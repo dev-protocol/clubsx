@@ -1,28 +1,9 @@
 <template>
   <header
-    class="
-      border-b-2
-      text-black
-      dark:border-b-0 dark:text-white dark:shadow-xl
-      burger:flex
-      burger:items-center
-      burger:justify-between
-      burger:px-4
-      burger:py-3
-    "
+    class="border-b-2 text-black dark:border-b-0 dark:text-white dark:shadow-xl burger:flex burger:items-center burger:justify-between burger:px-4 burger:py-3"
   >
     <div
-      class="
-        flex
-        w-full
-        flex-wrap
-        items-center
-        justify-between
-        px-4
-        py-3
-        align-baseline
-        burger:flex-nowrap burger:p-0
-      "
+      class="flex w-full flex-wrap items-center justify-between px-4 py-3 align-baseline burger:flex-nowrap burger:p-0"
     >
       <!-- Logo -->
       <a href="/" class="py-4 text-gray-900 md:p-4">D Club</a>
@@ -33,13 +14,7 @@
           <button
             @click="smIsOpen = !smIsOpen"
             type="button"
-            class="
-              block
-              text-gray-800
-              hover:text-black
-              focus:text-black focus:outline-none
-              dark:text-white
-            "
+            class="block text-gray-800 hover:text-black focus:text-black focus:outline-none dark:text-white"
           >
             <svg class="h-6 w-6 fill-current" viewBox="0 0 24 24">
               <path
