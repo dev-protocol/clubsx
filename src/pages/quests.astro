@@ -1,8 +1,7 @@
 ---
 import Layout from '../layouts/Default.astro'
 
-import Hero from '@components/Home/Hero.astro'
-import JoinClub from '@components/Home/JoinClub.astro'
+import Quests from '@components/Quests/Quests.astro'
 import Apps from '@components/Home/Apps/Apps.astro'
 import Sidebar from '@components/Sidebar/Sidebar.astro'
 ---
@@ -10,9 +9,6 @@ import Sidebar from '@components/Sidebar/Sidebar.astro'
 <Layout metaTitle="Dev Protocol | An open protocol for Creator Economy">
   <div class="flex justify-center">
     <Sidebar />
-    <div width="600" >
-      <Hero />
-      <JoinClub />
-    </div>
+    <Quests />
   </div>
 </Layout>

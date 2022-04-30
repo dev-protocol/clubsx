@@ -1,0 +1,62 @@
+---
+import Tier from "./Tier.vue"
+---
+
+<section
+  class="
+    flex flex-col
+    mt-12
+  "
+>
+  <h2 class="text-4xl mb-4">Join</h2>
+  <div class="mb-8">
+    Join Awesome Club in support of the awesome project.
+  </div>
+
+  <h3 class="text-2xl mb-4">Support with</h3>
+  <div class="mb-8">
+    <div class="flex">
+      <div class="w-16">
+        <input type="radio" id="dev" name="dev" value="dev" />
+        <label>$DEV</label>
+      </div>
+      <div class="w-16">
+        <img src="/assets/devtoken.png" width="50" height="50" alt="dev token" />
+      </div>
+    </div>
+    <div class="flex">
+      <div class="w-16">
+        <input type="radio" id="eth" name="eth" value="eth" />
+        <label>ETH</label>
+      </div>
+      <div class="w-16">
+        <img src="/assets/ETH.svg" width="50" height="50" alt="ethereum" />
+      </div>
+      <div>
+        <p class="text-sm">$ETH is automatically replaced with $DEV</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="text-2xl mb-4">Select a tier</h3>
+  <div class="grid grid-cols-3 gap-8 mb-8">
+    <Tier
+       title="Supporter"
+       id="supporter"
+       description="100 $DEV"
+       badgeImageSrc="/assets/badge1.png"
+    />
+    <Tier
+       title="Sponsor"
+       id="sponsor"
+       description="1200 $DEV"
+       badgeImageSrc="/assets/badge2.png"
+    />
+    <Tier
+       title="Awesomer"
+       id="awesomer"
+       description="3000 $DEV"
+       badgeImageSrc="/assets/badge3.png"
+    />
+  </div>
+</section>
