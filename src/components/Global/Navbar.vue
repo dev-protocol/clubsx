@@ -6,7 +6,7 @@
       class="flex w-full flex-wrap items-center justify-between px-4 py-3 align-baseline burger:flex-nowrap burger:p-0"
     >
       <!-- Logo -->
-      <a href="/" class="py-4 text-gray-900 md:p-4 dark:text-white">D Club</a>
+      <a href="/" class="py-4 text-gray-900 dark:text-white md:p-4">D Club</a>
 
       <div class="flex">
         <ThemeButton />

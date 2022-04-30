@@ -5,9 +5,9 @@
     </div>
     <div class="text-2xl">{{ title }}</div>
     <div class="mb-2">{{ description }}</div>
-      <a href="/join">
-        <button class="border p-2 px-4 rounded-sm bg-gray-600">Select</button>
-      </a>
+    <a href="/join">
+      <button class="rounded-sm border bg-gray-600 p-2 px-4">Select</button>
+    </a>
   </div>
 </template>
 
@@ -18,7 +18,7 @@ export default {
     title: String,
     id: String,
     description: String,
-    badgeImageSrc: String
+    badgeImageSrc: String,
   },
 }
 </script>

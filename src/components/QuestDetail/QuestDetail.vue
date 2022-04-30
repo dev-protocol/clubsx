@@ -1,10 +1,8 @@
 <template>
   <div class="mx-4">
-    <div class="mb-1 text-gray-400">
-      Quests / {{ id }}
-    </div>
+    <div class="mb-1 text-gray-400">Quests / {{ id }}</div>
     <div class="text-2xl">{{ title }}</div>
-    <div class="grid grid-cols-2 gap-4 my-8">
+    <div class="my-8 grid grid-cols-2 gap-4">
       <div>
         <img :src="badgeImageSrc" class="" width="400" height="400" />
       </div>
@@ -18,7 +16,7 @@
 </template>
 
 <script>
-import QuestInfo from "./QuestInfo.vue"
+import QuestInfo from './QuestInfo.vue'
 
 export default {
   name: 'QuestDetail',
@@ -26,7 +24,7 @@ export default {
     title: String,
     id: String,
     description: String,
-    badgeImageSrc: String
+    badgeImageSrc: String,
   },
   components: {
     QuestInfo,

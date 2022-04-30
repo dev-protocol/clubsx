@@ -16,7 +16,7 @@ export default {
     title: String,
     id: String,
     description: String,
-    badgeImageSrc: String
+    badgeImageSrc: String,
   },
 }
 </script>
