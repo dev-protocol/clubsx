@@ -1,14 +1,14 @@
 ---
 import Layout from '../layouts/Default.astro'
 
-import Quests from '@components/Quests/Quests.astro'
 import Apps from '@components/Home/Apps/Apps.astro'
-import Sidebar from '@components/Sidebar/Sidebar.astro'
+import Sidebar from '@components/Sidebar/Sidebar.vue'
+import Quests from '@components/Quests/Quests.astro'
 ---
 
 <Layout metaTitle="Dev Protocol | An open protocol for Creator Economy">
   <div class="flex justify-center">
-    <Sidebar />
+    <Sidebar client:load />
     <Quests />
   </div>
 </Layout>

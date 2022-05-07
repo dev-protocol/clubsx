@@ -2,7 +2,7 @@
 import Layout from '../../layouts/Default.astro'
 
 import QuestDetail from '@components/QuestDetail/QuestDetail.vue'
-import Sidebar from '@components/Sidebar/Sidebar.astro'
+import Sidebar from '@components/Sidebar/Sidebar.vue'
 
 export function getStaticPaths() {
   return [
@@ -15,7 +15,7 @@ export function getStaticPaths() {
 
 <Layout metaTitle="D Club | Quest">
   <div class="flex justify-center">
-    <Sidebar />
+    <Sidebar client:load />
     <QuestDetail
       id="quest_starter"
       title="Become the first 30 supporters"

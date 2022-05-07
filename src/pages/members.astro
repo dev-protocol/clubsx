@@ -2,7 +2,7 @@
 import Layout from '../layouts/Default.astro'
 
 import Apps from '@components/Home/Apps/Apps.astro'
-import JoinClub from '@components/Join/JoinClub.astro'
+import Members from '@components/Members/Members.vue'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
 ---
 
@@ -10,7 +10,7 @@ import Sidebar from '@components/Sidebar/Sidebar.vue'
   <div class="flex justify-center">
     <Sidebar client:load />
     <div>
-      <JoinClub />
+      <Members client:load />
     </div>
   </div>
 </Layout>
