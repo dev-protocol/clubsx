@@ -1,14 +1,14 @@
 <template>
-  <div class="flex items-center m-8">
+  <div class="m-8 flex items-center">
     <img
       v-if="imgSrc"
-      class="rounded-full mr-8"
+      class="mr-8 rounded-full"
       style="width: 75px; height: 75px"
       :src="imgSrc"
     />
     <div
       v-else
-      class="bg-blue-400 rounded-full mr-8"
+      class="mr-8 rounded-full bg-blue-400"
       style="width: 75px; height: 75px"
     />
     <div v-if="displayName">

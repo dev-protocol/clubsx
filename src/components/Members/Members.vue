@@ -1,18 +1,12 @@
 <template>
-  <div class="bg-cover bg-center mx-4">
+  <div class="mx-4 bg-cover bg-center">
     <h2 class="text-3xl">Members</h2>
-    <div class="border rounded">
+    <div class="rounded border">
       <ul role="list">
         <li
           v-for="member in members"
           :key="member.ownerAddress"
-          class="
-            flex
-            outline-white
-            border border-x-0 border-t-0
-            first:border-solid
-            last:border-none
-          "
+          class="flex border border-x-0 border-t-0 outline-white first:border-solid last:border-none"
         >
           <Avator :accountAddress="member.ownerAddress" :displayName="true" />
         </li>
