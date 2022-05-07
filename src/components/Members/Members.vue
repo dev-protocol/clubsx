@@ -6,14 +6,7 @@
         <li
           v-for="member in members"
           :key="member.ownerAddress"
-          class="
-            flex
-            items-center
-            border border-x-0 border-t-0
-            outline-white
-            first:border-solid
-            last:border-none
-          "
+          class="flex items-center border border-x-0 border-t-0 outline-white first:border-solid last:border-none"
         >
           <Avator :accountAddress="member.ownerAddress" :displayName="true" />
           <STokenPositions class="mx-8" :stokenID="member.id" />

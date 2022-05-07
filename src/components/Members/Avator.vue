@@ -1,5 +1,5 @@
 <template>
-  <div class="w-96 m-8 flex items-center">
+  <div class="m-8 flex w-96 items-center">
     <img
       v-if="imgSrc"
       class="mr-8 rounded-full"
@@ -11,7 +11,7 @@
       class="mr-8 rounded-full bg-blue-400"
       style="width: 75px; height: 75px"
     />
-    <div class="w-64 text-ellipsis overflow-hidden" v-if="displayName">
+    <div class="w-64 overflow-hidden text-ellipsis" v-if="displayName">
       {{ name || accountAddress }}
     </div>
   </div>
