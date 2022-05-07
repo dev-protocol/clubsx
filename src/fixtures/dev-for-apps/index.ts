@@ -1,4 +1,5 @@
 import { always } from 'ramda'
+
 export const StrapiBaseUrl = 'https://dev-for-apps.azureedge.net'
 
 export type ImageFormat = {

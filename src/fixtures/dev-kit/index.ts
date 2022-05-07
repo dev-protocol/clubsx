@@ -79,6 +79,18 @@ const getSTokensAddress = async (prov: providers.BaseProvider) => {
     : undefined
 }
 
+export const getStokenPositions = async (
+  prov: providers.BaseProvider,
+  sTokenID: number
+) => {
+  const [, , client] = await newClient(prov)
+  const address = await getSTokensAddress(prov)
+  if (client && address) {
+    return client.sTokens(address).positions(sTokenID)
+  }
+  return undefined
+}
+
 export const getStokenOwnerOf = async (
   prov: providers.BaseProvider,
   sTokenID: number
@@ -87,6 +99,18 @@ export const getStokenOwnerOf = async (
   const address = await getSTokensAddress(prov)
   if (client && address) {
     return client.sTokens(address).ownerOf(sTokenID)
+  }
+  return undefined
+}
+
+export const getStokenTokenURI = async (
+  prov: providers.BaseProvider,
+  sTokenID: number
+) => {
+  const [, , client] = await newClient(prov)
+  const address = await getSTokensAddress(prov)
+  if (client && address) {
+    return client.sTokens(address).tokenURI(sTokenID)
   }
   return undefined
 }
@@ -102,6 +126,18 @@ export const detectStokensByPropertyAddress = async (
       client.sTokens(address) as any
     ).positionsOfProperty(propertyAddress)
     return TokenIdList
+  }
+  return undefined
+}
+
+export const balanceOfProperty = async (
+  prov: providers.BaseProvider,
+  propertyAddress: string,
+  accountAddress: string
+) => {
+  const [, , client] = await newClient(prov)
+  if (client && accountAddress) {
+    return client.property(propertyAddress).balanceOf(accountAddress)
   }
   return undefined
 }

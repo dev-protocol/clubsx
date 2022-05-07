@@ -30,7 +30,7 @@
 
 <script>
 import { providers } from 'ethers'
-import { detectStokensByPropertyAddress } from '../../fixtures/devkit'
+import { detectStokensByPropertyAddress } from '../../fixtures/dev-kit'
 
 export default {
   name: 'Sidebar',

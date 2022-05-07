@@ -6,9 +6,17 @@
         <li
           v-for="member in members"
           :key="member.ownerAddress"
-          class="flex border border-x-0 border-t-0 outline-white first:border-solid last:border-none"
+          class="
+            flex
+            items-center
+            border border-x-0 border-t-0
+            outline-white
+            first:border-solid
+            last:border-none
+          "
         >
           <Avator :accountAddress="member.ownerAddress" :displayName="true" />
+          <STokenPositions class="mx-8" :stokenID="member.id" />
         </li>
       </ul>
     </div>
@@ -20,23 +28,24 @@ import { providers } from 'ethers'
 import {
   detectStokensByPropertyAddress,
   getStokenOwnerOf,
-} from '../../fixtures/devkit'
+} from '../../fixtures/dev-kit'
 import Avator from './Avator.vue'
+import STokenPositions from './STokenPositions.vue'
 
 export default {
   data() {
     return {
       members: [],
       creators: [],
+      propertyAddress: import.meta.env.PUBLIC_PROPERTY_ADDRESS,
     }
   },
   async created() {
     const providerURL = import.meta.env.PUBLIC_WEB3_PROVIDER_URL
     const provider = new providers.JsonRpcProvider(providerURL)
-    const propertyAddress = import.meta.env.PUBLIC_PROPERTY_ADDRESS
     const stokenIDs = await detectStokensByPropertyAddress(
       provider,
-      propertyAddress
+      this.propertyAddress
     )
     const ret = await Promise.all(
       stokenIDs.map(async (stokenID) => {
@@ -50,11 +59,11 @@ export default {
         )
       })
     )
-    console.log(ret)
     this.members = ret
   },
   components: {
     Avator,
+    STokenPositions,
   },
 }
 </script>

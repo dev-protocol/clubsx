@@ -1,5 +1,5 @@
 <template>
-  <div class="m-8 flex items-center">
+  <div class="w-96 m-8 flex items-center">
     <img
       v-if="imgSrc"
       class="mr-8 rounded-full"
@@ -11,8 +11,8 @@
       class="mr-8 rounded-full bg-blue-400"
       style="width: 75px; height: 75px"
     />
-    <div v-if="displayName">
-      {{ name }}
+    <div class="w-64 text-ellipsis overflow-hidden" v-if="displayName">
+      {{ name || accountAddress }}
     </div>
   </div>
 </template>
@@ -31,9 +31,8 @@ export default {
   },
   async created() {
     const res = await getAccount(this.accountAddress)
-    console.log(res)
     this.imgSrc = res[0]?.portrait?.formats.thumbnail.url
-    this.name = res[0].name
+    this.name = res[0]?.name
   },
 }
 </script>
