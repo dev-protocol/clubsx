@@ -1,7 +1,7 @@
 <template>
   <div class="flex items-center">
     <div
-      class="w-16 h-16"
+      class="h-16 w-16"
       :style="`background-image: url('${image}');background-repeat: no-repeat; background-size: contain; background-position: center center;`"
     />
     <div class="mr-4">#{{ stokenID }}</div>
