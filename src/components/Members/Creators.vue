@@ -6,7 +6,14 @@
         <li
           v-for="creator in creators"
           :key="creator.ownerAddress"
-          class="flex items-center border border-x-0 border-t-0 outline-white first:border-solid last:border-none"
+          class="
+            flex
+            items-center
+            border border-x-0 border-t-0
+            outline-white
+            first:border-solid
+            last:border-none
+          "
         >
           <Avator
             :accountAddress="creator.accountAddress"
@@ -34,7 +41,6 @@ export default {
     const providerURL = import.meta.env.PUBLIC_WEB3_PROVIDER_URL
     const provider = new providers.JsonRpcProvider(providerURL)
     const balances = await getBalances(provider, this.propertyAddress)
-    console.log(balances)
     this.creators = balances.map((balance) => ({
       accountAddress: balance.account,
     }))
