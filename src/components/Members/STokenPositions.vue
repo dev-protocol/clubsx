@@ -27,7 +27,6 @@ export default {
   async created() {
     const providerURL = import.meta.env.PUBLIC_WEB3_PROVIDER_URL
     const provider = new providers.JsonRpcProvider(providerURL)
-    console.log(this.propertyAddress, this.accountAddress)
 
     const balances = await getStokenPositions(provider, this.stokenID)
     const uri = await getStokenTokenURI(provider, this.stokenID)
@@ -35,7 +34,6 @@ export default {
       .dp(0)
       .toNumber()
     this.image = uri.image
-    console.log('b:', balances, uri)
   },
 }
 </script>

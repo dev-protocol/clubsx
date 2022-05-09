@@ -1,12 +1,19 @@
 <template>
-  <div class="mx-4 bg-cover bg-center">
-    <h2 class="text-3xl">Members</h2>
-    <div class="rounded border">
+  <div class="bg-cover bg-center">
+    <h3 class="my-8 text-2xl">Supporters</h3>
+    <div v-if="members.length > 0" class="rounded border">
       <ul role="list">
         <li
           v-for="member in members"
           :key="member.ownerAddress"
-          class="flex items-center border border-x-0 border-t-0 outline-white first:border-solid last:border-none"
+          class="
+            flex
+            items-center
+            border border-x-0 border-t-0
+            outline-white
+            first:border-solid
+            last:border-none
+          "
         >
           <Avator :accountAddress="member.ownerAddress" :displayName="true" />
           <STokenPositions class="mx-8" :stokenID="member.id" />
@@ -29,7 +36,6 @@ export default {
   data() {
     return {
       members: [],
-      creators: [],
       propertyAddress: import.meta.env.PUBLIC_PROPERTY_ADDRESS,
     }
   },

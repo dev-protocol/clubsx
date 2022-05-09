@@ -7,6 +7,7 @@ import {
 import {
   contractFactory as l2ContractFactory,
   DevkitContract as L2DevkitContract,
+  createPropertyContract,
 } from '@devprotocol/dev-kit/l2'
 import { UndefinedOr } from '@devprotocol/util-ts'
 
@@ -140,4 +141,12 @@ export const balanceOfProperty = async (
     return client.property(propertyAddress).balanceOf(accountAddress)
   }
   return undefined
+}
+
+export const getBalances = async (
+  prov: providers.BaseProvider,
+  propertyAddress: string
+) => {
+  // only for L2
+  return await createPropertyContract(prov)(propertyAddress).getBalances()
 }
