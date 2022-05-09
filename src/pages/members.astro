@@ -2,15 +2,18 @@
 import Layout from '../layouts/Default.astro'
 
 import Apps from '@components/Home/Apps/Apps.astro'
-import Members from '@components/Members/Members.vue'
+import Creators from '@components/Members/Creators.vue'
+import Supporters from '@components/Members/Supporters.vue'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
 ---
 
 <Layout metaTitle="Dev Protocol | An open protocol for Creator Economy">
   <div class="flex justify-center">
     <Sidebar client:load />
-    <div>
-      <Members client:load />
+    <div class="mx-4 mb-4">
+      <h2 class="text-3xl">Members</h2>
+      <Supporters client:load />
+      <Creators client:load />
     </div>
   </div>
 </Layout>
