@@ -23,7 +23,7 @@
       <nav
         :aria-disabled="toggleOpen"
         :style="{ transform: toggleOpen ? 'translateX(0)' : '' }"
-        class="mx-4 grid max-h-[80vh] translate-x-[-100vw] justify-items-center gap-8 overflow-y-scroll rounded border border-stone-50/30 bg-slate-50/[.06] p-8 backdrop-blur-3xl transition-transform duration-100 md:max-h-[90vh] lg:mx-auto lg:translate-x-0"
+        class="mx-4 grid max-h-[80vh] max-w-xs translate-x-[-100vw] justify-items-center gap-8 overflow-y-hidden rounded border border-stone-50/30 bg-slate-50/[.06] p-8 backdrop-blur-3xl transition-transform duration-100 hover:overflow-auto md:max-h-[90vh] lg:mx-auto lg:max-w-none lg:translate-x-0"
       >
         <img
           src="/assets/avatar.png"
@@ -40,7 +40,7 @@
           </p>
         </header>
         <aside
-          class="grid w-full grid-cols-[1fr_auto] justify-between rounded border border-stone-50/30 font-c-sans"
+          class="grid w-full grid-cols-[1fr_auto] justify-between rounded border border-stone-50/30 font-c-sans text-sm"
         >
           <h3 class="border-b border-stone-50/30 p-2 opacity-20">
             Club Allocation
@@ -49,7 +49,7 @@
           <h3 class="p-2 opacity-20">APY for $DEV</h3>
           <p class="p-2 opacity-20">&*%</p>
         </aside>
-        <a class="m-2 rounded border p-2 px-4 opacity-20">Join</a>
+        <a class="rounded border p-2 px-4 opacity-20">Join</a>
         <div class="grid w-full gap-6">
           <a class="opacity-20">Perks</a>
           <a class="opacity-20">Updates</a>
