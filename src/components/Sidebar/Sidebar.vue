@@ -23,7 +23,7 @@
       <nav
         :aria-disabled="toggleOpen"
         :style="{ transform: toggleOpen ? 'translateX(0)' : '' }"
-        class="mx-4 grid max-h-[90vh] translate-x-[-100vw] justify-items-center gap-8 overflow-y-scroll rounded border border-stone-50/30 bg-slate-50/[.06] p-8 backdrop-blur-3xl transition-transform duration-100 lg:mx-auto lg:translate-x-0"
+        class="mx-4 grid max-h-[80vh] translate-x-[-100vw] justify-items-center gap-8 overflow-y-scroll rounded border border-stone-50/30 bg-slate-50/[.06] p-8 backdrop-blur-3xl transition-transform duration-100 md:max-h-[90vh] lg:mx-auto lg:translate-x-0"
       >
         <img
           src="/assets/avatar.png"
