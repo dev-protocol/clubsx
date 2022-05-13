@@ -5,7 +5,7 @@
     :space-between="50"
     navigation
     loop="true"
-    :autoplay="{ delay: 3000 }"
+    :autoplay="{ delay: 3000, disableOnInteraction: false }"
     class="inset-0"
   >
     <div class="absolute inset-0 bg-black"></div>
@@ -52,8 +52,14 @@ export default {
   position: absolute;
   z-index: 0;
 }
-.swiper-button-next,
-.swiper-button-prev {
-  color: white;
+</style>
+<style>
+.swiper-button-prev,
+.swiper-button-next {
+  color: #fff;
+}
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  font-size: 1.2rem;
 }
 </style>

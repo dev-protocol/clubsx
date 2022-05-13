@@ -64,16 +64,9 @@ export default {
       menuIsOpen: false,
     }
   },
-  mounted() {
-    this.popupItem = this.$el
-  },
   methods: {
     toggle() {
       this.menuIsOpen = !this.menuIsOpen
-    },
-    hide() {
-      console.log(this)
-      this.menuIsOpen = false
     },
   },
 }
