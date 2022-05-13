@@ -1,5 +1,5 @@
 {
-  "name": "devprotocol",
+  "name": "clubs",
   "version": "0.11.0",
   "private": true,
   "scripts": {
@@ -32,9 +32,8 @@
     "remark-cli": "^10.0.1",
     "tailwindcss": "^3.0.7"
   },
-  "description": "Dev Protocol's open-source website, built with Astro",
-  "repository": "https://github.com/WebXDAO/devprotocol.xyz.git",
-  "author": "WebXDAO",
+  "repository": "https://github.com/dev-protocol/club-apps.git",
+  "author": "",
   "license": "MIT",
   "dependencies": {
     "@devprotocol/dev-kit": "^6.0.9",
