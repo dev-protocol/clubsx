@@ -43,7 +43,6 @@
     "bignumber.js": "^9.0.2",
     "ethers": "^5.6.5",
     "ramda": "^0.28.0",
-    "vue": "3.2.26",
-    "vue-click-outside": "^1.1.0"
+    "vue": "3.2.26"
   }
 }
