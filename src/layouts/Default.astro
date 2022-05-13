@@ -1,5 +1,6 @@
 ---
 import Navigation from '../components/Global/Navigation.vue'
+import '../styles/global.css'
 
 const { metaTitle } = Astro.props
 const title = metaTitle
@@ -13,7 +14,6 @@ const title = metaTitle
     <meta name="viewport" content="width=device-width" />
     <title>{title}</title>
     <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="stylesheet" href={Astro.resolve('../styles/global.css')} />
     <meta
       name="description"
       content={`${import.meta.env.PUBLIC_SITE_DESCRIPTION}`}
@@ -46,7 +46,7 @@ const title = metaTitle
   </head>
 
   <body class="font-c-body text-gray-900 dark:bg-darkPrimary dark:text-white">
-    <Navigation client:visible />
+    <Navigation />
     <main>
       <slot />
     </main>
