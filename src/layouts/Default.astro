@@ -20,10 +20,10 @@ const title = metaTitle
     />
     <meta property="og:title" content={title} />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={Astro.request.canonicalURL.href} />
+    <meta property="og:url" content={Astro.canonicalURL.href} />
     <meta
       property="og:image"
-      content={`${Astro.request.canonicalURL.origin}/assets/og.png`}
+      content={`${Astro.canonicalURL.origin}/assets/og.png`}
     />
     <meta
       property="og:description"
@@ -41,7 +41,7 @@ const title = metaTitle
     />
     <meta
       name="twitter:image"
-      content={`${Astro.request.canonicalURL.origin}/assets/og.png`}
+      content={`${Astro.canonicalURL.origin}/assets/og.png`}
     />
   </head>
 
