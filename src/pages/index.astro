@@ -1,30 +1,32 @@
 ---
 import Layout from '../layouts/Default.astro'
 
-import Sidebar from '@components/Sidebar/Sidebar.vue'
-import Footer from '@components/Global/Footer.astro'
+import Sidebar from '../components/Sidebar/Sidebar.vue'
+import Footer from '../components/Global/Footer.astro'
 ---
 
-<Layout metaTitle="Dev Protocol | An open protocol for Creator Economy">
+<Layout metaTitle="">
   <div class="relative">
-    <div class="absolute w-full h-c-hero">
+    <div class="absolute w-full h-[24rem] lg:h-[38rem]">
       <img src="/assets/temple-fusaiji.jpg" class="object-cover w-full h-full"
       />
       <div class="absolute inset-0 bg-black opacity-20"></div>
     </div>
     <div
-      class="lg:container relative mx-auto pt-12 grid gap-12 lg:grid-cols-[minmax(290px,_1fr)_4fr]"
+      class="lg:container relative mx-auto lg:pt-12 grid lg:gap-12 lg:grid-cols-[minmax(290px,_1fr)_4fr]"
     >
       <Sidebar client:load />
-      <article class="grid gap-20">
+      <article class="grid gap-10 lg:gap-20">
         <header
-          class="min-h-[38rem] py-12 flex justify-items-center items-center"
+          class="min-h-[24rem] lg:min-h-[38rem] lg:-mt-12 flex justify-center items-center"
         >
-          <h1 class="max-w-2xl mx-auto text-4xl font-extrabold text-justify">
+          <h1
+            class="max-w-2xl mx-4 text-3xl lg:text-4xl font-extrabold text-justify"
+          >
             Join DAO that makes the next 1000 years
           </h1>
         </header>
-        <section class="mt-12 px-4">
+        <section class="px-4">
           <img src="/assets/preview/Content.png" />
         </section>
       </article>

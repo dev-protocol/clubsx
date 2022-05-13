@@ -12,7 +12,11 @@
         <span>Sign in</span>
       </button>
       <div class="relative" ref="menu">
-        <button class="rounded border p-2" @click="menuIsOpen = !menuIsOpen">
+        <button
+          class="rounded border p-2"
+          @click="toggle"
+          v-click-outside="hide"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="h-6 w-6"
@@ -30,20 +34,25 @@
         </button>
         <ul
           v-if="menuIsOpen"
-          class="absolute right-0 z-50 mt-2 w-48 rounded border border-slate-800 bg-neutral-900 p-2 shadow"
+          class="absolute right-0 z-50 mt-2 w-48 rounded border border-slate-800 bg-black p-2 shadow"
         >
           <li>
             <a
-              href="#"
-              class="inline-block w-full rounded px-4 py-2 hover:bg-black"
-              >Powerd</a
+              href="https://stakes.social/"
+              class="inline-block w-full rounded px-4 py-2 hover:bg-neutral-900"
+              target="_blank"
+              rel="norefferer noopener"
+              >Stakes.social</a
             >
           </li>
+          <hr class="my-4 border-slate-50/20" />
           <li>
             <a
-              href="#"
-              class="inline-block w-full rounded px-4 py-2 hover:bg-black"
-              >Powerd</a
+              href="https://www.youtube.com/user/suiundo/"
+              class="inline-block w-full rounded px-4 py-2 hover:bg-neutral-900"
+              target="_blank"
+              rel="norefferer noopener"
+              >YouTube</a
             >
           </li>
         </ul>
@@ -53,7 +62,7 @@
 </template>
 
 <script>
-import { toggle } from 'src/fixtures/utility'
+import ClickOutside from 'vue-click-outside'
 
 export default {
   data() {
@@ -61,6 +70,20 @@ export default {
       menuIsOpen: false,
     }
   },
-  ...toggle('menuIsOpen', 'menu'),
+  mounted() {
+    this.popupItem = this.$el
+  },
+  methods: {
+    toggle() {
+      this.menuIsOpen = !this.menuIsOpen
+    },
+    hide() {
+      console.log(this)
+      this.menuIsOpen = false
+    },
+  },
+  directives: {
+    ClickOutside,
+  },
 }
 </script>

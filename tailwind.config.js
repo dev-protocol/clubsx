@@ -18,9 +18,6 @@ module.exports = {
         'c-serif': ['Bodoni Moda', 'serif'],
         'c-sans': ['DM Sans', 'sans-serif'],
       },
-      spacing: {
-        'c-hero': '48rem',
-      },
       animation: {
         'c-bash-spinner': 'c-bash-spinner 1s linear infinite',
       },
