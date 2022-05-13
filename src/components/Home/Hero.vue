@@ -52,4 +52,8 @@ export default {
   position: absolute;
   z-index: 0;
 }
+.swiper-button-next,
+.swiper-button-prev {
+  color: white;
+}
 </style>

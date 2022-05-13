@@ -34,7 +34,7 @@
     "remark-cli": "^10.0.1",
     "tailwindcss": "^3.0.7"
   },
-  "repository": "https://github.com/dev-protocol/club-apps.git",
+  "repository": "https://github.com/dev-protocol/clubs.git",
   "author": "",
   "license": "MIT",
   "dependencies": {
