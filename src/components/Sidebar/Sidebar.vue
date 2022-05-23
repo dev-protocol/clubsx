@@ -63,6 +63,11 @@
               </p>
             </header>
           </div>
+          <div
+            class="grid grid-cols-[1fr_2fr] items-center gap-8 lg:grid-cols-1"
+          >
+            <a href="/members">{{ members || '-' }} members</a>
+          </div>
           <aside
             class="grid w-full grid-cols-[1fr_auto] justify-between rounded border border-stone-50/30 font-c-sans text-sm"
           >
@@ -73,8 +78,9 @@
             <h3 class="p-2 opacity-20">APY for $DEV</h3>
             <p class="p-2 opacity-20">&*%</p>
           </aside>
-          <a class="rounded border p-2 px-4 opacity-20">Join</a>
+          <a class="rounded border p-2 px-4 opacity-20" href="/join">Join</a>
           <div class="grid w-full gap-6">
+            <a class="opacity-20" href="/quests">Quests</a>
             <a class="opacity-20">Perks</a>
             <a class="opacity-20">Updates</a>
             <a class="opacity-20">Vote</a>
@@ -98,14 +104,14 @@ export default {
     }
   },
   async created() {
-    // const providerURL = import.meta.env.PUBLIC_WEB3_PROVIDER_URL
-    // const provider = new providers.JsonRpcProvider(providerURL)
-    // const propertyAddress = import.meta.env.PUBLIC_PROPERTY_ADDRESS
-    // await detectStokensByPropertyAddress(provider, propertyAddress).then(
-    //   (res) => {
-    //     this.members = res.length
-    //   }
-    // )
+    const providerURL = import.meta.env.PUBLIC_WEB3_PROVIDER_URL
+    const provider = new providers.JsonRpcProvider(providerURL)
+    const propertyAddress = import.meta.env.PUBLIC_PROPERTY_ADDRESS
+    await detectStokensByPropertyAddress(provider, propertyAddress).then(
+      (res) => {
+        this.members = res.length
+      }
+    )
   },
   methods: {
     toggle() {

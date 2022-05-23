@@ -1,5 +1,5 @@
 ---
-import Navigation from '../components/Global/Navigation.vue'
+import Navigation from '@components/Global/Navigation.vue'
 import '../styles/global.css'
 
 const { metaTitle } = Astro.props
@@ -46,7 +46,7 @@ const title = metaTitle
   </head>
 
   <body class="font-c-body text-gray-900 dark:bg-darkPrimary dark:text-white">
-    <Navigation client:visible />
+    <Navigation client:only="vue" />
     <main>
       <slot />
     </main>
