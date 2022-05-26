@@ -393,10 +393,10 @@
     "@babel/helper-validator-identifier" "^7.16.7"
     to-fast-properties "^2.0.0"
 
-"@devprotocol/dev-kit@^6.0.9":
-  version "6.0.9"
-  resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-6.0.9.tgz#159f72a1e43e62c7c87c66fd7fc048e5fbc59ddf"
-  integrity sha512-anFbBmO8zRFa88GyAtsUBygF6JnNSTyZ9JV54x6Mci+gKfKkm1RvaPBrEatCZaLwHcw0qMgDG8ucBnjggEVhNg==
+"@devprotocol/dev-kit@^6.2.1":
+  version "6.2.1"
+  resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-6.2.1.tgz#23d9901bfd0f07cf7a73604e8c35059a54c8803a"
+  integrity sha512-39BR/LJTaweLZwToABonlivt44FC3tlrPJ3Sj70t3bj/1G4omVa4mqit7fUzSKcynmExEEV+ugBplEQAv/GKig==
   dependencies:
     "@devprotocol/util-ts" "^2.2.1"
     "@types/bent" "^7.3.1"
@@ -1372,11 +1372,6 @@
   dependencies:
     "@vue/compiler-dom" "3.2.26"
     "@vue/shared" "3.2.26"
-
-"@vue/devtools-api@^6.0.0-beta.11":
-  version "6.1.4"
-  resolved "https://registry.yarnpkg.com/@vue/devtools-api/-/devtools-api-6.1.4.tgz#b4aec2f4b4599e11ba774a50c67fa378c9824e53"
-  integrity sha512-IiA0SvDrJEgXvVxjNkHPFfDx6SXw0b/TUkqMcDZWNg9fnCAHbTpoo59YfJ9QLFkwa3raau5vSlRVzMSLDnfdtQ==
 
 "@vue/reactivity-transform@3.2.26":
   version "3.2.26"
@@ -11253,13 +11248,6 @@ vue@3.2.26:
     "@vue/runtime-dom" "3.2.26"
     "@vue/server-renderer" "3.2.26"
     "@vue/shared" "3.2.26"
-
-vuex@^4.0.2:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/vuex/-/vuex-4.0.2.tgz#f896dbd5bf2a0e963f00c67e9b610de749ccacc9"
-  integrity sha512-M6r8uxELjZIK8kTKDGgZTYX/ahzblnzC4isU1tpmEuOIIKmV+TRdc+H4s8ds2NuZ7wpUTdGRzJRtoj+lI+pc0Q==
-  dependencies:
-    "@vue/devtools-api" "^6.0.0-beta.11"
 
 wcwidth@^1.0.1:
   version "1.0.1"

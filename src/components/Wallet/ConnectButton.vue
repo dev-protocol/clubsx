@@ -8,40 +8,35 @@
 </template>
 
 <script>
-import Web3Modal from 'web3modal'
 import { providers } from 'ethers'
-import detectEthereumProvider from '@metamask/detect-provider'
 import { whenDefined } from '@devprotocol/util-ts'
-
-import { store } from '../../store'
+import { ReConnectWallet, GetModalProvider } from '../../fixtures/wallet'
 
 export default {
   name: 'ConnectButton',
   data() {
+    const modalProvider = GetModalProvider()
     return {
-      walletAddress: store.state.wallet.walletAddress,
+      modalProvider,
+      walletAddress: '',
+    }
+  },
+  async mounted() {
+    const { currentAddress } = await ReConnectWallet(this.modalProvider)
+    if (currentAddress) {
+      this.walletAddress = currentAddress
     }
   },
   methods: {
     async connect() {
-      const modalProvider = new Web3Modal({
-        providerOptions: {
-          injected: {
-            package: detectEthereumProvider(),
-          },
-        },
-        cacheProvider: false,
-      })
-      const connectedProvider = await modalProvider.connect()
+      const connectedProvider = await this.modalProvider.connect()
       const newProvider = whenDefined(
         connectedProvider,
         (p) => new providers.Web3Provider(p)
       )
-      store.commit('wallet/setProvider', { provider: newProvider })
 
       const currentAddress = await newProvider.getSigner().getAddress()
       this.walletAddress = currentAddress
-      store.commit('wallet/setWalletAddress', { walletAddress: currentAddress })
     },
   },
 }
