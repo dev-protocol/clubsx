@@ -1,7 +1,7 @@
 ---
 import Layout from '@layouts/Default.astro'
 
-import JoinClub from '@components/Join/JoinClub.astro'
+import JoinClub from '@components/Join/JoinClub.vue'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
 ---
 
@@ -11,7 +11,7 @@ import Sidebar from '@components/Sidebar/Sidebar.vue'
   >
     <Sidebar client:load />
     <div>
-      <JoinClub />
+      <JoinClub client:load />
     </div>
   </div>
 </Layout>
