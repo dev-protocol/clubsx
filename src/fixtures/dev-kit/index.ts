@@ -80,6 +80,14 @@ export const balanceOfProperty = async (
   return undefined
 }
 
+export const positionsOfOwner = async (
+  prov: providers.BaseProvider,
+  accountAddress: string
+) => {
+  const [l1, l2] = await clientsSTokens(prov)
+  return (l1 || l2)?.positionsOfOwner(accountAddress)
+}
+
 export const getBalances = async (
   prov: providers.BaseProvider,
   propertyAddress: string

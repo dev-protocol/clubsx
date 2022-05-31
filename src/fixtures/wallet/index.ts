@@ -32,7 +32,7 @@ export const ReConnectWallet = async (modalProvider: any) => {
       (p) => new providers.Web3Provider(p)
     )
 
-    const currentAddress = await newProvider.getSigner().getAddress()
+    const currentAddress = await newProvider?.getSigner().getAddress()
     return { currentAddress, provider: newProvider }
   }
 

@@ -1,10 +1,18 @@
 <template>
-  <div class="flex items-center">
+  <div class="flex items-center" v-if="layout === 'default'">
     <div
       class="h-16 w-16"
       :style="`background-image: url('${image}');background-repeat: no-repeat; background-size: contain; background-position: center center;`"
     />
     <div class="mr-4">#{{ stokenID }}</div>
+    <div>{{ amount || '-' }} DEV</div>
+  </div>
+  <div v-else>
+    <div
+      class="h-64 w-64"
+      :style="`background-image: url('${image}');background-repeat: no-repeat; background-size: contain; background-position: center start;`"
+    />
+    <div class="mr-4 text-2xl">#{{ stokenID }}</div>
     <div>{{ amount || '-' }} DEV</div>
   </div>
 </template>
@@ -17,11 +25,12 @@ import { toNaturalNumber } from '../../fixtures/utility'
 
 export default {
   name: 'STokenPositions',
-  props: ['stokenID'],
+  props: ['stokenID', 'layout'],
   data() {
     return {
       amount: undefined,
       image: undefined,
+      layout: this.layout ? this.layout : 'default',
     }
   },
   async created() {

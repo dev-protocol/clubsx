@@ -3,6 +3,7 @@ import Layout from '@layouts/Default.astro'
 
 import Sidebar from '@components/Sidebar/Sidebar.vue'
 import Badges from '@components/Badges/Badges.astro'
+import Membership from '@components/Membership/Membership.vue'
 ---
 
 <Layout metaTitle="Dev Protocol | An open protocol for Creator Economy">
@@ -10,6 +11,13 @@ import Badges from '@components/Badges/Badges.astro'
     class="lg:container relative mx-auto lg:pt-12 grid lg:gap-12 lg:grid-cols-[minmax(290px,_1fr)_4fr]"
   >
     <Sidebar client:load />
-    <Badges />
+    <div>
+      <div class="mb-8">
+        <Membership client:only="vue" />
+      </div>
+      <div class="mb-8">
+        <Badges />
+      </div>
+    </div>
   </div>
 </Layout>

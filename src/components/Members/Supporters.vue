@@ -22,8 +22,8 @@ import {
   detectStokensByPropertyAddress,
   getStokenOwnerOf,
 } from '../../fixtures/dev-kit'
-import Avator from './Avator.vue'
-import STokenPositions from './STokenPositions.vue'
+import Avator from '@components/Members/Avator.vue'
+import STokenPositions from '@components/Members/STokenPositions.vue'
 
 export default {
   data() {
