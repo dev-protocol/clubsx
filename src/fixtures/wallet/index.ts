@@ -38,3 +38,7 @@ export const ReConnectWallet = async (modalProvider: any) => {
 
   return { currentAddress: undefined, provider: undefined }
 }
+
+export const Disconnect = (modalProvider: any) => {
+  modalProvider?.clearCachedProvider()
+}

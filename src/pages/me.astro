@@ -4,6 +4,7 @@ import Layout from '@layouts/Default.astro'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
 import Badges from '@components/Badges/Badges.astro'
 import Membership from '@components/Membership/Membership.vue'
+import Account from '@components/Account/Account.vue'
 ---
 
 <Layout metaTitle="Dev Protocol | An open protocol for Creator Economy">
@@ -17,6 +18,9 @@ import Membership from '@components/Membership/Membership.vue'
       </div>
       <div class="mb-8">
         <Badges />
+      </div>
+      <div class="mb-8">
+        <Account client:only="vue" />
       </div>
     </div>
   </div>
