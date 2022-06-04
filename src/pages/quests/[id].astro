@@ -3,6 +3,7 @@ import Layout from '@layouts/Default.astro'
 
 import QuestDetail from '@components/QuestDetail/QuestDetail.vue'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
+import quests from '@components/Quests/quests.json'
 
 export function getStaticPaths() {
   return [
@@ -12,18 +13,21 @@ export function getStaticPaths() {
   ]
 }
 const { id } = Astro.params
+const targetQuest = quests.filter(
+  (quest) => quest && quest.id === id && quest.listed
+)[0]
 ---
 
-<Layout metaTitle="D Club | Quest">
+<Layout metaTitle='D Club | Quest'>
   <div
-    class="lg:container relative mx-auto lg:pt-12 grid lg:gap-12 lg:grid-cols-[minmax(290px,_1fr)_4fr]"
+    class='lg:container relative mx-auto lg:pt-12 grid lg:gap-12 lg:grid-cols-[minmax(290px,_1fr)_4fr]'
   >
     <Sidebar client:load />
     <QuestDetail
-      {id}
-      title="Become the first 30 supporters"
-      description="start description description"
-      badgeImageSrc="/assets/badge1.png"
+      questId={targetQuest?.id}
+      title={targetQuest?.title}
+      description={targetQuest?.description}
+      badgeImageSrc={targetQuest?.badgeImageSrc}
     />
   </div>
 </Layout>

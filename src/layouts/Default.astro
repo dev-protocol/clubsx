@@ -8,47 +8,47 @@ const title = metaTitle
   : import.meta.env.PUBLIC_SITE_NAME
 ---
 
-<html class="dark" lang="en">
+<html class='dark' lang='en'>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width' />
     <title>{title}</title>
-    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel='icon' type='image/png' href='/favicon.png' />
     <meta
-      name="description"
+      name='description'
       content={`${import.meta.env.PUBLIC_SITE_DESCRIPTION}`}
     />
-    <meta property="og:title" content={title} />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={Astro.canonicalURL.href} />
+    <meta property='og:title' content={title} />
+    <meta property='og:type' content='website' />
+    <meta property='og:url' content={Astro.canonicalURL.href} />
     <meta
-      property="og:image"
+      property='og:image'
       content={`${Astro.canonicalURL.origin}/assets/og.png`}
     />
     <meta
-      property="og:description"
+      property='og:description'
       content={import.meta.env.PUBLIC_SITE_DESCRIPTION}
     />
-    <meta property="og:site_name" content={import.meta.env.PUBLIC_SITE_NAME} />
-    <meta name="twitter:site" content={import.meta.env.PUBLIC_TWITTER_USER} />
-    <meta name="twitter:creator" content={import.meta.env.PUBLIC_TWITTER_USER}
+    <meta property='og:site_name' content={import.meta.env.PUBLIC_SITE_NAME} />
+    <meta name='twitter:site' content={import.meta.env.PUBLIC_TWITTER_USER} />
+    <meta name='twitter:creator' content={import.meta.env.PUBLIC_TWITTER_USER}
     />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
+    <meta name='twitter:card' content='summary_large_image' />
+    <meta name='twitter:title' content={title} />
     <meta
-      name="twitter:description"
+      name='twitter:description'
       content={import.meta.env.PUBLIC_SITE_DESCRIPTION}
     />
     <meta
-      name="twitter:image"
+      name='twitter:image'
       content={`${Astro.canonicalURL.origin}/assets/og.png`}
     />
   </head>
 
-  <body class="font-c-body text-gray-900 dark:bg-darkPrimary dark:text-white">
-    <Navigation client:only="vue" />
+  <body class='font-c-body text-gray-900 dark:bg-darkPrimary dark:text-white'>
+    <Navigation client:only='vue' />
     <main>
-      <slot />
+      <slot></slot>
     </main>
   </body>
 </html>

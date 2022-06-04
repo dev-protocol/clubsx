@@ -7,36 +7,36 @@ import Hero from '@components/Home/Hero.vue'
 import JoinClub from '@components/Join/JoinClub.vue'
 ---
 
-<Layout metaTitle="">
-  <div class="relative">
-    <div class="absolute w-full h-[24rem] lg:h-[38rem]">
+<Layout metaTitle=''>
+  <div class='relative'>
+    <div class='absolute w-full h-[24rem] lg:h-[38rem]'>
       <Hero client:load />
     </div>
     <div
-      class="lg:container relative mx-auto lg:pt-12 grid lg:gap-12 lg:grid-cols-[minmax(290px,_1fr)_4fr]"
+      class='lg:container relative mx-auto lg:pt-12 grid lg:gap-12 lg:grid-cols-[minmax(290px,_1fr)_4fr]'
     >
       <Sidebar client:load />
-      <article class="grid gap-10 lg:gap-20">
+      <article class='grid gap-10 lg:gap-20'>
         <header
-          class="min-h-[24rem] lg:min-h-[38rem] lg:-mt-12 flex justify-center items-center"
+          class='min-h-[24rem] lg:min-h-[38rem] lg:-mt-12 flex justify-center items-center'
         >
           <h1
-            class="max-w-3xl mx-4 text-3xl lg:text-4xl font-extrabold text-justify"
+            class='max-w-3xl mx-4 text-3xl lg:text-4xl font-extrabold text-justify'
           >
             Join the DAO that makes the next 1000 years
           </h1>
         </header>
-        <section class="px-4 grid gap-12 grid-cols-1">
-          <img src="/assets/preview/1.png" />
-          <img src="/assets/preview/2.png" />
-          <img src="/assets/preview/3.png" />
-          <img src="/assets/preview/4.png" />
-          <img src="/assets/preview/5.png" />
-          <img src="/assets/preview/6.png" />
-          <img src="/assets/preview/7.png" />
+        <section class='px-4 grid gap-12 grid-cols-1'>
+          <img src='/assets/preview/1.png' />
+          <img src='/assets/preview/2.png' />
+          <img src='/assets/preview/3.png' />
+          <img src='/assets/preview/4.png' />
+          <img src='/assets/preview/5.png' />
+          <img src='/assets/preview/6.png' />
+          <img src='/assets/preview/7.png' />
           <JoinClub />
-          <img src="/assets/preview/10.png" />
-          <img src="/assets/preview/11.png" />
+          <img src='/assets/preview/10.png' />
+          <img src='/assets/preview/11.png' />
         </section>
       </article>
     </div>

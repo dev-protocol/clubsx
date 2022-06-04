@@ -1,12 +1,15 @@
 ---
 import QuestCard from './QuestCard/QuestCard.vue'
+import quests from './quests.json'
+
+const filteredQuests = quests.filter((quest) => quest.listed)
 ---
 
-<section class="bg-cover bg-center mx-4">
-  <h2 class="text-3xl">Quests</h2>
+<section class='bg-cover bg-center mx-4'>
+  <h2 class='text-3xl'>Quests</h2>
   <p>Complete quests and collect additional badges.</p>
   <div
-    class="
+    class='
       grid
       gap-8
       md:grid-cols-2
@@ -17,43 +20,25 @@ import QuestCard from './QuestCard/QuestCard.vue'
       p-4
       text-black
       dark:text-white
-    "
+    '
   >
-    <div class="h-full grid justify-items-start">
-      <a href="/quests/quest_starter">
-        <div class="max-w-xl">
-          <QuestCard
-            title="Become the first 30 supporters"
-            id="quest_starter"
-            description="start description description"
-            badgeImageSrc="/assets/badge1.png"
-          />
+    {filteredQuests.length > 0 ? (
+      filteredQuests.map((quest) => (
+        <div class="grid h-full justify-items-start">
+          <a href={`/quests/${quest.id}`}>
+            <div class="max-w-xl">
+              <QuestCard
+                title={quest.title}
+                questId={quest.id}
+                description={quest.description}
+                badgeImageSrc={quest.badgeImageSrc}
+              />
+            </div>
+          </a>
         </div>
-      </a>
-    </div>
-    <div class="h-full grid justify-items-start">
-      <a href="/quests/quest_stake_100">
-        <div class="max-w-xl">
-          <QuestCard
-            title="Stake more than 100"
-            id="quest_stake_100"
-            description="more than 100 description description"
-            badgeImageSrc="/assets/badge2.png"
-          />
-        </div>
-      </a>
-    </div>
-    <div class="h-full grid justify-items-start">
-      <a href="/quests/quest_stake_500">
-        <div class="max-w-xl">
-          <QuestCard
-            title="Stake more than 500"
-            id="quest_stake_500"
-            description="more than 500 description description"
-            badgeImageSrc="/assets/badge3.png"
-          />
-        </div>
-      </a>
-    </div>
+      ))
+    ) : (
+      <div>no quests data</div>
+    )}
   </div>
 </section>
