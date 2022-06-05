@@ -1,7 +1,14 @@
 <template>
   <div>
     <div>
-      <img :src="badgeImageSrc" class="" width="256" height="256" />
+      <img
+        v-if="badgeImageSrc"
+        :src="badgeImageSrc"
+        class="w-ful h-auto rounded"
+      />
+      <div v-if="!badgeImageSrc" class="animate-pulse">
+        <div class="w-ful min-h-[16rem] rounded bg-gray-500/60"></div>
+      </div>
     </div>
     <div class="text-2xl">{{ title }}</div>
     <div class="mb-2 uppercase">{{ omittedAmount }} ${{ currency }}</div>
@@ -12,8 +19,10 @@
 </template>
 
 <script>
+import { defineComponent } from '@vue/runtime-core'
 import BigNumber from 'bignumber.js'
-export default {
+
+export default defineComponent({
   name: 'QuestCard',
   props: {
     title: String,
@@ -32,5 +41,5 @@ export default {
       idLink: `/join/${this.id}`,
     }
   },
-}
+})
 </script>
