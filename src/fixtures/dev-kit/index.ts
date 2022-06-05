@@ -109,3 +109,17 @@ export const stakeWithEth = async (
   })
   return { estimatedEth, create }
 }
+
+export const tokenURISim = async (
+  prov: providers.BaseProvider,
+  propertyAddress: string,
+  amount: number | string
+) => {
+  const [l1, l2] = await clientsSTokens(prov)
+  return (l1 || l2)?.tokenURISim({
+    positions: {
+      amount: utils.parseUnits(amount.toString(), 18).toString(),
+      property: propertyAddress,
+    },
+  })
+}

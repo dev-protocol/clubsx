@@ -62,7 +62,7 @@ import Tier from './Tier.vue'
 import { tiers as sourceTiers } from '../../constants/tier'
 import type { Tiers } from '../../constants/tier'
 import { providers } from 'ethers'
-import { convertTiersToEth } from 'src/fixtures/utility'
+import { composeTiers } from 'src/fixtures/utility'
 import { UndefinedOr } from '@devprotocol/util-ts'
 import { defineComponent } from '@vue/runtime-core'
 
@@ -91,7 +91,7 @@ export default defineComponent({
     }
   },
   async created() {
-    this.tiers.eth = await convertTiersToEth({
+    this.tiers = await composeTiers({
       sourceTiers,
       provider,
       tokenAddress,
