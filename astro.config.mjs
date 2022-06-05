@@ -11,9 +11,20 @@ export default defineConfig({
     port: 3000,
   },
   integrations: [
-    vue(),
+    vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: (tag) => tag.includes('-'),
+        },
+      },
+    }),
     tailwind({
       config: { path: './tailwind.config.js' },
     }),
   ],
+  vite: {
+    resolve: {
+      conditions: [],
+    },
+  },
 })

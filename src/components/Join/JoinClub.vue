@@ -12,6 +12,7 @@
           id="dev"
           name="input"
           value="dev"
+          checked
           @change="switchInputs"
         />
         <span class="w-16">$DEV</span>
@@ -63,6 +64,7 @@ import type { Tiers } from '../../constants/tier'
 import { providers } from 'ethers'
 import { convertTiersToEth } from 'src/fixtures/utility'
 import { UndefinedOr } from '@devprotocol/util-ts'
+import { defineComponent } from '@vue/runtime-core'
 
 const provider = new providers.JsonRpcProvider(
   import.meta.env.PUBLIC_WEB3_PROVIDER_URL
@@ -77,7 +79,7 @@ type Data = {
   }
 }
 
-export default {
+export default defineComponent({
   name: 'JoinClub',
   data(): Data {
     return {
@@ -89,7 +91,6 @@ export default {
     }
   },
   async created() {
-    // @ts-ignore
     this.tiers.eth = await convertTiersToEth({
       sourceTiers,
       provider,
@@ -100,18 +101,16 @@ export default {
     const input = new FormData(this.$refs.form as HTMLFormElement).get(
       'input'
     ) as null | Data['currency']
-    // @ts-ignore
-    this.currency = input
+    this.currency = input as 'dev' | 'eth'
   },
   methods: {
     async switchInputs(ev: Event) {
       const { value } = ev.target as HTMLInputElement
-      // @ts-ignore
-      this.currency = value
+      this.currency = value as 'dev' | 'eth'
     },
   },
   components: {
     Tier,
   },
-}
+})
 </script>

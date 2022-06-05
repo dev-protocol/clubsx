@@ -18,12 +18,22 @@ import { providers, utils } from 'ethers'
 import truncateEthAddress from 'truncate-eth-address'
 import { whenDefined } from '@devprotocol/util-ts'
 import { ReConnectWallet, GetModalProvider } from '../../fixtures/wallet'
-import { clientsDev } from '@devprotocol/dev-kit/agent'
+import { getConnection } from '@devprotocol/elements'
+import { connectionId } from '../../constants/connection'
+import Core from 'web3modal'
 import { defineComponent } from '@vue/runtime-core'
+import { clientsDev } from '@devprotocol/dev-kit/agent'
+
+type Data = {
+  modalProvider: Core
+  truncateWalletAddress: String
+  formattedUserBalance: String
+  supportedNetwork: boolean
+}
 
 export default defineComponent({
   name: 'ConnectButton',
-  data() {
+  data(): Data {
     const modalProvider = GetModalProvider()
     return {
       modalProvider,
@@ -39,17 +49,24 @@ export default defineComponent({
     if (currentAddress) {
       this.truncateWalletAddress = truncateEthAddress(currentAddress)
     }
+    if (provider) {
+      this.setSigner(provider)
+    }
     if (currentAddress && provider) {
       this.fetchUserBalance(currentAddress, provider)
     }
   },
   methods: {
+    setSigner(provider: providers.Web3Provider) {
+      getConnection(connectionId)?.signer.next(provider.getSigner())
+    },
     async connect() {
       const connectedProvider = await this.modalProvider.connect()
-      const newProvider = whenDefined(
-        connectedProvider,
-        (p) => new providers.Web3Provider(p)
-      )
+      const newProvider = whenDefined(connectedProvider, (p) => {
+        const provider = new providers.Web3Provider(p)
+        this.setSigner(provider)
+        return provider
+      })
 
       const currentAddress = await newProvider?.getSigner().getAddress()
       if (currentAddress) {

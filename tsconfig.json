@@ -6,6 +6,7 @@
     "strict": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "allowSyntheticDefaultImports": true,
     "types": ["vite/client"],
     "baseUrl": ".",
     "paths": {

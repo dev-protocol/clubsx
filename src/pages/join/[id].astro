@@ -1,33 +1,21 @@
 ---
 import Layout from '@layouts/Default.astro'
 
-import JoinCheckout from '@components/Join/JoinCheckout.astro'
+import JoinCheckout from '@components/Join/JoinCheckout.vue'
+import { tiers } from 'src/constants/tier'
 
 export function getStaticPaths() {
-  return [
-    { params: { id: 'supporter' } },
-    { params: { id: 'sponsor' } },
-    { params: { id: 'awesomer' } },
-  ]
+  return tiers.map(({ id }) => ({ params: { id } }))
 }
+
 const { id } = Astro.params
-const stakeAmount = id === 'supporter' ? 100 : id === 'sponsor' ? 1200 : 3000
+const tier = tiers.find(({ id: _id }) => _id === id)
 ---
 
 <Layout metaTitle='join checkout'>
-  <div
-    class='lg:container relative mx-auto lg:pt-12 grid lg:gap-12 lg:grid-cols-[auto,_480px]'
-  >
-    <JoinCheckout />
-    <div class='grid grid-cols-1 content-start p-4'>
-      <div class='border border-accent border-b-0 p-4'>
-        <h3 class='text-2xl opacity-70'>Stake</h3>
-        <div class='text-2xl'>{stakeAmount} DEV</div>
-      </div>
-      <div class='border border-accent p-4'>
-        <h3 class='text-2xl opacity-70'>Estimated earnings/year</h3>
-        <div class='text-2xl'>10 DEV</div>
-      </div>
-    </div>
-  </div>
+  <JoinCheckout
+    client:only
+    amount={tier?.amount}
+    destination={import.meta.env.PUBLIC_PROPERTY_ADDRESS}
+  />
 </Layout>
