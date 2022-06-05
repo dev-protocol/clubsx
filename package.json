@@ -38,7 +38,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@devprotocol/dev-kit": "6.3.3",
+    "@devprotocol/dev-kit": "6.4.0",
     "@devprotocol/elements": "0.0.5",
     "@devprotocol/util-ts": "^2.2.1",
     "@metamask/detect-provider": "^1.2.0",
