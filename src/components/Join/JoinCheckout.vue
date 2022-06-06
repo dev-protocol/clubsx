@@ -1,11 +1,11 @@
 <template>
   <div
     v-if="!stakeSuccessful"
-    class="relative mx-auto grid lg:container lg:grid-cols-[auto,_480px] lg:gap-12 lg:pt-12"
+    class="relative mx-auto grid px-4 lg:container lg:grid-cols-[auto,_480px] lg:gap-12 lg:pt-12"
   >
     <section class="flex flex-col">
-      <h2 class="mb-8 text-4xl">Join</h2>
-      <div class="mb-8">
+      <h2 class="mb-8 font-title text-4xl font-bold">Join</h2>
+      <div v-if="currency === dev" class="mb-8">
         <h3 class="mb-4 text-2xl">Approval</h3>
         <button
           @click="approve"
@@ -28,19 +28,30 @@
           @click="submitStake"
           class="rounded-sm border bg-gray-600 p-2 px-4"
         >
-          Stake DEV on Awesome Club
+          Stake
         </button>
       </div>
     </section>
-    <div class="grid grid-cols-1 content-start p-4">
-      <div class="border border-b-0 border-accent p-4">
-        <h3 class="text-2xl opacity-70">Stake</h3>
-        <div class="text-2xl">{{ amount }} DEV</div>
-      </div>
-      <div class="border border-accent p-4">
-        <h3 class="text-2xl opacity-70">Estimated earnings/year</h3>
-        <div class="text-2xl">10 DEV</div>
-      </div>
+    <div
+      class="grid grid-cols-1 content-start overflow-hidden rounded border border-dp-black-200"
+    >
+      <section class="border-b border-dp-black-200 p-4">
+        <h3 class="mb-2 text-xl opacity-70">Purchase</h3>
+        <p class="text-2xl uppercase">
+          {{ omittedAmountForInputCurrency }} ${{ currency }}
+        </p>
+        <aside
+          v-if="currency !== dev"
+          class="mt-4 ml-4 border-l border-dp-black-200 pl-4"
+        >
+          <h4 class="text-md mb-2 opacity-70">Replace</h4>
+          <p class="text-sm uppercase">{{ amount }} $DEV</p>
+        </aside>
+      </section>
+      <section class="p-4">
+        <h3 class="text-xl opacity-70">Estimated earnings/year</h3>
+        <p class="text-2xl">10 DEV</p>
+      </section>
     </div>
   </div>
   <section
@@ -48,7 +59,7 @@
     class="flex flex-col items-center justify-center"
     v-if="stakeSuccessful"
   >
-    <h2 class="mb-8 text-4xl">Joined</h2>
+    <h2 class="mb-8 font-title text-4xl font-bold">Joined</h2>
     <a href="/" class="text-blue-400">Back to top</a>
   </section>
 </template>
@@ -60,16 +71,19 @@ import {
   positionsCreateWithEth,
 } from '@devprotocol/dev-kit/agent'
 import { getConnection } from '@devprotocol/elements'
-import { whenDefinedAll } from '@devprotocol/util-ts'
+import { UndefinedOr, whenDefinedAll } from '@devprotocol/util-ts'
 import { defineComponent } from '@vue/composition-api'
-import { BigNumber, BigNumberish, constants, providers, utils } from 'ethers'
+import { BigNumberish, constants, providers, utils } from 'ethers'
+import BigNumber from 'bignumber.js'
 import { parse } from 'query-string'
 import { Subscription, zip } from 'rxjs'
 import { connectionId } from 'src/constants/connection'
 import { CurrencyOption } from 'src/constants/currencyOption'
+import { fetchEthForDev } from 'src/fixtures/utility'
 
 type Data = {
   currency: CurrencyOption
+  amountForInputCurrency: UndefinedOr<string>
   parsedAmount: BigNumberish
   approveNeeded: boolean
   subscriptions: Subscription[]
@@ -86,6 +100,7 @@ export default defineComponent({
   data() {
     return {
       currency: CurrencyOption.DEV,
+      amountForInputCurrency: undefined,
       parsedAmount: utils.parseUnits(this.amount.toString(), 18),
       approveNeeded: false,
       subscriptions: [],
@@ -94,7 +109,12 @@ export default defineComponent({
       account: undefined,
     } as Data
   },
-  mounted() {
+  computed: {
+    omittedAmountForInputCurrency(): string {
+      return new BigNumber(this.amountForInputCurrency ?? 0).dp(9).toFixed()
+    },
+  },
+  async mounted() {
     const query = parse(location.search)
     const input = String(query.input).toLowerCase()
     this.currency = input === 'eth' ? CurrencyOption.ETH : CurrencyOption.DEV
@@ -117,6 +137,19 @@ export default defineComponent({
         }
       )
       this.subscriptions.push(sub)
+    }
+    if (this.destination && this.amount) {
+      const amount =
+        this.currency === 'eth'
+          ? await fetchEthForDev({
+              provider: new providers.JsonRpcProvider(
+                import.meta.env.PUBLIC_WEB3_PROVIDER_URL
+              ),
+              tokenAddress: this.destination,
+              amount: this.amount,
+            }).then(utils.formatUnits)
+          : this.amount
+      this.amountForInputCurrency = amount?.toString()
     }
   },
   destroyed() {

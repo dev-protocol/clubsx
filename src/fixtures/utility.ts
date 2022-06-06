@@ -11,7 +11,7 @@ const toNaturalBasis = new BigNumber(10).pow(18)
 export const toNaturalNumber = (num?: number | string | BigNumber): BigNumber =>
   new BigNumber(falsyOrZero(num)).div(toNaturalBasis)
 
-const fetchBadgeImageSrc = async (opts: {
+export const fetchBadgeImageSrc = async (opts: {
   provider: BaseProvider
   tokenAddress: string
   amount: number | string
@@ -23,7 +23,7 @@ const fetchBadgeImageSrc = async (opts: {
   return src
 }
 
-const fetchEthForDev = async (opts: {
+export const fetchEthForDev = async (opts: {
   provider: BaseProvider
   tokenAddress: string
   amount: number | string

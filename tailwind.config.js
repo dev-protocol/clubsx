@@ -1,3 +1,7 @@
+const {
+  theme: { colors, fontFamily },
+} = require('@devprotocol/hashi/gradual')
+
 module.exports = {
   mode: 'jit',
   content: [
@@ -7,18 +11,13 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
-      colors: {
-        darkPrimary: '#0d0f12',
-        darkSecondary: '#1E3A8A',
-        darkThird: '#1F2937',
-        accent: '#3A4158',
-      },
-      fontFamily: {
-        'c-mono': ['IBM Plex Mono', 'monospace'],
-        'c-body': ['Syne', 'sans-serif'],
-        'c-serif': ['Bodoni Moda', 'serif'],
-        'c-sans': ['DM Sans', 'sans-serif'],
-      },
+      colors,
+      fontFamily: Object.assign(
+        {
+          'c-serif': ['Bodoni Moda', 'serif'],
+        },
+        fontFamily
+      ),
       animation: {
         'c-bash-spinner': 'c-bash-spinner 1s linear infinite',
       },

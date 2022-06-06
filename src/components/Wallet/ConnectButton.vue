@@ -1,16 +1,30 @@
 <template>
-  <div class="rounded border px-4 py-2">
+  <button class="rounded border px-4 py-2">
     <div v-if="truncateWalletAddress && formattedUserBalance.length > 0">
       <div v-if="supportedNetwork">
-        <a href="/me">
-          <span class="mr-4">{{ formattedUserBalance }} DEV</span>
+        <a href="/me" class="flex items-center">
+          <span class="mr-4">{{ formattedUserBalance }} $DEV</span>
           <span>{{ truncateWalletAddress }}</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="ml-2 inline h-[1.2em] w-[1.2em]"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+            />
+          </svg>
         </a>
       </div>
       <div v-else>Unsupported Network</div>
     </div>
     <div v-else v-on:click="connect">Connect Wallet</div>
-  </div>
+  </button>
 </template>
 
 <script lang="ts">

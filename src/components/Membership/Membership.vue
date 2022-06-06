@@ -3,7 +3,7 @@
     <h3 class="mb-8 text-2xl">Membership</h3>
     <div
       v-if="memberships.length > 0"
-      class="grid gap-8 rounded border border-accent md:grid-cols-3"
+      class="grid gap-8 rounded border border-dp-black-200 md:grid-cols-3"
     >
       <div
         v-for="membership in memberships"

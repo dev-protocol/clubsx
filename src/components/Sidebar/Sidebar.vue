@@ -56,8 +56,8 @@
               height="220"
             />
             <header class="grid justify-items-center gap-2">
-              <h2 class="text-xl font-bold">Temples DAO</h2>
-              <p class="flex items-center gap-2 font-c-sans text-xs">
+              <h2 class="font-title text-xl font-bold">Temples DAO</h2>
+              <p class="flex items-center gap-2 font-body text-xs">
                 $TEMPL on
                 <img src="/assets/ETH.svg" class="h-[1.8em]" alt="Ethereum" />
               </p>
@@ -69,7 +69,7 @@
             <a href="/members">{{ members || '-' }} members</a>
           </div>
           <aside
-            class="grid w-full grid-cols-[1fr_auto] justify-between rounded border border-stone-50/30 font-c-sans text-sm"
+            class="grid w-full grid-cols-[1fr_auto] justify-between rounded border border-stone-50/30 font-body text-sm"
           >
             <h3 class="border-b border-stone-50/30 p-2 opacity-20">
               Club Allocation

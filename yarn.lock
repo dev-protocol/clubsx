@@ -422,6 +422,13 @@
     ramda "0.28.0"
     rxjs "7.5.5"
 
+"@devprotocol/hashi@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@devprotocol/hashi/-/hashi-1.2.1.tgz#f20725eab68e5daa48bd1bd410b8505897b9d64b"
+  integrity sha512-OghUDbal+ufDCknp9EQes58SHZBxFFMnuUMweQcE+gE3N+abyJMJTWM5sSmabE0UwO6dW7qFRxTHTsMWudUDWA==
+  dependencies:
+    "@matteusan/sentro" "0.1.22"
+
 "@devprotocol/util-ts@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@devprotocol/util-ts/-/util-ts-2.2.1.tgz#331b0c29b3837589bcb16f143afb9a51495238cc"
@@ -1307,6 +1314,11 @@
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@ljharb/has-package-exports-patterns/-/has-package-exports-patterns-0.0.1.tgz#70f07047b058e0909488a0ab1928afb95a9326d0"
   integrity sha512-J4HxcjHI8EzVwXj2HKfZrwnWv4wmOhGxSHyxDQLhiL4ibwRoIkYBqsacZUXFUWQzJtW6QC+FKSNy8HqKjkEqaQ==
+
+"@matteusan/sentro@0.1.22":
+  version "0.1.22"
+  resolved "https://registry.yarnpkg.com/@matteusan/sentro/-/sentro-0.1.22.tgz#0caff06245426db6ca58c7817ba3c0ed08ea2674"
+  integrity sha512-j7XFgzKiPB8Az9cJVdfeFBP4VHiJu5y9zGPMg9JtzG5ILQwmg29rWzgTWotigeGix/iK1pQCQ8T97wDWyYRwsQ==
 
 "@metamask/detect-provider@^1.2.0":
   version "1.2.0"
@@ -3282,7 +3294,7 @@ checkpoint-store@^1.1.0:
   dependencies:
     functional-red-black-tree "^1.0.1"
 
-chokidar@^3.0.0, chokidar@^3.5.3:
+"chokidar@>=3.0.0 <4.0.0", chokidar@^3.0.0, chokidar@^3.5.3:
   version "3.5.3"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.5.3.tgz#1cf37c8707b932bd1af1ae22c0432e2acd1903bd"
   integrity sha512-Dr3sfKRP6oTcjf2JmUmFJfeVMvXBdegxB0iVQ5eb2V10uFJUCAS8OByZdVAyVb8xXNz3GjjTgj9kLWsZTqE6kw==
@@ -6333,6 +6345,11 @@ immediate@~3.2.3:
   version "3.2.3"
   resolved "https://registry.yarnpkg.com/immediate/-/immediate-3.2.3.tgz#d140fa8f614659bd6541233097ddaac25cdd991c"
   integrity sha1-0UD6j2FGWb1lQSMwl92qwlzdmRw=
+
+immutable@^4.0.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/immutable/-/immutable-4.1.0.tgz#f795787f0db780183307b9eb2091fcac1f6fafef"
+  integrity sha512-oNkuqVTA8jqG1Q6c+UglTOD1xhC1BtjKI7XkCXRkZHrN5m18/XsnUp8Q89GkQO/z+0WjonSvl0FLhDYftp46nQ==
 
 import-fresh@^3.0.0, import-fresh@^3.2.1:
   version "3.3.0"
@@ -9971,6 +9988,15 @@ sass-formatter@^0.7.2:
     suf-log "^2.5.3"
     suf-regex "^0.3.4"
 
+sass@^1.52.2:
+  version "1.52.2"
+  resolved "https://registry.yarnpkg.com/sass/-/sass-1.52.2.tgz#cd1f03e0e7be5bb2cebcf1c34d735f087d790936"
+  integrity sha512-mfHB2VSeFS7sZlPv9YohB9GB7yWIgQNTGniQwfQ04EoQN0wsQEv7SwpCwy/x48Af+Z3vDeFXz+iuXM3HK/phZQ==
+  dependencies:
+    chokidar ">=3.0.0 <4.0.0"
+    immutable "^4.0.0"
+    source-map-js ">=0.6.2 <2.0.0"
+
 scheduler@^0.19.1:
   version "0.19.1"
   resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.19.1.tgz#4f3e2ed2c1a7d65681f4c854fa8c5a1ccb40f196"
@@ -10299,7 +10325,7 @@ solc@^0.6.3:
     semver "^5.5.0"
     tmp "0.0.33"
 
-source-map-js@^1.0.2:
+"source-map-js@>=0.6.2 <2.0.0", source-map-js@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/source-map-js/-/source-map-js-1.0.2.tgz#adbc361d9c62df380125e7f161f71c826f1e490c"
   integrity sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==
