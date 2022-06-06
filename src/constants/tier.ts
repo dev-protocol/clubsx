@@ -11,16 +11,21 @@ export const tiers: Tiers = [
   {
     title: 'Silver',
     id: 'silver',
-    amount: 100,
+    amount: 400,
   },
   {
     title: 'Bronze',
     id: 'bronze',
-    amount: 1000,
+    amount: 4000,
   },
   {
     title: 'Gold',
     id: 'gold',
-    amount: 10000,
+    amount: 20000,
+  },
+  {
+    title: 'Super',
+    id: 'super',
+    amount: 80000,
   },
 ] as const

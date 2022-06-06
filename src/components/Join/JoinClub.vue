@@ -43,7 +43,7 @@
     </form>
 
     <h3 class="mb-4 font-title text-2xl font-bold">Select a tier</h3>
-    <div class="mb-8 grid grid-cols-3 gap-8">
+    <div class="mb-8 grid grid-cols-2 gap-8 lg:grid-cols-4">
       <Tier
         v-for="tier in tiers[currency]"
         v-bind:key="tier.id"
