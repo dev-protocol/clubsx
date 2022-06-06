@@ -15,7 +15,7 @@
           Sign with wallet and approve
         </button>
         <button
-          v-if="!approveNeeded"
+          v-if="approveNeeded === false"
           disabled
           class="rounded-sm border border-gray-400 bg-gray-600 p-2 px-4 text-gray-400"
         >
@@ -80,22 +80,18 @@ import {
   positionsCreate,
   positionsCreateWithEth,
   estimationsAPY,
+  clientsLockup,
 } from '@devprotocol/dev-kit/agent'
 import { getConnection } from '@devprotocol/elements'
 import { UndefinedOr, whenDefined, whenDefinedAll } from '@devprotocol/util-ts'
 import { defineComponent } from '@vue/composition-api'
-import {
-  BigNumber as BN,
-  BigNumberish,
-  constants,
-  providers,
-  utils,
-} from 'ethers'
+import { BigNumber as BN, BigNumberish, providers, utils } from 'ethers'
 import BigNumber from 'bignumber.js'
 import { parse } from 'query-string'
 import { Subscription, zip } from 'rxjs'
 import { connectionId } from 'src/constants/connection'
 import { CurrencyOption } from 'src/constants/currencyOption'
+import { stake } from 'src/fixtures/dev-kit'
 import { fetchEthForDev } from 'src/fixtures/utility'
 import Skeleton from '@components/Global/Skeleton.vue'
 
@@ -104,12 +100,13 @@ type Data = {
   amountForInputCurrency: UndefinedOr<string>
   apy: UndefinedOr<number>
   parsedAmount: BigNumberish
-  approveNeeded: boolean
+  approveNeeded: UndefinedOr<boolean>
   subscriptions: Subscription[]
   stakeSuccessful: boolean
-  provider?: providers.Provider
   account?: string
 }
+
+let providerPool: UndefinedOr<providers.Provider>
 
 export default defineComponent({
   props: {
@@ -122,10 +119,9 @@ export default defineComponent({
       amountForInputCurrency: undefined,
       apy: undefined,
       parsedAmount: utils.parseUnits(this.amount.toString(), 18),
-      approveNeeded: false,
+      approveNeeded: undefined,
       subscriptions: [],
       stakeSuccessful: false,
-      provider: undefined,
       account: undefined,
     } as Data
   },
@@ -154,12 +150,12 @@ export default defineComponent({
     if (connection) {
       const sub = zip(connection.provider, connection.account).subscribe(
         async ([provider, account]) => {
-          this.provider = provider
+          providerPool = provider
           this.account = account
           await whenDefinedAll(
-            [provider, account, this.destination],
-            async ([prov, userAddress, destination]) => {
-              this.checkApproved(prov, userAddress, destination)
+            [provider, account],
+            async ([prov, userAddress]) => {
+              this.checkApproved(prov, userAddress)
             }
           )
         }
@@ -169,7 +165,7 @@ export default defineComponent({
     const provider = new providers.JsonRpcProvider(
       import.meta.env.PUBLIC_WEB3_PROVIDER_URL
     )
-    estimationsAPY({ provider }).then(([apy]) => {
+    estimationsAPY({ provider: providerPool || provider }).then(([apy]) => {
       this.apy = apy
     })
 
@@ -177,7 +173,7 @@ export default defineComponent({
       const amount =
         this.currency === 'eth'
           ? await fetchEthForDev({
-              provider,
+              provider: (providerPool || provider) as providers.BaseProvider,
               tokenAddress: this.destination,
               amount: this.amount,
             }).then(utils.formatUnits)
@@ -191,38 +187,39 @@ export default defineComponent({
     }
   },
   methods: {
-    async approve() {
-      await whenDefinedAll(
-        [this.provider, this.destination],
-        async ([prov, destination]) => {
-          const [l1, _] = await clientsDev(prov)
-          const res = await l1?.approve(
+    approve() {
+      whenDefinedAll(
+        [providerPool, this.account, this.destination, this.amount],
+        async ([prov, account, destination, amount]) => {
+          const res = await stake(
+            prov as providers.BaseProvider,
             destination,
-            constants.MaxUint256.toString()
+            account,
+            amount
           )
+
           if (res) {
-            await res?.wait()
+            await res.approveIfNeeded()
             console.log('approve res is: ', res)
             this.approveNeeded = false
           }
         }
       )
     },
-    async checkApproved(
-      provider: providers.Provider,
-      userAddress: string,
-      destination: string
-    ) {
-      const [l1, _] = await clientsDev(provider)
+    async checkApproved(provider: providers.Provider, userAddress: string) {
+      const [l1, l2] = await clientsDev(provider)
+      const [l1L, l2L] = await clientsLockup(provider)
       const allowance = BN.from(
-        (await l1?.allowance(userAddress, destination)) ?? 0
+        (await whenDefinedAll([l1 || l2, l1L || l2L], ([dev, lockup]) =>
+          dev.allowance(userAddress, lockup.contract().address)
+        )) ?? 0
       )
-      this.approved = allowance?.gt(this.parsedAmount ?? 0) ?? false
+      this.approveNeeded = allowance?.lt(this.parsedAmount ?? 0) ?? true
     },
     async submitStake() {
       await whenDefinedAll(
         [
-          this.provider,
+          providerPool,
           this.account,
           this.destination,
           this.parsedAmount?.toString(),

@@ -5,6 +5,7 @@ import {
   clientsProperty,
 } from '@devprotocol/dev-kit/agent'
 import { UndefinedOr } from '@devprotocol/util-ts'
+import { positionsCreate } from '@devprotocol/dev-kit'
 
 export type ChainName = UndefinedOr<
   | 'ethereum'
@@ -95,6 +96,22 @@ export const getBalances = async (
   // only for L2
   const [, l2] = await clientsProperty(prov, propertyAddress)
   return l2?.getBalances()
+}
+
+export const stake = async (
+  provider: providers.BaseProvider,
+  propertyAddress: string,
+  from: string,
+  devAmount: number | string
+) => {
+  const amount = utils.parseUnits(devAmount.toString(), 18).toString()
+  const res = await positionsCreate({
+    provider,
+    from,
+    amount,
+    destination: propertyAddress,
+  })
+  return res
 }
 
 export const stakeWithEth = async (
