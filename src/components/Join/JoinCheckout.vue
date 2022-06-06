@@ -37,7 +37,11 @@
     >
       <section class="border-b border-dp-black-200 p-4">
         <h3 class="mb-2 text-xl opacity-70">Purchase</h3>
-        <p class="text-2xl uppercase">
+        <p class="flex items-center text-2xl uppercase">
+          <Skeleton
+            v-if="omittedAmountForInputCurrency === undefined"
+            class="mr-4 inline-block h-[1.2em] w-24"
+          />
           {{ omittedAmountForInputCurrency }} ${{ currency }}
         </p>
         <aside
@@ -49,8 +53,14 @@
         </aside>
       </section>
       <section class="p-4">
-        <h3 class="text-xl opacity-70">Estimated earnings/year</h3>
-        <p class="text-2xl">10 DEV</p>
+        <h3 class="mb-2 text-xl opacity-70">Estimated earnings/year</h3>
+        <p class="flex items-center text-2xl uppercase">
+          <Skeleton
+            v-if="estimatedEarnings === undefined"
+            class="mr-4 inline-block h-[1.2em] w-24"
+          />
+          {{ estimatedEarnings }} $DEV
+        </p>
       </section>
     </div>
   </div>
@@ -69,21 +79,30 @@ import {
   clientsDev,
   positionsCreate,
   positionsCreateWithEth,
+  estimationsAPY,
 } from '@devprotocol/dev-kit/agent'
 import { getConnection } from '@devprotocol/elements'
-import { UndefinedOr, whenDefinedAll } from '@devprotocol/util-ts'
+import { UndefinedOr, whenDefined, whenDefinedAll } from '@devprotocol/util-ts'
 import { defineComponent } from '@vue/composition-api'
-import { BigNumberish, constants, providers, utils } from 'ethers'
+import {
+  BigNumber as BN,
+  BigNumberish,
+  constants,
+  providers,
+  utils,
+} from 'ethers'
 import BigNumber from 'bignumber.js'
 import { parse } from 'query-string'
 import { Subscription, zip } from 'rxjs'
 import { connectionId } from 'src/constants/connection'
 import { CurrencyOption } from 'src/constants/currencyOption'
 import { fetchEthForDev } from 'src/fixtures/utility'
+import Skeleton from '@components/Global/Skeleton.vue'
 
 type Data = {
   currency: CurrencyOption
   amountForInputCurrency: UndefinedOr<string>
+  apy: UndefinedOr<number>
   parsedAmount: BigNumberish
   approveNeeded: boolean
   subscriptions: Subscription[]
@@ -101,6 +120,7 @@ export default defineComponent({
     return {
       currency: CurrencyOption.DEV,
       amountForInputCurrency: undefined,
+      apy: undefined,
       parsedAmount: utils.parseUnits(this.amount.toString(), 18),
       approveNeeded: false,
       subscriptions: [],
@@ -110,10 +130,18 @@ export default defineComponent({
     } as Data
   },
   computed: {
-    omittedAmountForInputCurrency(): string {
-      return new BigNumber(this.amountForInputCurrency ?? 0).dp(9).toFixed()
+    omittedAmountForInputCurrency(): string | undefined {
+      return this.amountForInputCurrency
+        ? new BigNumber(this.amountForInputCurrency).dp(9).toFixed()
+        : undefined
+    },
+    estimatedEarnings(): number | undefined {
+      return this.amount && this.apy
+        ? new BigNumber(this.amount * this.apy).dp(9).toNumber()
+        : undefined
     },
   },
+  components: { Skeleton },
   async mounted() {
     const query = parse(location.search)
     const input = String(query.input).toLowerCase()
@@ -138,13 +166,18 @@ export default defineComponent({
       )
       this.subscriptions.push(sub)
     }
+    const provider = new providers.JsonRpcProvider(
+      import.meta.env.PUBLIC_WEB3_PROVIDER_URL
+    )
+    estimationsAPY({ provider }).then(([apy]) => {
+      this.apy = apy
+    })
+
     if (this.destination && this.amount) {
       const amount =
         this.currency === 'eth'
           ? await fetchEthForDev({
-              provider: new providers.JsonRpcProvider(
-                import.meta.env.PUBLIC_WEB3_PROVIDER_URL
-              ),
+              provider,
               tokenAddress: this.destination,
               amount: this.amount,
             }).then(utils.formatUnits)
@@ -181,7 +214,7 @@ export default defineComponent({
       destination: string
     ) {
       const [l1, _] = await clientsDev(provider)
-      const allowance = BigNumber.from(
+      const allowance = BN.from(
         (await l1?.allowance(userAddress, destination)) ?? 0
       )
       this.approved = allowance?.gt(this.parsedAmount ?? 0) ?? false

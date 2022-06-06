@@ -5,9 +5,7 @@
       :src="badgeImageSrc"
       class="w-ful h-auto rounded"
     />
-    <div v-if="!badgeImageSrc" class="w-full animate-pulse">
-      <div class="w-ful min-h-[16rem] rounded bg-gray-500/60"></div>
-    </div>
+    <Skeleton v-if="!badgeImageSrc" class="min-h-[16rem] w-full" />
     <div class="mb-2 font-title text-2xl font-bold">{{ title }}</div>
     <div class="mb-2 uppercase">{{ omittedAmount }} ${{ currency }}</div>
     <a :href="idLink">
@@ -19,6 +17,7 @@
 <script>
 import { defineComponent } from '@vue/runtime-core'
 import BigNumber from 'bignumber.js'
+import Skeleton from '@components/Global/Skeleton.vue'
 
 export default defineComponent({
   name: 'QuestCard',
@@ -39,5 +38,6 @@ export default defineComponent({
       }`
     },
   },
+  components: { Skeleton },
 })
 </script>
