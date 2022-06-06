@@ -61,6 +61,14 @@
         :badgeImageSrc="tier.badgeImageSrc"
       />
     </div>
+
+    <section>
+      <a
+        href="/perks"
+        class="block rounded border border-native-blue-400 p-4 text-xl"
+        >Perks →</a
+      >
+    </section>
   </section>
 </template>
 
