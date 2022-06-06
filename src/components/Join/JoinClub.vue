@@ -42,7 +42,7 @@
         <div class="flex items-center">
           <img src="/assets/ETH.svg" width="50" height="50" alt="ethereum" />
           <span class="content-center justify-between text-sm"
-            >You will earn $DEV by staking. *ETH staking will be support
+            >You will earn $DEV by staking. *ETH staking will be supported
             soon</span
           >
         </div>
