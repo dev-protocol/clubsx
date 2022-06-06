@@ -40,7 +40,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@devprotocol/dev-kit": "6.5.2",
+    "@devprotocol/dev-kit": "6.6.3",
     "@devprotocol/elements": "0.0.5",
     "@devprotocol/hashi": "^1.2.1",
     "@devprotocol/util-ts": "^2.2.1",

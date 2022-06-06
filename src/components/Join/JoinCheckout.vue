@@ -137,7 +137,13 @@ import {
 import { getConnection } from '@devprotocol/elements'
 import { UndefinedOr, whenDefined, whenDefinedAll } from '@devprotocol/util-ts'
 import { defineComponent } from '@vue/composition-api'
-import { BigNumber as BN, BigNumberish, providers, utils } from 'ethers'
+import {
+  BigNumber as BN,
+  BigNumberish,
+  constants,
+  providers,
+  utils,
+} from 'ethers'
 import BigNumber from 'bignumber.js'
 import { parse } from 'query-string'
 import { Subscription, zip } from 'rxjs'
@@ -210,9 +216,9 @@ export default defineComponent({
           providerPool = provider
           this.account = account
           await whenDefinedAll(
-            [provider, account],
-            async ([prov, userAddress]) => {
-              this.checkApproved(prov, userAddress)
+            [providerPool, account, this.destination, this.amount],
+            async ([prov, userAddress, destination, amount]) => {
+              this.checkApproved(prov, userAddress, destination, amount)
             }
           )
         }
@@ -254,27 +260,32 @@ export default defineComponent({
             account,
             amount
           )
-
-          if (res) {
-            const { waitOrSkip } = await res.approveIfNeeded()
+          whenDefined(res, async (results) => {
+            const { waitOrSkipApproval } = await results.approveIfNeeded({
+              amount: constants.MaxUint256.toString(),
+            })
             this.isApproving = true
-            await waitOrSkip()
+            await waitOrSkipApproval()
             console.log('approve res is: ', res)
             this.isApproving = false
             this.approveNeeded = false
-          }
+          })
         }
       )
     },
-    async checkApproved(provider: providers.Provider, userAddress: string) {
-      const [l1, l2] = await clientsDev(provider)
-      const [l1L, l2L] = await clientsLockup(provider)
-      const allowance = BN.from(
-        (await whenDefinedAll([l1 || l2, l1L || l2L], ([dev, lockup]) =>
-          dev.allowance(userAddress, lockup.contract().address)
-        )) ?? 0
+    async checkApproved(
+      provider: providers.Provider,
+      userAddress: string,
+      destination: string,
+      amount: number
+    ) {
+      const res = await stake(
+        provider as providers.BaseProvider,
+        destination,
+        userAddress,
+        amount
       )
-      this.approveNeeded = allowance?.lt(this.parsedAmount ?? 0) ?? true
+      this.approveNeeded = whenDefined(res, (x) => x.approvalNeeded)
     },
     async submitStake() {
       await whenDefinedAll(
@@ -312,18 +323,18 @@ export default defineComponent({
               amount: parsedAmount,
             })
 
-            if (res) {
+            whenDefined(res, (x) => {
               this.isStaking = true
-              res
-                .approveIfNeeded()
-                .then((res) => res.waitOrSkip())
+              x.approveIfNeeded()
+                .then((res) => res.waitOrSkipApproval())
+                .then((res) => res.run())
                 .then((res) => res.wait())
                 .then((res) => {
                   console.log('res is: ', res)
                   this.isStaking = false
                   this.stakeSuccessful = true
                 })
-            }
+            })
           }
         }
       )
