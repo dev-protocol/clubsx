@@ -3,6 +3,7 @@ import Layout from '@layouts/Default.astro'
 
 import JoinClub from '@components/Join/JoinClub.vue'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
+import Footer from '@components/Global/Footer.astro'
 ---
 
 <Layout metaTitle='Dev Protocol | An open protocol for Creator Economy'>
@@ -14,4 +15,5 @@ import Sidebar from '@components/Sidebar/Sidebar.vue'
       <JoinClub client:only />
     </div>
   </div>
+  <Footer />
 </Layout>
