@@ -25,6 +25,14 @@
       <div class="mb-8">
         <h3 class="mb-4 text-2xl">Stake</h3>
         <button
+          v-if="approveNeeded"
+          disabled
+          class="rounded-sm border border-gray-400 bg-gray-600 p-2 px-4 text-gray-400"
+        >
+          Stake
+        </button>
+        <button
+          v-if="approveNeeded === false"
           @click="submitStake"
           class="rounded-sm border bg-gray-600 p-2 px-4"
         >
@@ -146,6 +154,7 @@ export default defineComponent({
 
     if (this.currency === CurrencyOption.ETH) {
       this.approveNeeded = false
+      console.log(this.approveNeeded)
     }
     if (connection) {
       const sub = zip(connection.provider, connection.account).subscribe(
@@ -199,7 +208,8 @@ export default defineComponent({
           )
 
           if (res) {
-            await res.approveIfNeeded()
+            const { waitOrSkip } = await res.approveIfNeeded()
+            await waitOrSkip()
             console.log('approve res is: ', res)
             this.approveNeeded = false
           }
