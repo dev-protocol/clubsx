@@ -37,6 +37,11 @@ const listOfTier = await Promise.all(
             <header>
               <h2 class="font-title text-2xl font-bold">{tier.title}</h2>
               <h3 class="font-mono">Tier #{listOfTier.length - i}</h3>
+              {tier.badgeImageDescription && (
+                <p class="mt-4 text-xs opacity-30">
+                  {tier.badgeImageDescription}
+                </p>
+              )}
             </header>
             <div class="col-span-2 row-span-2 lg:col-auto lg:row-auto">
               {tier.perks.map((perk) =>
