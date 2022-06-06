@@ -1,6 +1,6 @@
 <template>
   <div class="bg-cover bg-center">
-    <h3 class="mb-8 text-2xl">Membership</h3>
+    <h3 class="mb-8 font-title text-2xl font-bold">Membership</h3>
     <div
       v-if="memberships.length > 0"
       class="grid gap-8 rounded border border-dp-black-200 md:grid-cols-3"

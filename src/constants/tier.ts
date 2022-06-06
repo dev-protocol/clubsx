@@ -9,13 +9,13 @@ export type Tiers = ReadonlyArray<Tier>
 
 export const tiers: Tiers = [
   {
-    title: 'Silver',
-    id: 'silver',
+    title: 'Bronze',
+    id: 'bronze',
     amount: 400,
   },
   {
-    title: 'Bronze',
-    id: 'bronze',
+    title: 'Silver',
+    id: 'silver',
     amount: 4000,
   },
   {
