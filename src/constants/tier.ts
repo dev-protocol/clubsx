@@ -24,13 +24,13 @@ export const tiers: Tiers = [
   {
     title: 'Gold',
     id: 'gold',
-    amount: 20000,
+    amount: 10000,
     badgeImageDescription: `Sojiij Head Monastry : Nioh statue (statues of the two Deva kings)`,
   },
   {
     title: 'Super',
     id: 'super',
-    amount: 80000,
+    amount: 15000,
     badgeImageDescription: `Gokokuji= Head Monastry : Nyoirin Kannon statue (Cintāmaṇicakra statue)`,
   },
 ] as const
