@@ -259,8 +259,8 @@ export default defineComponent({
             const { waitOrSkip } = await res.approveIfNeeded()
             this.isApproving = true
             await waitOrSkip()
-            this.isApproving = false
             console.log('approve res is: ', res)
+            this.isApproving = false
             this.approveNeeded = false
           }
         }
@@ -313,11 +313,14 @@ export default defineComponent({
             })
 
             if (res) {
+              this.isStaking = true
               res
                 .approveIfNeeded()
                 .then((res) => res.waitOrSkip())
+                .then((res) => res.wait())
                 .then((res) => {
                   console.log('res is: ', res)
+                  this.isStaking = false
                   this.stakeSuccessful = true
                 })
             }
