@@ -11,15 +11,20 @@ const toNaturalBasis = new BigNumber(10).pow(18)
 export const toNaturalNumber = (num?: number | string | BigNumber): BigNumber =>
   new BigNumber(falsyOrZero(num)).div(toNaturalBasis)
 
+export const validImageUri = (path: string) => {
+  const src = path.startsWith('ipfs://')
+    ? path.replace(/^ipfs:\/\/(.*)/, 'https://$1.ipfs.nftstorage.link/')
+    : path
+  return src
+}
+
 export const fetchBadgeImageSrc = async (opts: {
   provider: BaseProvider
   tokenAddress: string
   amount: number | string
 }) => {
   const res = await tokenURISim(opts.provider, opts.tokenAddress, opts.amount)
-  const src = res?.image.startsWith('ipfs://')
-    ? res.image.replace(/^ipfs:\/\/(.*)/, 'https://$1.ipfs.nftstorage.link/')
-    : res?.image
+  const src = res ? validImageUri(res.image) : undefined
   return src
 }
 

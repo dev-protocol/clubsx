@@ -21,7 +21,7 @@
 import BigNumber from 'bignumber.js'
 import { providers } from 'ethers'
 import { getStokenPositions, getStokenTokenURI } from '../../fixtures/dev-kit'
-import { toNaturalNumber } from '../../fixtures/utility'
+import { toNaturalNumber, validImageUri } from '../../fixtures/utility'
 
 export default {
   name: 'STokenPositions',
@@ -42,7 +42,7 @@ export default {
     this.amount = toNaturalNumber(new BigNumber(balances.amount))
       .dp(0)
       .toNumber()
-    this.image = uri.image
+    this.image = validImageUri(uri.image)
   },
 }
 </script>
