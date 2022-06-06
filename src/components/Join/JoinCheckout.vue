@@ -5,7 +5,7 @@
   >
     <section class="flex flex-col">
       <h2 class="mb-8 font-title text-4xl font-bold">Join</h2>
-      <div v-if="currency === dev" class="mb-8">
+      <div v-if="currency === 'dev'" class="mb-8">
         <h3 class="mb-4 text-2xl">Approval</h3>
         <button
           @click="approve"
@@ -45,7 +45,7 @@
           {{ omittedAmountForInputCurrency }} ${{ currency }}
         </p>
         <aside
-          v-if="currency !== dev"
+          v-if="currency !== 'dev'"
           class="mt-4 ml-4 border-l border-dp-black-200 pl-4"
         >
           <h4 class="text-md mb-2 opacity-70">Replace</h4>

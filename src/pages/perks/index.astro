@@ -36,7 +36,6 @@ const listOfTier = await Promise.all(
             <img src={tier.badgeImageSrc} class="rounded" role="presentation" />
             <header>
               <h2 class="font-title text-2xl font-bold">{tier.title}</h2>
-              <h3 class="font-mono">Tier #{listOfTier.length - i}</h3>
               {tier.badgeImageDescription && (
                 <p class="mt-4 text-xs opacity-30">
                   {tier.badgeImageDescription}
