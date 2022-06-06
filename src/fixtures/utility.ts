@@ -18,7 +18,7 @@ export const fetchBadgeImageSrc = async (opts: {
 }) => {
   const res = await tokenURISim(opts.provider, opts.tokenAddress, opts.amount)
   const src = res?.image.startsWith('ipfs://')
-    ? res.image.replace(/^ipfs:\/\/(.*)/, 'https://cloudflare-ipfs.com/ipfs/$1')
+    ? res.image.replace(/^ipfs:\/\/(.*)/, 'https://$1.ipfs.nftstorage.link/')
     : res?.image
   return src
 }

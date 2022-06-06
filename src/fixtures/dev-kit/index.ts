@@ -102,11 +102,17 @@ export const stakeWithEth = async (
   propertyAddress: string,
   devAmount: string
 ) => {
+  console.log(
+    '****',
+    utils.parseUnits(devAmount, 18).toString(),
+    propertyAddress
+  )
   const { estimatedEth, create } = await positionsCreateWithEth({
     provider,
     devAmount: utils.parseUnits(devAmount, 18).toString(),
     destination: propertyAddress,
   })
+  console.log({ estimatedEth })
   return { estimatedEth, create }
 }
 

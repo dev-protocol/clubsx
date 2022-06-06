@@ -13,15 +13,20 @@
           name="input"
           value="dev"
           checked
-          @change="switchInputs"
+          @change="null"
         />
         <span class="w-16">$DEV</span>
-        <img
-          src="/assets/devtoken.png"
-          width="50"
-          height="50"
-          alt="dev token"
-        />
+        <div class="flex items-center">
+          <img
+            src="/assets/devtoken.png"
+            width="50"
+            height="50"
+            alt="dev token"
+          />
+          <span class="content-center justify-between text-sm"
+            >Best way to sustainably support with staking.</span
+          >
+        </div>
       </label>
       <label class="flex items-center">
         <input
@@ -30,13 +35,15 @@
           id="eth"
           name="input"
           value="eth"
+          disabled
           @change="switchInputs"
         />
         <span class="w-16">$ETH</span>
         <div class="flex items-center">
           <img src="/assets/ETH.svg" width="50" height="50" alt="ethereum" />
           <span class="content-center justify-between text-sm"
-            >$ETH is automatically replaced with $DEV</span
+            >You will earn $DEV by staking. *ETH staking will be support
+            soon</span
           >
         </div>
       </label>
@@ -90,18 +97,16 @@ export default defineComponent({
       },
     }
   },
-  async created() {
+  async mounted() {
+    const input = new FormData(this.$refs.form as HTMLFormElement).get(
+      'input'
+    ) as null | Data['currency']
+    this.currency = input as 'dev' | 'eth'
     this.tiers = await composeTiers({
       sourceTiers,
       provider,
       tokenAddress,
     })
-  },
-  mounted() {
-    const input = new FormData(this.$refs.form as HTMLFormElement).get(
-      'input'
-    ) as null | Data['currency']
-    this.currency = input as 'dev' | 'eth'
   },
   methods: {
     async switchInputs(ev: Event) {
