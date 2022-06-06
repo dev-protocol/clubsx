@@ -1,6 +1,6 @@
 <template>
   <div class="bg-cover bg-center">
-    <h3 class="my-8 text-2xl">Supporters</h3>
+    <h3 class="my-8 font-title text-2xl font-bold">Supporters</h3>
     <div v-if="members.length > 0" class="rounded border border-dp-black-200">
       <ul role="list">
         <li

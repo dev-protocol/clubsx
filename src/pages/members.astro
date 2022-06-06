@@ -1,7 +1,6 @@
 ---
 import Layout from '@layouts/Default.astro'
 
-import Creators from '@components/Members/Creators.vue'
 import Supporters from '@components/Members/Supporters.vue'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
 ---
@@ -12,9 +11,8 @@ import Sidebar from '@components/Sidebar/Sidebar.vue'
   >
     <Sidebar client:load />
     <div class='mx-4 mb-4'>
-      <h2 class='text-3xl'>Members</h2>
+      <h2 class='font-title font-bold text-3xl'>Members</h2>
       <Supporters client:only='vue' />
-      <Creators client:only='vue' />
     </div>
   </div>
 </Layout>
