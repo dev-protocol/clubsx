@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="!stakeSuccessful"
-    class="relative mx-auto grid px-4 lg:container lg:grid-cols-[auto,_480px] lg:gap-12 lg:pt-12"
+    class="relative mx-auto grid items-start px-4 lg:container lg:grid-cols-[auto,_480px] lg:gap-12 lg:pt-12"
   >
     <section class="flex flex-col">
       <h2 class="mb-8 font-title text-4xl font-bold">Join</h2>
