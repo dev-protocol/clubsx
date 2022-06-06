@@ -9,7 +9,7 @@ export type Perks = ReadonlyArray<Perk>
 
 export const perks: Perks = [
   {
-    tier: 'bronze',
+    tier: 'tier-3',
     descriptions: [
       {
         lang: 'en_US',
@@ -22,7 +22,7 @@ export const perks: Perks = [
     ],
   },
   {
-    tier: 'silver',
+    tier: 'tier-2',
     descriptions: [
       {
         lang: 'en_US',
@@ -43,7 +43,7 @@ export const perks: Perks = [
     ],
   },
   {
-    tier: 'gold',
+    tier: 'tier-1',
     descriptions: [
       {
         lang: 'en_US',
