@@ -128,28 +128,19 @@
 
 <script lang="ts">
 import {
-  clientsDev,
   positionsCreate,
   positionsCreateWithEth,
   estimationsAPY,
-  clientsLockup,
 } from '@devprotocol/dev-kit/agent'
 import { getConnection } from '@devprotocol/elements'
 import { UndefinedOr, whenDefined, whenDefinedAll } from '@devprotocol/util-ts'
 import { defineComponent } from '@vue/composition-api'
-import {
-  BigNumber as BN,
-  BigNumberish,
-  constants,
-  providers,
-  utils,
-} from 'ethers'
+import { BigNumberish, constants, providers, utils } from 'ethers'
 import BigNumber from 'bignumber.js'
 import { parse } from 'query-string'
 import { Subscription, zip } from 'rxjs'
 import { connectionId } from 'src/constants/connection'
 import { CurrencyOption } from 'src/constants/currencyOption'
-import { stake } from 'src/fixtures/dev-kit'
 import { fetchEthForDev } from 'src/fixtures/utility'
 import Skeleton from '@components/Global/Skeleton.vue'
 
@@ -208,7 +199,6 @@ export default defineComponent({
 
     if (this.currency === CurrencyOption.ETH) {
       this.approveNeeded = false
-      console.log(this.approveNeeded)
     }
     if (connection) {
       const sub = zip(connection.provider, connection.account).subscribe(
@@ -218,7 +208,8 @@ export default defineComponent({
           await whenDefinedAll(
             [providerPool, account, this.destination, this.amount],
             async ([prov, userAddress, destination, amount]) => {
-              this.checkApproved(prov, userAddress, destination, amount)
+              this.currency !== CurrencyOption.ETH &&
+                this.checkApproved(prov, userAddress, destination, amount)
             }
           )
         }
@@ -252,14 +243,14 @@ export default defineComponent({
   methods: {
     approve() {
       whenDefinedAll(
-        [providerPool, this.account, this.destination, this.amount],
+        [providerPool, this.account, this.destination, this.parsedAmount],
         async ([prov, account, destination, amount]) => {
-          const res = await stake(
-            prov as providers.BaseProvider,
+          const res = await positionsCreate({
+            provider: prov,
             destination,
-            account,
-            amount
-          )
+            amount: amount.toString(),
+            from: account,
+          })
           whenDefined(res, async (results) => {
             const { waitOrSkipApproval } = await results.approveIfNeeded({
               amount: constants.MaxUint256.toString(),
@@ -277,14 +268,14 @@ export default defineComponent({
       provider: providers.Provider,
       userAddress: string,
       destination: string,
-      amount: number
+      amount: BigNumberish
     ) {
-      const res = await stake(
-        provider as providers.BaseProvider,
+      const res = await positionsCreate({
+        provider,
         destination,
-        userAddress,
-        amount
-      )
+        from: userAddress,
+        amount: amount.toString(),
+      })
       this.approveNeeded = whenDefined(res, (x) => x.approvalNeeded)
     },
     async submitStake() {
@@ -305,15 +296,16 @@ export default defineComponent({
               devAmount: parsedAmount,
             })
 
-            if (res) {
-              res
-                .create()
+            whenDefined(res, (x) => {
+              this.isStaking = true
+              x.create()
                 .then((res) => res.wait())
                 .then((res) => {
                   console.log('res is: ', res)
+                  this.isStaking = false
                   this.stakeSuccessful = true
                 })
-            }
+            })
           } else {
             // handle DEV stake
             const res = await positionsCreate({

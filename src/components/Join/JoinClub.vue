@@ -13,7 +13,7 @@
           name="input"
           value="dev"
           checked
-          @change="null"
+          @change="switchInputs"
         />
         <span class="w-16">$DEV</span>
         <div class="flex items-center">
@@ -35,16 +35,14 @@
           id="eth"
           name="input"
           value="eth"
-          disabled
           @change="switchInputs"
         />
         <span class="w-16">$ETH</span>
         <div class="flex items-center">
           <img src="/assets/ETH.svg" width="50" height="50" alt="ethereum" />
           <span class="content-center justify-between text-sm"
-            >You will earn $DEV by staking. *ETH staking will be supported
-            soon</span
-          >
+            >You will earn $DEV by staking.
+          </span>
         </div>
       </label>
     </form>
@@ -53,7 +51,7 @@
     <div class="mb-8 grid grid-cols-2 gap-8 lg:grid-cols-4">
       <Tier
         v-for="tier in tiers[currency]"
-        v-bind:key="tier.id"
+        v-bind:key="tier.id + tier.amount"
         :title="tier.title"
         :id="tier.id"
         :amount="tier.amount"
@@ -80,6 +78,7 @@ import { providers } from 'ethers'
 import { composeTiers } from 'src/fixtures/utility'
 import { UndefinedOr } from '@devprotocol/util-ts'
 import { defineComponent } from '@vue/runtime-core'
+import { CurrencyOption } from 'src/constants/currencyOption'
 
 const provider = new providers.JsonRpcProvider(
   import.meta.env.PUBLIC_WEB3_PROVIDER_URL
@@ -89,8 +88,7 @@ const tokenAddress = import.meta.env.PUBLIC_PROPERTY_ADDRESS
 type Data = {
   currency: 'dev' | 'eth'
   tiers: {
-    dev: Tiers
-    eth: UndefinedOr<Tiers>
+    [key in CurrencyOption]: UndefinedOr<Tiers>
   }
 }
 
@@ -99,10 +97,7 @@ export default defineComponent({
   data(): Data {
     return {
       currency: 'dev',
-      tiers: {
-        dev: [...sourceTiers],
-        eth: undefined,
-      },
+      tiers: { dev: [...sourceTiers], eth: undefined },
     }
   },
   async mounted() {
