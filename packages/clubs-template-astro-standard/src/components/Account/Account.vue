@@ -1,6 +1,6 @@
 <template>
   <div class="bg-cover bg-center">
-    <h3 class="mb-8 font-title text-2xl font-bold">Account</h3>
+    <h3 class="font-title mb-8 text-2xl font-bold">Account</h3>
     <div class="mb-8 flex">
       <div>Your account is connecting with wallet:</div>
       <div class="ml-1">

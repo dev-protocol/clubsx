@@ -1,9 +1,9 @@
 <template>
-  <header class="flex items-center justify-between px-8 py-4 font-body">
+  <header class="font-body flex items-center justify-between px-8 py-4">
     <h1>
       <a
         href="/"
-        class="py-4 font-title font-bold text-gray-900 dark:text-white"
+        class="font-title py-4 font-bold text-gray-900 dark:text-white"
         >Temples DAO</a
       >
     </h1>
