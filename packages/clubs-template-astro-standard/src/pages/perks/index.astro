@@ -1,0 +1,62 @@
+---
+import Layout from '../../layouts/Default.astro'
+
+import Sidebar from '../../components/Sidebar/Sidebar.vue'
+import Footer from '../../components/Global/Footer.astro'
+import { tiers } from '../../constants/tier'
+import { perks } from '../../constants/perks'
+import { fetchBadgeImageSrc } from '../../fixtures/utility'
+import { providers } from 'ethers'
+
+const listOfTier = await Promise.all(
+  tiers.map(async ({ ...tier }) => {
+    const badgeImageSrc = await fetchBadgeImageSrc({
+      provider: new providers.JsonRpcProvider(
+        import.meta.env.PUBLIC_WEB3_PROVIDER_URL
+      ),
+      tokenAddress: import.meta.env.PUBLIC_PROPERTY_ADDRESS,
+      amount: tier.amount,
+    })
+    const listOfPerk = perks.filter((perk) => perk.tier === tier.id)
+    return { ...tier, perks: listOfPerk, badgeImageSrc }
+  })
+)
+---
+
+<Layout metaTitle='Dev Protocol | An open protocol for Creator Economy'>
+  <div
+    class='lg:container relative mx-auto lg:pt-12 grid lg:gap-12 lg:grid-cols-[minmax(290px,_1fr)_4fr]'
+  >
+    <Sidebar client:load />
+    <div class='px-4'>
+      <article class='grid gap-8'>
+        <h2 class='font-title text-4xl font-bold'>Perks</h2>
+        {listOfTier.map((tier, i) => (
+          <section class="grid auto-rows-auto grid-cols-[1fr_2fr] gap-2 lg:grid-cols-[1fr_2fr_3fr]">
+            <img src={tier.badgeImageSrc} class="rounded" role="presentation" />
+            <header>
+              <h2 class="font-title text-2xl font-bold">{tier.title}</h2>
+              {tier.badgeImageDescription && (
+                <p class="mt-4 text-xs opacity-30">
+                  {tier.badgeImageDescription}
+                </p>
+              )}
+            </header>
+            <div class="col-span-2 row-span-2 lg:col-auto lg:row-auto">
+              {tier.perks.map((perk) =>
+                perk.descriptions.map((desc) =>
+                  desc.lang === 'en_US' ? (
+                    <p class="text-md mb-2">{desc.description}</p>
+                  ) : (
+                    <p class="mb-2 text-sm opacity-30">{desc.description}</p>
+                  )
+                )
+              )}
+            </div>
+          </section>
+        ))}
+      </article>
+    </div>
+  </div>
+  <Footer />
+</Layout>

@@ -1,0 +1,234 @@
+---
+import Layout from '../layouts/Default.astro'
+
+import Sidebar from '../components/Sidebar/Sidebar.vue'
+import Footer from '../components/Global/Footer.astro'
+import Hero from '../components/Home/Hero.vue'
+import JoinClub from '../components/Join/JoinClub.vue'
+---
+
+<Layout metaTitle=''>
+  <div class='relative'>
+    <div class='absolute w-full h-[24rem] lg:h-[38rem]'>
+      <img
+        src='/assets/cover-1.jpg'
+        class='h-full w-full object-cover opacity-80'
+      />
+    </div>
+    <div
+      class='lg:container relative mx-auto lg:pt-12 grid lg:gap-12 lg:grid-cols-[minmax(290px,_1fr)_4fr]'
+    >
+      <Sidebar client:load />
+      <article class='grid gap-10 lg:gap-20'>
+        <header
+          class='min-h-[24rem] lg:min-h-[38rem] lg:-mt-12 flex justify-center items-center'
+        >
+          <h1
+            class='max-w-3xl mx-4 text-3xl font-title lg:text-4xl font-extrabold text-justify'
+          >
+            Join the DAO that makes the next 1000 years
+          </h1>
+        </header>
+        <div class='px-4 grid gap-12 grid-cols-1'>
+          <section class='grid gap-8'>
+            <h2 class='text-native-blue-200 font-mono text-xl'>What we do</h2>
+            <div class='grid lg:grid-cols-[1fr_auto_1fr] gap-8 items-center'>
+              <i
+                class='border border-native-blue-200 rounded-full h-14 w-14 lg:h-28 lg:w-28'
+              ></i>
+              <p class='text-xl lg:text-2xl font-title font-bold'>
+                We make everything for temples. Let’s continue to create history
+                by passing on culture.
+              </p>
+              <i
+                class='border border-native-blue-200 rounded-full h-14 w-14 lg:h-28 lg:w-28'
+              ></i>
+            </div>
+            <div class='flex gap-8'>
+              <figure>
+                <img
+                  src='/assets/owt3cn75.png'
+                  class='rounded-lg'
+                  width='961'
+                  height='704'
+                  alt='Zuiunji-temple, Hokkaido / 瑞雲寺 楼門'
+                />
+                <figcaption class='text-sm'>
+                  Zuiunji-temple, Hokkaido / 瑞雲寺 楼門
+                </figcaption>
+              </figure>
+              <figure>
+                <img
+                  src='/assets/gt6zfoja.png'
+                  class='rounded-lg'
+                  width='961'
+                  height='704'
+                  alt='Narita san Shinshoji-temple, Chiba / 成田山新勝寺 荘厳具'
+                />
+                <figcaption class='text-sm'>
+                  Narita san Shinshoji-temple, Chiba / 成田山新勝寺 荘厳具
+                </figcaption>
+              </figure>
+            </div>
+          </section>
+          <hr class='border border-dp-black-200 max-w-xl' />
+          <section class='grid gap-8'>
+            <h2 class='text-native-blue-200 font-mono text-xl'>Perks</h2>
+            <p class='text-4xl font-title font-bold text-center'>
+              Receive NFTs, authentic art pieces by traditional artisans and
+              more.
+            </p>
+            <p class='font-c-serif text-2xl text-center'>
+              Get NFTs, and redeem authentic art pieces by real traditional
+              craftsmanship.
+            </p>
+            <section>
+              <div
+                class='grid grid-cols-[repeat(3,minmax(0,210px))] gap-8 justify-between items-center mb-16'
+              >
+                <figure>
+                  <img
+                    src='/assets/artifacts/40.png'
+                    width='399'
+                    height='301'
+                    alt='40 Makie lacquer-work plate'
+                  />
+                  <figcaption class='text-sm'>
+                    40 Makie lacquer-work plate
+                  </figcaption>
+                </figure>
+                <figure>
+                  <img
+                    src='/assets/artifacts/92.png'
+                    width='339'
+                    height='315'
+                    alt='92 Transformable panel'
+                  />
+                  <figcaption class='text-sm'>
+                    92 Transformable panel
+                  </figcaption>
+                </figure>
+                <figure>
+                  <img
+                    src='/assets/artifacts/89.png'
+                    width='365'
+                    height='358'
+                    alt='89 Metal panel, moon and autumn grasses'
+                  />
+                  <figcaption class='text-sm'>
+                    89 Metal panel, moon and autumn grasses
+                  </figcaption>
+                </figure>
+              </div>
+              <div class='grid justify-items-center gap-16'>
+                <figure>
+                  <img
+                    src='/assets/artifacts/12.png'
+                    class='w-full max-w-md'
+                    width='907'
+                    height='229'
+                    alt='12 Lotus petal dish flower in the moon'
+                  />
+                  <figcaption class='text-sm max-w-md'>
+                    12 Lotus petal dish flower in the moon
+                  </figcaption>
+                </figure>
+                <figure>
+                  <img
+                    src='/assets/Grade.png'
+                    class='h-8 w-auto'
+                    width='137'
+                    height='75'
+                  />
+                  <img
+                    src='/assets/artifacts/259.png'
+                    class='w-full max-w-md'
+                    width='995'
+                    height='483'
+                    alt='259 RINPOUKARAKUSASUKASIEGOURO'
+                  />
+                  <figcaption class='text-sm max-w-md'>
+                    259 RINPOUKARAKUSASUKASIEGOURO
+                  </figcaption>
+                </figure>
+                <figure>
+                  <img
+                    src='/assets/artifacts/125.png'
+                    class='w-60 max-w-full'
+                    width='490'
+                    height='1165'
+                    alt='125 Virupaksa (Buddhist deity)'
+                  />
+                  <figcaption class='text-sm w-60 max-w-full'>
+                    125 Virupaksa (Buddhist deity)
+                  </figcaption>
+                </figure>
+                <figure>
+                  <img
+                    src='/assets/artifacts/101.png'
+                    class='max-w-xs'
+                    width='684'
+                    height='690'
+                    alt='101 Meditation Room'
+                  />
+                  <figcaption class='text-sm max-w-xs'>
+                    101 Meditation Room
+                  </figcaption>
+                </figure>
+                <figure>
+                  <img
+                    src='/assets/artifacts/108.png'
+                    class='max-w-xs'
+                    width='580'
+                    height='1017'
+                    alt={"108 The Light Beyond, Ryunosuke Akutagawa, The Spider's Thread"}
+                  />
+                  <figcaption class='text-sm max-w-xs'>
+                    {"108 The Light Beyond, Ryunosuke Akutagawa, The Spider's Thread"}
+                  </figcaption>
+                </figure>
+              </div>
+            </section>
+          </section>
+          <section
+            class='grid gap-8 bg-[linear-gradient(0,#00000080,#00000080),url("/assets/texture.jpg")] bg-cover p-8 rounded-xl'
+          >
+            <svg
+              width='21'
+              height='15'
+              viewBox='0 0 21 15'
+              fill='none'
+              role='presentation'
+              xmlns='http://www.w3.org/2000/svg'
+            >
+              <path
+                d='M10.3203 0.104004L6.35938 14.6821H0.148438L7.4375 0.104004H10.3203ZM20.6094 0.104004L16.6484 14.6821H10.4375L17.7266 0.104004H20.6094Z'
+                fill='currentColor'></path>
+            </svg>
+            <h2
+              class='font-title font-bold text-3xl text-center leading-normal'
+            >
+              Let's get good craftsmen to do good w ork. It is important to pass
+              on the skills of skilled craftsmen to the next generation.
+            </h2>
+            <svg
+              class='place-self-end'
+              width='21'
+              height='15'
+              viewBox='0 0 21 15'
+              fill='none'
+              role='presentation'
+              xmlns='http://www.w3.org/2000/svg'
+            >
+              <path
+                d='M10.6328 14.6821L14.5938 0.104004H20.8047L13.5156 14.6821H10.6328ZM0.34375 14.6821L4.30469 0.104004H10.5156L3.22656 14.6821H0.34375Z'
+                fill='currentColor'></path>
+            </svg>
+          </section>
+          <JoinClub client:idle />
+        </div>
+      </article>
+    </div>
+  </div>
+  <Footer />
+</Layout>

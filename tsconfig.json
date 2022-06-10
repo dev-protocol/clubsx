@@ -9,10 +9,6 @@
     "isolatedModules": true,
     "allowSyntheticDefaultImports": true,
     "types": ["vite/client"],
-    "baseUrl": ".",
-    "paths": {
-      "@components/*": ["src/components/*"],
-      "@layouts/*": ["src/layouts/*"]
-    }
+    "baseUrl": "."
   }
 }
