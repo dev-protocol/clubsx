@@ -10,7 +10,7 @@
     "@astrojs/tailwind": "0.2.1",
     "@astrojs/vue": "0.1.5",
     "@devprotocol/dev-kit": "6.6.3",
-    "@devprotocol/elements": "0.0.5",
+    "@devprotocol/elements": "0.0.6",
     "@devprotocol/hashi": "1.2.1",
     "@devprotocol/util-ts": "2.2.1",
     "@metamask/detect-provider": "1.2.0",
