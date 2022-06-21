@@ -58,7 +58,7 @@
             <header class="grid justify-items-center gap-2">
               <!-- Take DAOName and DAOToken from YAML config -->
               <h2 class="font-title text-xl font-bold">DAOName</h2>
-              <p class="flex items-center gap-2 font-body text-xs">
+              <p class="font-body flex items-center gap-2 text-xs">
                 $DAOToken on
                 <!-- Incase of multiple network change img as per chainId -->
                 <img src="/assets/ETH.svg" class="h-[1.8em]" alt="Ethereum" />
@@ -71,7 +71,7 @@
             <a href="/members">{{ members || '-' }} members</a>
           </div>
           <aside
-            class="grid w-full grid-cols-[1fr_auto] justify-between rounded border border-stone-50/30 font-body text-sm"
+            class="font-body grid w-full grid-cols-[1fr_auto] justify-between rounded border border-stone-50/30 text-sm"
           >
             <h3 class="border-b border-stone-50/30 p-2 opacity-20">
               Club Allocation
@@ -96,7 +96,7 @@
 
 <script>
 import { providers } from 'ethers'
-import { detectStokensByPropertyAddress } from '../../fixtures/dev-kit'
+import { detectStokensByPropertyAddress } from 'packages/clubs-core/functions/dev-kit/index.ts'
 
 export default {
   name: 'Sidebar',

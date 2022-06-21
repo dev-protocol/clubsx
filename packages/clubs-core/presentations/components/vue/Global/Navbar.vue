@@ -1,10 +1,10 @@
 <template>
-  <header class="flex items-center justify-between px-8 py-4 font-body">
+  <header class="font-body flex items-center justify-between px-8 py-4">
     <h1>
       <!-- Fetch DAO name from YAML config -->
       <a
         href="/"
-        class="py-4 font-title font-bold text-gray-900 dark:text-white"
+        class="font-title py-4 font-bold text-gray-900 dark:text-white"
         >You DAO-Name</a
       >
     </h1>
@@ -31,7 +31,7 @@
           v-if="menuIsOpen"
           class="absolute right-0 z-50 mt-2 w-48 rounded border border-slate-800 bg-black p-2 shadow"
         >
-        <!-- Links and social media name will fetched through yaml -->
+          <!-- Links and social media name will fetched through yaml -->
           <li>
             <a
               href="https://stakes.social/"

@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import { getAccount } from '../../fixtures/dev-for-apps'
+import { getAccount } from 'packages/clubs-core/functions/dev-for-apps'
 
 export default {
   name: 'Avator',

@@ -20,8 +20,8 @@
 <script>
 import BigNumber from 'bignumber.js'
 import { providers } from 'ethers'
-import { getStokenPositions, getStokenTokenURI } from '../../fixtures/dev-kit'
-import { toNaturalNumber, validImageUri } from '../../fixtures/utility'
+import { getStokenPositions, getStokenTokenURI } from 'packages/clubs-core/functions/dev-kit'
+import { toNaturalNumber, validImageUri } from 'packages/clubs-core/functions/utility'
 
 export default {
   name: 'STokenPositions',

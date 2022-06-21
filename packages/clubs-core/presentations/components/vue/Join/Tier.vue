@@ -6,7 +6,7 @@
       class="w-ful h-auto rounded"
     />
     <Skeleton v-if="!badgeImageSrc" class="min-h-[16rem] w-full" />
-    <div class="mb-2 font-title text-2xl font-bold">{{ title }}</div>
+    <div class="font-title mb-2 text-2xl font-bold">{{ title }}</div>
     <div class="mb-2 uppercase">{{ omittedAmount }} ${{ currency }}</div>
     <a :href="idLink">
       <button class="rounded-sm border bg-gray-600 p-2 px-4">Select</button>
@@ -17,7 +17,7 @@
 <script>
 import { defineComponent } from '@vue/runtime-core'
 import BigNumber from 'bignumber.js'
-import Skeleton from '@components/Global/Skeleton.vue'
+import Skeleton from 'packages/clubs-core/presentations/components/vue/Global/Skeleton.vue'
 
 export default defineComponent({
   name: 'QuestCard',

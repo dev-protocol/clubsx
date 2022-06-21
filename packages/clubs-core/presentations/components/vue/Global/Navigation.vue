@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Navbar from '@components/Global/Navbar.vue'
+import Navbar from 'packages/clubs-core/presentations/components/vue/Global/Navbar.vue'
 
 export default {
   name: 'app',

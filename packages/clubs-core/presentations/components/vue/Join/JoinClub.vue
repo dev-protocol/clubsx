@@ -1,10 +1,10 @@
 <template>
   <section class="flex flex-col">
-    <h2 class="mb-4 font-title text-4xl font-bold">Join</h2>
+    <h2 class="font-title mb-4 text-4xl font-bold">Join</h2>
     <!-- DAOName from YAML config -->
     <div class="mb-8">Join {DAOName} in support of the project.</div>
 
-    <h3 class="mb-4 font-title text-2xl font-bold">Purchase with</h3>
+    <h3 class="font-title mb-4 text-2xl font-bold">Purchase with</h3>
     <form class="mb-8 flex flex-col" ref="form">
       <label class="flex items-center py-4">
         <input
@@ -48,7 +48,7 @@
       </label>
     </form>
 
-    <h3 class="mb-4 font-title text-2xl font-bold">Select a tier</h3>
+    <h3 class="font-title mb-4 text-2xl font-bold">Select a tier</h3>
     <div class="mb-8 grid grid-cols-2 gap-8 lg:grid-cols-4">
       <Tier
         v-for="tier in tiers[currency]"
@@ -64,7 +64,7 @@
     <section>
       <a
         href="/perks"
-        class="block rounded border border-native-blue-400 p-4 text-xl"
+        class="border-native-blue-400 block rounded border p-4 text-xl"
         >Perks →</a
       >
     </section>
@@ -73,13 +73,13 @@
 
 <script lang="ts">
 import Tier from './Tier.vue'
-import { tiers as sourceTiers } from '../../constants/tier'
-import type { Tiers } from '../../constants/tier'
+import { tiers as sourceTiers } from 'packages/clubs-core/constants/tier'
+import type { Tiers } from 'packages/clubs-core/constants/tier'
 import { providers } from 'ethers'
-import { composeTiers } from 'src/fixtures/utility'
+import { composeTiers } from 'packages/clubs-core/functions/utility'
 import { UndefinedOr } from '@devprotocol/util-ts'
 import { defineComponent } from '@vue/runtime-core'
-import { CurrencyOption } from 'src/constants/currencyOption'
+import { CurrencyOption } from 'packages/clubs-core/constants/currencyOption'
 
 const provider = new providers.JsonRpcProvider(
   import.meta.env.PUBLIC_WEB3_PROVIDER_URL

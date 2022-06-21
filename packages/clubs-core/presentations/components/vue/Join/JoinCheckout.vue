@@ -4,7 +4,7 @@
     class="relative mx-auto grid items-start px-4 lg:container lg:grid-cols-[auto,_480px] lg:gap-12 lg:pt-12"
   >
     <section class="flex flex-col">
-      <h2 class="mb-8 font-title text-4xl font-bold">Join</h2>
+      <h2 class="font-title mb-8 text-4xl font-bold">Join</h2>
       <div v-if="currency === 'dev'" class="mb-8">
         <h3 class="mb-4 text-2xl">Approval</h3>
         <button
@@ -85,9 +85,9 @@
       </div>
     </section>
     <div
-      class="grid grid-cols-1 content-start overflow-hidden rounded border border-dp-black-200"
+      class="border-dp-black-200 grid grid-cols-1 content-start overflow-hidden rounded border"
     >
-      <section class="border-b border-dp-black-200 p-4">
+      <section class="border-dp-black-200 border-b p-4">
         <h3 class="mb-2 text-xl opacity-70">Purchase</h3>
         <p class="flex items-center text-2xl uppercase">
           <Skeleton
@@ -98,7 +98,7 @@
         </p>
         <aside
           v-if="currency !== 'dev'"
-          class="mt-4 ml-4 border-l border-dp-black-200 pl-4"
+          class="border-dp-black-200 mt-4 ml-4 border-l pl-4"
         >
           <h4 class="text-md mb-2 opacity-70">Replace</h4>
           <p class="text-sm uppercase">{{ amount }} $DEV</p>
@@ -121,7 +121,7 @@
     class="flex flex-col items-center justify-center"
     v-if="stakeSuccessful"
   >
-    <h2 class="mb-8 font-title text-4xl font-bold">Joined</h2>
+    <h2 class="font-title mb-8 text-4xl font-bold">Joined</h2>
     <a href="/" class="text-blue-400">Back to top</a>
   </section>
 </template>
@@ -139,10 +139,10 @@ import { BigNumberish, constants, providers, utils } from 'ethers'
 import BigNumber from 'bignumber.js'
 import { parse } from 'query-string'
 import { Subscription, zip } from 'rxjs'
-import { connectionId } from 'src/constants/connection'
-import { CurrencyOption } from 'src/constants/currencyOption'
-import { fetchEthForDev } from 'src/fixtures/utility'
-import Skeleton from '@components/Global/Skeleton.vue'
+import { connectionId } from 'packages/clubs-core/constants/connection'
+import { CurrencyOption } from 'packages/clubs-core/constants/currencyOption'
+import { fetchEthForDev } from 'packages/clubs-core/functions/utility'
+import Skeleton from 'packages/clubs-core/presentations/components/vue/Global/Skeleton.vue'
 
 type Data = {
   currency: CurrencyOption

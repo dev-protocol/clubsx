@@ -1,12 +1,12 @@
 <template>
   <div class="bg-cover bg-center">
-    <h3 class="my-8 font-title text-2xl font-bold">Supporters</h3>
-    <div v-if="members.length > 0" class="rounded border border-dp-black-200">
+    <h3 class="font-title my-8 text-2xl font-bold">Supporters</h3>
+    <div v-if="members.length > 0" class="border-dp-black-200 rounded border">
       <ul role="list">
         <li
           v-for="member in members"
           :key="member.ownerAddress"
-          class="flex items-center border border-x-0 border-t-0 border-dp-black-200 outline-white first:border-solid last:border-none"
+          class="border-dp-black-200 flex items-center border border-x-0 border-t-0 outline-white first:border-solid last:border-none"
         >
           <Avator :accountAddress="member.ownerAddress" :displayName="true" />
           <STokenPositions class="mx-8" :stokenID="member.id" />
@@ -21,9 +21,9 @@ import { providers } from 'ethers'
 import {
   detectStokensByPropertyAddress,
   getStokenOwnerOf,
-} from '../../fixtures/dev-kit'
-import Avator from '@components/Members/Avator.vue'
-import STokenPositions from '@components/Members/STokenPositions.vue'
+} from 'packages/clubs-core/functions/dev-kit'
+import Avator from 'packages/clubs-core/presentations/components/vue/Members/Avator.vue'
+import STokenPositions from 'packages/clubs-core/presentations/components/vue/Members/STokenPositions.vue'
 
 export default {
   data() {
