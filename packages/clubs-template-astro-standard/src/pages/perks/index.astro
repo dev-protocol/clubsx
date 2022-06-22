@@ -1,11 +1,11 @@
 ---
-import Layout from 'packages/clubs-core/presentations/layouts/astro/Default.astro'
+import Layout from '@clubs/clubs-core/presentations/layouts/astro/Default.astro'
 
-import Sidebar from 'packages/clubs-core/presentations/components/vue/Sidebar/Sidebar.vue'
-import Footer from 'packages/clubs-core/presentations/components/astro/Global/Footer.astro'
-import { tiers } from 'packages/clubs-core/constants/tier'
-import { perks } from 'packages/clubs-core/constants/perks'
-import { fetchBadgeImageSrc } from 'packages/clubs-core/functions/utility'
+import Sidebar from '@clubs/clubs-core/presentations/components/vue/Sidebar/Sidebar.vue'
+import Footer from '@clubs/clubs-core/presentations/components/astro/Global/Footer.astro'
+import { tiers } from '@clubs/clubs-core/constants/tier'
+import { perks } from '@clubs/clubs-core/constants/perks'
+import { fetchBadgeImageSrc } from '@clubs/clubs-core/functions/utility'
 import { providers } from 'ethers'
 
 const listOfTier = await Promise.all(
