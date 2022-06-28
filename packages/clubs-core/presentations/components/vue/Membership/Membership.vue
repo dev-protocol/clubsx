@@ -20,11 +20,14 @@
 import {
   detectStokensByPropertyAddress,
   getStokenOwnerOf,
-} from '../../fixtures/dev-kit'
-import Avator from '@components/Members/Avator.vue'
-import STokenPositions from '@components/Members/STokenPositions.vue'
-import { GetModalProvider, ReConnectWallet } from '../../fixtures/wallet'
-import { positionsOfOwner } from '../../fixtures/dev-kit'
+} from '@clubs/clubs-core/functions/dev-kit'
+import Avator from '@clubs/clubs-core/presentations/components/vue/Members/Avator.vue'
+import STokenPositions from '@clubs/clubs-core/presentations/components/vue/Members/STokenPositions.vue'
+import {
+  GetModalProvider,
+  ReConnectWallet,
+} from '@clubs/clubs-core/functions/wallet'
+import { positionsOfOwner } from '@clubs/clubs-core/functions/dev-kit'
 
 // NOTE: It is assumed to be used on a wallet-connected page.
 export default {

@@ -139,10 +139,10 @@ import { BigNumberish, constants, providers, utils } from 'ethers'
 import BigNumber from 'bignumber.js'
 import { parse } from 'query-string'
 import { Subscription, zip } from 'rxjs'
-import { connectionId } from 'packages/clubs-core/constants/connection'
-import { CurrencyOption } from 'packages/clubs-core/constants/currencyOption'
-import { fetchEthForDev } from 'packages/clubs-core/functions/utility'
-import Skeleton from 'packages/clubs-core/presentations/components/vue/Global/Skeleton.vue'
+import { connectionId } from '@clubs/clubs-core/constants/connection'
+import { CurrencyOption } from '@clubs/clubs-core/constants/currencyOption'
+import { fetchEthForDev } from '@clubs/clubs-core/functions/utility'
+import Skeleton from '@clubs/clubs-core/presentations/components/vue/Global/Skeleton.vue'
 
 type Data = {
   currency: CurrencyOption

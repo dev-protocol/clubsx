@@ -31,9 +31,12 @@
 import { providers, utils } from 'ethers'
 import truncateEthAddress from 'truncate-eth-address'
 import { whenDefined } from '@devprotocol/util-ts'
-import { ReConnectWallet, GetModalProvider } from 'packages/clubs-core/functions/wallet/index'
+import {
+  ReConnectWallet,
+  GetModalProvider,
+} from '@clubs/clubs-core/functions/wallet/index'
 import { getConnection } from '@devprotocol/elements'
-import { connectionId } from 'packages/clubs-core/constants/connection'
+import { connectionId } from '@clubs/clubs-core/constants/connection'
 import Core from 'web3modal'
 import { defineComponent } from '@vue/runtime-core'
 import { clientsDev } from '@devprotocol/dev-kit/agent'
