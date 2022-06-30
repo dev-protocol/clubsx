@@ -1,8 +1,8 @@
 ---
-import Layout from '@clubs/clubs-core/presentations/layouts/astro/Default.astro'
+import Layout from '../../layouts/Default.astro'
 
-import JoinCheckout from '@clubs/clubs-core/presentations/components/vue/Join/JoinCheckout.vue'
-import { tiers } from '@clubs/clubs-core/constants/tier'
+import JoinCheckout from '../../components/Join/JoinCheckout.vue'
+import { tiers } from '../../constants/tier'
 
 export function getStaticPaths() {
   return tiers.map(({ id }) => ({ params: { id } }))

@@ -56,9 +56,11 @@
               height="220"
             />
             <header class="grid justify-items-center gap-2">
-              <h2 class="font-title text-xl font-bold">Temples DAO</h2>
+              <!-- Take DAOName and DAOToken from YAML config -->
+              <h2 class="font-title text-xl font-bold">DAOName</h2>
               <p class="font-body flex items-center gap-2 text-xs">
-                $TEMPL on
+                $DAOToken on
+                <!-- Incase of multiple network change img as per chainId -->
                 <img src="/assets/ETH.svg" class="h-[1.8em]" alt="Ethereum" />
               </p>
             </header>
@@ -75,7 +77,8 @@
               Club Allocation
             </h3>
             <p class="border-b border-stone-50/30 p-2 opacity-20">TBD</p>
-            <h3 class="p-2 opacity-20">APY for $DEV</h3>
+            <!-- DAOToken from YAML config -->
+            <h3 class="p-2 opacity-20">APY for $DaoToken</h3>
             <p class="p-2 opacity-20">&*%</p>
           </aside>
           <a class="rounded border p-2 px-4" href="/join">Join</a>
@@ -90,6 +93,7 @@
     </div>
   </div>
 </template>
+
 
 <script>
 import { providers } from 'ethers'
