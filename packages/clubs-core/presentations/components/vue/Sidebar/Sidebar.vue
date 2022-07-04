@@ -94,10 +94,9 @@
   </div>
 </template>
 
-
 <script>
 import { providers } from 'ethers'
-import { detectStokensByPropertyAddress } from '../../fixtures/dev-kit'
+import { detectStokensByPropertyAddress } from 'packages/clubs-core/functions/dev-kit/index.ts'
 
 export default {
   name: 'Sidebar',

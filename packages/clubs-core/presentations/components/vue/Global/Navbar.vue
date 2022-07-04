@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import ConnectButton from '../Wallet/ConnectButton.vue'
+import ConnectButton from '@clubs/clubs-core/presentations/components/vue/Wallet/ConnectButton.vue'
 
 export default {
   data() {

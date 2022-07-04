@@ -73,13 +73,13 @@
 
 <script lang="ts">
 import Tier from './Tier.vue'
-import { tiers as sourceTiers } from '../../constants/tier'
-import type { Tiers } from '../../constants/tier'
+import { tiers as sourceTiers } from 'packages/clubs-core/constants/tier'
+import type { Tiers } from 'packages/clubs-core/constants/tier'
 import { providers } from 'ethers'
-import { composeTiers } from '../../fixtures/utility'
+import { composeTiers } from 'packages/clubs-core/functions/utility'
 import { UndefinedOr } from '@devprotocol/util-ts'
 import { defineComponent } from '@vue/runtime-core'
-import { CurrencyOption } from '../../constants/currencyOption'
+import { CurrencyOption } from 'packages/clubs-core/constants/currencyOption'
 
 const provider = new providers.JsonRpcProvider(
   import.meta.env.PUBLIC_WEB3_PROVIDER_URL
