@@ -1,7 +1,6 @@
 {
-  "name": "@clubs/clubs-core",
+  "name": "@devprotocol/clubs-core",
   "version": "0.11.0",
-  "private": true,
   "scripts": {},
   "devDependencies": {
     "autoprefixer": "10.4.7"
@@ -20,5 +19,17 @@
     "tailwindcss": "3.1.1",
     "truncate-eth-address": "1.0.2",
     "web3modal": "1.9.7"
-  }
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dev-protocol/clubs-monorepo.git#main"
+  },
+  "author": "devprotocol",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dev-protocol/clubs-monorepo/tree/main/packages/clubs-core"
+  },
+  "homepage": "https://github.com/dev-protocol/clubs-monorepo/tree/main#readme",
+  "description": ""
 }
