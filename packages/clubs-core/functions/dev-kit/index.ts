@@ -1,10 +1,12 @@
 import { providers, utils } from 'ethers'
 import {
   positionsCreateWithEth,
+  positionsCreateWithEthForPolygon,
+  clientsUtilsSwapForStake,
   clientsSTokens,
   clientsProperty,
 } from '@devprotocol/dev-kit/agent'
-import { UndefinedOr } from '@devprotocol/util-ts'
+import { UndefinedOr, whenDefined } from '@devprotocol/util-ts'
 import { positionsCreate } from '@devprotocol/dev-kit'
 
 export type ChainName = UndefinedOr<
@@ -117,15 +119,56 @@ export const stake = async (
 export const stakeWithEth = async (
   provider: providers.BaseProvider,
   propertyAddress: string,
-  devAmount: string
+  devAmount?: string,
+  ethAmount?: string,
+  payload?: string,
+  gatewayAddress?: string,
+  gatewayBasisPoints?: number // For example 10000 is 100%
 ) => {
-  const { estimatedEth, create } = await positionsCreateWithEth({
+  const { estimatedEth, estimatedDev, create } = await positionsCreateWithEth({
     provider,
-    devAmount: utils.parseUnits(devAmount, 18).toString(),
+    devAmount: whenDefined(devAmount, (dev) =>
+      utils.parseUnits(dev, 18).toString()
+    ),
+    ethAmount: whenDefined(ethAmount, (eth) =>
+      utils.parseUnits(eth, 18).toString()
+    ),
     destination: propertyAddress,
+    payload,
+    gatewayAddress,
+    gatewayBasisPoints,
   })
-  console.log({ estimatedEth })
-  return { estimatedEth, create }
+  console.log({ estimatedEth, estimatedDev })
+  return { estimatedEth, estimatedDev, create }
+}
+
+export const stakeWithEthForPolygon = async (
+  provider: providers.BaseProvider,
+  propertyAddress: string,
+  devAmount?: string,
+  ethAmount?: string,
+  payload?: string,
+  from?: string,
+  gatewayAddress?: string,
+  gatewayBasisPoints?: number // For example 10000 is 100%
+) => {
+  const { estimatedEth, estimatedDev, create } =
+    await positionsCreateWithEthForPolygon({
+      provider,
+      devAmount: whenDefined(devAmount, (dev) =>
+        utils.parseUnits(dev, 18).toString()
+      ),
+      ethAmount: whenDefined(ethAmount, (eth) =>
+        utils.parseUnits(eth, 18).toString()
+      ),
+      destination: propertyAddress,
+      payload,
+      gatewayAddress,
+      gatewayBasisPoints,
+      from,
+    })
+  console.log({ estimatedEth, estimatedDev })
+  return { estimatedEth, estimatedDev, create }
 }
 
 export const tokenURISim = async (
