@@ -157,7 +157,7 @@ type Data = {
   account?: string
 }
 
-let providerPool: UndefinedOr<providers.Provider>
+let providerPool: UndefinedOr<providers.BaseProvider>
 
 export default defineComponent({
   props: {
@@ -265,7 +265,7 @@ export default defineComponent({
       )
     },
     async checkApproved(
-      provider: providers.Provider,
+      provider: providers.BaseProvider,
       userAddress: string,
       destination: string,
       amount: BigNumberish
