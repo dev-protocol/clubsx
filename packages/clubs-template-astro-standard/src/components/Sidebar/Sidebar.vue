@@ -94,7 +94,6 @@
   </div>
 </template>
 
-
 <script>
 import { providers } from 'ethers'
 import { detectStokensByPropertyAddress } from '../../fixtures/dev-kit'
