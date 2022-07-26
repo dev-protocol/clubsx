@@ -143,9 +143,12 @@ import { connectionId } from '../../constants/connection'
 import { CurrencyOption } from '../../constants/currencyOption'
 import { fetchEthForDev } from '../../fixtures/utility'
 import Skeleton from '../Global/Skeleton.vue'
+import {
+  detectChain,
+  stakeWithEthForPolygon,
+} from 'packages/clubs-core/functions/dev-kit'
 
 type Data = {
-  currency: CurrencyOption
   amountForInputCurrency: UndefinedOr<string>
   apy: UndefinedOr<number>
   parsedAmount: BigNumberish
@@ -163,10 +166,10 @@ export default defineComponent({
   props: {
     amount: Number,
     destination: String,
+    currency: String,
   },
   data() {
     return {
-      currency: CurrencyOption.DEV,
       amountForInputCurrency: undefined,
       apy: undefined,
       parsedAmount: utils.parseUnits(this.amount.toString(), 18),
@@ -189,15 +192,17 @@ export default defineComponent({
         ? new BigNumber(this.amount * this.apy).dp(9).toNumber()
         : undefined
     },
+    verifiedCurrency(): CurrencyOption {
+      return this.currency?.toUpperCase() === 'ETH'
+        ? CurrencyOption.ETH
+        : CurrencyOption.DEV
+    },
   },
   components: { Skeleton },
   async mounted() {
-    const query = parse(location.search)
-    const input = String(query.input).toLowerCase()
-    this.currency = input === 'eth' ? CurrencyOption.ETH : CurrencyOption.DEV
     const connection = getConnection(connectionId)
 
-    if (this.currency === CurrencyOption.ETH) {
+    if (this.verifiedCurrency === CurrencyOption.ETH) {
       this.approveNeeded = false
     }
     if (connection) {
@@ -208,7 +213,7 @@ export default defineComponent({
           await whenDefinedAll(
             [providerPool, account, this.destination, this.amount],
             async ([prov, userAddress, destination, amount]) => {
-              this.currency !== CurrencyOption.ETH &&
+              this.verifiedCurrency !== CurrencyOption.ETH &&
                 this.checkApproved(prov, userAddress, destination, amount)
             }
           )
@@ -225,7 +230,7 @@ export default defineComponent({
 
     if (this.destination && this.amount) {
       const amount =
-        this.currency === 'eth'
+        this.verifiedCurrency === CurrencyOption.ETH
           ? await fetchEthForDev({
               provider: (providerPool || provider) as providers.BaseProvider,
               tokenAddress: this.destination,
@@ -287,25 +292,49 @@ export default defineComponent({
           this.parsedAmount?.toString(),
         ],
         async ([prov, account, destination, parsedAmount]) => {
-          if (this.currency === CurrencyOption.ETH) {
-            // handle ETH stake
-            const res = await positionsCreateWithEth({
-              provider: prov,
+          if (this.verifiedCurrency === CurrencyOption.ETH) {
+            const chain = await detectChain(prov)
 
-              destination,
-              devAmount: parsedAmount,
-            })
+            if (chain.chainId === 137 || chain.chainId === 80001) {
+              const res = await stakeWithEthForPolygon(
+                prov,
+                destination,
+                parsedAmount
+              )
+              whenDefined(res, (x) => {
+                this.isStaking = true
+                x.create()
+                  .then(
+                    async (res) =>
+                      await res?.approveIfNeeded({ amount: parsedAmount })
+                  )
+                  .then(async (res) => await res?.waitOrSkipApproval())
+                  .then(async (res) => await res?.run())
+                  .then((res) => {
+                    console.log('res is: ', res)
+                    this.isStaking = false
+                    this.stakeSuccessful = true
+                  })
+              })
+            } else {
+              // handle ETH stake
+              const res = await positionsCreateWithEth({
+                provider: prov,
 
-            whenDefined(res, (x) => {
-              this.isStaking = true
-              x.create()
-                .then((res) => res.wait())
-                .then((res) => {
-                  console.log('res is: ', res)
-                  this.isStaking = false
-                  this.stakeSuccessful = true
-                })
-            })
+                destination,
+                devAmount: parsedAmount,
+              })
+              whenDefined(res, (x) => {
+                this.isStaking = true
+                x.create()
+                  .then((res) => res.wait())
+                  .then((res) => {
+                    console.log('res is: ', res)
+                    this.isStaking = false
+                    this.stakeSuccessful = true
+                  })
+              })
+            }
           } else {
             // handle DEV stake
             const res = await positionsCreate({
