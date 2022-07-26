@@ -1,15 +1,15 @@
-import ConnectButton from "../Walllet/connectbutton"
+import ConnectButton from '../Walllet/connectbutton'
 export default function Navbar() {
   return (
-    <div className="font-body flex items-center justify-between px-8 py-4 bg-black">
+    <div className="font-body flex items-center justify-between bg-black px-8 py-4">
       <h1>
         <a className="font-Syne py-4 font-bold text-white dark:text-white">
           KOGENJI
         </a>
       </h1>
-        <div className="flex items-center gap-4">
-          <ConnectButton />
-          {/* <div class="relative">
+      <div className="flex items-center gap-4">
+        <ConnectButton />
+        {/* <div class="relative">
             <button class="rounded border p-2" onclick="toggle">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -60,7 +60,7 @@ export default function Navbar() {
               </li>
             </ul>
           </div> */}
-        </div>
+      </div>
     </div>
   )
 }

@@ -143,7 +143,10 @@ import { connectionId } from '../../constants/connection'
 import { CurrencyOption } from '../../constants/currencyOption'
 import { fetchEthForDev } from '../../fixtures/utility'
 import Skeleton from '../Global/Skeleton.vue'
-import { detectChain, stakeWithEthForPolygon } from 'packages/clubs-core/functions/dev-kit'
+import {
+  detectChain,
+  stakeWithEthForPolygon,
+} from 'packages/clubs-core/functions/dev-kit'
 
 type Data = {
   amountForInputCurrency: UndefinedOr<string>
@@ -163,7 +166,7 @@ export default defineComponent({
   props: {
     amount: Number,
     destination: String,
-    currency: String
+    currency: String,
   },
   data() {
     return {
@@ -190,8 +193,10 @@ export default defineComponent({
         : undefined
     },
     verifiedCurrency(): CurrencyOption {
-      return this.currency?.toUpperCase() === 'ETH' ? CurrencyOption.ETH : CurrencyOption.DEV
-    }
+      return this.currency?.toUpperCase() === 'ETH'
+        ? CurrencyOption.ETH
+        : CurrencyOption.DEV
+    },
   },
   components: { Skeleton },
   async mounted() {
@@ -288,15 +293,21 @@ export default defineComponent({
         ],
         async ([prov, account, destination, parsedAmount]) => {
           if (this.verifiedCurrency === CurrencyOption.ETH) {
-
-            const chain = await detectChain(prov);
+            const chain = await detectChain(prov)
 
             if (chain.chainId === 137 || chain.chainId === 80001) {
-              const res = await stakeWithEthForPolygon(prov, destination, parsedAmount)
+              const res = await stakeWithEthForPolygon(
+                prov,
+                destination,
+                parsedAmount
+              )
               whenDefined(res, (x) => {
                 this.isStaking = true
                 x.create()
-                  .then(async (res) => await res?.approveIfNeeded({amount: parsedAmount}))
+                  .then(
+                    async (res) =>
+                      await res?.approveIfNeeded({ amount: parsedAmount })
+                  )
                   .then(async (res) => await res?.waitOrSkipApproval())
                   .then(async (res) => await res?.run())
                   .then((res) => {
