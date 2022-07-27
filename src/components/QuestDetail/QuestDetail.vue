@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import QuestInfo from './QuestInfo.vue'
+import QuestInfo from '@components/QuestDetail/QuestInfo.vue'
 
 export default {
   name: 'QuestDetail',

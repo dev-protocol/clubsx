@@ -20,8 +20,8 @@
 
 <script>
 import { providers } from 'ethers'
-import { getBalances } from '../../fixtures/dev-kit'
-import Avator from './Avator.vue'
+import { getBalances } from '@fixtures/dev-kit'
+import Avator from '@components/Members/Avator.vue'
 
 export default {
   data() {

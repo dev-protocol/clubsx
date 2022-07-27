@@ -139,11 +139,11 @@ import { BigNumberish, constants, providers, utils } from 'ethers'
 import BigNumber from 'bignumber.js'
 import { parse } from 'query-string'
 import { Subscription, zip } from 'rxjs'
-import { connectionId } from '../../constants/connection'
-import { CurrencyOption } from '../../constants/currencyOption'
-import { fetchEthForDev } from '../../fixtures/utility'
-import Skeleton from '../Global/Skeleton.vue'
-import { detectChain, stakeWithEthForPolygon } from '../../fixtures/dev-kit'
+import { connectionId } from '@constants/connection'
+import { CurrencyOption } from '@constants/currencyOption'
+import { fetchEthForDev } from '@fixtures/utility'
+import Skeleton from '@components/Global/Skeleton.vue'
+import { detectChain, stakeWithEthForPolygon } from '@fixtures/dev-kit'
 
 type Data = {
   amountForInputCurrency: UndefinedOr<string>

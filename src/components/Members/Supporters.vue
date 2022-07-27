@@ -21,9 +21,9 @@ import { providers } from 'ethers'
 import {
   detectStokensByPropertyAddress,
   getStokenOwnerOf,
-} from '../../fixtures/dev-kit'
-import Avator from '../Members/Avator.vue'
-import STokenPositions from '../Members/STokenPositions.vue'
+} from '@fixtures/dev-kit'
+import Avator from '@components/Members/Avator.vue'
+import STokenPositions from '@components/Members/STokenPositions.vue'
 
 export default {
   data() {

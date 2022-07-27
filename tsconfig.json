@@ -9,6 +9,14 @@
     "isolatedModules": true,
     "allowSyntheticDefaultImports": true,
     "types": ["vite/client"],
-    "baseUrl": "."
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": ["src/components/*"],
+      "@constants/*": ["src/constants/*"],
+      "@fixtures/*": ["src/fixtures/*"],
+      "@layouts/*": ["src/layouts/*"],
+      "@pages/*": ["src/pages/*"],
+      "@styles/*": ["src/styles/*"]
+    }
   }
 }

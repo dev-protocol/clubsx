@@ -1,11 +1,11 @@
 ---
-import Layout from '../../layouts/Default.astro'
+import Layout from '@layouts/Default.astro'
 
-import Sidebar from '../../components/Sidebar/Sidebar.vue'
-import Footer from '../../components/Global/Footer.astro'
-import { tiers } from '../../constants/tier'
-import { perks } from '../../constants/perks'
-import { fetchBadgeImageSrc } from '../../fixtures/utility'
+import Sidebar from '@components/Sidebar/Sidebar.vue'
+import Footer from '@components/Global/Footer.astro'
+import { tiers } from '@constants/tier'
+import { perks } from '@constants/perks'
+import { fetchBadgeImageSrc } from '@fixtures/utility'
 import { providers } from 'ethers'
 
 const listOfTier = await Promise.all(

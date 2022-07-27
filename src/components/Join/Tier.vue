@@ -17,7 +17,7 @@
 <script>
 import { defineComponent } from '@vue/runtime-core'
 import BigNumber from 'bignumber.js'
-import Skeleton from '../Global/Skeleton.vue'
+import Skeleton from '@components/Global/Skeleton.vue'
 
 export default defineComponent({
   name: 'QuestCard',

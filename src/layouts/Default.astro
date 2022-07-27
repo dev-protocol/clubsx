@@ -1,14 +1,17 @@
 ---
-import Navigation from '../components/Global/Navigation.vue'
-import { connectionId } from '../constants/connection'
-import '../styles/global.scss'
+import Navigation from '@components/Global/Navigation.vue'
+import { connectionId } from '@constants/connection'
+import '@styles/global.scss'
 
 const { metaTitle } = Astro.props
 const title = metaTitle
   ? `${import.meta.env.PUBLIC_SITE_NAME}: ${metaTitle}`
   : import.meta.env.PUBLIC_SITE_NAME
+const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'http://localhost');
 ---
 
+
+<!DOCTYPE html>
 <html class="dark" lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -21,10 +24,10 @@ const title = metaTitle
     />
     <meta property="og:title" content={title} />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={Astro.canonicalURL.href} />
+    <meta property="og:url" content={Astro.url.href} />
     <meta
       property="og:image"
-      content={`${Astro.canonicalURL.origin}/assets/og.png`}
+      content={`${canonicalURL}/assets/og.png`}
     />
     <meta
       property="og:description"
@@ -42,7 +45,7 @@ const title = metaTitle
     />
     <meta
       name="twitter:image"
-      content={`${Astro.canonicalURL.origin}/assets/og.png`}
+      content={`${canonicalURL}/assets/og.png`}
     />
   </head>
 

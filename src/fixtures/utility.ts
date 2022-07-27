@@ -1,7 +1,7 @@
 import { BaseProvider } from '@ethersproject/providers'
 import BigNumber from 'bignumber.js'
 import { utils } from 'ethers'
-import type { Tiers } from '../constants/tier'
+import type { Tiers } from '@constants/tier'
 import { stakeWithEth, tokenURISim } from './dev-kit'
 
 const falsyOrZero = <T>(num?: T): T | 0 => (num ? num : 0)

@@ -1,8 +1,8 @@
 ---
-import Layout from '../../layouts/Default.astro'
+import Layout from '@layouts/Default.astro'
 
-import JoinCheckout from '../../components/Join/JoinCheckout.vue'
-import { tiers } from '../../constants/tier'
+import JoinCheckout from '@components/Join/JoinCheckout.vue'
+import { tiers } from '@constants/tier'
 
 export function getStaticPaths() {
   return tiers.map(({ id }) => ({ params: { id } }))
@@ -15,8 +15,8 @@ const tier = tiers.find(({ id: _id }) => _id === id)
 <Layout metaTitle='join checkout'>
   <JoinCheckout
     client:only
-    amount={tier?.amount}
-    destination={import.meta.env.PUBLIC_PROPERTY_ADDRESS}
-    currency={'DEV'}
+    :amount={tier?.amount}
+    :destination={import.meta.env.PUBLIC_PROPERTY_ADDRESS}
+    :currency={'DEV'}
   />
 </Layout>
