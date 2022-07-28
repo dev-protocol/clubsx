@@ -55,7 +55,7 @@
     "ramda": "0.28.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "rxjs": "7.5.5",
+    "rxjs": "7.5.6",
     "swiper": "8.3.2",
     "tailwindcss": "3.1.6",
     "truncate-eth-address": "1.0.2",
