@@ -19,7 +19,8 @@ export default function middleware(req) {
 
   if (html) {
     url.pathname = `/_sites/${tenant}${url.pathname}`
-    return new Response(url)
+    const headers = new Headers(req.headers)
+    return new Response(url, headers)
   }
 
   return req
