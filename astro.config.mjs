@@ -22,7 +22,7 @@ export default defineConfig({
           server.middlewares.use((req, _, next) => {
             if (req.headers.accept?.includes('text/html')) {
               const [domain] = req.headers.host.split('.')
-              req.url = `/_site/${domain}`
+              req.url = `/_sites/${domain}`
             }
             next()
           })
