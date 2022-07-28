@@ -1,5 +1,3 @@
-import { NextResponse } from 'next/server'
-
 export const config = {
   matcher: [
     '/',
@@ -11,17 +9,17 @@ export const config = {
 export default function middleware(req) {
   const url = req.nextUrl
 
-  const hostname = req.headers.get('host') || 'demo.vercel.pub'
-  const [tenant] = hostname.split('.')
+  const hostname = (req.headers.get('host') || 'demo.vercel.pub').split('.')
+  const [tenant] = hostname
   const html = req.headers.get('accept')?.includes('text/html')
 
-  if (tenant === 'localhost' || tenant === 'clubsx') {
+  if (hostname.length < 4) {
     return req
   }
 
   if (html) {
     url.pathname = `/_sites/${tenant}${url.pathname}`
-    return NextResponse.rewrite(url)
+    return new Response(url)
   }
 
   return req
