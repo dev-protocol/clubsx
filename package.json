@@ -30,7 +30,7 @@
     "postcss": "8.4.14",
     "prettier": "2.7.1",
     "prettier-plugin-astro": "0.1.2",
-    "prettier-plugin-tailwindcss": "0.1.11",
+    "prettier-plugin-tailwindcss": "0.1.13",
     "remark-cli": "10.0.1",
     "sass": "1.52.3",
     "type-fest": "2.17.0",
