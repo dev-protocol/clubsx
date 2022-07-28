@@ -9,7 +9,7 @@ config()
 export default defineConfig({
   site: process.env.PUBLIC_SITE_URL,
   server: {
-    port: 3001,
+    port: 3000,
   },
   integrations: [
     {
