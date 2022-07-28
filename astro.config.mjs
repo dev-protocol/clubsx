@@ -1,5 +1,6 @@
 import { config } from 'dotenv'
 import { defineConfig } from 'astro/config'
+import vercel from '@astrojs/vercel/serverless'
 import tailwind from '@astrojs/tailwind'
 import vue from '@astrojs/vue'
 import react from '@astrojs/react'
@@ -11,6 +12,7 @@ export default defineConfig({
   server: {
     port: 3000,
   },
+  adapter: vercel(),
   integrations: [
     {
       name: 'clubs:multi-tenant',
