@@ -12,6 +12,20 @@ export default defineConfig({
     port: 3001,
   },
   integrations: [
+    {
+      name: 'clubs:multi-tenant',
+      hooks: {
+        'astro:server:setup': ({ server }) => {
+          server.middlewares.use((req, _, next) => {
+            if (req.headers.accept?.includes('text/html')) {
+              const [domain] = req.headers.host.split('.')
+              req.url = `/${domain}`
+            }
+            next()
+          })
+        },
+      },
+    },
     vue({
       template: {
         compilerOptions: {
