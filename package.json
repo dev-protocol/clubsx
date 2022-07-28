@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build && cp ./src/middleware.js .vercel/output/static",
+    "build": "astro build && cp ./src/middleware.js .vercel/output",
     "preview": "astro preview",
     "lint": "yarn lint:eslint && yarn lint:prettier && yarn lint:prettier:astro",
     "lint:eslint": "eslint --fix '**/*.{js,mjs,cjs}'",
