@@ -1,5 +1,6 @@
 import { config } from 'dotenv'
 import { defineConfig } from 'astro/config'
+import vercel from '@astrojs/vercel/serverless'
 import tailwind from '@astrojs/tailwind'
 import vue from '@astrojs/vue'
 import react from '@astrojs/react'
@@ -9,9 +10,25 @@ config()
 export default defineConfig({
   site: process.env.PUBLIC_SITE_URL,
   server: {
-    port: 3001,
+    port: 3000,
   },
+  output: 'server',
+  adapter: vercel(),
   integrations: [
+    {
+      name: 'clubs:multi-tenant',
+      hooks: {
+        'astro:server:setup': ({ server }) => {
+          server.middlewares.use((req, _, next) => {
+            if (req.headers.accept?.includes('text/html')) {
+              const [domain] = req.headers.host.split('.')
+              req.url = `/${domain}`
+            }
+            next()
+          })
+        },
+      },
+    },
     vue({
       template: {
         compilerOptions: {

@@ -1,4 +1,5 @@
 dist
+.vercel
 
 ###### prettier-plugin-astro isn't works fine. Use individually with CLI ######
 *.astro

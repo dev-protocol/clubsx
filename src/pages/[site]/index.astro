@@ -1,0 +1,12 @@
+---
+import Layout from '@layouts/Default.astro'
+import { tenantBy } from '@fixtures/data/tenants'
+
+export { getStaticPaths } from '@fixtures/router/tenants'
+
+const data = tenantBy(Astro)
+---
+
+<Layout>
+  <p>{data.name}</p>
+</Layout>
