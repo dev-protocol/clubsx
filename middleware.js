@@ -7,7 +7,7 @@ export const config = {
 }
 
 export default function middleware(req) {
-  const url = req.nextUrl
+  const url = new URL(req.url)
 
   const hostname = (req.headers.get('host') || 'demo.vercel.pub').split('.')
   const [tenant] = hostname
