@@ -24,7 +24,7 @@ export default function middleware(req) {
   url.pathname = `/_sites/${tenant}${url.pathname}`
   const headers = new Headers(req.headers)
   headers.set('x-middleware-rewrite', url.href)
-  return new Response(url, headers)
+  return new Response(url, { headers })
   // }
 
   // console.log('***', 4)
