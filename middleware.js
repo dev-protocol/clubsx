@@ -8,7 +8,6 @@ export const config = {
 
 export default function middleware(req) {
   const url = new URL(req.url)
-  console.log('***', 1)
 
   const hostname = (req.headers.get('host') || 'demo.vercel.pub').split('.')
   const [tenant] = hostname
@@ -16,13 +15,11 @@ export default function middleware(req) {
 
   const headers = new Headers()
   if (html && hostname.length > 3) {
-    console.log('***', 3)
     url.pathname = `/sites_/${tenant}${url.pathname}`
     headers.set('x-middleware-rewrite', url.href)
     headers.set('x-rewrited-url', url.href)
     return new Response(null, { headers })
   }
 
-  console.log('***', 4)
   return new Response(null, { headers })
 }
