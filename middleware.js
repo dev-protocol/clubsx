@@ -21,5 +21,6 @@ export default function middleware(req) {
     return new Response(null, { headers })
   }
 
+  headers.set('x-middleware-rewrite', url.href)
   return new Response(null, { headers })
 }
