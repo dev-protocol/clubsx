@@ -23,14 +23,14 @@ const listOfTier = await Promise.all(
 )
 ---
 
-<Layout metaTitle='Dev Protocol | An open protocol for Creator Economy'>
+<Layout metaTitle="Dev Protocol | An open protocol for Creator Economy">
   <div
-    class='lg:container relative mx-auto lg:pt-12 grid lg:gap-12 lg:grid-cols-[minmax(290px,_1fr)_4fr]'
+    class="lg:container relative mx-auto lg:pt-12 grid lg:gap-12 lg:grid-cols-[minmax(290px,_1fr)_4fr]"
   >
     <Sidebar client:load />
-    <div class='px-4'>
-      <article class='grid gap-8'>
-        <h2 class='font-title text-4xl font-bold'>Perks</h2>
+    <div class="px-4">
+      <article class="grid gap-8">
+        <h2 class="font-title text-4xl font-bold">Perks</h2>
         {listOfTier.map((tier, i) => (
           <section class="grid auto-rows-auto grid-cols-[1fr_2fr] gap-2 lg:grid-cols-[1fr_2fr_3fr]">
             <img src={tier.badgeImageSrc} class="rounded" role="presentation" />

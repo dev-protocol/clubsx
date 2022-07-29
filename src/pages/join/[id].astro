@@ -12,7 +12,7 @@ const { id } = Astro.params
 const tier = tiers.find(({ id: _id }) => _id === id)
 ---
 
-<Layout metaTitle='join checkout'>
+<Layout metaTitle="join checkout">
   <JoinCheckout
     client:only
     :amount={tier?.amount}

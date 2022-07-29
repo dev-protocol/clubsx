@@ -5,8 +5,10 @@ import { tenantBy } from '@fixtures/data/tenants'
 export { getStaticPaths } from '@fixtures/router/tenants'
 
 const data = tenantBy(Astro)
+console.log('data is: ', data)
 ---
 
 <Layout>
+  <p>hello world</p>
   <p>{data.name}</p>
 </Layout>
