@@ -14,12 +14,7 @@ export default function middleware(req) {
   const [tenant] = hostname
   const html = req.headers.get('accept')?.includes('text/html')
 
-  if (hostname.length < 4) {
-    console.log('***', 2)
-    return req
-  }
-
-  if (html) {
+  if (html && hostname.length < 4) {
     console.log('***', 3)
     url.pathname = `/_sites/${tenant}${url.pathname}`
     const headers = new Headers()
@@ -29,5 +24,5 @@ export default function middleware(req) {
   }
 
   console.log('***', 4)
-  return req
+  return new Response(null, null)
 }
