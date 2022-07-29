@@ -6,12 +6,12 @@ import Sidebar from '@components/Sidebar/Sidebar.vue'
 import Footer from '@components/Global/Footer.astro'
 ---
 
-<Layout metaTitle='Dev Protocol | An open protocol for Creator Economy'>
+<Layout metaTitle="Dev Protocol | An open protocol for Creator Economy">
   <div
-    class='lg:container relative mx-auto lg:pt-12 grid lg:gap-12 lg:grid-cols-[minmax(290px,_1fr)_4fr]'
+    class="lg:container relative mx-auto lg:pt-12 grid lg:gap-12 lg:grid-cols-[minmax(290px,_1fr)_4fr]"
   >
     <Sidebar client:load />
-    <div class='p-4'>
+    <div class="p-4">
       <JoinClub client:only />
     </div>
   </div>
