@@ -14,10 +14,10 @@ export default function middleware(req) {
   const [tenant] = hostname
   const html = req.headers.get('accept')?.includes('text/html')
 
-  if (hostname.length < 4) {
-    console.log('***', 2)
-    return req
-  }
+  // if (hostname.length < 4) {
+  //   console.log('***', 2)
+  //   return req
+  // }
 
   if (html) {
     console.log('***', 3)
