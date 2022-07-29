@@ -97,7 +97,7 @@
   resolved "https://registry.yarnpkg.com/@astrojs/prism/-/prism-0.6.1.tgz#f2289d46e532b01ce38afb6cf155f669c2601230"
   integrity sha512-/Hoppze9XPUfCIx44EUzKe3Tg7alr1MHl2++QJlDRQZfKfIvMBvf8mRMSPh7vzfayH6IlFaQUS/jMtGUWKt9wA==
 
-"@astrojs/react@^0.4.2":
+"@astrojs/react@0.4.2":
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/@astrojs/react/-/react-0.4.2.tgz#19d58d17dd950d717cb63fc95ed71a6165896260"
   integrity sha512-Odt/O3e8vrkWn46ipwTiQjUP5ql9QzfVe2lZELVfwDNPYSf/AjZWXcSVHtfXIM9bRZ1mj/zaU1eTBAYoy+jOSA==
