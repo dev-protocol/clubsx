@@ -1,10 +1,10 @@
-// export const config = {
-//   matcher: [
-//     '/',
-//     '/([^/.]*)', // exclude `/public` files by matching all paths except for paths containing `.` (e.g. /logo.png)
-//     '/_sites/:path*', // for all custom hostnames under the `/_sites/[site]*` dynamic route (demo.vercel.pub, platformize.co)
-//   ],
-// }
+export const config = {
+  matcher: [
+    '/',
+    '/([^/.]*)', // exclude `/public` files by matching all paths except for paths containing `.` (e.g. /logo.png)
+    '/_sites/:path*', // for all custom hostnames under the `/_sites/[site]*` dynamic route (demo.vercel.pub, platformize.co)
+  ],
+}
 
 export default function middleware(req) {
   const url = new URL(req.url)
@@ -24,7 +24,7 @@ export default function middleware(req) {
     url.pathname = `/_sites/${tenant}${url.pathname}`
     const headers = new Headers(req.headers)
     headers.set('x-middleware-rewrite', url.href)
-    return new Response(url, headers)
+    return new Response(null, headers)
   }
 
   console.log('***', 4)
