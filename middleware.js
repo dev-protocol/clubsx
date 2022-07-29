@@ -20,14 +20,14 @@ export default function middleware(req) {
   //   return req
   // }
 
-  if (html) {
-    console.log('***', 3)
-    url.pathname = `/_sites/${tenant}${url.pathname}`
-    const headers = new Headers(req.headers)
-    headers.set('x-middleware-rewrite', url.href)
-    return new Response(url, headers)
-  }
+  // if (html) {
+  console.log('***', 3)
+  url.pathname = `/_sites/${tenant}${url.pathname}`
+  const headers = new Headers(req.headers)
+  headers.set('x-middleware-rewrite', url.href)
+  return new Response(url, headers)
+  // }
 
-  console.log('***', 4)
-  return req
+  // console.log('***', 4)
+  // return req
 }
