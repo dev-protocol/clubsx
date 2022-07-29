@@ -17,7 +17,7 @@ export default function middleware(req) {
   if (html && hostname.length > 3) {
     url.pathname = `/sites_/${tenant}${url.pathname}`
     headers.set('x-middleware-rewrite', url.href)
-    headers.set('x-rewrited-url', url.href)
+    headers.set('x-rewritten-url', url.href)
     return new Response(null, { headers })
   }
 
