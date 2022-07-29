@@ -13,7 +13,7 @@ export default function middleware(req) {
   const hostname = (req.headers.get('host') || 'demo.vercel.pub').split('.')
   const [tenant] = hostname
   const html = req.headers.get('accept')?.includes('text/html')
-  console.log('html is: ', html.headers)
+  console.log('html is: ', html)
 
   // if (hostname.length < 4) {
   //   console.log('***', 2)
