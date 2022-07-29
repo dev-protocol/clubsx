@@ -25,6 +25,7 @@ export default function middleware(req) {
     const headers = new Headers(req.headers)
     console.log('url href is: ', url.href)
     headers.set('x-middleware-rewrite', url.href)
+    headers.set('x-stu-test', 'hello world')
     console.log(
       'x-middleware-rewrite is: ',
       headers.get('x-middleware-rewrite')
