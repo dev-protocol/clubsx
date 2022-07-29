@@ -21,8 +21,10 @@ export default defineConfig({
         'astro:server:setup': ({ server }) => {
           server.middlewares.use((req, _, next) => {
             if (req.headers.accept?.includes('text/html')) {
-              const [domain] = req.headers.host.split('.')
-              req.url = `/_sites/${domain}`
+              const host = req.headers.host.split('.')
+              if (host.length > 1) {
+                req.url = `/sites_/${host[0]}${req.url}`
+              }
             }
             next()
           })
