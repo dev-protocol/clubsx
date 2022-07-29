@@ -4,18 +4,6 @@ import vercel from '@astrojs/vercel/serverless'
 import tailwind from '@astrojs/tailwind'
 import vue from '@astrojs/vue'
 import react from '@astrojs/react'
-import fs from 'fs-extra'
-
-const path =
-  './node_modules/@astrojs/vercel/dist/serverless/request-transform.js'
-fs.outputFileSync(
-  path,
-  ((file) =>
-    file.replace(
-      'base + req.url',
-      `headers['x-middleware-rewrite'] ? headers['x-middleware-rewrite'] : base + req.url`
-    ))(fs.readFileSync(path, 'utf8'))
-)
 
 config()
 
