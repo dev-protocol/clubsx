@@ -2,6 +2,8 @@
 import Layout from '@layouts/Default.astro'
 import { tenantBy } from '@fixtures/data/tenants'
 
+console.log('Astro.params', Astro.params)
+
 export { getStaticPaths } from '@fixtures/router/tenants'
 
 const data = tenantBy(Astro)
