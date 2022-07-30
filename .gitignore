@@ -1,5 +1,6 @@
 # build output
 dist
+.vercel
 
 # dependencies
 node_modules/
@@ -18,9 +19,8 @@ yarn-error.log*
 .DS_Store
 
 
-# workspaces
+# vscode
 .vscode/
-.idea/
 
 # use yarn
 package-lock.json
