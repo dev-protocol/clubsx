@@ -12,12 +12,12 @@ const { id } = Astro.params
 const tier = tiers.find(({ id: _id }) => _id === id)
 ---
 
-<Layout metaTitle="join checkout">
+<Layout metaTitle="buy nft checkout">
   <JoinCheckout
     client:only
     amount={tier?.amount}
     destination={import.meta.env.PUBLIC_PROPERTY_ADDRESS}
-    currency={'DEV'}
-    page="JOIN"
+    currency={'ETH'}
+    page="BUY"
   />
 </Layout>

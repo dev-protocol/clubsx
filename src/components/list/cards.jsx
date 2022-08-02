@@ -1,8 +1,8 @@
 /*
-  This example requires Tailwind CSS v2.0+ 
-  
+  This example requires Tailwind CSS v2.0+
+
   This example requires some changes to your config:
-  
+
   ```
   // tailwind.config.js
   module.exports = {
@@ -18,7 +18,7 @@ const products = [
   {
     id: 1,
     name: 'Name',
-    href: '#',
+    href: '/buy/tier-3',
     price: '0.3',
     description:
       'Get the full lineup of our Basic Tees. Have a fresh shirt all week, and an extra for laundry day.',
@@ -31,7 +31,7 @@ const products = [
   {
     id: 2,
     name: 'Name',
-    href: '#',
+    href: '/buy/tier-2',
     price: '0.3',
     left: '32',
     imageSrc:
@@ -42,7 +42,7 @@ const products = [
     id: 3,
     name: 'Name',
     href: '#',
-    price: '0.3',
+    price: '/buy/tier-1',
     left: '32',
     imageSrc:
       'https://bafybeiagvn4exdbwokm4g6t6a2s3xvl2fu7zutvlf6sgwd4fjrdrc23hsu.ipfs.nftstorage.link/',
@@ -52,7 +52,7 @@ const products = [
     id: 4,
     name: 'Name',
     href: '#',
-    price: '0.3',
+    price: '/buy/super',
     left: '32',
     imageSrc:
       'https://bafybeiav46h6zegh4e7zfdcgk6xjpg6if2kdxtvp3ejtyicvpgc2iucpim.ipfs.nftstorage.link/',
@@ -61,7 +61,7 @@ const products = [
   {
     id: 5,
     name: 'Name',
-    href: '#',
+    href: '/buy/tier-1',
     price: '0.3',
     left: '32',
     imageSrc:
@@ -72,7 +72,7 @@ const products = [
   {
     id: 6,
     name: 'Name',
-    href: '#',
+    href: '/buy/tier-2',
     price: '0.3',
     left: '32',
     imageSrc:

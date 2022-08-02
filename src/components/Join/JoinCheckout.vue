@@ -4,7 +4,10 @@
     class="relative mx-auto grid items-start px-4 lg:container lg:grid-cols-[auto,_480px] lg:gap-12 lg:pt-12"
   >
     <section class="flex flex-col">
-      <h2 class="mb-8 font-title text-4xl font-bold">Join</h2>
+      <h2 class="mb-8 font-title text-4xl font-bold">
+        <span v-if="page === 'BUY'">BUY</span>
+        <span v-if="page === 'JOIN'">JOIN</span>
+      </h2>
       <div v-if="currency === 'dev'" class="mb-8">
         <h3 class="mb-4 text-2xl">Approval</h3>
         <button
@@ -45,13 +48,15 @@
         </button>
       </div>
       <div class="mb-8">
-        <h3 class="mb-4 text-2xl">Stake</h3>
+        <h3 class="mb-4 text-2xl" v-if="page === 'BUY'">Purchase NFT</h3>
+        <h3 class="mb-4 text-2xl" v-if="page === 'JOIN'">Stake</h3>
         <button
           v-if="approveNeeded"
           disabled
           class="rounded-sm border border-gray-400 bg-gray-600 p-2 px-4 text-gray-400"
         >
-          Stake
+          <span v-if="page === 'BUY'">Buy</span>
+          <span v-if="page === 'JOIN'">Stake</span>
         </button>
         <button
           v-if="!approveNeeded"
@@ -80,7 +85,9 @@
               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
             ></path>
           </svg>
-          Stake
+
+          <span v-if="page === 'BUY'">Buy</span>
+          <span v-if="page === 'JOIN'">Stake</span>
         </button>
       </div>
     </section>
@@ -164,12 +171,15 @@ export default defineComponent({
     amount: Number,
     destination: String,
     currency: String,
+    page: String, // 'JOIN or BUY'
   },
   data() {
     return {
       amountForInputCurrency: undefined,
       apy: undefined,
-      parsedAmount: utils.parseUnits(this.amount.toString(), 18),
+      parsedAmount: this.amount
+        ? utils.parseUnits(this.amount.toString(), 18)
+        : 0,
       approveNeeded: undefined,
       subscriptions: [],
       stakeSuccessful: false,
