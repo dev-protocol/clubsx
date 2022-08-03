@@ -116,15 +116,23 @@ export const stake = async (
   return res
 }
 
-export const stakeWithEth = async (
-  provider: providers.BaseProvider,
-  propertyAddress: string,
-  devAmount?: string,
-  ethAmount?: string,
-  payload?: string,
-  gatewayAddress?: string,
+export const stakeWithEth = async ({
+  provider,
+  propertyAddress,
+  devAmount,
+  ethAmount,
+  payload,
+  gatewayAddress,
+  gatewayBasisPoints,
+}: {
+  provider: providers.BaseProvider
+  propertyAddress: string
+  devAmount?: string
+  ethAmount?: string
+  payload?: string
+  gatewayAddress?: string
   gatewayBasisPoints?: number // For example 10000 is 100%
-) => {
+}) => {
   const { estimatedEth, estimatedDev, create } = await positionsCreateWithEth({
     provider,
     devAmount: whenDefined(devAmount, (dev) =>

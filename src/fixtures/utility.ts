@@ -33,12 +33,25 @@ export const fetchEthForDev = async (opts: {
   tokenAddress: string
   amount: number | string
 }) => {
-  const { estimatedEth } = await stakeWithEth(
-    opts.provider,
-    opts.tokenAddress,
-    new BigNumber(opts.amount).toFixed()
-  )
+  const { estimatedEth } = await stakeWithEth({
+    provider: opts.provider,
+    propertyAddress: opts.tokenAddress,
+    devAmount: new BigNumber(opts.amount).toFixed(),
+  })
   return estimatedEth
+}
+
+export const fetchDevForEth = async (opts: {
+  provider: BaseProvider
+  tokenAddress: string
+  amount: number | string
+}) => {
+  const { estimatedDev } = await stakeWithEth({
+    provider: opts.provider,
+    propertyAddress: opts.tokenAddress,
+    ethAmount: new BigNumber(opts.amount).toFixed(),
+  })
+  return estimatedDev
 }
 
 export const composeTiers = async ({

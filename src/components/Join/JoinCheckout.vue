@@ -98,17 +98,19 @@
         <h3 class="mb-2 text-xl opacity-70">Purchase</h3>
         <p class="flex items-center text-2xl uppercase">
           <Skeleton
-            v-if="omittedAmountForInputCurrency === undefined"
+            v-if="(currency?.toUpperCase() === 'ETH' && !ethAmount) || (currency?.toUpperCase() === 'DEV' && !devAmount) "
             class="mr-4 inline-block h-[1.2em] w-24"
           />
-          {{ omittedAmountForInputCurrency }} ${{ currency }}
+
+          <span v-if="currency?.toUpperCase() == 'DEV' && devAmount">{{devAmount}} $DEV</span>
+          <span v-if="currency?.toUpperCase() == 'ETH' && ethAmount">{{ethAmount}} $ETH</span>
         </p>
         <aside
-          v-if="currency !== 'dev'"
+          v-if="currency?.toUpperCase() !== 'DEV'"
           class="mt-4 ml-4 border-l border-dp-black-200 pl-4"
         >
           <h4 class="text-md mb-2 opacity-70">Replace</h4>
-          <p class="text-sm uppercase">{{ amount }} $DEV</p>
+          <p class="text-sm uppercase">{{ devAmount }} $DEV</p>
         </aside>
       </section>
       <section class="p-4">
@@ -148,12 +150,11 @@ import { parse } from 'query-string'
 import { Subscription, zip } from 'rxjs'
 import { connectionId } from '@constants/connection'
 import { CurrencyOption } from '@constants/currencyOption'
-import { fetchEthForDev } from '@fixtures/utility'
+import { fetchEthForDev, fetchDevForEth } from '@fixtures/utility'
 import Skeleton from '@components/Global/Skeleton.vue'
 import { detectChain, stakeWithEthForPolygon } from '@fixtures/dev-kit'
 
 type Data = {
-  amountForInputCurrency: UndefinedOr<string>
   apy: UndefinedOr<number>
   parsedAmount: BigNumberish
   approveNeeded: UndefinedOr<boolean>
@@ -162,6 +163,8 @@ type Data = {
   subscriptions: Subscription[]
   stakeSuccessful: boolean
   account?: string
+  ethAmount: UndefinedOr<string>,
+  devAmount: UndefinedOr<string>
 }
 
 let providerPool: UndefinedOr<providers.BaseProvider>
@@ -175,7 +178,6 @@ export default defineComponent({
   },
   data() {
     return {
-      amountForInputCurrency: undefined,
       apy: undefined,
       parsedAmount: this.amount
         ? utils.parseUnits(this.amount.toString(), 18)
@@ -186,14 +188,11 @@ export default defineComponent({
       account: undefined,
       isApproving: false,
       isStaking: false,
+      ethAmount: undefined,
+      devAmount: undefined
     } as Data
   },
   computed: {
-    omittedAmountForInputCurrency(): string | undefined {
-      return this.amountForInputCurrency
-        ? new BigNumber(this.amountForInputCurrency).dp(9).toFixed()
-        : undefined
-    },
     estimatedEarnings(): number | undefined {
       return this.amount && this.apy
         ? new BigNumber(this.amount * this.apy).dp(9).toNumber()
@@ -236,15 +235,16 @@ export default defineComponent({
     })
 
     if (this.destination && this.amount) {
-      const amount =
-        this.verifiedCurrency === CurrencyOption.ETH
-          ? await fetchEthForDev({
-              provider: (providerPool || provider) as providers.BaseProvider,
-              tokenAddress: this.destination,
-              amount: this.amount,
-            }).then(utils.formatUnits)
-          : this.amount
-      this.amountForInputCurrency = amount?.toString()
+      const devAmount = this.verifiedCurrency === CurrencyOption.DEV
+        ? this.amount
+        : await fetchDevForEth({
+            provider: (providerPool || provider) as providers.BaseProvider,
+            tokenAddress: this.destination,
+            amount: this.amount,
+          }).then(utils.formatUnits)
+      this.devAmount = new BigNumber(devAmount).dp(9).toFixed().toString();
+
+      this.ethAmount = this.verifiedCurrency === CurrencyOption.ETH ? this.amount.toString() : ''
     }
   },
   destroyed() {
