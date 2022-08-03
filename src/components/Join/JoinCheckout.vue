@@ -98,12 +98,19 @@
         <h3 class="mb-2 text-xl opacity-70">Purchase</h3>
         <p class="flex items-center text-2xl uppercase">
           <Skeleton
-            v-if="(currency?.toUpperCase() === 'ETH' && !ethAmount) || (currency?.toUpperCase() === 'DEV' && !devAmount) "
+            v-if="
+              (currency?.toUpperCase() === 'ETH' && !ethAmount) ||
+              (currency?.toUpperCase() === 'DEV' && !devAmount)
+            "
             class="mr-4 inline-block h-[1.2em] w-24"
           />
 
-          <span v-if="currency?.toUpperCase() == 'DEV' && devAmount">{{devAmount}} $DEV</span>
-          <span v-if="currency?.toUpperCase() == 'ETH' && ethAmount">{{ethAmount}} $ETH</span>
+          <span v-if="currency?.toUpperCase() == 'DEV' && devAmount"
+            >{{ devAmount }} $DEV</span
+          >
+          <span v-if="currency?.toUpperCase() == 'ETH' && ethAmount"
+            >{{ ethAmount }} $ETH</span
+          >
         </p>
         <aside
           v-if="currency?.toUpperCase() !== 'DEV'"
@@ -163,7 +170,7 @@ type Data = {
   subscriptions: Subscription[]
   stakeSuccessful: boolean
   account?: string
-  ethAmount: UndefinedOr<string>,
+  ethAmount: UndefinedOr<string>
   devAmount: UndefinedOr<string>
 }
 
@@ -189,7 +196,7 @@ export default defineComponent({
       isApproving: false,
       isStaking: false,
       ethAmount: undefined,
-      devAmount: undefined
+      devAmount: undefined,
     } as Data
   },
   computed: {
@@ -235,16 +242,20 @@ export default defineComponent({
     })
 
     if (this.destination && this.amount) {
-      const devAmount = this.verifiedCurrency === CurrencyOption.DEV
-        ? this.amount
-        : await fetchDevForEth({
-            provider: (providerPool || provider) as providers.BaseProvider,
-            tokenAddress: this.destination,
-            amount: this.amount,
-          }).then(utils.formatUnits)
-      this.devAmount = new BigNumber(devAmount).dp(9).toFixed().toString();
+      const devAmount =
+        this.verifiedCurrency === CurrencyOption.DEV
+          ? this.amount
+          : await fetchDevForEth({
+              provider: (providerPool || provider) as providers.BaseProvider,
+              tokenAddress: this.destination,
+              amount: this.amount,
+            }).then(utils.formatUnits)
+      this.devAmount = new BigNumber(devAmount).dp(9).toFixed().toString()
 
-      this.ethAmount = this.verifiedCurrency === CurrencyOption.ETH ? this.amount.toString() : ''
+      this.ethAmount =
+        this.verifiedCurrency === CurrencyOption.ETH
+          ? this.amount.toString()
+          : ''
     }
   },
   destroyed() {
