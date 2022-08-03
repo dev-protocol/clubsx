@@ -245,7 +245,7 @@ export default defineComponent({
       const devAmount =
         this.verifiedCurrency === CurrencyOption.DEV
           ? this.amount
-          : await fetchDevForEth({
+          : await fetchEthForDev({
               provider: (providerPool || provider) as providers.BaseProvider,
               tokenAddress: this.destination,
               amount: this.amount,
