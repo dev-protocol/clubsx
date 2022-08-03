@@ -151,14 +151,25 @@ export const stakeWithEth = async ({
 }
 
 export const stakeWithEthForPolygon = async (
-  provider: providers.BaseProvider,
-  propertyAddress: string,
-  devAmount?: string,
-  ethAmount?: string,
-  payload?: string,
-  from?: string,
-  gatewayAddress?: string,
-  gatewayBasisPoints?: number // For example 10000 is 100%
+  {
+    provider,
+    propertyAddress,
+    devAmount,
+    ethAmount,
+    payload,
+    from,
+    gatewayAddress,
+    gatewayBasisPoints,
+  }: {
+    provider: providers.BaseProvider
+    propertyAddress: string
+    devAmount?: string
+    ethAmount?: string
+    payload?: string
+    from?: string
+    gatewayAddress?: string
+    gatewayBasisPoints?: number
+  } // For example 10000 is 100%
 ) => {
   const { estimatedEth, estimatedDev, create } =
     await positionsCreateWithEthForPolygon({
