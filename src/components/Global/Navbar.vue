@@ -5,7 +5,7 @@
       <a
         href="/"
         class="py-4 font-title font-bold text-gray-900 dark:text-white"
-        >You DAO-Name</a
+        >Your DAO-Name</a
       >
     </h1>
     <div class="flex items-center gap-4">
