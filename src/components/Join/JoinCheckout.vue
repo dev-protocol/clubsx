@@ -255,7 +255,7 @@ export default defineComponent({
     const provider = new providers.JsonRpcProvider(
       import.meta.env.PUBLIC_WEB3_PROVIDER_URL
     )
-    const chain = (await provider.getNetwork()).chainId;
+    const chain = (await provider.getNetwork()).chainId
     estimationsAPY({ provider: providerPool || provider }).then(([apy]) => {
       this.apy = apy
     })
