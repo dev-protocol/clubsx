@@ -249,34 +249,35 @@ export default defineComponent({
               )
           }
         )
-        whenDefinedAll(
-          [this.destination, this.amount],
-          async ([destination, amount]) => {
-            const devAmount =
-              this.verifiedCurrency === CurrencyOption.DEV
-                ? this.amount
-                : await fetchDevForEth({
-                    provider: (providerPool ||
-                      provider) as providers.BaseProvider,
-                    tokenAddress: destination,
-                    amount: amount,
-                    chain,
-                  }).then(utils.formatUnits)
-            this.devAmount = new BigNumber(devAmount ?? 0)
-              .dp(9)
-              .toFixed()
-              .toString()
-          }
-        )
       })
       this.subscriptions.push(sub)
     }
     const provider = new providers.JsonRpcProvider(
       import.meta.env.PUBLIC_WEB3_PROVIDER_URL
     )
+    const chain = (await provider.getNetwork()).chainId;
     estimationsAPY({ provider: providerPool || provider }).then(([apy]) => {
       this.apy = apy
     })
+
+    whenDefinedAll(
+      [this.destination, this.amount],
+      async ([destination, amount]) => {
+        const devAmount =
+          this.verifiedCurrency === CurrencyOption.DEV
+            ? this.amount
+            : await fetchDevForEth({
+                provider,
+                tokenAddress: destination,
+                amount: amount,
+                chain,
+              }).then(utils.formatUnits)
+        this.devAmount = new BigNumber(devAmount ?? 0)
+          .dp(9)
+          .toFixed()
+          .toString()
+      }
+    )
 
     if (this.destination && this.amount) {
       this.ethAmount =
