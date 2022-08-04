@@ -2,7 +2,7 @@
   <div>
     <div class="fixed top-14 lg:sticky lg:top-12">
       <button
-        class="rounded-r-full bg-white text-black lg:hidden"
+        class="rounded-r-full bg-white px-0.5 py-1 text-black lg:hidden"
         @click="toggle"
       >
         <svg
@@ -26,7 +26,7 @@
         class="fixed inset-0 max-h-screen translate-x-[-100vw] overflow-y-hidden scroll-smooth rounded border-stone-50/30 bg-zinc-900 transition-transform duration-100 hover:overflow-auto md:max-h-[calc(100vh-6rem)] lg:relative lg:inset-auto lg:mx-auto lg:max-w-none lg:translate-x-0 lg:border lg:bg-slate-50/[.06] lg:backdrop-blur-3xl"
       >
         <button
-          class="mt-4 rounded-r-full bg-white text-black lg:hidden"
+          class="mt-4 rounded-r-full bg-white px-0.5 py-1 text-black lg:hidden"
           @click="toggle"
         >
           <svg
