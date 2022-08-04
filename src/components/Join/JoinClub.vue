@@ -56,6 +56,7 @@ import { composeTiers } from '@fixtures/utility'
 import { UndefinedOr } from '@devprotocol/util-ts'
 import { defineComponent } from '@vue/runtime-core'
 import { CurrencyOption } from '@constants/currencyOption'
+import CLBRadio from '@components/Primitives/CLBRadio.vue'
 
 const provider = new providers.JsonRpcProvider(
   import.meta.env.PUBLIC_WEB3_PROVIDER_URL
@@ -95,6 +96,7 @@ export default defineComponent({
     },
   },
   components: {
+    CLBRadio,
     Tier,
   },
 })
