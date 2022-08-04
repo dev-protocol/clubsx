@@ -81,12 +81,12 @@
             <h3 class="p-2 opacity-20">APY for $DaoToken</h3>
             <p class="p-2 opacity-20">&*%</p>
           </aside>
-          <a class="rounded border p-2 px-4" href="/join">Join</a>
-          <div class="grid w-full gap-6">
-            <a href="/perks">Perks</a>
-            <a class="opacity-20">Quests</a>
-            <a class="opacity-20">Updates</a>
-            <a class="opacity-20">Vote</a>
+          <HSButton type="filled fullwidth" link="/join">Join</HSButton>
+          <div class="grid w-full gap-3">
+            <HSButton link="/perks">Perks</HSButton>
+            <HSButton link="/quests">Quests</HSButton>
+            <HSButton link="#">Updates</HSButton>
+            <HSButton link="#">Vote</HSButton>
           </div>
         </section>
       </nav>
