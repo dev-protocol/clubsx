@@ -1,30 +1,49 @@
 <template>
-  <button class="rounded border px-4 py-2">
-    <div v-if="truncateWalletAddress && formattedUserBalance.length > 0">
-      <div v-if="supportedNetwork">
-        <a href="/me" class="flex items-center">
-          <span class="mr-4">{{ formattedUserBalance }} $DEV</span>
-          <span>{{ truncateWalletAddress }}</span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="ml-2 inline h-[1.2em] w-[1.2em]"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-            />
-          </svg>
-        </a>
-      </div>
-      <div v-else>Unsupported Network</div>
-    </div>
-    <div v-else v-on:click="connect">Connect Wallet</div>
-  </button>
+  <div
+    v-bind:class="`hs-wallet${
+      truncateWalletAddress &&
+      formattedUserBalance.length > 0 &&
+      supportedNetwork
+        ? ' is-connected'
+        : ''
+    }`"
+  >
+    <HSButton
+      type="outlined"
+      v-if="
+        truncateWalletAddress &&
+        formattedUserBalance.length > 0 &&
+        supportedNetwork
+      "
+      link="/me"
+    >
+      {{ truncateWalletAddress }}
+    </HSButton>
+    <HSButton
+      type="outlined"
+      v-else-if="
+        truncateWalletAddress &&
+        formattedUserBalance.length > 0 &&
+        !supportedNetwork
+      "
+      link="/me"
+    >
+      Unsupported Network
+    </HSButton>
+    <HSButton type="outlined" v-else v-on:click="connect">
+      Connect Wallet
+    </HSButton>
+    <ul
+      class="hs-wallet__details"
+      v-if="
+        truncateWalletAddress &&
+        formattedUserBalance.length > 0 &&
+        supportedNetwork
+      "
+    >
+      <li>Balance: {{ formattedUserBalance }} $DEV</li>
+    </ul>
+  </div>
 </template>
 
 <script lang="ts">
@@ -37,6 +56,7 @@ import { connectionId } from '@constants/connection'
 import Core from 'web3modal'
 import { defineComponent } from '@vue/runtime-core'
 import { clientsDev } from '@devprotocol/dev-kit/agent'
+import HSButton from '../Primitives/Hashi/HSButton.vue'
 
 type Data = {
   modalProvider: Core
@@ -47,6 +67,7 @@ type Data = {
 
 export default defineComponent({
   name: 'ConnectButton',
+  components: { HSButton },
   data(): Data {
     const modalProvider = GetModalProvider()
     return {
