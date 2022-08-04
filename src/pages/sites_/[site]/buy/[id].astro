@@ -2,22 +2,22 @@
 import Layout from '@layouts/Default.astro'
 
 import JoinCheckout from '@components/Join/JoinCheckout.vue'
-import { tiers } from '@constants/tier'
+import { products } from '@constants/products'
 
 export function getStaticPaths() {
-  return tiers.map(({ id }) => ({ params: { id } }))
+  return products.map(({ id }) => ({ params: { id } }))
 }
 
 const { id } = Astro.params
-const tier = tiers.find(({ id: _id }) => _id === id)
+const product = products.find(({ id: _id }) => _id === id)
 ---
 
-<Layout metaTitle="join checkout">
+<Layout metaTitle="buy nft checkout">
   <JoinCheckout
     client:only
-    amount={tier?.amount}
+    amount={product?.price}
     destination={import.meta.env.PUBLIC_PROPERTY_ADDRESS}
-    currency={'DEV'}
-    page="JOIN"
+    currency={'ETH'}
+    page="BUY"
   />
 </Layout>

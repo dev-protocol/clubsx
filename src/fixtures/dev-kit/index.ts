@@ -2,7 +2,6 @@ import { providers, utils } from 'ethers'
 import {
   positionsCreateWithEth,
   positionsCreateWithEthForPolygon,
-  clientsUtilsSwapForStake,
   clientsSTokens,
   clientsProperty,
 } from '@devprotocol/dev-kit/agent'
@@ -116,15 +115,23 @@ export const stake = async (
   return res
 }
 
-export const stakeWithEth = async (
-  provider: providers.BaseProvider,
-  propertyAddress: string,
-  devAmount?: string,
-  ethAmount?: string,
-  payload?: string,
-  gatewayAddress?: string,
+export const stakeWithEth = async ({
+  provider,
+  propertyAddress,
+  devAmount,
+  ethAmount,
+  payload,
+  gatewayAddress,
+  gatewayBasisPoints,
+}: {
+  provider: providers.BaseProvider
+  propertyAddress: string
+  devAmount?: string
+  ethAmount?: string
+  payload?: string
+  gatewayAddress?: string
   gatewayBasisPoints?: number // For example 10000 is 100%
-) => {
+}) => {
   const { estimatedEth, estimatedDev, create } = await positionsCreateWithEth({
     provider,
     devAmount: whenDefined(devAmount, (dev) =>
@@ -143,14 +150,25 @@ export const stakeWithEth = async (
 }
 
 export const stakeWithEthForPolygon = async (
-  provider: providers.BaseProvider,
-  propertyAddress: string,
-  devAmount?: string,
-  ethAmount?: string,
-  payload?: string,
-  from?: string,
-  gatewayAddress?: string,
-  gatewayBasisPoints?: number // For example 10000 is 100%
+  {
+    provider,
+    propertyAddress,
+    devAmount,
+    ethAmount,
+    payload,
+    from,
+    gatewayAddress,
+    gatewayBasisPoints,
+  }: {
+    provider: providers.BaseProvider
+    propertyAddress: string
+    devAmount?: string
+    ethAmount?: string
+    payload?: string
+    from?: string
+    gatewayAddress?: string
+    gatewayBasisPoints?: number
+  } // For example 10000 is 100%
 ) => {
   const { estimatedEth, estimatedDev, create } =
     await positionsCreateWithEthForPolygon({
