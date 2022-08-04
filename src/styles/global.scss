@@ -1,4 +1,87 @@
+@use 'clubs.theme' as clubs;
+@use 'node_modules/@devprotocol/hashi' with (
+  $theme: clubs.$theme
+);
+@use 'node_modules/@devprotocol/hashi/hs-button' with (
+  $theme: clubs.$button-theme
+);
+@use 'node_modules/@devprotocol/hashi/hs-card';
+@use 'node_modules/@devprotocol/hashi/hs-link' with (
+  $theme: clubs.$link-theme
+);
+@use 'node_modules/@devprotocol/hashi/hs-wallet' with (
+  $theme: clubs.$wallet-theme
+);
+@use 'node_modules/@devprotocol/hashi/hs-utils';
+
 @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz@6..96&family=DM+Sans:wght@400;700&family=Syne:wght@500;700;800&display=swap');
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+
+@include hashi.init() {
+  body {
+    scrollbar-width: thin !important;
+    scrollbar-color: rgba(255 255 255 / 50%) rgba(0 0 0 / 30%) !important;
+  }
+  @include hs-button.render();
+  @include hs-button.extend('filled.is-plox') {
+    @include hs-button.color(
+      (
+        fill: 'plox-400',
+        ink: 'plox-ink',
+        border: 'plox-400',
+      )
+    );
+
+    &:hover,
+    &:focus {
+      @include hs-button.color(
+        (
+          fill: 'plox-400',
+          ink: 'plox-ink',
+          border: 'plox-400',
+        )
+      );
+    }
+
+    &:active {
+      @include hs-button.color(
+        (
+          fill: 'plox-200',
+          ink: 'plox-ink',
+          border: 'plox-200',
+        )
+      );
+    }
+  }
+  @include hs-button.extend('fullwidth') {
+    @include hs-button.shape(
+      (
+        width: (
+          min: 100%,
+          default: 100%,
+          max: 100%,
+        ),
+      )
+    );
+  }
+  @include hs-button.extend('contained') {
+    @include hs-button.shape(
+      (
+        width: (
+          min: auto,
+          default: auto,
+          max: max-content,
+        ),
+      )
+    );
+  }
+  // @include hs-card.render();
+  @include hs-link.render();
+  @include hs-wallet.render();
+  @include hs-utils.typography(
+    $include: (
+      'preset',
+      'family',
+    )
+  );
+  @tailwind utilities;
+}
