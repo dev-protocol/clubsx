@@ -30,37 +30,25 @@
           </slot>
         </HSButton>
         <ul
-          v-if="menuIsOpen"
-          class="absolute right-0 z-50 mt-2 w-48 rounded border border-slate-800 bg-black p-2 shadow"
+          v-show="menuIsOpen"
+          class="absolute right-0 z-50 mt-2 w-48 rounded bg-primary-400 p-2 shadow"
         >
-          <!-- Links and social media name will fetched through yaml -->
           <li>
             <a
-              href="https://stakes.social/"
-              class="inline-block w-full rounded px-4 py-2 hover:bg-neutral-900"
+              href="#"
+              class="inline-block w-full rounded px-4 py-2 hover:bg-primary-200"
               target="_blank"
               rel="norefferer noopener"
-              >Social media1</a
+              >Stakes.social</a
             >
           </li>
-          <hr class="my-4 border-slate-50/20" />
           <li>
             <a
               href="https://www.youtube.com/user/suiundo/"
-              class="inline-block w-full rounded px-4 py-2 hover:bg-neutral-900"
+              class="inline-block w-full rounded px-4 py-2 hover:bg-primary-200"
               target="_blank"
               rel="norefferer noopener"
-              >Social media2</a
-            >
-          </li>
-          <hr class="my-4 border-slate-50/20" />
-          <li>
-            <a
-              href="https://www.youtube.com/user/suiundo/"
-              class="inline-block w-full rounded px-4 py-2 hover:bg-neutral-900"
-              target="_blank"
-              rel="norefferer noopener"
-              >More social media</a
+              >YouTube</a
             >
           </li>
         </ul>
@@ -80,11 +68,23 @@ export default {
     }
   },
   methods: {
-    toggle() {
+    toggle(e) {
       this.menuIsOpen = !this.menuIsOpen
     },
+    close(e) {
+      if (!this.$el.contains(e.target)) {
+        this.menuIsOpen = false
+      }
+    },
+  },
+  mounted() {
+    document.addEventListener('click', this.close)
+  },
+  beforeDestroy() {
+    document.removeEventListener('click', this.close)
   },
   components: {
+    HSButton,
     ConnectButton,
   },
 }
