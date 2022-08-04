@@ -2,7 +2,7 @@ import { BaseProvider } from '@ethersproject/providers'
 import BigNumber from 'bignumber.js'
 import { utils } from 'ethers'
 import type { Tiers } from '@constants/tier'
-import { stakeWithEth, tokenURISim } from './dev-kit'
+import { stakeWithEth, stakeWithEthForPolygon, tokenURISim } from './dev-kit'
 
 const falsyOrZero = <T>(num?: T): T | 0 => (num ? num : 0)
 
@@ -45,12 +45,17 @@ export const fetchDevForEth = async (opts: {
   provider: BaseProvider
   tokenAddress: string
   amount: number | string
+  chain?: number
 }) => {
-  const { estimatedDev } = await stakeWithEth({
+  const params = {
     provider: opts.provider,
     propertyAddress: opts.tokenAddress,
     ethAmount: new BigNumber(opts.amount).toFixed(),
-  })
+  }
+  const { estimatedDev } =
+    opts.chain === 137 || opts.chain === 80001
+      ? await stakeWithEthForPolygon(params)
+      : await stakeWithEth(params)
   return estimatedDev
 }
 
