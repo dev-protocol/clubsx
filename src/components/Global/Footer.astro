@@ -1,3 +1,15 @@
+---
+const url: string = Astro.url.pathname
+
+const footerAccent: Record<string, string> = {
+  '/': 'native-blue',
+}
+
+const getColor = (): string => {
+  return footerAccent[url] ? `is-${footerAccent[url]}` : ''
+}
+---
+
 <footer class="my-32 lg:my-56 grid justify-items-center">
   <section
     class="container mx-auto px-4 grid gap-16 sm:grid-flow-col sm:justify-items-center items-center"
@@ -21,7 +33,7 @@
       </p>
       <p>
         <a
-          class="font-mono text-xs text-blue-500"
+          class={`hs-link ${getColor()} font-mono text-xs`}
           href="https://github.com/dev-protocol/clubs"
           target="_blank"
           rel="norefferer noopener"
@@ -29,11 +41,10 @@
         </a>
       </p>
       <p
-        class="before:content-["
-        ']
+        class="before:content-['']
         before:w-4
         before:inline-block
-        before:animate-c-bash-spinner'
+        before:animate-c-bash-spinner"
       >
         <span class="font-body text-xs"
           >Create tokens, bring people together and drive community growth.
