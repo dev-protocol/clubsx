@@ -75,7 +75,43 @@
     );
   }
   // @include hs-card.render();
+
   @include hs-link.render();
+  @include hs-link.extend('native-blue') {
+    @include hs-link.color(
+      (
+        ink: 'native-blue-400',
+      )
+    );
+
+    &:hover,
+    &:focus {
+      @include hs-link.color(
+        (
+          fill:
+            rgba(
+              hashi.token-get-raw('native-blue-400'),
+              hashi.$color-fill-hover-opacity
+            ),
+          ink: 'native-blue-400',
+        )
+      );
+    }
+
+    &:active {
+      @include hs-link.color(
+        (
+          fill:
+            rgba(
+              hashi.token-get-raw('native-blue-400'),
+              hashi.$color-fill-active-opacity
+            ),
+          ink: 'native-blue-400',
+        )
+      );
+    }
+  }
+
   @include hs-wallet.render();
   @include hs-utils.typography(
     $include: (
