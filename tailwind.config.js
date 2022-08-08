@@ -1,5 +1,5 @@
 const {
-  theme: { colors, fontFamily },
+  theme: { colors, fontFamily, screens },
 } = require('@devprotocol/hashi/tailwind')
 
 module.exports = {
@@ -11,6 +11,7 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
+      screens,
       colors,
       fontFamily: Object.assign(
         {
