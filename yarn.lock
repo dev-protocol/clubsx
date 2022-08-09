@@ -101,10 +101,10 @@
     "@babel/core" ">=7.0.0-0 <8.0.0"
     "@babel/plugin-transform-react-jsx" "^7.17.12"
 
-"@astrojs/tailwind@0.2.5":
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/@astrojs/tailwind/-/tailwind-0.2.5.tgz#4f54b0e9a8d6c61e15900058a671336ce603028f"
-  integrity sha512-VbqDVNn/Geb4p0WjjnjBs8staZgubXU16elpxqIwD4y/E2nq585/HWOJt6eK+MifDqeE/C2mGMNK+GLwZW6ylg==
+"@astrojs/tailwind@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/tailwind/-/tailwind-1.0.0.tgz#05f75c46611d70963c5978126d0924ff781b77e1"
+  integrity sha512-hEpvKBJKCStaxRZt3ENDacQlzUTOvW1D7dfIUyTf7jMUK4O+y8Q7gdTjERf1HBEi/YXrYNX1zhAElwp6lvW5oQ==
   dependencies:
     "@proload/core" "^0.3.2"
     autoprefixer "^10.4.7"
