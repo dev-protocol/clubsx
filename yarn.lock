@@ -44,13 +44,13 @@
     vscode-languageserver-types "^3.17.1"
     vscode-uri "^3.0.3"
 
-"@astrojs/markdown-remark@^0.14.1":
-  version "0.14.1"
-  resolved "https://registry.yarnpkg.com/@astrojs/markdown-remark/-/markdown-remark-0.14.1.tgz#61ac3c7001b62140fb184dd49a52ae0df7867eae"
-  integrity sha512-u072l5Nvb7GGMIBXmm65+IakPoF3nQ0ICIrDyFolznUB6e51AEa0ZGdpZa1jiT5fugR1gZgFPPJGcwWlSadZJA==
+"@astrojs/markdown-remark@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/markdown-remark/-/markdown-remark-1.0.0.tgz#14adf79e02e744ee8a1342fa89aa858ccc6160d2"
+  integrity sha512-yQIMvVjSMs4ZQHffT2nBgXiqVHKOwIgd6xC0o5XkcbXxyspxjRGpHyiAp/WKEdKsUeXwjVuL8b+6lhAYByd+lw==
   dependencies:
     "@astrojs/micromark-extension-mdx-jsx" "^1.0.3"
-    "@astrojs/prism" "^0.7.0"
+    "@astrojs/prism" "^1.0.0"
     acorn "^8.7.1"
     acorn-jsx "^5.3.2"
     github-slugger "^1.4.0"
@@ -86,10 +86,10 @@
     uvu "^0.5.0"
     vfile-message "^3.0.0"
 
-"@astrojs/prism@^0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@astrojs/prism/-/prism-0.7.0.tgz#7a5197cfae58d8632ed5c5d073f0d93d80f2ea99"
-  integrity sha512-5gh4BL9BlgCKBru0crQI3Y7GQCCC389wLBy+0yPnfss/pA0rVgCupRnGcs3oinsRopymOlNblEDfJXdTbCWEtg==
+"@astrojs/prism@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/prism/-/prism-1.0.0.tgz#9d9f2d3178252eb8fe7c92d6de439b3962d2e124"
+  integrity sha512-hRsHDw/y4p7bFpq9XSeDTJtIvhdajU5ZahfAh+n9I7VKsKUHTYI3xTkImcXgkkUoEWs6UI0gk4GgJjiiLEgfYQ==
   dependencies:
     prismjs "^1.28.0"
 
@@ -111,10 +111,10 @@
     postcss "^8.4.14"
     tailwindcss "^3.0.24"
 
-"@astrojs/telemetry@^0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@astrojs/telemetry/-/telemetry-0.4.1.tgz#5e44298641009c850afb3cba63281ed133e943e5"
-  integrity sha512-xssM9IxVQGQHPNfzNlmbaQyevnD5CjSFNEszdYEoJRgsN0yzkxjgGzzVZ4Toq+7gwM5oSO2/oxNWVbP9loHEKg==
+"@astrojs/telemetry@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/telemetry/-/telemetry-1.0.0.tgz#425171610daa66702fe7b117b6dab82ed6bdf8db"
+  integrity sha512-a8edSHK2CpWrGubLp2RR2D/uC9Paa614hQM/lS4In2lhmcCjaQA9ZyYT6l44peuDwUNt1V82DqXk3TFiDBWM8g==
   dependencies:
     ci-info "^3.3.1"
     debug "^4.3.4"
@@ -147,6 +147,13 @@
   integrity sha512-rie5SYbvXVykKYBsNFnkUtDe7/0mGmrvj7Gg5pOKV34Cg/CrCJbvUSwH2oyCG2OLGtN2ttUOLvSgnVq3eipCsQ==
   dependencies:
     node-fetch "^3.2.4"
+
+"@astrojs/webapi@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/webapi/-/webapi-1.0.0.tgz#f43df01cc1ee7b8b955691248b42dfd637485901"
+  integrity sha512-+klQ75oQbRdAMEbvAgrKE14hxh6GVHsQWZE4j/eJ2qhnvMSu7pw13MVQtFaAV96+pUkcYSjwWd1k+Oxoxkuo3g==
+  dependencies:
+    node-fetch "^3.2.5"
 
 "@babel/code-frame@^7.16.0", "@babel/code-frame@^7.18.6":
   version "7.18.6"
@@ -1812,16 +1819,16 @@ ast-types@0.14.2, ast-types@^0.14.2:
   dependencies:
     tslib "^2.0.1"
 
-astro@1.0.0-rc.8:
-  version "1.0.0-rc.8"
-  resolved "https://registry.yarnpkg.com/astro/-/astro-1.0.0-rc.8.tgz#93bc150ba131eaf6d5274ec922b512eafab35b15"
-  integrity sha512-8j9Ka4Rgp5K6RmCy5Yagu/tBRDWZHZUQmAnjH99/eX9aWDIIlMxqcK0V6KM2JMi2IEdTQpnsFc8gg1Bxu8LoIA==
+astro@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/astro/-/astro-1.0.0.tgz#5796910930f21a4989b890e12a0f6938cc8c586b"
+  integrity sha512-mk7/2iY0k0uSZX6eK6770vLZ0535XgmYxLKzKBVsM+W/nYwH96qJugC6PFvdKONyLceSicoULUsy+GYbKRuv1w==
   dependencies:
     "@astrojs/compiler" "^0.23.1"
     "@astrojs/language-server" "^0.20.0"
-    "@astrojs/markdown-remark" "^0.14.1"
-    "@astrojs/telemetry" "^0.4.1"
-    "@astrojs/webapi" "^0.12.0"
+    "@astrojs/markdown-remark" "^1.0.0"
+    "@astrojs/telemetry" "^1.0.0"
+    "@astrojs/webapi" "^1.0.0"
     "@babel/core" "^7.18.2"
     "@babel/generator" "^7.18.2"
     "@babel/parser" "^7.18.4"
