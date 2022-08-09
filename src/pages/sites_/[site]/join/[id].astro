@@ -17,7 +17,6 @@ const tier = tiers.find(({ id: _id }) => _id === id)
     client:only
     amount={tier?.amount}
     destination={import.meta.env.PUBLIC_PROPERTY_ADDRESS}
-    currency={'DEV'}
     page="JOIN"
   />
 </Layout>

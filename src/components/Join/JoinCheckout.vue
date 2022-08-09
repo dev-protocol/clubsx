@@ -8,7 +8,10 @@
         <span v-if="page === 'BUY'">BUY</span>
         <span v-if="page === 'JOIN'">JOIN</span>
       </h2>
-      <div v-if="currency === 'dev' || usePolygonWETH" class="mb-8">
+      <div
+        v-if="verifiedCurrency === currencyOption.DEV || usePolygonWETH"
+        class="mb-8"
+      >
         <h3 class="mb-4 text-2xl">Approval</h3>
         <button
           @click="approve"
@@ -99,21 +102,21 @@
         <p class="flex items-center text-2xl uppercase">
           <Skeleton
             v-if="
-              (currency?.toUpperCase() === 'ETH' && !ethAmount) ||
-              (currency?.toUpperCase() === 'DEV' && !devAmount)
+              (verifiedCurrency == currencyOption.ETH && !ethAmount) ||
+              (verifiedCurrency == currencyOption.DEV && !devAmount)
             "
             class="mr-4 inline-block h-[1.2em] w-24"
           />
 
-          <span v-if="currency?.toUpperCase() == 'DEV' && devAmount"
+          <span v-if="verifiedCurrency == currencyOption.DEV && devAmount"
             >{{ devAmount }} $DEV</span
           >
-          <span v-if="currency?.toUpperCase() == 'ETH' && ethAmount"
+          <span v-if="verifiedCurrency == currencyOption.ETH && ethAmount"
             >{{ ethAmount }} $ETH</span
           >
         </p>
         <aside
-          v-if="currency?.toUpperCase() !== 'DEV'"
+          v-if="verifiedCurrency !== currencyOption.DEV"
           class="mt-4 ml-4 border-l border-dp-black-200 pl-4"
         >
           <h4 class="text-md mb-2 opacity-70">Replace</h4>
@@ -157,7 +160,7 @@ import { parse } from 'query-string'
 import { Subscription, zip } from 'rxjs'
 import { connectionId } from '@constants/connection'
 import { CurrencyOption } from '@constants/currencyOption'
-import { fetchEthForDev, fetchDevForEth } from '@fixtures/utility'
+import { fetchDevForEth } from '@fixtures/utility'
 import Skeleton from '@components/Global/Skeleton.vue'
 import { stakeWithEthForPolygon } from '@fixtures/dev-kit'
 
@@ -181,7 +184,6 @@ export default defineComponent({
   props: {
     amount: Number,
     destination: String,
-    currency: String,
     page: String, // 'JOIN or BUY'
   },
   data() {
@@ -208,7 +210,9 @@ export default defineComponent({
         : undefined
     },
     verifiedCurrency(): CurrencyOption {
-      return this.currency?.toUpperCase() === 'ETH'
+      const query = parse(location.search)
+      const input = String(query.input).toLowerCase()
+      return input.toUpperCase() === 'ETH'
         ? CurrencyOption.ETH
         : CurrencyOption.DEV
     },
@@ -217,6 +221,9 @@ export default defineComponent({
         this.verifiedCurrency === CurrencyOption.ETH &&
         (this.chain === 137 || this.chain === 80001)
       )
+    },
+    currencyOption() {
+      return CurrencyOption
     },
   },
   components: { Skeleton },

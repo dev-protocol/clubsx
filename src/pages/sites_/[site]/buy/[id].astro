@@ -17,7 +17,6 @@ const product = products.find(({ id: _id }) => _id === id)
     client:only
     amount={product?.price}
     destination={import.meta.env.PUBLIC_PROPERTY_ADDRESS}
-    currency={'ETH'}
     page="BUY"
   />
 </Layout>
