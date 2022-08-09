@@ -1,3 +1,3 @@
 /dist
 /.vercel
-/src/styles/**/*.scss
+/src/**/*.scss
