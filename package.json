@@ -40,7 +40,7 @@
   "dependencies": {
     "@astrojs/react": "1.0.0",
     "@astrojs/tailwind": "1.0.0",
-    "@astrojs/vercel": "0.4.0",
+    "@astrojs/vercel": "1.0.0",
     "@astrojs/vue": "0.5.0",
     "@devprotocol/dev-kit": "6.8.7",
     "@devprotocol/elements": "0.0.6",
