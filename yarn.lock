@@ -133,10 +133,10 @@
     "@astrojs/webapi" "^1.0.0"
     "@vercel/nft" "^0.18.2"
 
-"@astrojs/vue@0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@astrojs/vue/-/vue-0.5.0.tgz#4b2efab8a83f4d05f03d5a01390961073a137bc9"
-  integrity sha512-f5qliJERXqwoozKHUG+f1OrStlP7MilYK79YAEPbbbcOx960wZOS8bPDjfxHmmBUdjLWOHnbTr7J7xupi4ZENA==
+"@astrojs/vue@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/vue/-/vue-1.0.0.tgz#7ef01d9b4eef99abf9daca376d87b1235de22e88"
+  integrity sha512-QRjj4hC+V1uR6fG4sBhniI4GVc4sDAx3D4twRM5y/H/tQMYZe/7awLENCbRRRBJmpqZPrNMnk1WQHS5O9hDmzQ==
   dependencies:
     "@vitejs/plugin-vue" "^3.0.0"
     vite "^3.0.0"
