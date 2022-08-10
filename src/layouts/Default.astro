@@ -1,12 +1,23 @@
 ---
 import Navigation from '@components/Global/Navigation.vue'
 import { connectionId } from '@constants/connection'
+import { tenants } from '@constants/tenants';
+import { tenantBy } from '@fixtures/data/tenants';
+import { getStaticPaths } from '@fixtures/router/tenants';
 import '@styles/global.scss'
 
 const { metaTitle } = Astro.props
-const title = metaTitle
-  ? `${import.meta.env.PUBLIC_SITE_NAME}: ${metaTitle}`
-  : import.meta.env.PUBLIC_SITE_NAME
+
+getStaticPaths()
+
+const tenant = tenantBy(Astro.params);
+
+if (!tenant) {
+  throw new Error("No tenant found");
+}
+
+const title = metaTitle ? `${tenant.name} : ${metaTitle}` : tenant.name;
+
 const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'http://localhost');
 ---
 
@@ -20,7 +31,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'http://localhost
     <link rel="icon" type="image/png" href="/favicon.png" />
     <meta
       name="description"
-      content={`${import.meta.env.PUBLIC_SITE_DESCRIPTION}`}
+      content={`${tenant.description}`}
     />
     <meta property="og:title" content={title} />
     <meta property="og:type" content="website" />
@@ -31,17 +42,17 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'http://localhost
     />
     <meta
       property="og:description"
-      content={import.meta.env.PUBLIC_SITE_DESCRIPTION}
+      content={tenant.description}
     />
-    <meta property="og:site_name" content={import.meta.env.PUBLIC_SITE_NAME} />
-    <meta name="twitter:site" content={import.meta.env.PUBLIC_TWITTER_USER} />
-    <meta name="twitter:creator" content={import.meta.env.PUBLIC_TWITTER_USER}
+    <meta property="og:site_name" content={tenant.name} />
+    <meta name="twitter:site" content={tenant.twitterHandle} />
+    <meta name="twitter:creator" content={tenant.twitterHandle}
     />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta
       name="twitter:description"
-      content={import.meta.env.PUBLIC_SITE_DESCRIPTION}
+      content={tenant.description}
     />
     <meta
       name="twitter:image"

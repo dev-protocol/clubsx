@@ -30,6 +30,9 @@ import { GetModalProvider, ReConnectWallet, Disconnect } from '@fixtures/wallet'
 
 // NOTE: It is assumed to be used on a wallet-connected page.
 export default {
+  props: {
+    propertyAddress: string
+  },
   data() {
     const modalProvider = GetModalProvider()
     return {
@@ -37,7 +40,6 @@ export default {
       modalProvider,
       provider: undefined,
       memberships: [],
-      propertyAddress: import.meta.env.PUBLIC_PROPERTY_ADDRESS,
     }
   },
   async mounted() {

@@ -3,6 +3,8 @@ import Layout from '@layouts/Default.astro'
 
 import JoinCheckout from '@components/Join/JoinCheckout.vue'
 import { tiers } from '@constants/tier'
+import { getStaticPaths as tenantStaticPaths } from '@fixtures/router/tenants'
+import { tenantBy } from '@fixtures/data/tenants'
 
 export function getStaticPaths() {
   return tiers.map(({ id }) => ({ params: { id } }))
@@ -10,13 +12,16 @@ export function getStaticPaths() {
 
 const { id } = Astro.params
 const tier = tiers.find(({ id: _id }) => _id === id)
+
+tenantStaticPaths()
+const tenant = tenantBy(Astro.params)
 ---
 
 <Layout metaTitle="join checkout">
   <JoinCheckout
     client:only
     amount={tier?.amount}
-    destination={import.meta.env.PUBLIC_PROPERTY_ADDRESS}
+    destination={tenant?.propertyAddress}
     currency={'DEV'}
     page="JOIN"
   />

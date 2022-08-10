@@ -100,6 +100,9 @@ import { detectStokensByPropertyAddress } from '@fixtures/dev-kit'
 
 export default {
   name: 'Sidebar',
+  props: {
+    propertyAddress: String
+  },
   data() {
     return {
       members: 0,
@@ -109,8 +112,7 @@ export default {
   async created() {
     const providerURL = import.meta.env.PUBLIC_WEB3_PROVIDER_URL
     const provider = new providers.JsonRpcProvider(providerURL)
-    const propertyAddress = import.meta.env.PUBLIC_PROPERTY_ADDRESS
-    await detectStokensByPropertyAddress(provider, propertyAddress).then(
+    await detectStokensByPropertyAddress(provider, this.propertyAddress).then(
       (res) => {
         this.members = res.length
       }

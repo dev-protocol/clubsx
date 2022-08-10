@@ -26,10 +26,12 @@ import Avator from '@components/Members/Avator.vue'
 import STokenPositions from '@components/Members/STokenPositions.vue'
 
 export default {
+  props: {
+    propertyAddress: String
+  },
   data() {
     return {
       members: [],
-      propertyAddress: import.meta.env.PUBLIC_PROPERTY_ADDRESS,
     }
   },
   async created() {

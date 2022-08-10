@@ -3,6 +3,8 @@ import Layout from '@layouts/Default.astro'
 
 import JoinCheckout from '@components/Join/JoinCheckout.vue'
 import { products } from '@constants/products'
+import { getStaticPaths as tenantsStaticPaths } from '@fixtures/router/tenants'
+import { tenantBy } from '@fixtures/data/tenants'
 
 export function getStaticPaths() {
   return products.map(({ id }) => ({ params: { id } }))
@@ -10,13 +12,17 @@ export function getStaticPaths() {
 
 const { id } = Astro.params
 const product = products.find(({ id: _id }) => _id === id)
+
+tenantsStaticPaths()
+
+const tenant = tenantBy(Astro.props)
 ---
 
 <Layout metaTitle="buy nft checkout">
   <JoinCheckout
     client:only
     amount={product?.price}
-    destination={import.meta.env.PUBLIC_PROPERTY_ADDRESS}
+    destination={tenant?.propertyAddress}
     currency={'ETH'}
     page="BUY"
   />

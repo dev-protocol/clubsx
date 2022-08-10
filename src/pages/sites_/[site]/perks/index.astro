@@ -7,6 +7,13 @@ import { tiers } from '@constants/tier'
 import { perks } from '@constants/perks'
 import { fetchBadgeImageSrc } from '@fixtures/utility'
 import { providers } from 'ethers'
+import { getStaticPaths } from '@fixtures/router/tenants'
+import { tenantBy } from '@fixtures/data/tenants'
+
+
+getStaticPaths()
+
+const tenant = tenantBy(Astro.params)
 
 const listOfTier = await Promise.all(
   tiers.map(async ({ ...tier }) => {
@@ -14,7 +21,7 @@ const listOfTier = await Promise.all(
       provider: new providers.JsonRpcProvider(
         import.meta.env.PUBLIC_WEB3_PROVIDER_URL
       ),
-      tokenAddress: import.meta.env.PUBLIC_PROPERTY_ADDRESS,
+      tokenAddress: tenant?.propertyAddress ?? '',
       amount: tier.amount,
     })
     const listOfPerk = perks.filter((perk) => perk.tier === tier.id)
@@ -27,7 +34,7 @@ const listOfTier = await Promise.all(
   <div
     class="lg:container relative mx-auto lg:pt-12 grid lg:gap-12 lg:grid-cols-[minmax(290px,_1fr)_4fr]"
   >
-    <Sidebar client:load />
+    <Sidebar client:load propertyAddress={tenant?.propertyAddress} />
     <div class="px-4">
       <article class="grid gap-8">
         <h2 class="font-title text-4xl font-bold">Perks</h2>
