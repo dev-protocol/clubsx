@@ -9,7 +9,7 @@
         <span v-if="page === 'JOIN'">JOIN</span>
       </h2>
       <div
-        v-if="verifiedCurrency === currencyOption.DEV || usePolygonWETH"
+        v-if="usedCurrency === currencyOption.DEV || usePolygonWETH"
         class="mb-8"
       >
         <h3 class="mb-4 text-2xl">Approval</h3>
@@ -102,21 +102,21 @@
         <p class="flex items-center text-2xl uppercase">
           <Skeleton
             v-if="
-              (verifiedCurrency == currencyOption.ETH && !ethAmount) ||
-              (verifiedCurrency == currencyOption.DEV && !devAmount)
+              (usedCurrency == currencyOption.ETH && !ethAmount) ||
+              (usedCurrency == currencyOption.DEV && !devAmount)
             "
             class="mr-4 inline-block h-[1.2em] w-24"
           />
 
-          <span v-if="verifiedCurrency == currencyOption.DEV && devAmount"
+          <span v-if="usedCurrency == currencyOption.DEV && devAmount"
             >{{ devAmount }} $DEV</span
           >
-          <span v-if="verifiedCurrency == currencyOption.ETH && ethAmount"
+          <span v-if="usedCurrency == currencyOption.ETH && ethAmount"
             >{{ ethAmount }} $ETH</span
           >
         </p>
         <aside
-          v-if="verifiedCurrency !== currencyOption.DEV"
+          v-if="usedCurrency !== currencyOption.DEV"
           class="mt-4 ml-4 border-l border-dp-black-200 pl-4"
         >
           <h4 class="text-md mb-2 opacity-70">Replace</h4>
@@ -160,7 +160,7 @@ import { parse } from 'query-string'
 import { Subscription, zip } from 'rxjs'
 import { connectionId } from '@constants/connection'
 import { CurrencyOption } from '@constants/currencyOption'
-import { fetchDevForEth } from '@fixtures/utility'
+import { fetchDevForEth, fetchEthForDev } from '@fixtures/utility'
 import Skeleton from '@components/Global/Skeleton.vue'
 import { stakeWithEthForPolygon } from '@fixtures/dev-kit'
 
@@ -184,6 +184,7 @@ export default defineComponent({
   props: {
     amount: Number,
     destination: String,
+    currency: String, // 'DEV' or 'ETH'
     page: String, // 'JOIN or BUY'
   },
   data() {
@@ -205,20 +206,31 @@ export default defineComponent({
   },
   computed: {
     estimatedEarnings(): number | undefined {
-      return this.amount && this.apy
-        ? new BigNumber(this.amount * this.apy).dp(9).toNumber()
+      return this.devAmount && this.apy
+        ? new BigNumber(this.devAmount).times(this.apy).dp(9).toNumber()
         : undefined
     },
-    verifiedCurrency(): CurrencyOption {
+    verifiedInputCurrency(): CurrencyOption {
       const query = parse(location.search)
       const input = String(query.input).toLowerCase()
       return input.toUpperCase() === 'ETH'
         ? CurrencyOption.ETH
         : CurrencyOption.DEV
     },
+    verifiedPropsCurrency(): CurrencyOption {
+      return this.currency?.toUpperCase() === 'ETH'
+        ? CurrencyOption.ETH
+        : CurrencyOption.DEV
+    },
+    usedCurrency(): CurrencyOption {
+      return this.verifiedPropsCurrency === CurrencyOption.ETH ||
+        this.verifiedInputCurrency === CurrencyOption.ETH
+        ? CurrencyOption.ETH
+        : CurrencyOption.DEV
+    },
     usePolygonWETH(): boolean {
       return (
-        this.verifiedCurrency === CurrencyOption.ETH &&
+        this.usedCurrency === CurrencyOption.ETH &&
         (this.chain === 137 || this.chain === 80001)
       )
     },
@@ -230,7 +242,7 @@ export default defineComponent({
   async mounted() {
     const connection = getConnection(connectionId)
 
-    if (this.verifiedCurrency === CurrencyOption.ETH) {
+    if (this.usedCurrency === CurrencyOption.ETH) {
       this.approveNeeded = false
     }
     if (connection) {
@@ -245,7 +257,7 @@ export default defineComponent({
         whenDefinedAll(
           [providerPool, account, this.destination, this.amount],
           async ([prov, userAddress, destination, amount]) => {
-            ;(this.verifiedCurrency !== CurrencyOption.ETH ||
+            ;(this.usedCurrency !== CurrencyOption.ETH ||
               this.usePolygonWETH) &&
               this.checkApproved(
                 prov,
@@ -270,28 +282,34 @@ export default defineComponent({
     whenDefinedAll(
       [this.destination, this.amount],
       async ([destination, amount]) => {
-        const devAmount =
-          this.verifiedCurrency === CurrencyOption.DEV
+        const [devAmount, ethAmount] = await Promise.all([
+          this.verifiedPropsCurrency === CurrencyOption.DEV
             ? this.amount
             : await fetchDevForEth({
                 provider,
                 tokenAddress: destination,
                 amount: amount,
                 chain,
-              }).then(utils.formatUnits)
+              }).then(utils.formatUnits),
+          this.verifiedPropsCurrency === CurrencyOption.ETH
+            ? this.amount
+            : await fetchEthForDev({
+                provider,
+                tokenAddress: destination,
+                amount: amount,
+              }).then(utils.formatUnits),
+        ])
+
         this.devAmount = new BigNumber(devAmount ?? 0)
+          .dp(9)
+          .toFixed()
+          .toString()
+        this.ethAmount = new BigNumber(ethAmount ?? 0)
           .dp(9)
           .toFixed()
           .toString()
       }
     )
-
-    if (this.destination && this.amount) {
-      this.ethAmount =
-        this.verifiedCurrency === CurrencyOption.ETH
-          ? this.amount.toString()
-          : ''
-    }
   },
   destroyed() {
     for (const sub of this.subscriptions) {
@@ -360,7 +378,7 @@ export default defineComponent({
           this.parsedAmount?.toString(),
         ],
         async ([prov, account, destination, parsedAmount]) => {
-          if (this.verifiedCurrency === CurrencyOption.ETH) {
+          if (this.usedCurrency === CurrencyOption.ETH) {
             if (this.usePolygonWETH) {
               const res = await stakeWithEthForPolygon({
                 provider: prov,

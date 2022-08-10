@@ -16,6 +16,7 @@ const product = products.find(({ id: _id }) => _id === id)
   <JoinCheckout
     client:only
     amount={product?.price}
+    currency="ETH"
     destination={import.meta.env.PUBLIC_PROPERTY_ADDRESS}
     page="BUY"
   />
