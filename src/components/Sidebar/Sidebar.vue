@@ -101,7 +101,7 @@ import { detectStokensByPropertyAddress } from '@fixtures/dev-kit'
 export default {
   name: 'Sidebar',
   props: {
-    propertyAddress: String
+    propertyAddress: String,
   },
   data() {
     return {

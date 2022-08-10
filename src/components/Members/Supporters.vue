@@ -27,7 +27,7 @@ import STokenPositions from '@components/Members/STokenPositions.vue'
 
 export default {
   props: {
-    propertyAddress: String
+    propertyAddress: String,
   },
   data() {
     return {

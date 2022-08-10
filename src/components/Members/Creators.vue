@@ -25,7 +25,7 @@ import Avator from '@components/Members/Avator.vue'
 
 export default {
   props: {
-    propertyAddress: String
+    propertyAddress: String,
   },
   data() {
     return {

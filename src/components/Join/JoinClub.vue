@@ -95,7 +95,7 @@ type Data = {
 export default defineComponent({
   name: 'JoinClub',
   props: {
-    propertyAddress: String
+    propertyAddress: String,
   },
   data(): Data {
     return {
