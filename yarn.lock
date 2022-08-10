@@ -1819,10 +1819,10 @@ ast-types@0.14.2, ast-types@^0.14.2:
   dependencies:
     tslib "^2.0.1"
 
-astro@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/astro/-/astro-1.0.0.tgz#5796910930f21a4989b890e12a0f6938cc8c586b"
-  integrity sha512-mk7/2iY0k0uSZX6eK6770vLZ0535XgmYxLKzKBVsM+W/nYwH96qJugC6PFvdKONyLceSicoULUsy+GYbKRuv1w==
+astro@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/astro/-/astro-1.0.1.tgz#8b1c7e4d7ba3c906ab98f5407ac3894f1c1db953"
+  integrity sha512-oQltZ7Yk+ShztRL5NO+nyXVIZqBHjlL6yn6oDeJ/a+6D/rN6KMZQquKP21j87nSwnSnEUjS73EsFsIEvrxG4Tw==
   dependencies:
     "@astrojs/compiler" "^0.23.1"
     "@astrojs/language-server" "^0.20.0"
