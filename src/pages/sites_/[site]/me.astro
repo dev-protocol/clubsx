@@ -20,7 +20,7 @@ const tenant = tenantBy(Astro.props)
     <Sidebar client:load propertyAddress={tenant?.propertyAddress} />
     <div>
       <div class="mb-8">
-        <Membership client:only="vue" />
+        <Membership client:only="vue" propertyAddress={tenant?.propertyAddress} />
       </div>
       <!-- <div class='mb-8'>
         <Badges />

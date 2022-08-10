@@ -28,12 +28,14 @@ import { positionsOfOwner } from '@fixtures/dev-kit'
 
 // NOTE: It is assumed to be used on a wallet-connected page.
 export default {
+  props: {
+    propertyAddress: String,
+  },
   data() {
     const modalProvider = GetModalProvider()
     return {
       modalProvider,
       memberships: [],
-      propertyAddress: import.meta.env.PUBLIC_PROPERTY_ADDRESS,
     }
   },
   async mounted() {
