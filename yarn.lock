@@ -125,12 +125,12 @@
     node-fetch "^3.2.5"
     which-pm-runs "^1.1.0"
 
-"@astrojs/vercel@0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@astrojs/vercel/-/vercel-0.4.0.tgz#61ec320ea30661be6fe3d130904c653d83e6ff52"
-  integrity sha512-6hfCGziLgfKVKT4qwnBBT8PNsKDF1yxUawoia3eU1xEdYg922sgUTN6k0rLEhNbMHQ6rFGVC0rbFPWU/oIUHGg==
+"@astrojs/vercel@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/vercel/-/vercel-1.0.0.tgz#7e764190ac0cdff9723980e7ff5ab997667e15c4"
+  integrity sha512-Tu2KKaIaPu/3ru0e2l455ltY6SOCKXHNtE88ccEydVslrrQl8oeBXIgZY2e8ylVdzGCKmiYFcRudaAO3IYRMiA==
   dependencies:
-    "@astrojs/webapi" "^0.12.0"
+    "@astrojs/webapi" "^1.0.0"
     "@vercel/nft" "^0.18.2"
 
 "@astrojs/vue@0.5.0":
@@ -140,13 +140,6 @@
   dependencies:
     "@vitejs/plugin-vue" "^3.0.0"
     vite "^3.0.0"
-
-"@astrojs/webapi@^0.12.0":
-  version "0.12.0"
-  resolved "https://registry.yarnpkg.com/@astrojs/webapi/-/webapi-0.12.0.tgz#53359c2f18f5758bee31c08bb4979d3ee6769308"
-  integrity sha512-rie5SYbvXVykKYBsNFnkUtDe7/0mGmrvj7Gg5pOKV34Cg/CrCJbvUSwH2oyCG2OLGtN2ttUOLvSgnVq3eipCsQ==
-  dependencies:
-    node-fetch "^3.2.4"
 
 "@astrojs/webapi@^1.0.0":
   version "1.0.0"
@@ -7929,7 +7922,7 @@ node-fetch@^2.6.1, node-fetch@^2.6.7:
   dependencies:
     whatwg-url "^5.0.0"
 
-node-fetch@^3.2.4, node-fetch@^3.2.5:
+node-fetch@^3.2.5:
   version "3.2.9"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-3.2.9.tgz#3f6070bf854de20f21b9fe8479f823462e615d7d"
   integrity sha512-/2lI+DBecVvVm9tDhjziTVjo2wmTsSxSk58saUYP0P/fRJ3xxtfMDY24+CKTkfm0Dlhyn3CSXNL0SoRiCZ8Rzg==
