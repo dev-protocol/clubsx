@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="fixed left-0 lg:left-auto top-14 lg:sticky lg:top-12">
+    <div class="fixed left-0 top-14 lg:sticky lg:left-auto lg:top-12">
       <button
         class="rounded-r-full bg-white px-0.5 py-1 text-black lg:hidden"
         @click="toggle"
