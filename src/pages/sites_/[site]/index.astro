@@ -5,6 +5,9 @@ import Sidebar from '@components/Sidebar/Sidebar.vue'
 import Footer from '@components/Global/Footer.astro'
 import Hero from '@components/Home/Hero.vue'
 import JoinClub from '@components/Join/JoinClub.vue'
+import { tenantBy } from '@fixtures/data/tenants'
+
+const tenant = tenantBy(Astro.params)
 ---
 
 <Layout metaTitle="">
@@ -18,7 +21,7 @@ import JoinClub from '@components/Join/JoinClub.vue'
     <div
       class="lg:container relative mx-auto lg:pt-12 grid lg:gap-12 lg:grid-cols-[minmax(290px,_1fr)_4fr]"
     >
-      <Sidebar client:load />
+      <Sidebar client:load propertyAddress={tenant?.propertyAddress} />
       <article class="grid gap-10 lg:gap-20">
         <header
           class="min-h-[24rem] lg:min-h-[38rem] lg:-mt-12 flex justify-center items-center"
@@ -230,7 +233,7 @@ import JoinClub from '@components/Join/JoinClub.vue'
                 fill="currentColor"></path>
             </svg>
           </section>
-          <JoinClub client:idle />
+          <JoinClub client:idle propertyAddress={tenant?.propertyAddress} />
         </div>
       </article>
     </div>

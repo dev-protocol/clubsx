@@ -24,10 +24,12 @@ import { getBalances } from '@fixtures/dev-kit'
 import Avator from '@components/Members/Avator.vue'
 
 export default {
+  props: {
+    propertyAddress: String,
+  },
   data() {
     return {
       creators: [],
-      propertyAddress: import.meta.env.PUBLIC_PROPERTY_ADDRESS,
     }
   },
   async created() {

@@ -5,22 +5,26 @@ import Sidebar from '@components/Sidebar/Sidebar.vue'
 import Badges from '@components/Badges/Badges.astro'
 import Membership from '@components/Membership/Membership.vue'
 import Account from '@components/Account/Account.vue'
+import { tenantBy } from '@fixtures/data/tenants'
+
+const tenant = tenantBy(Astro.props)
 ---
 
 <Layout metaTitle="Dev Protocol | An open protocol for Creator Economy">
   <div
     class="lg:container relative mx-auto lg:pt-12 grid lg:gap-12 lg:grid-cols-[minmax(290px,_1fr)_4fr]"
   >
-    <Sidebar client:load />
+    <Sidebar client:load propertyAddress={tenant?.propertyAddress} />
     <div>
       <div class="mb-8">
-        <Membership client:only="vue" />
+        <Membership client:only="vue" propertyAddress={tenant?.propertyAddress}
+        />
       </div>
       <!-- <div class='mb-8'>
         <Badges />
       </div> -->
       <div class="mb-8">
-        <Account client:only="vue" />
+        <Account client:only="vue" propertyAddress={tenant?.propertyAddress} />
       </div>
     </div>
   </div>
