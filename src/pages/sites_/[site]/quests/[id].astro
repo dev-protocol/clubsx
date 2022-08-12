@@ -4,7 +4,6 @@ import Layout from '@layouts/Default.astro'
 import QuestDetail from '@components/QuestDetail/QuestDetail.vue'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
 import quests from '@components/Quests/quests.json'
-import { getStaticPaths as tenantsStaticPaths } from '@fixtures/router/tenants'
 import { tenantBy } from '@fixtures/data/tenants'
 
 export function getStaticPaths() {
@@ -18,8 +17,6 @@ const { id } = Astro.params
 const targetQuest = quests.filter(
   (quest) => quest && quest.id === id && quest.listed
 )[0]
-
-tenantsStaticPaths()
 
 const tenant = tenantBy(Astro.params)
 ---

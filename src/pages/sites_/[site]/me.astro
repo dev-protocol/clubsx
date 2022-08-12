@@ -5,10 +5,7 @@ import Sidebar from '@components/Sidebar/Sidebar.vue'
 import Badges from '@components/Badges/Badges.astro'
 import Membership from '@components/Membership/Membership.vue'
 import Account from '@components/Account/Account.vue'
-import { getStaticPaths } from '@fixtures/router/tenants'
 import { tenantBy } from '@fixtures/data/tenants'
-
-getStaticPaths()
 
 const tenant = tenantBy(Astro.props)
 ---
@@ -20,7 +17,8 @@ const tenant = tenantBy(Astro.props)
     <Sidebar client:load propertyAddress={tenant?.propertyAddress} />
     <div>
       <div class="mb-8">
-        <Membership client:only="vue" propertyAddress={tenant?.propertyAddress} />
+        <Membership client:only="vue" propertyAddress={tenant?.propertyAddress}
+        />
       </div>
       <!-- <div class='mb-8'>
         <Badges />

@@ -1,14 +1,10 @@
 ---
 import Navigation from '@components/Global/Navigation.vue'
 import { connectionId } from '@constants/connection'
-import { tenants } from '@constants/tenants'
 import { tenantBy } from '@fixtures/data/tenants'
-import { getStaticPaths } from '@fixtures/router/tenants'
 import '@styles/global.scss'
 
 const { metaTitle } = Astro.props
-
-getStaticPaths()
 
 const tenant = tenantBy(Astro.params)
 

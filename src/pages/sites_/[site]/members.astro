@@ -3,10 +3,7 @@ import Layout from '@layouts/Default.astro'
 
 import Supporters from '@components/Members/Supporters.vue'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
-import { getStaticPaths } from '@fixtures/router/tenants'
 import { tenantBy } from '@fixtures/data/tenants'
-
-getStaticPaths()
 
 const tenant = tenantBy(Astro.props)
 ---

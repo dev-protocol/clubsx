@@ -7,10 +7,7 @@ import { tiers } from '@constants/tier'
 import { perks } from '@constants/perks'
 import { fetchBadgeImageSrc } from '@fixtures/utility'
 import { providers } from 'ethers'
-import { getStaticPaths } from '@fixtures/router/tenants'
 import { tenantBy } from '@fixtures/data/tenants'
-
-getStaticPaths()
 
 const tenant = tenantBy(Astro.params)
 
