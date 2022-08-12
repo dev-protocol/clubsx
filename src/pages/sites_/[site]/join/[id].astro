@@ -20,7 +20,7 @@ const tenant = tenantBy(Astro.params)
     client:only
     amount={tier?.amount}
     destination={tenant?.propertyAddress}
-    currency={'DEV'}
+    currency={tier?.currency}
     page="JOIN"
   />
 </Layout>
