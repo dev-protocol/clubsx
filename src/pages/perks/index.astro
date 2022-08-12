@@ -1,6 +1,7 @@
 ---
 import Layout from '@layouts/Default.astro'
 
+import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
 import Footer from '@components/Global/Footer.astro'
 import { tiers } from '@constants/tier'
@@ -24,9 +25,7 @@ const listOfTier = await Promise.all(
 ---
 
 <Layout metaTitle="Dev Protocol | An open protocol for Creator Economy">
-  <div
-    class="lg:container relative mx-auto lg:pt-12 grid lg:gap-12 lg:grid-cols-[minmax(290px,_1fr)_4fr]"
-  >
+  <CLBWrapper>
     <Sidebar client:load />
     <div class="px-4">
       <article class="grid gap-8">
@@ -57,6 +56,6 @@ const listOfTier = await Promise.all(
         ))}
       </article>
     </div>
-  </div>
+  </CLBWrapper>
   <Footer />
 </Layout>

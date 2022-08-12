@@ -1,5 +1,6 @@
 ---
 import Layout from '@layouts/Default.astro'
+import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
 
 import Footer from '@components/Global/Footer.astro'
 import HSButton from '@components/Primitives/Hashi/HSButton.vue'
@@ -9,9 +10,7 @@ import Step from '@components/Community/Step.vue'
 
 <Layout metaTitle="Community">
   <div class="relative">
-    <div
-      class="lg:container relative mx-auto px-2 lg:px-5 lg:pt-12 grid lg:gap-12 lg:grid-cols-[minmax(290px,_1fr)_4fr]"
-    >
+    <CLBWrapper>
       <Sidebar client:load />
       <article class="px-8 lg:px-4">
         <section class="mb-6">
@@ -64,7 +63,7 @@ import Step from '@components/Community/Step.vue'
           </Step>
         </section>
       </article>
-    </div>
+    </CLBWrapper>
   </div>
   <Footer />
 </Layout>

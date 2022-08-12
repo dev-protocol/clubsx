@@ -1,5 +1,6 @@
 ---
 import Layout from '@layouts/Default.astro'
+import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
 
 import Sidebar from '@components/Sidebar/Sidebar.vue'
 import Badges from '@components/Badges/Badges.astro'
@@ -8,9 +9,7 @@ import Account from '@components/Account/Account.vue'
 ---
 
 <Layout metaTitle="Dev Protocol | An open protocol for Creator Economy">
-  <div
-    class="lg:container relative mx-auto lg:pt-12 grid lg:gap-12 lg:grid-cols-[minmax(290px,_1fr)_4fr]"
-  >
+  <CLBWrapper>
     <Sidebar client:load />
     <div>
       <div class="mb-8">
@@ -23,5 +22,5 @@ import Account from '@components/Account/Account.vue'
         <Account client:only="vue" />
       </div>
     </div>
-  </div>
+  </CLBWrapper>
 </Layout>

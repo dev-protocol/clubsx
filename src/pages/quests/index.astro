@@ -1,5 +1,6 @@
 ---
 import Layout from '@layouts/Default.astro'
+import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
 
 import HSButton from '@components/Primitives/Hashi/HSButton.vue'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
@@ -7,9 +8,7 @@ import Sidebar from '@components/Sidebar/Sidebar.vue'
 ---
 
 <Layout metaTitle="Quests">
-  <div
-    class="lg:container relative mx-auto px-2 lg:px-5 lg:pt-12 grid lg:gap-12 lg:grid-cols-[minmax(290px,_1fr)_4fr]"
-  >
+  <CLBWrappwe>
     <Sidebar client:load />
     <section class="quests">
       <article class="mb-6">
@@ -34,7 +33,7 @@ import Sidebar from '@components/Sidebar/Sidebar.vue'
         </div>
       </article>
     </section>
-  </div>
+  </CLBWrappwe>
 </Layout>
 <style lang="scss">
   .quests-digest {

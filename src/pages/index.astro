@@ -1,5 +1,6 @@
 ---
 import Layout from '@layouts/Default.astro'
+import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
 
 import Sidebar from '@components/Sidebar/Sidebar.vue'
 import Footer from '@components/Global/Footer.astro'
@@ -15,9 +16,7 @@ import JoinClub from '@components/Join/JoinClub.vue'
         class="h-full w-full object-cover opacity-80"
       />
     </div>
-    <div
-      class="lg:container relative mx-auto px-2 lg:px-5 lg:pt-12 grid lg:gap-12 lg:grid-cols-[minmax(290px,_1fr)_4fr]"
-    >
+    <CLBWrapper>
       <Sidebar client:load />
       <article class="grid gap-10 lg:gap-20">
         <header
@@ -233,7 +232,7 @@ import JoinClub from '@components/Join/JoinClub.vue'
           <JoinClub client:idle />
         </div>
       </article>
-    </div>
+    </CLBWrapper>
   </div>
   <Footer />
 </Layout>

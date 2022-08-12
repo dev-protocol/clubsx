@@ -1,5 +1,5 @@
 <template>
-  <header class="flex items-center justify-between px-8 py-4 font-body">
+  <header class="flex items-center justify-between px-4 lg:px-8 py-4 font-body">
     <h1>
       <!-- Fetch DAO name from YAML config -->
       <a
