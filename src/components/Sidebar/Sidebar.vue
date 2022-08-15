@@ -57,7 +57,7 @@
             />
             <header class="grid justify-items-center gap-2">
               <!-- Take DAOName and DAOToken from YAML config -->
-              <h2 class="font-title text-xl font-bold">DAOName</h2>
+              <h2 class="font-title text-xl font-bold">{{ tenantName }}</h2>
               <p class="flex items-center gap-2 font-body text-xs">
                 $DAOToken on
                 <!-- Incase of multiple network change img as per chainId -->
@@ -102,6 +102,7 @@ export default {
   name: 'Sidebar',
   props: {
     propertyAddress: String,
+    tenantName: String,
   },
   data() {
     return {

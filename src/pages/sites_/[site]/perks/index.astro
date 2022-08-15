@@ -30,7 +30,11 @@ const listOfTier = await Promise.all(
   <div
     class="lg:container relative mx-auto lg:pt-12 grid lg:gap-12 lg:grid-cols-[minmax(290px,_1fr)_4fr]"
   >
-    <Sidebar client:load propertyAddress={tenant?.propertyAddress} />
+    <Sidebar
+      client:load
+      propertyAddress={tenant?.propertyAddress}
+      tenantName={tenant?.name}
+    />
     <div class="px-4">
       <article class="grid gap-8">
         <h2 class="font-title text-4xl font-bold">Perks</h2>
