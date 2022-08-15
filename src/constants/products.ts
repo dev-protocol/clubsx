@@ -4,7 +4,7 @@ export type Product = Readonly<{
   price: number
   description?: string
   left: string
-  imageSrc: string
+  payload: string
   imageAlt: string
 }>
 
@@ -18,7 +18,7 @@ export const products: Products = [
     description:
       'Get the full lineup of our Basic Tees. Have a fresh shirt all week, and an extra for laundry day.',
     left: '32',
-    imageSrc:
+    payload:
       'https://bafybeib745w7vjcsh37mepaluvbmqrbjq4gax46oirkmrjeqeh55gjiyzi.ipfs.nftstorage.link/',
     imageAlt:
       'Eight shirts arranged on table in black, olive, grey, blue, white, red, mustard, and green.',
@@ -28,7 +28,7 @@ export const products: Products = [
     name: 'Name',
     price: 0.3,
     left: '32',
-    imageSrc:
+    payload:
       'https://bafybeic3d2otapykfdp3ktqbdonn4ylrove5ccs5vv2udydwbgudstrcwu.ipfs.nftstorage.link/',
     imageAlt: 'Front of plain black t-shirt.',
   },
@@ -37,7 +37,7 @@ export const products: Products = [
     name: 'Name',
     price: 0.3,
     left: '32',
-    imageSrc:
+    payload:
       'https://bafybeiagvn4exdbwokm4g6t6a2s3xvl2fu7zutvlf6sgwd4fjrdrc23hsu.ipfs.nftstorage.link/',
     imageAlt: 'Front of plain black t-shirt.',
   },
@@ -46,7 +46,7 @@ export const products: Products = [
     name: 'Name',
     price: 0.3,
     left: '32',
-    imageSrc:
+    payload:
       'https://bafybeiav46h6zegh4e7zfdcgk6xjpg6if2kdxtvp3ejtyicvpgc2iucpim.ipfs.nftstorage.link/',
     imageAlt: 'Front of plain black t-shirt.',
   },
@@ -55,7 +55,7 @@ export const products: Products = [
     name: 'Name',
     price: 0.3,
     left: '32',
-    imageSrc:
+    payload:
       'https://bafybeib745w7vjcsh37mepaluvbmqrbjq4gax46oirkmrjeqeh55gjiyzi.ipfs.nftstorage.link/',
     imageAlt:
       'Eight shirts arranged on table in black, olive, grey, blue, white, red, mustard, and green.',
@@ -65,7 +65,7 @@ export const products: Products = [
     name: 'Name',
     price: 0.3,
     left: '32',
-    imageSrc:
+    payload:
       'https://bafybeiagvn4exdbwokm4g6t6a2s3xvl2fu7zutvlf6sgwd4fjrdrc23hsu.ipfs.nftstorage.link/',
     imageAlt: 'Front of plain black t-shirt.',
   },

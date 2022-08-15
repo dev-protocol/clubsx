@@ -5,14 +5,18 @@ import Supporters from '@components/Members/Supporters.vue'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
 import { tenantBy } from '@fixtures/data/tenants'
 
-const tenant = tenantBy(Astro.props)
+const tenant = tenantBy(Astro.params)
 ---
 
 <Layout metaTitle="Dev Protocol | An open protocol for Creator Economy">
   <div
     class="lg:container relative mx-auto lg:pt-12 grid lg:gap-12 lg:grid-cols-[minmax(290px,_1fr)_4fr]"
   >
-    <Sidebar client:load propertyAddress={tenant?.propertyAddress} />
+    <Sidebar
+      client:load
+      propertyAddress={tenant?.propertyAddress}
+      tenantName={tenant?.name}
+    />
     <div class="mx-4 mb-4">
       <h2 class="font-title font-bold text-3xl">Members</h2>
       <Supporters client:only="vue" propertyAddress={tenant?.propertyAddress} />

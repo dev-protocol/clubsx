@@ -13,11 +13,19 @@ export type Tenants = ReadonlyArray<Tenant>
 
 export const tenants: Tenants = [
   {
-    id: 'my-domain',
-    name: 'My Name',
-    url: 'https://my-dao.example.com',
+    id: 'temples',
+    name: 'TemplesDAO',
+    twitterHandle: '@templesdao',
+    description: 'DAO that makes the next 1000 years',
+    url: 'https://temples.clubs.stakes.social',
+    propertyAddress: '0x541f7914ed2a4a8b477edc711fa349a77983f3ad',
+  },
+  {
+    id: 'kogenji',
+    name: 'Kogenji',
+    twitterHandle: '@templesdao',
     description: '',
-    twitterHandle: '',
-    propertyAddress: '0x1E09dcf341c62e2Ea155dA247ecB94627AA0bcaf',
+    url: 'https://kogenji.clubs.stakes.social',
+    propertyAddress: '0x541f7914ed2a4a8b477edc711fa349a77983f3ad',
   },
 ] as const

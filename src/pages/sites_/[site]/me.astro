@@ -14,7 +14,11 @@ const tenant = tenantBy(Astro.props)
   <div
     class="lg:container relative mx-auto lg:pt-12 grid lg:gap-12 lg:grid-cols-[minmax(290px,_1fr)_4fr]"
   >
-    <Sidebar client:load propertyAddress={tenant?.propertyAddress} />
+    <Sidebar
+      client:load
+      propertyAddress={tenant?.propertyAddress}
+      tenantName={tenant?.name}
+    />
     <div>
       <div class="mb-8">
         <Membership client:only="vue" propertyAddress={tenant?.propertyAddress}
