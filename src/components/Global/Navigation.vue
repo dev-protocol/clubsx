@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Navbar tenantName={tenantName} />
+    <Navbar tenantName="{tenantName}" />
   </div>
 </template>
 
@@ -15,6 +15,6 @@ export default defineComponent({
   },
   components: {
     Navbar,
-  }
+  },
 })
 </script>

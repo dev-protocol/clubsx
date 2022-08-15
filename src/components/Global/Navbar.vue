@@ -5,7 +5,7 @@
       <a
         href="/"
         class="py-4 font-title font-bold text-gray-900 dark:text-white"
-        >{{tenantName}}</a
+        >{{ tenantName }}</a
       >
     </h1>
     <div class="flex items-center gap-4">
@@ -73,7 +73,7 @@ import { defineComponent } from '@vue/runtime-core'
 
 export default defineComponent({
   props: {
-    tenantName: String
+    tenantName: String,
   },
   data() {
     return {
