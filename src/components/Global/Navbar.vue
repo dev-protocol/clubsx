@@ -5,7 +5,7 @@
       <a
         href="/"
         class="py-4 font-title font-bold text-gray-900 dark:text-white"
-        >You DAO-Name</a
+        >{{tenantName}}</a
       >
     </h1>
     <div class="flex items-center gap-4">
@@ -67,10 +67,14 @@
   </header>
 </template>
 
-<script>
+<script lang="ts">
 import ConnectButton from '@components/Wallet/ConnectButton.vue'
+import { defineComponent } from '@vue/runtime-core'
 
-export default {
+export default defineComponent({
+  props: {
+    tenantName: String
+  },
   data() {
     return {
       menuIsOpen: false,
@@ -84,5 +88,5 @@ export default {
   components: {
     ConnectButton,
   },
-}
+})
 </script>

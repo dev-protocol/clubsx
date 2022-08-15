@@ -5,7 +5,7 @@ import Supporters from '@components/Members/Supporters.vue'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
 import { tenantBy } from '@fixtures/data/tenants'
 
-const tenant = tenantBy(Astro.props)
+const tenant = tenantBy(Astro.params)
 ---
 
 <Layout metaTitle="Dev Protocol | An open protocol for Creator Economy">
