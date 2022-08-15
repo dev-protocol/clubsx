@@ -29,7 +29,7 @@ export default function Cards() {
             >
               <div className="aspect-w-3 aspect-h-4 bg-gray-200 group-hover:opacity-75 sm:aspect-none sm:h-96">
                 <img
-                  src={product.imageSrc}
+                  src={product.payload}
                   alt={product.imageAlt}
                   className="h-full w-full object-cover object-center sm:h-full sm:w-full"
                 />
