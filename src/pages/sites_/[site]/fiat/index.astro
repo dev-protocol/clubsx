@@ -1,0 +1,158 @@
+---
+import Layout from '@layouts/Default.astro'
+import Footer from '@components/Global/Footer.astro'
+import Cards from '@components/list/cards'
+
+const tdStyles = 'border border-slate-500 px-4 py-2 w-1/3'
+---
+
+<Layout metaTitle="Buy NFTs with FIAT">
+  <div class="container mx-auto">
+    <h1 class="font-title font-bold mb-12 text-4xl">Buy NFTs with FIAT</h1>
+
+    <div
+      class="bg-gradient-to-l from-[#261746] via-[#2F2325] to-black rounded-xl py-32 px-4 font-bold text-2xl font-title mb-14"
+    >
+      Do you still not have ETH? You can buy NFT collections with your regular
+      credit card here.
+    </div>
+
+    <div class="mb-4">
+      For purchase with FIAT, unlike purchase with ETH, you get NFT with various
+      functionalities excluded.
+    </div>
+
+    <a href="/fiat#faq" class="bg-[#D500E6] text-white rounded px-7 py-2"
+      >FAQ
+    </a>
+
+    <Cards />
+
+    <section id="faq" class="mb-12">
+      <h2 class="font-title font-bold mb-12 text-4xl">FAQ</h2>
+      <div class="mb-12">What is the flow of the NFT purchase?</div>
+
+      <div class="flex flex-col">
+        <div class="flex justify-center mb-2.5">
+          <div class="inline border border-white rounded py-8 px-20">
+            Choose an NFT
+          </div>
+        </div>
+
+        <div class="flex justify-center mb-2.5">
+          <i class="arrow-long-down"></i>
+        </div>
+
+        <div class="flex justify-center mb-2.5">
+          <div class="inline border border-white rounded py-8 px-20">
+            Checkout with Stripe
+          </div>
+        </div>
+
+        <div class="flex justify-center mb-2.5">
+          <i class="arrow-long-down"></i>
+        </div>
+
+        <div class="flex justify-center mb-2.5">
+          <div class="inline border border-white rounded py-8 px-20">
+            Send the wallet address form on Airtable
+          </div>
+        </div>
+
+        <div class="flex justify-center mb-2.5">
+          <i class="arrow-long-down"></i>
+        </div>
+
+        <div class="flex justify-center mb-2.5">
+          <div class="inline border border-white rounded py-8 px-20">
+            NFT will be sent within 5 days
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="mb-12">
+        How does the NFT differ between purchase with FIAT and purchase with
+        ETH?
+      </div>
+
+      <div class="flex justify-center">
+        <table
+          class="table rounded w-full rounded max-w-2xl border-collapse border-none"
+        >
+          <thead>
+            <tr>
+              <th class={`${tdStyles} rounded`}></th>
+              <th class={tdStyles}>FIAT</th>
+              <th class={`${tdStyles} rounded`}>ETH</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class={tdStyles}>Limited Art NFT</td>
+              <td class={`${tdStyles} text-right`}>✓</td>
+              <td class={`${tdStyles} text-right`}>✓</td>
+            </tr>
+            <tr>
+              <td class={tdStyles}>Join the DAO</td>
+              <td class={`${tdStyles} text-right`}>✓</td>
+              <td class={`${tdStyles} text-right`}>✓</td>
+            </tr>
+            <tr>
+              <td class={tdStyles}>Redeem perks</td>
+              <td class={`${tdStyles} text-right`}>✓</td>
+              <td class={`${tdStyles} text-right`}>✓</td>
+            </tr>
+            <tr>
+              <td class={tdStyles}>$DEV Yielding Reward</td>
+              <td class={`${tdStyles} text-right`}>-</td>
+              <td class={`${tdStyles} text-right`}>✓</td>
+            </tr>
+            <tr>
+              <td class={tdStyles}>Withdraw Locked $DEV</td>
+              <td class={`${tdStyles} text-right`}>-</td>
+              <td class={`${tdStyles} text-right`}>✓</td>
+            </tr>
+            <tr>
+              <td class={tdStyles}>$DEV Additional Staking</td>
+              <td class={`${tdStyles} text-right`}>-</td>
+              <td class={`${tdStyles} text-right`}>✓</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+  <Footer />
+</Layout>
+
+<style>
+  /** credit to https://css.gg/arrow-long-down */
+  .arrow-long-down {
+    box-sizing: border-box;
+    position: relative;
+    display: block;
+    transform: scale(var(--ggs, 1));
+    border-right: 2px solid transparent;
+    border-left: 2px solid transparent;
+    box-shadow: inset 0 0 0 2px;
+    height: 42px;
+    width: 6px;
+    color: white;
+  }
+  .arrow-long-down::after {
+    content: '';
+    display: block;
+    box-sizing: border-box;
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-bottom: 2px solid;
+    border-right: 2px solid;
+    transform: rotate(45deg);
+    bottom: 0;
+    left: -2px;
+    color: white;
+  }
+</style>
