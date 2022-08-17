@@ -17,7 +17,11 @@
 
 import { products } from '@constants/products'
 
-export default function Cards() {
+type Params = {
+  currency: 'ETH' | 'USD'
+}
+
+export default function Cards({ currency }: Params) {
   return (
     <div className="bg-black">
       <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -36,7 +40,12 @@ export default function Cards() {
               </div>
               <div className="flex flex-1 flex-col space-y-2 p-4">
                 <h3 className="font-Syne mt-[32px] text-4xl font-normal text-gray-900">
-                  <a href={`buy/${product.id}?input=eth`}>
+                  {/* TODO: Link when using fiat */}
+                  <a
+                    href={
+                      currency === 'ETH' ? `buy/${product.id}?input=eth` : '#'
+                    }
+                  >
                     <span aria-hidden="true" className="absolute inset-0" />
                     {product.name}
                   </a>
@@ -46,7 +55,9 @@ export default function Cards() {
                     Price
                   </p>
                   <p className="font-DMSans text-2xl font-normal text-[#000000]">
-                    Ξ{product.price}
+                    {currency === 'USD'
+                      ? `$${product.priceUsd.toLocaleString()}`
+                      : `Ξ${product.priceEth}`}
                   </p>
                   <p className="font-Syne mt-[10px] text-lg font-normal text-[#88AEFF]">
                     {product.left} left
