@@ -17,7 +17,7 @@
   "devDependencies": {
     "@types/dotenv": "8.2.0",
     "@types/ramda": "0.28.15",
-    "@types/react": "^18.0.17",
+    "@types/react": "18.0.17",
     "autoprefixer": "10.4.8",
     "dotenv": "16.0.1",
     "eslint": "8.22.0",
