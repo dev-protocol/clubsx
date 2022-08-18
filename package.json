@@ -8,7 +8,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "lint": "yarn lint:eslint && yarn lint:prettier && yarn lint:prettier:astro",
-    "lint:eslint": "eslint --fix '**/*.{js,mjs,cjs}'",
+    "lint:eslint": "eslint --fix \"**/*.{js,mjs,cjs}\"",
     "lint:prettier": "prettier -w --ignore-path .astro.prettierignore --no-error-on-unmatched-pattern .",
     "lint:prettier:astro": "yarn prettier -w **/*.astro || echo '🙈 > ignored some errors of prettier for astro'",
     "prepare": "husky install",

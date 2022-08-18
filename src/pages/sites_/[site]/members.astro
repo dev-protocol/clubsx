@@ -1,5 +1,6 @@
 ---
 import Layout from '@layouts/Default.astro'
+import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
 
 import Supporters from '@components/Members/Supporters.vue'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
@@ -9,9 +10,7 @@ const tenant = tenantBy(Astro.params)
 ---
 
 <Layout metaTitle="Dev Protocol | An open protocol for Creator Economy">
-  <div
-    class="lg:container relative mx-auto lg:pt-12 grid lg:gap-12 lg:grid-cols-[minmax(290px,_1fr)_4fr]"
-  >
+  <CLBWrapper>
     <Sidebar
       client:load
       propertyAddress={tenant?.propertyAddress}
@@ -21,5 +20,5 @@ const tenant = tenantBy(Astro.params)
       <h2 class="font-title font-bold text-3xl">Members</h2>
       <Supporters client:only="vue" propertyAddress={tenant?.propertyAddress} />
     </div>
-  </div>
+  </CLBWrapper>
 </Layout>

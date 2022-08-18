@@ -1,5 +1,5 @@
 <template>
-  <header class="flex items-center justify-between px-8 py-4 font-body">
+  <header class="flex items-center justify-between px-4 py-4 font-body lg:px-8">
     <h1>
       <!-- Fetch DAO name from YAML config -->
       <a
@@ -11,54 +11,44 @@
     <div class="flex items-center gap-4">
       <ConnectButton client:only="vue" />
       <div class="relative" ref="menu">
-        <button class="rounded border p-2" @click="toggle">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M4 6h16M4 12h16m-7 6h7"
-            />
-          </svg>
-        </button>
+        <HSButton type="outlined" @click.prevent="toggle">
+          <slot name="icon">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M4 6h16M4 12h16m-7 6h7"
+              />
+            </svg>
+          </slot>
+        </HSButton>
         <ul
-          v-if="menuIsOpen"
-          class="absolute right-0 z-50 mt-2 w-48 rounded border border-slate-800 bg-black p-2 shadow"
+          v-show="menuIsOpen"
+          class="absolute right-0 z-50 mt-2 w-48 rounded bg-primary-400 p-2 shadow"
         >
-          <!-- Links and social media name will fetched through yaml -->
           <li>
             <a
-              href="https://stakes.social/"
-              class="inline-block w-full rounded px-4 py-2 hover:bg-neutral-900"
+              href="#"
+              class="inline-block w-full rounded px-4 py-2 hover:bg-primary-200"
               target="_blank"
               rel="norefferer noopener"
-              >Social media1</a
+              >Stakes.social</a
             >
           </li>
-          <hr class="my-4 border-slate-50/20" />
           <li>
             <a
               href="https://www.youtube.com/user/suiundo/"
-              class="inline-block w-full rounded px-4 py-2 hover:bg-neutral-900"
+              class="inline-block w-full rounded px-4 py-2 hover:bg-primary-200"
               target="_blank"
               rel="norefferer noopener"
-              >Social media2</a
-            >
-          </li>
-          <hr class="my-4 border-slate-50/20" />
-          <li>
-            <a
-              href="https://www.youtube.com/user/suiundo/"
-              class="inline-block w-full rounded px-4 py-2 hover:bg-neutral-900"
-              target="_blank"
-              rel="norefferer noopener"
-              >More social media</a
+              >YouTube</a
             >
           </li>
         </ul>
@@ -68,7 +58,8 @@
 </template>
 
 <script lang="ts">
-import ConnectButton from '@components/Wallet/ConnectButton.vue'
+import ConnectButton from '../Wallet/ConnectButton.vue'
+import HSButton from '../Primitives/Hashi/HSButton.vue'
 import { defineComponent } from '@vue/runtime-core'
 
 export default defineComponent({
@@ -81,11 +72,23 @@ export default defineComponent({
     }
   },
   methods: {
-    toggle() {
+    toggle(e) {
       this.menuIsOpen = !this.menuIsOpen
     },
+    close(e) {
+      if (!this.$el.contains(e.target)) {
+        this.menuIsOpen = false
+      }
+    },
+  },
+  mounted() {
+    document.addEventListener('click', this.close)
+  },
+  beforeDestroy() {
+    document.removeEventListener('click', this.close)
   },
   components: {
+    HSButton,
     ConnectButton,
   },
 })

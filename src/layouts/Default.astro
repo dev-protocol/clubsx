@@ -1,12 +1,13 @@
 ---
 import Navbar from '@components/Global/Navbar.vue'
 import { connectionId } from '@constants/connection'
+import { tenants } from '@constants/tenants'
 import { tenantBy } from '@fixtures/data/tenants'
 import '@styles/global.scss'
 
 const { metaTitle } = Astro.props
 
-const tenant = tenantBy(Astro.params)
+const tenant = Astro.params.site ? tenantBy(Astro.params) : tenants[0]
 
 if (!tenant) {
   throw new Error('No tenant found')

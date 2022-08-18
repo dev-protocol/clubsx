@@ -1,23 +1,19 @@
 <template>
-  <div class="grid justify-items-start gap-2">
-    <img
-      v-if="badgeImageSrc"
-      :src="badgeImageSrc"
-      class="w-ful h-auto rounded"
-    />
-    <Skeleton v-if="!badgeImageSrc" class="min-h-[16rem] w-full" />
-    <div class="mb-2 font-title text-2xl font-bold">{{ title }}</div>
-    <div class="mb-2 uppercase">{{ omittedAmount }} ${{ currency }}</div>
-    <a :href="idLink">
-      <button class="rounded-sm border bg-gray-600 p-2 px-4">Select</button>
-    </a>
-  </div>
+  <CLBTier
+    :title="title"
+    :subtitle="`${omittedAmount} $${currency}`"
+    :media="badgeImageSrc"
+  >
+    <HSButton :link="idLink" type="filled">Select</HSButton>
+  </CLBTier>
 </template>
 
 <script>
 import { defineComponent } from '@vue/runtime-core'
 import BigNumber from 'bignumber.js'
 import Skeleton from '@components/Global/Skeleton.vue'
+import HSButton from '../Primitives/Hashi/HSButton.vue'
+import CLBTier from '@components/Primitives/CLBTier.vue'
 
 export default defineComponent({
   name: 'QuestCard',
@@ -38,6 +34,6 @@ export default defineComponent({
       }`
     },
   },
-  components: { Skeleton },
+  components: { CLBTier, HSButton, Skeleton },
 })
 </script>
