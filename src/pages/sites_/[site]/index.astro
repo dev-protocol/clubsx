@@ -1,6 +1,7 @@
 ---
 import Layout from '@layouts/Default.astro'
 
+import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
 import Footer from '@components/Global/Footer.astro'
 import Hero from '@components/Home/Hero.vue'
@@ -18,9 +19,7 @@ const tenant = tenantBy(Astro.params)
         class="h-full w-full object-cover opacity-80"
       />
     </div>
-    <div
-      class="lg:container relative mx-auto lg:pt-12 grid lg:gap-12 lg:grid-cols-[minmax(290px,_1fr)_4fr]"
-    >
+    <CLBWrapper>
       <Sidebar
         client:load
         propertyAddress={tenant?.propertyAddress}
@@ -237,7 +236,7 @@ const tenant = tenantBy(Astro.params)
           <JoinClub client:idle propertyAddress={tenant?.propertyAddress} />
         </div>
       </article>
-    </div>
+    </CLBWrapper>
   </div>
   <Footer />
 </Layout>
