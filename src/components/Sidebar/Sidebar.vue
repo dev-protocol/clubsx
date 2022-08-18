@@ -82,10 +82,11 @@
           </aside>
           <HSButton type="filled fullwidth" link="/join">Join</HSButton>
           <div class="grid w-full gap-3">
+            <HSButton link="/community">Community</HSButton>
             <HSButton link="/perks">Perks</HSButton>
             <HSButton link="/quests">Quests</HSButton>
-            <HSButton link="#">Updates</HSButton>
-            <HSButton link="#">Vote</HSButton>
+            <HSButton link="#" :isDisabled="true">Updates</HSButton>
+            <HSButton link="#" :isDisabled="true">Vote</HSButton>
           </div>
         </section>
       </nav>

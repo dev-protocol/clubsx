@@ -7,6 +7,7 @@
       name="input"
       :value="value"
       @change="action"
+      :checked="checked"
     />
     <div class="grid grid-cols-[max-content_1fr] items-center gap-3">
       <img
@@ -27,7 +28,7 @@
 <script>
 export default {
   name: 'CLBRadio',
-  props: ['action', 'value', 'label', 'helper', 'media', 'mediaAlt'],
+  props: ['action', 'value', 'label', 'helper', 'media', 'mediaAlt', 'checked'],
 }
 </script>
 

@@ -3,6 +3,7 @@
     v-if="!link"
     v-bind:class="`hs-button${type && ' ' + assertType(type)}`"
     role="button"
+    :disabled="isDisabled"
   >
     <i v-if="isIconVisible" class="hs-button__icon"
       ><slot name="icon"></slot
@@ -14,7 +15,7 @@
     v-else
     v-bind:class="`hs-button${type && ' ' + assertType(type)}`"
     role="link"
-    v-bind:href="link"
+    :[href]="link"
   >
     <i v-if="isIconVisible" class="hs-button__icon"
       ><slot name="icon"></slot
@@ -54,6 +55,9 @@ export default {
         this.$slots.icon().findIndex((o) => o.type !== Comment) !== -1
       )
     },
+    href() {
+      return this.isDisabled ? null : 'href'
+    },
   },
   methods: {
     assertType(type) {
@@ -71,5 +75,10 @@ export default {
 .hs-button {
   --hs-button-width: auto;
   flex-flow: row nowrap;
+
+  &[role='link']:not([href]) {
+    pointer-events: none;
+    --hs-button-ink: #ffffff75;
+  }
 }
 </style>

@@ -13,6 +13,7 @@
         helper="Best way to sustainably support with staking."
         value="dev"
         :action="switchInputs"
+        :checked="true"
       />
       <CLBRadio
         label="$ETH"
