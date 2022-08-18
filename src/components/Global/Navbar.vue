@@ -5,7 +5,7 @@
       <a
         href="/"
         class="py-4 font-title font-bold text-gray-900 dark:text-white"
-        >Your DAO-Name</a
+        >{{ tenantName }}</a
       >
     </h1>
     <div class="flex items-center gap-4">
@@ -57,11 +57,15 @@
   </header>
 </template>
 
-<script>
+<script lang="ts">
 import ConnectButton from '../Wallet/ConnectButton.vue'
 import HSButton from '../Primitives/Hashi/HSButton.vue'
+import { defineComponent } from '@vue/runtime-core'
 
-export default {
+export default defineComponent({
+  props: {
+    tenantName: String,
+  },
   data() {
     return {
       menuIsOpen: false,
@@ -87,5 +91,5 @@ export default {
     HSButton,
     ConnectButton,
   },
-}
+})
 </script>

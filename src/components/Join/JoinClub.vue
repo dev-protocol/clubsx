@@ -61,7 +61,6 @@ import CLBRadio from '@components/Primitives/CLBRadio.vue'
 const provider = new providers.JsonRpcProvider(
   import.meta.env.PUBLIC_WEB3_PROVIDER_URL
 )
-const tokenAddress = import.meta.env.PUBLIC_PROPERTY_ADDRESS
 
 type Data = {
   currency: 'dev' | 'eth'
@@ -72,6 +71,9 @@ type Data = {
 
 export default defineComponent({
   name: 'JoinClub',
+  props: {
+    propertyAddress: String,
+  },
   data(): Data {
     return {
       currency: 'dev',
@@ -86,7 +88,7 @@ export default defineComponent({
     this.tiers = await composeTiers({
       sourceTiers,
       provider,
-      tokenAddress,
+      tokenAddress: this.propertyAddress ?? '',
     })
   },
   methods: {

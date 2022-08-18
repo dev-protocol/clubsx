@@ -4,11 +4,14 @@ import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
 
 import HSButton from '@components/Primitives/Hashi/HSButton.vue'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
+import { tenantBy } from '@fixtures/data/tenants'
+
+const tenant = tenantBy(Astro.params)
 // import Quests from '@components/Quests/Quests.astro'
 ---
 
 <Layout metaTitle="Quests">
-  <CLBWrappwe>
+  <CLBWrapper>
     <Sidebar client:load />
     <section class="quests">
       <article class="mb-6">
@@ -33,12 +36,17 @@ import Sidebar from '@components/Sidebar/Sidebar.vue'
         </div>
       </article>
     </section>
-  </CLBWrappwe>
+  </CLBWrapper>
 </Layout>
 <style lang="scss">
   .quests-digest {
     /* eslint-disable no-eval */
-    background: linear-gradient(-125deg, #261746 30%, #463537 52.78%, rgba(142, 93, 82, 0) 99.52%);
+    background: linear-gradient(
+      -125deg,
+      #261746 30%,
+      #463537 52.78%,
+      rgba(142, 93, 82, 0) 99.52%
+    );
   }
   .quests__image {
     /* eslint-disable no-eval */

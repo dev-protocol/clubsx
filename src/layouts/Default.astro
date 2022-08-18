@@ -1,15 +1,25 @@
 ---
-import Navigation from '@components/Global/Navigation.vue'
+import Navbar from '@components/Global/Navbar.vue'
 import { connectionId } from '@constants/connection'
+import { tenants } from '@constants/tenants'
+import { tenantBy } from '@fixtures/data/tenants'
 import '@styles/global.scss'
 
 const { metaTitle } = Astro.props
-const title = metaTitle
-  ? `${import.meta.env.PUBLIC_SITE_NAME}: ${metaTitle}`
-  : import.meta.env.PUBLIC_SITE_NAME
-const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'http://localhost');
----
 
+const tenant = Astro.params.site ? tenantBy(Astro.params) : tenants[0]
+
+if (!tenant) {
+  throw new Error('No tenant found')
+}
+
+const title = metaTitle ? `${tenant.name} : ${metaTitle}` : tenant.name
+
+const canonicalURL = new URL(
+  Astro.url.pathname,
+  Astro.site ?? 'http://localhost'
+)
+---
 
 <!DOCTYPE html>
 <html class="dark" lang="en">
@@ -18,35 +28,19 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'http://localhost
     <meta name="viewport" content="width=device-width" />
     <title>{title}</title>
     <link rel="icon" type="image/png" href="/favicon.png" />
-    <meta
-      name="description"
-      content={`${import.meta.env.PUBLIC_SITE_DESCRIPTION}`}
-    />
+    <meta name="description" content={`${tenant.description}`} />
     <meta property="og:title" content={title} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={Astro.url.href} />
-    <meta
-      property="og:image"
-      content={`${canonicalURL}/assets/og.png`}
-    />
-    <meta
-      property="og:description"
-      content={import.meta.env.PUBLIC_SITE_DESCRIPTION}
-    />
-    <meta property="og:site_name" content={import.meta.env.PUBLIC_SITE_NAME} />
-    <meta name="twitter:site" content={import.meta.env.PUBLIC_TWITTER_USER} />
-    <meta name="twitter:creator" content={import.meta.env.PUBLIC_TWITTER_USER}
-    />
+    <meta property="og:image" content={`${canonicalURL}/assets/og.png`} />
+    <meta property="og:description" content={tenant.description} />
+    <meta property="og:site_name" content={tenant.name} />
+    <meta name="twitter:site" content={tenant.twitterHandle} />
+    <meta name="twitter:creator" content={tenant.twitterHandle} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
-    <meta
-      name="twitter:description"
-      content={import.meta.env.PUBLIC_SITE_DESCRIPTION}
-    />
-    <meta
-      name="twitter:image"
-      content={`${canonicalURL}/assets/og.png`}
-    />
+    <meta name="twitter:description" content={tenant.description} />
+    <meta name="twitter:image" content={`${canonicalURL}/assets/og.png`} />
   </head>
 
   <body class="font-body bg-black text-white min-h-screen">
@@ -54,10 +48,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'http://localhost
       type="module"
       src="https://cdn.jsdelivr.net/npm/@devprotocol/elements@0.0.5/bundled/dev-connection.mjs"
     ></script>
-    <Navigation client:only="vue" />
+    <Navbar client:only="vue" tenantName={tenant?.name} />
     <main>
       <slot />
     </main>
-    <dev-connection id={connectionId}></dev-connection>
+    <dev-connection id={connectionId} />
   </body>
 </html>

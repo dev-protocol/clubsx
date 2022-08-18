@@ -4,8 +4,14 @@
     class="relative mx-auto grid items-start px-4 lg:container lg:grid-cols-[auto,_480px] lg:gap-12 lg:pt-12"
   >
     <section class="flex flex-col">
-      <h2 class="mb-8 font-title text-4xl font-bold">Join</h2>
-      <div v-if="currency === 'dev'" class="mb-8">
+      <h2 class="mb-8 font-title text-4xl font-bold">
+        <span v-if="page === 'BUY'">BUY</span>
+        <span v-if="page === 'JOIN'">JOIN</span>
+      </h2>
+      <div
+        v-if="usedCurrency === currencyOption.DEV || usePolygonWETH"
+        class="mb-8"
+      >
         <h3 class="mb-4 text-2xl">Approval</h3>
         <button
           @click="approve"
@@ -45,13 +51,15 @@
         </button>
       </div>
       <div class="mb-8">
-        <h3 class="mb-4 text-2xl">Stake</h3>
+        <h3 class="mb-4 text-2xl" v-if="page === 'BUY'">Purchase NFT</h3>
+        <h3 class="mb-4 text-2xl" v-if="page === 'JOIN'">Stake</h3>
         <button
           v-if="approveNeeded"
           disabled
           class="rounded-sm border border-gray-400 bg-gray-600 p-2 px-4 text-gray-400"
         >
-          Stake
+          <span v-if="page === 'BUY'">Buy</span>
+          <span v-if="page === 'JOIN'">Stake</span>
         </button>
         <button
           v-if="!approveNeeded"
@@ -80,7 +88,9 @@
               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
             ></path>
           </svg>
-          Stake
+
+          <span v-if="page === 'BUY'">Buy</span>
+          <span v-if="page === 'JOIN'">Stake</span>
         </button>
       </div>
     </section>
@@ -91,17 +101,26 @@
         <h3 class="mb-2 text-xl opacity-70">Purchase</h3>
         <p class="flex items-center text-2xl uppercase">
           <Skeleton
-            v-if="omittedAmountForInputCurrency === undefined"
+            v-if="
+              (usedCurrency == currencyOption.ETH && !ethAmount) ||
+              (usedCurrency == currencyOption.DEV && !devAmount)
+            "
             class="mr-4 inline-block h-[1.2em] w-24"
           />
-          {{ omittedAmountForInputCurrency }} ${{ currency }}
+
+          <span v-if="usedCurrency == currencyOption.DEV && devAmount"
+            >{{ devAmount }} $DEV</span
+          >
+          <span v-if="usedCurrency == currencyOption.ETH && ethAmount"
+            >{{ ethAmount }} $ETH</span
+          >
         </p>
         <aside
-          v-if="currency !== 'dev'"
+          v-if="usedCurrency !== currencyOption.DEV"
           class="mt-4 ml-4 border-l border-dp-black-200 pl-4"
         >
           <h4 class="text-md mb-2 opacity-70">Replace</h4>
-          <p class="text-sm uppercase">{{ amount }} $DEV</p>
+          <p class="text-sm uppercase">{{ devAmount }} $DEV</p>
         </aside>
       </section>
       <section class="p-4">
@@ -141,12 +160,11 @@ import { parse } from 'query-string'
 import { Subscription, zip } from 'rxjs'
 import { connectionId } from '@constants/connection'
 import { CurrencyOption } from '@constants/currencyOption'
-import { fetchEthForDev } from '@fixtures/utility'
+import { fetchDevForEth, fetchEthForDev } from '@fixtures/utility'
 import Skeleton from '@components/Global/Skeleton.vue'
-import { detectChain, stakeWithEthForPolygon } from '@fixtures/dev-kit'
+import { stakeWithEthForPolygon } from '@fixtures/dev-kit'
 
 type Data = {
-  amountForInputCurrency: UndefinedOr<string>
   apy: UndefinedOr<number>
   parsedAmount: BigNumberish
   approveNeeded: UndefinedOr<boolean>
@@ -155,6 +173,9 @@ type Data = {
   subscriptions: Subscription[]
   stakeSuccessful: boolean
   account?: string
+  ethAmount: UndefinedOr<string>
+  devAmount: UndefinedOr<string>
+  chain: UndefinedOr<number>
 }
 
 let providerPool: UndefinedOr<providers.BaseProvider>
@@ -163,79 +184,132 @@ export default defineComponent({
   props: {
     amount: Number,
     destination: String,
-    currency: String,
+    currency: String, // 'DEV' or 'ETH'
+    page: String, // 'JOIN or BUY'
   },
   data() {
     return {
-      amountForInputCurrency: undefined,
       apy: undefined,
-      parsedAmount: utils.parseUnits(this.amount.toString(), 18),
+      parsedAmount: this.amount
+        ? utils.parseUnits(this.amount.toString(), 18)
+        : 0,
       approveNeeded: undefined,
       subscriptions: [],
       stakeSuccessful: false,
       account: undefined,
       isApproving: false,
       isStaking: false,
+      ethAmount: undefined,
+      devAmount: undefined,
+      chain: undefined,
     } as Data
   },
   computed: {
-    omittedAmountForInputCurrency(): string | undefined {
-      return this.amountForInputCurrency
-        ? new BigNumber(this.amountForInputCurrency).dp(9).toFixed()
-        : undefined
-    },
     estimatedEarnings(): number | undefined {
-      return this.amount && this.apy
-        ? new BigNumber(this.amount * this.apy).dp(9).toNumber()
+      return this.devAmount && this.apy
+        ? new BigNumber(this.devAmount).times(this.apy).dp(9).toNumber()
         : undefined
     },
-    verifiedCurrency(): CurrencyOption {
+    verifiedInputCurrency(): CurrencyOption {
+      const query = parse(location.search)
+      const input = String(query.input).toLowerCase()
+      return input.toUpperCase() === 'ETH'
+        ? CurrencyOption.ETH
+        : CurrencyOption.DEV
+    },
+    verifiedPropsCurrency(): CurrencyOption {
       return this.currency?.toUpperCase() === 'ETH'
         ? CurrencyOption.ETH
         : CurrencyOption.DEV
+    },
+    usedCurrency(): CurrencyOption {
+      return this.verifiedPropsCurrency === CurrencyOption.ETH ||
+        this.verifiedInputCurrency === CurrencyOption.ETH
+        ? CurrencyOption.ETH
+        : CurrencyOption.DEV
+    },
+    usePolygonWETH(): boolean {
+      return (
+        this.usedCurrency === CurrencyOption.ETH &&
+        (this.chain === 137 || this.chain === 80001)
+      )
+    },
+    currencyOption() {
+      return CurrencyOption
     },
   },
   components: { Skeleton },
   async mounted() {
     const connection = getConnection(connectionId)
 
-    if (this.verifiedCurrency === CurrencyOption.ETH) {
+    if (this.usedCurrency === CurrencyOption.ETH) {
       this.approveNeeded = false
     }
     if (connection) {
-      const sub = zip(connection.provider, connection.account).subscribe(
-        async ([provider, account]) => {
-          providerPool = provider
-          this.account = account
-          await whenDefinedAll(
-            [providerPool, account, this.destination, this.amount],
-            async ([prov, userAddress, destination, amount]) => {
-              this.verifiedCurrency !== CurrencyOption.ETH &&
-                this.checkApproved(prov, userAddress, destination, amount)
-            }
-          )
-        }
-      )
+      const sub = zip(
+        connection.provider,
+        connection.account,
+        connection.chain
+      ).subscribe(async ([provider, account, chain]) => {
+        providerPool = provider
+        this.account = account
+        this.chain = chain
+        whenDefinedAll(
+          [providerPool, account, this.destination, this.amount],
+          async ([prov, userAddress, destination, amount]) => {
+            ;(this.usedCurrency !== CurrencyOption.ETH ||
+              this.usePolygonWETH) &&
+              this.checkApproved(
+                prov,
+                userAddress,
+                destination,
+                amount,
+                this.usePolygonWETH
+              )
+          }
+        )
+      })
       this.subscriptions.push(sub)
     }
     const provider = new providers.JsonRpcProvider(
       import.meta.env.PUBLIC_WEB3_PROVIDER_URL
     )
+    const chain = (await provider.getNetwork()).chainId
     estimationsAPY({ provider: providerPool || provider }).then(([apy]) => {
       this.apy = apy
     })
 
-    if (this.destination && this.amount) {
-      const amount =
-        this.verifiedCurrency === CurrencyOption.ETH
-          ? await fetchEthForDev({
-              provider: (providerPool || provider) as providers.BaseProvider,
-              tokenAddress: this.destination,
-              amount: this.amount,
-            }).then(utils.formatUnits)
-          : this.amount
-      this.amountForInputCurrency = amount?.toString()
-    }
+    whenDefinedAll(
+      [this.destination, this.amount],
+      async ([destination, amount]) => {
+        const [devAmount, ethAmount] = await Promise.all([
+          this.verifiedPropsCurrency === CurrencyOption.DEV
+            ? this.amount
+            : await fetchDevForEth({
+                provider,
+                tokenAddress: destination,
+                amount: amount,
+                chain,
+              }).then(utils.formatUnits),
+          this.verifiedPropsCurrency === CurrencyOption.ETH
+            ? this.amount
+            : await fetchEthForDev({
+                provider,
+                tokenAddress: destination,
+                amount: amount,
+              }).then(utils.formatUnits),
+        ])
+
+        this.devAmount = new BigNumber(devAmount ?? 0)
+          .dp(9)
+          .toFixed()
+          .toString()
+        this.ethAmount = new BigNumber(ethAmount ?? 0)
+          .dp(9)
+          .toFixed()
+          .toString()
+      }
+    )
   },
   destroyed() {
     for (const sub of this.subscriptions) {
@@ -247,12 +321,19 @@ export default defineComponent({
       whenDefinedAll(
         [providerPool, this.account, this.destination, this.parsedAmount],
         async ([prov, account, destination, amount]) => {
-          const res = await positionsCreate({
-            provider: prov,
-            destination,
-            amount: amount.toString(),
-            from: account,
-          })
+          const res = this.usePolygonWETH
+            ? await stakeWithEthForPolygon({
+                provider: prov,
+                propertyAddress: destination,
+                ethAmount: amount.toString(),
+                from: account,
+              }).then((res) => res.create())
+            : await positionsCreate({
+                provider: prov,
+                destination,
+                amount: amount.toString(),
+                from: account,
+              })
           whenDefined(res, async (results) => {
             const { waitOrSkipApproval } = await results.approveIfNeeded({
               amount: constants.MaxUint256.toString(),
@@ -270,14 +351,22 @@ export default defineComponent({
       provider: providers.BaseProvider,
       userAddress: string,
       destination: string,
-      amount: BigNumberish
+      amount: BigNumberish,
+      isPolygonWETH: boolean
     ) {
-      const res = await positionsCreate({
-        provider,
-        destination,
-        from: userAddress,
-        amount: amount.toString(),
-      })
+      const res = isPolygonWETH
+        ? await stakeWithEthForPolygon({
+            provider,
+            propertyAddress: destination,
+            from: userAddress,
+            ethAmount: amount.toString(),
+          }).then((res) => res.create())
+        : await positionsCreate({
+            provider,
+            destination,
+            from: userAddress,
+            amount: amount.toString(),
+          })
       this.approveNeeded = whenDefined(res, (x) => x.approvalNeeded)
     },
     async submitStake() {
@@ -289,15 +378,13 @@ export default defineComponent({
           this.parsedAmount?.toString(),
         ],
         async ([prov, account, destination, parsedAmount]) => {
-          if (this.verifiedCurrency === CurrencyOption.ETH) {
-            const chain = await detectChain(prov)
-
-            if (chain.chainId === 137 || chain.chainId === 80001) {
-              const res = await stakeWithEthForPolygon(
-                prov,
-                destination,
-                parsedAmount
-              )
+          if (this.usedCurrency === CurrencyOption.ETH) {
+            if (this.usePolygonWETH) {
+              const res = await stakeWithEthForPolygon({
+                provider: prov,
+                propertyAddress: destination,
+                ethAmount: parsedAmount,
+              })
               whenDefined(res, (x) => {
                 this.isStaking = true
                 x.create()
@@ -319,7 +406,7 @@ export default defineComponent({
                 provider: prov,
 
                 destination,
-                devAmount: parsedAmount,
+                ethAmount: parsedAmount,
               })
               whenDefined(res, (x) => {
                 this.isStaking = true

@@ -58,7 +58,7 @@
             <header
               class="grid justify-items-start gap-1 md:justify-items-center md:gap-2"
             >
-              <h2 class="font-title text-xl font-bold">Temples DAO</h2>
+              <h2 class="font-title text-xl font-bold">{{ tenantName }}</h2>
               <p class="flex items-center gap-2 font-body text-xs">
                 $TEMPL on
                 <img src="/assets/ETH.svg" class="h-[1.8em]" alt="Ethereum" />
@@ -101,6 +101,10 @@ import HSButton from '../Primitives/Hashi/HSButton.vue'
 export default {
   name: 'Sidebar',
   components: { HSButton },
+  props: {
+    propertyAddress: String,
+    tenantName: String,
+  },
   data() {
     return {
       members: 0,
@@ -110,8 +114,7 @@ export default {
   async created() {
     const providerURL = import.meta.env.PUBLIC_WEB3_PROVIDER_URL
     const provider = new providers.JsonRpcProvider(providerURL)
-    const propertyAddress = import.meta.env.PUBLIC_PROPERTY_ADDRESS
-    await detectStokensByPropertyAddress(provider, propertyAddress).then(
+    await detectStokensByPropertyAddress(provider, this.propertyAddress).then(
       (res) => {
         this.members = res.length
       }

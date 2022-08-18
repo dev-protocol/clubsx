@@ -9,36 +9,27 @@ const filteredQuests = quests.filter((quest) => quest.listed)
   <h2 class="text-3xl">Quests</h2>
   <p>Complete quests and collect additional badges.</p>
   <div
-    class="
-      grid
-      gap-8
-      md:grid-cols-2
-      items-center
-      justify-center
-      lg:px-0
-      md:text-left
-      p-4
-      text-black
-      dark:text-white
-    "
+    class="grid gap-8 md:grid-cols-2 items-center justify-center lg:px-0 md:text-left p-4 text-black dark:text-white"
   >
-    {filteredQuests.length > 0 ? (
-      filteredQuests.map((quest) => (
-        <div class="grid h-full justify-items-start">
-          <a href={`/quests/${quest.id}`}>
-            <div class="max-w-xl">
-              <QuestCard
-                title={quest.title}
-                questId={quest.id}
-                description={quest.description}
-                badgeImageSrc={quest.badgeImageSrc}
-              />
-            </div>
-          </a>
-        </div>
-      ))
-    ) : (
-      <div>no quests data</div>
-    )}
+    {
+      filteredQuests.length > 0 ? (
+        filteredQuests.map((quest) => (
+          <div class="grid h-full justify-items-start">
+            <a href={`/quests/${quest.id}`}>
+              <div class="max-w-xl">
+                <QuestCard
+                  title={quest.title}
+                  questId={quest.id}
+                  description={quest.description}
+                  badgeImageSrc={quest.badgeImageSrc}
+                />
+              </div>
+            </a>
+          </div>
+        ))
+      ) : (
+        <div>no quests data</div>
+      )
+    }
   </div>
 </section>
