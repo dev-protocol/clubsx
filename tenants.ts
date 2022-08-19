@@ -11,7 +11,49 @@ export default {
     plugins: [
       {
         name: 'buy',
-        path: './plugins/buy/index.astro',
+        path: './plugins/buy',
+        enable: true,
+        options: [],
+      },
+      {
+        name: 'fiat',
+        path: './plugins/fiat',
+        enable: true,
+        options: [],
+      },
+      {
+        name: 'join',
+        path: './plugins/join',
+        enable: true,
+        options: [],
+      },
+      {
+        name: 'me',
+        path: './plugins/me',
+        enable: true,
+        options: [],
+      },
+      {
+        name: 'members',
+        path: './plugins/members',
+        enable: true,
+        options: [],
+      },
+      {
+        name: 'nft',
+        path: './plugins/nft',
+        enable: true,
+        options: [],
+      },
+      {
+        name: 'perks',
+        path: './plugins/perks',
+        enable: true,
+        options: [],
+      },
+      {
+        name: 'quests',
+        path: './plugins/quests',
         enable: true,
         options: [],
       },
@@ -27,7 +69,49 @@ export default {
     plugins: [
       {
         name: 'buy',
-        path: './plugins/buy/index.astro',
+        path: './plugins/buy',
+        enable: true,
+        options: [],
+      },
+      {
+        name: 'fiat',
+        path: './plugins/fiat',
+        enable: true,
+        options: [],
+      },
+      {
+        name: 'join',
+        path: './plugins/join',
+        enable: true,
+        options: [],
+      },
+      {
+        name: 'me',
+        path: './plugins/me',
+        enable: true,
+        options: [],
+      },
+      {
+        name: 'members',
+        path: './plugins/members',
+        enable: true,
+        options: [],
+      },
+      {
+        name: 'nft',
+        path: './plugins/nft',
+        enable: true,
+        options: [],
+      },
+      {
+        name: 'perks',
+        path: './plugins/perks',
+        enable: true,
+        options: [],
+      },
+      {
+        name: 'quests',
+        path: './plugins/quests',
         enable: true,
         options: [],
       },

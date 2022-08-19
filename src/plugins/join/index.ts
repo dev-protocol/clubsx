@@ -1,4 +1,4 @@
-import { products } from '@constants/products'
+import { tiers } from '@constants/tier'
 import {
   ClubsFunctionGetAdminPaths,
   ClubsFunctionGetPagePaths,
@@ -9,7 +9,7 @@ import { default as Id } from './[id].astro'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async () => [
   { paths: [''], component: Index },
-  ...products.map(({ id }) => ({ paths: ['buy', id], component: Id })),
+  ...tiers.map(({ id }) => ({ paths: ['join', id], component: Id })),
 ]
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async () => []

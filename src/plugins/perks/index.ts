@@ -1,15 +1,12 @@
-import { products } from '@constants/products'
 import {
   ClubsFunctionGetAdminPaths,
   ClubsFunctionGetPagePaths,
   ClubsFunctionPlugin,
 } from '@devprotocol/clubs-core'
 import { default as Index } from './index.astro'
-import { default as Id } from './[id].astro'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async () => [
   { paths: [''], component: Index },
-  ...products.map(({ id }) => ({ paths: ['buy', id], component: Id })),
 ]
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async () => []

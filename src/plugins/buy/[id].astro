@@ -17,7 +17,7 @@ const tenant = tenantBy(Astro.params)
 <Layout metaTitle="buy nft checkout">
   <JoinCheckout
     client:only
-    amount={product?.price}
+    amount={product?.priceEth}
     destination={tenant?.propertyAddress}
     currency={'ETH'}
     page="BUY"
