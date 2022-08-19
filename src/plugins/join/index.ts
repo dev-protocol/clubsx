@@ -8,7 +8,7 @@ import { default as Index } from './index.astro'
 import { default as Id } from './[id].astro'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async () => [
-  { paths: [''], component: Index },
+  { paths: ['join'], component: Index },
   ...tiers.map(({ id }) => ({ paths: ['join', id], component: Id })),
 ]
 

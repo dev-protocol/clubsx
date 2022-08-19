@@ -7,7 +7,7 @@ import { default as Index } from './index.astro'
 import { default as Id } from './[id].astro'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async () => [
-  { paths: [''], component: Index },
+  { paths: ['quests'], component: Index },
   { paths: ['quests', 'quest_starter'], component: Id },
   { paths: ['quests', 'quest_stake_100'], component: Id },
   { paths: ['quests', 'quest_stake_500'], component: Id },

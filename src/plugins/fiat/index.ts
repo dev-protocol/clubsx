@@ -6,7 +6,7 @@ import {
 import { default as Index } from './index.astro'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async () => [
-  { paths: [''], component: Index },
+  { paths: ['fiat'], component: Index },
 ]
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async () => []
