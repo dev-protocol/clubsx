@@ -1,16 +1,13 @@
 ---
-import Layout from '@layouts/Default.astro'
-
 import Sidebar from '@components/Sidebar/Sidebar.vue'
 import Footer from '@components/Global/Footer.astro'
-import Hero from '@components/Home/Hero.vue'
 import JoinClub from '@components/Join/JoinClub.vue'
 import { tenantBy } from '@fixtures/data/tenants'
 
 const tenant = tenantBy(Astro.params)
 ---
 
-<Layout metaTitle="">
+<div>
   <div class="relative">
     <div class="absolute w-full h-[24rem] lg:h-[38rem]">
       <img
@@ -245,4 +242,4 @@ const tenant = tenantBy(Astro.params)
     </div>
   </div>
   <Footer />
-</Layout>
+</div>

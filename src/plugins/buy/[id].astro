@@ -1,6 +1,4 @@
 ---
-import Layout from '@layouts/Default.astro'
-
 import JoinCheckout from '@components/Join/JoinCheckout.vue'
 import { products } from '@constants/products'
 import { tenantBy } from '@fixtures/data/tenants'
@@ -14,12 +12,10 @@ const product = products.find(({ id: _id }) => _id === id)
 const tenant = tenantBy(Astro.params)
 ---
 
-<Layout metaTitle="buy nft checkout">
-  <JoinCheckout
-    client:only
-    amount={product?.priceEth}
-    destination={tenant?.propertyAddress}
-    currency={'ETH'}
-    page="BUY"
-  />
-</Layout>
+<JoinCheckout
+  client:only
+  amount={product?.priceEth}
+  destination={tenant?.propertyAddress}
+  currency={'ETH'}
+  page="BUY"
+/>

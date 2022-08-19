@@ -1,17 +1,13 @@
 ---
-import Layout from '@layouts/Default.astro'
-
 import Footer from '@components/Global/Footer.astro'
 import Hero from '@components/Hero/hero'
 import Hero2 from '@components/Hero/hero2'
 import Cards from '@components/list/cards'
 ---
 
-<Layout metaTitle="">
-  <div class="bg-black">
-    <Hero />
-    <Hero2 />
-    <Cards currency="ETH" />
-  </div>
-  <Footer />
-</Layout>
+<div class="bg-black">
+  <Hero />
+  <Hero2 />
+  <Cards currency="ETH" />
+</div>
+<Footer />

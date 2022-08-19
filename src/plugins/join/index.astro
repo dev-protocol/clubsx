@@ -1,6 +1,4 @@
 ---
-import Layout from '@layouts/Default.astro'
-
 import JoinClub from '@components/Join/JoinClub.vue'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
 import Footer from '@components/Global/Footer.astro'
@@ -9,18 +7,16 @@ import { tenantBy } from '@fixtures/data/tenants'
 const tenant = tenantBy(Astro.params)
 ---
 
-<Layout metaTitle="Dev Protocol | An open protocol for Creator Economy">
-  <div
-    class="lg:container relative mx-auto lg:pt-12 grid lg:gap-12 lg:grid-cols-[minmax(290px,_1fr)_4fr]"
-  >
-    <Sidebar
-      client:load
-      propertyAddress={tenant?.propertyAddress}
-      tenantName={tenant?.name}
-    />
-    <div class="p-4">
-      <JoinClub client:only propertyAddress={tenant?.propertyAddress} />
-    </div>
+<div
+  class="lg:container relative mx-auto lg:pt-12 grid lg:gap-12 lg:grid-cols-[minmax(290px,_1fr)_4fr]"
+>
+  <Sidebar
+    client:load
+    propertyAddress={tenant?.propertyAddress}
+    tenantName={tenant?.name}
+  />
+  <div class="p-4">
+    <JoinClub client:only propertyAddress={tenant?.propertyAddress} />
   </div>
-  <Footer />
-</Layout>
+</div>
+<Footer />

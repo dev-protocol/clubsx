@@ -1,6 +1,4 @@
 ---
-import Layout from '@layouts/Default.astro'
-
 import QuestDetail from '@components/QuestDetail/QuestDetail.vue'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
 import quests from '@components/Quests/quests.json'
@@ -21,20 +19,18 @@ const targetQuest = quests.filter(
 const tenant = tenantBy(Astro.params)
 ---
 
-<Layout metaTitle="D Club | Quest">
-  <div
-    class="lg:container relative mx-auto lg:pt-12 grid lg:gap-12 lg:grid-cols-[minmax(290px,_1fr)_4fr]"
-  >
-    <Sidebar
-      client:load
-      propertyAddress={tenant?.propertyAddress}
-      tenantName={tenant?.name}
-    />
-    <QuestDetail
-      questId={targetQuest?.id}
-      title={targetQuest?.title}
-      description={targetQuest?.description}
-      badgeImageSrc={targetQuest?.badgeImageSrc}
-    />
-  </div>
-</Layout>
+<div
+  class="lg:container relative mx-auto lg:pt-12 grid lg:gap-12 lg:grid-cols-[minmax(290px,_1fr)_4fr]"
+>
+  <Sidebar
+    client:load
+    propertyAddress={tenant?.propertyAddress}
+    tenantName={tenant?.name}
+  />
+  <QuestDetail
+    questId={targetQuest?.id}
+    title={targetQuest?.title}
+    description={targetQuest?.description}
+    badgeImageSrc={targetQuest?.badgeImageSrc}
+  />
+</div>
