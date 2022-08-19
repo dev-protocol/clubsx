@@ -8,7 +8,14 @@ export default {
     description: 'DAO that makes the next 1000 years',
     url: 'https://temples.clubs.stakes.social',
     propertyAddress: '0x541f7914ed2a4a8b477edc711fa349a77983f3ad',
-    plugins: [],
+    plugins: [
+      {
+        name: 'buy',
+        path: './plugins/buy/index.astro',
+        enable: true,
+        options: [],
+      },
+    ],
   }),
   kogenji: encode({
     id: 'kogenji',
@@ -17,6 +24,13 @@ export default {
     description: '',
     url: 'https://kogenji.clubs.stakes.social',
     propertyAddress: '0x541f7914ed2a4a8b477edc711fa349a77983f3ad',
-    plugins: [],
+    plugins: [
+      {
+        name: 'buy',
+        path: './plugins/buy/index.astro',
+        enable: true,
+        options: [],
+      },
+    ],
   }),
 }
