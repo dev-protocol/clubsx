@@ -1,21 +1,15 @@
 ---
 import JoinCheckout from '@components/Join/JoinCheckout.vue'
 import { products } from '@constants/products'
-import { tenantBy } from '@fixtures/data/tenants'
 
-export function getStaticPaths() {
-  return products.map(({ id }) => ({ params: { id } }))
-}
-
-const { id } = Astro.params
+const { id, propertyAddress } = Astro.props
 const product = products.find(({ id: _id }) => _id === id)
-const tenant = tenantBy(Astro.params)
 ---
 
 <JoinCheckout
   client:only
   amount={product?.priceEth}
-  destination={tenant?.propertyAddress}
+  destination={propertyAddress}
   currency={'ETH'}
   page="BUY"
 />

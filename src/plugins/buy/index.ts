@@ -7,9 +7,16 @@ import {
 import { default as Index } from './index.astro'
 import { default as Id } from './[id].astro'
 
-export const getPagePaths: ClubsFunctionGetPagePaths = async () => [
+export const getPagePaths: ClubsFunctionGetPagePaths = async (
+  _,
+  { propertyAddress }
+) => [
   { paths: ['buy'], component: Index },
-  ...products.map(({ id }) => ({ paths: ['buy', id], component: Id })),
+  ...products.map(({ id }) => ({
+    paths: ['buy', id],
+    component: Id,
+    props: { id, propertyAddress },
+  })),
 ]
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async () => []
