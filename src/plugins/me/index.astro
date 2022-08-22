@@ -1,4 +1,5 @@
 ---
+import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
 import Membership from '@components/Membership/Membership.vue'
 import Account from '@components/Account/Account.vue'
@@ -7,9 +8,7 @@ import { tenantBy } from '@fixtures/data/tenants'
 const tenant = tenantBy(Astro.props)
 ---
 
-<div
-  class="lg:container relative mx-auto lg:pt-12 grid lg:gap-12 lg:grid-cols-[minmax(290px,_1fr)_4fr]"
->
+<CLBWrapper>
   <Sidebar
     client:load
     propertyAddress={tenant?.propertyAddress}
@@ -20,10 +19,10 @@ const tenant = tenantBy(Astro.props)
       <Membership client:only="vue" propertyAddress={tenant?.propertyAddress} />
     </div>
     <!-- <div class='mb-8'>
-      <Badges />
-    </div> -->
+        <Badges />
+      </div> -->
     <div class="mb-8">
       <Account client:only="vue" propertyAddress={tenant?.propertyAddress} />
     </div>
   </div>
-</div>
+</CLBWrapper>

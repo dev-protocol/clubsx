@@ -1,8 +1,9 @@
 ---
+import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
 import Footer from '@components/Global/Footer.astro'
+import Perks from '@components/Perks/Perks.astro'
 import { tiers } from '@constants/tier'
-import { perks } from '@constants/perks'
 import { fetchBadgeImageSrc } from '@fixtures/utility'
 import { providers } from 'ethers'
 import { tenantBy } from '@fixtures/data/tenants'
@@ -18,15 +19,12 @@ const listOfTier = await Promise.all(
       tokenAddress: tenant?.propertyAddress ?? '',
       amount: tier.amount,
     })
-    const listOfPerk = perks.filter((perk) => perk.tier === tier.id)
-    return { ...tier, perks: listOfPerk, badgeImageSrc }
+    return { ...tier, badgeImageSrc }
   })
 )
 ---
 
-<div
-  class="lg:container relative mx-auto lg:pt-12 grid lg:gap-12 lg:grid-cols-[minmax(290px,_1fr)_4fr]"
->
+<CLBWrapper>
   <Sidebar
     client:load
     propertyAddress={tenant?.propertyAddress}
@@ -47,21 +45,11 @@ const listOfTier = await Promise.all(
                 </p>
               )}
             </header>
-            <div class="col-span-2 row-span-2 lg:col-auto lg:row-auto">
-              {tier.perks.map((perk) =>
-                perk.descriptions.map((desc) =>
-                  desc.lang === 'en_US' ? (
-                    <p class="text-md mb-2">{desc.description}</p>
-                  ) : (
-                    <p class="mb-2 text-sm opacity-30">{desc.description}</p>
-                  )
-                )
-              )}
-            </div>
+            <Perks tierId={tier.id} />
           </section>
         ))
       }
     </article>
   </div>
-</div>
+</CLBWrapper>
 <Footer />

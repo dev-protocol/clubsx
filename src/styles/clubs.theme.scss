@@ -1,0 +1,34 @@
+@use 'sass:map';
+
+$theme: (
+  primary: 'dp-black',
+  primary-dark: 'dp-black',
+  accent: 'dp-white',
+  accent-dark: 'dp-white',
+  surface: 'dp-black',
+  surface-dark: 'dp-black',
+  background: #000,
+  dark-background: #000,
+);
+
+$button-theme: (
+  width: auto,
+  padding: (
+    'sm',
+    'md',
+  ),
+  fill: 'accent-200',
+  fill-hover: 'accent-200',
+  fill-active: 'accent-400',
+);
+
+$link-theme: (
+  ink: 'plox-400',
+);
+
+$wallet-theme: (
+  width: auto,
+  fill: 'accent-200',
+  fill-hover: 'accent-200',
+  fill-active: 'accent-400',
+);

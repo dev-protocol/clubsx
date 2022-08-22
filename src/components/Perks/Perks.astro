@@ -1,0 +1,20 @@
+---
+import { perks } from '@constants/perks'
+
+const { tierId } = Astro.props
+
+const listOfPerk = perks.find((perk) => perk.tier === tierId)
+---
+
+<div class="col-span-2 row-span-2 lg:col-auto lg:row-auto">
+  {
+    listOfPerk &&
+    listOfPerk.descriptions.map((desc) =>
+      desc.lang === 'en_US' ? (
+        <p class="text-md mb-2">{desc.description}</p>
+      ) : (
+        <p class="mb-2 text-sm opacity-30">{desc.description}</p>
+      )
+    )
+  }
+</div>
