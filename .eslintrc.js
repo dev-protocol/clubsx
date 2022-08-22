@@ -9,5 +9,6 @@ module.exports = {
     ecmaVersion: 13,
     sourceType: 'module',
   },
+  ignorePatterns: ['src/**/*.scss'],
   rules: {},
 }

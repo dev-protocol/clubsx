@@ -1,0 +1,25 @@
+---
+import Layout from '@layouts/Default.astro'
+import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
+
+import JoinClub from '@components/Join/JoinClub.vue'
+import Sidebar from '@components/Sidebar/Sidebar.vue'
+import Footer from '@components/Global/Footer.astro'
+import { tenantBy } from '@fixtures/data/tenants'
+
+const tenant = tenantBy(Astro.params)
+---
+
+<Layout metaTitle="Dev Protocol | An open protocol for Creator Economy">
+  <CLBWrapper>
+    <Sidebar
+      client:load
+      propertyAddress={tenant?.propertyAddress}
+      tenantName={tenant?.name}
+    />
+    <div class="p-4">
+      <JoinClub client:only propertyAddress={tenant?.propertyAddress} />
+    </div>
+  </CLBWrapper>
+  <Footer />
+</Layout>

@@ -1,4 +1,6 @@
 ---
+import Layout from '@layouts/Default.astro'
+
 import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
 import Footer from '@components/Global/Footer.astro'
@@ -24,7 +26,7 @@ const listOfTier = await Promise.all(
 )
 ---
 
-
+<Layout metaTitle="Dev Protocol | An open protocol for Creator Economy">
   <CLBWrapper>
     <Sidebar
       client:load
@@ -58,4 +60,4 @@ const listOfTier = await Promise.all(
     </div>
   </CLBWrapper>
   <Footer />
-
+</Layout>

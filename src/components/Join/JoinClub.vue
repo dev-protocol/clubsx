@@ -5,47 +5,24 @@
     <div class="mb-8">Join {DAOName} in support of the project.</div>
 
     <h3 class="mb-4 font-title text-2xl font-bold">Purchase with</h3>
-    <form class="mb-8 flex flex-col" ref="form">
-      <label class="flex items-center py-4">
-        <input
-          class="w-16"
-          type="radio"
-          id="dev"
-          name="input"
-          value="dev"
-          checked
-          @change="switchInputs"
-        />
-        <span class="w-16">$DEV</span>
-        <div class="flex items-center">
-          <img
-            src="/assets/devtoken.png"
-            width="50"
-            height="50"
-            alt="dev token"
-          />
-          <span class="content-center justify-between text-sm"
-            >Best way to sustainably support with staking.</span
-          >
-        </div>
-      </label>
-      <label class="flex items-center">
-        <input
-          class="w-16"
-          type="radio"
-          id="eth"
-          name="input"
-          value="eth"
-          @change="switchInputs"
-        />
-        <span class="w-16">$ETH</span>
-        <div class="flex items-center">
-          <img src="/assets/ETH.svg" width="50" height="50" alt="ethereum" />
-          <span class="content-center justify-between text-sm"
-            >You will earn $DEV by staking.
-          </span>
-        </div>
-      </label>
+    <form class="mb-8 flex flex-col gap-2 md:flex-row" ref="form">
+      <CLBRadio
+        label="$DEV"
+        media="/assets/devtoken.png"
+        media-alt="Dev Token logo"
+        helper="Best way to sustainably support with staking."
+        value="dev"
+        :action="switchInputs"
+        :checked="true"
+      />
+      <CLBRadio
+        label="$ETH"
+        media="/assets/ETH.svg"
+        media-alt="Ethereum logo"
+        helper="You will earn $DEV by staking."
+        value="eth"
+        :action="switchInputs"
+      />
     </form>
 
     <h3 class="mb-4 font-title text-2xl font-bold">Select a tier</h3>
@@ -64,7 +41,7 @@
     <section>
       <a
         href="/perks"
-        class="block rounded border border-native-blue-400 p-4 text-xl"
+        class="block rounded border border-native-blue-400 p-4 text-xl transition-all duration-[var(--hs-transition-time)] ease-in-out hover:bg-[rgba(116,172,255,0.2)]"
         >Perks →</a
       >
     </section>
@@ -80,6 +57,7 @@ import { composeTiers } from '@fixtures/utility'
 import { UndefinedOr } from '@devprotocol/util-ts'
 import { defineComponent } from '@vue/runtime-core'
 import { CurrencyOption } from '@constants/currencyOption'
+import CLBRadio from '@components/Primitives/CLBRadio.vue'
 
 const provider = new providers.JsonRpcProvider(
   import.meta.env.PUBLIC_WEB3_PROVIDER_URL
@@ -121,6 +99,7 @@ export default defineComponent({
     },
   },
   components: {
+    CLBRadio,
     Tier,
   },
 })

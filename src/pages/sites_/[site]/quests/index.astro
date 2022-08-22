@@ -1,11 +1,16 @@
 ---
+import Layout from '@layouts/Default.astro'
 import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
 
 import HSButton from '@components/Primitives/Hashi/HSButton.vue'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
+import { tenantBy } from '@fixtures/data/tenants'
+
+const tenant = tenantBy(Astro.params)
+// import Quests from '@components/Quests/Quests.astro'
 ---
 
-
+<Layout metaTitle="Quests">
   <CLBWrapper>
     <Sidebar client:load />
     <section class="quests">
@@ -32,7 +37,7 @@ import Sidebar from '@components/Sidebar/Sidebar.vue'
       </article>
     </section>
   </CLBWrapper>
-
+</Layout>
 <style lang="scss">
   .quests-digest {
     /* eslint-disable no-eval */
