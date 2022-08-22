@@ -31,7 +31,7 @@
     "husky": "8.0.1",
     "postcss": "8.4.16",
     "prettier": "2.7.1",
-    "prettier-plugin-astro": "0.5.0",
+    "prettier-plugin-astro": "0.5.1",
     "prettier-plugin-tailwindcss": "0.1.13",
     "remark-cli": "11.0.0",
     "sass": "1.54.5",
