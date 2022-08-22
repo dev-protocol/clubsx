@@ -1,4 +1,5 @@
 import { encode } from '@devprotocol/clubs-core'
+import { products } from '@constants/products'
 
 export default {
   temples: encode({
@@ -12,12 +13,6 @@ export default {
       {
         name: 'home',
         path: './src/plugins/home',
-        enable: true,
-        options: [],
-      },
-      {
-        name: 'buy',
-        path: './src/plugins/buy',
         enable: true,
         options: [],
       },
@@ -42,12 +37,6 @@ export default {
       {
         name: 'members',
         path: './src/plugins/members',
-        enable: true,
-        options: [],
-      },
-      {
-        name: 'nft',
-        path: './src/plugins/nft',
         enable: true,
         options: [],
       },
@@ -83,7 +72,12 @@ export default {
         name: 'buy',
         path: './src/plugins/buy',
         enable: true,
-        options: [],
+        options: [
+          {
+            key: 'products',
+            value: products,
+          },
+        ],
       },
       {
         name: 'fiat',
@@ -113,7 +107,12 @@ export default {
         name: 'nft',
         path: './src/plugins/nft',
         enable: true,
-        options: [],
+        options: [
+          {
+            key: 'products',
+            value: products,
+          },
+        ],
       },
       {
         name: 'perks',

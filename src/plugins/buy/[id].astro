@@ -1,14 +1,12 @@
 ---
 import JoinCheckout from '@components/Join/JoinCheckout.vue'
-import { products } from '@constants/products'
 
-const { id, propertyAddress } = Astro.props
-const product = products.find(({ id: _id }) => _id === id)
+const { propertyAddress, priceEth } = Astro.props
 ---
 
 <JoinCheckout
   client:only
-  amount={product?.priceEth}
+  amount={priceEth}
   destination={propertyAddress}
   currency={'ETH'}
   page="BUY"
