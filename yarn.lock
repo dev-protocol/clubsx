@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@aggre/ullr@^3.1.3":
+"@aggre/ullr@3.1.3", "@aggre/ullr@^3.1.3":
   version "3.1.3"
-  resolved "https://registry.npmjs.org/@aggre/ullr/-/ullr-3.1.3.tgz"
+  resolved "https://registry.yarnpkg.com/@aggre/ullr/-/ullr-3.1.3.tgz#5d730888f737cbf8fd01851e05da3723bd856e57"
   integrity sha512-G/zdWFLZu6/7SA9wWNO30DX0wzfqoaTAfwdmFxOne+mYB4akLLtTKnCyQPi8bgrYHuG2jdsDih2Ht19Q/oUg4w==
   dependencies:
     ramda "^0.28.0"
@@ -351,11 +351,13 @@
     "@babel/helper-validator-identifier" "^7.18.6"
     to-fast-properties "^2.0.0"
 
-"@devprotocol/clubs-core@0.4.3":
-  version "0.4.3"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.4.3.tgz#68ef0068a2e4220065e202c9b0929f55d1eb9a34"
-  integrity sha512-U0OIi27C0OvBK2wCMLGE5ibhbEv/k3XOf17HhZgV47N4dtrab5PEuAkGbdA7kKrksNnWI1XVEFFe2FQkVnL84A==
+"@devprotocol/clubs-core@0.5.3":
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.5.3.tgz#ba4559a83ca9f6bba2a1c3c2bfa44e48b8754327"
+  integrity sha512-Su6z39UmgCmcbg0htK7eXRP2mVLN+hPD45Li/mzs9ZPyit/oUwSMgFc9NAn3labsLgQSTzR+/SoEN3eSqPH9og==
   dependencies:
+    "@aggre/ullr" "3.1.3"
+    "@devprotocol/elements" "0.0.7"
     "@devprotocol/util-ts" "2.2.1"
     get-installed-path "^4.0.8"
     js-base64 "^3.7.2"
@@ -385,6 +387,11 @@
     lit "2.2.5"
     ramda "0.28.0"
     rxjs "7.5.5"
+
+"@devprotocol/elements@0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@devprotocol/elements/-/elements-0.0.7.tgz#7454845b59b501edea98b3f1630f275c1b93c68b"
+  integrity sha512-hyK7kTT0mj/XX4sMSjnQFy5UY380VWlE7E+KJXpD4RqD8kotCHbSRKV6oxbxE6/VMgIZ41M/7uV2/HjLhGkusQ==
 
 "@devprotocol/hashi@1.2.1":
   version "1.2.1"
