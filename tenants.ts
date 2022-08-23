@@ -1,5 +1,6 @@
 import { encode } from '@devprotocol/clubs-core'
 import { products } from '@constants/products'
+import { tiers } from '@constants/tier'
 
 export default {
   temples: encode({
@@ -26,7 +27,12 @@ export default {
         name: 'join',
         path: './src/plugins/join',
         enable: true,
-        options: [],
+        options: [
+          {
+            key: 'tiers',
+            value: tiers,
+          },
+        ],
       },
       {
         name: 'me',

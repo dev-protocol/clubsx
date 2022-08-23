@@ -28,7 +28,7 @@
     <h3 class="mb-4 font-title text-2xl font-bold">Select a tier</h3>
     <div class="mb-8 grid grid-cols-2 gap-8 lg:grid-cols-4">
       <Tier
-        v-for="tier in tiers[currency]"
+        v-for="tier in composedTiers[currency]"
         v-bind:key="tier.id + tier.amount"
         :title="tier.title"
         :id="tier.id"
@@ -49,13 +49,12 @@
 </template>
 
 <script lang="ts">
-import Tier from '@components/Join/Tier.vue'
-import { tiers as sourceTiers } from '@constants/tier'
 import type { Tiers } from '@constants/tier'
+import Tier from '@components/Join/Tier.vue'
 import { providers } from 'ethers'
 import { composeTiers } from '@fixtures/utility'
 import { UndefinedOr } from '@devprotocol/util-ts'
-import { defineComponent } from '@vue/runtime-core'
+import { defineComponent, PropType } from '@vue/runtime-core'
 import { CurrencyOption } from '@constants/currencyOption'
 import CLBRadio from '@components/Primitives/CLBRadio.vue'
 
@@ -65,7 +64,7 @@ const provider = new providers.JsonRpcProvider(
 
 type Data = {
   currency: 'dev' | 'eth'
-  tiers: {
+  composedTiers: {
     [key in CurrencyOption]: UndefinedOr<Tiers>
   }
 }
@@ -74,11 +73,15 @@ export default defineComponent({
   name: 'JoinClub',
   props: {
     propertyAddress: String,
+    tiers: {
+      type: Array as PropType<Tiers>,
+      required: true,
+    },
   },
   data(): Data {
     return {
       currency: 'dev',
-      tiers: { dev: [...sourceTiers], eth: undefined },
+      composedTiers: { dev: [...this.tiers], eth: undefined },
     }
   },
   async mounted() {
@@ -86,8 +89,8 @@ export default defineComponent({
       'input'
     ) as null | Data['currency']
     this.currency = input as 'dev' | 'eth'
-    this.tiers = await composeTiers({
-      sourceTiers,
+    this.composedTiers = await composeTiers({
+      sourceTiers: this.tiers,
       provider,
       tokenAddress: this.propertyAddress ?? '',
     })

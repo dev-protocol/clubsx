@@ -1,21 +1,13 @@
 ---
 import JoinCheckout from '@components/Join/JoinCheckout.vue'
-import { tiers } from '@constants/tier'
 
-export function getStaticPaths() {
-  return tiers.map(({ id }) => ({ params: { id } }))
-}
-
-const { id } = Astro.params
-const tier = tiers.find(({ id: _id }) => _id === id)
-
-const { propertyAddress } = Astro.props
+const { amount, propertyAddress, currency } = Astro.props
 ---
 
 <JoinCheckout
   client:only
-  amount={tier?.amount}
+  amount={amount}
   destination={propertyAddress}
-  currency={tier?.currency}
+  currency={currency}
   page="JOIN"
 />
