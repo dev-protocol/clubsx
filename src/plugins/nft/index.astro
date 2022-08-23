@@ -1,0 +1,16 @@
+---
+import type { Products } from '@constants/products'
+import Footer from '@components/Global/Footer.astro'
+import Hero from '@components/Hero/hero'
+import Hero2 from '@components/Hero/hero2'
+import Cards from '@components/list/cards'
+
+const { products } = Astro.props as { products: Products }
+---
+
+<div class="bg-black">
+  <Hero />
+  <Hero2 />
+  <Cards currency="ETH" products={products} />
+</div>
+<Footer />

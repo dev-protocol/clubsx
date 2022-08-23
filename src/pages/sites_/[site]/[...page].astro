@@ -1,0 +1,21 @@
+---
+import { pageFactory } from '@devprotocol/clubs-core'
+import Layout from '@layouts/Default.astro'
+import { config } from '@fixtures/config'
+
+const { site, page } = Astro.params
+
+const { getStaticPaths } = await pageFactory(() => config(site))
+
+const path = getStaticPaths().find(({ params }) => params.page === page)
+
+if (!path) {
+  throw new Error('Path undefined: ', path)
+}
+
+const Content = path.props.component
+---
+
+<Layout>
+  <Content {...path.props} />
+</Layout>
