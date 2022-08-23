@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@aggre/ullr@3.1.3", "@aggre/ullr@^3.1.3":
+"@aggre/ullr@3.1.3":
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/@aggre/ullr/-/ullr-3.1.3.tgz#5d730888f737cbf8fd01851e05da3723bd856e57"
   integrity sha512-G/zdWFLZu6/7SA9wWNO30DX0wzfqoaTAfwdmFxOne+mYB4akLLtTKnCyQPi8bgrYHuG2jdsDih2Ht19Q/oUg4w==
@@ -377,17 +377,6 @@
     js-base64 "^3.7.2"
     ramda "^0.28.0"
 
-"@devprotocol/elements@0.0.6":
-  version "0.0.6"
-  resolved "https://registry.npmjs.org/@devprotocol/elements/-/elements-0.0.6.tgz"
-  integrity sha512-lZcjIVh7MXPDJu86DyiWDalmUlEA2/S8QkxABpyejXXwvzMj10KApRcPhi+FY/TM9CpW6t1Ok5HMK2BuNMtnDw==
-  dependencies:
-    "@aggre/ullr" "^3.1.3"
-    ethers "5.6.8"
-    lit "2.2.5"
-    ramda "0.28.0"
-    rxjs "7.5.5"
-
 "@devprotocol/elements@0.0.7":
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/@devprotocol/elements/-/elements-0.0.7.tgz#7454845b59b501edea98b3f1630f275c1b93c68b"
@@ -551,21 +540,6 @@
     "@ethersproject/logger" ">=5.0.0-beta.129"
     "@ethersproject/properties" ">=5.0.0-beta.131"
     "@ethersproject/strings" ">=5.0.0-beta.130"
-
-"@ethersproject/abi@5.6.3":
-  version "5.6.3"
-  resolved "https://registry.npmjs.org/@ethersproject/abi/-/abi-5.6.3.tgz"
-  integrity sha512-CxKTdoZY4zDJLWXG6HzNH6znWK0M79WzzxHegDoecE3+K32pzfHOzuXg2/oGSTecZynFgpkjYXNPOqXVJlqClw==
-  dependencies:
-    "@ethersproject/address" "^5.6.1"
-    "@ethersproject/bignumber" "^5.6.2"
-    "@ethersproject/bytes" "^5.6.1"
-    "@ethersproject/constants" "^5.6.1"
-    "@ethersproject/hash" "^5.6.1"
-    "@ethersproject/keccak256" "^5.6.1"
-    "@ethersproject/logger" "^5.6.0"
-    "@ethersproject/properties" "^5.6.0"
-    "@ethersproject/strings" "^5.6.1"
 
 "@ethersproject/abi@5.6.4", "@ethersproject/abi@^5.5.0", "@ethersproject/abi@^5.6.3":
   version "5.6.4"
@@ -903,13 +877,6 @@
   version "5.7.0"
   resolved "https://registry.yarnpkg.com/@ethersproject/logger/-/logger-5.7.0.tgz#6ce9ae168e74fecf287be17062b590852c311892"
   integrity sha512-0odtFdXu/XHtjQXJYA3u9G0G8btm0ND5Cu8M7i5vhEcE8/HmF4Lbdqanwyv4uQTr2tx6b7fQRmgLrsnpQlmnig==
-
-"@ethersproject/networks@5.6.3":
-  version "5.6.3"
-  resolved "https://registry.npmjs.org/@ethersproject/networks/-/networks-5.6.3.tgz"
-  integrity sha512-QZxRH7cA5Ut9TbXwZFiCyuPchdWi87ZtVNHWZd0R6YFgYtes2jQ3+bsslJ0WdyDe0i6QumqtoYqvY3rrQFRZOQ==
-  dependencies:
-    "@ethersproject/logger" "^5.6.0"
 
 "@ethersproject/networks@5.6.4", "@ethersproject/networks@^5.6.3":
   version "5.6.4"
@@ -1315,11 +1282,6 @@
   dependencies:
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
-
-"@lit/reactive-element@^1.3.0":
-  version "1.3.4"
-  resolved "https://registry.npmjs.org/@lit/reactive-element/-/reactive-element-1.3.4.tgz"
-  integrity sha512-I1wz4uxOA52zSBhKmv4KQWLJpCyvfpnDg+eQR6mjpRgV+Ldi14HLPpSUpJklZRldz0fFmGCC/kVmuc/3cPFqCg==
 
 "@ljharb/has-package-exports-patterns@^0.0.2":
   version "0.0.2"
@@ -1737,11 +1699,6 @@
   version "0.2.2"
   resolved "https://registry.npmjs.org/@types/text-table/-/text-table-0.2.2.tgz"
   integrity sha512-dGoI5Af7To0R2XE8wJuc6vwlavWARsCh3UKJPjWs1YEqGUqfgBI/j/4GX0yf19/DsDPPf0YAXWAp8psNeIehLg==
-
-"@types/trusted-types@^2.0.2":
-  version "2.0.2"
-  resolved "https://registry.npmjs.org/@types/trusted-types/-/trusted-types-2.0.2.tgz"
-  integrity sha512-F5DIZ36YVLE+PN+Zwws4kJogq47hNgX3Nx6WyDJ3kcplxyke3XIzB8uK5n/Lpm1HBsbGzd6nmGehL8cPekP+Tg==
 
 "@types/unist@*", "@types/unist@^2.0.0":
   version "2.0.6"
@@ -5077,42 +5034,6 @@ ethereumjs-wallet@0.6.5:
     utf8 "^3.0.0"
     uuid "^3.3.2"
 
-ethers@5.6.8:
-  version "5.6.8"
-  resolved "https://registry.npmjs.org/ethers/-/ethers-5.6.8.tgz"
-  integrity sha512-YxIGaltAOdvBFPZwIkyHnXbW40f1r8mHUgapW6dxkO+6t7H6wY8POUn0Kbxrd/N7I4hHxyi7YCddMAH/wmho2w==
-  dependencies:
-    "@ethersproject/abi" "5.6.3"
-    "@ethersproject/abstract-provider" "5.6.1"
-    "@ethersproject/abstract-signer" "5.6.2"
-    "@ethersproject/address" "5.6.1"
-    "@ethersproject/base64" "5.6.1"
-    "@ethersproject/basex" "5.6.1"
-    "@ethersproject/bignumber" "5.6.2"
-    "@ethersproject/bytes" "5.6.1"
-    "@ethersproject/constants" "5.6.1"
-    "@ethersproject/contracts" "5.6.2"
-    "@ethersproject/hash" "5.6.1"
-    "@ethersproject/hdnode" "5.6.2"
-    "@ethersproject/json-wallets" "5.6.1"
-    "@ethersproject/keccak256" "5.6.1"
-    "@ethersproject/logger" "5.6.0"
-    "@ethersproject/networks" "5.6.3"
-    "@ethersproject/pbkdf2" "5.6.1"
-    "@ethersproject/properties" "5.6.0"
-    "@ethersproject/providers" "5.6.8"
-    "@ethersproject/random" "5.6.1"
-    "@ethersproject/rlp" "5.6.1"
-    "@ethersproject/sha2" "5.6.1"
-    "@ethersproject/signing-key" "5.6.2"
-    "@ethersproject/solidity" "5.6.1"
-    "@ethersproject/strings" "5.6.1"
-    "@ethersproject/transactions" "5.6.2"
-    "@ethersproject/units" "5.6.1"
-    "@ethersproject/wallet" "5.6.2"
-    "@ethersproject/web" "5.6.1"
-    "@ethersproject/wordlists" "5.6.1"
-
 ethers@5.7.0:
   version "5.7.0"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.7.0.tgz#0055da174b9e076b242b8282638bc94e04b39835"
@@ -7277,30 +7198,6 @@ lines-and-columns@^2.0.2:
   version "2.0.3"
   resolved "https://registry.npmjs.org/lines-and-columns/-/lines-and-columns-2.0.3.tgz"
   integrity sha512-cNOjgCnLB+FnvWWtyRTzmB3POJ+cXxTA81LoW7u8JdmhfXzriropYwpjShnz1QLLWsQwY7nIxoDmcPTwphDK9w==
-
-lit-element@^3.2.0:
-  version "3.2.2"
-  resolved "https://registry.npmjs.org/lit-element/-/lit-element-3.2.2.tgz"
-  integrity sha512-6ZgxBR9KNroqKb6+htkyBwD90XGRiqKDHVrW/Eh0EZ+l+iC+u+v+w3/BA5NGi4nizAVHGYvQBHUDuSmLjPp7NQ==
-  dependencies:
-    "@lit/reactive-element" "^1.3.0"
-    lit-html "^2.2.0"
-
-lit-html@^2.2.0:
-  version "2.2.7"
-  resolved "https://registry.npmjs.org/lit-html/-/lit-html-2.2.7.tgz"
-  integrity sha512-JhqiAwO1l03kRe68uBZ0i2x4ef2S5szY9vvP411nlrFZIpKK4/hwnhA/15bqbvxe1lV3ipBdhaOzHmyOk7QIRg==
-  dependencies:
-    "@types/trusted-types" "^2.0.2"
-
-lit@2.2.5:
-  version "2.2.5"
-  resolved "https://registry.npmjs.org/lit/-/lit-2.2.5.tgz"
-  integrity sha512-Ln463c0xJZfzVxBcHddNvFQQ8Z22NK7KgNmrzwFF1iESHUud412RRExzepj18wpTbusgwoTnOYuoTpo9uyNBaQ==
-  dependencies:
-    "@lit/reactive-element" "^1.3.0"
-    lit-element "^3.2.0"
-    lit-html "^2.2.0"
 
 load-json-file@^1.0.0:
   version "1.1.0"
@@ -9963,13 +9860,6 @@ rustbn.js@~0.2.0:
   version "0.2.0"
   resolved "https://registry.npmjs.org/rustbn.js/-/rustbn.js-0.2.0.tgz"
   integrity sha512-4VlvkRUuCJvr2J6Y0ImW7NvTCriMi7ErOAqWk1y69vAdoNIzCF3yPmgeNzx+RQTLEDFq5sHfscn1MwHxP9hNfA==
-
-rxjs@7.5.5:
-  version "7.5.5"
-  resolved "https://registry.npmjs.org/rxjs/-/rxjs-7.5.5.tgz"
-  integrity sha512-sy+H0pQofO95VDmFLzyaw9xNJU4KTRSwQIGM6+iG3SypAtCiLDzpeG8sJrNCWn2Up9km+KhkvTdbkrdy+yzZdw==
-  dependencies:
-    tslib "^2.1.0"
 
 rxjs@7.5.6:
   version "7.5.6"
