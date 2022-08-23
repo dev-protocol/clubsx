@@ -351,11 +351,12 @@
     "@babel/helper-validator-identifier" "^7.18.6"
     to-fast-properties "^2.0.0"
 
-"@devprotocol/clubs-core@0.4.3":
-  version "0.4.3"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.4.3.tgz#68ef0068a2e4220065e202c9b0929f55d1eb9a34"
-  integrity sha512-U0OIi27C0OvBK2wCMLGE5ibhbEv/k3XOf17HhZgV47N4dtrab5PEuAkGbdA7kKrksNnWI1XVEFFe2FQkVnL84A==
+"@devprotocol/clubs-core@0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.5.0.tgz#767a60e43c136a79b2d345f690194d5bd822cd2e"
+  integrity sha512-OkkQCQUttQWGggFI43/vewDN7dDIJZQNgrny5KFaaJNm552H/lFUBgAlyubxjW4U4v8vZTcyEOxhdPTxNWf9rA==
   dependencies:
+    "@devprotocol/elements" "^0.0.6"
     "@devprotocol/util-ts" "2.2.1"
     get-installed-path "^4.0.8"
     js-base64 "^3.7.2"
@@ -375,9 +376,9 @@
     js-base64 "^3.7.2"
     ramda "^0.28.0"
 
-"@devprotocol/elements@0.0.6":
+"@devprotocol/elements@0.0.6", "@devprotocol/elements@^0.0.6":
   version "0.0.6"
-  resolved "https://registry.npmjs.org/@devprotocol/elements/-/elements-0.0.6.tgz"
+  resolved "https://registry.yarnpkg.com/@devprotocol/elements/-/elements-0.0.6.tgz#fc1713a5f00076dc95a66182357530e1c2ec5384"
   integrity sha512-lZcjIVh7MXPDJu86DyiWDalmUlEA2/S8QkxABpyejXXwvzMj10KApRcPhi+FY/TM9CpW6t1Ok5HMK2BuNMtnDw==
   dependencies:
     "@aggre/ullr" "^3.1.3"
