@@ -4495,18 +4495,18 @@ eslint-plugin-import@2.26.0:
     resolve "^1.22.0"
     tsconfig-paths "^3.14.1"
 
-eslint-plugin-n@15.2.4:
-  version "15.2.4"
-  resolved "https://registry.npmjs.org/eslint-plugin-n/-/eslint-plugin-n-15.2.4.tgz"
-  integrity sha512-tjnVMv2fiXYMnuiIFI8QMtyUFI42SckEEWvi8h68SWGWshfqO6SSCASy24dGMGAiy7NUk6DZt90DM0iNUsmQ5w==
+eslint-plugin-n@15.2.5:
+  version "15.2.5"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-n/-/eslint-plugin-n-15.2.5.tgz#aa7ff8d45bb8bf2df8ea3b7d3774ae570cb794b8"
+  integrity sha512-8+BYsqiyZfpu6NXmdLOXVUfk8IocpCjpd8nMRRH0A9ulrcemhb2VI9RSJMEy5udx++A/YcVPD11zT8hpFq368g==
   dependencies:
     builtins "^5.0.1"
     eslint-plugin-es "^4.1.0"
     eslint-utils "^3.0.0"
     ignore "^5.1.1"
-    is-core-module "^2.9.0"
+    is-core-module "^2.10.0"
     minimatch "^3.1.2"
-    resolve "^1.10.1"
+    resolve "^1.22.1"
     semver "^7.3.7"
 
 eslint-plugin-node@11.1.0:
@@ -6538,6 +6538,13 @@ is-ci@^2.0.0:
   integrity sha512-YfJT7rkpQB0updsdHLGWrvhBJfcfzNNawYDNIyQXJz0IViGf75O8EBPKSdvw2rF+LGCsX4FZ8tcr3b19LcZq4w==
   dependencies:
     ci-info "^2.0.0"
+
+is-core-module@^2.10.0:
+  version "2.10.0"
+  resolved "https://registry.yarnpkg.com/is-core-module/-/is-core-module-2.10.0.tgz#9012ede0a91c69587e647514e1d5277019e728ed"
+  integrity sha512-Erxj2n/LDAZ7H8WNJXd9tw38GYM3dv8rk8Zcs+jJuxYTW7sozH+SS8NtrSjVL1/vpLvWi1hxy96IzjJ3EHTJJg==
+  dependencies:
+    has "^1.0.3"
 
 is-core-module@^2.8.1, is-core-module@^2.9.0:
   version "2.9.0"
@@ -9150,10 +9157,10 @@ prettier-linter-helpers@^1.0.0:
   dependencies:
     fast-diff "^1.1.2"
 
-prettier-plugin-astro@0.5.0:
-  version "0.5.0"
-  resolved "https://registry.npmjs.org/prettier-plugin-astro/-/prettier-plugin-astro-0.5.0.tgz"
-  integrity sha512-wBDZs0hlPWQDc7P7VmGe8pImci6F434Wd/otfLJwvCSXRb9J7AhmAigXhm5WPgCJuBA509Ovo/Ed+LAgZy4KWg==
+prettier-plugin-astro@0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/prettier-plugin-astro/-/prettier-plugin-astro-0.5.1.tgz#bab28d0cfb09cceb63c8400dd20ce628621549c1"
+  integrity sha512-u6Ueb5dJFLzSkWwBFdx1rf/bSsdWt9arLWgvcxbDO9hS6kZs9QZHvYdZyJmywaYlH606eHA4578ncjY0bdDSQw==
   dependencies:
     "@astrojs/compiler" "^0.19.0"
     prettier "^2.7.1"
@@ -11101,10 +11108,10 @@ type-detect@4.0.8, type-detect@^4.0.8:
   resolved "https://registry.npmjs.org/type-detect/-/type-detect-4.0.8.tgz"
   integrity sha512-0fr/mIH1dlO+x7TlcMy+bIDqKPsw/70tVyeHW787goQjhmqaZe10uwLujubK9q9Lg6Fiho1KUKDYz0Z7k7g5/g==
 
-type-fest@2.18.1:
-  version "2.18.1"
-  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-2.18.1.tgz#a94f068c60b5a2d6beccccffa711210d7dd99b38"
-  integrity sha512-UKCINsd4qiATXD6OIlnQw9t1ux/n2ld+Nl0kzPbCONhCaUIS/BhJbNw14w6584HCQWf3frBK8vmWnGZq/sbPHQ==
+type-fest@2.19.0:
+  version "2.19.0"
+  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-2.19.0.tgz#88068015bb33036a598b952e55e9311a60fd3a9b"
+  integrity sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA==
 
 type-fest@^0.13.1:
   version "0.13.1"
