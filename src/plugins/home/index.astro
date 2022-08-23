@@ -16,10 +16,7 @@ const { propertyAddress, name } = Astro.props
       />
     </div>
     <CLBWrapper>
-      <Sidebar
-        client:load
-        propertyAddress={propertyAddress}
-        tenantName={name}
+      <Sidebar client:load propertyAddress={propertyAddress} tenantName={name}
       />
       <article class="grid gap-10 lg:gap-20">
         <header

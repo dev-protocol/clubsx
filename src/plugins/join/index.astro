@@ -9,11 +9,7 @@ const { name, propertyAddress } = Astro.props
 ---
 
 <CLBWrapper>
-  <Sidebar
-    client:load
-    propertyAddress={propertyAddress}
-    tenantName={name}
-  />
+  <Sidebar client:load propertyAddress={propertyAddress} tenantName={name} />
   <div class="p-4">
     <JoinClub client:only propertyAddress={propertyAddress} />
   </div>

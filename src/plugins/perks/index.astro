@@ -24,11 +24,7 @@ const listOfTier = await Promise.all(
 ---
 
 <CLBWrapper>
-  <Sidebar
-    client:load
-    propertyAddress={propertyAddress}
-    tenantName={name}
-  />
+  <Sidebar client:load propertyAddress={propertyAddress} tenantName={name} />
   <div class="px-4">
     <article class="grid gap-8">
       <h2 class="font-title text-4xl font-bold">Perks</h2>

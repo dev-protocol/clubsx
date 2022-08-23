@@ -16,17 +16,12 @@ const targetQuest = quests.filter(
 )[0]
 
 const { propertyAddress, name } = Astro.props
-
 ---
 
 <div
   class="lg:container relative mx-auto lg:pt-12 grid lg:gap-12 lg:grid-cols-[minmax(290px,_1fr)_4fr]"
 >
-  <Sidebar
-    client:load
-    propertyAddress={propertyAddress}
-    tenantName={name}
-  />
+  <Sidebar client:load propertyAddress={propertyAddress} tenantName={name} />
   <QuestDetail
     questId={targetQuest?.id}
     title={targetQuest?.title}
