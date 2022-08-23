@@ -2,7 +2,6 @@
 import QuestDetail from '@components/QuestDetail/QuestDetail.vue'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
 import quests from '@components/Quests/quests.json'
-import { tenantBy } from '@fixtures/data/tenants'
 
 export function getStaticPaths() {
   return [
@@ -16,7 +15,8 @@ const targetQuest = quests.filter(
   (quest) => quest && quest.id === id && quest.listed
 )[0]
 
-const tenant = tenantBy(Astro.params)
+const { propertyAddress, name } = Astro.props
+
 ---
 
 <div
@@ -24,8 +24,8 @@ const tenant = tenantBy(Astro.params)
 >
   <Sidebar
     client:load
-    propertyAddress={tenant?.propertyAddress}
-    tenantName={tenant?.name}
+    propertyAddress={propertyAddress}
+    tenantName={name}
   />
   <QuestDetail
     questId={targetQuest?.id}

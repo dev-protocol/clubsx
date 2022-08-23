@@ -4,19 +4,18 @@ import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
 import JoinClub from '@components/Join/JoinClub.vue'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
 import Footer from '@components/Global/Footer.astro'
-import { tenantBy } from '@fixtures/data/tenants'
 
-const tenant = tenantBy(Astro.params)
+const { name, propertyAddress } = Astro.props
 ---
 
 <CLBWrapper>
   <Sidebar
     client:load
-    propertyAddress={tenant?.propertyAddress}
-    tenantName={tenant?.name}
+    propertyAddress={propertyAddress}
+    tenantName={name}
   />
   <div class="p-4">
-    <JoinClub client:only propertyAddress={tenant?.propertyAddress} />
+    <JoinClub client:only propertyAddress={propertyAddress} />
   </div>
 </CLBWrapper>
 <Footer />

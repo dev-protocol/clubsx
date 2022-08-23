@@ -3,9 +3,8 @@ import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
 import Footer from '@components/Global/Footer.astro'
 import JoinClub from '@components/Join/JoinClub.vue'
-import { tenantBy } from '@fixtures/data/tenants'
 
-const tenant = tenantBy(Astro.params)
+const { propertyAddress, name } = Astro.props
 ---
 
 <div>
@@ -19,8 +18,8 @@ const tenant = tenantBy(Astro.params)
     <CLBWrapper>
       <Sidebar
         client:load
-        propertyAddress={tenant?.propertyAddress}
-        tenantName={tenant?.name}
+        propertyAddress={propertyAddress}
+        tenantName={name}
       />
       <article class="grid gap-10 lg:gap-20">
         <header
@@ -230,7 +229,7 @@ const tenant = tenantBy(Astro.params)
                 fill="currentColor"></path>
             </svg>
           </section>
-          <JoinClub client:idle propertyAddress={tenant?.propertyAddress} />
+          <JoinClub client:idle propertyAddress={propertyAddress} />
         </div>
       </article>
     </CLBWrapper>

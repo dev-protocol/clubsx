@@ -6,9 +6,8 @@ import Perks from '@components/Perks/Perks.astro'
 import { tiers } from '@constants/tier'
 import { fetchBadgeImageSrc } from '@fixtures/utility'
 import { providers } from 'ethers'
-import { tenantBy } from '@fixtures/data/tenants'
 
-const tenant = tenantBy(Astro.params)
+const { propertyAddress } = Astro.props
 
 const listOfTier = await Promise.all(
   tiers.map(async ({ ...tier }) => {
@@ -16,7 +15,7 @@ const listOfTier = await Promise.all(
       provider: new providers.JsonRpcProvider(
         import.meta.env.PUBLIC_WEB3_PROVIDER_URL
       ),
-      tokenAddress: tenant?.propertyAddress ?? '',
+      tokenAddress: propertyAddress,
       amount: tier.amount,
     })
     return { ...tier, badgeImageSrc }
@@ -27,8 +26,8 @@ const listOfTier = await Promise.all(
 <CLBWrapper>
   <Sidebar
     client:load
-    propertyAddress={tenant?.propertyAddress}
-    tenantName={tenant?.name}
+    propertyAddress={propertyAddress}
+    tenantName={name}
   />
   <div class="px-4">
     <article class="grid gap-8">

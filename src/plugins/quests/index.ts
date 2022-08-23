@@ -6,11 +6,18 @@ import {
 import { default as Index } from './index.astro'
 import { default as Id } from './[id].astro'
 
-export const getPagePaths: ClubsFunctionGetPagePaths = async () => [
+const questParams = ['quest_starter', 'quest_stake_100', 'quest_stake_500']
+
+export const getPagePaths: ClubsFunctionGetPagePaths = async (
+  _,
+  { propertyAddress, name }
+) => [
   { paths: ['quests'], component: Index },
-  { paths: ['quests', 'quest_starter'], component: Id },
-  { paths: ['quests', 'quest_stake_100'], component: Id },
-  { paths: ['quests', 'quest_stake_500'], component: Id },
+  ...questParams.map((param) => ({
+    paths: ['quests', param],
+    component: Id,
+    props: { propertyAddress, name },
+  })),
 ]
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async () => []

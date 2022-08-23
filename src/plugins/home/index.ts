@@ -5,9 +5,10 @@ import {
 } from '@devprotocol/clubs-core'
 import { default as Index } from './index.astro'
 
-export const getPagePaths: ClubsFunctionGetPagePaths = async () => [
-  { paths: [''], component: Index },
-]
+export const getPagePaths: ClubsFunctionGetPagePaths = async (
+  _,
+  { name, propertyAddress }
+) => [{ paths: [''], component: Index, props: { name, propertyAddress } }]
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async () => []
 
