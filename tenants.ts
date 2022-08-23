@@ -1,6 +1,7 @@
 import { encode } from '@devprotocol/clubs-core'
 import { products } from '@constants/products'
 import { tiers } from '@constants/tier'
+import { perks } from '@constants/perks'
 
 export default {
   temples: encode({
@@ -50,7 +51,12 @@ export default {
         name: 'perks',
         path: './src/plugins/perks',
         enable: true,
-        options: [],
+        options: [
+          {
+            key: 'perks',
+            value: perks,
+          },
+        ],
       },
       {
         name: 'quests',
@@ -124,7 +130,12 @@ export default {
         name: 'perks',
         path: './src/plugins/perks',
         enable: true,
-        options: [],
+        options: [
+          {
+            key: 'perks',
+            value: perks,
+          },
+        ],
       },
       {
         name: 'quests',

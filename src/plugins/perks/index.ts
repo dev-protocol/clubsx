@@ -1,14 +1,27 @@
+import type { Perks } from '@constants/perks'
 import {
   ClubsFunctionGetAdminPaths,
   ClubsFunctionGetPagePaths,
   ClubsFunctionPlugin,
 } from '@devprotocol/clubs-core'
+import { UndefinedOr } from '@devprotocol/util-ts'
 import { default as Index } from './index.astro'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
-  _,
+  options,
   { propertyAddress, name }
-) => [{ paths: ['perks'], component: Index, props: { propertyAddress, name } }]
+) => {
+  const perks = options.find((opt) => opt.key === 'perks')
+    ?.value as UndefinedOr<Perks>
+
+  return [
+    {
+      paths: ['perks'],
+      component: Index,
+      props: { propertyAddress, name, perks },
+    },
+  ]
+}
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async () => []
 
