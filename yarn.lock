@@ -409,11 +409,6 @@
     js-base64 "^3.7.2"
     ramda "^0.28.0"
 
-"@devprotocol/elements@0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@devprotocol/elements/-/elements-0.0.7.tgz#7454845b59b501edea98b3f1630f275c1b93c68b"
-  integrity sha512-hyK7kTT0mj/XX4sMSjnQFy5UY380VWlE7E+KJXpD4RqD8kotCHbSRKV6oxbxE6/VMgIZ41M/7uV2/HjLhGkusQ==
-
 "@devprotocol/elements@0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@devprotocol/elements/-/elements-0.1.0.tgz#984df7d50adceca4c8d8fd5a10347c847ca621c4"
