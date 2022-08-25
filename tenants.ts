@@ -16,7 +16,12 @@ export default {
         name: 'home',
         path: './src/plugins/home',
         enable: true,
-        options: [],
+        options: [
+          {
+            key: 'tiers',
+            value: tiers,
+          },
+        ],
       },
       {
         name: 'fiat',

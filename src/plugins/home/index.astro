@@ -4,7 +4,7 @@ import Sidebar from '@components/Sidebar/Sidebar.vue'
 import Footer from '@components/Global/Footer.astro'
 import JoinClub from '@components/Join/JoinClub.vue'
 
-const { propertyAddress, name } = Astro.props
+const { propertyAddress, name, tiers } = Astro.props
 ---
 
 <div>
@@ -226,7 +226,8 @@ const { propertyAddress, name } = Astro.props
                 fill="currentColor"></path>
             </svg>
           </section>
-          <JoinClub client:idle propertyAddress={propertyAddress} />
+          <JoinClub client:idle propertyAddress={propertyAddress} tiers={tiers}
+          />
         </div>
       </article>
     </CLBWrapper>
