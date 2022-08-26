@@ -16,8 +16,8 @@ if (!tenant) {
 
 const title = metaTitle ? `${tenant.name} : ${metaTitle}` : tenant.name
 
-const canonicalURL = new URL(
-  Astro.url.pathname,
+const ogURL = new URL(
+  Astro.url.pathname.replace(/(.*)\/$/, '$1') + og,
   Astro.site ?? 'http://localhost'
 )
 ---
@@ -33,7 +33,7 @@ const canonicalURL = new URL(
     <meta property="og:title" content={title} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={Astro.url.href} />
-    <meta property="og:image" content={`${canonicalURL}${og}`} />
+    <meta property="og:image" content={`${ogURL}`} />
     <meta property="og:description" content={tenant.description} />
     <meta property="og:site_name" content={tenant.name} />
     <meta name="twitter:site" content={tenant.twitterHandle} />
@@ -41,7 +41,7 @@ const canonicalURL = new URL(
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={tenant.description} />
-    <meta name="twitter:image" content={`${canonicalURL}${og}`} />
+    <meta name="twitter:image" content={`${ogURL}`} />
   </head>
 
   <body class="font-body bg-black text-white min-h-screen">
