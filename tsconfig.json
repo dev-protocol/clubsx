@@ -16,7 +16,8 @@
       "@fixtures/*": ["src/fixtures/*"],
       "@layouts/*": ["src/layouts/*"],
       "@pages/*": ["src/pages/*"],
-      "@styles/*": ["src/styles/*"]
+      "@styles/*": ["src/styles/*"],
+      "@plugins/*": ["src/plugins/*"]
     }
   }
 }
