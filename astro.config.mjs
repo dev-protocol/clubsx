@@ -47,5 +47,10 @@ export default defineConfig({
     resolve: {
       conditions: [],
     },
+    build: {
+      rollupOptions: {
+        external: [/^\/assets\/.*/],
+      },
+    },
   },
 })
