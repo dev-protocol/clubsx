@@ -95,7 +95,15 @@
   dependencies:
     prismjs "^1.28.0"
 
-"@astrojs/react@1.0.0", "@astrojs/react@^1.0.0":
+"@astrojs/react@1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/react/-/react-1.1.0.tgz#af6f4cdcfba39c6de89cfe6b6ba24abfd1669cd5"
+  integrity sha512-T9/mEE/9yO36X3QeqzQjGMFXRH0f3vcBC9Jhxb3oGm5NlKm2m9Sg9GR52fcCtLRVR3ihc8qAElgEmQAAUTZ3KQ==
+  dependencies:
+    "@babel/core" ">=7.0.0-0 <8.0.0"
+    "@babel/plugin-transform-react-jsx" "^7.17.12"
+
+"@astrojs/react@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@astrojs/react/-/react-1.0.0.tgz#44f270e45a1608f623275c89d52fd1617315e2bf"
   integrity sha512-CHJQ1dwjpYOTunioi02yWKdSxN/YeLP1vI70Xq+AqhcTmcmdbCMwbtYOEVwIK1k/AJmLItsJMcrsTfRoQU+Z+Q==
