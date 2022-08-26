@@ -61,6 +61,11 @@ export default {
         enable: true,
         options: [],
       },
+      {
+        name: 'community',
+        enable: true,
+        options: [],
+      },
     ],
   }),
   kogenji: encode({
