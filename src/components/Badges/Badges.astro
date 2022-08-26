@@ -1,5 +1,7 @@
 ---
 import Badge from '@components/Badges/Badge.vue'
+import badge1 from '@assets/badge1.png'
+import badge2 from '@assets/badge2.png'
 ---
 
 <div class="bg-cover bg-center">
@@ -10,17 +12,14 @@ import Badge from '@components/Badges/Badge.vue'
     <div class="h-full grid justify-items-start">
       <a href="/quests/quest_starter">
         <div class="max-w-xl">
-          <Badge title="Awesomer" badgeImageSrc="/assets/badge1.png" />
+          <Badge title="Awesomer" badgeImageSrc={badge1} />
         </div>
       </a>
     </div>
     <div class="h-full grid justify-items-start">
       <a href="/quests/quest_stake_100">
         <div class="max-w-xl">
-          <Badge
-            title="Become the first 30 starters"
-            badgeImageSrc="/assets/badge2.png"
-          />
+          <Badge title="Become the first 30 starters" badgeImageSrc={badge2} />
         </div>
       </a>
     </div>

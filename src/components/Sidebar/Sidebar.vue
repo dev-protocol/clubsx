@@ -49,7 +49,7 @@
             class="grid grid-cols-[1fr_2fr] items-center gap-4 md:gap-6 lg:grid-cols-1 lg:gap-8"
           >
             <img
-              src="/assets/avatar.png"
+              :src="images.avatar"
               alt="avator"
               class="h-auto rounded-full"
               width="220"
@@ -61,7 +61,7 @@
               <h2 class="font-title text-xl font-bold">{{ tenantName }}</h2>
               <p class="flex items-center gap-2 font-body text-xs">
                 $TEMPL on
-                <img src="/assets/ETH.svg" class="h-[1.8em]" alt="Ethereum" />
+                <img :src="images.ETH" class="h-[1.8em]" alt="Ethereum" />
               </p>
             </header>
           </div>
@@ -95,6 +95,8 @@
 </template>
 
 <script>
+import ETH from '@assets/ETH.svg'
+import avatar from '@assets/avatar.png'
 import { providers } from 'ethers'
 import { detectStokensByPropertyAddress } from '@fixtures/dev-kit'
 import HSButton from '../Primitives/Hashi/HSButton.vue'
@@ -110,6 +112,10 @@ export default {
     return {
       members: 0,
       toggleOpen: false,
+      images: {
+        ETH,
+        avatar,
+      },
     }
   },
   async created() {

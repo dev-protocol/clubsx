@@ -1,4 +1,6 @@
 ---
+import logo from '@assets/devlogo.svg'
+
 const url: string = Astro.url.pathname
 
 const footerAccent: Record<string, string> = {
@@ -56,7 +58,7 @@ const getColor = (): string => {
           target="_blank"
           rel="norefferer noopener"
         >
-          <img src="/assets/devlogo.svg" alt="Dev Protocol" class="w-24" />
+          <img src={logo} alt="Dev Protocol" class="w-24" />
         </a>
       </p>
     </div>

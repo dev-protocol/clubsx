@@ -3,6 +3,7 @@ import Navbar from '@components/Global/Navbar.vue'
 import { connectionId } from '@constants/connection'
 import { tenants } from '@constants/tenants'
 import { tenantBy } from '@fixtures/data/tenants'
+import og from '@assets/og.png'
 import '@styles/global.scss'
 
 const { metaTitle } = Astro.props
@@ -32,7 +33,7 @@ const canonicalURL = new URL(
     <meta property="og:title" content={title} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={Astro.url.href} />
-    <meta property="og:image" content={`${canonicalURL}/assets/og.png`} />
+    <meta property="og:image" content={`${canonicalURL}${og}`} />
     <meta property="og:description" content={tenant.description} />
     <meta property="og:site_name" content={tenant.name} />
     <meta name="twitter:site" content={tenant.twitterHandle} />
@@ -40,7 +41,7 @@ const canonicalURL = new URL(
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={tenant.description} />
-    <meta name="twitter:image" content={`${canonicalURL}/assets/og.png`} />
+    <meta name="twitter:image" content={`${canonicalURL}${og}`} />
   </head>
 
   <body class="font-body bg-black text-white min-h-screen">

@@ -8,7 +8,7 @@
     <form class="mb-8 flex flex-col gap-2 md:flex-row" ref="form">
       <CLBRadio
         label="$DEV"
-        media="/assets/devtoken.png"
+        :media="images.DEV"
         media-alt="Dev Token logo"
         helper="Best way to sustainably support with staking."
         value="dev"
@@ -17,7 +17,7 @@
       />
       <CLBRadio
         label="$ETH"
-        media="/assets/ETH.svg"
+        :media="images.ETH"
         media-alt="Ethereum logo"
         helper="You will earn $DEV by staking."
         value="eth"
@@ -49,6 +49,8 @@
 </template>
 
 <script lang="ts">
+import ETH from '@assets/ETH.svg'
+import DEV from '@assets/devtoken.png'
 import type { Tiers } from '@constants/tier'
 import Tier from '@components/Join/Tier.vue'
 import { providers } from 'ethers'
@@ -67,6 +69,10 @@ type Data = {
   composedTiers: {
     [key in CurrencyOption]: UndefinedOr<Tiers>
   }
+  images: {
+    DEV: string
+    ETH: string
+  }
 }
 
 export default defineComponent({
@@ -82,6 +88,10 @@ export default defineComponent({
     return {
       currency: 'dev',
       composedTiers: { dev: [...this.tiers], eth: undefined },
+      images: {
+        DEV,
+        ETH,
+      },
     }
   },
   async mounted() {

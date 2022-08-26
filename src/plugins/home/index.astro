@@ -3,6 +3,18 @@ import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
 import Footer from '@components/Global/Footer.astro'
 import JoinClub from '@components/Join/JoinClub.vue'
+import cover1 from '@assets/cover-1.jpg'
+import owt3cn75 from '@assets/owt3cn75.png'
+import gt6zfoja from '@assets/gt6zfoja.png'
+import artifacts40 from '@assets/artifacts/40.png'
+import artifacts92 from '@assets/artifacts/92.png'
+import artifacts89 from '@assets/artifacts/89.png'
+import artifacts12 from '@assets/artifacts/12.png'
+import artifacts259 from '@assets/artifacts/259.png'
+import artifacts125 from '@assets/artifacts/125.png'
+import artifacts101 from '@assets/artifacts/101.png'
+import artifacts108 from '@assets/artifacts/108.png'
+import grade from '@assets/Grade.png'
 
 const { propertyAddress, name, tiers } = Astro.props
 ---
@@ -10,10 +22,7 @@ const { propertyAddress, name, tiers } = Astro.props
 <div>
   <div class="relative">
     <div class="absolute w-full h-[24rem] lg:h-[38rem]">
-      <img
-        src="/assets/cover-1.jpg"
-        class="h-full w-full object-cover opacity-80"
-      />
+      <img src={cover1} class="h-full w-full object-cover opacity-80" />
     </div>
     <CLBWrapper>
       <Sidebar
@@ -49,7 +58,7 @@ const { propertyAddress, name, tiers } = Astro.props
             <div class="flex gap-8">
               <figure>
                 <img
-                  src="/assets/owt3cn75.png"
+                  src={owt3cn75}
                   class="rounded-lg"
                   width="961"
                   height="704"
@@ -61,7 +70,7 @@ const { propertyAddress, name, tiers } = Astro.props
               </figure>
               <figure>
                 <img
-                  src="/assets/gt6zfoja.png"
+                  src={gt6zfoja}
                   class="rounded-lg"
                   width="961"
                   height="704"
@@ -90,7 +99,7 @@ const { propertyAddress, name, tiers } = Astro.props
               >
                 <figure>
                   <img
-                    src="/assets/artifacts/40.png"
+                    src={artifacts40}
                     width="399"
                     height="301"
                     alt="40 Makie lacquer-work plate"
@@ -101,7 +110,7 @@ const { propertyAddress, name, tiers } = Astro.props
                 </figure>
                 <figure>
                   <img
-                    src="/assets/artifacts/92.png"
+                    src={artifacts92}
                     width="339"
                     height="315"
                     alt="92 Transformable panel"
@@ -112,7 +121,7 @@ const { propertyAddress, name, tiers } = Astro.props
                 </figure>
                 <figure>
                   <img
-                    src="/assets/artifacts/89.png"
+                    src={artifacts89}
                     width="365"
                     height="358"
                     alt="89 Metal panel, moon and autumn grasses"
@@ -125,7 +134,7 @@ const { propertyAddress, name, tiers } = Astro.props
               <div class="grid justify-items-center gap-16">
                 <figure>
                   <img
-                    src="/assets/artifacts/12.png"
+                    src={artifacts12}
                     class="w-full max-w-md"
                     width="907"
                     height="229"
@@ -136,14 +145,9 @@ const { propertyAddress, name, tiers } = Astro.props
                   </figcaption>
                 </figure>
                 <figure>
+                  <img src={grade} class="h-8 w-auto" width="137" height="75" />
                   <img
-                    src="/assets/Grade.png"
-                    class="h-8 w-auto"
-                    width="137"
-                    height="75"
-                  />
-                  <img
-                    src="/assets/artifacts/259.png"
+                    src={artifacts259}
                     class="w-full max-w-md"
                     width="995"
                     height="483"
@@ -155,7 +159,7 @@ const { propertyAddress, name, tiers } = Astro.props
                 </figure>
                 <figure>
                   <img
-                    src="/assets/artifacts/125.png"
+                    src={artifacts125}
                     class="w-60 max-w-full"
                     width="490"
                     height="1165"
@@ -167,7 +171,7 @@ const { propertyAddress, name, tiers } = Astro.props
                 </figure>
                 <figure>
                   <img
-                    src="/assets/artifacts/101.png"
+                    src={artifacts101}
                     class="max-w-xs"
                     width="684"
                     height="690"
@@ -179,7 +183,7 @@ const { propertyAddress, name, tiers } = Astro.props
                 </figure>
                 <figure>
                   <img
-                    src="/assets/artifacts/108.png"
+                    src={artifacts108}
                     class="max-w-xs"
                     width="580"
                     height="1017"

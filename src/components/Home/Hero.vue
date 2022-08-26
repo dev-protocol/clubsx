@@ -10,24 +10,23 @@
   >
     <div class="absolute inset-0 bg-black"></div>
     <swiper-slide
-      ><img
-        src="/assets/cover-1.jpg"
-        class="h-full w-full object-cover opacity-80"
+      ><img :src="images.cover1" class="h-full w-full object-cover opacity-80"
     /></swiper-slide>
     <swiper-slide
       ><img
-        src="/assets/cover-2.jpg"
+        :src="images.cover2"
         class="opacity-8 h-full w-full object-cover opacity-80"
     /></swiper-slide>
     <swiper-slide
-      ><img
-        src="/assets/cover-3.jpg"
-        class="h-full w-full object-cover opacity-80"
+      ><img :src="images.cover3" class="h-full w-full object-cover opacity-80"
     /></swiper-slide>
   </swiper>
 </template>
 
 <script>
+import cover1 from '@assets/cover-1.jpg'
+import cover2 from '@assets/cover-2.jpg'
+import cover3 from '@assets/cover-3.jpg'
 import { Navigation, Autoplay, A11y } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 
@@ -35,6 +34,15 @@ export default {
   components: {
     Swiper,
     SwiperSlide,
+  },
+  data() {
+    return {
+      images: {
+        cover1,
+        cover2,
+        cover3,
+      },
+    }
   },
   setup() {
     return {

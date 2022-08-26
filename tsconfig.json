@@ -17,7 +17,8 @@
       "@layouts/*": ["src/layouts/*"],
       "@pages/*": ["src/pages/*"],
       "@styles/*": ["src/styles/*"],
-      "@plugins/*": ["src/plugins/*"]
+      "@plugins/*": ["src/plugins/*"],
+      "@assets/*": ["src/assets/*"]
     }
   }
 }
