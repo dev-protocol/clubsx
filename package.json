@@ -61,7 +61,7 @@
     "swiper": "8.3.2",
     "tailwindcss": "3.1.8",
     "truncate-eth-address": "1.0.2",
-    "vue": "3.2.37",
+    "vue": "3.2.38",
     "web3modal": "1.9.9"
   },
   "repository": "https://github.com/dev-protocol/clubs.git",
