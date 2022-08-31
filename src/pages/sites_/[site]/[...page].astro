@@ -15,7 +15,7 @@ import quests from '@plugins/quests'
 
 const { site, page } = Astro.params
 
-const { getStaticPaths, getCurrentConfig } = await pageFactory({
+const { getStaticPaths, getCurrentConfig } = pageFactory({
   config: () => _config(site),
   plugins: {
     buy,
@@ -31,7 +31,7 @@ const { getStaticPaths, getCurrentConfig } = await pageFactory({
   },
 })
 
-const path = getStaticPaths().find(({ params }) => params.page === page)
+const path = (await getStaticPaths()).find(({ params }) => params.page === page)
 
 if (!path) {
   throw new Error('Path undefined: ', path)
