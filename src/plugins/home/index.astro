@@ -20,9 +20,8 @@ const { propertyAddress, name, tiers } = Astro.props
 
 import { get } from './api'
 
-const test = await get({userAddress: ''})
+const test = await get({ userAddress: '' })
 console.log('test is: ', test)
-
 ---
 
 <div>
