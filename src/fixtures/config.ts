@@ -25,5 +25,6 @@ export const config = async (
   if (!res) {
     throw new Error(`No entry found ${site}`)
   }
+  await client.quit()
   return encode(res)
 }
