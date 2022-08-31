@@ -1,5 +1,5 @@
 import { createClient } from 'redis'
-import { encode } from '@devprotocol/clubs-core'
+import { ClubsConfiguration, encode } from '@devprotocol/clubs-core'
 
 export const config = async (
   site: string | number | undefined
@@ -19,6 +19,11 @@ export const config = async (
     throw new Error('No site passed')
   }
 
-  const res = (await client.get(`${site}`)) as string
-  return encode(JSON.parse(res))
+  const res = (await client.json.get(
+    `${site}`
+  )) as unknown as ClubsConfiguration
+  if (!res) {
+    throw new Error(`No entry found ${site}`)
+  }
+  return encode(res)
 }

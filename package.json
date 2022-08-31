@@ -13,7 +13,7 @@
     "lint:prettier:astro": "yarn prettier -w **/*.astro || echo '🙈 > ignored some errors of prettier for astro'",
     "prepare": "husky install",
     "install": "node ./ugly.mjs",
-    "populate": "ts-node ./scripts/populate.js"
+    "populate": "node ./scripts/populate.js"
   },
   "devDependencies": {
     "@types/dotenv": "8.2.0",
