@@ -20,7 +20,7 @@
     "@types/ramda": "0.28.15",
     "@types/react": "18.0.18",
     "autoprefixer": "10.4.8",
-    "dotenv": "16.0.1",
+    "dotenv": "16.0.2",
     "eslint": "8.23.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-config-standard": "17.0.0",
