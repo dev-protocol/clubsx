@@ -19,11 +19,10 @@ export const config = async (
     throw new Error('No site passed')
   }
 
-  const res = (await client.json.get(
-    `${site}`
-  )) as unknown as ClubsConfiguration
+  const res = (await client.get(`${site}`)) as string
   if (!res) {
     throw new Error(`No entry found ${site}`)
   }
-  return encode(res)
+  await client.quit()
+  return res
 }
