@@ -16,7 +16,7 @@ import quests from '@plugins/quests'
 const { site, page } = Astro.params
 
 const { getStaticPaths, getCurrentConfig } = pageFactory({
-  config: () => _config(site),
+  config: async () => await _config(site),
   plugins: {
     buy,
     community,
