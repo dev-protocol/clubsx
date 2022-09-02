@@ -184,6 +184,11 @@ const populate = async () => {
         propertyAddress: '0x541f7914ed2a4a8b477edc711fa349a77983f3ad',
         plugins: [
           {
+            name: 'admin',
+            enable: true,
+            options: [],
+          },
+          {
             name: 'home',
             enable: true,
             options: [
