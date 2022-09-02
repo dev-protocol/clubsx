@@ -148,10 +148,10 @@
     node-fetch "^3.2.5"
     which-pm-runs "^1.1.0"
 
-"@astrojs/vercel@1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@astrojs/vercel/-/vercel-1.0.1.tgz#5b81025310978183845ad32675ae2fc2e724eb73"
-  integrity sha512-3OP8TvYbVBt9zkqmKAotQJ9OqhtcKbmEWvtAN04Knw4i+e/KFOrok83k+aNKFi99QFHBDQX7Ougu/3XIVHyEkg==
+"@astrojs/vercel@1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@astrojs/vercel/-/vercel-1.0.2.tgz#b05b9ce7c98b113b7461e4e7588318e88801e0f2"
+  integrity sha512-IdEkJQVZ9iBVCrojVHbwoFWJ4uF4SBo0GuC4vMDL+wuZPnjV6TnZZDJwl77HwylFqbqujjmm4pvqhHJAQ8GTFA==
   dependencies:
     "@astrojs/webapi" "^1.0.0"
     "@vercel/nft" "^0.18.2"
@@ -380,10 +380,10 @@
     "@babel/helper-validator-identifier" "^7.18.6"
     to-fast-properties "^2.0.0"
 
-"@devprotocol/clubs-core@0.6.2-alpha.0":
-  version "0.6.2-alpha.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.6.2-alpha.0.tgz#e98e0c252a9ffc25ace08fe06fa183bcb4a644ca"
-  integrity sha512-XvkYD+YJVbkwySYcxV4WObWtHNO4tvOOmBiQEmicl8saMa3Hg88G7CgiDHiDtX/FctxyWZ6hRotNTjIbmJwvWw==
+"@devprotocol/clubs-core@0.6.2-alpha.2":
+  version "0.6.2-alpha.2"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.6.2-alpha.2.tgz#99ad67ed5bb248427809563334abfdfe688b3f7f"
+  integrity sha512-QFCbDAebVseaJoMudKRqV84eSyJCmOvQSEdgHZev/2F46OFWwyGBS0ZY8nJXUCvEWtHlaZOZpQR07SUcnkPX1g==
   dependencies:
     "@aggre/ullr" "3.1.3"
     "@astrojs/lit" "^1.0.0"
@@ -1125,7 +1125,7 @@
   resolved "https://registry.yarnpkg.com/@redis/graph/-/graph-1.0.1.tgz#eabc58ba99cd70d0c907169c02b55497e4ec8a99"
   integrity sha512-oDE4myMCJOCVKYMygEMWuriBgqlS5FqdWerikMoJxzmmTUErnTRRgmIDa2VcgytACZMFqpAOWDzops4DOlnkfQ==
 
-"@redis/json@1.0.3", "@redis/json@^1.0.3":
+"@redis/json@1.0.3":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@redis/json/-/json-1.0.3.tgz#a13fde1d22ebff0ae2805cd8e1e70522b08ea866"
   integrity sha512-4X0Qv0BzD9Zlb0edkUoau5c1bInWSICqXAGrpwEltkncUwcxJIGEcVryZhLgb0p/3PkKaLIWkjhHRtLe9yiA7Q==
@@ -1237,10 +1237,10 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
-"@tailwindcss/aspect-ratio@0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@tailwindcss/aspect-ratio/-/aspect-ratio-0.4.0.tgz#c635dd7331cbcc1b111cebdc2647dd3493ebdd3e"
-  integrity sha512-WJu0I4PpqNPuutpaA9zDUq2JXR+lorZ7PbLcKNLmb6GL9/HLfC7w3CRsMhJF4BbYd/lkY6CfXOvkYpuGnZfkpQ==
+"@tailwindcss/aspect-ratio@0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@tailwindcss/aspect-ratio/-/aspect-ratio-0.4.1.tgz#60886cada7a1fac2ba9f12bfdc31567fbb06f589"
+  integrity sha512-1wN2Znrh064KfaULmW+UVgnMCk+LUbYnupH4syF9I9Qx7JLfUlGyPYd0oMXFwqkpNv5aiHu4j+0uSbjSY9tNvA==
 
 "@typechain/ethers-v5@^2.0.0":
   version "2.0.0"
@@ -2003,10 +2003,10 @@ ast-types@0.14.2, ast-types@^0.14.2:
   dependencies:
     tslib "^2.0.1"
 
-astro@1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/astro/-/astro-1.1.2.tgz#e89cb7107d713722fdfe4048e0c0f641ec9c1c89"
-  integrity sha512-btawnJ+MwkJbjLO0uSMrlYl71jsa6ljyXEXeeFitp9aqRo0sqH7JdTE0nh7MWsVMePXEvcJ88WOkEhW/FpRu/Q==
+astro@1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/astro/-/astro-1.1.3.tgz#fa74e76b95c8acaf625c3186b68ad561587eefc0"
+  integrity sha512-bD12gtIQkvqkc7L2syqsFdJzhvDYF/4EP8+RyMnE/FycAYSCn7z6AtIBMZIhPVhD+3GFhNYrhG5Sjfx/TlR9tQ==
   dependencies:
     "@astrojs/compiler" "^0.23.4"
     "@astrojs/language-server" "^0.23.0"
@@ -3889,10 +3889,15 @@ dom7@^4.0.4:
   dependencies:
     ssr-window "^4.0.0"
 
-dotenv@*, dotenv@16.0.1:
+dotenv@*:
   version "16.0.1"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.0.1.tgz#8f8f9d94876c35dac989876a5d3a82a267fdce1d"
   integrity sha512-1K6hR6wtk2FviQ4kEiSjFiH5rpzEVi8WW0x96aztHVMhEspNpc4DVOUTEHtEva5VThQ8IaBX1Pe4gSzpVVUsKQ==
+
+dotenv@16.0.2:
+  version "16.0.2"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.0.2.tgz#0b0f8652c016a3858ef795024508cddc4bffc5bf"
+  integrity sha512-JvpYKUmzQhYoIFgK2MOnF3bciIZoItIIoryihy0rIA+H4Jy0FmgyKYAHCTN98P5ybGSJcIFbh6QKeJdtZd1qhA==
 
 dotignore@~0.1.2:
   version "0.1.2"
@@ -8743,7 +8748,17 @@ prettier-linter-helpers@^1.0.0:
   dependencies:
     fast-diff "^1.1.2"
 
-prettier-plugin-astro@0.5.3, prettier-plugin-astro@^0.5.3:
+prettier-plugin-astro@0.5.4:
+  version "0.5.4"
+  resolved "https://registry.yarnpkg.com/prettier-plugin-astro/-/prettier-plugin-astro-0.5.4.tgz#0ccc510cdd260baf6346ccaf5956fb63d0b2bbd9"
+  integrity sha512-ILs/WgUYtKBOn3Zh217/PwjCFtUWEKQjcCFJDevri0hGEBwEnnda9aqSLL0/nhCOmQn/UE7M9zLQvThu970ZHw==
+  dependencies:
+    "@astrojs/compiler" "^0.23.4"
+    prettier "^2.7.1"
+    sass-formatter "^0.7.5"
+    synckit "^0.7.0"
+
+prettier-plugin-astro@^0.5.3:
   version "0.5.3"
   resolved "https://registry.yarnpkg.com/prettier-plugin-astro/-/prettier-plugin-astro-0.5.3.tgz#6e2f21979ab1bd905f63a816b829aeb2a3698927"
   integrity sha512-g4uJ/7k1rJeIWBifeBgTqzgV5gmMTG+lOmOvUZvtIh1R91aqa+yYMzbysIlsJKRaRyWefejrOpvpIuEePBDAyw==
@@ -9137,7 +9152,7 @@ recast@^0.20.5:
     source-map "~0.6.1"
     tslib "^2.0.1"
 
-redis@^4.3.0:
+redis@4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/redis/-/redis-4.3.0.tgz#c01de4cf13821406addb7fcb70afe203266c4c39"
   integrity sha512-RXRUor0iU1vizu4viHoUyLpe1ZO/RngZp0V9DyXBHTI+7tC7rEz6Wzn4Sv9v0tTJeqGAzdJ+q5YVbNKKQ5hX9A==
@@ -9558,17 +9573,17 @@ sander@^0.5.0:
     mkdirp "^0.5.1"
     rimraf "^2.5.2"
 
-sass-formatter@^0.7.2:
+sass-formatter@^0.7.2, sass-formatter@^0.7.5:
   version "0.7.5"
   resolved "https://registry.yarnpkg.com/sass-formatter/-/sass-formatter-0.7.5.tgz#60fc3756267368d82877c6abf2c148f0c9291d6d"
   integrity sha512-NKFP8ddjhUYi6A/iD1cEtzkEs91U61kzqe3lY9SVNuvX7LGc88xnEN0mmsWL7Ol//YTi2GL/ol7b9XZ2+hgXuA==
   dependencies:
     suf-log "^2.5.3"
 
-sass@1.54.6:
-  version "1.54.6"
-  resolved "https://registry.yarnpkg.com/sass/-/sass-1.54.6.tgz#5a12c268db26555c335028e355d6b7b1a5b9b4c8"
-  integrity sha512-DUqJjR2WxXBcZjRSZX5gCVyU+9fuC2qDfFzoKX9rV4rCOcec5mPtEafTcfsyL3YJuLONjWylBne+uXVh5rrmFw==
+sass@1.54.8:
+  version "1.54.8"
+  resolved "https://registry.yarnpkg.com/sass/-/sass-1.54.8.tgz#4adef0dd86ea2b1e4074f551eeda4fc5f812a996"
+  integrity sha512-ib4JhLRRgbg6QVy6bsv5uJxnJMTS2soVcCp9Y88Extyy13A8vV0G1fAwujOzmNkFQbR3LvedudAMbtuNRPbQww==
   dependencies:
     chokidar ">=3.0.0 <4.0.0"
     immutable "^4.0.0"
