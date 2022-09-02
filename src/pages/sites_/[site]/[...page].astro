@@ -12,12 +12,14 @@ import members from '@plugins/members'
 import nft from '@plugins/nft'
 import perks from '@plugins/perks'
 import quests from '@plugins/quests'
+// import admin from '@plugins/admin'
 
 const { site, page } = Astro.params
 
 const { getStaticPaths, getCurrentConfig } = pageFactory({
   config: async () => await _config(site),
   plugins: {
+    // admin,
     buy,
     community,
     fiat,
