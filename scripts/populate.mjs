@@ -1,6 +1,8 @@
-require('dotenv').config()
-const { encode } = require('@devprotocol/clubs-core')
-const { createClient } = require('redis')
+import dotenv from 'dotenv'
+import { encode } from '@devprotocol/clubs-core'
+import { createClient } from 'redis'
+
+dotenv.config()
 
 const products = [
   {
