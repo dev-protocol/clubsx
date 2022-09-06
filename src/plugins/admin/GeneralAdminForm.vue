@@ -75,12 +75,28 @@
           Network
           <span class="text-purple-400">*</span>
         </label>
-        <input
+        <!-- <input
           :disabled="dangerLocked"
           class="rounded bg-[#040B10] px-8 py-4"
           id="network"
           name="network"
-        />
+        /> -->
+        <select
+          :class="[dangerLocked ? 'bg-[#1E1E1E]' : 'bg-[#040B10]']"
+          class="rounded border border-2 border-[#040B10] px-8 py-4"
+          :disabled="dangerLocked"
+          v-model="network"
+          id="network"
+          name="network"
+        >
+          <option
+            v-for="option in networkOptions"
+            :key="option.value"
+            :value="option.value"
+          >
+            {{ option.name }}
+          </option>
+        </select>
       </div>
 
       <div class="flex flex-col">
@@ -90,7 +106,8 @@
         </label>
         <input
           :disabled="dangerLocked"
-          class="rounded bg-[#040B10] px-8 py-4"
+          :class="[dangerLocked ? 'bg-[#1E1E1E]' : 'bg-[#040B10]']"
+          class="rounded border border-2 border-[#040B10] px-8 py-4"
           v-model="propertyAddress"
           id="tokenAddress"
           name="tokenAddress"
@@ -117,6 +134,13 @@ export default {
       modalProvider,
       provider: undefined,
       dangerLocked: true,
+      networkOptions: [
+        { name: 'Mainnet', value: 'mainnet' },
+        { name: 'Polygon', value: 'polygon' },
+        { name: 'Arbitrum', value: 'arbitrum' },
+        { name: 'Polygon Mumbai', value: 'polygon-mumbai' },
+        { name: 'Arbitrum Rinkeby', value: 'arbitrum-rinkeby' },
+      ],
     }
   },
   async mounted() {
