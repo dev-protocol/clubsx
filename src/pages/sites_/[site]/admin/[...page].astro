@@ -1,12 +1,12 @@
 ---
+import Admin from '@devprotocol/clubs-core/layouts/Admin.astro'
 import { adminFactory } from '@devprotocol/clubs-core'
-import Layout from '@layouts/Admin.astro'
 import { config as _config } from '@fixtures/config'
 import admin from '@plugins/admin'
 
 const { site, page } = Astro.params
 
-const { getStaticPaths, getCurrentConfig } = adminFactory({
+const { getStaticPaths } = adminFactory({
   config: async () => await _config(site),
   plugins: {
     admin,
@@ -20,9 +20,8 @@ if (!path) {
 }
 
 const Content = path.props.component
-const config = getCurrentConfig()
 ---
 
-<Layout {config}>
+<Admin {...path.props}>
   <Content {...path.props} />
-</Layout>
+</Admin>
