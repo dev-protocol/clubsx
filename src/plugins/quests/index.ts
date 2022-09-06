@@ -2,6 +2,7 @@ import {
   ClubsFunctionGetAdminPaths,
   ClubsFunctionGetPagePaths,
   ClubsFunctionPlugin,
+  ClubsPluginMeta,
 } from '@devprotocol/clubs-core'
 import { default as Index } from './index.astro'
 import { default as Id } from './[id].astro'
@@ -22,7 +23,10 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async () => []
 
+export const meta: ClubsPluginMeta = { displayName: 'Quests' }
+
 export default {
   getPagePaths,
   getAdminPaths,
+  meta,
 } as ClubsFunctionPlugin
