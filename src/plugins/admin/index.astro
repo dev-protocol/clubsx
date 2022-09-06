@@ -1,13 +1,18 @@
 ---
 import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
+import GeneralAdminForm from './GeneralAdminForm.vue'
 
-import Footer from '@components/Global/Footer.astro'
-// import HSButton from '@components/Primitives/Hashi/HSButton.vue'
-// import Sidebar from '@components/Sidebar/Sidebar.vue'
-// import Step from '@components/Community/Step.vue'
+const { name, description, twitterHandle, propertyAddress } = Astro.props
 ---
 
-<CLBWrapper>
-  <p>hello world</p>
-</CLBWrapper>
-<Footer />
+<div class="flex flex-col">
+  <h1 class="font-title text-lg font-bold">General</h1>
+
+  <GeneralAdminForm
+    client:only="vue"
+    name={name}
+    description={description}
+    twitterHandle={twitterHandle}
+    propertyAddress={propertyAddress}
+  />
+</div>

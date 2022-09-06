@@ -1,0 +1,79 @@
+---
+import type { ClubsConfiguration } from '@devprotocol/clubs-core'
+import { connectionId } from '@constants/connection'
+import og from '@assets/og.png'
+import '@styles/global.scss'
+
+const { metaTitle, config } = Astro.props as {
+  metaTitle?: string
+  config: ClubsConfiguration
+}
+
+const title = metaTitle
+  ? `${await config.name} : ${metaTitle}`
+  : await config.name
+
+console.log('config name is: ', await config)
+const { name, plugins } = await config
+const enabledPlugins = plugins
+  .filter((plugin) => plugin.enable === true)
+  .filter((plugin) => plugin.name.toUpperCase() !== 'ADMIN')
+
+const ogURL = new URL(
+  Astro.url.pathname.replace(/(.*)\/$/, '$1') + og,
+  config.url ?? 'http://localhost'
+)
+---
+
+<!DOCTYPE html>
+<html class="dark" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="description" content={`${config.description}`} />
+    <meta property="og:title" content={title} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url.href} />
+    <meta property="og:image" content={`${ogURL}`} />
+    <meta property="og:description" content={config.description} />
+    <meta property="og:site_name" content={config.name} />
+    <meta name="twitter:site" content={config.twitterHandle} />
+    <meta name="twitter:creator" content={config.twitterHandle} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={config.description} />
+    <meta name="twitter:image" content={`${ogURL}`} />
+  </head>
+
+  <body
+    class="font-body bg-[#3A4158] text-white min-h-screen container mx-auto px-4"
+  >
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@devprotocol/elements@0.0.5/bundled/dev-connection.mjs"
+    ></script>
+    <div class="flex py-8">
+      <header class="flex flex-col pr-16">
+        <h1 class="font-title text-lg font-bold mb-16">{name}</h1>
+        <nav class="flex flex-col">
+          <a class="mb-4 text-sm" href="/admin">Admin</a>
+          <a class="mb-16 text-sm" href="/admin/plugins">Plugins</a>
+
+          {
+            enabledPlugins.map((plugin) => (
+              <a class="mb-4 text-sm capitalize" href={plugin.name}>
+                {plugin.name}
+              </a>
+            ))
+          }
+        </nav>
+      </header>
+      <main class="w-full">
+        <slot />
+      </main>
+    </div>
+    <dev-connection id={connectionId} />
+  </body>
+</html>
