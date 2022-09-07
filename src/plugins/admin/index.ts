@@ -21,7 +21,7 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
   {
     paths: ['plugins'],
     component: Plugins,
-    props: { },
+    props: {},
   },
 ]
 
