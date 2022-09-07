@@ -90,7 +90,7 @@
     "@babel/core" ">=7.0.0-0 <8.0.0"
     "@babel/plugin-transform-react-jsx" "^7.17.12"
 
-"@astrojs/svelte@^1.0.0":
+"@astrojs/svelte@1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@astrojs/svelte/-/svelte-1.0.0.tgz#8abd0fcaeb35eca0258dd38d08f8c62c96f4b91d"
   integrity sha512-WmvcEe86j/3wL2xWURo1Kxtgh+s0CVys2j7xQboHr0ZeH9TBlkQuacAT8mWccD1/MikhDVqL/1hnF/n+vRKuGw==
@@ -10252,7 +10252,7 @@ svelte2tsx@^0.5.11:
     dedent-js "^1.0.1"
     pascal-case "^3.1.1"
 
-svelte@^3.46.4:
+svelte@3.50.0:
   version "3.50.0"
   resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.50.0.tgz#d11a7a6bd1e084ec051d55104a9af8bccf54461f"
   integrity sha512-zXeOUDS7+85i+RxLN+0iB6PMbGH7OhEgjETcD1fD8ZrhuhNFxYxYEHU41xuhkHIulJavcu3PKbPyuCrBxdxskQ==
