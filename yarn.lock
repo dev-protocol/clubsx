@@ -381,10 +381,17 @@
   resolved "https://registry.yarnpkg.com/@devprotocol/elements/-/elements-0.1.1.tgz#303a9afb23c154efc7f792891673cfbef497ec30"
   integrity sha512-rozYrfPo+/bKp+QtXdGVZQGkXhOirhsDSrPmue0AOeg+OLBaOpjUNmZQf+P4kC6LOEiGUUguHP3AD+gy+8EXmg==
 
+
+"@devprotocol/elements@0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@devprotocol/elements/-/elements-0.1.1.tgz#303a9afb23c154efc7f792891673cfbef497ec30"
+  integrity sha512-rozYrfPo+/bKp+QtXdGVZQGkXhOirhsDSrPmue0AOeg+OLBaOpjUNmZQf+P4kC6LOEiGUUguHP3AD+gy+8EXmg==
+
 "@devprotocol/hashi@1.3.0":
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/@devprotocol/hashi/-/hashi-1.3.0.tgz#c902fc3539ef811c8efd314a1eb31c81481d1132"
   integrity sha512-GCjcnVEtWPaYfadzcdsMi0sf86fzGM3G5lBpq951mf37oyxMH7C3ODDFW6q/qhkKC6IB2cU9vPpT5ujUiayrcw==
+
   dependencies:
     "@matteusan/sentro" "0.1.23"
 

@@ -1,6 +1,8 @@
-require('dotenv').config()
-const { encode } = require('@devprotocol/clubs-core')
-const { createClient } = require('redis')
+import dotenv from 'dotenv'
+import { encode } from '@devprotocol/clubs-core'
+import { createClient } from 'redis'
+
+dotenv.config()
 
 const products = [
   {
@@ -183,6 +185,11 @@ const populate = async () => {
         url: 'https://temples.clubs.stakes.social',
         propertyAddress: '0x541f7914ed2a4a8b477edc711fa349a77983f3ad',
         plugins: [
+          {
+            name: 'admin',
+            enable: true,
+            options: [],
+          },
           {
             name: 'home',
             enable: true,

@@ -1,0 +1,27 @@
+---
+import Admin from '@devprotocol/clubs-core/layouts/Admin.astro'
+import { adminFactory } from '@devprotocol/clubs-core'
+import { config as _config } from '@fixtures/config'
+import admin from '@plugins/admin'
+
+const { site, page } = Astro.params
+
+const { getStaticPaths } = adminFactory({
+  config: async () => await _config(site),
+  plugins: {
+    admin,
+  },
+})
+
+const path = (await getStaticPaths()).find(({ params }) => params.page === page)
+
+if (!path) {
+  throw new Error('Path undefined: ', path)
+}
+
+const Content = path.props.component
+---
+
+<Admin {...path.props}>
+  <Content {...path.props} />
+</Admin>
