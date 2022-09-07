@@ -376,22 +376,24 @@
     js-base64 "^3.7.2"
     ramda "^0.28.0"
 
-"@devprotocol/elements@0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/elements/-/elements-0.1.0.tgz#984df7d50adceca4c8d8fd5a10347c847ca621c4"
-  integrity sha512-TuTnsuz+FtDbKGJF7CIwt6AxGFskM5F2FkO11hQ+C+cPQXpJnBDNzPIrHFwVYcHSWVjSML7IKXm4+06k2JuPvQ==
+"@devprotocol/elements@0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@devprotocol/elements/-/elements-0.1.1.tgz#303a9afb23c154efc7f792891673cfbef497ec30"
+  integrity sha512-rozYrfPo+/bKp+QtXdGVZQGkXhOirhsDSrPmue0AOeg+OLBaOpjUNmZQf+P4kC6LOEiGUUguHP3AD+gy+8EXmg==
+
 
 "@devprotocol/elements@0.1.1":
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/@devprotocol/elements/-/elements-0.1.1.tgz#303a9afb23c154efc7f792891673cfbef497ec30"
   integrity sha512-rozYrfPo+/bKp+QtXdGVZQGkXhOirhsDSrPmue0AOeg+OLBaOpjUNmZQf+P4kC6LOEiGUUguHP3AD+gy+8EXmg==
 
-"@devprotocol/hashi@1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@devprotocol/hashi/-/hashi-1.2.1.tgz#f20725eab68e5daa48bd1bd410b8505897b9d64b"
-  integrity sha512-OghUDbal+ufDCknp9EQes58SHZBxFFMnuUMweQcE+gE3N+abyJMJTWM5sSmabE0UwO6dW7qFRxTHTsMWudUDWA==
+"@devprotocol/hashi@1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@devprotocol/hashi/-/hashi-1.3.0.tgz#c902fc3539ef811c8efd314a1eb31c81481d1132"
+  integrity sha512-GCjcnVEtWPaYfadzcdsMi0sf86fzGM3G5lBpq951mf37oyxMH7C3ODDFW6q/qhkKC6IB2cU9vPpT5ujUiayrcw==
+
   dependencies:
-    "@matteusan/sentro" "0.1.22"
+    "@matteusan/sentro" "0.1.23"
 
 "@devprotocol/util-ts@2.2.1", "@devprotocol/util-ts@^2.2.1":
   version "2.2.1"
@@ -981,10 +983,10 @@
     semver "^7.3.5"
     tar "^6.1.11"
 
-"@matteusan/sentro@0.1.22":
-  version "0.1.22"
-  resolved "https://registry.yarnpkg.com/@matteusan/sentro/-/sentro-0.1.22.tgz#0caff06245426db6ca58c7817ba3c0ed08ea2674"
-  integrity sha512-j7XFgzKiPB8Az9cJVdfeFBP4VHiJu5y9zGPMg9JtzG5ILQwmg29rWzgTWotigeGix/iK1pQCQ8T97wDWyYRwsQ==
+"@matteusan/sentro@0.1.23":
+  version "0.1.23"
+  resolved "https://registry.yarnpkg.com/@matteusan/sentro/-/sentro-0.1.23.tgz#9554653f6d7eba7a6358c4dabb21b320b5bd4547"
+  integrity sha512-lVnDTSy/xjn7KHPkAXEGMCOHKSEY3OBMtbhfXxZu9ZcDWWbU57pttojVV/XMW7Wkr7BGOlM1hbBggzV22adTnA==
 
 "@metamask/detect-provider@1.2.0":
   version "1.2.0"
@@ -1063,10 +1065,10 @@
   resolved "https://registry.yarnpkg.com/@redis/graph/-/graph-1.0.1.tgz#eabc58ba99cd70d0c907169c02b55497e4ec8a99"
   integrity sha512-oDE4myMCJOCVKYMygEMWuriBgqlS5FqdWerikMoJxzmmTUErnTRRgmIDa2VcgytACZMFqpAOWDzops4DOlnkfQ==
 
-"@redis/json@1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@redis/json/-/json-1.0.3.tgz#a13fde1d22ebff0ae2805cd8e1e70522b08ea866"
-  integrity sha512-4X0Qv0BzD9Zlb0edkUoau5c1bInWSICqXAGrpwEltkncUwcxJIGEcVryZhLgb0p/3PkKaLIWkjhHRtLe9yiA7Q==
+"@redis/json@1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@redis/json/-/json-1.0.4.tgz#f372b5f93324e6ffb7f16aadcbcb4e5c3d39bda1"
+  integrity sha512-LUZE2Gdrhg0Rx7AN+cZkb1e6HjoSKaeeW8rYnt89Tly13GBI5eP4CwDVr+MY8BAYfCg4/N15OUrtLoona9uSgw==
 
 "@redis/search@1.1.0":
   version "1.1.0"
@@ -1155,10 +1157,10 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
-"@tailwindcss/aspect-ratio@0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@tailwindcss/aspect-ratio/-/aspect-ratio-0.4.1.tgz#60886cada7a1fac2ba9f12bfdc31567fbb06f589"
-  integrity sha512-1wN2Znrh064KfaULmW+UVgnMCk+LUbYnupH4syF9I9Qx7JLfUlGyPYd0oMXFwqkpNv5aiHu4j+0uSbjSY9tNvA==
+"@tailwindcss/aspect-ratio@0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@tailwindcss/aspect-ratio/-/aspect-ratio-0.4.2.tgz#9ffd52fee8e3c8b20623ff0dcb29e5c21fb0a9ba"
+  integrity sha512-8QPrypskfBa7QIMuKHg2TA7BqES6vhBrDLOv8Unb6FcFyd3TjKbc6lcmb9UPQHxfl24sXoJ41ux/H7qQQvfaSQ==
 
 "@typechain/ethers-v5@^2.0.0":
   version "2.0.0"
@@ -1892,17 +1894,17 @@ assign-symbols@^1.0.0:
   resolved "https://registry.yarnpkg.com/assign-symbols/-/assign-symbols-1.0.0.tgz#59667f41fadd4f20ccbc2bb96b8d4f7f78ec0367"
   integrity sha512-Q+JC7Whu8HhmTdBph/Tq59IoRtoy6KAm5zzPv00WdujX82lbAL8K7WVjne7vdCsAmbF4AYaDOPyO3k0kl8qIrw==
 
-ast-types@0.14.2, ast-types@^0.14.2:
+ast-types@0.14.2:
   version "0.14.2"
   resolved "https://registry.yarnpkg.com/ast-types/-/ast-types-0.14.2.tgz#600b882df8583e3cd4f2df5fa20fa83759d4bdfd"
   integrity sha512-O0yuUDnZeQDL+ncNGlJ78BiO4jnYI3bvMsD5prT0/nsgijG/LpNBIr63gTjVTNsiGkgQhiyCShTgxt8oXOrklA==
   dependencies:
     tslib "^2.0.1"
 
-astro@1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/astro/-/astro-1.1.3.tgz#fa74e76b95c8acaf625c3186b68ad561587eefc0"
-  integrity sha512-bD12gtIQkvqkc7L2syqsFdJzhvDYF/4EP8+RyMnE/FycAYSCn7z6AtIBMZIhPVhD+3GFhNYrhG5Sjfx/TlR9tQ==
+astro@1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/astro/-/astro-1.1.5.tgz#ee55042dfc567836235b13dda7e4e0721c62405b"
+  integrity sha512-V3uDGTHYDbrqDbCpziEgCv8uElow/Ae1LjGC7guTQTU3IXzcVbJPkIfx8uNDThQ6nZpSb38z9GsFtsNJ9A3OmQ==
   dependencies:
     "@astrojs/compiler" "^0.23.4"
     "@astrojs/language-server" "^0.23.0"
@@ -1917,7 +1919,6 @@ astro@1.1.3:
     "@babel/types" "^7.18.4"
     "@proload/core" "^0.3.2"
     "@proload/plugin-tsm" "^0.2.1"
-    ast-types "^0.14.2"
     boxen "^6.2.1"
     ci-info "^3.3.1"
     common-ancestor-path "^1.0.1"
@@ -8993,15 +8994,15 @@ recast@^0.20.5:
     source-map "~0.6.1"
     tslib "^2.0.1"
 
-redis@4.3.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/redis/-/redis-4.3.0.tgz#c01de4cf13821406addb7fcb70afe203266c4c39"
-  integrity sha512-RXRUor0iU1vizu4viHoUyLpe1ZO/RngZp0V9DyXBHTI+7tC7rEz6Wzn4Sv9v0tTJeqGAzdJ+q5YVbNKKQ5hX9A==
+redis@4.3.1:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/redis/-/redis-4.3.1.tgz#290532a0c22221e05e991162ac4dca1e1b2ff6da"
+  integrity sha512-cM7yFU5CA6zyCF7N/+SSTcSJQSRMEKN0k0Whhu6J7n9mmXRoXugfWDBo5iOzGwABmsWKSwGPTU5J4Bxbl+0mrA==
   dependencies:
     "@redis/bloom" "1.0.2"
     "@redis/client" "1.3.0"
     "@redis/graph" "1.0.1"
-    "@redis/json" "1.0.3"
+    "@redis/json" "1.0.4"
     "@redis/search" "1.1.0"
     "@redis/time-series" "1.0.3"
 
