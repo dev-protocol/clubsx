@@ -1,18 +1,11 @@
 ---
-import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
-import GeneralAdminForm from './GeneralAdminForm.vue'
+import GeneralAdminForm from './GeneralAdminForm.svelte'
 
-const { name, description, twitterHandle, propertyAddress } = Astro.props
+const config = Astro.props
 ---
 
 <div class="flex flex-col">
   <h1 class="font-title text-lg font-bold mb-16">General</h1>
 
-  <GeneralAdminForm
-    client:only="vue"
-    name={name}
-    description={description}
-    twitterHandle={twitterHandle}
-    propertyAddress={propertyAddress}
-  />
+  <GeneralAdminForm client:only="svelte" config={config} />
 </div>
