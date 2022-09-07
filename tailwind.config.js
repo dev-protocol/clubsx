@@ -7,6 +7,7 @@ module.exports = {
   content: [
     './public/**/*.html',
     './src/**/*.{astro,js,jsx,svelte,ts,tsx,vue}',
+    './node_modules/@devprotocol/clubs-core/**/*.{astro,js,jsx,svelte,ts,tsx,vue}',
   ],
   darkMode: 'class',
   theme: {
