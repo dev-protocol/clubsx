@@ -346,10 +346,10 @@
     "@babel/helper-validator-identifier" "^7.18.6"
     to-fast-properties "^2.0.0"
 
-"@devprotocol/clubs-core@0.6.2-alpha.11":
-  version "0.6.2-alpha.11"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.6.2-alpha.11.tgz#28f47e2804996736d3620ce2cb173af7be2b9d36"
-  integrity sha512-83MqAnX8GhbbehclJi1H5oDTQobHfeHl8beT8Ko0Uu5iUcEk1UKqWCwgt3M0gp96x3SYb8LfnHCTEtx8KPNIRQ==
+"@devprotocol/clubs-core@0.6.2-alpha.12":
+  version "0.6.2-alpha.12"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.6.2-alpha.12.tgz#11ddc906f58a33e363985c6fe9f93ea38da0733a"
+  integrity sha512-tUrpR50cIycBFcDb7EdKQOF7Oi6HAYQcgZAkfkPfFw0T1cH3QnYMtf3ple5NtS6pYg6uiA4HqKvSJqNFGT3vHQ==
   dependencies:
     "@devprotocol/elements" "0.1.1"
     "@devprotocol/util-ts" "2.2.1"
@@ -381,17 +381,10 @@
   resolved "https://registry.yarnpkg.com/@devprotocol/elements/-/elements-0.1.1.tgz#303a9afb23c154efc7f792891673cfbef497ec30"
   integrity sha512-rozYrfPo+/bKp+QtXdGVZQGkXhOirhsDSrPmue0AOeg+OLBaOpjUNmZQf+P4kC6LOEiGUUguHP3AD+gy+8EXmg==
 
-
-"@devprotocol/elements@0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@devprotocol/elements/-/elements-0.1.1.tgz#303a9afb23c154efc7f792891673cfbef497ec30"
-  integrity sha512-rozYrfPo+/bKp+QtXdGVZQGkXhOirhsDSrPmue0AOeg+OLBaOpjUNmZQf+P4kC6LOEiGUUguHP3AD+gy+8EXmg==
-
 "@devprotocol/hashi@1.3.0":
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/@devprotocol/hashi/-/hashi-1.3.0.tgz#c902fc3539ef811c8efd314a1eb31c81481d1132"
   integrity sha512-GCjcnVEtWPaYfadzcdsMi0sf86fzGM3G5lBpq951mf37oyxMH7C3ODDFW6q/qhkKC6IB2cU9vPpT5ujUiayrcw==
-
   dependencies:
     "@matteusan/sentro" "0.1.23"
 
