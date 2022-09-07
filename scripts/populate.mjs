@@ -189,7 +189,6 @@ const populate = async () => {
             name: 'admin',
             enable: true,
             options: [],
-            meta: { displayName: 'Admin' },
           },
           {
             name: 'home',
@@ -200,13 +199,11 @@ const populate = async () => {
                 value: tiers,
               },
             ],
-            meta: { displayName: 'Home' },
           },
           {
             name: 'fiat',
             enable: true,
             options: [],
-            meta: { displayName: 'Fiat' },
           },
           {
             name: 'join',
@@ -217,19 +214,16 @@ const populate = async () => {
                 value: tiers,
               },
             ],
-            meta: { displayName: 'Join' },
           },
           {
             name: 'me',
             enable: true,
             options: [],
-            meta: { displayName: 'Me' },
           },
           {
             name: 'members',
             enable: true,
             options: [],
-            meta: { displayName: 'Members' },
           },
           {
             name: 'perks',
@@ -240,19 +234,16 @@ const populate = async () => {
                 value: perks,
               },
             ],
-            meta: { displayName: 'Perks' },
           },
           {
             name: 'quests',
             enable: true,
             options: [],
-            meta: { displayName: 'Quests' },
           },
           {
             name: 'community',
             enable: true,
             options: [],
-            meta: { displayName: 'Community' },
           },
         ],
       })
@@ -271,7 +262,6 @@ const populate = async () => {
             name: 'home',
             enable: true,
             options: [],
-            meta: { displayName: 'Home' },
           },
           {
             name: 'buy',
@@ -282,31 +272,26 @@ const populate = async () => {
                 value: products,
               },
             ],
-            meta: { displayName: 'Buy' },
           },
           {
             name: 'fiat',
             enable: true,
             options: [],
-            meta: { displayName: 'Fiat' },
           },
           {
             name: 'join',
             enable: true,
             options: [],
-            meta: { displayName: 'Join' },
           },
           {
             name: 'me',
             enable: true,
             options: [],
-            meta: { displayName: 'Me' },
           },
           {
             name: 'members',
             enable: true,
             options: [],
-            meta: { displayName: 'Members' },
           },
           {
             name: 'nft',
@@ -317,7 +302,6 @@ const populate = async () => {
                 value: products,
               },
             ],
-            meta: { displayName: 'NFT' },
           },
           {
             name: 'perks',
@@ -328,13 +312,11 @@ const populate = async () => {
                 value: perks,
               },
             ],
-            meta: { displayName: 'Perks' },
           },
           {
             name: 'quests',
             enable: true,
             options: [],
-            meta: { displayName: 'Quests' },
           },
         ],
       })
