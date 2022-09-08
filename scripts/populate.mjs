@@ -323,6 +323,7 @@ const populate = async () => {
     )
 
     console.log('Tenants set')
+    return
   } catch (error) {
     console.error('error populating tenants: ', error)
   }
