@@ -2,7 +2,7 @@ const AdminPlugins = (props) => {
   const { plugins = [] } = props
 
   return (
-    <div className="flex ml-auto mr-auto w-[51.05%] max-w-full flex-col items-start gap-[64px] p-0">
+    <div className="ml-auto mr-auto flex w-[51.05%] max-w-full flex-col items-start gap-[64px] p-0">
       <p className="font-Syne h-9 p-0 text-2xl font-bold leading-9">Plugins</p>
       {plugins.map((plugin, i) => (
         <div className="flex w-full flex-row items-center justify-between gap-[10px] p-0">
