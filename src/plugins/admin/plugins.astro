@@ -9,4 +9,4 @@ const allPlugins = plugins.filter(
 )
 ---
 
-<AdminPlugins plugins={allPlugins} />
+<AdminPlugins client:only="react" plugins={allPlugins} />
