@@ -151,14 +151,13 @@ import {
   positionsCreateWithEth,
   estimationsAPY,
 } from '@devprotocol/dev-kit/agent'
-import { getConnection } from '@devprotocol/elements'
+import { connection as getConnection } from '@devprotocol/clubs-core/connection'
 import { UndefinedOr, whenDefined, whenDefinedAll } from '@devprotocol/util-ts'
 import { defineComponent } from '@vue/composition-api'
 import { BigNumberish, constants, providers, utils } from 'ethers'
 import BigNumber from 'bignumber.js'
 import { parse } from 'query-string'
 import { Subscription, zip } from 'rxjs'
-import { connectionId } from '@constants/connection'
 import { CurrencyOption } from '@constants/currencyOption'
 import { fetchDevForEth, fetchEthForDev } from '@fixtures/utility'
 import Skeleton from '@components/Global/Skeleton.vue'
@@ -240,37 +239,35 @@ export default defineComponent({
   },
   components: { Skeleton },
   async mounted() {
-    const connection = getConnection(connectionId)
+    const connection = getConnection()
 
     if (this.usedCurrency === CurrencyOption.ETH) {
       this.approveNeeded = false
     }
-    if (connection) {
-      const sub = zip(
-        connection.provider,
-        connection.account,
-        connection.chain
-      ).subscribe(async ([provider, account, chain]) => {
-        providerPool = provider
-        this.account = account
-        this.chain = chain
-        whenDefinedAll(
-          [providerPool, account, this.destination, this.amount],
-          async ([prov, userAddress, destination, amount]) => {
-            ;(this.usedCurrency !== CurrencyOption.ETH ||
-              this.usePolygonWETH) &&
-              this.checkApproved(
-                prov,
-                userAddress,
-                destination,
-                amount,
-                this.usePolygonWETH
-              )
-          }
-        )
-      })
-      this.subscriptions.push(sub)
-    }
+    const sub = zip(
+      connection.provider,
+      connection.account,
+      connection.chain
+    ).subscribe(async ([provider, account, chain]) => {
+      providerPool = provider
+      this.account = account
+      this.chain = chain
+      whenDefinedAll(
+        [providerPool, account, this.destination, this.amount],
+        async ([prov, userAddress, destination, amount]) => {
+          ;(this.usedCurrency !== CurrencyOption.ETH || this.usePolygonWETH) &&
+            this.checkApproved(
+              prov,
+              userAddress,
+              destination,
+              amount,
+              this.usePolygonWETH
+            )
+        }
+      )
+    })
+    this.subscriptions.push(sub)
+
     const provider = new providers.JsonRpcProvider(
       import.meta.env.PUBLIC_WEB3_PROVIDER_URL
     )
