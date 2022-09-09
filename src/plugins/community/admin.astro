@@ -1,0 +1,18 @@
+---
+import AdminCommunityForm from './components/AdminCommunityForm.svelte'
+
+const { options, currentPluginIndex } = Astro.props
+const guildUrl = options.find(
+  (option: { key: string; value: string }) => option.key === 'guildUrl'
+)
+---
+
+<div>
+  <h1 class="font-title text-lg font-bold mb-16">Community</h1>
+
+  <AdminCommunityForm
+    client:only="svelte"
+    guildUrl={guildUrl?.value ?? ''}
+    currentPluginIndex={currentPluginIndex}
+  />
+</div>

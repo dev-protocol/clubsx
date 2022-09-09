@@ -1,5 +1,5 @@
 import dotenv from 'dotenv'
-import { encode } from '@devprotocol/clubs-core'
+import { encode } from '@devprotocol/clubs-core/encode'
 import { createClient } from 'redis'
 
 dotenv.config()
@@ -167,6 +167,11 @@ const perks = [
   },
 ]
 
+const guild = {
+  key: 'guildUrl',
+  value: 'https://guild.xyz/temples-dao',
+}
+
 const populate = async () => {
   try {
     const client = createClient({
@@ -243,7 +248,7 @@ const populate = async () => {
           {
             name: 'community',
             enable: true,
-            options: [],
+            options: [guild],
           },
         ],
       })
@@ -269,7 +274,7 @@ const populate = async () => {
             options: [
               {
                 key: 'products',
-                value: products,
+                value: Object.assign({}, products),
               },
             ],
           },
