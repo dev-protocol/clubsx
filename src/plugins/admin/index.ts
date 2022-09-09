@@ -5,6 +5,7 @@ import {
   ClubsPluginMeta,
 } from '@devprotocol/clubs-core'
 import { default as Index } from './index.astro'
+import { default as Plugins } from './plugins.astro'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async () => []
 
@@ -16,6 +17,11 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
     paths: [],
     component: Index,
     props: { name, description, twitterHandle, propertyAddress },
+  },
+  {
+    paths: ['plugins'],
+    component: Plugins,
+    props: {},
   },
 ]
 
