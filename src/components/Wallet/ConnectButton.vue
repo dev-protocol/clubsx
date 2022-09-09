@@ -51,8 +51,7 @@ import { providers, utils } from 'ethers'
 import truncateEthAddress from 'truncate-eth-address'
 import { whenDefined } from '@devprotocol/util-ts'
 import { ReConnectWallet, GetModalProvider } from '@fixtures/wallet'
-import { getConnection } from '@devprotocol/elements'
-import { connectionId } from '@constants/connection'
+import { connection } from '@devprotocol/clubs-core/connection'
 import Core from 'web3modal'
 import { defineComponent } from '@vue/runtime-core'
 import { clientsDev } from '@devprotocol/dev-kit/agent'
@@ -93,7 +92,7 @@ export default defineComponent({
   },
   methods: {
     setSigner(provider: providers.Web3Provider) {
-      getConnection(connectionId)?.signer.next(provider.getSigner())
+      connection().signer.next(provider.getSigner())
     },
     async connect() {
       const connectedProvider = await this.modalProvider.connect()

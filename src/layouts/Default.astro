@@ -1,7 +1,6 @@
 ---
 import type { ClubsConfiguration } from '@devprotocol/clubs-core'
 import Navbar from '@components/Global/Navbar.vue'
-import { connectionId } from '@constants/connection'
 import og from '@assets/og.png'
 import '@styles/global.scss'
 
@@ -41,14 +40,9 @@ const ogURL = new URL(
   </head>
 
   <body class="font-body bg-black text-white min-h-screen">
-    <script
-      type="module"
-      src="https://cdn.jsdelivr.net/npm/@devprotocol/elements@0.0.5/bundled/dev-connection.mjs"
-    ></script>
     <Navbar client:only="vue" tenantName={config.name} />
     <main>
       <slot />
     </main>
-    <dev-connection id={connectionId} />
   </body>
 </html>
