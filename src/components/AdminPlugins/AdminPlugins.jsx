@@ -4,7 +4,7 @@ import { decode, setConfig } from '@devprotocol/clubs-core'
 class AdminPlugins extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { config: decode(props.encodedConfig)  }
+    this.state = { config: decode(props.encodedConfig) }
     this.toggleActivation = this.toggleActivation.bind(this)
   }
 
@@ -13,8 +13,8 @@ class AdminPlugins extends React.Component {
       const plugins = prevState.config.plugins
 
       // 1. Find index of plugin.
-      const index = plugins.findIndex(plugin => plugin.name === pluginName);
-      if (index === -1) return prevState;
+      const index = plugins.findIndex((plugin) => plugin.name === pluginName)
+      if (index === -1) return prevState
 
       // 2. Extract it's details.
       const pluginDetails = { ...plugins[index] }
@@ -44,13 +44,15 @@ class AdminPlugins extends React.Component {
         </p>
         {this.state.config.plugins.map((plugin, i) => (
           <div className="flex w-full flex-row items-center justify-between gap-[10px] p-0">
-            <p className="h-[24px] font-body text-base font-normal leading-6 capitalize">
+            <p className="h-[24px] font-body text-base font-normal capitalize leading-6">
               {plugin.name}
             </p>
             <div className="border-[##040B10] flex h-[68px] flex-row items-center justify-start gap-[16px] rounded-[99px] border-[3px] border-[#040B10] p-1.5">
               <div
                 onClick={
-                  !plugin.enable ? () => {} : () => this.toggleActivation(plugin.name)
+                  !plugin.enable
+                    ? () => {}
+                    : () => this.toggleActivation(plugin.name)
                 }
                 className={
                   !plugin.enable ? toggleEnableClasses : toggleDisableClasses
@@ -65,7 +67,9 @@ class AdminPlugins extends React.Component {
               </div>
               <div
                 onClick={
-                  plugin.enable ? () => {} : () => this.toggleActivation(plugin.name)
+                  plugin.enable
+                    ? () => {}
+                    : () => this.toggleActivation(plugin.name)
                 }
                 className={
                   plugin.enable ? toggleEnableClasses : toggleDisableClasses
