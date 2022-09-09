@@ -23,8 +23,6 @@ class AdminPlugins extends React.Component {
     const toggleDisableClasses =
       'h-[56px] rounded-[999px] b-0 p-[16px] cursor-pointer'
 
-    console.log('This', this.state.plugins)
-
     return (
       <div className="relative left-[5.555%] flex w-[51.05%] flex-col items-start gap-[64px] p-0">
         <p className="font-Syne h-9 p-0 text-2xl font-bold leading-9">
@@ -46,7 +44,6 @@ class AdminPlugins extends React.Component {
               >
                 <button
                   disabled={!plugin.enable}
-                  onClick={() => this.toggleActivation(i)}
                   className="h-[24px] font-body text-base font-normal leading-6"
                 >
                   {!plugin.enable ? 'Disabled' : 'Disable'}
@@ -62,7 +59,6 @@ class AdminPlugins extends React.Component {
               >
                 <button
                   disabled={plugin.enable}
-                  onClick={() => this.toggleActivation(i)}
                   className="h-[24px] font-body text-base font-normal leading-6"
                 >
                   {plugin.enable ? 'Enabled' : 'Enable'}

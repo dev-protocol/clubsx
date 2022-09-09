@@ -3,10 +3,6 @@ import { decode } from '@devprotocol/clubs-core'
 import AdminPlugins from '@components/AdminPlugins/AdminPlugins.jsx'
 
 const { clubs } = Astro.props
-const { plugins } = decode(clubs.encodedClubsConfiguration)
-const allPlugins = plugins.filter(
-  (plugin) => plugin.name.toUpperCase() !== 'ADMIN'
-)
 ---
 
-<AdminPlugins client:only="react" plugins={allPlugins} />
+<AdminPlugins client:only="react" plugins={clubs.plugins} />
