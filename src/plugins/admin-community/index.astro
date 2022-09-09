@@ -1,0 +1,15 @@
+---
+import AdminCommunityForm from './AdminCommunityForm.svelte'
+
+const { options, currentPluginIndex } = Astro.props
+---
+
+<div>
+  <h1>Community</h1>
+
+  <AdminCommunityForm
+    client:only="svelte"
+    guildUrl={options?.guildUrl ?? ''}
+    currentPluginIndex={currentPluginIndex}
+  />
+</div>
