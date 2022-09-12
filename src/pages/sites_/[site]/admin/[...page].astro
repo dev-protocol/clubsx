@@ -4,6 +4,7 @@ import { adminFactory } from '@devprotocol/clubs-core'
 import { config as _config } from '@fixtures/config'
 import admin from '@plugins/admin'
 import community from '@plugins/community'
+import membership from '@plugins/membership'
 
 const { site, page } = Astro.params
 
@@ -12,6 +13,7 @@ const { getStaticPaths } = adminFactory({
   plugins: {
     admin,
     community,
+    membership,
   },
 })
 

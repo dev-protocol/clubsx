@@ -167,6 +167,49 @@ const perks = [
   },
 ]
 
+const memberships = [
+  {
+    id: 'tier-3',
+    name: 'Tier 3',
+    description: undefined,
+    price: 400,
+    currency: 'DEV',
+    imageSrc: '',
+    payload: new Uint8Array(),
+    fee: undefined,
+  },
+  {
+    id: 'tier-2',
+    name: 'Tier 2',
+    description: undefined,
+    price: 4000,
+    currency: 'DEV',
+    imageSrc: '',
+    payload: new Uint8Array(),
+    fee: undefined,
+  },
+  {
+    id: 'tier-1',
+    name: 'Tier 1',
+    description: undefined,
+    price: 10000,
+    currency: 'DEV',
+    imageSrc: '',
+    payload: new Uint8Array(),
+    fee: undefined,
+  },
+  {
+    id: 'super',
+    name: 'Super',
+    description: undefined,
+    price: 15000,
+    currency: 'DEV',
+    imageSrc: '',
+    payload: new Uint8Array(),
+    fee: undefined,
+  },
+]
+
 const guild = {
   key: 'guildUrl',
   value: 'https://guild.xyz/temples-dao',
@@ -249,6 +292,11 @@ const populate = async () => {
             name: 'community',
             enable: true,
             options: [guild],
+          },
+          {
+            name: 'memberships',
+            enable: true,
+            options: [memberships],
           },
         ],
       })
