@@ -106,10 +106,10 @@
     svelte2tsx "^0.5.11"
     vite "^3.0.0"
 
-"@astrojs/tailwind@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@astrojs/tailwind/-/tailwind-1.0.0.tgz#05f75c46611d70963c5978126d0924ff781b77e1"
-  integrity sha512-hEpvKBJKCStaxRZt3ENDacQlzUTOvW1D7dfIUyTf7jMUK4O+y8Q7gdTjERf1HBEi/YXrYNX1zhAElwp6lvW5oQ==
+"@astrojs/tailwind@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@astrojs/tailwind/-/tailwind-1.0.1.tgz#06d19b158451e01365e5998b0daca38a50ca1b1a"
+  integrity sha512-ZVytcmam/krEkg3xfW+2ItMz/XKWCg86Zj9lZsUOybEi3mcQZt++CRGyX1zqUAHrjXY9p/hhMeSWtwVX3GnIyA==
   dependencies:
     "@proload/core" "^0.3.2"
     autoprefixer "^10.4.7"
