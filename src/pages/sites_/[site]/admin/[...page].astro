@@ -45,7 +45,7 @@ const Content = path.props.component
     const modalProvider = GetModalProvider()
     const { provider, currentAddress } = await ReConnectWallet(modalProvider)
     if (!currentAddress || !provider) {
-      return;
+      return
     }
     const signer = provider.getSigner()
 
@@ -60,18 +60,14 @@ const Content = path.props.component
       config: 'hello world',
       hash,
       sig,
-      expectedAddress: currentAddress
+      expectedAddress: currentAddress,
     }
 
     await fetch('/sites_/[site]/admin/updateConfig', {
       method: 'POST',
       body: JSON.stringify(body),
     })
-
-
   })
-
-
 
   const splitHostname = window.location.hostname.split('.')
   const site = splitHostname[0]
@@ -82,7 +78,7 @@ const Content = path.props.component
     const modalProvider = GetModalProvider()
     const { provider, currentAddress } = await ReConnectWallet(modalProvider)
     if (!currentAddress || !provider) {
-      return;
+      return
     }
     const signer = provider.getSigner()
 
@@ -97,7 +93,7 @@ const Content = path.props.component
       config: data,
       hash,
       sig,
-      expectedAddress: currentAddress
+      expectedAddress: currentAddress,
     }
 
     const res = await fetch('/sites_/[site]/admin/updateConfig', {
