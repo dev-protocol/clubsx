@@ -2007,10 +2007,10 @@ ast-types@0.14.2:
   dependencies:
     tslib "^2.0.1"
 
-astro@1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/astro/-/astro-1.2.2.tgz#e87b06de1ab16ce3bbce22537da10d7c80e21309"
-  integrity sha512-qfK7Ch7dSO0CJEwkcEx/oxMxEuaDcaHCcrJ1PGMWFzdjBXrT45tDgnXXis06yT+AuolLSOIbPhpEi3QWsGqvuQ==
+astro@1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/astro/-/astro-1.2.3.tgz#cb2d6df983b2ffa46e5aac34f6593b2df447920f"
+  integrity sha512-iNZcvnaS+Hw4g/rkk4bzlnonjsws066wPkfmnQ+WUqGoH81a4GbFj93YT6zoum5kHg4Kw713abHAf3e/2mpjmg==
   dependencies:
     "@astrojs/compiler" "^0.24.0"
     "@astrojs/language-server" "^0.23.0"
