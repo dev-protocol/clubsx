@@ -40,7 +40,7 @@ if (!path) {
 }
 
 const Content = path.props.component
-const config = getCurrentConfig()
+const config = await getCurrentConfig()
 ---
 
 <Layout {config}>
