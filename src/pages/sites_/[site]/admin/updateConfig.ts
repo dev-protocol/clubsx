@@ -1,10 +1,20 @@
+import { utils } from 'ethers'
 import { createClient } from 'redis'
 
 export const post = async ({ request }: { request: Request }) => {
-  const { site, config } = (await request.json()) as {
+  const { site, config, sig, expectedAddress } = (await request.json()) as {
     site: string
     config: string
+    hash: string
+    sig: string
+    expectedAddress: string
   }
+
+  const digest = utils.hashMessage(config)
+  const actual = utils.recoverAddress(digest, sig)
+  console.log('actual is: ', actual)
+
+  return
 
   const client = createClient({
     url: process.env.REDIS_URL,
