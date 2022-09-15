@@ -376,16 +376,21 @@
     "@babel/helper-validator-identifier" "^7.18.6"
     to-fast-properties "^2.0.0"
 
-"@devprotocol/clubs-core@0.6.2-alpha.17":
-  version "0.6.2-alpha.17"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.6.2-alpha.17.tgz#47fe94820e8391518559c48c54b4d0aa098ec20c"
-  integrity sha512-06JHASoqvmMJU1xP3z5MVADAYacfP6hQJjp/3CqUA1GBVz8TNH4Hr3iSydA8pcU4c6cWXq/F+QyUym9Ea4Wp8w==
+"@devprotocol/clubs-core@0.6.2-alpha.18":
+  version "0.6.2-alpha.18"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.6.2-alpha.18.tgz#464fa79cc33eddb6f4d2f84d468b4678e5ce6a2f"
+  integrity sha512-4suh7V0FVHnEvGXNN8l5gyNTlgEBANH5XiNLqhiB6F92RSThN30FyL1w6lc8AhZ5DpMa6GCZRbiQU2m06SefFw==
   dependencies:
+    "@devprotocol/dev-kit" "6.8.7"
     "@devprotocol/elements" "0.1.1"
     "@devprotocol/util-ts" "2.2.1"
+    "@metamask/detect-provider" "^1.2.0"
+    ethers "^5.7.0"
     js-base64 "^3.7.2"
     lit "^2.3.1"
     ramda "^0.28.0"
+    truncate-eth-address "^1.0.2"
+    web3modal "^1.9.9"
     yaml "^2.1.1"
   optionalDependencies:
     react "^18.0.0"
@@ -1060,7 +1065,7 @@
   resolved "https://registry.yarnpkg.com/@matteusan/sentro/-/sentro-0.1.23.tgz#9554653f6d7eba7a6358c4dabb21b320b5bd4547"
   integrity sha512-lVnDTSy/xjn7KHPkAXEGMCOHKSEY3OBMtbhfXxZu9ZcDWWbU57pttojVV/XMW7Wkr7BGOlM1hbBggzV22adTnA==
 
-"@metamask/detect-provider@1.2.0":
+"@metamask/detect-provider@1.2.0", "@metamask/detect-provider@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@metamask/detect-provider/-/detect-provider-1.2.0.tgz#3667a7531f2a682e3c3a43eaf3a1958bdb42a696"
   integrity sha512-ocA76vt+8D0thgXZ7LxFPyqw3H7988qblgzddTDA6B8a/yU0uKV42QR/DhA+Jh11rJjxW0jKvwb5htA6krNZDQ==
@@ -5082,7 +5087,7 @@ ethereumjs-wallet@0.6.5:
     utf8 "^3.0.0"
     uuid "^3.3.2"
 
-ethers@5.7.1:
+ethers@5.7.1, ethers@^5.7.0:
   version "5.7.1"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.7.1.tgz#48c83a44900b5f006eb2f65d3ba6277047fd4f33"
   integrity sha512-5krze4dRLITX7FpU8J4WscXqADiKmyeNlylmmDLbS95DaZpBhDe2YSwRQwKXWNyXcox7a3gBgm/MkGXV1O1S/Q==
@@ -10826,7 +10831,7 @@ trough@^2.0.0:
   resolved "https://registry.yarnpkg.com/trough/-/trough-2.1.0.tgz#0f7b511a4fde65a46f18477ab38849b22c554876"
   integrity sha512-AqTiAOLcj85xS7vQ8QkAV41hPDIJ71XJB4RCUrzo/1GM2CQwhkJGaf9Hgr7BOugMRpgGUrqRg/DrBDl4H40+8g==
 
-truncate-eth-address@1.0.2:
+truncate-eth-address@1.0.2, truncate-eth-address@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/truncate-eth-address/-/truncate-eth-address-1.0.2.tgz#b8e008215d09d2e3ab28fff27b69addddc989048"
   integrity sha512-MLGSzEIDam9XdBQejtCpQfdbgXfYTEkQseqpz+Pcqu6SEvvVC4mYniWFp4n8VG+KOi6jYVtUfA6cqWecSvS3rw==
@@ -11761,7 +11766,7 @@ web3@1.2.11:
     web3-shh "1.2.11"
     web3-utils "1.2.11"
 
-web3modal@1.9.9:
+web3modal@1.9.9, web3modal@^1.9.9:
   version "1.9.9"
   resolved "https://registry.yarnpkg.com/web3modal/-/web3modal-1.9.9.tgz#1a09771e1b9264842ab98d42c620568f470ff96b"
   integrity sha512-ML1C4xH+JTSHHkKbjxuF+f5B3cDUOCnrdQZ8Mlzippq7zRKHf3NBeuIvDdNjtVclJ2S4zYYVmVqRWrgB11ej8A==
