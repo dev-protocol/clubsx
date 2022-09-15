@@ -1,0 +1,18 @@
+---
+import AdminQuestsForm from './components/AdminQuestsForm.vue'
+
+const { options, currentPluginIndex } = Astro.props
+const deworkUrl = options.find(
+  (option: { key: string; value: string }) => option.key === 'deworkUrl'
+)
+---
+
+<div>
+  <h1 class="font-title text-lg font-bold mb-16">Quests</h1>
+
+  <AdminQuestsForm
+    client:only="vue"
+    deworkUrl={deworkUrl?.value ?? ''}
+    currentPluginIndex={currentPluginIndex}
+  />
+</div>
