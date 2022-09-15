@@ -12,9 +12,13 @@ const { metaTitle, config } = Astro.props as {
 const title = metaTitle ? `${config.name} : ${metaTitle}` : config.name
 
 const ogURL = new URL(
-  Astro.url.pathname.replace(/(.*)\/$/, '$1') + og,
+  Astro.url.pathname
+    .replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
+    .replace(/(.*)\/$/, '$1') + og,
   config.url ?? 'http://localhost'
 )
+
+const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
 ---
 
 <!DOCTYPE html>
@@ -27,7 +31,7 @@ const ogURL = new URL(
     <meta name="description" content={`${config.description}`} />
     <meta property="og:title" content={title} />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={Astro.url.href} />
+    <meta property="og:url" content={url} />
     <meta property="og:image" content={`${ogURL}`} />
     <meta property="og:description" content={config.description} />
     <meta property="og:site_name" content={config.name} />
