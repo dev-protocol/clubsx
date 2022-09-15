@@ -2061,10 +2061,10 @@ ast-types@0.14.2:
   dependencies:
     tslib "^2.0.1"
 
-astro@1.2.4:
-  version "1.2.4"
-  resolved "https://registry.yarnpkg.com/astro/-/astro-1.2.4.tgz#cdce526f41d4bdd6780d13bbb53bacc8cf7609c0"
-  integrity sha512-RJAdTDb4mECyAzNjl4RFzEHueHpGqvxPMQAYYd59nK7tCqBYzAde1mThzuEtQglSdGnIP3DXia2XtPzoo9mniQ==
+astro@1.2.5:
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/astro/-/astro-1.2.5.tgz#5c89c52458baac5c2895471b21174f6825e94f8a"
+  integrity sha512-kyP4HVQt9h+O8C+djY4q4VsBsT2Vgt4AjNDZQZQr8sdN+GdDQISAxZMCpUp99w9PndpAPGxvVEJMQD3MG+dyjQ==
   dependencies:
     "@astrojs/compiler" "^0.24.0"
     "@astrojs/language-server" "^0.23.0"
