@@ -51,10 +51,3 @@ export const post = async ({ request }: { request: Request }) => {
     return new Response(JSON.stringify({ error }), { status: 500 })
   }
 }
-
-export type ClubsFunctionAuthenticationAdminParams = {
-  readonly signature: string
-  readonly message: string
-  readonly previousConfiguration: string
-  readonly provider: providers.BaseProvider
-}
