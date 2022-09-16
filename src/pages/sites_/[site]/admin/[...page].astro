@@ -30,52 +30,16 @@ const Content = path.props.component
 
 <Admin {...path.props}>
   <Content {...path.props} />
-  <button id="test" name="test" type="button">TEST</button>
 </Admin>
 
 <script>
-  import { onSubmitConfig, setConfig } from '@devprotocol/clubs-core'
+  import { onSubmitConfig } from '@devprotocol/clubs-core'
   import { GetModalProvider, ReConnectWallet } from '@fixtures/wallet'
   import { utils } from 'ethers'
 
-  const btn = document.getElementById('test')
-
-  btn!.addEventListener('click', async () => {
-    console.log('hello world!')
-    // onSubmitConfig('hello world')
-
-    const modalProvider = GetModalProvider()
-    const { provider, currentAddress } = await ReConnectWallet(modalProvider)
-    if (!currentAddress || !provider) {
-      return
-    }
-    const signer = provider.getSigner()
-
-    const hash = await utils.keccak256('hello world')
-    const sig = await signer.signMessage(utils.arrayify(hash))
-    if (!sig) {
-      return
-    }
-
-    const body = {
-      site,
-      config: 'hello world',
-      hash,
-      sig,
-      expectedAddress: currentAddress,
-    }
-
-    await fetch('/sites_/[site]/admin/updateConfig', {
-      method: 'POST',
-      body: JSON.stringify(body),
-    })
-  })
-
-  const splitHostname = window.location.hostname.split('.')
-  const site = splitHostname[0]
-
   onSubmitConfig(async (data, onFinish) => {
-    console.log('onSubmitConfig', data, onFinish)
+    const splitHostname = window.location.hostname.split('.')
+    const site = splitHostname[0]
 
     const modalProvider = GetModalProvider()
     const { provider, currentAddress } = await ReConnectWallet(modalProvider)
@@ -84,8 +48,8 @@ const Content = path.props.component
     }
     const signer = provider.getSigner()
 
-    const hash = await utils.keccak256(data)
-    const sig = await signer.signMessage(utils.arrayify(hash))
+    const hash = await utils.hashMessage(data)
+    const sig = await signer.signMessage(hash)
     if (!sig) {
       return
     }
