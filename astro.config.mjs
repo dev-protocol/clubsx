@@ -6,6 +6,7 @@ import vue from '@astrojs/vue'
 import react from '@astrojs/react'
 import svelte from '@astrojs/svelte'
 import prefetch from '@astrojs/prefetch'
+
 config()
 
 // https://astro.build/config

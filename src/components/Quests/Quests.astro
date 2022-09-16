@@ -15,7 +15,7 @@ const filteredQuests = quests.filter((quest) => quest.listed)
       filteredQuests.length > 0 ? (
         filteredQuests.map((quest) => (
           <div class="grid h-full justify-items-start">
-            <a href={`/quests/${quest.id}`}>
+            <a rel="nofollow prefetch" href={`/quests/${quest.id}`}>
               <div class="max-w-xl">
                 <QuestCard
                   title={quest.title}
