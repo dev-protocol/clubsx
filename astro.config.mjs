@@ -50,7 +50,9 @@ export default defineConfig({
       },
     }),
     svelte(),
-    prefetch(),
+    prefetch({
+      throttle: 10
+    }),
   ],
   vite: {
     resolve: {
