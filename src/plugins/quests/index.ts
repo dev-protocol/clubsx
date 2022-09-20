@@ -14,7 +14,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
   _,
   { propertyAddress, name }
 ) => [
-  { paths: ['quests'], component: Index },
+  { paths: ['quests'], component: Index, props: { propertyAddress, name } },
   ...questParams.map((param) => ({
     paths: ['quests', param],
     component: Id,
