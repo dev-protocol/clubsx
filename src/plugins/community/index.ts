@@ -7,8 +7,11 @@ import {
 import { default as Index } from './index.astro'
 import { default as Admin } from './admin.astro'
 
-export const getPagePaths: ClubsFunctionGetPagePaths = async () => [
-  { paths: ['community'], component: Index },
+export const getPagePaths: ClubsFunctionGetPagePaths = async (
+  _,
+  { name, propertyAddress }
+) => [
+  { paths: ['community'], component: Index, props: { name, propertyAddress } },
 ]
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async (

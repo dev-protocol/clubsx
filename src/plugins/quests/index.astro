@@ -3,10 +3,12 @@ import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
 
 import HSButton from '@components/Primitives/Hashi/HSButton.vue'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
+
+const { propertyAddress, name } = Astro.props
 ---
 
 <CLBWrapper>
-  <Sidebar client:load />
+  <Sidebar client:load propertyAddress={propertyAddress} tenantName={name} />
   <section class="quests">
     <article class="mb-6">
       <h3 class="family-title text-lg mb-6">Quests</h3>
