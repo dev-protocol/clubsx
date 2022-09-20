@@ -54,7 +54,7 @@
     "@redis/json": "1.0.4",
     "@tailwindcss/aspect-ratio": "0.4.2",
     "@vue/composition-api": "1.7.0",
-    "astro": "1.2.7",
+    "astro": "1.2.8",
     "bignumber.js": "9.1.0",
     "ethers": "5.7.1",
     "query-string": "7.1.1",
