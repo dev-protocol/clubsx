@@ -2,7 +2,7 @@
   <section class="flex flex-col">
     <h2 class="mb-4 font-title text-4xl font-bold">Join</h2>
     <!-- DAOName from YAML config -->
-    <div class="mb-8">Join {DAOName} in support of the project.</div>
+    <div class="mb-8">Join {{ tenantName }} in support of the project.</div>
 
     <h3 class="mb-4 font-title text-2xl font-bold">Purchase with</h3>
     <form class="mb-8 flex flex-col gap-2 md:flex-row" ref="form">
@@ -84,6 +84,7 @@ export default defineComponent({
       type: Array as PropType<Tiers>,
       required: true,
     },
+    tenantName: String,
   },
   data(): Data {
     return {
