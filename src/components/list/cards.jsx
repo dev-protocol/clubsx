@@ -1,8 +1,8 @@
 /*
-  This example requires Tailwind CSS v2.0+ 
-  
+  This example requires Tailwind CSS v2.0+
+
   This example requires some changes to your config:
-  
+
   ```
   // tailwind.config.js
   module.exports = {
@@ -102,7 +102,7 @@ export default function Cards() {
               </div>
               <div className="flex flex-1 flex-col space-y-2 p-4">
                 <h3 className="font-Syne mt-[32px] text-4xl font-normal text-gray-900">
-                  <a href={product.href}>
+                  <a rel="prefetch" href={product.href}>
                     <span aria-hidden="true" className="absolute inset-0" />
                     {product.name}
                   </a>

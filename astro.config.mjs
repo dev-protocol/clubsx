@@ -5,6 +5,8 @@ import tailwind from '@astrojs/tailwind'
 import vue from '@astrojs/vue'
 import react from '@astrojs/react'
 import svelte from '@astrojs/svelte'
+import prefetch from '@astrojs/prefetch'
+
 config()
 
 // https://astro.build/config
@@ -48,6 +50,9 @@ export default defineConfig({
       },
     }),
     svelte(),
+    prefetch({
+      throttle: 10,
+    }),
   ],
   vite: {
     resolve: {

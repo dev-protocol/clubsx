@@ -43,6 +43,7 @@ export default function Cards({ currency, products }: Params) {
                 <h3 className="font-Syne mt-[32px] text-4xl font-normal text-gray-900">
                   {/* TODO: Link when using fiat */}
                   <a
+                    rel="prefetch"
                     href={
                       currency === 'ETH' ? `buy/${product.id}?input=eth` : '#'
                     }

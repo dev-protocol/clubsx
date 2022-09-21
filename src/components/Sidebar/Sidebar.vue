@@ -68,7 +68,7 @@
           <div
             class="grid grid-cols-[1fr_2fr] items-center gap-8 lg:grid-cols-1"
           >
-            <a href="/members">{{ members || 'NaN' }} members</a>
+            <a rel="prefetch" href="/members">{{ members || 'NaN' }} members</a>
           </div>
           <aside
             class="border-accent-800 grid w-full grid-cols-[1fr_auto] justify-between rounded border font-body text-sm"
