@@ -15,7 +15,7 @@
     v-else
     v-bind:class="`hs-button${type && ' ' + assertType(type)}`"
     role="link"
-    rel="nofollow prefetch"
+    rel="prefetch"
     :[href]="link"
   >
     <i v-if="isIconVisible" class="hs-button__icon"

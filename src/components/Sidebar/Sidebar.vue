@@ -68,7 +68,7 @@
           <div
             class="grid grid-cols-[1fr_2fr] items-center gap-8 lg:grid-cols-1"
           >
-            <a rel="nofollow prefetch" href="/members"
+            <a rel="prefetch" href="/members"
               >{{ members || 'NaN' }} members</a
             >
           </div>

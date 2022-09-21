@@ -102,7 +102,7 @@ export default function Cards() {
               </div>
               <div className="flex flex-1 flex-col space-y-2 p-4">
                 <h3 className="font-Syne mt-[32px] text-4xl font-normal text-gray-900">
-                  <a rel="nofollow prefetch" href={product.href}>
+                  <a rel="prefetch" href={product.href}>
                     <span aria-hidden="true" className="absolute inset-0" />
                     {product.name}
                   </a>
