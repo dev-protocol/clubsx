@@ -5,21 +5,19 @@ import {
   ClubsPluginMeta,
 } from '@devprotocol/clubs-core'
 import { default as Index } from './index.astro'
-import { default as ID } from './id.astro'
+import { default as ID } from './[id].astro'
+import json from './forms.json'
+import { GatedMessage } from './types'
 
-type GatedMessage = {
-  id: number
-  title: string
-  description: string
-  membershipIds: number[]
-  presetName: string
-  sendGridEnvKey: string
-  destinationEmail: string
-}
+const forms: GatedMessage[] = json
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async () => [
   { paths: ['message'], component: Index },
-  { paths: ['message', '1'], component: ID },
+  ...forms.map((form) => ({
+    paths: ['message', String(form.id)],
+    component: ID,
+    props: { form },
+  })),
 ]
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async () => []

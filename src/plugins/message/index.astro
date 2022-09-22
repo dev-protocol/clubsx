@@ -1,6 +1,8 @@
 ---
-import forms from './forms.json'
-console.log('forms are: ', forms)
+import json from './forms.json'
+import { GatedMessage } from './types'
+
+const forms: GatedMessage[] = json
 ---
 
 <div>Select message form page</div>
