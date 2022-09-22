@@ -1,0 +1,9 @@
+forms:
+  - id: 1
+    title: ''
+    description: ''
+    membershipIds:
+      - 1
+    presetName: ''
+    sendGridEnvKey: ''
+    destinationEmail: ''
