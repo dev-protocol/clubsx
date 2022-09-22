@@ -3,7 +3,17 @@
     "id": 1,
     "title": "",
     "description": "",
-    "membershipIds": ["1"],
+    "requiredMemberships": [
+      {
+        "id": "tier-1",
+        "amount": 100
+      },
+      {
+        "id": "tier-2",
+        "amount": 200,
+        "payload": [1, 2, 3]
+      }
+    ],
     "presetName": "",
     "sendGridEnvKey": "",
     "destinationEmail": ""
