@@ -153,13 +153,6 @@
     "@vitejs/plugin-vue" "^3.0.0"
     vite "^3.0.0"
 
-"@astrojs/webapi@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@astrojs/webapi/-/webapi-1.0.0.tgz#f43df01cc1ee7b8b955691248b42dfd637485901"
-  integrity sha512-+klQ75oQbRdAMEbvAgrKE14hxh6GVHsQWZE4j/eJ2qhnvMSu7pw13MVQtFaAV96+pUkcYSjwWd1k+Oxoxkuo3g==
-  dependencies:
-    node-fetch "^3.2.5"
-
 "@astrojs/webapi@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@astrojs/webapi/-/webapi-1.1.0.tgz#d0f4721405c8962a4c7f1db863903b9ab4b6acf6"
@@ -2089,16 +2082,16 @@ ast-types@0.14.2:
   dependencies:
     tslib "^2.0.1"
 
-astro@1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/astro/-/astro-1.3.0.tgz#bbe8ccf17b64bb41abf5d102dd1533908a18075c"
-  integrity sha512-cWBtLkkUcj38J0knrTaZvyoVFJxjOAWPRbECIXFxvGZ/ASNr+FNumeUk/u3uAGIF0pbqEgc+5zAvmPoe0pCd9w==
+astro@1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/astro/-/astro-1.3.1.tgz#6360a81c64065591d694b1ba590ad93ceae773f6"
+  integrity sha512-dSgwiHMuRI7+hPlMfpkSsMA7Bdsroh5LwfNMvk3+oX6xMz2zP1IZHjDZ03w/wp2JkWek6n9s9I+Bwz7ld6yT4w==
   dependencies:
     "@astrojs/compiler" "^0.24.0"
     "@astrojs/language-server" "^0.26.2"
     "@astrojs/markdown-remark" "^1.1.2"
     "@astrojs/telemetry" "^1.0.0"
-    "@astrojs/webapi" "^1.0.0"
+    "@astrojs/webapi" "^1.1.0"
     "@babel/core" "^7.18.2"
     "@babel/generator" "^7.18.2"
     "@babel/parser" "^7.18.4"
