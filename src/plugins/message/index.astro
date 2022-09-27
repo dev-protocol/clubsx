@@ -1,8 +1,10 @@
 ---
 import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
+import CLBTier from '@components/Primitives/CLBTier.vue'
 
-const { name, propertyAddress, tiers = [], formName, description } = Astro.props;
+const { name, propertyAddress, formName, description, memberships } =
+  Astro.props
 ---
 
 <div>
@@ -20,25 +22,39 @@ const { name, propertyAddress, tiers = [], formName, description } = Astro.props
             class="community-digest grid place-items-center rounded-[36px] px-10 py-20 mt-12"
           >
             <h1 class="family-supertitle md:text-2xl font-black uppercase">
-              EXERCISE YOUR SPECIAL RIGHTS WITH ACCESS TO EXCLUSIVE CONTACTS OPEN ONLY TO MEMBERSHIP HOLDERS.
+              EXERCISE YOUR SPECIAL RIGHTS WITH ACCESS TO EXCLUSIVE CONTACTS
+              OPEN ONLY TO MEMBERSHIP HOLDERS.
             </h1>
           </div>
         </section>
         <section class="mb-12">
-          <h3 class="font-Syne text-4xl font-bold">{ formName }</h3>
+          <h3 class="font-Syne text-4xl font-bold">{formName}</h3>
         </section>
         <section class="mb-4 mt-12">
-          <h3 class="family-title text-base">{ description }</h3>
+          <h3 class="family-title text-base">{description}</h3>
         </section>
         <section class="mb-4">
-          <button class="bg-[#D500E6] rounded border-[##171717] py-2 px-7">Open</button>
+          <button class="bg-[#D500E6] rounded border-[##171717] py-2 px-7"
+            >Open</button
+          >
         </section>
         <section class="mb-4">
           <h3 class="font-Syne text-2xl font-bold">Required membership(s)</h3>
         </section>
-        <section class="mb-5">
-          <h3 class="font-Syne text-2xl font-bold">Required membership(s)</h3>
-        </section>
+        <div class="mb-5 flex flex-row flex-wrap gap-8">
+          {
+            memberships.map((membership: any, i: any) => (
+              <div class="w-[25%]">
+                <CLBTier
+                  key={i}
+                  title={membership.name}
+                  subtitle={`${membership.price} ${membership.currency}`}
+                  media={`${membership.imageSrc}`}
+                />
+              </div>
+            ))
+          }
+        </div>
       </article>
     </CLBWrapper>
   </div>
