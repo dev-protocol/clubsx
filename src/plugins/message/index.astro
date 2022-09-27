@@ -1,15 +1,10 @@
 ---
-import CLBWrapper from '@components/Primitives/CLBWrapper.astro';
-import Sidebar from '@components/Sidebar/Sidebar.vue';
-import CLBTier from '@components/Primitives/CLBTier.vue';
+import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
+import Sidebar from '@components/Sidebar/Sidebar.vue'
+import CLBTier from '@components/Primitives/CLBTier.vue'
 
-const {
-  name,
-  propertyAddress,
-  formName,
-  description,
-  memberships
-} = Astro.props;
+const { name, propertyAddress, formName, description, memberships } =
+  Astro.props
 ---
 
 <div>
@@ -49,7 +44,7 @@ const {
         <div class="mb-5 flex flex-row flex-wrap gap-8">
           {
             memberships.map((membership: any, i: any) => (
-              <div class="w-[25%] h-[240px]">
+              <div class="h-[240px] w-[25%]">
                 <CLBTier
                   key={i}
                   title={membership.name}
