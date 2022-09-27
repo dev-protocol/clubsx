@@ -309,31 +309,31 @@ const populate = async () => {
             enable: true,
             options: [
               {
-                key: "name",
-                value: "Contact Temples DAO"
+                key: 'name',
+                value: 'Contact Temples DAO',
               },
               {
-                key: "description",
-                value: "Enter the issue your are facing or the query you have"
+                key: 'description',
+                value: 'Enter the issue your are facing or the query you have',
               },
               {
-                key: "formPresetName",
-                value: "Contacte"
+                key: 'formPresetName',
+                value: 'Contacte',
               },
               {
-                key: "memberships",
-                value: memberships
+                key: 'memberships',
+                value: memberships,
               },
               {
-                key: "envVarKey",
-                value: "SENDGRID_KEY_TEMPLESDAO"
+                key: 'envVarKey',
+                value: 'SENDGRID_KEY_TEMPLESDAO',
               },
               {
-                key: "destinationEmailAddr",
-                value: "dev@devprotocol.xyz"
-              }
-            ]
-          }
+                key: 'destinationEmailAddr',
+                value: 'dev@devprotocol.xyz',
+              },
+            ],
+          },
         ],
       })
     )
