@@ -6,11 +6,15 @@
     "requiredMemberships": [
       {
         "id": "tier-1",
-        "amount": 100
+        "amount": 100,
+        "currency": "DEV",
+        "imageSrc": "https://gaijinpot.scdn3.secure.raxcdn.com/app/uploads/sites/6/2017/07/Kiyomizudera-Temple-Kyoto.jpg"
       },
       {
         "id": "tier-2",
         "amount": 200,
+        "currency": "DEV",
+        "imageSrc": "https://gaijinpot.scdn3.secure.raxcdn.com/app/uploads/sites/6/2017/07/Kiyomizudera-Temple-Kyoto.jpg",
         "payload": [1, 2, 3]
       }
     ],
