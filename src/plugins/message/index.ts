@@ -11,14 +11,23 @@ import { GatedMessage } from './types'
 
 const forms: GatedMessage[] = json
 
-export const getPagePaths: ClubsFunctionGetPagePaths = async () => [
-  { paths: ['message'], component: Index },
-  ...forms.map((form) => ({
-    paths: ['message', String(form.id)],
-    component: ID,
-    props: { form },
-  })),
-]
+export const getPagePaths: ClubsFunctionGetPagePaths = async (
+  options,
+  { name, propertyAddress }
+) => {
+  return [
+    {
+      paths: ['message'],
+      component: Index,
+      props: { name, propertyAddress, forms },
+    },
+    ...forms.map((form) => ({
+      paths: ['message', String(form.id)],
+      component: ID,
+      props: { form },
+    })),
+  ]
+}
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async () => []
 

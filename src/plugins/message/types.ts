@@ -5,6 +5,8 @@ export type GatedMessage = {
   requiredMemberships: {
     id: string
     amount: number
+    currency: string
+    imageSrc: string
     payload?: number[]
   }[]
   presetName: string

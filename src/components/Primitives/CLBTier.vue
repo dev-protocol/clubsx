@@ -36,6 +36,7 @@ export default {
   computed: {
     hasAction() {
       return (
+        this.$slots.default &&
         this.$slots.default() &&
         this.$slots.default().findIndex((o) => o.type !== Comment) !== -1
       )

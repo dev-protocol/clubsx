@@ -1,16 +1,20 @@
 [
   {
     "id": 1,
-    "title": "",
-    "description": "",
+    "title": "Contact Temples DAO",
+    "description": "You can contact Temples DAO to get answers to your queries and issues. You require membership in order to contact the Temples DAO team.",
     "requiredMemberships": [
       {
         "id": "tier-1",
-        "amount": 100
+        "amount": 100,
+        "currency": "DEV",
+        "imageSrc": "https://gaijinpot.scdn3.secure.raxcdn.com/app/uploads/sites/6/2017/07/Kiyomizudera-Temple-Kyoto.jpg"
       },
       {
         "id": "tier-2",
         "amount": 200,
+        "currency": "DEV",
+        "imageSrc": "https://gaijinpot.scdn3.secure.raxcdn.com/app/uploads/sites/6/2017/07/Kiyomizudera-Temple-Kyoto.jpg",
         "payload": [1, 2, 3]
       }
     ],
