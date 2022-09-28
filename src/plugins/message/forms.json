@@ -1,8 +1,8 @@
 [
   {
     "id": 1,
-    "title": "",
-    "description": "",
+    "title": "Contact Temples DAO",
+    "description": "You can contact Temples DAO to get answers to your queries and issues. You require membership in order to contact the Temples DAO team.",
     "requiredMemberships": [
       {
         "id": "tier-1",
