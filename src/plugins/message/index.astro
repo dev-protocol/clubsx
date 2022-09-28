@@ -33,9 +33,12 @@ const { name, propertyAddress, forms } = Astro.props
           <h3 class="family-title text-base">{forms[0].description}</h3>
         </section>
         <section class="mb-4">
-          <button class="bg-[#D500E6] rounded border-[##171717] py-2 px-7"
-            >Open</button
+          <a
+            href={`/message/${forms[0]?.id || '1'}`}
+            class="bg-[#D500E6] rounded border-[##171717] py-2 px-7"
           >
+            Open
+          </a>
         </section>
         <section class="mb-4">
           <h3 class="font-Syne text-2xl font-bold">Required membership(s)</h3>
