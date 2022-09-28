@@ -1,5 +1,55 @@
 ---
-const { form } = Astro.props
+import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
+import Sidebar from '@components/Sidebar/Sidebar.vue'
+import CLBTier from '@components/Primitives/CLBTier.vue'
+import MessageForm from './components/MessageForm.vue'
+
+const { name, propertyAddress, form } = Astro.props
 ---
 
-<div>Individual message form page</div>
+<CLBWrapper>
+  <Sidebar client:load propertyAddress={propertyAddress} tenantName={name} />
+  <article>
+    <section class="mb-12">
+      <h1 class="mb-5 font-title font-semibold text-2xl">{form.title}</h1>
+      <p>{form.description}</p>
+    </section>
+
+    <section>
+      <h1 class="mb-4 font-semibold font-title text-xl">
+        Required membership(s)
+      </h1>
+      <div class="mb-5 flex flex-row flex-wrap gap-8">
+        {
+          form.requiredMemberships.map((membership: any, i: any) => (
+            <div class="h-[240px] max-h-[240px] min-h-[240px] w-[25%] capitalize">
+              <CLBTier
+                key={i}
+                title={membership.id}
+                subtitle={`${membership.amount} ${membership.currency}`}
+                media={`${membership.imageSrc}`}
+              />
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="mb-10">
+      <!-- Depending on access logic, show either one -->
+      <div>
+        <h1 class="font-title font-black text-xl text-green-500">
+          You have the access
+        </h1>
+      </div>
+      <div class="text-red-500">
+        <h1 class="font-title font-black text-xl">You don't have the access</h1>
+        <p>By purchasing a membership to any one of them, you gain access.</p>
+      </div>
+    </section>
+
+    <section>
+      <MessageForm client:only="vue" />
+    </section>
+  </article>
+</CLBWrapper>
