@@ -24,7 +24,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
     ...forms.map((form) => ({
       paths: ['message', String(form.id)],
       component: ID,
-      props: { form },
+      props: { name, propertyAddress, form },
     })),
   ]
 }
