@@ -1,7 +1,14 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { GetModalProvider, ReConnectWallet } from '@fixtures/wallet'
+import { utils } from 'ethers'
+import { GatedMessage } from '../types'
+import { encode } from '@devprotocol/clubs-core'
 
 export default defineComponent({
+  props: {
+    formId: Number,
+  },
   data: () => ({
     fullname: '',
     addressLine1: '',
@@ -11,15 +18,55 @@ export default defineComponent({
     country: '',
   }),
   methods: {
-    signAndSubmit() {
-      // Logic here
+    async signAndSubmit() {
+      const splitHostname = window.location.hostname.split('.')
+      const site = splitHostname[0]
+
+      const modalProvider = GetModalProvider()
+      const { provider, currentAddress } = await ReConnectWallet(modalProvider)
+      if (!currentAddress || !provider) {
+        return
+      }
+
+      const signer = provider.getSigner()
+      const data = {
+        fullname: this.fullname,
+        addressLine1: this.addressLine1,
+        addressLine2: this.addressLine2,
+        zipCode: this.zipCode,
+        city: this.city,
+        country: this.country,
+        formId: this.formId,
+      }
+
+      const encodedData = encode(data)
+      const hash = await utils.hashMessage(encodedData)
+      const sig = await signer.signMessage(hash)
+      if (!sig) {
+        return
+      }
+
+      const body = {
+        site,
+        data,
+        hash,
+        sig,
+      }
+
+      const res = await fetch(`/sites_/[site]/message/sendMessage`, {
+        method: 'POST',
+        body: JSON.stringify(body),
+      })
+
+      const success = res.ok
+      console.log('Success', success, res)
     },
   },
 })
 </script>
 
 <template>
-  <form class="mb-12" @submit="signAndSubmit">
+  <div class="mb-12">
     <div class="mb-10 flex flex-col">
       <label class="mb-1" for="fullname">
         Full Name <span class="text-red-500">*</span></label
@@ -101,10 +148,11 @@ export default defineComponent({
       />
     </div>
     <button
+      @click="signAndSubmit"
       type="submit"
       class="border-[##171717] rounded bg-[#D500E6] py-2 px-7"
     >
       Sign and Submit
     </button>
-  </form>
+  </div>
 </template>
