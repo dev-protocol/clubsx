@@ -18,7 +18,7 @@
   "devDependencies": {
     "@astrojs/prefetch": "0.0.7",
     "@astrojs/svelte": "1.0.0",
-    "@sendgrid/mail": "^7.7.0",
+    "@sendgrid/mail": "7.7.0",
     "@types/dotenv": "8.2.0",
     "@types/ramda": "0.28.15",
     "@types/react": "18.0.21",
