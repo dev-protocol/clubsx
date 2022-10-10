@@ -36,7 +36,11 @@ const { name, propertyAddress, form } = Astro.props
     </section>
 
     <section>
-      <MessageForm client:only="vue" propertyAddress={propertyAddress} formId={form.id} />
+      <MessageForm
+        client:only="vue"
+        propertyAddress={propertyAddress}
+        formId={form.id}
+      />
     </section>
   </article>
 </CLBWrapper>

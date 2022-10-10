@@ -4,13 +4,13 @@ import { GetModalProvider, ReConnectWallet } from '@fixtures/wallet'
 import { utils } from 'ethers'
 import { GatedMessage } from '../types'
 import { encode } from '@devprotocol/clubs-core'
-import {checkMemberships} from '@fixtures/utility'
-import forms from '../forms.json';
+import { checkMemberships } from '@fixtures/utility'
+import forms from '../forms.json'
 
 export default defineComponent({
   props: {
     formId: Number,
-    propertyAddress: String
+    propertyAddress: String,
   },
   data: () => ({
     fullname: '',
@@ -19,7 +19,7 @@ export default defineComponent({
     zipCode: '',
     city: '',
     country: '',
-    isMember: false
+    isMember: false,
   }),
   async beforeMount() {
     const modalProvider = GetModalProvider()
@@ -30,22 +30,26 @@ export default defineComponent({
 
     const formData = forms.find((element) => element.id === Number(this.formId))
     if (!formData) {
-      this.isMember = false;
-      return;
+      this.isMember = false
+      return
     }
 
     try {
-      const isMember = await checkMemberships(provider, this.propertyAddress, formData.requiredMemberships)
+      const isMember = await checkMemberships(
+        provider,
+        this.propertyAddress,
+        formData.requiredMemberships
+      )
       this.isMember = isMember
     } catch {
-      this.isMember = false;
+      this.isMember = false
     }
   },
   methods: {
     async signAndSubmit() {
       if (!this.isMember) {
         // TODO: update error state to show error message
-        return;
+        return
       }
 
       const splitHostname = window.location.hostname.split('.')
@@ -99,12 +103,12 @@ export default defineComponent({
   <section class="mb-10">
     <!-- Depending on access logic, show either one -->
     <div v-if="isMember">
-      <h1 class="font-title font-black text-xl text-green-500">
+      <h1 class="font-title text-xl font-black text-green-500">
         You have the access
       </h1>
     </div>
     <div class="text-red-500" v-else>
-      <h1 class="font-title font-black text-xl">You don't have the access</h1>
+      <h1 class="font-title text-xl font-black">You don't have the access</h1>
       <p>By purchasing a membership to any one of them, you gain access.</p>
     </div>
   </section>

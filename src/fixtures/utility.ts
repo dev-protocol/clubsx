@@ -3,9 +3,9 @@ import BigNumber from 'bignumber.js'
 import { ethers, utils } from 'ethers'
 import type { Tiers } from '@constants/tier'
 import { stakeWithEth, stakeWithEthForPolygon, tokenURISim } from './dev-kit'
-import {clientsSTokens, client} from '@devprotocol/dev-kit'
-import {whenDefined} from '@devprotocol/util-ts'
-import {xprod} from 'ramda'
+import { clientsSTokens, client } from '@devprotocol/dev-kit'
+import { whenDefined } from '@devprotocol/util-ts'
+import { xprod } from 'ramda'
 
 const falsyOrZero = <T>(num?: T): T | 0 => (num ? num : 0)
 
@@ -99,46 +99,58 @@ export const composeTiers = async ({
   }
 }
 
-export const checkMemberships = async (provider: ethers.providers.Web3Provider, propertyAddress: string, requiredMemberships: any[]) => {
+export const checkMemberships = async (
+  provider: ethers.providers.Web3Provider,
+  propertyAddress: string,
+  requiredMemberships: any[]
+) => {
   // gets the visitor's address
-  const signer = provider.getSigner();
-  const userAddress = await signer.getAddress();
+  const signer = provider.getSigner()
+  const userAddress = await signer.getAddress()
 
   // creates sTokens detector
   const clients = await clientsSTokens(provider)
   const contract = whenDefined(clients, ([l1, l2]) => l1 ?? l2)
-  if (!contract) return false;
+  if (!contract) return false
 
   const detectSTokens = whenDefined(contract, client.createDetectSTokens)
 
   // gets all sTokens of the passed Property address that the visitor have
-  const allSTokens = await whenDefined(detectSTokens, detector => detector(propertyAddress, userAddress))
-  if (!allSTokens) return false;
+  const allSTokens = await whenDefined(detectSTokens, (detector) =>
+    detector(propertyAddress, userAddress)
+  )
+  if (!allSTokens) return false
 
   // https://ramdajs.com/docs/#xprod
   const pairs = xprod(requiredMemberships, allSTokens)
 
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/any
-  const testResult = await Promise.any(pairs.map(async ([membership, tokenId]) => {
-    const payload = whenDefined(membership.payload, utils.keccak256)
+  const testResult = await Promise.any(
+    pairs.map(async ([membership, tokenId]) => {
+      const payload = whenDefined(membership.payload, utils.keccak256)
 
-    const sTokenContract = contract.contract();
-    // if it has payload, test the payload
-    const testForPayload = await whenDefined(payload, async v => await (sTokenContract.payloadOf(tokenId)) === v)
+      const sTokenContract = contract.contract()
+      // if it has payload, test the payload
+      const testForPayload = await whenDefined(
+        payload,
+        async (v) => (await sTokenContract.payloadOf(tokenId)) === v
+      )
 
-    // if it has not payload, test the staking amount
-    const testForAmount = payload ? undefined : ethers.BigNumber.from(
-      (await contract.positions(tokenId)).amount
-    ).gte(utils.parseEther(membership.amount.toString()))
+      // if it has not payload, test the staking amount
+      const testForAmount = payload
+        ? undefined
+        : ethers.BigNumber.from((await contract.positions(tokenId)).amount).gte(
+            utils.parseEther(membership.amount.toString())
+          )
 
-    if (testForPayload || testForAmount) {
-      return tokenId
-    }
+      if (testForPayload || testForAmount) {
+        return tokenId
+      }
 
-    return Promise.reject()
-  }))
+      return Promise.reject()
+    })
+  )
 
   // returns the result
   return testResult > 0
 }
-
