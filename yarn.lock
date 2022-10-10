@@ -2302,10 +2302,10 @@ ast-types@0.14.2:
   dependencies:
     tslib "^2.0.1"
 
-astro@1.4.6:
-  version "1.4.6"
-  resolved "https://registry.yarnpkg.com/astro/-/astro-1.4.6.tgz#8442efca97605caf6d44f036b25f155df2cafdbd"
-  integrity sha512-zGi3uCl+VwBYwbmccyo9M4xI68gx+M7jJdP7kFSR3UCdmDbCoCY6u85ixAAjbkMUSNsuxsrBrhH9HW/X5SGTzQ==
+astro@1.4.7:
+  version "1.4.7"
+  resolved "https://registry.yarnpkg.com/astro/-/astro-1.4.7.tgz#046d290fea6fda0543f3809e9808a99c10b8edc7"
+  integrity sha512-Vit4megdh1rLdET5+HwQTdiXOjWQNzPNxRbpp08qn/0xw7pxrYD34TqLl7j8lxwrF+ky9WohdQGo7fkBF6P3SQ==
   dependencies:
     "@astrojs/compiler" "^0.26.0"
     "@astrojs/language-server" "^0.26.2"
