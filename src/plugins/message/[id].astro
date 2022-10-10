@@ -35,21 +35,8 @@ const { name, propertyAddress, form } = Astro.props
       </div>
     </section>
 
-    <section class="mb-10">
-      <!-- Depending on access logic, show either one -->
-      <div>
-        <h1 class="font-title font-black text-xl text-green-500">
-          You have the access
-        </h1>
-      </div>
-      <div class="text-red-500">
-        <h1 class="font-title font-black text-xl">You don't have the access</h1>
-        <p>By purchasing a membership to any one of them, you gain access.</p>
-      </div>
-    </section>
-
     <section>
-      <MessageForm client:only="vue" formId={form.id} />
+      <MessageForm client:only="vue" propertyAddress={propertyAddress} formId={form.id} />
     </section>
   </article>
 </CLBWrapper>
