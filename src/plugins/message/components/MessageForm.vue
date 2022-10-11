@@ -20,7 +20,7 @@ export default defineComponent({
     city: '',
     country: '',
     isMember: false,
-    messageSentStatus: 'not-sent'
+    messageSentStatus: 'not-sent',
   }),
   async beforeMount() {
     const modalProvider = GetModalProvider()
@@ -95,7 +95,7 @@ export default defineComponent({
 
         const success = res.ok
         this.messageSentStatus = success ? 'send-successful' : 'send-failed'
-      } catch(e) {
+      } catch (e) {
         this.messageSentStatus = 'send-failed'
       }
     },
@@ -119,13 +119,15 @@ export default defineComponent({
 
   <section class="mb-10" v-if="messageSentStatus !== 'not-sent'">
     <!-- Depending on access logic, show either one -->
-    <div  v-if="messageSentStatus == 'send-successful'">
+    <div v-if="messageSentStatus == 'send-successful'">
       <h1 class="font-title text-xl font-black text-green-500">
         Your message has been sent!
       </h1>
     </div>
     <div class="text-red-500" v-else-if="messageSentStatus == 'send-failed'">
-      <h1 class="font-title text-xl font-black">An error occured during sending.</h1>
+      <h1 class="font-title text-xl font-black">
+        An error occured during sending.
+      </h1>
     </div>
   </section>
 

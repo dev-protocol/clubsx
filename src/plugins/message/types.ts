@@ -19,5 +19,5 @@ export type GatedMessage = {
 export enum MessageSentStatus {
   NOT_SENT,
   SEND_SUCCESSFUL,
-  SEND_FAILED
+  SEND_FAILED,
 }
