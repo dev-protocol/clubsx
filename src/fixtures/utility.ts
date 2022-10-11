@@ -7,6 +7,8 @@ import { clientsSTokens, client } from '@devprotocol/dev-kit'
 import { whenDefined } from '@devprotocol/util-ts'
 import { xprod } from 'ramda'
 
+import { GatedMessageRequiredMemberships } from '../plugins/message/types'
+
 const falsyOrZero = <T>(num?: T): T | 0 => (num ? num : 0)
 
 const toNaturalBasis = new BigNumber(10).pow(18)
@@ -102,7 +104,7 @@ export const composeTiers = async ({
 export const checkMemberships = async (
   provider: ethers.providers.Web3Provider,
   propertyAddress: string,
-  requiredMemberships: any[]
+  requiredMemberships: GatedMessageRequiredMemberships[]
 ) => {
   // gets the visitor's address
   const signer = provider.getSigner()

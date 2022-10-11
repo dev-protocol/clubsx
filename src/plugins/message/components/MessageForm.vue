@@ -20,6 +20,7 @@ export default defineComponent({
     city: '',
     country: '',
     isMember: false,
+    messageSentStatus: 'not-sent'
   }),
   async beforeMount() {
     const modalProvider = GetModalProvider()
@@ -47,10 +48,10 @@ export default defineComponent({
   },
   methods: {
     async signAndSubmit() {
-      if (!this.isMember) {
-        // TODO: update error state to show error message
-        return
-      }
+      // if (!this.isMember) {
+      //   // TODO: update error state to show error message
+      //   return
+      // }
 
       const splitHostname = window.location.hostname.split('.')
       const site = splitHostname[0]
@@ -86,21 +87,24 @@ export default defineComponent({
         sig,
       }
 
-      const res = await fetch(`/sites_/[site]/message/sendMessage`, {
-        method: 'POST',
-        body: JSON.stringify(body),
-      })
+      try {
+        const res = await fetch(`/sites_/[site]/message/sendMessag`, {
+          method: 'POST',
+          body: JSON.stringify(body),
+        })
 
-      const success = res.ok
-
-      // TODO: update message as per success or failure.
+        const success = res.ok
+        this.messageSentStatus = success ? 'send-successful' : 'send-failed'
+      } catch(e) {
+        this.messageSentStatus = 'send-failed'
+      }
     },
   },
 })
 </script>
 
 <template>
-  <section class="mb-10">
+  <section class="mb-10" v-if="messageSentStatus == 'not-sent'">
     <!-- Depending on access logic, show either one -->
     <div v-if="isMember">
       <h1 class="font-title text-xl font-black text-green-500">
@@ -113,7 +117,19 @@ export default defineComponent({
     </div>
   </section>
 
-  <div class="mb-12">
+  <section class="mb-10" v-if="messageSentStatus !== 'not-sent'">
+    <!-- Depending on access logic, show either one -->
+    <div  v-if="messageSentStatus == 'send-successful'">
+      <h1 class="font-title text-xl font-black text-green-500">
+        Your message has been sent!
+      </h1>
+    </div>
+    <div class="text-red-500" v-else-if="messageSentStatus == 'send-failed'">
+      <h1 class="font-title text-xl font-black">An error occured during sending.</h1>
+    </div>
+  </section>
+
+  <div class="mb-12" v-if="messageSentStatus == 'not-sent'">
     <div class="mb-10 flex flex-col">
       <label class="mb-1" for="fullname">
         Full Name <span class="text-red-500">*</span></label
