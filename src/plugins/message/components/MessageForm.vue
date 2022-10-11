@@ -4,10 +4,13 @@ import { GetModalProvider, ReConnectWallet } from '@fixtures/wallet'
 import { utils } from 'ethers'
 import { GatedMessage } from '../types'
 import { encode } from '@devprotocol/clubs-core'
+import { checkMemberships } from '@fixtures/utility'
+import forms from '../forms.json'
 
 export default defineComponent({
   props: {
     formId: Number,
+    propertyAddress: String,
   },
   data: () => ({
     fullname: '',
@@ -16,9 +19,40 @@ export default defineComponent({
     zipCode: '',
     city: '',
     country: '',
+    isMember: false,
+    messageSentStatus: 'not-sent',
   }),
+  async beforeMount() {
+    const modalProvider = GetModalProvider()
+    const { provider, currentAddress } = await ReConnectWallet(modalProvider)
+    if (!currentAddress || !provider) {
+      return
+    }
+
+    const formData = forms.find((element) => element.id === Number(this.formId))
+    if (!formData) {
+      this.isMember = false
+      return
+    }
+
+    try {
+      const isMember = await checkMemberships(
+        provider,
+        this.propertyAddress,
+        formData.requiredMemberships
+      )
+      this.isMember = isMember
+    } catch {
+      this.isMember = false
+    }
+  },
   methods: {
     async signAndSubmit() {
+      // if (!this.isMember) {
+      //   // TODO: update error state to show error message
+      //   return
+      // }
+
       const splitHostname = window.location.hostname.split('.')
       const site = splitHostname[0]
 
@@ -53,20 +87,51 @@ export default defineComponent({
         sig,
       }
 
-      const res = await fetch(`/sites_/[site]/message/sendMessage`, {
-        method: 'POST',
-        body: JSON.stringify(body),
-      })
+      try {
+        const res = await fetch(`/sites_/[site]/message/sendMessag`, {
+          method: 'POST',
+          body: JSON.stringify(body),
+        })
 
-      const success = res.ok
-      console.log('Success', success, res)
+        const success = res.ok
+        this.messageSentStatus = success ? 'send-successful' : 'send-failed'
+      } catch (e) {
+        this.messageSentStatus = 'send-failed'
+      }
     },
   },
 })
 </script>
 
 <template>
-  <div class="mb-12">
+  <section class="mb-10" v-if="messageSentStatus == 'not-sent'">
+    <!-- Depending on access logic, show either one -->
+    <div v-if="isMember">
+      <h1 class="font-title text-xl font-black text-green-500">
+        You have the access
+      </h1>
+    </div>
+    <div class="text-red-500" v-else>
+      <h1 class="font-title text-xl font-black">You don't have the access</h1>
+      <p>By purchasing a membership to any one of them, you gain access.</p>
+    </div>
+  </section>
+
+  <section class="mb-10" v-if="messageSentStatus !== 'not-sent'">
+    <!-- Depending on access logic, show either one -->
+    <div v-if="messageSentStatus == 'send-successful'">
+      <h1 class="font-title text-xl font-black text-green-500">
+        Your message has been sent!
+      </h1>
+    </div>
+    <div class="text-red-500" v-else-if="messageSentStatus == 'send-failed'">
+      <h1 class="font-title text-xl font-black">
+        An error occured during sending.
+      </h1>
+    </div>
+  </section>
+
+  <div class="mb-12" v-if="messageSentStatus == 'not-sent'">
     <div class="mb-10 flex flex-col">
       <label class="mb-1" for="fullname">
         Full Name <span class="text-red-500">*</span></label
