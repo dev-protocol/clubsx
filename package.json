@@ -65,7 +65,7 @@
     "react-dom": "18.2.0",
     "redis": "4.3.1",
     "rxjs": "7.5.7",
-    "swiper": "8.4.3",
+    "swiper": "8.4.4",
     "tailwindcss": "3.1.8",
     "truncate-eth-address": "1.0.2",
     "vue": "3.2.40",
