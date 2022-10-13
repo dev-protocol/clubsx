@@ -1,15 +1,12 @@
 <script lang="ts">
-  import type { HomeConfig } from "../types/home-config"
+  import type { HomeConfig } from '../types/home-config'
 
-  export let homeConfig: HomeConfig;
-
+  export let homeConfig: HomeConfig
 </script>
 
 <div class="divide-y">
-
-  <div class="flex flex-col mb-4">
-
-    <span class="text-lg font-bold mb-4">Hero</span>
+  <div class="mb-4 flex flex-col">
+    <span class="mb-4 text-lg font-bold">Hero</span>
 
     <div class="mb-10 flex flex-col">
       <label class="mb-1" for="hero-image"> Image </label>
@@ -32,9 +29,8 @@
     </div>
   </div>
 
-  <div class="flex flex-col my-4 pt-8">
-
-    <span class="text-lg font-bold mb-4">What We Do</span>
+  <div class="my-4 flex flex-col pt-8">
+    <span class="mb-4 text-lg font-bold">What We Do</span>
 
     <div class="mb-10 flex flex-col">
       <label class="mb-1" for="what-we-do-text"> Section Text </label>
@@ -47,56 +43,56 @@
     </div>
 
     {#if homeConfig.whatWeDo.images[0]}
+      <div class="mb-10 flex flex-col">
+        <label class="mb-1" for="what-we-do-image-1"> Image 1 </label>
+        <input
+          class="rounded bg-[#040B10] px-8 py-4"
+          bind:value={homeConfig.whatWeDo.images[0].image}
+          id="what-we-do-image-1"
+          name="what-we-do-image-1"
+        />
+      </div>
 
-    <div class="mb-10 flex flex-col">
-      <label class="mb-1" for="what-we-do-image-1"> Image 1 </label>
-      <input
-        class="rounded bg-[#040B10] px-8 py-4"
-        bind:value={homeConfig.whatWeDo.images[0].image}
-        id="what-we-do-image-1"
-        name="what-we-do-image-1"
-      />
-    </div>
-
-    <div class="mb-10 flex flex-col">
-      <label class="mb-1" for="what-we-do-image-1-description"> Image 1 Description </label>
-      <input
-        class="rounded bg-[#040B10] px-8 py-4"
-        bind:value={homeConfig.whatWeDo.images[0].description}
-        id="what-we-do-image-1-description"
-        name="what-we-do-image-1-description"
-      />
-    </div>
-
+      <div class="mb-10 flex flex-col">
+        <label class="mb-1" for="what-we-do-image-1-description">
+          Image 1 Description
+        </label>
+        <input
+          class="rounded bg-[#040B10] px-8 py-4"
+          bind:value={homeConfig.whatWeDo.images[0].description}
+          id="what-we-do-image-1-description"
+          name="what-we-do-image-1-description"
+        />
+      </div>
     {/if}
 
     {#if homeConfig.whatWeDo.images[1]}
-    <div class="mb-10 flex flex-col">
-      <label class="mb-1" for="what-we-do-image-1"> Image 2 </label>
-      <input
-        class="rounded bg-[#040B10] px-8 py-4"
-        bind:value={homeConfig.whatWeDo.images[1].image}
-        id="what-we-do-image-2"
-        name="what-we-do-image-2"
-      />
-    </div>
+      <div class="mb-10 flex flex-col">
+        <label class="mb-1" for="what-we-do-image-1"> Image 2 </label>
+        <input
+          class="rounded bg-[#040B10] px-8 py-4"
+          bind:value={homeConfig.whatWeDo.images[1].image}
+          id="what-we-do-image-2"
+          name="what-we-do-image-2"
+        />
+      </div>
 
-    <div class="mb-10 flex flex-col">
-      <label class="mb-1" for="what-we-do-image-2-description"> Image 2 Description </label>
-      <input
-        class="rounded bg-[#040B10] px-8 py-4"
-        bind:value={homeConfig.whatWeDo.images[0].description}
-        id="what-we-do-image-2-description"
-        name="what-we-do-image-2-description"
-      />
-    </div>
+      <div class="mb-10 flex flex-col">
+        <label class="mb-1" for="what-we-do-image-2-description">
+          Image 2 Description
+        </label>
+        <input
+          class="rounded bg-[#040B10] px-8 py-4"
+          bind:value={homeConfig.whatWeDo.images[0].description}
+          id="what-we-do-image-2-description"
+          name="what-we-do-image-2-description"
+        />
+      </div>
     {/if}
-
   </div>
 
-  <div class="flex flex-col my-4 pt-8">
-
-    <span class="text-lg font-bold mb-4">Perks</span>
+  <div class="my-4 flex flex-col pt-8">
+    <span class="mb-4 text-lg font-bold">Perks</span>
 
     <div class="mb-10 flex flex-col">
       <label class="mb-1" for="perks-header-text"> Header Text </label>
@@ -119,38 +115,34 @@
     </div>
 
     {#each homeConfig.perks.images as perkImage, i}
+      <div>
+        <div class="mb-10 flex flex-col">
+          <label class="mb-1" for={`perk-image-${i}`}> Perk Image {i} </label>
+          <input
+            class="rounded bg-[#040B10] px-8 py-4"
+            bind:value={perkImage.image}
+            id={`perk-image-${i}`}
+            name={`perk-image-${i}`}
+          />
+        </div>
 
-    <div>
-
-      <div class="mb-10 flex flex-col">
-        <label class="mb-1" for={`perk-image-${i}`}> Perk Image {i} </label>
-        <input
-          class="rounded bg-[#040B10] px-8 py-4"
-          bind:value={perkImage.image}
-          id={`perk-image-${i}`}
-          name={`perk-image-${i}`}
-        />
+        <div class="mb-10 flex flex-col">
+          <label class="mb-1" for={`perk-image-${i}-description`}>
+            Perk Image {i} Description
+          </label>
+          <input
+            class="rounded bg-[#040B10] px-8 py-4"
+            bind:value={perkImage.description}
+            id={`perk-image-${i}-description`}
+            name={`perk-image-${i}-description`}
+          />
+        </div>
       </div>
-
-      <div class="mb-10 flex flex-col">
-        <label class="mb-1" for={`perk-image-${i}-description`}> Perk Image {i} Description </label>
-        <input
-          class="rounded bg-[#040B10] px-8 py-4"
-          bind:value={perkImage.description}
-          id={`perk-image-${i}-description`}
-          name={`perk-image-${i}-description`}
-        />
-      </div>
-
-    </div>
-
     {/each}
-
   </div>
 
-  <div class="flex flex-col my-4 pt-8">
-
-    <span class="text-lg font-bold mb-4">Quote</span>
+  <div class="my-4 flex flex-col pt-8">
+    <span class="mb-4 text-lg font-bold">Quote</span>
 
     <div class="mb-10 flex flex-col">
       <label class="mb-1" for="quote"> Quote </label>
@@ -161,7 +153,5 @@
         name="quote"
       />
     </div>
-
   </div>
-
 </div>
