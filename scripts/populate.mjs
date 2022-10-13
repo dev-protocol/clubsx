@@ -215,6 +215,64 @@ const guild = {
   value: 'https://guild.xyz/temples-dao',
 }
 
+const templesHomeConfig = {
+  hero: {
+    image: '/src/assets/cover-1.jpg',
+    text: 'Join the DAO that makes the next 1000 years',
+  },
+  whatWeDo: {
+    text: 'We make everything for temples. Let’s continue to create history by passing on culture.',
+    images: [
+      {
+        image: '/src/assets/owt3cn75.png',
+        description: 'Zuiunji-temple, Hokkaido / 瑞雲寺 楼門',
+      },
+      {
+        image: '/src/assets/gt6zfoja.png',
+        description: 'Narita san Shinshoji-temple, Chiba / 成田山新勝寺 荘厳具',
+      },
+    ],
+  },
+  perks: {
+    headerText:
+      'Receive NFTs, authentic art pieces by traditional artisans and more.',
+    subText:
+      'Get NFTs, and redeem authentic art pieces by real traditional craftsmanship.',
+    images: [
+      {
+        image: '/src/assets/artifacts/40.png',
+        description: '40 Makie lacquer-work plate',
+      },
+      {
+        image: '/src/assets/artifacts/92.png',
+        description: '92 Transformable panel',
+      },
+      {
+        image: '/src/assets/artifacts/89.png',
+        description: '89 Metal panel, moon and autumn grasses',
+      },
+      {
+        image: '/src/assets/artifacts/12.png',
+        description: '12 Lotus petal dish flower in the moon',
+      },
+      {
+        image: '/src/assets/artifacts/125.png',
+        description: '125 Virupaksa (Buddhist deity)',
+      },
+      {
+        image: '/src/assets/artifacts/101.png',
+        description: '101 Meditation Room',
+      },
+      {
+        image: '/src/assets/artifacts/108.png',
+        description:
+          "108 The Light Beyond, Ryunosuke Akutagawa, The Spider's Thread",
+      },
+    ],
+  },
+  quote:
+    "Let's get good craftsmen to do good work. It is important to pass on the skills of skilled craftsmen to the next generation.",
+}
 const populate = async () => {
   try {
     const client = createClient({
@@ -246,6 +304,10 @@ const populate = async () => {
               {
                 key: 'tiers',
                 value: tiers,
+              },
+              {
+                key: 'homeConfig',
+                value: templesHomeConfig,
               },
             ],
           },

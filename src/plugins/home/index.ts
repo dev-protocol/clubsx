@@ -7,6 +7,7 @@ import {
   ClubsPluginMeta,
 } from '@devprotocol/clubs-core'
 import { default as Index } from './index.astro'
+import { default as Admin } from './admin.astro'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
@@ -20,7 +21,13 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
   ]
 }
 
-export const getAdminPaths: ClubsFunctionGetAdminPaths = async () => []
+export const getAdminPaths: ClubsFunctionGetAdminPaths = async (options, _) => [
+  {
+    paths: ['home'],
+    component: Admin,
+    props: { options },
+  },
+]
 
 export const meta: ClubsPluginMeta = { displayName: 'Home' }
 

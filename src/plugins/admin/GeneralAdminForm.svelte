@@ -88,7 +88,7 @@
           {#if dangerLocked}
             <span>Unlock</span>
           {:else}
-            <span v-else>Lock</span>
+            <span>Lock</span>
           {/if}
         </button>
       </div>
