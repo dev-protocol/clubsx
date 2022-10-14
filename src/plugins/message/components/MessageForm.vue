@@ -48,10 +48,10 @@ export default defineComponent({
   },
   methods: {
     async signAndSubmit() {
-      // if (!this.isMember) {
-      //   // TODO: update error state to show error message
-      //   return
-      // }
+      if (!this.isMember) {
+        // TODO: update error state to show error message
+        return
+      }
 
       const splitHostname = window.location.hostname.split('.')
       const site = splitHostname[0]
@@ -79,16 +79,17 @@ export default defineComponent({
       if (!sig) {
         return
       }
-
       const body = {
         site,
         data,
         hash,
         sig,
+        userAddress: await signer.getAddress(),
+        propertyAddress: this.propertyAddress,
       }
 
       try {
-        const res = await fetch(`/sites_/[site]/message/sendMessag`, {
+        const res = await fetch(`/sites_/[site]/message/sendMessage`, {
           method: 'POST',
           body: JSON.stringify(body),
         })
