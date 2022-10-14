@@ -85,7 +85,7 @@ export default defineComponent({
         data,
         hash,
         sig,
-        address: signer.address
+        address: signer.address,
       }
 
       try {

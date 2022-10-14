@@ -22,8 +22,8 @@ export const post = async ({ request }: { request: Request }) => {
   }
 
   // Check that the user has signed the message.
-  const verificationDigest = utils.hashMessage(hash);
-  const recoveredSigner = utils.recoverAddress(verificationDigest, sig);
+  const verificationDigest = utils.hashMessage(hash)
+  const recoveredSigner = utils.recoverAddress(verificationDigest, sig)
   if (recoveredSigner.toLowerCase() !== userAddress.toLowerCase()) {
     return new Response(JSON.stringify({ error: 'Invalid signer' }), {
       status: 404,
