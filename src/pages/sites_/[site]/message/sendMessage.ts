@@ -1,11 +1,11 @@
-import { providers } from 'ethers'
+import { utils, providers } from 'ethers'
 import { createClient } from 'redis'
 import { authenticate } from '@devprotocol/clubs-core'
 
 import json from '../../../../plugins/message/forms.json'
 
 export const post = async ({ request }: { request: Request }) => {
-  const { site, data, sig, hash } = (await request.json()) as {
+  const { site, data, sig, hash, userAddress } = (await request.json()) as {
     site: string
     data: {
       fullname: string
@@ -18,6 +18,16 @@ export const post = async ({ request }: { request: Request }) => {
     }
     hash: string
     sig: string
+    userAddress: string
+  }
+
+  // Check that the user has signed the message.
+  const verificationDigest = utils.hashMessage(hash);
+  const recoveredSigner = utils.recoverAddress(verificationDigest, sig);
+  if (recoveredSigner.toLowerCase() !== userAddress.toLowerCase()) {
+    return new Response(JSON.stringify({ error: 'Invalid signer' }), {
+      status: 404,
+    })
   }
 
   const formData = json.find((element) => element.id === Number(data.formId))

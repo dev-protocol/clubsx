@@ -85,10 +85,11 @@ export default defineComponent({
         data,
         hash,
         sig,
+        address: signer.address
       }
 
       try {
-        const res = await fetch(`/sites_/[site]/message/sendMessag`, {
+        const res = await fetch(`/sites_/[site]/message/sendMessage`, {
           method: 'POST',
           body: JSON.stringify(body),
         })
