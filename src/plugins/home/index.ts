@@ -7,6 +7,8 @@ import {
   ClubsPluginMeta,
 } from '@devprotocol/clubs-core'
 import { default as Index } from './index.astro'
+import { default as Admin } from './admin.astro'
+import { HomeConfig } from './types/home-config'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
@@ -15,12 +17,25 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
   const tiers = options.find((opt) => opt.key === 'tiers')
     ?.value as UndefinedOr<Tiers>
 
+  const homeConfig = options.find((opt) => opt.key === 'homeConfig')
+    ?.value as UndefinedOr<HomeConfig>
+
   return [
-    { paths: [''], component: Index, props: { name, propertyAddress, tiers } },
+    {
+      paths: [''],
+      component: Index,
+      props: { name, propertyAddress, tiers, homeConfig },
+    },
   ]
 }
 
-export const getAdminPaths: ClubsFunctionGetAdminPaths = async () => []
+export const getAdminPaths: ClubsFunctionGetAdminPaths = async (options, _) => [
+  {
+    paths: ['home'],
+    component: Admin,
+    props: { options },
+  },
+]
 
 export const meta: ClubsPluginMeta = { displayName: 'Home' }
 
