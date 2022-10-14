@@ -3,26 +3,24 @@ import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
 import Footer from '@components/Global/Footer.astro'
 import JoinClub from '@components/Join/JoinClub.vue'
-import cover1 from '@assets/cover-1.jpg'
-import owt3cn75 from '@assets/owt3cn75.png'
-import gt6zfoja from '@assets/gt6zfoja.png'
-import artifacts40 from '@assets/artifacts/40.png'
-import artifacts92 from '@assets/artifacts/92.png'
-import artifacts89 from '@assets/artifacts/89.png'
-import artifacts12 from '@assets/artifacts/12.png'
-import artifacts259 from '@assets/artifacts/259.png'
-import artifacts125 from '@assets/artifacts/125.png'
-import artifacts101 from '@assets/artifacts/101.png'
-import artifacts108 from '@assets/artifacts/108.png'
-import grade from '@assets/Grade.png'
+import { Tiers } from '@constants/tier'
+import { HomeConfig } from './types/home-config'
 
-const { propertyAddress, name, tiers } = Astro.props
+const { propertyAddress, name, tiers, homeConfig } = Astro.props as {
+  propertyAddress: string
+  name: string
+  tiers: Tiers
+  homeConfig: HomeConfig
+}
 ---
 
 <div>
   <div class="relative">
     <div class="absolute w-full h-[24rem] lg:h-[38rem]">
-      <img src={cover1} class="h-full w-full object-cover opacity-80" />
+      <img
+        src={homeConfig.hero.image}
+        class="h-full w-full object-cover opacity-80"
+      />
     </div>
     <CLBWrapper>
       <Sidebar
@@ -37,7 +35,7 @@ const { propertyAddress, name, tiers } = Astro.props
           <h1
             class="max-w-3xl mx-4 text-3xl font-title lg:text-4xl font-extrabold text-justify"
           >
-            Join the DAO that makes the next 1000 years
+            {homeConfig.hero.text}
           </h1>
         </header>
         <div class="px-4 grid gap-12 grid-cols-1">
@@ -48,153 +46,71 @@ const { propertyAddress, name, tiers } = Astro.props
                 class="border border-native-blue-200 rounded-full h-14 w-14 lg:h-28 lg:w-28"
               ></i>
               <p class="text-xl lg:text-2xl font-title font-bold">
-                We make everything for temples. Let’s continue to create history
-                by passing on culture.
+                {homeConfig.whatWeDo.text}
               </p>
               <i
                 class="border border-native-blue-200 rounded-full h-14 w-14 lg:h-28 lg:w-28"
               ></i>
             </div>
             <div class="flex gap-8">
-              <figure>
-                <img
-                  src={owt3cn75}
-                  class="rounded-lg"
-                  width="961"
-                  height="704"
-                  alt="Zuiunji-temple, Hokkaido / 瑞雲寺 楼門"
-                />
-                <figcaption class="text-sm">
-                  Zuiunji-temple, Hokkaido / 瑞雲寺 楼門
-                </figcaption>
-              </figure>
-              <figure>
-                <img
-                  src={gt6zfoja}
-                  class="rounded-lg"
-                  width="961"
-                  height="704"
-                  alt="Narita san Shinshoji-temple, Chiba / 成田山新勝寺 荘厳具"
-                />
-                <figcaption class="text-sm">
-                  Narita san Shinshoji-temple, Chiba / 成田山新勝寺 荘厳具
-                </figcaption>
-              </figure>
+              {
+                homeConfig.whatWeDo.images.map((_img) => (
+                  <figure>
+                    <img
+                      src={_img.image}
+                      class="rounded-lg"
+                      width="961"
+                      height="704"
+                      alt={_img.description}
+                    />
+                    <figcaption class="text-sm">{_img.description}</figcaption>
+                  </figure>
+                ))
+              }
             </div>
           </section>
           <hr class="border border-dp-black-200 max-w-xl" />
           <section class="grid gap-8">
             <h2 class="text-native-blue-200 font-mono text-xl">Perks</h2>
             <p class="text-4xl font-title font-bold text-center">
-              Receive NFTs, authentic art pieces by traditional artisans and
-              more.
+              {homeConfig.perks.headerText}
             </p>
             <p class="font-c-serif text-2xl text-center">
-              Get NFTs, and redeem authentic art pieces by real traditional
-              craftsmanship.
+              {homeConfig.perks.subText}
             </p>
             <section>
               <div
                 class="grid grid-cols-[repeat(3,minmax(0,210px))] gap-8 justify-between items-center mb-16"
               >
-                <figure>
-                  <img
-                    src={artifacts40}
-                    width="399"
-                    height="301"
-                    alt="40 Makie lacquer-work plate"
-                  />
-                  <figcaption class="text-sm">
-                    40 Makie lacquer-work plate
-                  </figcaption>
-                </figure>
-                <figure>
-                  <img
-                    src={artifacts92}
-                    width="339"
-                    height="315"
-                    alt="92 Transformable panel"
-                  />
-                  <figcaption class="text-sm">
-                    92 Transformable panel
-                  </figcaption>
-                </figure>
-                <figure>
-                  <img
-                    src={artifacts89}
-                    width="365"
-                    height="358"
-                    alt="89 Metal panel, moon and autumn grasses"
-                  />
-                  <figcaption class="text-sm">
-                    89 Metal panel, moon and autumn grasses
-                  </figcaption>
-                </figure>
+                {
+                  homeConfig.perks.images.slice(0, 3).map((_img) => (
+                    <figure>
+                      <img src={_img.image} alt={_img.description} />
+                      <figcaption class="text-sm">
+                        {_img.description}
+                      </figcaption>
+                    </figure>
+                  ))
+                }
               </div>
+
               <div class="grid justify-items-center gap-16">
-                <figure>
-                  <img
-                    src={artifacts12}
-                    class="w-full max-w-md"
-                    width="907"
-                    height="229"
-                    alt="12 Lotus petal dish flower in the moon"
-                  />
-                  <figcaption class="text-sm max-w-md">
-                    12 Lotus petal dish flower in the moon
-                  </figcaption>
-                </figure>
-                <figure>
-                  <img src={grade} class="h-8 w-auto" width="137" height="75" />
-                  <img
-                    src={artifacts259}
-                    class="w-full max-w-md"
-                    width="995"
-                    height="483"
-                    alt="259 RINPOUKARAKUSASUKASIEGOURO"
-                  />
-                  <figcaption class="text-sm max-w-md">
-                    259 RINPOUKARAKUSASUKASIEGOURO
-                  </figcaption>
-                </figure>
-                <figure>
-                  <img
-                    src={artifacts125}
-                    class="w-60 max-w-full"
-                    width="490"
-                    height="1165"
-                    alt="125 Virupaksa (Buddhist deity)"
-                  />
-                  <figcaption class="text-sm w-60 max-w-full">
-                    125 Virupaksa (Buddhist deity)
-                  </figcaption>
-                </figure>
-                <figure>
-                  <img
-                    src={artifacts101}
-                    class="max-w-xs"
-                    width="684"
-                    height="690"
-                    alt="101 Meditation Room"
-                  />
-                  <figcaption class="text-sm max-w-xs">
-                    101 Meditation Room
-                  </figcaption>
-                </figure>
-                <figure>
-                  <img
-                    src={artifacts108}
-                    class="max-w-xs"
-                    width="580"
-                    height="1017"
-                    alt={"108 The Light Beyond, Ryunosuke Akutagawa, The Spider's Thread"}
-                  />
-                  <figcaption class="text-sm max-w-xs">
-                    {
-                      "108 The Light Beyond, Ryunosuke Akutagawa, The Spider's Thread"
-                    }
-                  </figcaption>
-                </figure>
+                {
+                  homeConfig.perks.images
+                    .slice(3, homeConfig.perks.images.length)
+                    .map((_img) => (
+                      <figure>
+                        <img
+                          src={_img.image}
+                          class="w-full max-w-sm"
+                          alt={_img.description}
+                        />
+                        <figcaption class="max-w-md text-sm">
+                          {_img.description}
+                        </figcaption>
+                      </figure>
+                    ))
+                }
               </div>
             </section>
           </section>
@@ -216,8 +132,7 @@ const { propertyAddress, name, tiers } = Astro.props
             <h2
               class="font-title font-bold text-3xl text-center leading-normal"
             >
-              Let's get good craftsmen to do good w ork. It is important to pass
-              on the skills of skilled craftsmen to the next generation.
+              {homeConfig.quote}
             </h2>
             <svg
               class="place-self-end"

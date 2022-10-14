@@ -1,11 +1,10 @@
 ---
 import AdminHomeForm from './components/AdminHomeForm.svelte'
 
-const { options, currentPluginIndex } = Astro.props
+const { options } = Astro.props
 const homeConfig = options.find(
   (option: { key: string; value: string }) => option.key === 'homeConfig'
 )
-console.log('home config is: ', homeConfig)
 ---
 
 <div>
