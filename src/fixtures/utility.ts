@@ -105,9 +105,11 @@ export const checkMemberships = async (
   provider: ethers.providers.Web3Provider | ethers.providers.JsonRpcProvider,
   propertyAddress: string,
   requiredMemberships: GatedMessageRequiredMemberships[],
-  userAddress: string = "0x0000000000000000000000000000000000000000"
+  userAddress: string = '0x0000000000000000000000000000000000000000'
 ) => {
-  if (userAddress === "0x0000000000000000000000000000000000000000") {
+  // Check if we are validating at server or ui. because server can
+  // provide userAddress.
+  if (userAddress === '0x0000000000000000000000000000000000000000') {
     // gets the visitor's address
     const signer = provider.getSigner()
     userAddress = await signer.getAddress()
@@ -152,7 +154,7 @@ export const checkMemberships = async (
         return tokenId
       }
 
-      return Promise.reject("Membership not found")
+      return Promise.reject('Membership not found')
     })
   )
 
