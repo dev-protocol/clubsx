@@ -102,13 +102,16 @@ export const composeTiers = async ({
 }
 
 export const checkMemberships = async (
-  provider: ethers.providers.Web3Provider,
+  provider: ethers.providers.Web3Provider | ethers.providers.JsonRpcProvider,
   propertyAddress: string,
-  requiredMemberships: GatedMessageRequiredMemberships[]
+  requiredMemberships: GatedMessageRequiredMemberships[],
+  userAddress: string = "0x0000000000000000000000000000000000000000"
 ) => {
-  // gets the visitor's address
-  const signer = provider.getSigner()
-  const userAddress = await signer.getAddress()
+  if (userAddress === "0x0000000000000000000000000000000000000000") {
+    // gets the visitor's address
+    const signer = provider.getSigner()
+    userAddress = await signer.getAddress()
+  }
 
   // creates sTokens detector
   const clients = await clientsSTokens(provider)
@@ -149,7 +152,7 @@ export const checkMemberships = async (
         return tokenId
       }
 
-      return Promise.reject()
+      return Promise.reject("Membership not found")
     })
   )
 

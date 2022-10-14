@@ -79,13 +79,14 @@ export default defineComponent({
       if (!sig) {
         return
       }
-
+      console.log(signer, await signer.getAddress())
       const body = {
         site,
         data,
         hash,
         sig,
-        address: signer.address,
+        userAddress: await signer.getAddress(),
+        propertyAddress: this.propertyAddress
       }
 
       try {
@@ -97,6 +98,7 @@ export default defineComponent({
         const success = res.ok
         this.messageSentStatus = success ? 'send-successful' : 'send-failed'
       } catch (e) {
+        console.log("ERROR", e);
         this.messageSentStatus = 'send-failed'
       }
     },
