@@ -43,7 +43,7 @@
     "typescript": "4.8.4"
   },
   "dependencies": {
-    "@astrojs/react": "1.2.0",
+    "@astrojs/react": "1.2.1",
     "@astrojs/tailwind": "2.1.0",
     "@astrojs/vercel": "2.2.0",
     "@astrojs/vue": "1.1.0",
