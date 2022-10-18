@@ -569,15 +569,15 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
-"@devprotocol/clubs-core@0.6.2-alpha.21":
-  version "0.6.2-alpha.21"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.6.2-alpha.21.tgz#dbe7efb532b8f7c491361ba79a38cff8269037bd"
-  integrity sha512-KjimFyrWV3bbVqOgfbm2LiPje1yM2J0DEqZQOuwG/mH9hyCezGBBhjfrLCjNSGWXD56dCVHyQAEkL11iygzlcA==
+"@devprotocol/clubs-core@0.6.2-alpha.23":
+  version "0.6.2-alpha.23"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.6.2-alpha.23.tgz#2bedc75f9d9df34214819319e2ed9b886627155e"
+  integrity sha512-3Nx1gNRT4Jps0WA0RzXXBvgFVpzIrblVENcCgzDDpfdApJLjL3nCnzRWucC7oLdvSRfd95biZDXyt0D8g+lT6A==
   dependencies:
-    "@devprotocol/dev-kit" "6.8.7"
+    "@devprotocol/dev-kit" "6.9.0"
     "@devprotocol/elements" "0.1.1"
     "@devprotocol/util-ts" "2.2.1"
-    "@metamask/detect-provider" "^1.2.0"
+    "@metamask/detect-provider" "^2.0.0"
     ethers "^5.7.0"
     js-base64 "^3.7.2"
     lit "^2.3.1"
@@ -590,19 +590,6 @@
     react-dom "^18.0.0"
     svelte "^3.49.0"
     vue "^3.2.0"
-
-"@devprotocol/dev-kit@6.8.7":
-  version "6.8.7"
-  resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-6.8.7.tgz#3261a84a61538546f3f1db8742bd8981bcaaabe4"
-  integrity sha512-di8MjYTIBdoD2PTruJLAP8R2jFwyeCqYPMA/8z8//2fY10YK3eCd7SVK0WPsRELaLXxtcueQmLL70fAIYzSiOg==
-  dependencies:
-    "@devprotocol/util-ts" "^2.2.1"
-    "@types/bent" "^7.3.1"
-    async-ray "^3.2.0"
-    bent "^7.3.12"
-    bignumber.js "9.0.2"
-    js-base64 "^3.7.2"
-    ramda "^0.28.0"
 
 "@devprotocol/dev-kit@6.9.0":
   version "6.9.0"
@@ -1266,15 +1253,10 @@
   resolved "https://registry.yarnpkg.com/@matteusan/sentro/-/sentro-0.1.23.tgz#9554653f6d7eba7a6358c4dabb21b320b5bd4547"
   integrity sha512-lVnDTSy/xjn7KHPkAXEGMCOHKSEY3OBMtbhfXxZu9ZcDWWbU57pttojVV/XMW7Wkr7BGOlM1hbBggzV22adTnA==
 
-"@metamask/detect-provider@2.0.0":
+"@metamask/detect-provider@2.0.0", "@metamask/detect-provider@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@metamask/detect-provider/-/detect-provider-2.0.0.tgz#4bc2795e5e6f7d8b84b2e845058d2f222c99917d"
   integrity sha512-sFpN+TX13E9fdBDh9lvQeZdJn4qYoRb/6QF2oZZK/Pn559IhCFacPMU1rMuqyXoFQF3JSJfii2l98B87QDPeCQ==
-
-"@metamask/detect-provider@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@metamask/detect-provider/-/detect-provider-1.2.0.tgz#3667a7531f2a682e3c3a43eaf3a1958bdb42a696"
-  integrity sha512-ocA76vt+8D0thgXZ7LxFPyqw3H7988qblgzddTDA6B8a/yU0uKV42QR/DhA+Jh11rJjxW0jKvwb5htA6krNZDQ==
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -3140,11 +3122,6 @@ bent@7.3.12, bent@^7.3.12:
     bytesish "^0.4.1"
     caseless "~0.12.0"
     is-stream "^2.0.0"
-
-bignumber.js@9.0.2:
-  version "9.0.2"
-  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-9.0.2.tgz#71c6c6bed38de64e24a65ebe16cfcf23ae693673"
-  integrity sha512-GAcQvbpsM0pUb0zw1EI0KhQEZ+lRwR5fYaAp3vPOYuP7aDvGy6cVN6XHLauvF8SOga2y0dcLcjt3iQDTSEliyw==
 
 bignumber.js@9.1.0, bignumber.js@^9.0.0:
   version "9.1.0"
