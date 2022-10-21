@@ -1,13 +1,20 @@
 ---
 import JoinCheckout from '@components/Join/JoinCheckout.vue'
+import { Product } from '@constants/products'
 
-const { propertyAddress, priceEth } = Astro.props
+const { propertyAddress, product } = Astro.props as {
+  propertyAddress: string
+  product: Product
+}
 ---
 
 <JoinCheckout
   client:only
-  amount={priceEth}
+  amount={product.price}
   destination={propertyAddress}
   currency={'ETH'}
   page="BUY"
+  feeBeneficiary={product.fee?.beneficiary}
+  feePercentage={product.fee?.percentage}
+  payload={product.payload}
 />

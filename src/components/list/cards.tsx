@@ -18,11 +18,10 @@
 import type { Products } from '@constants/products'
 
 type Params = {
-  currency: 'ETH' | 'USD'
   products: Products
 }
 
-export default function Cards({ currency, products }: Params) {
+export default function Cards({ products }: Params) {
   return (
     <div className="bg-black">
       <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -34,7 +33,7 @@ export default function Cards({ currency, products }: Params) {
             >
               <div className="aspect-w-3 aspect-h-4 sm:aspect-none bg-gray-200 group-hover:opacity-75 sm:h-96">
                 <img
-                  src={product.payload}
+                  src={product.imageSrc}
                   alt={product.imageAlt}
                   className="h-full w-full object-cover object-center sm:h-full sm:w-full"
                 />
@@ -42,12 +41,7 @@ export default function Cards({ currency, products }: Params) {
               <div className="flex flex-1 flex-col space-y-2 p-4">
                 <h3 className="font-Syne mt-[32px] text-4xl font-normal text-gray-900">
                   {/* TODO: Link when using fiat */}
-                  <a
-                    rel="prefetch"
-                    href={
-                      currency === 'ETH' ? `buy/${product.id}?input=eth` : '#'
-                    }
-                  >
+                  <a rel="prefetch" href={`buy/${product.id}?input=eth`}>
                     <span aria-hidden="true" className="absolute inset-0" />
                     {product.name}
                   </a>
@@ -57,12 +51,7 @@ export default function Cards({ currency, products }: Params) {
                     Price
                   </p>
                   <p className="font-DMSans text-2xl font-normal text-[#000000]">
-                    {currency === 'USD'
-                      ? `$${product.priceUsd.toLocaleString()}`
-                      : `Ξ${product.priceEth}`}
-                  </p>
-                  <p className="font-Syne mt-[10px] text-lg font-normal text-[#88AEFF]">
-                    {product.left} left
+                    {`Ξ${product.price}`}
                   </p>
                 </div>
               </div>

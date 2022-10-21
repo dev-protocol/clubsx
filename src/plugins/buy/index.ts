@@ -18,10 +18,10 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
   return products
     ? [
         { paths: ['buy'], component: Index, props: { products } },
-        ...products.map(({ id, priceEth }) => ({
-          paths: ['buy', id],
+        ...products.map((product) => ({
+          paths: ['buy', product.id],
           component: Id,
-          props: { propertyAddress, priceEth },
+          props: { propertyAddress, product },
         })),
       ]
     : []

@@ -185,6 +185,9 @@ export default defineComponent({
     destination: String,
     currency: String, // 'DEV' or 'ETH'
     page: String, // 'JOIN or BUY'
+    feeBeneficiary: String,
+    feePercentage: Number,
+    payload: String,
   },
   data() {
     return {
@@ -381,6 +384,11 @@ export default defineComponent({
                 provider: prov,
                 propertyAddress: destination,
                 ethAmount: parsedAmount,
+                gatewayAddress: this.feeBeneficiary,
+                gatewayBasisPoints: this.feePercentage
+                  ? this.feePercentage * 10_000
+                  : undefined,
+                payload: this.payload,
               })
               whenDefined(res, (x) => {
                 this.isStaking = true
@@ -401,9 +409,13 @@ export default defineComponent({
               // handle ETH stake
               const res = await positionsCreateWithEth({
                 provider: prov,
-
                 destination,
                 ethAmount: parsedAmount,
+                gatewayAddress: this.feeBeneficiary,
+                gatewayBasisPoints: this.feePercentage
+                  ? this.feePercentage * 10_000
+                  : undefined,
+                payload: this.payload,
               })
               whenDefined(res, (x) => {
                 this.isStaking = true
