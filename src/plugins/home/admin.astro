@@ -1,7 +1,7 @@
 ---
 import AdminHomeForm from './components/AdminHomeForm.svelte'
 
-const { options, currentPluginIndex } = Astro.props
+const { options, clubs } = Astro.props
 const homeConfig = options.find(
   (option: { key: string; value: string }) => option.key === 'homeConfig'
 )
@@ -13,6 +13,6 @@ const homeConfig = options.find(
   <AdminHomeForm
     client:only="svelte"
     homeConfig={homeConfig.value}
-    currentPluginIndex={currentPluginIndex}
+    currentPluginIndex={clubs.currentPluginIndex}
   />
 </div>
