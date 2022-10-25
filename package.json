@@ -21,7 +21,7 @@
     "@sendgrid/mail": "7.7.0",
     "@types/dotenv": "8.2.0",
     "@types/ramda": "0.28.18",
-    "@types/react": "18.0.22",
+    "@types/react": "18.0.23",
     "autoprefixer": "10.4.12",
     "dotenv": "16.0.3",
     "eslint": "8.26.0",
