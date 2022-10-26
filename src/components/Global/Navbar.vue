@@ -51,6 +51,15 @@
               >YouTube</a
             >
           </li>
+          <li v-for="navLink in navLinks" :key="navLink.path">
+            <a
+              :href="navLink.path"
+              class="inline-block w-full rounded px-4 py-2 hover:bg-primary-200"
+              target="_blank"
+              rel="norefferer noopener"
+              >{{ navLink.display }}</a
+            >
+          </li>
         </ul>
       </div>
     </div>
@@ -60,11 +69,16 @@
 <script lang="ts">
 import ConnectButton from '../Wallet/ConnectButton.vue'
 import HSButton from '../Primitives/Hashi/HSButton.vue'
-import { defineComponent } from '@vue/runtime-core'
+import { defineComponent, PropType } from '@vue/runtime-core'
+import { NavLink } from '@constants/navLink'
 
 export default defineComponent({
   props: {
     tenantName: String,
+    navLinks: {
+      type: Object as PropType<NavLink[]>,
+      default: [],
+    },
   },
   data() {
     return {

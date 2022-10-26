@@ -311,6 +311,17 @@ const populate = async () => {
         url: 'https://temples.clubs.stakes.social',
         propertyAddress: '0x541f7914ed2a4a8b477edc711fa349a77983f3ad',
         adminRolePoints: 0,
+        options: [
+          {
+            key: 'navLinks',
+            value: [
+              {
+                display: 'Kougenji',
+                path: 'http://kogenji.localhost:3000',
+              },
+            ],
+          },
+        ],
         plugins: [
           {
             name: 'admin',
@@ -399,11 +410,31 @@ const populate = async () => {
         url: 'https://kogenji.clubs.stakes.social',
         propertyAddress: '0x541f7914ed2a4a8b477edc711fa349a77983f3ad',
         adminRolePoints: 0,
+        options: [
+          {
+            key: 'navLinks',
+            value: [
+              {
+                display: 'Temples',
+                path: 'http://temples.localhost:3000',
+              },
+            ],
+          },
+        ],
         plugins: [
           {
             name: 'home',
             enable: true,
-            options: [],
+            options: [
+              {
+                key: 'tiers',
+                value: tiers,
+              },
+              {
+                key: 'homeConfig',
+                value: templesHomeConfig,
+              },
+            ],
           },
           {
             name: 'buy',
