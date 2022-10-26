@@ -47,7 +47,7 @@ class AdminPlugins extends React.Component {
             <p className="h-[24px] font-body text-base font-normal capitalize leading-6">
               {plugin.name}
             </p>
-            <div className="border-[##040B10] flex h-[68px] flex-row items-center justify-start gap-[16px] rounded-[99px] border-[3px] border-[#040B10] p-1.5">
+            <div className="flex h-[68px] flex-row items-center justify-start gap-[16px] rounded-[99px] border-[3px] border-[##040B10] border-[#040B10] p-1.5">
               <div
                 onClick={
                   !plugin.enable

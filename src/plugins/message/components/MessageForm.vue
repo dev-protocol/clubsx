@@ -216,7 +216,7 @@ export default defineComponent({
     <button
       @click="signAndSubmit"
       type="submit"
-      class="border-[##171717] rounded bg-[#D500E6] py-2 px-7"
+      class="rounded border-[##171717] bg-[#D500E6] py-2 px-7"
     >
       Sign and Submit
     </button>
