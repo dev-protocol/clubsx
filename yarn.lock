@@ -143,10 +143,10 @@
     node-fetch "^3.2.5"
     which-pm-runs "^1.1.0"
 
-"@astrojs/vercel@2.3.1":
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/@astrojs/vercel/-/vercel-2.3.1.tgz#b5a38cea22b1decb0cb0a4774679c2fe7816119c"
-  integrity sha512-CrGH/5FKR8XL6LP1Y5nJkHEJbbrM3o1ViEF6REvuRNRuXdw150FGgi+mu66LdOlCKDv9tcPXsF9e9C2A8Kl5Rg==
+"@astrojs/vercel@2.3.2":
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/@astrojs/vercel/-/vercel-2.3.2.tgz#0512e663e0ccd6d445be9a9eccdf435368bf9d82"
+  integrity sha512-VEaoaobGKqkjKM9993hZUvObDa1WpldYHUxcODWMQ2930eC2m4aN70UcXsK3w7ENA/X8Xx9dg+yy4gmSKr9OPA==
   dependencies:
     "@astrojs/webapi" "^1.1.0"
     "@vercel/nft" "^0.22.1"
