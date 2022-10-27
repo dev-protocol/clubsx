@@ -491,6 +491,11 @@ const populate = async () => {
             enable: true,
             options: [],
           },
+          {
+            name: 'memberships',
+            enable: true,
+            options: [memberships],
+          },
         ],
       })
     )
