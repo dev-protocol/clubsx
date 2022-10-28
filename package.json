@@ -22,7 +22,7 @@
     "@types/dotenv": "8.2.0",
     "@types/ramda": "0.28.18",
     "@types/react": "18.0.24",
-    "autoprefixer": "10.4.12",
+    "autoprefixer": "10.4.13",
     "dotenv": "16.0.3",
     "eslint": "8.26.0",
     "eslint-config-prettier": "8.5.0",
