@@ -143,12 +143,12 @@
     node-fetch "^3.2.5"
     which-pm-runs "^1.1.0"
 
-"@astrojs/vercel@2.3.2":
-  version "2.3.2"
-  resolved "https://registry.yarnpkg.com/@astrojs/vercel/-/vercel-2.3.2.tgz#0512e663e0ccd6d445be9a9eccdf435368bf9d82"
-  integrity sha512-VEaoaobGKqkjKM9993hZUvObDa1WpldYHUxcODWMQ2930eC2m4aN70UcXsK3w7ENA/X8Xx9dg+yy4gmSKr9OPA==
+"@astrojs/vercel@2.3.3":
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/@astrojs/vercel/-/vercel-2.3.3.tgz#354aebd3e504d57d9e7794a7e8c5229885d92928"
+  integrity sha512-gdYf98Oii8MEfRHyX6Uwsbvx/rjimZV75qPSMbcGPFUCteshENFvtUAk5jMJvJNrDh/Cxjt4akTd4/llbvWBeQ==
   dependencies:
-    "@astrojs/webapi" "^1.1.0"
+    "@astrojs/webapi" "^1.1.1"
     "@vercel/nft" "^0.22.1"
 
 "@astrojs/vue@1.2.1":
@@ -165,6 +165,14 @@
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@astrojs/webapi/-/webapi-1.1.0.tgz#d0f4721405c8962a4c7f1db863903b9ab4b6acf6"
   integrity sha512-yLSksFKv9kRbI3WWPuRvbBjS+J5ZNmZHacJ6Io8XQleKIHHHcw7RoNcrLK0s+9iwVPhqMYIzja6HJuvnO93oFw==
+  dependencies:
+    global-agent "^3.0.0"
+    node-fetch "^3.2.5"
+
+"@astrojs/webapi@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@astrojs/webapi/-/webapi-1.1.1.tgz#3d86b5c7a58da8fa62b66233de1e982a125a6cf7"
+  integrity sha512-yeUvP27PoiBK/WCxyQzC4HLYZo4Hg6dzRd/dTsL50WGlAQVCwWcqzVJrIZKvzNDNaW/fIXutZTmdj6nec0PIGg==
   dependencies:
     global-agent "^3.0.0"
     node-fetch "^3.2.5"
