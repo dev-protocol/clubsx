@@ -63,7 +63,7 @@
     "ramda": "0.28.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "redis": "4.3.1",
+    "redis": "4.4.0",
     "rxjs": "7.5.7",
     "swiper": "8.4.4",
     "tailwindcss": "3.2.1",
