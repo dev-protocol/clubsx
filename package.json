@@ -16,7 +16,7 @@
     "populate": "node ./scripts/populate.mjs"
   },
   "devDependencies": {
-    "@astrojs/prefetch": "0.1.0",
+    "@astrojs/prefetch": "0.1.1",
     "@astrojs/svelte": "1.0.2",
     "@sendgrid/mail": "7.7.0",
     "@types/dotenv": "8.2.0",
