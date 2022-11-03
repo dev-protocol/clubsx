@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "@astrojs/react": "1.2.2",
-    "@astrojs/tailwind": "2.1.1",
+    "@astrojs/tailwind": "2.1.2",
     "@astrojs/vercel": "2.3.3",
     "@astrojs/vue": "1.2.1",
     "@devprotocol/clubs-core": "0.7.0",
