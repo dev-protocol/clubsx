@@ -1,0 +1,42 @@
+---
+import HSButton from '@components/Primitives/Hashi/HSButton.vue';
+import Layout from '@layouts/Landing.astro'
+---
+
+<Layout>
+  <div class="flex flex-col justify-items-center items-center mt-[10%]">
+    <section class="mb-16 mt-8">
+      <h1 class="font-title text-7xl font-bold mb-2 text-center">
+        Let's get started
+      </h1>
+      <p class="font-title text-xl mb-2 text-center">
+        First, create your DAO tokens with your online account
+      </p>
+    </section>
+    <section class="mb-4">
+      <HSButton type="outlined" class="w-full gap-0.5 py-4 px-6">
+        Youtube
+      </HSButton>
+    </section>
+    <section class="mb-16 flex flex-row flex-wrap justify-center content-center gap-10">
+      <HSButton type="outlined" class="py-4 px-6">
+        Github
+      </HSButton>
+      <HSButton type="outlined" class="py-4 px-6">
+        Discord
+      </HSButton>
+    </section>
+    <section class="mb-16">
+      <select name="network" id="network" class="bg-transparent hs-button is-outlined p-2 text-white">
+        <option value="polygon" selected>Network: Polygon</option>
+        <option value="ethereum">Network: Ethereum</option>
+        <option value="bsc">Network: Binance Smart Chain</option>
+      </select>
+    </section>
+    <section class="mb-4">
+      <HSButton type="outlined" class="w-full gap-0.5 py-2 px-6">
+        Next
+      </HSButton>
+    </section>
+  </div>
+</Layout>
