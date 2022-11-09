@@ -13,6 +13,11 @@ export default {
     setSocialMedia(socialMedia) {
       this.socialMedia = socialMedia.toLowerCase()
     },
+    openNiwa(link) {
+      console.log(link);
+      const popupLink = link + '?popup=true'
+      window.open(popupLink, 'Niwa', 'popup,width=500,height=700');
+    }
   },
   computed: {
     link() {
@@ -76,7 +81,7 @@ export default {
       </select>
     </section>
     <section class="mb-4">
-      <HSButton :link="link" type="outlined" class="w-full gap-0.5 py-2 px-6"
+      <HSButton @click.prevent="openNiwa(link)" type="outlined" class="w-full gap-0.5 py-2 px-6"
         >Next</HSButton
       >
     </section>
