@@ -34,7 +34,9 @@ export default {
     </section>
     <section class="mb-4">
       <HSButton
-        type="outlined"
+        v-bind:type="
+          this.socialMedia.toLowerCase() === 'youtube' ? 'filled' : 'outlined'
+        "
         @click.prevent="setSocialMedia('youtube')"
         class="w-full gap-0.5 py-4 px-6"
       >
@@ -46,13 +48,17 @@ export default {
     >
       <HSButton
         @click.prevent="setSocialMedia('github')"
-        type="outlined"
+        v-bind:type="
+          this.socialMedia.toLowerCase() === 'github' ? 'filled' : 'outlined'
+        "
         class="py-4 px-6"
         >Github</HSButton
       >
       <HSButton
         @click.prevent="setSocialMedia('discord')"
-        type="outlined"
+        v-bind:type="
+          this.socialMedia.toLowerCase() === 'discord' ? 'filled' : 'outlined'
+        "
         class="py-4 px-6"
         >Discord</HSButton
       >
