@@ -18,6 +18,10 @@ const ogURL = new URL(
   config.url ?? 'http://localhost'
 )
 
+const headerLinks =
+  config.options?.find((option) => option.key === 'headerLinks')?.value ??
+  ([] as { display: string; path: string }[])
+
 const navLinks =
   config.options?.find((option) => option.key === 'navLinks')?.value ??
   ([] as { display: string; path: string }[])
@@ -48,7 +52,12 @@ const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
   </head>
 
   <body class="font-body bg-black text-white min-h-screen">
-    <Navbar client:only="vue" tenantName={config.name} navLinks={navLinks} />
+    <Navbar
+      client:only="vue"
+      tenantName={config.name}
+      headerLinks={headerLinks}
+      navLinks={navLinks}
+    />
     <main>
       <slot />
     </main>
