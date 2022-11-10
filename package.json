@@ -33,7 +33,7 @@
     "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-promise": "6.1.1",
     "husky": "8.0.2",
-    "postcss": "8.4.18",
+    "postcss": "8.4.19",
     "prettier": "2.7.1",
     "prettier-plugin-astro": "0.7.0",
     "prettier-plugin-tailwindcss": "0.1.13",
