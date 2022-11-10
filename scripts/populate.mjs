@@ -412,6 +412,15 @@ const populate = async () => {
         adminRolePoints: 0,
         options: [
           {
+            key: 'headerLinks',
+            value: [
+              {
+                display: 'Temples',
+                path: 'http://temples.localhost:3000',
+              },
+            ],
+          },
+          {
             key: 'navLinks',
             value: [
               {

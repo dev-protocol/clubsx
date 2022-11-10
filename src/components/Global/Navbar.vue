@@ -1,5 +1,7 @@
 <template>
-  <header class="flex items-center justify-between px-4 py-4 font-body lg:px-8">
+  <header
+    class="grid grid-flow-col items-center justify-between px-4 py-4 font-body lg:grid-cols-[auto,1fr,auto] lg:px-8"
+  >
     <h1>
       <!-- Fetch DAO name from YAML config -->
       <a
@@ -8,7 +10,12 @@
         >{{ tenantName }}</a
       >
     </h1>
-    <div class="flex items-center gap-4">
+    <ul v-if="headerLinks.length" class="hidden gap-6 px-12 font-title lg:flex">
+      <li v-for="headerLink in headerLinks" :key="headerLink.path">
+        <a :href="headerLink.path">{{ headerLink.display }}</a>
+      </li>
+    </ul>
+    <div class="flex items-center gap-4 place-self-end">
       <ConnectButton client:only="vue" />
       <div class="relative" ref="menu">
         <HSButton type="outlined" @click.prevent="toggle">
@@ -33,6 +40,19 @@
           v-show="menuIsOpen"
           class="absolute right-0 z-50 mt-2 w-48 rounded bg-primary-400 p-2 shadow"
         >
+          <ul
+            v-if="headerLinks.length"
+            class="mb-2 border-b border-primary-200 pb-2 lg:hidden"
+          >
+            <li v-for="headerLink in headerLinks" :key="headerLink.path">
+              <a
+                :href="headerLink.path"
+                class="inline-block w-full rounded px-4 py-2 hover:bg-primary-200"
+                >{{ headerLink.display }}</a
+              >
+            </li>
+          </ul>
+
           <li>
             <a
               href="#"
@@ -75,6 +95,10 @@ import { NavLink } from '@constants/navLink'
 export default defineComponent({
   props: {
     tenantName: String,
+    headerLinks: {
+      type: Object as PropType<NavLink[]>,
+      default: [],
+    },
     navLinks: {
       type: Object as PropType<NavLink[]>,
       default: [],
