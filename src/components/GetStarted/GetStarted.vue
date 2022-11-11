@@ -46,15 +46,6 @@ export default {
       return `https://${this.network.toLowerCase()}.niwa.xyz/tokenize/${this.socialMedia.toLowerCase()}`
     },
   },
-  // created: function () {
-  //   window.addEventListener('message', this.listenForAddress, false)
-  // },
-  // destroyed: function () {
-  //   window.removeEventListener('message', this.listenForAddress, false)
-  // },
-  // mounted: function () {
-  //   window.addEventListener('message', this.listenForAddress, false)
-  // }
 }
 </script>
 
