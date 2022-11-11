@@ -48,7 +48,7 @@ export default function Cards({ products }: Params) {
                 </h3>
                 {product.description && (
                   <p className="font-Syne mt-[10px] text-sm font-normal text-black">
-                    Price
+                    {product.description}
                   </p>
                 )}
                 <div className="flex flex-1 flex-col justify-end">
