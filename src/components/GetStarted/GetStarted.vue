@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import { Comment } from 'vue'
 import HSButton from '../Primitives/Hashi/HSButton.vue'
 
@@ -8,15 +8,37 @@ export default {
   data: () => ({
     socialMedia: 'discord',
     network: 'polygon',
+    popupWindow: null as Window | null,
   }),
   methods: {
-    setSocialMedia(socialMedia) {
+    setSocialMedia(socialMedia: string) {
       this.socialMedia = socialMedia.toLowerCase()
     },
-    openNiwa(link) {
-      console.log(link)
+    openNiwa(link: string) {
       const popupLink = link + '?popup=true'
-      window.open(popupLink, 'Niwa', 'popup,width=500,height=700')
+      this.popupWindow = window.open(
+        popupLink,
+        'Niwa',
+        'popup,width=500,height=700'
+      )
+      if (this.popupWindow) {
+        this.popupWindow.addEventListener(
+          'message',
+          this.listenForAddress,
+          false
+        )
+      }
+    },
+    listenForAddress(event: MessageEvent<any>) {
+      console.log(event.data, event.source, event.origin)
+      if (event.source !== this.popupWindow) return
+
+      const { address } = event.data
+      if (!address) return
+
+      const link = `/almost-there?network=${this.network}&address=${address}`
+      window.location.href = link
+      return
     },
   },
   computed: {
@@ -40,7 +62,7 @@ export default {
     <section class="mb-4">
       <HSButton
         v-bind:type="
-          this.socialMedia.toLowerCase() === 'youtube' ? 'filled' : 'outlined'
+          socialMedia.toLowerCase() === 'youtube' ? 'filled' : 'outlined'
         "
         @click.prevent="setSocialMedia('youtube')"
         class="w-full gap-0.5 py-4 px-6"
@@ -54,7 +76,7 @@ export default {
       <HSButton
         @click.prevent="setSocialMedia('github')"
         v-bind:type="
-          this.socialMedia.toLowerCase() === 'github' ? 'filled' : 'outlined'
+          socialMedia.toLowerCase() === 'github' ? 'filled' : 'outlined'
         "
         class="py-4 px-6"
         >Github</HSButton
@@ -62,7 +84,7 @@ export default {
       <HSButton
         @click.prevent="setSocialMedia('discord')"
         v-bind:type="
-          this.socialMedia.toLowerCase() === 'discord' ? 'filled' : 'outlined'
+          socialMedia.toLowerCase() === 'discord' ? 'filled' : 'outlined'
         "
         class="py-4 px-6"
         >Discord</HSButton
