@@ -26,6 +26,10 @@ const navLinks =
   config.options?.find((option) => option.key === 'navLinks')?.value ??
   ([] as { display: string; path: string }[])
 
+const socialLinks =
+  config.options?.find((option) => option.key === 'socialLinks')?.value ??
+  ([] as { display: string; path: string }[])
+
 const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
 ---
 
@@ -57,6 +61,7 @@ const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
       tenantName={config.name}
       headerLinks={headerLinks}
       navLinks={navLinks}
+      socialLinks={socialLinks}
     />
     <main>
       <slot />

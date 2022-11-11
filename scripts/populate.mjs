@@ -321,6 +321,19 @@ const populate = async () => {
               },
             ],
           },
+          {
+            key: 'socialLinks',
+            value: [
+              {
+                display: 'Stakes.social',
+                path: '#',
+              },
+              {
+                display: 'YouTube',
+                path: 'https://www.youtube.com/user/suiundo/',
+              },
+            ],
+          },
         ],
         plugins: [
           {
