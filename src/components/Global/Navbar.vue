@@ -53,22 +53,13 @@
             </li>
           </ul>
 
-          <li>
+          <li v-for="socialLink in socialLinks" :key="socialLink.path">
             <a
-              href="#"
+              :href="socialLink.path"
               class="inline-block w-full rounded px-4 py-2 hover:bg-primary-200"
               target="_blank"
               rel="norefferer noopener"
-              >Stakes.social</a
-            >
-          </li>
-          <li>
-            <a
-              href="https://www.youtube.com/user/suiundo/"
-              class="inline-block w-full rounded px-4 py-2 hover:bg-primary-200"
-              target="_blank"
-              rel="norefferer noopener"
-              >YouTube</a
+              >{{ socialLink.display }}</a
             >
           </li>
           <li v-for="navLink in navLinks" :key="navLink.path">
@@ -100,6 +91,10 @@ export default defineComponent({
       default: [],
     },
     navLinks: {
+      type: Object as PropType<NavLink[]>,
+      default: [],
+    },
+    socialLinks: {
       type: Object as PropType<NavLink[]>,
       default: [],
     },
