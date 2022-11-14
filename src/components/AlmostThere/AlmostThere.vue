@@ -1,6 +1,8 @@
 <script lang="ts">
 import { Comment } from 'vue'
 import HSButton from '../Primitives/Hashi/HSButton.vue'
+import { ClubsConfiguration, encode } from '@devprotocol/clubs-core'
+import { utils } from 'ethers'
 
 export default {
   name: 'AlmostThere',
@@ -10,13 +12,52 @@ export default {
     dbSetStatus: '',
   }),
   methods: {
-    setDb() {
+    async setDb() {
       if (!this.daoName || this.daoName === '') {
         this.dbSetStatus = 'invalid-dao-name'
         return
       }
 
-      this.dbSetStatus = 'successful'
+      const configuration: ClubsConfiguration = {
+        name: this.daoName,
+        twitterHandle: '',
+        description: '',
+        url: '',
+        propertyAddress: this.address,
+        adminRolePoints: 0,
+        options: [],
+        plugins: [],
+      }
+
+      // TODO: use this
+      // const hash = await utils.hashMessage(configuration)
+      // const sig = await signer.signMessage(hash)
+      // if (!sig) {
+      //   return
+      // }
+
+      const body = {
+        site: this.daoName,
+        config: encode(configuration),
+        hash: null, // TODO: use this
+        sig: null, // TODO: use this
+        expectedAddress: null, // TODO: use this
+      }
+
+      // Save the config to db, this is the same as updateConfig in the admin sections.
+      // However just for now, wallet realted operations (like signing, hashing, validating sig) is disabled
+      // as we need to enable wallet connection if we do that.
+      const res = await fetch('/setConfig', {
+        method: 'POST',
+        body: JSON.stringify(body),
+      })
+
+      const isConfigSet = res.ok
+      if (isConfigSet) {
+        this.dbSetStatus = 'successful'
+      } else {
+        this.dbSetStatus = 'failed'
+      }
     },
   },
   computed: {
