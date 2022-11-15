@@ -564,12 +564,12 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
-"@devprotocol/clubs-core@0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.7.0.tgz#03d6f8e514cfd052c54c090d0bb28b37cc6be283"
-  integrity sha512-wAxCCihA8rBJFCV5F44RTzPXieoCJ33AdYhiRXH2VNoWF7cYWvxw2YvQLSLopr/IGpRw8tdJEL0wPsb3CkkXMQ==
+"@devprotocol/clubs-core@0.7.1":
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.7.1.tgz#b56d3f58b91ea30a2db0d9d98cb279841a4cfcfe"
+  integrity sha512-ixrB8NTS8EnBMjIMtorAEsmM7HYI/CNfcPHMM1XVJ15E3h27Dftsa/cYvokdi/Y+xAgNNIWdt6dS5/gVo6AMhg==
   dependencies:
-    "@devprotocol/dev-kit" "6.9.0"
+    "@devprotocol/dev-kit" "6.10.0"
     "@devprotocol/elements" "0.1.1"
     "@devprotocol/util-ts" "2.2.1"
     "@metamask/detect-provider" "^2.0.0"
@@ -590,19 +590,6 @@
   version "6.10.0"
   resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-6.10.0.tgz#4599812a4f588d7892ced821857094f56f023710"
   integrity sha512-gb4W8t2VohdukHZlsszZ6u3KjEk106MJpO6vXt5E0E0webYoimzqfWuT5cCcI1UcphKJnyN3Lz22O8P4T4bgcA==
-  dependencies:
-    "@devprotocol/util-ts" "^2.2.1"
-    "@types/bent" "^7.3.1"
-    async-ray "^3.2.0"
-    bent "^7.3.12"
-    bignumber.js "9.1.0"
-    js-base64 "^3.7.2"
-    ramda "^0.28.0"
-
-"@devprotocol/dev-kit@6.9.0":
-  version "6.9.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-6.9.0.tgz#592d4d6650df7a1c50ece289626a78d94c5549fb"
-  integrity sha512-aK+7dMjz/YxObAdxNWFQDCkvivYnaBVUj9imoW4Q75L7Lwl1TGAPcivAYU+Fkier+F8lu5g5fVPikkYHMbZAWg==
   dependencies:
     "@devprotocol/util-ts" "^2.2.1"
     "@types/bent" "^7.3.1"
