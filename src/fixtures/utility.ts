@@ -26,9 +26,17 @@ export const validImageUri = (path: string) => {
 export const fetchBadgeImageSrc = async (opts: {
   provider: BaseProvider
   tokenAddress: string
-  amount: number | string
+  amount?: number | string
+  payload?: string | Uint8Array
+  owner?: string
 }) => {
-  const res = await tokenURISim(opts.provider, opts.tokenAddress, opts.amount)
+  const res = await tokenURISim(
+    opts.provider,
+    opts.tokenAddress,
+    opts.amount,
+    opts.payload,
+    opts.owner
+  )
   const src = res ? validImageUri(res.image) : undefined
   return src
 }

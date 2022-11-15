@@ -192,13 +192,19 @@ export const stakeWithEthForPolygon = async (
 export const tokenURISim = async (
   prov: providers.BaseProvider,
   propertyAddress: string,
-  amount: number | string
+  amount?: number | string,
+  payload?: string | Uint8Array,
+  owner?: string
 ) => {
   const [l1, l2] = await clientsSTokens(prov)
   return (l1 || l2)?.tokenURISim({
     positions: {
-      amount: utils.parseUnits(amount.toString(), 18).toString(),
+      amount: whenDefined(amount, (x) =>
+        utils.parseUnits(x.toString(), 18).toString()
+      ),
       property: propertyAddress,
     },
+    payload,
+    owner,
   })
 }
