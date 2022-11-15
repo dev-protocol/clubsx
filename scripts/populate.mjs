@@ -309,6 +309,8 @@ const populate = async () => {
         twitterHandle: '@templesdao',
         description: 'DAO that makes the next 1000 years',
         url: 'https://temples.clubs.stakes.social',
+        chainId: 1,
+        rpcUrl: 'https://mainnet.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920',
         propertyAddress: '0x541f7914ed2a4a8b477edc711fa349a77983f3ad',
         adminRolePoints: 0,
         options: [
@@ -422,6 +424,9 @@ const populate = async () => {
         description: '',
         url: 'https://kogenji.clubs.stakes.social',
         propertyAddress: '0x541f7914ed2a4a8b477edc711fa349a77983f3ad',
+        chainId: 137,
+        rpcUrl:
+          'https://polygon-mainnet.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920',
         adminRolePoints: 0,
         options: [
           {
