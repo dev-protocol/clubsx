@@ -1,6 +1,7 @@
 <script lang="ts">
 import { Comment } from 'vue'
 import HSButton from '../Primitives/Hashi/HSButton.vue'
+import { GetModalProvider, ReConnectWallet } from '@fixtures/wallet'
 import { ClubsConfiguration, encode } from '@devprotocol/clubs-core'
 import { utils } from 'ethers'
 
@@ -29,24 +30,30 @@ export default {
         plugins: [],
       }
 
-      // TODO: use this
-      // const hash = await utils.hashMessage(configuration)
-      // const sig = await signer.signMessage(hash)
-      // if (!sig) {
-      //   return
-      // }
+      const modalProvider = GetModalProvider()
+      const { provider, currentAddress } = await ReConnectWallet(modalProvider)
+      if (!currentAddress || !provider) {
+        this.dbSetStatus = "wallet-not-connected"
+        return
+      }
+      const signer = provider.getSigner()
+
+      const config = encode(configuration)
+      const hash = await utils.hashMessage(config)
+      const sig = await signer.signMessage(hash)
+      if (!sig) {
+        return
+      }
 
       const body = {
         site: this.daoName,
-        config: encode(configuration),
-        hash: null, // TODO: use this
-        sig: null, // TODO: use this
-        expectedAddress: null, // TODO: use this
+        config,
+        hash,
+        sig,
+        expectedAddress: currentAddress,
       }
 
       // Save the config to db, this is the same as updateConfig in the admin sections.
-      // However just for now, wallet realted operations (like signing, hashing, validating sig) is disabled
-      // as we need to enable wallet connection if we do that.
       const res = await fetch('/setConfig', {
         method: 'POST',
         body: JSON.stringify(body),
@@ -120,6 +127,11 @@ export default {
       <div class="text-red-500" v-else-if="dbSetStatus == 'failed'">
         <h1 class="font-title text-xl font-black">
           An error occured during setting your DAO.
+        </h1>
+      </div>
+      <div class="text-red-500" v-else-if="dbSetStatus == 'wallet-not-connected'">
+        <h1 class="font-title text-xl font-black">
+          Connect your wallet before setting your DAO.
         </h1>
       </div>
     </section>

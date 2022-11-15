@@ -1,19 +1,14 @@
-import { authenticate } from '@devprotocol/clubs-core'
-import { providers } from 'ethers'
+import { providers, utils} from 'ethers'
 import { createClient } from 'redis'
 
 export const post = async ({ request }: { request: Request }) => {
-  const { site, config, sig, hash } = (await request.json()) as {
+  const { site, config, sig, hash, expectedAddress } = (await request.json()) as {
     site: string
     config: string
     hash: string
     sig: string
+    expectedAddress: string
   }
-
-  // TODO: use this
-  // const provider = providers.getDefaultProvider(
-  //   import.meta.env.PUBLIC_WEB3_PROVIDER_URL
-  // )
 
   const client = createClient({
     url: process.env.REDIS_URL,
@@ -35,17 +30,10 @@ export const post = async ({ request }: { request: Request }) => {
     })
   }
 
-  // TODO: use this
-  // const authenticated = await authenticate({
-  //   message: hash,
-  //   signature: sig,
-  //   previousConfiguration,
-  //   provider,
-  // })
-  // TODO: use this
-  // if (!authenticated) {
-  //   return new Response(JSON.stringify({}), { status: 401 })
-  // }
+  const address = utils.recoverAddress(utils.hashMessage(hash), sig)
+  if (address.toLowerCase() != expectedAddress.toLowerCase()) {
+    return new Response(JSON.stringify({error: "Invalid address"}), { status: 401 })
+  }
 
   try {
     await client.set(site, config)
