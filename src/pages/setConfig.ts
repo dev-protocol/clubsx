@@ -1,14 +1,15 @@
-import { providers, utils} from 'ethers'
+import { providers, utils } from 'ethers'
 import { createClient } from 'redis'
 
 export const post = async ({ request }: { request: Request }) => {
-  const { site, config, sig, hash, expectedAddress } = (await request.json()) as {
-    site: string
-    config: string
-    hash: string
-    sig: string
-    expectedAddress: string
-  }
+  const { site, config, sig, hash, expectedAddress } =
+    (await request.json()) as {
+      site: string
+      config: string
+      hash: string
+      sig: string
+      expectedAddress: string
+    }
 
   const client = createClient({
     url: process.env.REDIS_URL,
@@ -32,7 +33,9 @@ export const post = async ({ request }: { request: Request }) => {
 
   const address = utils.recoverAddress(utils.hashMessage(hash), sig)
   if (address.toLowerCase() != expectedAddress.toLowerCase()) {
-    return new Response(JSON.stringify({error: "Invalid address"}), { status: 401 })
+    return new Response(JSON.stringify({ error: 'Invalid address' }), {
+      status: 401,
+    })
   }
 
   try {

@@ -33,7 +33,7 @@ export default {
       const modalProvider = GetModalProvider()
       const { provider, currentAddress } = await ReConnectWallet(modalProvider)
       if (!currentAddress || !provider) {
-        this.dbSetStatus = "wallet-not-connected"
+        this.dbSetStatus = 'wallet-not-connected'
         return
       }
       const signer = provider.getSigner()
@@ -129,7 +129,10 @@ export default {
           An error occured during setting your DAO.
         </h1>
       </div>
-      <div class="text-red-500" v-else-if="dbSetStatus == 'wallet-not-connected'">
+      <div
+        class="text-red-500"
+        v-else-if="dbSetStatus == 'wallet-not-connected'"
+      >
         <h1 class="font-title text-xl font-black">
           Connect your wallet before setting your DAO.
         </h1>
