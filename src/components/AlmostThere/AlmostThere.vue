@@ -46,7 +46,7 @@ export default {
       }
 
       const body = {
-        site: this.daoName,
+        site: this.daoName.toLowerCase(),
         config,
         hash,
         sig,
