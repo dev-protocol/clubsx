@@ -1,4 +1,4 @@
-export default function Hero() {
+export default function Hero({ coverImgSrc, projectName }) {
   return (
     <div>
       <div className="relative">
@@ -7,8 +7,8 @@ export default function Hero() {
             <div className="relative inset-0">
               <img
                 className="h-full w-full object-cover"
-                src="https://i.ibb.co/yntQTZ7/Hero.png"
-                alt="People working on laptops"
+                src={coverImgSrc}
+                alt={projectName + 'cover image'}
               />
             </div>
           </div>

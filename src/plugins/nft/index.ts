@@ -8,11 +8,60 @@ import {
 } from '@devprotocol/clubs-core'
 import { default as Index } from './index.astro'
 
-export const getPagePaths: ClubsFunctionGetPagePaths = async (options) => {
-  const products = options.find((opt) => opt.key === 'products')
-    ?.value as UndefinedOr<Products>
+export const getPagePaths: ClubsFunctionGetPagePaths = async (
+  options,
+  config
+) => {
+  let products: Products | undefined = []
+  let coverImgSrc: string = ''
+  let title: string = ''
+  let description: string = ''
+  let avatarImgSrc: string = ''
+
+  for (const option of config.options || []) {
+    if (option.key === 'avatarImgSrc') {
+      avatarImgSrc = option?.value as string
+      break
+    }
+  }
+
+  for (const option of options) {
+    if (option.key === 'products') {
+      products = option?.value as UndefinedOr<Products>
+      continue
+    }
+
+    if (option.key === 'coverImgSrc') {
+      coverImgSrc = option?.value as string
+      continue
+    }
+
+    if (option.key === 'title') {
+      title = option?.value as string
+      continue
+    }
+
+    if (option.key === 'description') {
+      description = option?.value as string
+      continue
+    }
+  }
+
   return products
-    ? [{ paths: ['nft'], component: Index, props: { products } }]
+    ? [
+        {
+          paths: ['nft'],
+          component: Index,
+          props: {
+            products,
+            coverImgSrc,
+            title,
+            description,
+            avatarImgSrc,
+            projectName: config.name,
+          },
+        },
+      ]
     : []
 }
 

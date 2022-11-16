@@ -5,12 +5,25 @@ import Hero from '@components/Hero/hero'
 import Hero2 from '@components/Hero/hero2'
 import Cards from '@components/list/cards'
 
-const { products } = Astro.props as { products: Products }
+const { products, coverImgSrc, title, description, projectName, avatarImgSrc } =
+  Astro.props as {
+    products: Products
+    coverImgSrc: string
+    title: string
+    description: string
+    avatarImgSrc: string
+    projectName: string
+  }
 ---
 
 <div class="bg-black">
-  <Hero />
-  <Hero2 />
+  <Hero projectName={projectName} coverImgSrc={coverImgSrc} />
+  <Hero2
+    title={title}
+    description={description}
+    projectName={projectName}
+    avatarImgSrc={avatarImgSrc}
+  />
   <Cards products={products} />
 </div>
 <Footer />
