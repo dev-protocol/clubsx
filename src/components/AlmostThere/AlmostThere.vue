@@ -48,7 +48,7 @@ export default {
         site: this.daoName
           .toLowerCase()
           .split(/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~\s+]/)
-          .filter(i => i && i !== ' ')
+          .filter((i) => i && i !== ' ')
           .join('-'),
         config,
         hash,
@@ -70,7 +70,7 @@ export default {
       }
 
       if (isConfigSet) {
-        let host = window.location.host;
+        const host = window.location.host
         window.location.href = `https://${body.site}.${host}/setup/homepage`
       }
     },
