@@ -13,6 +13,8 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
   config
 ) => {
   let products: Products | undefined = []
+
+  // TODO: add default values like placeholder here.
   let coverImgSrc: string = ''
   let title: string = ''
   let description: string = ''
