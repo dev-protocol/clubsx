@@ -45,7 +45,11 @@ export default {
       }
 
       const body = {
-        site: this.daoName.toLowerCase(),
+        site: this.daoName
+          .toLowerCase()
+          .split(/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~\s+]/)
+          .filter(i => i && i !== ' ')
+          .join('-'),
         config,
         hash,
         sig,
@@ -63,6 +67,11 @@ export default {
         this.dbSetStatus = 'successful'
       } else {
         this.dbSetStatus = 'failed'
+      }
+
+      if (isConfigSet) {
+        let host = window.location.host;
+        window.location.href = `https://${body.site}.${host}/setup/homepage`
       }
     },
   },
