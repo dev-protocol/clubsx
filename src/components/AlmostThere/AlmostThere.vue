@@ -4,6 +4,7 @@ import HSButton from '../Primitives/Hashi/HSButton.vue'
 import { GetModalProvider, ReConnectWallet } from '@fixtures/wallet'
 import { ClubsConfiguration, encode } from '@devprotocol/clubs-core'
 import { utils } from 'ethers'
+import { defaultPlugins } from '@constants/plugins'
 
 export default {
   name: 'AlmostThere',
@@ -18,7 +19,6 @@ export default {
         this.dbSetStatus = 'invalid-dao-name'
         return
       }
-
       const configuration: ClubsConfiguration = {
         name: this.daoName,
         twitterHandle: '',
@@ -27,9 +27,8 @@ export default {
         propertyAddress: this.address,
         adminRolePoints: 0,
         options: [],
-        plugins: [],
+        plugins: defaultPlugins,
       }
-
       const modalProvider = GetModalProvider()
       const { provider, currentAddress } = await ReConnectWallet(modalProvider)
       if (!currentAddress || !provider) {
