@@ -6,11 +6,12 @@ import JoinClub from '@components/Join/JoinClub.vue'
 import { Tiers } from '@constants/tier'
 import { HomeConfig } from './types/home-config'
 
-const { propertyAddress, name, tiers, homeConfig } = Astro.props as {
+const { propertyAddress, name, tiers, homeConfig, rpcUrl } = Astro.props as {
   propertyAddress: string
   name: string
   tiers: Tiers
   homeConfig: HomeConfig
+  rpcUrl: string
 }
 ---
 
@@ -153,6 +154,7 @@ const { propertyAddress, name, tiers, homeConfig } = Astro.props as {
             propertyAddress={propertyAddress}
             tiers={tiers}
             tenantName={name}
+            rpcUrl={rpcUrl}
           />
         </div>
       </article>

@@ -11,7 +11,7 @@ import { default as Id } from './[id].astro'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
-  { propertyAddress, name }
+  { propertyAddress, name, rpcUrl }
 ) => {
   const tiers = options.find((opt) => opt.key === 'tiers')
     ?.value as UndefinedOr<Tiers>
@@ -21,12 +21,12 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
         {
           paths: ['join'],
           component: Index,
-          props: { tiers, propertyAddress, name },
+          props: { tiers, propertyAddress, name, rpcUrl },
         },
         ...tiers.map(({ id, amount, currency }) => ({
           paths: ['join', id],
           component: Id,
-          props: { amount, currency, propertyAddress },
+          props: { amount, currency, propertyAddress, rpcUrl },
         })),
       ]
     : []
