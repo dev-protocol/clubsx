@@ -19,6 +19,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
   let title: string = ''
   let description: string = ''
   let avatarImgSrc: string = ''
+  let slug: string[] = ['nft']
 
   for (const option of config.options || []) {
     if (option.key === 'avatarImgSrc') {
@@ -47,12 +48,17 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
       description = option?.value as string
       continue
     }
+
+    if (option.key === 'slug') {
+      slug = option?.value as string[]
+      continue
+    }
   }
 
   return products
     ? [
         {
-          paths: ['nft'],
+          paths: [...slug],
           component: Index,
           props: {
             products,

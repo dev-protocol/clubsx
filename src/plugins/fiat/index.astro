@@ -1,30 +1,53 @@
 ---
 import Footer from '@components/Global/Footer.astro'
 import Cards from '@components/list/cards'
+import type { Products } from '@constants/products'
+import type { PriceOverrides } from '@plugins/fiat'
 
+const { products: _products, priceOverrides } = Astro.props as {
+  products: Products
+  priceOverrides: PriceOverrides
+}
 const tdStyles = 'border border-slate-500 px-4 py-2 w-1/3'
+const products = _products.map((prod) => {
+  const override = priceOverrides.find((x) => x.id === prod.id)
+  return override
+    ? {
+        ...prod,
+        currency: override.currency as any,
+        price: override.price,
+        purchaseLink: override.purchaseLink,
+      }
+    : { ...prod }
+})
 ---
 
-<div class="container mx-auto px-4">
-  <h1 class="font-title font-bold mb-12 text-4xl">Buy NFTs with FIAT</h1>
+<div class="container mx-auto px-4 grid gap-16">
+  <h1 class="font-title font-bold text-4xl">Buy NFTs with FIAT</h1>
 
   <div
-    class="bg-gradient-to-l from-[#261746] via-[#2F2325] to-black rounded-xl py-32 px-4 font-bold text-2xl font-title mb-14"
+    class="community-digest rounded-xl py-32 px-4 font-bold text-2xl font-title"
   >
     Do you still not have ETH? You can buy NFT collections with your regular
     credit card here.
   </div>
 
-  <div class="mb-4">
-    For purchase with FIAT, unlike purchase with ETH, you get NFT with various
-    functionalities excluded.
+  <div>
+    <p>
+      For purchase with FIAT, unlike purchase with ETH, you get NFT with various
+      functionalities excluded.
+    </p>
+    <p>
+      <a
+        href="/fiat#faq"
+        class="bg-[#D500E6] inline-block text-white rounded px-7 py-2">FAQ</a
+      >
+    </p>
   </div>
 
-  <a href="/fiat#faq" class="bg-[#D500E6] text-white rounded px-7 py-2">FAQ</a>
+  <Cards products={products} />
 
-  <Cards currency="USD" />
-
-  <section id="faq" class="mb-12">
+  <section id="faq">
     <h2 class="font-title font-bold mb-12 text-4xl">FAQ</h2>
     <div class="mb-12">What is the flow of the NFT purchase?</div>
 
@@ -148,5 +171,14 @@ const tdStyles = 'border border-slate-500 px-4 py-2 w-1/3'
     bottom: 0;
     left: -2px;
     color: white;
+  }
+  .community-digest {
+    /* eslint-disable no-eval */
+    background: linear-gradient(
+      -125deg,
+      #261746 30%,
+      #463537 52.78%,
+      rgba(142, 93, 82, 0) 99.52%
+    );
   }
 </style>
