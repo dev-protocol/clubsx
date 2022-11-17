@@ -11,8 +11,8 @@ const products = [
   {
     id: '1',
     name: 'Kougenji Celestial Maiden #1',
-    description:
-      'Get the full lineup of our Basic Tees. Have a fresh shirt all week, and an extra for laundry day.',
+    description: `光源寺に特別参拝でき、修復後の天女のNFTを受け取ることができます.
+    Holders of this NFT are invited to a special visit at Kougenji, and can receive restored celestial maiden NFT.`,
     price: 0.6,
     currency: 'ETH',
     imageSrc:
@@ -27,6 +27,8 @@ const products = [
   {
     id: '2',
     name: 'Kougenji Celestial Maiden #2',
+    description: `修復後の天女のNFTを受け取ることができます.
+    Holders of this NFT can receive restored celestial maiden NFT.`,
     price: 0.45,
     currency: 'ETH',
     imageSrc:
@@ -41,6 +43,8 @@ const products = [
   {
     id: '3',
     name: 'Kougenji Celestial Maiden #3',
+    description: `光源寺ご住職による水晶ブレスレットを受け取ることができます（日本国内のみ）.
+    Holders of this NFT can receive a crystal bracelet made by the chief priest of Kougenji.`,
     price: 0.4,
     currency: 'ETH',
     imageSrc:
@@ -55,6 +59,8 @@ const products = [
   {
     id: '4',
     name: 'Kougenji Flower #1',
+    description: `天井絵シリーズを3枚集めた方はオンラインでの読経、5枚集めた方は光源寺での読経に参加できます。
+    If you collect 3 flower NFTs, you can join an online sutra chanting. If you collect 5 flower NFTs, you can join a sutra chanting event at Kougenji.`,
     price: 0.06,
     currency: 'ETH',
     imageSrc:
@@ -69,6 +75,8 @@ const products = [
   {
     id: '5',
     name: 'Kougenji Flower #2',
+    description: `天井絵シリーズを3枚集めた方はオンラインでの読経、5枚集めた方は光源寺での読経に参加できます。
+    If you collect 3 flower NFTs, you can join an online sutra chanting. If you collect 5 flower NFTs, you can join a sutra chanting event at Kougenji.`,
     price: 0.06,
     currency: 'ETH',
     imageSrc:
@@ -83,6 +91,8 @@ const products = [
   {
     id: '6',
     name: 'Kougenji Flower #3',
+    description: `天井絵シリーズを3枚集めた方はオンラインでの読経、5枚集めた方は光源寺での読経に参加できます。
+    If you collect 3 flower NFTs, you can join an online sutra chanting. If you collect 5 flower NFTs, you can join a sutra chanting event at Kougenji.`,
     price: 0.06,
     currency: 'ETH',
     imageSrc:
@@ -97,6 +107,8 @@ const products = [
   {
     id: '7',
     name: 'Kougenji Flower #4',
+    description: `天井絵シリーズを3枚集めた方はオンラインでの読経、5枚集めた方は光源寺での読経に参加できます。
+    If you collect 3 flower NFTs, you can join an online sutra chanting. If you collect 5 flower NFTs, you can join a sutra chanting event at Kougenji.`,
     price: 0.06,
     currency: 'ETH',
     imageSrc:
@@ -111,6 +123,8 @@ const products = [
   {
     id: '8',
     name: 'Kougenji Flower #5',
+    description: `天井絵シリーズを3枚集めた方はオンラインでの読経、5枚集めた方は光源寺での読経に参加できます。
+    If you collect 3 flower NFTs, you can join an online sutra chanting. If you collect 5 flower NFTs, you can join a sutra chanting event at Kougenji.`,
     price: 0.06,
     currency: 'ETH',
     imageSrc:
@@ -125,6 +139,8 @@ const products = [
   {
     id: '9',
     name: 'Kougenji Flower #6',
+    description: `天井絵シリーズを3枚集めた方はオンラインでの読経、5枚集めた方は光源寺での読経に参加できます。
+    If you collect 3 flower NFTs, you can join an online sutra chanting. If you collect 5 flower NFTs, you can join a sutra chanting event at Kougenji.`,
     price: 0.06,
     currency: 'ETH',
     imageSrc:
@@ -139,6 +155,8 @@ const products = [
   {
     id: '10',
     name: 'Kougenji Flower #7',
+    description: `天井絵シリーズを3枚集めた方はオンラインでの読経、5枚集めた方は光源寺での読経に参加できます。
+    If you collect 3 flower NFTs, you can join an online sutra chanting. If you collect 5 flower NFTs, you can join a sutra chanting event at Kougenji.`,
     price: 0.06,
     currency: 'ETH',
     imageSrc:
@@ -153,6 +171,8 @@ const products = [
   {
     id: '11',
     name: 'Kougenji Flower #8',
+    description: `天井絵シリーズを3枚集めた方はオンラインでの読経、5枚集めた方は光源寺での読経に参加できます。
+    If you collect 3 flower NFTs, you can join an online sutra chanting. If you collect 5 flower NFTs, you can join a sutra chanting event at Kougenji.`,
     price: 0.06,
     currency: 'ETH',
     imageSrc:
@@ -167,6 +187,8 @@ const products = [
   {
     id: '12',
     name: 'Kougenji DAO',
+    description: `御住職によるオンライン法話やお話し会に参加できます（2,3ヶ月に1回開催予定）.
+    Holders of this NFT are allowed to join online preach or round-table talk by the head priest (to be scheduled once in a few months).`,
     price: 0.085,
     currency: 'ETH',
     imageSrc:
@@ -510,18 +532,22 @@ const populate = async () => {
         twitterHandle: '@templesdao',
         description: '',
         url: 'https://kogenji.clubs.stakes.social',
-        propertyAddress: '0x541f7914ed2a4a8b477edc711fa349a77983f3ad',
-        chainId: 137,
+        propertyAddress: '0x70a8B9a4B2d407a542c205adBbEA38289c3285eB', // Polygon: 0x23d67953FE2e61e9fAc78447526D9358cD05d40d // Mumbai: 0x70a8B9a4B2d407a542c205adBbEA38289c3285eB
+        chainId: 80001, // Polygon: 137 // Mumbai: 80001
         rpcUrl:
-          'https://polygon-mainnet.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920',
+          'https://polygon-mumbai.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920', // Polygon: https://polygon-mainnet.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920 // Mumbai: https://polygon-mumbai.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920
         adminRolePoints: 0,
         options: [
           {
             key: 'headerLinks',
             value: [
               {
-                display: 'Temples',
-                path: 'http://temples.localhost:3000',
+                display: 'FIAT',
+                path: 'fiat',
+              },
+              {
+                display: 'Community',
+                path: 'https://guild.xyz/temples-dao',
               },
             ],
           },
@@ -529,8 +555,12 @@ const populate = async () => {
             key: 'navLinks',
             value: [
               {
-                display: 'Temples',
-                path: 'http://temples.localhost:3000',
+                display: 'About',
+                path: 'http://example.com',
+              },
+              {
+                display: 'Terms & Conditions',
+                path: 'http://example.com',
               },
             ],
           },
@@ -541,20 +571,6 @@ const populate = async () => {
           },
         ],
         plugins: [
-          {
-            name: 'home',
-            enable: true,
-            options: [
-              {
-                key: 'tiers',
-                value: tiers,
-              },
-              {
-                key: 'homeConfig',
-                value: templesHomeConfig,
-              },
-            ],
-          },
           {
             name: 'buy',
             enable: true,
@@ -568,22 +584,95 @@ const populate = async () => {
           {
             name: 'fiat',
             enable: true,
-            options: [],
-          },
-          {
-            name: 'join',
-            enable: true,
-            options: [],
-          },
-          {
-            name: 'me',
-            enable: true,
-            options: [],
-          },
-          {
-            name: 'members',
-            enable: true,
-            options: [],
+            options: [
+              {
+                key: 'products',
+                value: products,
+              },
+              {
+                key: 'priceOverrides',
+                value: [
+                  {
+                    id: '1',
+                    price: 100_000,
+                    currency: 'YEN',
+                    purchaseLink: 'http://example.com',
+                  },
+                  {
+                    id: '2',
+                    price: 80_000,
+                    currency: 'YEN',
+                    purchaseLink: 'http://example.com',
+                  },
+                  {
+                    id: '3',
+                    price: 70_000,
+                    currency: 'YEN',
+                    purchaseLink: 'http://example.com',
+                  },
+                  {
+                    id: '4',
+                    price: 10_000,
+                    currency: 'YEN',
+                    purchaseLink: 'http://example.com',
+                  },
+                  {
+                    id: '5',
+                    price: 10_000,
+                    currency: 'YEN',
+                    purchaseLink: 'http://example.com',
+                  },
+                  {
+                    id: '6',
+                    price: 10_000,
+                    currency: 'YEN',
+                    purchaseLink: 'http://example.com',
+                  },
+                  {
+                    id: '7',
+                    price: 10_000,
+                    currency: 'YEN',
+                    purchaseLink: 'http://example.com',
+                  },
+                  {
+                    id: '8',
+                    price: 10_000,
+                    currency: 'YEN',
+                    purchaseLink: 'http://example.com',
+                  },
+                  {
+                    id: '9',
+                    price: 10_000,
+                    currency: 'YEN',
+                    purchaseLink: 'http://example.com',
+                  },
+                  {
+                    id: '10',
+                    price: 10_000,
+                    currency: 'YEN',
+                    purchaseLink: 'http://example.com',
+                  },
+                  {
+                    id: '11',
+                    price: 10_000,
+                    currency: 'YEN',
+                    purchaseLink: 'http://example.com',
+                  },
+                  {
+                    id: '12',
+                    price: 10_000,
+                    currency: 'YEN',
+                    purchaseLink: 'http://example.com',
+                  },
+                  {
+                    id: '13',
+                    price: 20_000,
+                    currency: 'YEN',
+                    purchaseLink: 'http://example.com',
+                  },
+                ],
+              },
+            ],
           },
           {
             name: 'nft',
@@ -595,39 +684,30 @@ const populate = async () => {
               },
               {
                 key: 'coverImgSrc',
-                value:
-                  'https://www.tambacity-kankou.jp/english/momiji/img/01main01.jpg',
+                value: 'https://i.imgur.com/qPq8hI8.jpg',
               },
               {
                 key: 'title',
-                value: 'Kogenji NFT plugin',
+                value: 'Kogenji',
               },
               {
                 key: 'description',
-                value:
-                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                value: [
+                  `光源寺の天女絵修復プロジェクトでのご支援金は、天女の表具欄間彩色修復等に使われます。支援者の方は光源寺のDiscordチャンネルに参加し、修復状況（写真等）を見ることができます。また、NFTの種類により様々な特典をご用意しております。`,
+                  `[EN:] The funds raised in the restoration project of Kougenji Celestial Maiden Art will be used for restoring the celestial maiden paper picture frame on the decorative transom and other cultural assets in the temple. Supporters are allowed to join the Discord channel of Kougenji to know the latest news about the restoration (photos,etc.).
+                We provide a variety of Perks according to the types of NFT you’ll purchase.`,
+                ],
               },
-            ],
-          },
-          {
-            name: 'perks',
-            enable: true,
-            options: [
               {
-                key: 'perks',
-                value: perks,
+                key: 'slug',
+                value: [],
               },
             ],
           },
           {
-            name: 'quests',
+            name: 'message',
             enable: true,
             options: [],
-          },
-          {
-            name: 'memberships',
-            enable: true,
-            options: [memberships],
           },
         ],
       })

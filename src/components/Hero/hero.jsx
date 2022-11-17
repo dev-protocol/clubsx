@@ -2,7 +2,7 @@ export default function Hero({ coverImgSrc, projectName }) {
   return (
     <div>
       <div className="relative">
-        <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
           <div className="relative shadow-xl sm:overflow-hidden sm:rounded-2xl">
             <div className="relative inset-0">
               <img

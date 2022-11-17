@@ -6,20 +6,22 @@ export default function Hero2({
 }) {
   return (
     <div>
-      <div className="relative mx-[89px] mt-[32px]">
+      <div className="relative md:mx-20">
         <div className="flex">
           <img
-            className="h-[220px] w-[220px] rounded-full object-cover"
+            className="h-24 w-24 rounded-full object-cover md:h-52 md:w-52"
             src={avatarImgSrc}
             alt={projectName + 'avatar image'}
           />
-          <p className="font-Syne ml-[10px] flex items-center justify-center text-5xl font-extrabold capitalize text-white">
+          <h2 className="ml-[10px] flex items-center justify-center font-title text-2xl font-bold font-extrabold capitalize text-white md:text-5xl">
             {title}
-          </p>
+          </h2>
         </div>
-        <p className="mt-[76px] text-2xl font-light capitalize text-white">
-          {description}
-        </p>
+        {description.map((text) => (
+          <p className="my-8 font-light capitalize text-white md:text-2xl">
+            {text}
+          </p>
+        ))}
       </div>
     </div>
   )

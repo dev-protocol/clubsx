@@ -15,33 +15,41 @@
   ```
 */
 
-import type { Products } from '@constants/products'
+import type { Product } from '@constants/products'
+
+type ExtendedProducts = (Product & { purchaseLink?: string })[]
 
 type Params = {
-  products: Products
+  products: ExtendedProducts
 }
 
 export default function Cards({ products }: Params) {
   return (
     <div className="bg-black">
-      <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-        <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-3 lg:gap-x-8">
+      <div className="mx-auto max-w-2xl px-6 md:max-w-7xl md:px-8">
+        <div className="grid grid-cols-1 gap-y-4 gap-x-6 md:grid-cols-2 md:gap-x-8 lg:grid-cols-3">
           {products.map((product) => (
             <div
               key={product.id}
               className="group relative flex flex-col overflow-hidden rounded-[32px] border border-gray-500 bg-white"
             >
-              <div className="aspect-w-3 aspect-h-4 sm:aspect-none bg-gray-200 group-hover:opacity-75 sm:h-96">
+              <div className="bg-gray-200 group-hover:opacity-75">
                 <img
                   src={product.imageSrc}
                   alt={product.imageAlt}
-                  className="h-full w-full object-cover object-center sm:h-full sm:w-full"
+                  className="h-auto w-full object-cover object-center sm:h-full sm:w-full"
                 />
               </div>
               <div className="flex flex-1 flex-col space-y-2 p-4">
-                <h3 className="font-Syne mt-[32px] text-4xl font-normal text-gray-900">
-                  {/* TODO: Link when using fiat */}
-                  <a rel="prefetch" href={`buy/${product.id}?input=eth`}>
+                <h3 className="font-Syne text-4xl font-normal text-gray-900">
+                  <a
+                    rel="prefetch"
+                    href={
+                      product.purchaseLink
+                        ? product.purchaseLink
+                        : `buy/${product.id}?input=eth`
+                    }
+                  >
                     <span aria-hidden="true" className="absolute inset-0" />
                     {product.name}
                   </a>
@@ -56,7 +64,9 @@ export default function Cards({ products }: Params) {
                     Price
                   </p>
                   <p className="font-DMSans text-2xl font-normal text-[#000000]">
-                    {`Ξ${product.price}`}
+                    {`${Number(product.price).toLocaleString()} ${
+                      product.currency
+                    }`}
                   </p>
                 </div>
               </div>
