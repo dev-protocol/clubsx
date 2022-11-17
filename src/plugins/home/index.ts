@@ -8,7 +8,7 @@ import {
 } from '@devprotocol/clubs-core'
 import { default as Index } from './index.astro'
 import { default as Admin } from './admin.astro'
-import { HomeConfig } from './types/home-config'
+import { HomeConfig } from '../../constants/homeConfig'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,

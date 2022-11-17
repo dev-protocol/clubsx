@@ -1,0 +1,29 @@
+---
+import AdminHomeForm from '@components/AdminHomeForm/AdminHomeForm.svelte'
+import WelcomeWizard from '@components/WelcomeWizard/WelcomeWizard.svelte'
+import type { HomeConfig } from '@constants/homeConfig'
+import Layout from '@layouts/Setup.astro'
+
+const initHomeConfig: HomeConfig = {
+  hero: {
+    image: '',
+    text: '',
+  },
+  whatWeDo: {
+    text: '',
+    images: [],
+  },
+  perks: {
+    headerText: '',
+    subText: '',
+    images: [],
+  },
+  quote: '',
+}
+---
+
+<AdminHomeForm
+  client:only="svelte"
+  homeConfig={initHomeConfig}
+  currentPluginIndex={0}
+/>
