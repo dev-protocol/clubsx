@@ -11,7 +11,7 @@ import { default as Id } from './[id].astro'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
-  { propertyAddress }
+  { propertyAddress, rpcUrl }
 ) => {
   const products = options.find((opt) => opt.key === 'products')
     ?.value as UndefinedOr<Products>
@@ -21,7 +21,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
         ...products.map((product) => ({
           paths: ['buy', product.id],
           component: Id,
-          props: { propertyAddress, product },
+          props: { propertyAddress, product, rpcUrl },
         })),
       ]
     : []

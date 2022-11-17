@@ -12,7 +12,7 @@ import { HomeConfig } from './types/home-config'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
-  { name, propertyAddress }
+  { name, propertyAddress, rpcUrl }
 ) => {
   const tiers = options.find((opt) => opt.key === 'tiers')
     ?.value as UndefinedOr<Tiers>
@@ -24,7 +24,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
     {
       paths: [''],
       component: Index,
-      props: { name, propertyAddress, tiers, homeConfig },
+      props: { name, propertyAddress, tiers, homeConfig, rpcUrl },
     },
   ]
 }

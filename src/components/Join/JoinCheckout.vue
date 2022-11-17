@@ -218,6 +218,7 @@ export default defineComponent({
     feeBeneficiary: String,
     feePercentage: Number,
     payload: String,
+    rpcUrl: String,
   },
   data() {
     return {
@@ -303,9 +304,7 @@ export default defineComponent({
     })
     this.subscriptions.push(sub)
 
-    const provider = new providers.JsonRpcProvider(
-      import.meta.env.PUBLIC_WEB3_PROVIDER_URL
-    )
+    const provider = new providers.JsonRpcProvider(this.rpcUrl)
     const chain = (await provider.getNetwork()).chainId
     estimationsAPY({ provider: providerPool || provider }).then(([apy]) => {
       this.apy = apy
