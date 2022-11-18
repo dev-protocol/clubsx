@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import dotenv from 'dotenv'
 import { encode } from '@devprotocol/clubs-core/encode'
 import { createClient } from 'redis'
