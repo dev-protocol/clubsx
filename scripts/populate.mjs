@@ -549,6 +549,10 @@ const populate = async () => {
                 display: 'Community',
                 path: 'https://guild.xyz/temples-dao',
               },
+              {
+                display: 'Perks',
+                path: 'https://example.com',
+              },
             ],
           },
           {
@@ -560,6 +564,14 @@ const populate = async () => {
               },
               {
                 display: 'Terms & Conditions',
+                path: 'http://example.com',
+              },
+              {
+                display: 'Privacy Policy',
+                path: 'http://example.com',
+              },
+              {
+                display: 'Act on specified commercial transactions',
                 path: 'http://example.com',
               },
             ],
