@@ -1,0 +1,92 @@
+---
+import WelcomeWizard from '@components/WelcomeWizard/WelcomeWizard.svelte'
+import { ClubsConfiguration } from '@devprotocol/clubs-core'
+import Aside from '@devprotocol/clubs-core/aside'
+
+const { config, setupStep } = Astro.props as {
+  config: ClubsConfiguration
+  setupStep: 'HOME' | 'MEMBERSHIPS' | 'PLUGINS'
+}
+---
+
+<body class="flex bg-[#3A4158] text-white py-8 px-4">
+  <WelcomeWizard client:only="svelte" step={setupStep} />
+
+  <main class="w-full grid grid-cols-4 gap-x-6">
+    <div class="col-span-3">
+      <slot />
+    </div>
+
+    <Aside
+      class="col-span-1"
+      class="col-span-1"
+      config={config}
+      client:only="vue"
+    />
+  </main>
+</body>
+
+<input id="setupStep" hidden value={setupStep} />
+
+<script>
+  import { onSubmitConfig } from '@devprotocol/clubs-core'
+  import { GetModalProvider, ReConnectWallet } from '@fixtures/wallet'
+  import { utils } from 'ethers'
+
+  const setupStep = (document.getElementById('setupStep') as HTMLInputElement)
+    ?.value
+
+  const getNextStepPath = () => {
+    switch (setupStep) {
+      case 'HOME':
+        return '/setup/memberships'
+
+      case 'MEMBERSHIPS':
+        return '/setup/plugins'
+
+      case 'PLUGINS':
+        return '/setup/congratulations'
+    }
+  }
+
+  const nextStepPath = getNextStepPath()
+
+  onSubmitConfig(async (data, onFinish) => {
+    const splitHostname = window.location.hostname.split('.')
+    const site = splitHostname[0]
+
+    const modalProvider = GetModalProvider()
+    const { provider, currentAddress } = await ReConnectWallet(modalProvider)
+    if (!currentAddress || !provider) {
+      return
+    }
+    const signer = provider.getSigner()
+
+    const hash = await utils.hashMessage(data)
+    const sig = await signer.signMessage(hash)
+    if (!sig) {
+      return
+    }
+
+    const body = {
+      site,
+      config: data,
+      hash,
+      sig,
+      expectedAddress: currentAddress,
+    }
+
+    const res = await fetch('/api/updateConfig', {
+      method: 'POST',
+      body: JSON.stringify(body),
+    })
+
+    const success = res.ok
+    onFinish({ success })
+
+    // navigate to next step
+    if (success && nextStepPath) {
+      window.location.href = nextStepPath
+    }
+  })
+</script>

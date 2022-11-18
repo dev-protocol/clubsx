@@ -13,14 +13,11 @@ import nft from '@plugins/nft'
 import perks from '@plugins/perks'
 import quests from '@plugins/quests'
 import message from '@plugins/message'
-// import admin from '@plugins/admin'
 
 const { site, page } = Astro.params
-
 const { getStaticPaths, getCurrentConfig } = pageFactory({
   config: async () => await _config(site),
   plugins: {
-    // admin,
     buy,
     community,
     fiat,
@@ -34,13 +31,10 @@ const { getStaticPaths, getCurrentConfig } = pageFactory({
     quests,
   },
 })
-
 const path = (await getStaticPaths()).find(({ params }) => params.page === page)
-
 if (!path) {
   throw new Error('Path undefined: ', path)
 }
-
 const Content = path.props.component
 const config = await getCurrentConfig()
 ---

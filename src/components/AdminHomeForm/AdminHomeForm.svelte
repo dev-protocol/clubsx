@@ -1,6 +1,6 @@
 <script lang="ts">
   import { setOptions } from '@devprotocol/clubs-core'
-  import type { HomeConfig } from '../types/home-config'
+  import type { HomeConfig } from '../../constants/homeConfig'
 
   export let homeConfig: HomeConfig
   export let currentPluginIndex: number
