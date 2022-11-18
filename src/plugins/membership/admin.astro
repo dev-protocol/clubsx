@@ -1,8 +1,14 @@
 ---
+import AdminMembershipsForm from '@components/AdminMembershipsForm/AdminMembershipsForm.svelte'
+
+const { options, clubs } = Astro.props
 ---
 
 <div>
   <h1 class="font-title text-lg font-bold mb-16">Membership</h1>
 
-  <!-- form goes here -->
+  <AdminMembershipsForm
+    client:only="svelte"
+    currentPluginIndex={clubs.currentPluginIndex}
+  />
 </div>
