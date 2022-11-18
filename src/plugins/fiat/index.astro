@@ -14,7 +14,7 @@ const {
 } = Astro.props as {
   products: Products
   priceOverrides: PriceOverrides
-  title?:string
+  title?: string
   hero?: {
     coverImgSrc: string
     title: string
@@ -38,7 +38,7 @@ const products = _products.map((prod) => {
 ---
 
 <div class="container mx-auto px-4 grid gap-16 my-16">
-  {title && <h1 class="font-title font-bold text-4xl">{title}</h1>}
+  {title && <h1 class="font-title text-4xl font-bold">{title}</h1>}
   {
     hero && (
       <>
