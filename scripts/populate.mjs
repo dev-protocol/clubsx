@@ -17,12 +17,12 @@ const products = [
     price: 0.6,
     currency: 'ETH',
     imageSrc:
-      'https://bafybeib745w7vjcsh37mepaluvbmqrbjq4gax46oirkmrjeqeh55gjiyzi.ipfs.nftstorage.link/',
+      'https://bafybeih5bq6rwg67cdtpyh5sx2th4f7u3bognjfcidawopnlp3ygfq7da4.ipfs.nftstorage.link/',
     imageAlt: 'lorem ipsum',
-    payload: new Uint8Array(),
+    payload: toBytes32('Kougenji Celestial Maiden #1'),
     fee: {
-      percentage: 3,
-      beneficiary: '0x0',
+      percentage: 95,
+      beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
     },
   },
   {
@@ -33,12 +33,12 @@ const products = [
     price: 0.45,
     currency: 'ETH',
     imageSrc:
-      'https://bafybeic3d2otapykfdp3ktqbdonn4ylrove5ccs5vv2udydwbgudstrcwu.ipfs.nftstorage.link/',
+      'https://bafybeih5bq6rwg67cdtpyh5sx2th4f7u3bognjfcidawopnlp3ygfq7da4.ipfs.nftstorage.link/',
     imageAlt: 'lorem ipsum',
-    payload: new Uint8Array(),
+    payload: toBytes32('Kougenji Celestial Maiden #2'),
     fee: {
-      percentage: 3,
-      beneficiary: '0x0',
+      percentage: 95,
+      beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
     },
   },
   {
@@ -49,12 +49,12 @@ const products = [
     price: 0.4,
     currency: 'ETH',
     imageSrc:
-      'https://bafybeiagvn4exdbwokm4g6t6a2s3xvl2fu7zutvlf6sgwd4fjrdrc23hsu.ipfs.nftstorage.link/',
+      'https://bafybeih5bq6rwg67cdtpyh5sx2th4f7u3bognjfcidawopnlp3ygfq7da4.ipfs.nftstorage.link/',
     imageAlt: 'lorem ipsum',
-    payload: new Uint8Array(),
+    payload: toBytes32('Kougenji Celestial Maiden #3'),
     fee: {
-      percentage: 3,
-      beneficiary: '0x0',
+      percentage: 95,
+      beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
     },
   },
   {
@@ -65,12 +65,12 @@ const products = [
     price: 0.06,
     currency: 'ETH',
     imageSrc:
-      'https://bafybeiav46h6zegh4e7zfdcgk6xjpg6if2kdxtvp3ejtyicvpgc2iucpim.ipfs.nftstorage.link/',
+      'https://bafybeih5bq6rwg67cdtpyh5sx2th4f7u3bognjfcidawopnlp3ygfq7da4.ipfs.nftstorage.link/',
     imageAlt: 'lorem ipsum',
-    payload: new Uint8Array(),
+    payload: toBytes32('Kougenji Flower #1'),
     fee: {
-      percentage: 3,
-      beneficiary: '0x0',
+      percentage: 95,
+      beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
     },
   },
   {
@@ -81,12 +81,12 @@ const products = [
     price: 0.06,
     currency: 'ETH',
     imageSrc:
-      'https://bafybeib745w7vjcsh37mepaluvbmqrbjq4gax46oirkmrjeqeh55gjiyzi.ipfs.nftstorage.link/',
+      'https://bafybeih5bq6rwg67cdtpyh5sx2th4f7u3bognjfcidawopnlp3ygfq7da4.ipfs.nftstorage.link/',
     imageAlt: 'lorem ipsum',
-    payload: new Uint8Array(),
+    payload: toBytes32('Kougenji Flower #2'),
     fee: {
-      percentage: 3,
-      beneficiary: '0x0',
+      percentage: 95,
+      beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
     },
   },
   {
@@ -97,9 +97,9 @@ const products = [
     price: 0.06,
     currency: 'ETH',
     imageSrc:
-      'https://bafybeiagvn4exdbwokm4g6t6a2s3xvl2fu7zutvlf6sgwd4fjrdrc23hsu.ipfs.nftstorage.link/',
+      'https://bafybeih5bq6rwg67cdtpyh5sx2th4f7u3bognjfcidawopnlp3ygfq7da4.ipfs.nftstorage.link/',
     imageAlt: 'lorem ipsum',
-    payload: new Uint8Array(),
+    payload: toBytes32('Kougenji Flower #3'),
     fee: {
       percentage: 95,
       beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
