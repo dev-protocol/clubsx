@@ -1,46 +1,41 @@
 ---
-import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
-import Sidebar from '@components/Sidebar/Sidebar.vue'
 import CLBTier from '@components/Primitives/CLBTier.vue'
 import MessageForm from './components/MessageForm.vue'
 
-const { name, propertyAddress, form } = Astro.props
+const { propertyAddress, form } = Astro.props
 ---
 
-<CLBWrapper>
-  <Sidebar client:load propertyAddress={propertyAddress} tenantName={name} />
-  <article>
-    <section class="mb-12">
-      <h1 class="mb-5 font-title font-semibold text-2xl">{form.title}</h1>
-      <p>{form.description}</p>
-    </section>
+<article class="container max-w-6xl px-4 mx-auto">
+  <section class="mb-12">
+    <h1 class="mb-5 font-title font-semibold text-2xl">{form.title}</h1>
+    <p>{form.description}</p>
+  </section>
 
-    <section>
-      <h1 class="mb-4 font-semibold font-title text-xl">
-        Required membership(s)
-      </h1>
-      <div class="mb-5 flex flex-row flex-wrap gap-8">
-        {
-          form.requiredMemberships.map((membership: any, i: any) => (
-            <div class="h-[240px] max-h-[240px] min-h-[240px] w-[25%] capitalize">
-              <CLBTier
-                key={i}
-                title={membership.id}
-                subtitle={`${membership.amount} ${membership.currency}`}
-                media={`${membership.imageSrc}`}
-              />
-            </div>
-          ))
-        }
-      </div>
-    </section>
+  <section>
+    <h1 class="mb-4 font-semibold font-title text-xl">
+      Required membership(s)
+    </h1>
+    <div class="mb-5 flex flex-row flex-wrap gap-8">
+      {
+        form.requiredMemberships.map((membership: any, i: any) => (
+          <div class="h-[240px] max-h-[240px] min-h-[240px] w-[25%] capitalize">
+            <CLBTier
+              key={i}
+              title={membership.id}
+              subtitle={`${membership.amount} ${membership.currency}`}
+              media={`${membership.imageSrc}`}
+            />
+          </div>
+        ))
+      }
+    </div>
+  </section>
 
-    <section>
-      <MessageForm
-        client:only="vue"
-        propertyAddress={propertyAddress}
-        formId={form.id}
-      />
-    </section>
-  </article>
-</CLBWrapper>
+  <section>
+    <MessageForm
+      client:only="vue"
+      propertyAddress={propertyAddress}
+      formId={form.id}
+    />
+  </section>
+</article>
