@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="!stakeSuccessful"
-    class="relative mx-auto grid items-start px-4 lg:container lg:grid-cols-[auto,_480px] lg:gap-12 lg:pt-12"
+    class="relative mx-auto mb-12 grid items-start px-4 lg:container lg:mt-12 lg:grid-cols-[auto,_480px] lg:gap-12"
   >
     <section class="flex flex-col">
       <h2 class="mb-8 font-title text-4xl font-bold">
@@ -120,10 +120,18 @@
           class="mt-4 ml-4 border-l border-dp-black-200 pl-4"
         >
           <h4 class="text-md mb-2 opacity-70">Replace</h4>
-          <p class="text-sm uppercase">{{ devAmount }} $DEV</p>
+          <Skeleton
+            v-if="!devAmount"
+            class="mr-4 inline-block h-[1.2em] w-32"
+          />
+          <p v-if="devAmount" class="text-sm uppercase">{{ devAmount }} $DEV</p>
+          <div v-if="ethFeeAmount" class="mt-2">
+            <h4 class="text-md mb-2 opacity-70">Fee included</h4>
+            <p class="text-sm uppercase">{{ ethFeeAmount }} $ETH</p>
+          </div>
         </aside>
       </section>
-      <section class="p-4">
+      <section class="border-b border-dp-black-200 p-4">
         <h3 class="mb-2 text-xl opacity-70">Estimated earnings/year</h3>
         <p class="flex items-center text-2xl uppercase">
           <Skeleton
@@ -132,6 +140,22 @@
           />
           {{ estimatedEarnings }} $DEV
         </p>
+      </section>
+      <section class="p-4">
+        <h3 class="mb-2 text-xl opacity-70">Preview</h3>
+        <div
+          class="mx-auto flex aspect-square justify-center rounded bg-zinc-900 p-4"
+        >
+          <Skeleton
+            v-if="previewImageSrc === undefined"
+            class="mx-auto aspect-square h-full"
+          />
+          <img
+            v-if="previewImageSrc"
+            :src="previewImageSrc"
+            class="h-full w-full"
+          />
+        </div>
       </section>
     </div>
   </div>
@@ -159,7 +183,11 @@ import BigNumber from 'bignumber.js'
 import { parse } from 'query-string'
 import { Subscription, zip } from 'rxjs'
 import { CurrencyOption } from '@constants/currencyOption'
-import { fetchDevForEth, fetchEthForDev } from '@fixtures/utility'
+import {
+  fetchDevForEth,
+  fetchEthForDev,
+  fetchBadgeImageSrc,
+} from '@fixtures/utility'
 import Skeleton from '@components/Global/Skeleton.vue'
 import { stakeWithEthForPolygon } from '@fixtures/dev-kit'
 
@@ -174,7 +202,9 @@ type Data = {
   account?: string
   ethAmount: UndefinedOr<string>
   devAmount: UndefinedOr<string>
+  ethFeeAmount: UndefinedOr<string>
   chain: UndefinedOr<number>
+  previewImageSrc: UndefinedOr<string>
 }
 
 let providerPool: UndefinedOr<providers.BaseProvider>
@@ -188,6 +218,7 @@ export default defineComponent({
     feeBeneficiary: String,
     feePercentage: Number,
     payload: String,
+    rpcUrl: String,
   },
   data() {
     return {
@@ -203,7 +234,9 @@ export default defineComponent({
       isStaking: false,
       ethAmount: undefined,
       devAmount: undefined,
+      ethFeeAmount: undefined,
       chain: undefined,
+      previewImageSrc: undefined,
     } as Data
   },
   computed: {
@@ -271,9 +304,7 @@ export default defineComponent({
     })
     this.subscriptions.push(sub)
 
-    const provider = new providers.JsonRpcProvider(
-      import.meta.env.PUBLIC_WEB3_PROVIDER_URL
-    )
+    const provider = new providers.JsonRpcProvider(this.rpcUrl)
     const chain = (await provider.getNetwork()).chainId
     estimationsAPY({ provider: providerPool || provider }).then(([apy]) => {
       this.apy = apy
@@ -282,13 +313,16 @@ export default defineComponent({
     whenDefinedAll(
       [this.destination, this.amount],
       async ([destination, amount]) => {
+        const feeDeposit = this.feePercentage
+          ? new BigNumber(100).minus(this.feePercentage).div(100)
+          : 0
         const [devAmount, ethAmount] = await Promise.all([
           this.verifiedPropsCurrency === CurrencyOption.DEV
             ? this.amount
             : await fetchDevForEth({
                 provider,
                 tokenAddress: destination,
-                amount: amount,
+                amount: new BigNumber(amount).times(feeDeposit).toNumber(),
                 chain,
               }).then(utils.formatUnits),
           this.verifiedPropsCurrency === CurrencyOption.ETH
@@ -308,6 +342,15 @@ export default defineComponent({
           .dp(9)
           .toFixed()
           .toString()
+        this.ethFeeAmount = whenDefined(ethAmount, (_eth) =>
+          new BigNumber(_eth).times(feeDeposit).dp(9).toFixed().toString()
+        )
+        this.previewImageSrc = await fetchBadgeImageSrc({
+          provider,
+          tokenAddress: destination,
+          amount: devAmount,
+          payload: this.payload,
+        })
       }
     )
   },

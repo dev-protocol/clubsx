@@ -61,10 +61,6 @@ import { defineComponent, PropType } from '@vue/runtime-core'
 import { CurrencyOption } from '@constants/currencyOption'
 import CLBRadio from '@components/Primitives/CLBRadio.vue'
 
-const provider = new providers.JsonRpcProvider(
-  import.meta.env.PUBLIC_WEB3_PROVIDER_URL
-)
-
 type Data = {
   currency: 'dev' | 'eth'
   composedTiers: {
@@ -85,6 +81,7 @@ export default defineComponent({
       required: true,
     },
     tenantName: String,
+    rpcUrl: String,
   },
   data(): Data {
     return {
@@ -103,7 +100,7 @@ export default defineComponent({
     this.currency = input as 'dev' | 'eth'
     this.composedTiers = await composeTiers({
       sourceTiers: this.tiers,
-      provider,
+      provider: new providers.JsonRpcProvider(this.rpcUrl),
       tokenAddress: this.propertyAddress ?? '',
     })
   },

@@ -1,14 +1,36 @@
+import { Products } from '@constants/products'
 import {
   ClubsFunctionGetAdminPaths,
   ClubsFunctionGetPagePaths,
   ClubsFunctionPlugin,
   ClubsPluginMeta,
 } from '@devprotocol/clubs-core'
+import { UndefinedOr } from '@devprotocol/util-ts'
 import { default as Index } from './index.astro'
 
-export const getPagePaths: ClubsFunctionGetPagePaths = async () => [
-  { paths: ['fiat'], component: Index },
-]
+export type PriceOverrides = {
+  id: string
+  currency: string
+  price: number
+  purchaseLink: string
+}[]
+
+export const getPagePaths: ClubsFunctionGetPagePaths = async (options) => {
+  const products = options.find((opt) => opt.key === 'products')
+    ?.value as UndefinedOr<Products>
+  const priceOverrides = options.find((opt) => opt.key === 'priceOverrides')
+    ?.value as UndefinedOr<PriceOverrides>
+
+  return products && priceOverrides
+    ? [
+        {
+          paths: ['fiat'],
+          props: { products, priceOverrides },
+          component: Index,
+        },
+      ]
+    : []
+}
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async () => []
 

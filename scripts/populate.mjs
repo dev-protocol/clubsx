@@ -1,16 +1,20 @@
+/* eslint-disable no-undef */
 import dotenv from 'dotenv'
 import { encode } from '@devprotocol/clubs-core/encode'
 import { createClient } from 'redis'
+import { utils } from 'ethers'
 
 dotenv.config()
+
+const toBytes32 = (str) => utils.keccak256(utils.toUtf8Bytes(str))
 
 const products = [
   {
     id: '1',
-    name: 'Name',
-    description:
-      'Get the full lineup of our Basic Tees. Have a fresh shirt all week, and an extra for laundry day.',
-    price: 3_000_000_000_000_000,
+    name: 'Kougenji Celestial Maiden #1',
+    description: `光源寺に特別参拝でき、修復後の天女のNFTを受け取ることができます.
+    Holders of this NFT are invited to a special visit at Kougenji, and can receive restored celestial maiden NFT.`,
+    price: 0.6,
     currency: 'ETH',
     imageSrc:
       'https://bafybeib745w7vjcsh37mepaluvbmqrbjq4gax46oirkmrjeqeh55gjiyzi.ipfs.nftstorage.link/',
@@ -23,8 +27,10 @@ const products = [
   },
   {
     id: '2',
-    name: 'Name',
-    price: 3_000_000_000_000_000,
+    name: 'Kougenji Celestial Maiden #2',
+    description: `修復後の天女のNFTを受け取ることができます.
+    Holders of this NFT can receive restored celestial maiden NFT.`,
+    price: 0.45,
     currency: 'ETH',
     imageSrc:
       'https://bafybeic3d2otapykfdp3ktqbdonn4ylrove5ccs5vv2udydwbgudstrcwu.ipfs.nftstorage.link/',
@@ -37,8 +43,10 @@ const products = [
   },
   {
     id: '3',
-    name: 'Name',
-    price: 5_000_000_000_000_000,
+    name: 'Kougenji Celestial Maiden #3',
+    description: `光源寺ご住職による水晶ブレスレットを受け取ることができます（日本国内のみ）.
+    Holders of this NFT can receive a crystal bracelet made by the chief priest of Kougenji.`,
+    price: 0.4,
     currency: 'ETH',
     imageSrc:
       'https://bafybeiagvn4exdbwokm4g6t6a2s3xvl2fu7zutvlf6sgwd4fjrdrc23hsu.ipfs.nftstorage.link/',
@@ -51,8 +59,10 @@ const products = [
   },
   {
     id: '4',
-    name: 'Name',
-    price: 5_000_000_000_000_000,
+    name: 'Kougenji Flower #1',
+    description: `天井絵シリーズを3枚集めた方はオンラインでの読経、5枚集めた方は光源寺での読経に参加できます。
+    If you collect 3 flower NFTs, you can join an online sutra chanting. If you collect 5 flower NFTs, you can join a sutra chanting event at Kougenji.`,
+    price: 0.06,
     currency: 'ETH',
     imageSrc:
       'https://bafybeiav46h6zegh4e7zfdcgk6xjpg6if2kdxtvp3ejtyicvpgc2iucpim.ipfs.nftstorage.link/',
@@ -65,8 +75,10 @@ const products = [
   },
   {
     id: '5',
-    name: 'Name',
-    price: 5_000_000_000_000_000,
+    name: 'Kougenji Flower #2',
+    description: `天井絵シリーズを3枚集めた方はオンラインでの読経、5枚集めた方は光源寺での読経に参加できます。
+    If you collect 3 flower NFTs, you can join an online sutra chanting. If you collect 5 flower NFTs, you can join a sutra chanting event at Kougenji.`,
+    price: 0.06,
     currency: 'ETH',
     imageSrc:
       'https://bafybeib745w7vjcsh37mepaluvbmqrbjq4gax46oirkmrjeqeh55gjiyzi.ipfs.nftstorage.link/',
@@ -79,16 +91,114 @@ const products = [
   },
   {
     id: '6',
-    name: 'Name',
-    price: 5_000_000_000_000_000,
+    name: 'Kougenji Flower #3',
+    description: `天井絵シリーズを3枚集めた方はオンラインでの読経、5枚集めた方は光源寺での読経に参加できます。
+    If you collect 3 flower NFTs, you can join an online sutra chanting. If you collect 5 flower NFTs, you can join a sutra chanting event at Kougenji.`,
+    price: 0.06,
     currency: 'ETH',
     imageSrc:
       'https://bafybeiagvn4exdbwokm4g6t6a2s3xvl2fu7zutvlf6sgwd4fjrdrc23hsu.ipfs.nftstorage.link/',
     imageAlt: 'lorem ipsum',
     payload: new Uint8Array(),
     fee: {
-      percentage: 3,
-      beneficiary: '0x0',
+      percentage: 95,
+      beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
+    },
+  },
+  {
+    id: '7',
+    name: 'Kougenji Flower #4',
+    description: `天井絵シリーズを3枚集めた方はオンラインでの読経、5枚集めた方は光源寺での読経に参加できます。
+    If you collect 3 flower NFTs, you can join an online sutra chanting. If you collect 5 flower NFTs, you can join a sutra chanting event at Kougenji.`,
+    price: 0.06,
+    currency: 'ETH',
+    imageSrc:
+      'https://bafybeih5bq6rwg67cdtpyh5sx2th4f7u3bognjfcidawopnlp3ygfq7da4.ipfs.nftstorage.link/',
+    imageAlt: 'lorem ipsum',
+    payload: toBytes32('Kougenji Flower #4'),
+    fee: {
+      percentage: 95,
+      beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
+    },
+  },
+  {
+    id: '8',
+    name: 'Kougenji Flower #5',
+    description: `天井絵シリーズを3枚集めた方はオンラインでの読経、5枚集めた方は光源寺での読経に参加できます。
+    If you collect 3 flower NFTs, you can join an online sutra chanting. If you collect 5 flower NFTs, you can join a sutra chanting event at Kougenji.`,
+    price: 0.06,
+    currency: 'ETH',
+    imageSrc:
+      'https://bafybeih5bq6rwg67cdtpyh5sx2th4f7u3bognjfcidawopnlp3ygfq7da4.ipfs.nftstorage.link/',
+    imageAlt: 'lorem ipsum',
+    payload: toBytes32('Kougenji Flower #5'),
+    fee: {
+      percentage: 95,
+      beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
+    },
+  },
+  {
+    id: '9',
+    name: 'Kougenji Flower #6',
+    description: `天井絵シリーズを3枚集めた方はオンラインでの読経、5枚集めた方は光源寺での読経に参加できます。
+    If you collect 3 flower NFTs, you can join an online sutra chanting. If you collect 5 flower NFTs, you can join a sutra chanting event at Kougenji.`,
+    price: 0.06,
+    currency: 'ETH',
+    imageSrc:
+      'https://bafybeih5bq6rwg67cdtpyh5sx2th4f7u3bognjfcidawopnlp3ygfq7da4.ipfs.nftstorage.link/',
+    imageAlt: 'lorem ipsum',
+    payload: toBytes32('Kougenji Flower #6'),
+    fee: {
+      percentage: 95,
+      beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
+    },
+  },
+  {
+    id: '10',
+    name: 'Kougenji Flower #7',
+    description: `天井絵シリーズを3枚集めた方はオンラインでの読経、5枚集めた方は光源寺での読経に参加できます。
+    If you collect 3 flower NFTs, you can join an online sutra chanting. If you collect 5 flower NFTs, you can join a sutra chanting event at Kougenji.`,
+    price: 0.06,
+    currency: 'ETH',
+    imageSrc:
+      'https://bafybeih5bq6rwg67cdtpyh5sx2th4f7u3bognjfcidawopnlp3ygfq7da4.ipfs.nftstorage.link/',
+    imageAlt: 'lorem ipsum',
+    payload: toBytes32('Kougenji Flower #7'),
+    fee: {
+      percentage: 95,
+      beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
+    },
+  },
+  {
+    id: '11',
+    name: 'Kougenji Flower #8',
+    description: `天井絵シリーズを3枚集めた方はオンラインでの読経、5枚集めた方は光源寺での読経に参加できます。
+    If you collect 3 flower NFTs, you can join an online sutra chanting. If you collect 5 flower NFTs, you can join a sutra chanting event at Kougenji.`,
+    price: 0.06,
+    currency: 'ETH',
+    imageSrc:
+      'https://bafybeih5bq6rwg67cdtpyh5sx2th4f7u3bognjfcidawopnlp3ygfq7da4.ipfs.nftstorage.link/',
+    imageAlt: 'lorem ipsum',
+    payload: toBytes32('Kougenji Flower #8'),
+    fee: {
+      percentage: 95,
+      beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
+    },
+  },
+  {
+    id: '12',
+    name: 'Kougenji DAO',
+    description: `御住職によるオンライン法話やお話し会に参加できます（2,3ヶ月に1回開催予定）.
+    Holders of this NFT are allowed to join online preach or round-table talk by the head priest (to be scheduled once in a few months).`,
+    price: 0.085,
+    currency: 'ETH',
+    imageSrc:
+      'https://bafybeih5bq6rwg67cdtpyh5sx2th4f7u3bognjfcidawopnlp3ygfq7da4.ipfs.nftstorage.link/',
+    imageAlt: 'lorem ipsum',
+    payload: toBytes32('Kougenji DAO'),
+    fee: {
+      percentage: 50,
+      beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
     },
   },
 ]
@@ -425,15 +535,22 @@ const populate = async () => {
         twitterHandle: '@templesdao',
         description: '',
         url: 'https://kogenji.clubs.stakes.social',
-        propertyAddress: '0x541f7914ed2a4a8b477edc711fa349a77983f3ad',
+        propertyAddress: '0x70a8B9a4B2d407a542c205adBbEA38289c3285eB', // Polygon: 0x23d67953FE2e61e9fAc78447526D9358cD05d40d // Mumbai: 0x70a8B9a4B2d407a542c205adBbEA38289c3285eB
+        chainId: 80001, // Polygon: 137 // Mumbai: 80001
+        rpcUrl:
+          'https://polygon-mumbai.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920', // Polygon: https://polygon-mainnet.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920 // Mumbai: https://polygon-mumbai.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920
         adminRolePoints: 0,
         options: [
           {
             key: 'headerLinks',
             value: [
               {
-                display: 'Temples',
-                path: 'http://temples.localhost:3000',
+                display: 'FIAT',
+                path: 'fiat',
+              },
+              {
+                display: 'Community',
+                path: 'https://guild.xyz/temples-dao',
               },
             ],
           },
@@ -441,27 +558,22 @@ const populate = async () => {
             key: 'navLinks',
             value: [
               {
-                display: 'Temples',
-                path: 'http://temples.localhost:3000',
+                display: 'About',
+                path: 'http://example.com',
+              },
+              {
+                display: 'Terms & Conditions',
+                path: 'http://example.com',
               },
             ],
+          },
+          {
+            key: 'avatarImgSrc',
+            value:
+              'https://www.tambacity-kankou.jp/english/momiji/img/01main01.jpg',
           },
         ],
         plugins: [
-          {
-            name: 'home',
-            enable: true,
-            options: [
-              {
-                key: 'tiers',
-                value: tiers,
-              },
-              {
-                key: 'homeConfig',
-                value: templesHomeConfig,
-              },
-            ],
-          },
           {
             name: 'buy',
             enable: true,
@@ -475,22 +587,95 @@ const populate = async () => {
           {
             name: 'fiat',
             enable: true,
-            options: [],
-          },
-          {
-            name: 'join',
-            enable: true,
-            options: [],
-          },
-          {
-            name: 'me',
-            enable: true,
-            options: [],
-          },
-          {
-            name: 'members',
-            enable: true,
-            options: [],
+            options: [
+              {
+                key: 'products',
+                value: products,
+              },
+              {
+                key: 'priceOverrides',
+                value: [
+                  {
+                    id: '1',
+                    price: 100_000,
+                    currency: 'YEN',
+                    purchaseLink: 'http://example.com',
+                  },
+                  {
+                    id: '2',
+                    price: 80_000,
+                    currency: 'YEN',
+                    purchaseLink: 'http://example.com',
+                  },
+                  {
+                    id: '3',
+                    price: 70_000,
+                    currency: 'YEN',
+                    purchaseLink: 'http://example.com',
+                  },
+                  {
+                    id: '4',
+                    price: 10_000,
+                    currency: 'YEN',
+                    purchaseLink: 'http://example.com',
+                  },
+                  {
+                    id: '5',
+                    price: 10_000,
+                    currency: 'YEN',
+                    purchaseLink: 'http://example.com',
+                  },
+                  {
+                    id: '6',
+                    price: 10_000,
+                    currency: 'YEN',
+                    purchaseLink: 'http://example.com',
+                  },
+                  {
+                    id: '7',
+                    price: 10_000,
+                    currency: 'YEN',
+                    purchaseLink: 'http://example.com',
+                  },
+                  {
+                    id: '8',
+                    price: 10_000,
+                    currency: 'YEN',
+                    purchaseLink: 'http://example.com',
+                  },
+                  {
+                    id: '9',
+                    price: 10_000,
+                    currency: 'YEN',
+                    purchaseLink: 'http://example.com',
+                  },
+                  {
+                    id: '10',
+                    price: 10_000,
+                    currency: 'YEN',
+                    purchaseLink: 'http://example.com',
+                  },
+                  {
+                    id: '11',
+                    price: 10_000,
+                    currency: 'YEN',
+                    purchaseLink: 'http://example.com',
+                  },
+                  {
+                    id: '12',
+                    price: 10_000,
+                    currency: 'YEN',
+                    purchaseLink: 'http://example.com',
+                  },
+                  {
+                    id: '13',
+                    price: 20_000,
+                    currency: 'YEN',
+                    purchaseLink: 'http://example.com',
+                  },
+                ],
+              },
+            ],
           },
           {
             name: 'nft',
@@ -500,27 +685,32 @@ const populate = async () => {
                 key: 'products',
                 value: products,
               },
-            ],
-          },
-          {
-            name: 'perks',
-            enable: true,
-            options: [
               {
-                key: 'perks',
-                value: perks,
+                key: 'coverImgSrc',
+                value: 'https://i.imgur.com/qPq8hI8.jpg',
+              },
+              {
+                key: 'title',
+                value: 'Kogenji',
+              },
+              {
+                key: 'description',
+                value: [
+                  `光源寺の天女絵修復プロジェクトでのご支援金は、天女の表具欄間彩色修復等に使われます。支援者の方は光源寺のDiscordチャンネルに参加し、修復状況（写真等）を見ることができます。また、NFTの種類により様々な特典をご用意しております。`,
+                  `[EN:] The funds raised in the restoration project of Kougenji Celestial Maiden Art will be used for restoring the celestial maiden paper picture frame on the decorative transom and other cultural assets in the temple. Supporters are allowed to join the Discord channel of Kougenji to know the latest news about the restoration (photos,etc.).
+                We provide a variety of Perks according to the types of NFT you’ll purchase.`,
+                ],
+              },
+              {
+                key: 'slug',
+                value: [],
               },
             ],
           },
           {
-            name: 'quests',
+            name: 'message',
             enable: true,
             options: [],
-          },
-          {
-            name: 'memberships',
-            enable: true,
-            options: [memberships],
           },
         ],
       })

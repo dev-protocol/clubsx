@@ -1,4 +1,6 @@
 ---
+import ConnectButton from '@components/Wallet/ConnectButton.vue'
+
 import '@styles/global.scss'
 const title = 'Clubs'
 const name = 'Clubs' // not sure the difference here compared to title
@@ -33,10 +35,10 @@ const twitterHandle = 'devprtcl'
   <body class="font-body bg-black text-white min-h-screen container mx-auto">
     <header class="flex justify-between py-4">
       <h1 class="text-xl font-bold">Clubs.xyz</h1>
-
-      <nav>
+      <nav class="gap-10 flex justify-between py-4">
         <!-- TODO: path for this -->
         <a class="border rounded py-2 px-4" href="/getstarted">Get Started</a>
+        <ConnectButton client:only="vue" />
       </nav>
     </header>
 
