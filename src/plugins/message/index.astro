@@ -1,66 +1,53 @@
 ---
-import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
-import Sidebar from '@components/Sidebar/Sidebar.vue'
 import CLBTier from '@components/Primitives/CLBTier.vue'
 
-const { name, propertyAddress, forms } = Astro.props
+const { forms } = Astro.props
 ---
 
-<div>
-  <div class="relative">
-    <CLBWrapper>
-      <Sidebar
-        client:load
-        propertyAddress={propertyAddress}
-        tenantName={name}
-      />
-      <article>
-        <section class="mb-12">
-          <h3 class="family-title text-lg mb-6">Contact</h3>
-          <div
-            class="community-digest grid place-items-center rounded-[36px] px-10 py-20 mt-12"
-          >
-            <h1 class="family-supertitle md:text-2xl font-black uppercase">
-              EXERCISE YOUR SPECIAL RIGHTS WITH ACCESS TO EXCLUSIVE CONTACTS
-              OPEN ONLY TO MEMBERSHIP HOLDERS.
-            </h1>
-          </div>
-        </section>
-        <section class="mb-12">
-          <h3 class="font-Syne text-4xl font-bold">{forms[0].title}</h3>
-        </section>
-        <section class="mb-4 mt-12">
-          <h3 class="family-title text-base">{forms[0].description}</h3>
-        </section>
-        <section class="mb-4">
-          <a
-            href={`/message/${forms[0]?.id || '1'}`}
-            class="bg-[#D500E6] rounded border-[##171717] py-2 px-7"
-          >
-            Open
-          </a>
-        </section>
-        <section class="mb-4">
-          <h3 class="font-Syne text-2xl font-bold">Required membership(s)</h3>
-        </section>
-        <div class="mb-5 flex flex-row flex-wrap gap-8">
-          {
-            forms[0].requiredMemberships.map((membership: any, i: any) => (
-              <div class="h-[240px] max-h-[240px] min-h-[240px] w-[25%] capitalize">
-                <CLBTier
-                  key={i}
-                  title={membership.id}
-                  subtitle={`${membership.amount} ${membership.currency}`}
-                  media={`${membership.imageSrc}`}
-                />
-              </div>
-            ))
-          }
+<article class="container max-w-6xl px-4 mx-auto">
+  <section class="mb-12">
+    <h3 class="family-title text-lg mb-6">Contact</h3>
+    <div
+      class="community-digest grid place-items-center rounded-[36px] px-10 py-20 mt-12"
+    >
+      <h1 class="family-supertitle md:text-2xl font-black uppercase">
+        EXERCISE YOUR SPECIAL RIGHTS WITH ACCESS TO EXCLUSIVE CONTACTS OPEN ONLY
+        TO MEMBERSHIP HOLDERS.
+      </h1>
+    </div>
+  </section>
+  <section class="mb-12">
+    <h3 class="font-Syne text-4xl font-bold">{forms[0].title}</h3>
+  </section>
+  <section class="mb-4 mt-12">
+    <h3 class="family-title text-base">{forms[0].description}</h3>
+  </section>
+  <section class="mb-4">
+    <a
+      href={`/message/${forms[0]?.id || '1'}`}
+      class="bg-[#D500E6] rounded border-[##171717] py-2 px-7"
+    >
+      Open
+    </a>
+  </section>
+  <section class="mb-4">
+    <h3 class="font-Syne text-2xl font-bold">Required membership(s)</h3>
+  </section>
+  <div class="mb-5 flex flex-row flex-wrap gap-8">
+    {
+      forms[0].requiredMemberships.map((membership: any, i: any) => (
+        <div class="h-[240px] max-h-[240px] min-h-[240px] w-[25%] capitalize">
+          <CLBTier
+            key={i}
+            title={membership.id}
+            subtitle={`${membership.amount} ${membership.currency}`}
+            media={`${membership.imageSrc}`}
+          />
         </div>
-      </article>
-    </CLBWrapper>
+      ))
+    }
   </div>
-</div>
+</article>
 
 <style lang="scss">
   .community-digest {
