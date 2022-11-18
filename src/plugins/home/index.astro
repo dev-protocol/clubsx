@@ -5,13 +5,26 @@ import Footer from '@components/Global/Footer.astro'
 import JoinClub from '@components/Join/JoinClub.vue'
 import { Tiers } from '@constants/tier'
 import { HomeConfig } from '../../constants/homeConfig'
+import { NavLink } from '@constants/navLink'
 
-const { propertyAddress, name, tiers, homeConfig, rpcUrl } = Astro.props as {
+const {
+  propertyAddress,
+  name,
+  tiers,
+  homeConfig,
+  rpcUrl,
+  sidebarLinks,
+  sidebarPrimaryLinks,
+  avatarImgSrc,
+} = Astro.props as {
   propertyAddress: string
   name: string
   tiers: Tiers
   homeConfig: HomeConfig
   rpcUrl: string
+  sidebarPrimaryLinks: NavLink[]
+  sidebarLinks: NavLink[]
+  avatarImgSrc: string
 }
 ---
 
@@ -28,6 +41,9 @@ const { propertyAddress, name, tiers, homeConfig, rpcUrl } = Astro.props as {
         client:load
         propertyAddress={propertyAddress}
         tenantName={name}
+        links={sidebarLinks}
+        primaryLinks={sidebarPrimaryLinks}
+        avatarImgSrc={avatarImgSrc}
       />
       <article class="grid gap-10 lg:gap-20">
         <header

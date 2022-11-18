@@ -1,13 +1,10 @@
 ---
-import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
-import Sidebar from '@components/Sidebar/Sidebar.vue'
-import Footer from '@components/Global/Footer.astro'
 import Perks from '@components/Perks/Perks.astro'
 import { tiers } from '@constants/tier'
 import { fetchBadgeImageSrc } from '@fixtures/utility'
 import { providers } from 'ethers'
 
-const { propertyAddress, name, perks } = Astro.props
+const { propertyAddress, perks } = Astro.props
 
 const listOfTier = await Promise.all(
   tiers.map(async ({ ...tier }) => {
@@ -23,28 +20,24 @@ const listOfTier = await Promise.all(
 )
 ---
 
-<CLBWrapper>
-  <Sidebar client:load propertyAddress={propertyAddress} tenantName={name} />
-  <div class="px-4">
-    <article class="grid gap-8">
-      <h2 class="font-title text-4xl font-bold">Perks</h2>
-      {
-        listOfTier.map((tier, i) => (
-          <section class="grid auto-rows-auto grid-cols-[1fr_2fr] gap-2 lg:grid-cols-[1fr_2fr_3fr]">
-            <img src={tier.badgeImageSrc} class="rounded" role="presentation" />
-            <header>
-              <h2 class="font-title text-2xl font-bold">{tier.title}</h2>
-              {tier.badgeImageDescription && (
-                <p class="mt-4 text-xs opacity-30">
-                  {tier.badgeImageDescription}
-                </p>
-              )}
-            </header>
-            <Perks tierId={tier.id} perks={perks} />
-          </section>
-        ))
-      }
-    </article>
-  </div>
-</CLBWrapper>
-<Footer />
+<div class="px-4">
+  <article class="grid gap-8">
+    <h2 class="font-title text-4xl font-bold">Perks</h2>
+    {
+      listOfTier.map((tier, i) => (
+        <section class="grid auto-rows-auto grid-cols-[1fr_2fr] gap-2 lg:grid-cols-[1fr_2fr_3fr]">
+          <img src={tier.badgeImageSrc} class="rounded" role="presentation" />
+          <header>
+            <h2 class="font-title text-2xl font-bold">{tier.title}</h2>
+            {tier.badgeImageDescription && (
+              <p class="mt-4 text-xs opacity-30">
+                {tier.badgeImageDescription}
+              </p>
+            )}
+          </header>
+          <Perks tierId={tier.id} perks={perks} />
+        </section>
+      ))
+    }
+  </article>
+</div>

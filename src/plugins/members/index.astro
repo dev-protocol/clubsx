@@ -1,15 +1,10 @@
 ---
-import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
 import Supporters from '@components/Members/Supporters.vue'
-import Sidebar from '@components/Sidebar/Sidebar.vue'
 
-const { propertyAddress, name } = Astro.props
+const { propertyAddress } = Astro.props
 ---
 
-<CLBWrapper>
-  <Sidebar client:load propertyAddress={propertyAddress} tenantName={name} />
-  <div class="mx-4 mb-4">
-    <h2 class="font-title font-bold text-3xl">Members</h2>
-    <Supporters client:only="vue" propertyAddress={propertyAddress} />
-  </div>
-</CLBWrapper>
+<div class="mx-4 mb-4">
+  <h2 class="font-title font-bold text-3xl">Members</h2>
+  <Supporters client:only="vue" propertyAddress={propertyAddress} />
+</div>

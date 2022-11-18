@@ -1,23 +1,15 @@
 ---
-import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
-
 import JoinClub from '@components/Join/JoinClub.vue'
-import Sidebar from '@components/Sidebar/Sidebar.vue'
-import Footer from '@components/Global/Footer.astro'
 
 const { tiers, propertyAddress, name, rpcUrl } = Astro.props
 ---
 
-<CLBWrapper>
-  <Sidebar client:load propertyAddress={propertyAddress} tenantName={name} />
-  <div class="p-4">
-    <JoinClub
-      client:only
-      propertyAddress={propertyAddress}
-      tiers={tiers}
-      tenantName={name}
-      rpcUrl={rpcUrl}
-    />
-  </div>
-</CLBWrapper>
-<Footer />
+<div class="p-4">
+  <JoinClub
+    client:only
+    propertyAddress={propertyAddress}
+    tiers={tiers}
+    tenantName={name}
+    rpcUrl={rpcUrl}
+  />
+</div>

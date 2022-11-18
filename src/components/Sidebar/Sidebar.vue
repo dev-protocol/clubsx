@@ -80,13 +80,20 @@
             <h3 class="p-2 opacity-50">APY for $DEV</h3>
             <p class="p-2 opacity-50">&*%</p>
           </aside>
-          <HSButton type="filled fullwidth" link="/join">Join</HSButton>
+          <HSButton
+            v-for="primaryLink in primaryLinks"
+            type="filled fullwidth"
+            :link="primaryLink.path"
+            :isDisabled="primaryLink.enable === false"
+            >{{ primaryLink.display }}</HSButton
+          >
           <div class="grid w-full gap-3">
-            <HSButton link="/community">Community</HSButton>
-            <HSButton link="/perks">Perks</HSButton>
-            <HSButton link="#" :isDisabled="true">Quests</HSButton>
-            <HSButton link="#" :isDisabled="true">Updates</HSButton>
-            <HSButton link="#" :isDisabled="true">Vote</HSButton>
+            <HSButton
+              v-for="link in links"
+              :link="link.path"
+              :isDisabled="link.enable === false"
+              >{{ link.display }}</HSButton
+            >
           </div>
         </section>
       </nav>
@@ -94,12 +101,13 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import ETH from '@assets/ETH.svg'
-import avatar from '@assets/avatar.png'
 import { providers } from 'ethers'
 import { detectStokensByPropertyAddress } from '@fixtures/dev-kit'
 import HSButton from '../Primitives/Hashi/HSButton.vue'
+import { PropType } from '@vue/runtime-core'
+import { NavLink } from '@constants/navLink'
 
 export default {
   name: 'Sidebar',
@@ -107,6 +115,15 @@ export default {
   props: {
     propertyAddress: String,
     tenantName: String,
+    links: {
+      type: Object as PropType<NavLink[]>,
+      default: [],
+    },
+    primaryLinks: {
+      type: Object as PropType<NavLink[]>,
+      default: [],
+    },
+    avatarImgSrc: String,
   },
   data() {
     return {
@@ -114,7 +131,7 @@ export default {
       toggleOpen: false,
       images: {
         ETH,
-        avatar,
+        avatar: this.avatarImgSrc,
       },
     }
   },

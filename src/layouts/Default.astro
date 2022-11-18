@@ -1,9 +1,14 @@
 ---
 import type { ClubsConfiguration } from '@devprotocol/clubs-core'
 import Navbar from '@components/Global/Navbar.vue'
+import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
+import Sidebar from '@components/Sidebar/Sidebar.vue'
+import Footer from '@components/Global/Footer.astro'
 import og from '@assets/og.png'
 import '@styles/global.scss'
+import { NavLink, PathCondition } from '@constants/navLink'
 
+const { page } = Astro.params
 const { metaTitle, config } = Astro.props as {
   metaTitle?: string
   config: ClubsConfiguration
@@ -20,15 +25,39 @@ const ogURL = new URL(
 
 const headerLinks =
   config.options?.find((option) => option.key === 'headerLinks')?.value ??
-  ([] as { display: string; path: string }[])
+  ([] as NavLink[])
 
 const navLinks =
   config.options?.find((option) => option.key === 'navLinks')?.value ??
-  ([] as { display: string; path: string }[])
+  ([] as NavLink[])
 
 const socialLinks =
   config.options?.find((option) => option.key === 'socialLinks')?.value ??
-  ([] as { display: string; path: string }[])
+  ([] as NavLink[])
+
+const sidebarPrimaryLinks =
+  config.options?.find((option) => option.key === 'sidebarPrimaryLinks')
+    ?.value ?? ([] as NavLink[])
+
+const sidebarLinks =
+  config.options?.find((option) => option.key === 'sidebarLinks')?.value ??
+  ([] as NavLink[])
+
+const avatarImgSrc = config.options?.find(
+  (option) => option.key === 'avatarImgSrc'
+)?.value
+
+const fullViewPaths =
+  (config.options?.find((option) => option.key === 'fullViewPaths')
+    ?.value as PathCondition[]) ?? ([] as PathCondition[])
+
+const isFullView = fullViewPaths.some((path) =>
+  path.exact || page === undefined
+    ? path.path === (page ?? '')
+    : page !== undefined
+    ? page.toString().startsWith(path.path)
+    : false
+)
 
 const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
 ---
@@ -63,8 +92,29 @@ const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
       navLinks={navLinks}
       socialLinks={socialLinks}
     />
-    <main>
-      <slot />
-    </main>
+    {
+      isFullView ? (
+        <main>
+          <slot />
+        </main>
+      ) : (
+        <>
+          <main>
+            <CLBWrapper>
+              <Sidebar
+                client:load
+                propertyAddress={config.propertyAddress}
+                tenantName={config.name}
+                links={sidebarLinks}
+                primaryLinks={sidebarPrimaryLinks}
+                avatarImgSrc={avatarImgSrc}
+              />
+              <slot />
+            </CLBWrapper>
+          </main>
+          <Footer />
+        </>
+      )
+    }
   </body>
 </html>

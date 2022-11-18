@@ -1,23 +1,18 @@
 ---
-import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
-import Sidebar from '@components/Sidebar/Sidebar.vue'
 import Membership from '@components/Membership/Membership.vue'
 import Account from '@components/Account/Account.vue'
 
-const { propertyAddress, name } = Astro.props
+const { propertyAddress } = Astro.props
 ---
 
-<CLBWrapper>
-  <Sidebar client:load propertyAddress={propertyAddress} tenantName={name} />
-  <div>
-    <div class="mb-8">
-      <Membership client:only="vue" propertyAddress={propertyAddress} />
-    </div>
-    <!-- <div class='mb-8'>
+<div>
+  <div class="mb-8">
+    <Membership client:only="vue" propertyAddress={propertyAddress} />
+  </div>
+  <!-- <div class='mb-8'>
         <Badges />
       </div> -->
-    <div class="mb-8">
-      <Account client:only="vue" propertyAddress={propertyAddress} />
-    </div>
+  <div class="mb-8">
+    <Account client:only="vue" propertyAddress={propertyAddress} />
   </div>
-</CLBWrapper>
+</div>

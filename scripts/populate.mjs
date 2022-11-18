@@ -443,6 +443,52 @@ const populate = async () => {
               },
             ],
           },
+          {
+            key: 'sidebarPrimaryLinks',
+            value: [
+              {
+                display: 'Join',
+                path: '/join',
+              },
+            ],
+          },
+          {
+            key: 'sidebarLinks',
+            value: [
+              {
+                display: 'Community',
+                path: '/community',
+              },
+              {
+                display: 'Perks',
+                path: '/perks',
+              },
+              {
+                display: 'Quests',
+                path: '#',
+                enable: false,
+              },
+              {
+                display: 'Updates',
+                path: '#',
+                enable: false,
+              },
+              {
+                display: 'Vote',
+                path: '#',
+                enable: false,
+              },
+            ],
+          },
+          {
+            key: 'fullViewPaths',
+            value: [{ path: '', exact: true }, { path: 'join/' }],
+          },
+          {
+            key: 'avatarImgSrc',
+            value:
+              'https://temples.clubs.stakes.social/assets/avatar.445c55eb.png',
+          },
         ],
         plugins: [
           {
@@ -578,6 +624,10 @@ const populate = async () => {
             key: 'avatarImgSrc',
             value:
               'https://www.tambacity-kankou.jp/english/momiji/img/01main01.jpg',
+          },
+          {
+            key: 'fullViewPaths',
+            value: [{ path: '' }],
           },
         ],
         plugins: [

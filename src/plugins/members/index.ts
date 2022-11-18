@@ -8,10 +8,8 @@ import { default as Index } from './index.astro'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   _,
-  { propertyAddress, name }
-) => [
-  { paths: ['members'], component: Index, props: { propertyAddress, name } },
-]
+  { propertyAddress }
+) => [{ paths: ['members'], component: Index, props: { propertyAddress } }]
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async () => []
 
