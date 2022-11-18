@@ -1,12 +1,27 @@
 ---
 import Footer from '@components/Global/Footer.astro'
 import Cards from '@components/list/cards'
+import Hero from '@components/Hero/hero'
+import Hero2 from '@components/Hero/hero2'
 import type { Products } from '@constants/products'
 import type { PriceOverrides } from '@plugins/fiat'
 
-const { products: _products, priceOverrides } = Astro.props as {
+const {
+  products: _products,
+  priceOverrides,
+  title,
+  hero,
+} = Astro.props as {
   products: Products
   priceOverrides: PriceOverrides
+  title?:string
+  hero?: {
+    coverImgSrc: string
+    title: string
+    description: string
+    avatarImgSrc: string
+    projectName: string
+  }
 }
 const tdStyles = 'border border-slate-500 px-4 py-2 w-1/3'
 const products = _products.map((prod) => {
@@ -22,8 +37,21 @@ const products = _products.map((prod) => {
 })
 ---
 
-<div class="container mx-auto px-4 grid gap-16">
-  <h1 class="font-title font-bold text-4xl">Buy NFTs with FIAT</h1>
+<div class="container mx-auto px-4 grid gap-16 my-16">
+  {title && <h1 class="font-title font-bold text-4xl">{title}</h1>}
+  {
+    hero && (
+      <>
+        <Hero projectName={hero.projectName} coverImgSrc={hero.coverImgSrc} />
+        <Hero2
+          title={hero.title}
+          description={hero.description}
+          projectName={hero.projectName}
+          avatarImgSrc={hero.avatarImgSrc}
+        />
+      </>
+    )
+  }
 
   <div
     class="community-digest rounded-xl py-32 px-4 font-bold text-2xl font-title"
@@ -39,7 +67,7 @@ const products = _products.map((prod) => {
     </p>
     <p>
       <a
-        href="/fiat#faq"
+        href="#faq"
         class="bg-[#D500E6] inline-block text-white rounded px-7 py-2">FAQ</a
       >
     </p>
@@ -90,7 +118,7 @@ const products = _products.map((prod) => {
     </div>
   </section>
 
-  <section>
+  <section id="faq">
     <div class="mb-12">
       How does the NFT differ between purchase with FIAT and purchase with ETH?
     </div>

@@ -540,8 +540,8 @@ const populate = async () => {
             key: 'headerLinks',
             value: [
               {
-                display: 'FIAT',
-                path: 'fiat',
+                display: 'Use ETH',
+                path: 'nft',
               },
               {
                 display: 'Community',
@@ -682,6 +682,26 @@ const populate = async () => {
                   },
                 ],
               },
+              {
+                key: 'hero',
+                value: {
+                  coverImgSrc: 'https://i.imgur.com/qPq8hI8.jpg',
+                  title: 'Kogenji',
+                  description: [
+                    `光源寺の天女絵修復プロジェクトでのご支援金は、天女の表具欄間彩色修復等に使われます。支援者の方は光源寺のDiscordチャンネルに参加し、修復状況（写真等）を見ることができます。また、NFTの種類により様々な特典をご用意しております。`,
+                    `[EN:] The funds raised in the restoration project of Kougenji Celestial Maiden Art will be used for restoring the celestial maiden paper picture frame on the decorative transom and other cultural assets in the temple. Supporters are allowed to join the Discord channel of Kougenji to know the latest news about the restoration (photos,etc.).
+                    We provide a variety of Perks according to the types of NFT you’ll purchase.`,
+                  ],
+                },
+              },
+              {
+                key: 'title',
+                value: undefined,
+              },
+              {
+                key: 'slug',
+                value: [],
+              },
             ],
           },
           {
@@ -707,10 +727,6 @@ const populate = async () => {
                   `[EN:] The funds raised in the restoration project of Kougenji Celestial Maiden Art will be used for restoring the celestial maiden paper picture frame on the decorative transom and other cultural assets in the temple. Supporters are allowed to join the Discord channel of Kougenji to know the latest news about the restoration (photos,etc.).
                 We provide a variety of Perks according to the types of NFT you’ll purchase.`,
                 ],
-              },
-              {
-                key: 'slug',
-                value: [],
               },
             ],
           },
