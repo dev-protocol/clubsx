@@ -1,7 +1,6 @@
 ---
 import { pageFactory } from '@devprotocol/clubs-core'
-import DefaultLayout from '@layouts/Default.astro'
-import SetupLayout from '@layouts/Setup.astro'
+import Layout from '@layouts/Default.astro'
 import { config as _config } from '@fixtures/config'
 import buy from '@plugins/buy'
 import community from '@plugins/community'
@@ -14,20 +13,15 @@ import nft from '@plugins/nft'
 import perks from '@plugins/perks'
 import quests from '@plugins/quests'
 import message from '@plugins/message'
-import setup from '@plugins/setup'
-// import admin from '@plugins/admin'
 
 const { site, page } = Astro.params
-
 const { getStaticPaths, getCurrentConfig } = pageFactory({
   config: async () => await _config(site),
   plugins: {
-    // admin,
     buy,
     community,
     fiat,
     home,
-    setup,
     join,
     me,
     members,
@@ -37,53 +31,14 @@ const { getStaticPaths, getCurrentConfig } = pageFactory({
     quests,
   },
 })
-
 const path = (await getStaticPaths()).find(({ params }) => params.page === page)
-
 if (!path) {
   throw new Error('Path undefined: ', path)
 }
-
-let isSetup = false
-let setupStep: 'HOME' | 'MEMBERSHIPS' | 'PLUGINS'
-
-if (page) {
-  const pageSplit = (page as String).split('/')
-  isSetup = pageSplit[0] == 'setup'
-
-  if (isSetup) {
-    switch (pageSplit[1]) {
-      case 'homepage':
-        setupStep = 'HOME'
-        break
-
-      case 'memberships':
-        setupStep = 'MEMBERSHIPS'
-        break
-
-      case 'plugins':
-        setupStep = 'PLUGINS'
-        break
-    }
-  }
-}
-
 const Content = path.props.component
 const config = await getCurrentConfig()
 ---
 
-{
-  isSetup && (
-    <SetupLayout {config} setupStep={setupStep}>
-      <Content {...path.props} />
-    </SetupLayout>
-  )
-}
-
-{
-  !isSetup && (
-    <DefaultLayout {config}>
-      <Content {...path.props} />
-    </DefaultLayout>
-  )
-}
+<Layout {config}>
+  <Content {...path.props} />
+</Layout>

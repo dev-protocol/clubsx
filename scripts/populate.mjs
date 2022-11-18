@@ -519,10 +519,6 @@ const populate = async () => {
             enable: true,
             options: [memberships],
           },
-          {
-            name: 'setup',
-            enable: true,
-          },
         ],
       })
     )
