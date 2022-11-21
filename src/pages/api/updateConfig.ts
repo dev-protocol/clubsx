@@ -1,4 +1,4 @@
-import { authenticate } from '@devprotocol/clubs-core'
+import { authenticate, decode } from '@devprotocol/clubs-core'
 import { providers } from 'ethers'
 import { createClient } from 'redis'
 
@@ -9,10 +9,6 @@ export const post = async ({ request }: { request: Request }) => {
     hash: string
     sig: string
   }
-
-  const provider = providers.getDefaultProvider(
-    import.meta.env.PUBLIC_WEB3_PROVIDER_URL
-  )
 
   const client = createClient({
     url: process.env.REDIS_URL,
@@ -32,6 +28,9 @@ export const post = async ({ request }: { request: Request }) => {
     })
   }
 
+  const provider = providers.getDefaultProvider(
+    decode(previousConfiguration).rpcUrl
+  )
   const authenticated = await authenticate({
     message: hash,
     signature: sig,

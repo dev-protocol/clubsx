@@ -25,7 +25,7 @@ import { toNaturalNumber, validImageUri } from '@fixtures/utility'
 
 export default {
   name: 'STokenPositions',
-  props: ['stokenID', 'layout'],
+  props: ['stokenID', 'layout', 'rpcUrl'],
   data() {
     return {
       amount: undefined,
@@ -34,7 +34,7 @@ export default {
     }
   },
   async created() {
-    const providerURL = import.meta.env.PUBLIC_WEB3_PROVIDER_URL
+    const providerURL = this.rpcUrl
     const provider = new providers.JsonRpcProvider(providerURL)
 
     const balances = await getStokenPositions(provider, this.stokenID)

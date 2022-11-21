@@ -26,6 +26,7 @@ import Avator from '@components/Members/Avator.vue'
 export default {
   props: {
     propertyAddress: String,
+    rpcUrl: String,
   },
   data() {
     return {
@@ -33,7 +34,7 @@ export default {
     }
   },
   async created() {
-    const providerURL = import.meta.env.PUBLIC_WEB3_PROVIDER_URL
+    const providerURL = this.rpcUrl
     const provider = new providers.JsonRpcProvider(providerURL)
     const balances = await getBalances(provider, this.propertyAddress)
     this.creators = balances.map((balance) => ({

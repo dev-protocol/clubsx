@@ -9,7 +9,12 @@ const { tiers, propertyAddress, name, rpcUrl } = Astro.props
 ---
 
 <CLBWrapper>
-  <Sidebar client:load propertyAddress={propertyAddress} tenantName={name} />
+  <Sidebar
+    client:load
+    propertyAddress={propertyAddress}
+    tenantName={name}
+    rpcUrl={rpcUrl}
+  />
   <div class="p-4">
     <JoinClub
       client:only

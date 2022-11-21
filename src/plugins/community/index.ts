@@ -9,9 +9,13 @@ import { default as Admin } from './admin.astro'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   _,
-  { name, propertyAddress }
+  { name, propertyAddress, rpcUrl }
 ) => [
-  { paths: ['community'], component: Index, props: { name, propertyAddress } },
+  {
+    paths: ['community'],
+    component: Index,
+    props: { name, propertyAddress, rpcUrl },
+  },
 ]
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
