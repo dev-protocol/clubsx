@@ -12,7 +12,7 @@ const products = [
     id: '1',
     name: 'Kougenji Celestial Maiden #1',
     description: `光源寺に特別参拝でき、修復後の天女のNFTを受け取ることができます.
-    Holders of this NFT are invited to a special visit at Kougenji, and can receive restored celestial maiden NFT.`,
+    Holders of this NFT are invited to a special visit at Kougenji, and can receive the restored celestial maiden NFT.`,
     price: 0.6,
     currency: 'ETH',
     imageSrc:
@@ -418,8 +418,6 @@ const populate = async () => {
         twitterHandle: '@templesdao',
         description: 'DAO that makes the next 1000 years',
         url: 'https://temples.clubs.stakes.social',
-        chainId: 1,
-        rpcUrl: 'https://mainnet.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920',
         propertyAddress: '0x541f7914ed2a4a8b477edc711fa349a77983f3ad',
         adminRolePoints: 0,
         options: [
@@ -542,8 +540,8 @@ const populate = async () => {
             key: 'headerLinks',
             value: [
               {
-                display: 'FIAT',
-                path: 'fiat',
+                display: 'Use ETH',
+                path: 'nft',
               },
               {
                 display: 'Community',
@@ -684,6 +682,26 @@ const populate = async () => {
                   },
                 ],
               },
+              {
+                key: 'hero',
+                value: {
+                  coverImgSrc: 'https://i.imgur.com/qPq8hI8.jpg',
+                  title: 'Kogenji',
+                  description: [
+                    `光源寺の天女絵修復プロジェクトでのご支援金は、天女の表具欄間彩色修復等に使われます。支援者の方は光源寺のDiscordチャンネルに参加し、修復状況（写真等）を見ることができます。また、NFTの種類により様々な特典をご用意しております。`,
+                    `[EN:] The funds raised for Kougenji will be used to restore the celestial maiden paper picture frame on the decorative transom and other cultural assets withinin the temple. Supporters are allowed to join Kougenji's Discord channel for the latest news and updates about the restoration (photos,etc.).
+                    We also plan to provide a variety of Perks according to the types of NFT you'll purchase.`,
+                  ],
+                },
+              },
+              {
+                key: 'title',
+                value: undefined,
+              },
+              {
+                key: 'slug',
+                value: [],
+              },
             ],
           },
           {
@@ -706,13 +724,9 @@ const populate = async () => {
                 key: 'description',
                 value: [
                   `光源寺の天女絵修復プロジェクトでのご支援金は、天女の表具欄間彩色修復等に使われます。支援者の方は光源寺のDiscordチャンネルに参加し、修復状況（写真等）を見ることができます。また、NFTの種類により様々な特典をご用意しております。`,
-                  `[EN:] The funds raised in the restoration project of Kougenji Celestial Maiden Art will be used for restoring the celestial maiden paper picture frame on the decorative transom and other cultural assets in the temple. Supporters are allowed to join the Discord channel of Kougenji to know the latest news about the restoration (photos,etc.).
-                We provide a variety of Perks according to the types of NFT you’ll purchase.`,
+                  `[EN:] The funds raised for Kougenji will be used to restore the celestial maiden paper picture frame on the decorative transom and other cultural assets withinin the temple. Supporters are allowed to join Kougenji's Discord channel for the latest news and updates about the restoration (photos,etc.).
+                  We also plan to provide a variety of Perks according to the types of NFT you'll purchase.`,
                 ],
-              },
-              {
-                key: 'slug',
-                value: [],
               },
             ],
           },
