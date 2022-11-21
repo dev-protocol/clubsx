@@ -3,13 +3,22 @@ import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
 import Supporters from '@components/Members/Supporters.vue'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
 
-const { propertyAddress, name, rpcUrl} = Astro.props
+const { propertyAddress, name, rpcUrl } = Astro.props
 ---
 
 <CLBWrapper>
-  <Sidebar client:load propertyAddress={propertyAddress} tenantName={name} rpcUrl={rpcUrl} />
+  <Sidebar
+    client:load
+    propertyAddress={propertyAddress}
+    tenantName={name}
+    rpcUrl={rpcUrl}
+  />
   <div class="mx-4 mb-4">
     <h2 class="font-title font-bold text-3xl">Members</h2>
-    <Supporters client:only="vue" propertyAddress={propertyAddress} rpcUrl={rpcUrl} />
+    <Supporters
+      client:only="vue"
+      propertyAddress={propertyAddress}
+      rpcUrl={rpcUrl}
+    />
   </div>
 </CLBWrapper>

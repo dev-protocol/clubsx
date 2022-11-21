@@ -8,7 +8,12 @@ const { propertyAddress, name, rpcUrl } = Astro.props
 ---
 
 <CLBWrapper>
-  <Sidebar client:load propertyAddress={propertyAddress} tenantName={name} rpcUrl={rpcUrl} />
+  <Sidebar
+    client:load
+    propertyAddress={propertyAddress}
+    tenantName={name}
+    rpcUrl={rpcUrl}
+  />
   <div>
     <div class="mb-8">
       <Membership client:only="vue" propertyAddress={propertyAddress} />

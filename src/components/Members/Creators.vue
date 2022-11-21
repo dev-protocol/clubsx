@@ -26,7 +26,7 @@ import Avator from '@components/Members/Avator.vue'
 export default {
   props: {
     propertyAddress: String,
-    rpcUrl: String
+    rpcUrl: String,
   },
   data() {
     return {

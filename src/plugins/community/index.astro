@@ -16,7 +16,12 @@ const { propertyAddress, name, rpcUrl } = Astro.props
 
 <div class="relative">
   <CLBWrapper>
-    <Sidebar client:load propertyAddress={propertyAddress} tenantName={name} rpcUrl={rpcUrl} />
+    <Sidebar
+      client:load
+      propertyAddress={propertyAddress}
+      tenantName={name}
+      rpcUrl={rpcUrl}
+    />
     <article>
       <section class="mb-6">
         <!-- DIGEST -->

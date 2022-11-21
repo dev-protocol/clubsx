@@ -11,7 +11,11 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
   _,
   { name, propertyAddress, rpcUrl }
 ) => [
-  { paths: ['community'], component: Index, props: { name, propertyAddress, rpcUrl } },
+  {
+    paths: ['community'],
+    component: Index,
+    props: { name, propertyAddress, rpcUrl },
+  },
 ]
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async (

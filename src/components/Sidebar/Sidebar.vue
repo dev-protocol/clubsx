@@ -107,7 +107,7 @@ export default {
   props: {
     propertyAddress: String,
     tenantName: String,
-    rpcUrl: String
+    rpcUrl: String,
   },
   data() {
     return {
