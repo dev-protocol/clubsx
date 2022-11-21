@@ -7,7 +7,7 @@ dotenv.config()
 
 const toBytes32 = (str) => utils.keccak256(utils.toUtf8Bytes(str))
 
-const products = [
+const kogenjiProducts = [
   {
     id: '1',
     name: 'Kougenji Celestial Maiden #1',
@@ -201,6 +201,10 @@ const products = [
     },
   },
 ]
+const kogenjiProductsMumbai = kogenjiProducts.map((item) => ({
+  ...item,
+  price: item.price / 100,
+}))
 
 const tiers = [
   {
@@ -587,7 +591,7 @@ const populate = async () => {
             options: [
               {
                 key: 'products',
-                value: products,
+                value: kogenjiProductsMumbai, // Polygon: kogenjiProducts // Mumbai: kogenjiProductsMumbai
               },
             ],
           },
@@ -597,7 +601,7 @@ const populate = async () => {
             options: [
               {
                 key: 'products',
-                value: products,
+                value: kogenjiProductsMumbai, // Polygon: kogenjiProducts // Mumbai: kogenjiProductsMumbai
               },
               {
                 key: 'priceOverrides',
@@ -710,7 +714,7 @@ const populate = async () => {
             options: [
               {
                 key: 'products',
-                value: products,
+                value: kogenjiProductsMumbai, // Polygon: kogenjiProducts // Mumbai: kogenjiProductsMumbai
               },
               {
                 key: 'coverImgSrc',
