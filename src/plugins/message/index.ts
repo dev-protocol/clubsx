@@ -13,18 +13,18 @@ const forms: GatedMessage[] = json
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
-  { name, propertyAddress }
+  { name, propertyAddress, rpcUrl }
 ) => {
   return [
     {
       paths: ['message'],
       component: Index,
-      props: { name, propertyAddress, forms },
+      props: { name, propertyAddress, forms, rpcUrl },
     },
     ...forms.map((form) => ({
       paths: ['message', String(form.id)],
       component: ID,
-      props: { name, propertyAddress, form },
+      props: { name, propertyAddress, form, rpcUrl },
     })),
   ]
 }

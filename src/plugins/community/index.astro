@@ -11,12 +11,12 @@ import Step2 from '@assets/Step-2.png'
 import Step3 from '@assets/Step-3.png'
 import Key from '@assets/key.png'
 
-const { propertyAddress, name } = Astro.props
+const { propertyAddress, name, rpcUrl } = Astro.props
 ---
 
 <div class="relative">
   <CLBWrapper>
-    <Sidebar client:load propertyAddress={propertyAddress} tenantName={name} />
+    <Sidebar client:load propertyAddress={propertyAddress} tenantName={name} rpcUrl={rpcUrl} />
     <article>
       <section class="mb-6">
         <!-- DIGEST -->

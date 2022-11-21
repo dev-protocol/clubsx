@@ -3,13 +3,14 @@ import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
 import CLBTier from '@components/Primitives/CLBTier.vue'
 
-const { name, propertyAddress, forms } = Astro.props
+const { name, propertyAddress, forms, rpcUrl } = Astro.props
 ---
 
 <div>
   <div class="relative">
     <CLBWrapper>
       <Sidebar
+        rpcUrl={rpcUrl}
         client:load
         propertyAddress={propertyAddress}
         tenantName={name}

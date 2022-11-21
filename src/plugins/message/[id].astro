@@ -4,11 +4,11 @@ import Sidebar from '@components/Sidebar/Sidebar.vue'
 import CLBTier from '@components/Primitives/CLBTier.vue'
 import MessageForm from './components/MessageForm.vue'
 
-const { name, propertyAddress, form } = Astro.props
+const { name, propertyAddress, form, rpcUrl } = Astro.props
 ---
 
 <CLBWrapper>
-  <Sidebar client:load propertyAddress={propertyAddress} tenantName={name} />
+  <Sidebar client:load propertyAddress={propertyAddress} tenantName={name} rpcUrl={rpcUrl} />
   <article>
     <section class="mb-12">
       <h1 class="mb-5 font-title font-semibold text-2xl">{form.title}</h1>
