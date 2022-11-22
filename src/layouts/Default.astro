@@ -108,6 +108,7 @@ const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
                 links={sidebarLinks}
                 primaryLinks={sidebarPrimaryLinks}
                 avatarImgSrc={avatarImgSrc}
+                rpcUrl={config.rpcUrl}
               />
               <slot />
             </CLBWrapper>

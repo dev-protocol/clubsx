@@ -2,6 +2,7 @@ import dotenv from 'dotenv'
 import { encode } from '@devprotocol/clubs-core/encode'
 import { createClient } from 'redis'
 import { utils } from 'ethers'
+import BigNumber from 'bignumber.js'
 
 dotenv.config()
 
@@ -203,7 +204,7 @@ const kogenjiProducts = [
 ]
 const kogenjiProductsMumbai = kogenjiProducts.map((item) => ({
   ...item,
-  price: item.price / 100,
+  price: new BigNumber(item.price).div(100).toFixed(),
 }))
 
 const tiers = [
@@ -424,6 +425,8 @@ const populate = async () => {
         url: 'https://temples.clubs.stakes.social',
         propertyAddress: '0x541f7914ed2a4a8b477edc711fa349a77983f3ad',
         adminRolePoints: 0,
+        chainId: 1,
+        rpcUrl: 'https://mainnet.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920',
         options: [
           {
             key: 'navLinks',
