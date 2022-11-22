@@ -9,7 +9,11 @@
           class="flex items-center border border-x-0 border-t-0 border-dp-black-200 outline-white first:border-solid last:border-none"
         >
           <Avator :accountAddress="member.ownerAddress" :displayName="true" />
-          <STokenPositions class="mx-8" :stokenID="member.id" />
+          <STokenPositions
+            class="mx-8"
+            :stokenID="member.id"
+            :rpcUrl="rpcUrl"
+          />
         </li>
       </ul>
     </div>
@@ -28,6 +32,7 @@ import STokenPositions from '@components/Members/STokenPositions.vue'
 export default {
   props: {
     propertyAddress: String,
+    rpcUrl: String,
   },
   data() {
     return {
@@ -35,7 +40,7 @@ export default {
     }
   },
   async created() {
-    const providerURL = import.meta.env.PUBLIC_WEB3_PROVIDER_URL
+    const providerURL = this.rpcUrl
     const provider = new providers.JsonRpcProvider(providerURL)
     const stokenIDs = await detectStokensByPropertyAddress(
       provider,

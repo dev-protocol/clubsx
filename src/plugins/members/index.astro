@@ -1,10 +1,14 @@
 ---
 import Supporters from '@components/Members/Supporters.vue'
 
-const { propertyAddress } = Astro.props
+const { propertyAddress, rpcUrl } = Astro.props
 ---
 
 <div class="mx-4 mb-4">
   <h2 class="font-title font-bold text-3xl">Members</h2>
-  <Supporters client:only="vue" propertyAddress={propertyAddress} />
+  <Supporters
+    client:only="vue"
+    propertyAddress={propertyAddress}
+    rpcUrl={rpcUrl}
+  />
 </div>

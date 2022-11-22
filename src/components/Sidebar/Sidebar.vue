@@ -124,6 +124,7 @@ export default {
       default: [],
     },
     avatarImgSrc: String,
+    rpcUrl: String,
   },
   data() {
     return {
@@ -136,7 +137,7 @@ export default {
     }
   },
   async created() {
-    const providerURL = import.meta.env.PUBLIC_WEB3_PROVIDER_URL
+    const providerURL = this.rpcUrl
     const provider = new providers.JsonRpcProvider(providerURL)
     await detectStokensByPropertyAddress(provider, this.propertyAddress).then(
       (res) => {

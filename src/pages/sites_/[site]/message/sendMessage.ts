@@ -1,6 +1,6 @@
 import { utils, providers, ethers, Signer } from 'ethers'
 import { createClient } from 'redis'
-import { authenticate } from '@devprotocol/clubs-core'
+import { authenticate, decode } from '@devprotocol/clubs-core'
 import { checkMemberships } from '@fixtures/utility'
 
 import json from '../../../../plugins/message/forms.json'
@@ -41,31 +41,6 @@ export const post = async ({ request }: { request: Request }) => {
     })
   }
 
-  const provider = providers.getDefaultProvider(
-    import.meta.env.PUBLIC_WEB3_PROVIDER_URL
-  )
-
-  // Check for required membership validity
-  try {
-    const web3Provider = new ethers.providers.JsonRpcProvider(
-      import.meta.env.PUBLIC_WEB3_PROVIDER_URL
-    )
-    const isMember = await checkMemberships(
-      web3Provider,
-      propertyAddress,
-      formData.requiredMemberships,
-      userAddress
-    ).catch((err) => {
-      throw Error('Not a member')
-    })
-
-    if (!isMember) {
-      throw Error('Not a member')
-    }
-  } catch (error) {
-    return new Response(JSON.stringify({ error }), { status: 500 })
-  }
-
   const client = createClient({
     url: process.env.REDIS_URL,
     username: process.env.REDIS_USERNAME ?? '',
@@ -85,6 +60,30 @@ export const post = async ({ request }: { request: Request }) => {
     })
   }
 
+  // Check for required membership validity
+  try {
+    const web3Provider = new ethers.providers.JsonRpcProvider(
+      decode(previousConfiguration).rpcUrl
+    )
+    const isMember = await checkMemberships(
+      web3Provider,
+      propertyAddress,
+      formData.requiredMemberships,
+      userAddress
+    ).catch((err) => {
+      throw Error('Not a member')
+    })
+
+    if (!isMember) {
+      throw Error('Not a member')
+    }
+  } catch (error) {
+    return new Response(JSON.stringify({ error }), { status: 500 })
+  }
+
+  const provider = providers.getDefaultProvider(
+    decode(previousConfiguration).rpcUrl
+  )
   const authenticated = await authenticate({
     message: hash,
     signature: sig,
