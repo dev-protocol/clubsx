@@ -9,10 +9,11 @@ import {
 import { default as Index } from './index.astro'
 import { default as Admin } from './admin.astro'
 import { HomeConfig } from '../../constants/homeConfig'
+import { NavLink } from '@constants/navLink'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
-  { name, propertyAddress, rpcUrl }
+  { name, propertyAddress, rpcUrl, ...config }
 ) => {
   const tiers = options.find((opt) => opt.key === 'tiers')
     ?.value as UndefinedOr<Tiers>
@@ -20,11 +21,32 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
   const homeConfig = options.find((opt) => opt.key === 'homeConfig')
     ?.value as UndefinedOr<HomeConfig>
 
+  const sidebarPrimaryLinks =
+    config.options?.find((option) => option.key === 'sidebarPrimaryLinks')
+      ?.value ?? ([] as NavLink[])
+
+  const sidebarLinks =
+    config.options?.find((option) => option.key === 'sidebarLinks')?.value ??
+    ([] as NavLink[])
+
+  const avatarImgSrc = config.options?.find(
+    (option) => option.key === 'avatarImgSrc'
+  )?.value
+
   return [
     {
       paths: [''],
       component: Index,
-      props: { name, propertyAddress, tiers, homeConfig, rpcUrl },
+      props: {
+        name,
+        propertyAddress,
+        tiers,
+        homeConfig,
+        rpcUrl,
+        sidebarPrimaryLinks,
+        sidebarLinks,
+        avatarImgSrc,
+      },
     },
   ]
 }

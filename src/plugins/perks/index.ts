@@ -10,7 +10,7 @@ import { default as Index } from './index.astro'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
-  { propertyAddress, name, rpcUrl }
+  { propertyAddress, rpcUrl }
 ) => {
   const perks = options.find((opt) => opt.key === 'perks')
     ?.value as UndefinedOr<Perks>
@@ -19,7 +19,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
     {
       paths: ['perks'],
       component: Index,
-      props: { propertyAddress, name, perks, rpcUrl },
+      props: { propertyAddress, perks, rpcUrl },
     },
   ]
 }

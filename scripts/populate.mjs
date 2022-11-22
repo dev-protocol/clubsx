@@ -2,6 +2,7 @@ import dotenv from 'dotenv'
 import { encode } from '@devprotocol/clubs-core/encode'
 import { createClient } from 'redis'
 import { utils } from 'ethers'
+import BigNumber from 'bignumber.js'
 
 dotenv.config()
 
@@ -203,7 +204,7 @@ const kogenjiProducts = [
 ]
 const kogenjiProductsMumbai = kogenjiProducts.map((item) => ({
   ...item,
-  price: item.price / 100,
+  price: new BigNumber(item.price).div(100).toFixed(),
 }))
 
 const tiers = [
@@ -424,6 +425,8 @@ const populate = async () => {
         url: 'https://temples.clubs.stakes.social',
         propertyAddress: '0x541f7914ed2a4a8b477edc711fa349a77983f3ad',
         adminRolePoints: 0,
+        chainId: 1,
+        rpcUrl: 'https://mainnet.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920',
         options: [
           {
             key: 'navLinks',
@@ -446,6 +449,52 @@ const populate = async () => {
                 path: 'https://www.youtube.com/user/suiundo/',
               },
             ],
+          },
+          {
+            key: 'sidebarPrimaryLinks',
+            value: [
+              {
+                display: 'Join',
+                path: '/join',
+              },
+            ],
+          },
+          {
+            key: 'sidebarLinks',
+            value: [
+              {
+                display: 'Community',
+                path: '/community',
+              },
+              {
+                display: 'Perks',
+                path: '/perks',
+              },
+              {
+                display: 'Quests',
+                path: '#',
+                enable: false,
+              },
+              {
+                display: 'Updates',
+                path: '#',
+                enable: false,
+              },
+              {
+                display: 'Vote',
+                path: '#',
+                enable: false,
+              },
+            ],
+          },
+          {
+            key: 'fullPageViewPaths',
+            value: [{ path: '', exact: true }, { path: 'join/' }],
+          },
+          {
+            key: 'avatarImgSrc',
+            value:
+              'https://temples.clubs.stakes.social/assets/avatar.445c55eb.png',
           },
         ],
         plugins: [
@@ -582,6 +631,10 @@ const populate = async () => {
             key: 'avatarImgSrc',
             value:
               'https://www.tambacity-kankou.jp/english/momiji/img/01main01.jpg',
+          },
+          {
+            key: 'fullPageViewPaths',
+            value: [{ path: '' }],
           },
         ],
         plugins: [
