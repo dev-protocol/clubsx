@@ -488,7 +488,7 @@ const populate = async () => {
             ],
           },
           {
-            key: 'fullViewPaths',
+            key: 'fullPageViewPaths',
             value: [{ path: '', exact: true }, { path: 'join/' }],
           },
           {
@@ -633,7 +633,7 @@ const populate = async () => {
               'https://www.tambacity-kankou.jp/english/momiji/img/01main01.jpg',
           },
           {
-            key: 'fullViewPaths',
+            key: 'fullPageViewPaths',
             value: [{ path: '' }],
           },
         ],

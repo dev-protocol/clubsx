@@ -47,11 +47,11 @@ const avatarImgSrc = config.options?.find(
   (option) => option.key === 'avatarImgSrc'
 )?.value
 
-const fullViewPaths =
-  (config.options?.find((option) => option.key === 'fullViewPaths')
+const fullPageViewPaths =
+  (config.options?.find((option) => option.key === 'fullPageViewPaths')
     ?.value as PathCondition[]) ?? ([] as PathCondition[])
 
-const isFullView = fullViewPaths.some((path) =>
+const isFullPageView = fullPageViewPaths.some((path) =>
   path.exact || page === undefined
     ? path.path === (page ?? '')
     : page !== undefined
@@ -93,7 +93,7 @@ const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
       socialLinks={socialLinks}
     />
     {
-      isFullView ? (
+      isFullPageView ? (
         <main>
           <slot />
         </main>
