@@ -8,6 +8,29 @@
   const update = () => {
     setOptions([{ key: 'homeConfig', value: homeConfig }], currentPluginIndex)
   }
+
+  const addWhatWeDo = () => {
+    homeConfig = {
+      ...homeConfig,
+      whatWeDo: {
+        ...homeConfig.whatWeDo,
+        images: homeConfig.whatWeDo.images.concat({
+          image: '',
+          description: '',
+        }),
+      },
+    }
+  }
+
+  const addPerks = () => {
+    homeConfig = {
+      ...homeConfig,
+      perks: {
+        ...homeConfig.perks,
+        images: homeConfig.perks.images.concat({ image: '', description: '' }),
+      },
+    }
+  }
 </script>
 
 <form on:change|preventDefault={(_) => update()}>
@@ -49,87 +72,13 @@
         />
       </div>
 
-      {#if homeConfig.whatWeDo.images[0]}
-        <div class="mb-10 flex flex-col">
-          <label class="mb-1" for="what-we-do-image-1"> Image 1 </label>
-          <input
-            class="rounded bg-[#040B10] px-8 py-4"
-            bind:value={homeConfig.whatWeDo.images[0].image}
-            id="what-we-do-image-1"
-            name="what-we-do-image-1"
-          />
-        </div>
-
-        <div class="mb-10 flex flex-col">
-          <label class="mb-1" for="what-we-do-image-1-description">
-            Image 1 Description
-          </label>
-          <input
-            class="rounded bg-[#040B10] px-8 py-4"
-            bind:value={homeConfig.whatWeDo.images[0].description}
-            id="what-we-do-image-1-description"
-            name="what-we-do-image-1-description"
-          />
-        </div>
-      {/if}
-
-      {#if homeConfig.whatWeDo.images[1]}
-        <div class="mb-10 flex flex-col">
-          <label class="mb-1" for="what-we-do-image-1"> Image 2 </label>
-          <input
-            class="rounded bg-[#040B10] px-8 py-4"
-            bind:value={homeConfig.whatWeDo.images[1].image}
-            id="what-we-do-image-2"
-            name="what-we-do-image-2"
-          />
-        </div>
-
-        <div class="mb-10 flex flex-col">
-          <label class="mb-1" for="what-we-do-image-2-description">
-            Image 2 Description
-          </label>
-          <input
-            class="rounded bg-[#040B10] px-8 py-4"
-            bind:value={homeConfig.whatWeDo.images[0].description}
-            id="what-we-do-image-2-description"
-            name="what-we-do-image-2-description"
-          />
-        </div>
-      {/if}
-    </div>
-
-    <div class="my-4 flex flex-col pt-8">
-      <span class="mb-4 text-lg font-bold">Perks</span>
-
-      <div class="mb-10 flex flex-col">
-        <label class="mb-1" for="perks-header-text"> Header Text </label>
-        <input
-          class="rounded bg-[#040B10] px-8 py-4"
-          bind:value={homeConfig.perks.headerText}
-          id="perks-header-text"
-          name="perks-header-text"
-        />
-      </div>
-
-      <div class="mb-10 flex flex-col">
-        <label class="mb-1" for="perks-header-sub-text">
-          Header Sub Text
-        </label>
-        <input
-          class="rounded bg-[#040B10] px-8 py-4"
-          bind:value={homeConfig.perks.subText}
-          id="perks-header-sub-text"
-          name="perks-header-sub-text"
-        />
-      </div>
-
-      {#each homeConfig.perks.images as perkImage, i}
+      {#each homeConfig.whatWeDo.images as image, i}
         <div>
           <div class="mb-10 flex flex-col">
-            <label class="mb-1" for={`perk-image-${i}`}> Perk Image {i} </label>
+            <label class="mb-1" for={`perk-image-${i}`}>Image {i + 1} </label>
             <input
               class="rounded bg-[#040B10] px-8 py-4"
-              bind:value={perkImage.image}
+              bind:value={image.image}
               id={`perk-image-${i}`}
               name={`perk-image-${i}`}
             />
@@ -137,30 +86,100 @@
 
           <div class="mb-10 flex flex-col">
             <label class="mb-1" for={`perk-image-${i}-description`}>
-              Perk Image {i} Description
+              Image {i + 1} Description
             </label>
             <input
               class="rounded bg-[#040B10] px-8 py-4"
-              bind:value={perkImage.description}
+              bind:value={image.description}
               id={`perk-image-${i}-description`}
               name={`perk-image-${i}-description`}
             />
           </div>
+
+          {#if i === homeConfig.whatWeDo.images.length - 1}
+            <button
+              class="hs-button is-filled"
+              type="button"
+              on:click={addWhatWeDo}>Add image</button
+            >
+          {/if}
         </div>
       {/each}
-    </div>
 
-    <div class="my-4 flex flex-col pt-8">
-      <span class="mb-4 text-lg font-bold">Quote</span>
+      <div class="my-4 flex flex-col pt-8">
+        <span class="mb-4 text-lg font-bold">Perks</span>
 
-      <div class="mb-10 flex flex-col">
-        <label class="mb-1" for="quote"> Quote </label>
-        <input
-          class="rounded bg-[#040B10] px-8 py-4"
-          bind:value={homeConfig.quote}
-          id="quote"
-          name="quote"
-        />
+        <div class="mb-10 flex flex-col">
+          <label class="mb-1" for="perks-header-text"> Header Text </label>
+          <input
+            class="rounded bg-[#040B10] px-8 py-4"
+            bind:value={homeConfig.perks.headerText}
+            id="perks-header-text"
+            name="perks-header-text"
+          />
+        </div>
+
+        <div class="mb-10 flex flex-col">
+          <label class="mb-1" for="perks-header-sub-text">
+            Header Sub Text
+          </label>
+          <input
+            class="rounded bg-[#040B10] px-8 py-4"
+            bind:value={homeConfig.perks.subText}
+            id="perks-header-sub-text"
+            name="perks-header-sub-text"
+          />
+        </div>
+
+        {#each homeConfig.perks.images as perkImage, i}
+          <div>
+            <div class="mb-10 flex flex-col">
+              <label class="mb-1" for={`perk-image-${i}`}>
+                Perk Image {i + 1}
+              </label>
+              <input
+                class="rounded bg-[#040B10] px-8 py-4"
+                bind:value={perkImage.image}
+                id={`perk-image-${i}`}
+                name={`perk-image-${i}`}
+              />
+            </div>
+
+            <div class="mb-10 flex flex-col">
+              <label class="mb-1" for={`perk-image-${i}-description`}>
+                Perk Image {i + 1} Description
+              </label>
+              <input
+                class="rounded bg-[#040B10] px-8 py-4"
+                bind:value={perkImage.description}
+                id={`perk-image-${i}-description`}
+                name={`perk-image-${i}-description`}
+              />
+            </div>
+          </div>
+
+          {#if i === homeConfig.perks.images.length - 1}
+            <button
+              class="hs-button is-filled"
+              type="button"
+              on:click={addPerks}>Add image</button
+            >
+          {/if}
+        {/each}
+      </div>
+
+      <div class="my-4 flex flex-col pt-8">
+        <span class="mb-4 text-lg font-bold">Quote</span>
+
+        <div class="mb-10 flex flex-col">
+          <label class="mb-1" for="quote"> Quote </label>
+          <input
+            class="rounded bg-[#040B10] px-8 py-4"
+            bind:value={homeConfig.quote}
+            id="quote"
+            name="quote"
+          />
+        </div>
       </div>
     </div>
   </div>
