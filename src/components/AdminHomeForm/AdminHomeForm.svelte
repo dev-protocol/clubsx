@@ -8,6 +8,29 @@
   const update = () => {
     setOptions([{ key: 'homeConfig', value: homeConfig }], currentPluginIndex)
   }
+
+  const addWhatWeDo = () => {
+    homeConfig = {
+      ...homeConfig,
+      whatWeDo: {
+        ...homeConfig.whatWeDo,
+        images: homeConfig.whatWeDo.images.concat({
+          image: '',
+          description: '',
+        }),
+      },
+    }
+  }
+
+  const addPerks = () => {
+    homeConfig = {
+      ...homeConfig,
+      perks: {
+        ...homeConfig.perks,
+        images: homeConfig.perks.images.concat({ image: '', description: '' }),
+      },
+    }
+  }
 </script>
 
 <form on:change|preventDefault={(_) => update()}>
@@ -72,6 +95,14 @@
               name={`perk-image-${i}-description`}
             />
           </div>
+
+          {#if i === homeConfig.whatWeDo.images.length - 1}
+            <button
+              class="hs-button is-filled"
+              type="button"
+              on:click={addWhatWeDo}>Add image</button
+            >
+          {/if}
         </div>
       {/each}
 
@@ -126,6 +157,14 @@
               />
             </div>
           </div>
+
+          {#if i === homeConfig.perks.images.length - 1}
+            <button
+              class="hs-button is-filled"
+              type="button"
+              on:click={addPerks}>Add image</button
+            >
+          {/if}
         {/each}
       </div>
 
