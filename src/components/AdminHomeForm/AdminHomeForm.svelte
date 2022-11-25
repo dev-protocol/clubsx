@@ -2,12 +2,12 @@
   import { setOptions } from '@devprotocol/clubs-core'
   import type { HomeConfig } from '../../constants/homeConfig'
 
-  let fileinput: any;
+  let fileinput: any
   export let homeConfig: HomeConfig
   export let currentPluginIndex: number
 
   const update = (e: any) => {
-    if (e.target.id.includes('-image-') || e.target.type == 'file') return;  // We don't want to store file in config
+    if (e.target.id.includes('-image-') || e.target.type == 'file') return // We don't want to store file in config
     setOptions([{ key: 'homeConfig', value: homeConfig }], currentPluginIndex)
   }
 
@@ -35,27 +35,27 @@
   }
 
   const uploadImageAndGetPath = (image: string) => {
-    if (!image) return '';
+    if (!image) return ''
     // Upload the image and return path
-    return 'ABC';
+    return 'ABC'
   }
 
   const updateWhatWeDoImgUrl = (i: number, imageURl: string) => {
     homeConfig.whatWeDo.images[i] = {
       image: imageURl,
-      description: homeConfig.whatWeDo.images[i].description
+      description: homeConfig.whatWeDo.images[i].description,
     }
   }
 
   const onWhatWeDoFileSelected = (i: number, e: any) => {
-    let image = e.target.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(image);
-    reader.onload = e => {
-      const imgData = e?.target?.result?.toString() || '';
-      const path = uploadImageAndGetPath(imgData);
-      updateWhatWeDoImgUrl(i, path);
-    };
+    let image = e.target.files[0]
+    const reader = new FileReader()
+    reader.readAsDataURL(image)
+    reader.onload = (e) => {
+      const imgData = e?.target?.result?.toString() || ''
+      const path = uploadImageAndGetPath(imgData)
+      updateWhatWeDoImgUrl(i, path)
+    }
   }
 </script>
 
@@ -101,7 +101,9 @@
       {#each homeConfig.whatWeDo.images as image, i}
         <div>
           <div class="mb-10 flex flex-col">
-            <label class="mb-1" for={`whatwedo-image-${i}`}>Image {i + 1} </label>
+            <label class="mb-1" for={`whatwedo-image-${i}`}
+              >Image {i + 1}
+            </label>
             {#if image.image && image.image != ''}
               <input
                 class="rounded bg-[#040B10] px-8 py-4"
@@ -110,8 +112,22 @@
                 name={`whatwedo-image-${i}`}
               />
             {:else}
-              <button for={`whatwedo-image-${i}`} class="hs-button is-filled" type="button" on:click={()=>{fileinput.click();}}>Choose Image</button>
-              <input id={`whatwedo-image-${i}`} name={`whatwedo-image-${i}`} style="display:none" type="file" on:change={(e)=> onWhatWeDoFileSelected(i, e)} bind:this={fileinput} >
+              <button
+                for={`whatwedo-image-${i}`}
+                class="hs-button is-filled"
+                type="button"
+                on:click={() => {
+                  fileinput.click()
+                }}>Choose Image</button
+              >
+              <input
+                id={`whatwedo-image-${i}`}
+                name={`whatwedo-image-${i}`}
+                style="display:none"
+                type="file"
+                on:change={(e) => onWhatWeDoFileSelected(i, e)}
+                bind:this={fileinput}
+              />
             {/if}
           </div>
 
