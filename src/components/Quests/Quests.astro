@@ -5,11 +5,11 @@ import quests from './quests.json'
 const filteredQuests = quests.filter((quest) => quest.listed)
 ---
 
-<section class="bg-cover bg-center mx-4">
+<section class="mx-4 bg-cover bg-center">
   <h2 class="text-3xl">Quests</h2>
   <p>Complete quests and collect additional badges.</p>
   <div
-    class="grid gap-8 md:grid-cols-2 items-center justify-center lg:px-0 md:text-left p-4 text-black dark:text-white"
+    class="grid items-center justify-center gap-8 p-4 text-black dark:text-white md:grid-cols-2 md:text-left lg:px-0"
   >
     {
       filteredQuests.length > 0 ? (
