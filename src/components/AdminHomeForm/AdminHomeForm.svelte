@@ -101,6 +101,10 @@
 
     update()
   }
+
+  const onUploadClick = (id: string) => {
+    document.getElementById(id)?.click()
+  }
 </script>
 
 <form on:change|preventDefault={(e) => update(e)}>
@@ -160,9 +164,8 @@
                 for={`whatwedo-image-${i}`}
                 class="hs-button is-filled"
                 type="button"
-                on:click={() => {
-                  fileinput.click()
-                }}>Choose Image</button
+                on:click={() => onUploadClick(`whatwedo-image-${i}`)}
+                >Choose Image</button
               >
               <input
                 id={`whatwedo-image-${i}`}
@@ -225,28 +228,25 @@
         {#each homeConfig.perks.images as perkImage, i}
           <div>
             <div class="mb-10 flex flex-col">
-              <label class="mb-1" for={`whatwedo-image-${i}`}
-                >Image {i + 1}
-              </label>
+              <label class="mb-1" for={`perk-image-${i}`}>Image {i + 1} </label>
               {#if perkImage.image && perkImage.image != ''}
                 <input
                   class="rounded bg-[#040B10] px-8 py-4"
                   bind:value={perkImage.image}
-                  id={`whatwedo-image-${i}`}
-                  name={`whatwedo-image-${i}`}
+                  id={`perk-image-${i}`}
+                  name={`perk-image-${i}`}
                 />
               {:else}
                 <button
-                  for={`whatwedo-image-${i}`}
+                  for={`perk-image-${i}`}
                   class="hs-button is-filled"
                   type="button"
-                  on:click={() => {
-                    fileinput.click()
-                  }}>Choose Image</button
+                  on:click={() => onUploadClick(`perk-image-${i}`)}
+                  >Choose Image</button
                 >
                 <input
-                  id={`whatwedo-image-${i}`}
-                  name={`whatwedo-image-${i}`}
+                  id={`perk-image-${i}`}
+                  name={`perk-image-${i}`}
                   style="display:none"
                   type="file"
                   on:change={(e) => onFileSelected(i, e, false)}
