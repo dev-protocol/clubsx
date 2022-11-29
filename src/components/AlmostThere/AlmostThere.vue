@@ -147,12 +147,28 @@ export default {
       </div>
     </section>
     <section class="mb-4">
-      <HSButton
-        @click.prevent="setDb()"
-        type="outlined"
-        class="w-full gap-0.5 py-2 px-6"
-        >Next</HSButton
-      >
+      <div class="text-center">
+        <HSButton
+          @click.prevent="setDb()"
+          type="outlined"
+          class="mb-2 gap-0.5 py-2 px-6"
+          >Sign to proceed</HSButton
+        >
+      </div>
+      <div class="text-gray-400">
+        <span class="text-sm"
+          >Please click "Sign" to sign this message to keep your data
+          safe.</span
+        >
+        <br />
+        <span class="text-sm">No password and gas fee are required.</span>
+        <br />
+        <span class="text-sm"
+          >Timestamp: {{ new Date().getTime() }} ({{
+            new Date().toString()
+          }})</span
+        >
+      </div>
     </section>
   </div>
 </template>
