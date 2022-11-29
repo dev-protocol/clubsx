@@ -24,10 +24,12 @@ export default {
         twitterHandle: '',
         description: '',
         url: '',
-        propertyAddress: this.address,
+        propertyAddress: this.address ?? '',
         adminRolePoints: 0,
         options: [],
         plugins: defaultPlugins,
+        chainId: this.network ? +this.network : 1, // need to ensure this is correct...
+        rpcUrl: '',
       }
       const modalProvider = GetModalProvider()
       const { provider, currentAddress } = await ReConnectWallet(modalProvider)
@@ -92,33 +94,22 @@ export default {
   <div class="mt-[10%] flex flex-col items-center justify-items-center">
     <section class="mb-16 mt-8">
       <h1 class="mb-2 text-center font-title text-7xl font-bold">
-        Almost There
+        It All Starts <br />
+        with a Domain
       </h1>
     </section>
     <section class="mb-16">
-      <table class="table-auto py-4 px-6 text-xl">
-        <tr class="py-4 px-6 text-left">
-          <td class="py-4 px-6 text-left">Chain</td>
-          <td class="py-4 px-6 text-left">{{ network || '' }}</td>
-        </tr>
-        <tr class="py-4 px-6 text-left">
-          <td class="py-4 px-6 text-left">Token</td>
-          <td class="py-4 px-6 text-left">{{ address || '' }}</td>
-        </tr>
-        <tr class="py-4 px-6 text-left">
-          <td class="py-4 px-6 text-left">DAO name</td>
-          <td class="py-4 px-6 text-left">
-            <input
-              class="rounded bg-gray-700 px-8 py-4"
-              v-model="daoName"
-              id="fullname"
-              name="fullname"
-              placeholder="Enter your DAO name"
-              required
-            />
-          </td>
-        </tr>
-      </table>
+      <div class="flex items-center">
+        <input
+          class="rounded bg-gray-700 py-4 pl-8 pr-1 text-right"
+          v-model="daoName"
+          id="daoname"
+          name="daoname"
+          placeholder="Enter your DAO name"
+          required
+        />
+        <span class="ml-1 text-lg">.clubs.xyz</span>
+      </div>
     </section>
     <section class="mb-16" v-if="dbSetStatus !== ''">
       <!-- Depending on access logic, show either one -->
