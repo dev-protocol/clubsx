@@ -2,7 +2,6 @@
   import { setOptions } from '@devprotocol/clubs-core'
   import type { HomeConfig } from '../../constants/homeConfig'
 
-  let fileinput: any
   export let homeConfig: HomeConfig
   export let currentPluginIndex: number
   export let imgurClientId: string
@@ -173,7 +172,6 @@
                 style="display:none"
                 type="file"
                 on:change={(e) => onFileSelected(i, e, true)}
-                bind:this={fileinput}
               />
             {/if}
           </div>
@@ -250,7 +248,6 @@
                   style="display:none"
                   type="file"
                   on:change={(e) => onFileSelected(i, e, false)}
-                  bind:this={fileinput}
                 />
               {/if}
             </div>
