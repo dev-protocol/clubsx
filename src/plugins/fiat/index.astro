@@ -37,7 +37,7 @@ const products = _products.map((prod) => {
 })
 ---
 
-<div class="container mx-auto px-4 grid gap-16 my-16">
+<div class="container mx-auto my-16 grid gap-16 px-4">
   {title && <h1 class="font-title text-4xl font-bold">{title}</h1>}
   {
     hero && (
@@ -54,7 +54,7 @@ const products = _products.map((prod) => {
   }
 
   <div
-    class="community-digest rounded-xl py-32 px-4 font-bold text-2xl font-title"
+    class="community-digest rounded-xl py-32 px-4 font-title text-2xl font-bold"
   >
     Do you still not have ETH? You can buy NFT collections with your regular
     credit card here.
@@ -68,7 +68,7 @@ const products = _products.map((prod) => {
     <p>
       <a
         href="#faq"
-        class="bg-[#D500E6] inline-block text-white rounded px-7 py-2">FAQ</a
+        class="inline-block rounded bg-[#D500E6] px-7 py-2 text-white">FAQ</a
       >
     </p>
   </div>
@@ -76,42 +76,42 @@ const products = _products.map((prod) => {
   <Cards products={products} />
 
   <section id="faq">
-    <h2 class="font-title font-bold mb-12 text-4xl">FAQ</h2>
+    <h2 class="mb-12 font-title text-4xl font-bold">FAQ</h2>
     <div class="mb-12">What is the flow of the NFT purchase?</div>
 
     <div class="flex flex-col">
-      <div class="flex justify-center mb-2.5">
-        <div class="inline border border-white rounded py-8 px-20">
+      <div class="mb-2.5 flex justify-center">
+        <div class="inline rounded border border-white py-8 px-20">
           Choose an NFT
         </div>
       </div>
 
-      <div class="flex justify-center mb-2.5">
+      <div class="mb-2.5 flex justify-center">
         <i class="arrow-long-down"></i>
       </div>
 
-      <div class="flex justify-center mb-2.5">
-        <div class="inline border border-white rounded py-8 px-20">
+      <div class="mb-2.5 flex justify-center">
+        <div class="inline rounded border border-white py-8 px-20">
           Checkout with Stripe
         </div>
       </div>
 
-      <div class="flex justify-center mb-2.5">
+      <div class="mb-2.5 flex justify-center">
         <i class="arrow-long-down"></i>
       </div>
 
-      <div class="flex justify-center mb-2.5">
-        <div class="inline border border-white rounded py-8 px-20">
+      <div class="mb-2.5 flex justify-center">
+        <div class="inline rounded border border-white py-8 px-20">
           Send the wallet address form on Airtable
         </div>
       </div>
 
-      <div class="flex justify-center mb-2.5">
+      <div class="mb-2.5 flex justify-center">
         <i class="arrow-long-down"></i>
       </div>
 
-      <div class="flex justify-center mb-2.5">
-        <div class="inline border border-white rounded py-8 px-20">
+      <div class="mb-2.5 flex justify-center">
+        <div class="inline rounded border border-white py-8 px-20">
           NFT will be sent within 5 days
         </div>
       </div>
@@ -125,7 +125,7 @@ const products = _products.map((prod) => {
 
     <div class="flex justify-center">
       <table
-        class="table rounded w-full rounded max-w-2xl border-collapse border-none"
+        class="table w-full max-w-2xl border-collapse rounded rounded border-none"
       >
         <thead>
           <tr>

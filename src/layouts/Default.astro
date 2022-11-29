@@ -84,7 +84,7 @@ const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
     <meta name="twitter:image" content={`${ogURL}`} />
   </head>
 
-  <body class="font-body bg-black text-white min-h-screen">
+  <body class="min-h-screen bg-black font-body text-white">
     <Navbar
       client:only="vue"
       tenantName={config.name}

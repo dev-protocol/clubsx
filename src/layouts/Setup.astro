@@ -9,10 +9,10 @@ const { config, setupStep } = Astro.props as {
 }
 ---
 
-<body class="flex bg-[#3A4158] text-white py-8 px-4">
+<body class="flex bg-[#3A4158] py-8 px-4 text-white">
   <WelcomeWizard client:only="svelte" step={setupStep} />
 
-  <main class="w-full grid grid-cols-4 gap-x-6">
+  <main class="grid w-full grid-cols-4 gap-x-6">
     <div class="col-span-3">
       <slot />
     </div>

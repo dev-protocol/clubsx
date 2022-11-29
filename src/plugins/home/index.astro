@@ -30,7 +30,7 @@ const {
 
 <div>
   <div class="relative">
-    <div class="absolute w-full h-[24rem] lg:h-[38rem]">
+    <div class="absolute h-[24rem] w-full lg:h-[38rem]">
       <img
         src={homeConfig.hero.image}
         class="h-full w-full object-cover opacity-80"
@@ -48,26 +48,26 @@ const {
       />
       <article class="grid gap-10 lg:gap-20">
         <header
-          class="min-h-[24rem] lg:min-h-[38rem] lg:-mt-12 flex justify-center items-center"
+          class="flex min-h-[24rem] items-center justify-center lg:-mt-12 lg:min-h-[38rem]"
         >
           <h1
-            class="max-w-3xl mx-4 text-3xl font-title lg:text-4xl font-extrabold text-justify"
+            class="mx-4 max-w-3xl text-justify font-title text-3xl font-extrabold lg:text-4xl"
           >
             {homeConfig.hero.text}
           </h1>
         </header>
-        <div class="px-4 grid gap-12 grid-cols-1">
+        <div class="grid grid-cols-1 gap-12 px-4">
           <section class="grid gap-8">
-            <h2 class="text-native-blue-200 font-mono text-xl">What we do</h2>
-            <div class="grid lg:grid-cols-[1fr_auto_1fr] gap-8 items-center">
+            <h2 class="font-mono text-xl text-native-blue-200">What we do</h2>
+            <div class="grid items-center gap-8 lg:grid-cols-[1fr_auto_1fr]">
               <i
-                class="border border-native-blue-200 rounded-full h-14 w-14 lg:h-28 lg:w-28"
+                class="h-14 w-14 rounded-full border border-native-blue-200 lg:h-28 lg:w-28"
               ></i>
-              <p class="text-xl lg:text-2xl font-title font-bold">
+              <p class="font-title text-xl font-bold lg:text-2xl">
                 {homeConfig.whatWeDo.text}
               </p>
               <i
-                class="border border-native-blue-200 rounded-full h-14 w-14 lg:h-28 lg:w-28"
+                class="h-14 w-14 rounded-full border border-native-blue-200 lg:h-28 lg:w-28"
               ></i>
             </div>
             <div class="flex gap-8">
@@ -87,18 +87,18 @@ const {
               }
             </div>
           </section>
-          <hr class="border border-dp-black-200 max-w-xl" />
+          <hr class="max-w-xl border border-dp-black-200" />
           <section class="grid gap-8">
-            <h2 class="text-native-blue-200 font-mono text-xl">Perks</h2>
-            <p class="text-4xl font-title font-bold text-center">
+            <h2 class="font-mono text-xl text-native-blue-200">Perks</h2>
+            <p class="text-center font-title text-4xl font-bold">
               {homeConfig.perks.headerText}
             </p>
-            <p class="font-c-serif text-2xl text-center">
+            <p class="font-c-serif text-center text-2xl">
               {homeConfig.perks.subText}
             </p>
             <section>
               <div
-                class="grid grid-cols-[repeat(3,minmax(0,210px))] gap-8 justify-between items-center mb-16"
+                class="mb-16 grid grid-cols-[repeat(3,minmax(0,210px))] items-center justify-between gap-8"
               >
                 {
                   homeConfig.perks.images.slice(0, 3).map((_img) => (
@@ -133,7 +133,7 @@ const {
             </section>
           </section>
           <section
-            class="grid gap-8 bg-[linear-gradient(0,#00000080,#00000080),url('/assets/texture.jpg')] bg-cover p-8 rounded-xl"
+            class="grid gap-8 rounded-xl bg-[linear-gradient(0,#00000080,#00000080),url('/assets/texture.jpg')] bg-cover p-8"
           >
             <svg
               width="21"
@@ -148,7 +148,7 @@ const {
                 fill="currentColor"></path>
             </svg>
             <h2
-              class="font-title font-bold text-3xl text-center leading-normal"
+              class="text-center font-title text-3xl font-bold leading-normal"
             >
               {homeConfig.quote}
             </h2>
