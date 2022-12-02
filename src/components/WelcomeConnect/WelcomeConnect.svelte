@@ -5,20 +5,24 @@
 
   let email = '';
   let emailErrorMessage = '';
+  let emailSent = false;
 
   const sendMagicLink = async () => {
+
+    if (emailSent) {
+      return;
+    }
 
     const actionCodeSettings = {
       // URL you want to redirect back to. The domain (www.example.com) for this
       // URL must be in the authorized domains list in the Firebase Console.
       // url: 'https://www.example.com/finishSignUp?cartId=1234',
-      url: 'http://localhost:3000/test',
+      url: import.meta.env.PUBLIC_FIREBASE_CALLBACK_URL,
       // This must be true.
       handleCodeInApp: true,
     };
 
     const auth = initializeFirebase();
-    console.log('auth is: ', auth)
 
     sendSignInLinkToEmail(auth, email, actionCodeSettings)
       .then(() => {
@@ -26,6 +30,7 @@
         // Save the email locally so you don't need to ask the user for it again
         // if they open the link on the same device.
         window.localStorage.setItem('emailForSignIn', email);
+        emailSent = true;
         // ...
       })
       .catch((error) => {
@@ -56,7 +61,13 @@
         />
       </div>
 
-      <button on:click|preventDefault={(_) => sendMagicLink()} class="text-sm bg-blue-500 px-4 rounded-xl py-3 px-6">Send Magic Link</button>
+      <button on:click|preventDefault={(_) => sendMagicLink()} class="text-sm bg-blue-500 px-4 rounded-xl py-3 px-6">
+        {#if emailSent}
+          Check your inbox
+        {:else}
+          Send Magic Link
+        {/if}
+      </button>
 
       {#if emailErrorMessage.length > 0}
         <span class="text-sm">{emailErrorMessage}</span>
