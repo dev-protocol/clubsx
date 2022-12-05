@@ -23,6 +23,14 @@ const ogURL = new URL(
   config.url ?? 'http://localhost'
 )
 
+type DraftValues = { user: { ethereum?: string; email?: string } }
+const draftOptions =
+  (config.options?.find((option) => option.key === '__draft')
+    ?.value as DraftValues) ?? ({ user: {} } as DraftValues)
+const isDraft = Boolean(draftOptions.user.ethereum ?? draftOptions.user.email)
+
+console.log({ draftOptions, isDraft })
+
 const headerLinks =
   config.options?.find((option) => option.key === 'headerLinks')?.value ??
   ([] as NavLink[])
