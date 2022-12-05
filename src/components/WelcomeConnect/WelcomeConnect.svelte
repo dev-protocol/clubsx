@@ -1,7 +1,8 @@
 <script lang="ts">
   import { initializeFirebase } from '../../fixtures/firebase';
   import { sendSignInLinkToEmail } from "firebase/auth";
-
+  import { utils } from 'ethers'
+  import { GetModalProvider, ReConnectWallet } from '@fixtures/wallet'
 
   let email = '';
   let emailErrorMessage = '';
@@ -40,7 +41,37 @@
       });
 
   }
-  const walletConnect = async () => {}
+  const walletConnect = async () => {
+
+    const modalProvider = GetModalProvider()
+    const { provider, currentAddress } = await ReConnectWallet(modalProvider)
+    if (!currentAddress || !provider) {
+      return
+    }
+
+    const signer = provider.getSigner()
+
+    const hash = await utils.hashMessage(currentAddress)
+    const sig = await signer.signMessage(hash)
+    if (!sig) {
+      return
+    }
+
+    const body = {
+      hash,
+      sig,
+    }
+
+    const res = await fetch('/api/updateDraft', {
+      method: 'POST',
+      body: JSON.stringify(body),
+    })
+
+    // // TODO
+    // // navigate to next page
+    // window.location.href = '/setup/homepage'
+
+  }
 
 </script>
 
