@@ -10,3 +10,54 @@ import Layout from '@layouts/Landing.astro'
     <span>Authenticating...</span>
   </section>
 </Layout>
+
+<script>
+  import {
+    getAdditionalUserInfo,
+    isSignInWithEmailLink,
+    signInWithEmailLink,
+  } from 'firebase/auth'
+  import { initializeFirebase } from '../fixtures/firebase'
+  import { setOptions } from '@devprotocol/clubs-core'
+
+  // Confirm the link is a sign-in with email link.
+  const auth = initializeFirebase()
+
+  if (isSignInWithEmailLink(auth, window.location.href)) {
+    let email = window.localStorage.getItem('emailForSignIn')
+    if (!email) {
+      // User opened the link on a different device. To prevent session fixation
+      // attacks, ask the user to provide the associated email again. For example:
+      email = window.prompt('Please provide your email for confirmation')
+    }
+
+    signInWithEmailLink(auth, email ?? '', window.location.href).then(
+      (result) => {
+        // Clear email from storage.
+        window.localStorage.removeItem('emailForSignIn')
+
+        const details = getAdditionalUserInfo(result)
+
+        if (details?.isNewUser && result.user.email) {
+          // Is this correct?
+          setOptions(
+            [
+              {
+                key: '__draft',
+                value: {
+                  user: {
+                    mail: result.user.email,
+                  },
+                },
+              },
+            ],
+            0 // currentPluginIndex
+          )
+        }
+
+        // navigate to setup here...
+        // window.location.href = '/setup/homepage'
+      }
+    )
+  }
+</script>
