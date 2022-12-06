@@ -17,7 +17,7 @@ const kogenjiProducts = [
     price: 0.6,
     currency: 'ETH',
     imageSrc:
-      'https://bafybeih5bq6rwg67cdtpyh5sx2th4f7u3bognjfcidawopnlp3ygfq7da4.ipfs.nftstorage.link/',
+      'https://bafybeifmshinu5cjv5gddsburhwmwaut2awoxkl4bsmhzqwxsl7pgx5bbi.ipfs.nftstorage.link/',
     imageAlt: 'lorem ipsum',
     payload: toBytes32('Kougenji Celestial Maiden #1'),
     fee: {
@@ -33,7 +33,7 @@ const kogenjiProducts = [
     price: 0.45,
     currency: 'ETH',
     imageSrc:
-      'https://bafybeih5bq6rwg67cdtpyh5sx2th4f7u3bognjfcidawopnlp3ygfq7da4.ipfs.nftstorage.link/',
+      'https://bafybeifmshinu5cjv5gddsburhwmwaut2awoxkl4bsmhzqwxsl7pgx5bbi.ipfs.nftstorage.link/',
     imageAlt: 'lorem ipsum',
     payload: toBytes32('Kougenji Celestial Maiden #2'),
     fee: {
@@ -49,7 +49,7 @@ const kogenjiProducts = [
     price: 0.4,
     currency: 'ETH',
     imageSrc:
-      'https://bafybeih5bq6rwg67cdtpyh5sx2th4f7u3bognjfcidawopnlp3ygfq7da4.ipfs.nftstorage.link/',
+      'https://bafybeifmshinu5cjv5gddsburhwmwaut2awoxkl4bsmhzqwxsl7pgx5bbi.ipfs.nftstorage.link/',
     imageAlt: 'lorem ipsum',
     payload: toBytes32('Kougenji Celestial Maiden #3'),
     fee: {
@@ -65,7 +65,7 @@ const kogenjiProducts = [
     price: 0.06,
     currency: 'ETH',
     imageSrc:
-      'https://bafybeih5bq6rwg67cdtpyh5sx2th4f7u3bognjfcidawopnlp3ygfq7da4.ipfs.nftstorage.link/',
+      'https://bafybeihgfcvcfwlao6vpkmxa7n6vjaanrzkirgmczdv4pif5r5xewabx6m.ipfs.nftstorage.link/',
     imageAlt: 'lorem ipsum',
     payload: toBytes32('Kougenji Flower #1'),
     fee: {
@@ -81,7 +81,7 @@ const kogenjiProducts = [
     price: 0.06,
     currency: 'ETH',
     imageSrc:
-      'https://bafybeih5bq6rwg67cdtpyh5sx2th4f7u3bognjfcidawopnlp3ygfq7da4.ipfs.nftstorage.link/',
+      'https://bafybeiftzluw5jwesplnfbn7lrwj4cghej5zukttnpo4lbvcg5664dmcbu.ipfs.nftstorage.link/',
     imageAlt: 'lorem ipsum',
     payload: toBytes32('Kougenji Flower #2'),
     fee: {
@@ -97,7 +97,7 @@ const kogenjiProducts = [
     price: 0.06,
     currency: 'ETH',
     imageSrc:
-      'https://bafybeih5bq6rwg67cdtpyh5sx2th4f7u3bognjfcidawopnlp3ygfq7da4.ipfs.nftstorage.link/',
+      'https://bafybeieqzdapuwwhfb6ks2t4ojcejgfzctxeeb7sdagghnuph6emdlun7u.ipfs.nftstorage.link/',
     imageAlt: 'lorem ipsum',
     payload: toBytes32('Kougenji Flower #3'),
     fee: {
@@ -113,7 +113,7 @@ const kogenjiProducts = [
     price: 0.06,
     currency: 'ETH',
     imageSrc:
-      'https://bafybeih5bq6rwg67cdtpyh5sx2th4f7u3bognjfcidawopnlp3ygfq7da4.ipfs.nftstorage.link/',
+      'https://bafybeia5rdumeanpxugwjqommuz35j5w2ljhu6ln7fx3w3eu3eqanf76aq.ipfs.nftstorage.link/',
     imageAlt: 'lorem ipsum',
     payload: toBytes32('Kougenji Flower #4'),
     fee: {
@@ -129,7 +129,7 @@ const kogenjiProducts = [
     price: 0.06,
     currency: 'ETH',
     imageSrc:
-      'https://bafybeih5bq6rwg67cdtpyh5sx2th4f7u3bognjfcidawopnlp3ygfq7da4.ipfs.nftstorage.link/',
+      'https://bafybeibvhu5snammvmydginirqjtbb56tg5nq25ey24icr4p7t2bmg545e.ipfs.nftstorage.link/',
     imageAlt: 'lorem ipsum',
     payload: toBytes32('Kougenji Flower #5'),
     fee: {
@@ -145,7 +145,7 @@ const kogenjiProducts = [
     price: 0.06,
     currency: 'ETH',
     imageSrc:
-      'https://bafybeih5bq6rwg67cdtpyh5sx2th4f7u3bognjfcidawopnlp3ygfq7da4.ipfs.nftstorage.link/',
+      'https://bafybeiazi5ynl6fxcryv2wcbeln6nvgbfdmu6qalydhfwtvplfdqcpmlli.ipfs.nftstorage.link/',
     imageAlt: 'lorem ipsum',
     payload: toBytes32('Kougenji Flower #6'),
     fee: {
@@ -161,7 +161,7 @@ const kogenjiProducts = [
     price: 0.06,
     currency: 'ETH',
     imageSrc:
-      'https://bafybeih5bq6rwg67cdtpyh5sx2th4f7u3bognjfcidawopnlp3ygfq7da4.ipfs.nftstorage.link/',
+      'https://bafybeihfv3skpt6f4yipwxt776w63voqpt5lmmkvclkjj6ekxtp7ah3hb4.ipfs.nftstorage.link/',
     imageAlt: 'lorem ipsum',
     payload: toBytes32('Kougenji Flower #7'),
     fee: {
@@ -177,7 +177,7 @@ const kogenjiProducts = [
     price: 0.06,
     currency: 'ETH',
     imageSrc:
-      'https://bafybeih5bq6rwg67cdtpyh5sx2th4f7u3bognjfcidawopnlp3ygfq7da4.ipfs.nftstorage.link/',
+      'https://bafybeif63d37ggtvcbukfu73gau47awx6mgxwlhkcyxug37tlayiw4wlb4.ipfs.nftstorage.link/',
     imageAlt: 'lorem ipsum',
     payload: toBytes32('Kougenji Flower #8'),
     fee: {
@@ -193,7 +193,7 @@ const kogenjiProducts = [
     price: 0.085,
     currency: 'ETH',
     imageSrc:
-      'https://bafybeih5bq6rwg67cdtpyh5sx2th4f7u3bognjfcidawopnlp3ygfq7da4.ipfs.nftstorage.link/',
+      'https://bafybeifq5zh2rpnw5meyrjcyekyjfps5tsvfv5f62zjiqiahvut6w2btc4.ipfs.nftstorage.link/',
     imageAlt: 'lorem ipsum',
     payload: toBytes32('Kougenji DAO'),
     fee: {
