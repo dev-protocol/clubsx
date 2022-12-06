@@ -583,10 +583,10 @@ const populate = async () => {
         twitterHandle: '@templesdao',
         description: '',
         url: 'https://kogenji.clubs.stakes.social',
-        propertyAddress: '0x70a8B9a4B2d407a542c205adBbEA38289c3285eB', // Polygon: 0x23d67953FE2e61e9fAc78447526D9358cD05d40d // Mumbai: 0x70a8B9a4B2d407a542c205adBbEA38289c3285eB
-        chainId: 80001, // Polygon: 137 // Mumbai: 80001
+        propertyAddress: '0x23d67953FE2e61e9fAc78447526D9358cD05d40d', // Polygon: 0x23d67953FE2e61e9fAc78447526D9358cD05d40d // Mumbai: 0x70a8B9a4B2d407a542c205adBbEA38289c3285eB
+        chainId: 137, // Polygon: 137 // Mumbai: 80001
         rpcUrl:
-          'https://polygon-mumbai.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920', // Polygon: https://polygon-mainnet.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920 // Mumbai: https://polygon-mumbai.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920
+          'https://polygon-mainnet.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920', // Polygon: https://polygon-mainnet.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920 // Mumbai: https://polygon-mumbai.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920
         adminRolePoints: 0,
         options: [
           {
@@ -644,7 +644,7 @@ const populate = async () => {
             options: [
               {
                 key: 'products',
-                value: kogenjiProductsMumbai, // Polygon: kogenjiProducts // Mumbai: kogenjiProductsMumbai
+                value: kogenjiProducts, // Polygon: kogenjiProducts // Mumbai: kogenjiProductsMumbai
               },
             ],
           },
@@ -654,7 +654,7 @@ const populate = async () => {
             options: [
               {
                 key: 'products',
-                value: kogenjiProductsMumbai, // Polygon: kogenjiProducts // Mumbai: kogenjiProductsMumbai
+                value: kogenjiProducts, // Polygon: kogenjiProducts // Mumbai: kogenjiProductsMumbai
               },
               {
                 key: 'priceOverrides',
