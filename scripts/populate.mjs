@@ -597,12 +597,12 @@ const populate = async () => {
                 path: 'nft',
               },
               {
-                display: 'Community',
-                path: 'https://guild.xyz/temples-dao',
+                display: 'Perks',
+                path: 'https://sites.google.com/view/kougenjidao/%E3%83%9B%E3%83%BC%E3%83%A0/%E3%81%94%E6%94%AF%E6%8F%B4%E3%81%AE%E7%89%B9%E5%85%B8',
               },
               {
-                display: 'Perks',
-                path: 'https://example.com',
+                display: 'Community',
+                path: 'https://guild.xyz/temples-dao',
               },
             ],
           },
@@ -611,19 +611,19 @@ const populate = async () => {
             value: [
               {
                 display: 'About',
-                path: 'http://example.com',
+                path: 'https://sites.google.com/view/kougenjidao',
               },
               {
                 display: 'Terms & Conditions',
-                path: 'http://example.com',
+                path: 'https://kougenjidao.notion.site/5558b9a7d5b74453a2cf8c3640f63b5a',
               },
               {
                 display: 'Privacy Policy',
-                path: 'http://example.com',
+                path: 'https://kougenjidao.notion.site/1d8d0410286443d4b7742549960eb588',
               },
               {
                 display: 'Act on specified commercial transactions',
-                path: 'http://example.com',
+                path: 'https://kougenjidao.notion.site/edd00237c45c4f01a006ad17264e676e',
               },
             ],
           },
