@@ -1,17 +1,18 @@
 <script lang="ts">
-  import { initializeFirebase } from '../../fixtures/firebase';
-  import { sendSignInLinkToEmail } from "firebase/auth";
-  import { utils } from 'ethers'
+  import { initializeFirebase } from '../../fixtures/firebase'
+  import { sendSignInLinkToEmail } from 'firebase/auth'
   import { GetModalProvider, ReConnectWallet } from '@fixtures/wallet'
+  import { ClubsConfiguration, setConfig } from '@devprotocol/clubs-core'
 
-  let email = '';
-  let emailErrorMessage = '';
-  let emailSent = false;
+  export let config: ClubsConfiguration
+
+  let email = ''
+  let emailErrorMessage = ''
+  let emailSent = false
 
   const sendMagicLink = async () => {
-
     if (emailSent) {
-      return;
+      return
     }
 
     const actionCodeSettings = {
@@ -21,66 +22,56 @@
       url: import.meta.env.PUBLIC_FIREBASE_CALLBACK_URL,
       // This must be true.
       handleCodeInApp: true,
-    };
+    }
 
-    const auth = initializeFirebase();
+    const auth = initializeFirebase()
 
     sendSignInLinkToEmail(auth, email, actionCodeSettings)
       .then(() => {
         // The link was successfully sent. Inform the user.
         // Save the email locally so you don't need to ask the user for it again
         // if they open the link on the same device.
-        window.localStorage.setItem('emailForSignIn', email);
-        emailSent = true;
+        window.localStorage.setItem('emailForSignIn', email)
+        emailSent = true
         // ...
       })
       .catch((error) => {
-        emailErrorMessage = error.message;
+        emailErrorMessage = error.message
         console.log('error is: ', error)
         // ...
-      });
-
+      })
   }
   const walletConnect = async () => {
-
     const modalProvider = GetModalProvider()
     const { provider, currentAddress } = await ReConnectWallet(modalProvider)
     if (!currentAddress || !provider) {
       return
     }
 
-    const signer = provider.getSigner()
-
-    const hash = await utils.hashMessage(currentAddress)
-    const sig = await signer.signMessage(hash)
-    if (!sig) {
-      return
-    }
-
-    const body = {
-      hash,
-      sig,
-    }
-
-    const res = await fetch('/api/updateDraft', {
-      method: 'POST',
-      body: JSON.stringify(body),
+    const updatedUptions = Object.assign({}, config.options, {
+      key: '__draft',
+      value: {
+        user: {
+          wallet: currentAddress,
+        },
+      },
     })
+
+    const updatedConfig = Object.assign(config, {
+      options: updatedUptions,
+    })
+
+    await setConfig(updatedConfig)
 
     // // TODO
     // // navigate to next page
     // window.location.href = '/setup/homepage'
-
   }
-
 </script>
 
 <div class="flex flex-col items-center">
-
   <section class="mb-8 pb-8 mt-8 border-b-2 border-gray-400">
-
     <div class="flex items-center">
-
       <div class="mr-2">
         <input
           bind:value={email}
@@ -92,7 +83,10 @@
         />
       </div>
 
-      <button on:click|preventDefault={(_) => sendMagicLink()} class="text-sm bg-blue-500 px-4 rounded-xl py-3 px-6">
+      <button
+        on:click|preventDefault={(_) => sendMagicLink()}
+        class="text-sm bg-blue-500 px-4 rounded-xl py-3 px-6"
+      >
         {#if emailSent}
           Check your inbox
         {:else}
@@ -103,13 +97,10 @@
       {#if emailErrorMessage.length > 0}
         <span class="text-sm">{emailErrorMessage}</span>
       {/if}
-
     </div>
-
   </section>
 
   <div class="flex flex-col items-center">
-
     <span class="text-sm text-gray-400 mb-4">Already have a wallet?</span>
 
     <button
@@ -118,7 +109,5 @@
     >
       Sign with your wallet
     </button>
-
   </div>
-
 </div>

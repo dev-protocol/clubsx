@@ -1,5 +1,8 @@
 ---
+import { ClubsConfiguration } from '@devprotocol/clubs-core'
 import Layout from '@layouts/Landing.astro'
+
+const config = Astro.props as ClubsConfiguration
 ---
 
 <Layout>
@@ -11,6 +14,8 @@ import Layout from '@layouts/Landing.astro'
   </section>
 </Layout>
 
+<input id="config" type="hidden" value={JSON.stringify(config)} />
+
 <script>
   import {
     getAdditionalUserInfo,
@@ -18,10 +23,13 @@ import Layout from '@layouts/Landing.astro'
     signInWithEmailLink,
   } from 'firebase/auth'
   import { initializeFirebase } from '../fixtures/firebase'
-  import { setOptions } from '@devprotocol/clubs-core'
+  import { ClubsConfiguration, setConfig } from '@devprotocol/clubs-core'
 
   // Confirm the link is a sign-in with email link.
   const auth = initializeFirebase()
+  const config = JSON.parse(
+    (document.getElementById('config') as HTMLInputElement)?.value
+  ) as ClubsConfiguration
 
   if (isSignInWithEmailLink(auth, window.location.href)) {
     let email = window.localStorage.getItem('emailForSignIn')
@@ -32,27 +40,29 @@ import Layout from '@layouts/Landing.astro'
     }
 
     signInWithEmailLink(auth, email ?? '', window.location.href).then(
-      (result) => {
+      async (result) => {
         // Clear email from storage.
         window.localStorage.removeItem('emailForSignIn')
 
         const details = getAdditionalUserInfo(result)
 
-        if (details?.isNewUser && result.user.email) {
-          // Is this correct?
-          setOptions(
-            [
-              {
-                key: '__draft',
-                value: {
-                  user: {
-                    mail: result.user.email,
-                  },
-                },
+        const jwtTokenId = await result.user.getIdToken()
+
+        if (details?.isNewUser && jwtTokenId) {
+          const updatedUptions = Object.assign({}, config.options, {
+            key: '__draft',
+            value: {
+              user: {
+                jwtTokenId,
               },
-            ],
-            0 // currentPluginIndex
-          )
+            },
+          })
+
+          const updatedConfig = Object.assign(config, {
+            options: updatedUptions,
+          })
+
+          setConfig(updatedConfig)
         }
 
         // navigate to setup here...

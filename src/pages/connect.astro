@@ -1,6 +1,8 @@
 ---
 import Layout from '@layouts/Landing.astro'
 import WelcomeConnect from '@components/WelcomeConnect/WelcomeConnect.svelte'
+import type { ClubsConfiguration } from '@devprotocol/clubs-core'
+const config = Astro.props as ClubsConfiguration
 ---
 
 <Layout>
@@ -10,5 +12,5 @@ import WelcomeConnect from '@components/WelcomeConnect/WelcomeConnect.svelte'
     </h1>
   </section>
 
-  <WelcomeConnect client:only="svelte" />
+  <WelcomeConnect client:only="svelte" config={config} />
 </Layout>
