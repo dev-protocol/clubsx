@@ -739,7 +739,7 @@ const populate = async () => {
                 key: 'hero',
                 value: {
                   coverImgSrc: 'https://i.imgur.com/I6Yr0V7.jpg',
-                  title: 'Kougenji',
+                  title: '光源寺/ Kougenji',
                   description: [
                     `光源寺の天女絵修復プロジェクトでのご支援金は、天女の表具欄間彩色修復等に使われます。支援者の方は光源寺のDiscordチャンネルに参加し、修復状況（写真等）を見ることができます。また、NFTの種類により様々な特典をご用意しております。`,
                     `[EN:] The funds raised for Kougenji will be used to restore the celestial maiden paper picture frame on the decorative transom and other cultural assets withinin the temple. Supporters are allowed to join Kougenji's Discord channel for the latest news and updates about the restoration (photos,etc.).
@@ -749,7 +749,7 @@ const populate = async () => {
               },
               {
                 key: 'title',
-                value: '光源寺/ Kougenji',
+                value: undefined,
               },
               {
                 key: 'slug',
