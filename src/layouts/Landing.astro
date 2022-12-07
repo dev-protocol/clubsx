@@ -47,3 +47,58 @@ const twitterHandle = 'devprtcl'
     </main>
   </body>
 </html>
+
+<script>
+  import { onSubmitConfig } from '@devprotocol/clubs-core'
+  import { GetModalProvider, ReConnectWallet } from '@fixtures/wallet'
+  import { utils } from 'ethers'
+  import { onAuthStateChanged } from 'firebase/auth'
+  import { initializeFirebase } from '../fixtures/firebase'
+
+  const auth = initializeFirebase()
+  let jwtIdToken: string | undefined
+
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      // User is signed in, see docs for a list of available properties
+      // https://firebase.google.com/docs/reference/js/firebase.User
+      jwtIdToken = await user.getIdToken()
+    } else {
+      jwtIdToken = undefined
+    }
+  })
+
+  onSubmitConfig(async (data, onFinish) => {
+    const splitHostname = window.location.hostname.split('.')
+    const site = splitHostname[0]
+
+    const modalProvider = GetModalProvider()
+    const { provider, currentAddress } = await ReConnectWallet(modalProvider)
+    if (!currentAddress || !provider) {
+      return
+    }
+    const signer = provider.getSigner()
+
+    const hash = await utils.hashMessage(data)
+    const sig = await signer.signMessage(hash)
+    if (!sig) {
+      return
+    }
+
+    const body = {
+      site,
+      config: data,
+      hash,
+      sig,
+      jwtIdToken,
+    }
+
+    const res = await fetch('/api/updateDraftConfig', {
+      method: 'POST',
+      body: JSON.stringify(body),
+    })
+
+    const success = res.ok
+    onFinish({ success })
+  })
+</script>
