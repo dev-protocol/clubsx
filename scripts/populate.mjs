@@ -8,7 +8,7 @@ dotenv.config()
 
 const toBytes32 = (str) => utils.keccak256(utils.toUtf8Bytes(str))
 
-const kogenjiProducts = [
+const kougenjiProducts = [
   {
     id: '1',
     name: 'Kougenji Celestial Maiden #1',
@@ -202,7 +202,7 @@ const kogenjiProducts = [
     },
   },
 ]
-const kogenjiProductsMumbai = kogenjiProducts.map((item) => ({
+const kougenjiProductsMumbai = kougenjiProducts.map((item) => ({
   ...item,
   price: new BigNumber(item.price).div(100).toFixed(),
 }))
@@ -429,11 +429,15 @@ const populate = async () => {
         rpcUrl: 'https://mainnet.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920',
         options: [
           {
+            key: 'ogp',
+            value: { image: 'https://i.imgur.com/lcyO9Bn.jpg' },
+          },
+          {
             key: 'navLinks',
             value: [
               {
                 display: 'Kougenji',
-                path: 'http://kogenji.localhost:3000',
+                path: 'http://kougenji.localhost:3000',
               },
             ],
           },
@@ -576,19 +580,24 @@ const populate = async () => {
       })
     )
 
+    // await client.del('kogenji')
     await client.set(
-      'kogenji',
+      'kougenji',
       encode({
-        name: 'Kogenji',
+        name: 'Kougenji',
         twitterHandle: '@templesdao',
         description: '',
-        url: 'https://kogenji.clubs.stakes.social',
-        propertyAddress: '0x70a8B9a4B2d407a542c205adBbEA38289c3285eB', // Polygon: 0x23d67953FE2e61e9fAc78447526D9358cD05d40d // Mumbai: 0x70a8B9a4B2d407a542c205adBbEA38289c3285eB
-        chainId: 80001, // Polygon: 137 // Mumbai: 80001
+        url: 'https://kougenji.clubs.stakes.social',
+        propertyAddress: '0x23d67953FE2e61e9fAc78447526D9358cD05d40d', // Polygon: 0x23d67953FE2e61e9fAc78447526D9358cD05d40d // Mumbai: 0x70a8B9a4B2d407a542c205adBbEA38289c3285eB
+        chainId: 137, // Polygon: 137 // Mumbai: 80001
         rpcUrl:
-          'https://polygon-mumbai.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920', // Polygon: https://polygon-mainnet.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920 // Mumbai: https://polygon-mumbai.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920
+          'https://polygon-mainnet.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920', // Polygon: https://polygon-mainnet.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920 // Mumbai: https://polygon-mumbai.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920
         adminRolePoints: 0,
         options: [
+          {
+            key: 'ogp',
+            value: { image: 'https://i.imgur.com/I6Yr0V7.jpg' },
+          },
           {
             key: 'headerLinks',
             value: [
@@ -629,8 +638,7 @@ const populate = async () => {
           },
           {
             key: 'avatarImgSrc',
-            value:
-              'https://www.tambacity-kankou.jp/english/momiji/img/01main01.jpg',
+            value: 'https://i.imgur.com/453nyAX.jpg',
           },
           {
             key: 'fullPageViewPaths',
@@ -644,7 +652,7 @@ const populate = async () => {
             options: [
               {
                 key: 'products',
-                value: kogenjiProductsMumbai, // Polygon: kogenjiProducts // Mumbai: kogenjiProductsMumbai
+                value: kougenjiProducts, // Polygon: kougenjiProducts // Mumbai: kougenjiProductsMumbai
               },
             ],
           },
@@ -654,7 +662,7 @@ const populate = async () => {
             options: [
               {
                 key: 'products',
-                value: kogenjiProductsMumbai, // Polygon: kogenjiProducts // Mumbai: kogenjiProductsMumbai
+                value: kougenjiProducts, // Polygon: kougenjiProducts // Mumbai: kougenjiProductsMumbai
               },
               {
                 key: 'priceOverrides',
@@ -742,8 +750,8 @@ const populate = async () => {
               {
                 key: 'hero',
                 value: {
-                  coverImgSrc: 'https://i.imgur.com/qPq8hI8.jpg',
-                  title: 'Kogenji',
+                  coverImgSrc: 'https://i.imgur.com/I6Yr0V7.jpg',
+                  title: 'Kougenji',
                   description: [
                     `光源寺の天女絵修復プロジェクトでのご支援金は、天女の表具欄間彩色修復等に使われます。支援者の方は光源寺のDiscordチャンネルに参加し、修復状況（写真等）を見ることができます。また、NFTの種類により様々な特典をご用意しております。`,
                     `[EN:] The funds raised for Kougenji will be used to restore the celestial maiden paper picture frame on the decorative transom and other cultural assets withinin the temple. Supporters are allowed to join Kougenji's Discord channel for the latest news and updates about the restoration (photos,etc.).
@@ -767,15 +775,15 @@ const populate = async () => {
             options: [
               {
                 key: 'products',
-                value: kogenjiProductsMumbai, // Polygon: kogenjiProducts // Mumbai: kogenjiProductsMumbai
+                value: kougenjiProductsMumbai, // Polygon: kougenjiProducts // Mumbai: kougenjiProductsMumbai
               },
               {
                 key: 'coverImgSrc',
-                value: 'https://i.imgur.com/qPq8hI8.jpg',
+                value: 'https://i.imgur.com/I6Yr0V7.jpg',
               },
               {
                 key: 'title',
-                value: 'Kogenji',
+                value: 'Kougenji',
               },
               {
                 key: 'description',

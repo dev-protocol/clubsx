@@ -4,9 +4,9 @@ import Navbar from '@components/Global/Navbar.vue'
 import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
 import Footer from '@components/Global/Footer.astro'
-import og from '@assets/og.png'
 import '@styles/global.scss'
 import { NavLink, PathCondition } from '@constants/navLink'
+import { UndefinedOr } from '@devprotocol/util-ts'
 
 const { page } = Astro.params
 const { metaTitle, config } = Astro.props as {
@@ -16,21 +16,17 @@ const { metaTitle, config } = Astro.props as {
 
 const title = metaTitle ? `${config.name} : ${metaTitle}` : config.name
 
-const ogURL = new URL(
-  Astro.url.pathname
-    .replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
-    .replace(/(.*)\/$/, '$1') + og,
-  config.url ?? 'http://localhost'
-)
-
-type DraftValues = { user?: { ethereum?: string; email?: string } }
+type DraftValues = { user?: { ethereum?: string; uid?: string } }
 const draftOptions = config.options?.find((option) => option.key === '__draft')
   ?.value as DraftValues
-const isDraft = Boolean(
-  draftOptions?.user?.ethereum ?? draftOptions?.user?.email
+const isInDraft = Boolean(
+  draftOptions?.user?.ethereum ?? draftOptions?.user?.uid
 )
 
-console.log({ draftOptions, isDraft })
+console.log({ draftOptions, isInDraft })
+
+const ogp = config.options?.find((option) => option.key === 'ogp')
+  ?.value as UndefinedOr<{ image?: string }>
 
 const headerLinks =
   config.options?.find((option) => option.key === 'headerLinks')?.value ??
@@ -82,7 +78,7 @@ const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
     <meta property="og:title" content={title} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={url} />
-    <meta property="og:image" content={`${ogURL}`} />
+    <meta property="og:image" content={`${ogp?.image}`} />
     <meta property="og:description" content={config.description} />
     <meta property="og:site_name" content={config.name} />
     <meta name="twitter:site" content={config.twitterHandle} />
@@ -90,7 +86,7 @@ const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={config.description} />
-    <meta name="twitter:image" content={`${ogURL}`} />
+    <meta name="twitter:image" content={`${ogp?.image}`} />
   </head>
 
   <body class="min-h-screen bg-black font-body text-white">
