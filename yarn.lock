@@ -606,6 +606,11 @@
   resolved "https://registry.npmjs.org/@devprotocol/elements/-/elements-0.1.1.tgz"
   integrity sha512-rozYrfPo+/bKp+QtXdGVZQGkXhOirhsDSrPmue0AOeg+OLBaOpjUNmZQf+P4kC6LOEiGUUguHP3AD+gy+8EXmg==
 
+"@devprotocol/elements@0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@devprotocol/elements/-/elements-0.2.0.tgz#3baccd8b5534126c8d50a06cbfec0622274853de"
+  integrity sha512-JB9SntSv0x8YpJmVdtchiiVuFa9mOI14Ew5DkhT1BphiLy1NNSBehQIyROM4Df7Au3l5V6SORHx/1WK29J2QEw==
+
 "@devprotocol/hashi@1.4.0":
   version "1.4.0"
   resolved "https://registry.npmjs.org/@devprotocol/hashi/-/hashi-1.4.0.tgz"
