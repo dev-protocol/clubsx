@@ -1,6 +1,6 @@
 <template>
   <div
-    v-bind:class="`hs-wallet${
+    v-bind:class="`relative hs-wallet${
       truncateWalletAddress &&
       formattedUserBalance.length > 0 &&
       supportedNetwork
@@ -21,18 +21,20 @@
     </HSButton>
     <HSButton
       type="outlined"
-      v-else-if="
-        truncateWalletAddress &&
-        formattedUserBalance.length > 0 &&
-        !supportedNetwork
-      "
-      link="/me"
+      v-else-if="truncateWalletAddress && !supportedNetwork"
+      v-on:click="connect"
     >
       Unsupported Network
     </HSButton>
     <HSButton type="outlined" v-else v-on:click="connect">
       Connect Wallet
     </HSButton>
+    <span
+      v-if="truncateWalletAddress && !supportedNetwork"
+      class="absolute top-14 z-50 block rounded bg-orange-600 p-4 text-sm shadow"
+    >
+      Please connect to {{ chainName }}
+    </span>
     <ul
       class="hs-wallet__details"
       v-if="
@@ -67,6 +69,9 @@ type Data = {
 export default defineComponent({
   name: 'ConnectButton',
   components: { HSButton },
+  props: {
+    chainId: Number,
+  },
   data(): Data {
     const modalProvider = GetModalProvider()
     return {
@@ -76,7 +81,23 @@ export default defineComponent({
       supportedNetwork: false,
     }
   },
+  computed: {
+    chainName() {
+      return this.chainId === 1
+        ? 'Ethereum'
+        : this.chainId === 137
+        ? 'Polygon'
+        : this.chainId === 80001
+        ? 'Polygon Mumbai'
+        : this.chainId === 42161
+        ? 'Arbitrum'
+        : null
+    },
+  },
   async mounted() {
+    connection().chain.subscribe((chainId: number) => {
+      this.supportedNetwork = chainId === this.chainId
+    })
     const { currentAddress, provider } = await ReConnectWallet(
       this.modalProvider
     )
@@ -115,7 +136,6 @@ export default defineComponent({
       provider: providers.Provider
     ) {
       const [l1, l2] = await clientsDev(provider)
-      this.supportedNetwork = l1 || l2 ? true : false
       const balance = await (l1 || l2)?.balanceOf(currentAddress)
       const formatted = utils.formatUnits(balance ?? 0)
       const rounded = Math.round((+formatted + Number.EPSILON) * 100) / 100
