@@ -351,18 +351,18 @@ const guild = {
 
 const templesHomeConfig = {
   hero: {
-    image: '/src/assets/cover-1.jpg',
+    image: 'https://i.imgur.com/oNf7FsR.jpg',
     text: 'Join the DAO that makes the next 1000 years',
   },
   whatWeDo: {
     text: 'We make everything for temples. Let’s continue to create history by passing on culture.',
     images: [
       {
-        image: '/src/assets/owt3cn75.png',
+        image: 'https://i.imgur.com/9gAz9wI.png',
         description: 'Zuiunji-temple, Hokkaido / 瑞雲寺 楼門',
       },
       {
-        image: '/src/assets/gt6zfoja.png',
+        image: 'https://i.imgur.com/lKyjs9f.png',
         description: 'Narita san Shinshoji-temple, Chiba / 成田山新勝寺 荘厳具',
       },
     ],
@@ -374,31 +374,31 @@ const templesHomeConfig = {
       'Get NFTs, and redeem authentic art pieces by real traditional craftsmanship.',
     images: [
       {
-        image: '/src/assets/artifacts/40.png',
+        image: 'https://i.imgur.com/m5HQXhz.png',
         description: '40 Makie lacquer-work plate',
       },
       {
-        image: '/src/assets/artifacts/92.png',
+        image: 'https://i.imgur.com/UStVM2Y.png',
         description: '92 Transformable panel',
       },
       {
-        image: '/src/assets/artifacts/89.png',
+        image: 'https://i.imgur.com/XQqkt1f.png',
         description: '89 Metal panel, moon and autumn grasses',
       },
       {
-        image: '/src/assets/artifacts/12.png',
+        image: 'https://i.imgur.com/60ALfQp.png',
         description: '12 Lotus petal dish flower in the moon',
       },
       {
-        image: '/src/assets/artifacts/125.png',
+        image: 'https://i.imgur.com/1yoKPeb.png',
         description: '125 Virupaksa (Buddhist deity)',
       },
       {
-        image: '/src/assets/artifacts/101.png',
+        image: 'https://i.imgur.com/JMHaZVn.png',
         description: '101 Meditation Room',
       },
       {
-        image: '/src/assets/artifacts/108.png',
+        image: 'https://i.imgur.com/BePYk2f.png',
         description:
           "108 The Light Beyond, Ryunosuke Akutagawa, The Spider's Thread",
       },
