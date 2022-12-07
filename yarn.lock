@@ -566,13 +566,13 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
-"@devprotocol/clubs-core@0.9.0":
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.9.0.tgz#5e1c9277d6715603de06023b1d7cf3db9f6f8160"
-  integrity sha512-EDui1qOfNqARkmfWK+hGSsimpqkskR2R6sv9Ubel/Ai/vHOdyGK91rHFkNpa19wnsoTSXoLONpJAC3nglw4L8A==
+"@devprotocol/clubs-core@0.9.2":
+  version "0.9.2"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.9.2.tgz#f8ab32ff450a96f22a9435b299a4423a3e280a54"
+  integrity sha512-JK/q4jUhYJtxKpfrEzAKdPhQffU5xMHCpHpUNpfg5M/f4Y166JrqDm8DwtmnQB32kOTxZWVB3yPkfOU8D9nmgw==
   dependencies:
     "@devprotocol/dev-kit" "6.10.0"
-    "@devprotocol/elements" "0.1.1"
+    "@devprotocol/elements" "0.2.0"
     "@devprotocol/util-ts" "2.2.1"
     "@metamask/detect-provider" "^2.0.0"
     ethers "^5.7.0"
@@ -605,6 +605,11 @@
   version "0.1.1"
   resolved "https://registry.npmjs.org/@devprotocol/elements/-/elements-0.1.1.tgz"
   integrity sha512-rozYrfPo+/bKp+QtXdGVZQGkXhOirhsDSrPmue0AOeg+OLBaOpjUNmZQf+P4kC6LOEiGUUguHP3AD+gy+8EXmg==
+
+"@devprotocol/elements@0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@devprotocol/elements/-/elements-0.2.0.tgz#3baccd8b5534126c8d50a06cbfec0622274853de"
+  integrity sha512-JB9SntSv0x8YpJmVdtchiiVuFa9mOI14Ew5DkhT1BphiLy1NNSBehQIyROM4Df7Au3l5V6SORHx/1WK29J2QEw==
 
 "@devprotocol/hashi@1.4.0":
   version "1.4.0"
