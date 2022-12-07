@@ -429,6 +429,10 @@ const populate = async () => {
         rpcUrl: 'https://mainnet.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920',
         options: [
           {
+            key: 'ogp',
+            value: { image: 'https://i.imgur.com/lcyO9Bn.jpg' },
+          },
+          {
             key: 'navLinks',
             value: [
               {
@@ -590,6 +594,10 @@ const populate = async () => {
           'https://polygon-mainnet.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920', // Polygon: https://polygon-mainnet.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920 // Mumbai: https://polygon-mumbai.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920
         adminRolePoints: 0,
         options: [
+          {
+            key: 'ogp',
+            value: { image: 'https://i.imgur.com/I6Yr0V7.jpg' },
+          },
           {
             key: 'headerLinks',
             value: [
