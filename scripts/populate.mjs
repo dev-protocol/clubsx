@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 import { encode } from '@devprotocol/clubs-core/encode'
 import { createClient } from 'redis'
 import { utils } from 'ethers'
-import BigNumber from 'bignumber.js'
+// import BigNumber from 'bignumber.js'
 
 dotenv.config()
 
@@ -202,10 +202,10 @@ const kougenjiProducts = [
     },
   },
 ]
-const kougenjiProductsMumbai = kougenjiProducts.map((item) => ({
-  ...item,
-  price: new BigNumber(item.price).div(100).toFixed(),
-}))
+// const kougenjiProductsMumbai = kougenjiProducts.map((item) => ({
+//   ...item,
+//   price: new BigNumber(item.price).div(100).toFixed(),
+// }))
 
 const tiers = [
   {
@@ -602,15 +602,15 @@ const populate = async () => {
             key: 'headerLinks',
             value: [
               {
-                display: 'Use ETH',
+                display: 'ETH での支援',
                 path: 'nft',
               },
               {
-                display: 'Perks',
+                display: '特典について',
                 path: 'https://sites.google.com/view/kougenjidao/%E3%83%9B%E3%83%BC%E3%83%A0/%E3%81%94%E6%94%AF%E6%8F%B4%E3%81%AE%E7%89%B9%E5%85%B8',
               },
               {
-                display: 'Community',
+                display: '光源寺 DAO への参加',
                 path: 'https://guild.xyz/temples-dao',
               },
             ],
@@ -671,79 +671,67 @@ const populate = async () => {
                     id: '1',
                     price: 100_000,
                     currency: 'YEN',
-                    purchaseLink: 'http://example.com',
+                    purchaseLink: 'https://buy.stripe.com/4gw14A6Jh1LEaZicMP',
                   },
                   {
                     id: '2',
                     price: 80_000,
                     currency: 'YEN',
-                    purchaseLink: 'http://example.com',
+                    purchaseLink: 'https://buy.stripe.com/fZebJe8RpfCu1oI8wA',
                   },
                   {
                     id: '3',
                     price: 70_000,
                     currency: 'YEN',
-                    purchaseLink: 'http://example.com',
+                    purchaseLink: 'https://buy.stripe.com/00g4gM2t1dumaZifZ3',
                   },
                   {
                     id: '4',
                     price: 10_000,
                     currency: 'YEN',
-                    purchaseLink: 'http://example.com',
+                    purchaseLink: 'https://buy.stripe.com/eVabJe9VtgGyd7q006',
                   },
                   {
                     id: '5',
                     price: 10_000,
                     currency: 'YEN',
-                    purchaseLink: 'http://example.com',
+                    purchaseLink: 'https://buy.stripe.com/eVabJe5Fd3TMc3m5kr',
                   },
                   {
                     id: '6',
                     price: 10_000,
                     currency: 'YEN',
-                    purchaseLink: 'http://example.com',
+                    purchaseLink: 'https://buy.stripe.com/eVa14A5Fdbmed7q7sA',
                   },
                   {
                     id: '7',
                     price: 10_000,
                     currency: 'YEN',
-                    purchaseLink: 'http://example.com',
+                    purchaseLink: 'https://buy.stripe.com/3cs3cI4B99e6d7q6ox',
                   },
                   {
                     id: '8',
                     price: 10_000,
                     currency: 'YEN',
-                    purchaseLink: 'http://example.com',
+                    purchaseLink: 'https://buy.stripe.com/eVadRmc3B0HA3wQ4gq',
                   },
                   {
                     id: '9',
                     price: 10_000,
                     currency: 'YEN',
-                    purchaseLink: 'http://example.com',
+                    purchaseLink: 'https://buy.stripe.com/cN2dRmffN2PI8Ra28j',
                   },
                   {
                     id: '10',
                     price: 10_000,
                     currency: 'YEN',
-                    purchaseLink: 'http://example.com',
+                    purchaseLink: 'https://buy.stripe.com/bIYbJeffN4XQ2sMaEQ',
                   },
                   {
                     id: '11',
                     price: 10_000,
                     currency: 'YEN',
-                    purchaseLink: 'http://example.com',
-                  },
-                  {
-                    id: '12',
-                    price: 10_000,
-                    currency: 'YEN',
-                    purchaseLink: 'http://example.com',
-                  },
-                  {
-                    id: '13',
-                    price: 20_000,
-                    currency: 'YEN',
-                    purchaseLink: 'http://example.com',
+                    purchaseLink: 'https://buy.stripe.com/8wM28E1oX1LE9Ve00d',
                   },
                 ],
               },
@@ -761,7 +749,7 @@ const populate = async () => {
               },
               {
                 key: 'title',
-                value: undefined,
+                value: '光源寺/ Kougenji',
               },
               {
                 key: 'slug',
@@ -775,7 +763,7 @@ const populate = async () => {
             options: [
               {
                 key: 'products',
-                value: kougenjiProductsMumbai, // Polygon: kougenjiProducts // Mumbai: kougenjiProductsMumbai
+                value: kougenjiProducts, // Polygon: kougenjiProducts // Mumbai: kougenjiProductsMumbai
               },
               {
                 key: 'coverImgSrc',
@@ -783,7 +771,7 @@ const populate = async () => {
               },
               {
                 key: 'title',
-                value: 'Kougenji',
+                value: '光源寺/ Kougenji',
               },
               {
                 key: 'description',
