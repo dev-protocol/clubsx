@@ -50,16 +50,15 @@ const config = Astro.props as ClubsConfiguration
 
         const details = getAdditionalUserInfo(result)
 
-        const jwtTokenId = await result.user.getIdToken()
+        const uid = result.user.uid
 
         // If it is a new user, set the __draft user
-        if (details?.isNewUser && jwtTokenId) {
+        if (details?.isNewUser && uid) {
           const updatedUptions = Object.assign({}, config.options, {
-            key: '__draft',
+            key: '__draftOptions',
             value: {
-              user: {
-                jwtTokenId,
-              },
+              isInDraft: true,
+              uid,
             },
           })
 

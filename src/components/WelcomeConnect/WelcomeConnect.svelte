@@ -49,11 +49,10 @@
     }
 
     const updatedUptions = Object.assign({}, config.options, {
-      key: '__draft',
+      key: '__draftOptions',
       value: {
-        user: {
-          wallet: currentAddress,
-        },
+        isInDraft: true,
+        address: currentAddress,
       },
     })
 
