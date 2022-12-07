@@ -16,7 +16,7 @@
       </li>
     </ul>
     <div class="flex items-center gap-4 place-self-end">
-      <ConnectButton client:only="vue" />
+      <ConnectButton client:only="vue" :chainId="chainId" />
       <div class="relative" ref="menu">
         <HSButton type="outlined" @click.prevent="toggle">
           <slot name="icon">
@@ -98,6 +98,7 @@ export default defineComponent({
       type: Object as PropType<NavLink[]>,
       default: [],
     },
+    chainId: Number,
   },
   data() {
     return {
