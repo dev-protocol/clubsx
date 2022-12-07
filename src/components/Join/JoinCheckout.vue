@@ -131,16 +131,6 @@
           </div>
         </aside>
       </section>
-      <section class="border-b border-dp-black-200 p-4">
-        <h3 class="mb-2 text-xl opacity-70">Estimated earnings/year</h3>
-        <p class="flex items-center text-2xl uppercase">
-          <Skeleton
-            v-if="estimatedEarnings === undefined"
-            class="mr-4 inline-block h-[1.2em] w-24"
-          />
-          {{ estimatedEarnings }} $DEV
-        </p>
-      </section>
       <section class="p-4">
         <h3 class="mb-2 text-xl opacity-70">Preview</h3>
         <div
@@ -173,7 +163,6 @@
 import {
   positionsCreate,
   positionsCreateWithEth,
-  estimationsAPY,
 } from '@devprotocol/dev-kit/agent'
 import { connection as getConnection } from '@devprotocol/clubs-core/connection'
 import { UndefinedOr, whenDefined, whenDefinedAll } from '@devprotocol/util-ts'
@@ -192,7 +181,6 @@ import Skeleton from '@components/Global/Skeleton.vue'
 import { stakeWithEthForPolygon } from '@fixtures/dev-kit'
 
 type Data = {
-  apy: UndefinedOr<number>
   parsedAmount: BigNumberish
   approveNeeded: UndefinedOr<boolean>
   isApproving: boolean
@@ -222,7 +210,6 @@ export default defineComponent({
   },
   data() {
     return {
-      apy: undefined,
       parsedAmount: this.amount
         ? utils.parseUnits(this.amount.toString(), 18)
         : 0,
@@ -240,11 +227,6 @@ export default defineComponent({
     } as Data
   },
   computed: {
-    estimatedEarnings(): number | undefined {
-      return this.devAmount && this.apy
-        ? new BigNumber(this.devAmount).times(this.apy).dp(9).toNumber()
-        : undefined
-    },
     verifiedInputCurrency(): CurrencyOption {
       const query = parse(location.search)
       const input = String(query.input).toLowerCase()
@@ -306,9 +288,6 @@ export default defineComponent({
 
     const provider = new providers.JsonRpcProvider(this.rpcUrl)
     const chain = (await provider.getNetwork()).chainId
-    estimationsAPY({ provider: providerPool || provider }).then(([apy]) => {
-      this.apy = apy
-    })
 
     whenDefinedAll(
       [this.destination, this.amount],

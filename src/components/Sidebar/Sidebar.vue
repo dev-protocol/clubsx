@@ -70,16 +70,6 @@
           >
             <a rel="prefetch" href="/members">{{ members || 'NaN' }} members</a>
           </div>
-          <aside
-            class="border-accent-800 grid w-full grid-cols-[1fr_auto] justify-between rounded border font-body text-sm"
-          >
-            <h3 class="border-accent-800 border-b p-2 opacity-50">
-              Club Allocation
-            </h3>
-            <p class="border-accent-800 border-b p-2 opacity-50">TBD</p>
-            <h3 class="p-2 opacity-50">APY for $DEV</h3>
-            <p class="p-2 opacity-50">&*%</p>
-          </aside>
           <HSButton
             v-for="primaryLink in primaryLinks"
             type="filled fullwidth"
