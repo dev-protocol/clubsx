@@ -433,11 +433,11 @@ const populate = async () => {
             value: { image: 'https://i.imgur.com/lcyO9Bn.jpg' },
           },
           {
-            key: 'navLinks',
+            key: 'headerLinks',
             value: [
               {
                 display: 'Kougenji',
-                path: 'http://kougenji.localhost:3000',
+                path: 'https://kougenji.clubs.stakes.social/',
               },
             ],
           },
