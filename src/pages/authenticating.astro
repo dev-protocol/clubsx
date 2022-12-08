@@ -1,0 +1,77 @@
+---
+/**
+ * This page is for when the user clicks from the Firebase email authentication link
+ */
+
+import { ClubsConfiguration } from '@devprotocol/clubs-core'
+import Layout from '@layouts/Landing.astro'
+
+const config = Astro.props as ClubsConfiguration
+---
+
+<Layout>
+  <section class="mb-16 mt-8 text-center">
+    <h1 class="mb-2 text-center font-title text-7xl font-bold">
+      Connecting Your Account
+    </h1>
+    <span>Authenticating...</span>
+  </section>
+</Layout>
+
+<input id="config" type="hidden" value={JSON.stringify(config)} />
+
+<script>
+  import {
+    getAdditionalUserInfo,
+    isSignInWithEmailLink,
+    signInWithEmailLink,
+  } from 'firebase/auth'
+  import { initializeFirebase } from '../fixtures/firebase'
+  import { ClubsConfiguration, setConfig } from '@devprotocol/clubs-core'
+
+  // Confirm the link is a sign-in with email link.
+  const auth = initializeFirebase()
+  const config = JSON.parse(
+    (document.getElementById('config') as HTMLInputElement)?.value
+  ) as ClubsConfiguration
+
+  if (isSignInWithEmailLink(auth, window.location.href)) {
+    let email = window.localStorage.getItem('emailForSignIn')
+    if (!email) {
+      // User opened the link on a different device. To prevent session fixation
+      // attacks, ask the user to provide the associated email again. For example:
+      email = window.prompt('Please provide your email for confirmation')
+    }
+
+    signInWithEmailLink(auth, email ?? '', window.location.href).then(
+      async (result) => {
+        // Clear email from storage.
+        window.localStorage.removeItem('emailForSignIn')
+
+        const details = getAdditionalUserInfo(result)
+
+        const uid = result.user.uid
+
+        // If it is a new user, set the __draft user
+        if (details?.isNewUser && uid) {
+          const updatedUptions = Object.assign({}, config.options, {
+            key: '__draftOptions',
+            value: {
+              isInDraft: true,
+              uid,
+            },
+          })
+
+          const updatedConfig = Object.assign(config, {
+            options: updatedUptions,
+          })
+
+          setConfig(updatedConfig)
+        }
+
+        // navigate to setup here...
+        // window.location.href = '/setup/homepage'
+      }
+    )
+  }
+</script>
