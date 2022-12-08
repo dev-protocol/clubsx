@@ -392,40 +392,42 @@ export default defineComponent({
       this.approveNeeded = whenDefined(res, (x) => x.approvalNeeded)
     },
     async submitStake() {
+      debugger
       await whenDefinedAll(
         [
           providerPool,
           this.account,
           this.destination,
+          this.amount,
           this.parsedAmount?.toString(),
         ],
-        async ([prov, account, destination, parsedAmount]) => {
+        async ([prov, account, destination, amount, parsedAmount]) => {
           if (this.usedCurrency === CurrencyOption.ETH) {
             if (this.usePolygonWETH) {
               const res = await stakeWithEthForPolygon({
                 provider: prov,
                 propertyAddress: destination,
-                ethAmount: parsedAmount,
+                ethAmount: amount.toString(),
                 gatewayAddress: this.feeBeneficiary,
                 gatewayBasisPoints: this.feePercentage
                   ? this.feePercentage * 10_000
                   : undefined,
                 payload: this.payload,
+                from: account,
               })
-              whenDefined(res, (x) => {
+              await whenDefined(res, async (x) => {
                 this.isStaking = true
-                x.create()
-                  .then(
-                    async (res) =>
-                      await res?.approveIfNeeded({ amount: parsedAmount })
-                  )
-                  .then(async (res) => await res?.waitOrSkipApproval())
-                  .then(async (res) => await res?.run())
-                  .then((res) => {
-                    console.log('res is: ', res)
-                    this.isStaking = false
-                    this.stakeSuccessful = true
-                  })
+                const create = await x.create()
+                const approveIfNeeded = await create?.approveIfNeeded({
+                  amount: parsedAmount,
+                })
+                const waitOrSkipApproval =
+                  await approveIfNeeded?.waitOrSkipApproval()
+                const run = await waitOrSkipApproval?.run()
+                const res = await run?.wait()
+                console.log('res is: ', res)
+                this.isStaking = false
+                this.stakeSuccessful = true
               })
             } else {
               // handle ETH stake
@@ -439,15 +441,13 @@ export default defineComponent({
                   : undefined,
                 payload: this.payload,
               })
-              whenDefined(res, (x) => {
+              await whenDefined(res, async (x) => {
                 this.isStaking = true
-                x.create()
-                  .then((res) => res.wait())
-                  .then((res) => {
-                    console.log('res is: ', res)
-                    this.isStaking = false
-                    this.stakeSuccessful = true
-                  })
+                const create = await x.create()
+                const res = await create.wait()
+                console.log('res is: ', res)
+                this.isStaking = false
+                this.stakeSuccessful = true
               })
             }
           } else {
@@ -459,17 +459,16 @@ export default defineComponent({
               amount: parsedAmount,
             })
 
-            whenDefined(res, (x) => {
+            await whenDefined(res, async (x) => {
               this.isStaking = true
-              x.approveIfNeeded()
-                .then((res) => res.waitOrSkipApproval())
-                .then((res) => res.run())
-                .then((res) => res.wait())
-                .then((res) => {
-                  console.log('res is: ', res)
-                  this.isStaking = false
-                  this.stakeSuccessful = true
-                })
+              const approveIfNeeded = await x.approveIfNeeded()
+              const waitOrSkipApproval =
+                await approveIfNeeded.waitOrSkipApproval()
+              const run = await waitOrSkipApproval.run()
+              const res = await run.wait()
+              console.log('res is: ', res)
+              this.isStaking = false
+              this.stakeSuccessful = true
             })
           }
         }

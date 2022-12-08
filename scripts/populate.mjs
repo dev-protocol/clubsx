@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 import { encode } from '@devprotocol/clubs-core/encode'
 import { createClient } from 'redis'
 import { utils } from 'ethers'
-// import BigNumber from 'bignumber.js'
+import BigNumber from 'bignumber.js'
 
 dotenv.config()
 
@@ -21,7 +21,7 @@ const kougenjiProducts = [
     imageAlt: 'lorem ipsum',
     payload: toBytes32('Kougenji Celestial Maiden #1'),
     fee: {
-      percentage: 95,
+      percentage: 0.95,
       beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
     },
   },
@@ -37,7 +37,7 @@ const kougenjiProducts = [
     imageAlt: 'lorem ipsum',
     payload: toBytes32('Kougenji Celestial Maiden #2'),
     fee: {
-      percentage: 95,
+      percentage: 0.95,
       beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
     },
   },
@@ -53,7 +53,7 @@ const kougenjiProducts = [
     imageAlt: 'lorem ipsum',
     payload: toBytes32('Kougenji Celestial Maiden #3'),
     fee: {
-      percentage: 95,
+      percentage: 0.95,
       beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
     },
   },
@@ -69,7 +69,7 @@ const kougenjiProducts = [
     imageAlt: 'lorem ipsum',
     payload: toBytes32('Kougenji Flower #1'),
     fee: {
-      percentage: 95,
+      percentage: 0.95,
       beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
     },
   },
@@ -85,7 +85,7 @@ const kougenjiProducts = [
     imageAlt: 'lorem ipsum',
     payload: toBytes32('Kougenji Flower #2'),
     fee: {
-      percentage: 95,
+      percentage: 0.95,
       beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
     },
   },
@@ -101,7 +101,7 @@ const kougenjiProducts = [
     imageAlt: 'lorem ipsum',
     payload: toBytes32('Kougenji Flower #3'),
     fee: {
-      percentage: 95,
+      percentage: 0.95,
       beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
     },
   },
@@ -117,7 +117,7 @@ const kougenjiProducts = [
     imageAlt: 'lorem ipsum',
     payload: toBytes32('Kougenji Flower #4'),
     fee: {
-      percentage: 95,
+      percentage: 0.95,
       beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
     },
   },
@@ -133,7 +133,7 @@ const kougenjiProducts = [
     imageAlt: 'lorem ipsum',
     payload: toBytes32('Kougenji Flower #5'),
     fee: {
-      percentage: 95,
+      percentage: 0.95,
       beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
     },
   },
@@ -149,7 +149,7 @@ const kougenjiProducts = [
     imageAlt: 'lorem ipsum',
     payload: toBytes32('Kougenji Flower #6'),
     fee: {
-      percentage: 95,
+      percentage: 0.95,
       beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
     },
   },
@@ -165,7 +165,7 @@ const kougenjiProducts = [
     imageAlt: 'lorem ipsum',
     payload: toBytes32('Kougenji Flower #7'),
     fee: {
-      percentage: 95,
+      percentage: 0.95,
       beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
     },
   },
@@ -181,7 +181,7 @@ const kougenjiProducts = [
     imageAlt: 'lorem ipsum',
     payload: toBytes32('Kougenji Flower #8'),
     fee: {
-      percentage: 95,
+      percentage: 0.95,
       beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
     },
   },
@@ -197,15 +197,15 @@ const kougenjiProducts = [
     imageAlt: 'lorem ipsum',
     payload: toBytes32('Kougenji DAO'),
     fee: {
-      percentage: 50,
+      percentage: 0.5,
       beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
     },
   },
 ]
-// const kougenjiProductsMumbai = kougenjiProducts.map((item) => ({
-//   ...item,
-//   price: new BigNumber(item.price).div(100).toFixed(),
-// }))
+const kougenjiProductsMumbai = kougenjiProducts.map((item) => ({
+  ...item,
+  price: new BigNumber(item.price).div(100).toFixed(),
+}))
 
 const tiers = [
   {
@@ -647,6 +647,11 @@ const populate = async () => {
         ],
         plugins: [
           {
+            name: 'me',
+            enable: true,
+            options: [],
+          },
+          {
             name: 'buy',
             enable: true,
             options: [
@@ -742,8 +747,7 @@ const populate = async () => {
                   title: '光源寺/ Kougenji',
                   description: [
                     `光源寺の天女絵修復プロジェクトでのご支援金は、天女の表具欄間彩色修復等に使われます。支援者の方は光源寺のDiscordチャンネルに参加し、修復状況（写真等）を見ることができます。また、NFTの種類により様々な特典をご用意しております。`,
-                    `[EN:] The funds raised for Kougenji will be used to restore the celestial maiden paper picture frame on the decorative transom and other cultural assets withinin the temple. Supporters are allowed to join Kougenji's Discord channel for the latest news and updates about the restoration (photos,etc.).
-                    We also plan to provide a variety of Perks according to the types of NFT you'll purchase.`,
+                    `The funds raised for Kougenji will be used to restore the celestial maiden paper picture frame on the decorative transom and other cultural assets within the temple. Supporters are allowed to join Kougenji's Discord channel for the latest news and updates about the restoration (photos, etc.). We also plan to provide a variety of perks according to the types of NFT you'll purchase.`,
                   ],
                 },
               },
@@ -777,8 +781,220 @@ const populate = async () => {
                 key: 'description',
                 value: [
                   `光源寺の天女絵修復プロジェクトでのご支援金は、天女の表具欄間彩色修復等に使われます。支援者の方は光源寺のDiscordチャンネルに参加し、修復状況（写真等）を見ることができます。また、NFTの種類により様々な特典をご用意しております。`,
-                  `[EN:] The funds raised for Kougenji will be used to restore the celestial maiden paper picture frame on the decorative transom and other cultural assets withinin the temple. Supporters are allowed to join Kougenji's Discord channel for the latest news and updates about the restoration (photos,etc.).
-                  We also plan to provide a variety of Perks according to the types of NFT you'll purchase.`,
+                  `The funds raised for Kougenji will be used to restore the celestial maiden paper picture frame on the decorative transom and other cultural assets within the temple. Supporters are allowed to join Kougenji's Discord channel for the latest news and updates about the restoration (photos, etc.). We also plan to provide a variety of perks according to the types of NFT you'll purchase.`,
+                ],
+              },
+            ],
+          },
+          {
+            name: 'message',
+            enable: true,
+            options: [],
+          },
+        ],
+      })
+    )
+    await client.set(
+      'kougenji-test',
+      encode({
+        name: 'Kougenji',
+        twitterHandle: '@templesdao',
+        description: '',
+        url: 'https://kougenji.clubs.stakes.social',
+        propertyAddress: '0x70a8B9a4B2d407a542c205adBbEA38289c3285eB', // Polygon: 0x23d67953FE2e61e9fAc78447526D9358cD05d40d // Mumbai: 0x70a8B9a4B2d407a542c205adBbEA38289c3285eB
+        chainId: 80001, // Polygon: 137 // Mumbai: 80001
+        rpcUrl:
+          'https://polygon-mumbai.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920', // Polygon: https://polygon-mainnet.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920 // Mumbai: https://polygon-mumbai.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920
+        adminRolePoints: 0,
+        options: [
+          {
+            key: 'ogp',
+            value: { image: 'https://i.imgur.com/I6Yr0V7.jpg' },
+          },
+          {
+            key: 'headerLinks',
+            value: [
+              {
+                display: 'ETH での支援',
+                path: 'nft',
+              },
+              {
+                display: '特典について',
+                path: 'https://sites.google.com/view/kougenjidao/%E3%83%9B%E3%83%BC%E3%83%A0/%E3%81%94%E6%94%AF%E6%8F%B4%E3%81%AE%E7%89%B9%E5%85%B8',
+              },
+              {
+                display: '光源寺 DAO への参加',
+                path: 'https://guild.xyz/temples-dao',
+              },
+            ],
+          },
+          {
+            key: 'navLinks',
+            value: [
+              {
+                display: 'About',
+                path: 'https://sites.google.com/view/kougenjidao',
+              },
+              {
+                display: 'Terms & Conditions',
+                path: 'https://kougenjidao.notion.site/5558b9a7d5b74453a2cf8c3640f63b5a',
+              },
+              {
+                display: 'Privacy Policy',
+                path: 'https://kougenjidao.notion.site/1d8d0410286443d4b7742549960eb588',
+              },
+              {
+                display: 'Act on specified commercial transactions',
+                path: 'https://kougenjidao.notion.site/edd00237c45c4f01a006ad17264e676e',
+              },
+            ],
+          },
+          {
+            key: 'avatarImgSrc',
+            value: 'https://i.imgur.com/453nyAX.jpg',
+          },
+          {
+            key: 'fullPageViewPaths',
+            value: [{ path: '' }],
+          },
+        ],
+        plugins: [
+          {
+            name: 'me',
+            enable: true,
+            options: [],
+          },
+          {
+            name: 'buy',
+            enable: true,
+            options: [
+              {
+                key: 'products',
+                value: kougenjiProductsMumbai, // Polygon: kougenjiProducts // Mumbai: kougenjiProductsMumbai
+              },
+            ],
+          },
+          {
+            name: 'fiat',
+            enable: true,
+            options: [
+              {
+                key: 'products',
+                value: kougenjiProductsMumbai, // Polygon: kougenjiProducts // Mumbai: kougenjiProductsMumbai
+              },
+              {
+                key: 'priceOverrides',
+                value: [
+                  {
+                    id: '1',
+                    price: 100_000,
+                    currency: 'YEN',
+                    purchaseLink: 'https://buy.stripe.com/4gw14A6Jh1LEaZicMP',
+                  },
+                  {
+                    id: '2',
+                    price: 80_000,
+                    currency: 'YEN',
+                    purchaseLink: 'https://buy.stripe.com/fZebJe8RpfCu1oI8wA',
+                  },
+                  {
+                    id: '3',
+                    price: 70_000,
+                    currency: 'YEN',
+                    purchaseLink: 'https://buy.stripe.com/00g4gM2t1dumaZifZ3',
+                  },
+                  {
+                    id: '4',
+                    price: 10_000,
+                    currency: 'YEN',
+                    purchaseLink: 'https://buy.stripe.com/eVabJe9VtgGyd7q006',
+                  },
+                  {
+                    id: '5',
+                    price: 10_000,
+                    currency: 'YEN',
+                    purchaseLink: 'https://buy.stripe.com/eVabJe5Fd3TMc3m5kr',
+                  },
+                  {
+                    id: '6',
+                    price: 10_000,
+                    currency: 'YEN',
+                    purchaseLink: 'https://buy.stripe.com/eVa14A5Fdbmed7q7sA',
+                  },
+                  {
+                    id: '7',
+                    price: 10_000,
+                    currency: 'YEN',
+                    purchaseLink: 'https://buy.stripe.com/3cs3cI4B99e6d7q6ox',
+                  },
+                  {
+                    id: '8',
+                    price: 10_000,
+                    currency: 'YEN',
+                    purchaseLink: 'https://buy.stripe.com/eVadRmc3B0HA3wQ4gq',
+                  },
+                  {
+                    id: '9',
+                    price: 10_000,
+                    currency: 'YEN',
+                    purchaseLink: 'https://buy.stripe.com/cN2dRmffN2PI8Ra28j',
+                  },
+                  {
+                    id: '10',
+                    price: 10_000,
+                    currency: 'YEN',
+                    purchaseLink: 'https://buy.stripe.com/bIYbJeffN4XQ2sMaEQ',
+                  },
+                  {
+                    id: '11',
+                    price: 10_000,
+                    currency: 'YEN',
+                    purchaseLink: 'https://buy.stripe.com/8wM28E1oX1LE9Ve00d',
+                  },
+                ],
+              },
+              {
+                key: 'hero',
+                value: {
+                  coverImgSrc: 'https://i.imgur.com/I6Yr0V7.jpg',
+                  title: '光源寺/ Kougenji',
+                  description: [
+                    `光源寺の天女絵修復プロジェクトでのご支援金は、天女の表具欄間彩色修復等に使われます。支援者の方は光源寺のDiscordチャンネルに参加し、修復状況（写真等）を見ることができます。また、NFTの種類により様々な特典をご用意しております。`,
+                    `The funds raised for Kougenji will be used to restore the celestial maiden paper picture frame on the decorative transom and other cultural assets within the temple. Supporters are allowed to join Kougenji's Discord channel for the latest news and updates about the restoration (photos, etc.). We also plan to provide a variety of perks according to the types of NFT you'll purchase.`,
+                  ],
+                },
+              },
+              {
+                key: 'title',
+                value: undefined,
+              },
+              {
+                key: 'slug',
+                value: [],
+              },
+            ],
+          },
+          {
+            name: 'nft',
+            enable: true,
+            options: [
+              {
+                key: 'products',
+                value: kougenjiProductsMumbai, // Polygon: kougenjiProducts // Mumbai: kougenjiProductsMumbai
+              },
+              {
+                key: 'coverImgSrc',
+                value: 'https://i.imgur.com/I6Yr0V7.jpg',
+              },
+              {
+                key: 'title',
+                value: '光源寺/ Kougenji',
+              },
+              {
+                key: 'description',
+                value: [
+                  `光源寺の天女絵修復プロジェクトでのご支援金は、天女の表具欄間彩色修復等に使われます。支援者の方は光源寺のDiscordチャンネルに参加し、修復状況（写真等）を見ることができます。また、NFTの種類により様々な特典をご用意しております。`,
+                  `The funds raised for Kougenji will be used to restore the celestial maiden paper picture frame on the decorative transom and other cultural assets within the temple. Supporters are allowed to join Kougenji's Discord channel for the latest news and updates about the restoration (photos, etc.). We also plan to provide a variety of perks according to the types of NFT you'll purchase.`,
                 ],
               },
             ],

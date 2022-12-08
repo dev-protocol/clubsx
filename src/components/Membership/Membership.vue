@@ -34,7 +34,6 @@ import { positionsOfOwner } from '@fixtures/dev-kit'
 export default {
   props: {
     propertyAddress: String,
-    rpcUrl: String,
   },
   data() {
     const modalProvider = GetModalProvider()
