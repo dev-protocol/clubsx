@@ -154,7 +154,7 @@
     class="flex flex-col items-center justify-center"
     v-if="stakeSuccessful"
   >
-    <h2 class="mb-8 font-title text-4xl font-bold">Joined</h2>
+    <h2 class="mb-8 font-title text-4xl font-bold">Completed</h2>
     <a href="/" class="text-blue-400">Back to top</a>
   </section>
 </template>

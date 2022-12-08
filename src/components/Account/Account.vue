@@ -31,7 +31,7 @@ import { GetModalProvider, ReConnectWallet, Disconnect } from '@fixtures/wallet'
 // NOTE: It is assumed to be used on a wallet-connected page.
 export default {
   props: {
-    propertyAddress: string,
+    propertyAddress: String,
   },
   data() {
     const modalProvider = GetModalProvider()
