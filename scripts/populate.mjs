@@ -30,7 +30,7 @@ const kougenjiProducts = [
     name: 'Kougenji Celestial Maiden #2',
     description: `修復後の天女のNFTを受け取ることができます.
     Holders of this NFT can receive restored celestial maiden NFT.`,
-    price: 0.45,
+    price: 0.5,
     currency: 'ETH',
     imageSrc:
       'https://bafybeifmshinu5cjv5gddsburhwmwaut2awoxkl4bsmhzqwxsl7pgx5bbi.ipfs.nftstorage.link/',
@@ -190,7 +190,7 @@ const kougenjiProducts = [
     name: 'Kougenji DAO',
     description: `御住職によるオンライン法話やお話し会に参加できます（2,3ヶ月に1回開催予定）.
     Holders of this NFT are allowed to join online preach or round-table talk by the head priest (to be scheduled once in a few months).`,
-    price: 0.085,
+    price: 0.09,
     currency: 'ETH',
     imageSrc:
       'https://bafybeifq5zh2rpnw5meyrjcyekyjfps5tsvfv5f62zjiqiahvut6w2btc4.ipfs.nftstorage.link/',
