@@ -19,27 +19,19 @@
 
 <script>
 import truncateEthAddress from 'truncate-eth-address'
-import {
-  detectStokensByPropertyAddress,
-  getStokenOwnerOf,
-  positionsOfOwner,
-} from '@fixtures/dev-kit'
 import Avator from '@components/Members/Avator.vue'
 import STokenPositions from '@components/Members/STokenPositions.vue'
 import { GetModalProvider, ReConnectWallet, Disconnect } from '@fixtures/wallet'
 
 // NOTE: It is assumed to be used on a wallet-connected page.
 export default {
-  props: {
-    propertyAddress: String,
-  },
+  props: {},
   data() {
     const modalProvider = GetModalProvider()
     return {
       truncateCurrentAddress: '',
       modalProvider,
       provider: undefined,
-      memberships: [],
     }
   },
   async mounted() {
@@ -52,30 +44,6 @@ export default {
     )
     this.provider = provider
     this.truncateCurrentAddress = truncateEthAddress(currentAddress)
-    const stokenIDs = await detectStokensByPropertyAddress(
-      provider,
-      this.propertyAddress
-    )
-
-    const accountStokenIDs = await positionsOfOwner(provider, currentAddress)
-
-    const membershipStokenIDs = accountStokenIDs.filter((stokenID) =>
-      stokenIDs.includes(stokenID)
-    )
-
-    const ret = await Promise.all(
-      membershipStokenIDs.map(async (stokenID) => {
-        return await getStokenOwnerOf(provider, stokenID).then(
-          (ownerAddress) => {
-            return {
-              id: stokenID,
-              ownerAddress,
-            }
-          }
-        )
-      })
-    )
-    this.memberships = ret
   },
   methods: {
     signout() {

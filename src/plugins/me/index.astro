@@ -2,17 +2,21 @@
 import Membership from '@components/Membership/Membership.vue'
 import Account from '@components/Account/Account.vue'
 
-const { propertyAddress } = Astro.props
+const { propertyAddress, rpcUrl } = Astro.props
 ---
 
 <div class="container mx-auto">
   <div class="mb-8">
-    <Membership client:only="vue" propertyAddress={propertyAddress} />
+    <Membership
+      client:only="vue"
+      propertyAddress={propertyAddress}
+      rpcUrl={rpcUrl}
+    />
   </div>
   <!-- <div class='mb-8'>
         <Badges />
       </div> -->
   <div class="mb-8">
-    <Account client:only="vue" propertyAddress={propertyAddress} />
+    <Account client:only="vue" />
   </div>
 </div>

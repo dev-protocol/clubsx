@@ -40,7 +40,7 @@ export default {
     const balances = await getStokenPositions(provider, this.stokenID)
     const uri = await getStokenTokenURI(provider, this.stokenID)
     this.amount = toNaturalNumber(new BigNumber(balances.amount))
-      .dp(0)
+      .dp(5)
       .toNumber()
     this.image = validImageUri(uri.image)
   },

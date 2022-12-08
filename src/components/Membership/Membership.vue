@@ -20,61 +20,68 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   detectStokensByPropertyAddress,
   getStokenOwnerOf,
 } from '@fixtures/dev-kit'
 import Avator from '@components/Members/Avator.vue'
 import STokenPositions from '@components/Members/STokenPositions.vue'
-import { GetModalProvider, ReConnectWallet } from '@fixtures/wallet'
 import { positionsOfOwner } from '@fixtures/dev-kit'
+import { connection as getConnection } from '@devprotocol/clubs-core/connection'
+import { zip } from 'rxjs'
+import { whenDefined, whenDefinedAll } from '@devprotocol/util-ts'
 
 // NOTE: It is assumed to be used on a wallet-connected page.
 export default {
   props: {
     propertyAddress: String,
+    rpcUrl: String,
   },
   data() {
-    const modalProvider = GetModalProvider()
     return {
-      modalProvider,
       memberships: [],
     }
   },
   async mounted() {
-    const { provider } = await ReConnectWallet(this.modalProvider)
-    this.modalProvider = provider
-  },
-  async created() {
-    const { provider, currentAddress } = await ReConnectWallet(
-      this.modalProvider
-    )
-    this.modalProvider = provider
-    const stokenIDs = await detectStokensByPropertyAddress(
-      provider,
-      this.propertyAddress
-    )
+    const connection = getConnection()
 
-    const accountStokenIDs = await positionsOfOwner(provider, currentAddress)
+    zip(connection.provider, connection.account).subscribe(
+      async ([provider, account]) => {
+        whenDefinedAll(
+          [provider, account, this.propertyAddress],
+          async ([prov, userAddress, propertyAddress]) => {
+            const stokenIDs = await detectStokensByPropertyAddress(
+              prov,
+              propertyAddress
+            )
 
-    const membershipStokenIDs = accountStokenIDs.filter((stokenID) =>
-      stokenIDs.includes(stokenID)
-    )
+            const accountStokenIDs = await positionsOfOwner(prov, userAddress)
 
-    const ret = await Promise.all(
-      membershipStokenIDs.map(async (stokenID) => {
-        return await getStokenOwnerOf(provider, stokenID).then(
-          (ownerAddress) => {
-            return {
-              id: stokenID,
-              ownerAddress,
-            }
+            const membershipStokenIDs = accountStokenIDs?.filter((stokenID) =>
+              stokenIDs?.includes(stokenID)
+            )
+
+            const ret = await whenDefined(membershipStokenIDs, (ids) =>
+              Promise.all(
+                ids.map(async (stokenID) => {
+                  return await getStokenOwnerOf(provider, stokenID).then(
+                    (ownerAddress) => {
+                      return {
+                        id: stokenID,
+                        ownerAddress,
+                      }
+                    }
+                  )
+                })
+              )
+            )
+            console.log({ ret })
+            this.memberships = ret ?? []
           }
         )
-      })
+      }
     )
-    this.memberships = ret
   },
   components: {
     Avator,
