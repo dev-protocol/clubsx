@@ -1,10 +1,10 @@
 <script lang="ts">
   import { setOptions } from '@devprotocol/clubs-core'
+  import { uploadImageAndGetPath } from '@fixtures/imgur'
   import type { HomeConfig } from '../../constants/homeConfig'
 
   export let homeConfig: HomeConfig
   export let currentPluginIndex: number
-  export let imgurClientId: string
 
   const update = (e?: any) => {
     // We don't want to store file in config
@@ -35,33 +35,6 @@
         ...homeConfig.perks,
         images: homeConfig.perks.images.concat({ image: '', description: '' }),
       },
-    }
-  }
-
-  const uploadImageAndGetPath = async (image: any) => {
-    if (!image) return ''
-
-    try {
-      const formData = new FormData()
-      formData.append('image', image)
-
-      const response = await fetch('https://api.imgur.com/3/upload', {
-        method: 'POST',
-        body: formData,
-        headers: {
-          Authorization: `Client-ID ${imgurClientId}`,
-          Accept: 'application/json',
-        },
-      })
-
-      const data = await response.json()
-      if (!response.ok || !data || !data.data.link) {
-        throw Error(response.statusText)
-      }
-
-      return data.data.link
-    } catch (e) {
-      return ''
     }
   }
 

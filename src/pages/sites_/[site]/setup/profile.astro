@@ -1,0 +1,22 @@
+---
+import AdminMembershipsForm from '@components/AdminMembershipsForm/AdminMembershipsForm.svelte'
+import { config as _config } from '@fixtures/config'
+import { adminFactory } from '@devprotocol/clubs-core'
+import membership from '@plugins/membership'
+import SetupLayout from '@layouts/Setup.astro'
+
+const { site } = Astro.params
+
+const { getCurrentConfig } = adminFactory({
+  config: async () => await _config(site),
+  plugins: {
+    membership,
+  },
+})
+
+const config = await getCurrentConfig()
+---
+
+<SetupLayout {config} setupStep="PROFILE">
+  <AdminMembershipsForm client:only="svelte" currentPluginIndex={0} />
+</SetupLayout>
