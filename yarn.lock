@@ -148,10 +148,10 @@
     fast-glob "^3.2.11"
     set-cookie-parser "^2.5.1"
 
-"@astrojs/vue@1.2.1":
-  version "1.2.1"
-  resolved "https://registry.npmjs.org/@astrojs/vue/-/vue-1.2.1.tgz"
-  integrity sha512-o/tmgrK5CaZX5yY+5BgatpcL3ItfSKSAvM5/hTSRkXIWMOgxHqST8tKjDhCgVUAhCzrzVBUIs/qXaLa+Tv00nQ==
+"@astrojs/vue@1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@astrojs/vue/-/vue-1.2.2.tgz#66e8cb1af79626518fadd9953f0912c7cc003969"
+  integrity sha512-RdngCS7BaXv1v0ygOVJ5P7+FUsDyBLkU8YLDxxud56zeEsKxFkk6drF/lmXM8Z/sJ/SZMqsK+I9bhTHRqIkAaA==
   dependencies:
     "@vitejs/plugin-vue" "^3.0.0"
     "@vitejs/plugin-vue-jsx" "^2.0.1"
