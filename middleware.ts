@@ -12,8 +12,8 @@ export default function middleware(req: Request) {
   const html = req.headers.get('accept')?.includes('text/html')
 
   if (html) {
-    url.pathname = `/sites_/${tenant}${url.pathname}`
-    return rewrite(new URL(url.pathname, 'https://clubs.place'))
+    const pathname = `/sites_/${tenant}${url.pathname}`
+    return rewrite(new URL(pathname, 'https://clubs.place'))
   }
 
   return next()
