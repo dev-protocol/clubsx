@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
-import { initializeApp as initializeAdminApp } from 'firebase-admin/app';
+import { initializeApp as initializeAdminApp } from 'firebase-admin/app'
 import { getAuth as getAdminAuth } from 'firebase-admin/auth'
 
 export const initializeFirebase = () => {
@@ -29,7 +29,7 @@ export const initializeFirebaseAdmin = () => {
 
   // Initialize Firebase Admin.
   const app = initializeAdminApp(firebaseConfig)
-  const auth = getAdminAuth(app);
+  const auth = getAdminAuth(app)
 
   return auth
 }

@@ -88,16 +88,18 @@ export const post = async ({ request }: { request: Request }) => {
 
   // We now check that the jwt matches the user in the draftOptions.
   if (jwtIdToken) {
-    const auth = initializeFirebaseAdmin();
+    const auth = initializeFirebaseAdmin()
     try {
-      const decodedJwtData = await auth.verifyIdToken(jwtIdToken);
-      const uidInJwt = decodedJwtData.uid;
-      authenticated = uidInJwt === value.uid;
+      const decodedJwtData = await auth.verifyIdToken(jwtIdToken)
+      const uidInJwt = decodedJwtData.uid
+      authenticated = uidInJwt === value.uid
       if (!authenticated) {
         return new Response(JSON.stringify({}), { status: 401 })
       }
     } catch (error: any) {
-      return new Response(JSON.stringify({ error }), { status: error?.response?.status || 500 })
+      return new Response(JSON.stringify({ error }), {
+        status: error?.response?.status || 500,
+      })
     }
   }
 
