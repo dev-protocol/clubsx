@@ -11,7 +11,7 @@ export default function middleware(req: Request) {
   const [tenant] = hostname
   const html = req.headers.get('accept')?.includes('text/html')
 
-  if (html) {
+  if (html && hostname.length > 2) {
     const pathname = `/sites_/${tenant}${url.pathname}`
     return rewrite(new URL(pathname, 'https://clubs.place'))
   }
