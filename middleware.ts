@@ -1,4 +1,4 @@
-import { rewrite } from '@vercel/edge'
+import { rewrite, next } from '@vercel/edge'
 
 export const config = {
   matcher: ['/((?!api|[\\w-]+\\.\\w+).*)'],
@@ -16,5 +16,5 @@ export default function middleware(req: Request) {
     return rewrite(new URL(url.pathname, 'https://clubs.place'))
   }
 
-  return new Response(null)
+  return next()
 }
