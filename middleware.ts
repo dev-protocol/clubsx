@@ -15,4 +15,6 @@ export default function middleware(req: Request) {
     url.pathname = `/sites_/${tenant}${url.pathname}`
     return rewrite(new URL(url.pathname, 'https://clubs.place'))
   }
+
+  return req
 }
