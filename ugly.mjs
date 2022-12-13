@@ -1,0 +1,12 @@
+import fs from 'fs-extra'
+
+const path =
+  './node_modules/@astrojs/vercel/dist/serverless/request-transform.js'
+fs.outputFileSync(
+  path,
+  ((file) =>
+    file.replace(
+      'base + req.url',
+      `(()=> {console.log(base, req.url); return base + req.url})()`
+    ))(fs.readFileSync(path, 'utf8'))
+)

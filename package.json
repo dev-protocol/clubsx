@@ -12,6 +12,7 @@
     "lint:prettier": "prettier -w --ignore-path .astro.prettierignore --no-error-on-unmatched-pattern .",
     "lint:prettier:astro": "yarn prettier -w **/*.astro || echo '🙈 > ignored some errors of prettier for astro'",
     "prepare": "husky install",
+    "install": "node ./ugly.mjs",
     "populate": "node ./scripts/populate.mjs"
   },
   "devDependencies": {
