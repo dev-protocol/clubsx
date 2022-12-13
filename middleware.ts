@@ -16,5 +16,5 @@ export default function middleware(req: Request) {
     return rewrite(new URL(url.pathname, 'https://clubs.place'))
   }
 
-  return req
+  return new Response(null)
 }
