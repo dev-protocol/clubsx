@@ -13,7 +13,7 @@ export default function middleware(req: Request) {
 
   if (html && hostname.length > 2) {
     const pathname = `/sites_/${tenant}${url.pathname}`
-    return rewrite(new URL(pathname, 'https://clubs.place'))
+    return rewrite(new URL(pathname, url.href))
   }
 
   return next()
