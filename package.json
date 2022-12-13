@@ -12,6 +12,7 @@
     "lint:prettier": "prettier -w --ignore-path .astro.prettierignore --no-error-on-unmatched-pattern .",
     "lint:prettier:astro": "yarn prettier -w **/*.astro || echo '🙈 > ignored some errors of prettier for astro'",
     "prepare": "husky install",
+    "install": "node ./ugly.mjs",
     "populate": "node ./scripts/populate.mjs"
   },
   "devDependencies": {
@@ -54,7 +55,6 @@
     "@metamask/detect-provider": "2.0.0",
     "@redis/json": "1.0.4",
     "@tailwindcss/aspect-ratio": "0.4.2",
-    "@vercel/edge": "^0.1.2",
     "@vue/composition-api": "1.7.1",
     "astro": "1.6.15",
     "bignumber.js": "9.1.1",
