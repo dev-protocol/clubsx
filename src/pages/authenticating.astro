@@ -55,7 +55,7 @@ const config = Astro.props as ClubsConfiguration
         // If it is a new user, set the __draft user
         if (details?.isNewUser && uid) {
           const updatedUptions = Object.assign({}, config.options, {
-            key: '__draftOptions',
+            key: '__draft',
             value: {
               isInDraft: true,
               uid,

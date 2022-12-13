@@ -43,7 +43,7 @@
     }
 
     const draftOptions =
-      config.options?.find((opt) => opt.key === '__draftOptions') ?? {}
+      config.options?.find((opt) => opt.key === '__draft') ?? {}
 
     const options = [
       {
@@ -51,7 +51,7 @@
         value: avatarPath ?? '',
       },
       {
-        key: '__draftOptions',
+        key: '__draft',
         value: Object.assign({}, draftOptions, { category: projectCategory }),
       },
     ]

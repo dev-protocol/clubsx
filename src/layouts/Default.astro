@@ -7,6 +7,7 @@ import Footer from '@components/Global/Footer.astro'
 import '@styles/global.scss'
 import { NavLink, PathCondition } from '@constants/navLink'
 import { UndefinedOr } from '@devprotocol/util-ts'
+import PreviewBanner from '@components/PreviewBanner/PreviewBanner.svelte'
 
 const { page } = Astro.params
 const { metaTitle, config } = Astro.props as {
@@ -102,6 +103,8 @@ const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
       isFullPageView ? (
         <main>
           <slot />
+
+          {isInDraft && <PreviewBanner />}
         </main>
       ) : (
         <>
@@ -120,6 +123,8 @@ const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
             </CLBWrapper>
           </main>
           <Footer />
+
+          {isInDraft && <PreviewBanner />}
         </>
       )
     }

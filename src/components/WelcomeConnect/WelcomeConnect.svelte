@@ -49,7 +49,7 @@
     }
 
     const updatedUptions = Object.assign({}, config.options, {
-      key: '__draftOptions',
+      key: '__draft',
       value: {
         isInDraft: true,
         address: currentAddress,
