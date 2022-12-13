@@ -17,7 +17,7 @@ export default function middleware(req: Request) {
     const pathname = `/sites_/${tenant}${url.pathname}`
     const newurl = new URL(pathname, url.origin)
     console.log({ newurl }, newurl.href)
-    return rewrite(newurl)
+    return rewrite(newurl, { headers: { 'x-rewritten-url': newurl.href } })
   }
 
   return next()
