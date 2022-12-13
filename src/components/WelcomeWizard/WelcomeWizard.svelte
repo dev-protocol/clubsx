@@ -1,10 +1,16 @@
 <script lang="ts">
   import WelcomeWizardStep from './WelcomeWizardStep.svelte'
 
-  export let step: 'HOME' | 'MEMBERSHIPS' | 'PLUGINS'
+  export let step: 'HOME' | 'MEMBERSHIPS' | 'PLUGINS' | 'PROFILE'
 </script>
 
 <div class="h-screen py-12 px-16">
+  <WelcomeWizardStep
+    label="Profile"
+    isActive={step === 'PROFILE'}
+    isComplete={step === 'MEMBERSHIPS' || step === 'PLUGINS' || step === 'HOME'}
+  />
+
   <WelcomeWizardStep
     label="Homepage"
     isActive={step === 'HOME'}
