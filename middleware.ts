@@ -11,12 +11,9 @@ export default function middleware(req: Request) {
   const [tenant] = hostname
   const html = req.headers.get('accept')?.includes('text/html')
 
-  console.log({ hostname, tenant, html }, url.pathname, url.origin)
-
   if (html && hostname.length > 2) {
     const pathname = `/sites_/${tenant}${url.pathname}`
     const newurl = new URL(pathname, url.origin)
-    console.log({ newurl }, newurl.href)
     return rewrite(newurl, { headers: { 'x-rewritten-url': newurl.href } })
   }
 
