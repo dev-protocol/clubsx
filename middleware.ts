@@ -13,8 +13,10 @@ export default function middleware(req: Request) {
 
   if (html && hostname.length > 2) {
     const pathname = `/sites_/${tenant}${url.pathname}`
-    const newurl = new URL(pathname, url.origin)
-    return rewrite(newurl, { headers: { 'x-rewritten-url': newurl.href } })
+    const destination = new URL(pathname, url.origin)
+    return rewrite(destination, {
+      headers: { 'x-rewritten-url': destination.href },
+    })
   }
 
   return next()
