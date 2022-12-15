@@ -4,5 +4,7 @@ import Domain from '@components/Domain/Domain.vue'
 ---
 
 <Layout>
-  <Domain client:only="vue" />
+  <div slot="before-header" id="three-container" class="absolute inset-0 z-0">
+  </div>
+  <Domain client:only="vue" containerId="three-container" />
 </Layout>

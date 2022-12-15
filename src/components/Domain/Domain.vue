@@ -1,76 +1,86 @@
 <script lang="ts">
 import { Comment } from 'vue'
 import HSButton from '../Primitives/Hashi/HSButton.vue'
-// import { GetModalProvider, ReConnectWallet } from '@fixtures/wallet'
+import { GetModalProvider, ReConnectWallet } from '@fixtures/wallet'
 import { ClubsConfiguration, encode } from '@devprotocol/clubs-core'
-// import { utils } from 'ethers'
+import { utils } from 'ethers'
 import { defaultPlugins } from '@constants/plugins'
+import { renderSpotlight } from '@fixtures/ui/renderSpotLight'
 
 export default {
   name: 'AlmostThere',
   components: { HSButton },
+  props: {
+    containerId: {
+      type: String,
+      required: true,
+    },
+  },
   data: () => ({
     daoName: '',
     dbSetStatus: '',
   }),
   methods: {
-    // async setDb() {
-    //   if (!this.daoName || this.daoName === '') {
-    //     this.dbSetStatus = 'invalid-dao-name'
-    //     return
-    //   }
-    //   const configuration: ClubsConfiguration = {
-    //     name: this.daoName,
-    //     twitterHandle: '',
-    //     description: '',
-    //     url: '',
-    //     propertyAddress: this.address ?? '',
-    //     adminRolePoints: 0,
-    //     options: [],
-    //     plugins: defaultPlugins,
-    //     chainId: this.network ? +this.network : 1, // need to ensure this is correct...
-    //     rpcUrl: '',
-    //   }
-    //   const modalProvider = GetModalProvider()
-    //   const { provider, currentAddress } = await ReConnectWallet(modalProvider)
-    //   if (!currentAddress || !provider) {
-    //     this.dbSetStatus = 'wallet-not-connected'
-    //     return
-    //   }
-    //   const signer = provider.getSigner()
-    //   const config = encode(configuration)
-    //   const hash = await utils.hashMessage(config)
-    //   const sig = await signer.signMessage(hash)
-    //   if (!sig) {
-    //     return
-    //   }
-    //   const body = {
-    //     site: this.daoName
-    //       .toLowerCase()
-    //       .split(/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~\s+]/)
-    //       .filter((i) => i && i !== ' ')
-    //       .join('-'),
-    //     config,
-    //     hash,
-    //     sig,
-    //     expectedAddress: currentAddress,
-    //   }
-    //   // Save the config to db, this is the same as updateConfig in the admin sections.
-    //   const res = await fetch('/setConfig', {
-    //     method: 'POST',
-    //     body: JSON.stringify(body),
-    //   })
-    //   const isConfigSet = res.ok
-    //   if (isConfigSet) {
-    //     this.dbSetStatus = 'successful'
-    //   } else {
-    //     this.dbSetStatus = 'failed'
-    //   }
-    //   if (isConfigSet) {
-    //     const host = window.location.host
-    //     window.location.href = `https://${body.site}.${host}/setup/homepage`
-    //   }
-    // },
+    async setDb() {
+      if (!this.daoName || this.daoName === '') {
+        this.dbSetStatus = 'invalid-dao-name'
+        return
+      }
+      const configuration: ClubsConfiguration = {
+        name: this.daoName,
+        twitterHandle: '',
+        description: '',
+        url: '',
+        propertyAddress: this.address ?? '',
+        adminRolePoints: 0,
+        options: [],
+        plugins: defaultPlugins,
+        chainId: this.network ? +this.network : 1, // need to ensure this is correct...
+        rpcUrl: '',
+      }
+      const modalProvider = GetModalProvider()
+      const { provider, currentAddress } = await ReConnectWallet(modalProvider)
+      if (!currentAddress || !provider) {
+        this.dbSetStatus = 'wallet-not-connected'
+        return
+      }
+      const signer = provider.getSigner()
+      const config = encode(configuration)
+      const hash = await utils.hashMessage(config)
+      const sig = await signer.signMessage(hash)
+      if (!sig) {
+        return
+      }
+      const body = {
+        site: this.daoName
+          .toLowerCase()
+          .split(/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~\s+]/)
+          .filter((i) => i && i !== ' ')
+          .join('-'),
+        config,
+        hash,
+        sig,
+        expectedAddress: currentAddress,
+      }
+      // Save the config to db, this is the same as updateConfig in the admin sections.
+      const res = await fetch('/setConfig', {
+        method: 'POST',
+        body: JSON.stringify(body),
+      })
+      const isConfigSet = res.ok
+      if (isConfigSet) {
+        this.dbSetStatus = 'successful'
+      } else {
+        this.dbSetStatus = 'failed'
+      }
+      if (isConfigSet) {
+        const host = window.location.host
+        window.location.href = `https://${body.site}.${host}/setup/homepage`
+      }
+    },
+  },
+  mounted() {
+    renderSpotlight({ containerId: this.containerId })
   },
   computed: {
     network() {
@@ -86,7 +96,7 @@ export default {
 </script>
 
 <template>
-  <div class="grid justify-center">
+  <div class="relative grid justify-center">
     <section class="my-32 grid gap-8 text-center">
       <h1 class="text-5xl font-bold">It All Starts with a Domain</h1>
       <p>You can use your preferred domain for your club.</p>

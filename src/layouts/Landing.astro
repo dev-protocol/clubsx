@@ -34,7 +34,8 @@ const twitterHandle = 'devprtcl'
   </head>
 
   <body class="min-h-screen bg-dp-blue-grey-400 font-body text-white">
-    <header class="flex justify-between p-12">
+    <slot name="before-header" />
+    <header class="relative flex justify-between p-12">
       <h1 class="flex items-center gap-2.5 font-['Poppins'] text-xl font-bold">
         <img src={ClubsWhite} />Clubs
       </h1>
@@ -45,7 +46,7 @@ const twitterHandle = 'devprtcl'
       </nav>
     </header>
 
-    <main class="container mx-auto">
+    <main class="container relative mx-auto">
       <slot />
     </main>
   </body>
