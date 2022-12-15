@@ -79,6 +79,7 @@ export default {
         method: 'POST',
         body: JSON.stringify(body),
       })
+
       const isConfigSet = res.ok
       if (isConfigSet) {
         this.dbSetStatus = 'successful'
