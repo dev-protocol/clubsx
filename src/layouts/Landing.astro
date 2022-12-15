@@ -35,15 +35,15 @@ const twitterHandle = 'devprtcl'
 
   <body class="min-h-screen bg-dp-blue-grey-400 font-body text-white">
     <slot name="before-header" />
-    <header class="relative flex justify-between p-12">
+    <header class="relative flex justify-between p-6 md:p-12">
       <h1 class="flex items-center gap-2.5 font-['Poppins'] text-xl font-bold">
         <img src={ClubsWhite} />Clubs
       </h1>
-      <nav class="flex justify-between gap-10">
-        <!-- TODO: path for this -->
-        <a class="rounded border py-2 px-4" href="/getstarted">Get Started</a>
-        <ConnectButton client:only="vue" />
-      </nav>
+      <!-- <nav class="flex justify-between gap-10"> -->
+      <!-- TODO: path for this -->
+      <!-- <a class="rounded border py-2 px-4" href="/getstarted">Get Started</a> -->
+      <!-- <ConnectButton client:only="vue" /> -->
+      <!-- </nav> -->
     </header>
 
     <main class="container relative mx-auto">
