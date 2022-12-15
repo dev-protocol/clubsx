@@ -54,12 +54,14 @@ export default {
         return
       }
       const signer = provider.getSigner()
+
       const config = encode(configuration)
       const hash = await utils.hashMessage(config)
       const sig = await signer.signMessage(hash)
       if (!sig) {
         return
       }
+
       const body = {
         site: this.daoName
           .toLowerCase()
@@ -71,6 +73,7 @@ export default {
         sig,
         expectedAddress: currentAddress,
       }
+
       // Save the config to db, this is the same as updateConfig in the admin sections.
       const res = await fetch('/setConfig', {
         method: 'POST',
@@ -82,6 +85,7 @@ export default {
       } else {
         this.dbSetStatus = 'failed'
       }
+
       if (isConfigSet) {
         const host = window.location.host
         window.location.href = `https://${body.site}.${host}/setup/homepage`
