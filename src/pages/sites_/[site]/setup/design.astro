@@ -1,0 +1,32 @@
+---
+import SetupDesign from '@components/SetupDesign/SetupDesign.svelte'
+import { config as _config } from '@fixtures/config'
+import { adminFactory } from '@devprotocol/clubs-core'
+import home from '@plugins/home'
+import SetupLayout from '@layouts/Setup.astro'
+
+const { site } = Astro.params
+
+const { getCurrentConfig } = adminFactory({
+  config: async () => await _config(site),
+  plugins: {
+    home,
+  },
+})
+
+const config = await getCurrentConfig()
+
+const { options, clubs } = Astro.props
+
+const homeConfig = options.find(
+  (option: { key: string; value: string }) => option.key === 'homeConfig'
+)
+---
+
+<SetupLayout {config} setupStep="PROFILE">
+  <SetupDesign
+    client:only="svelte"
+    homeConfig={homeConfig.value}
+    currentPluginIndex={clubs.currentPluginIndex}
+  />
+</SetupLayout>

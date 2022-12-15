@@ -95,7 +95,7 @@
       </div>
 
       <div class="mb-10 flex flex-col">
-        <label class="mb-1" for="hero-image"> Text </label>
+        <label class="mb-1" for="hero-text"> Text </label>
         <input
           class="rounded bg-[#040B10] px-8 py-4"
           bind:value={homeConfig.hero.text}

@@ -19,4 +19,5 @@ export type HomeConfig = {
     }[]
   }
   quote: string
+  body: string
 }
