@@ -14,7 +14,7 @@
 );
 @use 'node_modules/@devprotocol/hashi/hs-utils';
 
-@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz@6..96&family=DM+Sans:wght@400;700&family=Syne:wght@500;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz@6..96&family=DM+Sans:wght@400;700&family=Syne:wght@500;700;800&family=Poppins:wght@700&display=swap');
 
 @include hashi.init() {
   body {
