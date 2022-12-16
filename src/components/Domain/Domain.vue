@@ -89,7 +89,7 @@ export default {
 
       if (isConfigSet) {
         const host = window.location.host
-        window.location.href = `https://${body.site}.${host}/setup/connect`
+        window.location.href = `https://${host}/connect/${body.site}`
       }
     },
     async verifySiteName() {
