@@ -1,31 +1,68 @@
 <script lang="ts">
   import WelcomeWizardStep from './WelcomeWizardStep.svelte'
+  import IconClubs from './icons/clubs.svelte'
+  import IconIdentification from './icons/identification.svelte'
+  import IconComputerDesktop from './icons/computer-desktop.svelte'
+  import IconUserGroup from './icons/user-group.svelte'
+  import IconGlobeEuropeAfrica from './icons/globe-europe-africa.svelte'
+  import IconArrowBottom from './icons/arrow-bottom.svelte'
 
-  export let step: 'HOME' | 'MEMBERSHIPS' | 'PLUGINS' | 'PROFILE'
+  export let step: 'DESIGN' | 'MEMBERSHIPS' | 'PREVIEW' | 'PROFILE' | 'PUBLISH'
 </script>
 
-<div class="h-screen py-12 px-16">
-  <WelcomeWizardStep
-    label="Profile"
-    isActive={step === 'PROFILE'}
-    isComplete={step === 'MEMBERSHIPS' || step === 'PLUGINS' || step === 'HOME'}
-  />
+<div class={`relative grid gap-16 content-start h-full py-16 px-8 bg-[url('/assets/bg-wizard.jpg')] bg-cover	bg-center	bg-no-repeat`}>
+  <div role='presentation' class="absolute inset-0 bg-black/30"></div>
+  <h1 class="relative flex gap-2 items-center">
+    <IconClubs />
+    <span class="font-['Poppins']">Clubs</span>
+  </h1>
+  <div class='relative grid gap-4	'>
+    <WelcomeWizardStep
+      label="Basic info"
+      isActive={step === 'PROFILE'}
+      link="/setup/profile"
+    >
+      <IconIdentification />
+    </WelcomeWizardStep>
 
-  <WelcomeWizardStep
-    label="Homepage"
-    isActive={step === 'HOME'}
-    isComplete={step === 'MEMBERSHIPS' || step === 'PLUGINS'}
-  />
+    <IconArrowBottom />
 
-  <WelcomeWizardStep
-    label="Memberships"
-    isActive={step === 'MEMBERSHIPS'}
-    isComplete={step === 'PLUGINS'}
-  />
+    <WelcomeWizardStep
+      label="Design"
+      isActive={step === 'DESIGN'}
+      link="/setup/homepage"
+    >
+      <IconComputerDesktop />
+    </WelcomeWizardStep>
 
-  <WelcomeWizardStep
-    label="Plugins"
-    isActive={step === 'PLUGINS'}
-    isComplete={false}
-  />
+    <IconArrowBottom />
+
+    <WelcomeWizardStep
+      label="Memberships"
+      isActive={step === 'MEMBERSHIPS'}
+      link="/setup/memberships"
+    >
+      <IconUserGroup />
+    </WelcomeWizardStep>
+
+    <IconArrowBottom />
+
+    <WelcomeWizardStep
+      label="Preview"
+      isActive={step==='PREVIEW'}
+      link="/setup/preview"
+    >
+      <IconComputerDesktop />
+    </WelcomeWizardStep>
+
+    <IconArrowBottom />
+
+    <WelcomeWizardStep
+      label="Publish"
+      isActive={step==='PUBLISH'}
+      link="/setup/publish"
+    >
+      <IconGlobeEuropeAfrica />
+    </WelcomeWizardStep>
+  </div>
 </div>
