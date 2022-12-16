@@ -5,9 +5,9 @@ import { adminFactory } from '@devprotocol/clubs-core'
 import home from '@plugins/home'
 import SetupLayout from '@layouts/Setup.astro'
 
-const { site } = Astro.params
+const { site, page } = Astro.params
 
-const { getCurrentConfig } = adminFactory({
+const { getStaticPaths, getCurrentConfig } = adminFactory({
   config: async () => await _config(site),
   plugins: {
     home,
@@ -15,10 +15,15 @@ const { getCurrentConfig } = adminFactory({
 })
 
 const config = await getCurrentConfig()
+const path = (await getStaticPaths()).find(
+  ({ params }) => params.page === 'home'
+)
 
-const { options, clubs } = Astro.props
+if (!path) {
+  throw new Error('Path undefined: ', path)
+}
 
-const homeConfig = options.find(
+const homeConfig = path?.props.options.find(
   (option: { key: string; value: string }) => option.key === 'homeConfig'
 )
 ---
@@ -27,6 +32,6 @@ const homeConfig = options.find(
   <SetupDesign
     client:only="svelte"
     homeConfig={homeConfig.value}
-    currentPluginIndex={clubs.currentPluginIndex}
+    currentPluginIndex={path?.props.clubs.currentPluginIndex}
   />
 </SetupLayout>
