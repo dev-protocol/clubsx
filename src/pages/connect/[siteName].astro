@@ -4,7 +4,7 @@ import WelcomeConnect from '@components/WelcomeConnect/WelcomeConnect.svelte'
 import { config as _config } from '@fixtures/config'
 import { decode } from '@devprotocol/clubs-core'
 
-const { siteName } = Astro.props as { siteName: string }
+const { siteName } = Astro.params as { siteName: string }
 const config = decode(await _config(siteName))
 ---
 
