@@ -4,12 +4,7 @@
   export let link: string
 </script>
 
-<a
-  href={link}
-  class={`-mx-3 flex w-full flex-row gap-4 rounded p-3 text-white transition-colors duration-500 ${
-    isActive ? 'border' : 'hover:bg-white/30'
-  }`}
->
+<a href={link} class={`flex flex-row w-full p-3 -mx-3 rounded transition-colors duration-500 gap-4 text-white ${isActive ? 'border' : 'hover:bg-white/30'}`}>
   <i role="presentation" class={`${isActive ? '' : 'opacity-50'}`}><slot /></i>
   <span class="font-bold">{label}</span>
 </a>

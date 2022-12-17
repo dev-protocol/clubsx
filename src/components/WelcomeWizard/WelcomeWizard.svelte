@@ -10,15 +10,13 @@
   export let step: 'DESIGN' | 'MEMBERSHIPS' | 'PREVIEW' | 'PROFILE' | 'PUBLISH'
 </script>
 
-<div
-  class={`relative grid h-full content-start gap-16 bg-[url('/assets/bg-wizard.jpg')] bg-cover bg-center bg-no-repeat	py-16	px-8`}
->
-  <div role="presentation" class="absolute inset-0 bg-black/30" />
-  <h1 class="relative flex items-center gap-2">
+<div class={`relative grid gap-16 content-start h-full py-16 px-8 bg-[url('/assets/bg-wizard.jpg')] bg-cover	bg-center	bg-no-repeat`}>
+  <div role='presentation' class="absolute inset-0 bg-black/30"></div>
+  <h1 class="relative flex gap-2 items-center">
     <IconClubs />
     <span class="font-['Poppins']">Clubs</span>
   </h1>
-  <div class="relative grid gap-4	">
+  <div class='relative grid gap-4	'>
     <WelcomeWizardStep
       label="Basic info"
       isActive={step === 'PROFILE'}
@@ -51,7 +49,7 @@
 
     <WelcomeWizardStep
       label="Preview"
-      isActive={step === 'PREVIEW'}
+      isActive={step==='PREVIEW'}
       link="/setup/preview"
     >
       <IconComputerDesktop />
@@ -61,7 +59,7 @@
 
     <WelcomeWizardStep
       label="Publish"
-      isActive={step === 'PUBLISH'}
+      isActive={step==='PUBLISH'}
       link="/setup/publish"
     >
       <IconGlobeEuropeAfrica />
