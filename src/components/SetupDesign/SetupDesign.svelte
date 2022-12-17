@@ -37,7 +37,7 @@
       {:else}
         <div class="float-left">
           <span
-            class="text-sm font-medium px-12 py-4 rounded-lg bg-[#040B10] cursor-pointer"
+            class="cursor-pointer rounded-lg bg-[#040B10] px-12 py-4 text-sm font-medium"
             type="button">Choose Image</span
           >
         </div>
