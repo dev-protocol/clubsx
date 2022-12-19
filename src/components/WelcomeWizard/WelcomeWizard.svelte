@@ -32,7 +32,7 @@
     <WelcomeWizardStep
       label="Design"
       isActive={step === 'DESIGN'}
-      link="/setup/homepage"
+      link="/setup/design"
     >
       <IconComputerDesktop />
     </WelcomeWizardStep>

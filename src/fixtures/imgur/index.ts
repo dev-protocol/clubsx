@@ -1,7 +1,7 @@
 export const uploadImageAndGetPath = async (image: File) => {
-  const imgurClientId = import.meta.env.IMGUR_CLIENT_ID
+  const imgurClientId = import.meta.env.PUBLIC_IMGUR_CLIENT_ID
   if (!imgurClientId) {
-    throw Error('No IMGUR_CLIENT_ID set in .env')
+    throw Error('No PUBLIC_IMGUR_CLIENT_ID set in .env')
   }
 
   if (!image) return ''
