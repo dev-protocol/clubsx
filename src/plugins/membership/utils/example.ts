@@ -13,7 +13,7 @@ const propertyAddress: propertyAddressType = {
 const image: Image[] = [
   {
     // const { imageSrc, requiredETHAmount, requiredETHFee, gateway } = config
-    imageSrc: 'https://example.com',     
+    imageSrc: 'https://example.com',
     requiredETHAmount: 0,
     requiredETHFee: 0,
     gateway: '0x0000000000000000000000000000000000000000',
@@ -21,11 +21,14 @@ const image: Image[] = [
 ]
 const keys: keysType[] = [
   // const { key } = config
-  { 
-    key: "0x000"
+  {
+    key: '0x000',
   },
 ]
 
 export const example = async (provider: BaseProvider) => {
-  const setImage = await callSimpleCollections(provider, 'setImage', [propertyAddress, image])
+  const setImage = await callSimpleCollections(provider, 'setImage', [
+    propertyAddress,
+    image,
+  ])
 }

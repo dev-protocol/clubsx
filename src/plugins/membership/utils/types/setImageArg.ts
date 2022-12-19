@@ -1,5 +1,4 @@
-import { type } from "ramda"
-
+import { type } from 'ramda'
 
 export type propertyAddressType = {
   readonly propertyAddress: string
