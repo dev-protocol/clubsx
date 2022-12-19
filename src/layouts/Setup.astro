@@ -21,7 +21,7 @@ const { config, setupStep } = Astro.props as {
     <div
       class="mr-20 grid min-h-screen auto-cols-[18rem_minmax(auto,_1fr)_12rem] grid-flow-col gap-20"
     >
-      <WelcomeWizard client:load step={setupStep} />
+      <WelcomeWizard step={setupStep} />
 
       <main class="container mx-auto py-16">
         <slot />
