@@ -13,33 +13,33 @@ type Address = {
 const address: Address[] = [
   {
     chainId: 1,
-    address: '0x8a9c67fee641579deba04928c4bc45f66e26343a',
+    address: '0x541F7914ED2A4a8B477edc711FA349A77983F3AD',
   },
   {
     chainId: 4,
-    address: '0x8a9c67fee641579deba04928c4bc45f66e26343a',
+    address: '0x541F7914ED2A4a8B477edc711FA349A77983F3AD',
   },
   {
     chainId: 42161,
-    address: '0x8a9c67fee641579deba04928c4bc45f66e26343a',
+    address: '0x541F7914ED2A4a8B477edc711FA349A77983F3AD',
   },
   {
     chainId: 421611,
-    address: '0x8a9c67fee641579deba04928c4bc45f66e26343a',
+    address: '0x541F7914ED2A4a8B477edc711FA349A77983F3AD',
   },
   {
     chainId: 137,
-    address: '0x8a9c67fee641579deba04928c4bc45f66e26343a',
+    address: '0x541F7914ED2A4a8B477edc711FA349A77983F3AD',
   },
   {
     chainId: 80001,
-    address: '0x8a9c67fee641579deba04928c4bc45f66e26343a',
+    address: '0x541F7914ED2A4a8B477edc711FA349A77983F3AD',
   },
 ]
 
 const defaultAddress: Address = {
   chainId: 1,
-  address: '0x8a9c67fee641579deba04928c4bc45f66e26343a',
+  address: '0x541F7914ED2A4a8B477edc711FA349A77983F3AD',
 }
 
 const simpleCollectionsAbi = [
