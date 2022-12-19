@@ -63,6 +63,16 @@
     const config: ClubsConfiguration = {
       ...defaultConfig,
       name: siteName,
+      options: [
+        ...(defaultConfig.options ? defaultConfig.options : []),
+        {
+          key: '__draft',
+          value: {
+            isInDraft: true,
+            address: currentAddress,
+          },
+        },
+      ],
     }
 
     // Get the signature ready.
