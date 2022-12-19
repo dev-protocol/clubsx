@@ -1,5 +1,5 @@
 ---
-import ProfileSetupForm from '@components/ProfileSetupForm/ProfileSetupForm.svelte'
+import AdminMembershipsForm from '@components/AdminMembershipsForm/AdminMembershipsForm.svelte'
 import { config as _config } from '@fixtures/config'
 import { adminFactory } from '@devprotocol/clubs-core'
 import admin from '@plugins/admin'
@@ -22,6 +22,6 @@ if (!path) {
 }
 ---
 
-<SetupLayout {config} {...path.props} setupStep="PROFILE">
-  <ProfileSetupForm client:only="svelte" config={config} />
+<SetupLayout {config} {...path.props} setupStep="PREVIEW">
+  <h2 class="mb-16 font-title text-2xl font-bold">Preview</h2>
 </SetupLayout>

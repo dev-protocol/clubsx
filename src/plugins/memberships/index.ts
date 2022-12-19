@@ -10,11 +10,11 @@ import { default as Admin } from './admin.astro'
 export const getPagePaths: ClubsFunctionGetPagePaths = async () => []
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async () => [
-  { paths: ['membership'], component: Admin, props: {} },
+  { paths: ['memberships'], component: Admin, props: {} },
 ]
 
 export const meta: ClubsPluginMeta = {
-  displayName: 'Membership',
+  displayName: 'Memberships',
   category: ClubsPluginCategory.Monetization,
 }
 
