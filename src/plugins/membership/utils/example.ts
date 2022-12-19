@@ -30,5 +30,6 @@ export const example = async (provider: BaseProvider) => {
   const setImage = await callSimpleCollections(provider, 'setImage', [
     propertyAddress,
     image,
+    keys,
   ])
 }
