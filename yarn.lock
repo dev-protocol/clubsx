@@ -571,13 +571,14 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
-"@devprotocol/clubs-core@0.11.1":
-  version "0.11.1"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.11.1.tgz#57d387c26304f132d66505764feb41af0dbebdb8"
-  integrity sha512-65/dW2HDUFfR0lrUg/L7uMu8ke+uZ66LR6UBTnHGl8uTNUoEmLT4wA3WglVhQjs5uA0BHBAzpxsyrUGgvdOJVw==
+"@devprotocol/clubs-core@0.12.0":
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.12.0.tgz#fca67b9efd546dcafe4a1a5b4c49ec8c5f0f1df9"
+  integrity sha512-PCvFQIv4hZcT3fnUB5wHp4ZHlgYn08d0czsN2x9bcxCD47mfQZMpp47v4V5hnhzZV0ED6gh/3JRwo1pbuLMfqQ==
   dependencies:
     "@devprotocol/dev-kit" "6.10.0"
     "@devprotocol/elements" "0.2.2"
+    "@devprotocol/hashi" "1.4.0"
     "@devprotocol/util-ts" "2.2.1"
     "@metamask/detect-provider" "^2.0.0"
     ethers "^5.7.0"
