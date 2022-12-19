@@ -1,10 +1,12 @@
 <script lang="ts">
+  import Skeleton from '@components/Global/Skeleton.svelte'
   import { setOptions } from '@devprotocol/clubs-core'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import type { HomeConfig } from '../../constants/homeConfig'
 
   export let homeConfig: HomeConfig
   export let currentPluginIndex: number
+  let uploading = false
 
   const update = async () => {
     setOptions([{ key: 'homeConfig', value: homeConfig }], currentPluginIndex)
@@ -18,11 +20,13 @@
     if (!e.currentTarget.files) {
       return
     }
+    uploading = true
 
     const file = e.currentTarget.files[0]
 
     homeConfig.hero.image = await uploadImageAndGetPath(file)
     homeConfig = homeConfig
+    uploading = false
   }
 </script>
 
@@ -30,25 +34,32 @@
   <div>
     <label class="grid justify-items-start gap-2" for="avatarPath">
       <label class="" for="hero-image"> Cover image </label>
-      {#if homeConfig.hero.image && homeConfig.hero.image != ''}
+      {#if homeConfig.hero.image && homeConfig.hero.image != '' && uploading === false}
         <img
           src={homeConfig.hero.image}
           class="h-auto max-w-full rounded"
           alt="Hero"
         />
       {/if}
-      <span
-        class="cursor-pointer rounded bg-[#040B10] px-12 py-4 text-sm font-medium"
-        type="button">Upload to change</span
-      >
+      {#if uploading}
+        <div role="presentation" class="h-64 w-full">
+          <Skeleton />
+        </div>
+      {/if}
+      <div>
+        <label
+          class="block cursor-pointer rounded bg-[#040B10] px-12 py-4 text-sm font-medium"
+          for="hero-image">Upload to change</label
+        >
 
-      <input
-        id="hero-image"
-        name="hero-image"
-        style="display:none"
-        type="file"
-        on:change={onFileSelected}
-      />
+        <input
+          id="hero-image"
+          name="hero-image"
+          style="display:none"
+          type="file"
+          on:change={onFileSelected}
+        />
+      </div>
     </label>
   </div>
 
