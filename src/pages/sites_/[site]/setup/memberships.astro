@@ -2,21 +2,30 @@
 import AdminMembershipsForm from '@components/AdminMembershipsForm/AdminMembershipsForm.svelte'
 import { config as _config } from '@fixtures/config'
 import { adminFactory } from '@devprotocol/clubs-core'
-import membership from '@plugins/membership'
+import memberships from '@plugins/memberships'
 import SetupLayout from '@layouts/Setup.astro'
 
 const { site } = Astro.params
 
-const { getCurrentConfig } = adminFactory({
+const { getStaticPaths, getCurrentConfig } = adminFactory({
   config: async () => await _config(site),
   plugins: {
-    membership,
+    memberships,
   },
 })
 
 const config = await getCurrentConfig()
+const path = (await getStaticPaths()).find(
+  ({ params }) => params.page === 'memberships'
+)
+
+if (!path) {
+  throw new Error('Path undefined: ', path)
+}
+
+const Content = path.props.component
 ---
 
-<SetupLayout {config} setupStep="MEMBERSHIPS">
-  <AdminMembershipsForm client:only="svelte" currentPluginIndex={0} />
+<SetupLayout {config} {...path.props} setupStep="MEMBERSHIPS">
+  <Content {...path.props} />
 </SetupLayout>
