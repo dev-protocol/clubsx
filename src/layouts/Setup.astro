@@ -1,12 +1,17 @@
 ---
 import '@styles/global.scss'
 import WelcomeWizard from '@components/WelcomeWizard/WelcomeWizard.svelte'
-import { ClubsConfiguration } from '@devprotocol/clubs-core'
+import type {
+  ClubsConfiguration,
+  ClubsPropsAdminPages,
+} from '@devprotocol/clubs-core'
 import Aside from '@devprotocol/clubs-core/aside'
+import { AdminConfigurationManager } from '@devprotocol/clubs-core/layouts'
 
-const { config, setupStep } = Astro.props as {
+const { config, setupStep, clubs } = Astro.props as {
   config: ClubsConfiguration
   setupStep: 'DESIGN' | 'MEMBERSHIPS' | 'PREVIEW' | 'PROFILE' | 'PUBLISH'
+  clubs: ClubsPropsAdminPages['clubs']
 }
 ---
 
@@ -21,7 +26,7 @@ const { config, setupStep } = Astro.props as {
     <div
       class="mr-20 grid min-h-screen auto-cols-[18rem_minmax(auto,_1fr)_12rem] grid-flow-col gap-20"
     >
-      <WelcomeWizard client:load step={setupStep} />
+      <WelcomeWizard step={setupStep} />
 
       <main class="container mx-auto py-16">
         <slot />
@@ -38,6 +43,7 @@ const { config, setupStep } = Astro.props as {
   </body>
 
   <input id="setupStep" hidden value={setupStep} />
+  <AdminConfigurationManager {clubs} />
 </html>
 
 <script>
