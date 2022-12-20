@@ -1,15 +1,26 @@
-import { providers, utils } from 'ethers'
+import { initializeFirebaseAdmin } from '@fixtures/firebase'
+import { utils } from 'ethers'
 import { createClient } from 'redis'
 
 export const post = async ({ request }: { request: Request }) => {
-  const { site, config, sig, hash, expectedAddress } =
+  const { site, config, sig, hash, expectedAddress, uid } =
     (await request.json()) as {
       site: string
       config: string
-      hash: string
-      sig: string
-      expectedAddress: string
+      hash?: string
+      sig?: string
+      uid?: string
+      expectedAddress?: string
     }
+
+  // We need either signautre or firebase jwt token to authenticate the draft.
+  const hashAndSignGiven = !!hash && !!sig && !!expectedAddress
+  const uidAndTokenGiven = !!uid && !!request.headers.has('authorization')
+  if (!hashAndSignGiven && !uidAndTokenGiven) {
+    return new Response(JSON.stringify({ error: 'Auth failed' }), {
+      status: 401,
+    })
+  }
 
   const client = createClient({
     url: process.env.REDIS_URL,
@@ -31,11 +42,43 @@ export const post = async ({ request }: { request: Request }) => {
     })
   }
 
-  const address = utils.recoverAddress(utils.hashMessage(hash), sig)
-  if (address.toLowerCase() != expectedAddress.toLowerCase()) {
-    return new Response(JSON.stringify({ error: 'Invalid address' }), {
-      status: 401,
-    })
+  // If we are passing auth header and uid, then we are using email(firebase uid) to signup and draft.
+  if (uidAndTokenGiven) {
+    // We get the authorization header.
+    const authorization: string | null = request.headers.get('authorization')
+
+    // Get the token out of the header.
+    const jwtTokenId: string | undefined = authorization?.split('Bearer ')[1]
+    if (!jwtTokenId) {
+      return new Response(JSON.stringify({ error: 'Auth missing' }), {
+        status: 401,
+      })
+    }
+
+    // Initialize the firebase app and check that token is valid.
+    const auth = initializeFirebaseAdmin()
+    // Then we compare the token.
+    try {
+      const decodedJwtData = await auth.verifyIdToken(jwtTokenId)
+      const uidInJwt = decodedJwtData.uid
+      if (uidInJwt !== uid) {
+        return new Response(JSON.stringify({}), { status: 401 })
+      }
+    } catch (error: any) {
+      return new Response(JSON.stringify({ error }), {
+        status: error?.response?.status || 500,
+      })
+    }
+  }
+
+  if (hashAndSignGiven) {
+    // Else we are using wallet signature to do the same.
+    const address = utils.recoverAddress(utils.hashMessage(hash), sig)
+    if (address.toLowerCase() != expectedAddress.toLowerCase()) {
+      return new Response(JSON.stringify({ error: 'Invalid address' }), {
+        status: 401,
+      })
+    }
   }
 
   try {
