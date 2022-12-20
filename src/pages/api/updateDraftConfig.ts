@@ -4,7 +4,7 @@ import {
   ClubsPluginOptionValue,
   decode,
 } from '@devprotocol/clubs-core'
-import { initializeFirebaseAdmin } from "@fixtures/firebase/initializeFirebaseAdmin"
+import { initializeFirebaseAdmin } from '@fixtures/firebase/initializeFirebaseAdmin'
 import { providers, utils } from 'ethers'
 import { createClient } from 'redis'
 

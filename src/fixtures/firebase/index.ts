@@ -18,5 +18,3 @@ export const initializeFirebase = () => {
 
   return auth
 }
-
-

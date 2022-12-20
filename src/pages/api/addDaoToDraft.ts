@@ -1,4 +1,4 @@
-import { initializeFirebaseAdmin } from "@fixtures/firebase/initializeFirebaseAdmin"
+import { initializeFirebaseAdmin } from '@fixtures/firebase/initializeFirebaseAdmin'
 import { utils } from 'ethers'
 import { createClient } from 'redis'
 
