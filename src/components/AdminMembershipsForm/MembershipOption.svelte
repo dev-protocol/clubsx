@@ -9,7 +9,7 @@
   <span class="mb-2 font-semibold">{name}</span>
 
   <div class="mb-2">
-    <img src={imagePath} alt={`${name} Membership`} />
+    <img class="w-full" src={imagePath} alt={`${name} Membership`} />
   </div>
 
   <!-- TODO: how is this different than description? -->

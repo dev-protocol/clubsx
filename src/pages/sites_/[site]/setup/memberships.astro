@@ -33,5 +33,8 @@ const clubs = path.props.clubs
     Create a new Membership by selecting a template
   </div>
 
-  <AdminMembershipsForm currentPluginIndex={clubs.currentPluginIndex} />
+  <AdminMembershipsForm
+    client:load
+    currentPluginIndex={clubs.currentPluginIndex}
+  />
 </SetupLayout>
