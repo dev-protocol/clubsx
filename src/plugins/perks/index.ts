@@ -3,6 +3,7 @@ import {
   ClubsFunctionGetAdminPaths,
   ClubsFunctionGetPagePaths,
   ClubsFunctionPlugin,
+  ClubsPluginCategory,
   ClubsPluginMeta,
 } from '@devprotocol/clubs-core'
 import { UndefinedOr } from '@devprotocol/util-ts'
@@ -26,7 +27,10 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async () => []
 
-export const meta: ClubsPluginMeta = { displayName: 'Perks' }
+export const meta: ClubsPluginMeta = {
+  displayName: 'Perks',
+  category: ClubsPluginCategory.Growth,
+}
 
 export default {
   getPagePaths,

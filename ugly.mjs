@@ -1,12 +1,12 @@
 import fs from 'fs-extra'
 
 const path =
-  './node_modules/@astrojs/vercel/dist/serverless/request-transform.js'
+  './node_modules/@astrojs/vercel/dist/serverless/request-transform/node18.js'
 fs.outputFileSync(
   path,
   ((file) =>
     file.replace(
       'base + req.url',
-      `((paths)=> paths.length > 3 ? base + '/sites_/' + paths[0] + req.url : base + req.url)(base.replace('https://', '').split('.'))`
+      `(() => headers['x-rewritten-url'] ? headers['x-rewritten-url'] : ((paths) => paths.length > 2 ? base + '/sites_/' + paths[0] + req.url : base + req.url)(req.headers.host.split('.')))()`
     ))(fs.readFileSync(path, 'utf8'))
 )

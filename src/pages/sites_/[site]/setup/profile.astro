@@ -1,0 +1,27 @@
+---
+import ProfileSetupForm from '@components/ProfileSetupForm/ProfileSetupForm.svelte'
+import { config as _config } from '@fixtures/config'
+import { adminFactory } from '@devprotocol/clubs-core'
+import admin from '@plugins/admin'
+import SetupLayout from '@layouts/Setup.astro'
+
+const { site } = Astro.params
+
+const { getStaticPaths, getCurrentConfig } = adminFactory({
+  config: async () => await _config(site),
+  plugins: {
+    admin,
+  },
+})
+
+const config = await getCurrentConfig()
+const path = (await getStaticPaths()).find(({ props }) => props.clubs)
+
+if (!path) {
+  throw new Error('Path undefined: ', path)
+}
+---
+
+<SetupLayout {config} {...path.props} setupStep="PROFILE">
+  <ProfileSetupForm client:only="svelte" config={config} />
+</SetupLayout>

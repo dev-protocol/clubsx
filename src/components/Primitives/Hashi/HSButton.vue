@@ -1,7 +1,9 @@
 <template>
   <button
     v-if="!link"
-    v-bind:class="`hs-button${type && ' ' + assertType(type)}`"
+    v-bind:class="`hs-button${
+      type && ' ' + assertType(type)
+    } rounded-md font-bold`"
     role="button"
     :disabled="isDisabled"
   >
@@ -13,7 +15,9 @@
 
   <a
     v-else
-    v-bind:class="`hs-button${type && ' ' + assertType(type)}`"
+    v-bind:class="`hs-button${
+      type && ' ' + assertType(type)
+    } rounded-md font-bold`"
     role="link"
     rel="prefetch"
     :[href]="link"

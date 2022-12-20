@@ -497,8 +497,7 @@ const populate = async () => {
           },
           {
             key: 'avatarImgSrc',
-            value:
-              'https://temples.clubs.stakes.social/assets/avatar.445c55eb.png',
+            value: 'https://i.imgur.com/jDel1t9.png',
           },
         ],
         plugins: [

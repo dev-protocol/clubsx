@@ -49,7 +49,7 @@
     }
 
     const updatedUptions = Object.assign({}, config.options, {
-      key: '__draftOptions',
+      key: '__draft',
       value: {
         isInDraft: true,
         address: currentAddress,
@@ -69,7 +69,7 @@
 </script>
 
 <div class="flex flex-col items-center">
-  <section class="mb-8 pb-8 mt-8 border-b-2 border-gray-400">
+  <section class="mb-8 mt-8 border-b-2 border-gray-400 pb-8">
     <div class="flex items-center">
       <div class="mr-2">
         <input
@@ -78,13 +78,13 @@
           name="email"
           type="email"
           placeholder="Your email"
-          class="rounded bg-gray-700 py-3 px-4 w-64 text-right"
+          class="w-64 rounded bg-gray-700 py-3 px-4 text-right"
         />
       </div>
 
       <button
         on:click|preventDefault={(_) => sendMagicLink()}
-        class="text-sm bg-blue-500 px-4 rounded-xl py-3 px-6"
+        class="rounded-xl bg-blue-500 px-4 py-3 px-6 text-sm"
       >
         {#if emailSent}
           Check your inbox
@@ -100,10 +100,10 @@
   </section>
 
   <div class="flex flex-col items-center">
-    <span class="text-sm text-gray-400 mb-4">Already have a wallet?</span>
+    <span class="mb-4 text-sm text-gray-400">Already have a wallet?</span>
 
     <button
-      class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-xl py-3 px-6"
+      class="rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 py-3 px-6"
       on:click|preventDefault={(_) => walletConnect()}
     >
       Sign with your wallet

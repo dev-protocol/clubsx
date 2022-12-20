@@ -4,6 +4,7 @@ import {
   ClubsPluginOptionValue,
   decode,
 } from '@devprotocol/clubs-core'
+import { initializeFirebaseAdmin } from '@fixtures/firebase'
 import { providers, utils } from 'ethers'
 import { createClient } from 'redis'
 
@@ -85,21 +86,22 @@ export const post = async ({ request }: { request: Request }) => {
     }
   }
 
-  // TODO: uncomment once we have signup and some draft flow ready to test.
   // We now check that the jwt matches the user in the draftOptions.
-  // if (jwtIdToken) {
-  //   const auth = initializeFirebase();
-  //   try {
-  //     const decodedJwtData = await auth.verifyIdToken(jwtIdToken);
-  //     const uidInJwt = decodedJwtData.uid;
-  //     authenticated = uidInJwt === value.uid;
-  //     if (!authenticated) {
-  //       return new Response(JSON.stringify({}), { status: 401 })
-  //     }
-  //   } catch (error: any) {
-  //     return new Response(JSON.stringify({ error }), { status: error?.response?.status || 500 })
-  //   }
-  // }
+  if (jwtIdToken) {
+    const auth = initializeFirebaseAdmin()
+    try {
+      const decodedJwtData = await auth.verifyIdToken(jwtIdToken)
+      const uidInJwt = decodedJwtData.uid
+      authenticated = uidInJwt === value.uid
+      if (!authenticated) {
+        return new Response(JSON.stringify({}), { status: 401 })
+      }
+    } catch (error: any) {
+      return new Response(JSON.stringify({ error }), {
+        status: error?.response?.status || 500,
+      })
+    }
+  }
 
   try {
     await client.set(site, config)
