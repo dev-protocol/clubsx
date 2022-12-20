@@ -7,6 +7,7 @@ import Footer from '@components/Global/Footer.astro'
 import '@styles/global.scss'
 import { NavLink, PathCondition } from '@constants/navLink'
 import { UndefinedOr } from '@devprotocol/util-ts'
+import VercelAnalytics from './VercelAnalytics.astro'
 
 const { page } = Astro.params
 const { metaTitle, config } = Astro.props as {
@@ -124,4 +125,5 @@ const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
       )
     }
   </body>
+  <VercelAnalytics />
 </html>

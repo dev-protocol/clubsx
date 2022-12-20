@@ -55,6 +55,7 @@
     "@metamask/detect-provider": "2.0.0",
     "@redis/json": "1.0.4",
     "@tailwindcss/aspect-ratio": "0.4.2",
+    "@vercel/analytics": "0.1.6",
     "@vue/composition-api": "1.7.1",
     "astro": "1.6.13",
     "bignumber.js": "9.1.1",
