@@ -3,7 +3,7 @@
     v-if="!link"
     v-bind:class="`hs-button${
       type && ' ' + assertType(type)
-    } rounded-md px-8 py-4 font-bold`"
+    } rounded-md font-bold`"
     role="button"
     :disabled="isDisabled"
   >
@@ -17,7 +17,7 @@
     v-else
     v-bind:class="`hs-button${
       type && ' ' + assertType(type)
-    } rounded-md px-8 py-4 font-bold`"
+    } rounded-md font-bold`"
     role="link"
     rel="prefetch"
     :[href]="link"
