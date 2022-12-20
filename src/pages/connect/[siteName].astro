@@ -6,11 +6,5 @@ const { siteName } = Astro.params as { siteName: string }
 ---
 
 <Layout>
-  <section class="mb-16 mt-8">
-    <h1 class="mb-2 text-center font-title text-7xl font-bold">
-      Connect Your Account
-    </h1>
-  </section>
-
   <WelcomeConnect client:only="svelte" siteName={siteName} />
 </Layout>

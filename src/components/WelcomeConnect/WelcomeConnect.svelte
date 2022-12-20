@@ -15,17 +15,20 @@
   let email = ''
   let emailErrorMessage = ''
   let emailSent = false
+  let emailSending = false
 
   const sendMagicLink = async () => {
     if (emailSent) {
       return
     }
 
+    emailSending = true
+
     const actionCodeSettings = {
       // URL you want to redirect back to. The domain (www.example.com) for this
       // URL must be in the authorized domains list in the Firebase Console.
       // url: 'https://www.example.com/finishSignUp?cartId=1234',
-      url: import.meta.env.PUBLIC_FIREBASE_CALLBACK_URL,
+      url: `${import.meta.env.PUBLIC_FIREBASE_CALLBACK_URL}/${siteName}`,
       // This must be true.
       handleCodeInApp: true,
     }
@@ -44,6 +47,9 @@
       .catch((error) => {
         emailErrorMessage = error.message
         // ...
+      })
+      .finally(() => {
+        emailSending = false
       })
   }
 
@@ -106,45 +112,63 @@
   }
 </script>
 
-<div class="flex flex-col items-center">
-  <section class="mb-8 mt-8 border-b-2 border-gray-400 pb-8">
-    <div class="flex items-center">
-      <div class="mr-2">
+<div class="relative grid justify-center p-4 md:p-0">
+  <section class="my-16 grid gap-8 text-center md:my-32">
+    <h1 class="text-2xl font-bold md:text-5xl">Connect Your Account</h1>
+    <p>Link your account to your club.</p>
+  </section>
+
+  <section class="grid gap-24	">
+    {#if emailSending}
+      <span
+        class="hs-button is-filled animate-pulse rounded border-0 bg-gray-500/60 px-8 py-4 text-inherit"
+        >Sending a magic link</span
+      >
+    {:else if emailSent}
+      <span
+        class="hs-button is-filled cursor-default border-0 bg-success-300 px-8 py-4 text-inherit"
+        >Check your inbox</span
+      >
+    {:else}
+      <div class="grid auto-rows-auto grid-cols-[1fr_auto] items-center gap-2">
         <input
           bind:value={email}
           id="email"
           name="email"
           type="email"
           placeholder="Your email"
-          class="w-64 rounded bg-gray-700 py-3 px-4 text-right"
+          class="rounded-md border-[3px] bg-dp-blue-grey-600 px-8 py-4 font-bold"
         />
+        <button
+          on:click|preventDefault={(_) => sendMagicLink()}
+          class="hs-button is-filled border-0 bg-native-blue-300 px-8 py-4 text-inherit"
+        >
+          Continue
+        </button>
+        {#if emailErrorMessage.length > 0}
+          <span class="col-span-2 rounded-md bg-danger-300 px-8 py-4 text-sm"
+            >{emailErrorMessage}</span
+          >
+        {/if}
       </div>
+    {/if}
+
+    <p
+      role="separator"
+      class="grid grid-cols-[1fr_auto_1fr] items-center gap-4 before:block before:border-b before:content-[''] after:block after:border-b after:content-[''] "
+    >
+      or
+    </p>
+
+    <div class="flex flex-col items-center">
+      <span class="mb-4">Already have a wallet?</span>
 
       <button
-        on:click|preventDefault={(_) => sendMagicLink()}
-        class="rounded-xl bg-blue-500 px-4 py-3 px-6 text-sm"
+        class="hs-button is-filled border-0 bg-native-blue-300 px-8 py-4 text-inherit"
+        on:click|preventDefault={(_) => walletConnect()}
       >
-        {#if emailSent}
-          Check your inbox
-        {:else}
-          Send Magic Link
-        {/if}
+        Sign with your wallet
       </button>
-
-      {#if emailErrorMessage.length > 0}
-        <span class="text-sm">{emailErrorMessage}</span>
-      {/if}
     </div>
   </section>
-
-  <div class="flex flex-col items-center">
-    <span class="mb-4 text-sm text-gray-400">Already have a wallet?</span>
-
-    <button
-      class="rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 py-3 px-6"
-      on:click|preventDefault={(_) => walletConnect()}
-    >
-      Sign with your wallet
-    </button>
-  </div>
 </div>
