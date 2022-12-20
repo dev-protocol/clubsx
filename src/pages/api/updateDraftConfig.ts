@@ -18,7 +18,9 @@ export const post = async ({ request }: { request: Request }) => {
   }
 
   // We need either signautre or firebase jwt token to authenticate the draft.
-  if (!sig && !jwtIdToken) {
+  const hashAndSignGiven = !!hash && !!sig
+  const jwtIdTokenGiven = !!jwtIdToken
+  if (!hashAndSignGiven && !jwtIdTokenGiven) {
     return new Response(JSON.stringify({ error: 'Auth failed' }), {
       status: 401,
     })
@@ -76,8 +78,8 @@ export const post = async ({ request }: { request: Request }) => {
   let authenticated: boolean = false
 
   // We check that the signature matches the address in the draftOptions.
-  if (sig) {
-    const address = utils.recoverAddress(utils.hashMessage(hash || ''), sig)
+  if (hashAndSignGiven) {
+    const address = utils.recoverAddress(utils.hashMessage(hash), sig)
     authenticated = address.toLowerCase() === value.address.toLowerCase()
     if (!authenticated) {
       return new Response(JSON.stringify({ error: 'Invalid sig' }), {
@@ -87,7 +89,7 @@ export const post = async ({ request }: { request: Request }) => {
   }
 
   // We now check that the jwt matches the user in the draftOptions.
-  if (jwtIdToken) {
+  if (jwtIdTokenGiven) {
     const auth = initializeFirebaseAdmin()
     try {
       const decodedJwtData = await auth.verifyIdToken(jwtIdToken)

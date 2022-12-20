@@ -8,7 +8,6 @@ import { renderSpotlight } from '@fixtures/ui/renderSpotLight'
 
 type Data = {
   daoName: string
-  dbSetStatus: string
   fetching?: boolean
   valid?: boolean
 }
@@ -25,73 +24,10 @@ export default {
   data: () =>
     ({
       daoName: '',
-      dbSetStatus: '',
       fetching: undefined,
       valid: undefined,
     } as Data),
   methods: {
-    async setDb() {
-      if (!this.daoName || this.daoName === '') {
-        this.dbSetStatus = 'invalid-dao-name'
-        return
-      }
-      const configuration: ClubsConfiguration = {
-        name: this.daoName,
-        twitterHandle: '',
-        description: '',
-        url: '',
-        propertyAddress: this.address ?? '',
-        adminRolePoints: 0,
-        options: [],
-        plugins: defaultPlugins,
-        chainId: this.network ? +this.network : 1, // need to ensure this is correct...
-        rpcUrl: '',
-      }
-      const modalProvider = GetModalProvider()
-      const { provider, currentAddress } = await ReConnectWallet(modalProvider)
-      if (!currentAddress || !provider) {
-        this.dbSetStatus = 'wallet-not-connected'
-        return
-      }
-      const signer = provider.getSigner()
-
-      const config = encode(configuration)
-      const hash = await utils.hashMessage(config)
-      const sig = await signer.signMessage(hash)
-      if (!sig) {
-        return
-      }
-
-      const body = {
-        site: this.daoName
-          .toLowerCase()
-          .split(/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~\s+]/)
-          .filter((i) => i && i !== ' ')
-          .join('-'),
-        config,
-        hash,
-        sig,
-        expectedAddress: currentAddress,
-      }
-
-      // Save the config to db, this is the same as updateConfig in the admin sections.
-      const res = await fetch('/setConfig', {
-        method: 'POST',
-        body: JSON.stringify(body),
-      })
-
-      const isConfigSet = res.ok
-      if (isConfigSet) {
-        this.dbSetStatus = 'successful'
-      } else {
-        this.dbSetStatus = 'failed'
-      }
-
-      if (isConfigSet) {
-        const host = window.location.host
-        window.location.href = `https://${host}/connect/${body.site}`
-      }
-    },
     async verifySiteName() {
       if (this.daoName === '') {
         this.valid = undefined
@@ -172,7 +108,7 @@ export default {
           v-if="fetching === false && valid"
           type="outlined"
           class="w-full border-0 bg-native-blue-300 shadow hover:bg-native-blue-400 hover:text-inherit"
-          link="/connect"
+          :link="`/connect/${daoName}`"
           >Continue</HSButton
         >
         <HSButton

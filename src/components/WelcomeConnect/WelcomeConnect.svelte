@@ -2,9 +2,15 @@
   import { initializeFirebase } from '../../fixtures/firebase'
   import { sendSignInLinkToEmail } from 'firebase/auth'
   import { GetModalProvider, ReConnectWallet } from '@fixtures/wallet'
-  import { ClubsConfiguration, setConfig } from '@devprotocol/clubs-core'
+  import {
+    ClubsConfiguration,
+    encode,
+    setConfig,
+  } from '@devprotocol/clubs-core'
+  import { utils } from 'ethers'
+  import { defaultConfig } from '@constants/defaultConfig'
 
-  export let config: ClubsConfiguration
+  export let siteName: string
 
   let email = ''
   let emailErrorMessage = ''
@@ -37,10 +43,10 @@
       })
       .catch((error) => {
         emailErrorMessage = error.message
-        console.log('error is: ', error)
         // ...
       })
   }
+
   const walletConnect = async () => {
     const modalProvider = GetModalProvider()
     const { provider, currentAddress } = await ReConnectWallet(modalProvider)
@@ -48,23 +54,55 @@
       return
     }
 
-    const updatedUptions = Object.assign({}, config.options, {
-      key: '__draft',
-      value: {
-        isInDraft: true,
-        address: currentAddress,
-      },
+    const siteNameCheckRes = await fetch(`/api/verifySiteName/${siteName}`)
+    if (!siteNameCheckRes.ok) {
+      return
+    }
+
+    // Make the default config.
+    const config: ClubsConfiguration = {
+      ...defaultConfig,
+      name: siteName,
+      options: [
+        ...(defaultConfig.options ? defaultConfig.options : []),
+        {
+          key: '__draft',
+          value: {
+            isInDraft: true,
+            address: currentAddress,
+          },
+        },
+      ],
+    }
+
+    // Get the signature ready.
+    const signer = provider.getSigner()
+    const encodedConfig = encode(config)
+    const hash = utils.hashMessage(encodedConfig)
+    const sig = await signer.signMessage(hash)
+    if (!sig) {
+      return
+    }
+
+    const body = {
+      site: siteName,
+      config,
+      hash,
+      sig,
+      expectedAddress: currentAddress,
+    }
+
+    // Save the config to db.
+    const res = await fetch('/api/addDaoToDraft', {
+      method: 'POST',
+      body: JSON.stringify(body),
     })
 
-    const updatedConfig = Object.assign(config, {
-      options: updatedUptions,
-    })
-
-    await setConfig(updatedConfig)
-
-    // // TODO
-    // // navigate to next page
-    // window.location.href = '/setup/homepage'
+    if (res.ok) {
+      setConfig(config)
+      // TODO: navigate to the next page.
+      // window.location.href = '/setup/homepage'
+    }
   }
 </script>
 

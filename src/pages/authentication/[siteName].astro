@@ -4,11 +4,8 @@
  */
 
 import Layout from '@layouts/Landing.astro'
-import { config as _config } from '@fixtures/config'
-import { decode } from '@devprotocol/clubs-core'
 
 const { site } = Astro.params
-const config = decode(await _config(site))
 ---
 
 <Layout>
@@ -18,9 +15,8 @@ const config = decode(await _config(site))
     </h1>
     <span>Authenticating...</span>
   </section>
+  <input id="siteName" type="hidden" value={site} disabled />
 </Layout>
-
-<input id="config" type="hidden" value={JSON.stringify(config)} />
 
 <script>
   import {
@@ -31,11 +27,13 @@ const config = decode(await _config(site))
   import { initializeFirebase } from '../../fixtures/firebase'
   import { ClubsConfiguration, setConfig } from '@devprotocol/clubs-core'
 
+  import { defaultConfig } from '@constants/defaultConfig'
+
   // Confirm the link is a sign-in with email link.
   const auth = initializeFirebase()
-  const config = JSON.parse(
-    (document.getElementById('config') as HTMLInputElement)?.value
-  ) as ClubsConfiguration
+  const siteName = JSON.parse(
+    (document.getElementById('siteName') as HTMLInputElement)?.value
+  ) as string
 
   if (isSignInWithEmailLink(auth, window.location.href)) {
     let email = window.localStorage.getItem('emailForSignIn')
@@ -51,27 +49,51 @@ const config = decode(await _config(site))
         window.localStorage.removeItem('emailForSignIn')
 
         const details = getAdditionalUserInfo(result)
-
+        const jwtToken = await result.user.getIdToken()
+        const site: string | undefined =
+          window.location.pathname.split('/').pop() || siteName
         const uid = result.user.uid
 
         // If it is a new user, set the __draft user
         if (details?.isNewUser && uid) {
-          const updatedUptions = Object.assign({}, config.options, {
-            key: '__draft',
-            value: {
-              isInDraft: true,
-              uid,
+          // Make the default config.
+          const config: ClubsConfiguration = {
+            ...defaultConfig,
+            name: site,
+            options: [
+              ...(defaultConfig.options ? defaultConfig.options : []),
+              {
+                key: '__draft',
+                value: {
+                  isInDraft: true,
+                  uid: uid,
+                },
+              },
+            ],
+          }
+
+          const body = {
+            site,
+            config,
+            uid,
+          }
+
+          // Save the config to db.
+          const res = await fetch('/api/addDaoToDraft', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${jwtToken}`,
             },
+            body: JSON.stringify(body),
           })
 
-          const updatedConfig = Object.assign(config, {
-            options: updatedUptions,
-          })
-
-          setConfig(updatedConfig)
+          if (res.ok) {
+            setConfig(config)
+          }
         }
 
-        // navigate to setup here...
+        // TODO: navigate to setup here.
         // window.location.href = '/setup/homepage'
       }
     )
