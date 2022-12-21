@@ -33,6 +33,16 @@
       {/each}
     {:else}
       <!-- TODO: Display existing memberships -->
+      {#each memberships as membership}
+        <div>
+          <MembershipOptionCard
+            name={membership.name}
+            imagePath={membership.imageSrc}
+            ethPrice={membership.price.toString()}
+            description={membership.description}
+          />
+        </div>
+      {/each}
     {/if}
   </div>
 </div>
