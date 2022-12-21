@@ -60,8 +60,10 @@ const presets: Membership[] = [
 export const getPagePaths: ClubsFunctionGetPagePaths = async () => []
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async (options) => {
-  const memberships = options.find((opt) => opt.key === 'memberships')
-    ?.value as UndefinedOr<Membership[]>
+  const memberships =
+    (options.find((opt) => opt.key === 'memberships')?.value as UndefinedOr<
+      Membership[]
+    >) ?? []
 
   return [
     {

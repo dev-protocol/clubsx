@@ -10,9 +10,15 @@
   export let existingMemberships: Membership[]
 
   const update = () => {
-    const newMemberships = existingMemberships.map((_mem) =>
-      _mem.id === membership.id ? membership : _mem
+    const newMemberships = existingMemberships.some(
+      ({ id }) => id === membership.id
     )
+      ? // If the ID is already exists, override it. This is a safeguard to avoid duplicate data.
+        existingMemberships.map((_mem) =>
+          _mem.id === membership.id ? membership : _mem
+        )
+      : // If not, add it.
+        [...existingMemberships, membership]
     setOptions(
       [{ key: 'memberships', value: { memberships: newMemberships } }],
       currentPluginIndex
