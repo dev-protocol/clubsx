@@ -8,6 +8,7 @@
   export let presets: Membership[]
   export let membership: Membership
   export let existingMemberships: Membership[]
+  export let base: string = '/admin'
 
   const update = () => {
     const newMemberships = existingMemberships.some(
@@ -19,6 +20,7 @@
         )
       : // If not, add it.
         [...existingMemberships, membership]
+
     setOptions(
       [{ key: 'memberships', value: { memberships: newMemberships } }],
       currentPluginIndex
@@ -42,6 +44,17 @@
 
     update()
   }
+
+  const cancel = () => {
+    const preset = existingMemberships.find(
+      (preset) => preset.id === membership.id
+    )
+    if (!preset) {
+      console.error('no matching preset found for: ', membership.id)
+      return
+    }
+    membership = preset
+  }
 </script>
 
 <div>
@@ -54,11 +67,16 @@
           ethPrice={opt.price.toString()}
           description={opt.description}
         />
+        <a
+          class="mt-2 block w-full rounded bg-black py-4 text-center text-sm font-semibold text-white"
+          id={`select-opt-${i}`}
+          href={`${base}/memberships/new/${opt.id}`}>Select</a
+        >
       </div>
     {/each}
   </div>
 
-  <div>
+  <form on:change|preventDefault={(_) => update()}>
     <div class="mb-10 grid grid-cols-2 gap-8">
       <div>
         <!-- Name -->
@@ -149,7 +167,9 @@
     </div>
 
     <div class="flex w-full justify-end">
-      <button>Cancel</button>
+      <button type="button" on:click|preventDefault={() => cancel()}
+        >Cancel</button
+      >
     </div>
-  </div>
+  </form>
 </div>

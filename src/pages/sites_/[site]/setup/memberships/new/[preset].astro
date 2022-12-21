@@ -16,7 +16,7 @@ const { getStaticPaths, getCurrentConfig } = adminFactory({
 
 const config = await getCurrentConfig()
 const path = (await getStaticPaths()).find(
-  ({ params }) => params.page === `memberships/${preset}`
+  ({ params }) => params.page === `memberships`
 )
 
 if (!path) {
@@ -24,6 +24,16 @@ if (!path) {
 }
 
 const { props } = path
+
+const presets = (props.presets ?? []) as Membership[]
+
+const membership = presets.find(
+  (_membership: Membership) => _membership.id === preset
+)
+
+if (!membership) {
+  throw new Error(`Membership not found: ${preset}`)
+}
 ---
 
 <SetupLayout {config} {...props} setupStep="MEMBERSHIPS">
@@ -32,9 +42,10 @@ const { props } = path
   <AdminMembershipsAdditionForm
     client:load
     currentPluginIndex={props.clubs.currentPluginIndex}
-    membership={props.membership as Membership}
+    membership={membership}
     presets={props.presets as Membership[]}
-    existingMemberships={props.memberships as Membership[]}
+    existingMemberships={presets}
+    base="/setup"
   />
 </SetupLayout>
 
