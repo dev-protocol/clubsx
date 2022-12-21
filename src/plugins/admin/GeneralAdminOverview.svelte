@@ -6,8 +6,8 @@
   export let config: ClubsConfiguration
 
   let { propertyAddress, rpcUrl } = config
-  // let members = []
-  // let earnings = 0;
+  let members = 0
+  let earnings = 0
   // async function getData() {
   //   const clients = await clientsSTokens(rpcUrl)
   //   const sToken = whenDefined(clients, ([l1, l2]) => l1 ?? l2)
