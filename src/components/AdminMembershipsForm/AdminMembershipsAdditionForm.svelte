@@ -22,7 +22,7 @@
         [...existingMemberships, membership]
 
     setOptions(
-      [{ key: 'memberships', value: { memberships: newMemberships } }],
+      [{ key: 'memberships', value: newMemberships }],
       currentPluginIndex
     )
   }
