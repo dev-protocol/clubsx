@@ -23,7 +23,12 @@ export default defineConfig({
       hooks: {
         'astro:server:setup': ({ server }) => {
           server.middlewares.use((req, _, next) => {
-            if (req.headers.accept?.includes('text/html')) {
+            if (
+              req.headers.accept?.includes('text/html') ||
+              new URL(req.url, `http://${req.headers.host}`).pathname.includes(
+                '.'
+              ) === false
+            ) {
               const host = req.headers.host.split('.')
 
               if (host.length > 1) {
