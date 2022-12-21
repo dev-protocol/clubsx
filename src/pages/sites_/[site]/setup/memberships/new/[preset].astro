@@ -1,11 +1,11 @@
 ---
-import AdminMembershipsForm from '@components/AdminMembershipsForm/AdminMembershipsForm.svelte'
+import AdminMembershipsAdditionForm from '@components/AdminMembershipsForm/AdminMembershipsAdditionForm.svelte'
 import { config as _config } from '@fixtures/config'
 import { adminFactory } from '@devprotocol/clubs-core'
 import memberships, { Membership } from '@plugins/memberships'
 import SetupLayout from '@layouts/Setup.astro'
 
-const { site } = Astro.params
+const { site, preset } = Astro.params
 
 const { getStaticPaths, getCurrentConfig } = adminFactory({
   config: async () => await _config(site),
@@ -16,29 +16,25 @@ const { getStaticPaths, getCurrentConfig } = adminFactory({
 
 const config = await getCurrentConfig()
 const path = (await getStaticPaths()).find(
-  ({ params }) => params.page === 'memberships'
+  ({ params }) => params.page === `memberships/${preset}`
 )
 
 if (!path) {
   throw new Error('Path undefined: ', path)
 }
 
-const clubs = path.props.clubs
+const { props } = path
 ---
 
-<SetupLayout {config} {...path.props} setupStep="MEMBERSHIPS">
+<SetupLayout {config} {...props} setupStep="MEMBERSHIPS">
   <h1 class="mb-8 font-title text-lg font-bold">Memberships</h1>
 
-  <div class="mb-8 text-2xl">
-    Create a new Membership by selecting a template
-  </div>
-
-  <AdminMembershipsForm
+  <AdminMembershipsAdditionForm
     client:load
-    currentPluginIndex={clubs.currentPluginIndex}
-    memberships={path.props.memberships as Membership[]}
-    presets={path.props.presets as Membership[]}
-    base="/setup"
+    currentPluginIndex={props.clubs.currentPluginIndex}
+    membership={props.membership as Membership}
+    presets={props.presets as Membership[]}
+    existingMemberships={props.memberships as Membership[]}
   />
 </SetupLayout>
 

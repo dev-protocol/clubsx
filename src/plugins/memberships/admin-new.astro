@@ -1,0 +1,24 @@
+---
+import AdminMembershipsAdditionForm from '@components/AdminMembershipsForm/AdminMembershipsAdditionForm.svelte'
+import { ClubsPropsAdminPages } from '@devprotocol/clubs-core'
+import { Membership } from '.'
+
+const { membership, memberships, presets, clubs } =
+  Astro.props as ClubsPropsAdminPages & {
+    membership: Membership
+    memberships: Membership[]
+    presets: Membership[]
+  }
+---
+
+<div>
+  <h1 class="mb-16 font-title text-lg font-bold">Membership</h1>
+
+  <AdminMembershipsAdditionForm
+    client:only="svelte"
+    currentPluginIndex={clubs.currentPluginIndex}
+    membership={membership}
+    presets={presets}
+    existingMemberships={memberships}
+  />
+</div>
