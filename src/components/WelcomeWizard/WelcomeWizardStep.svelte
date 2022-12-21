@@ -6,6 +6,7 @@
 
 <a
   href={link}
+  rel="prefetch"
   class={`-mx-3 flex w-full flex-row gap-4 rounded p-3 text-white transition-colors duration-500 ${
     isActive ? 'border' : 'hover:bg-white/30'
   }`}

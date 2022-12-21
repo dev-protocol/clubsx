@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Skeleton from '@components/Global/Skeleton.svelte'
   import { ClubsConfiguration, setConfig } from '@devprotocol/clubs-core'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
 
@@ -22,6 +23,7 @@
   ]
   let projectCategory = 'GITHUB'
   let avatarPath = ''
+  let avatarUploading = false
 
   const onFileSelected = async (
     e: Event & {
@@ -32,9 +34,13 @@
       return
     }
 
+    avatarUploading = true
+
     const file = e.currentTarget.files[0]
 
     avatarPath = await uploadImageAndGetPath(file)
+
+    avatarUploading = false
   }
 
   const update = async () => {
@@ -62,24 +68,25 @@
   }
 </script>
 
-<form on:change|preventDefault={(e) => update()}>
-  <div class="mb-10 flex flex-col">
-    <label class="mb-1" for="club-name">
+<form on:change|preventDefault={(e) => update()} class="grid gap-16">
+  <div class="flex flex-col items-start gap-1">
+    <label for="club-name">
       Club Name
-      <span class="text-purple-400">*</span>
+      <span class="text-plox-200">*</span>
     </label>
     <input
       class="rounded bg-[#040B10] px-8 py-4"
       bind:value={name}
       id="club-name"
       name="club-name"
+      size="50"
     />
   </div>
 
-  <div class="mb-10 flex flex-col">
-    <label class="mb-1" for="project-category">
+  <div class="flex flex-col items-start gap-1">
+    <label for="project-category">
       Project Category
-      <span class="text-purple-400">*</span>
+      <span class="text-plox-200">*</span>
     </label>
     <select
       bind:value={projectCategory}
@@ -93,35 +100,34 @@
     </select>
   </div>
 
-  <div class="mb-10 flex flex-col">
-    <label class="mb-1" for="twitter-handle"> Twitter Handle </label>
+  <div class="flex flex-col items-start gap-1">
+    <label for="twitter-handle"> Twitter Handle </label>
     <input
       class="rounded bg-[#040B10] px-8 py-4"
       bind:value={twitterHandle}
       id="twitter-handle"
       name="twitter-handle"
+      size="50"
     />
   </div>
 
-  <div class="mb-10 flex flex-col">
-    <label class="mb-1 flex flex-col" for="avatarPath">
-      <span class="mb-1">Avatar</span>
+  <div class="flex flex-col items-start gap-1">
+    <label class="flex flex-col items-start gap-1" for="avatarPath">
+      <span>Avatar</span>
 
-      {#if avatarPath && avatarPath != ''}
-        <input
-          class="rounded bg-[#040B10] px-8 py-4"
-          bind:value={avatarPath}
-          id={`avatar`}
-          name={`avatar`}
-        />
-      {:else}
-        <div class="float-left">
-          <span
-            class="cursor-pointer rounded-lg bg-[#040B10] px-12 py-4 text-sm font-medium"
-            type="button">Choose Image</span
-          >
+      {#if avatarUploading}
+        <div class="h-64 w-64"><Skeleton /></div>
+      {:else if avatarPath && avatarPath != ''}
+        <div class="w-64 rounded bg-dp-blue-grey-600 p-3">
+          <img src={avatarPath} class="rounded" alt="" />
         </div>
       {/if}
+      <div class="float-left">
+        <span
+          class="hs-button is-filled cursor-pointer border-0 bg-[#040B10] px-12 py-4 text-sm font-medium text-inherit"
+          type="button">Choose Image</span
+        >
+      </div>
       <input
         id="avatarPath"
         name="avatarPath"
