@@ -1,11 +1,11 @@
 ---
 import { ClubsConfiguration } from '@devprotocol/clubs-core'
-import AdminOverView from './AdminOverView.svelte'
+import AdminOverview from './AdminOverview.svelte'
 
 const config = Astro.props as ClubsConfiguration
 ---
 
 <div class="flex flex-col">
   <h1 class="mb-16 font-title text-lg font-bold">Overview</h1>
-  <AdminOverView client:load config={config} />
+  <AdminOverview client:load config={config} />
 </div>
