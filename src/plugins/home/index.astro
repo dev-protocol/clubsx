@@ -6,6 +6,7 @@ import JoinClub from '@components/Join/JoinClub.vue'
 import { Tiers } from '@constants/tier'
 import { HomeConfig } from '../../constants/homeConfig'
 import { NavLink } from '@constants/navLink'
+import { Markdown } from '@astropub/md'
 
 const {
   propertyAddress,
@@ -57,115 +58,7 @@ const {
           </h1>
         </header>
         <div class="grid grid-cols-1 gap-12 px-4">
-          <section class="grid gap-8">
-            <h2 class="font-mono text-xl text-native-blue-200">What we do</h2>
-            <div class="grid items-center gap-8 lg:grid-cols-[1fr_auto_1fr]">
-              <i
-                class="h-14 w-14 rounded-full border border-native-blue-200 lg:h-28 lg:w-28"
-              ></i>
-              <p class="font-title text-xl font-bold lg:text-2xl">
-                {homeConfig.whatWeDo.text}
-              </p>
-              <i
-                class="h-14 w-14 rounded-full border border-native-blue-200 lg:h-28 lg:w-28"
-              ></i>
-            </div>
-            <div class="flex gap-8">
-              {
-                homeConfig.whatWeDo.images.map((_img) => (
-                  <figure>
-                    <img
-                      src={_img.image}
-                      class="rounded-lg"
-                      width="961"
-                      height="704"
-                      alt={_img.description}
-                    />
-                    <figcaption class="text-sm">{_img.description}</figcaption>
-                  </figure>
-                ))
-              }
-            </div>
-          </section>
-          <hr class="max-w-xl border border-dp-black-200" />
-          <section class="grid gap-8">
-            <h2 class="font-mono text-xl text-native-blue-200">Perks</h2>
-            <p class="text-center font-title text-4xl font-bold">
-              {homeConfig.perks.headerText}
-            </p>
-            <p class="font-c-serif text-center text-2xl">
-              {homeConfig.perks.subText}
-            </p>
-            <section>
-              <div
-                class="mb-16 grid grid-cols-[repeat(3,minmax(0,210px))] items-center justify-between gap-8"
-              >
-                {
-                  homeConfig.perks.images.slice(0, 3).map((_img) => (
-                    <figure>
-                      <img src={_img.image} alt={_img.description} />
-                      <figcaption class="text-sm">
-                        {_img.description}
-                      </figcaption>
-                    </figure>
-                  ))
-                }
-              </div>
-
-              <div class="grid justify-items-center gap-16">
-                {
-                  homeConfig.perks.images
-                    .slice(3, homeConfig.perks.images.length)
-                    .map((_img) => (
-                      <figure>
-                        <img
-                          src={_img.image}
-                          class="w-full max-w-sm"
-                          alt={_img.description}
-                        />
-                        <figcaption class="max-w-md text-sm">
-                          {_img.description}
-                        </figcaption>
-                      </figure>
-                    ))
-                }
-              </div>
-            </section>
-          </section>
-          <section
-            class="grid gap-8 rounded-xl bg-[linear-gradient(0,#00000080,#00000080),url('/assets/texture.jpg')] bg-cover p-8"
-          >
-            <svg
-              width="21"
-              height="15"
-              viewBox="0 0 21 15"
-              fill="none"
-              role="presentation"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M10.3203 0.104004L6.35938 14.6821H0.148438L7.4375 0.104004H10.3203ZM20.6094 0.104004L16.6484 14.6821H10.4375L17.7266 0.104004H20.6094Z"
-                fill="currentColor"></path>
-            </svg>
-            <h2
-              class="text-center font-title text-3xl font-bold leading-normal"
-            >
-              {homeConfig.quote}
-            </h2>
-            <svg
-              class="place-self-end"
-              width="21"
-              height="15"
-              viewBox="0 0 21 15"
-              fill="none"
-              role="presentation"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M10.6328 14.6821L14.5938 0.104004H20.8047L13.5156 14.6821H10.6328ZM0.34375 14.6821L4.30469 0.104004H10.5156L3.22656 14.6821H0.34375Z"
-                fill="currentColor"></path>
-            </svg>
-          </section>
+          <Markdown.Inline of={homeConfig.body} />
           <JoinClub
             client:idle
             propertyAddress={propertyAddress}
