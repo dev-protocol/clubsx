@@ -4,6 +4,7 @@ import {
   positionsCreateWithEthForPolygon,
   clientsSTokens,
   clientsProperty,
+  clientsLockup,
 } from '@devprotocol/dev-kit/agent'
 import { UndefinedOr, whenDefined } from '@devprotocol/util-ts'
 import { positionsCreate } from '@devprotocol/dev-kit'
@@ -207,4 +208,12 @@ export const tokenURISim = async (
     payload,
     owner,
   })
+}
+
+export const calculateRewardAmount = async (
+  prov: providers.BaseProvider,
+  propertyAddress: string
+) => {
+  const [l1, l2] = await clientsLockup(prov)
+  return (l1 || l2)?.calculateRewardAmount(propertyAddress)
 }
