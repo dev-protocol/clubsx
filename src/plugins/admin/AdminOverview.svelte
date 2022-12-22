@@ -12,16 +12,18 @@
   let { propertyAddress, rpcUrl } = config
   const provider = new providers.JsonRpcProvider(rpcUrl)
   let members: number | undefined = 0
-  let earnings: [string, string] | undefined = ['0', '0']
+  let earnings: number
   async function getData() {
     await detectStokensByPropertyAddress(provider, propertyAddress).then(
       (res) => {
         members = res?.length
       }
     )
-    // await calculateRewardAmount(provider, propertyAddress).then((res) => {
-    //   earnings = res
-    // })
+    await calculateRewardAmount(provider, propertyAddress).then((res) => {
+      whenDefined(res, (value) => {
+        earnings = Number(value[0]) / 10 ** 18
+      })
+    })
   }
   onMount(async () => {
     await getData()
