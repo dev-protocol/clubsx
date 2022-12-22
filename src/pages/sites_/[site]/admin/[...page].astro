@@ -2,6 +2,7 @@
 import Admin from '@devprotocol/clubs-core/admin'
 import { adminFactory } from '@devprotocol/clubs-core'
 import { config as _config } from '@fixtures/config'
+import defaultTheme from '@plugins/default-theme'
 import admin from '@plugins/admin'
 import community from '@plugins/community'
 import memberships from '@plugins/memberships'
@@ -13,6 +14,7 @@ const { site, page } = Astro.params
 const { getStaticPaths } = adminFactory({
   config: async () => await _config(site),
   plugins: {
+    defaultTheme,
     admin,
     quests,
     community,
