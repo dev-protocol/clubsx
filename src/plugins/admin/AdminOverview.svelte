@@ -6,7 +6,7 @@
   } from '@fixtures/dev-kit'
   import { whenDefined } from '@devprotocol/util-ts'
   import { onMount } from 'svelte'
-  import { providers } from 'ethers'
+  import { ethers, BigNumber, providers } from 'ethers'
   export let config: ClubsConfiguration
 
   let { propertyAddress, rpcUrl } = config
@@ -21,7 +21,8 @@
     )
     await calculateRewardAmount(provider, propertyAddress).then((res) => {
       whenDefined(res, (value) => {
-        earnings = Number(value[0]) / 10 ** 18
+        earnings = Number(value[0]) / 1e36
+        earnings = Math.round(earnings * 100) / 100
       })
     })
   }
