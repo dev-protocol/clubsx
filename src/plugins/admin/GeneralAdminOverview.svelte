@@ -1,25 +1,31 @@
 <script lang="ts">
   import { ClubsConfiguration, setConfig } from '@devprotocol/clubs-core'
-  import { clientsSTokens } from '@devprotocol/dev-kit'
+  import {
+    detectStokensByPropertyAddress,
+    calculateRewardAmount,
+  } from '@fixtures/dev-kit'
   import { whenDefined } from '@devprotocol/util-ts'
   import { onMount } from 'svelte'
+  import { providers } from 'ethers'
   export let config: ClubsConfiguration
 
   let { propertyAddress, rpcUrl } = config
-  let members = 0
-  let earnings = 0
-  // async function getData() {
-  //   const clients = await clientsSTokens(rpcUrl)
-  //   const sToken = whenDefined(clients, ([l1, l2]) => l1 ?? l2)
-  //   members = await whenDefined(sToken, (contract) =>
-  //       contract.positionsOfProperty(
-  //         propertyAddress
-  //       )
-  //   )
-  // }
-  // onMount(async () => {
-  //   await getData();
-  // });
+  const provider = new providers.JsonRpcProvider(rpcUrl)
+  let members: number | undefined = 0
+  let earnings: [string, string ] | undefined = [ '0', '0' ]
+  async function getData() {
+    await detectStokensByPropertyAddress(provider, propertyAddress).then(
+      (res) => {
+        members = res?.length
+      }
+    )
+    // await calculateRewardAmount(provider, propertyAddress).then((res) => {
+    //   earnings = res
+    // })
+  }
+  onMount(async () => {
+    await getData()
+  })
 </script>
 
 <div>
