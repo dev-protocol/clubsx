@@ -12,7 +12,7 @@
   let { propertyAddress, rpcUrl } = config
   const provider = new providers.JsonRpcProvider(rpcUrl)
   let members: number | undefined = 0
-  let earnings: [string, string ] | undefined = [ '0', '0' ]
+  let earnings: [string, string] | undefined = ['0', '0']
   async function getData() {
     await detectStokensByPropertyAddress(provider, propertyAddress).then(
       (res) => {
