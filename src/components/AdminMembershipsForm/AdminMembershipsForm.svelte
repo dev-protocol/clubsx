@@ -33,7 +33,7 @@
       {/each}
     {:else}
       <!-- TODO: Display existing memberships -->
-      {#each memberships as membership}
+      {#each memberships as membership, i}
         <div>
           <MembershipOptionCard
             name={membership.name}
@@ -41,6 +41,11 @@
             ethPrice={membership.price.toString()}
             description={membership.description}
           />
+          <a
+            class="mt-2 block w-full rounded bg-black py-4 text-center text-sm font-semibold text-white"
+            id={`select-opt-${i}`}
+            href={`${base}/memberships/${membership.id}`}>Select</a
+          >
         </div>
       {/each}
     {/if}
