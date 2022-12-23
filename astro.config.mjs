@@ -63,8 +63,10 @@ export default defineConfig({
     // syntaxHighlight: 'prism'
   },
   vite: {
-    resolve: {
-      conditions: [],
+    server: {
+      hmr: {
+        timeout: 180000,
+      },
     },
   },
 })

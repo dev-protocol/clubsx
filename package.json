@@ -49,7 +49,7 @@
     "@astrojs/vercel": "2.3.6",
     "@astrojs/vue": "1.2.2",
     "@astropub/md": "^0.1.4",
-    "@devprotocol/clubs-core": "0.13.0",
+    "@devprotocol/clubs-core": "0.13.1",
     "@devprotocol/dev-kit": "6.10.0",
     "@devprotocol/elements": "0.2.2",
     "@devprotocol/hashi": "1.4.0",
