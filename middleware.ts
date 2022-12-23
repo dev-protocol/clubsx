@@ -1,7 +1,7 @@
 import { rewrite, next } from '@vercel/edge'
 
 export const config = {
-  matcher: ['/((?!api|assets|chunks|[\\w-]+\\.\\w+).*)'],
+  matcher: ['/((?!api|assets|chunks|_vercel|[\\w-]+\\.\\w+).*)'],
 }
 
 export default function middleware(req: Request) {
