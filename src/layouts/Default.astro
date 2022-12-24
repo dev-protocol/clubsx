@@ -93,7 +93,7 @@ const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
 
   <body class="min-h-screen bg-black font-body text-white">
     <Navbar
-      client:only="vue"
+      client:load
       tenantName={config.name}
       headerLinks={headerLinks}
       navLinks={navLinks}

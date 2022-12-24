@@ -1,11 +1,11 @@
 <template>
   <button
     v-if="!link"
-    v-bind:class="`hs-button${
-      type && ' ' + assertType(type)
+    v-bind:class="`hs-button${type && ' ' + assertType(type)} ${
+      loading && 'w-full animate-pulse bg-gray-500/60'
     } rounded-md font-bold`"
     role="button"
-    :disabled="isDisabled"
+    :disabled="isDisabled || loading"
   >
     <i v-if="isIconVisible" class="hs-button__icon"
       ><slot name="icon"></slot
@@ -15,8 +15,8 @@
 
   <a
     v-else
-    v-bind:class="`hs-button${
-      type && ' ' + assertType(type)
+    v-bind:class="`hs-button${type && ' ' + assertType(type)} ${
+      loading && 'w-full animate-pulse bg-gray-500/60'
     } rounded-md font-bold`"
     role="link"
     rel="prefetch"
@@ -39,6 +39,10 @@ export default {
       default: null,
     },
     isDisabled: {
+      type: Boolean,
+      default: false,
+    },
+    loading: {
       type: Boolean,
       default: false,
     },
