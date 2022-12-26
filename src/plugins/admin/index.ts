@@ -15,7 +15,7 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
   { name, description, twitterHandle, propertyAddress, rpcUrl }
 ) => [
   {
-    paths: [],
+    paths: ['general'],
     component: Index,
     props: { name, description, twitterHandle, propertyAddress },
   },
