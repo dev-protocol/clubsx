@@ -7,6 +7,8 @@ import SetupLayout from '@layouts/Setup.astro'
 
 const { site } = Astro.params
 
+const created = new URL(Astro.request.url).searchParams.get('created')
+
 const { getStaticPaths, getCurrentConfig } = adminFactory({
   config: async () => await _config(site),
   plugins: {
@@ -27,19 +29,36 @@ const clubs = path.props.clubs
 ---
 
 <SetupLayout {config} {...path.props} setupStep="MEMBERSHIPS">
-  <h1 class="mb-8 font-title text-lg font-bold">Memberships</h1>
+  <section class="grid gap-16">
+    <h1 class="font-title text-lg font-bold">Memberships</h1>
 
-  <div class="mb-8 text-2xl">
-    Create a new Membership by selecting a template
-  </div>
+    <div class="text-2xl">Create a new Membership by selecting a template</div>
 
-  <AdminMembershipsForm
-    client:load
-    currentPluginIndex={clubs.currentPluginIndex}
-    memberships={path.props.memberships as Membership[]}
-    presets={path.props.presets as Membership[]}
-    base="/setup"
-  />
+    <AdminMembershipsForm
+      client:load
+      currentPluginIndex={clubs.currentPluginIndex}
+      memberships={path.props.memberships as Membership[]}
+      presets={path.props.presets as Membership[]}
+      base="/setup"
+    />
+
+    {
+      created === '' && (
+        <aside class="grid gap-2">
+          <p class="text-center text-4xl">Congratulation!</p>
+          <p class="text-center">
+            You can add more anytime. Let's save and proceed to preview.
+          </p>
+          <a
+            class="hs-button inline-block bg-black py-4 text-center text-sm font-semibold text-white"
+            href="/setup/preview"
+          >
+            Preview
+          </a>
+        </aside>
+      )
+    }
+  </section>
 </SetupLayout>
 
 <script>

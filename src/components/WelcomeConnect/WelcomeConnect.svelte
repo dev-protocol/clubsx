@@ -1,7 +1,9 @@
 <script lang="ts">
   import { initializeFirebase } from '../../fixtures/firebase'
   import { sendSignInLinkToEmail } from 'firebase/auth'
-  import { GetModalProvider, ReConnectWallet } from '@fixtures/wallet'
+  import type { EthersProviderFrom as TypeEthersProviderFrom } from '@fixtures/wallet'
+  import type Web3Modal from 'web3modal'
+
   import {
     ClubsConfiguration,
     encode,
@@ -9,6 +11,7 @@
   } from '@devprotocol/clubs-core'
   import { utils } from 'ethers'
   import { defaultConfig } from '@constants/defaultConfig'
+  import { onMount } from 'svelte'
 
   export let siteName: string
 
@@ -16,6 +19,14 @@
   let emailErrorMessage = ''
   let emailSent = false
   let emailSending = false
+  let GetModalProvider: Web3Modal
+  let EthersProviderFrom: typeof TypeEthersProviderFrom
+
+  onMount(async () => {
+    const wallet = await import('@fixtures/wallet')
+    GetModalProvider = wallet.GetModalProvider()
+    EthersProviderFrom = wallet.EthersProviderFrom
+  })
 
   const sendMagicLink = async () => {
     if (emailSent) {
@@ -54,8 +65,9 @@
   }
 
   const walletConnect = async () => {
-    const modalProvider = GetModalProvider()
-    const { provider, currentAddress } = await ReConnectWallet(modalProvider)
+    const { provider, currentAddress } = await EthersProviderFrom(
+      GetModalProvider
+    )
     if (!currentAddress || !provider) {
       return
     }
@@ -92,7 +104,7 @@
 
     const body = {
       site: siteName,
-      config,
+      config: encode(config),
       hash,
       sig,
       expectedAddress: currentAddress,
@@ -164,7 +176,12 @@
       <span class="mb-4">Already have a wallet?</span>
 
       <button
-        class="hs-button is-filled border-0 bg-native-blue-300 px-8 py-4 text-inherit"
+        class={`hs-button is-filled border-0 bg-native-blue-300 px-8 py-4 text-inherit ${
+          !GetModalProvider || !EthersProviderFrom
+            ? 'animate-pulse bg-gray-500/60'
+            : ''
+        }`}
+        disabled={!GetModalProvider || !EthersProviderFrom}
         on:click|preventDefault={(_) => walletConnect()}
       >
         Sign with your wallet

@@ -3,20 +3,22 @@
   import MembershipOptionCard from './MembershipOption.svelte'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import { Membership } from '@plugins/memberships'
+  import { UndefinedOr } from '@devprotocol/util-ts'
 
   export let currentPluginIndex: number
-  export let presets: Membership[]
+  export let presets: UndefinedOr<Membership[]> = undefined
   export let membership: Membership
   export let existingMemberships: Membership[]
   export let base: string = '/admin'
+  export let mode: 'edit' | 'create' = 'create'
+  const originalId = membership.id
 
   const update = () => {
-    const newMemberships = existingMemberships.some(
-      ({ id }) => id === membership.id
-    )
+    const search = mode === 'edit' ? originalId : membership.id
+    const newMemberships = existingMemberships.some(({ id }) => id === search)
       ? // If the ID is already exists, override it. This is a safeguard to avoid duplicate data.
         existingMemberships.map((_mem) =>
-          _mem.id === membership.id ? membership : _mem
+          _mem.id === search ? membership : _mem
         )
       : // If not, add it.
         [...existingMemberships, membership]
@@ -45,6 +47,11 @@
     update()
   }
 
+  const onChangeName = () => {
+    const id = membership.name.toLowerCase().replace(/\W/g, '-')
+    membership.id = id
+  }
+
   const cancel = () => {
     const preset = existingMemberships.find(
       (preset) => preset.id === membership.id
@@ -57,43 +64,51 @@
   }
 </script>
 
-<div>
-  <div class="mb-8 grid grid-cols-3 gap-4">
-    {#each presets as opt, i}
-      <div>
-        <MembershipOptionCard
-          name={opt.name}
-          imagePath={opt.imageSrc}
-          ethPrice={opt.price.toString()}
-          description={opt.description}
-        />
-        <a
-          class="mt-2 block w-full rounded bg-black py-4 text-center text-sm font-semibold text-white"
-          id={`select-opt-${i}`}
-          href={`${base}/memberships/new/${opt.id}`}>Select</a
-        >
-      </div>
-    {/each}
-  </div>
+<div class="grid gap-16">
+  {#if presets}
+    <div class="grid grid-cols-3 gap-4">
+      {#each presets as opt, i}
+        <div>
+          <MembershipOptionCard
+            name={opt.name}
+            imagePath={opt.imageSrc}
+            ethPrice={opt.price.toString()}
+            description={opt.description}
+            className={originalId === opt.id
+              ? 'border-[3px] border-native-blue-300'
+              : 'opacity-30'}
+          />
+          <a
+            class="mt-2 block w-full rounded bg-black py-4 text-center text-sm font-semibold text-white"
+            id={`select-opt-${i}`}
+            href={`${base}/memberships/new/${opt.id}`}
+            >{originalId === opt.id ? 'Selected' : 'Select'}</a
+          >
+        </div>
+      {/each}
+    </div>
+  {/if}
 
-  <form on:change|preventDefault={(_) => update()}>
-    <div class="mb-10 grid grid-cols-2 gap-8">
-      <div>
+  <form on:change|preventDefault={(_) => update()} class="grid gap-16">
+    <div class="grid grid-cols-[3fr_2fr] gap-16">
+      <!-- Form -->
+      <div class="grid gap-8">
         <!-- Name -->
-        <div class="mb-10 flex flex-col">
-          <label class="mb-1" for="membership-name"> Name </label>
+        <div class="flex flex-col gap-1">
+          <label for="membership-name"> Name </label>
           <input
             class="rounded bg-[#040B10] px-8 py-4"
             bind:value={membership.name}
+            on:change={onChangeName}
             id="membership-name"
             name="membership-name"
           />
         </div>
 
         <!-- Image -->
-        <div class="mb-10 flex flex-col">
-          <label class="mb-1 flex flex-col" for="avatarPath">
-            <span class="mb-1">Avatar</span>
+        <div class="flex flex-col gap-1">
+          <label class="flex flex-col gap-1" for="avatarPath">
+            <span>Image</span>
 
             {#if membership.imageSrc && membership.imageSrc != ''}
               <img
@@ -101,14 +116,11 @@
                 class="h-auto max-w-full cursor-pointer rounded"
                 alt="Hero"
               />
-            {:else}
-              <div class="float-left">
-                <span
-                  class="cursor-pointer rounded-lg bg-[#040B10] px-12 py-4 text-sm font-medium"
-                  type="button">Choose Image</span
-                >
-              </div>
             {/if}
+            <span
+              class="hs-button cursor-pointer rounded-lg bg-[#040B10] px-12 py-4 text-sm font-medium"
+              type="button">Choose Image</span
+            >
             <input
               id="avatarPath"
               name="avatarPath"
@@ -120,22 +132,23 @@
         </div>
 
         <!-- Price -->
-        <div class="mb-10 flex flex-col">
-          <label class="mb-1" for="membership-price"> Price </label>
+        <div class="flex flex-col gap-1">
+          <label for="membership-price"> Price </label>
           <input
             class="rounded bg-[#040B10] px-8 py-4"
             bind:value={membership.price}
             id="membership-price"
             name="membership-price"
+            type="number"
           />
         </div>
 
         <!-- Subscription Streaming -->
-        <div class="rounded border border-blue-500 px-4 py-2">
-          <span class="mb-4 font-title font-bold">Subscription Streaming</span>
+        <div class="rounded-lg border-[3px] border-blue-500 px-4 py-2">
+          <h3 class="mb-8 font-title font-bold">Subscription Streaming</h3>
 
-          <div class="flex text-sm">
-            <span class="mr-2 text-sm">Estimated Earnings/year: </span>
+          <div class="flex gap-2 text-sm">
+            <span class="text-sm">Estimated Earnings/year: </span>
             <span class="text-sm">888.8888 USD (888.8888 DEV)</span>
           </div>
         </div>
@@ -143,6 +156,7 @@
 
       <!-- Preview -->
       <div class="relative top-0">
+        <h3>Preview</h3>
         <div class="sticky top-4">
           <MembershipOptionCard
             name={membership.name}
@@ -155,7 +169,7 @@
     </div>
 
     <!-- Description -->
-    <div class="mb-10 flex flex-col">
+    <div class="flex flex-col">
       <label for="membership-description"> Description </label>
       <textarea
         class="rounded bg-[#040B10] px-8 py-4"

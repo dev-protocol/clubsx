@@ -14,7 +14,9 @@
 </script>
 
 <div>
-  <div class="mb-8 grid grid-cols-3 gap-4">
+  <div
+    class="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] justify-between gap-4	"
+  >
     {#if memberships.length === 0}
       {#each presets as opt, i}
         <div>

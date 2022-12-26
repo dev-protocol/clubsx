@@ -37,16 +37,18 @@ if (!membership) {
 ---
 
 <SetupLayout {config} {...props} setupStep="MEMBERSHIPS">
-  <h1 class="mb-8 font-title text-lg font-bold">Memberships</h1>
+  <section class="grid gap-16">
+    <h1 class="font-title text-lg font-bold">Memberships</h1>
 
-  <AdminMembershipsAdditionForm
-    client:load
-    currentPluginIndex={props.clubs.currentPluginIndex}
-    membership={membership}
-    presets={props.presets as Membership[]}
-    existingMemberships={presets}
-    base="/setup"
-  />
+    <AdminMembershipsAdditionForm
+      client:load
+      currentPluginIndex={props.clubs.currentPluginIndex}
+      membership={membership}
+      presets={props.presets as Membership[]}
+      existingMemberships={props.memberships as Membership[]}
+      base="/setup"
+    />
+  </section>
 </SetupLayout>
 
 <script>
@@ -54,5 +56,6 @@ if (!membership) {
 
   document.body.addEventListener(ClubsEvents.FinishConfiguration, (ev) => {
     console.log('Save button clicked and updated the data remotely!!')
+    window.location.href = '/setup/memberships?created'
   })
 </script>
