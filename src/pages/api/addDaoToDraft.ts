@@ -82,6 +82,7 @@ export const post = async ({ request }: { request: Request }) => {
   }
 
   try {
+    console.log({ config })
     await client.set(site, config)
     await client.quit()
     return new Response(JSON.stringify({}), { status: 200 })
