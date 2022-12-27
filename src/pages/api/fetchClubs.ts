@@ -1,7 +1,16 @@
 import { createClient } from 'redis'
-import { decode } from '@devprotocol/clubs-core'
 
-export const get = async () => {
+export const get = async ({ request }: { request: Request }) => {
+  const { userAddress } = (await request.json()) as {
+    userAddress: string
+  }
+
+  if (!userAddress) {
+    return new Response(JSON.stringify({ error: 'No user address passed' }), {
+      status: 401,
+    })
+  }
+
   const client = createClient({
     url: process.env.REDIS_URL,
     username: process.env.REDIS_USERNAME ?? '',
@@ -13,15 +22,12 @@ export const get = async () => {
     console.error('redis connection error: ', e)
   })
 
-  const sites = []
-
-  // scans the keys
-  for await (const key of client.scanIterator()) {
-    // use the key to fetch config
-    const config = await client.get(key)
-    if (!config) continue
-    sites.push(decode(config))
+  const userSites = (await client.get(userAddress)) as string[] | null
+  if (!userSites) {
+    return new Response(JSON.stringify({ error: 'No user sites found' }), {
+      status: 400,
+    })
   }
 
-  return new Response(JSON.stringify(sites), { status: 200 })
+  return new Response(JSON.stringify(userSites), { status: 200 })
 }
