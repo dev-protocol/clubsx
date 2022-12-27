@@ -293,7 +293,7 @@ export default defineComponent({
       [this.destination, this.amount],
       async ([destination, amount]) => {
         const feeDeposit = this.feePercentage
-          ? new BigNumber(100).minus(this.feePercentage).div(100)
+          ? new BigNumber(this.feePercentage)
           : 0
         const [devAmount, ethAmount] = await Promise.all([
           this.verifiedPropsCurrency === CurrencyOption.DEV
@@ -301,7 +301,9 @@ export default defineComponent({
             : await fetchDevForEth({
                 provider,
                 tokenAddress: destination,
-                amount: new BigNumber(amount).times(feeDeposit).toNumber(),
+                amount: new BigNumber(amount)
+                  .times(new BigNumber(1).minus(feeDeposit))
+                  .toNumber(),
                 chain,
               }).then(utils.formatUnits),
           this.verifiedPropsCurrency === CurrencyOption.ETH
