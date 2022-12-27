@@ -24,4 +24,9 @@ if (!path) {
 
 <SetupLayout {config} {...path.props} setupStep="PREVIEW">
   <h2 class="mb-16 font-title text-2xl font-bold">Preview</h2>
+
+  <iframe width="200%" height="1600"
+    style="transform: scale(0.5); transform-origin: 0 0"
+    src={`https://clubs.place/sites_/${site}`}
+  />
 </SetupLayout>
