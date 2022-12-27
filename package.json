@@ -60,7 +60,7 @@
     "@vercel/analytics": "0.1.6",
     "@vercel/edge": "^0.2.0",
     "@vue/composition-api": "1.7.1",
-    "astro": "1.7.2",
+    "astro": "1.8.0",
     "bignumber.js": "9.1.1",
     "ethers": "5.7.2",
     "firebase": "^9.14.0",
