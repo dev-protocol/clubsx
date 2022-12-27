@@ -79,6 +79,16 @@ export const post = async ({ request }: { request: Request }) => {
         status: 401,
       })
     }
+
+    // associate user address with site
+    // first we check if user has other sites associated with their address
+    let existingSites = (await client.get(address)) as string[] | null
+    if (!existingSites) {
+      existingSites = []
+    }
+    existingSites.push(site)
+
+    await client.set(address, JSON.stringify(existingSites))
   }
 
   try {
