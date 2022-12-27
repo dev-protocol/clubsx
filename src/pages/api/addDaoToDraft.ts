@@ -86,7 +86,11 @@ export const post = async ({ request }: { request: Request }) => {
     if (!existingSites) {
       existingSites = []
     }
-    existingSites.push(site)
+
+    // avoid duplicates
+    if (!existingSites.includes(site)) {
+      existingSites.push(site)
+    }
 
     await client.set(address, JSON.stringify(existingSites))
   }
