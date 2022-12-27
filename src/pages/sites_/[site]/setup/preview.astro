@@ -4,6 +4,7 @@ import { config as _config } from '@fixtures/config'
 import { adminFactory } from '@devprotocol/clubs-core'
 import admin from '@plugins/admin'
 import SetupLayout from '@layouts/Setup.astro'
+import HSButton from '@components/Primitives/Hashi/HSButton.vue'
 
 const { site } = Astro.params
 
@@ -23,10 +24,31 @@ if (!path) {
 ---
 
 <SetupLayout {config} {...path.props} setupStep="PREVIEW">
-  <h2 class="mb-16 font-title text-2xl font-bold">Preview</h2>
-
-  <iframe width="200%" height="1600"
+  <h2 class="mb-16 font-title text-2xl font-bold mb-16">Preview</h2>
+  <iframe
+    width="200%"
+    height="1600"
     style="transform: scale(0.5); transform-origin: 0 0"
     src={`https://clubs.place/sites_/${site}`}
-  />
+    class="rounded mb-16"
+  >
+  </iframe>
+  <div class="text-center w-full rounded bg-[#040B10] py-4 px-8 mb-16">
+    <a
+      class="text-lg font-bold"
+      href={`https://clubs.place/sites_/${site}`}
+      target="_blank"
+    >
+      Open external
+    </a>
+  </div>
+  <div class="text-center w-full rounded bg-[#040B10] py-4 px-8 mb-16">
+    <a
+      class="text-lg font-bold"
+      href={`https://clubs.place/sites_/${site}`}
+      target="_blank"
+    >
+      Open external
+    </a>
+  </div>
 </SetupLayout>
