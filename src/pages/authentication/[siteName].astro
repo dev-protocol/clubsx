@@ -35,7 +35,8 @@ const { siteName } = Astro.params
 
   // Confirm the link is a sign-in with email link.
   const auth = initializeFirebase()
-  const siteName = (document.getElementById('siteName') as HTMLInputElement)?.value as string
+  const siteName = (document.getElementById('siteName') as HTMLInputElement)
+    ?.value as string
 
   if (isSignInWithEmailLink(auth, window.location.href)) {
     let email = window.localStorage.getItem('emailForSignIn')
