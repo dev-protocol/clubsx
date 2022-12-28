@@ -5,7 +5,7 @@
 
 import Layout from '@layouts/Landing.astro'
 
-const { site } = Astro.params
+const { siteName } = Astro.params
 ---
 
 <Layout>
@@ -19,7 +19,7 @@ const { site } = Astro.params
       >Authenticating...</span
     >
   </section>
-  <input id="siteName" type="hidden" value={site} disabled />
+  <input id="siteName" type="hidden" value={siteName} disabled />
 </Layout>
 
 <script>
@@ -35,9 +35,8 @@ const { site } = Astro.params
 
   // Confirm the link is a sign-in with email link.
   const auth = initializeFirebase()
-  const siteName = JSON.parse(
-    (document.getElementById('siteName') as HTMLInputElement)?.value
-  ) as string
+  const siteName = (document.getElementById('siteName') as HTMLInputElement)
+    ?.value as string
 
   if (isSignInWithEmailLink(auth, window.location.href)) {
     let email = window.localStorage.getItem('emailForSignIn')
