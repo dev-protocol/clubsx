@@ -416,6 +416,7 @@ const populate = async () => {
     })
     await client.connect()
 
+    // await client.del('aggre')
     await client.set(
       'temples',
       encode({
