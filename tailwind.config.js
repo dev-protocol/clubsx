@@ -1,25 +1,10 @@
-const {
-  theme: { colors, fontFamily, screens },
-} = require('@devprotocol/hashi/tailwind')
+const { clubs } = require('@devprotocol/clubs-core/tailwind')
 
 module.exports = {
   mode: 'jit',
-  content: [
-    './public/**/*.html',
-    './src/**/*.{astro,js,jsx,svelte,ts,tsx,vue}',
-    './node_modules/@devprotocol/clubs-core/**/*.{astro,js,jsx,svelte,ts,tsx,vue}',
-  ],
-  darkMode: 'class',
+  presets: [clubs],
   theme: {
     extend: {
-      screens,
-      colors,
-      fontFamily: Object.assign(
-        {
-          serif: ['Bodoni Moda', 'serif'],
-        },
-        fontFamily
-      ),
       animation: {
         'c-bash-spinner': 'c-bash-spinner 1s linear infinite',
       },
