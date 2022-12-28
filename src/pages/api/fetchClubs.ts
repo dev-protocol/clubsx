@@ -1,6 +1,11 @@
 import { generateId } from '@fixtures/api/keys'
 import { createClient } from 'redis'
 
+export type ClubsData = {
+  name: string
+  created: string
+}
+
 export const get = async ({ request }: { request: Request }) => {
   const { identifier } = (await request.json()) as {
     identifier: string
@@ -27,7 +32,7 @@ export const get = async ({ request }: { request: Request }) => {
   })
 
   const userSites = (await client.get(generateId(identifier))) as
-    | string[]
+    | ClubsData[]
     | null
   if (!userSites) {
     return new Response(JSON.stringify({ error: 'No user sites found' }), {

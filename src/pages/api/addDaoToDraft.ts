@@ -3,6 +3,7 @@ import { generateId } from '@fixtures/api/keys'
 import { initializeFirebaseAdmin } from '@fixtures/firebase/initializeFirebaseAdmin'
 import { utils } from 'ethers'
 import { createClient } from 'redis'
+import { ClubsData } from './fetchClubs'
 
 export const post = async ({ request }: { request: Request }) => {
   const { site, config, sig, hash, expectedAddress, uid } =
@@ -88,14 +89,14 @@ export const post = async ({ request }: { request: Request }) => {
   if (keyEnumerable) {
     // associate user address with site
     // first we check if user has other sites associated with their address
-    let existingSites = (await client.get(keyEnumerable)) as string[] | null
+    let existingSites = (await client.get(keyEnumerable)) as ClubsData[] | null
     if (!existingSites) {
       existingSites = []
     }
 
     // avoid duplicates
-    if (!existingSites.includes(site)) {
-      existingSites.push(site)
+    if (!existingSites.some((c) => c.name === site)) {
+      existingSites.push({ name: site, created: new Date().toISOString() })
     }
 
     await client.set(keyEnumerable, JSON.stringify(existingSites))
