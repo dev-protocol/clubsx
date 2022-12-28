@@ -4,7 +4,7 @@ import { config as _config } from '@fixtures/config'
 import { adminFactory } from '@devprotocol/clubs-core'
 import admin from '@plugins/admin'
 import SetupLayout from '@layouts/Setup.astro'
-import image from '../../../../assets/preview-overview-chart.png'
+import image from '@assets/preview-overview-chart.png'
 
 const { site } = Astro.params
 
@@ -21,59 +21,55 @@ const path = (await getStaticPaths()).find(({ props }) => props.clubs)
 if (!path) {
   throw new Error('Path undefined: ', path)
 }
+
+const baseUrl = ((url) => `${url.protocol}//${url.host}/`)(
+  new URL(Astro.request.url)
+)
 ---
 
 <SetupLayout {config} {...path.props} setupStep="PREVIEW">
-  <h2 class="mb-16 font-title text-2xl font-bold">Preview</h2>
-  <iframe
-    width="200%"
-    height="1600"
-    style="transform: scale(0.5); transform-origin: 0 0"
-    src={`https://clubs.place/sites_/${site}`}
-    class="mb-16 rounded-[32px]"
-  >
-  </iframe>
-  <div
-    class="mb-16 mt-[-800px] w-full rounded bg-[#040B10] py-4 px-8 text-center"
-  >
+  <section class="grid gap-16">
+    <h2 class="font-title text-2xl font-bold">Preview</h2>
+    <iframe
+      width="200%"
+      height="1200"
+      style="transform: scale(0.5); transform-origin: 0 0"
+      src={baseUrl}
+      class="-mb-[600px] rounded-lg bg-dp-black-600 shadow-lg"
+    >
+    </iframe>
     <a
-      class="text-lg font-bold"
-      href={`https://clubs.place/sites_/${site}`}
+      class="hs-button w-full rounded bg-dp-black-600 py-4 px-8 text-center text-lg font-bold"
+      href={baseUrl}
       target="_blank"
     >
       Open external
     </a>
-  </div>
-  <div
-    class="relative mb-16 w-full rounded-[32px] bg-[#5B8BF5] pt-8 pl-0 pr-0 pb-0"
-  >
-    <div class="font-Syne mt-16 text-center text-4xl font-bold">
-      Almost there!
-    </div>
-    <div class="font-DMSans mt-8 text-center text-base font-normal">Next?</div>
-    <div class="font-Syne mb-16 text-center text-2xl font-bold">
-      Publish your club to unlock more features
-    </div>
-    <div
-      class="relative bottom-0 left-[20%] h-[80%] w-[80%] rounded-t-[32px] rounded-l-[32px]"
-    >
-      <img
-        class="object-cover object-center"
-        src={image}
-        alt="Post sales chart"
-      />
-      <div class="bg-div absolute top-0 right-0 bottom-0 left-0 h-full w-full">
-      </div>
-    </div>
-  </div>
 
-  <style lang="scss">
-    .bg-div {
-      background-image: linear-gradient(
-        90deg,
-        #d9d9d9 0%,
-        rgba(217, 217, 217, 0) 100%
-      );
-    }
-  </style>
+    <a
+      href="/setup/publish"
+      class="grid w-full gap-14 overflow-hidden rounded-[32px] bg-native-blue-400 pt-14"
+    >
+      <h3 class="text-center font-title text-4xl font-bold">Almost there!</h3>
+      <div>
+        <p class="text-center text-base font-normal">Next?</p>
+        <p class="text-center font-title text-2xl font-bold">
+          Publish your club to unlock more features
+        </p>
+      </div>
+      <div class="relative ml-24 flex content-end justify-end">
+        <img
+          class="rounded-tl-[32px] object-cover object-center"
+          src={image}
+          width="750"
+          height="755"
+          alt="Post sales chart"
+        />
+        <div
+          class="absolute inset-0 bg-gradient-to-r from-transparent to-native-blue-400"
+        >
+        </div>
+      </div>
+    </a>
+  </section>
 </SetupLayout>
