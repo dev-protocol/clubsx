@@ -1,5 +1,6 @@
 import { config } from 'dotenv'
 import { defineConfig } from 'astro/config'
+import clubs from '@devprotocol/clubs-core'
 import vercel from '@astrojs/vercel/serverless'
 import tailwind from '@astrojs/tailwind'
 import vue from '@astrojs/vue'
@@ -19,6 +20,7 @@ export default defineConfig({
   output: 'server',
   adapter: vercel(),
   integrations: [
+    clubs(),
     markdownIntegration(),
     {
       name: 'clubs:multi-tenant',
@@ -46,11 +48,7 @@ export default defineConfig({
       },
     }),
     react(),
-    tailwind({
-      config: {
-        path: './tailwind.config.js',
-      },
-    }),
+    tailwind(),
     svelte(),
     prefetch({
       throttle: 10,
