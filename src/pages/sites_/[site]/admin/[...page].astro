@@ -30,9 +30,37 @@ if (!path) {
 }
 
 const Content = path.props.component
+
+const baseUrl = ((host) =>
+  host.includes('localhost')
+    ? host.replace(/^.*\.(localhost.*)$/, 'http://$1')
+    : `https://${host.split('.').slice(1, Infinity).join('.')}`)(
+  new URL(Astro.request.url).host
+)
 ---
 
 <Admin {...path.props}>
+  <a
+    slot="sidebar:before-title"
+    class="flex items-center gap-2 transition-colors hover:text-native-blue-300"
+    href={`${baseUrl}/me`}
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      class="h-4 w-4"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M19.5 12h-15m0 0l6.75 6.75M4.5 12l6.75-6.75"></path>
+    </svg>
+
+    Projects
+  </a>
   <Content {...path.props} />
 </Admin>
 
