@@ -34,32 +34,27 @@
 </script>
 
 <div class="grid gap-16">
-  <div class="grid grid-cols-2 items-stretch justify-between gap-16">
+  <section class="grid grid-cols-2 items-stretch justify-between gap-16">
     <div
       class="grid gap-16 rounded-lg border border-[3px] border-native-blue-400 p-8"
     >
-      <div class="flex items-center justify-between">
-        <span class="font-title text-lg font-bold">Number of members</span>
-      </div>
-      <div class="flex flex-col">
-        {#if members}
-          <span class="text-5xl"
-            >{members.toLocaleString('en', { useGrouping: true })}</span
-          >
-        {:else}
-          <span
-            class="block animate-pulse rounded bg-gray-500/60 text-5xl text-transparent"
-            >0</span
-          >
-        {/if}
-      </div>
+      <span class="font-title text-lg font-bold">Number of members</span>
+      {#if members}
+        <span class="text-5xl"
+          >{members.toLocaleString('en', { useGrouping: true })}</span
+        >
+      {:else}
+        <span
+          class="block animate-pulse rounded bg-gray-500/60 text-5xl text-transparent"
+          >0</span
+        >
+      {/if}
     </div>
+
     <div
       class="grid gap-16 rounded-lg border border-[3px] border-native-blue-400 p-8"
     >
-      <div class="flex items-center justify-between">
-        <span class="font-title text-lg font-bold">Total earnings</span>
-      </div>
+      <span class="font-title text-lg font-bold">Total earnings</span>
       <div class="grid gap-2">
         {#if typeof earnings === 'number' && typeof earningsInDev === 'number'}
           <span class="truncate text-5xl"
@@ -80,8 +75,9 @@
         {/if}
       </div>
     </div>
-  </div>
-  <div class="group grid gap-8">
+  </section>
+
+  <section class="group grid gap-8">
     <h1 class="font-title text-lg font-bold">Chart</h1>
     <div class="relative">
       <img
@@ -92,8 +88,10 @@
       <div
         class="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100"
       >
-        <p>Charts will be available in future updates.</p>
+        <p class="rounded-md bg-dp-blue-grey-600 px-6 py-4">
+          Charts will be available in future updates.
+        </p>
       </div>
     </div>
-  </div>
+  </section>
 </div>
