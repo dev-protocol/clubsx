@@ -4,7 +4,7 @@ import { config as _config } from '@fixtures/config'
 import { adminFactory } from '@devprotocol/clubs-core'
 import admin from '@plugins/admin'
 import SetupLayout from '@layouts/Setup.astro'
-import HSButton from '@components/Primitives/Hashi/HSButton.vue'
+import image from '../../../../assets/preview-overview-chart.png'
 
 const { site } = Astro.params
 
@@ -45,7 +45,23 @@ if (!path) {
     </a>
   </div>
   <div
-    class="mb-16 h-[1079px] w-full rounded-[32px] bg-[#5B8BF5] pt-8 pl-0 pr-0 pb-0"
+    class="relative mb-16 w-full rounded-[32px] bg-[#5B8BF5] pt-8 pl-0 pr-0 pb-0"
   >
+    <div class="font-Syne mt-16 text-center text-4xl font-bold">
+      Almost there!
+    </div>
+    <div class="font-DMSans mt-8 text-center text-base font-normal">Next?</div>
+    <div class="font-Syne mb-16 text-center text-2xl font-bold">
+      Publish your club to unlock more features
+    </div>
+    <div
+      class="relative bottom-0 left-[20%] h-[80%] w-[80%] rounded-t-[32px] rounded-l-[32px]"
+    >
+      <img
+        class="object-cover object-center"
+        src={image}
+        alt="Post sales chart"
+      />
+    </div>
   </div>
 </SetupLayout>
