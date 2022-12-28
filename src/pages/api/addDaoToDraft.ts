@@ -1,3 +1,5 @@
+import { whenDefined } from '@devprotocol/util-ts'
+import { generateId } from '@fixtures/api/keys'
 import { initializeFirebaseAdmin } from '@fixtures/firebase/initializeFirebaseAdmin'
 import { utils } from 'ethers'
 import { createClient } from 'redis'
@@ -79,10 +81,14 @@ export const post = async ({ request }: { request: Request }) => {
         status: 401,
       })
     }
+  }
 
+  const keyEnumerable = whenDefined(uid ?? expectedAddress, generateId)
+
+  if (keyEnumerable) {
     // associate user address with site
     // first we check if user has other sites associated with their address
-    let existingSites = (await client.get(address)) as string[] | null
+    let existingSites = (await client.get(keyEnumerable)) as string[] | null
     if (!existingSites) {
       existingSites = []
     }
@@ -92,7 +98,7 @@ export const post = async ({ request }: { request: Request }) => {
       existingSites.push(site)
     }
 
-    await client.set(address, JSON.stringify(existingSites))
+    await client.set(keyEnumerable, JSON.stringify(existingSites))
   }
 
   try {

@@ -1,14 +1,18 @@
+import { generateId } from '@fixtures/api/keys'
 import { createClient } from 'redis'
 
 export const get = async ({ request }: { request: Request }) => {
-  const { userAddress } = (await request.json()) as {
-    userAddress: string
+  const { identifier } = (await request.json()) as {
+    identifier: string
   }
 
-  if (!userAddress) {
-    return new Response(JSON.stringify({ error: 'No user address passed' }), {
-      status: 401,
-    })
+  if (!identifier) {
+    return new Response(
+      JSON.stringify({ error: 'No user identifier passed' }),
+      {
+        status: 401,
+      }
+    )
   }
 
   const client = createClient({
@@ -22,7 +26,9 @@ export const get = async ({ request }: { request: Request }) => {
     console.error('redis connection error: ', e)
   })
 
-  const userSites = (await client.get(userAddress)) as string[] | null
+  const userSites = (await client.get(generateId(identifier))) as
+    | string[]
+    | null
   if (!userSites) {
     return new Response(JSON.stringify({ error: 'No user sites found' }), {
       status: 400,
