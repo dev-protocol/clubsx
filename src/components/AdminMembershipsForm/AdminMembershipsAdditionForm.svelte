@@ -4,6 +4,7 @@
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import { Membership } from '@plugins/memberships'
   import { UndefinedOr } from '@devprotocol/util-ts'
+  import { utils } from 'ethers'
 
   export let currentPluginIndex: number
   export let presets: UndefinedOr<Membership[]> = undefined
@@ -15,13 +16,14 @@
 
   const update = () => {
     const search = mode === 'edit' ? originalId : membership.id
+    const payload = mode === 'edit' ? membership.payload : utils.randomBytes(8)
     const newMemberships = existingMemberships.some(({ id }) => id === search)
       ? // If the ID is already exists, override it. This is a safeguard to avoid duplicate data.
         existingMemberships.map((_mem) =>
-          _mem.id === search ? membership : _mem
+          _mem.id === search ? { ...membership, payload } : _mem
         )
       : // If not, add it.
-        [...existingMemberships, membership]
+        [...existingMemberships, { ...membership, payload }]
 
     setOptions(
       [{ key: 'memberships', value: newMemberships }],
