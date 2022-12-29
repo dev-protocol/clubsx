@@ -2,6 +2,12 @@ import { config } from 'dotenv'
 import { defineConfig } from 'astro/config'
 import clubs from '@devprotocol/clubs-core'
 import vercel from '@astrojs/vercel/serverless'
+import tailwind from '@astrojs/tailwind'
+import vue from '@astrojs/vue'
+import react from '@astrojs/react'
+import svelte from '@astrojs/svelte'
+import prefetch from '@astrojs/prefetch'
+import markdownIntegration from '@astropub/md'
 
 config()
 
@@ -15,6 +21,7 @@ export default defineConfig({
   adapter: vercel(),
   integrations: [
     clubs(),
+    markdownIntegration(),
     {
       name: 'clubs:multi-tenant',
       hooks: {
@@ -33,6 +40,19 @@ export default defineConfig({
         },
       },
     },
+    vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: (tag) => tag.includes('-'),
+        },
+      },
+    }),
+    react(),
+    tailwind(),
+    svelte(),
+    prefetch({
+      throttle: 10,
+    }),
   ],
   markdown: {
     remarkPlugins: [],
