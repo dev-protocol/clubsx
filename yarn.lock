@@ -616,17 +616,17 @@
   resolved "https://registry.yarnpkg.com/@devprotocol/elements/-/elements-0.2.2.tgz#7325fb3354f2fb77c08f91634656a9e87ce0fa80"
   integrity sha512-8Kj3hw84GVAIrQnX5gFE0iZSMvzbKqga5Kdo7rHI7ZS6lUBgG1EwxYv78iIz9SwdBki9zyGxfrQb4j3dI4Sv9w==
 
-"@devprotocol/hashi@1.4.0":
-  version "1.4.0"
-  resolved "https://registry.npmjs.org/@devprotocol/hashi/-/hashi-1.4.0.tgz"
-  integrity sha512-N5krU/oIFylZd1crhMEXc3DZjWPtWHV6eM8eO0r8QERm9AaOuZs9aRhxE7/yPYBNmrHcs+y6xsDG5FL3rwYP4w==
-  dependencies:
-    "@matteusan/sentro" "0.1.23"
-
 "@devprotocol/hashi@1.5.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@devprotocol/hashi/-/hashi-1.5.0.tgz#d622c863c2d84cea988b06fda18d8589e56da24d"
   integrity sha512-DVm+AI05GIVtIaYBwrcYNoKdx7+r244MS2wMgEgQGimMK7XQtdFe+3WEGzIFMU1izFQQbMhy8ZwJiOPYfh6AAQ==
+  dependencies:
+    "@matteusan/sentro" "0.1.25"
+
+"@devprotocol/hashi@1.5.1":
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@devprotocol/hashi/-/hashi-1.5.1.tgz#3640da6743dc893c44b0fabee90f13f2d5b6c362"
+  integrity sha512-uczqXwvCh/DWV/Fj5yxXwCufzZtQM597WOh6C2rhQEILXQdu8dHXF2w/Q+5MoTlyv4pXK44zS654xvXEfjwblw==
   dependencies:
     "@matteusan/sentro" "0.1.25"
 
@@ -1728,11 +1728,6 @@
     rimraf "^3.0.2"
     semver "^7.3.5"
     tar "^6.1.11"
-
-"@matteusan/sentro@0.1.23":
-  version "0.1.23"
-  resolved "https://registry.npmjs.org/@matteusan/sentro/-/sentro-0.1.23.tgz"
-  integrity sha512-lVnDTSy/xjn7KHPkAXEGMCOHKSEY3OBMtbhfXxZu9ZcDWWbU57pttojVV/XMW7Wkr7BGOlM1hbBggzV22adTnA==
 
 "@matteusan/sentro@0.1.25":
   version "0.1.25"
