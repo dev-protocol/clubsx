@@ -52,7 +52,7 @@
     "@devprotocol/clubs-core": "0.17.1",
     "@devprotocol/dev-kit": "6.10.0",
     "@devprotocol/elements": "0.2.2",
-    "@devprotocol/hashi": "1.4.0",
+    "@devprotocol/hashi": "1.5.1",
     "@devprotocol/util-ts": "2.2.1",
     "@metamask/detect-provider": "2.0.0",
     "@redis/json": "1.0.4",
