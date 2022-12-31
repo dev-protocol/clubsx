@@ -22,6 +22,6 @@ if (!path) {
 }
 ---
 
-<SetupLayout {config} {...path.props} setupStep="PROFILE">
-  <ProfileSetupForm client:only="svelte" config={config} />
+<SetupLayout {config} {...path.props} setupStep="BASIC">
+  <ProfileSetupForm client:load config={config} />
 </SetupLayout>

@@ -7,15 +7,15 @@ import {
 } from '@devprotocol/clubs-core'
 import { default as Index } from './index.astro'
 import { default as Plugins } from './plugins.astro'
-
+import { default as Overview } from './overview.astro'
 export const getPagePaths: ClubsFunctionGetPagePaths = async () => []
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
   _,
-  { name, description, twitterHandle, propertyAddress }
+  { name, description, twitterHandle, propertyAddress, rpcUrl }
 ) => [
   {
-    paths: [],
+    paths: ['general'],
     component: Index,
     props: { name, description, twitterHandle, propertyAddress },
   },
@@ -23,6 +23,11 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
     paths: ['plugins'],
     component: Plugins,
     props: {},
+  },
+  {
+    paths: ['overview'],
+    component: Overview,
+    props: { propertyAddress, rpcUrl },
   },
 ]
 

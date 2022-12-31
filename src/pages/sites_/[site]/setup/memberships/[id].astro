@@ -1,0 +1,48 @@
+---
+import AdminMembershipsAdditionForm from '@components/AdminMembershipsForm/AdminMembershipsAdditionForm.svelte'
+import { config as _config } from '@fixtures/config'
+import { adminFactory } from '@devprotocol/clubs-core'
+import memberships, { Membership } from '@plugins/memberships'
+import SetupLayout from '@layouts/Setup.astro'
+
+const { site, id } = Astro.params
+
+const { getStaticPaths, getCurrentConfig } = adminFactory({
+  config: async () => await _config(site),
+  plugins: {
+    memberships,
+  },
+})
+
+const config = await getCurrentConfig()
+const path = (await getStaticPaths()).find(
+  ({ params }) => params.page === `memberships/${id}`
+)
+
+if (!path) {
+  throw new Error('Path undefined: ', path)
+}
+
+const { props } = path
+---
+
+<SetupLayout {config} {...props} setupStep="MEMBERSHIPS">
+  <h1 class="mb-8 font-title text-lg font-bold">Memberships</h1>
+
+  <AdminMembershipsAdditionForm
+    client:load
+    currentPluginIndex={props.clubs.currentPluginIndex}
+    membership={props.membership as Membership}
+    existingMemberships={props.memberships as Membership[]}
+    base="/setup"
+    mode="edit"
+  />
+</SetupLayout>
+
+<script>
+  import { ClubsEvents } from '@devprotocol/clubs-core'
+
+  document.body.addEventListener(ClubsEvents.FinishConfiguration, (ev) => {
+    console.log('Save button clicked and updated the data remotely!!')
+  })
+</script>

@@ -416,6 +416,7 @@ const populate = async () => {
     })
     await client.connect()
 
+    // await client.del('aggre')
     await client.set(
       'temples',
       encode({
@@ -507,7 +508,7 @@ const populate = async () => {
             options: [],
           },
           {
-            name: 'home',
+            name: 'defaultTheme',
             enable: true,
             options: [
               {
@@ -645,6 +646,7 @@ const populate = async () => {
           },
         ],
         plugins: [
+          { name: 'defaultTheme', enable: true },
           {
             name: 'me',
             enable: true,
@@ -858,6 +860,7 @@ const populate = async () => {
           },
         ],
         plugins: [
+          { name: 'defaultTheme', enable: true },
           {
             name: 'me',
             enable: true,

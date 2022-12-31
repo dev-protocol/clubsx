@@ -8,5 +8,5 @@ const config = Astro.props as ClubsConfiguration
 <div class="flex flex-col">
   <h1 class="mb-16 font-title text-lg font-bold">General</h1>
 
-  <GeneralAdminForm client:only="svelte" config={config} />
+  <GeneralAdminForm client:load config={config} />
 </div>

@@ -7,7 +7,7 @@
   import IconGlobeEuropeAfrica from './icons/globe-europe-africa.svelte'
   import IconArrowBottom from './icons/arrow-bottom.svelte'
 
-  export let step: 'DESIGN' | 'MEMBERSHIPS' | 'PREVIEW' | 'PROFILE' | 'PUBLISH'
+  export let step: 'DESIGN' | 'MEMBERSHIPS' | 'PREVIEW' | 'BASIC' | 'PUBLISH'
 </script>
 
 <div
@@ -21,8 +21,8 @@
   <div class="relative grid gap-4	">
     <WelcomeWizardStep
       label="Basic info"
-      isActive={step === 'PROFILE'}
-      link="/setup/profile"
+      isActive={step === 'BASIC'}
+      link="/setup/basic"
     >
       <IconIdentification />
     </WelcomeWizardStep>

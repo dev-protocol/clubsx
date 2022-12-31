@@ -6,5 +6,5 @@ const { siteName } = Astro.params as { siteName: string }
 ---
 
 <Layout>
-  <WelcomeConnect client:only="svelte" siteName={siteName} />
+  <WelcomeConnect client:load siteName={siteName} />
 </Layout>

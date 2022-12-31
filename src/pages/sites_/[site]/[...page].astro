@@ -1,7 +1,7 @@
 ---
 import { pageFactory } from '@devprotocol/clubs-core'
-import Layout from '@layouts/Default.astro'
 import { config as _config } from '@fixtures/config'
+import defaultTheme from '@plugins/default-theme'
 import buy from '@plugins/buy'
 import community from '@plugins/community'
 import fiat from '@plugins/fiat'
@@ -18,6 +18,7 @@ const { site, page } = Astro.params
 const { getStaticPaths, getCurrentConfig } = pageFactory({
   config: async () => await _config(site),
   plugins: {
+    defaultTheme,
     buy,
     community,
     fiat,
@@ -35,6 +36,7 @@ const path = (await getStaticPaths()).find(({ params }) => params.page === page)
 if (!path) {
   throw new Error('Path undefined: ', path)
 }
+const Layout = path.props.layout
 const Content = path.props.component
 const config = await getCurrentConfig()
 ---

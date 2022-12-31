@@ -26,17 +26,21 @@ export const ReConnectWallet = async (modalProvider: any) => {
     modalProvider.cachedProvider === 'injected' &&
     web3ForInjected.selectedAddress
   ) {
-    const connectedProvider = await modalProvider.connect()
-    const newProvider = whenDefined(
-      connectedProvider,
-      (p) => new providers.Web3Provider(p)
-    )
-
-    const currentAddress = await newProvider?.getSigner().getAddress()
-    return { currentAddress, provider: newProvider }
+    return EthersProviderFrom(modalProvider)
   }
 
   return { currentAddress: undefined, provider: undefined }
+}
+
+export const EthersProviderFrom = async (modalProvider: any) => {
+  const connectedProvider = await modalProvider.connect()
+  const newProvider = whenDefined(
+    connectedProvider,
+    (p) => new providers.Web3Provider(p)
+  )
+
+  const currentAddress = await newProvider?.getSigner().getAddress()
+  return { currentAddress, provider: newProvider }
 }
 
 export const Disconnect = (modalProvider: any) => {

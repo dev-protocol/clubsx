@@ -10,7 +10,7 @@ import { AdminConfigurationManager } from '@devprotocol/clubs-core/layouts'
 
 const { config, setupStep, clubs } = Astro.props as {
   config: ClubsConfiguration
-  setupStep: 'DESIGN' | 'MEMBERSHIPS' | 'PREVIEW' | 'PROFILE' | 'PUBLISH'
+  setupStep: 'DESIGN' | 'MEMBERSHIPS' | 'PREVIEW' | 'BASIC' | 'PUBLISH'
   clubs: ClubsPropsAdminPages['clubs']
 }
 ---
@@ -41,7 +41,7 @@ const { config, setupStep, clubs } = Astro.props as {
           class="col-span-1"
           class="col-span-1"
           config={config}
-          client:only="vue"
+          client:load
         />
       </div>
     </div>
@@ -53,7 +53,7 @@ const { config, setupStep, clubs } = Astro.props as {
 
 <script>
   import { onSubmitConfig } from '@devprotocol/clubs-core'
-  import { GetModalProvider, ReConnectWallet } from '@fixtures/wallet'
+  import { GetModalProvider, EthersProviderFrom } from '@fixtures/wallet'
   import { utils } from 'ethers'
 
   const setupStep = (document.getElementById('setupStep') as HTMLInputElement)
@@ -65,7 +65,7 @@ const { config, setupStep, clubs } = Astro.props as {
         return '/setup/memberships'
 
       case 'MEMBERSHIPS':
-        return '/setup/plugins'
+        return '/setup/preview'
 
       case 'PLUGINS':
         return '/setup/congratulations'
@@ -79,7 +79,7 @@ const { config, setupStep, clubs } = Astro.props as {
     const site = splitHostname[0]
 
     const modalProvider = GetModalProvider()
-    const { provider, currentAddress } = await ReConnectWallet(modalProvider)
+    const { provider, currentAddress } = await EthersProviderFrom(modalProvider)
     if (!currentAddress || !provider) {
       return
     }
@@ -106,6 +106,10 @@ const { config, setupStep, clubs } = Astro.props as {
 
     const success = res.ok
     onFinish({ success })
+
+    if (window.location.pathname.startsWith('/setup/memberships/new')) {
+      return
+    }
 
     // navigate to next step
     if (success && nextStepPath) {

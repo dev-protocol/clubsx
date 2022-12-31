@@ -32,8 +32,8 @@
 
 <form on:change|preventDefault={(e) => update()} class="grid gap-16">
   <div>
-    <label class="grid justify-items-start gap-2" for="avatarPath">
-      <label class="" for="hero-image"> Cover image </label>
+    <label class="grid justify-items-start gap-2" name="hero-image">
+      <span class=""> Cover image </span>
       {#if homeConfig.hero.image && homeConfig.hero.image != '' && uploading === false}
         <img
           src={homeConfig.hero.image}
@@ -47,9 +47,9 @@
         </div>
       {/if}
       <div>
-        <label
+        <span
           class="block cursor-pointer rounded bg-[#040B10] px-12 py-4 text-sm font-medium"
-          for="hero-image">Upload to change</label
+          >Upload to change</span
         >
 
         <input

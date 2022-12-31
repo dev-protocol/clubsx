@@ -2,10 +2,12 @@
 import AdminMembershipsForm from '@components/AdminMembershipsForm/AdminMembershipsForm.svelte'
 import { config as _config } from '@fixtures/config'
 import { adminFactory } from '@devprotocol/clubs-core'
-import memberships from '@plugins/memberships'
+import memberships, { Membership } from '@plugins/memberships'
 import SetupLayout from '@layouts/Setup.astro'
 
 const { site } = Astro.params
+
+const created = new URL(Astro.request.url).searchParams.get('created')
 
 const { getStaticPaths, getCurrentConfig } = adminFactory({
   config: async () => await _config(site),
@@ -23,9 +25,46 @@ if (!path) {
   throw new Error('Path undefined: ', path)
 }
 
-const Content = path.props.component
+const clubs = path.props.clubs
 ---
 
 <SetupLayout {config} {...path.props} setupStep="MEMBERSHIPS">
-  <Content {...path.props} />
+  <section class="grid gap-16">
+    <h1 class="font-title text-lg font-bold">Memberships</h1>
+
+    <div class="text-2xl">Create a new Membership by selecting a template</div>
+
+    <AdminMembershipsForm
+      client:load
+      currentPluginIndex={clubs.currentPluginIndex}
+      memberships={path.props.memberships as Membership[]}
+      presets={path.props.presets as Membership[]}
+      base="/setup"
+    />
+
+    {
+      created === '' && (
+        <aside class="grid gap-2">
+          <p class="text-center text-4xl">Congratulation!</p>
+          <p class="text-center">
+            You can add more anytime. Let's save and proceed to preview.
+          </p>
+          <a
+            class="hs-button inline-block bg-black py-4 text-center text-sm font-semibold text-white"
+            href="/setup/preview"
+          >
+            Preview
+          </a>
+        </aside>
+      )
+    }
+  </section>
 </SetupLayout>
+
+<script>
+  import { ClubsEvents } from '@devprotocol/clubs-core'
+
+  document.body.addEventListener(ClubsEvents.FinishConfiguration, (ev) => {
+    console.log('Save button clicked and updated the data remotely!!')
+  })
+</script>
