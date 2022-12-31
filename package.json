@@ -20,7 +20,7 @@
     "@types/react": "18.0.26",
     "@types/three": "^0.147.0",
     "dotenv": "16.0.3",
-    "eslint": "8.30.0",
+    "eslint": "8.31.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-config-standard": "17.0.0",
     "eslint-plugin-import": "2.26.0",
