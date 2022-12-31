@@ -169,7 +169,6 @@ import { UndefinedOr, whenDefined, whenDefinedAll } from '@devprotocol/util-ts'
 import { defineComponent } from '@vue/composition-api'
 import { BigNumberish, constants, providers, utils } from 'ethers'
 import BigNumber from 'bignumber.js'
-import { parse } from 'query-string'
 import { Subscription, zip } from 'rxjs'
 import { CurrencyOption } from '@constants/currencyOption'
 import {
@@ -228,8 +227,9 @@ export default defineComponent({
   },
   computed: {
     verifiedInputCurrency(): CurrencyOption {
-      const query = parse(location.search)
-      const input = String(query.input).toLowerCase()
+      const inputFromQuery =
+        new URL(location.href).searchParams.get('input') ?? ''
+      const input = String(inputFromQuery).toLowerCase()
       return input.toUpperCase() === 'ETH'
         ? CurrencyOption.ETH
         : CurrencyOption.DEV
