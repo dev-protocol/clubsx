@@ -5,7 +5,6 @@
   import { onMount } from 'svelte'
   import EmailConnect from '../EmailConnect/EmailConnect.svelte'
 
-  export let siteName: string
   const firebaseCallbackUrl = import.meta.env
     .PUBLIC_FIREBASE_CALLBACK_SIGNIN_URL
 
@@ -23,11 +22,6 @@
       GetModalProvider
     )
     if (!currentAddress || !provider) {
-      return
-    }
-
-    const siteNameCheckRes = await fetch(`/api/verifySiteName/${siteName}`)
-    if (!siteNameCheckRes.ok) {
       return
     }
 
