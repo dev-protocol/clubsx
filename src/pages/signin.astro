@@ -1,0 +1,12 @@
+---
+import Layout from '@layouts/Landing.astro'
+import SignInForm from '@components/SignInForm/SignInForm.svelte'
+
+const { siteName } = Astro.params as { siteName: string }
+---
+
+<Layout>
+  <div class="pb-16">
+    <SignInForm client:load siteName={siteName} />
+  </div>
+</Layout>
