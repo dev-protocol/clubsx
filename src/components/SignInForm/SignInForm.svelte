@@ -6,6 +6,8 @@
   import EmailConnect from '../EmailConnect/EmailConnect.svelte'
 
   export let siteName: string
+  const firebaseCallbackUrl = import.meta.env
+    .PUBLIC_FIREBASE_CALLBACK_SIGNIN_URL
 
   let GetModalProvider: Web3Modal
   let EthersProviderFrom: typeof TypeEthersProviderFrom
@@ -64,7 +66,7 @@
 
     <div class="flex flex-col items-center">
       <span class="mb-4">Use email</span>
-      <EmailConnect {siteName} />
+      <EmailConnect {firebaseCallbackUrl} />
     </div>
   </section>
 </div>

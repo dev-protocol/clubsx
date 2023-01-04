@@ -16,6 +16,7 @@
 
   let GetModalProvider: Web3Modal
   let EthersProviderFrom: typeof TypeEthersProviderFrom
+  const firebaseCallbackUrl = import.meta.env.PUBLIC_FIREBASE_CALLBACK_URL
 
   onMount(async () => {
     const wallet = await import('@fixtures/wallet')
@@ -90,7 +91,7 @@
   </section>
 
   <section class="grid gap-24	">
-    <EmailConnect {siteName} />
+    <EmailConnect firebaseCallbackUrl={`${firebaseCallbackUrl}/${siteName}`} />
 
     <p
       role="separator"
