@@ -581,14 +581,14 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
-"@devprotocol/clubs-core@0.17.1":
-  version "0.17.1"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.17.1.tgz#a2974eac648d3d071be7115594fe0b7e663a45c8"
-  integrity sha512-e77+yDHHCqsMHzduYRgZkcSgSSXrigqWrCAyf1n+zQbKQ1pzx4qM1bMCU4/0khAZD7XaFgMgpLXUfJBytbC9Eg==
+"@devprotocol/clubs-core@0.18.0":
+  version "0.18.0"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.18.0.tgz#fb60a6a79d2bbab06289564a79c69e2348962a4f"
+  integrity sha512-aDNUy2YsJ0bfDf8qX148msPiKPJHjSxF+48qr/NKzmciwh7NCcJ8iswKFaiTzRUF/otoAToZobJKW2KOJOkpeQ==
   dependencies:
     "@devprotocol/dev-kit" "6.10.0"
     "@devprotocol/elements" "0.2.2"
-    "@devprotocol/hashi" "1.5.0"
+    "@devprotocol/hashi" "1.5.1"
     "@devprotocol/util-ts" "2.2.1"
     "@metamask/detect-provider" "^2.0.0"
     ethers "^5.7.0"
@@ -596,7 +596,7 @@
     lit "^2.3.1"
     ramda "^0.28.0"
     web3modal "^1.9.9"
-    yaml "2.1.1"
+    yaml "2.2.1"
   optionalDependencies:
     react "^18.0.0"
     react-dom "^18.0.0"
@@ -620,13 +620,6 @@
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/@devprotocol/elements/-/elements-0.2.2.tgz#7325fb3354f2fb77c08f91634656a9e87ce0fa80"
   integrity sha512-8Kj3hw84GVAIrQnX5gFE0iZSMvzbKqga5Kdo7rHI7ZS6lUBgG1EwxYv78iIz9SwdBki9zyGxfrQb4j3dI4Sv9w==
-
-"@devprotocol/hashi@1.5.0":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/hashi/-/hashi-1.5.0.tgz#d622c863c2d84cea988b06fda18d8589e56da24d"
-  integrity sha512-DVm+AI05GIVtIaYBwrcYNoKdx7+r244MS2wMgEgQGimMK7XQtdFe+3WEGzIFMU1izFQQbMhy8ZwJiOPYfh6AAQ==
-  dependencies:
-    "@matteusan/sentro" "0.1.25"
 
 "@devprotocol/hashi@1.5.1":
   version "1.5.1"
@@ -13656,10 +13649,10 @@ yallist@^3.0.0, yallist@^3.0.2, yallist@^3.1.1:
   resolved "https://registry.npmjs.org/yallist/-/yallist-3.1.1.tgz"
   integrity sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==
 
-yaml@2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.1.1.tgz#1e06fb4ca46e60d9da07e4f786ea370ed3c3cfec"
-  integrity sha512-o96x3OPo8GjWeSLF+wOAbrPfhFOGY0W00GNaxCDv+9hkcDJEnev1yh8S7pgHF0ik6zc8sQLuL8hjHjJULZp8bw==
+yaml@2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.2.1.tgz#3014bf0482dcd15147aa8e56109ce8632cd60ce4"
+  integrity sha512-e0WHiYql7+9wr4cWMx3TVQrNwejKaEe7/rHNmQmqRjazfOP5W8PB6Jpebb5o6fIapbz9o9+2ipcaTM2ZwDI6lw==
 
 yaml@^1.10.2:
   version "1.10.2"
