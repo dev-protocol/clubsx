@@ -48,7 +48,7 @@
     "@devprotocol/dev-kit": "6.10.0",
     "@devprotocol/elements": "0.2.2",
     "@devprotocol/hashi": "1.5.1",
-    "@devprotocol/util-ts": "2.2.1",
+    "@devprotocol/util-ts": "3.0.0",
     "@metamask/detect-provider": "2.0.0",
     "@redis/json": "1.0.4",
     "@sendgrid/mail": "7.7.0",

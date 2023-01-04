@@ -640,6 +640,14 @@
     sinon "9.2.4"
     url-join "4.0.1"
 
+"@devprotocol/util-ts@3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@devprotocol/util-ts/-/util-ts-3.0.0.tgz#031b251d59dfd9199a4beee421d8b28c0d2ee7aa"
+  integrity sha512-oDg7IeJCeAajGGG79C+UXJE7pKrGsDui3yn9yxSx5SpGFejlAJ3E3af9CpF+uK71NNropglbf/W4KCs2unpGaA==
+  dependencies:
+    ethers "^5.7.2"
+    ramda "^0.28.0"
+
 "@emmetio/abbreviation@^2.2.3":
   version "2.2.3"
   resolved "https://registry.npmjs.org/@emmetio/abbreviation/-/abbreviation-2.2.3.tgz"
@@ -6078,7 +6086,7 @@ ethereumjs-wallet@0.6.5:
     utf8 "^3.0.0"
     uuid "^3.3.2"
 
-ethers@5.7.2, ethers@^5.7.0:
+ethers@5.7.2, ethers@^5.7.0, ethers@^5.7.2:
   version "5.7.2"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.7.2.tgz#3a7deeabbb8c030d4126b24f84e525466145872e"
   integrity sha512-wswUsmWo1aOK8rR7DIKiWSw9DbLWe6x98Jrn8wcTflTVvaXhAMaB5zGAXy0GYQEQp9iO1iSHWVyARQm11zUtyg==
