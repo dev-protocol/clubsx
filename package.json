@@ -18,7 +18,7 @@
     "@types/dotenv": "8.2.0",
     "@types/ramda": "0.28.20",
     "@types/react": "18.0.26",
-    "@types/three": "^0.147.0",
+    "@types/three": "^0.148.0",
     "dotenv": "16.0.3",
     "eslint": "8.31.0",
     "eslint-config-prettier": "8.6.0",
