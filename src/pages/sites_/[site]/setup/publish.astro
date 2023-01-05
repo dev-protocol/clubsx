@@ -4,6 +4,7 @@ import { config as _config } from '@fixtures/config'
 import { adminFactory } from '@devprotocol/clubs-core'
 import admin from '@plugins/admin'
 import SetupLayout from '@layouts/Setup.astro'
+import PublishGrants from '@components/PublishGrants/PublishGrants'
 
 const { site } = Astro.params
 
@@ -46,26 +47,6 @@ if (!path) {
         <h2 class="font-title text-2xl font-bold">Preview</h2>
       </section>
     </section>
-    <section
-      class="grants-bg-cover grid w-full gap-[30px] rounded-2xl py-[39px] px-[117px]"
-    >
-      <p class="text-base font-normal text-black">
-        Having trouble with gas fees? Apply!
-      </p>
-      <p class="font-title text-[42px] font-bold text-black">Creator Grants</p>
-      <p class="font-title text-2xl font-bold text-black">
-        Grants to cover the gas fees for tokenization/set up memberships.
-      </p>
-    </section>
+    <PublishGrants client:visible />
   </section>
 </SetupLayout>
-
-<style>
-  .grants-bg-cover {
-    background-image: url('../../../assets/maxim-berg-unsplash.jpg');
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center start;
-    border: 1px solid white;
-  }
-</style>
