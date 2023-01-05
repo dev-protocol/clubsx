@@ -11,7 +11,7 @@ class PublishGrants extends React.Component {
           backgroundImage: `url(${image})`,
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
-          backgroundPosition: 'center start',
+          backgroundPosition: 'center center',
         }}
       >
         <p className="text-base font-normal text-black">
