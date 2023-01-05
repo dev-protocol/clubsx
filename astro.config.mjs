@@ -63,7 +63,7 @@ export default defineConfig({
   vite: {
     server: {
       hmr: {
-        timeout: 180000,
+        timeout: 360000,
       },
     },
   },
