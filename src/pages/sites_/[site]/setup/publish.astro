@@ -4,7 +4,8 @@ import { adminFactory } from '@devprotocol/clubs-core'
 import admin from '@plugins/admin'
 import SetupLayout from '@layouts/SetupWithoutAside.astro'
 import PublishGrants from '@components/PublishGrants/PublishGrants'
-import checkImage from '@assets/check.svg'
+import checkImage from '@assets/step-check.svg'
+import roundedSquareImage from '@assets/step-rounded-square.svg'
 
 const { site } = Astro.params
 
@@ -89,13 +90,34 @@ if (!path) {
         </button>
       </section>
     </section>
-    <section class="flex grid-cols-2 items-center justify-start gap-8">
+    <section class="flex grid-cols-2 items-start justify-start gap-8">
       <section class="grid w-[49%] gap-3">
         <p class="font-mono text-base font-normal">3/</p>
         <h2 class="font-title text-2xl font-bold">Activate</h2>
       </section>
       <section class="w-[49%] p-4">
-        <section class="mb-5"></section>
+        <section class="mb-5 flex items-center justify-between">
+          <section
+            class="align-items-center flex items-center justify-items-center gap-2"
+          >
+            <img alt="Status" src={roundedSquareImage} class="h-3 w-3" />
+            <p class="font-DMSans text-base font-bold">1</p>
+          </section>
+          <div class="ml-4 mr-7 h-0 flex-1 border-[1px] border-white"></div>
+          <section
+            class="align-items-center flex items-center justify-items-center gap-2"
+          >
+            <img alt="Status" src={roundedSquareImage} class="h-3 w-3" />
+            <p class="font-DMSans text-base font-bold">2</p>
+          </section>
+          <div class="ml-4 mr-7 h-0 flex-1 border-[1px] border-white"></div>
+          <section
+            class="align-items-center flex items-center justify-items-center gap-2"
+          >
+            <img alt="Status" src={roundedSquareImage} class="h-3 w-3" />
+            <p class="font-DMSans text-base font-bold">3</p>
+          </section>
+        </section>
         <button
           class="mb-4 w-full rounded border-[3px] border-[#000000] bg-[#040B10] py-6 text-center"
         >
