@@ -54,17 +54,29 @@ if (!path) {
         >
           <img alt="Status" src={checkImage} class="h-6 w-6" />
           <h2 class="font-title text-2xl font-bold opacity-50">
-            <s>Choose nnetwork</s>
+            <s>Choose network</s>
           </h2>
         </section>
         <p class="text-base">What is the different between networks?</p>
       </section>
       <section
-        class="grid w-[49%] grid-cols-3 gap-4 border-2 border-white py-6 px-8"
+        class="grid w-[49%] grid-cols-3 gap-4 border-2 border-white p-4"
       >
-        <ConnectButton client:visible class="rounded opacity-50" />
-        <ConnectButton client:visible class="rounded opacity-50" />
-        <ConnectButton client:visible class="rounded opacity-50" />
+        <button
+          class="font-DMSans rounded border-[3px] border-[#000000] bg-[#040B10] py-6 px-8 text-base font-bold text-[#FFFFFF] opacity-50"
+        >
+          Connected
+        </button>
+        <button
+          class="font-DMSans rounded border-[3px] border-[#000000] bg-[#040B10] py-6 px-8 text-base font-bold text-[#FFFFFF] opacity-50"
+        >
+          Arbitrum
+        </button>
+       <button
+          class="font-DMSans rounded border-[3px] border-[#000000] bg-[#040B10] py-6 px-8 text-base font-bold text-[#FFFFFF] opacity-50"
+        >
+          Ethereum
+        </button>
       </section>
     </section>
     <section class="flex grid-cols-2 items-start justify-between gap-8">
