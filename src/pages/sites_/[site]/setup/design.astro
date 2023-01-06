@@ -2,7 +2,7 @@
 import SetupDesign from '@components/SetupDesign/SetupDesign.svelte'
 import { config as _config } from '@fixtures/config'
 import { adminFactory } from '@devprotocol/clubs-core'
-import home from '@plugins/home'
+import defaultTheme from '@plugins/default-theme'
 import SetupLayout from '@layouts/Setup.astro'
 
 const { site, page } = Astro.params
@@ -10,13 +10,13 @@ const { site, page } = Astro.params
 const { getStaticPaths, getCurrentConfig } = adminFactory({
   config: async () => await _config(site),
   plugins: {
-    home,
+    defaultTheme,
   },
 })
 
 const config = await getCurrentConfig()
 const path = (await getStaticPaths()).find(
-  ({ params }) => params.page === 'home'
+  ({ params }) => params.page === 'theme'
 )
 
 if (!path) {
@@ -32,7 +32,7 @@ const homeConfig = path?.props.options.find(
   <h2 class="mb-16 font-title text-2xl font-bold">Design</h2>
 
   <SetupDesign
-    client:only="svelte"
+    client:load
     homeConfig={homeConfig.value}
     currentPluginIndex={path?.props.clubs.currentPluginIndex}
   />
