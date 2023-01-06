@@ -1,6 +1,9 @@
 ---
-import ClubsWhite from '@assets/clubs--white.svg'
+import ClubsColor from '@assets/clubs--color.svg'
+import PolygonLogo from '@assets/polygon-logo.svg'
+
 import ConnectButton from '@components/Wallet/ConnectButton.vue'
+import CLBButton from 'node_modules/@devprotocol/clubs-core/src/ui/vue/CLBButton.vue'
 
 import '@devprotocol/clubs-core/styles'
 const title = 'Clubs'
@@ -12,7 +15,7 @@ const twitterHandle = 'devprtcl'
 ---
 
 <!DOCTYPE html>
-<html class="dark" lang="en">
+<html data-theme="light" lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -38,22 +41,63 @@ const twitterHandle = 'devprtcl'
     <meta name="twitter:image" content={`${ogURL}`} />
   </head>
 
-  <body class="min-h-screen bg-dp-blue-grey-400 font-body text-white">
+  <body class="min-h-screen bg-dp-black-600 font-body text-white">
     <slot name="before-header" />
-    <header class="relative flex justify-between p-6 md:p-12">
-      <h1 class="flex items-center gap-2.5 font-['Poppins'] text-xl font-bold">
-        <img src={ClubsWhite} />Clubs
-      </h1>
-      <!-- <nav class="flex justify-between gap-10"> -->
-      <!-- TODO: path for this -->
-      <!-- <a class="rounded border py-2 px-4" href="/getstarted">Get Started</a> -->
-      <!-- <ConnectButton client:only="vue" /> -->
-      <!-- </nav> -->
+    <header
+      class="relative flex items-center justify-between bg-dp-black-600 py-4 px-6"
+    >
+      <a href="/">
+        <h1
+          class="flex items-center gap-2.5 font-['Poppins'] text-xl font-bold text-dp-white-200"
+        >
+          <img src={ClubsColor} />Clubs
+        </h1>
+      </a>
+      <nav class="flex justify-between gap-10">
+        <ConnectButton type="black" client:only="vue" />
+      </nav>
     </header>
 
-    <main class="container relative mx-auto">
+    <main>
       <slot />
     </main>
+
+    <footer class="clb-footer">
+      <div class="clb-footer__wrapper">
+        <div
+          class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between"
+        >
+          <CLBButton link="#" type="outlined">Join the Waitlist</CLBButton>
+          <div class="wrap-none flex flex-row items-center">
+            <p class="text-lg font-bold md:text-lg">Clubs is powered by</p>
+            <img src={PolygonLogo} alt="Polygon logo." />
+          </div>
+        </div>
+        <div class="wrap my-6 flex flex-row gap-4">
+          <div class="flex flex-col gap-2">
+            <p class="font-bold">Community</p>
+            <ul class="clb-footer__links">
+              <li><a href="#">Discord</a></li>
+              <li><a href="#">Medium</a></li>
+              <li><a href="#">Twitter</a></li>
+            </ul>
+          </div>
+          <div class="flex flex-col gap-2">
+            <p class="font-bold">About</p>
+            <ul class="clb-footer__links">
+              <li><a href="#">Dev Protocol</a></li>
+              <li><a href="#">Forums</a></li>
+            </ul>
+          </div>
+        </div>
+        <p>
+          <small
+            >Clubs build on Dev Protocol, the core of the Decentralized Creator
+            Economy, completely on-chain and 100% composable middleware
+            protocol.</small>
+        </p>
+      </div>
+    </footer>
   </body>
 </html>
 
@@ -111,3 +155,68 @@ const twitterHandle = 'devprtcl'
     onFinish({ success })
   })
 </script>
+
+<style lang="scss" is:global>
+  @use 'node_modules/@devprotocol/hashi/hs-button';
+
+  html,
+  body {
+    scroll-behavior: smooth;
+  }
+
+  @include hs-button.extend('black') {
+    @include hs-button.color(
+      (
+        ink: 'dp-black-600',
+        border: 'dp-black-600',
+      )
+    );
+
+    &:hover,
+    &:focus {
+      @include hs-button.color(
+        (
+          fill: 'dp-black-600',
+          ink: 'dp-black-ink',
+          border: 'dp-black-600',
+        )
+      );
+    }
+
+    &:active {
+      @include hs-button.color(
+        (
+          fill: 'dp-black-400',
+          ink: 'dp-black-ink',
+          border: 'dp-black-400',
+        )
+      );
+    }
+  }
+
+  .clb-footer {
+    padding: 3rem 0;
+
+    .clb-footer__wrapper {
+      width: calc(100% - 50px);
+      max-width: 1077px;
+      margin: 0 auto;
+    }
+
+    .clb-footer__links {
+      li a {
+        transition: all var(--hs-transition-time) ease;
+
+        &:hover,
+        &:focus {
+          background: rgba(#fff, 20%);
+          text-decoration: underline;
+        }
+
+        &:active {
+          background: rgba(#fff, 33%);
+        }
+      }
+    }
+  }
+</style>
