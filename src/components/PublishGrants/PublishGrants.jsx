@@ -6,7 +6,7 @@ class PublishGrants extends React.Component {
   render() {
     return (
       <div
-        className="grants-bg-cover grid w-full gap-[30px] rounded-2xl py-[39px] px-[117px]"
+        className="grants-bg-cover grid gap-[30px] rounded-2xl py-[39px] px-[117px]"
         style={{
           backgroundImage: `url(${image})`,
           backgroundRepeat: 'no-repeat',
