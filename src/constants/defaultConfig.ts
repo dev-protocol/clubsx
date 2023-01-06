@@ -46,7 +46,7 @@ export const defaultConfig: ClubsConfiguration = {
       options: [],
     },
     {
-      name: 'home',
+      name: 'defaultTheme',
       options: [
         {
           key: 'homeConfig',

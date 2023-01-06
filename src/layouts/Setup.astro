@@ -13,6 +13,19 @@ const { config, setupStep, clubs } = Astro.props as {
   setupStep: 'DESIGN' | 'MEMBERSHIPS' | 'PREVIEW' | 'BASIC' | 'PUBLISH'
   clubs: ClubsPropsAdminPages['clubs']
 }
+const steps = {
+  current:
+    setupStep === 'BASIC'
+      ? 1
+      : setupStep === 'DESIGN'
+      ? 2
+      : setupStep === 'MEMBERSHIPS'
+      ? 3
+      : setupStep === 'PREVIEW'
+      ? 4
+      : 5,
+  total: 5,
+}
 ---
 
 <!DOCTYPE html>
@@ -29,14 +42,36 @@ const { config, setupStep, clubs } = Astro.props as {
 
   <body class="bg-dp-blue-grey-300 font-body text-white">
     <div
-      class="mr-20 grid min-h-screen auto-cols-[18rem_minmax(auto,_1fr)_12rem] grid-flow-col gap-20"
+      class="grid min-h-screen gap-20 lg:mr-20 lg:auto-cols-[18rem_minmax(auto,_1fr)_12rem] lg:grid-flow-col"
     >
-      <WelcomeWizard step={setupStep} />
+      <header
+        id="__clubs:setup:header__"
+        class="fixed z-50 hidden max-h-screen min-h-screen w-full content-start gap-16 overflow-y-scroll bg-dp-blue-grey-400 lg:relative lg:block lg:max-h-fit lg:overflow-y-auto"
+      >
+        <WelcomeWizard step={setupStep} />
+        <button
+          id="__clubs:setup:sidebar-close__"
+          class="fixed left-1/2 bottom-[3rem] flex aspect-square w-14 -translate-x-1/2 items-center justify-center rounded-full bg-white text-dp-white-ink shadow-2xl lg:hidden"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="h-6 w-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </header>
 
-      <main class="container mx-auto py-16">
+      <main class="container mx-auto px-2 py-8 lg:px-0 lg:py-16">
         <slot />
       </main>
-      <div class="py-16">
+      <div class="container mx-auto px-2 py-8 lg:px-0 lg:py-16">
         <Aside
           class="col-span-1"
           class="col-span-1"
@@ -44,6 +79,36 @@ const { config, setupStep, clubs } = Astro.props as {
           client:load
         />
       </div>
+    </div>
+
+    <!-- Navigation bar for mobile -->
+    <div
+      id="__clubs:setup:nav-mobile__"
+      class="fixed bottom-[3rem] left-1/2 -translate-x-1/2 transition-all duration-300 ease-in-out lg:hidden"
+    >
+      <button
+        id="__clubs:setup:sidebar-open__"
+        class="flex items-center gap-3 rounded-full bg-white py-2 px-3 text-dp-white-ink shadow-2xl"
+      >
+        <div class="ml-2 flex items-stretch gap-2">
+          <span class="font-bold">Step {steps.current}</span><span
+            class="text-dp-white-600">/{steps.total}</span
+          >
+        </div>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="box-content h-6 w-6 rounded-full border p-2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12"></path>
+        </svg>
+      </button>
     </div>
   </body>
 
@@ -117,3 +182,53 @@ const { config, setupStep, clubs } = Astro.props as {
     }
   })
 </script>
+
+<script>
+  const header = document.getElementById('__clubs:setup:header__')
+  const navMobile = document.getElementById('__clubs:setup:nav-mobile__')
+  document
+    .getElementById('__clubs:setup:sidebar-open__')
+    ?.addEventListener('click', () => {
+      header?.classList.toggle('hidden')
+    })
+
+  document
+    .getElementById('__clubs:setup:sidebar-close__')
+    ?.addEventListener('click', () => {
+      header?.classList.toggle('hidden')
+    })
+
+  let lastKnownScrollPosition = 0
+  let timer: NodeJS.Timeout
+
+  const toggleNavMobile = (scrollPos: number) => {
+    const shown = navMobile?.classList.contains('nav-mobile--hide') === false
+    const update =
+      (shown && scrollPos > lastKnownScrollPosition) ||
+      (!shown && scrollPos < lastKnownScrollPosition)
+    if (update) navMobile?.classList.toggle('nav-mobile--hide')
+    lastKnownScrollPosition = scrollPos
+  }
+
+  const onScroll = () => {
+    if (timer) clearTimeout(timer)
+    timer = setTimeout(() => toggleNavMobile(window.scrollY), 80)
+  }
+
+  const onInit = () => {
+    if (window.innerWidth < 1024) {
+      document.addEventListener('scroll', onScroll)
+    } else {
+      document.removeEventListener('scroll', onScroll)
+    }
+  }
+
+  window.addEventListener('resize', onInit)
+  document.addEventListener('DOMContentLoaded', onInit)
+</script>
+
+<style>
+  .nav-mobile--hide {
+    bottom: -5rem;
+  }
+</style>

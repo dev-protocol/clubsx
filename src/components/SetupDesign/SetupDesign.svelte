@@ -66,8 +66,7 @@
   <div class="grid justify-start gap-2">
     <label for="hero-text"> Main copy </label>
     <input
-      size="50"
-      class="rounded bg-[#040B10] px-8 py-4"
+      class="min-w-full max-w-full rounded bg-[#040B10] px-8 py-4"
       bind:value={homeConfig.hero.text}
       id="hero-text"
       name="hero-text"
