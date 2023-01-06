@@ -9,7 +9,7 @@
     }`"
   >
     <HSButton
-      type="outlined"
+      :type="`outlined${type ? ' ' + type : ''}`"
       v-if="
         truncateWalletAddress &&
         formattedUserBalance.length > 0 &&
@@ -20,14 +20,14 @@
       {{ truncateWalletAddress }}
     </HSButton>
     <HSButton
-      type="outlined"
+      :type="`outlined${type ? ' ' + type : ''}`"
       v-else-if="truncateWalletAddress && !supportedNetwork"
       v-on:click="connect"
     >
       Unsupported Network
     </HSButton>
     <HSButton
-      type="outlined"
+      :type="`outlined${type ? ' ' + type : ''}`"
       v-else
       v-on:click="connect"
       :loading="connection === undefined || modalProvider === undefined"
@@ -76,6 +76,10 @@ export default defineComponent({
   components: { HSButton },
   props: {
     chainId: Number,
+    type: {
+      type: String,
+      required: false,
+    }
   },
   data(): Data {
     return {
