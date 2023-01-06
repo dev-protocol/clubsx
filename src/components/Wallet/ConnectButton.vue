@@ -79,7 +79,7 @@ export default defineComponent({
     type: {
       type: String,
       required: false,
-    }
+    },
   },
   data(): Data {
     return {
