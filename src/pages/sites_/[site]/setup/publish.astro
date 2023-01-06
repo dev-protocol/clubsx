@@ -27,7 +27,17 @@ if (!path) {
 <SetupLayout {config} {...path.props} setupStep="PUBLISH">
   <section class="grid gap-16">
     <h2 class="font-title text-2xl font-bold">Preview</h2>
-    <section class="grid">
+    <section class="flex grid-cols-2 items-start justify-between gap-8">
+      <section class="grid gap-3">
+        <p class="font-mono text-base font-normal">1/</p>
+        <section
+          class="align-items-center flex items-center justify-items-center gap-3"
+        >
+          <img alt="Status" src={checkImage} class="h-6 w-6" />
+          <h2 class="font-title text-2xl font-bold">Connect your wallet</h2>
+        </section>
+        <p class="text-base">How to create a wallet?</p>
+      </section>
       <section class="grid gap-3">
         <p class="font-mono text-base font-normal">1/</p>
         <section
@@ -39,7 +49,17 @@ if (!path) {
         <p class="text-base">How to create a wallet?</p>
       </section>
     </section>
-    <section class="grid">
+    <section class="flex grid-cols-2 items-start justify-between gap-8">
+      <section class="grid gap-3">
+        <p class="font-mono text-base font-normal">2/</p>
+        <section
+          class="align-items-center flex items-center justify-items-center gap-3"
+        >
+          <img alt="Status" src={checkImage} class="h-6 w-6" />
+          <h2 class="font-title text-2xl font-bold">Choose network</h2>
+        </section>
+        <p class="text-base">What is the different between networks?</p>
+      </section>
       <section class="grid gap-3">
         <p class="font-mono text-base font-normal">2/</p>
         <section
@@ -51,7 +71,11 @@ if (!path) {
         <p class="text-base">What is the different between networks?</p>
       </section>
     </section>
-    <section class="grid">
+    <section class="flex grid-cols-2 items-start justify-between gap-8">
+      <section class="grid gap-3">
+        <p class="font-mono text-base font-normal">3/</p>
+        <h2 class="font-title text-2xl font-bold">Activate</h2>
+      </section>
       <section class="grid gap-3">
         <p class="font-mono text-base font-normal">3/</p>
         <h2 class="font-title text-2xl font-bold">Activate</h2>
