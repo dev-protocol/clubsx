@@ -35,7 +35,7 @@ edit to `src/components/Quests/quests.json` file.
 List of Data with the following keys and values:
 
 | key           | type      | description                                               |
-| ------------- | --------- | --------------------------------------------------------- |
+|---------------|-----------|-----------------------------------------------------------|
 | id            | `string`  | `id` is treated as the URL key for the quest details page |
 | title         | `string`  | -                                                         |
 | description   | `string`  | -                                                         |
