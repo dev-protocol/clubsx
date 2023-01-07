@@ -1,14 +1,15 @@
 ---
 import Landing from '@layouts/Landing.astro'
+import HSButton from '@components/Primitives/Hashi/HSButton.vue'
 import CLBButton from 'node_modules/@devprotocol/clubs-core/src/ui/vue/CLBButton.vue'
 
 import HeroMedia from '@assets/Hero.png'
 import StarterKits from '@assets/starter-kits.png'
 
-import R1 from '@assets/Rectangle1.png'
-import R2 from '@assets/Rectangle2.png'
-import R3 from '@assets/Rectangle3.png'
-import R4 from '@assets/Rectangle4.png'
+// import R1 from '@assets/Rectangle1.png'
+// import R2 from '@assets/Rectangle2.png'
+// import R3 from '@assets/Rectangle3.png'
+// import R4 from '@assets/Rectangle4.png'
 
 import A1 from '@assets/Article1.png'
 import A2 from '@assets/Article2.png'
@@ -19,88 +20,80 @@ import CSM2 from '@assets/CaseStudyMedia2.png'
 import CSM3 from '@assets/CaseStudyMedia3.png'
 ---
 
-<Landing>
-  <section class="clb-hero">
+<Landing connectButton="hidden">
+  <HSButton slot="right" type="link filled" link="#">Sign-in</HSButton>
+  <section class="clb-hero py-16 xl:py-28 2xl:py-40">
     <img
       src={HeroMedia}
       aria-hidden="true"
       alt="Hero media."
       class="clb-hero__media"
     />
-    <div class="clb-hero__section">
+    <div class="clb-hero__section container">
       <h1
-        class="clb-hero__tagline mb-6 text-3xl font-black leading-[1.5] md:text-[3rem]"
+        class="clb-hero__tagline mb-6 text-3xl font-black leading-[1.5] lg:text-6xl 2xl:text-8xl"
       >
-        Bring your community to web3 <br /> in one minute.
+        Bring your community to <span
+          class="bg-[url('/WhitePurpleAbstract.png')] bg-clip-text bg-center text-3xl font-bold text-transparent lg:text-6xl 2xl:text-8xl"
+          >web3</span
+        ><br /> in one minute.
       </h1>
-      <CLBButton link="#sales-pitch" type="filled black">Learn more</CLBButton>
+      <a
+        class="hs-button is-filled is-black inline py-3 px-6 text-xl"
+        href="#sales-pitch"
+      >
+        Get started for free
+      </a>
     </div>
   </section>
   <section class="content-wrap">
     <section id="sales-pitch">
       <div
         id="features"
-        class="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4"
+        class="grid grid-cols-2 gap-3 text-xl md:grid-cols-3 lg:grid-cols-4"
       >
-        <div class="sales-pitch-card">
-          <div
-            class="grid h-[200px] w-[100%] items-center justify-center bg-[rgba(75,11,157,0.4)] p-4"
-          >
-            <h3 class="text-center text-lg font-bold">
-              Build an online community space
-            </h3>
-          </div>
-          <img src={R1} class="sales-pitch-card__media" alt="Rectangle 1" />
+        <div class="sales-pitch-card bg-[rgb(45,39,220)]">
+          <!-- <img src={R1} class="sales-pitch-card__media" alt="Rectangle 1" /> -->
+          <h3 class="text-center font-bold">Build an online community space</h3>
         </div>
-        <div class="sales-pitch-card">
-          <div
-            class="grid h-[200px] w-[100%] items-center justify-center bg-[rgba(0,151,172,0.4)] p-4"
-          >
-            <h3 class="text-center text-lg font-bold">
-              Tokenize my idea/project
-            </h3>
-          </div>
-          <img src={R2} class="sales-pitch-card__media" alt="Rectangle 1" />
+        <div class="sales-pitch-card bg-[rgb(0,172,148)]">
+          <!-- <img src={R2} class="sales-pitch-card__media" alt="Rectangle 1" /> -->
+          <h3 class="text-center font-bold">Tokenize my idea/project</h3>
         </div>
-        <div class="sales-pitch-card">
-          <div
-            class="grid h-[200px] w-[100%] items-center justify-center bg-[rgba(27,23,236,0.4)] p-4"
-          >
-            <h3 class="text-center text-lg font-bold">
-              Gain access to DeFi funding
-            </h3>
-          </div>
-          <img src={R3} class="sales-pitch-card__media" alt="Rectangle 1" />
+        <div class="sales-pitch-card bg-[rgb(22,20,129)]">
+          <!-- <img src={R3} class="sales-pitch-card__media" alt="Rectangle 1" /> -->
+          <h3 class="text-center font-bold">Gain access to DeFi funding</h3>
         </div>
-        <div class="sales-pitch-card">
-          <div
-            class="grid h-[200px] w-[100%] items-center justify-center bg-[rgba(246,89,117,0.4)] p-4"
-          >
-            <h3 class="text-center text-lg font-bold">
-              Provide perks & rewards structure
-            </h3>
-          </div>
-          <img src={R4} class="sales-pitch-card__media" alt="Rectangle 1" />
+        <div class="sales-pitch-card bg-[rgb(201,53,116)]">
+          <!-- <img src={R4} class="sales-pitch-card__media" alt="Rectangle 1" /> -->
+          <h3 class="text-center font-bold">
+            Provide perks & rewards structure
+          </h3>
         </div>
       </div>
-      <div id="starter-kit" class="wrap-none relative flex flex-row">
+      <div class="grid py-16 md:grid-cols-[3fr_2fr]">
         <div>
-          <h2 class="text-2xl font-bold">
-            My no-code <span class="text-2xl font-bold text-native-blue-400"
+          <h2 class="text-4xl font-bold">
+            My no-code <span
+              class="bg-[url('/LightBlueGradient.png')] bg-cover bg-clip-text bg-center text-4xl font-bold text-[rgba(0,208,253,0.4)]"
               >DAO</span
             > starter-kit
           </h2>
-          <p class="mt-4 mb-5">
-            Giving creators and communities <br /> web3 <span
-              class="font-bold text-native-blue-400">super powers</span
+          <p class="my-6 text-2xl">
+            Giving creators and communities <br /><span
+              class="bg-[url('/LightBlueGradient.png')] bg-cover bg-clip-text bg-center text-2xl font-bold text-[rgba(0,82,255,0.4)]"
+              >web3 super powers</span
             >.
           </p>
-          <CLBButton link="#how-to-start" type="filled black">
-            How to start?
-          </CLBButton>
+          <a
+            class="hs-button is-filled is-black inline py-3 px-6 text-lg"
+            href="#how-to-start"
+          >
+            Get started for free
+          </a>
         </div>
         <img
-          class="starter-kit__media"
+          class=""
           aria-hidden="true"
           src={StarterKits}
           alt="Starter kits."
@@ -110,7 +103,7 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
   </section>
   <div id="use-cases" class="py-[3rem]">
     <section class="content-wrap">
-      <h2 class="text-center text-2xl font-bold">Clubs use cases</h2>
+      <h2 class="mb-3 text-center text-3xl font-bold">Clubs use cases</h2>
       <p class="text-center">
         Explore how creators access sustainable funding & support with Clubs.
       </p>
@@ -153,7 +146,7 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
   </div>
   <div id="how-to-start" class="py-[3rem]">
     <section class="content-wrap">
-      <h2 class="text-center text-2xl font-bold">How to start Clubs?</h2>
+      <h2 class="mb-3 text-center text-3xl font-bold">How to start Clubs?</h2>
       <p class="text-center">
         Wonder how can Clubs help you? Have a look at these sample case studies
         today.
@@ -199,9 +192,9 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
 
   <div id="all-set" class="bg-native-blue-400 py-[3rem]">
     <section class="content-wrap flex flex-col justify-center">
-      <h2 class="text-center text-2xl font-bold">You're all set!</h2>
+      <h2 class="mb-3 text-center text-3xl font-bold">You're all set!</h2>
       <p class="mb-3 text-center">
-        It’s easy, free, and all in one place. Let's build together in web3!
+        It's easy, free, and all in one place. Let's build together in web3!
       </p>
       <div id="all-set__actions">
         <CLBButton link="/getstarted" type="filled">Get started!</CLBButton>
@@ -236,8 +229,6 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
   .clb-hero {
     width: 100%;
     height: 100%;
-    min-height: 360px;
-    max-height: 460px;
     display: flex;
     position: relative;
     justify-content: center;
@@ -255,7 +246,6 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
 
     .clb-hero__section {
       width: calc(100% - 50px);
-      max-width: 1077px;
       margin: 0 auto;
       padding: 3rem 0;
       position: relative;
@@ -279,6 +269,9 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
     position: relative;
     border-radius: 0.5rem;
     overflow: hidden;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
 
     .sales-pitch-card__media {
       width: 100%;
@@ -286,7 +279,6 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
       position: absolute;
       object-fit: cover;
       object-position: center;
-      z-index: -1;
       user-select: none;
     }
   }
@@ -295,34 +287,6 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
     width: 100%;
     height: 100%;
     margin: 0 auto 3rem;
-  }
-
-  #starter-kit {
-    width: 100%;
-    height: 100%;
-    min-height: 360px;
-    max-height: 460px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 0 auto;
-    padding: 1rem 2rem;
-  }
-
-  .starter-kit__media {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    left: auto;
-    right: 2rem;
-    object-fit: contain;
-    object-position: right;
-    z-index: -1;
-    transition: all var(--hs-transition-time) ease;
-
-    @media screen and (max-width: 735px) {
-      filter: blur(4px);
-    }
   }
 
   #use-cases {

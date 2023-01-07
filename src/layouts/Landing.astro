@@ -6,6 +6,11 @@ import ConnectButton from '@components/Wallet/ConnectButton.vue'
 import CLBButton from 'node_modules/@devprotocol/clubs-core/src/ui/vue/CLBButton.vue'
 
 import '@devprotocol/clubs-core/styles'
+
+const { connectButton = 'show' } = Astro.props as {
+  connectButton?: 'show' | 'hidden'
+}
+
 const title = 'Clubs'
 const name = 'Clubs' // not sure the difference here compared to title
 const description = ''
@@ -53,9 +58,14 @@ const twitterHandle = 'devprtcl'
           <img src={ClubsColor} />Clubs
         </h1>
       </a>
-      <nav class="flex justify-between gap-10">
-        <ConnectButton type="black" client:only="vue" />
-      </nav>
+      <slot name="right" />
+      {
+        connectButton === 'show' && (
+          <nav class="flex justify-between gap-10">
+            <ConnectButton type="black" client:load />
+          </nav>
+        )
+      }
     </header>
 
     <main>
