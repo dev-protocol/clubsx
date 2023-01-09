@@ -73,6 +73,10 @@ export default defineComponent({
       ])
     this.connection = connection
     this.modalProvider = GetModalProvider()
+    const { currentAddress } = await ReConnectWallet(this.modalProvider)
+    if (currentAddress) {
+      this.connected = true
+    }
   },
   methods: {
     setSigner(provider: providers.Web3Provider) {

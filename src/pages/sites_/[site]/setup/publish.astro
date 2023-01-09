@@ -7,6 +7,7 @@ import PublishGrants from '@components/PublishGrants/PublishGrants'
 import checkImage from '@assets/step-check.svg'
 import roundedSquareImage from '@assets/step-rounded-square.svg'
 import PublishConnect from '@components/PublishConnect/PublishConnect.vue'
+import PublishNetworkSelection from '@components/PublishNetworkSelection/PublishNetworkSelection.vue'
 
 const { site } = Astro.params
 
@@ -29,46 +30,7 @@ if (!path) {
   <section class="grid gap-16">
     <h2 class="font-title text-2xl font-bold">Preview</h2>
     <PublishConnect client:visible checkImage={checkImage} />
-    <section class="flex grid-cols-2 items-center justify-start gap-8">
-      <section class="grid w-[49%] gap-3">
-        <p class="font-mono text-base font-normal">2/</p>
-        <section
-          class="align-items-center flex items-center justify-items-center gap-3"
-        >
-          <img alt="Status" src={checkImage} class="h-6 w-6" />
-          <h2 class="font-title text-2xl font-bold opacity-50">
-            <s>Choose network</s>
-          </h2>
-        </section>
-        <p class="text-base">What is the different between networks?</p>
-      </section>
-      <section class="grid w-[49%] grid-cols-3 gap-4 p-4">
-        <button
-          class="rounded border-[3px] border-[#000000] bg-[#040B10] py-6 text-center opacity-50"
-        >
-          <p class="font-DMSans text-center text-base font-bold text-[#FFFFFF]">
-            Polygon
-          </p>
-          <p class="font-DMSans text-center text-xs font-medium text-[#FFFFFF]">
-            Recommended
-          </p>
-        </button>
-        <button
-          class="rounded border-[3px] border-[#000000] bg-[#040B10] py-6 text-center opacity-50"
-        >
-          <p class="font-DMSans text-center text-base font-bold text-[#FFFFFF]">
-            Arbitrum
-          </p>
-        </button>
-        <button
-          class="rounded border-[3px] border-[#000000] bg-[#040B10] py-6 text-center opacity-50"
-        >
-          <p class="font-DMSans text-center text-base font-bold text-[#FFFFFF]">
-            Ethereum
-          </p>
-        </button>
-      </section>
-    </section>
+    <PublishNetworkSelection client:visible checkImage={checkImage} />
     <section class="flex grid-cols-2 items-start justify-start gap-8">
       <section class="grid w-[49%] gap-3">
         <p class="font-mono text-base font-normal">3/</p>
