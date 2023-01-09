@@ -46,6 +46,8 @@
 
     const auth = initializeFirebase()
 
+    console.log({ auth, email, actionCodeSettings })
+
     sendSignInLinkToEmail(auth, email, actionCodeSettings)
       .then(() => {
         // The link was successfully sent. Inform the user.

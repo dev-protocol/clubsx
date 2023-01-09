@@ -75,11 +75,10 @@
       <span class="text-plox-200">*</span>
     </label>
     <input
-      class="rounded bg-[#040B10] px-8 py-4"
+      class="min-w-full max-w-full rounded bg-[#040B10] px-8 py-4"
       bind:value={name}
       id="club-name"
       name="club-name"
-      size="50"
     />
   </div>
 
@@ -103,11 +102,10 @@
   <div class="flex flex-col items-start gap-1">
     <label for="twitter-handle"> Twitter Handle </label>
     <input
-      class="rounded bg-[#040B10] px-8 py-4"
+      class="min-w-full max-w-full rounded bg-[#040B10] px-8 py-4"
       bind:value={twitterHandle}
       id="twitter-handle"
       name="twitter-handle"
-      size="50"
     />
   </div>
 
