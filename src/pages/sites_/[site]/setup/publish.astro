@@ -24,6 +24,16 @@ const path = (await getStaticPaths()).find(({ props }) => props.clubs)
 if (!path) {
   throw new Error('Path undefined: ', path)
 }
+
+const draftOptions = config.options?.find((opt) => opt.key === '__draft')
+const draftOptionsValue =
+  draftOptions &&
+  (draftOptions.value as {
+    isInDraft: boolean
+    address: string
+    uid: string
+    category: string
+  })
 ---
 
 <SetupLayout {config} {...path.props} setupStep="PUBLISH">
@@ -34,6 +44,7 @@ if (!path) {
       client:visible
       checkImage={checkImage}
       roundedSquareImage={roundedSquareImage}
+      category={draftOptionsValue?.category || ''}
     />
     <PublishGrants client:visible />
   </section>

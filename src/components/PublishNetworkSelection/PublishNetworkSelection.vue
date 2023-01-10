@@ -98,7 +98,10 @@
         <div
           class="ml-4 mr-7 h-0 flex-1 border-[1px]"
           v-bind:class="
-            networkSelected === '' || !networkSelected || !connected
+            networkSelected === '' ||
+            !networkSelected ||
+            !connected ||
+            !!addressFromNiwa
               ? 'border-[#3A4158]'
               : 'border-white'
           "
@@ -143,6 +146,7 @@
         </section>
       </section>
       <button
+        @click="openNiwa(link)"
         class="mb-4 w-full rounded border-[3px] border-[#000000] bg-[#040B10] py-6 text-center"
         v-bind:class="
           networkSelected === '' || !networkSelected || !connected
@@ -166,6 +170,7 @@ import { providers } from 'ethers'
 import type Web3Modal from 'web3modal'
 import { defineComponent } from '@vue/runtime-core'
 import type { connection as Connection } from '@devprotocol/clubs-core/connection'
+import { add } from 'ramda'
 
 type Data = {
   networkSelected: String
@@ -173,6 +178,7 @@ type Data = {
   modalProvider?: Web3Modal
   connection?: typeof Connection
   popupWindow: Window | null
+  addressFromNiwa: String
 }
 
 export default defineComponent({
@@ -180,6 +186,7 @@ export default defineComponent({
   props: {
     checkImage: String,
     roundedSquareImage: String,
+    category: String,
   },
   data(): Data {
     return {
@@ -188,6 +195,7 @@ export default defineComponent({
       networkSelected: '',
       connected: false,
       popupWindow: null as Window | null,
+      addressFromNiwa: '',
     }
   },
   computed: {
@@ -214,6 +222,9 @@ export default defineComponent({
         ? classes + ' opacity-50'
         : classes
     },
+    link() {
+      return `https://${this.networkSelected.toLowerCase()}.niwa.xyz/tokenize/${this.category?.toLowerCase()}`
+    },
   },
   async mounted() {
     const [{ connection }, { GetModalProvider, ReConnectWallet }] =
@@ -235,7 +246,6 @@ export default defineComponent({
 
     async changeNetwork(network: string) {
       if (!this.connected) return
-
       this.networkSelected = network
     },
 
@@ -257,13 +267,9 @@ export default defineComponent({
 
     listenForAddress(event: MessageEvent<any>) {
       if (event.source !== this.popupWindow) return
-
       const { address } = event.data
       if (!address) return
-
-      const link = `/almost-there?network=${this.networkSelected}&address=${address}`
-      window.location.href = link
-      return
+      this.addressFromNiwa = address
     },
   },
 })
