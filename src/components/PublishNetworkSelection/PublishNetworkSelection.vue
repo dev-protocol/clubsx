@@ -83,7 +83,7 @@
         <section
           class="align-items-center flex items-center justify-items-center gap-2"
         >
-          <img alt="Status" :src="roundedSquareImage" class="h-3 w-3" />
+          <img alt="Status" :src="!!addressFromNiwa ? checkImage : roundedSquareImage" class="h-3 w-3" />
           <p
             class="font-DMSans text-base font-bold"
             v-bind:class="
@@ -113,7 +113,7 @@
           <p
             class="font-DMSans text-base font-bold"
             v-bind:class="
-              networkSelected === '' || !networkSelected || !connected
+              networkSelected === '' || !networkSelected || !connected || !addressFromNiwa
                 ? 'text-[#3A4158]'
                 : 'text-white'
             "
@@ -124,7 +124,7 @@
         <div
           class="ml-4 mr-7 h-0 flex-1 border-[1px]"
           v-bind:class="
-            networkSelected === '' || !networkSelected || !connected
+            networkSelected === '' || !networkSelected || !connected || !addressFromNiwa
               ? 'border-[#3A4158]'
               : 'border-white'
           "
@@ -136,7 +136,7 @@
           <p
             class="font-DMSans text-base font-bold"
             v-bind:class="
-              networkSelected === '' || !networkSelected || !connected
+              networkSelected === '' || !networkSelected || !connected || !addressFromNiwa
                 ? 'text-[#3A4158]'
                 : 'text-white'
             "
