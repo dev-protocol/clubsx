@@ -1,9 +1,13 @@
 ---
-import AdminMembershipsForm from '@components/AdminMembershipsForm/AdminMembershipsForm.svelte'
 import { config as _config } from '@fixtures/config'
 import { adminFactory } from '@devprotocol/clubs-core'
 import admin from '@plugins/admin'
-import SetupLayout from '@layouts/Setup.astro'
+import SetupLayout from '@layouts/SetupWithoutAside.astro'
+import PublishGrants from '@components/PublishGrants/PublishGrants'
+import checkImage from '@assets/step-check.svg'
+import roundedSquareImage from '@assets/step-rounded-square.svg'
+import PublishConnect from '@components/PublishConnect/PublishConnect.vue'
+import PublishNetworkSelection from '@components/PublishNetworkSelection/PublishNetworkSelection.vue'
 
 const { site } = Astro.params
 
@@ -20,8 +24,28 @@ const path = (await getStaticPaths()).find(({ props }) => props.clubs)
 if (!path) {
   throw new Error('Path undefined: ', path)
 }
+
+const draftOptions = config.options?.find((opt) => opt.key === '__draft')
+const draftOptionsValue =
+  draftOptions &&
+  (draftOptions.value as {
+    isInDraft: boolean
+    address: string
+    uid: string
+    category: string
+  })
 ---
 
 <SetupLayout {config} {...path.props} setupStep="PUBLISH">
-  <h2 class="mb-16 font-title text-2xl font-bold">Publish</h2>
+  <section class="grid gap-16">
+    <h2 class="font-title text-2xl font-bold">Preview</h2>
+    <PublishConnect client:visible checkImage={checkImage} />
+    <PublishNetworkSelection
+      client:visible
+      checkImage={checkImage}
+      roundedSquareImage={roundedSquareImage}
+      category={draftOptionsValue?.category || ''}
+    />
+    <PublishGrants client:visible />
+  </section>
 </SetupLayout>
