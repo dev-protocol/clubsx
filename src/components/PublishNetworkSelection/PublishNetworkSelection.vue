@@ -76,7 +76,7 @@
   <section class="flex grid-cols-2 items-start justify-start gap-8">
     <section class="grid w-[49%] gap-3">
       <p class="font-mono text-base font-normal">3/</p>
-      <h2 class="font-title text-2xl font-bold">Activate</h2>
+      <h2 v-bind:class="step3TextClasses">Activate</h2>
     </section>
     <section class="w-[49%] p-4">
       <section class="mb-5 flex items-center justify-between">
@@ -84,25 +84,32 @@
           class="align-items-center flex items-center justify-items-center gap-2"
         >
           <img alt="Status" :src="roundedSquareImage" class="h-3 w-3" />
-          <p class="font-DMSans text-base font-bold">1</p>
+          <p class="font-DMSans text-base font-bold" v-bind:class="networkSelected === '' || !networkSelected || !connected ? 'text-[#3A4158]' : 'text-white'">1</p>
         </section>
-        <div class="ml-4 mr-7 h-0 flex-1 border-[1px] border-white"></div>
+        <div
+          class="ml-4 mr-7 h-0 flex-1 border-[1px]"
+          v-bind:class="networkSelected === '' || !networkSelected || !connected ? 'border-[#3A4158]' : 'border-white'"
+        ></div>
         <section
           class="align-items-center flex items-center justify-items-center gap-2"
         >
           <img alt="Status" :src="roundedSquareImage" class="h-3 w-3" />
-          <p class="font-DMSans text-base font-bold">2</p>
+          <p class="font-DMSans text-base font-bold" v-bind:class="networkSelected === '' || !networkSelected || !connected ? 'text-[#3A4158]' : 'text-white'">2</p>
         </section>
-        <div class="ml-4 mr-7 h-0 flex-1 border-[1px] border-white"></div>
+        <div
+          class="ml-4 mr-7 h-0 flex-1 border-[1px]"
+          v-bind:class="networkSelected === '' || !networkSelected || !connected ? 'border-[#3A4158]' : 'border-white'"
+        ></div>
         <section
           class="align-items-center flex items-center justify-items-center gap-2"
         >
           <img alt="Status" :src="roundedSquareImage" class="h-3 w-3" />
-          <p class="font-DMSans text-base font-bold">3</p>
+          <p class="font-DMSans text-base font-bold" v-bind:class="networkSelected === '' || !networkSelected || !connected ? 'text-[#3A4158]' : 'text-white'">3</p>
         </section>
       </section>
       <button
         class="mb-4 w-full rounded border-[3px] border-[#000000] bg-[#040B10] py-6 text-center"
+        v-bind:class="networkSelected === '' || !networkSelected || !connected ? 'opacity-50' : ''"
       >
         <p class="font-DMSans text-center text-base font-bold text-[#FFFFFF]">
           Activate
@@ -159,6 +166,14 @@ export default defineComponent({
           : classes + ' line-through opacity-50'
         : classes + ' opacity-50'
     },
+    step3TextClasses() {
+      const classes = 'font-title text-2xl font-bold'
+
+      return !this.connected || this.networkSelected === '' || !this.networkSelected
+        ? classes + ' opacity-50'
+        : classes
+    },
+
   },
   async mounted() {
     const [{ connection }, { GetModalProvider, ReConnectWallet }] =
