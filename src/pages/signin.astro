@@ -1,0 +1,10 @@
+---
+import Layout from '@layouts/Landing.astro'
+import SignInForm from '@components/SignInForm/SignInForm.svelte'
+---
+
+<Layout>
+  <div class="pb-16">
+    <SignInForm client:load />
+  </div>
+</Layout>
