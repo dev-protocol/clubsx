@@ -4,6 +4,7 @@
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import { Membership } from '@plugins/memberships'
   import { UndefinedOr } from '@devprotocol/util-ts'
+  import { utils } from 'ethers'
 
   export let currentPluginIndex: number
   export let presets: UndefinedOr<Membership[]> = undefined
@@ -15,13 +16,14 @@
 
   const update = () => {
     const search = mode === 'edit' ? originalId : membership.id
+    const payload = mode === 'edit' ? membership.payload : utils.randomBytes(8)
     const newMemberships = existingMemberships.some(({ id }) => id === search)
       ? // If the ID is already exists, override it. This is a safeguard to avoid duplicate data.
         existingMemberships.map((_mem) =>
-          _mem.id === search ? membership : _mem
+          _mem.id === search ? { ...membership, payload } : _mem
         )
       : // If not, add it.
-        [...existingMemberships, membership]
+        [...existingMemberships, { ...membership, payload }]
 
     setOptions(
       [{ key: 'memberships', value: newMemberships }],
@@ -66,31 +68,33 @@
 
 <div class="grid gap-16">
   {#if presets}
-    <div class="grid grid-cols-3 gap-4">
-      {#each presets as opt, i}
-        <div>
-          <MembershipOptionCard
-            name={opt.name}
-            imagePath={opt.imageSrc}
-            ethPrice={opt.price.toString()}
-            description={opt.description}
-            className={originalId === opt.id
-              ? 'border-[3px] border-native-blue-300'
-              : 'opacity-30'}
-          />
-          <a
-            class="mt-2 block w-full rounded bg-black py-4 text-center text-sm font-semibold text-white"
-            id={`select-opt-${i}`}
-            href={`${base}/memberships/new/${opt.id}`}
-            >{originalId === opt.id ? 'Selected' : 'Select'}</a
-          >
-        </div>
-      {/each}
+    <div class="max-w-full overflow-x-scroll">
+      <div class="flex flex-nowrap gap-4">
+        {#each presets as opt, i}
+          <div>
+            <MembershipOptionCard
+              name={opt.name}
+              imagePath={opt.imageSrc}
+              ethPrice={opt.price.toString()}
+              description={opt.description}
+              className={originalId === opt.id
+                ? 'border-[3px] border-native-blue-300 w-32'
+                : 'opacity-30 w-32'}
+            />
+            <a
+              class="mt-2 block w-full rounded bg-black py-4 text-center text-sm font-semibold text-white"
+              id={`select-opt-${i}`}
+              href={`${base}/memberships/new/${opt.id}`}
+              >{originalId === opt.id ? 'Selected' : 'Select'}</a
+            >
+          </div>
+        {/each}
+      </div>
     </div>
   {/if}
 
   <form on:change|preventDefault={(_) => update()} class="grid gap-16">
-    <div class="grid grid-cols-[3fr_2fr] gap-16">
+    <div class="grid gap-16 lg:grid-cols-[3fr_2fr]">
       <!-- Form -->
       <div class="grid gap-8">
         <!-- Name -->
