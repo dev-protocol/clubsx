@@ -218,6 +218,7 @@ import {
   callSimpleCollections,
 } from '@plugins/memberships/utils/simpleCollections'
 import { Image } from '@plugins/memberships/utils/types/setImageArg'
+import { keccak256 } from '@ethersproject/keccak256'
 
 type Data = {
   networkSelected: String
@@ -237,6 +238,7 @@ export default defineComponent({
     checkImage: String,
     roundedSquareImage: String,
     category: String,
+    membershipsPluginOptions: Array<any>,
   },
   data(): Data {
     return {
@@ -404,8 +406,17 @@ export default defineComponent({
 
       // TODO: remove this after code is done.
       const propertyAddress = this.addressFromNiwa.toString()
-      const images: Image[] = []
-      const keys: string[] = []
+      const images: Image[] =
+        this.membershipsPluginOptions?.map((opt) => ({
+          src: opt.imageSrc,
+          requiredETHAmount: opt.price, // TODO: confirm that this is in eth always.
+          requiredETHFee: opt.fee, // TODO: confirm that this is in eth always.
+          gateway: '', // TODO: Where does this come from?
+        })) || []
+      const keys: string[] =
+        this.membershipsPluginOptions?.map((opt) => keccak256(opt.payload)) ||
+        []
+
       const tx = await callSimpleCollections(this.provider, 'setImages', [
         propertyAddress,
         images,
