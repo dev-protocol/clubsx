@@ -1,3 +1,4 @@
+import { decode } from '@devprotocol/clubs-core'
 import { generateId } from '@fixtures/api/keys'
 import { createClient } from 'redis'
 
@@ -6,7 +7,7 @@ export type ClubsData = {
   created: string
 }
 
-export const get = async ({ request }: { request: Request }) => {
+export const post = async ({ request }: { request: Request }) => {
   const { identifier } = (await request.json()) as {
     identifier: string
   }
@@ -31,6 +32,9 @@ export const get = async ({ request }: { request: Request }) => {
     console.error('redis connection error: ', e)
   })
 
+  /**
+   * Fetch site names associated with user
+   */
   const userSites = (await client.get(generateId(identifier))) as
     | ClubsData[]
     | null
@@ -40,5 +44,18 @@ export const get = async ({ request }: { request: Request }) => {
     })
   }
 
-  return new Response(JSON.stringify(userSites), { status: 200 })
+  /**
+   * Fetch user clubs configs
+   */
+  const configs = []
+
+  for (const site of userSites) {
+    const config = await client.get(site.name)
+    if (!config) continue
+    configs.push(decode(config))
+  }
+
+  await client.disconnect()
+
+  return new Response(JSON.stringify(configs), { status: 200 })
 }
