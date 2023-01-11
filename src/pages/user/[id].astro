@@ -1,0 +1,13 @@
+---
+import UserClubs from '@components/UserClubs/UserClubs.svelte'
+import Layout from '@layouts/Landing.astro'
+const { id } = Astro.params
+---
+
+<Layout>
+  <div class="mb-16 text-center">
+    <h2 class="text-3xl font-bold">User Clubs</h2>
+  </div>
+
+  <UserClubs client:load id={id ?? ''} />
+</Layout>
