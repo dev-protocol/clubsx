@@ -217,6 +217,7 @@ import {
   address,
   callSimpleCollections,
 } from '@plugins/memberships/utils/simpleCollections'
+import { Image } from '@plugins/memberships/utils/types/setImageArg'
 
 type Data = {
   networkSelected: String
@@ -402,10 +403,17 @@ export default defineComponent({
       }
 
       // TODO: remove this after code is done.
-      // const tx = await callSimpleCollections(this.provider, "setImages", []);
-      // const response = await tx?.wait(1);
+      const propertyAddress = this.addressFromNiwa.toString()
+      const images: Image[] = []
+      const keys: string[] = []
+      const tx = await callSimpleCollections(this.provider, 'setImages', [
+        propertyAddress,
+        images,
+        keys,
+      ])
+      const response = await tx?.wait(1)
 
-      const response = { status: true }
+      // const response = { status: true }
       if (response?.status) {
         this.membershipSet = true
       } else {
