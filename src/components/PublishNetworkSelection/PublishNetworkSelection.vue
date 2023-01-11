@@ -155,8 +155,15 @@
         <section
           class="align-items-center flex items-center justify-items-center gap-2"
         >
-          <img alt="Status" :src=" addressFromNiwa && membershipInitialized &&
-          membershipSet ? checkImage : roundedSquareImage" class="h-3 w-3" />
+          <img
+            alt="Status"
+            :src="
+              addressFromNiwa && membershipInitialized && membershipSet
+                ? checkImage
+                : roundedSquareImage
+            "
+            class="h-3 w-3"
+          />
           <p
             class="font-DMSans text-base font-bold"
             v-bind:class="
