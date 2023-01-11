@@ -5,7 +5,7 @@
       <section
         class="align-items-center flex items-center justify-items-center gap-3"
       >
-        <img alt="Status" :src="checkImage" class="h-6 w-6" />
+        <img v-if="connected" alt="Status" :src="checkImage" class="h-6 w-6" />
         <h2 v-bind:class="stepTextClasses">Connect your wallet</h2>
       </section>
       <p class="text-base">How to create a wallet?</p>
