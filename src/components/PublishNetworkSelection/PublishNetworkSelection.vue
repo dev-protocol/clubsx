@@ -118,7 +118,15 @@
         <section
           class="align-items-center flex items-center justify-items-center gap-2"
         >
-          <img alt="Status" :src="roundedSquareImage" class="h-3 w-3" />
+          <img
+            alt="Status"
+            :src="
+              addressFromNiwa && membershipInitialized
+                ? checkImage
+                : roundedSquareImage
+            "
+            class="h-3 w-3"
+          />
           <p
             class="font-DMSans text-base font-bold"
             v-bind:class="
@@ -139,7 +147,7 @@
             networkSelected === '' ||
             !networkSelected ||
             !connected ||
-            !addressFromNiwa
+            (!!addressFromNiwa && membershipInitialized)
               ? 'border-[#3A4158]'
               : 'border-white'
           "
@@ -164,13 +172,20 @@
         </section>
       </section>
       <button
-        @click="openNiwa(link)"
+        @click="
+          !addressFromNiwa || addressFromNiwa === ''
+            ? openNiwa(link)
+            : !membershipInitialized
+            ? initializeMemberships()
+            : initializeMemberships
+        "
         class="mb-4 w-full rounded border-[3px] border-[#000000] bg-[#040B10] py-6 text-center"
         v-bind:class="
           networkSelected === '' || !networkSelected || !connected
             ? 'opacity-50'
             : ''
         "
+        :disabled="!connected || !networkSelected || networkSelected === ''"
       >
         <p class="font-DMSans text-center text-base font-bold text-[#FFFFFF]">
           {{ step3InterStepButtonText }}
@@ -187,8 +202,9 @@
 import { providers } from 'ethers'
 import type Web3Modal from 'web3modal'
 import { defineComponent } from '@vue/runtime-core'
+import { clientsSTokens } from '@devprotocol/dev-kit/agent'
 import type { connection as Connection } from '@devprotocol/clubs-core/connection'
-import { add } from 'ramda'
+import { BaseProvider } from '@ethersproject/providers'
 
 type Data = {
   networkSelected: String
@@ -197,6 +213,8 @@ type Data = {
   connection?: typeof Connection
   popupWindow: Window | null
   addressFromNiwa: String
+  provider?: BaseProvider | null
+  membershipInitialized: boolean
 }
 
 export default defineComponent({
@@ -205,6 +223,7 @@ export default defineComponent({
     checkImage: String,
     roundedSquareImage: String,
     category: String,
+    propertyAddress: String,
   },
   data(): Data {
     return {
@@ -214,6 +233,8 @@ export default defineComponent({
       connected: false,
       popupWindow: null as Window | null,
       addressFromNiwa: '',
+      provider: null as BaseProvider | null,
+      membershipInitialized: false,
     }
   },
   computed: {
@@ -250,7 +271,9 @@ export default defineComponent({
         !this.addressFromNiwa ||
         this.addressFromNiwa === ''
         ? 'Activate'
-        : 'Initialize your memberships'
+        : !this.membershipInitialized
+        ? 'Initialize your memberships'
+        : 'Setup memberships'
     },
     step3InterStepSubInfo() {
       return !this.connected ||
@@ -259,7 +282,9 @@ export default defineComponent({
         !this.addressFromNiwa ||
         this.addressFromNiwa === ''
         ? 'What is activating?'
-        : 'Enable a memberships contract to use memberships.'
+        : !this.membershipInitialized
+        ? 'Enable a memberships contract to use memberships.'
+        : 'Store your memberships to a contract.'
     },
   },
   async mounted() {
@@ -270,9 +295,14 @@ export default defineComponent({
       ])
     this.connection = connection
     this.modalProvider = GetModalProvider()
-    const { currentAddress } = await ReConnectWallet(this.modalProvider)
+    const { currentAddress, provider } = await ReConnectWallet(
+      this.modalProvider
+    )
     if (currentAddress) {
       this.connected = true
+    }
+    if (provider) {
+      this.provider = provider
     }
   },
   methods: {
@@ -286,19 +316,22 @@ export default defineComponent({
     },
 
     openNiwa(link: string) {
-      const popupLink = link + '?popup=true'
-      this.popupWindow = window.open(
-        popupLink,
-        'Niwa',
-        'popup,width=500,height=700'
-      )
-      if (this.popupWindow) {
-        this.popupWindow.addEventListener(
-          'message',
-          this.listenForAddress,
-          false
-        )
-      }
+      // TODO: remove this after code is done.
+      // const popupLink = link + '?popup=true'
+      // this.popupWindow = window.open(
+      //   popupLink,
+      //   'Niwa',
+      //   'popup,width=500,height=700'
+      // )
+      // if (this.popupWindow) {
+      //   this.popupWindow.addEventListener(
+      //     'message',
+      //     this.listenForAddress,
+      //     false
+      //   )
+      // }
+
+      this.addressFromNiwa = '0x690B9A9E9aa1C9dB991C7721a92d351Db4FaC990'
     },
 
     listenForAddress(event: MessageEvent<any>) {
@@ -306,6 +339,23 @@ export default defineComponent({
       const { address } = event.data
       if (!address) return
       this.addressFromNiwa = address
+    },
+
+    async initializeMemberships() {
+      if (!this.provider || !this.propertyAddress || !this.addressFromNiwa)
+        return
+
+      // TODO: remove this after code is done.
+      // const [l1, l2] = await clientsSTokens(this.provider as BaseProvider);
+      // const tx = await (l1 || l2)?.setTokenURIDescriptor(this.propertyAddress, this.addressFromNiwa.toString());
+      // const response = await tx?.wait(1)
+
+      const response = { status: true }
+      if (response?.status) {
+        this.membershipInitialized = true
+      } else {
+        this.membershipInitialized = false
+      }
     },
   },
 })
