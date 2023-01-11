@@ -6,7 +6,12 @@
       <section
         class="align-items-center flex items-center justify-items-center gap-3"
       >
-        <img alt="Status" :src="checkImage" class="h-6 w-6" />
+        <img
+          v-if="networkSelected && networkSelected !== ''"
+          alt="Status"
+          :src="checkImage"
+          class="h-6 w-6"
+        />
         <h2 v-bind:class="step2TextClasses">Choose network</h2>
       </section>
       <p class="text-base">What is the different between networks?</p>
@@ -168,11 +173,11 @@
         "
       >
         <p class="font-DMSans text-center text-base font-bold text-[#FFFFFF]">
-          Activate
+          {{ step3InterStepButtonText }}
         </p>
       </button>
       <p class="font-DMSans text-base font-normal text-white">
-        What is activating?
+        {{ step3InterStepSubInfo }}
       </p>
     </section>
   </section>
@@ -237,6 +242,24 @@ export default defineComponent({
     },
     link() {
       return `https://${this.networkSelected.toLowerCase()}.niwa.xyz/tokenize/${this.category?.toLowerCase()}`
+    },
+    step3InterStepButtonText() {
+      return !this.connected ||
+        !this.networkSelected ||
+        this.networkSelected === '' ||
+        !this.addressFromNiwa ||
+        this.addressFromNiwa === ''
+        ? 'Activate'
+        : 'Initialize your memberships'
+    },
+    step3InterStepSubInfo() {
+      return !this.connected ||
+        !this.networkSelected ||
+        this.networkSelected === '' ||
+        !this.addressFromNiwa ||
+        this.addressFromNiwa === ''
+        ? 'What is activating?'
+        : 'Enable a memberships contract to use memberships.'
     },
   },
   async mounted() {
