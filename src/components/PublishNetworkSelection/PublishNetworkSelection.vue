@@ -205,6 +205,7 @@ import { defineComponent } from '@vue/runtime-core'
 import { clientsSTokens } from '@devprotocol/dev-kit/agent'
 import type { connection as Connection } from '@devprotocol/clubs-core/connection'
 import { BaseProvider } from '@ethersproject/providers'
+import { address } from '@plugins/memberships/utils/simpleCollections'
 
 type Data = {
   networkSelected: String
@@ -223,7 +224,6 @@ export default defineComponent({
     checkImage: String,
     roundedSquareImage: String,
     category: String,
-    propertyAddress: String,
   },
   data(): Data {
     return {
@@ -306,6 +306,18 @@ export default defineComponent({
     }
   },
   methods: {
+    getChainId() {
+      return this.networkSelected === 'ethereum'
+        ? 1
+        : this.networkSelected === 'polygon'
+        ? 137
+        : this.networkSelected === 'polygon-mumbai'
+        ? 80001
+        : this.networkSelected === 'arbitrum'
+        ? 42161
+        : null
+    },
+
     setSigner(provider: providers.Web3Provider) {
       this.connection!().signer.next(provider.getSigner())
     },
@@ -342,12 +354,21 @@ export default defineComponent({
     },
 
     async initializeMemberships() {
-      if (!this.provider || !this.propertyAddress || !this.addressFromNiwa)
+      const currentChainId: number | null = this.getChainId()
+      if (!this.provider || !this.addressFromNiwa || !currentChainId) {
         return
+      }
+
+      const descriptiorAddress: string | undefined = address.find(
+        (address) => address.chainId === currentChainId
+      )?.address
+      if (!descriptiorAddress) {
+        return
+      }
 
       // TODO: remove this after code is done.
       // const [l1, l2] = await clientsSTokens(this.provider as BaseProvider);
-      // const tx = await (l1 || l2)?.setTokenURIDescriptor(this.propertyAddress, this.addressFromNiwa.toString());
+      // const tx = await (l1 || l2)?.setTokenURIDescriptor(this.addressFromNiwa.toString(), descriptiorAddress);
       // const response = await tx?.wait(1)
 
       const response = { status: true }

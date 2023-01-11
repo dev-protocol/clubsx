@@ -11,7 +11,7 @@ type Address = {
   chainId: number
   address: string
 }
-const address: Address[] = [
+export const address: Address[] = [
   {
     chainId: 1,
     address: '0x541F7914ED2A4a8B477edc711FA349A77983F3AD',
