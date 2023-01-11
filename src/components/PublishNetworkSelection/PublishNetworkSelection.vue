@@ -155,14 +155,15 @@
         <section
           class="align-items-center flex items-center justify-items-center gap-2"
         >
-          <img alt="Status" :src="roundedSquareImage" class="h-3 w-3" />
+          <img alt="Status" :src=" addressFromNiwa && membershipInitialized &&
+          membershipSet ? checkImage : roundedSquareImage class="h-3 w-3" />
           <p
             class="font-DMSans text-base font-bold"
             v-bind:class="
               networkSelected === '' ||
               !networkSelected ||
               !connected ||
-              !addressFromNiwa
+              (!!addressFromNiwa && membershipInitialized && membershipSet)
                 ? 'text-[#3A4158]'
                 : 'text-white'
             "
@@ -177,7 +178,7 @@
             ? openNiwa(link)
             : !membershipInitialized
             ? initializeMemberships()
-            : initializeMemberships
+            : setMemberships()
         "
         class="mb-4 w-full rounded border-[3px] border-[#000000] bg-[#040B10] py-6 text-center"
         v-bind:class="
@@ -205,7 +206,10 @@ import { defineComponent } from '@vue/runtime-core'
 import { clientsSTokens } from '@devprotocol/dev-kit/agent'
 import type { connection as Connection } from '@devprotocol/clubs-core/connection'
 import { BaseProvider } from '@ethersproject/providers'
-import { address } from '@plugins/memberships/utils/simpleCollections'
+import {
+  address,
+  callSimpleCollections,
+} from '@plugins/memberships/utils/simpleCollections'
 
 type Data = {
   networkSelected: String
@@ -216,6 +220,7 @@ type Data = {
   addressFromNiwa: String
   provider?: BaseProvider | null
   membershipInitialized: boolean
+  membershipSet: boolean
 }
 
 export default defineComponent({
@@ -235,6 +240,7 @@ export default defineComponent({
       addressFromNiwa: '',
       provider: null as BaseProvider | null,
       membershipInitialized: false,
+      membershipSet: false,
     }
   },
   computed: {
@@ -369,13 +375,34 @@ export default defineComponent({
       // TODO: remove this after code is done.
       // const [l1, l2] = await clientsSTokens(this.provider as BaseProvider);
       // const tx = await (l1 || l2)?.setTokenURIDescriptor(this.addressFromNiwa.toString(), descriptiorAddress);
-      // const response = await tx?.wait(1)
+      // const response = await tx?.wait(1);
 
       const response = { status: true }
       if (response?.status) {
         this.membershipInitialized = true
       } else {
         this.membershipInitialized = false
+      }
+    },
+
+    async setMemberships() {
+      if (
+        !this.provider ||
+        !this.addressFromNiwa ||
+        !this.membershipInitialized
+      ) {
+        return
+      }
+
+      // TODO: remove this after code is done.
+      // const tx = await callSimpleCollections(this.provider, "setImages", []);
+      // const response = await tx?.wait(1);
+
+      const response = { status: true }
+      if (response?.status) {
+        this.membershipSet = true
+      } else {
+        this.membershipSet = false
       }
     },
   },
