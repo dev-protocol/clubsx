@@ -157,7 +157,8 @@
             networkSelected === '' ||
             !networkSelected ||
             !connected ||
-            !addressFromNiwa
+            !addressFromNiwa ||
+            membershipInitialized
               ? 'border-[#3A4158]'
               : 'border-white'
           "
@@ -358,22 +359,19 @@ export default defineComponent({
     },
 
     openNiwa(link: string) {
-      // TODO: remove this after code is done.
-      // const popupLink = link + '?popup=true'
-      // this.popupWindow = window.open(
-      //   popupLink,
-      //   'Niwa',
-      //   'popup,width=500,height=700'
-      // )
-      // if (this.popupWindow) {
-      //   this.popupWindow.addEventListener(
-      //     'message',
-      //     this.listenForAddress,
-      //     false
-      //   )
-      // }
-
-      this.addressFromNiwa = '0x690B9A9E9aa1C9dB991C7721a92d351Db4FaC990'
+      const popupLink = link + '?popup=true'
+      this.popupWindow = window.open(
+        popupLink,
+        'Niwa',
+        'popup,width=500,height=700'
+      )
+      if (this.popupWindow) {
+        this.popupWindow.addEventListener(
+          'message',
+          this.listenForAddress,
+          false
+        )
+      }
     },
 
     listenForAddress(event: MessageEvent<any>) {
@@ -396,12 +394,14 @@ export default defineComponent({
         return
       }
 
-      // TODO: remove this after code is done.
-      // const [l1, l2] = await clientsSTokens(this.provider as BaseProvider);
-      // const tx = await (l1 || l2)?.setTokenURIDescriptor(this.addressFromNiwa.toString(), descriptiorAddress);
-      // const response = await tx?.wait(1);
+      const [l1, l2] = await clientsSTokens(this.provider as BaseProvider)
+      const tx = await (l1 || l2)?.setTokenURIDescriptor(
+        this.addressFromNiwa.toString(),
+        descriptiorAddress
+      )
+      const response = await tx?.wait(1)
 
-      const response = { status: true }
+      // const response = { status: true }
       if (response?.status) {
         this.membershipInitialized = true
       } else {
@@ -418,27 +418,26 @@ export default defineComponent({
         return
       }
 
-      // TODO: remove this after code is done.
-      // const propertyAddress = this.addressFromNiwa.toString()
-      // const images: Image[] =
-      //   this.membershipsPluginOptions?.map((opt) => ({
-      //     src: opt.imageSrc,
-      //     requiredETHAmount: opt.price, // TODO: confirm that this is in eth always.
-      //     requiredETHFee: opt.fee, // TODO: confirm that this is in eth always.
-      //     gateway: '', // TODO: Where does this come from?
-      //   })) || []
-      // const keys: string[] =
-      //   this.membershipsPluginOptions?.map((opt) => keccak256(opt.payload)) ||
-      //   []
+      const propertyAddress = this.addressFromNiwa.toString()
+      const images: Image[] =
+        this.membershipsPluginOptions?.map((opt) => ({
+          src: opt.imageSrc,
+          requiredETHAmount: opt.price, // TODO: confirm that this is in eth always.
+          requiredETHFee: opt.fee, // TODO: confirm that this is in eth always.
+          gateway: '', // TODO: Where does this come from?
+        })) || []
+      const keys: string[] =
+        this.membershipsPluginOptions?.map((opt) => keccak256(opt.payload)) ||
+        []
 
-      // const tx = await callSimpleCollections(this.provider, 'setImages', [
-      //   propertyAddress,
-      //   images,
-      //   keys,
-      // ])
-      // const response = await tx?.wait(1)
+      const tx = await callSimpleCollections(this.provider, 'setImages', [
+        propertyAddress,
+        images,
+        keys,
+      ])
+      const response = await tx?.wait(1)
 
-      const response = { status: true }
+      // const response = { status: true }
       if (response?.status) {
         this.membershipSet = true
       } else {
