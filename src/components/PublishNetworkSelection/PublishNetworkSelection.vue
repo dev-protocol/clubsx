@@ -81,7 +81,17 @@
   <section class="flex grid-cols-2 items-start justify-start gap-8">
     <section class="grid w-[49%] gap-3">
       <p class="font-mono text-base font-normal">3/</p>
-      <h2 v-bind:class="step3TextClasses">Activate</h2>
+      <section
+        class="align-items-center flex items-center justify-items-center gap-3"
+      >
+        <img
+          v-if="membershipSet"
+          alt="Status"
+          :src="checkImage"
+          class="h-6 w-6"
+        />
+        <h2 v-bind:class="step3TextClasses">Activate</h2>
+      </section>
     </section>
     <section class="w-[49%] p-4">
       <section class="mb-5 flex items-center justify-between">
@@ -147,7 +157,7 @@
             networkSelected === '' ||
             !networkSelected ||
             !connected ||
-            (!!addressFromNiwa && membershipInitialized)
+            !addressFromNiwa
               ? 'border-[#3A4158]'
               : 'border-white'
           "
@@ -170,7 +180,7 @@
               networkSelected === '' ||
               !networkSelected ||
               !connected ||
-              (!!addressFromNiwa && membershipInitialized && membershipSet)
+              !membershipInitialized
                 ? 'text-[#3A4158]'
                 : 'text-white'
             "
@@ -275,6 +285,10 @@ export default defineComponent({
         this.networkSelected === '' ||
         !this.networkSelected
         ? classes + ' opacity-50'
+        : this.addressFromNiwa &&
+          this.membershipInitialized &&
+          this.membershipSet
+        ? classes + ' line-through opacity-50'
         : classes
     },
     link() {
@@ -405,26 +419,26 @@ export default defineComponent({
       }
 
       // TODO: remove this after code is done.
-      const propertyAddress = this.addressFromNiwa.toString()
-      const images: Image[] =
-        this.membershipsPluginOptions?.map((opt) => ({
-          src: opt.imageSrc,
-          requiredETHAmount: opt.price, // TODO: confirm that this is in eth always.
-          requiredETHFee: opt.fee, // TODO: confirm that this is in eth always.
-          gateway: '', // TODO: Where does this come from?
-        })) || []
-      const keys: string[] =
-        this.membershipsPluginOptions?.map((opt) => keccak256(opt.payload)) ||
-        []
+      // const propertyAddress = this.addressFromNiwa.toString()
+      // const images: Image[] =
+      //   this.membershipsPluginOptions?.map((opt) => ({
+      //     src: opt.imageSrc,
+      //     requiredETHAmount: opt.price, // TODO: confirm that this is in eth always.
+      //     requiredETHFee: opt.fee, // TODO: confirm that this is in eth always.
+      //     gateway: '', // TODO: Where does this come from?
+      //   })) || []
+      // const keys: string[] =
+      //   this.membershipsPluginOptions?.map((opt) => keccak256(opt.payload)) ||
+      //   []
 
-      const tx = await callSimpleCollections(this.provider, 'setImages', [
-        propertyAddress,
-        images,
-        keys,
-      ])
-      const response = await tx?.wait(1)
+      // const tx = await callSimpleCollections(this.provider, 'setImages', [
+      //   propertyAddress,
+      //   images,
+      //   keys,
+      // ])
+      // const response = await tx?.wait(1)
 
-      // const response = { status: true }
+      const response = { status: true }
       if (response?.status) {
         this.membershipSet = true
       } else {
