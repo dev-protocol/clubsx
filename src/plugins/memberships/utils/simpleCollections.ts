@@ -6,6 +6,7 @@ import {
 } from '@ethersproject/abstract-provider'
 import { UndefinedOr } from '@devprotocol/util-ts'
 import { BigNumber } from 'ethers'
+import { Image } from './types/setImageArg'
 type Address = {
   chainId: number
   address: string
@@ -408,9 +409,27 @@ const simpleCollectionsAbi = [
 
 export async function callSimpleCollections(
   provider: BaseProvider,
+  functionName: 'setImages',
+  args: [propertyAddress: string, images: Image[], keys: string[]]
+): Promise<TransactionResponse>
+
+export async function callSimpleCollections(
+  provider: BaseProvider,
+  functionName: 'removeImage',
+  args: [propertyAddress: string, key: string]
+): Promise<TransactionResponse>
+
+export async function callSimpleCollections(
+  provider: BaseProvider,
+  functionName: 'propertyImages',
+  args: [propertyAddress: string, key: string]
+): Promise<Image>
+
+export async function callSimpleCollections(
+  provider: BaseProvider,
   functionName: string,
-  args: any[]
-): Promise<any> {
+  args: unknown[]
+): Promise<unknown> {
   const chainId = await provider.getNetwork().then((network) => {
     return network.chainId
   })
