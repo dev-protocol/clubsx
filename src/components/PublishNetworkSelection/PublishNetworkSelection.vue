@@ -230,6 +230,9 @@ import {
 } from '@plugins/memberships/utils/simpleCollections'
 import { Image } from '@plugins/memberships/utils/types/setImageArg'
 import { keccak256 } from '@ethersproject/keccak256'
+import { parseUnits } from '@ethersproject/units'
+import { Membership } from '@plugins/memberships'
+import BigNumber from 'bignumber.js'
 
 type Data = {
   networkSelected: String
@@ -249,7 +252,7 @@ export default defineComponent({
     checkImage: String,
     roundedSquareImage: String,
     category: String,
-    membershipsPluginOptions: Array<any>,
+    membershipsPluginOptions: Array<Membership>,
   },
   data(): Data {
     return {
@@ -422,9 +425,13 @@ export default defineComponent({
       const images: Image[] =
         this.membershipsPluginOptions?.map((opt) => ({
           src: opt.imageSrc,
-          requiredETHAmount: opt.price, // TODO: confirm that this is in eth always.
-          requiredETHFee: opt.fee, // TODO: confirm that this is in eth always.
-          gateway: '', // TODO: Where does this come from?
+          requiredETHAmount: parseUnits(String(opt.price)).toString(),
+          requiredETHFee: opt.fee?.percentage
+            ? parseUnits(
+                new BigNumber(opt.price).times(opt.fee.percentage).toFixed()
+              ).toString()
+            : 0,
+          gateway: '', // TODO: Where does this come from? <= this is a connected wallet address
         })) || []
       const keys: string[] =
         this.membershipsPluginOptions?.map((opt) => keccak256(opt.payload)) ||
