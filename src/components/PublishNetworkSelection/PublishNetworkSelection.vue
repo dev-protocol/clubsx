@@ -244,6 +244,7 @@ type Data = {
   provider?: BaseProvider | null
   membershipInitialized: boolean
   membershipSet: boolean
+  currentWalletAddress: string
 }
 
 export default defineComponent({
@@ -265,6 +266,7 @@ export default defineComponent({
       provider: null as BaseProvider | null,
       membershipInitialized: false,
       membershipSet: false,
+      currentWalletAddress: '',
     }
   },
   computed: {
@@ -334,6 +336,7 @@ export default defineComponent({
     )
     if (currentAddress) {
       this.connected = true
+      this.currentWalletAddress = currentAddress
     }
     if (provider) {
       this.provider = provider
@@ -431,7 +434,7 @@ export default defineComponent({
                 new BigNumber(opt.price).times(opt.fee.percentage).toFixed()
               ).toString()
             : 0,
-          gateway: '', // TODO: Where does this come from? <= this is a connected wallet address
+          gateway: this.currentWalletAddress,
         })) || []
       const keys: string[] =
         this.membershipsPluginOptions?.map((opt) => keccak256(opt.payload)) ||
