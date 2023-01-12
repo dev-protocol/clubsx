@@ -21,7 +21,7 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
 ---
 
 <Landing connectButton="hidden">
-  <HSButton slot="right" type="link filled" link="#">Sign-in</HSButton>
+  <HSButton slot="right" type="filled white" link="#">Sign-in</HSButton>
   <section class="clb-hero py-16 xl:py-28 2xl:py-40">
     <img
       src={HeroMedia}
@@ -29,7 +29,7 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
       alt="Hero media."
       class="clb-hero__media"
     />
-    <div class="clb-hero__section container">
+    <div class="clb-hero__section">
       <h1
         class="clb-hero__tagline mb-6 text-3xl font-black leading-[1.5] lg:text-6xl 2xl:text-8xl"
       >
@@ -38,19 +38,16 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
           >web3</span
         ><br /> in one minute.
       </h1>
-      <a
-        class="hs-button is-filled is-black inline py-3 px-6 text-xl"
-        href="#sales-pitch"
-      >
+      <CLBButton type="filled large" link="#sales-pitch">
         Get started for free
-      </a>
+      </CLBButton>
     </div>
   </section>
   <section class="content-wrap">
     <section id="sales-pitch">
       <div
         id="features"
-        class="grid grid-cols-2 gap-3 text-xl md:grid-cols-3 lg:grid-cols-4"
+        class="grid grid-cols-2 gap-3 text-xl md:grid-cols-3 lg:grid-cols-4 text-white"
       >
         <div class="sales-pitch-card bg-[rgb(45,39,220)]">
           <!-- <img src={R1} class="sales-pitch-card__media" alt="Rectangle 1" /> -->
@@ -85,12 +82,9 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
               >web3 super powers</span
             >.
           </p>
-          <a
-            class="hs-button is-filled is-black inline py-3 px-6 text-lg"
-            href="#how-to-start"
-          >
+          <CLBButton type="filled large" link="#how-to-start">
             Get started for free
-          </a>
+          </CLBButton>
         </div>
         <img
           class=""
@@ -197,13 +191,14 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
         It's easy, free, and all in one place. Let's build together in web3!
       </p>
       <div id="all-set__actions">
-        <CLBButton link="/getstarted" type="filled">Get started!</CLBButton>
+        <CLBButton link="/getstarted" type="filled large">Get started!</CLBButton>
       </div>
     </section>
   </div>
 </Landing>
 
 <style lang="scss">
+  @use 'node_modules/@devprotocol/hashi';
   @use 'sass:meta';
 
   @mixin responsive-img($position: null, $z-index: null) {
@@ -246,6 +241,7 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
 
     .clb-hero__section {
       width: calc(100% - 50px);
+      max-width: 1077px;
       margin: 0 auto;
       padding: 3rem 0;
       position: relative;
@@ -290,7 +286,11 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
   }
 
   #use-cases {
-    background: rgba(#fff, 10%);
+    background: rgba(#000, 10%);
+
+    @include hashi.dark-mode {
+      background: rgba(#fff, 10%);
+    }
   }
 
   .use-case {
@@ -301,13 +301,23 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
 
     &:hover,
     &:focus {
-      background: rgba(#fff, 20%);
-      box-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.2);
+      background: rgba(#000, 20%);
+      // box-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.2);
+
+      @include hashi.dark-mode {
+        background: rgba(#fff, 20%);
+        // box-shadow: 0 0.3rem 0.5rem rgba(255, 255, 255, 0.2);
+      }
     }
 
     &:active {
-      background: rgba(#fff, 33%);
-      box-shadow: 0 0.5rem 0.7rem rgba(0, 0, 0, 0.2);
+      background: rgba(#000, 33%);
+      // box-shadow: 0 0.5rem 0.7rem rgba(0, 0, 0, 0.2);
+
+      @include hashi.dark-mode {
+        background: rgba(#fff, 33%);
+        // box-shadow: 0 0.5rem 0.7rem rgba(255, 255, 255, 0.2);
+      }
     }
 
     .use-case__media {
