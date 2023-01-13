@@ -1,0 +1,18 @@
+---
+import AdminHomeForm from '../../components/AdminHomeForm/AdminHomeForm.svelte'
+
+const { options, clubs } = Astro.props
+const homeConfig = options.find(
+  (option: { key: string; value: string }) => option.key === 'homeConfig'
+)
+---
+
+<div>
+  <h1 class="mb-16 font-title text-lg font-bold">Home</h1>
+
+  <AdminHomeForm
+    client:only="svelte"
+    homeConfig={homeConfig.value}
+    currentPluginIndex={clubs.currentPluginIndex}
+  />
+</div>
