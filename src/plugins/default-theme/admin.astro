@@ -1,5 +1,5 @@
 ---
-import AdminHomeForm from '../../components/AdminHomeForm/AdminHomeForm.svelte'
+import AdminThemeForm from '@components/AdminThemeForm/AdminThemeForm.svelte'
 
 const { options, clubs } = Astro.props
 const homeConfig = options.find(
@@ -10,7 +10,7 @@ const homeConfig = options.find(
 <div>
   <h1 class="mb-16 font-title text-lg font-bold">Home</h1>
 
-  <AdminHomeForm
+  <AdminThemeForm
     client:only="svelte"
     homeConfig={homeConfig.value}
     currentPluginIndex={clubs.currentPluginIndex}
