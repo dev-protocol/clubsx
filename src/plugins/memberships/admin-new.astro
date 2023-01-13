@@ -1,6 +1,6 @@
 ---
 import AdminMembershipsAdditionForm from '@components/AdminMembershipsForm/AdminMembershipsAdditionForm.svelte'
-import { ClubsPropsAdminPages } from '@devprotocol/clubs-core'
+import { ClubsPropsAdminPages, decode } from '@devprotocol/clubs-core'
 import { Membership } from '.'
 
 const { membership, memberships, presets, clubs } =
@@ -9,6 +9,9 @@ const { membership, memberships, presets, clubs } =
     memberships: Membership[]
     presets: Membership[]
   }
+
+const decoded = decode(clubs.encodedClubsConfiguration)
+const propertyAddress = decoded.propertyAddress
 ---
 
 <div>
@@ -22,3 +25,56 @@ const { membership, memberships, presets, clubs } =
     existingMemberships={memberships}
   />
 </div>
+
+<input id="membershipOpts" type="hidden" value={JSON.stringify(memberships)} />
+<input id="propertyAddress" type="hidden" value={propertyAddress} />
+
+<script>
+  import { ClubsEvents } from '@devprotocol/clubs-core'
+  import { GetModalProvider, ReConnectWallet } from '@fixtures/wallet'
+  import { Membership } from '@plugins/memberships'
+  import { BigNumber } from 'ethers'
+  import { keccak256, parseUnits } from 'ethers/lib/utils'
+
+  import { callSimpleCollections } from './utils/simpleCollections'
+
+  document.body.addEventListener(
+    ClubsEvents.FinishConfiguration,
+    async (ev) => {
+      const memOptsInput = document.getElementById(
+        'membershipOpts'
+      ) as HTMLInputElement
+      const memOpts = JSON.parse(memOptsInput.value) as Membership[]
+
+      const propertyAddressInput = document.getElementById(
+        'propertyAddress'
+      ) as HTMLInputElement
+      const propAddress = propertyAddressInput.value as string
+
+      const modalProvider = GetModalProvider()
+      const { currentAddress, provider } = await ReConnectWallet(modalProvider)
+      if (!currentAddress || !provider) {
+        return
+      }
+
+      const images = memOpts.map((opt) => ({
+        src: opt.imageSrc,
+        requiredETHAmount: parseUnits(String(opt.price)).toString(),
+        requiredETHFee: opt.fee?.percentage
+          ? parseUnits(
+              BigNumber.from(opt.price).mul(opt.fee.percentage).toString()
+            ).toString()
+          : 0,
+        gateway: currentAddress,
+      }))
+
+      const keys: string[] = memOpts?.map((opt) => keccak256(opt.payload)) || []
+
+      await callSimpleCollections(provider, 'setImages', [
+        propAddress,
+        images,
+        keys,
+      ])
+    }
+  )
+</script>
