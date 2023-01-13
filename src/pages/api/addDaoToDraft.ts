@@ -89,7 +89,9 @@ export const post = async ({ request }: { request: Request }) => {
   if (keyEnumerable) {
     // associate user address with site
     // first we check if user has other sites associated with their address
-    let existingSites = (await client.get(keyEnumerable)) as ClubsData[] | null
+    let existingSites = JSON.parse(
+      (await client.get(keyEnumerable)) ?? '[]'
+    ) as ClubsData[] | null
     if (!existingSites) {
       existingSites = []
     }
