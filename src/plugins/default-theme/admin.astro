@@ -5,14 +5,15 @@ const { options, clubs } = Astro.props
 const homeConfig = options.find(
   (option: { key: string; value: string }) => option.key === 'homeConfig'
 )
+
+import whiteRightArrowImgSrc from '@assets/white-arrow-right.svg'
 ---
 
 <div>
-  <h1 class="mb-16 font-title text-lg font-bold">Home</h1>
-
   <AdminThemeForm
     client:only="svelte"
     homeConfig={homeConfig.value}
     currentPluginIndex={clubs.currentPluginIndex}
+    whiteRightArrowImgSrc={whiteRightArrowImgSrc}
   />
 </div>
