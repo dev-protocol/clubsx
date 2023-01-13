@@ -6,11 +6,6 @@ import CLBButton from 'node_modules/@devprotocol/clubs-core/src/ui/vue/CLBButton
 import HeroMedia from '@assets/Hero.png'
 import StarterKits from '@assets/starter-kits.png'
 
-// import R1 from '@assets/Rectangle1.png'
-// import R2 from '@assets/Rectangle2.png'
-// import R3 from '@assets/Rectangle3.png'
-// import R4 from '@assets/Rectangle4.png'
-
 import A1 from '@assets/Article1.png'
 import A2 from '@assets/Article2.png'
 import A3 from '@assets/Article3.png'
@@ -22,7 +17,7 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
 
 <Landing connectButton="hidden">
   <HSButton slot="right" type="filled white" link="#">Sign-in</HSButton>
-  <section class="clb-hero py-16 xl:py-28 2xl:py-40">
+  <section class="clb-hero py-16 lg:py-28 2xl:py-40">
     <img
       src={HeroMedia}
       aria-hidden="true"
@@ -31,10 +26,10 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
     />
     <div class="clb-hero__section">
       <h1
-        class="clb-hero__tagline mb-6 text-3xl font-black leading-[1.5] lg:text-6xl 2xl:text-8xl"
+        class="clb-hero__tagline mb-6 text-3xl font-black leading-[1.5] lg:text-7xl 2xl:text-8xl"
       >
-        Bring your community to <span
-          class="bg-[url('/WhitePurpleAbstract.png')] bg-clip-text bg-center text-3xl font-bold text-transparent lg:text-6xl 2xl:text-8xl"
+        Bring your <br class="hidden lg:inline" />community to <span
+          class="bg-[url('/WhitePurpleAbstract.png')] bg-clip-text bg-center text-3xl font-bold text-white/30 lg:text-7xl 2xl:text-8xl"
           >web3</span
         ><br /> in one minute.
       </h1>
@@ -50,19 +45,15 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
         class="grid grid-cols-2 gap-3 text-xl text-white md:grid-cols-3 lg:grid-cols-4"
       >
         <div class="sales-pitch-card bg-[rgb(45,39,220)]">
-          <!-- <img src={R1} class="sales-pitch-card__media" alt="Rectangle 1" /> -->
           <h3 class="text-center font-bold">Build an online community space</h3>
         </div>
         <div class="sales-pitch-card bg-[rgb(0,172,148)]">
-          <!-- <img src={R2} class="sales-pitch-card__media" alt="Rectangle 1" /> -->
           <h3 class="text-center font-bold">Tokenize my idea/project</h3>
         </div>
         <div class="sales-pitch-card bg-[rgb(22,20,129)]">
-          <!-- <img src={R3} class="sales-pitch-card__media" alt="Rectangle 1" /> -->
           <h3 class="text-center font-bold">Gain access to DeFi funding</h3>
         </div>
         <div class="sales-pitch-card bg-[rgb(201,53,116)]">
-          <!-- <img src={R4} class="sales-pitch-card__media" alt="Rectangle 1" /> -->
           <h3 class="text-center font-bold">
             Provide perks & rewards structure
           </h3>
@@ -106,7 +97,11 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
           href="https://medium.com/devprtcl/the-future-of-fundraising-daos-with-clubs-8433029af141"
         >
           <div class="use-case">
-            <img src={A1} alt="Article 1" class="use-case__media" />
+            <img
+              src={A1}
+              alt="Article 1"
+              class="use-case__media aspect-[16/10]"
+            />
             <p class="mb-1 font-bold">
               The Future of fundraising DAOs, with Clubs
             </p>
@@ -117,7 +112,11 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
           href="https://medium.com/devprtcl/the-future-of-fundraising-daos-with-clubs-8433029af141"
         >
           <div class="use-case">
-            <img src={A2} alt="Article 1" class="use-case__media" />
+            <img
+              src={A2}
+              alt="Article 1"
+              class="use-case__media aspect-[16/10]"
+            />
             <p class="mb-1 font-bold">
               The Future of fundraising DAOs, with Clubs
             </p>
@@ -128,7 +127,11 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
           href="https://medium.com/devprtcl/the-future-of-fundraising-daos-with-clubs-8433029af141"
         >
           <div class="use-case">
-            <img src={A3} alt="Article 1" class="use-case__media" />
+            <img
+              src={A3}
+              alt="Article 1"
+              class="use-case__media aspect-[16/10]"
+            />
             <p class="mb-1 font-bold">
               The Future of fundraising DAOs, with Clubs
             </p>
@@ -160,7 +163,11 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
           href="https://drive.google.com/file/d/1ONyN66UniFTR-fqjWzySfPuXAMd17jam/view?usp=share_link"
         >
           <div class="use-case">
-            <img src={CSM1} alt="Article 1" class="use-case__media" />
+            <img
+              src={CSM1}
+              alt="Article 1"
+              class="use-case__media aspect-square"
+            />
             <p class="mb-1 font-bold">Case 1: Bakery owner</p>
           </div>
         </a>
@@ -168,7 +175,11 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
           href="https://drive.google.com/file/d/1CfyuMjIQb3638iIPod7ApeWNXwgBtDaa/view?usp=share_link"
         >
           <div class="use-case">
-            <img src={CSM2} alt="Article 1" class="use-case__media" />
+            <img
+              src={CSM2}
+              alt="Article 1"
+              class="use-case__media aspect-square"
+            />
             <p class="mb-1 font-bold">Case 2: Yoga teacher</p>
           </div>
         </a>
@@ -176,7 +187,11 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
           href="https://drive.google.com/file/d/12kl50AYfsJCScvG48fHX8_ZymduulfeC/view?usp=share_link"
         >
           <div class="use-case">
-            <img src={CSM3} alt="Article 1" class="use-case__media" />
+            <img
+              src={CSM3}
+              alt="Article 1"
+              class="use-case__media aspect-square"
+            />
             <p class="mb-1 font-bold">Case 3: Crowdfunding</p>
           </div>
         </a>
@@ -249,7 +264,7 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
       position: relative;
 
       .clb-hero__tagline {
-        color: rgba(#fff, 90%);
+        color: #fff;
         text-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.2);
       }
     }
@@ -316,15 +331,10 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
 
     .use-case__media {
       width: 100%;
-      height: 150px;
       object-fit: cover;
       object-position: center;
       border-radius: 0.5rem;
       margin-bottom: 0.7rem;
-
-      @media screen and (min-width: 540px) {
-        height: 250px;
-      }
     }
   }
 
