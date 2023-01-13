@@ -95,7 +95,7 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
       </div>
     </section>
   </section>
-  <div id="use-cases" class="py-[3rem]">
+  <div id="use-cases" class="bg-black/10 py-[3rem] dark:bg-white/10">
     <section class="content-wrap">
       <h2 class="mb-3 text-center text-3xl font-bold">Clubs use cases</h2>
       <p class="text-center">
@@ -287,14 +287,6 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
     margin: 0 auto 3rem;
   }
 
-  #use-cases {
-    background: rgba(#000, 10%);
-
-    @include hashi.dark-mode {
-      background: rgba(#fff, 10%);
-    }
-  }
-
   .use-case {
     width: 100%;
     transition: all var(--hs-transition-time) ease;
@@ -306,7 +298,7 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
       background: rgba(#000, 20%);
       // box-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.2);
 
-      @include hashi.dark-mode {
+      @media (prefers-color-scheme: dark) {
         background: rgba(#fff, 20%);
         // box-shadow: 0 0.3rem 0.5rem rgba(255, 255, 255, 0.2);
       }
@@ -316,7 +308,7 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
       background: rgba(#000, 33%);
       // box-shadow: 0 0.5rem 0.7rem rgba(0, 0, 0, 0.2);
 
-      @include hashi.dark-mode {
+      @media (prefers-color-scheme: dark) {
         background: rgba(#fff, 33%);
         // box-shadow: 0 0.5rem 0.7rem rgba(255, 255, 255, 0.2);
       }

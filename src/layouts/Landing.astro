@@ -19,20 +19,12 @@ const ogURL = ''
 const twitterHandle = 'devprtcl'
 ---
 
-<script is:inline>
-  // TODO: Fix dark mode script next time.
-  // let colorScheme;
-  // window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-  //   colorScheme = event.matches ? "dark" : "light"
-  // });
-</script>
-
-<html lang="en" data-theme={colorScheme}>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <title>{title}</title>
-    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="icon" type="image/svg" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /><link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap"
@@ -54,15 +46,13 @@ const twitterHandle = 'devprtcl'
   </head>
 
   <body
-    class="bg-var(--hs-theme-dp-white-200) min-h-screen font-body text-black"
+    class="bg-var(--hs-theme-dp-white-200) min-h-screen font-body text-black dark:bg-dp-black-600 dark:text-white"
   >
     <slot name="before-header" />
-    <header
-      class="relative flex items-center justify-between bg-dp-black-600 py-4 px-6"
-    >
+    <header class="relative flex items-center justify-between py-4 px-6">
       <a href="/">
         <h1
-          class="flex items-center gap-2.5 font-['Poppins'] text-xl font-bold text-[var(--hs-theme-dp-white-200)]"
+          class="flex items-center gap-2.5 font-['Poppins'] text-xl font-bold"
         >
           <img src={ClubsColor} />Clubs
         </h1>
