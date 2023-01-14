@@ -2,12 +2,13 @@
 import { config as _config } from '@fixtures/config'
 import { adminFactory } from '@devprotocol/clubs-core'
 import admin from '@plugins/admin'
-import SetupLayout from '@layouts/SetupWithoutAside.astro'
+import SetupLayout from '@layouts/Setup.astro'
 import PublishGrants from '@components/PublishGrants/PublishGrants'
 import checkImage from '@assets/step-check.svg'
 import roundedSquareImage from '@assets/step-rounded-square.svg'
 import PublishConnect from '@components/PublishConnect/PublishConnect.vue'
 import PublishNetworkSelection from '@components/PublishNetworkSelection/PublishNetworkSelection.vue'
+import { UndefinedOr } from '@devprotocol/util-ts'
 
 const { site } = Astro.params
 
@@ -26,26 +27,39 @@ if (!path) {
 }
 
 const draftOptions = config.options?.find((opt) => opt.key === '__draft')
-const draftOptionsValue =
-  draftOptions &&
-  (draftOptions.value as {
-    isInDraft: boolean
-    address: string
-    uid: string
-    category: string
-  })
+const draftOptionsValue = draftOptions?.value as UndefinedOr<{
+  isInDraft: boolean
+  address: string
+  uid: string
+  category: string
+}>
+
+const membershipsPlugin = config.plugins.find(
+  (plgn) => plgn.name === 'memberships'
+)
+const membershipsPluginOptions = membershipsPlugin?.options?.find(
+  (opt) => opt.key === 'memberships'
+)?.value
 ---
 
-<SetupLayout {config} {...path.props} setupStep="PUBLISH">
+<SetupLayout {config} {...path.props} setupStep="PUBLISH" aside={false}>
   <section class="grid gap-16">
-    <h2 class="font-title text-2xl font-bold">Preview</h2>
-    <PublishConnect client:visible checkImage={checkImage} />
+    <h2 class="font-title text-2xl font-bold">Publish</h2>
+    <PublishConnect client:load checkImage={checkImage} />
     <PublishNetworkSelection
-      client:visible
+      client:load
       checkImage={checkImage}
       roundedSquareImage={roundedSquareImage}
-      category={draftOptionsValue?.category || ''}
+      category={draftOptionsValue?.category}
+      membershipsPluginOptions={membershipsPluginOptions}
     />
-    <PublishGrants client:visible />
+    <a
+      href="#"
+      target="_blank"
+      rel="noopener"
+      class="overflow-hidden rounded-2xl transition-shadow hover:shadow-[0_0_0_8px_rgba(255,255,255,0.2)]"
+    >
+      <PublishGrants />
+    </a>
   </section>
 </SetupLayout>
