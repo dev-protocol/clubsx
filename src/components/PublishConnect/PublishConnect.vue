@@ -1,6 +1,6 @@
 <template>
-  <section class="flex grid-cols-2 items-center justify-start gap-8">
-    <section class="grid w-[49%] gap-3">
+  <section class="grid items-center justify-start gap-8 md:grid-cols-2">
+    <section class="grid gap-3">
       <p class="font-mono text-base font-normal">1/</p>
       <section
         class="align-items-center flex items-center justify-items-center gap-3"
@@ -10,23 +10,17 @@
       </section>
       <p class="text-base">How to create a wallet?</p>
     </section>
-    <section class="w-[49%] gap-4 p-4">
-      <button
-        v-bind:class="buttonClasses"
-        @click="connect"
-        :disabled="connected"
-      >
-        <p class="font-DMSans text-base font-bold text-[#FFFFFF]">
-          {{ buttonText }}
-        </p>
-      </button>
-    </section>
+    <button v-bind:class="buttonClasses" @click="connect" :disabled="connected">
+      <p class="font-DMSans text-base font-bold text-[#FFFFFF]">
+        {{ buttonText }}
+      </p>
+    </button>
   </section>
 </template>
 
 <script lang="ts">
 import type Web3Modal from 'web3modal'
-import { providers, utils } from 'ethers'
+import { providers } from 'ethers'
 import { whenDefined } from '@devprotocol/util-ts'
 import { defineComponent } from '@vue/runtime-core'
 import type { connection as Connection } from '@devprotocol/clubs-core/connection'
@@ -52,7 +46,7 @@ export default defineComponent({
   computed: {
     buttonClasses() {
       const classes =
-        'w-full rounded border-[3px] border-[#000000] bg-[#040B10] py-6 px-8'
+        'hs-button is-large border-[3px] border-black bg-dp-blue-grey-600'
 
       return this.connected ? classes + ' opacity-50' : classes
     },

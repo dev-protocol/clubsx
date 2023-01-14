@@ -1,7 +1,7 @@
 <template>
   <!-- Step 2 -->
-  <section class="flex grid-cols-2 items-center justify-start gap-8">
-    <section class="grid w-[49%] gap-3">
+  <section class="grid items-center justify-start gap-8 md:grid-cols-2">
+    <section class="grid gap-3">
       <p class="font-mono text-base font-normal">2/</p>
       <section
         class="align-items-center flex items-center justify-items-center gap-3"
@@ -16,10 +16,12 @@
       </section>
       <p class="text-base">What is the different between networks?</p>
     </section>
-    <section class="grid w-[49%] grid-cols-3 gap-4 p-4">
+    <section
+      class="grid grid-cols-[2fr_1fr] grid-rows-2 items-stretch gap-4 lg:grid-cols-[3fr_1fr_1fr] lg:grid-rows-none"
+    >
       <button
         @click="changeNetwork('polygon')"
-        class="rounded border-[3px] border-[#000000] bg-[#040B10] py-6 text-center"
+        class="hs-button is-large row-span-2 h-full flex-col border-[3px] border-black bg-dp-blue-grey-600 lg:row-auto"
         v-bind:class="
           !connected
             ? 'opacity-50'
@@ -40,7 +42,7 @@
       </button>
       <button
         @click="changeNetwork('arbitrum')"
-        class="rounded border-[3px] border-[#000000] bg-[#040B10] py-6 text-center"
+        class="hs-button is-large h-full border-[3px] border-black bg-dp-blue-grey-600"
         v-bind:class="
           !connected
             ? 'opacity-50'
@@ -52,13 +54,11 @@
         "
         :disabled="!connected"
       >
-        <p class="font-DMSans text-center text-base font-bold text-[#FFFFFF]">
-          Arbitrum
-        </p>
+        <p class="font-DMSans text-center text-xs text-[#FFFFFF]">Arbitrum</p>
       </button>
       <button
         @click="changeNetwork('ethereum')"
-        class="rounded border-[3px] border-[#000000] bg-[#040B10] py-6 text-center"
+        class="hs-button is-large h-full border-[3px] border-black bg-dp-blue-grey-600"
         v-bind:class="
           !connected
             ? 'opacity-50'
@@ -70,16 +70,14 @@
         "
         :disabled="!connected"
       >
-        <p class="font-DMSans text-center text-base font-bold text-[#FFFFFF]">
-          Ethereum
-        </p>
+        <p class="font-DMSans text-center text-xs text-[#FFFFFF]">Ethereum</p>
       </button>
     </section>
   </section>
 
   <!-- Step 3 -->
-  <section class="flex grid-cols-2 items-start justify-start gap-8">
-    <section class="grid w-[49%] gap-3">
+  <section class="justify-stretch grid items-start gap-8 md:grid-cols-2">
+    <section class="grid gap-3">
       <p class="font-mono text-base font-normal">3/</p>
       <section
         class="align-items-center flex items-center justify-items-center gap-3"
@@ -93,7 +91,7 @@
         <h2 v-bind:class="step3TextClasses">Activate</h2>
       </section>
     </section>
-    <section class="w-[49%] p-4">
+    <section>
       <section class="mb-5 flex items-center justify-between">
         <section
           class="align-items-center flex items-center justify-items-center gap-2"
@@ -198,7 +196,7 @@
             ? initializeMemberships()
             : setMemberships()
         "
-        class="mb-4 w-full rounded border-[3px] border-[#000000] bg-[#040B10] py-6 text-center"
+        class="hs-button is-large mb-4 border-[3px] border-black bg-dp-blue-grey-600"
         v-bind:class="
           networkSelected === '' || !networkSelected || !connected
             ? 'opacity-50'
@@ -282,7 +280,7 @@ export default defineComponent({
         ? this.networkSelected === '' || !this.networkSelected
           ? classes
           : classes + ' line-through opacity-50'
-        : classes + ' opacity-50'
+        : classes
     },
     step3TextClasses() {
       const classes = 'font-title text-2xl font-bold'
