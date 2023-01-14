@@ -91,8 +91,8 @@
         <h2 v-bind:class="step3TextClasses">Activate</h2>
       </section>
     </section>
-    <section>
-      <section class="mb-5 flex items-center justify-between">
+    <section class="grid gap-4">
+      <section class="flex items-center justify-between">
         <section
           class="align-items-center flex items-center justify-items-center gap-2"
         >
@@ -115,6 +115,7 @@
         <div
           class="ml-4 mr-7 h-0 flex-1 border-[1px]"
           v-bind:class="
+            !step3Enabled ||
             networkSelected === '' ||
             !networkSelected ||
             !connected ||
@@ -196,13 +197,9 @@
             ? initializeMemberships()
             : setMemberships()
         "
-        class="hs-button is-large mb-4 border-[3px] border-black bg-dp-blue-grey-600"
-        v-bind:class="
-          networkSelected === '' || !networkSelected || !connected
-            ? 'opacity-50'
-            : ''
-        "
-        :disabled="!connected || !networkSelected || networkSelected === ''"
+        class="hs-button is-large border-[3px] border-black bg-dp-blue-grey-600"
+        v-bind:class="!step3Enabled ? 'opacity-50' : ''"
+        :disabled="!step3Enabled"
       >
         <p class="font-DMSans text-center text-base font-bold text-[#FFFFFF]">
           {{ step3InterStepButtonText }}
@@ -210,6 +207,12 @@
       </button>
       <p class="font-DMSans text-base font-normal text-white">
         {{ step3InterStepSubInfo }}
+      </p>
+      <p
+        v-if="!category || !membershipsPluginOptions?.length"
+        class="font-DMSans rounded bg-danger-300 px-4 py-2 text-base font-normal text-white"
+      >
+        Complete Basic info, Design, Memberships before activation.
       </p>
     </section>
   </section>
@@ -297,6 +300,14 @@ export default defineComponent({
     },
     link() {
       return `https://${this.networkSelected.toLowerCase()}.niwa.xyz/tokenize/${this.category?.toLowerCase()}`
+    },
+    step3Enabled() {
+      return (
+        this.category &&
+        this.membershipsPluginOptions?.length &&
+        this.connected &&
+        this.networkSelected
+      )
     },
     step3InterStepButtonText() {
       return !this.connected ||

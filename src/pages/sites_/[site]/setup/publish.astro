@@ -8,6 +8,7 @@ import checkImage from '@assets/step-check.svg'
 import roundedSquareImage from '@assets/step-rounded-square.svg'
 import PublishConnect from '@components/PublishConnect/PublishConnect.vue'
 import PublishNetworkSelection from '@components/PublishNetworkSelection/PublishNetworkSelection.vue'
+import { UndefinedOr } from '@devprotocol/util-ts'
 
 const { site } = Astro.params
 
@@ -26,31 +27,31 @@ if (!path) {
 }
 
 const draftOptions = config.options?.find((opt) => opt.key === '__draft')
-const draftOptionsValue = draftOptions?.value as {
+const draftOptionsValue = draftOptions?.value as UndefinedOr<{
   isInDraft: boolean
   address: string
   uid: string
   category: string
-}
+}>
 
 const membershipsPlugin = config.plugins.find(
   (plgn) => plgn.name === 'memberships'
 )
 const membershipsPluginOptions = membershipsPlugin?.options?.find(
   (opt) => opt.key === 'memberships'
-)
+)?.value
 ---
 
 <SetupLayout {config} {...path.props} setupStep="PUBLISH" aside={false}>
   <section class="grid gap-16">
-    <h2 class="font-title text-2xl font-bold">Preview</h2>
+    <h2 class="font-title text-2xl font-bold">Publish</h2>
     <PublishConnect client:load checkImage={checkImage} />
     <PublishNetworkSelection
       client:load
       checkImage={checkImage}
       roundedSquareImage={roundedSquareImage}
-      category={draftOptionsValue?.category || ''}
-      membershipsPluginOptions={membershipsPluginOptions || []}
+      category={draftOptionsValue?.category}
+      membershipsPluginOptions={membershipsPluginOptions}
     />
     <a
       href="#"
