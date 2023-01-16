@@ -24,7 +24,17 @@
   export let base: string = '/admin'
   export let mode: 'edit' | 'create' = 'create'
   export let rpcUrl: string
-  let estimatedEarnings: { dev?: number; usd?: number } = {
+  let estimatedEarnings: {
+    dev?: [number, number]
+    usd?: [number, number]
+  } = {
+    dev: undefined,
+    usd: undefined,
+  }
+  let usersDeposit: {
+    dev?: [number, number]
+    usd?: [number, number]
+  } = {
     dev: undefined,
     usd: undefined,
   }
@@ -75,13 +85,21 @@
     membership.id = id
   }
 
+  const toDp2 = (v: number | string) => new BigNumber(v).dp(2).toNumber()
   const onChangePrice = async () => {
     if (membership.price === 0) {
-      estimatedEarnings = { dev: 0, usd: 0 }
+      estimatedEarnings = { dev: [0, 0], usd: [0, 0] }
+      usersDeposit = { dev: [0, 0], usd: [0, 0] }
       return
     }
-    estimatedEarnings = {}
-    const [[, devApy], stakingEstimation] = await Promise.all([
+    estimatedEarnings = { dev: [0, 0], usd: [0, 0] }
+    usersDeposit = { dev: [0, 0], usd: [0, 0] }
+
+    /**
+     * devApy: $DEV APY for creator
+     * staking: Estimation for $DEV staking
+     */
+    const [[, devApy], staking] = await Promise.all([
       estimationsAPY({ provider }),
       positionsCreateWithEth({
         provider,
@@ -92,18 +110,34 @@
           .toNumber(),
       }),
     ])
-    const dev = whenDefinedAll([devApy, stakingEstimation], ([apy, stake]) =>
-      new BigNumber(utils.formatUnits(stake.estimatedDev).toString())
-        .times(apy)
-        .dp(2)
-        .toNumber()
+    const stakedDev = utils.formatUnits(staking.estimatedDev).toString()
+    const estimatedEarningsDev = whenDefinedAll(
+      [devApy, stakedDev],
+      ([apy, stake]) => new BigNumber(stake).times(apy).toNumber()
     )
-    const usd = await whenDefined(dev, usdByDev)?.then((x) =>
-      new BigNumber(x).dp(2).toNumber()
-    )
+    const [estimatedEarningsUsd, usersDepositUsd] = await Promise.all([
+      whenDefined(estimatedEarningsDev, usdByDev),
+      whenDefined(stakedDev, (stake) => usdByDev(Number(stake))),
+    ])
     estimatedEarnings = {
-      dev,
-      usd,
+      dev: whenDefined(
+        estimatedEarningsDev,
+        (v) => toDp2(v).toString().split('.').map(Number) as [number, number]
+      ),
+      usd: whenDefined(
+        estimatedEarningsUsd,
+        (v) => toDp2(v).toString().split('.').map(Number) as [number, number]
+      ),
+    }
+    usersDeposit = {
+      dev: whenDefined(
+        stakedDev,
+        (v) => toDp2(v).toString().split('.').map(Number) as [number, number]
+      ),
+      usd: whenDefined(
+        usersDepositUsd,
+        (v) => toDp2(v).toString().split('.').map(Number) as [number, number]
+      ),
     }
   }
 
@@ -206,14 +240,38 @@
           <h3 class="mb-8 font-title font-bold">Subscription Streaming</h3>
 
           <div class="grid gap-2">
-            <p class="text-sm">Estimated Earnings/year:</p>
-            {#if estimatedEarnings.usd === undefined || estimatedEarnings.dev === undefined}
+            <p class="text-sm">Estimated Earnings/year (per 1 membership):</p>
+            {#if !estimatedEarnings.usd || !estimatedEarnings.dev}
               <p
                 class="h-[2rem] w-full animate-pulse cursor-progress rounded bg-gray-500/60"
               />
             {:else}
               <p>
-                {estimatedEarnings.usd} USD ({estimatedEarnings.dev} DEV)
+                <span class="font-bold">{estimatedEarnings.usd[0]}</span>.<span
+                  class="text-sm">{estimatedEarnings.usd[1]}</span
+                >
+                USD
+                <span class="font-bold">{estimatedEarnings.dev[0]}</span>.<span
+                  class="text-sm">{estimatedEarnings.dev[1]}</span
+                >
+                DEV
+              </p>
+            {/if}
+            <p class="text-sm">User will earn (when unsubscribed):</p>
+            {#if !usersDeposit.usd || !usersDeposit.dev}
+              <p
+                class="h-[2rem] w-full animate-pulse cursor-progress rounded bg-gray-500/60"
+              />
+            {:else}
+              <p>
+                <span class="font-bold">{usersDeposit.usd[0]}</span>.<span
+                  class="text-sm">{usersDeposit.usd[1]}</span
+                >
+                USD
+                <span class="font-bold">{usersDeposit.dev[0]}</span>.<span
+                  class="text-sm">{usersDeposit.dev[1]}</span
+                >
+                DEV
               </p>
             {/if}
           </div>
