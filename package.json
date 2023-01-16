@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "@types/dotenv": "8.2.0",
-    "@types/ramda": "0.28.20",
+    "@types/ramda": "0.28.21",
     "@types/react": "18.0.26",
     "@types/three": "^0.148.0",
     "dotenv": "16.0.3",
