@@ -35,6 +35,7 @@ const { props } = path
     membership={props.membership as Membership}
     existingMemberships={props.memberships as Membership[]}
     base="/setup"
+    rpcUrl={props.rpcUrl as string}
     mode="edit"
   />
 </SetupLayout>
