@@ -1,39 +1,70 @@
 <script lang="ts">
   import Skeleton from '@components/Global/Skeleton.svelte'
   import { NavLink } from '@constants/navLink'
-  import { setOptions } from '@devprotocol/clubs-core'
+  import {
+    ClubsConfiguration,
+    ClubsPluginOption,
+    ClubsPluginOptions,
+    setConfig,
+  } from '@devprotocol/clubs-core'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import type { HomeConfig } from '../../constants/homeConfig'
 
+  export let config: ClubsConfiguration
   export let navLinks: NavLink[]
   export let sidebarPrimaryLinks: NavLink[]
   export let sidebarLinks: NavLink[]
   export let headerLinks: NavLink[]
   export let socialLinks: NavLink[]
   export let homeConfig: HomeConfig
-  export let currentPluginIndex: number
   export let whiteRightArrowImgSrc: string
   export let homeHeroDefaultImgSrc: string
   let uploading = false
 
   const update = (e?: any) => {
-    // We don't want to store file in config
-    if (e && (e.target.id.includes('-image-') || e.target.type == 'file')) {
-      return
+    const newConfig: ClubsConfiguration = {
+      ...config,
+      options: config.options
+        ? (config.options.map((option: ClubsPluginOption) => {
+            if (option.key === 'headerLinks') {
+              return {
+                key: 'headerLinks',
+                value: headerLinks,
+              }
+            } else if (option.key === 'homeConfig') {
+              return {
+                key: 'homeConfig',
+                value: homeConfig,
+              }
+            } else if (option.key === 'socialLinks') {
+              return {
+                key: 'socialLinks',
+                value: socialLinks,
+              }
+            } else if (option.key === 'sidebarPrimaryLinks') {
+              return {
+                key: 'sidebarPrimaryLinks',
+                value: sidebarPrimaryLinks,
+              }
+            } else if (option.key === 'sidebarLinks') {
+              return {
+                key: 'sidebarLinks',
+                value: sidebarLinks,
+              }
+            } else if (option.key === 'navLinks') {
+              return {
+                key: 'navLinks',
+                value: navLinks,
+              }
+            } else {
+              return option
+            }
+          }) as ClubsPluginOptions)
+        : undefined,
     }
 
-    setOptions([{ key: 'homeConfig', value: homeConfig }], currentPluginIndex)
-    setOptions([{ key: 'headerLinks', value: headerLinks }], currentPluginIndex)
-    setOptions([{ key: 'socialLinks', value: socialLinks }], currentPluginIndex)
-    setOptions(
-      [{ key: 'sidebarPrimaryLinks', value: sidebarPrimaryLinks }],
-      currentPluginIndex
-    )
-    setOptions(
-      [{ key: 'sidebarLinks', value: sidebarLinks }],
-      currentPluginIndex
-    )
-    setOptions([{ key: 'navLinks', value: navLinks }], currentPluginIndex)
+    console.log('HERE', config, newConfig)
+    setConfig(newConfig)
   }
 
   const addNewSidebarPrimaryLink = () => {
