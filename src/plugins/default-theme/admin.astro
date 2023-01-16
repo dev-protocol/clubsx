@@ -1,12 +1,47 @@
 ---
 import AdminThemeForm from '@components/AdminThemeForm/AdminThemeForm.svelte'
+import { NavLink } from '@constants/navLink'
+import whiteRightArrowImgSrc from '@assets/white-arrow-right.svg'
 
 const { options, clubs } = Astro.props
 const homeConfig = options.find(
   (option: { key: string; value: string }) => option.key === 'homeConfig'
 )
-
-import whiteRightArrowImgSrc from '@assets/white-arrow-right.svg'
+const sidebarPrimaryLinks: NavLink[] =
+  options.find(
+    (option: {
+      key: string
+      value: Array<{ display: string; path: string }>
+    }) => option.key === 'sidebarPrimaryLinks'
+  ) || ([] as NavLink[])
+const sidebarLinks: NavLink[] =
+  options.find(
+    (option: {
+      key: string
+      value: Array<{ display: string; path: string }>
+    }) => option.key === 'sidebarLinks'
+  ) || ([] as NavLink[])
+const socialLinks: NavLink[] =
+  options.find(
+    (option: {
+      key: string
+      value: Array<{ display: string; path: string }>
+    }) => option.key === 'socialLinks'
+  ) || ([] as NavLink[])
+const headerLinks: NavLink[] =
+  options.find(
+    (option: {
+      key: string
+      value: Array<{ display: string; path: string }>
+    }) => option.key === 'headerLinks'
+  ) || ([] as NavLink[])
+const navLinks: NavLink[] =
+  options.find(
+    (option: {
+      key: string
+      value: Array<{ display: string; path: string }>
+    }) => option.key === 'navLinks'
+  ) || ([] as NavLink[])
 ---
 
 <div>
@@ -15,5 +50,10 @@ import whiteRightArrowImgSrc from '@assets/white-arrow-right.svg'
     homeConfig={homeConfig.value}
     currentPluginIndex={clubs.currentPluginIndex}
     whiteRightArrowImgSrc={whiteRightArrowImgSrc}
+    headerLinks={headerLinks}
+    navLinks={navLinks}
+    sidebarPrimaryLinks={sidebarPrimaryLinks}
+    sidebarLinks={sidebarLinks}
+    socialLinks={socialLinks}
   />
 </div>
