@@ -7,7 +7,7 @@ import { clientsSTokens, client } from '@devprotocol/dev-kit'
 import { whenDefined } from '@devprotocol/util-ts'
 import { xprod } from 'ramda'
 
-import { GatedMessageRequiredMemberships } from '../plugins/message/types'
+import { Membership } from '@plugins/memberships'
 
 const falsyOrZero = <T>(num?: T): T | 0 => (num ? num : 0)
 
@@ -112,7 +112,7 @@ export const composeTiers = async ({
 export const checkMemberships = async (
   provider: ethers.providers.Web3Provider | ethers.providers.JsonRpcProvider,
   propertyAddress: string,
-  requiredMemberships: GatedMessageRequiredMemberships[],
+  requiredMemberships: Membership[],
   userAddress: string = '0x0000000000000000000000000000000000000000'
 ) => {
   // Check if we are validating at server or ui. because server can
@@ -152,11 +152,13 @@ export const checkMemberships = async (
       )
 
       // if it has not payload, test the staking amount
-      const testForAmount = payload
-        ? undefined
-        : ethers.BigNumber.from((await contract.positions(tokenId)).amount).gte(
-            utils.parseEther(membership.amount.toString())
-          )
+      // This works for only direct DEV staking
+      const testForAmount =
+        payload && membership.currency === 'DEV'
+          ? undefined
+          : ethers.BigNumber.from(
+              (await contract.positions(tokenId)).amount
+            ).gte(utils.parseEther(membership.price.toString()))
 
       if (testForPayload || testForAmount) {
         return tokenId

@@ -8,6 +8,7 @@ import community from '@plugins/community'
 import memberships from '@plugins/memberships'
 import quests from '@plugins/quests'
 import home from '@plugins/home'
+import message from '@plugins/message'
 
 const { site, page } = Astro.params
 
@@ -20,6 +21,7 @@ const { getStaticPaths } = adminFactory({
     community,
     memberships,
     home,
+    message,
   },
 })
 

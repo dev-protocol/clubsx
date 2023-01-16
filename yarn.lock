@@ -581,14 +581,14 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
-"@devprotocol/clubs-core@0.18.2":
-  version "0.18.2"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.18.2.tgz#61b83125cfc2bb72b7296871b380568031e6e4d3"
-  integrity sha512-uF3rux6AqpCSHtfAYa4IFW1bo87zRpRUQxKWcKMuB/ZZRYObYzm3mrz3a9TWoZRfqkP1IpLGbBQ4YyH4h4IBdQ==
+"@devprotocol/clubs-core@0.19.1":
+  version "0.19.1"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.19.1.tgz#35a0f63570cd92c6c9c10c5865798e72a317a086"
+  integrity sha512-a8KgDuVkvqwRBUnjAUWyd2uffCYXIeApSg8qhw2vi7Z0Izyd7P+J6pTaqZ6w0QkRLuPjUEF50C56bVCxF8eZug==
   dependencies:
-    "@devprotocol/dev-kit" "7.0.1"
+    "@devprotocol/dev-kit" "7.1.1"
     "@devprotocol/elements" "0.2.2"
-    "@devprotocol/hashi" "1.5.1"
+    "@devprotocol/hashi" "1.6.0"
     "@devprotocol/util-ts" "3.0.0"
     "@metamask/detect-provider" "^2.0.0"
     ethers "^5.7.0"
@@ -602,16 +602,6 @@
     react-dom "^18.0.0"
     svelte "^3.49.0"
     vue "^3.2.0"
-
-"@devprotocol/dev-kit@7.0.1":
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-7.0.1.tgz#0289dd2f4b197eaca054df08870ab8d88d4bec52"
-  integrity sha512-/5OjhEIx2IRmIqAlUXQaLLAel7vkpx+5Bw79Cqe08w3JreH2kYWlm58iY/vlja46+ngfaHZZfD8hc7wwddE6UQ==
-  dependencies:
-    "@devprotocol/util-ts" "3.0.0"
-    bignumber.js "9.1.1"
-    js-base64 "^3.7.2"
-    ramda "^0.28.0"
 
 "@devprotocol/dev-kit@7.1.1":
   version "7.1.1"
@@ -627,13 +617,6 @@
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/@devprotocol/elements/-/elements-0.2.2.tgz#7325fb3354f2fb77c08f91634656a9e87ce0fa80"
   integrity sha512-8Kj3hw84GVAIrQnX5gFE0iZSMvzbKqga5Kdo7rHI7ZS6lUBgG1EwxYv78iIz9SwdBki9zyGxfrQb4j3dI4Sv9w==
-
-"@devprotocol/hashi@1.5.1":
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/@devprotocol/hashi/-/hashi-1.5.1.tgz#3640da6743dc893c44b0fabee90f13f2d5b6c362"
-  integrity sha512-uczqXwvCh/DWV/Fj5yxXwCufzZtQM597WOh6C2rhQEILXQdu8dHXF2w/Q+5MoTlyv4pXK44zS654xvXEfjwblw==
-  dependencies:
-    "@matteusan/sentro" "0.1.25"
 
 "@devprotocol/hashi@1.6.0":
   version "1.6.0"
@@ -3055,6 +3038,13 @@ cross-spawn@^7.0.2, cross-spawn@^7.0.3:
     path-key "^3.1.0"
     shebang-command "^2.0.0"
     which "^2.0.1"
+
+crypto-random-string@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/crypto-random-string/-/crypto-random-string-4.0.0.tgz#5a3cc53d7dd86183df5da0312816ceeeb5bb1fc2"
+  integrity sha512-x8dy3RnvYdlUcPOjkEHqozhiwzKNSq7GcPuXFbnyMOCHxX8V3OgIg/pYuabl2sbUPfIJaeAQB7PMOK8DFIdoRA==
+  dependencies:
+    type-fest "^1.0.1"
 
 css-color-keywords@^1.0.0:
   version "1.0.0"
@@ -7857,6 +7847,11 @@ type-fest@^0.20.2:
   resolved "https://registry.npmjs.org/type-fest/-/type-fest-0.20.2.tgz"
   integrity sha512-Ne+eE4r0/iWnpAxD852z3A+N0Bt5RN//NjJwRd2VFHEmrywxf5vsZlh4R6lixl6B+wz/8d+maTSAkN1FIkI3LQ==
 
+type-fest@^1.0.1:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-1.4.0.tgz#e9fb813fe3bf1744ec359d55d1affefa76f14be1"
+  integrity sha512-yGSza74xk0UG8k+pLh5oeoYirvIiWo5t0/o3zHHAO2tRDiZcxWP7fywNlXhqb6/r6sWvwi+RsyQMWhVLe4BVuA==
+
 type-fest@^2.5.0:
   version "2.19.0"
   resolved "https://registry.npmjs.org/type-fest/-/type-fest-2.19.0.tgz"
@@ -7923,6 +7918,13 @@ unified@^10.0.0, unified@^10.1.2:
     is-plain-obj "^4.0.0"
     trough "^2.0.0"
     vfile "^5.0.0"
+
+unique-string@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/unique-string/-/unique-string-3.0.0.tgz#84a1c377aff5fd7a8bc6b55d8244b2bd90d75b9a"
+  integrity sha512-VGXBUVwxKMBUznyffQweQABPRRW1vHZAbadFZud4pLFAqRGvv/96vafgjWFqzourzr8YonlQiPgH0YCJfawoGQ==
+  dependencies:
+    crypto-random-string "^4.0.0"
 
 unist-builder@^3.0.0:
   version "3.0.0"

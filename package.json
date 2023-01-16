@@ -45,7 +45,7 @@
     "@astrojs/vercel": "2.4.0",
     "@astrojs/vue": "1.2.2",
     "@astropub/md": "^0.1.4",
-    "@devprotocol/clubs-core": "0.18.2",
+    "@devprotocol/clubs-core": "0.19.1",
     "@devprotocol/dev-kit": "7.1.1",
     "@devprotocol/elements": "0.2.2",
     "@devprotocol/hashi": "1.6.0",
@@ -75,6 +75,7 @@
     "tailwindcss": "^3.2.4",
     "three": "^0.148.0",
     "truncate-eth-address": "1.0.2",
+    "unique-string": "^3.0.0",
     "vue": "3.2.45",
     "web3modal": "1.9.11"
   },

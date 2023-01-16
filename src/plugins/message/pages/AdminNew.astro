@@ -1,0 +1,25 @@
+---
+import { Membership } from '@plugins/memberships'
+import AdminForm from '../components/AdminForm.svelte'
+import { ClubsPropsAdminPages } from '@devprotocol/clubs-core'
+import { GatedMessage } from '../types'
+
+const { forms, memberships, id, clubs } =
+  Astro.props as ClubsPropsAdminPages & {
+    forms: GatedMessage[]
+    memberships: Membership[]
+    id: string
+  }
+---
+
+<div>
+  <h1 class="mb-16 font-title text-lg font-bold">Gated form</h1>
+
+  <AdminForm
+    client:load
+    currentPluginIndex={clubs.currentPluginIndex}
+    memberships={memberships}
+    forms={forms}
+    id={id}
+  />
+</div>
