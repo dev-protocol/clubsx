@@ -2,6 +2,7 @@
 import AdminThemeForm from '@components/AdminThemeForm/AdminThemeForm.svelte'
 import { NavLink } from '@constants/navLink'
 import whiteRightArrowImgSrc from '@assets/white-arrow-right.svg'
+import homeHeroDefaultImgSrc from '@assets/home-config-default-hero-img.svg'
 
 const { options, clubs } = Astro.props
 const homeConfig = options.find(
@@ -55,5 +56,6 @@ const navLinks: NavLink[] =
     sidebarPrimaryLinks={sidebarPrimaryLinks}
     sidebarLinks={sidebarLinks}
     socialLinks={socialLinks}
+    homeHeroDefaultImgSrc={homeHeroDefaultImgSrc}
   />
 </div>
