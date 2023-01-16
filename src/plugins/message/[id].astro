@@ -1,8 +1,14 @@
 ---
 import CLBTier from '@components/Primitives/CLBTier.vue'
 import MessageForm from './components/MessageForm.vue'
+import { Membership } from '@plugins/memberships'
+import { GatedMessage } from './types'
 
-const { propertyAddress, form } = Astro.props
+const { propertyAddress, form, requiredMemberships } = Astro.props as {
+  form: GatedMessage
+  requiredMemberships: Membership[]
+  propertyAddress: string
+}
 ---
 
 <article class="container mx-auto max-w-6xl px-4">
@@ -17,7 +23,7 @@ const { propertyAddress, form } = Astro.props
     </h1>
     <div class="mb-5 flex flex-row flex-wrap gap-8">
       {
-        form.requiredMemberships.map((membership: any, i: any) => (
+        requiredMemberships.map((membership: any, i: any) => (
           <div class="h-[240px] max-h-[240px] min-h-[240px] w-[25%] capitalize">
             <CLBTier
               key={i}
