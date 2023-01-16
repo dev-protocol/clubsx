@@ -3,8 +3,19 @@
   import MembershipOptionCard from './MembershipOption.svelte'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import { Membership } from '@plugins/memberships'
-  import { UndefinedOr } from '@devprotocol/util-ts'
-  import { utils } from 'ethers'
+  import {
+    UndefinedOr,
+    whenDefined,
+    whenDefinedAll,
+  } from '@devprotocol/util-ts'
+  import { providers, utils } from 'ethers'
+  import {
+    positionsCreateWithEth,
+    estimationsAPY,
+  } from '@devprotocol/dev-kit/agent'
+  import { usdByDev } from '@fixtures/coingecko/api'
+  import { onMount } from 'svelte'
+  import BigNumber from 'bignumber.js'
 
   export let currentPluginIndex: number
   export let presets: UndefinedOr<Membership[]> = undefined
@@ -12,7 +23,17 @@
   export let existingMemberships: Membership[]
   export let base: string = '/admin'
   export let mode: 'edit' | 'create' = 'create'
+  export let rpcUrl: string
+  let estimatedEarnings: { dev?: number; usd?: number } = {
+    dev: undefined,
+    usd: undefined,
+  }
   const originalId = membership.id
+  const provider = new providers.JsonRpcProvider(rpcUrl)
+
+  onMount(() => {
+    onChangePrice()
+  })
 
   const update = () => {
     const search = mode === 'edit' ? originalId : membership.id
@@ -52,6 +73,38 @@
   const onChangeName = () => {
     const id = membership.name.toLowerCase().replace(/\W/g, '-')
     membership.id = id
+  }
+
+  const onChangePrice = async () => {
+    if (membership.price === 0) {
+      estimatedEarnings = { dev: 0, usd: 0 }
+      return
+    }
+    estimatedEarnings = {}
+    const [[, devApy], stakingEstimation] = await Promise.all([
+      estimationsAPY({ provider }),
+      positionsCreateWithEth({
+        provider,
+        ethAmount: utils.parseEther(membership.price.toString()).toString(),
+        destination: '',
+        gatewayBasisPoints: new BigNumber(10000)
+          .times(membership.fee?.percentage ?? 0)
+          .toNumber(),
+      }),
+    ])
+    const dev = whenDefinedAll([devApy, stakingEstimation], ([apy, stake]) =>
+      new BigNumber(utils.formatUnits(stake.estimatedDev).toString())
+        .times(apy)
+        .dp(2)
+        .toNumber()
+    )
+    const usd = await whenDefined(dev, usdByDev)?.then((x) =>
+      new BigNumber(x).dp(2).toNumber()
+    )
+    estimatedEarnings = {
+      dev,
+      usd,
+    }
   }
 
   const cancel = () => {
@@ -122,7 +175,7 @@
               />
             {/if}
             <span
-              class="hs-button cursor-pointer rounded-lg bg-[#040B10] px-12 py-4 text-sm font-medium"
+              class="hs-button cursor-pointer rounded-lg bg-[#040B10] px-12 py-4 text-sm font-medium text-white"
               type="button">Choose Image</span
             >
             <input
@@ -141,6 +194,7 @@
           <input
             class="rounded bg-[#040B10] px-8 py-4"
             bind:value={membership.price}
+            on:change={onChangePrice}
             id="membership-price"
             name="membership-price"
             type="number"
@@ -148,12 +202,20 @@
         </div>
 
         <!-- Subscription Streaming -->
-        <div class="rounded-lg border-[3px] border-blue-500 px-4 py-2">
+        <div class="rounded-lg border-[3px] border-blue-500 px-4 py-6">
           <h3 class="mb-8 font-title font-bold">Subscription Streaming</h3>
 
-          <div class="flex gap-2 text-sm">
-            <span class="text-sm">Estimated Earnings/year: </span>
-            <span class="text-sm">888.8888 USD (888.8888 DEV)</span>
+          <div class="grid gap-2">
+            <p class="text-sm">Estimated Earnings/year:</p>
+            {#if estimatedEarnings.usd === undefined || estimatedEarnings.dev === undefined}
+              <p
+                class="h-[2rem] w-full animate-pulse cursor-progress rounded bg-gray-500/60"
+              />
+            {:else}
+              <p>
+                {estimatedEarnings.usd} USD ({estimatedEarnings.dev} DEV)
+              </p>
+            {/if}
           </div>
         </div>
       </div>

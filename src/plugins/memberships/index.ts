@@ -60,7 +60,10 @@ const presets: Membership[] = [
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async () => []
 
-export const getAdminPaths: ClubsFunctionGetAdminPaths = async (options) => {
+export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
+  options,
+  { rpcUrl }
+) => {
   const memberships =
     (options.find((opt) => opt.key === 'memberships')?.value as UndefinedOr<
       Membership[]
@@ -75,12 +78,12 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (options) => {
     ...(memberships?.map((membership) => ({
       paths: ['memberships', membership.id],
       component: AdminEdit,
-      props: { membership, memberships },
+      props: { membership, memberships, rpcUrl },
     })) ?? []),
     ...(presets.map((membership) => ({
       paths: ['memberships', 'new', membership.id],
       component: AdminNew,
-      props: { membership, memberships, presets },
+      props: { membership, memberships, presets, rpcUrl },
     })) ?? []),
   ]
 }
