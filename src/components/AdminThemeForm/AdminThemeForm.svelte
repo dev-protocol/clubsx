@@ -23,6 +23,17 @@
     }
 
     setOptions([{ key: 'homeConfig', value: homeConfig }], currentPluginIndex)
+    setOptions([{ key: 'headerLinks', value: headerLinks }], currentPluginIndex)
+    setOptions([{ key: 'socialLinks', value: socialLinks }], currentPluginIndex)
+    setOptions(
+      [{ key: 'sidebarPrimaryLinks', value: sidebarPrimaryLinks }],
+      currentPluginIndex
+    )
+    setOptions(
+      [{ key: 'sidebarLinks', value: sidebarLinks }],
+      currentPluginIndex
+    )
+    setOptions([{ key: 'navLinks', value: navLinks }], currentPluginIndex)
   }
 
   const addNewSidebarPrimaryLink = () => {
