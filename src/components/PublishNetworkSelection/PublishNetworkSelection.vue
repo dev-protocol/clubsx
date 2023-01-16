@@ -16,63 +16,85 @@
       </section>
       <p class="text-base">What is the different between networks?</p>
     </section>
-    <section
-      class="grid grid-cols-[2fr_1fr] grid-rows-2 items-stretch gap-4 lg:grid-cols-[3fr_1fr_1fr] lg:grid-rows-none"
-    >
-      <button
-        @click="changeNetwork('polygon')"
-        class="hs-button is-large row-span-2 h-full flex-col border-[3px] border-black bg-dp-blue-grey-600 lg:row-auto"
-        v-bind:class="
-          !connected
-            ? 'opacity-50'
-            : networkSelected === ''
-            ? ''
-            : networkSelected === 'polygon'
-            ? 'opacity-50'
-            : 'opacity-20'
-        "
-        :disabled="!connected"
+    <div>
+      <section
+        class="grid grid-cols-[2fr_1fr] grid-rows-2 items-stretch gap-4 lg:grid-cols-[3fr_1fr_1fr] lg:grid-rows-none"
       >
-        <p class="font-DMSans text-center text-base font-bold text-[#FFFFFF]">
-          Polygon
-        </p>
-        <p class="font-DMSans text-center text-xs font-medium text-[#FFFFFF]">
-          Recommended
-        </p>
-      </button>
-      <button
-        @click="changeNetwork('arbitrum')"
-        class="hs-button is-large h-full border-[3px] border-black bg-dp-blue-grey-600"
-        v-bind:class="
-          !connected
-            ? 'opacity-50'
-            : networkSelected === ''
-            ? ''
-            : networkSelected === 'arbitrum'
-            ? 'opacity-50'
-            : 'opacity-20'
-        "
-        :disabled="!connected"
-      >
-        <p class="font-DMSans text-center text-xs text-[#FFFFFF]">Arbitrum</p>
-      </button>
-      <button
-        @click="changeNetwork('ethereum')"
-        class="hs-button is-large h-full border-[3px] border-black bg-dp-blue-grey-600"
-        v-bind:class="
-          !connected
-            ? 'opacity-50'
-            : networkSelected === ''
-            ? ''
-            : networkSelected === 'ethereum'
-            ? 'opacity-50'
-            : 'opacity-20'
-        "
-        :disabled="!connected"
-      >
-        <p class="font-DMSans text-center text-xs text-[#FFFFFF]">Ethereum</p>
-      </button>
-    </section>
+        <button
+          @click="changeNetwork('polygon')"
+          class="hs-button is-large row-span-2 h-full flex-col border-[3px] border-black bg-dp-blue-grey-600 lg:row-auto"
+          v-bind:class="
+            !connected
+              ? 'opacity-50'
+              : networkSelected === ''
+              ? ''
+              : networkSelected === 'polygon'
+              ? 'opacity-50'
+              : 'opacity-20'
+          "
+          :disabled="!connected"
+        >
+          <p class="font-DMSans text-center text-base font-bold text-[#FFFFFF]">
+            Polygon
+          </p>
+          <p class="font-DMSans text-center text-xs font-medium text-[#FFFFFF]">
+            Recommended
+          </p>
+        </button>
+        <button
+          @click="changeNetwork('arbitrum')"
+          class="hs-button is-large h-full border-[3px] border-black bg-dp-blue-grey-600"
+          v-bind:class="
+            !connected
+              ? 'opacity-50'
+              : networkSelected === ''
+              ? ''
+              : networkSelected === 'arbitrum'
+              ? 'opacity-50'
+              : 'opacity-20'
+          "
+          :disabled="!connected"
+        >
+          <p class="font-DMSans text-center text-xs text-[#FFFFFF]">Arbitrum</p>
+        </button>
+        <button
+          @click="changeNetwork('ethereum')"
+          class="hs-button is-large h-full border-[3px] border-black bg-dp-blue-grey-600"
+          v-bind:class="
+            !connected
+              ? 'opacity-50'
+              : networkSelected === ''
+              ? ''
+              : networkSelected === 'ethereum'
+              ? 'opacity-50'
+              : 'opacity-20'
+          "
+          :disabled="!connected"
+        >
+          <p class="font-DMSans text-center text-xs text-[#FFFFFF]">Ethereum</p>
+        </button>
+      </section>
+      <div v-if="showTestnets" class="mt-4">
+        <button
+          @click="changeNetwork('polygon-mumbai')"
+          class="hs-button is-large col-span-2 h-full border-[3px] border-black bg-dp-blue-grey-600"
+          v-bind:class="
+            !connected
+              ? 'opacity-50'
+              : networkSelected === ''
+              ? ''
+              : networkSelected === 'polygon-mumbai'
+              ? 'opacity-50'
+              : 'opacity-20'
+          "
+          :disabled="!connected"
+        >
+          <p class="font-DMSans text-center text-xs text-[#FFFFFF]">
+            Polygon Mumbai
+          </p>
+        </button>
+      </div>
+    </div>
   </section>
 
   <!-- Step 3 -->
@@ -255,6 +277,7 @@ export default defineComponent({
     roundedSquareImage: String,
     category: String,
     membershipsPluginOptions: Array<Membership>,
+    showTestnets: Boolean,
   },
   data(): Data {
     return {
@@ -361,6 +384,8 @@ export default defineComponent({
         ? 80001
         : this.networkSelected === 'arbitrum'
         ? 42161
+        : this.networkSelected === 'polygon-mumbai'
+        ? 80001
         : null
     },
 

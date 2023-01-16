@@ -12,6 +12,8 @@ import { UndefinedOr } from '@devprotocol/util-ts'
 
 const { site } = Astro.params
 
+const testnets = Astro.url.searchParams.get('testnets') === ''
+
 const { getStaticPaths, getCurrentConfig } = adminFactory({
   config: async () => await _config(site),
   plugins: {
@@ -52,6 +54,7 @@ const membershipsPluginOptions = membershipsPlugin?.options?.find(
       roundedSquareImage={roundedSquareImage}
       category={draftOptionsValue?.category}
       membershipsPluginOptions={membershipsPluginOptions}
+      showTestnets={testnets}
     />
     <a
       href="#"
