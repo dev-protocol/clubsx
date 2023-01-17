@@ -61,14 +61,16 @@
   >
 {:else}
   <div class="grid auto-rows-auto grid-cols-[1fr_auto] items-center gap-2">
-    <input
-      bind:value={email}
-      id="email"
-      name="email"
-      type="email"
-      placeholder="Your email"
-      class="rounded-md border-[3px] bg-dp-blue-grey-600 px-8 py-4 font-bold"
-    />
+    <label class="hs-form-field is-filled mb-0">
+      <input
+        bind:value={email}
+        id="email"
+        name="email"
+        type="email"
+        placeholder="Your email"
+        class="hs-form-field__input"
+      />
+    </label>
     <button
       on:click|preventDefault={(_) => sendMagicLink()}
       class="hs-button is-filled border-0 bg-native-blue-300 px-8 py-4 text-inherit"
