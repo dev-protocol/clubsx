@@ -65,21 +65,36 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (options) => {
       Membership[]
     >) ?? []
 
+  const draftOptions = options?.find((opt) => opt.key === '__draft')
+  const draftOptionsValue =
+    draftOptions &&
+    (draftOptions.value as {
+      isInDraft: boolean
+      address: string
+      uid: string
+      category: string
+    })
+
   return [
     {
       paths: ['memberships'],
       component: Admin,
-      props: { memberships, presets },
+      props: { memberships, presets, draftOptions: draftOptionsValue },
     },
     ...(memberships?.map((membership) => ({
       paths: ['memberships', membership.id],
       component: Admin,
-      props: { membership, memberships },
+      props: { membership, memberships, draftOptions: draftOptionsValue },
     })) ?? []),
     ...(presets.map((membership) => ({
       paths: ['memberships', 'new', membership.id],
       component: AdminNew,
-      props: { membership, memberships, presets },
+      props: {
+        membership,
+        memberships,
+        presets,
+        draftOptions: draftOptionsValue,
+      },
     })) ?? []),
   ]
 }
