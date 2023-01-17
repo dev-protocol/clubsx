@@ -22,7 +22,7 @@
       >
         <button
           @click="changeNetwork('polygon')"
-          class="hs-button is-large row-span-2 h-full flex-col border-[3px] border-black bg-dp-blue-grey-600 lg:row-auto"
+          class="hs-button is-filled is-large row-span-2 h-full flex-col lg:row-auto"
           v-bind:class="
             !connected
               ? 'opacity-50'
@@ -43,7 +43,7 @@
         </button>
         <button
           @click="changeNetwork('arbitrum')"
-          class="hs-button is-large h-full border-[3px] border-black bg-dp-blue-grey-600"
+          class="hs-button is-filled is-large h-full"
           v-bind:class="
             !connected
               ? 'opacity-50'
@@ -59,7 +59,7 @@
         </button>
         <button
           @click="changeNetwork('ethereum')"
-          class="hs-button is-large h-full border-[3px] border-black bg-dp-blue-grey-600"
+          class="hs-button is-filled is-large h-full"
           v-bind:class="
             !connected
               ? 'opacity-50'
@@ -77,7 +77,7 @@
       <div v-if="showTestnets" class="mt-4">
         <button
           @click="changeNetwork('polygon-mumbai')"
-          class="hs-button is-large col-span-2 h-full border-[3px] border-black bg-dp-blue-grey-600"
+          class="hs-button is-filled is-large col-span-2 h-full"
           v-bind:class="
             !connected
               ? 'opacity-50'
@@ -219,7 +219,7 @@
             ? initializeMemberships()
             : setMemberships()
         "
-        class="hs-button is-large border-[3px] border-black bg-dp-blue-grey-600"
+        class="hs-button is-filled is-large"
         v-bind:class="!step3Enabled ? 'opacity-50' : ''"
         :disabled="!step3Enabled"
       >

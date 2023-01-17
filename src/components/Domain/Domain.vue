@@ -78,16 +78,18 @@ export default {
               : ''
           }`"
         >
-          <input
-            class="rounded-md border-[3px] bg-dp-blue-grey-600 px-8 py-4 font-bold"
-            v-model="daoName"
-            id="daoname"
-            name="daoname"
-            placeholder="Enter your DAO name"
-            pattern="^[a-z|0-9|-]{3,42}$"
-            required
-            @keyup="verifySiteName"
-          />
+          <label class="hs-form-field is-filled mb-0">
+            <input
+              class="hs-form-field__input"
+              v-model="daoName"
+              id="daoname"
+              name="daoname"
+              placeholder="Enter your DAO name"
+              pattern="^[a-z|0-9|-]{3,42}$"
+              required
+              @keyup="verifySiteName"
+            />
+          </label>
           <span class="ml-1 text-lg font-bold">.clubs.place</span>
           <p
             v-if="fetching === false && typeof valid === 'boolean'"
@@ -106,14 +108,14 @@ export default {
       <section>
         <HSButton
           v-if="fetching === false && valid"
-          type="outlined"
-          class="w-full border-0 bg-native-blue-300 shadow hover:bg-native-blue-400 hover:text-inherit"
+          type="outlined large"
+          class="w-full border-0 bg-native-blue-300 text-white shadow hover:bg-native-blue-400 hover:text-inherit"
           :link="`/connect/${daoName}`"
           >Continue</HSButton
         >
         <HSButton
           v-if="fetching || !valid"
-          type="outlined"
+          type="outlined large"
           class="w-full cursor-not-allowed border-0 bg-dp-blue-grey-200 text-white shadow hover:bg-dp-blue-grey-200 hover:text-inherit"
           isDisabled="true"
           >Continue</HSButton
