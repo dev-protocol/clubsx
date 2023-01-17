@@ -5,12 +5,20 @@ import { utils } from 'ethers'
 import { GatedMessage } from '../types'
 import { encode } from '@devprotocol/clubs-core'
 import { checkMemberships } from '@fixtures/utility'
-import forms from '../forms.json'
+import { Membership } from '@plugins/memberships'
+import { PropType } from '@vue/runtime-core'
 
 export default defineComponent({
   props: {
     formId: Number,
-    propertyAddress: String,
+    propertyAddress: {
+      type: String,
+      required: true,
+    },
+    requiredMemberships: {
+      type: Array as PropType<Membership[]>,
+      required: true,
+    },
   },
   data: () => ({
     fullname: '',
@@ -29,8 +37,7 @@ export default defineComponent({
       return
     }
 
-    const formData = forms.find((element) => element.id === Number(this.formId))
-    if (!formData) {
+    if (!this.requiredMemberships.length) {
       this.isMember = false
       return
     }
@@ -39,7 +46,7 @@ export default defineComponent({
       const isMember = await checkMemberships(
         provider,
         this.propertyAddress,
-        formData.requiredMemberships
+        this.requiredMemberships
       )
       this.isMember = isMember
     } catch {

@@ -1,16 +1,10 @@
-export type GatedMessageRequiredMemberships = {
-  id: string
-  amount: number
-  currency: string
-  imageSrc: string
-  payload?: number[]
-}
+import { Membership } from '@plugins/memberships'
 
 export type GatedMessage = {
-  id: number
+  id: string
   title: string
   description: string
-  requiredMemberships: GatedMessageRequiredMemberships[]
+  requiredMembershipIds: string[]
   presetName: string
   sendGridEnvKey: string
   destinationEmail: string

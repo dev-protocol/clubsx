@@ -35,9 +35,9 @@ export const post = async ({ request }: { request: Request }) => {
   /**
    * Fetch site names associated with user
    */
-  const userSites = (await client.get(generateId(identifier))) as
-    | ClubsData[]
-    | null
+  const userSites = JSON.parse(
+    (await client.get(generateId(identifier))) ?? '[]'
+  ) as ClubsData[] | null
   if (!userSites) {
     return new Response(JSON.stringify({ error: 'No user sites found' }), {
       status: 400,

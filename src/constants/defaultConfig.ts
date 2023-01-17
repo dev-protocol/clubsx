@@ -76,5 +76,9 @@ export const defaultConfig: ClubsConfiguration = {
       name: 'memberships',
       options: [],
     },
+    {
+      name: 'message',
+      options: [],
+    },
   ],
 }

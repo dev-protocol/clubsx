@@ -1,0 +1,33 @@
+---
+import AdminMembershipsAdditionForm from '@components/AdminMembershipsForm/AdminMembershipsAdditionForm.svelte'
+import { ClubsPropsAdminPages } from '@devprotocol/clubs-core'
+import { Membership } from '.'
+
+const { membership, memberships, clubs, rpcUrl } =
+  Astro.props as ClubsPropsAdminPages & {
+    membership: Membership
+    memberships: Membership[]
+    rpcUrl: string
+  }
+---
+
+<div>
+  <h1 class="mb-8 font-title text-lg font-bold">Memberships</h1>
+
+  <AdminMembershipsAdditionForm
+    client:load
+    currentPluginIndex={clubs.currentPluginIndex}
+    membership={membership as Membership}
+    existingMemberships={memberships as Membership[]}
+    mode="edit"
+    rpcUrl={rpcUrl}
+  />
+</div>
+
+<script>
+  import { ClubsEvents } from '@devprotocol/clubs-core'
+
+  document.body.addEventListener(ClubsEvents.FinishConfiguration, (ev) => {
+    console.log('Save button clicked and updated the data remotely!!')
+  })
+</script>
