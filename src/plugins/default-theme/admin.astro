@@ -1,0 +1,50 @@
+---
+import AdminThemeForm from '@components/AdminThemeForm/AdminThemeForm.svelte'
+import { NavLink } from '@constants/navLink'
+import whiteRightArrowImgSrc from '@assets/white-arrow-right.svg'
+import homeHeroDefaultImgSrc from '@assets/home-config-default-hero-img.svg'
+import { ClubsPluginOption, decode } from '@devprotocol/clubs-core'
+
+const { options, clubs } = Astro.props
+const homeConfig = options.find(
+  (option: { key: string; value: string }) => option.key === 'homeConfig'
+)
+
+const decodedClubsConfig = decode(clubs.encodedClubsConfiguration)
+const allOptions = decodedClubsConfig.options
+
+const sidebarPrimaryLinks: ClubsPluginOption = allOptions?.find(
+  (option: ClubsPluginOption) => option.key === 'sidebarPrimaryLinks'
+) || { key: 'sidebarPrimaryLinks', value: [] }
+
+const sidebarLinks: ClubsPluginOption = allOptions?.find(
+  (option: ClubsPluginOption) => option.key === 'sidebarLinks'
+) || { key: 'sidebarLinks', value: [] }
+
+const socialLinks: ClubsPluginOption = allOptions?.find(
+  (option: ClubsPluginOption) => option.key === 'socialLinks'
+) || { key: 'socialLinks', value: [] }
+
+const headerLinks: ClubsPluginOption = allOptions?.find(
+  (option: ClubsPluginOption) => option.key === 'headerLinks'
+) || { key: 'headerLinks', value: [] }
+
+const navLinks: ClubsPluginOption = allOptions?.find(
+  (option: ClubsPluginOption) => option.key === 'navLinks'
+) || { key: 'navLinks', value: [] }
+---
+
+<div>
+  <AdminThemeForm
+    client:only="svelte"
+    homeConfig={homeConfig.value}
+    whiteRightArrowImgSrc={whiteRightArrowImgSrc}
+    headerLinks={headerLinks.value as NavLink[]}
+    navLinks={navLinks.value as NavLink[]}
+    sidebarPrimaryLinks={sidebarPrimaryLinks.value as NavLink[]}
+    sidebarLinks={sidebarLinks.value as NavLink[]}
+    socialLinks={socialLinks.value as NavLink[]}
+    homeHeroDefaultImgSrc={homeHeroDefaultImgSrc}
+    config={decodedClubsConfig}
+  />
+</div>
