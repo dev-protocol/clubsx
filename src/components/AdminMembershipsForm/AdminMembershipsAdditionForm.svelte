@@ -16,6 +16,7 @@
   import { usdByDev } from '@fixtures/coingecko/api'
   import { onMount } from 'svelte'
   import BigNumber from 'bignumber.js'
+  import { clientsSTokens } from '@devprotocol/dev-kit'
 
   export let currentPluginIndex: number
   export let presets: UndefinedOr<Membership[]> = undefined
@@ -24,6 +25,7 @@
   export let base: string = '/admin'
   export let mode: 'edit' | 'create' = 'create'
   export let rpcUrl: string
+  export let propertyAddress: string
   let estimatedEarnings: {
     dev?: [number, number]
     usd?: [number, number]
@@ -40,9 +42,12 @@
   }
   const originalId = membership.id
   const provider = new providers.JsonRpcProvider(rpcUrl)
+  let membershipExists = false
+  let loading = false
 
   onMount(() => {
     onChangePrice()
+    fetchPositionsOfProperty()
   })
 
   const update = () => {
@@ -151,6 +156,37 @@
     }
     membership = preset
   }
+
+  const fetchPositionsOfProperty = async () => {
+    loading = true
+    // const modalProvider = GetModalProvider()
+    // const { provider } = await ReConnectWallet(modalProvider)
+
+    if (!provider) {
+      loading = false
+      return
+    }
+
+    const [l1, l2] = await clientsSTokens(provider)
+
+    const contract = l1 ?? l2
+    const positions = await contract?.positionsOfProperty(propertyAddress)
+    if (!positions) {
+      loading = false
+      return
+    }
+
+    for (const position of positions) {
+      const positionPayload = await contract?.payloadOf(position)
+
+      if (!membershipExists && positionPayload) {
+        membershipExists = true
+        break
+      }
+    }
+
+    loading = false
+  }
 </script>
 
 <div class="grid gap-16">
@@ -193,6 +229,7 @@
             on:change={onChangeName}
             id="membership-name"
             name="membership-name"
+            disabled={membershipExists}
           />
         </div>
 
@@ -210,7 +247,7 @@
             {/if}
             <span
               class="hs-button cursor-pointer rounded-lg bg-[#040B10] px-12 py-4 text-sm font-medium text-white"
-              type="button">Choose Image</span
+              >Choose Image</span
             >
             <input
               id="avatarPath"
@@ -218,6 +255,7 @@
               style="display:none"
               type="file"
               on:change={onFileSelected}
+              disabled={membershipExists}
             />
           </label>
         </div>
@@ -232,6 +270,7 @@
             id="membership-price"
             name="membership-price"
             type="number"
+            disabled={membershipExists}
           />
         </div>
 
@@ -300,6 +339,7 @@
         bind:value={membership.description}
         id="membership-description"
         name="membership-description"
+        disabled={membershipExists}
       />
       <p class="text-sm">Markdown is available</p>
     </div>

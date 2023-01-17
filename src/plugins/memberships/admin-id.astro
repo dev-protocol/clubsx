@@ -3,11 +3,12 @@ import AdminMembershipsAdditionForm from '@components/AdminMembershipsForm/Admin
 import { ClubsPropsAdminPages } from '@devprotocol/clubs-core'
 import { Membership } from '.'
 
-const { membership, memberships, clubs, rpcUrl } =
+const { membership, memberships, clubs, rpcUrl, propertyAddress } =
   Astro.props as ClubsPropsAdminPages & {
     membership: Membership
     memberships: Membership[]
     rpcUrl: string
+    propertyAddress: string
   }
 ---
 
@@ -21,13 +22,64 @@ const { membership, memberships, clubs, rpcUrl } =
     existingMemberships={memberships as Membership[]}
     mode="edit"
     rpcUrl={rpcUrl}
+    propertyAddress={propertyAddress}
   />
+
+  <input
+    id="membershipOpts"
+    type="hidden"
+    value={JSON.stringify(memberships)}
+  />
+  <input id="propertyAddress" type="hidden" value={propertyAddress} />
 </div>
 
 <script>
   import { ClubsEvents } from '@devprotocol/clubs-core'
+  import { GetModalProvider, ReConnectWallet } from '@fixtures/wallet'
+  import { BigNumber } from 'ethers'
+  import { keccak256, parseUnits } from 'ethers/lib/utils'
 
-  document.body.addEventListener(ClubsEvents.FinishConfiguration, (ev) => {
-    console.log('Save button clicked and updated the data remotely!!')
-  })
+  import { Membership } from '.'
+
+  import { callSimpleCollections } from './utils/simpleCollections'
+
+  document.body.addEventListener(
+    ClubsEvents.FinishConfiguration,
+    async (ev) => {
+      const memOptsInput = document.getElementById(
+        'membershipOpts'
+      ) as HTMLInputElement
+      const memOpts = JSON.parse(memOptsInput.value) as Membership[]
+
+      const propertyAddressInput = document.getElementById(
+        'propertyAddress'
+      ) as HTMLInputElement
+      const propAddress = propertyAddressInput.value as string
+
+      const modalProvider = GetModalProvider()
+      const { currentAddress, provider } = await ReConnectWallet(modalProvider)
+      if (!currentAddress || !provider) {
+        return
+      }
+
+      const images = memOpts.map((opt) => ({
+        src: opt.imageSrc,
+        requiredETHAmount: parseUnits(String(opt.price)).toString(),
+        requiredETHFee: opt.fee?.percentage
+          ? parseUnits(
+              BigNumber.from(opt.price).mul(opt.fee.percentage).toString()
+            ).toString()
+          : 0,
+        gateway: currentAddress,
+      }))
+
+      const keys: string[] = memOpts?.map((opt) => keccak256(opt.payload)) || []
+
+      await callSimpleCollections(provider, 'setImages', [
+        propAddress,
+        images,
+        keys,
+      ])
+    }
+  )
 </script>

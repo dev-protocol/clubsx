@@ -3,15 +3,23 @@ import AdminMembershipsAdditionForm from '@components/AdminMembershipsForm/Admin
 import { ClubsPropsAdminPages, decode } from '@devprotocol/clubs-core'
 import { Membership } from '.'
 
-const { membership, memberships, presets, clubs, options } =
-  Astro.props as ClubsPropsAdminPages & {
-    membership: Membership
-    memberships: Membership[]
-    presets: Membership[]
-  }
+const {
+  membership,
+  memberships,
+  presets,
+  clubs,
+  options,
+  rpcUrl,
+  propertyAddress,
+} = Astro.props as ClubsPropsAdminPages & {
+  membership: Membership
+  memberships: Membership[]
+  presets: Membership[]
+  rpcUrl: string
+  propertyAddress: string
+}
 
 const decoded = decode(clubs.encodedClubsConfiguration)
-const propertyAddress = decoded.propertyAddress
 ---
 
 <div>
@@ -23,6 +31,8 @@ const propertyAddress = decoded.propertyAddress
     membership={membership}
     presets={presets}
     existingMemberships={memberships}
+    rpcUrl={rpcUrl}
+    propertyAddress={propertyAddress}
   />
 </div>
 

@@ -2,53 +2,11 @@
   import { setOptions } from '@devprotocol/clubs-core'
   import MembershipOptionCard from './MembershipOption.svelte'
   import { Membership } from '@plugins/memberships'
-  import { onMount } from 'svelte'
-  import { GetModalProvider, ReConnectWallet } from '@fixtures/wallet'
-  import { clientsSTokens } from '@devprotocol/dev-kit'
 
   export let currentPluginIndex: number
   export let memberships: Membership[]
   export let presets: Membership[]
   export let base: string = '/admin'
-  export let propertyAddress: string
-
-  let membershipExists = false
-  let loading = false
-
-  const fetchPositionsOfProperty = async () => {
-    loading = true
-    const modalProvider = GetModalProvider()
-    const { provider } = await ReConnectWallet(modalProvider)
-
-    if (!provider) {
-      loading = false
-      return
-    }
-
-    const [l1, l2] = await clientsSTokens(provider)
-
-    const contract = l1 ?? l2
-    const positions = await contract?.positionsOfProperty(propertyAddress)
-    if (!positions) {
-      loading = false
-      return
-    }
-
-    for (const position of positions) {
-      const positionPayload = await contract?.payloadOf(position)
-
-      if (!membershipExists && positionPayload) {
-        membershipExists = true
-        break
-      }
-    }
-
-    loading = false
-  }
-
-  onMount(() => {
-    fetchPositionsOfProperty()
-  })
 
   const update = () => {
     setOptions([{ key: 'memberships', value: {} }], currentPluginIndex)

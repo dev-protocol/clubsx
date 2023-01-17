@@ -7,6 +7,7 @@ import {
 } from '@devprotocol/clubs-core'
 import { default as Admin } from './admin.astro'
 import { default as AdminNew } from './admin-new.astro'
+import { default as AdminEdit } from './admin-id.astro'
 import { UndefinedOr } from '@devprotocol/util-ts'
 import membershipOpt1 from '@assets/membership-opt-1.png'
 import membershipOpt2 from '@assets/membership-opt-2.png'
@@ -87,7 +88,7 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
     ...(memberships?.map((membership) => ({
       paths: ['memberships', membership.id],
 
-      component: Admin,
+      component: AdminEdit,
       props: {
         membership,
         memberships,
