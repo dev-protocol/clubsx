@@ -603,16 +603,6 @@
     svelte "^3.49.0"
     vue "^3.2.0"
 
-"@devprotocol/dev-kit@7.1.1":
-  version "7.1.1"
-  resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-7.1.1.tgz#d7306ac82c07f4a56b97ea267f41fd28c58f0533"
-  integrity sha512-imZBfTfLLoB8A+/yEuwSdMJ+pzybLVMmuWuPgvy9kkodtI7vc11fweO3AG/K4PzMxh4s5n3GVc161qVSwRoQwg==
-  dependencies:
-    "@devprotocol/util-ts" "3.0.0"
-    bignumber.js "9.1.1"
-    js-base64 "^3.7.2"
-    ramda "^0.28.0"
-
 "@devprotocol/dev-kit@7.1.2":
   version "7.1.2"
   resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-7.1.2.tgz#12858bd63d9d52099f2a3d5a8ccefe3d24e37564"
