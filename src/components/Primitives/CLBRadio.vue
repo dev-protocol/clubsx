@@ -33,7 +33,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use 'node_modules/@devprotocol/hashi' with (
+@use '@devprotocol/hashi' with (
   $vue-mode: true
 );
 
