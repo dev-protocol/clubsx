@@ -45,8 +45,7 @@ export default defineComponent({
   },
   computed: {
     buttonClasses() {
-      const classes =
-        'hs-button is-large border-[3px] border-black bg-dp-blue-grey-600'
+      const classes = 'hs-button is-large is-filled'
 
       return this.connected ? classes + ' opacity-50' : classes
     },

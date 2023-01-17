@@ -185,21 +185,21 @@
       <!-- Form -->
       <div class="grid gap-8">
         <!-- Name -->
-        <div class="flex flex-col gap-1">
-          <label for="membership-name"> Name </label>
+        <label class="hs-form-field is-filled is-required">
+          <span class="hs-form-field__label"> Name </span>
           <input
-            class="rounded bg-[#040B10] px-8 py-4"
+            class="hs-form-field__input"
             bind:value={membership.name}
             on:change={onChangeName}
             id="membership-name"
             name="membership-name"
           />
-        </div>
+        </label>
 
         <!-- Image -->
         <div class="flex flex-col gap-1">
-          <label class="flex flex-col gap-1" for="avatarPath">
-            <span>Image</span>
+          <label class="hs-form-field" for="avatarPath">
+            <span class="hs-form-field__label">Image</span>
 
             {#if membership.imageSrc && membership.imageSrc != ''}
               <img
@@ -209,7 +209,7 @@
               />
             {/if}
             <span
-              class="hs-button cursor-pointer rounded-lg bg-[#040B10] px-12 py-4 text-sm font-medium text-white"
+              class="hs-button is-filled cursor-pointer rounded-lg bg-[#040B10] px-12 py-4"
               type="button">Choose Image</span
             >
             <input
@@ -223,17 +223,17 @@
         </div>
 
         <!-- Price -->
-        <div class="flex flex-col gap-1">
-          <label for="membership-price"> Price </label>
+        <label class="hs-form-field is-filled is-required">
+          <span class="hs-form-field__label"> Price </span>
           <input
-            class="rounded bg-[#040B10] px-8 py-4"
+            class="hs-form-field__input"
             bind:value={membership.price}
             on:change={onChangePrice}
             id="membership-price"
             name="membership-price"
             type="number"
           />
-        </div>
+        </label>
 
         <!-- Subscription Streaming -->
         <div class="rounded-lg border-[3px] border-blue-500 px-4 py-6">
@@ -293,16 +293,16 @@
     </div>
 
     <!-- Description -->
-    <div class="flex flex-col">
-      <label for="membership-description"> Description </label>
+    <label class="hs-form-field is-filled is-requred">
+      <span class="hs-form-field__label"> Description </span>
       <textarea
-        class="rounded bg-[#040B10] px-8 py-4"
+        class="hs-form-field__input"
         bind:value={membership.description}
         id="membership-description"
         name="membership-description"
       />
       <p class="text-sm">Markdown is available</p>
-    </div>
+    </label>
 
     <div class="flex w-full justify-end">
       <button type="button" on:click|preventDefault={() => cancel()}
