@@ -10,7 +10,7 @@ import {
 } from '@devprotocol/clubs-core'
 import { default as Layout } from '@layouts/Default.astro'
 import { default as Index } from '@plugins/home/index.astro'
-import { default as Admin } from '@plugins/home/admin.astro'
+import { default as Admin } from './admin.astro'
 import { HomeConfig } from '../../constants/homeConfig'
 import { NavLink } from '@constants/navLink'
 
@@ -39,7 +39,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
   return homeConfig
     ? [
         {
-          paths: [''],
+          paths: [],
           component: Index,
           props: {
             name,

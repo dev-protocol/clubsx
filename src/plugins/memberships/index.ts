@@ -7,6 +7,7 @@ import {
 } from '@devprotocol/clubs-core'
 import { default as Admin } from './admin.astro'
 import { default as AdminNew } from './admin-new.astro'
+import { default as AdminEdit } from './admin-id.astro'
 import { UndefinedOr } from '@devprotocol/util-ts'
 import membershipOpt1 from '@assets/membership-opt-1.png'
 import membershipOpt2 from '@assets/membership-opt-2.png'
@@ -59,7 +60,10 @@ const presets: Membership[] = [
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async () => []
 
-export const getAdminPaths: ClubsFunctionGetAdminPaths = async (options) => {
+export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
+  options,
+  { rpcUrl }
+) => {
   const memberships =
     (options.find((opt) => opt.key === 'memberships')?.value as UndefinedOr<
       Membership[]
@@ -73,13 +77,13 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (options) => {
     },
     ...(memberships?.map((membership) => ({
       paths: ['memberships', membership.id],
-      component: Admin,
-      props: { membership, memberships },
+      component: AdminEdit,
+      props: { membership, memberships, rpcUrl },
     })) ?? []),
     ...(presets.map((membership) => ({
       paths: ['memberships', 'new', membership.id],
       component: AdminNew,
-      props: { membership, memberships, presets },
+      props: { membership, memberships, presets, rpcUrl },
     })) ?? []),
   ]
 }

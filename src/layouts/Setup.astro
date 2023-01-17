@@ -8,10 +8,16 @@ import type {
 import Aside from '@devprotocol/clubs-core/aside'
 import { AdminConfigurationManager } from '@devprotocol/clubs-core/layouts'
 
-const { config, setupStep, clubs } = Astro.props as {
+const {
+  config,
+  setupStep,
+  clubs,
+  aside = true,
+} = Astro.props as {
   config: ClubsConfiguration
   setupStep: 'DESIGN' | 'MEMBERSHIPS' | 'PREVIEW' | 'BASIC' | 'PUBLISH'
   clubs: ClubsPropsAdminPages['clubs']
+  aside?: boolean
 }
 const steps = {
   current:
@@ -71,14 +77,18 @@ const steps = {
       <main class="container mx-auto px-2 py-8 lg:px-0 lg:py-16">
         <slot />
       </main>
-      <div class="container mx-auto px-2 py-8 lg:px-0 lg:py-16">
-        <Aside
-          class="col-span-1"
-          class="col-span-1"
-          config={config}
-          client:load
-        />
-      </div>
+      {
+        aside && (
+          <div class="container mx-auto px-2 py-8 lg:px-0 lg:py-16">
+            <Aside
+              class="col-span-1"
+              class="col-span-1"
+              config={config}
+              client:load
+            />
+          </div>
+        )
+      }
     </div>
 
     <!-- Navigation bar for mobile -->
