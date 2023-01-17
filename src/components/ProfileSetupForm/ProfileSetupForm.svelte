@@ -69,49 +69,43 @@
 </script>
 
 <form on:change|preventDefault={(e) => update()} class="grid gap-16">
-  <div class="flex flex-col items-start gap-1">
-    <label for="club-name">
-      Club Name
-      <span class="text-plox-200">*</span>
-    </label>
+  <label class="hs-form-field is-filled is-required">
+    <span class="hs-form-field__label"> Club Name </span>
     <input
-      class="min-w-full max-w-full rounded bg-[#040B10] px-8 py-4"
+      class="hs-form-field__input min-w-full max-w-full"
       bind:value={name}
       id="club-name"
       name="club-name"
     />
-  </div>
+  </label>
 
-  <div class="flex flex-col items-start gap-1">
-    <label for="project-category">
-      Project Category
-      <span class="text-plox-200">*</span>
-    </label>
+  <label class="hs-select-field is-filled is-required">
+    <span class="hs-select-field__label"> Project Category </span>
     <select
       bind:value={projectCategory}
       id="project-category"
       name="project-category"
-      class="rounded bg-[#040B10] px-8 py-4"
+      class="hs-select-field__input"
     >
       {#each projectCategories as cat}
         <option value={cat.value}>{cat.label}</option>
       {/each}
     </select>
-  </div>
+  </label>
 
-  <div class="flex flex-col items-start gap-1">
-    <label for="twitter-handle"> Twitter Handle </label>
+  <label class="hs-form-field is-filled">
+    <span class="hs-form-field__label"> Twitter Handle </span>
     <input
-      class="min-w-full max-w-full rounded bg-[#040B10] px-8 py-4"
+      class="hs-form-field__input min-w-full max-w-full"
       bind:value={twitterHandle}
       id="twitter-handle"
       name="twitter-handle"
     />
-  </div>
+  </label>
 
   <div class="flex flex-col items-start gap-1">
-    <label class="flex flex-col items-start gap-1" for="avatarPath">
-      <span>Avatar</span>
+    <label class="hs-form-field" for="avatarPath">
+      <span class="hs-form-field__label">Avatar</span>
 
       {#if avatarUploading}
         <div class="h-64 w-64"><Skeleton /></div>
@@ -121,9 +115,8 @@
         </div>
       {/if}
       <div class="float-left">
-        <span
-          class="hs-button is-filled cursor-pointer border-0 bg-[#040B10] px-12 py-4 text-sm font-medium text-inherit"
-          type="button">Choose Image</span
+        <span class="hs-button is-filled is-large cursor-pointer" type="button"
+          >Choose Image</span
         >
       </div>
       <input
