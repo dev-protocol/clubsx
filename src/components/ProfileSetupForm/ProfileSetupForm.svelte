@@ -24,7 +24,8 @@
     },
   ]
   let projectCategory = 'GITHUB'
-  let avatarPath = ''
+  let avatarPath =
+    config.options?.find((opt) => opt.key === 'avatarImgSrc')?.value ?? ''
   let avatarUploading = false
 
   const onFileSelected = async (
@@ -43,6 +44,7 @@
     avatarPath = await uploadImageAndGetPath(file)
 
     avatarUploading = false
+    update()
   }
 
   const update = async () => {
