@@ -1,25 +1,19 @@
-import {
-  authenticate,
-  ClubsPluginOption,
-  ClubsPluginOptionValue,
-  decode,
-} from '@devprotocol/clubs-core'
+import { ClubsPluginOption, decode } from '@devprotocol/clubs-core'
 import { initializeFirebaseAdmin } from '@fixtures/firebase/initializeFirebaseAdmin'
-import { providers, utils } from 'ethers'
+import { utils } from 'ethers'
 import { createClient } from 'redis'
 
 export const post = async ({ request }: { request: Request }) => {
-  const { site, config, sig, hash, jwtIdToken } = (await request.json()) as {
+  const { site, config, sig, hash } = (await request.json()) as {
     site: string
     config: string
     hash?: string
     sig?: string
-    jwtIdToken?: string
   }
 
   // We need either signautre or firebase jwt token to authenticate the draft.
   const hashAndSignGiven = !!hash && !!sig
-  const jwtIdTokenGiven = !!jwtIdToken
+  const jwtIdTokenGiven = !!request.headers.has('authorization')
   if (!hashAndSignGiven && !jwtIdTokenGiven) {
     return new Response(JSON.stringify({ error: 'Auth failed' }), {
       status: 401,
@@ -75,13 +69,10 @@ export const post = async ({ request }: { request: Request }) => {
     })
   }
 
-  let authenticated: boolean = false
-
   // We check that the signature matches the address in the draftOptions.
   if (hashAndSignGiven) {
     const address = utils.recoverAddress(utils.hashMessage(hash), sig)
-    authenticated = address.toLowerCase() === value.address.toLowerCase()
-    if (!authenticated) {
+    if (address.toLowerCase() !== value.address.toLowerCase()) {
       return new Response(JSON.stringify({ error: 'Invalid sig' }), {
         status: 401,
       })
@@ -90,12 +81,22 @@ export const post = async ({ request }: { request: Request }) => {
 
   // We now check that the jwt matches the user in the draftOptions.
   if (jwtIdTokenGiven) {
+    const authorization: string | null = request.headers.get('authorization')
+    // Get the token out of the header.
+    const jwtTokenId: string | undefined = authorization?.split('Bearer ')[1]
+    if (!jwtTokenId) {
+      return new Response(JSON.stringify({ error: 'Auth missing' }), {
+        status: 401,
+      })
+    }
+
+    // Initialize the firebase app and check that token is valid.
     const auth = initializeFirebaseAdmin()
+    // Then we compare the token.
     try {
-      const decodedJwtData = await auth.verifyIdToken(jwtIdToken)
+      const decodedJwtData = await auth.verifyIdToken(jwtTokenId)
       const uidInJwt = decodedJwtData.uid
-      authenticated = uidInJwt === value.uid
-      if (!authenticated) {
+      if (uidInJwt !== value.uid) {
         return new Response(JSON.stringify({}), { status: 401 })
       }
     } catch (error: any) {
