@@ -36,8 +36,9 @@ const { membership, memberships, clubs, rpcUrl, propertyAddress } =
 <script>
   import { ClubsEvents } from '@devprotocol/clubs-core'
   import { GetModalProvider, ReConnectWallet } from '@fixtures/wallet'
-  import { BigNumber } from 'ethers'
+  import { constants } from 'ethers'
   import { keccak256, parseUnits } from 'ethers/lib/utils'
+  import BigNumber from 'bignumber.js'
 
   import { Membership } from '.'
 
@@ -67,10 +68,10 @@ const { membership, memberships, clubs, rpcUrl, propertyAddress } =
         requiredETHAmount: parseUnits(String(opt.price)).toString(),
         requiredETHFee: opt.fee?.percentage
           ? parseUnits(
-              BigNumber.from(opt.price).mul(opt.fee.percentage).toString()
+              new BigNumber(opt.price).times(opt.fee.percentage).toFixed()
             ).toString()
           : 0,
-        gateway: currentAddress,
+        gateway: opt.fee?.beneficiary ?? constants.AddressZero,
       }))
 
       const keys: string[] = memOpts?.map((opt) => keccak256(opt.payload)) || []

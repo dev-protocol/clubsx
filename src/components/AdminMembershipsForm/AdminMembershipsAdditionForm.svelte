@@ -25,7 +25,7 @@
   export let base: string = '/admin'
   export let mode: 'edit' | 'create' = 'create'
   export let rpcUrl: string
-  export let propertyAddress: string
+  export let propertyAddress: string | null | undefined
   let estimatedEarnings: {
     dev?: [number, number]
     usd?: [number, number]
@@ -162,7 +162,7 @@
     // const modalProvider = GetModalProvider()
     // const { provider } = await ReConnectWallet(modalProvider)
 
-    if (!provider) {
+    if (!provider || !propertyAddress) {
       loading = false
       return
     }
@@ -219,7 +219,7 @@
   <form
     on:change|preventDefault={(_) => update()}
     class={`grid gap-16 ${loading ? 'animate-pulse' : ''} ${
-      existingMemberships ? 'opacity-30' : ''
+      membershipExists ? 'opacity-30' : ''
     }`}
   >
     <div class="grid gap-16 lg:grid-cols-[3fr_2fr]">
