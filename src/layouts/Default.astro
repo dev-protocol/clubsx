@@ -20,8 +20,8 @@ const { metaTitle, config } = Astro.props as {
 const title = metaTitle ? `${config.name} : ${metaTitle}` : config.name
 
 const draftOptions = config.options?.find((option) => option.key === '__draft')
-  ?.value as DraftOptions
-const isInDraft = Boolean(draftOptions?.value.isInDraft)
+  ?.value as DraftOptions['value']
+const isInDraft = Boolean(draftOptions?.isInDraft)
 
 console.log({ draftOptions, isInDraft })
 
