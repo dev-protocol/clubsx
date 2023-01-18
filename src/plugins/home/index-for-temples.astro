@@ -1,0 +1,272 @@
+---
+import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
+import Sidebar from '@components/Sidebar/Sidebar.vue'
+import Footer from '@components/Global/Footer.astro'
+import JoinClub from '@components/Join/JoinClub.vue'
+import { Tiers } from '@constants/tier'
+import { HomeConfig } from '../../constants/homeConfig'
+import { NavLink } from '@constants/navLink'
+
+import cover1 from '@assets/cover-1.jpg'
+import owt3cn75 from '@assets/owt3cn75.png'
+import gt6zfoja from '@assets/gt6zfoja.png'
+import artifacts40 from '@assets/artifacts/40.png'
+import artifacts92 from '@assets/artifacts/92.png'
+import artifacts89 from '@assets/artifacts/89.png'
+import artifacts12 from '@assets/artifacts/12.png'
+import artifacts259 from '@assets/artifacts/259.png'
+import artifacts125 from '@assets/artifacts/125.png'
+import artifacts101 from '@assets/artifacts/101.png'
+import artifacts108 from '@assets/artifacts/108.png'
+import grade from '@assets/Grade.png'
+
+const {
+  propertyAddress,
+  name,
+  tiers,
+  homeConfig,
+  rpcUrl,
+  sidebarLinks,
+  sidebarPrimaryLinks,
+  avatarImgSrc,
+} = Astro.props as {
+  propertyAddress: string
+  name: string
+  tiers: Tiers
+  homeConfig: HomeConfig
+  rpcUrl: string
+  sidebarPrimaryLinks: NavLink[]
+  sidebarLinks: NavLink[]
+  avatarImgSrc: string
+}
+---
+
+<div>
+  <div class="relative">
+    <div class="absolute h-[24rem] w-full lg:h-[38rem]">
+      <img src={cover1} class="h-full w-full object-cover opacity-80" />
+    </div>
+    <CLBWrapper>
+      <Sidebar
+        client:load
+        propertyAddress={propertyAddress}
+        tenantName={name}
+        links={sidebarLinks}
+        primaryLinks={sidebarPrimaryLinks}
+        avatarImgSrc={avatarImgSrc}
+        rpcUrl={rpcUrl}
+      />
+      <article class="grid gap-10 lg:gap-20">
+        <header
+          class="flex min-h-[24rem] items-center justify-center lg:-mt-12 lg:min-h-[38rem]"
+        >
+          <h1
+            class="mx-4 max-w-3xl text-justify font-title text-3xl font-extrabold lg:text-4xl"
+          >
+            Join the DAO that makes the next 1000 years
+          </h1>
+        </header>
+        <div class="grid grid-cols-1 gap-12 px-4">
+          <section class="grid gap-8">
+            <h2 class="font-mono text-xl text-native-blue-200">What we do</h2>
+            <div class="grid items-center gap-8 lg:grid-cols-[1fr_auto_1fr]">
+              <i
+                class="h-14 w-14 rounded-full border border-native-blue-200 lg:h-28 lg:w-28"
+              ></i>
+              <p class="font-title text-xl font-bold lg:text-2xl">
+                We make everything for temples. Let’s continue to create history
+                by passing on culture.
+              </p>
+              <i
+                class="h-14 w-14 rounded-full border border-native-blue-200 lg:h-28 lg:w-28"
+              ></i>
+            </div>
+            <div class="flex gap-8">
+              <figure>
+                <img
+                  src={owt3cn75}
+                  class="rounded-lg"
+                  width="961"
+                  height="704"
+                  alt="Zuiunji-temple, Hokkaido / 瑞雲寺 楼門"
+                />
+                <figcaption class="text-sm">
+                  Zuiunji-temple, Hokkaido / 瑞雲寺 楼門
+                </figcaption>
+              </figure>
+              <figure>
+                <img
+                  src={gt6zfoja}
+                  class="rounded-lg"
+                  width="961"
+                  height="704"
+                  alt="Narita san Shinshoji-temple, Chiba / 成田山新勝寺 荘厳具"
+                />
+                <figcaption class="text-sm">
+                  Narita san Shinshoji-temple, Chiba / 成田山新勝寺 荘厳具
+                </figcaption>
+              </figure>
+            </div>
+          </section>
+          <hr class="max-w-xl border border-dp-black-200" />
+          <section class="grid gap-8">
+            <h2 class="font-mono text-xl text-native-blue-200">Perks</h2>
+            <p class="text-center font-title text-4xl font-bold">
+              Receive NFTs, authentic art pieces by traditional artisans and
+              more.
+            </p>
+            <p class="font-c-serif text-center text-2xl">
+              Get NFTs, and redeem authentic art pieces by real traditional
+              craftsmanship.
+            </p>
+            <section>
+              <div
+                class="mb-16 grid grid-cols-[repeat(3,minmax(0,210px))] items-center justify-between gap-8"
+              >
+                <figure>
+                  <img
+                    src={artifacts40}
+                    width="399"
+                    height="301"
+                    alt="40 Makie lacquer-work plate"
+                  />
+                  <figcaption class="text-sm">
+                    40 Makie lacquer-work plate
+                  </figcaption>
+                </figure>
+                <figure>
+                  <img
+                    src={artifacts92}
+                    width="339"
+                    height="315"
+                    alt="92 Transformable panel"
+                  />
+                  <figcaption class="text-sm">
+                    92 Transformable panel
+                  </figcaption>
+                </figure>
+                <figure>
+                  <img
+                    src={artifacts89}
+                    width="365"
+                    height="358"
+                    alt="89 Metal panel, moon and autumn grasses"
+                  />
+                  <figcaption class="text-sm">
+                    89 Metal panel, moon and autumn grasses
+                  </figcaption>
+                </figure>
+              </div>
+              <div class="grid justify-items-center gap-16">
+                <figure>
+                  <img
+                    src={artifacts12}
+                    class="w-full max-w-md"
+                    width="907"
+                    height="229"
+                    alt="12 Lotus petal dish flower in the moon"
+                  />
+                  <figcaption class="max-w-md text-sm">
+                    12 Lotus petal dish flower in the moon
+                  </figcaption>
+                </figure>
+                <figure>
+                  <img src={grade} class="h-8 w-auto" width="137" height="75" />
+                  <img
+                    src={artifacts259}
+                    class="w-full max-w-md"
+                    width="995"
+                    height="483"
+                    alt="259 RINPOUKARAKUSASUKASIEGOURO"
+                  />
+                  <figcaption class="max-w-md text-sm">
+                    259 RINPOUKARAKUSASUKASIEGOURO
+                  </figcaption>
+                </figure>
+                <figure>
+                  <img
+                    src={artifacts125}
+                    class="w-60 max-w-full"
+                    width="490"
+                    height="1165"
+                    alt="125 Virupaksa (Buddhist deity)"
+                  />
+                  <figcaption class="w-60 max-w-full text-sm">
+                    125 Virupaksa (Buddhist deity)
+                  </figcaption>
+                </figure>
+                <figure>
+                  <img
+                    src={artifacts101}
+                    class="max-w-xs"
+                    width="684"
+                    height="690"
+                    alt="101 Meditation Room"
+                  />
+                  <figcaption class="max-w-xs text-sm">
+                    101 Meditation Room
+                  </figcaption>
+                </figure>
+                <figure>
+                  <img
+                    src={artifacts108}
+                    class="max-w-xs"
+                    width="580"
+                    height="1017"
+                    alt={"108 The Light Beyond, Ryunosuke Akutagawa, The Spider's Thread"}
+                  />
+                  <figcaption class="max-w-xs text-sm">
+                    {
+                      "108 The Light Beyond, Ryunosuke Akutagawa, The Spider's Thread"
+                    }
+                  </figcaption>
+                </figure>
+              </div>
+            </section>
+          </section>
+          <section
+            class="grid gap-8 rounded-xl bg-[linear-gradient(0,#00000080,#00000080),url('/assets/texture.jpg')] bg-cover p-8"
+          >
+            <svg
+              width="21"
+              height="15"
+              viewBox="0 0 21 15"
+              fill="none"
+              role="presentation"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M10.3203 0.104004L6.35938 14.6821H0.148438L7.4375 0.104004H10.3203ZM20.6094 0.104004L16.6484 14.6821H10.4375L17.7266 0.104004H20.6094Z"
+                fill="currentColor"></path>
+            </svg>
+            <h2
+              class="text-center font-title text-3xl font-bold leading-normal"
+            >
+              Let's get good craftsmen to do good w ork. It is important to pass
+              on the skills of skilled craftsmen to the next generation.
+            </h2>
+            <svg
+              class="place-self-end"
+              width="21"
+              height="15"
+              viewBox="0 0 21 15"
+              fill="none"
+              role="presentation"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M10.6328 14.6821L14.5938 0.104004H20.8047L13.5156 14.6821H10.6328ZM0.34375 14.6821L4.30469 0.104004H10.5156L3.22656 14.6821H0.34375Z"
+                fill="currentColor"></path>
+            </svg>
+          </section>
+          <JoinClub
+            client:idle
+            propertyAddress={propertyAddress}
+            tiers={tiers}
+          />
+        </div>
+      </article>
+    </CLBWrapper>
+  </div>
+  <Footer />
+</div>

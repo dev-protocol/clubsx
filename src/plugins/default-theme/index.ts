@@ -13,6 +13,7 @@ import { default as Index } from '@plugins/home/index.astro'
 import { default as Admin } from './admin.astro'
 import { HomeConfig } from '../../constants/homeConfig'
 import { NavLink } from '@constants/navLink'
+import { default as Temples } from '@plugins/home/index-for-temples.astro'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
@@ -36,11 +37,14 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
     (option) => option.key === 'avatarImgSrc'
   )?.value
 
+  const IS_TEMPLES_DAO =
+    propertyAddress === '0x541f7914ed2a4a8b477edc711fa349a77983f3ad'
+
   return homeConfig
     ? [
         {
           paths: [],
-          component: Index,
+          component: IS_TEMPLES_DAO ? Temples : Index,
           props: {
             name,
             propertyAddress,
