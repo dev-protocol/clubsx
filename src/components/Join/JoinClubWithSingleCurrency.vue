@@ -25,7 +25,7 @@ import { defineComponent, PropType } from '@vue/runtime-core'
 import { Membership } from '@plugins/memberships'
 
 export default defineComponent({
-  name: 'JoinClubWithEth',
+  name: 'JoinClubWithSingleCurrency',
   props: {
     propertyAddress: String,
     memberships: {
