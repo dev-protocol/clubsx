@@ -39,7 +39,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
   return homeConfig
     ? [
         {
-          paths: ['theme'],
+          paths: [],
           component: Index,
           props: {
             name,

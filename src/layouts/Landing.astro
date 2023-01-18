@@ -1,8 +1,13 @@
 ---
-import ClubsWhite from '@assets/clubs--white.svg'
+import ClubsColor from '@assets/clubs--color.svg'
 import ConnectButton from '@components/Wallet/ConnectButton.vue'
 
 import '@devprotocol/clubs-core/styles'
+
+const { connectButton = 'hidden' } = Astro.props as {
+  connectButton?: 'show' | 'hidden'
+}
+
 const title = 'Clubs'
 const name = 'Clubs' // not sure the difference here compared to title
 const description = ''
@@ -11,13 +16,12 @@ const ogURL = ''
 const twitterHandle = 'devprtcl'
 ---
 
-<!DOCTYPE html>
-<html class="dark" lang="en">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <title>{title}</title>
-    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="icon" type="image/svg" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /><link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap"
@@ -38,20 +42,27 @@ const twitterHandle = 'devprtcl'
     <meta name="twitter:image" content={`${ogURL}`} />
   </head>
 
-  <body class="min-h-screen bg-dp-blue-grey-400 font-body text-white">
+  <body class="min-h-screen bg-dp-black-600 font-body text-white">
     <slot name="before-header" />
-    <header class="relative flex justify-between p-6 md:p-12">
-      <h1 class="flex items-center gap-2.5 font-['Poppins'] text-xl font-bold">
-        <img src={ClubsWhite} />Clubs
-      </h1>
-      <!-- <nav class="flex justify-between gap-10"> -->
-      <!-- TODO: path for this -->
-      <!-- <a class="rounded border py-2 px-4" href="/getstarted">Get Started</a> -->
-      <!-- <ConnectButton client:only="vue" /> -->
-      <!-- </nav> -->
+    <header class="relative flex items-center justify-between py-4 px-6">
+      <a href="/">
+        <h1
+          class="flex items-center gap-2.5 font-['Poppins'] text-xl font-bold"
+        >
+          <img src={ClubsColor} />Clubs
+        </h1>
+      </a>
+      <slot name="right" />
+      {
+        connectButton === 'show' && (
+          <nav class="flex justify-between gap-10">
+            <ConnectButton type="white" client:load />
+          </nav>
+        )
+      }
     </header>
 
-    <main class="container relative mx-auto">
+    <main>
       <slot />
     </main>
   </body>

@@ -32,8 +32,11 @@
 
 <form on:change|preventDefault={(e) => update()} class="grid gap-16">
   <div>
-    <label class="grid justify-items-start gap-2" name="hero-image">
-      <span class=""> Cover image </span>
+    <label
+      class="hs-form-field grid justify-items-start gap-2"
+      name="hero-image"
+    >
+      <span class="hs-form-field__label"> Cover image </span>
       {#if homeConfig.hero.image && homeConfig.hero.image != '' && uploading === false}
         <img
           src={homeConfig.hero.image}
@@ -47,8 +50,7 @@
         </div>
       {/if}
       <div>
-        <span
-          class="block cursor-pointer rounded bg-[#040B10] px-12 py-4 text-sm font-medium"
+        <span class="hs-button is-filled is-large cursor-pointer"
           >Upload to change</span
         >
 
@@ -63,25 +65,27 @@
     </label>
   </div>
 
-  <div class="grid justify-start gap-2">
-    <label for="hero-text"> Main copy </label>
+  <label class="hs-form-field is-filled">
+    <span class="hs-form-field__label"> Main copy </span>
     <input
-      class="min-w-full max-w-full rounded bg-[#040B10] px-8 py-4"
+      class="hs-form-field__input"
       bind:value={homeConfig.hero.text}
       id="hero-text"
       name="hero-text"
     />
-  </div>
+  </label>
 
-  <div class="grid gap-2">
-    <label for="club-description"> Description to introduce about you </label>
+  <label class="hs-form-field is-filled">
+    <span class="hs-form-field__label">
+      Description to introduce about you
+    </span>
     <textarea
       rows="10"
-      class="rounded bg-[#040B10] px-8 py-4"
+      class="hs-form-field__input"
       bind:value={homeConfig.body}
       id="club-description"
       name="club-description"
     />
     <p class="text-sm">Markdown is available</p>
-  </div>
+  </label>
 </form>

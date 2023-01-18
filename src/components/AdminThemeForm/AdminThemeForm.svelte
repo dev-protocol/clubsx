@@ -152,24 +152,30 @@
       Sidebar primary links
     </p>
     {#each sidebarPrimaryLinks as link, i}
-      <section class="mb-4 flex w-full items-center justify-center gap-4">
+      <section
+        class="mb-4 flex w-full flex-col items-start justify-center gap-4 lg:flex-row lg:items-center"
+      >
         <input
-          class="font-DMSans h-[72px] flex-1 rounded border-[3px] border-[#000000] bg-[#040B10] px-8 py-6 text-base font-normal text-[#C4C4C4]"
+          class="font-DMSans flex-1 rounded border-[3px] border-[#000000] bg-[#040B10] px-8 py-4 text-base font-normal text-[#C4C4C4] outline-none transition-colors focus:border-white"
           bind:value={link.display}
           id={`sidebarPrimaryLinks-{i}-display`}
           name={`sidebarPrimaryLinks-{i}-display`}
           placeholder={link.display}
         />
-        <img alt="Status" src={whiteRightArrowImgSrc} class="h-6 w-6" />
+        <img
+          alt="Status"
+          src={whiteRightArrowImgSrc}
+          class="h-6 w-6 rotate-90 lg:rotate-0"
+        />
         <input
-          class="font-DMSans h-[72px] flex-1 rounded border-[3px] border-[#000000] bg-[#040B10] px-8 py-6 text-base font-normal text-[#C4C4C4]"
+          class="font-DMSans  flex-1 rounded border-[3px] border-[#000000] bg-[#040B10] px-8 py-4 text-base font-normal text-[#C4C4C4] outline-none transition-colors focus:border-white"
           bind:value={link.path}
           id={`sidebarPrimaryLinks-{i}-path`}
           name={`sidebarPrimaryLinks-{i}-path`}
           placeholder={link.path}
         />
         <button
-          class="hs-button is-filled h-[72px] rounded border-[3px] border-[#000000] bg-[#040B10] py-4 px-6 text-base"
+          class="hs-button is-filled  rounded border-[3px] border-[#000000] bg-[#040B10] py-4 px-6 text-base"
           type="button"
           id={`sidebarPrimaryLinks-{i}-remove-btn`}
           name={`sidebarPrimaryLinks-{i}-remove-btn`}
@@ -193,24 +199,30 @@
       Sidebar links
     </p>
     {#each sidebarLinks as link, i}
-      <section class="mb-4 flex w-full items-center justify-center gap-4">
+      <section
+        class="mb-4 flex w-full flex-col items-start justify-center gap-4 lg:flex-row lg:items-center"
+      >
         <input
-          class="font-DMSans h-[72px] flex-1 rounded border-[3px] border-[#000000] bg-[#040B10] px-8 py-6 text-base font-normal text-[#C4C4C4]"
+          class="font-DMSans  flex-1 rounded border-[3px] border-[#000000] bg-[#040B10] px-8 py-4 text-base font-normal text-[#C4C4C4] outline-none transition-colors focus:border-white"
           bind:value={link.display}
           id={`sidebarLinks-{i}-display`}
           name={`sidebarLinks-{i}-display`}
           placeholder={link.display}
         />
-        <img alt="Status" src={whiteRightArrowImgSrc} class="h-6 w-6" />
+        <img
+          alt="Status"
+          src={whiteRightArrowImgSrc}
+          class="h-6 w-6 rotate-90 lg:rotate-0"
+        />
         <input
-          class="font-DMSans h-[72px] flex-1 rounded border-[3px] border-[#000000] bg-[#040B10] px-8 py-6 text-base font-normal text-[#C4C4C4]"
+          class="font-DMSans  flex-1 rounded border-[3px] border-[#000000] bg-[#040B10] px-8 py-4 text-base font-normal text-[#C4C4C4] outline-none transition-colors focus:border-white"
           bind:value={link.path}
           id={`sidebarLinks-{i}-path`}
           name={`sidebarLinks-{i}-path`}
           placeholder={link.path}
         />
         <button
-          class="hs-button is-filled h-[72px] rounded border-[3px] border-[#000000] bg-[#040B10] py-4 px-6 text-base"
+          class="hs-button is-filled is-large rounded border-[3px] border-[#000000] bg-[#040B10]"
           type="button"
           id={`sidebarLinks-{i}-remove-btn`}
           name={`sidebarLinks-{i}-remove-btn`}
@@ -221,7 +233,7 @@
       </section>
     {/each}
     <button
-      class="hs-button is-filled h-14 w-fit rounded border-[3px] border-[#000000] bg-[#040B10] py-4 px-6 text-base"
+      class="hs-button is-filled is-large w-fit rounded border-[3px] border-[#000000] bg-[#040B10] text-base"
       type="button"
       on:click={addNewSidebarLink}
     >
@@ -234,24 +246,30 @@
       Header links
     </p>
     {#each headerLinks as link, i}
-      <section class="mb-4 flex w-full items-center justify-center gap-4">
+      <section
+        class="mb-4 flex w-full flex-col items-start justify-center gap-4 lg:flex-row lg:items-center"
+      >
         <input
-          class="font-DMSans h-[72px] flex-1 rounded border-[3px] border-[#000000] bg-[#040B10] px-8 py-6 text-base font-normal text-[#C4C4C4]"
+          class="font-DMSans  flex-1 rounded border-[3px] border-[#000000] bg-[#040B10] px-8 py-4 text-base font-normal text-[#C4C4C4] outline-none transition-colors focus:border-white"
           bind:value={link.display}
           id={`headerLinks-{i}-display`}
           name={`headerLinks-{i}-display`}
           placeholder={link.display}
         />
-        <img alt="Status" src={whiteRightArrowImgSrc} class="h-6 w-6" />
+        <img
+          alt="Status"
+          src={whiteRightArrowImgSrc}
+          class="h-6 w-6 rotate-90 lg:rotate-0"
+        />
         <input
-          class="font-DMSans h-[72px] flex-1 rounded border-[3px] border-[#000000] bg-[#040B10] px-8 py-6 text-base font-normal text-[#C4C4C4]"
+          class="font-DMSans  flex-1 rounded border-[3px] border-[#000000] bg-[#040B10] px-8 py-4 text-base font-normal text-[#C4C4C4] outline-none transition-colors focus:border-white"
           bind:value={link.path}
           id={`headerLinks-{i}-path`}
           name={`headerLinks-{i}-path`}
           placeholder={link.path}
         />
         <button
-          class="hs-button is-filled h-[72px] rounded border-[3px] border-[#000000] bg-[#040B10] py-4 px-6 text-base"
+          class="hs-button is-filled is-large border-[3px] border-[#000000] bg-[#040B10]"
           type="button"
           id={`headerLinks-{i}-remove-btn`}
           name={`headerLinks-{i}-remove-btn`}
@@ -262,7 +280,7 @@
       </section>
     {/each}
     <button
-      class="hs-button is-filled h-14 w-fit rounded border-[3px] border-[#000000] bg-[#040B10] py-4 px-6 text-base"
+      class="hs-button is-filled is-large w-fit rounded border-[3px] border-[#000000] bg-[#040B10]"
       type="button"
       on:click={addNewHeaderLink}
     >
@@ -275,24 +293,30 @@
       Social links
     </p>
     {#each socialLinks as link, i}
-      <section class="mb-4 flex w-full items-center justify-center gap-4">
+      <section
+        class="mb-4 flex w-full flex-col items-start justify-center gap-4 lg:flex-row lg:items-center"
+      >
         <input
-          class="font-DMSans h-[72px] flex-1 rounded border-[3px] border-[#000000] bg-[#040B10] px-8 py-6 text-base font-normal text-[#C4C4C4]"
+          class="font-DMSans  flex-1 rounded border-[3px] border-[#000000] bg-[#040B10] px-8 py-4 text-base font-normal text-[#C4C4C4] outline-none transition-colors focus:border-white"
           bind:value={link.display}
           id={`socialLinks-{i}-display`}
           name={`socialLinks-{i}-display`}
           placeholder={link.display}
         />
-        <img alt="Status" src={whiteRightArrowImgSrc} class="h-6 w-6" />
+        <img
+          alt="Status"
+          src={whiteRightArrowImgSrc}
+          class="h-6 w-6 rotate-90 lg:rotate-0"
+        />
         <input
-          class="font-DMSans h-[72px] flex-1 rounded border-[3px] border-[#000000] bg-[#040B10] px-8 py-6 text-base font-normal text-[#C4C4C4]"
+          class="font-DMSans  flex-1 rounded border-[3px] border-[#000000] bg-[#040B10] px-8 py-4 text-base font-normal text-[#C4C4C4] outline-none transition-colors focus:border-white"
           bind:value={link.path}
           id={`socialLinks-{i}-path`}
           name={`socialLinks-{i}-path`}
           placeholder={link.path}
         />
         <button
-          class="hs-button is-filled h-[72px] rounded border-[3px] border-[#000000] bg-[#040B10] py-4 px-6 text-base"
+          class="hs-button is-filled is-large border-[3px] border-[#000000] bg-[#040B10]"
           type="button"
           id={`socialLinks-{i}-remove-btn`}
           name={`socialLinks-{i}-remove-btn`}
@@ -303,7 +327,7 @@
       </section>
     {/each}
     <button
-      class="hs-button is-filled h-14 w-fit rounded border-[3px] border-[#000000] bg-[#040B10] py-4 px-6 text-base"
+      class="hs-button is-filled is-large w-fit rounded border-[3px] border-[#000000] bg-[#040B10]"
       type="button"
       on:click={addNewSocialLink}
     >
@@ -314,24 +338,30 @@
   <section class="mb-16 w-full">
     <p class="font-DMSans mb-4 text-base font-normal text-white">Nav links</p>
     {#each navLinks as link, i}
-      <section class="mb-4 flex w-full items-center justify-center gap-4">
+      <section
+        class="mb-4 flex w-full flex-col items-start justify-center gap-4 lg:flex-row lg:items-center"
+      >
         <input
-          class="font-DMSans h-[72px] flex-1 rounded border-[3px] border-[#000000] bg-[#040B10] px-8 py-6 text-base font-normal text-[#C4C4C4]"
+          class="font-DMSans  flex-1 rounded border-[3px] border-[#000000] bg-[#040B10] px-8 py-4 text-base font-normal text-[#C4C4C4] outline-none transition-colors focus:border-white"
           bind:value={link.display}
           id={`navLinks-{i}-display`}
           name={`navLinks-{i}-display`}
           placeholder={link.display}
         />
-        <img alt="Status" src={whiteRightArrowImgSrc} class="h-6 w-6" />
+        <img
+          alt="Status"
+          src={whiteRightArrowImgSrc}
+          class="h-6 w-6 rotate-90 lg:rotate-0"
+        />
         <input
-          class="font-DMSans h-[72px] flex-1 rounded border-[3px] border-[#000000] bg-[#040B10] px-8 py-6 text-base font-normal text-[#C4C4C4]"
+          class="font-DMSans  flex-1 rounded border-[3px] border-[#000000] bg-[#040B10] px-8 py-4 text-base font-normal text-[#C4C4C4] outline-none transition-colors focus:border-white"
           bind:value={link.path}
           id={`navLinks-{i}-path`}
           name={`navLinks-{i}-path`}
           placeholder={link.path}
         />
         <button
-          class="hs-button is-filled h-[72px] rounded border-[3px] border-[#000000] bg-[#040B10] py-4 px-6 text-base"
+          class="hs-button is-filled is-large border-[3px] border-[#000000] bg-[#040B10]"
           type="button"
           id={`navLinks-{i}-remove-btn`}
           name={`navLinks-{i}-remove-btn`}
@@ -342,7 +372,7 @@
       </section>
     {/each}
     <button
-      class="hs-button is-filled h-14 w-fit rounded border-[3px] border-[#000000] bg-[#040B10] py-4 px-6 text-base"
+      class="hs-button is-filled is-large w-fit rounded border-[3px] border-[#000000] bg-[#040B10]"
       type="button"
       on:click={addNewNavLink}
     >
@@ -373,12 +403,12 @@
       <button
         on:click={() => onUploadClick(`hero-image`)}
         type="button"
-        class="hs-button is-filled mb-[62px] h-[72px] w-fit rounded border-[3px] border-[#000000] bg-[#040B10] py-6 px-8 text-base"
+        class="hs-button is-filled mb-[62px]  w-fit rounded border-[3px] border-[#000000] bg-[#040B10] py-6 px-8 text-base"
       >
         Upload to change
       </button>
       <input
-        class="hs-button is-filled mb-[62px] h-[72px] w-fit rounded border-[3px] border-[#000000] bg-[#040B10] py-6 px-8 text-base"
+        class="hs-button is-filled mb-[62px]  w-fit rounded border-[3px] border-[#000000] bg-[#040B10] py-6 px-8 text-base"
         style="display:none"
         type="file"
         id="hero-image"
@@ -389,7 +419,7 @@
       Main copy
     </p>
     <input
-      class="font-DMSans mb-[62px] h-[72px] w-[95.23%] rounded border-[3px] border-[#000000] bg-[#040B10] px-8 py-6 text-base font-normal text-[#C4C4C4]"
+      class="font-DMSans mb-[62px]  w-[95.23%] rounded border-[3px] border-[#000000] bg-[#040B10] px-8 py-4 text-base font-normal text-[#C4C4C4] outline-none transition-colors focus:border-white"
       bind:value={homeConfig.hero.text}
       id="hero-text"
       name="hero-text"
@@ -400,7 +430,7 @@
     </p>
     <textarea
       rows="10"
-      class="font-DMSans mb-[7px] h-[203px] w-[95.23%] rounded border-[3px] border-[#000000] bg-[#040B10] px-8 py-6 text-base font-normal text-[#C4C4C4]"
+      class="font-DMSans mb-[7px] h-[203px] w-[95.23%] rounded border-[3px] border-[#000000] bg-[#040B10] px-8 py-4 text-base font-normal text-[#C4C4C4] outline-none transition-colors focus:border-white"
       id="club-description"
       name="club-description"
       placeholder={homeConfig.body}

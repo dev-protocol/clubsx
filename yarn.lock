@@ -581,14 +581,14 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
-"@devprotocol/clubs-core@0.19.2":
-  version "0.19.2"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.19.2.tgz#fbbd6f825932fa9b1d9c35f3518c0382e47fa4de"
-  integrity sha512-9oWyGXCymLh1QRN/RCkMRoqng85gY/X+PiZKXAZamIAFUlLL3edn2iZMBySllbdTj50z9/dhteKwS9Z+UK5nXw==
+"@devprotocol/clubs-core@0.20.1":
+  version "0.20.1"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.20.1.tgz#68f54de33e900517731fbe85f4b4dbfc3ef0e6ed"
+  integrity sha512-g5I9kIIgEOHHi3//SSEXmOhTA++ANgZq8wBxnFkbhuh8cyWTUKaGJF2T9SHdnA5aPzfS/Rk+YOj8rpnBhEo5Zw==
   dependencies:
-    "@devprotocol/dev-kit" "7.1.1"
+    "@devprotocol/dev-kit" "7.1.2"
     "@devprotocol/elements" "0.2.2"
-    "@devprotocol/hashi" "1.6.0"
+    "@devprotocol/hashi" "1.6.2"
     "@devprotocol/util-ts" "3.0.0"
     "@metamask/detect-provider" "^2.0.0"
     ethers "^5.7.0"
@@ -628,10 +628,10 @@
   resolved "https://registry.yarnpkg.com/@devprotocol/elements/-/elements-0.2.2.tgz#7325fb3354f2fb77c08f91634656a9e87ce0fa80"
   integrity sha512-8Kj3hw84GVAIrQnX5gFE0iZSMvzbKqga5Kdo7rHI7ZS6lUBgG1EwxYv78iIz9SwdBki9zyGxfrQb4j3dI4Sv9w==
 
-"@devprotocol/hashi@1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/hashi/-/hashi-1.6.0.tgz#9bed2117f5de8fe37d71131e516ba49ad59370ec"
-  integrity sha512-6RmrlhB1ZMfYnaqggNZeL2ociD+nYRIh9gn0GWyQsllr+IONJB07jxdZZ7+HKm+51EDfBYBiJD5goUQrevoMEg==
+"@devprotocol/hashi@1.6.2":
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/@devprotocol/hashi/-/hashi-1.6.2.tgz#0cf760ed8e3144960ac35eec693cc59f9ec38675"
+  integrity sha512-chEO3fWqLQsG8gfOfz34iMXBoQJkxoQIhN2MTwUj5hMQYn1CD5CaCMOAeYmFyb34WDjTfZGQhdMiHnLz0tOfCA==
   dependencies:
     "@matteusan/sentro" "0.1.25"
 
@@ -7639,10 +7639,10 @@ svg-tags@^1.0.0:
   resolved "https://registry.npmjs.org/svg-tags/-/svg-tags-1.0.0.tgz"
   integrity sha512-ovssysQTa+luh7A5Weu3Rta6FJlFBBbInjOh722LIt6klpU2/HtdUbszju/G4devcvk8PGt7FCLv5wftu3THUA==
 
-swiper@8.4.5:
-  version "8.4.5"
-  resolved "https://registry.yarnpkg.com/swiper/-/swiper-8.4.5.tgz#149ca81f67393d3f33abddd0f968fc37e99980b5"
-  integrity sha512-zveyEFBBv4q1sVkbJHnuH4xCtarKieavJ4SxP0QEHvdpPLJRuD7j/Xg38IVVLbp7Db6qrPsLUePvxohYx39Agw==
+swiper@8.4.6:
+  version "8.4.6"
+  resolved "https://registry.yarnpkg.com/swiper/-/swiper-8.4.6.tgz#5b52c83cb4aa9ce6f1640e44d3f93ff4ea6f7682"
+  integrity sha512-HACW035vBz2T6Kfut23EAzXhcDpgR8doX+wjq0ZUvJgS5SQApGrV885DAPLBFnmPUISsAhNSVxPKDxqroFvXvQ==
   dependencies:
     dom7 "^4.0.4"
     ssr-window "^4.0.2"
