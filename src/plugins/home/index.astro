@@ -2,16 +2,16 @@
 import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
 import Footer from '@components/Global/Footer.astro'
-import JoinClub from '@components/Join/JoinClub.vue'
-import { Tiers } from '@constants/tier'
+import JoinClubWithEth from '@components/Join/JoinClubWithEth.vue'
 import { HomeConfig } from '../../constants/homeConfig'
 import { NavLink } from '@constants/navLink'
 import { Markdown } from '@astropub/md'
+import { Membership } from '@plugins/memberships'
 
 const {
   propertyAddress,
   name,
-  tiers,
+  memberships,
   homeConfig,
   rpcUrl,
   sidebarLinks,
@@ -20,7 +20,7 @@ const {
 } = Astro.props as {
   propertyAddress: string
   name: string
-  tiers: Tiers
+  memberships: Membership[]
   homeConfig: HomeConfig
   rpcUrl: string
   sidebarPrimaryLinks: NavLink[]
@@ -59,10 +59,10 @@ const {
         </header>
         <div class="grid grid-cols-1 gap-12 px-4">
           <Markdown.Inline of={homeConfig.body} />
-          <JoinClub
+          <JoinClubWithEth
             client:idle
             propertyAddress={propertyAddress}
-            tiers={tiers}
+            memberships={memberships}
             tenantName={name}
             rpcUrl={rpcUrl}
           />

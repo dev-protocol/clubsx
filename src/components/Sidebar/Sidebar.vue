@@ -75,7 +75,7 @@
             type="filled fullwidth"
             :link="primaryLink.path"
             :isDisabled="primaryLink.enable === false"
-            class="bg-white text-black"
+            class="border-0 bg-white text-black"
             >{{ primaryLink.display }}</HSButton
           >
           <div class="grid w-full gap-3">
