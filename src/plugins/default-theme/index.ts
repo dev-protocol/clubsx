@@ -13,13 +13,21 @@ import { default as Index } from '@plugins/home/index.astro'
 import { default as Admin } from './admin.astro'
 import { HomeConfig } from '../../constants/homeConfig'
 import { NavLink } from '@constants/navLink'
+import { default as Temples } from '@plugins/home/index-for-temples.astro'
+import { Membership } from '@plugins/memberships'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
-  { name, propertyAddress, rpcUrl, ...config }
+  { name, propertyAddress, rpcUrl, plugins, ...config }
 ) => {
   const tiers = options.find((opt) => opt.key === 'tiers')
     ?.value as UndefinedOr<Tiers>
+
+  const memberships = plugins
+    .find((plg) => plg.name === 'memberships')
+    ?.options.find((opt) => opt.key === 'memberships')?.value as UndefinedOr<
+    Membership[]
+  >
 
   const homeConfig = options.find((opt) => opt.key === 'homeConfig')
     ?.value as UndefinedOr<HomeConfig>
@@ -36,15 +44,19 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
     (option) => option.key === 'avatarImgSrc'
   )?.value
 
+  const IS_TEMPLES_DAO =
+    propertyAddress === '0x541f7914ed2a4a8b477edc711fa349a77983f3ad'
+
   return homeConfig
     ? [
         {
           paths: [],
-          component: Index,
+          component: IS_TEMPLES_DAO ? Temples : Index,
           props: {
             name,
             propertyAddress,
             tiers,
+            memberships,
             homeConfig,
             rpcUrl,
             sidebarPrimaryLinks,
