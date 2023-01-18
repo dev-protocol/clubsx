@@ -3,20 +3,14 @@ import AdminMembershipsAdditionForm from '@components/AdminMembershipsForm/Admin
 import { ClubsPropsAdminPages } from '@devprotocol/clubs-core'
 import { Membership } from '.'
 
-const {
-  membership,
-  memberships,
-  presets,
-  clubs,
-  rpcUrl,
-  propertyAddress,
-} = Astro.props as ClubsPropsAdminPages & {
-  membership: Membership
-  memberships: Membership[]
-  presets: Membership[]
-  rpcUrl: string
-  propertyAddress: string
-}
+const { membership, memberships, presets, clubs, rpcUrl, propertyAddress } =
+  Astro.props as ClubsPropsAdminPages & {
+    membership: Membership
+    memberships: Membership[]
+    presets: Membership[]
+    rpcUrl: string
+    propertyAddress: string
+  }
 ---
 
 <div>
