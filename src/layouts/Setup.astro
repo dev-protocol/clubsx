@@ -145,17 +145,13 @@ const isInDraftWithFirebase = Boolean(
 </html>
 
 <script>
-  import { decode } from '@devprotocol/clubs-core'
-
-  const config = (document.getElementById('encodedConfig') as HTMLInputElement)
-    .value
-  console.log('ClubsConfiguration', decode(config))
-</script>
-
-<script>
-  import { onSubmitConfig } from '@devprotocol/clubs-core'
+  import { DraftOptions } from '@constants/draft'
+  import { decode, onSubmitConfig } from '@devprotocol/clubs-core'
+  import { UndefinedOr } from '@devprotocol/util-ts'
+  import { initializeFirebase } from '@fixtures/firebase'
   import { GetModalProvider, EthersProviderFrom } from '@fixtures/wallet'
   import { utils } from 'ethers'
+  import { Auth } from 'firebase/auth'
 
   const setupStep = (document.getElementById('setupStep') as HTMLInputElement)
     ?.value
@@ -175,32 +171,75 @@ const isInDraftWithFirebase = Boolean(
 
   const nextStepPath = getNextStepPath()
 
+  const config = (document.getElementById('encodedConfig') as HTMLInputElement)
+    .value
+  console.log('ClubsConfiguration', decode(config))
+  const decodedConfig = decode(config)
+  const isInDraftWithFirebase = Boolean(
+    (
+      decodedConfig.options?.find(
+        (x) => x.key === '__draft'
+      ) as UndefinedOr<DraftOptions>
+    )?.value.isInDraft &&
+      (
+        decodedConfig.options?.find(
+          (x) => x.key === '__draft'
+        ) as UndefinedOr<DraftOptions>
+      )?.value.uid
+  )
+
   onSubmitConfig(async (data, onFinish) => {
     const splitHostname = window.location.hostname.split('.')
     const site = splitHostname[0]
 
-    const modalProvider = GetModalProvider()
-    const { provider, currentAddress } = await EthersProviderFrom(modalProvider)
-    if (!currentAddress || !provider) {
-      return
-    }
-    const signer = provider.getSigner()
-
-    const hash = utils.hashMessage(data)
-    const sig = await signer.signMessage(hash)
-    if (!sig) {
-      return
-    }
-
-    const body = {
+    let body: {
+      site: string
+      config: string
+      hash?: string
+      sig?: string
+    } = {
       site,
       config: data,
-      hash,
-      sig,
+    }
+
+    const headers: { 'Content-Type': string; Authorization?: string } = {
+      'Content-Type': 'application/json',
+    }
+
+    if (!isInDraftWithFirebase) {
+      const modalProvider = GetModalProvider()
+      const { provider, currentAddress } = await EthersProviderFrom(
+        modalProvider
+      )
+      if (!currentAddress || !provider) {
+        return
+      }
+      const signer = provider.getSigner()
+
+      const hash = utils.hashMessage(data)
+      const sig = await signer.signMessage(hash)
+      if (!sig) {
+        return
+      }
+      // Update the request body to use hash and sig. Keeping headers the same.
+      body['hash'] = hash
+      body['sig'] = sig
+    } else {
+      // If in else, then we are using firebase.
+
+      const auth: Auth = initializeFirebase()
+      if (!auth || !auth.currentUser) {
+        return
+      }
+
+      const jwtTokenId = await auth.currentUser.getIdToken()
+      // Update the headers to use jwt authentication keeping body the same.
+      headers['Authorization'] = `Bearer ${jwtTokenId}`
     }
 
     const res = await fetch('/api/updateDraftConfig', {
       method: 'POST',
+      headers: headers,
       body: JSON.stringify(body),
     })
 
