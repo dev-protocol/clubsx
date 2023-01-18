@@ -10,7 +10,11 @@
       </section>
       <p class="text-base">How to create a wallet?</p>
     </section>
-    <button v-bind:class="buttonClasses" @click="connect" :disabled="connected">
+    <button
+      v-bind:class="buttonClasses"
+      @click="connect"
+      :disabled="connected || !connection"
+    >
       <p class="font-DMSans text-base font-bold text-[#FFFFFF]">
         {{ buttonText }}
       </p>
@@ -24,6 +28,7 @@ import { providers } from 'ethers'
 import { whenDefined } from '@devprotocol/util-ts'
 import { defineComponent } from '@vue/runtime-core'
 import type { connection as Connection } from '@devprotocol/clubs-core/connection'
+import { onMountClient } from '@devprotocol/clubs-core/events'
 
 type Data = {
   connected: boolean
@@ -47,7 +52,12 @@ export default defineComponent({
     buttonClasses() {
       const classes = 'hs-button is-large is-filled'
 
-      return this.connected ? classes + ' opacity-50' : classes
+      return this.connected
+        ? classes + ' opacity-50'
+        : classes +
+            (!this.connection
+              ? ' animate-pulse cursor-progress rounded bg-gray-500/60'
+              : '')
     },
     buttonText() {
       return this.connected ? 'Connected' : 'Connect'
@@ -59,17 +69,19 @@ export default defineComponent({
     },
   },
   async mounted() {
-    const [{ connection }, { GetModalProvider, ReConnectWallet }] =
-      await Promise.all([
-        import('@devprotocol/clubs-core/connection'),
-        import('@fixtures/wallet'),
-      ])
-    this.connection = connection
-    this.modalProvider = GetModalProvider()
-    const { currentAddress } = await ReConnectWallet(this.modalProvider)
-    if (currentAddress) {
-      this.connected = true
-    }
+    onMountClient(async () => {
+      const [{ connection }, { GetModalProvider, ReConnectWallet }] =
+        await Promise.all([
+          import('@devprotocol/clubs-core/connection'),
+          import('@fixtures/wallet'),
+        ])
+      this.connection = connection
+      this.modalProvider = GetModalProvider()
+      const { currentAddress } = await ReConnectWallet(this.modalProvider)
+      if (currentAddress) {
+        this.connected = true
+      }
+    })
   },
   methods: {
     setSigner(provider: providers.Web3Provider) {
