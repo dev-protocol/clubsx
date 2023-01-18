@@ -129,8 +129,17 @@ const isInDraftWithFirebase = Boolean(
   </body>
 
   <input id="setupStep" hidden value={setupStep} />
+  <input id="encodedConfig" hidden value={clubs.encodedClubsConfiguration} />
   <AdminConfigurationManager {clubs} />
 </html>
+
+<script>
+  import { decode } from '@devprotocol/clubs-core'
+
+  const config = (document.getElementById('encodedConfig') as HTMLInputElement)
+    .value
+  console.log('ClubsConfiguration', decode(config))
+</script>
 
 <script>
   import { onSubmitConfig } from '@devprotocol/clubs-core'
