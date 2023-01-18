@@ -7,6 +7,8 @@ import type {
 } from '@devprotocol/clubs-core'
 import Aside from '@devprotocol/clubs-core/aside'
 import { AdminConfigurationManager } from '@devprotocol/clubs-core/layouts'
+import { UndefinedOr } from '@devprotocol/util-ts'
+import { DraftOptions } from '@constants/draft'
 
 const {
   config,
@@ -34,8 +36,11 @@ const steps = {
 }
 
 const isInDraftWithFirebase = Boolean(
-  (config.options?.find((x) => x.key === '__draft')?.value as { uid?: string })
-    .uid
+  (
+    config.options?.find(
+      (x) => x.key === '__draft'
+    ) as UndefinedOr<DraftOptions>
+  )?.value.uid
 )
 ---
 

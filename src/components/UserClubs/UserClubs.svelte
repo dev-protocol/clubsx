@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { DraftOptions } from '@constants/draft'
   import { ClubsConfiguration } from '@devprotocol/clubs-core'
   import { onMount } from 'svelte'
   import UserClubItem from './UserClubItem.svelte'
@@ -26,9 +27,9 @@
     for (const club of clubs) {
       const isDraft = club.options?.find(
         (option) => option.key === '__draft'
-      ) as boolean | undefined
+      ) as DraftOptions | undefined
 
-      if (isDraft) {
+      if (isDraft?.value.isInDraft) {
         draftClubs.push(club)
         draftClubs = draftClubs
       } else {

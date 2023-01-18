@@ -9,6 +9,7 @@ import { NavLink, PathCondition } from '@constants/navLink'
 import { UndefinedOr } from '@devprotocol/util-ts'
 import VercelAnalytics from '@components/Analytics/VercelAnalytics.astro'
 import PreviewBanner from '@components/PreviewBanner/PreviewBanner.svelte'
+import { DraftOptions } from '@constants/draft'
 
 const { page } = Astro.params
 const { metaTitle, config } = Astro.props as {
@@ -18,12 +19,9 @@ const { metaTitle, config } = Astro.props as {
 
 const title = metaTitle ? `${config.name} : ${metaTitle}` : config.name
 
-type DraftValues = { user?: { ethereum?: string; uid?: string } }
 const draftOptions = config.options?.find((option) => option.key === '__draft')
-  ?.value as DraftValues
-const isInDraft = Boolean(
-  draftOptions?.user?.ethereum ?? draftOptions?.user?.uid
-)
+  ?.value as DraftOptions
+const isInDraft = Boolean(draftOptions?.value.isInDraft)
 
 console.log({ draftOptions, isInDraft })
 
