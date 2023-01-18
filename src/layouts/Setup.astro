@@ -35,12 +35,18 @@ const steps = {
   total: 5,
 }
 
+// Check that config is in draft and has a uid.
 const isInDraftWithFirebase = Boolean(
   (
     config.options?.find(
       (x) => x.key === '__draft'
     ) as UndefinedOr<DraftOptions>
-  )?.value.uid
+  )?.value.isInDraft &&
+    (
+      config.options?.find(
+        (x) => x.key === '__draft'
+      ) as UndefinedOr<DraftOptions>
+    )?.value.uid
 )
 ---
 
