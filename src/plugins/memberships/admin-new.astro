@@ -1,6 +1,6 @@
 ---
 import AdminMembershipsAdditionForm from '@components/AdminMembershipsForm/AdminMembershipsAdditionForm.svelte'
-import { ClubsPropsAdminPages, decode } from '@devprotocol/clubs-core'
+import { ClubsPropsAdminPages } from '@devprotocol/clubs-core'
 import { Membership } from '.'
 
 const {
@@ -8,7 +8,6 @@ const {
   memberships,
   presets,
   clubs,
-  options,
   rpcUrl,
   propertyAddress,
 } = Astro.props as ClubsPropsAdminPages & {
@@ -18,8 +17,6 @@ const {
   rpcUrl: string
   propertyAddress: string
 }
-
-const decoded = decode(clubs.encodedClubsConfiguration)
 ---
 
 <div>
