@@ -29,7 +29,11 @@ const { siteName } = Astro.params
     signInWithEmailLink,
   } from 'firebase/auth'
   import { initializeFirebase } from '../../fixtures/firebase'
-  import { ClubsConfiguration, setConfig } from '@devprotocol/clubs-core'
+  import {
+    ClubsConfiguration,
+    encode,
+    setConfig,
+  } from '@devprotocol/clubs-core'
 
   import { defaultConfig } from '@constants/defaultConfig'
 
@@ -79,7 +83,7 @@ const { siteName } = Astro.params
 
           const body = {
             site,
-            config,
+            config: encode(config),
             uid,
           }
 
