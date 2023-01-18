@@ -216,7 +216,12 @@
     </div>
   {/if}
 
-  <form on:change|preventDefault={(_) => update()} class="grid gap-16">
+  <form
+    on:change|preventDefault={(_) => update()}
+    class={`grid gap-16 ${loading ? 'animate-pulse' : ''} ${
+      existingMemberships ? 'opacity-30' : ''
+    }`}
+  >
     <div class="grid gap-16 lg:grid-cols-[3fr_2fr]">
       <!-- Form -->
       <div class="grid gap-8">
