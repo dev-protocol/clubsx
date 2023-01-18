@@ -32,6 +32,11 @@ const steps = {
       : 5,
   total: 5,
 }
+
+const isInDraftWithFirebase = Boolean(
+  (config.options?.find((x) => x.key === '__draft')?.value as { uid?: string })
+    .uid
+)
 ---
 
 <!DOCTYPE html>
@@ -84,6 +89,7 @@ const steps = {
               class="col-span-1"
               class="col-span-1"
               config={config}
+              showConnectButton={!isInDraftWithFirebase}
               client:load
             />
           </div>
@@ -174,7 +180,7 @@ const steps = {
       expectedAddress: currentAddress,
     }
 
-    const res = await fetch('/api/updateConfig', {
+    const res = await fetch('/api/updateDraftConfig', {
       method: 'POST',
       body: JSON.stringify(body),
     })
