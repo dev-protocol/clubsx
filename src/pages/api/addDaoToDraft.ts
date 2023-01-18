@@ -1,6 +1,6 @@
 import { whenDefined } from '@devprotocol/util-ts'
 import { generateId } from '@fixtures/api/keys'
-import { initializeFirebaseAdmin } from '@fixtures/firebase/initializeFirebaseAdmin'
+import { instanceStore } from '@fixtures/firebase/instance'
 import { utils } from 'ethers'
 import { createClient } from 'redis'
 import { ClubsData } from './fetchClubs'
@@ -59,7 +59,7 @@ export const post = async ({ request }: { request: Request }) => {
     }
 
     // Initialize the firebase app and check that token is valid.
-    const auth = initializeFirebaseAdmin()
+    const auth = instanceStore.initializedAdminApp
     // Then we compare the token.
     try {
       const decodedJwtData = await auth.verifyIdToken(jwtTokenId)
