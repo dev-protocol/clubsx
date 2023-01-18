@@ -2,6 +2,9 @@
 import HSButton from '@components/Primitives/Hashi/HSButton.vue'
 import CLBButton from 'node_modules/@devprotocol/clubs-core/src/ui/vue/CLBButton.vue'
 import ClubsColor from '@assets/clubs--color.svg'
+import Banner from '@assets/banner_clubs.png'
+import ArrowRight from '@components/Icons/arrow-right.astro'
+
 import '@devprotocol/clubs-core/styles'
 
 import HeroMedia from '@assets/Hero.png'
@@ -53,7 +56,9 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
           <img src={ClubsColor} />Clubs
         </h1>
       </a>
-      <HSButton slot="right" type="filled white" link="#">Sign-in</HSButton>
+      <HSButton slot="right" type="filled white" link="/signin">
+        Sign-in
+      </HSButton>
     </header>
 
     <main>
@@ -141,7 +146,7 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
             <a
               href="https://medium.com/devprtcl/the-future-of-fundraising-daos-with-clubs-8433029af141"
             >
-              <div class="use-case">
+              <div class="use-case hover:bg-black/20 dark:hover:bg-white/20">
                 <img
                   src={A1}
                   alt="Article 1"
@@ -156,14 +161,14 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
             <a
               href="https://medium.com/devprtcl/the-future-of-fundraising-daos-with-clubs-8433029af141"
             >
-              <div class="use-case">
+              <div class="use-case hover:bg-black/20 dark:hover:bg-white/20">
                 <img
                   src={A2}
                   alt="Article 1"
                   class="use-case__media aspect-[16/10]"
                 />
                 <p class="mb-1 font-bold">
-                  The Future of fundraising DAOs, with Clubs
+                  Clubs Starter Grant, Audiovisual Artist “Taito Otani” Joins!
                 </p>
                 <p class="underline">Read more...</p>
               </div>
@@ -171,14 +176,14 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
             <a
               href="https://medium.com/devprtcl/the-future-of-fundraising-daos-with-clubs-8433029af141"
             >
-              <div class="use-case">
+              <div class="use-case hover:bg-black/20 dark:hover:bg-white/20">
                 <img
                   src={A3}
                   alt="Article 1"
                   class="use-case__media aspect-[16/10]"
                 />
                 <p class="mb-1 font-bold">
-                  The Future of fundraising DAOs, with Clubs
+                  Collaboration to confront social issues in DAOs.
                 </p>
                 <p class="underline">Read more...</p>
               </div>
@@ -195,7 +200,7 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
             Wonder how can Clubs help you? Have a look at these sample case
             studies today.
           </p>
-          <div class="dp-video-embed my-3 grid place-items-center">
+          <div class="dp-video-embed my-24 mx-auto grid place-items-center">
             <iframe
               src="https://www.youtube.com/embed/WgDAezl1RrQ"
               title="YouTube video player"
@@ -210,45 +215,72 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
           >
             <a
               href="https://drive.google.com/file/d/1ONyN66UniFTR-fqjWzySfPuXAMd17jam/view?usp=share_link"
+              target="_blank"
+              rel="noopener"
             >
-              <div class="use-case">
+              <div
+                class="use-case bg-gradient-to-r from-[#9796F0] to-[#FBC7D4] text-white hover:from-[#7574cd] hover:to-[#d097a5]"
+              >
                 <img
                   src={CSM1}
                   alt="Article 1"
                   class="use-case__media aspect-square"
                 />
-                <p class="mb-1 font-bold">Case 1: Bakery owner</p>
+                <p class="mb-1 flex items-center gap-4 font-bold">
+                  <span class="rounded-full border p-3">
+                    <ArrowRight h="12" w="12" />
+                  </span>
+                  <span>Case 1: Bakery owner</span>
+                </p>
               </div>
             </a>
             <a
               href="https://drive.google.com/file/d/1CfyuMjIQb3638iIPod7ApeWNXwgBtDaa/view?usp=share_link"
             >
-              <div class="use-case">
+              <div
+                class="use-case bg-gradient-to-r from-[#FFAFBD] to-[#FFC3A0] text-white hover:from-[#d77d8d] hover:to-[#de9d77]"
+              >
                 <img
                   src={CSM2}
                   alt="Article 1"
                   class="use-case__media aspect-square"
                 />
-                <p class="mb-1 font-bold">Case 2: Yoga teacher</p>
+                <p class="mb-1 flex items-center gap-4 font-bold">
+                  <span class="rounded-full border p-3">
+                    <ArrowRight h="12" w="12" />
+                  </span>
+                  <span>Case 2: Yoga teacher</span>
+                </p>
               </div>
             </a>
             <a
               href="https://drive.google.com/file/d/12kl50AYfsJCScvG48fHX8_ZymduulfeC/view?usp=share_link"
             >
-              <div class="use-case">
+              <div
+                class="use-case bg-gradient-to-r from-[#4776E6] to-[#8E54E9] text-white hover:from-[#2b57c0] hover:to-[#6c34c4]"
+              >
                 <img
                   src={CSM3}
                   alt="Article 1"
                   class="use-case__media aspect-square"
                 />
-                <p class="mb-1 font-bold">Case 3: Crowdfunding</p>
+                <p class="mb-1 flex items-center gap-4 font-bold">
+                  <span class="rounded-full border p-3">
+                    <ArrowRight h="12" w="12" />
+                  </span>
+                  <span>Case 3: Crowdfunding</span>
+                </p>
               </div>
             </a>
           </div>
         </section>
       </div>
 
-      <div id="all-set" class="bg-native-blue-400 py-[3rem]">
+      <div
+        id="all-set"
+        class="bg-native-blue-400 bg-cover bg-center py-[3rem] text-white"
+        style={`background-image: url(${Banner})`}
+      >
         <section class="content-wrap flex flex-col justify-center">
           <h2 class="mb-3 text-center text-3xl font-bold">You're all set!</h2>
           <p class="mb-3 text-center">
@@ -437,27 +469,6 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
     padding: 1rem;
     border-radius: 0.5rem;
 
-    &:hover,
-    &:focus {
-      background: rgba(#000, 20%);
-      // box-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.2);
-
-      @media (prefers-color-scheme: dark) {
-        background: rgba(#fff, 20%);
-        // box-shadow: 0 0.3rem 0.5rem rgba(255, 255, 255, 0.2);
-      }
-    }
-
-    &:active {
-      background: rgba(#000, 33%);
-      // box-shadow: 0 0.5rem 0.7rem rgba(0, 0, 0, 0.2);
-
-      @media (prefers-color-scheme: dark) {
-        background: rgba(#fff, 33%);
-        // box-shadow: 0 0.5rem 0.7rem rgba(255, 255, 255, 0.2);
-      }
-    }
-
     .use-case__media {
       width: 100%;
       object-fit: cover;
@@ -469,8 +480,8 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
 
   .dp-video-embed {
     position: relative;
-    margin: 1.5rem auto;
-    padding-bottom: 56.25%;
+    max-width: 840px;
+    aspect-ratio: 16 / 9;
   }
 
   .dp-video-embed iframe {
