@@ -186,7 +186,7 @@ const isInDraftWithFirebase = Boolean(
     }
     const signer = provider.getSigner()
 
-    const hash = await utils.hashMessage(data)
+    const hash = utils.hashMessage(data)
     const sig = await signer.signMessage(hash)
     if (!sig) {
       return
@@ -197,7 +197,6 @@ const isInDraftWithFirebase = Boolean(
       config: data,
       hash,
       sig,
-      expectedAddress: currentAddress,
     }
 
     const res = await fetch('/api/updateDraftConfig', {
