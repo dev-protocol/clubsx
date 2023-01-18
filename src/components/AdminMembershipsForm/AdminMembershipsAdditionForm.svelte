@@ -16,6 +16,7 @@
   import { usdByDev } from '@fixtures/coingecko/api'
   import { onMount } from 'svelte'
   import BigNumber from 'bignumber.js'
+  import { clientsSTokens } from '@devprotocol/dev-kit'
 
   export let currentPluginIndex: number
   export let presets: UndefinedOr<Membership[]> = undefined
@@ -24,6 +25,7 @@
   export let base: string = '/admin'
   export let mode: 'edit' | 'create' = 'create'
   export let rpcUrl: string
+  export let propertyAddress: string | null | undefined
   let estimatedEarnings: {
     dev?: [number, number]
     usd?: [number, number]
@@ -40,9 +42,12 @@
   }
   const originalId = membership.id
   const provider = new providers.JsonRpcProvider(rpcUrl)
+  let membershipExists = false
+  let loading = false
 
   onMount(() => {
     onChangePrice()
+    fetchPositionsOfProperty()
   })
 
   const update = () => {
@@ -151,6 +156,37 @@
     }
     membership = preset
   }
+
+  const fetchPositionsOfProperty = async () => {
+    loading = true
+    // const modalProvider = GetModalProvider()
+    // const { provider } = await ReConnectWallet(modalProvider)
+
+    if (!provider || !propertyAddress) {
+      loading = false
+      return
+    }
+
+    const [l1, l2] = await clientsSTokens(provider)
+
+    const contract = l1 ?? l2
+    const positions = await contract?.positionsOfProperty(propertyAddress)
+    if (!positions) {
+      loading = false
+      return
+    }
+
+    for (const position of positions) {
+      const positionPayload = await contract?.payloadOf(position)
+
+      if (!membershipExists && positionPayload) {
+        membershipExists = true
+        break
+      }
+    }
+
+    loading = false
+  }
 </script>
 
 <div class="grid gap-16">
@@ -180,7 +216,12 @@
     </div>
   {/if}
 
-  <form on:change|preventDefault={(_) => update()} class="grid gap-16">
+  <form
+    on:change|preventDefault={(_) => update()}
+    class={`grid gap-16 ${loading ? 'animate-pulse' : ''} ${
+      membershipExists ? 'opacity-30' : ''
+    }`}
+  >
     <div class="grid gap-16 lg:grid-cols-[3fr_2fr]">
       <!-- Form -->
       <div class="grid gap-8">
@@ -193,6 +234,7 @@
             on:change={onChangeName}
             id="membership-name"
             name="membership-name"
+            disabled={membershipExists}
           />
         </label>
 
@@ -218,6 +260,7 @@
               style="display:none"
               type="file"
               on:change={onFileSelected}
+              disabled={membershipExists}
             />
           </label>
         </div>
@@ -232,6 +275,7 @@
             id="membership-price"
             name="membership-price"
             type="number"
+            disabled={membershipExists}
           />
         </label>
 
@@ -300,6 +344,7 @@
         bind:value={membership.description}
         id="membership-description"
         name="membership-description"
+        disabled={membershipExists}
       />
       <p class="text-sm">Markdown is available</p>
     </label>

@@ -1,14 +1,13 @@
 ---
 import AdminMembershipsForm from '@components/AdminMembershipsForm/AdminMembershipsForm.svelte'
-import { ClubsPropsAdminPages } from '@devprotocol/clubs-core'
+import { ClubsPropsAdminPages, decode } from '@devprotocol/clubs-core'
 import { Membership } from '.'
 
-const { memberships, presets, clubs, rpcUrl } =
-  Astro.props as ClubsPropsAdminPages & {
-    memberships: Membership[]
-    presets: Membership[]
-    rpcUrl: string
-  }
+const { memberships, presets, clubs } = Astro.props as ClubsPropsAdminPages & {
+  memberships: Membership[]
+  presets: Membership[]
+  rpcUrl: string
+}
 ---
 
 <div>
@@ -19,6 +18,5 @@ const { memberships, presets, clubs, rpcUrl } =
     currentPluginIndex={clubs.currentPluginIndex}
     memberships={memberships}
     presets={presets}
-    rpcUrl={rpcUrl}
   />
 </div>
