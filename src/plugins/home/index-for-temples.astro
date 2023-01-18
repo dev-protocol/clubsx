@@ -67,6 +67,11 @@ const {
           </h1>
         </header>
         <div class="grid grid-cols-1 gap-12 px-4">
+          <JoinClub
+            client:idle
+            propertyAddress={propertyAddress}
+            tiers={tiers}
+          />
           <section class="grid gap-8">
             <h2 class="font-mono text-xl text-native-blue-200">What we do</h2>
             <div class="grid items-center gap-8 lg:grid-cols-[1fr_auto_1fr]">
@@ -259,11 +264,6 @@ const {
                 fill="currentColor"></path>
             </svg>
           </section>
-          <JoinClub
-            client:idle
-            propertyAddress={propertyAddress}
-            tiers={tiers}
-          />
         </div>
       </article>
     </CLBWrapper>

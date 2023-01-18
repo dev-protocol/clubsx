@@ -75,6 +75,7 @@
             type="filled fullwidth"
             :link="primaryLink.path"
             :isDisabled="primaryLink.enable === false"
+            class="bg-white text-black"
             >{{ primaryLink.display }}</HSButton
           >
           <div class="grid w-full gap-3">
@@ -82,6 +83,7 @@
               v-for="link in links"
               :link="link.path"
               :isDisabled="link.enable === false"
+              :class="`${link.enable !== false && 'text-white'}`"
               >{{ link.display }}</HSButton
             >
           </div>
