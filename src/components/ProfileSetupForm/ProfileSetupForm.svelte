@@ -1,6 +1,8 @@
 <script lang="ts">
   import Skeleton from '@components/Global/Skeleton.svelte'
+  import { DraftOptions } from '@constants/draft'
   import { ClubsConfiguration, setConfig } from '@devprotocol/clubs-core'
+  import { UndefinedOr } from '@devprotocol/util-ts'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
 
   export let config: ClubsConfiguration
@@ -48,21 +50,30 @@
       config = Object.assign({}, config, { options: [] })
     }
 
-    const draftOptions =
-      config.options?.find((opt) => opt.key === '__draft') ?? {}
+    const sourceDraft = (config.options?.find(
+      (opt) => opt.key === '__draft'
+    ) as UndefinedOr<DraftOptions>) ?? { key: '__draft', value: {} }
 
+    const avatarImgSrc = {
+      key: 'avatarImgSrc',
+      value: avatarPath ?? '',
+    }
+    const __draft = {
+      ...sourceDraft,
+      value: {
+        ...sourceDraft.value,
+        category: projectCategory,
+      },
+    }
     const options = [
-      {
-        key: 'avatarImgSrc',
-        value: avatarPath ?? '',
-      },
-      {
-        key: '__draft',
-        value: Object.assign({}, draftOptions, { category: projectCategory }),
-      },
+      ...(config.options?.filter(
+        ({ key }) => key !== 'avatarImgSrc' && key !== '__draft'
+      ) ?? []),
+      avatarImgSrc,
+      __draft,
     ]
 
-    config = Object.assign({}, config, { name, twitterHandle, options })
+    config = { ...config, name, twitterHandle, options }
 
     setConfig(config)
   }

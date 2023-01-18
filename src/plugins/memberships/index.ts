@@ -13,6 +13,7 @@ import membershipOpt1 from '@assets/membership-opt-1.png'
 import membershipOpt2 from '@assets/membership-opt-2.png'
 import membershipOpt3 from '@assets/membership-opt-3.png'
 import { utils } from 'ethers'
+import { DraftOptions } from '@constants/draft'
 
 export type Membership = {
   id: string
@@ -71,13 +72,7 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
 
   const draftOptions = options?.find((opt) => opt.key === '__draft')
   const draftOptionsValue =
-    draftOptions &&
-    (draftOptions.value as {
-      isInDraft: boolean
-      address: string
-      uid: string
-      category: string
-    })
+    draftOptions && (draftOptions.value as DraftOptions['value'])
 
   return [
     {

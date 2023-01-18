@@ -9,6 +9,7 @@ import roundedSquareImage from '@assets/step-rounded-square.svg'
 import PublishConnect from '@components/PublishConnect/PublishConnect.vue'
 import PublishNetworkSelection from '@components/PublishNetworkSelection/PublishNetworkSelection.vue'
 import { UndefinedOr } from '@devprotocol/util-ts'
+import { DraftOptions } from '@constants/draft'
 
 const { site } = Astro.params
 
@@ -29,12 +30,9 @@ if (!path) {
 }
 
 const draftOptions = config.options?.find((opt) => opt.key === '__draft')
-const draftOptionsValue = draftOptions?.value as UndefinedOr<{
-  isInDraft: boolean
-  address: string
-  uid: string
-  category: string
-}>
+const draftOptionsValue = draftOptions?.value as UndefinedOr<
+  DraftOptions['value']
+>
 
 const membershipsPlugin = config.plugins.find(
   (plgn) => plgn.name === 'memberships'

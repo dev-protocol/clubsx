@@ -33,6 +33,8 @@ const { siteName } = Astro.params
 
   import { defaultConfig } from '@constants/defaultConfig'
 
+  import { DraftOptions } from '@constants/draft'
+
   // Confirm the link is a sign-in with email link.
   const auth = initializeFirebase()
   const siteName = (document.getElementById('siteName') as HTMLInputElement)
@@ -71,7 +73,7 @@ const { siteName } = Astro.params
                   isInDraft: true,
                   uid: uid,
                 },
-              },
+              } as DraftOptions,
             ],
           }
 

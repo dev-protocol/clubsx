@@ -11,6 +11,7 @@
   import { defaultConfig } from '@constants/defaultConfig'
   import { onMount } from 'svelte'
   import EmailConnect from '../EmailConnect/EmailConnect.svelte'
+  import { DraftOptions } from '@constants/draft'
 
   export let siteName: string
 
@@ -49,7 +50,7 @@
             isInDraft: true,
             address: currentAddress,
           },
-        },
+        } as DraftOptions,
       ],
     }
 
