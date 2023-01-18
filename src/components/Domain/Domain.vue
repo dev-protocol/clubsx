@@ -12,6 +12,8 @@ type Data = {
   valid?: boolean
 }
 
+let timer: NodeJS.Timeout
+
 export default {
   name: 'AlmostThere',
   components: { HSButton },
@@ -29,15 +31,18 @@ export default {
     } as Data),
   methods: {
     async verifySiteName() {
+      clearTimeout(timer)
       if (this.daoName === '') {
         this.valid = undefined
         return
       }
-      this.fetching = true
-      const res = await fetch(`/api/verifySiteName/${this.daoName}`)
-      this.fetching = false
-      const successful = res.ok
-      this.valid = successful
+      timer = setTimeout(async () => {
+        this.fetching = true
+        const res = await fetch(`/api/verifySiteName/${this.daoName}`)
+        this.fetching = false
+        const successful = res.ok
+        this.valid = successful
+      }, 300)
     },
   },
   mounted() {

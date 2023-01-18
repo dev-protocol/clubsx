@@ -78,8 +78,10 @@
 
     if (res.ok) {
       setConfig(config)
-      // TODO: navigate to the next page.
-      // window.location.href = '/setup/homepage'
+      window.location.href = new URL(
+        '/setup/basic',
+        `${location.protocol}//${siteName}.${location.host}`
+      ).toString()
     }
   }
 </script>
