@@ -481,9 +481,9 @@ export default defineComponent({
       ])
       const response = await tx?.wait(1)
 
-      // const response = { status: true }
       if (response?.status) {
         this.membershipSet = true
+        window.location.href = '/admin/overview'
       } else {
         this.membershipSet = false
       }
