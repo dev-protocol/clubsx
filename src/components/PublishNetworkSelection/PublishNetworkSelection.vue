@@ -241,6 +241,7 @@
 </template>
 
 <script lang="ts">
+import type { ethers } from 'ethers'
 import type Web3Modal from 'web3modal'
 import { PropType, defineComponent } from '@vue/runtime-core'
 import { clientsSTokens } from '@devprotocol/dev-kit/agent'
@@ -279,6 +280,7 @@ type Data = {
 }
 
 let provider: BaseProvider | undefined
+let signer: ethers.Signer | undefined
 
 export default defineComponent({
   name: 'PublishNetworkSelection',
@@ -388,6 +390,9 @@ export default defineComponent({
           this.currentWalletAddress = acc
           this.connected = true
         }
+      })
+      connection().signer.subscribe((sig) => {
+        signer = sig
       })
     })
   },
@@ -499,7 +504,7 @@ export default defineComponent({
 
     async setMemberships() {
       if (
-        !provider ||
+        !signer ||
         !this.addressFromNiwaOrConfig ||
         !this.membershipInitialized
       ) {
@@ -522,7 +527,7 @@ export default defineComponent({
         this.membershipsPluginOptions?.map((opt) => keccak256(opt.payload)) ||
         []
 
-      const tx = await callSimpleCollections(provider, 'setImages', [
+      const tx = await callSimpleCollections(signer, 'setImages', [
         propertyAddress,
         images,
         keys,
