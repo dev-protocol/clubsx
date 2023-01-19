@@ -208,8 +208,8 @@ const isInDraftWithFirebase = Boolean(
 
     const auth: Auth = instanceStore.initializedApp
     auth.onAuthStateChanged((user) => {
-      if (user) console.log("Persisted", user)
-      else console.log("Not persisted")
+      if (user) console.log('Persisted', user)
+      else console.log('Not persisted')
     })
 
     if (!isInDraftWithFirebase) {
@@ -234,7 +234,7 @@ const isInDraftWithFirebase = Boolean(
       body['sig'] = sig
     } else {
       const auth: Auth = instanceStore.initializedApp
-      console.log("HERE", auth.currentUser);
+      console.log('HERE', auth.currentUser)
       // If in else, then we are using firebase.
       if (!auth || !auth.currentUser) {
         onFinish({ success: false })
