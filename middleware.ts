@@ -14,6 +14,8 @@ export default function middleware(req: Request) {
   const [tenant] = hostnames
   const html = req.headers.get('accept')?.includes('text/html')
 
+  console.log('*', { host, html }, knownApp.test(host))
+
   if (html && knownApp.test(host)) {
     const pathname = `/sites_/${tenant}${url.pathname}`
     const destination = new URL(pathname, url.origin)
