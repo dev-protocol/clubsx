@@ -9,7 +9,7 @@ import {
   sRGBEncoding,
   ReinhardToneMapping,
 } from 'three'
-import { OrbitControls } from 'three/addons/controls/OrbitControls'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
 export const renderSpotlight = ({ containerId }: { containerId: string }) => {
   const container = document.getElementById(containerId) as HTMLElement
