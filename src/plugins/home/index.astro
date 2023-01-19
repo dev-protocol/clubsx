@@ -5,7 +5,7 @@ import Footer from '@components/Global/Footer.astro'
 import JoinClubWithSingleCurrency from '@components/Join/JoinClubWithSingleCurrency.vue'
 import { HomeConfig } from '../../constants/homeConfig'
 import { NavLink } from '@constants/navLink'
-import { Markdown } from '@astropub/md'
+import Markdown from '@components/Markdown/Markdown.astro'
 import { Membership } from '@plugins/memberships'
 
 const {
@@ -58,7 +58,7 @@ const {
           </h1>
         </header>
         <div class="grid grid-cols-1 gap-12 px-4">
-          <Markdown.Inline of={homeConfig.body} />
+          <Markdown body={homeConfig.body} />
           <JoinClubWithSingleCurrency
             client:idle
             propertyAddress={propertyAddress}

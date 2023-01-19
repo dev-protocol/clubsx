@@ -1,0 +1,43 @@
+---
+import { Markdown } from '@astropub/md'
+
+const { body = '' } = Astro.props as {
+  body?: string
+}
+---
+
+<div class="md grid grid-flow-row gap-12">
+  <Markdown.Inline of={body} />
+</div>
+
+<style lang="scss">
+  .md {
+    :global(h1) {
+      @apply font-title text-7xl font-bold;
+    }
+    :global(h2) {
+      @apply font-title text-6xl font-bold;
+    }
+    :global(h3) {
+      @apply text-5xl;
+    }
+    :global(h4) {
+      @apply text-4xl;
+    }
+    :global(h5) {
+      @apply text-3xl;
+    }
+    :global(a) {
+      @apply inline-block rounded p-1 underline transition hover:bg-white/20;
+    }
+    :global(ul) {
+      @apply grid list-disc gap-2;
+      :global(li) {
+        list-style: revert;
+      }
+    }
+    :global(pre) {
+      @apply rounded p-3;
+    }
+  }
+</style>
