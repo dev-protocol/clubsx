@@ -28,7 +28,7 @@ const { siteName } = Astro.params
     isSignInWithEmailLink,
     signInWithEmailLink,
   } from 'firebase/auth'
-  import { initializeFirebase } from '../../fixtures/firebase'
+  import { instanceStore } from '../../fixtures/firebase/clientInstance'
   import {
     ClubsConfiguration,
     encode,
@@ -40,7 +40,7 @@ const { siteName } = Astro.params
   import { DraftOptions } from '@constants/draft'
 
   // Confirm the link is a sign-in with email link.
-  const auth = initializeFirebase()
+  const auth = instanceStore.initializedApp
   const siteName = (document.getElementById('siteName') as HTMLInputElement)
     ?.value as string
 
@@ -99,13 +99,12 @@ const { siteName } = Astro.params
 
           if (res.ok) {
             setConfig(config)
+            window.location.href = new URL(
+              '/setup/basic',
+              `${location.protocol}//${siteName}.${location.host}`
+            ).toString()
           }
         }
-
-        window.location.href = new URL(
-          '/setup/basic',
-          `${location.protocol}//${siteName}.${location.host}`
-        ).toString()
       }
     )
   }

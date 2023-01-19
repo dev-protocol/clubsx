@@ -148,7 +148,7 @@ const isInDraftWithFirebase = Boolean(
   import { DraftOptions } from '@constants/draft'
   import { decode, onSubmitConfig } from '@devprotocol/clubs-core'
   import { UndefinedOr } from '@devprotocol/util-ts'
-  import { initializeFirebase } from '@fixtures/firebase'
+  import { instanceStore } from '@fixtures/firebase/clientInstance'
   import { GetModalProvider, EthersProviderFrom } from '@fixtures/wallet'
   import { utils } from 'ethers'
   import { Auth } from 'firebase/auth'
@@ -212,6 +212,7 @@ const isInDraftWithFirebase = Boolean(
         modalProvider
       )
       if (!currentAddress || !provider) {
+        onFinish({ success: false })
         return
       }
       const signer = provider.getSigner()
@@ -219,16 +220,17 @@ const isInDraftWithFirebase = Boolean(
       const hash = utils.hashMessage(data)
       const sig = await signer.signMessage(hash)
       if (!sig) {
+        onFinish({ success: false })
         return
       }
       // Update the request body to use hash and sig. Keeping headers the same.
       body['hash'] = hash
       body['sig'] = sig
     } else {
+      const auth: Auth = instanceStore.initializedApp
       // If in else, then we are using firebase.
-
-      const auth: Auth = initializeFirebase()
       if (!auth || !auth.currentUser) {
+        onFinish({ success: false })
         return
       }
 

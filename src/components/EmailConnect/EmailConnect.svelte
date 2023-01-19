@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { initializeFirebase } from '@fixtures/firebase'
+  import { instanceStore } from '@fixtures/firebase/clientInstance'
   import { sendSignInLinkToEmail } from 'firebase/auth'
 
   export let firebaseCallbackUrl: string
@@ -26,7 +26,7 @@
       handleCodeInApp: true,
     }
 
-    const auth = initializeFirebase()
+    const auth = instanceStore.initializedApp
 
     console.log({ auth, email, actionCodeSettings })
 
