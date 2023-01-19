@@ -243,7 +243,7 @@
 <script lang="ts">
 import { providers } from 'ethers'
 import type Web3Modal from 'web3modal'
-import { defineComponent } from '@vue/runtime-core'
+import { PropType, defineComponent } from '@vue/runtime-core'
 import { clientsSTokens } from '@devprotocol/dev-kit/agent'
 import type { connection as Connection } from '@devprotocol/clubs-core/connection'
 import { BaseProvider } from '@ethersproject/providers'
@@ -256,6 +256,15 @@ import { keccak256 } from '@ethersproject/keccak256'
 import { parseUnits } from '@ethersproject/units'
 import { Membership } from '@plugins/memberships'
 import BigNumber from 'bignumber.js'
+import {
+  ClubsConfiguration,
+  ClubsEvents,
+  setConfig,
+} from '@devprotocol/clubs-core'
+import {
+  buildConfig,
+  onUpdatedConfiguration,
+} from '@devprotocol/clubs-core/events'
 
 type Data = {
   networkSelected: String
@@ -277,6 +286,10 @@ export default defineComponent({
     roundedSquareImage: String,
     category: String,
     membershipsPluginOptions: Array<Membership>,
+    config: {
+      type: Object as PropType<ClubsConfiguration>,
+      required: true,
+    },
     showTestnets: Boolean,
   },
   data(): Data {
@@ -389,6 +402,20 @@ export default defineComponent({
         : null
     },
 
+    getRpcUrl() {
+      return `https://${
+        this.networkSelected === 'ethereum'
+          ? 'mainnet.infura.io'
+          : this.networkSelected === 'polygon'
+          ? 'polygon-mainnet.infura.io'
+          : this.networkSelected === 'polygon-mumbai'
+          ? 'polygon-mumbai.infura.io'
+          : this.networkSelected === 'arbitrum'
+          ? 'arbitrum-mainnet.infura.io'
+          : 'mainnet.infura.io'
+      }/v3/${import.meta.env.PUBLIC_INFURA_KEY}`
+    },
+
     setSigner(provider: providers.Web3Provider) {
       this.connection!().signer.next(provider.getSigner())
     },
@@ -396,6 +423,7 @@ export default defineComponent({
     async changeNetwork(network: string) {
       if (!this.connected) return
       this.networkSelected = network
+      this.updateConfig()
     },
 
     openNiwa(link: string) {
@@ -419,6 +447,24 @@ export default defineComponent({
       const { address } = event.data
       if (!address) return
       this.addressFromNiwa = address
+      this.updateConfig()
+    },
+
+    updateConfig() {
+      const propertyAddress = this.addressFromNiwa as string
+      const rpcUrl = this.getRpcUrl()
+      const nextConfig: ClubsConfiguration = {
+        ...this.config,
+        rpcUrl,
+        propertyAddress,
+      }
+      onUpdatedConfiguration(
+        () => {
+          buildConfig()
+        },
+        { once: true }
+      )
+      setConfig(nextConfig)
     },
 
     async initializeMemberships() {
