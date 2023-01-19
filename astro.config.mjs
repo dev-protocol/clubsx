@@ -66,5 +66,11 @@ export default defineConfig({
         timeout: 360000,
       },
     },
+    resolve: {
+      alias: {
+        'three/examples/jsm/controls/OrbitControls':
+          '/node_modules/three/examples/jsm/controls/OrbitControls',
+      },
+    },
   },
 })
