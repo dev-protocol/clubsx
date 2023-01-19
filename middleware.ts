@@ -7,8 +7,7 @@ export const config = {
 export default function middleware(req: Request) {
   const url = new URL(req.url)
 
-  const host = req.headers.get('host') ?? ''
-  const hostnames = host.split('.') ?? []
+  const hostnames = req.headers.get('host')?.split('.') ?? []
   const [tenant] = hostnames
   const html = req.headers.get('accept')?.includes('text/html')
 
