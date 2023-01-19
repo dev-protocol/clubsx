@@ -1,6 +1,9 @@
 /* eslint-disable no-undef */
 import fs from 'fs-extra'
 
+const path =
+  './node_modules/@astrojs/vercel/dist/serverless/request-transform/node18.js'
+
 const fn = () => {
   const paths = req.headers.host.split('.')
   const urlFromHeader = headers['x-rewritten-url']
