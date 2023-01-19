@@ -14,20 +14,7 @@ import membershipOpt2 from '@assets/membership-opt-2.png'
 import membershipOpt3 from '@assets/membership-opt-3.png'
 import { utils } from 'ethers'
 import { DraftOptions } from '@constants/draft'
-
-export type Membership = {
-  id: string
-  name: string
-  description: string
-  price: number
-  currency: 'DEV' | 'ETH'
-  imageSrc: string
-  payload: Uint8Array
-  fee?: {
-    percentage: number
-    beneficiary: string
-  }
-}
+import { Membership } from '@constants/membership'
 
 const presets: Membership[] = [
   {

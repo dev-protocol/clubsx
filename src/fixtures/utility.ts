@@ -7,7 +7,7 @@ import { clientsSTokens, client } from '@devprotocol/dev-kit'
 import { whenDefined } from '@devprotocol/util-ts'
 import { xprod } from 'ramda'
 
-import { Membership } from '@plugins/memberships'
+import { Membership } from '@constants/membership'
 
 const falsyOrZero = <T>(num?: T): T | 0 => (num ? num : 0)
 

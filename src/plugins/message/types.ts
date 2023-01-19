@@ -1,5 +1,3 @@
-import { Membership } from '@plugins/memberships'
-
 export type GatedMessage = {
   id: string
   title: string

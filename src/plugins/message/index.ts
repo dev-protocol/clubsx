@@ -14,7 +14,7 @@ import { default as AdminEdit } from './pages/AdminEdit.astro'
 import { default as RemoveButton } from './components/RemoveButton.astro'
 import { GatedMessage } from './types'
 import { UndefinedOr } from '@devprotocol/util-ts'
-import { Membership } from '@plugins/memberships'
+import { Membership } from '@constants/membership'
 import uniqueString from 'unique-string'
 
 const getMemberships = (plugins: ClubsConfiguration['plugins']) => {

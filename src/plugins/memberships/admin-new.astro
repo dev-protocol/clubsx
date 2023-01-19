@@ -1,7 +1,7 @@
 ---
 import AdminMembershipsAdditionForm from '@components/AdminMembershipsForm/AdminMembershipsAdditionForm.svelte'
+import { Membership } from '@constants/membership'
 import { ClubsPropsAdminPages } from '@devprotocol/clubs-core'
-import { Membership } from '.'
 
 const { membership, memberships, presets, clubs, rpcUrl, propertyAddress } =
   Astro.props as ClubsPropsAdminPages & {
@@ -33,7 +33,7 @@ const { membership, memberships, presets, clubs, rpcUrl, propertyAddress } =
 <script>
   import { ClubsEvents } from '@devprotocol/clubs-core'
   import { GetModalProvider, ReConnectWallet } from '@fixtures/wallet'
-  import { Membership } from '@plugins/memberships'
+  import { Membership } from '@constants/membership'
   import { constants } from 'ethers'
   import { keccak256, parseUnits } from 'ethers/lib/utils'
   import BigNumber from 'bignumber.js'

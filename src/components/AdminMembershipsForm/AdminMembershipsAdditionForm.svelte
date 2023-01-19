@@ -2,7 +2,7 @@
   import { setOptions } from '@devprotocol/clubs-core'
   import MembershipOptionCard from './MembershipOption.svelte'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
-  import { Membership } from '@plugins/memberships'
+  import { Membership } from '@constants/membership'
   import {
     UndefinedOr,
     whenDefined,

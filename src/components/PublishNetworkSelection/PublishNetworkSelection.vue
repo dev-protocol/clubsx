@@ -254,7 +254,7 @@ import {
 import { Image } from '@plugins/memberships/utils/types/setImageArg'
 import { keccak256 } from '@ethersproject/keccak256'
 import { parseUnits } from '@ethersproject/units'
-import { Membership } from '@plugins/memberships'
+import { Membership } from '@constants/membership'
 import BigNumber from 'bignumber.js'
 import {
   ClubsConfiguration,

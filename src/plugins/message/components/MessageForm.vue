@@ -2,10 +2,9 @@
 import { defineComponent } from 'vue'
 import { GetModalProvider, ReConnectWallet } from '@fixtures/wallet'
 import { utils } from 'ethers'
-import { GatedMessage } from '../types'
 import { encode } from '@devprotocol/clubs-core'
 import { checkMemberships } from '@fixtures/utility'
-import { Membership } from '@plugins/memberships'
+import { Membership } from '@constants/membership'
 import { PropType } from '@vue/runtime-core'
 
 export default defineComponent({

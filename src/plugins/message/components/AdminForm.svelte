@@ -1,6 +1,6 @@
 <script lang="ts">
   import { setOptions } from '@devprotocol/clubs-core'
-  import { Membership } from '@plugins/memberships'
+  import { Membership } from '@constants/membership'
   import { GatedMessage } from '../types'
 
   export let currentPluginIndex: number

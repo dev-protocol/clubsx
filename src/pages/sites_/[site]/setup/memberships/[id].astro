@@ -2,8 +2,9 @@
 import AdminMembershipsAdditionForm from '@components/AdminMembershipsForm/AdminMembershipsAdditionForm.svelte'
 import { config as _config } from '@fixtures/config'
 import { adminFactory } from '@devprotocol/clubs-core'
-import memberships, { Membership } from '@plugins/memberships'
+import memberships from '@plugins/memberships'
 import SetupLayout from '@layouts/Setup.astro'
+import { Membership } from '@constants/membership'
 
 const { site, id } = Astro.params
 
@@ -42,8 +43,60 @@ const { props } = path
 
 <script>
   import { ClubsEvents } from '@devprotocol/clubs-core'
+  import { Membership } from '@constants/membership'
+
+  import { GetModalProvider, ReConnectWallet } from '@fixtures/wallet'
+
+  import { keccak256, parseUnits } from 'ethers/lib/utils'
+
+  import BigNumber from 'bignumber.js'
+
+  import { constants } from 'ethers'
+
+  import { callSimpleCollections } from '@plugins/memberships/utils/simpleCollections'
 
   document.body.addEventListener(ClubsEvents.FinishConfiguration, (ev) => {
-    console.log('Save button clicked and updated the data remotely!!')
+    document.body.addEventListener(
+      ClubsEvents.FinishConfiguration,
+      async (ev) => {
+        const memOptsInput = document.getElementById(
+          'membershipOpts'
+        ) as HTMLInputElement
+        const memOpts = JSON.parse(memOptsInput.value) as Membership[]
+
+        const propertyAddressInput = document.getElementById(
+          'propertyAddress'
+        ) as HTMLInputElement
+        const propAddress = propertyAddressInput.value as string
+
+        const modalProvider = GetModalProvider()
+        const { currentAddress, provider } = await ReConnectWallet(
+          modalProvider
+        )
+        if (!currentAddress || !provider) {
+          return
+        }
+
+        const images = memOpts.map((opt) => ({
+          src: opt.imageSrc,
+          requiredETHAmount: parseUnits(String(opt.price)).toString(),
+          requiredETHFee: opt.fee?.percentage
+            ? parseUnits(
+                new BigNumber(opt.price).times(opt.fee.percentage).toFixed()
+              ).toString()
+            : 0,
+          gateway: opt.fee?.beneficiary ?? constants.AddressZero,
+        }))
+
+        const keys: string[] =
+          memOpts?.map((opt) => keccak256(opt.payload)) || []
+
+        await callSimpleCollections(provider, 'setImages', [
+          propAddress,
+          images,
+          keys,
+        ])
+      }
+    )
   })
 </script>

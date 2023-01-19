@@ -14,7 +14,7 @@ import { default as Admin } from './admin.astro'
 import { HomeConfig } from '../../constants/homeConfig'
 import { NavLink } from '@constants/navLink'
 import { default as Temples } from '@plugins/home/index-for-temples.astro'
-import { Membership } from '@plugins/memberships'
+import { Membership } from '@constants/membership'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,

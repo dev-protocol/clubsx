@@ -1,7 +1,7 @@
 ---
 import AdminMembershipsAdditionForm from '@components/AdminMembershipsForm/AdminMembershipsAdditionForm.svelte'
+import { Membership } from '@constants/membership'
 import { ClubsPropsAdminPages } from '@devprotocol/clubs-core'
-import { Membership } from '.'
 
 const { membership, memberships, clubs, rpcUrl, propertyAddress } =
   Astro.props as ClubsPropsAdminPages & {
@@ -40,9 +40,9 @@ const { membership, memberships, clubs, rpcUrl, propertyAddress } =
   import { keccak256, parseUnits } from 'ethers/lib/utils'
   import BigNumber from 'bignumber.js'
 
-  import { Membership } from '.'
-
   import { callSimpleCollections } from './utils/simpleCollections'
+
+  import { Membership } from '@constants/membership'
 
   document.body.addEventListener(
     ClubsEvents.FinishConfiguration,
