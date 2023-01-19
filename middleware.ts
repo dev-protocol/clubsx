@@ -7,6 +7,7 @@ export const config = {
 }
 
 export default function middleware(req: Request) {
+  console.log('&', process.env.DOMAIN_LENGTH)
   const url = new URL(req.url)
 
   const host = req.headers.get('host') ?? ''
