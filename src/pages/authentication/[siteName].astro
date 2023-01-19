@@ -64,7 +64,7 @@ const { siteName } = Astro.params
         const uid = result.user.uid
 
         // If it is a new user, set the __draft user
-        if (details?.isNewUser && uid) {
+        if (uid) {
           // Make the default config.
           const config: ClubsConfiguration = {
             ...defaultConfig,
@@ -100,8 +100,8 @@ const { siteName } = Astro.params
           if (res.ok) {
             setConfig(config)
             window.location.href = new URL(
-              '/setup/basic',
-              `${location.protocol}//${siteName}.${location.host}`
+              `${siteName}/setup/basic`,
+              `${location.protocol}//${location.host}`
             ).toString()
           }
         }

@@ -206,6 +206,12 @@ const isInDraftWithFirebase = Boolean(
       'Content-Type': 'application/json',
     }
 
+    const auth: Auth = instanceStore.initializedApp
+    auth.onAuthStateChanged((user) => {
+      if (user) console.log("Persisted", user)
+      else console.log("Not persisted")
+    })
+
     if (!isInDraftWithFirebase) {
       const modalProvider = GetModalProvider()
       const { provider, currentAddress } = await EthersProviderFrom(
@@ -228,6 +234,7 @@ const isInDraftWithFirebase = Boolean(
       body['sig'] = sig
     } else {
       const auth: Auth = instanceStore.initializedApp
+      console.log("HERE", auth.currentUser);
       // If in else, then we are using firebase.
       if (!auth || !auth.currentUser) {
         onFinish({ success: false })
