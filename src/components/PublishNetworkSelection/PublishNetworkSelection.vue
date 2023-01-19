@@ -241,7 +241,7 @@
 </template>
 
 <script lang="ts">
-import { providers } from 'ethers'
+import type { ethers } from 'ethers'
 import type Web3Modal from 'web3modal'
 import { PropType, defineComponent } from '@vue/runtime-core'
 import { clientsSTokens } from '@devprotocol/dev-kit/agent'
@@ -274,11 +274,13 @@ type Data = {
   connection?: typeof Connection
   popupWindow: Window | null
   addressFromNiwa: String
-  provider?: BaseProvider | null
   membershipInitialized: boolean
   membershipSet: boolean
   currentWalletAddress: string
 }
+
+let provider: BaseProvider | undefined
+let signer: ethers.Signer | undefined
 
 export default defineComponent({
   name: 'PublishNetworkSelection',
@@ -301,7 +303,6 @@ export default defineComponent({
       connected: false,
       popupWindow: null as Window | null,
       addressFromNiwa: '',
-      provider: null as BaseProvider | null,
       membershipInitialized: false,
       membershipSet: false,
       currentWalletAddress: '',
@@ -377,23 +378,22 @@ export default defineComponent({
   },
   async mounted() {
     onMountClient(async () => {
-      const [{ connection }, { GetModalProvider, ReConnectWallet }] =
-        await Promise.all([
-          import('@devprotocol/clubs-core/connection'),
-          import('@fixtures/wallet'),
-        ])
+      const [{ connection }] = await Promise.all([
+        import('@devprotocol/clubs-core/connection'),
+      ])
       this.connection = connection
-      this.modalProvider = GetModalProvider()
-      const { currentAddress, provider } = await ReConnectWallet(
-        this.modalProvider
-      )
-      if (currentAddress) {
-        this.connected = true
-        this.currentWalletAddress = currentAddress
-      }
-      if (provider) {
-        this.provider = provider
-      }
+      connection().provider.subscribe((prov) => {
+        provider = prov
+      })
+      connection().account.subscribe((acc) => {
+        if (acc) {
+          this.currentWalletAddress = acc
+          this.connected = true
+        }
+      })
+      connection().signer.subscribe((sig) => {
+        signer = sig
+      })
     })
   },
   methods: {
@@ -423,10 +423,6 @@ export default defineComponent({
           ? 'arbitrum-mainnet.infura.io'
           : 'mainnet.infura.io'
       }/v3/${import.meta.env.PUBLIC_INFURA_KEY}`
-    },
-
-    setSigner(provider: providers.Web3Provider) {
-      this.connection!().signer.next(provider.getSigner())
     },
 
     async changeNetwork(network: string) {
@@ -480,7 +476,7 @@ export default defineComponent({
 
     async initializeMemberships() {
       const currentChainId: number | null = this.getChainId()
-      if (!this.provider || !this.addressFromNiwaOrConfig || !currentChainId) {
+      if (!provider || !this.addressFromNiwaOrConfig || !currentChainId) {
         return
       }
 
@@ -491,7 +487,7 @@ export default defineComponent({
         return
       }
 
-      const [l1, l2] = await clientsSTokens(this.provider as BaseProvider)
+      const [l1, l2] = await clientsSTokens(provider as BaseProvider)
       const tx = await (l1 || l2)?.setTokenURIDescriptor(
         this.addressFromNiwaOrConfig.toString(),
         descriptiorAddress
@@ -508,7 +504,7 @@ export default defineComponent({
 
     async setMemberships() {
       if (
-        !this.provider ||
+        !signer ||
         !this.addressFromNiwaOrConfig ||
         !this.membershipInitialized
       ) {
@@ -531,7 +527,7 @@ export default defineComponent({
         this.membershipsPluginOptions?.map((opt) => keccak256(opt.payload)) ||
         []
 
-      const tx = await callSimpleCollections(this.provider, 'setImages', [
+      const tx = await callSimpleCollections(signer, 'setImages', [
         propertyAddress,
         images,
         keys,
