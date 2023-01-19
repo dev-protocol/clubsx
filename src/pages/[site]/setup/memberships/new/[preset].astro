@@ -34,6 +34,11 @@ const membership = presets.find(
 if (!membership) {
   throw new Error(`Membership not found: ${preset}`)
 }
+
+const baseUrl = new URL(
+  `${site}/setup`,
+  `${location.protocol}//${location.host}`
+).toString()
 ---
 
 <SetupLayout {config} {...props} setupStep="MEMBERSHIPS">
@@ -47,16 +52,24 @@ if (!membership) {
       presets={props.presets as Membership[]}
       existingMemberships={props.memberships as Membership[]}
       rpcUrl={props.rpcUrl as string}
-      base="/setup"
+      base={baseUrl}
     />
   </section>
+  <input id="siteName" hidden value={site} disabled />
 </SetupLayout>
 
 <script>
   import { ClubsEvents } from '@devprotocol/clubs-core'
 
+  const site =
+    window.location.pathname.split('/')[1] ||
+    (document.getElementById('siteName') as HTMLInputElement)?.value
+
   document.body.addEventListener(ClubsEvents.FinishConfiguration, (ev) => {
     console.log('Save button clicked and updated the data remotely!!')
-    window.location.href = '/setup/memberships?created'
+    window.location.href = new URL(
+      `${site}/setup/memberships?created`,
+      `${location.protocol}//${location.host}`
+    ).toString()
   })
 </script>

@@ -7,6 +7,7 @@
   import IconGlobeEuropeAfrica from './icons/globe-europe-africa.svelte'
   import IconArrowBottom from './icons/arrow-bottom.svelte'
 
+  export let site: string
   export let step: 'DESIGN' | 'MEMBERSHIPS' | 'PREVIEW' | 'BASIC' | 'PUBLISH'
 </script>
 
@@ -22,7 +23,7 @@
     <WelcomeWizardStep
       label="Basic info"
       isActive={step === 'BASIC'}
-      link="/setup/basic"
+      link={`/${site}/setup/basic`}
     >
       <IconIdentification />
     </WelcomeWizardStep>
@@ -32,7 +33,7 @@
     <WelcomeWizardStep
       label="Design"
       isActive={step === 'DESIGN'}
-      link="/setup/design"
+      link={`/${site}/setup/design`}
     >
       <IconComputerDesktop />
     </WelcomeWizardStep>
@@ -42,7 +43,7 @@
     <WelcomeWizardStep
       label="Memberships"
       isActive={step === 'MEMBERSHIPS'}
-      link="/setup/memberships"
+      link={`/${site}/setup/memberships`}
     >
       <IconUserGroup />
     </WelcomeWizardStep>
@@ -52,7 +53,7 @@
     <WelcomeWizardStep
       label="Preview"
       isActive={step === 'PREVIEW'}
-      link="/setup/preview"
+      link={`/${site}/setup/preview`}
     >
       <IconComputerDesktop />
     </WelcomeWizardStep>
@@ -62,7 +63,7 @@
     <WelcomeWizardStep
       label="Publish"
       isActive={step === 'PUBLISH'}
-      link="/setup/publish"
+      link={`/${site}/setup/publish`}
     >
       <IconGlobeEuropeAfrica />
     </WelcomeWizardStep>
