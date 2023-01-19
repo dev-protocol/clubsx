@@ -7,6 +7,6 @@ fs.outputFileSync(
   ((file) =>
     file.replace(
       'base + req.url',
-      `(() => {console.log('@', base, req.url); return headers['x-rewritten-url'] ? headers['x-rewritten-url'] : ((paths) => paths.length > 2 ? base + '/sites_/' + paths[0] + req.url : base + req.url})(req.headers.host.split('.')))()`
+      `(() => headers['x-rewritten-url'] ? headers['x-rewritten-url'] : ((paths) => paths.length > 2 ? base + '/sites_/' + paths[0] + req.url : base + req.url)(req.headers.host.split('.')))(console.log('@', base, req.url))`
     ))(fs.readFileSync(path, 'utf8'))
 )
