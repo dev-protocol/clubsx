@@ -131,7 +131,6 @@ export default {
       members: 0,
       toggleOpen: false,
       images: {
-        ETH,
         avatar: this.avatarImgSrc,
       },
     }
