@@ -381,11 +381,9 @@ export default defineComponent({
       ])
       this.connection = connection
       connection().provider.subscribe((prov) => {
-        console.log({prov})
         provider = prov
       })
       connection().account.subscribe((acc) => {
-        console.log({acc})
         if (acc) {
           this.currentWalletAddress = acc
           this.connected = true
