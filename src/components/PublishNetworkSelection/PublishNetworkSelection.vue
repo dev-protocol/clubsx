@@ -263,6 +263,7 @@ import {
 } from '@devprotocol/clubs-core'
 import {
   buildConfig,
+  onMountClient,
   onUpdatedConfiguration,
 } from '@devprotocol/clubs-core/events'
 
@@ -369,23 +370,25 @@ export default defineComponent({
     },
   },
   async mounted() {
-    const [{ connection }, { GetModalProvider, ReConnectWallet }] =
-      await Promise.all([
-        import('@devprotocol/clubs-core/connection'),
-        import('@fixtures/wallet'),
-      ])
-    this.connection = connection
-    this.modalProvider = GetModalProvider()
-    const { currentAddress, provider } = await ReConnectWallet(
-      this.modalProvider
-    )
-    if (currentAddress) {
-      this.connected = true
-      this.currentWalletAddress = currentAddress
-    }
-    if (provider) {
-      this.provider = provider
-    }
+    onMountClient(async () => {
+      const [{ connection }, { GetModalProvider, ReConnectWallet }] =
+        await Promise.all([
+          import('@devprotocol/clubs-core/connection'),
+          import('@fixtures/wallet'),
+        ])
+      this.connection = connection
+      this.modalProvider = GetModalProvider()
+      const { currentAddress, provider } = await ReConnectWallet(
+        this.modalProvider
+      )
+      if (currentAddress) {
+        this.connected = true
+        this.currentWalletAddress = currentAddress
+      }
+      if (provider) {
+        this.provider = provider
+      }
+    })
   },
   methods: {
     getChainId() {
