@@ -121,9 +121,9 @@
       <span class="hs-form-field__label">Avatar</span>
 
       {#if avatarUploading}
-        <div class="h-64 w-64"><Skeleton /></div>
+        <div class="h-64 w-64 mb-4"><Skeleton /></div>
       {:else if avatarPath && avatarPath != ''}
-        <div class="w-64 rounded bg-dp-blue-grey-600 p-3">
+        <div class="w-64 rounded bg-dp-blue-grey-600 p-3 mb-4">
           <img src={avatarPath} class="rounded" alt="" />
         </div>
       {/if}
