@@ -120,7 +120,7 @@
         >
           <img
             alt="Status"
-            :src="!!addressFromNiwa ? checkImage : roundedSquareImage"
+            :src="!!addressFromNiwaOrConfig ? checkImage : roundedSquareImage"
             class="h-3 w-3"
           />
           <p
@@ -141,7 +141,7 @@
             networkSelected === '' ||
             !networkSelected ||
             !connected ||
-            !!addressFromNiwa
+            !!addressFromNiwaOrConfig
               ? 'border-[#3A4158]'
               : 'border-white'
           "
@@ -152,7 +152,7 @@
           <img
             alt="Status"
             :src="
-              addressFromNiwa && membershipInitialized
+              addressFromNiwaOrConfig && membershipInitialized
                 ? checkImage
                 : roundedSquareImage
             "
@@ -164,7 +164,7 @@
               networkSelected === '' ||
               !networkSelected ||
               !connected ||
-              !addressFromNiwa
+              !addressFromNiwaOrConfig
                 ? 'text-[#3A4158]'
                 : 'text-white'
             "
@@ -178,7 +178,7 @@
             networkSelected === '' ||
             !networkSelected ||
             !connected ||
-            !addressFromNiwa ||
+            !addressFromNiwaOrConfig ||
             membershipInitialized
               ? 'border-[#3A4158]'
               : 'border-white'
@@ -190,7 +190,7 @@
           <img
             alt="Status"
             :src="
-              addressFromNiwa && membershipInitialized && membershipSet
+              addressFromNiwaOrConfig && membershipInitialized && membershipSet
                 ? checkImage
                 : roundedSquareImage
             "
@@ -213,7 +213,7 @@
       </section>
       <button
         @click="
-          !addressFromNiwa || addressFromNiwa === ''
+          !addressFromNiwaOrConfig || addressFromNiwaOrConfig === ''
             ? openNiwa(link)
             : !membershipInitialized
             ? initializeMemberships()
@@ -329,7 +329,7 @@ export default defineComponent({
         this.networkSelected === '' ||
         !this.networkSelected
         ? classes + ' opacity-50'
-        : this.addressFromNiwa &&
+        : this.addressFromNiwaOrConfig &&
           this.membershipInitialized &&
           this.membershipSet
         ? classes + ' line-through opacity-50'
@@ -349,12 +349,15 @@ export default defineComponent({
         this.networkSelected
       )
     },
+    addressFromNiwaOrConfig() {
+      return this.config.propertyAddress ?? this.addressFromNiwa
+    },
     step3InterStepButtonText() {
       return !this.connected ||
         !this.networkSelected ||
         this.networkSelected === '' ||
-        !this.addressFromNiwa ||
-        this.addressFromNiwa === ''
+        !this.addressFromNiwaOrConfig ||
+        this.addressFromNiwaOrConfig === ''
         ? 'Activate'
         : !this.membershipInitialized
         ? 'Initialize your memberships'
@@ -364,8 +367,8 @@ export default defineComponent({
       return !this.connected ||
         !this.networkSelected ||
         this.networkSelected === '' ||
-        !this.addressFromNiwa ||
-        this.addressFromNiwa === ''
+        !this.addressFromNiwaOrConfig ||
+        this.addressFromNiwaOrConfig === ''
         ? 'What is activating?'
         : !this.membershipInitialized
         ? 'Enable a memberships contract to use memberships.'
@@ -453,7 +456,7 @@ export default defineComponent({
     },
 
     updateConfig() {
-      const propertyAddress = this.addressFromNiwa as string
+      const propertyAddress = this.addressFromNiwaOrConfig as string
       const rpcUrl = this.getRpcUrl()
       const nextConfig: ClubsConfiguration = {
         ...this.config,
@@ -477,7 +480,7 @@ export default defineComponent({
 
     async initializeMemberships() {
       const currentChainId: number | null = this.getChainId()
-      if (!this.provider || !this.addressFromNiwa || !currentChainId) {
+      if (!this.provider || !this.addressFromNiwaOrConfig || !currentChainId) {
         return
       }
 
@@ -490,7 +493,7 @@ export default defineComponent({
 
       const [l1, l2] = await clientsSTokens(this.provider as BaseProvider)
       const tx = await (l1 || l2)?.setTokenURIDescriptor(
-        this.addressFromNiwa.toString(),
+        this.addressFromNiwaOrConfig.toString(),
         descriptiorAddress
       )
       const response = await tx?.wait(1)
@@ -506,13 +509,13 @@ export default defineComponent({
     async setMemberships() {
       if (
         !this.provider ||
-        !this.addressFromNiwa ||
+        !this.addressFromNiwaOrConfig ||
         !this.membershipInitialized
       ) {
         return
       }
 
-      const propertyAddress = this.addressFromNiwa.toString()
+      const propertyAddress = this.addressFromNiwaOrConfig.toString()
       const images: Image[] =
         this.membershipsPluginOptions?.map((opt) => ({
           src: opt.imageSrc,
