@@ -14,6 +14,7 @@ const {
   memberships,
   homeConfig,
   rpcUrl,
+  chainId,
   sidebarLinks,
   sidebarPrimaryLinks,
   avatarImgSrc,
@@ -23,6 +24,7 @@ const {
   memberships: Membership[]
   homeConfig: HomeConfig
   rpcUrl: string
+  chainId: number
   sidebarPrimaryLinks: NavLink[]
   sidebarLinks: NavLink[]
   avatarImgSrc: string
@@ -46,6 +48,7 @@ const {
         primaryLinks={sidebarPrimaryLinks}
         avatarImgSrc={avatarImgSrc}
         rpcUrl={rpcUrl}
+        chainId={chainId}
       />
       <article class="grid gap-10 lg:gap-20">
         <header

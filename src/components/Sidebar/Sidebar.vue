@@ -59,9 +59,14 @@
               class="grid justify-items-start gap-1 md:justify-items-center md:gap-2"
             >
               <h2 class="font-title text-xl font-bold">{{ tenantName }}</h2>
-              <p class="flex items-center gap-2 font-body text-xs">
+              <p class="flex items-center gap-1 font-body text-xs">
                 $TEMPL on
-                <img :src="images.ETH" class="h-[1.8em]" alt="Ethereum" />
+                <ETH v-if="chainId === 1" class="h-[1.8em]" />
+                <POLYGON
+                  v-if="chainId === 137 || chainId === 80001"
+                  class="h-[1.8em]"
+                />
+                <ARBITRUM v-if="chainId === 42161" class="h-[1.8em]" />
               </p>
             </header>
           </div>
@@ -94,7 +99,9 @@
 </template>
 
 <script lang="ts">
-import ETH from '@assets/ETH.svg'
+import ETH from '@components/Icons/ETH.vue'
+import POLYGON from '@components/Icons/POLYGON.vue'
+import ARBITRUM from '@components/Icons/ARBITRUM.vue'
 import { providers } from 'ethers'
 import { detectStokensByPropertyAddress } from '@fixtures/dev-kit'
 import HSButton from '../Primitives/Hashi/HSButton.vue'
@@ -103,7 +110,7 @@ import { NavLink } from '@constants/navLink'
 
 export default {
   name: 'Sidebar',
-  components: { HSButton },
+  components: { HSButton, ETH, POLYGON, ARBITRUM },
   props: {
     propertyAddress: String,
     tenantName: String,
@@ -117,6 +124,7 @@ export default {
     },
     avatarImgSrc: String,
     rpcUrl: String,
+    chainId: Number,
   },
   data() {
     return {

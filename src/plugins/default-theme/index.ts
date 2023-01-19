@@ -18,7 +18,7 @@ import { Membership } from '@plugins/memberships'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
-  { name, propertyAddress, rpcUrl, plugins, ...config }
+  { name, propertyAddress, rpcUrl, chainId, plugins, ...config }
 ) => {
   const tiers = options.find((opt) => opt.key === 'tiers')
     ?.value as UndefinedOr<Tiers>
@@ -59,6 +59,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
             memberships,
             homeConfig,
             rpcUrl,
+            chainId,
             sidebarPrimaryLinks,
             sidebarLinks,
             avatarImgSrc,
