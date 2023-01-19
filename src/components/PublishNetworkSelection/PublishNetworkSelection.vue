@@ -338,6 +338,9 @@ export default defineComponent({
     link() {
       return `https://${this.networkSelected.toLowerCase()}.niwa.xyz/tokenize/${this.category?.toLowerCase()}`
     },
+    linkOrigin() {
+      return new URL(this.link).origin
+    },
     step3Enabled() {
       return (
         this.category &&
@@ -437,16 +440,12 @@ export default defineComponent({
         'popup,width=500,height=700'
       )
       if (this.popupWindow) {
-        this.popupWindow.addEventListener(
-          'message',
-          this.listenForAddress,
-          false
-        )
+        window.addEventListener('message', this.listenForAddress, false)
       }
     },
 
     listenForAddress(event: MessageEvent<any>) {
-      if (event.source !== this.popupWindow) return
+      if (event.origin !== this.linkOrigin) return
       const { address } = event.data
       if (!address) return
       this.addressFromNiwa = address
@@ -463,6 +462,12 @@ export default defineComponent({
       }
       onUpdatedConfiguration(
         () => {
+          if (
+            this.config.propertyAddress === propertyAddress &&
+            this.config.rpcUrl === rpcUrl
+          ) {
+            return
+          }
           buildConfig()
         },
         { once: true }
