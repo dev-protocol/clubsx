@@ -37,8 +37,9 @@ export default {
     const providerURL = this.rpcUrl
     const provider = new providers.JsonRpcProvider(providerURL)
     const balances =
-      this.propertyAddress &&
-      this.propertyAddress !== ethers.constants.AddressZero
+      this.propertyAddress !== ethers.constants.AddressZero &&
+      this.propertyAddress !== '' &&
+      this.propertyAddress
         ? await getBalances(provider, this.propertyAddress)
         : []
     this.creators = balances.map((balance) => ({
