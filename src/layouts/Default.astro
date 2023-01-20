@@ -73,7 +73,7 @@ const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <title>{title}</title>
-    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="icon" type="image/svg" href="/favicon.svg" />
     <meta name="description" content={`${config.description}`} />
     <meta property="og:title" content={title} />
     <meta property="og:type" content="website" />
@@ -89,7 +89,7 @@ const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
     <meta name="twitter:image" content={`${ogp?.image}`} />
   </head>
 
-  <body class="min-h-screen bg-black font-body text-white">
+  <body class="min-h-screen bg-dp-blue-grey-300 font-body text-white">
     <Navbar
       client:load
       tenantName={config.name}

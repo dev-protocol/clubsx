@@ -7,6 +7,7 @@ import { HomeConfig } from '../../constants/homeConfig'
 import { NavLink } from '@constants/navLink'
 import Markdown from '@components/Markdown/Markdown.astro'
 import { Membership } from '@plugins/memberships'
+import ClubsColor from '@assets/clubs--color.svg'
 
 const {
   propertyAddress,
@@ -31,13 +32,25 @@ const {
 }
 ---
 
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /><link
+  href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap"
+  rel="stylesheet"
+/>
+
 <div>
   <div class="relative">
     <div class="absolute h-[24rem] w-full lg:h-[38rem]">
       <img
         src={homeConfig.hero.image}
-        class="h-full w-full object-cover opacity-80"
+        class="absolute h-full w-full object-cover opacity-80"
       />
+      <a
+        href="https://clubs.place"
+        class="absolute bottom-0 right-0 mb-6 mr-12 flex items-center gap-2 font-['Poppins'] font-bold lg:text-xl"
+      >
+        <img src={ClubsColor} class="w-[1em]" />Clubs
+      </a>
     </div>
     <CLBWrapper>
       <Sidebar
@@ -61,7 +74,6 @@ const {
           </h1>
         </header>
         <div class="grid grid-cols-1 gap-12 px-4">
-          <Markdown body={homeConfig.body} />
           <JoinClubWithSingleCurrency
             client:idle
             propertyAddress={propertyAddress}
@@ -69,6 +81,7 @@ const {
             tenantName={name}
             rpcUrl={rpcUrl}
           />
+          <Markdown body={homeConfig.body} />
         </div>
       </article>
     </CLBWrapper>
