@@ -35,10 +35,9 @@ if (!membership) {
   throw new Error(`Membership not found: ${preset}`)
 }
 
-const baseUrl = new URL(
-  `${site}/setup`,
-  `${location.protocol}//${location.host}`
-).toString()
+const baseUrl = ((url) => `${url.protocol}//${url.host}/`)(
+  new URL(Astro.request.url)
+)
 ---
 
 <SetupLayout {config} {...props} setupStep="MEMBERSHIPS">
