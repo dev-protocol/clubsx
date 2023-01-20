@@ -17,6 +17,9 @@ import A3 from '@assets/Article3.png'
 import CSM1 from '@assets/CaseStudyMedia1.png'
 import CSM2 from '@assets/CaseStudyMedia2.png'
 import CSM3 from '@assets/CaseStudyMedia3.png'
+
+import image from '@assets/maxim-berg-unsplash.jpg'
+import MaticLogo from '@assets/matic_logo.png'
 ---
 
 <html lang="en">
@@ -159,7 +162,7 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
               </div>
             </a>
             <a
-              href="https://medium.com/devprtcl/the-future-of-fundraising-daos-with-clubs-8433029af141"
+              href="https://medium.com/devprtcl/clubs-starter-grant-audiovisual-artist-taito-otani-joins-9cf3fbed41a4"
             >
               <div class="use-case hover:bg-black/20 dark:hover:bg-white/20">
                 <img
@@ -174,7 +177,7 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
               </div>
             </a>
             <a
-              href="https://medium.com/devprtcl/the-future-of-fundraising-daos-with-clubs-8433029af141"
+              href="https://medium.com/devprtcl/hikari-enterprise-ltd-joins-clubs-partner-to-build-garbage-collector-dao-a4f2538765c0"
             >
               <div class="use-case hover:bg-black/20 dark:hover:bg-white/20">
                 <img
@@ -275,6 +278,40 @@ import CSM3 from '@assets/CaseStudyMedia3.png'
           </div>
         </section>
       </div>
+
+      <section class="grid lg:grid-cols-2">
+        <div class="p-6">
+          <p
+            class="flex items-center justify-center bg-cover py-12 px-4 text-black lg:py-24"
+            style={`background-image: url(${image});`}
+          >
+            <span
+              class="flex flex-col items-end justify-center gap-4 lg:flex-row"
+            >
+              <span
+                class="text-right font-title text-2xl font-bold text-black xl:text-3xl"
+              >
+                The first $MATIC<br />
+                is covered
+              </span>
+              <img src={MaticLogo} class="h-auto w-24" />
+            </span>
+          </p>
+        </div>
+        <div
+          class="grid content-center items-center justify-items-start gap-6 p-6 lg:gap-12 lg:p-24"
+        >
+          <h3 class="text-2xl font-bold lg:text-3xl">
+            Apply today and get onboard support!
+          </h3>
+          <CLBButton
+            link="https://clubs-starter-grant.webflow.io/"
+            type="filled plox"
+          >
+            Apply
+          </CLBButton>
+        </div>
+      </section>
 
       <div
         id="all-set"
