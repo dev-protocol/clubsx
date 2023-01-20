@@ -9,7 +9,7 @@
     "preview": "astro preview",
     "lint": "yarn lint:eslint && yarn lint:prettier",
     "lint:eslint": "eslint --fix \"**/*.{js,mjs,cjs}\"",
-    "lint:prettier": "prettier -w .",
+    "lint:prettier": "prettier --cache -w .",
     "prepare": "husky install",
     "install": "node ./ugly.mjs",
     "populate": "node ./scripts/populate.mjs"
