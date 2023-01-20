@@ -151,6 +151,7 @@ const isInDraftWithFirebase = Boolean(
 <script>
   import { DraftOptions } from '@constants/draft'
   import { decode, onSubmitConfig } from '@devprotocol/clubs-core'
+  import { connection } from '@devprotocol/clubs-core/connection'
   import { UndefinedOr } from '@devprotocol/util-ts'
   import { instanceStore } from '@fixtures/firebase/clientInstance'
   import { GetModalProvider, EthersProviderFrom } from '@fixtures/wallet'
@@ -234,6 +235,7 @@ const isInDraftWithFirebase = Boolean(
         return
       }
       const signer = provider.getSigner()
+      connection().signer.next(signer)
 
       const hash = utils.hashMessage(data)
       const sig = await signer.signMessage(hash)
