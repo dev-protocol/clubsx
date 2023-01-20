@@ -10,6 +10,8 @@ import { AdminConfigurationManager } from '@devprotocol/clubs-core/layouts'
 import { UndefinedOr } from '@devprotocol/util-ts'
 import { DraftOptions } from '@constants/draft'
 
+const { site } = Astro.params
+
 const {
   config,
   setupStep,
@@ -70,7 +72,8 @@ const isInDraftWithFirebase = Boolean(
         id="__clubs:setup:header__"
         class="fixed z-50 hidden max-h-screen min-h-screen w-full content-start gap-16 overflow-y-scroll bg-dp-blue-grey-400 lg:relative lg:block lg:max-h-fit lg:overflow-y-auto"
       >
-        <WelcomeWizard step={setupStep} />
+        <!-- TODO: replace this default '' value for site prop in welcome wizard -->
+        <WelcomeWizard step={setupStep} site={site || ''} />
         <button
           id="__clubs:setup:sidebar-close__"
           class="fixed left-1/2 bottom-[3rem] flex aspect-square w-14 -translate-x-1/2 items-center justify-center rounded-full bg-white text-dp-white-ink shadow-2xl lg:hidden"
@@ -141,6 +144,7 @@ const isInDraftWithFirebase = Boolean(
 
   <input id="setupStep" hidden value={setupStep} />
   <input id="encodedConfig" hidden value={clubs.encodedClubsConfiguration} />
+  <input id="siteName" hidden value={site} disabled />
   <AdminConfigurationManager {clubs} />
 </html>
 
@@ -148,24 +152,29 @@ const isInDraftWithFirebase = Boolean(
   import { DraftOptions } from '@constants/draft'
   import { decode, onSubmitConfig } from '@devprotocol/clubs-core'
   import { UndefinedOr } from '@devprotocol/util-ts'
-  import { initializeFirebase } from '@fixtures/firebase'
+  import { instanceStore } from '@fixtures/firebase/clientInstance'
   import { GetModalProvider, EthersProviderFrom } from '@fixtures/wallet'
   import { utils } from 'ethers'
   import { Auth } from 'firebase/auth'
 
+  const siteName = (document.getElementById('siteName') as HTMLInputElement)
+    ?.value
   const setupStep = (document.getElementById('setupStep') as HTMLInputElement)
     ?.value
 
   const getNextStepPath = () => {
+    const splitHostname = window.location.pathname.split('/')
+    const site = splitHostname[1] || siteName
+
     switch (setupStep) {
       case 'HOME':
-        return '/setup/memberships'
+        return `/${site}/setup/memberships`
 
       case 'MEMBERSHIPS':
-        return '/setup/preview'
+        return `/${site}/setup/preview`
 
       case 'PLUGINS':
-        return '/setup/congratulations'
+        return `/${site}/setup/congratulations`
     }
   }
 
@@ -173,7 +182,7 @@ const isInDraftWithFirebase = Boolean(
 
   const config = (document.getElementById('encodedConfig') as HTMLInputElement)
     .value
-  console.log('ClubsConfiguration', decode(config))
+
   const decodedConfig = decode(config)
   const isInDraftWithFirebase = Boolean(
     (
@@ -188,9 +197,18 @@ const isInDraftWithFirebase = Boolean(
       )?.value.uid
   )
 
+  const auth: Auth = instanceStore.initializedApp
+  auth.onAuthStateChanged((user) => {
+    if (user) {
+      // TODO: show loading page until this happens.
+    } else {
+      // TODO: show that club was setup but signup failed when this happens.
+    }
+  })
+
   onSubmitConfig(async (data, onFinish) => {
-    const splitHostname = window.location.hostname.split('.')
-    const site = splitHostname[0]
+    const splitHostname = window.location.pathname.split('/')
+    const site = splitHostname[1] || siteName
 
     let body: {
       site: string
@@ -212,6 +230,7 @@ const isInDraftWithFirebase = Boolean(
         modalProvider
       )
       if (!currentAddress || !provider) {
+        onFinish({ success: false })
         return
       }
       const signer = provider.getSigner()
@@ -219,6 +238,7 @@ const isInDraftWithFirebase = Boolean(
       const hash = utils.hashMessage(data)
       const sig = await signer.signMessage(hash)
       if (!sig) {
+        onFinish({ success: false })
         return
       }
       // Update the request body to use hash and sig. Keeping headers the same.
@@ -226,9 +246,8 @@ const isInDraftWithFirebase = Boolean(
       body['sig'] = sig
     } else {
       // If in else, then we are using firebase.
-
-      const auth: Auth = initializeFirebase()
       if (!auth || !auth.currentUser) {
+        onFinish({ success: false })
         return
       }
 

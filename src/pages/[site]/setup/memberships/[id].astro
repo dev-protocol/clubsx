@@ -34,7 +34,7 @@ const { props } = path
     currentPluginIndex={props.clubs.currentPluginIndex}
     membership={props.membership as Membership}
     existingMemberships={props.memberships as Membership[]}
-    base="/setup"
+    base={`/${site}/setup`}
     rpcUrl={props.rpcUrl as string}
     mode="edit"
   />

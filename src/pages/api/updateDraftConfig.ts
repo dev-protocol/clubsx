@@ -1,5 +1,5 @@
 import { ClubsPluginOption, decode } from '@devprotocol/clubs-core'
-import { initializeFirebaseAdmin } from '@fixtures/firebase/initializeFirebaseAdmin'
+import { instanceStore } from '@fixtures/firebase/instance'
 import { utils } from 'ethers'
 import { createClient } from 'redis'
 
@@ -91,7 +91,7 @@ export const post = async ({ request }: { request: Request }) => {
     }
 
     // Initialize the firebase app and check that token is valid.
-    const auth = initializeFirebaseAdmin()
+    const auth = instanceStore.initializedAdminApp
     // Then we compare the token.
     try {
       const decodedJwtData = await auth.verifyIdToken(jwtTokenId)

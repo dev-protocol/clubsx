@@ -39,7 +39,7 @@ const clubs = path.props.clubs
       currentPluginIndex={clubs.currentPluginIndex}
       memberships={path.props.memberships as Membership[]}
       presets={path.props.presets as Membership[]}
-      base="/setup"
+      base={`/${site}/setup`}
     />
 
     {
@@ -51,7 +51,7 @@ const clubs = path.props.clubs
           </p>
           <a
             class="hs-button inline-block bg-black py-4 text-center text-sm font-semibold text-white"
-            href="/setup/preview"
+            href={`/${site}/setup/preview`}
           >
             Preview
           </a>
