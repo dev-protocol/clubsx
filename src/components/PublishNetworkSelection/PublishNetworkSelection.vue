@@ -120,7 +120,9 @@
         >
           <img
             alt="Status"
-            :src="!!addressFromNiwaOrConfig ? checkImage : roundedSquareImage"
+            :src="
+              addressFromNiwaOrConfigIsValid ? checkImage : roundedSquareImage
+            "
             class="h-3 w-3"
           />
           <p
@@ -164,7 +166,7 @@
               networkSelected === '' ||
               !networkSelected ||
               !connected ||
-              !addressFromNiwaOrConfig
+              !addressFromNiwaOrConfigIsValid
                 ? 'text-[#3A4158]'
                 : 'text-white'
             "
@@ -178,7 +180,7 @@
             networkSelected === '' ||
             !networkSelected ||
             !connected ||
-            !addressFromNiwaOrConfig ||
+            !addressFromNiwaOrConfigIsValid ||
             membershipInitialized
               ? 'border-[#3A4158]'
               : 'border-white'
@@ -213,7 +215,7 @@
       </section>
       <button
         @click="
-          !addressFromNiwaOrConfig || addressFromNiwaOrConfig === ''
+          !addressFromNiwaOrConfigIsValid
             ? openNiwa(link)
             : !membershipInitialized
             ? initializeMemberships()
@@ -241,7 +243,7 @@
 </template>
 
 <script lang="ts">
-import type { ethers } from 'ethers'
+import { ethers } from 'ethers'
 import type Web3Modal from 'web3modal'
 import { PropType, defineComponent } from '@vue/runtime-core'
 import { clientsSTokens } from '@devprotocol/dev-kit/agent'
@@ -309,6 +311,13 @@ export default defineComponent({
     }
   },
   computed: {
+    addressFromNiwaOrConfigIsValid() {
+      return (
+        this.addressFromNiwaOrConfig &&
+        this.addressFromNiwaOrConfig !== ethers.constants.AddressZero &&
+        this.addressFromNiwaOrConfig !== ''
+      )
+    },
     buttonClasses() {
       const classes =
         'w-full rounded border-[3px] border-[#000000] bg-[#040B10] py-6 px-8'
@@ -321,7 +330,7 @@ export default defineComponent({
         ? this.networkSelected === '' || !this.networkSelected
           ? classes
           : classes + ' line-through opacity-50'
-        : classes
+        : classes + ' opacity-50'
     },
     step3TextClasses() {
       const classes = 'font-title text-2xl font-bold'
@@ -358,7 +367,8 @@ export default defineComponent({
         !this.networkSelected ||
         this.networkSelected === '' ||
         !this.addressFromNiwaOrConfig ||
-        this.addressFromNiwaOrConfig === ''
+        this.addressFromNiwaOrConfig === '' ||
+        this.addressFromNiwaOrConfig === ethers.constants.AddressZero
         ? 'Activate'
         : !this.membershipInitialized
         ? 'Initialize your memberships'
@@ -369,7 +379,8 @@ export default defineComponent({
         !this.networkSelected ||
         this.networkSelected === '' ||
         !this.addressFromNiwaOrConfig ||
-        this.addressFromNiwaOrConfig === ''
+        this.addressFromNiwaOrConfig === '' ||
+        this.addressFromNiwaOrConfig === ethers.constants.AddressZero
         ? 'What is activating?'
         : !this.membershipInitialized
         ? 'Enable a memberships contract to use memberships.'
