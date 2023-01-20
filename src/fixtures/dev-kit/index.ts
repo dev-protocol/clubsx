@@ -1,4 +1,4 @@
-import { providers, utils } from 'ethers'
+import { constants, providers, utils } from 'ethers'
 import {
   positionsCreateWithEth,
   positionsCreateWithEthForPolygon,
@@ -67,6 +67,9 @@ export const detectStokensByPropertyAddress = async (
   prov: providers.BaseProvider,
   propertyAddress: string
 ) => {
+  if (propertyAddress === constants.AddressZero) {
+    return undefined
+  }
   const [l1, l2] = await clientsSTokens(prov)
   return (l1 || l2)?.positionsOfProperty(propertyAddress)
 }
@@ -76,6 +79,9 @@ export const balanceOfProperty = async (
   propertyAddress: string,
   accountAddress: string
 ) => {
+  if (propertyAddress === constants.AddressZero) {
+    return undefined
+  }
   const [l1, l2] = await clientsProperty(prov, propertyAddress)
   if (accountAddress) {
     return (l1 || l2)?.balanceOf(accountAddress)
@@ -95,6 +101,9 @@ export const getBalances = async (
   prov: providers.BaseProvider,
   propertyAddress: string
 ) => {
+  if (propertyAddress === constants.AddressZero) {
+    return undefined
+  }
   // only for L2
   const [, l2] = await clientsProperty(prov, propertyAddress)
   return l2?.getBalances()
@@ -222,6 +231,9 @@ export const propertySymbol = async (
   prov: providers.BaseProvider,
   propertyAddress: string
 ) => {
+  if (propertyAddress === constants.AddressZero) {
+    return undefined
+  }
   const [l1, l2] = await clientsProperty(prov, propertyAddress)
   return (l1 || l2)?.symbol()
 }

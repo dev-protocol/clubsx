@@ -37,6 +37,7 @@ export default {
     const providerURL = this.rpcUrl
     const provider = new providers.JsonRpcProvider(providerURL)
     const balances =
+      this.propertyAddress &&
       this.propertyAddress !== ethers.constants.AddressZero
         ? await getBalances(provider, this.propertyAddress)
         : []

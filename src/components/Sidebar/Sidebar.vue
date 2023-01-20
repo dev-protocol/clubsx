@@ -104,7 +104,7 @@
 import ETH from '@components/Icons/ETH.vue'
 import POLYGON from '@components/Icons/POLYGON.vue'
 import ARBITRUM from '@components/Icons/ARBITRUM.vue'
-import { providers } from 'ethers'
+import { constants, providers } from 'ethers'
 import {
   detectStokensByPropertyAddress,
   propertySymbol,
@@ -144,6 +144,9 @@ export default {
   async created() {
     const providerURL = this.rpcUrl
     const provider = new providers.JsonRpcProvider(providerURL)
+    if (this.propertyAddress === constants.AddressZero) {
+      return
+    }
     await detectStokensByPropertyAddress(provider, this.propertyAddress).then(
       (res) => {
         this.members = res.length
