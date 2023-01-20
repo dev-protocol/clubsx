@@ -1,3 +1,4 @@
+import reservedNamespacies from '@constants/reserved-namespacies'
 import { createClient } from 'redis'
 
 /**
@@ -14,14 +15,16 @@ export const get = async ({
   params: { site?: string }
 }) => {
   const validNaming = validate(site)
+  const notReserved = reservedNamespacies.includes(site ?? '') === false
 
-  const client = validNaming
-    ? createClient({
-        url: process.env.REDIS_URL,
-        username: process.env.REDIS_USERNAME ?? '',
-        password: process.env.REDIS_PASSWORD ?? '',
-      })
-    : undefined
+  const client =
+    validNaming && notReserved
+      ? createClient({
+          url: process.env.REDIS_URL,
+          username: process.env.REDIS_USERNAME ?? '',
+          password: process.env.REDIS_PASSWORD ?? '',
+        })
+      : undefined
   await client?.connect()
 
   client?.on('error', (e) => {
@@ -33,11 +36,12 @@ export const get = async ({
 
   try {
     await client?.quit()
-    const body = !validNaming
-      ? { error: 'Invalid naming' }
-      : !validNamespace
-      ? { error: 'Aleady exists' }
-      : {}
+    const body =
+      !validNaming || !notReserved
+        ? { error: 'Invalid naming' }
+        : !validNamespace
+        ? { error: 'Aleady exists' }
+        : {}
     const status = validNaming && validNamespace ? 200 : 400
     return new Response(JSON.stringify(body), { status })
   } catch (error) {
