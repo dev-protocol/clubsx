@@ -80,8 +80,8 @@
     if (res.ok) {
       setConfig(config)
       window.location.href = new URL(
-        '/setup/basic',
-        `${location.protocol}//${siteName}.${location.host}`
+        `${siteName}/setup/basic`,
+        `${location.protocol}//${location.host}`
       ).toString()
     }
   }
