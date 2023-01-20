@@ -69,6 +69,14 @@ export const defaultConfig: ClubsConfiguration = {
       options: [],
     },
     {
+      name: 'community',
+      options: [],
+    },
+    {
+      name: 'quests',
+      options: [],
+    },
+    {
       name: 'members',
       options: [],
     },
