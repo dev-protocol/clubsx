@@ -217,3 +217,11 @@ export const calculateRewardAmount = async (
   const [l1, l2] = await clientsLockup(prov)
   return (l1 || l2)?.calculateRewardAmount(propertyAddress)
 }
+
+export const propertySymbol = async (
+  prov: providers.BaseProvider,
+  propertyAddress: string
+) => {
+  const [l1, l2] = await clientsProperty(prov, propertyAddress)
+  return (l1 || l2)?.symbol()
+}

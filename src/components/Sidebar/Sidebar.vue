@@ -60,7 +60,9 @@
             >
               <h2 class="font-title text-xl font-bold">{{ tenantName }}</h2>
               <p class="flex items-center gap-1 font-body text-xs">
-                $TEMPL on
+                <span class="text-xs" v-if="propertySymbol.length > 0">
+                  ${{ propertySymbol }} on
+                </span>
                 <ETH v-if="chainId === 1" class="h-[1.8em]" />
                 <POLYGON
                   v-if="chainId === 137 || chainId === 80001"
@@ -103,7 +105,10 @@ import ETH from '@components/Icons/ETH.vue'
 import POLYGON from '@components/Icons/POLYGON.vue'
 import ARBITRUM from '@components/Icons/ARBITRUM.vue'
 import { providers } from 'ethers'
-import { detectStokensByPropertyAddress } from '@fixtures/dev-kit'
+import {
+  detectStokensByPropertyAddress,
+  propertySymbol,
+} from '@fixtures/dev-kit'
 import HSButton from '../Primitives/Hashi/HSButton.vue'
 import { PropType } from '@vue/runtime-core'
 import { NavLink } from '@constants/navLink'
@@ -130,6 +135,7 @@ export default {
     return {
       members: 0,
       toggleOpen: false,
+      propertySymbol: '',
       images: {
         avatar: this.avatarImgSrc,
       },
@@ -143,6 +149,9 @@ export default {
         this.members = res.length
       }
     )
+    await propertySymbol(provider, this.propertyAddress).then((res) => {
+      this.propertySymbol = res ?? 'CLUB'
+    })
   },
   methods: {
     toggle() {
