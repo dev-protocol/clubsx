@@ -6,7 +6,6 @@ import tailwind from '@astrojs/tailwind'
 import vue from '@astrojs/vue'
 import react from '@astrojs/react'
 import svelte from '@astrojs/svelte'
-import prefetch from '@astrojs/prefetch'
 import markdownIntegration from '@astropub/md'
 
 config()
@@ -50,9 +49,6 @@ export default defineConfig({
     react(),
     tailwind(),
     svelte(),
-    prefetch({
-      throttle: 10,
-    }),
   ],
   markdown: {
     remarkPlugins: [],
