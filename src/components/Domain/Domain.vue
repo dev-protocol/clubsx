@@ -95,6 +95,7 @@ export default {
               required
               type="text"
               @keyup="verifySiteName"
+              autocapitalize="off"
             />
           </label>
           <span class="ml-1 text-lg font-bold">.clubs.place</span>
