@@ -14,7 +14,7 @@
         />
         <h2 v-bind:class="step2TextClasses">Choose network</h2>
       </section>
-      <p class="text-base">What is the different between networks?</p>
+      <p class="text-base">What is the difference between networks?</p>
     </section>
     <div>
       <section
