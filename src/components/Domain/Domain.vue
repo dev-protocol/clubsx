@@ -87,12 +87,13 @@ export default {
             <input
               class="hs-form-field__input"
               :value="daoName"
-              @input="(evt) => (daoName = evt.target.value)"
+              @input="(evt) => (daoName = evt.target?.value.toLowerCase())"
               id="daoname"
               name="daoname"
               placeholder="Enter your DAO name"
               pattern="^[a-z|0-9|-]{3,42}$"
               required
+              type="text"
               @keyup="verifySiteName"
             />
           </label>
@@ -130,3 +131,9 @@ export default {
     </div>
   </div>
 </template>
+
+<style scoped>
+input[type='text'] {
+  text-transform: lowercase;
+}
+</style>
