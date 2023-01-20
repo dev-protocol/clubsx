@@ -22,7 +22,7 @@ if (!path) {
   throw new Error('Path undefined: ', path)
 }
 
-const baseUrl = ((url) => `${url.protocol}//${url.host}/`)(
+const baseUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
   new URL(Astro.request.url)
 )
 ---
