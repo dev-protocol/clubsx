@@ -86,7 +86,8 @@ export default {
           <label class="hs-form-field is-filled mb-0">
             <input
               class="hs-form-field__input"
-              v-model="daoName"
+              :value="daoName"
+              @input="(evt) => (daoName = evt.target.value)"
               id="daoname"
               name="daoname"
               placeholder="Enter your DAO name"
