@@ -60,7 +60,9 @@
             >
               <h2 class="font-title text-xl font-bold">{{ tenantName }}</h2>
               <p class="flex items-center gap-1 font-body text-xs">
-                $TEMPL on
+                <span class="text-xs" v-if="propertySymbol.length > 0">
+                  ${{ propertySymbol }} on
+                </span>
                 <ETH v-if="chainId === 1" class="h-[1.8em]" />
                 <POLYGON
                   v-if="chainId === 137 || chainId === 80001"
