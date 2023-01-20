@@ -243,7 +243,8 @@
 </template>
 
 <script lang="ts">
-import { ethers } from 'ethers'
+import type { ethers } from 'ethers'
+import { constants } from 'ethers'
 import type Web3Modal from 'web3modal'
 import { PropType, defineComponent } from '@vue/runtime-core'
 import { clientsSTokens } from '@devprotocol/dev-kit/agent'
@@ -296,6 +297,10 @@ export default defineComponent({
       required: true,
     },
     showTestnets: Boolean,
+    site: {
+      type: String,
+      required: true,
+    },
   },
   data(): Data {
     return {
@@ -313,9 +318,9 @@ export default defineComponent({
   computed: {
     addressFromNiwaOrConfigIsValid() {
       return (
-        this.addressFromNiwaOrConfig &&
-        this.addressFromNiwaOrConfig !== ethers.constants.AddressZero &&
-        this.addressFromNiwaOrConfig !== ''
+        (Boolean(this.addressFromNiwa)
+          ? this.addressFromNiwa
+          : this.config.propertyAddress) !== constants.AddressZero
       )
     },
     buttonClasses() {
@@ -368,7 +373,7 @@ export default defineComponent({
         this.networkSelected === '' ||
         !this.addressFromNiwaOrConfig ||
         this.addressFromNiwaOrConfig === '' ||
-        this.addressFromNiwaOrConfig === ethers.constants.AddressZero
+        this.addressFromNiwaOrConfig === constants.AddressZero
         ? 'Activate'
         : !this.membershipInitialized
         ? 'Initialize your memberships'
@@ -380,7 +385,7 @@ export default defineComponent({
         this.networkSelected === '' ||
         !this.addressFromNiwaOrConfig ||
         this.addressFromNiwaOrConfig === '' ||
-        this.addressFromNiwaOrConfig === ethers.constants.AddressZero
+        this.addressFromNiwaOrConfig === constants.AddressZero
         ? 'What is activating?'
         : !this.membershipInitialized
         ? 'Enable a memberships contract to use memberships.'
@@ -463,7 +468,9 @@ export default defineComponent({
     },
 
     updateConfig() {
-      const propertyAddress = this.addressFromNiwaOrConfig as string
+      const propertyAddress = Boolean(this.addressFromNiwa)
+        ? (this.addressFromNiwa as string)
+        : this.addressFromNiwaOrConfig
       const rpcUrl = this.getRpcUrl()
       const nextConfig: ClubsConfiguration = {
         ...this.config,
@@ -547,7 +554,10 @@ export default defineComponent({
 
       if (response?.status) {
         this.membershipSet = true
-        window.location.href = '/admin/overview'
+        window.location.href = new URL(
+          '/admin/overview',
+          `${location.protocol}//${this.site}.${location.host}`
+        ).toString()
       } else {
         this.membershipSet = false
       }
