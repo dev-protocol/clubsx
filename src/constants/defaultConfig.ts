@@ -5,7 +5,7 @@ export const defaultConfig: ClubsConfiguration = {
   twitterHandle: '',
   description: '',
   url: 'https://<USERS_SITE_NAME_HERE>.clubs.place',
-  propertyAddress: '0x0000000000000000000000000000000000000000',
+  propertyAddress: '0x23d67953FE2e61e9fAc78447526D9358cD05d40d',
   adminRolePoints: 50,
   chainId: 137,
   rpcUrl: 'https://polygon-rpc.com',
