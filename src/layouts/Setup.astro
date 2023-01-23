@@ -105,7 +105,9 @@ const isInDraftWithFirebase = Boolean(
               config={config}
               showConnectButton={!isInDraftWithFirebase}
               client:load
-            />
+            >
+              <slot name="aside:after-built-in-buttons" />
+            </Aside>
           </div>
         )
       }
