@@ -102,13 +102,7 @@ const isInDraftWithFirebase = Boolean(
       {
         aside && (
           <div class="container mx-auto px-2 py-8 lg:px-0 lg:py-16">
-            <Aside
-              class="col-span-1"
-              class="col-span-1"
-              config={config}
-              showConnectButton={!isInDraftWithFirebase}
-              client:only="vue"
-            >
+            <Aside config={config} showConnectButton={!isInDraftWithFirebase}>
               <slot name="aside:after-built-in-buttons" />
             </Aside>
           </div>
