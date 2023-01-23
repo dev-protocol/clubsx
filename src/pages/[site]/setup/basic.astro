@@ -1,5 +1,6 @@
 ---
 import ProfileSetupForm from '@components/ProfileSetupForm/ProfileSetupForm.svelte'
+import NextButton from '@components/Setup/NextButton.astro'
 import { config as _config } from '@fixtures/config'
 import { adminFactory } from '@devprotocol/clubs-core'
 import admin from '@plugins/admin'
@@ -24,4 +25,8 @@ if (!path) {
 
 <SetupLayout {config} {...path.props} setupStep="BASIC">
   <ProfileSetupForm client:load config={config} />
+  <NextButton
+    next={`/${site}/setup/design`}
+    slot="aside:after-built-in-buttons"
+  />
 </SetupLayout>
