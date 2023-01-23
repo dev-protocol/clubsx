@@ -63,7 +63,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async () => []
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
   options,
-  { rpcUrl }
+  { rpcUrl, propertyAddress }
 ) => {
   const memberships =
     (options.find((opt) => opt.key === 'memberships')?.value as UndefinedOr<
@@ -87,6 +87,7 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
       props: {
         membership,
         memberships,
+        propertyAddress,
         draftOptions: draftOptionsValue,
         rpcUrl,
       },
@@ -97,6 +98,7 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
       props: {
         membership,
         memberships,
+        propertyAddress,
         presets,
         draftOptions: draftOptionsValue,
         rpcUrl,

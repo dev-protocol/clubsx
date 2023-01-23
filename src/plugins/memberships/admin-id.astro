@@ -34,8 +34,10 @@ const { membership, memberships, clubs, rpcUrl, propertyAddress } =
 </div>
 
 <script>
+  import type { connection as Connection } from '@devprotocol/clubs-core/connection'
+  import type { ethers } from 'ethers'
+  import { onMountClient } from '@devprotocol/clubs-core/events'
   import { ClubsEvents } from '@devprotocol/clubs-core'
-  import { GetModalProvider, ReConnectWallet } from '@fixtures/wallet'
   import { constants } from 'ethers'
   import { keccak256, parseUnits } from 'ethers/lib/utils'
   import BigNumber from 'bignumber.js'
@@ -43,6 +45,21 @@ const { membership, memberships, clubs, rpcUrl, propertyAddress } =
   import { Membership } from '.'
 
   import { callSimpleCollections } from './utils/simpleCollections'
+
+  let connection: typeof Connection
+  let signer: ethers.Signer | undefined
+  let currentAddress: string | undefined
+
+  onMountClient(async () => {
+    const _connection = await import('@devprotocol/clubs-core/connection')
+    connection = _connection.connection
+    connection().signer.subscribe((s) => {
+      signer = s
+    })
+    connection().account.subscribe((a) => {
+      currentAddress = a
+    })
+  })
 
   document.body.addEventListener(
     ClubsEvents.FinishConfiguration,
@@ -57,9 +74,7 @@ const { membership, memberships, clubs, rpcUrl, propertyAddress } =
       ) as HTMLInputElement
       const propAddress = propertyAddressInput.value as string
 
-      const modalProvider = GetModalProvider()
-      const { currentAddress, provider } = await ReConnectWallet(modalProvider)
-      if (!currentAddress || !provider) {
+      if (!currentAddress || !signer) {
         return
       }
 
@@ -74,9 +89,12 @@ const { membership, memberships, clubs, rpcUrl, propertyAddress } =
         gateway: opt.fee?.beneficiary ?? constants.AddressZero,
       }))
 
-      const keys: string[] = memOpts?.map((opt) => keccak256(opt.payload)) || []
+      const keys: string[] =
+        memOpts?.map((opt) => keccak256(new Uint8Array(opt.payload))) || []
 
-      await callSimpleCollections(provider, 'setImages', [
+      console.log({ keys, images, propAddress })
+
+      await callSimpleCollections(signer, 'setImages', [
         propAddress,
         images,
         keys,
