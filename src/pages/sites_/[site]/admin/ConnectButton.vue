@@ -51,10 +51,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import { providers, utils } from 'ethers'
 import type Web3Modal from 'web3modal'
 import type { connection as Connection } from '@devprotocol/clubs-core/connection'
+import { defineComponent } from 'vue'
+import { providers, utils } from 'ethers'
 import { clientsDev } from '@devprotocol/dev-kit/agent'
 import { whenDefined } from '@devprotocol/util-ts'
 import HSButton from '@devprotocol/clubs-core/src/components/Primitives/Hashi/HSButton.vue'
@@ -86,8 +86,8 @@ export default defineComponent({
     onMountClient(async () => {
       const [{ connection }, { GetModalProvider, ReConnectWallet }] =
         await Promise.all([
-          import('../connection'),
-          import('../fixtures/wallet'),
+          import('@devprotocol/clubs-core/connection'),
+          import('@fixtures/wallet'),
         ])
       this.connection = connection
       this.modalProvider = GetModalProvider()
