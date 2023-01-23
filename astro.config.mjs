@@ -59,6 +59,8 @@ export default defineConfig({
       alias: {
         'three/examples/jsm/controls/OrbitControls':
           '/node_modules/three/examples/jsm/controls/OrbitControls',
+        '@devprotocol/clubs-core/aside':
+          '/node_modules/@devprotocol/clubs-core/src/layouts/Aside.vue',
       },
     },
   },
