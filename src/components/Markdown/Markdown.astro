@@ -6,7 +6,6 @@ const { body = '' } = Astro.props as {
 }
 
 const content = marked.parse(body)
-console.log({ body, content })
 ---
 
 <div class="md grid grid-flow-row gap-12">
