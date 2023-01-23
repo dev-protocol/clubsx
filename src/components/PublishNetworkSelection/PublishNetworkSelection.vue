@@ -120,7 +120,9 @@
         >
           <img
             alt="Status"
-            :src="!!addressFromNiwaOrConfig ? checkImage : roundedSquareImage"
+            :src="
+              addressFromNiwaOrConfigIsValid ? checkImage : roundedSquareImage
+            "
             class="h-3 w-3"
           />
           <p
@@ -164,7 +166,7 @@
               networkSelected === '' ||
               !networkSelected ||
               !connected ||
-              !addressFromNiwaOrConfig
+              !addressFromNiwaOrConfigIsValid
                 ? 'text-[#3A4158]'
                 : 'text-white'
             "
@@ -178,7 +180,7 @@
             networkSelected === '' ||
             !networkSelected ||
             !connected ||
-            !addressFromNiwaOrConfig ||
+            !addressFromNiwaOrConfigIsValid ||
             membershipInitialized
               ? 'border-[#3A4158]'
               : 'border-white'
@@ -213,7 +215,7 @@
       </section>
       <button
         @click="
-          !addressFromNiwaOrConfig || addressFromNiwaOrConfig === ''
+          !addressFromNiwaOrConfigIsValid
             ? openNiwa(link)
             : !membershipInitialized
             ? initializeMemberships()
@@ -242,6 +244,7 @@
 
 <script lang="ts">
 import type { ethers } from 'ethers'
+import { constants } from 'ethers'
 import type Web3Modal from 'web3modal'
 import { PropType, defineComponent } from '@vue/runtime-core'
 import { clientsSTokens } from '@devprotocol/dev-kit/agent'
@@ -294,6 +297,10 @@ export default defineComponent({
       required: true,
     },
     showTestnets: Boolean,
+    site: {
+      type: String,
+      required: true,
+    },
   },
   data(): Data {
     return {
@@ -309,6 +316,13 @@ export default defineComponent({
     }
   },
   computed: {
+    addressFromNiwaOrConfigIsValid() {
+      return (
+        (Boolean(this.addressFromNiwa)
+          ? this.addressFromNiwa
+          : this.config.propertyAddress) !== constants.AddressZero
+      )
+    },
     buttonClasses() {
       const classes =
         'w-full rounded border-[3px] border-[#000000] bg-[#040B10] py-6 px-8'
@@ -321,7 +335,7 @@ export default defineComponent({
         ? this.networkSelected === '' || !this.networkSelected
           ? classes
           : classes + ' line-through opacity-50'
-        : classes
+        : classes + ' opacity-50'
     },
     step3TextClasses() {
       const classes = 'font-title text-2xl font-bold'
@@ -358,7 +372,8 @@ export default defineComponent({
         !this.networkSelected ||
         this.networkSelected === '' ||
         !this.addressFromNiwaOrConfig ||
-        this.addressFromNiwaOrConfig === ''
+        this.addressFromNiwaOrConfig === '' ||
+        this.addressFromNiwaOrConfig === constants.AddressZero
         ? 'Activate'
         : !this.membershipInitialized
         ? 'Initialize your memberships'
@@ -369,7 +384,8 @@ export default defineComponent({
         !this.networkSelected ||
         this.networkSelected === '' ||
         !this.addressFromNiwaOrConfig ||
-        this.addressFromNiwaOrConfig === ''
+        this.addressFromNiwaOrConfig === '' ||
+        this.addressFromNiwaOrConfig === constants.AddressZero
         ? 'What is activating?'
         : !this.membershipInitialized
         ? 'Enable a memberships contract to use memberships.'
@@ -452,7 +468,9 @@ export default defineComponent({
     },
 
     updateConfig() {
-      const propertyAddress = this.addressFromNiwaOrConfig as string
+      const propertyAddress = Boolean(this.addressFromNiwa)
+        ? (this.addressFromNiwa as string)
+        : this.addressFromNiwaOrConfig
       const rpcUrl = this.getRpcUrl()
       const nextConfig: ClubsConfiguration = {
         ...this.config,
@@ -536,7 +554,10 @@ export default defineComponent({
 
       if (response?.status) {
         this.membershipSet = true
-        window.location.href = '/admin/overview'
+        window.location.href = new URL(
+          '/admin/overview',
+          `${location.protocol}//${this.site}.${location.host}`
+        ).toString()
       } else {
         this.membershipSet = false
       }

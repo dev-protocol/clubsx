@@ -6,7 +6,6 @@ import tailwind from '@astrojs/tailwind'
 import vue from '@astrojs/vue'
 import react from '@astrojs/react'
 import svelte from '@astrojs/svelte'
-import markdownIntegration from '@astropub/md'
 
 config()
 
@@ -20,7 +19,6 @@ export default defineConfig({
   adapter: vercel(),
   integrations: [
     clubs(),
-    markdownIntegration(),
     {
       name: 'clubs:multi-tenant',
       hooks: {
@@ -50,12 +48,6 @@ export default defineConfig({
     tailwind(),
     svelte(),
   ],
-  markdown: {
-    remarkPlugins: [],
-    rehypePlugins: [],
-    // syntaxHighlight: 'shiki'
-    // syntaxHighlight: 'prism'
-  },
   vite: {
     server: {
       hmr: {
