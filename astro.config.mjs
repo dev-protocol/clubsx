@@ -6,6 +6,9 @@ import tailwind from '@astrojs/tailwind'
 import vue from '@astrojs/vue'
 import react from '@astrojs/react'
 import svelte from '@astrojs/svelte'
+import nodePolyfills from 'rollup-plugin-polyfill-node'
+
+const production = process.env.NODE_ENV === 'production'
 
 config()
 
@@ -49,6 +52,20 @@ export default defineConfig({
     svelte(),
   ],
   vite: {
+    plugins: [
+      !production &&
+        nodePolyfills({
+          include: ['node_modules/**/*.js', /node_modules\/.vite\/.*js/],
+        }),
+    ],
+    build: {
+      rollupOptions: {
+        plugins: [nodePolyfills()],
+      },
+      commonjsOptions: {
+        transformMixedEsModules: true,
+      },
+    },
     server: {
       hmr: {
         timeout: 360000,
