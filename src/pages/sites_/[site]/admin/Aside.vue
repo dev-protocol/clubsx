@@ -24,7 +24,7 @@ import {
   ClubsConfiguration,
   ClubsEvents,
   ClubsEventsDetailFinishConfiguration,
-} from '@devprotocol/clubs-core/types'
+} from '@devprotocol/clubs-core'
 import ActionButton from '@devprotocol/clubs-core/src/components/Primitives/ActionButton.vue'
 // import ConnectButton from '../components/ConnectButton.vue'
 
