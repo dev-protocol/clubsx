@@ -90,22 +90,41 @@ const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
   </head>
 
   <body class="min-h-screen bg-dp-blue-grey-300 font-body text-white">
-    <!-- <Navbar
+    <Navbar
       client:load
       tenantName={config.name}
       headerLinks={headerLinks}
       navLinks={navLinks}
       socialLinks={socialLinks}
       chainId={config.chainId}
-    /> -->
+    />
     {
       isFullPageView ? (
         <main>
           <slot />
+
+          {isInDraft && <PreviewBanner />}
         </main>
       ) : (
         <>
+          <main>
+            <CLBWrapper>
+              <Sidebar
+                client:load
+                propertyAddress={config.propertyAddress}
+                tenantName={config.name}
+                links={sidebarLinks}
+                primaryLinks={sidebarPrimaryLinks}
+                avatarImgSrc={avatarImgSrc}
+                rpcUrl={config.rpcUrl}
+                chainId={config.chainId}
+              />
+              <slot />
+            </CLBWrapper>
+          </main>
           <Footer />
+
+          {isInDraft && <PreviewBanner />}
         </>
       )
     }
