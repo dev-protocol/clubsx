@@ -11,7 +11,7 @@ import PublishNetworkSelection from '@components/PublishNetworkSelection/Publish
 import { UndefinedOr } from '@devprotocol/util-ts'
 import { DraftOptions } from '@constants/draft'
 
-const { site } = Astro.params
+const { setupSiteName: site } = Astro.params
 
 const testnets = Astro.url.searchParams.get('testnets') === ''
 

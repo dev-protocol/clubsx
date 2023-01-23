@@ -6,7 +6,7 @@ import { adminFactory } from '@devprotocol/clubs-core'
 import admin from '@plugins/admin'
 import SetupLayout from '@layouts/Setup.astro'
 
-const { site } = Astro.params
+const { setupSiteName: site } = Astro.params
 
 const { getStaticPaths, getCurrentConfig } = adminFactory({
   config: async () => await _config(site),

@@ -5,7 +5,7 @@ import { adminFactory } from '@devprotocol/clubs-core'
 import memberships, { Membership } from '@plugins/memberships'
 import SetupLayout from '@layouts/Setup.astro'
 
-const { site } = Astro.params
+const { setupSiteName: site } = Astro.params
 
 const created = new URL(Astro.request.url).searchParams.get('created')
 

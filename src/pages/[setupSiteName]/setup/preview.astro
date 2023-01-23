@@ -6,7 +6,7 @@ import admin from '@plugins/admin'
 import SetupLayout from '@layouts/Setup.astro'
 import image from '@assets/preview-overview-chart.png'
 
-const { site } = Astro.params
+const { setupSiteName: site } = Astro.params
 
 const { getStaticPaths, getCurrentConfig } = adminFactory({
   config: async () => await _config(site),
