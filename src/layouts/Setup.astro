@@ -105,7 +105,7 @@ const isInDraftWithFirebase = Boolean(
               class="col-span-1"
               config={config}
               showConnectButton={!isInDraftWithFirebase}
-              client:load
+              client:only="vue"
             >
               <slot name="aside:after-built-in-buttons" />
             </Aside>
