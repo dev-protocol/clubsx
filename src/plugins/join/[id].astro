@@ -5,7 +5,7 @@ const { amount, propertyAddress, currency, rpcUrl } = Astro.props
 ---
 
 <JoinCheckout
-  client:only
+  client:only="vue"
   amount={amount}
   destination={propertyAddress}
   currency={currency}
