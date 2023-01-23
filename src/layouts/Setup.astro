@@ -267,7 +267,7 @@ const isInDraftWithFirebase = Boolean(
     const success = res.ok
     onFinish({ success })
 
-    if (window.location.pathname.startsWith('/setup/memberships/new')) {
+    if (window.location.pathname.startsWith(`/${site}/setup/memberships/new`)) {
       return
     }
 
