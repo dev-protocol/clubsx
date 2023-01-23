@@ -1,15 +1,16 @@
 ---
-import { Markdown } from '@astropub/md'
+import { marked } from 'marked'
 
 const { body = '' } = Astro.props as {
   body?: string
 }
 
-console.log({ body })
+const content = marked.parse(body)
+console.log({ body, content })
 ---
 
 <div class="md grid grid-flow-row gap-12">
-  <Markdown of={body} />
+  <div class="md" set:html={content} />
 </div>
 
 <style lang="scss">
