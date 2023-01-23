@@ -80,20 +80,37 @@ const baseUrl = ((host) =>
 </Admin>
 
 <script>
+  import type { ethers } from 'ethers'
+  import type { connection as Connection } from '@devprotocol/clubs-core/connection'
   import { onSubmitConfig } from '@devprotocol/clubs-core'
-  import { GetModalProvider, ReConnectWallet } from '@fixtures/wallet'
+  import { onMountClient } from '@devprotocol/clubs-core/events'
   import { utils } from 'ethers'
+
+  let connection: typeof Connection
+  let signer: ethers.Signer | undefined
+  let currentAddress: string | undefined
+
+  onMountClient(async () => {
+    const _connection = await import('@devprotocol/clubs-core/connection')
+    connection = _connection.connection
+    connection().signer.subscribe((s) => {
+      signer = s
+    })
+    connection().account.subscribe((a) => {
+      currentAddress = a
+    })
+  })
 
   onSubmitConfig(async (data, onFinish) => {
     const splitHostname = window.location.hostname.split('.')
     const site = splitHostname[0]
 
-    const modalProvider = GetModalProvider()
-    const { provider, currentAddress } = await ReConnectWallet(modalProvider)
-    if (!currentAddress || !provider) {
-      return
+    if (!currentAddress || !signer) {
+      return onFinish({
+        success: false,
+        error: new Error('Please connect your wallet first'),
+      })
     }
-    const signer = provider.getSigner()
 
     const hash = await utils.hashMessage(data)
     const sig = await signer.signMessage(hash)
