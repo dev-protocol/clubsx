@@ -6,7 +6,7 @@ fs.outputFileSync(
   path,
   ((file) =>
     file.replace(
-      'base + req.url',
-      `headers['x-rewritten-url'] ? headers['x-rewritten-url'] : base + req.url`
+      `base + req.url,`,
+      `(()=>headers['x-rewritten-url'] ? headers['x-rewritten-url'] : base + req.url)(),`
     ))(fs.readFileSync(path, 'utf8'))
 )
