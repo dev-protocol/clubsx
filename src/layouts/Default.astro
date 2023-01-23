@@ -90,14 +90,14 @@ const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
   </head>
 
   <body class="min-h-screen bg-dp-blue-grey-300 font-body text-white">
-    <Navbar
+    <!-- <Navbar
       client:load
       tenantName={config.name}
       headerLinks={headerLinks}
       navLinks={navLinks}
       socialLinks={socialLinks}
       chainId={config.chainId}
-    />
+    /> -->
     {
       isFullPageView ? (
         <main>
