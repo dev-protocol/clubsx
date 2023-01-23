@@ -3,7 +3,7 @@ import { ClubsPropsAdminPages, decode } from '@devprotocol/clubs-core'
 import AdminSidebar from '@devprotocol/clubs-core/src/layouts/AdminSidebar.astro'
 import { AdminConfigurationManager } from '@devprotocol/clubs-core/layouts'
 import AdminThemeCard from '@devprotocol/clubs-core/src/layouts/AdminThemeCard.astro'
-import Aside from '@devprotocol/clubs-core/aside'
+import Aside from './Aside.vue'
 
 import '@devprotocol/clubs-core/styles'
 
@@ -88,7 +88,7 @@ const SlotsAsideAfterBuiltInButtons =
         </div>
       </main>
       <div class="container mx-auto px-2 py-8 lg:px-0 lg:py-16">
-        <!-- <Aside config={config} client:load>
+        <Aside config={config} client:load>
           {
             SlotsAsideAfterBuiltInButtons ? (
               <SlotsAsideAfterBuiltInButtons {...Astro.props} />
@@ -96,7 +96,7 @@ const SlotsAsideAfterBuiltInButtons =
               <slot name="aside:after-built-in-buttons" />
             )
           }
-        </Aside> -->
+        </Aside>
       </div>
 
       <!-- Navigation bar for mobile -->
