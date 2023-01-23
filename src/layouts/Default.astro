@@ -89,15 +89,15 @@ const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
     <meta name="twitter:image" content={`${ogp?.image}`} />
   </head>
 
-  <body class="min-h-screen bg-dp-blue-grey-300 font-body text-white">
-    <!-- <Navbar
+  <!-- <body class="min-h-screen bg-dp-blue-grey-300 font-body text-white">
+    <Navbar
       client:load
       tenantName={config.name}
       headerLinks={headerLinks}
       navLinks={navLinks}
       socialLinks={socialLinks}
       chainId={config.chainId}
-    /> -->
+    />
     {
       isFullPageView ? (
         <main>
@@ -129,5 +129,6 @@ const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
       )
     }
   </body>
-  <VercelAnalytics />
+  <VercelAnalytics /> -->
+
 </html>
