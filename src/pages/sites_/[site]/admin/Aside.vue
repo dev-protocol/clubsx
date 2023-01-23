@@ -26,13 +26,13 @@ import {
   ClubsEventsDetailFinishConfiguration,
 } from '@devprotocol/clubs-core'
 import ActionButton from '@devprotocol/clubs-core/src/components/Primitives/ActionButton.vue'
-// import ConnectButton from '../components/ConnectButton.vue'
+import ConnectButton from './ConnectButton.vue'
 
 export default defineComponent({
   name: 'Aside',
   components: {
     ActionButton,
-    // ConnectButton,
+    ConnectButton,
   },
   props: {
     config: {
