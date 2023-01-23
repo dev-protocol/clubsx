@@ -12,7 +12,8 @@
     "lint:prettier": "prettier --cache -w .",
     "prepare": "husky install",
     "install": "node ./ugly.mjs",
-    "populate": "node ./scripts/populate.mjs"
+    "populate": "node ./scripts/populate.mjs",
+    "flushDb": "node ./scripts/flushDb.mjs"
   },
   "devDependencies": {
     "@types/dotenv": "8.2.0",

@@ -48,6 +48,7 @@
   onMount(() => {
     onChangePrice()
     fetchPositionsOfProperty()
+    update()
   })
 
   const update = () => {

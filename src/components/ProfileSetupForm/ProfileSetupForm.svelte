@@ -4,6 +4,7 @@
   import { ClubsConfiguration, setConfig } from '@devprotocol/clubs-core'
   import { UndefinedOr } from '@devprotocol/util-ts'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
+  import { onMount } from 'svelte'
 
   export let config: ClubsConfiguration
 
@@ -79,6 +80,10 @@
 
     setConfig(config)
   }
+
+  onMount(() => {
+    update()
+  })
 </script>
 
 <form on:change|preventDefault={(e) => update()} class="grid gap-16">
