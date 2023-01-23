@@ -58,6 +58,10 @@ export default defineConfig({
       alias: {
         'three/examples/jsm/controls/OrbitControls':
           '/node_modules/three/examples/jsm/controls/OrbitControls',
+        '@devprotocol/clubs-core/src/layouts/AdminSidebar.astro':
+          '/node_modules/@devprotocol/clubs-core/src/layouts/AdminSidebar.astro',
+        '@devprotocol/clubs-core/src/layouts/AdminThemeCard.astro':
+          '/node_modules/@devprotocol/clubs-core/src/layouts/AdminThemeCard.astro',
       },
     },
   },
