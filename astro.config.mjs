@@ -58,14 +58,6 @@ export default defineConfig({
       alias: {
         'three/examples/jsm/controls/OrbitControls':
           '/node_modules/three/examples/jsm/controls/OrbitControls',
-        '@devprotocol/clubs-core/src/layouts/AdminSidebar.astro':
-          '/node_modules/@devprotocol/clubs-core/src/layouts/AdminSidebar.astro',
-        '@devprotocol/clubs-core/src/layouts/AdminThemeCard.astro':
-          '/node_modules/@devprotocol/clubs-core/src/layouts/AdminThemeCard.astro',
-        '@devprotocol/clubs-core/src/components/Primitives/ActionButton.vue':
-          '/node_modules/@devprotocol/clubs-core/src/components/Primitives/ActionButton.vue',
-        '@devprotocol/clubs-core/src/components/Primitives/Hashi/HSButton.vue':
-          '/node_modules/@devprotocol/clubs-core/src/components/Primitives/Hashi/HSButton.vue',
       },
     },
   },
