@@ -143,7 +143,7 @@
             networkSelected === '' ||
             !networkSelected ||
             !connected ||
-            !!addressFromNiwaOrConfig
+            !!addressFromNiwaOrConfigIsValid
               ? 'border-[#3A4158]'
               : 'border-white'
           "
@@ -154,7 +154,7 @@
           <img
             alt="Status"
             :src="
-              addressFromNiwaOrConfig && membershipInitialized
+              addressFromNiwaOrConfigIsValid && membershipInitialized
                 ? checkImage
                 : roundedSquareImage
             "
@@ -181,7 +181,7 @@
             !networkSelected ||
             !connected ||
             !addressFromNiwaOrConfigIsValid ||
-            membershipInitialized
+            !membershipInitialized
               ? 'border-[#3A4158]'
               : 'border-white'
           "
@@ -192,7 +192,9 @@
           <img
             alt="Status"
             :src="
-              addressFromNiwaOrConfig && membershipInitialized && membershipSet
+              addressFromNiwaOrConfigIsValid &&
+              membershipInitialized &&
+              membershipSet
                 ? checkImage
                 : roundedSquareImage
             "
@@ -243,7 +245,7 @@
 </template>
 
 <script lang="ts">
-import type { ethers } from 'ethers'
+import { ethers } from 'ethers'
 import { constants } from 'ethers'
 import type Web3Modal from 'web3modal'
 import { PropType, defineComponent } from '@vue/runtime-core'
@@ -344,7 +346,7 @@ export default defineComponent({
         this.networkSelected === '' ||
         !this.networkSelected
         ? classes + ' opacity-50'
-        : this.addressFromNiwaOrConfig &&
+        : this.addressFromNiwaOrConfigIsValid &&
           this.membershipInitialized &&
           this.membershipSet
         ? classes + ' line-through opacity-50'
@@ -365,15 +367,16 @@ export default defineComponent({
       )
     },
     addressFromNiwaOrConfig() {
-      return this.config.propertyAddress ?? this.addressFromNiwa
+      return this.config.propertyAddress &&
+        this.config.propertyAddress != ethers.constants.AddressZero
+        ? this.config.propertyAddress
+        : this.addressFromNiwa
     },
     step3InterStepButtonText() {
       return !this.connected ||
         !this.networkSelected ||
         this.networkSelected === '' ||
-        !this.addressFromNiwaOrConfig ||
-        this.addressFromNiwaOrConfig === '' ||
-        this.addressFromNiwaOrConfig === constants.AddressZero
+        !this.addressFromNiwaOrConfigIsValid
         ? 'Activate'
         : !this.membershipInitialized
         ? 'Initialize your memberships'
@@ -383,9 +386,7 @@ export default defineComponent({
       return !this.connected ||
         !this.networkSelected ||
         this.networkSelected === '' ||
-        !this.addressFromNiwaOrConfig ||
-        this.addressFromNiwaOrConfig === '' ||
-        this.addressFromNiwaOrConfig === constants.AddressZero
+        !this.addressFromNiwaOrConfigIsValid
         ? 'What is activating?'
         : !this.membershipInitialized
         ? 'Enable a memberships contract to use memberships.'
@@ -470,7 +471,7 @@ export default defineComponent({
     updateConfig() {
       const propertyAddress = Boolean(this.addressFromNiwa)
         ? (this.addressFromNiwa as string)
-        : this.addressFromNiwaOrConfig
+        : (this.addressFromNiwaOrConfig as string)
       const rpcUrl = this.getRpcUrl()
       const nextConfig: ClubsConfiguration = {
         ...this.config,
@@ -494,7 +495,11 @@ export default defineComponent({
 
     async initializeMemberships() {
       const currentChainId: number | null = this.getChainId()
-      if (!provider || !this.addressFromNiwaOrConfig || !currentChainId) {
+      if (
+        !provider ||
+        !this.addressFromNiwaOrConfigIsValid ||
+        !currentChainId
+      ) {
         return
       }
 
@@ -506,8 +511,11 @@ export default defineComponent({
       }
 
       const [l1, l2] = await clientsSTokens(provider as BaseProvider)
+      const propertyAddress = Boolean(this.addressFromNiwa)
+        ? (this.addressFromNiwa as string)
+        : (this.addressFromNiwaOrConfig as string)
       const tx = await (l1 || l2)?.setTokenURIDescriptor(
-        this.addressFromNiwaOrConfig.toString(),
+        propertyAddress,
         descriptiorAddress
       )
       const response = await tx?.wait(1)
@@ -523,13 +531,15 @@ export default defineComponent({
     async setMemberships() {
       if (
         !signer ||
-        !this.addressFromNiwaOrConfig ||
+        !this.addressFromNiwaOrConfigIsValid ||
         !this.membershipInitialized
       ) {
         return
       }
 
-      const propertyAddress = this.addressFromNiwaOrConfig.toString()
+      const propertyAddress = Boolean(this.addressFromNiwa)
+        ? (this.addressFromNiwa as string)
+        : (this.addressFromNiwaOrConfig as string)
       const images: Image[] =
         this.membershipsPluginOptions?.map((opt) => ({
           src: opt.imageSrc,
