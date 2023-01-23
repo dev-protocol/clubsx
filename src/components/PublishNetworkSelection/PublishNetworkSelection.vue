@@ -319,11 +319,10 @@ export default defineComponent({
   },
   computed: {
     addressFromNiwaOrConfigIsValid() {
-      return (
-        (Boolean(this.addressFromNiwa)
-          ? this.addressFromNiwa
-          : this.config.propertyAddress) !== constants.AddressZero
-      )
+      const address = Boolean(this.addressFromNiwa)
+        ? this.addressFromNiwa
+        : this.config.propertyAddress
+      return address && address !== constants.AddressZero
     },
     buttonClasses() {
       const classes =
