@@ -7,5 +7,5 @@ const config = Astro.props as ClubsConfiguration
 
 <section class="flex flex-col">
   <h1 class="mb-16 font-title text-lg font-bold">Overview</h1>
-  <AdminOverview client:load config={config} />
+  <AdminOverview client:only="svelte" config={config} />
 </section>

@@ -39,7 +39,7 @@
       class="grid gap-16 rounded-lg border border-[3px] border-native-blue-400 p-8"
     >
       <span class="font-title text-lg font-bold">Number of members</span>
-      {#if members}
+      {#if typeof members === 'number'}
         <span class="text-5xl"
           >{members.toLocaleString('en', { useGrouping: true })}</span
         >
