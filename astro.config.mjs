@@ -1,7 +1,8 @@
 import { config } from 'dotenv'
 import { defineConfig } from 'astro/config'
 import clubs from '@devprotocol/clubs-core'
-import vercel from '@astrojs/vercel/serverless'
+// import vercel from '@astrojs/vercel/serverless'
+import netlify from '@astrojs/netlify/functions'
 import tailwind from '@astrojs/tailwind'
 import vue from '@astrojs/vue'
 import react from '@astrojs/react'
@@ -16,7 +17,7 @@ export default defineConfig({
     port: 3000,
   },
   output: 'server',
-  adapter: vercel(),
+  adapter: netlify(),
   integrations: [
     clubs(),
     {
@@ -58,6 +59,8 @@ export default defineConfig({
       alias: {
         'three/examples/jsm/controls/OrbitControls':
           '/node_modules/three/examples/jsm/controls/OrbitControls',
+        '@devprotocol/clubs-core/aside':
+          '/node_modules/@devprotocol/clubs-core/src/layouts/Aside.vue',
       },
     },
   },
