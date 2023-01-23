@@ -1,7 +1,7 @@
 import fs from 'fs-extra'
 
 const path =
-  './node_modules/@astrojs/vercel/dist/serverless/request-transform/node18.js'
+  './node_modules/@astrojs/vercel/dist/serverless/request-transform.js'
 fs.outputFileSync(
   path,
   ((file) =>
