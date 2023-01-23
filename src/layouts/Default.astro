@@ -107,21 +107,6 @@ const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
         </main>
       ) : (
         <>
-          <main>
-            <CLBWrapper>
-              <Sidebar
-                client:load
-                propertyAddress={config.propertyAddress}
-                tenantName={config.name}
-                links={sidebarLinks}
-                primaryLinks={sidebarPrimaryLinks}
-                avatarImgSrc={avatarImgSrc}
-                rpcUrl={config.rpcUrl}
-                chainId={config.chainId}
-              />
-              <slot />
-            </CLBWrapper>
-          </main>
           <Footer />
 
           {isInDraft && <PreviewBanner />}
