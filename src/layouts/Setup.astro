@@ -9,6 +9,7 @@ import Aside from '@devprotocol/clubs-core/aside'
 import { AdminConfigurationManager } from '@devprotocol/clubs-core/layouts'
 import { UndefinedOr } from '@devprotocol/util-ts'
 import { DraftOptions } from '@constants/draft'
+import VercelAnalytics from '@components/Analytics/VercelAnalytics.astro'
 
 const { site } = Astro.params
 
@@ -142,6 +143,7 @@ const isInDraftWithFirebase = Boolean(
         </svg>
       </button>
     </div>
+    <VercelAnalytics />
   </body>
 
   <input id="setupStep" hidden value={setupStep} />

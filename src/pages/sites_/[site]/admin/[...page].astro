@@ -9,6 +9,7 @@ import memberships from '@plugins/memberships'
 import quests from '@plugins/quests'
 import home from '@plugins/home'
 import message from '@plugins/message'
+import VercelAnalytics from '@components/Analytics/VercelAnalytics.astro'
 
 const { site, page } = Astro.params
 
@@ -75,6 +76,7 @@ const baseUrl = ((host) =>
     Projects
   </a>
   <Content {...path.props} />
+  <VercelAnalytics />
 </Admin>
 
 <script>

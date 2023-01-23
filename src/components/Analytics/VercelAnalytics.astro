@@ -1,4 +1,12 @@
+{
+  (import.meta.env.MODE as 'development' | 'production') === 'production' && (
+    <script is:inline src="/va/script.js" />
+  )
+}
+
 <script>
   import { inject } from '@vercel/analytics'
-  inject({ mode: import.meta.env.MODE as 'development' | 'production' })
+  if ((import.meta.env.MODE as 'development' | 'production') !== 'production') {
+    inject({ mode: 'development' })
+  }
 </script>
