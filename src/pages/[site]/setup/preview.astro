@@ -5,6 +5,7 @@ import { adminFactory } from '@devprotocol/clubs-core'
 import admin from '@plugins/admin'
 import SetupLayout from '@layouts/Setup.astro'
 import image from '@assets/preview-overview-chart.png'
+import NextButton from '@components/Setup/NextButton.astro'
 
 const { site } = Astro.params
 
@@ -68,4 +69,9 @@ const baseUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
       </div>
     </a>
   </section>
+
+  <NextButton
+    next={`/${site}/setup/publish`}
+    slot="aside:after-built-in-buttons"
+  />
 </SetupLayout>

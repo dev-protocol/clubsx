@@ -4,6 +4,7 @@ import { config as _config } from '@fixtures/config'
 import { adminFactory } from '@devprotocol/clubs-core'
 import defaultTheme from '@plugins/default-theme'
 import SetupLayout from '@layouts/Setup.astro'
+import NextButton from '@components/Setup/NextButton.astro'
 
 const { site, page } = Astro.params
 
@@ -35,5 +36,10 @@ const homeConfig = path?.props.options.find(
     client:load
     homeConfig={homeConfig.value}
     currentPluginIndex={path?.props.clubs.currentPluginIndex}
+  />
+
+  <NextButton
+    next={`/${site}/setup/memberships`}
+    slot="aside:after-built-in-buttons"
   />
 </SetupLayout>
