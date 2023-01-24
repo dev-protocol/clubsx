@@ -71,7 +71,7 @@ const ogp = {
         <h1
           class="flex items-center gap-2.5 font-['Poppins'] text-xl font-bold"
         >
-          <img src={ClubsColor} />Clubs
+          <img src={ClubsColor} class="h-auto w-[1.5em]" />Clubs
         </h1>
       </a>
       <HSButton slot="right" type="filled white" link="/signin">
@@ -348,21 +348,20 @@ const ogp = {
     </main>
   </body>
 
-  <footer class="mx-auto max-w-7xl py-28 px-4 lg:py-60">
+  <footer class="mx-auto max-w-7xl px-4 pb-28 pt-20 lg:pb-40">
     <div
       class="mb-12 grid gap-6 lg:grid-cols-[3fr_2fr] lg:items-center lg:gap-48"
     >
       <a href="/">
         <h1
-          class="flex items-center gap-2.5 font-['Poppins'] text-6xl font-bold"
+          class="flex items-center gap-2.5 font-['Poppins'] text-5xl font-bold"
         >
           <img src={ClubsColor} class="h-[1em] w-[1em]" />Clubs
         </h1>
       </a>
-
       <div class="wrap-none flex flex-row items-center">
-        <p class="whitespace-nowrap text-lg font-bold md:text-2xl">
-          <span class="hidden text-lg font-bold md:text-2xl lg:inline"
+        <p class="whitespace-nowrap text-lg font-bold">
+          <span class="hidden text-lg font-bold lg:inline"
             >Clubs is
           </span>powered by
         </p>
