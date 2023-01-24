@@ -15,6 +15,9 @@
 
   export let siteName: string
 
+  let walletAwaitingUserConfirmation: boolean = false
+  let walletConnectStatusMsg: string = ''
+
   let GetModalProvider: Web3Modal
   let EthersProviderFrom: typeof TypeEthersProviderFrom
   const firebaseCallbackUrl = import.meta.env.PUBLIC_FIREBASE_CALLBACK_URL
@@ -26,9 +29,16 @@
   })
 
   const walletConnect = async () => {
+    walletAwaitingUserConfirmation = true
+    walletConnectStatusMsg =
+      'Awaiting wallet connection confirmation on wallet...'
     const { provider, currentAddress } = await EthersProviderFrom(
       GetModalProvider
     )
+    walletAwaitingUserConfirmation = false
+    walletConnectStatusMsg =
+      'Wallet connection confirmed, initiating clubs creation...'
+
     if (!currentAddress || !provider) {
       return
     }
@@ -58,7 +68,14 @@
     const signer = provider.getSigner()
     const encodedConfig = encode(config)
     const hash = utils.hashMessage(encodedConfig)
+
+    walletAwaitingUserConfirmation = true
+    walletConnectStatusMsg = 'Awaiting clubs creation confirmation on wallet...'
     const sig = await signer.signMessage(hash)
+    walletAwaitingUserConfirmation = false
+    walletConnectStatusMsg =
+      'Clubs Creation confirmed on wallet, loading setup...'
+
     if (!sig) {
       return
     }
@@ -111,11 +128,15 @@
           !GetModalProvider || !EthersProviderFrom
             ? 'animate-pulse bg-gray-500/60'
             : ''
+        } ${
+          walletAwaitingUserConfirmation ? 'animate-pulse bg-gray-500/60' : ''
         }`}
         disabled={!GetModalProvider || !EthersProviderFrom}
         on:click|preventDefault={(_) => walletConnect()}
       >
-        Sign with your wallet
+        {walletConnectStatusMsg == ''
+          ? 'Sign with your wallet'
+          : walletConnectStatusMsg}
       </button>
     </div>
   </section>
