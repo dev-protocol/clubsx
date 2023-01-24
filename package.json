@@ -20,7 +20,7 @@
     "@types/marked": "^4.0.8",
     "@types/ramda": "0.28.21",
     "@types/react": "18.0.27",
-    "@types/three": "0.148.0",
+    "@types/three": "0.148.1",
     "dotenv": "16.0.3",
     "eslint": "8.32.0",
     "eslint-config-prettier": "8.6.0",
