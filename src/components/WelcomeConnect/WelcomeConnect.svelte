@@ -7,11 +7,12 @@
     encode,
     setConfig,
   } from '@devprotocol/clubs-core'
-  import { utils } from 'ethers'
+  import { providers, utils } from 'ethers'
   import { defaultConfig } from '@constants/defaultConfig'
   import { onMount } from 'svelte'
   import EmailConnect from '../EmailConnect/EmailConnect.svelte'
   import { DraftOptions } from '@constants/draft'
+  import { UndefinedOr } from '@devprotocol/util-ts'
 
   export let siteName: string
 
@@ -29,15 +30,24 @@
   })
 
   const walletConnect = async () => {
-    walletAwaitingUserConfirmation = true
-    walletConnectStatusMsg =
-      'Awaiting wallet connection confirmation on wallet...'
-    const { provider, currentAddress } = await EthersProviderFrom(
-      GetModalProvider
-    )
-    walletAwaitingUserConfirmation = false
-    walletConnectStatusMsg =
-      'Wallet connection confirmed, initiating clubs creation...'
+    let provider: UndefinedOr<providers.Web3Provider>
+    let currentAddress: string | undefined
+
+    try {
+      walletAwaitingUserConfirmation = true
+      walletConnectStatusMsg =
+        'Awaiting wallet connection confirmation on wallet...'
+      const connection = await EthersProviderFrom(GetModalProvider)
+      walletConnectStatusMsg =
+        'Wallet connection confirmed, initiating clubs creation...'
+
+      provider = connection.provider
+      currentAddress = connection.currentAddress
+    } catch (error: any) {
+      walletConnectStatusMsg = 'Wallet connection failed, try again!'
+    } finally {
+      walletAwaitingUserConfirmation = false
+    }
 
     if (!currentAddress || !provider) {
       return
@@ -69,12 +79,19 @@
     const encodedConfig = encode(config)
     const hash = utils.hashMessage(encodedConfig)
 
-    walletAwaitingUserConfirmation = true
-    walletConnectStatusMsg = 'Awaiting clubs creation confirmation on wallet...'
-    const sig = await signer.signMessage(hash)
-    walletAwaitingUserConfirmation = false
-    walletConnectStatusMsg =
-      'Clubs Creation confirmed on wallet, loading setup...'
+    let sig: string | undefined
+    try {
+      walletAwaitingUserConfirmation = true
+      walletConnectStatusMsg =
+        'Awaiting clubs creation confirmation on wallet...'
+      sig = await signer.signMessage(hash)
+      walletConnectStatusMsg =
+        'Clubs Creation confirmed on wallet, loading setup...'
+    } catch (error: any) {
+      walletConnectStatusMsg = 'Clubs creation confirmation failed, try again!'
+    } finally {
+      walletAwaitingUserConfirmation = false
+    }
 
     if (!sig) {
       return
