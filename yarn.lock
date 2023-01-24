@@ -100,14 +100,15 @@
     "@sveltejs/vite-plugin-svelte" "^2.0.2"
     svelte2tsx "^0.5.11"
 
-"@astrojs/tailwind@3.0.0-beta.1":
-  version "3.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@astrojs/tailwind/-/tailwind-3.0.0-beta.1.tgz#b00735bf72b65ebcac1fb153e863f7f1082aa6a8"
-  integrity sha512-Y1vptD7xk7/p1mcn9d/hwTRX38YVOgjYB4OtccGUPfkVov63C6bO2zNBTnJVgnaq1sopuLWX9it1+GsqFxY3HQ==
+"@astrojs/tailwind@3.0.0-beta.2":
+  version "3.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@astrojs/tailwind/-/tailwind-3.0.0-beta.2.tgz#438e129de9e7d5c281fc4e4c9bb20ec6e0a911e5"
+  integrity sha512-N0nWnt/ikdIFF0mpTIRmjc2RWRcaPQca7BeyikU+BEqnE9o+cVwW2GhKzKAc4ySt5PRtdS/MN9vALzBVlcOgTw==
   dependencies:
     "@proload/core" "^0.3.2"
     autoprefixer "^10.4.7"
     postcss "^8.4.14"
+    postcss-load-config "^4.0.1"
 
 "@astrojs/telemetry@^2.0.0-beta.0":
   version "2.0.0-beta.0"
@@ -6399,6 +6400,14 @@ postcss-load-config@^3.1.4:
     lilconfig "^2.0.5"
     yaml "^1.10.2"
 
+postcss-load-config@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/postcss-load-config/-/postcss-load-config-4.0.1.tgz#152383f481c2758274404e4962743191d73875bd"
+  integrity sha512-vEJIc8RdiBRu3oRAI0ymerOn+7rPuMvRXslTvZUKZonDHFIczxztIyJ1urxM1x9JXEikvpWWTUUqal5j/8QgvA==
+  dependencies:
+    lilconfig "^2.0.5"
+    yaml "^2.1.1"
+
 postcss-nested@6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/postcss-nested/-/postcss-nested-6.0.0.tgz#1572f1984736578f360cffc7eb7dca69e30d1735"
@@ -8128,7 +8137,7 @@ yallist@^3.0.2:
   resolved "https://registry.yarnpkg.com/yallist/-/yallist-3.1.1.tgz#dbb7daf9bfd8bac9ab45ebf602b8cbad0d5d08fd"
   integrity sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==
 
-yaml@2.2.1:
+yaml@2.2.1, yaml@^2.1.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.2.1.tgz#3014bf0482dcd15147aa8e56109ce8632cd60ce4"
   integrity sha512-e0WHiYql7+9wr4cWMx3TVQrNwejKaEe7/rHNmQmqRjazfOP5W8PB6Jpebb5o6fIapbz9o9+2ipcaTM2ZwDI6lw==
