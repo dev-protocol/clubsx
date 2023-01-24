@@ -124,7 +124,7 @@ export default {
         <HSButton
           v-if="fetching || !valid"
           type="outlined large"
-          class="w-full cursor-not-allowed border-0 bg-dp-blue-grey-200 text-white shadow hover:bg-dp-blue-grey-200 hover:text-inherit"
+          class="w-full cursor-not-allowed border-0 bg-dp-blue-grey-200 text-white opacity-50 shadow hover:bg-dp-blue-grey-200 hover:text-inherit"
           isDisabled="true"
           >Continue</HSButton
         >
