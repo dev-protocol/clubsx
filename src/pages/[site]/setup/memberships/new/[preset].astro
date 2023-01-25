@@ -35,7 +35,7 @@ if (!membership) {
   throw new Error(`Membership not found: ${preset}`)
 }
 
-const baseUrl = ((url) => `${url.protocol}//${url.host}/`)(
+const baseUrl = ((url) => `${url.protocol}//${url.host}/${site}/setup/`)(
   new URL(Astro.request.url)
 )
 ---
