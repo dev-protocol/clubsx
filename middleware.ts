@@ -34,8 +34,11 @@ export default function middleware(req: Request) {
   const hostnames = url.host.split('.') ?? []
   const [tenant] = hostnames
   const html = req.headers.get('accept')?.includes('text/html')
+  const hosts = (process.env.HOSTS ?? 'clubs.place')
+    .split(',')
+    .map((x) => x.trim())
 
-  if (html && hostnames.length > Number(process.env.DOMAIN_LENGTH)) {
+  if (html && hosts.includes(url.host)) {
     const pathname = `/sites_/${tenant}${url.pathname}`
     const destination = new URL(pathname, url.origin)
     return rewrite(destination, {
