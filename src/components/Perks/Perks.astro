@@ -3,7 +3,9 @@ import type { Perk } from '@constants/perks'
 
 const { tierId, perks } = Astro.props
 
-const listOfPerk = perks.find((perk: Perk) => perk.tier === tierId)
+const listOfPerk = perks.find((perk: Perk) => perk.tier === tierId) as
+  | undefined
+  | Perk
 ---
 
 <div class="col-span-2 row-span-2 lg:col-auto lg:row-auto">

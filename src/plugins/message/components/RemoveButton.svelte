@@ -2,7 +2,7 @@
   import { ClubsEvents, setOptions } from '@devprotocol/clubs-core'
   import { buildConfig } from '@devprotocol/clubs-core/events'
   import { onMount } from 'svelte'
-  import { GatedMessage } from '../types'
+  import type { GatedMessage } from '../types'
 
   export let currentPluginIndex: number
   export let forms: GatedMessage[] = []

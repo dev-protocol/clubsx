@@ -3,7 +3,6 @@ import HSButton from '@components/Primitives/Hashi/HSButton.vue'
 import { GetModalProvider, ReConnectWallet } from '@fixtures/wallet'
 import { ClubsConfiguration, encode } from '@devprotocol/clubs-core'
 import { utils } from 'ethers'
-import { defaultPlugins } from '@constants/plugins'
 import { renderSpotlight } from '@fixtures/ui/renderSpotLight'
 
 type Data = {

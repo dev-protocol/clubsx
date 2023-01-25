@@ -1,7 +1,7 @@
 <script lang="ts">
   import { setOptions } from '@devprotocol/clubs-core'
   import MembershipOptionCard from './MembershipOption.svelte'
-  import { Membership } from '@plugins/memberships'
+  import type { Membership } from '@plugins/memberships'
 
   export let currentPluginIndex: number
   export let memberships: Membership[]

@@ -79,7 +79,7 @@
 import ConnectButton from '../Wallet/ConnectButton.vue'
 import HSButton from '../Primitives/Hashi/HSButton.vue'
 import { defineComponent, PropType } from '@vue/runtime-core'
-import { NavLink } from '@constants/navLink'
+import type { NavLink } from '@constants/navLink'
 
 export default defineComponent({
   props: {

@@ -17,7 +17,7 @@
 
 import type { Product } from '@constants/products'
 
-type ExtendedProducts = (Product & { purchaseLink?: string })[]
+export type ExtendedProducts = (Product & { purchaseLink?: string })[]
 
 type Params = {
   products: ExtendedProducts

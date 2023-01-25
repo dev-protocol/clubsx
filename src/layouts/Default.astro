@@ -5,11 +5,11 @@ import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
 import Footer from '@components/Global/Footer.astro'
 import '@devprotocol/clubs-core/styles'
-import { NavLink, PathCondition } from '@constants/navLink'
-import { UndefinedOr } from '@devprotocol/util-ts'
+import type { NavLink, PathCondition } from '@constants/navLink'
+import type { UndefinedOr } from '@devprotocol/util-ts'
 import VercelAnalytics from '@components/Analytics/VercelAnalytics.astro'
 import PreviewBanner from '@components/PreviewBanner/PreviewBanner.svelte'
-import { DraftOptions } from '@constants/draft'
+import type { DraftOptions } from '@constants/draft'
 
 const { page } = Astro.params
 const { metaTitle, config } = Astro.props as {

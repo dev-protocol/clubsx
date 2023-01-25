@@ -11,10 +11,10 @@ import {
 import { default as Layout } from '@layouts/Default.astro'
 import { default as Index } from '@plugins/home/index.astro'
 import { default as Admin } from './admin.astro'
-import { HomeConfig } from '../../constants/homeConfig'
-import { NavLink } from '@constants/navLink'
+import type { HomeConfig } from '../../constants/homeConfig'
+import type { NavLink } from '@constants/navLink'
 import { default as Temples } from '@plugins/home/index-for-temples.astro'
-import { Membership } from '@plugins/memberships'
+import type { Membership } from '@plugins/memberships'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,

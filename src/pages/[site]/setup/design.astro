@@ -1,12 +1,13 @@
 ---
 import SetupDesign from '@components/SetupDesign/SetupDesign.svelte'
 import { config as _config } from '@fixtures/config'
-import { adminFactory } from '@devprotocol/clubs-core'
+import { ClubsPluginOptions, adminFactory } from '@devprotocol/clubs-core'
 import defaultTheme from '@plugins/default-theme'
 import SetupLayout from '@layouts/Setup.astro'
 import NextButton from '@components/Setup/NextButton.astro'
+import type { HomeConfig } from '@constants/homeConfig'
 
-const { site, page } = Astro.params
+const { site } = Astro.params
 
 const { getStaticPaths, getCurrentConfig } = adminFactory({
   config: async () => await _config(site),
@@ -24,8 +25,8 @@ if (!path) {
   throw new Error('Path undefined: ', path)
 }
 
-const homeConfig = path?.props.options.find(
-  (option: { key: string; value: string }) => option.key === 'homeConfig'
+const homeConfig = (path?.props.options as ClubsPluginOptions)?.find(
+  (option: { key: string }) => option.key === 'homeConfig'
 )
 ---
 
@@ -34,7 +35,7 @@ const homeConfig = path?.props.options.find(
 
   <SetupDesign
     client:load
-    homeConfig={homeConfig.value}
+    homeConfig={homeConfig!.value as HomeConfig}
     currentPluginIndex={path?.props.clubs.currentPluginIndex}
   />
 

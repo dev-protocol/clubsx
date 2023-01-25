@@ -1,8 +1,8 @@
 <script lang="ts">
   import Skeleton from '@components/Global/Skeleton.svelte'
-  import { DraftOptions } from '@constants/draft'
+  import type { DraftOptions } from '@constants/draft'
   import { ClubsConfiguration, setConfig } from '@devprotocol/clubs-core'
-  import { UndefinedOr } from '@devprotocol/util-ts'
+  import type { UndefinedOr } from '@devprotocol/util-ts'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import { onMount } from 'svelte'
 
@@ -133,7 +133,7 @@
         </div>
       {/if}
       <div class="float-left">
-        <span class="hs-button is-filled is-large cursor-pointer" type="button"
+        <span class="hs-button is-filled is-large cursor-pointer"
           >Choose Image</span
         >
       </div>

@@ -1,12 +1,12 @@
-import { BaseProvider } from '@ethersproject/providers'
+import type { BaseProvider } from '@ethersproject/providers'
 import { ethers } from 'ethers'
-import {
+import type {
   TransactionResponse,
   TransactionReceipt,
 } from '@ethersproject/abstract-provider'
-import { UndefinedOr } from '@devprotocol/util-ts'
-import { BigNumber } from 'ethers'
-import { Image } from './types/setImageArg'
+import type { UndefinedOr } from '@devprotocol/util-ts'
+import type { BigNumber } from 'ethers'
+import type { Image } from './types/setImageArg'
 type Address = {
   chainId: number
   address: string

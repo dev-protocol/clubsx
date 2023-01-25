@@ -2,7 +2,8 @@
 import AdminMembershipsAdditionForm from '@components/AdminMembershipsForm/AdminMembershipsAdditionForm.svelte'
 import { config as _config } from '@fixtures/config'
 import { adminFactory } from '@devprotocol/clubs-core'
-import memberships, { Membership } from '@plugins/memberships'
+import type { Membership } from '@plugins/memberships'
+import memberships from '@plugins/memberships'
 import SetupLayout from '@layouts/Setup.astro'
 
 const { site, id } = Astro.params
@@ -43,7 +44,7 @@ const { props } = path
 <script>
   import { ClubsEvents } from '@devprotocol/clubs-core'
 
-  document.body.addEventListener(ClubsEvents.FinishConfiguration, (ev) => {
+  document.body.addEventListener(ClubsEvents.FinishConfiguration, () => {
     console.log('Save button clicked and updated the data remotely!!')
   })
 </script>

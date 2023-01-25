@@ -68,6 +68,7 @@ export const post = async ({ request }: { request: Request }) => {
     const isMember = await checkMemberships(
       web3Provider,
       propertyAddress,
+      // @ts-ignore
       formData.requiredMemberships,
       userAddress
     ).catch((err) => {

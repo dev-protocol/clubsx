@@ -1,19 +1,19 @@
-import {
+import type {
   ClubsFunctionGetAdminPaths,
   ClubsFunctionGetPagePaths,
   ClubsFunctionPlugin,
-  ClubsPluginCategory,
   ClubsPluginMeta,
 } from '@devprotocol/clubs-core'
+import { ClubsPluginCategory } from '@devprotocol/clubs-core'
 import { default as Admin } from './admin.astro'
 import { default as AdminNew } from './admin-new.astro'
 import { default as AdminEdit } from './admin-id.astro'
-import { UndefinedOr } from '@devprotocol/util-ts'
+import type { UndefinedOr } from '@devprotocol/util-ts'
 import membershipOpt1 from '@assets/membership-opt-1.png'
 import membershipOpt2 from '@assets/membership-opt-2.png'
 import membershipOpt3 from '@assets/membership-opt-3.png'
 import { utils } from 'ethers'
-import { DraftOptions } from '@constants/draft'
+import type { DraftOptions } from '@constants/draft'
 
 export type Membership = {
   id: string

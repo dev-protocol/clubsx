@@ -251,15 +251,15 @@ import type Web3Modal from 'web3modal'
 import { PropType, defineComponent } from '@vue/runtime-core'
 import { clientsSTokens } from '@devprotocol/dev-kit/agent'
 import type { connection as Connection } from '@devprotocol/clubs-core/connection'
-import { BaseProvider } from '@ethersproject/providers'
+import type { BaseProvider } from '@ethersproject/providers'
 import {
   address,
   callSimpleCollections,
 } from '@plugins/memberships/utils/simpleCollections'
-import { Image } from '@plugins/memberships/utils/types/setImageArg'
+import type { Image } from '@plugins/memberships/utils/types/setImageArg'
 import { keccak256 } from '@ethersproject/keccak256'
 import { parseUnits } from '@ethersproject/units'
-import { Membership } from '@plugins/memberships'
+import type { Membership } from '@plugins/memberships'
 import BigNumber from 'bignumber.js'
 import {
   ClubsConfiguration,
