@@ -23,11 +23,7 @@ const { siteName } = Astro.params
 </Layout>
 
 <script>
-  import {
-    getAdditionalUserInfo,
-    isSignInWithEmailLink,
-    signInWithEmailLink,
-  } from 'firebase/auth'
+  import { isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth'
   import { instanceStore } from '../../fixtures/firebase/clientInstance'
   import {
     ClubsConfiguration,
@@ -37,7 +33,7 @@ const { siteName } = Astro.params
 
   import { defaultConfig } from '@constants/defaultConfig'
 
-  import { DraftOptions } from '@constants/draft'
+  import type { DraftOptions } from '@constants/draft'
 
   // Confirm the link is a sign-in with email link.
   const auth = instanceStore.initializedApp
@@ -57,7 +53,6 @@ const { siteName } = Astro.params
         // Clear email from storage.
         window.localStorage.removeItem('emailForSignIn')
 
-        const details = getAdditionalUserInfo(result)
         const jwtToken = await result.user.getIdToken()
         const site: string | undefined =
           window.location.pathname.split('/').pop() || siteName

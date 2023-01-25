@@ -25,7 +25,7 @@
   export let base: string = '/admin'
   export let mode: 'edit' | 'create' = 'create'
   export let rpcUrl: string
-  export let propertyAddress: string | null | undefined
+  export let propertyAddress: string | null | undefined = undefined
   let estimatedEarnings: {
     dev?: [number, number]
     usd?: [number, number]

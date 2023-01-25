@@ -24,7 +24,7 @@ export const ReConnectWallet = async (modalProvider: any) => {
 
   if (
     modalProvider.cachedProvider === 'injected' &&
-    web3ForInjected.selectedAddress
+    (web3ForInjected as any).selectedAddress
   ) {
     return EthersProviderFrom(modalProvider)
   }

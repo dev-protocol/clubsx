@@ -61,44 +61,41 @@ const { membership, memberships, clubs, rpcUrl, propertyAddress } =
     })
   })
 
-  document.body.addEventListener(
-    ClubsEvents.FinishConfiguration,
-    async (ev) => {
-      const memOptsInput = document.getElementById(
-        'membershipOpts'
-      ) as HTMLInputElement
-      const memOpts = JSON.parse(memOptsInput.value) as Membership[]
+  document.body.addEventListener(ClubsEvents.FinishConfiguration, async () => {
+    const memOptsInput = document.getElementById(
+      'membershipOpts'
+    ) as HTMLInputElement
+    const memOpts = JSON.parse(memOptsInput.value) as Membership[]
 
-      const propertyAddressInput = document.getElementById(
-        'propertyAddress'
-      ) as HTMLInputElement
-      const propAddress = propertyAddressInput.value as string
+    const propertyAddressInput = document.getElementById(
+      'propertyAddress'
+    ) as HTMLInputElement
+    const propAddress = propertyAddressInput.value as string
 
-      if (!currentAddress || !signer) {
-        return
-      }
-
-      const images = memOpts.map((opt) => ({
-        src: opt.imageSrc,
-        requiredETHAmount: parseUnits(String(opt.price)).toString(),
-        requiredETHFee: opt.fee?.percentage
-          ? parseUnits(
-              new BigNumber(opt.price).times(opt.fee.percentage).toFixed()
-            ).toString()
-          : 0,
-        gateway: opt.fee?.beneficiary ?? constants.AddressZero,
-      }))
-
-      const keys: string[] =
-        memOpts?.map((opt) => keccak256(new Uint8Array(opt.payload))) || []
-
-      console.log({ keys, images, propAddress })
-
-      await callSimpleCollections(signer, 'setImages', [
-        propAddress,
-        images,
-        keys,
-      ])
+    if (!currentAddress || !signer) {
+      return
     }
-  )
+
+    const images = memOpts.map((opt) => ({
+      src: opt.imageSrc,
+      requiredETHAmount: parseUnits(String(opt.price)).toString(),
+      requiredETHFee: opt.fee?.percentage
+        ? parseUnits(
+            new BigNumber(opt.price).times(opt.fee.percentage).toFixed()
+          ).toString()
+        : 0,
+      gateway: opt.fee?.beneficiary ?? constants.AddressZero,
+    }))
+
+    const keys: string[] =
+      memOpts?.map((opt) => keccak256(new Uint8Array(opt.payload))) || []
+
+    console.log({ keys, images, propAddress })
+
+    await callSimpleCollections(signer, 'setImages', [
+      propAddress,
+      images,
+      keys,
+    ])
+  })
 </script>
