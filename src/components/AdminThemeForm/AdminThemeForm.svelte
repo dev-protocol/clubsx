@@ -1,6 +1,6 @@
 <script lang="ts">
   import Skeleton from '@components/Global/Skeleton.svelte'
-  import { NavLink } from '@constants/navLink'
+  import type { NavLink } from '@constants/navLink'
   import {
     ClubsConfiguration,
     ClubsPluginOption,

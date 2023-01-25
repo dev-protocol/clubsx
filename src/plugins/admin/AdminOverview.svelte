@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ClubsConfiguration, setConfig } from '@devprotocol/clubs-core'
+  import type { ClubsConfiguration } from '@devprotocol/clubs-core'
   import {
     detectStokensByPropertyAddress,
     calculateRewardAmount,

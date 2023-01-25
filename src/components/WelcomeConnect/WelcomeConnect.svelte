@@ -2,17 +2,14 @@
   import type { EthersProviderFrom as TypeEthersProviderFrom } from '@fixtures/wallet'
   import type Web3Modal from 'web3modal'
 
-  import {
-    ClubsConfiguration,
-    encode,
-    setConfig,
-  } from '@devprotocol/clubs-core'
+  import type { ClubsConfiguration } from '@devprotocol/clubs-core'
+  import { encode, setConfig } from '@devprotocol/clubs-core'
   import { providers, utils } from 'ethers'
   import { defaultConfig } from '@constants/defaultConfig'
   import { onMount } from 'svelte'
   import EmailConnect from '../EmailConnect/EmailConnect.svelte'
-  import { DraftOptions } from '@constants/draft'
-  import { UndefinedOr } from '@devprotocol/util-ts'
+  import type { DraftOptions } from '@constants/draft'
+  import type { UndefinedOr } from '@devprotocol/util-ts'
 
   export let siteName: string
 

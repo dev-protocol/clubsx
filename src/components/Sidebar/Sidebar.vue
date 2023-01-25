@@ -110,8 +110,8 @@ import {
   propertySymbol,
 } from '@fixtures/dev-kit'
 import HSButton from '../Primitives/Hashi/HSButton.vue'
-import { PropType } from '@vue/runtime-core'
-import { NavLink } from '@constants/navLink'
+import type { PropType } from '@vue/runtime-core'
+import type { NavLink } from '@constants/navLink'
 
 export default {
   name: 'Sidebar',
