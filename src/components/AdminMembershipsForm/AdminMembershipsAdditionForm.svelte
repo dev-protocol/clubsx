@@ -4,10 +4,10 @@
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import type { Membership } from '@plugins/memberships'
   import {
-    UndefinedOr,
     whenDefined,
     whenDefinedAll,
   } from '@devprotocol/util-ts'
+  import type {UndefinedOr} from '@devprotocol/util-ts'
   import { providers, utils } from 'ethers'
   import {
     positionsCreateWithEth,
