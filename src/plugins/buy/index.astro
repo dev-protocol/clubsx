@@ -9,8 +9,10 @@ const { products } = Astro.props as { products: Products }
 ---
 
 <div>
+  {/* @ts-ignore */}
   <Hero />
+  {/* @ts-ignore */}
   <Hero2 />
-  <Cards products={products} />
+  <Cards products={[...products]} />
 </div>
 <Footer />

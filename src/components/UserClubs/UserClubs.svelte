@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { DraftOptions } from '@constants/draft'
-  import { ClubsConfiguration } from '@devprotocol/clubs-core'
+  import type { DraftOptions } from '@constants/draft'
+  import type { ClubsConfiguration } from '@devprotocol/clubs-core'
   import { onMount } from 'svelte'
   import UserClubItem from './UserClubItem.svelte'
 

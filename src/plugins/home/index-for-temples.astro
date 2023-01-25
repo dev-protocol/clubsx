@@ -3,9 +3,9 @@ import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
 import Footer from '@components/Global/Footer.astro'
 import JoinClub from '@components/Join/JoinClub.vue'
-import { Tiers } from '@constants/tier'
-import { HomeConfig } from '../../constants/homeConfig'
-import { NavLink } from '@constants/navLink'
+import type { Tiers } from '@constants/tier'
+import type { HomeConfig } from '../../constants/homeConfig'
+import type { NavLink } from '@constants/navLink'
 
 import cover1 from '@assets/cover-1.jpg'
 import owt3cn75 from '@assets/owt3cn75.png'
@@ -24,7 +24,6 @@ const {
   propertyAddress,
   name,
   tiers,
-  homeConfig,
   rpcUrl,
   chainId,
   sidebarLinks,

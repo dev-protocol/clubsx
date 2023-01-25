@@ -38,7 +38,9 @@ export default function middleware(req: Request) {
     .split(',')
     .map((x) => x.trim())
 
-  if (html && hosts.includes(url.host)) {
+  const primaryHost = hosts.find((h) => url.host.endsWith(h))
+
+  if (html && primaryHost && url.host !== primaryHost) {
     const pathname = `/sites_/${tenant}${url.pathname}`
     const destination = new URL(pathname, url.origin)
     return rewrite(destination, {

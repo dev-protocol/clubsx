@@ -1,6 +1,6 @@
 import { callSimpleCollections } from './simpleCollections'
-import { BaseProvider } from '@ethersproject/providers'
-import { Image } from './types/setImageArg'
+import type { ethers } from 'ethers'
+import type { Image } from './types/setImageArg'
 
 const image: Image[] = [
   {
@@ -13,7 +13,7 @@ const image: Image[] = [
 ]
 const keys: string[] = ['0x000']
 
-export const example = async (provider: BaseProvider) => {
+export const example = async (provider: ethers.Signer) => {
   const setImage = await callSimpleCollections(provider, 'setImages', [
     '0x0000000000000000000000000000000000000000',
     image,

@@ -70,7 +70,7 @@ const clubs = path.props.clubs
 <script>
   import { ClubsEvents } from '@devprotocol/clubs-core'
 
-  document.body.addEventListener(ClubsEvents.FinishConfiguration, (ev) => {
+  document.body.addEventListener(ClubsEvents.FinishConfiguration, () => {
     console.log('Save button clicked and updated the data remotely!!')
   })
 </script>

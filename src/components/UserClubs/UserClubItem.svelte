@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ClubsConfiguration } from '@devprotocol/clubs-core'
+  import type { ClubsConfiguration } from '@devprotocol/clubs-core'
 
   export let config: ClubsConfiguration
 

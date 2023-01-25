@@ -1,7 +1,7 @@
 <script lang="ts">
   import { setOptions } from '@devprotocol/clubs-core'
-  import { Membership } from '@plugins/memberships'
-  import { GatedMessage } from '../types'
+  import type { Membership } from '@plugins/memberships'
+  import type { GatedMessage } from '../types'
 
   export let currentPluginIndex: number
   export let forms: GatedMessage[] = []

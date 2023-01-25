@@ -1,4 +1,4 @@
-import { ClubsConfiguration } from '@devprotocol/clubs-core'
+import type { ClubsConfiguration } from '@devprotocol/clubs-core'
 
 export const defaultConfig: ClubsConfiguration = {
   name: '',

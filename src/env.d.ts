@@ -1,4 +1,5 @@
 /// <reference types="vite/client" />
+/// <reference types="astro/client" />
 
 interface ImportMetaEnv {
   readonly PUBLIC_FIREBASE_API_KEY: string
@@ -10,4 +11,8 @@ interface ImportMetaEnv {
 
 interface ImportMeta {
   readonly env: ImportMetaEnv
+}
+declare module '*.astro' {
+  import type { AstroComponentFactory } from 'astro/dist/runtime/server'
+  export default InstanceType<AstroComponentFactory>
 }

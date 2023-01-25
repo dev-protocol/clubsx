@@ -1,12 +1,12 @@
-import { Products } from '@constants/products'
-import {
+import type { Products } from '@constants/products'
+import type {
   ClubsFunctionGetAdminPaths,
   ClubsFunctionGetPagePaths,
   ClubsFunctionPlugin,
-  ClubsPluginCategory,
   ClubsPluginMeta,
 } from '@devprotocol/clubs-core'
-import { UndefinedOr } from '@devprotocol/util-ts'
+import { ClubsPluginCategory } from '@devprotocol/clubs-core'
+import type { UndefinedOr } from '@devprotocol/util-ts'
 import { default as Index } from './index.astro'
 
 export type PriceOverrides = {

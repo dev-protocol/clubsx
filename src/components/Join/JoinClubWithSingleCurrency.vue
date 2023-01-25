@@ -22,7 +22,7 @@
 <script lang="ts">
 import Tier from '@components/Join/Tier.vue'
 import { defineComponent, PropType } from '@vue/runtime-core'
-import { Membership } from '@plugins/memberships'
+import type { Membership } from '@plugins/memberships'
 
 export default defineComponent({
   name: 'JoinClubWithSingleCurrency',

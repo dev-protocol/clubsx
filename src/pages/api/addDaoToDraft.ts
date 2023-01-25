@@ -3,7 +3,7 @@ import { generateId } from '@fixtures/api/keys'
 import { instanceStore } from '@fixtures/firebase/instance'
 import { utils } from 'ethers'
 import { createClient } from 'redis'
-import { ClubsData } from './fetchClubs'
+import type { ClubsData } from './fetchClubs'
 
 export const post = async ({ request }: { request: Request }) => {
   const { site, config, sig, hash, expectedAddress, uid } =

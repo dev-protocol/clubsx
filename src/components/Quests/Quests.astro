@@ -2,7 +2,12 @@
 import QuestCard from '@components/Quests/QuestCard/QuestCard.vue'
 import quests from './quests.json'
 
-const filteredQuests = quests.filter((quest) => quest.listed)
+const filteredQuests = quests.filter((quest: any) => quest.listed) as {
+  id: string
+  title: string
+  description: string
+  badgeImageSrc: string
+}[]
 ---
 
 <section class="mx-4 bg-cover bg-center">

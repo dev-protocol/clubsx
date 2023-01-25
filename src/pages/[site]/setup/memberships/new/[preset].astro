@@ -2,7 +2,8 @@
 import AdminMembershipsAdditionForm from '@components/AdminMembershipsForm/AdminMembershipsAdditionForm.svelte'
 import { config as _config } from '@fixtures/config'
 import { adminFactory } from '@devprotocol/clubs-core'
-import memberships, { Membership } from '@plugins/memberships'
+import type { Membership } from '@plugins/memberships'
+import memberships from '@plugins/memberships'
 import SetupLayout from '@layouts/Setup.astro'
 
 const { site, preset } = Astro.params
@@ -64,7 +65,7 @@ const baseUrl = ((url) => `${url.protocol}//${url.host}/${site}/setup/`)(
     window.location.pathname.split('/')[1] ||
     (document.getElementById('siteName') as HTMLInputElement)?.value
 
-  document.body.addEventListener(ClubsEvents.FinishConfiguration, (ev) => {
+  document.body.addEventListener(ClubsEvents.FinishConfiguration, () => {
     console.log('Save button clicked and updated the data remotely!!')
     window.location.href = new URL(
       `${site}/setup/memberships?created`,

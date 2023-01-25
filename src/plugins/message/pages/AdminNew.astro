@@ -1,8 +1,8 @@
 ---
-import { Membership } from '@plugins/memberships'
+import type { Membership } from '@plugins/memberships'
 import AdminForm from '../components/AdminForm.svelte'
-import { ClubsPropsAdminPages } from '@devprotocol/clubs-core'
-import { GatedMessage } from '../types'
+import type { ClubsPropsAdminPages } from '@devprotocol/clubs-core'
+import type { GatedMessage } from '../types'
 
 const { forms, memberships, id, clubs } =
   Astro.props as ClubsPropsAdminPages & {

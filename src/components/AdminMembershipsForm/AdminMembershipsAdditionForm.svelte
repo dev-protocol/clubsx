@@ -2,7 +2,7 @@
   import { setOptions } from '@devprotocol/clubs-core'
   import MembershipOptionCard from './MembershipOption.svelte'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
-  import { Membership } from '@plugins/memberships'
+  import type { Membership } from '@plugins/memberships'
   import {
     UndefinedOr,
     whenDefined,
@@ -25,7 +25,7 @@
   export let base: string = '/admin'
   export let mode: 'edit' | 'create' = 'create'
   export let rpcUrl: string
-  export let propertyAddress: string | null | undefined
+  export let propertyAddress: string | null | undefined = undefined
   let estimatedEarnings: {
     dev?: [number, number]
     usd?: [number, number]
@@ -253,7 +253,7 @@
             {/if}
             <span
               class="hs-button is-filled cursor-pointer rounded-lg bg-[#040B10] px-12 py-4"
-              type="button">Choose Image</span
+              >Choose Image</span
             >
             <input
               id="avatarPath"

@@ -101,7 +101,7 @@ const twitterHandle = 'devprtcl'
     }
     const signer = provider.getSigner()
 
-    const hash = await utils.hashMessage(data)
+    const hash = utils.hashMessage(data)
     const sig = await signer.signMessage(hash)
     if (!sig) {
       return
