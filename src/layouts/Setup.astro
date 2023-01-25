@@ -53,6 +53,10 @@ const isInDraftWithFirebase = Boolean(
       ) as UndefinedOr<DraftOptions>
     )?.value.uid
 )
+
+const avatarImgSrc: string | undefined = config.options?.find(
+  (option) => option.key === 'avatarImgSrc'
+)?.value as string
 ---
 
 <!DOCTYPE html>
@@ -65,6 +69,7 @@ const isInDraftWithFirebase = Boolean(
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap"
       rel="stylesheet"
     />
+    <link rel="icon" type="image/svg" href={avatarImgSrc || '/favicon.svg'} />
   </head>
 
   <body class="bg-dp-blue-grey-300 font-body text-white">
