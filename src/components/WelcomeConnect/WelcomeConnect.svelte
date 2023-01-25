@@ -21,9 +21,11 @@
 
   let GetModalProvider: Web3Modal
   let EthersProviderFrom: typeof TypeEthersProviderFrom
-  const firebaseCallbackUrl = import.meta.env.PUBLIC_FIREBASE_CALLBACK_URL
+  let firebaseCallbackUrl: string
 
   onMount(async () => {
+    firebaseCallbackUrl = `${window.location.origin}/authentication`
+
     const wallet = await import('@fixtures/wallet')
     GetModalProvider = wallet.GetModalProvider()
     EthersProviderFrom = wallet.EthersProviderFrom
