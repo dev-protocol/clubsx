@@ -3,11 +3,8 @@
   import MembershipOptionCard from './MembershipOption.svelte'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import type { Membership } from '@plugins/memberships'
-  import {
-    whenDefined,
-    whenDefinedAll,
-  } from '@devprotocol/util-ts'
-  import type {UndefinedOr} from '@devprotocol/util-ts'
+  import { whenDefined, whenDefinedAll } from '@devprotocol/util-ts'
+  import type { UndefinedOr } from '@devprotocol/util-ts'
   import { providers, utils } from 'ethers'
   import {
     positionsCreateWithEth,
