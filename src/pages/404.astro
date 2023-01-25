@@ -1,6 +1,8 @@
 ---
 import Layout from '@layouts/Landing.astro'
 
+const { redirectionCtaText, redirectionCtaUrl } = Astro.props
+
 const homePageUrl: string = ((url) => `${url.protocol}//${url.host}/`)(
   new URL(Astro.request.url)
 )
@@ -16,10 +18,10 @@ const homePageUrl: string = ((url) => `${url.protocol}//${url.host}/`)(
       </p>
     </section>
     <a
-      href={homePageUrl}
+      href={redirectionCtaUrl || homePageUrl}
       class="hs-button is-filled border-0 bg-native-blue-300 px-8 py-4 text-inherit no-underline"
     >
-      Take me to Home page
+      {redirectionCtaText || 'Take me to Home page'}
     </a>
   </div>
 </Layout>

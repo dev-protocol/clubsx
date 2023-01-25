@@ -5,6 +5,7 @@ import { config as _config } from '@fixtures/config'
 import { adminFactory } from '@devprotocol/clubs-core'
 import admin from '@plugins/admin'
 import SetupLayout from '@layouts/Setup.astro'
+import PageNotFound from '@pages/404.astro'
 
 const { site } = Astro.params
 
@@ -18,15 +19,24 @@ const { getStaticPaths, getCurrentConfig } = adminFactory({
 const config = await getCurrentConfig()
 const path = (await getStaticPaths()).find(({ props }) => props.clubs)
 
-if (!path) {
-  throw new Error('Path undefined: ', path)
-}
+const siteBaseUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
+  new URL(Astro.request.url)
+)
 ---
 
-<SetupLayout {config} {...path.props} setupStep="BASIC">
-  <ProfileSetupForm client:load config={config} />
-  <NextButton
-    next={`/${site}/setup/design`}
-    slot="aside:after-built-in-buttons"
-  />
-</SetupLayout>
+{
+  path ? (
+    <SetupLayout {config} {...path.props} setupStep="BASIC">
+      <ProfileSetupForm client:load config={config} />
+      <NextButton
+        next={`/${site}/setup/design`}
+        slot="aside:after-built-in-buttons"
+      />
+    </SetupLayout>
+  ) : (
+    <PageNotFound
+      redirectionCtaText={`Take me to ${site?.toUpperCase()} homepage`}
+      redirectionCtaUrl={siteBaseUrl}
+    />
+  )
+}
