@@ -1,6 +1,6 @@
 import { callSimpleCollections } from './simpleCollections'
 import type { ethers } from 'ethers'
-import { Image } from './types/setImageArg'
+import type { Image } from './types/setImageArg'
 
 const image: Image[] = [
   {

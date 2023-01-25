@@ -1,7 +1,7 @@
 ---
-import { ClubsPropsAdminPages } from '@devprotocol/clubs-core'
+import type { ClubsPropsAdminPages } from '@devprotocol/clubs-core'
 import RemoveButton from './RemoveButton.svelte'
-import { GatedMessage } from '../types'
+import type { GatedMessage } from '../types'
 
 const { forms, id, clubs } = Astro.props as ClubsPropsAdminPages & {
   forms: GatedMessage[]

@@ -1,12 +1,12 @@
 import type { Perks } from '@constants/perks'
-import {
+import type {
   ClubsFunctionGetAdminPaths,
   ClubsFunctionGetPagePaths,
   ClubsFunctionPlugin,
-  ClubsPluginCategory,
   ClubsPluginMeta,
 } from '@devprotocol/clubs-core'
-import { UndefinedOr } from '@devprotocol/util-ts'
+import { ClubsPluginCategory } from '@devprotocol/clubs-core'
+import type { UndefinedOr } from '@devprotocol/util-ts'
 import { default as Index } from './index.astro'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (

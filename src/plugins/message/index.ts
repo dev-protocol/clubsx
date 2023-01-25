@@ -12,9 +12,9 @@ import { default as Admin } from './pages/Admin.astro'
 import { default as AdminNew } from './pages/AdminNew.astro'
 import { default as AdminEdit } from './pages/AdminEdit.astro'
 import { default as RemoveButton } from './components/RemoveButton.astro'
-import { GatedMessage } from './types'
-import { UndefinedOr } from '@devprotocol/util-ts'
-import { Membership } from '@plugins/memberships'
+import type { GatedMessage } from './types'
+import type { UndefinedOr } from '@devprotocol/util-ts'
+import type { Membership } from '@plugins/memberships'
 import uniqueString from 'unique-string'
 
 const getMemberships = (plugins: ClubsConfiguration['plugins']) => {

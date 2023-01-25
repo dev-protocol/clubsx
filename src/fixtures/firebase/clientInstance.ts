@@ -1,4 +1,4 @@
-import { Auth } from 'firebase/auth'
+import type { Auth } from 'firebase/auth'
 import { initializeFirebase } from '@fixtures/firebase'
 
 const store = new Set<Auth>()

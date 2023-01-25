@@ -1,8 +1,8 @@
 ---
 import CLBTier from '@components/Primitives/CLBTier.vue'
 import MessageForm from './components/MessageForm.vue'
-import { Membership } from '@plugins/memberships'
-import { GatedMessage } from './types'
+import type { Membership } from '@plugins/memberships'
+import type { GatedMessage } from './types'
 
 const { propertyAddress, form, requiredMemberships } = Astro.props as {
   form: GatedMessage

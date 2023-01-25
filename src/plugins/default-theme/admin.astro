@@ -1,9 +1,10 @@
 ---
 import AdminThemeForm from '@components/AdminThemeForm/AdminThemeForm.svelte'
-import { NavLink } from '@constants/navLink'
+import type { NavLink } from '@constants/navLink'
 import whiteRightArrowImgSrc from '@assets/white-arrow-right.svg'
 import homeHeroDefaultImgSrc from '@assets/home-config-default-hero-img.svg'
-import { ClubsPluginOption, decode } from '@devprotocol/clubs-core'
+import type { ClubsPluginOption } from '@devprotocol/clubs-core'
+import { decode } from '@devprotocol/clubs-core'
 
 const { options, clubs } = Astro.props
 const homeConfig = options.find(

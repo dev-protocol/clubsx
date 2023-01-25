@@ -1,4 +1,4 @@
-import { BaseProvider } from '@ethersproject/providers'
+import type { BaseProvider } from '@ethersproject/providers'
 import BigNumber from 'bignumber.js'
 import { ethers, utils } from 'ethers'
 import type { Tiers } from '@constants/tier'
@@ -7,7 +7,7 @@ import { clientsSTokens, client } from '@devprotocol/dev-kit'
 import { whenDefined } from '@devprotocol/util-ts'
 import { xprod } from 'ramda'
 
-import { Membership } from '@plugins/memberships'
+import type { Membership } from '@plugins/memberships'
 
 const falsyOrZero = <T>(num?: T): T | 0 => (num ? num : 0)
 

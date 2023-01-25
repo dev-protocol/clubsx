@@ -9,6 +9,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "allowSyntheticDefaultImports": true,
+    "importsNotUsedAsValues": "error",
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
