@@ -80,7 +80,7 @@
     "truncate-eth-address": "1.0.2",
     "unique-string": "^3.0.0",
     "vue": "3.2.45",
-    "web3modal": "1.9.11"
+    "web3modal": "1.9.12"
   },
   "repository": "https://github.com/dev-protocol/clubs.git",
   "author": "",
