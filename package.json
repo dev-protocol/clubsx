@@ -57,7 +57,7 @@
     "@sendgrid/mail": "7.7.0",
     "@tailwindcss/aspect-ratio": "0.4.2",
     "@vercel/analytics": "0.1.8",
-    "@vercel/edge": "0.2.6",
+    "@vercel/edge": "0.2.7",
     "@vue/composition-api": "1.7.1",
     "astro": "2.0.1",
     "autoprefixer": "10.4.13",
