@@ -1,12 +1,12 @@
 <script lang="ts">
   import Skeleton from '@components/Global/Skeleton.svelte'
   import type { NavLink } from '@constants/navLink'
-  import {
+  import type {
     ClubsConfiguration,
     ClubsPluginOption,
     ClubsPluginOptions,
-    setConfig,
   } from '@devprotocol/clubs-core'
+  import { setConfig } from '@devprotocol/clubs-core'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import type { HomeConfig } from '../../constants/homeConfig'
 
