@@ -23,8 +23,6 @@ const draftOptions = config.options?.find((option) => option.key === '__draft')
   ?.value as DraftOptions['value']
 const isInDraft = Boolean(draftOptions?.isInDraft)
 
-console.log({ draftOptions, isInDraft })
-
 const ogp = config.options?.find((option) => option.key === 'ogp')
   ?.value as UndefinedOr<{ image?: string }>
 
@@ -48,9 +46,9 @@ const sidebarLinks =
   config.options?.find((option) => option.key === 'sidebarLinks')?.value ??
   ([] as NavLink[])
 
-const avatarImgSrc = config.options?.find(
+const avatarImgSrc: string | undefined = config.options?.find(
   (option) => option.key === 'avatarImgSrc'
-)?.value
+)?.value as string
 
 const fullPageViewPaths =
   (config.options?.find((option) => option.key === 'fullPageViewPaths')
@@ -73,7 +71,7 @@ const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <title>{title}</title>
-    <link rel="icon" type="image/svg" href="/favicon.svg" />
+    <link rel="icon" type="image/svg" href={avatarImgSrc || '/favicon.svg'} />
     <meta name="description" content={`${config.description}`} />
     <meta property="og:title" content={title} />
     <meta property="og:type" content="website" />
