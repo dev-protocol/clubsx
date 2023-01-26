@@ -1,7 +1,8 @@
 <script lang="ts">
   import Skeleton from '@components/Global/Skeleton.svelte'
   import type { DraftOptions } from '@constants/draft'
-  import { ClubsConfiguration, setConfig } from '@devprotocol/clubs-core'
+  import { setConfig } from '@devprotocol/clubs-core'
+  import type { ClubsConfiguration } from '@devprotocol/clubs-core'
   import type { UndefinedOr } from '@devprotocol/util-ts'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import { onMount } from 'svelte'
