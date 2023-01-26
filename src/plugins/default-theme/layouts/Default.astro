@@ -1,0 +1,52 @@
+---
+import type { ClubsConfiguration } from '@devprotocol/clubs-core'
+import type { UndefinedOr } from '@devprotocol/util-ts'
+import '@devprotocol/clubs-core/styles'
+import Header from './components/Header/Header.astro'
+
+const { metaTitle, config } = Astro.props as {
+  metaTitle?: string
+  config: ClubsConfiguration
+}
+
+const title = metaTitle ? `${config.name} : ${metaTitle}` : config.name
+
+const ogp = config.options?.find((option) => option.key === 'ogp')
+  ?.value as UndefinedOr<{ image?: string }>
+
+const avatarImgSrc: string | undefined = config.options?.find(
+  (option) => option.key === 'avatarImgSrc'
+)?.value as string
+
+const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+    <link rel="icon" type="image/svg" href={avatarImgSrc || '/favicon.svg'} />
+    <meta name="description" content={`${config.description}`} />
+    <meta property="og:title" content={title} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={url} />
+    <meta property="og:image" content={`${ogp?.image}`} />
+    <meta property="og:description" content={config.description} />
+    <meta property="og:site_name" content={config.name} />
+    <meta name="twitter:site" content={config.twitterHandle} />
+    <meta name="twitter:creator" content={config.twitterHandle} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={config.description} />
+    <meta name="twitter:image" content={`${ogp?.image}`} />
+  </head>
+
+  <body class="min-h-screen bg-dp-black-300 font-body text-white">
+    <Header />
+    <main>
+      <slot />
+    </main>
+  </body>
+</html>
