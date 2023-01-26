@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { ClubsConfiguration, setConfig } from '@devprotocol/clubs-core'
+  import type { ClubsConfiguration } from '@devprotocol/clubs-core'
+  import { setConfig } from '@devprotocol/clubs-core'
   export let config: ClubsConfiguration
 
   let { name, description, twitterHandle, propertyAddress } = config
