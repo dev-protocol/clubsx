@@ -11,6 +11,7 @@ import PublishNetworkSelection from '@components/PublishNetworkSelection/Publish
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import type { DraftOptions } from '@constants/draft'
 import NextButton from '@components/Setup/NextButton.astro'
+import PageNotFound from '@pages/404.astro'
 
 const { site } = Astro.params
 
@@ -26,10 +27,6 @@ const { getStaticPaths, getCurrentConfig } = adminFactory({
 const config = await getCurrentConfig()
 const path = (await getStaticPaths()).find(({ props }) => props.clubs)
 
-if (!path) {
-  throw new Error('Path undefined: ', path)
-}
-
 const draftOptions = config.options?.find((opt) => opt.key === '__draft')
 const draftOptionsValue = draftOptions?.value as UndefinedOr<
   DraftOptions['value']
@@ -41,37 +38,52 @@ const membershipsPlugin = config.plugins.find(
 const membershipsPluginOptions = membershipsPlugin?.options?.find(
   (opt) => opt.key === 'memberships'
 )?.value
+
+const siteBaseUrl = ((url) =>
+  `${url.protocol}//${url.host}/${site}/setup/preview`)(
+  new URL(Astro.request.url)
+)
+
+const baseDomainUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
+  new URL(Astro.request.url)
+)
 ---
 
-<SetupLayout {config} {...path.props} setupStep="PUBLISH" aside={false}>
-  <section class="grid gap-16">
-    <h2 class="font-title text-2xl font-bold">Publish</h2>
-    <PublishConnect client:load checkImage={checkImage} />
-    <PublishNetworkSelection
-      client:load
-      checkImage={checkImage}
-      roundedSquareImage={roundedSquareImage}
-      category={draftOptionsValue?.category}
-      membershipsPluginOptions={membershipsPluginOptions}
-      showTestnets={testnets}
-      config={config}
-      site={site}
-    />
-    <a
-      href="https://clubs-starter-grant.webflow.io/"
-      target="_blank"
-      rel="noopener"
-      class="overflow-hidden rounded-2xl transition-shadow hover:shadow-[0_0_0_8px_rgba(255,255,255,0.2)]"
-    >
-      <PublishGrants />
-    </a>
-  </section>
+{
+  path ? (
+    <SetupLayout {config} {...path.props} setupStep="PUBLISH" aside={false}>
+      <section class="grid gap-16">
+        <h2 class="font-title text-2xl font-bold">Publish</h2>
+        <PublishConnect client:load checkImage={checkImage} />
+        <PublishNetworkSelection
+          client:load
+          checkImage={checkImage}
+          roundedSquareImage={roundedSquareImage}
+          category={draftOptionsValue?.category}
+          membershipsPluginOptions={membershipsPluginOptions}
+          showTestnets={testnets}
+          config={config}
+          site={site}
+        />
+        <a
+          href="https://clubs-starter-grant.webflow.io/"
+          target="_blank"
+          rel="noopener"
+          class="overflow-hidden rounded-2xl transition-shadow hover:shadow-[0_0_0_8px_rgba(255,255,255,0.2)]"
+        >
+          <PublishGrants />
+        </a>
+      </section>
 
-  <NextButton
-    next={(window.location.href = new URL(
-      '/admin/overview',
-      `${location.protocol}//${site}.${location.host}`
-    ).toString())}
-    slot="aside:after-built-in-buttons"
-  />
-</SetupLayout>
+      <NextButton
+        next={new URL('/admin/overview', baseDomainUrl).toString()}
+        slot="aside:after-built-in-buttons"
+      />
+    </SetupLayout>
+  ) : (
+    <PageNotFound
+      redirectionCtaText={`Take me back to previous page `}
+      redirectionCtaUrl={siteBaseUrl}
+    />
+  )
+}

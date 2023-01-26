@@ -5,6 +5,7 @@ import { adminFactory } from '@devprotocol/clubs-core'
 import type { Membership } from '@plugins/memberships'
 import memberships from '@plugins/memberships'
 import SetupLayout from '@layouts/Setup.astro'
+import PageNotFound from '@pages/404.astro'
 
 const { site, preset } = Astro.params
 
@@ -20,13 +21,9 @@ const path = (await getStaticPaths()).find(
   ({ params }) => params.page === `memberships`
 )
 
-if (!path) {
-  throw new Error('Path undefined: ', path)
-}
+const { props } = path || { props: undefined }
 
-const { props } = path
-
-const presets = (props.presets ?? []) as Membership[]
+const presets = (props?.presets ?? []) as Membership[]
 
 const membership = presets.find(
   (_membership: Membership) => _membership.id === preset
@@ -39,24 +36,38 @@ if (!membership) {
 const baseUrl = ((url) => `${url.protocol}//${url.host}/${site}/setup/`)(
   new URL(Astro.request.url)
 )
+
+const siteBaseUrl = ((url) =>
+  `${url.protocol}//${url.host}/${site}/setup/memberships`)(
+  new URL(Astro.request.url)
+)
 ---
 
-<SetupLayout {config} {...props} setupStep="MEMBERSHIPS">
-  <section class="grid gap-16">
-    <h1 class="font-title text-lg font-bold">Memberships</h1>
+{
+  path && props ? (
+    <SetupLayout {config} {...props} setupStep="MEMBERSHIPS">
+      <section class="grid gap-16">
+        <h1 class="font-title text-lg font-bold">Memberships</h1>
 
-    <AdminMembershipsAdditionForm
-      client:load
-      currentPluginIndex={props.clubs.currentPluginIndex}
-      membership={membership}
-      presets={props.presets as Membership[]}
-      existingMemberships={props.memberships as Membership[]}
-      rpcUrl={props.rpcUrl as string}
-      base={baseUrl}
+        <AdminMembershipsAdditionForm
+          client:load
+          currentPluginIndex={props.clubs.currentPluginIndex}
+          membership={membership}
+          presets={props.presets as Membership[]}
+          existingMemberships={props.memberships as Membership[]}
+          rpcUrl={props.rpcUrl as string}
+          base={baseUrl}
+        />
+      </section>
+      <input id="siteName" hidden value={site} disabled />
+    </SetupLayout>
+  ) : (
+    <PageNotFound
+      redirectionCtaText={`Take me back to previous page `}
+      redirectionCtaUrl={siteBaseUrl}
     />
-  </section>
-  <input id="siteName" hidden value={site} disabled />
-</SetupLayout>
+  )
+}
 
 <script>
   import { ClubsEvents } from '@devprotocol/clubs-core'

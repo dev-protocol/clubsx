@@ -13,6 +13,7 @@ import nft from '@plugins/nft'
 import perks from '@plugins/perks'
 import quests from '@plugins/quests'
 import message from '@plugins/message'
+import PageNotFound from '@pages/404.astro'
 
 const { site, page } = Astro.params
 const { getStaticPaths, getCurrentConfig } = pageFactory({
@@ -33,14 +34,25 @@ const { getStaticPaths, getCurrentConfig } = pageFactory({
   },
 })
 const path = (await getStaticPaths()).find(({ params }) => params.page === page)
-if (!path) {
-  throw new Error('Path undefined: ', path)
-}
-const Layout = path.props.layout
-const Content = path.props.component
+
+const Layout = path?.props.layout
+const Content = path?.props.component
 const config = await getCurrentConfig()
+
+const siteBaseUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
+  new URL(Astro.request.url)
+)
 ---
 
-<Layout {config}>
-  <Content {...path.props} />
-</Layout>
+{
+  path && Layout && Content ? (
+    <Layout {config}>
+      <Content {...path.props} />
+    </Layout>
+  ) : (
+    <PageNotFound
+      redirectionCtaText={`Take me back ${site} homepage`}
+      redirectionCtaUrl={siteBaseUrl}
+    />
+  )
+}
