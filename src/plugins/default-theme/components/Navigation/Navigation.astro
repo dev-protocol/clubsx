@@ -13,10 +13,14 @@ const { links, current } = Astro.props as {
       links.map((link) => (
         <li>
           <a
-            href={link.path}
+            href={link.enable !== false ? link.path : undefined}
             class={`inline-block p-5 text-sm font-bold text-white transition lg:text-xl ${
-              current.path === link.path ? '' : 'opacity-60'
-            } hover:opacity-100`}
+              current.path === link.path
+                ? ''
+                : link.enable !== false
+                ? 'opacity-60'
+                : 'opacity-30'
+            } ${link.enable !== false ? 'hover:opacity-100' : ''} `}
           >
             {link.display}
           </a>

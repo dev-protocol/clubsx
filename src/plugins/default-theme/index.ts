@@ -75,7 +75,10 @@ const config: ClubsConfiguration = {
   options: [
     {
       key: 'ogp',
-      value: { image: 'https://i.imgur.com/lcyO9Bn.jpg' },
+      value: {
+        image:
+          'https://images.unsplash.com/photo-1674614076460-2e6a391cd5ab?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2069&q=80',
+      },
     },
     {
       key: 'headerLinks',
