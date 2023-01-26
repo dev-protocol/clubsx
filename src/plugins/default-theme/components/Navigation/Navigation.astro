@@ -1,0 +1,27 @@
+---
+import type { NavLink } from '@constants/navLink'
+
+const { links, current } = Astro.props as {
+  links: NavLink[]
+  current: NavLink
+}
+---
+
+<nav>
+  <ul class="flex gap-6 overflow-x-auto border-b border-white/30 px-3 lg:px-0">
+    {
+      links.map((link) => (
+        <li>
+          <a
+            href={link.path}
+            class={`inline-block p-5 text-sm font-bold text-white transition lg:text-xl ${
+              current.path === link.path ? '' : 'opacity-60'
+            } hover:opacity-100`}
+          >
+            {link.display}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>

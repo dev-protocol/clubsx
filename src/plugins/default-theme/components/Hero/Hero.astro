@@ -1,0 +1,95 @@
+---
+import type { NavLink } from '@constants/navLink'
+import Card from '../Card/Card.astro'
+import NumberOfMembers from './NumberOfMembers.svelte'
+import Description from './Description.svelte'
+import Twitter from '@components/Icons/Twitter.astro'
+import Discord from '@components/Icons/Discord.astro'
+
+const {
+  image,
+  avatar,
+  name,
+  description,
+  propertyAddress,
+  rpcUrl,
+  socialLinks,
+} = Astro.props as {
+  image?: string
+  avatar?: string
+  name?: string
+  description?: string
+  propertyAddress?: string
+  rpcUrl?: string
+  socialLinks?: NavLink[]
+}
+
+const twitter = socialLinks?.find((l) => l.kind === 'twitter')
+const discord = socialLinks?.find((l) => l.kind === 'discord')
+const socials =
+  twitter || discord ? [twitter, discord].map((x) => x) : undefined
+---
+
+<div role="presentation" class="relative z-0 h-72 lg:h-[50rem]">
+  <div
+    class="gradient absolute left-1/2 bottom-0 aspect-square w-[950px] translate-x-[-50%] translate-y-[50%] rounded-full lg:w-[1800px]"
+  >
+  </div>
+  <img src={image} class="absolute h-full w-full max-w-full object-cover" />
+  <div
+    class="absolute bottom-0 hidden h-3/6 w-full bg-gradient-to-b from-transparent to-black/50 lg:block"
+  >
+  </div>
+</div>
+<section
+  class="container relative mx-auto -mt-3 grid max-w-7xl items-start gap-6 px-6 lg:-mt-44 lg:grid-cols-[2fr_1fr] lg:grid-rows-[auto_1fr] lg:gap-x-12 lg:gap-y-28 xl:px-0"
+>
+  <h1 class="flex items-center gap-6 lg:gap-12">
+    <img
+      src={avatar}
+      class="h-14 w-14 rounded-full border-4 border-surface-200 object-cover lg:h-24 lg:w-24"
+    />
+    <span class="text-2xl font-bold lg:text-5xl">{name}</span>
+  </h1>
+  <Card className="lg:row-span-2 lg:backdrop-blur-3xl lg:bg-black/10 lg:py-2.5">
+    <Description client:load>{description}</Description>
+  </Card>
+  <div
+    class="flex items-center justify-between gap-12 lg:justify-start lg:gap-24"
+  >
+    <p>
+      <NumberOfMembers
+        client:load
+        propertyAddress={propertyAddress}
+        rpcUrl={rpcUrl}
+      />
+    </p>
+    {
+      socials && (
+        <ul class="flex gap-12">
+          {socials.map((link) => (
+            <a href={link?.path} target="_blank" rel="noopener">
+              {link?.kind === 'twitter' ? (
+                <Twitter />
+              ) : link?.kind === 'discord' ? (
+                <Discord />
+              ) : (
+                link?.display
+              )}
+            </a>
+          ))}
+        </ul>
+      )
+    }
+  </div>
+</section>
+
+<style lang="scss">
+  .gradient {
+    background: radial-gradient(
+      50% 50% at 50% 50%,
+      rgba(204, 0, 255, 0.5) 0%,
+      rgba(204, 0, 255, 0) 100%
+    );
+  }
+</style>

@@ -1,0 +1,10 @@
+---
+const { className } = Astro.props as {
+  blur?: boolean
+  className?: string
+}
+---
+
+<div class={`rounded-lg p-6 bg-black/5 ${className ? className : ''}`}>
+  <slot />
+</div>

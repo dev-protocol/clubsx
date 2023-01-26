@@ -2,21 +2,60 @@
 import type { ClubsConfiguration } from '@devprotocol/clubs-core'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import '@devprotocol/clubs-core/styles'
-import Header from './components/Header/Header.astro'
+import Header from '../components/Header/Header.astro'
+import Hero from '../components/Hero/Hero.astro'
+import type { NavLink } from '@constants/navLink'
+import Navigation from '../components/Navigation/Navigation.astro'
+import type { Membership } from '@plugins/memberships'
+import Memberships from '../components/Memberships/Memberships.astro'
 
-const { metaTitle, config } = Astro.props as {
+const { page } = Astro.params
+const { metaTitle, config, homeConfig } = Astro.props as {
   metaTitle?: string
   config: ClubsConfiguration
+  homeConfig: {
+    hero: {
+      image: string
+    }
+    description: string
+    sections: {
+      title: string
+      body: {
+        image: string
+        description: string
+      }
+    }[]
+  }
 }
 
+const { name, propertyAddress, rpcUrl, chainId } = config
 const title = metaTitle ? `${config.name} : ${metaTitle}` : config.name
 
 const ogp = config.options?.find((option) => option.key === 'ogp')
   ?.value as UndefinedOr<{ image?: string }>
 
-const avatarImgSrc: string | undefined = config.options?.find(
+const avatarImgSrc: UndefinedOr<string> = config.options?.find(
   (option) => option.key === 'avatarImgSrc'
 )?.value as string
+
+const memberships = config.plugins
+  .find((plg) => plg.name === 'memberships')
+  ?.options.find((opt) => opt.key === 'memberships')?.value as UndefinedOr<
+  Membership[]
+>
+
+const socialLinks =
+  config.options?.find((option) => option.key === 'socialLinks')?.value ??
+  ([] as NavLink[])
+
+const navigationLinks: NavLink[] = [
+  { path: '/', display: 'Club' },
+  ...((config.options?.find((option) => option.key === 'navigationLinks')
+    ?.value as NavLink[]) ?? []),
+]
+const currentLink = navigationLinks?.find((link) =>
+  ((pathname) => pathname === link.path)(`/${page ?? ''}`)
+)
 
 const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
 ---
@@ -43,10 +82,32 @@ const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
     <meta name="twitter:image" content={`${ogp?.image}`} />
   </head>
 
-  <body class="min-h-screen bg-dp-black-300 font-body text-white">
-    <Header />
-    <main>
-      <slot />
+  <body
+    class="min-h-screen overflow-x-hidden bg-[#838AB0] font-body text-white"
+  >
+    <Header chainId={chainId} />
+    <Hero
+      image={homeConfig.hero.image}
+      avatar={avatarImgSrc}
+      name={name}
+      propertyAddress={propertyAddress}
+      rpcUrl={rpcUrl}
+      socialLinks={socialLinks}
+      description={homeConfig.description}
+    />
+    <div
+      class="container relative mx-auto my-12 mb-5 max-w-7xl lg:my-20 lg:mb-16 xl:px-0"
+    >
+      <Navigation links={navigationLinks} current={currentLink} />
+    </div>
+    <main
+      class="container relative mx-auto flex max-w-7xl flex-col-reverse gap-6 px-6 xl:flex-row xl:gap-24 xl:px-0"
+    >
+      <div class="max-w-4xl">
+        <slot />
+      </div>
+      <Memberships memberships={memberships} />
     </main>
+    <footer class="container mx-auto max-w-7xl py-24">Footer</footer>
   </body>
 </html>

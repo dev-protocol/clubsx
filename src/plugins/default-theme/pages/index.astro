@@ -1,0 +1,41 @@
+---
+import Markdown from '@components/Markdown/Markdown.astro'
+import Card from '../components/Card/Card.astro'
+
+const { homeConfig } = Astro.props as {
+  homeConfig: {
+    hero: {
+      image: string
+    }
+    description: string
+    sections: {
+      title: string
+      body: {
+        image: string
+        description: string
+      }
+    }[]
+  }
+}
+---
+
+<div class="grid gap-11">
+  {
+    homeConfig.sections.map((section) => (
+      <div>
+        <h2 class="mb-5 text-2xl font-bold">{section.title}</h2>
+        <Card>
+          <div class="flex flex-col gap-6 lg:flex-row">
+            <img
+              src={section.body.image}
+              class="aspect-[5/4] w-full rounded-lg lg:w-96	"
+            />
+            <div>
+              <Markdown body={section.body.description} />
+            </div>
+          </div>
+        </Card>
+      </div>
+    ))
+  }
+</div>

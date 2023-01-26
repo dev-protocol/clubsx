@@ -46,7 +46,7 @@ const siteBaseUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
 
 {
   path && Layout && Content ? (
-    <Layout {config}>
+    <Layout {...path.props}>
       <Content {...path.props} />
     </Layout>
   ) : (
