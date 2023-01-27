@@ -34,6 +34,7 @@ type Data = {
   connected: boolean
   modalProvider?: Web3Modal
   connection?: typeof Connection
+  isAwaitingWalletConfirmation: boolean
 }
 
 export default defineComponent({
@@ -46,6 +47,7 @@ export default defineComponent({
       modalProvider: undefined,
       connection: undefined,
       connected: false,
+      isAwaitingWalletConfirmation: false,
     }
   },
   computed: {
@@ -57,10 +59,16 @@ export default defineComponent({
         : classes +
             (!this.connection
               ? ' animate-pulse cursor-progress rounded bg-gray-500/60'
+              : this.isAwaitingWalletConfirmation
+              ? ' animate-pulse'
               : '')
     },
     buttonText() {
-      return this.connected ? 'Connected' : 'Connect'
+      return this.connected
+        ? 'Connected'
+        : this.isAwaitingWalletConfirmation
+        ? 'Awaiting connection confirmation on wallet...'
+        : 'Connect'
     },
     stepTextClasses() {
       const classes = 'font-title text-2xl font-bold'
@@ -77,6 +85,7 @@ export default defineComponent({
         ])
       this.connection = connection
       this.modalProvider = GetModalProvider()
+      this.isAwaitingWalletConfirmation = true
       const { currentAddress, provider } = await ReConnectWallet(
         this.modalProvider
       )
@@ -86,6 +95,7 @@ export default defineComponent({
       if (provider) {
         this.setSigner(provider)
       }
+      this.isAwaitingWalletConfirmation = false
     })
   },
   methods: {
@@ -96,6 +106,7 @@ export default defineComponent({
     async connect() {
       if (this.connected) return
 
+      this.isAwaitingWalletConfirmation = true
       const connectedProvider = await this.modalProvider!.connect()
       const newProvider = whenDefined(connectedProvider, (p) => {
         const provider = new providers.Web3Provider(p)
@@ -107,6 +118,7 @@ export default defineComponent({
       if (currentAddress) {
         this.connected = true
       }
+      this.isAwaitingWalletConfirmation = false
     },
   },
 })
