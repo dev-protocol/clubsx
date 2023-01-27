@@ -33,7 +33,7 @@
     "fs-extra": "^11.1.0",
     "husky": "8.0.3",
     "prettier": "2.8.3",
-    "prettier-plugin-astro": "0.7.2",
+    "prettier-plugin-astro": "0.8.0",
     "prettier-plugin-svelte": "2.9.0",
     "prettier-plugin-tailwindcss": "0.2.2",
     "type-fest": "3.5.3",
@@ -42,7 +42,7 @@
   "dependencies": {
     "@astrojs/netlify": "2.0.0",
     "@astrojs/prefetch": "0.1.1",
-    "@astrojs/react": "2.0.0",
+    "@astrojs/react": "2.0.1",
     "@astrojs/svelte": "2.0.0",
     "@astrojs/tailwind": "3.0.0",
     "@astrojs/vercel": "3.0.0",
@@ -57,7 +57,7 @@
     "@sendgrid/mail": "7.7.0",
     "@tailwindcss/aspect-ratio": "0.4.2",
     "@vercel/analytics": "0.1.8",
-    "@vercel/edge": "0.2.6",
+    "@vercel/edge": "0.2.7",
     "@vue/composition-api": "1.7.1",
     "astro": "2.0.1",
     "autoprefixer": "10.4.13",
@@ -80,7 +80,7 @@
     "truncate-eth-address": "1.0.2",
     "unique-string": "^3.0.0",
     "vue": "3.2.45",
-    "web3modal": "1.9.11"
+    "web3modal": "1.9.12"
   },
   "repository": "https://github.com/dev-protocol/clubs.git",
   "author": "",

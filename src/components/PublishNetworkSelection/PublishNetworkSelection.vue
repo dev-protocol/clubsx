@@ -351,11 +351,19 @@ export default defineComponent({
         ? classes + ' line-through opacity-50'
         : classes
     },
+    baseTokenizationLink() {
+      return `https://niwa.xyz/tokenize/${this.category?.toLowerCase()}`
+    },
     link() {
-      return `https://${this.networkSelected.toLowerCase()}.niwa.xyz/tokenize/${this.category?.toLowerCase()}`
+      const url = new URL(this.baseTokenizationLink)
+      url.host = `${this.networkSelected.toLowerCase()}.${url.host}`
+      return url
     },
     linkOrigin() {
       return new URL(this.link).origin
+    },
+    baseTokenizationLinkOrigin() {
+      return new URL(this.baseTokenizationLink).origin
     },
     step3Enabled() {
       return (
@@ -460,7 +468,11 @@ export default defineComponent({
     },
 
     listenForAddress(event: MessageEvent<any>) {
-      if (event.origin !== this.linkOrigin) return
+      if (
+        event.origin !== this.linkOrigin &&
+        event.origin !== this.baseTokenizationLinkOrigin
+      )
+        return
       const { address } = event.data
       if (!address) return
       this.addressFromNiwa = address
