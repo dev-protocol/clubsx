@@ -9,6 +9,7 @@ import Navigation from '../components/Navigation/Navigation.astro'
 import type { Membership } from '@plugins/memberships'
 import Memberships from '../components/Memberships/Memberships.astro'
 import type { Colors } from '..'
+import { generateRGBA } from '../utils/generateRGBA'
 
 const { page } = Astro.params
 const { metaTitle, config, homeConfig, colors, globalConfig } = Astro.props as {
@@ -66,7 +67,7 @@ const currentLink = navigationLinks?.find((link) =>
 const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
 
 const selectedbBckgroundColor = globalConfig?.bg ?? 'smoke-blue'
-const backgroundColor = `rgba(${colors[selectedbBckgroundColor]}, 1)`
+const backgroundColor = generateRGBA(colors[selectedbBckgroundColor], 1)
 ---
 
 <style define:vars={{ backgroundColor }}>

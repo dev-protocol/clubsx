@@ -5,7 +5,8 @@ import NumberOfMembers from './NumberOfMembers.svelte'
 import Description from './Description.svelte'
 import Twitter from '@components/Icons/Twitter.astro'
 import Discord from '@components/Icons/Discord.astro'
-import type { Colors } from '@plugins/default-theme'
+import type { Colors } from '../../'
+import { generateRGBA } from '../../utils/generateRGBA'
 
 const {
   colors,
@@ -38,8 +39,8 @@ const socials =
   twitter || discord ? [twitter, discord].map((x) => x) : undefined
 
 const selectedbAccentColor = globalConfig?.accent ?? 'purple'
-const accentColorFrom = `rgba(${colors[selectedbAccentColor]}, 0.5)`
-const accentColorTo = `rgba(${colors[selectedbAccentColor]}, 0)`
+const accentColorFrom = generateRGBA(colors[selectedbAccentColor], 0.5)
+const accentColorTo = generateRGBA(colors[selectedbAccentColor], 0)
 ---
 
 <style define:vars={{ accentColorFrom, accentColorTo }}>
