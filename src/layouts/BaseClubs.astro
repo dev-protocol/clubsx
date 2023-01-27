@@ -1,0 +1,71 @@
+---
+import ClubsColor from '@assets/clubs--color.svg'
+import VercelAnalytics from '@components/Analytics/VercelAnalytics.astro'
+import ConnectButton from '@components/Wallet/ConnectButton.vue'
+
+import '@devprotocol/clubs-core/styles'
+
+const { connectButton = 'hidden' } = Astro.props as {
+  connectButton?: 'show' | 'hidden'
+}
+
+const title = 'Clubs'
+const name = 'Clubs' // not sure the difference here compared to title
+const description = ''
+const url = ''
+const ogURL = ''
+const twitterHandle = 'devprtcl'
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+    <link rel="icon" type="image/svg" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /><link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="description" content={`${description}`} />
+    <meta property="og:title" content={title} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={url} />
+    <meta property="og:image" content={`${ogURL}`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content={name} />
+    <meta name="twitter:site" content={twitterHandle} />
+    <meta name="twitter:creator" content={twitterHandle} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${ogURL}`} />
+  </head>
+
+  <body class="min-h-screen bg-dp-black-600 font-body text-white">
+    <slot name="before-header" />
+    <header class="relative flex items-center justify-between py-4 px-6">
+      <a href="/">
+        <h1
+          class="flex items-center gap-2.5 font-['Poppins'] text-xl font-bold"
+        >
+          <img src={ClubsColor} />Clubs
+        </h1>
+      </a>
+      <slot name="right" />
+      {
+        connectButton === 'show' && (
+          <nav class="flex justify-between gap-10">
+            <ConnectButton type="white" client:load />
+          </nav>
+        )
+      }
+    </header>
+
+    <main>
+      <slot />
+    </main>
+    <VercelAnalytics />
+  </body>
+</html>
