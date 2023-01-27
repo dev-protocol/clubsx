@@ -18,7 +18,7 @@ const { metaTitle, config, homeConfig, colors, globalConfig } = Astro.props as {
   colors: Colors
   globalConfig?: {
     bg: string
-    accent: string
+    backgroundGradient?: [string, string]
   }
   homeConfig: {
     hero: {
@@ -66,8 +66,7 @@ const currentLink = navigationLinks?.find((link) =>
 
 const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
 
-const selectedbBckgroundColor = globalConfig?.bg ?? 'smoke-blue'
-const backgroundColor = generateRGBA(colors[selectedbBckgroundColor], 1)
+const backgroundColor = globalConfig?.bg ?? '#ADADAD'
 ---
 
 <style define:vars={{ backgroundColor }}>

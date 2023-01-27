@@ -20,11 +20,21 @@ import membershipOpt1 from '@assets/membership-opt-1.png'
 import membershipOpt2 from '@assets/membership-opt-2.png'
 import membershipOpt3 from '@assets/membership-opt-3.png'
 import { utils } from 'ethers'
+import { generateRGBA } from './utils/generateRGBA'
 
 export type Colors = { [key: string]: [number, number, number] }
 const colors: Colors = {
   'smoke-blue': [131, 138, 176],
   purple: [204, 0, 255],
+}
+const colorPresets = {
+  Purple: {
+    bg: generateRGBA(colors['smoke-blue'], 1),
+    backgroundGradient: [
+      generateRGBA(colors['purple'], 0.2),
+      generateRGBA(colors['purple'], 0),
+    ],
+  },
 }
 
 const lorem = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`
@@ -32,10 +42,7 @@ const lorem = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do e
 const options: ClubsPluginOptions = [
   {
     key: 'globalConfig',
-    value: {
-      bg: 'smoke-blue',
-      accent: 'purple',
-    },
+    value: colorPresets.Purple,
   },
   {
     key: 'homeConfig',
