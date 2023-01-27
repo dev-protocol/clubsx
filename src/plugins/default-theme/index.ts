@@ -76,7 +76,7 @@ const options: ClubsPluginOptions = [
 ]
 // TODO: THIS CONFIGURATION IS JUST FOR DEVELOPMENT
 const config: ClubsConfiguration = {
-  name: 'WaveDAO',
+  name: 'MyWaves',
   twitterHandle: '@aggre_',
   description: '',
   url: '',
