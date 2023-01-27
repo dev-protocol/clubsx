@@ -52,32 +52,7 @@ const options: ClubsPluginOptions = [
           'https://images.unsplash.com/photo-1673422627994-ba82ef264160?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340',
       },
       description: lorem,
-      sections: [
-        {
-          title: 'About us',
-          body: {
-            image:
-              'https://images.unsplash.com/photo-1668977309586-50c338c48cf5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2532&q=80',
-            description: lorem,
-          },
-        },
-        {
-          title: 'Mission',
-          body: {
-            image:
-              'https://images.unsplash.com/photo-1633150444294-e2c4848e504b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1064&q=80',
-            description: lorem,
-          },
-        },
-        {
-          title: 'Perks',
-          body: {
-            image:
-              'https://images.unsplash.com/photo-1674614076460-2e6a391cd5ab?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2069&q=80',
-            description: lorem,
-          },
-        },
-      ],
+      body: `https://www.youtube.com/watch?v=EK9MUwep4pY\n\n ${lorem}\n ### Heading\n 2 ${lorem}`,
     },
   },
 ]
