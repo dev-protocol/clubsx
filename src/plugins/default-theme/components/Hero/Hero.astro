@@ -5,8 +5,11 @@ import NumberOfMembers from './NumberOfMembers.svelte'
 import Description from './Description.svelte'
 import Twitter from '@components/Icons/Twitter.astro'
 import Discord from '@components/Icons/Discord.astro'
+import type { Colors } from '@plugins/default-theme'
 
 const {
+  colors,
+  globalConfig,
   image,
   avatar,
   name,
@@ -15,6 +18,11 @@ const {
   rpcUrl,
   socialLinks,
 } = Astro.props as {
+  colors: Colors
+  globalConfig?: {
+    bg: string
+    accent: string
+  }
   image?: string
   avatar?: string
   name?: string
@@ -28,7 +36,21 @@ const twitter = socialLinks?.find((l) => l.kind === 'twitter')
 const discord = socialLinks?.find((l) => l.kind === 'discord')
 const socials =
   twitter || discord ? [twitter, discord].map((x) => x) : undefined
+
+const selectedbAccentColor = globalConfig?.accent ?? 'purple'
+const accentColorFrom = `rgba(${colors[selectedbAccentColor]}, 0.5)`
+const accentColorTo = `rgba(${colors[selectedbAccentColor]}, 0)`
 ---
+
+<style define:vars={{ accentColorFrom, accentColorTo }}>
+  .gradient {
+    background: radial-gradient(
+      50% 50% at 50% 50%,
+      var(--accentColorFrom) 0%,
+      var(--accentColorTo) 100%
+    );
+  }
+</style>
 
 <!-- Cover image -->
 <div role="presentation" class="relative z-0 h-72 lg:h-[32rem]">
@@ -86,13 +108,3 @@ const socials =
     }
   </div>
 </section>
-
-<style lang="scss">
-  .gradient {
-    background: radial-gradient(
-      50% 50% at 50% 50%,
-      rgba(204, 0, 255, 0.5) 0%,
-      rgba(204, 0, 255, 0) 100%
-    );
-  }
-</style>

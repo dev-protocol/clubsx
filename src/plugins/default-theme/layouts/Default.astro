@@ -8,11 +8,17 @@ import type { NavLink } from '@constants/navLink'
 import Navigation from '../components/Navigation/Navigation.astro'
 import type { Membership } from '@plugins/memberships'
 import Memberships from '../components/Memberships/Memberships.astro'
+import type { Colors } from '..'
 
 const { page } = Astro.params
-const { metaTitle, config, homeConfig } = Astro.props as {
+const { metaTitle, config, homeConfig, colors, globalConfig } = Astro.props as {
   metaTitle?: string
   config: ClubsConfiguration
+  colors: Colors
+  globalConfig?: {
+    bg: string
+    accent: string
+  }
   homeConfig: {
     hero: {
       image: string
@@ -58,9 +64,17 @@ const currentLink = navigationLinks?.find((link) =>
 )
 
 const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
+
+const selectedbBckgroundColor = globalConfig?.bg ?? 'smoke-blue'
+const backgroundColor = `rgba(${colors[selectedbBckgroundColor]}, 1)`
 ---
 
-<!DOCTYPE html>
+<style define:vars={{ backgroundColor }}>
+  body {
+    background-color: var(--backgroundColor);
+  }
+</style>
+
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -82,9 +96,7 @@ const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
     <meta name="twitter:image" content={`${ogp?.image}`} />
   </head>
 
-  <body
-    class="min-h-screen overflow-x-hidden bg-[#838AB0] font-body text-white"
-  >
+  <body class="min-h-screen overflow-x-hidden font-body text-white">
     <Header chainId={chainId} />
     <Hero
       image={homeConfig.hero.image}
@@ -94,6 +106,8 @@ const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
       rpcUrl={rpcUrl}
       socialLinks={socialLinks}
       description={homeConfig.description}
+      colors={colors}
+      globalConfig={globalConfig}
     />
     <div
       class="container relative mx-auto my-12 mb-5 max-w-7xl lg:my-20 lg:mb-16 xl:px-0"
