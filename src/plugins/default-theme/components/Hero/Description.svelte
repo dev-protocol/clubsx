@@ -2,20 +2,16 @@
   let open = false
 
   const onClick = () => {
-    console.log({ open })
     open = !open
   }
 </script>
 
-<button on:click={onClick}>
-  <p
-    class={`overflow-hidden text-left ${
-      open ? '' : 'close h-[10ex] lg:h-[30ex]'
-    }`}
-  >
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<section class="cursor-pointer lg:cursor-auto" on:click={onClick}>
+  <p class={`overflow-hidden text-left lg:text-xl ${open ? '' : 'close'}`}>
     <slot />
   </p>
-</button>
+</section>
 
 <style>
   .close {
@@ -28,8 +24,7 @@
   }
   @media (min-width: 890px) {
     .close {
-      line-clamp: 10;
-      -webkit-line-clamp: 10;
+      display: block;
     }
   }
 </style>

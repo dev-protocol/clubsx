@@ -7,9 +7,7 @@ import Hero from '../components/Hero/Hero.astro'
 import type { NavLink } from '@constants/navLink'
 import Navigation from '../components/Navigation/Navigation.astro'
 import type { Membership } from '@plugins/memberships'
-import Memberships from '../components/Memberships/Memberships.astro'
 import type { Colors } from '..'
-import { generateRGBA } from '../utils/generateRGBA'
 
 const { page } = Astro.params
 const { metaTitle, config, homeConfig, colors, globalConfig } = Astro.props as {
@@ -114,13 +112,8 @@ const backgroundColor = globalConfig?.bg ?? '#ADADAD'
     >
       <Navigation links={navigationLinks} current={currentLink} />
     </div>
-    <main
-      class="container relative mx-auto flex max-w-7xl flex-col-reverse gap-6 px-6 xl:flex-row xl:gap-24 xl:px-0"
-    >
-      <div class="max-w-4xl">
-        <slot />
-      </div>
-      <Memberships memberships={memberships} />
+    <main class="container relative mx-auto max-w-4xl px-6 xl:px-0">
+      <slot />
     </main>
     <footer class="container mx-auto max-w-7xl py-24">Footer</footer>
   </body>

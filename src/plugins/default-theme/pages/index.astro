@@ -1,8 +1,11 @@
 ---
 import Markdown from '@components/Markdown/Markdown.astro'
 import Card from '../components/Card/Card.astro'
+import Memberships from '../components/Memberships/Memberships.astro'
+import type { Membership } from '@plugins/memberships'
 
-const { homeConfig } = Astro.props as {
+const { memberships, homeConfig } = Astro.props as {
+  memberships: Membership[]
   homeConfig: {
     hero: {
       image: string
@@ -19,7 +22,14 @@ const { homeConfig } = Astro.props as {
 }
 ---
 
-<div class="grid gap-11">
+<section>
+  <h2 class="text-center text-xl font-bold lg:text-2xl">
+    {memberships.length > 1 ? 'Select a membership' : 'Became a member'}
+  </h2>
+  <Memberships memberships={memberships} />
+</section>
+
+<div class="mt-4 grid gap-11 lg:mt-6">
   {
     homeConfig.sections.map((section) => (
       <div>
