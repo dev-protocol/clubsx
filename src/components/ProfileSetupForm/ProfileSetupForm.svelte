@@ -25,7 +25,14 @@
       value: 'DISCORD',
     },
   ]
-  let projectCategory = 'GITHUB'
+
+  let projectCategory =
+    (
+      config?.options?.find(
+        (option) => option.key === '__draft'
+      ) as UndefinedOr<DraftOptions>
+    )?.value?.category?.toUpperCase() || 'GITHUB'
+
   let avatarPath =
     config.options?.find((opt) => opt.key === 'avatarImgSrc')?.value ?? ''
   let avatarUploading = false
