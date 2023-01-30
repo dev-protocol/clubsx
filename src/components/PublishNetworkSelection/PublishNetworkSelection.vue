@@ -335,10 +335,14 @@ export default defineComponent({
     return {
       modalProvider: undefined,
       connection: undefined,
-      networkSelected: '',
+      networkSelected: this.getNetworkFromChainId(this.config.chainId),
       connected: false,
       popupWindow: null as Window | null,
-      addressFromNiwa: '',
+      addressFromNiwa:
+        !this.config.propertyAddress ||
+        this.config.propertyAddress === ethers.constants.AddressZero
+          ? ''
+          : this.config.propertyAddress,
       membershipInitialized: false,
       membershipSet: false,
       currentWalletAddress: '',
@@ -354,7 +358,9 @@ export default defineComponent({
     addressFromNiwaOrConfigIsValid() {
       const address = Boolean(this.addressFromNiwa)
         ? this.addressFromNiwa
-        : this.config.propertyAddress
+        : this.networkSelected.toLocaleLowerCase() === this.getNetworkFromChainId(this.config.chainId).toLocaleLowerCase()
+            ? this.config.propertyAddress
+            : ''
       return address && address !== constants.AddressZero
     },
     buttonClasses() {
@@ -448,6 +454,20 @@ export default defineComponent({
     })
   },
   methods: {
+    getNetworkFromChainId(chainId: number | null) {
+      return chainId === 1
+        ? 'ethereum'
+        : chainId === 137
+        ? 'polygon'
+        : chainId === 80001
+        ? 'polygon-mumbai'
+        : chainId === 42161
+        ? 'arbitrum'
+        : chainId === 80001
+        ? 'polygon-mumbai'
+        : ''
+    },
+
     getChainId() {
       return this.networkSelected === 'ethereum'
         ? 1
@@ -479,6 +499,11 @@ export default defineComponent({
     async changeNetwork(network: string) {
       if (!this.connected) return
       this.networkSelected = network
+
+      if (network.toLocaleLowerCase() !== this.getNetworkFromChainId(this.config.chainId).toLocaleLowerCase()) {
+        this.addressFromNiwa = ''
+      }
+
       this.updateConfig()
     },
 
@@ -531,16 +556,20 @@ export default defineComponent({
         ? (this.addressFromNiwa as string)
         : (this.addressFromNiwaOrConfig as string)
       const rpcUrl = this.getRpcUrl()
+      const chainId = this.getChainId()
+      if (!chainId) return;
       const nextConfig: ClubsConfiguration = {
         ...this.config,
         rpcUrl,
+        chainId,
         propertyAddress,
       }
       onUpdatedConfiguration(
         () => {
           if (
             this.config.propertyAddress === propertyAddress &&
-            this.config.rpcUrl === rpcUrl
+            this.config.rpcUrl === rpcUrl &&
+            this.config.chainId === chainId
           ) {
             return
           }
