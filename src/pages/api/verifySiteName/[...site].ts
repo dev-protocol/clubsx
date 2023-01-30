@@ -23,6 +23,10 @@ export const get = async ({
           url: process.env.REDIS_URL,
           username: process.env.REDIS_USERNAME ?? '',
           password: process.env.REDIS_PASSWORD ?? '',
+          socket: {
+            keepAlive: 1,
+            reconnectStrategy: 1,
+          },
         })
       : undefined
   await client?.connect()
