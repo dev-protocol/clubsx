@@ -697,7 +697,8 @@ export default defineComponent({
       if (
         !provider ||
         !this.addressFromNiwaOrConfigIsValid ||
-        !currentChainId
+        !currentChainId ||
+        !signer
       ) {
         this.initMbmershipTxnProcessing = false
         this.initMembershipTxnStatusMsg = 'Initialization failed, try again!'
@@ -721,10 +722,21 @@ export default defineComponent({
 
         this.initMembershipTxnStatusMsg =
           'Awaiting transaction confirmation on wallet...'
-        const tx = await (l1 || l2)?.setTokenURIDescriptor(
-          propertyAddress,
-          descriptiorAddress
-        )
+
+        const l = l1 || l2
+        if (!l) {
+          this.initMbmershipTxnProcessing = false
+          this.initMembershipTxnStatusMsg = 'Initialization failed, try again!'
+          return
+        }
+
+        const tx = await l
+          .contract()
+          .connect(signer)
+          [`setTokenURIDescriptor(address,address)`](
+            propertyAddress,
+            descriptiorAddress
+          )
 
         this.initMembershipTxnStatusMsg =
           'Transaction processing on the blockchain...'
