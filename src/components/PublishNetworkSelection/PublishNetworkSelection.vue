@@ -358,9 +358,10 @@ export default defineComponent({
     addressFromNiwaOrConfigIsValid() {
       const address = Boolean(this.addressFromNiwa)
         ? this.addressFromNiwa
-        : this.networkSelected.toLocaleLowerCase() === this.getNetworkFromChainId(this.config.chainId).toLocaleLowerCase()
-            ? this.config.propertyAddress
-            : ''
+        : this.networkSelected.toLocaleLowerCase() ===
+          this.getNetworkFromChainId(this.config.chainId).toLocaleLowerCase()
+        ? this.config.propertyAddress
+        : ''
       return address && address !== constants.AddressZero
     },
     buttonClasses() {
@@ -500,7 +501,10 @@ export default defineComponent({
       if (!this.connected) return
       this.networkSelected = network
 
-      if (network.toLocaleLowerCase() !== this.getNetworkFromChainId(this.config.chainId).toLocaleLowerCase()) {
+      if (
+        network.toLocaleLowerCase() !==
+        this.getNetworkFromChainId(this.config.chainId).toLocaleLowerCase()
+      ) {
         this.addressFromNiwa = ''
       }
 
@@ -557,7 +561,7 @@ export default defineComponent({
         : (this.addressFromNiwaOrConfig as string)
       const rpcUrl = this.getRpcUrl()
       const chainId = this.getChainId()
-      if (!chainId) return;
+      if (!chainId) return
       const nextConfig: ClubsConfiguration = {
         ...this.config,
         rpcUrl,
