@@ -335,7 +335,11 @@ export default defineComponent({
     return {
       modalProvider: undefined,
       connection: undefined,
-      networkSelected: this.getNetworkFromChainId(this.config.chainId),
+      networkSelected:
+        !this.config.propertyAddress ||
+        this.config.propertyAddress === ethers.constants.AddressZero
+          ? ''
+          : this.getNetworkFromChainId(this.config.chainId),
       connected: false,
       popupWindow: null as Window | null,
       addressFromNiwa:
@@ -430,6 +434,10 @@ export default defineComponent({
         ? 'Enable a memberships contract to use memberships.'
         : 'Store your memberships to a contract.'
     },
+    async initMembershipStatus() {
+      return (await this.getStep2CompletionStatusAndMessages())
+        .membershipInitialized
+    },
   },
   async mounted() {
     onMountClient(async () => {
@@ -437,21 +445,94 @@ export default defineComponent({
         import('@devprotocol/clubs-core/connection'),
       ])
       this.connection = connection
-      connection().provider.subscribe((prov) => {
+      connection().provider.subscribe(async (prov) => {
         provider = prov
+        await this.updateStep2CompletionStatus()
       })
-      connection().account.subscribe((acc) => {
+      connection().account.subscribe(async (acc) => {
         if (acc) {
           this.currentWalletAddress = acc
           this.connected = true
+          await this.updateStep2CompletionStatus()
         }
       })
-      connection().signer.subscribe((sig) => {
+      connection().signer.subscribe(async (sig) => {
         signer = sig
+        await this.updateStep2CompletionStatus()
       })
     })
   },
   methods: {
+    async getStep2CompletionStatusAndMessages() {
+      let initMbmershipTxnProcessing = true
+      let initMembershipTxnStatusMsg = 'Fetching initialization details...'
+      let membershipInitialized = false
+
+      const currentChainId: number | null = this.getChainId()
+      if (!provider || !this.addressFromNiwaOrConfig || !currentChainId) {
+        initMbmershipTxnProcessing = false
+        initMembershipTxnStatusMsg = 'Initialize your memberships'
+        membershipInitialized = false
+        return {
+          initMbmershipTxnProcessing,
+          initMembershipTxnStatusMsg,
+          membershipInitialized,
+        }
+      }
+
+      const [l1, l2] = await clientsSTokens(provider as BaseProvider)
+      const propertyAddress = Boolean(this.addressFromNiwa)
+        ? (this.addressFromNiwa as string)
+        : (this.addressFromNiwaOrConfig as string)
+
+      const descriptiorAddress: string | undefined = address.find(
+        (address) => address.chainId === currentChainId
+      )?.address
+      if (!descriptiorAddress) {
+        initMbmershipTxnProcessing = false
+        initMembershipTxnStatusMsg = 'Initialize your memberships'
+        membershipInitialized = false
+        return {
+          initMbmershipTxnProcessing,
+          initMembershipTxnStatusMsg,
+          membershipInitialized,
+        }
+      }
+
+      const contract = (l1 || l2)?.contract()
+      const descriptorAddressInContract: string = await contract?.descriptorOf(
+        propertyAddress
+      )
+      initMbmershipTxnProcessing = false
+      membershipInitialized =
+        descriptorAddressInContract?.toLowerCase() ===
+        descriptiorAddress?.toLocaleLowerCase()
+      initMembershipTxnStatusMsg = membershipInitialized
+        ? 'Membership initialized, fetching setup details...'
+        : 'Initialize your memberships'
+
+      return {
+        initMbmershipTxnProcessing,
+        initMembershipTxnStatusMsg,
+        membershipInitialized,
+      }
+    },
+
+    async updateStep2CompletionStatus() {
+      this.membershipInitialized = false
+      this.initMbmershipTxnProcessing = true
+      this.initMembershipTxnStatusMsg = 'Fetching initialization details...'
+
+      const {
+        initMbmershipTxnProcessing,
+        initMembershipTxnStatusMsg,
+        membershipInitialized,
+      } = await this.getStep2CompletionStatusAndMessages()
+      this.initMbmershipTxnProcessing = initMbmershipTxnProcessing
+      this.membershipInitialized = membershipInitialized
+      this.initMembershipTxnStatusMsg = initMembershipTxnStatusMsg
+    },
+
     getNetworkFromChainId(chainId: number | null) {
       return chainId === 1
         ? 'ethereum'
