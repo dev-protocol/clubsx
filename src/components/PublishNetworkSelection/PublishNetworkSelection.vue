@@ -162,6 +162,7 @@
                 : roundedSquareImage
             "
             class="h-3 w-3"
+            v-bind:class="initMbmershipTxnProcessing ? ' animate-pulse' : ''"
           />
           <p
             class="font-DMSans text-base font-bold"
@@ -171,7 +172,9 @@
               !connected ||
               !addressFromNiwaOrConfigIsValid
                 ? 'text-[#3A4158]'
-                : 'text-white'
+                : initMbmershipTxnProcessing
+                ? ' animate-pulse text-white'
+                : ' text-white'
             "
           >
             2
@@ -230,11 +233,11 @@
         v-bind:class="
           !step3Enabled
             ? 'opacity-50'
-            : isTokenizing || isTxnProcessing
+            : isTokenizing || initMbmershipTxnProcessing
             ? ' animate-pulse'
             : ''
         "
-        :disabled="!step3Enabled"
+        :disabled="!step3Enabled || isTokenizing || initMbmershipTxnProcessing"
       >
         <p class="font-DMSans text-center text-base font-bold text-[#FFFFFF]">
           {{ step3InterStepButtonText }}
@@ -291,10 +294,10 @@ type Data = {
   membershipInitialized: boolean
   membershipSet: boolean
   currentWalletAddress: string
-  isTxnProcessing: boolean
   isTokenizing: boolean
   tokenizingStatusMsg: string
-  txnProcessingStatusMsg: string
+  initMbmershipTxnProcessing: boolean
+  initMembershipTxnStatusMsg: string
 }
 
 let provider: BaseProvider | undefined
@@ -324,14 +327,18 @@ export default defineComponent({
       networkSelected: '',
       connected: false,
       popupWindow: null as Window | null,
-      addressFromNiwa: '',
+      addressFromNiwa:
+        !this.config.propertyAddress ||
+        this.config.propertyAddress === ethers.constants.AddressZero
+          ? ''
+          : this.config.propertyAddress,
       membershipInitialized: false,
       membershipSet: false,
       currentWalletAddress: '',
       isTokenizing: false,
-      isTxnProcessing: false,
+      initMbmershipTxnProcessing: false,
       tokenizingStatusMsg: 'Activate',
-      txnProcessingStatusMsg: 'Initialize your memberships',
+      initMembershipTxnStatusMsg: 'Initialize your memberships',
     }
   },
   computed: {
@@ -397,20 +404,14 @@ export default defineComponent({
         : this.addressFromNiwa
     },
     step3InterStepButtonText() {
-      return !this.connected ||
-        !this.networkSelected ||
-        this.networkSelected === '' ||
-        !this.addressFromNiwaOrConfigIsValid
+      return !this.addressFromNiwaOrConfigIsValid
         ? this.tokenizingStatusMsg
         : !this.membershipInitialized
-        ? 'Initialize your memberships'
+        ? this.initMembershipTxnStatusMsg
         : 'Setup memberships'
     },
     step3InterStepSubInfo() {
-      return !this.connected ||
-        !this.networkSelected ||
-        this.networkSelected === '' ||
-        !this.addressFromNiwaOrConfigIsValid
+      return !this.addressFromNiwaOrConfigIsValid
         ? 'What is activating?'
         : !this.membershipInitialized
         ? 'Enable a memberships contract to use memberships.'
@@ -473,6 +474,8 @@ export default defineComponent({
     },
 
     openNiwa(link: string) {
+      if (this.isTokenizing) return
+
       const popupLink = link + '?popup=true'
       this.popupWindow = window.open(
         popupLink,
@@ -540,12 +543,19 @@ export default defineComponent({
     },
 
     async initializeMemberships() {
+      if (this.initMbmershipTxnProcessing) return
+
+      this.initMbmershipTxnProcessing = true
+      this.initMembershipTxnStatusMsg = 'Initializing memberhips...'
+
       const currentChainId: number | null = this.getChainId()
       if (
         !provider ||
         !this.addressFromNiwaOrConfigIsValid ||
         !currentChainId
       ) {
+        this.initMbmershipTxnProcessing = false
+        this.initMembershipTxnStatusMsg = 'Initialization failed, try again!'
         return
       }
 
@@ -553,24 +563,40 @@ export default defineComponent({
         (address) => address.chainId === currentChainId
       )?.address
       if (!descriptiorAddress) {
+        this.initMbmershipTxnProcessing = false
+        this.initMembershipTxnStatusMsg = 'Initialization failed, try again!'
         return
       }
 
-      const [l1, l2] = await clientsSTokens(provider as BaseProvider)
-      const propertyAddress = Boolean(this.addressFromNiwa)
-        ? (this.addressFromNiwa as string)
-        : (this.addressFromNiwaOrConfig as string)
-      const tx = await (l1 || l2)?.setTokenURIDescriptor(
-        propertyAddress,
-        descriptiorAddress
-      )
-      const response = await tx?.wait(1)
+      try {
+        const [l1, l2] = await clientsSTokens(provider as BaseProvider)
+        const propertyAddress = Boolean(this.addressFromNiwa)
+          ? (this.addressFromNiwa as string)
+          : (this.addressFromNiwaOrConfig as string)
 
-      // const response = { status: true }
-      if (response?.status) {
-        this.membershipInitialized = true
-      } else {
+        this.initMembershipTxnStatusMsg =
+          'Awaiting transaction confirmation on wallet...'
+        const tx = await (l1 || l2)?.setTokenURIDescriptor(
+          propertyAddress,
+          descriptiorAddress
+        )
+
+        this.initMembershipTxnStatusMsg =
+          'Transaction processing on the blockchain...'
+        const response = await tx?.wait(1)
+
+        if (response?.status) {
+          this.initMembershipTxnStatusMsg = 'Initialization done.'
+          this.membershipInitialized = true
+        } else {
+          this.initMembershipTxnStatusMsg = 'Initialization failed, try again!'
+          this.membershipInitialized = false
+        }
+      } catch (error) {
         this.membershipInitialized = false
+        this.initMembershipTxnStatusMsg = 'Initialization failed, try again!'
+      } finally {
+        this.initMbmershipTxnProcessing = false
       }
     },
 
