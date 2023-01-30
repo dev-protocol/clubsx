@@ -32,7 +32,7 @@
               ? 'opacity-50'
               : 'opacity-20'
           "
-          :disabled="!connected"
+          :disabled="!connected || addressFromNiwaOrConfigIsValid"
         >
           <p class="font-DMSans text-center text-base font-bold text-[#FFFFFF]">
             Polygon
@@ -53,7 +53,7 @@
               ? 'opacity-50'
               : 'opacity-20'
           "
-          :disabled="!connected"
+          :disabled="!connected || addressFromNiwaOrConfigIsValid"
         >
           <p class="font-DMSans text-center text-xs text-[#FFFFFF]">Arbitrum</p>
         </button>
@@ -69,7 +69,7 @@
               ? 'opacity-50'
               : 'opacity-20'
           "
-          :disabled="!connected"
+          :disabled="!connected || addressFromNiwaOrConfigIsValid"
         >
           <p class="font-DMSans text-center text-xs text-[#FFFFFF]">Ethereum</p>
         </button>
@@ -87,7 +87,7 @@
               ? 'opacity-50'
               : 'opacity-20'
           "
-          :disabled="!connected"
+          :disabled="!connected || addressFromNiwaOrConfigIsValid"
         >
           <p class="font-DMSans text-center text-xs text-[#FFFFFF]">
             Polygon Mumbai
@@ -355,14 +355,11 @@ export default defineComponent({
     }
   },
   computed: {
-    addressFromNiwaOrConfigIsValid() {
+    addressFromNiwaOrConfigIsValid(): boolean {
       const address = Boolean(this.addressFromNiwa)
         ? this.addressFromNiwa
-        : this.networkSelected.toLocaleLowerCase() ===
-          this.getNetworkFromChainId(this.config.chainId).toLocaleLowerCase()
-        ? this.config.propertyAddress
-        : ''
-      return address && address !== constants.AddressZero
+        : this.config.propertyAddress
+      return !!address && address !== constants.AddressZero
     },
     buttonClasses() {
       const classes =
@@ -498,16 +495,17 @@ export default defineComponent({
     },
 
     async changeNetwork(network: string) {
-      if (!this.connected) return
-      this.networkSelected = network
-
       if (
-        network.toLocaleLowerCase() !==
-        this.getNetworkFromChainId(this.config.chainId).toLocaleLowerCase()
-      ) {
-        this.addressFromNiwa = ''
-      }
-
+        !this.connected ||
+        this.isTokenizing ||
+        this.addressFromNiwaOrConfigIsValid ||
+        this.membershipInitialized ||
+        this.membershipSet ||
+        this.initMbmershipTxnProcessing ||
+        this.setupMemberhipTxnProcessing
+      )
+        return
+      this.networkSelected = network
       this.updateConfig()
     },
 
