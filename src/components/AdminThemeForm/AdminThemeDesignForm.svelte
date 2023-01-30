@@ -1,5 +1,4 @@
 <script lang="ts">
-  import Skeleton from '@components/Global/Skeleton.svelte'
   import type { ClubsPluginOptions } from '@devprotocol/clubs-core'
   import { setOptions } from '@devprotocol/clubs-core'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
@@ -8,18 +7,31 @@
     GlobalConfigValue,
     HomeConfigValue,
   } from '@plugins/default-theme'
+  import { equals } from 'ramda'
+  import { onMount } from 'svelte'
 
-  export let globalConfig: GlobalConfigValue = {}
-  export let homeConfig: HomeConfigValue = {}
   export let colorPresets: typeof ColorPresets
+  export let homeConfig: HomeConfigValue = {}
+  export let globalConfig: GlobalConfigValue =
+    colorPresets.Purple as GlobalConfigValue
   export let currentPluginIndex: number
-  export let homeHeroDefaultImgSrc: string
-  export let onUpdate: (next: ClubsPluginOptions) => void
+  export let onUpdate: undefined | ((next: ClubsPluginOptions) => void)
   let uploading = false
   let selectedColorPreset: keyof typeof ColorPresets = 'Purple'
 
+  onMount(() => {
+    console.log({
+      colorPresets,
+      homeConfig,
+      globalConfig,
+      currentPluginIndex,
+      onUpdate,
+      selectedColorPreset,
+    })
+  })
+
   const update = (e?: any) => {
-    console.log({ selectedColorPreset })
+    globalConfig = colorPresets[selectedColorPreset] as GlobalConfigValue
     const newOptions: ClubsPluginOptions = [
       {
         key: 'globalConfig',
@@ -31,7 +43,7 @@
       },
     ]
     setOptions(newOptions, currentPluginIndex)
-    onUpdate(newOptions)
+    onUpdate && onUpdate(newOptions)
   }
 
   const onFileSelected = async (
@@ -54,12 +66,7 @@
         image,
       },
     }
-    console.log({ homeConfig })
     uploading = false
-  }
-
-  const onUploadClick = (id: string) => {
-    document.getElementById(id)?.click()
   }
 
   const getColor = (
@@ -79,7 +86,7 @@
   <span class="hs-form-field__label"> Preview </span>
   <div
     class="aspect-square max-w-lg overflow-hidden rounded-xl transition"
-    style={`background-color: ${getColor(selectedColorPreset).bg}`}
+    style={`background-color: ${globalConfig.bg}`}
   >
     <div class="relative mb-6 h-[50%]">
       <div
@@ -88,13 +95,14 @@
           `background: radial-gradient(50% 50% at 50% 50%, ${
             gradient ? gradient[0] : 'rgba(0,0,0,0)'
           } 0%, ${gradient ? gradient[1] : 'rgba(0,0,0,0)'} 100%)`)(
-          getColor(selectedColorPreset).backgroundGradient
+          globalConfig.backgroundGradient
         )}
       />
       {#if homeConfig.hero?.image && homeConfig.hero.image != '' && uploading === false}
         <img
           src={homeConfig.hero.image}
           class="absolute h-full w-full max-w-full object-cover"
+          alt="Hero"
         />
       {/if}
       {#if uploading}
@@ -112,7 +120,10 @@
   </div>
 </div>
 
-<form on:change|preventDefault={(e) => update()} class="grid gap-16">
+<form
+  on:change|preventDefault={(e) => update()}
+  class="grid justify-start gap-16"
+>
   <div class="hs-form-field grid justify-items-start gap-2">
     <span class="hs-form-field__label"> Choose colors </span>
     <div class="flex flex-wrap gap-6">
@@ -124,11 +135,11 @@
             name="selectedColorPreset"
             value={presetKey}
             bind:group={selectedColorPreset}
-            checked={selectedColorPreset === presetKey}
+            checked={equals(getColor(presetKey), globalConfig)}
           />
           <div
             class={`h-16 w-16 overflow-hidden rounded ${
-              selectedColorPreset === presetKey
+              equals(getColor(presetKey), globalConfig)
                 ? 'shadow-[0_0_0_3px_rgba(255,255,255,1)]'
                 : ''
             }`}
@@ -172,14 +183,26 @@
 
   <label class="hs-form-field is-filled">
     <span class="hs-form-field__label">
-      Description to introduce about you
+      Short description to introduce about you
     </span>
+    <textarea
+      rows="5"
+      class="hs-form-field__input"
+      bind:value={homeConfig.description}
+      id="club-description"
+      name="club-description"
+    />
+    <p class="text-sm">Markdown is available</p>
+  </label>
+
+  <label class="hs-form-field is-filled">
+    <span class="hs-form-field__label"> Your introduction </span>
     <textarea
       rows="10"
       class="hs-form-field__input"
       bind:value={homeConfig.body}
-      id="club-description"
-      name="club-description"
+      id="club-body"
+      name="club-body"
     />
     <p class="text-sm">Markdown is available</p>
   </label>

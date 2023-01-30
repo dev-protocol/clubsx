@@ -8,6 +8,7 @@
   } from '@devprotocol/clubs-core'
   import { setConfig } from '@devprotocol/clubs-core'
   import type { UndefinedOr } from '@devprotocol/util-ts'
+  import { isNotNil } from '@devprotocol/util-ts'
   import type {
     colorPresets as ColorPresets,
     GlobalConfigValue,
@@ -15,14 +16,24 @@
   } from '@plugins/default-theme'
   import AdminThemeDesignForm from './AdminThemeDesignForm.svelte'
 
+  const defaultSocialLinks: NavLink[] = [
+    { path: '', display: 'Twitter', kind: 'twitter' },
+    { path: '', display: 'Discord', kind: 'discord' },
+  ]
   export let options: ClubsPluginOptions
   export let colorPresets: typeof ColorPresets
   export let config: ClubsConfiguration
-  export let socialLinks: NavLink[]
+  export let socialLinks: NavLink[] = defaultSocialLinks
   export let navigationLinks: NavLink[]
   export let whiteRightArrowImgSrc: string
   export let homeHeroDefaultImgSrc: string
   export let currentPluginIndex: number
+
+  if (socialLinks.length < 2) {
+    socialLinks = Array.from(
+      new Set([...socialLinks, ...defaultSocialLinks])
+    ).filter(isNotNil)
+  }
 
   const globalConfig = (
     options.find((option) => option.key === 'globalConfig') as UndefinedOr<{
@@ -47,14 +58,14 @@
                 key: 'navigationLinks',
                 value: navigationLinks,
               }
-            } else if (opt.key === 'socialLinks') {
+            }
+            if (opt.key === 'socialLinks') {
               return {
                 key: 'socialLinks',
                 value: socialLinks,
               }
-            } else {
-              return opt
             }
+            return opt
           }) as ClubsPluginOptions)
         : undefined,
       plugins: config.plugins
@@ -90,8 +101,8 @@
   }
 </script>
 
-<form on:change|preventDefault={(e) => update(e)}>
-  <section class="hs-form-field is-filled mb-16 w-full ">
+<form on:change|preventDefault={(e) => update(e)} class="grid gap-16">
+  <section class="hs-form-field is-filled w-full ">
     <p class="hs-form-field__label">Navigation links</p>
     {#each navigationLinks as link, i}
       <section
@@ -100,8 +111,8 @@
         <input
           class="hs-form-field__input"
           bind:value={link.display}
-          id={`navigationLinks-{i}-display`}
-          name={`navigationLinks-{i}-display`}
+          id={`navigationLinks-${i}-display`}
+          name={`navigationLinks-${i}-display`}
           placeholder={link.display}
         />
         <img
@@ -112,15 +123,15 @@
         <input
           class="hs-form-field__input"
           bind:value={link.path}
-          id={`navigationLinks-{i}-path`}
-          name={`navigationLinks-{i}-path`}
+          id={`navigationLinks-${i}-path`}
+          name={`navigationLinks-${i}-path`}
           placeholder={link.path}
         />
         <button
           class="hs-button is-filled is-large"
           type="button"
-          id={`navigationLinks-{i}-remove-btn`}
-          name={`navigationLinks-{i}-remove-btn`}
+          id={`navigationLinks-${i}-remove-btn`}
+          name={`navigationLinks-${i}-remove-btn`}
           on:click={() => removeNavigationLinks(link.display)}
         >
           Remove
@@ -135,6 +146,26 @@
       Add link
     </button>
   </section>
+
+  <label class="hs-form-field is-filled">
+    <span class="hs-form-field__label"> Social links </span>
+    {#each socialLinks as link, i}
+      <div class="mb-4 flex flex-col items-start lg:flex-row lg:items-center">
+        <span class="hs-form-field__label w-28 text-sm capitalize"
+          >{link.kind}</span
+        >
+        <input
+          class="hs-form-field__input"
+          bind:value={link.path}
+          id={`socialLinks-${i}-path`}
+          name={`socialLinks-${i}-path`}
+          placeholder={link.path}
+        />
+      </div>
+    {/each}
+  </label>
+
+  <h2 class="font-title text-2xl font-bold">Design</h2>
 
   <AdminThemeDesignForm
     {globalConfig}

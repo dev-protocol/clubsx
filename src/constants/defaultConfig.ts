@@ -11,25 +11,13 @@ export const defaultConfig: ClubsConfiguration = {
   rpcUrl: 'https://polygon-rpc.com',
   options: [
     {
-      key: 'headerLinks',
-      value: [],
-    },
-    {
-      key: 'socialLinks',
-      value: [],
-    },
-    {
-      key: 'sidebarPrimaryLinks',
+      key: 'navigationLinks',
       value: [
         {
-          display: 'Join',
-          path: '/join',
+          display: 'Community',
+          path: '/community',
         },
       ],
-    },
-    {
-      key: 'sidebarLinks',
-      value: [],
     },
     {
       key: 'fullPageViewPaths',
@@ -49,12 +37,22 @@ export const defaultConfig: ClubsConfiguration = {
       name: 'defaultTheme',
       options: [
         {
+          key: 'globalConfig',
+          value: {
+            bg: 'rgba(131, 138, 176, 1)',
+            backgroundGradient: [
+              'rgba(204, 0, 255, 0.2)',
+              'rgba(204, 0, 255, 0)',
+            ],
+          },
+        },
+        {
           key: 'homeConfig',
           value: {
             hero: {
               image: 'https://i.imgur.com/MyGIFqA.jpg',
-              text: '',
             },
+            description: '',
             body: '',
           },
         },

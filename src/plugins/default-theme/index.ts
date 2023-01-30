@@ -64,7 +64,7 @@ export type HomeConfigValue = {
 const options = [
   {
     key: 'globalConfig',
-    value: colorPresets.Purple as GlobalConfigValue,
+    value: colorPresets.Grey as GlobalConfigValue,
   },
   {
     key: 'homeConfig',
@@ -246,10 +246,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (_, __) => {
     : []
 }
 
-export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
-  options,
-  config
-) => [
+export const getAdminPaths: ClubsFunctionGetAdminPaths = async (_, config) => [
   {
     paths: ['theme'],
     component: Admin,

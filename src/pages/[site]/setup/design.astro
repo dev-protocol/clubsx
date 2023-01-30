@@ -5,8 +5,8 @@ import { ClubsPluginOptions, adminFactory } from '@devprotocol/clubs-core'
 import defaultTheme from '@plugins/default-theme'
 import SetupLayout from '@layouts/Setup.astro'
 import NextButton from '@components/Setup/NextButton.astro'
-import type { HomeConfig } from '@constants/homeConfig'
 import PageNotFound from '@pages/404.astro'
+import type { colorPresets as ColorPresets } from '@plugins/default-theme'
 
 const { site } = Astro.params
 
@@ -26,20 +26,17 @@ const siteBaseUrl = ((url) =>
   `${url.protocol}//${url.host}/${site}/setup/basic`)(
   new URL(Astro.request.url)
 )
-
-const homeConfig = (path?.props.options as ClubsPluginOptions)?.find(
-  (option: { key: string }) => option.key === 'homeConfig'
-)
 ---
 
 {
   path ? (
     <SetupLayout {config} {...path.props} setupStep="DESIGN">
-      <h2 class="mb-16 font-title text-2xl font-bold">Design</h2>
+      <h2 class="font-title mb-16 text-2xl font-bold">Design</h2>
 
       <SetupDesign
         client:load
-        homeConfig={homeConfig!.value as HomeConfig}
+        options={path?.props.options as ClubsPluginOptions}
+        colorPresets={path?.props.colorPresets as typeof ColorPresets}
         currentPluginIndex={path?.props.clubs.currentPluginIndex}
       />
 
