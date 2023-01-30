@@ -99,7 +99,8 @@
       {/if}
       {#if uploading}
         <div role="presentation" class="absolute h-full w-full max-w-full">
-          <div class="h-full animate-pulse rounded bg-gray-500" />
+          <div class="absolute h-full w-full bg-zinc-500" />
+          <div class="h-full animate-pulse bg-zinc-400" />
         </div>
       {/if}
     </div>
@@ -116,7 +117,7 @@
     <span class="hs-form-field__label"> Choose colors </span>
     <div class="flex flex-wrap gap-6">
       {#each Object.keys(colorPresets) as presetKey}
-        <label>
+        <label class="cursor-pointer">
           <input
             type="radio"
             class="hidden"
