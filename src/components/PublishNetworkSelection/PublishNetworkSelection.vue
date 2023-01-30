@@ -124,12 +124,15 @@
               addressFromNiwaOrConfigIsValid ? checkImage : roundedSquareImage
             "
             class="h-3 w-3"
+            v-bind:class="isTokenizing ? 'animate-pulse' : ''"
           />
           <p
             class="font-DMSans text-base font-bold"
             v-bind:class="
               networkSelected === '' || !networkSelected || !connected
                 ? 'text-[#3A4158]'
+                : isTokenizing
+                ? 'animate-pulse text-white'
                 : 'text-white'
             "
           >
@@ -224,7 +227,13 @@
             : setMemberships()
         "
         class="hs-button is-filled is-large"
-        v-bind:class="!step3Enabled ? 'opacity-50' : ''"
+        v-bind:class="
+          !step3Enabled
+            ? 'opacity-50'
+            : isTokenizing || isTxnProcessing
+            ? ' animate-pulse'
+            : ''
+        "
         :disabled="!step3Enabled"
       >
         <p class="font-DMSans text-center text-base font-bold text-[#FFFFFF]">
@@ -282,6 +291,10 @@ type Data = {
   membershipInitialized: boolean
   membershipSet: boolean
   currentWalletAddress: string
+  isTxnProcessing: boolean
+  isTokenizing: boolean
+  tokenizingStatusMsg: string
+  txnProcessingStatusMsg: string
 }
 
 let provider: BaseProvider | undefined
@@ -315,6 +328,10 @@ export default defineComponent({
       membershipInitialized: false,
       membershipSet: false,
       currentWalletAddress: '',
+      isTokenizing: false,
+      isTxnProcessing: false,
+      tokenizingStatusMsg: 'Activate',
+      txnProcessingStatusMsg: 'Initialize your memberships',
     }
   },
   computed: {
@@ -357,10 +374,10 @@ export default defineComponent({
     link() {
       const url = new URL(this.baseTokenizationLink)
       url.host = `${this.networkSelected.toLowerCase()}.${url.host}`
-      return url
+      return url.toString()
     },
     linkOrigin() {
-      return new URL(this.link).origin
+      return new URL(this.link).origin as string
     },
     baseTokenizationLinkOrigin() {
       return new URL(this.baseTokenizationLink).origin
@@ -384,7 +401,7 @@ export default defineComponent({
         !this.networkSelected ||
         this.networkSelected === '' ||
         !this.addressFromNiwaOrConfigIsValid
-        ? 'Activate'
+        ? this.tokenizingStatusMsg
         : !this.membershipInitialized
         ? 'Initialize your memberships'
         : 'Setup memberships'
@@ -463,7 +480,12 @@ export default defineComponent({
         'popup,width=500,height=700'
       )
       if (this.popupWindow) {
+        this.isTokenizing = true
+        this.tokenizingStatusMsg = 'Activation in process...'
         window.addEventListener('message', this.listenForAddress, false)
+      } else {
+        this.isTokenizing = false
+        this.tokenizingStatusMsg = 'Activating failed, try again!'
       }
     },
 
@@ -473,10 +495,23 @@ export default defineComponent({
         event.origin !== this.baseTokenizationLinkOrigin
       )
         return
+
       const { address } = event.data
-      if (!address) return
-      this.addressFromNiwa = address
-      this.updateConfig()
+      if (!address) {
+        this.isTokenizing = false
+        this.tokenizingStatusMsg = 'Activation failed, try again!'
+        return
+      }
+
+      try {
+        this.addressFromNiwa = address
+        this.updateConfig()
+        this.tokenizingStatusMsg = 'Activated, setting up initialization..'
+      } catch (error) {
+        this.tokenizingStatusMsg = 'Activated failed, try again!'
+      } finally {
+        this.isTokenizing = false
+      }
     },
 
     updateConfig() {
