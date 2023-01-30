@@ -21,7 +21,6 @@ import membershipOpt1 from '@assets/membership-opt-1.png'
 import membershipOpt2 from '@assets/membership-opt-2.png'
 import membershipOpt3 from '@assets/membership-opt-3.png'
 import { utils } from 'ethers'
-import { generateRGBA } from './utils/generateRGBA'
 
 export const colorPresets = {
   Purple: {
@@ -119,15 +118,6 @@ const config: ClubsConfiguration = {
           display: 'Discord',
           path: '#',
           kind: 'discord',
-        },
-      ],
-    },
-    {
-      key: 'sidebarPrimaryLinks',
-      value: [
-        {
-          display: 'Join',
-          path: '/join',
         },
       ],
     },
