@@ -41,6 +41,7 @@
   const provider = new providers.JsonRpcProvider(rpcUrl)
   let membershipExists = false
   let loading = false
+  let subscriptionStreamingLoading = true
 
   onMount(() => {
     onChangePrice()
@@ -89,12 +90,17 @@
   }
 
   const toDp2 = (v: number | string) => new BigNumber(v).dp(2).toNumber()
+
   const onChangePrice = async () => {
-    if (membership.price === 0) {
+    subscriptionStreamingLoading = true
+
+    if (membership.price === 0 || !membership.price) {
       estimatedEarnings = { dev: [0, 0], usd: [0, 0] }
       usersDeposit = { dev: [0, 0], usd: [0, 0] }
+      subscriptionStreamingLoading = false
       return
     }
+
     estimatedEarnings = { dev: [0, 0], usd: [0, 0] }
     usersDeposit = { dev: [0, 0], usd: [0, 0] }
 
@@ -106,7 +112,9 @@
       estimationsAPY({ provider }),
       positionsCreateWithEth({
         provider,
-        ethAmount: utils.parseEther(membership.price.toString()).toString(),
+        ethAmount:
+          utils.parseEther(membership.price?.toString() || '0')?.toString() ||
+          '0',
         destination: '',
         gatewayBasisPoints: new BigNumber(10000)
           .times(membership.fee?.percentage ?? 0)
@@ -142,6 +150,8 @@
         (v) => toDp2(v).toString().split('.').map(Number) as [number, number]
       ),
     }
+
+    subscriptionStreamingLoading = false
   }
 
   const cancel = () => {
@@ -283,7 +293,7 @@
 
           <div class="grid gap-2">
             <p class="text-sm">Estimated Earnings/year (per 1 membership):</p>
-            {#if !estimatedEarnings.usd || !estimatedEarnings.dev}
+            {#if !estimatedEarnings.usd || !estimatedEarnings.dev || subscriptionStreamingLoading}
               <p
                 class="h-[2rem] w-full animate-pulse cursor-progress rounded bg-gray-500/60"
               />
@@ -300,7 +310,7 @@
               </p>
             {/if}
             <p class="text-sm">User will earn (when unsubscribed):</p>
-            {#if !usersDeposit.usd || !usersDeposit.dev}
+            {#if !usersDeposit.usd || !usersDeposit.dev || subscriptionStreamingLoading}
               <p
                 class="h-[2rem] w-full animate-pulse cursor-progress rounded bg-gray-500/60"
               />
@@ -327,7 +337,7 @@
           <MembershipOptionCard
             name={membership.name}
             imagePath={membership.imageSrc}
-            ethPrice={membership.price.toString()}
+            ethPrice={membership.price?.toString() || '0'}
             description={membership.description}
           />
         </div>
