@@ -5,7 +5,6 @@ import NumberOfMembers from './NumberOfMembers.svelte'
 import Description from './Description.svelte'
 import Twitter from '@components/Icons/Twitter.astro'
 import Discord from '@components/Icons/Discord.astro'
-import type { Colors } from '../../'
 
 const {
   globalConfig,
@@ -17,7 +16,6 @@ const {
   rpcUrl,
   socialLinks,
 } = Astro.props as {
-  colors: Colors
   globalConfig?: {
     bg: string
     backgroundGradient?: [string, string]

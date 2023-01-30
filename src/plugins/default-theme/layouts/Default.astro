@@ -7,13 +7,11 @@ import Hero from '../components/Hero/Hero.astro'
 import type { NavLink } from '@constants/navLink'
 import Navigation from '../components/Navigation/Navigation.astro'
 import type { Membership } from '@plugins/memberships'
-import type { Colors } from '..'
 
 const { page } = Astro.params
-const { metaTitle, config, homeConfig, colors, globalConfig } = Astro.props as {
+const { metaTitle, config, homeConfig, globalConfig } = Astro.props as {
   metaTitle?: string
   config: ClubsConfiguration
-  colors: Colors
   globalConfig?: {
     bg: string
     backgroundGradient?: [string, string]
@@ -98,7 +96,6 @@ const backgroundColor = globalConfig?.bg ?? '#ADADAD'
       rpcUrl={rpcUrl}
       socialLinks={socialLinks}
       description={homeConfig.description}
-      colors={colors}
       globalConfig={globalConfig}
     />
     <div

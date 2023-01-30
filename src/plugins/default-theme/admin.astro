@@ -3,49 +3,43 @@ import AdminThemeForm from '@components/AdminThemeForm/AdminThemeForm.svelte'
 import type { NavLink } from '@constants/navLink'
 import whiteRightArrowImgSrc from '@assets/white-arrow-right.svg'
 import homeHeroDefaultImgSrc from '@assets/home-config-default-hero-img.svg'
-import type { ClubsPluginOption } from '@devprotocol/clubs-core'
-import { decode } from '@devprotocol/clubs-core'
+import type {
+  ClubsConfiguration,
+  ClubsPluginOption,
+  ClubsPluginOptions,
+  ClubsPropsAdminPages,
+} from '@devprotocol/clubs-core'
+import type { GlobalConfigValue, HomeConfigValue, colorPresets as ColorPresets } from '.'
+import type { UndefinedOr } from '@devprotocol/util-ts'
 
-const { options, clubs } = Astro.props
-const homeConfig = options.find(
-  (option: { key: string; value: string }) => option.key === 'homeConfig'
-)
+const { options, config, colorPresets, clubs } =
+  Astro.props as ClubsPropsAdminPages & {
+    options: ClubsPluginOptions
+    config: ClubsConfiguration
+    colorPresets: typeof ColorPresets
+  }
 
-const decodedClubsConfig = decode(clubs.encodedClubsConfiguration)
-const allOptions = decodedClubsConfig.options
+const allOptions = config.options
 
-const sidebarPrimaryLinks: ClubsPluginOption = allOptions?.find(
-  (option: ClubsPluginOption) => option.key === 'sidebarPrimaryLinks'
-) || { key: 'sidebarPrimaryLinks', value: [] }
+const socialLinks: NavLink[] =
+  (allOptions?.find((option: ClubsPluginOption) => option.key === 'socialLinks')
+    ?.value as NavLink[]) ?? []
 
-const sidebarLinks: ClubsPluginOption = allOptions?.find(
-  (option: ClubsPluginOption) => option.key === 'sidebarLinks'
-) || { key: 'sidebarLinks', value: [] }
-
-const socialLinks: ClubsPluginOption = allOptions?.find(
-  (option: ClubsPluginOption) => option.key === 'socialLinks'
-) || { key: 'socialLinks', value: [] }
-
-const headerLinks: ClubsPluginOption = allOptions?.find(
-  (option: ClubsPluginOption) => option.key === 'headerLinks'
-) || { key: 'headerLinks', value: [] }
-
-const navLinks: ClubsPluginOption = allOptions?.find(
-  (option: ClubsPluginOption) => option.key === 'navLinks'
-) || { key: 'navLinks', value: [] }
+const navigationLinks: NavLink[] =
+  (allOptions?.find((option) => option.key === 'navigationLinks')
+    ?.value as NavLink[]) ?? []
 ---
 
 <div>
   <AdminThemeForm
     client:load
-    homeConfig={homeConfig.value}
     whiteRightArrowImgSrc={whiteRightArrowImgSrc}
-    headerLinks={headerLinks.value as NavLink[]}
-    navLinks={navLinks.value as NavLink[]}
-    sidebarPrimaryLinks={sidebarPrimaryLinks.value as NavLink[]}
-    sidebarLinks={sidebarLinks.value as NavLink[]}
-    socialLinks={socialLinks.value as NavLink[]}
+    navigationLinks={navigationLinks}
+    socialLinks={socialLinks}
     homeHeroDefaultImgSrc={homeHeroDefaultImgSrc}
-    config={decodedClubsConfig}
+    options={options}
+    config={config}
+    colorPresets={colorPresets}
+    currentPluginIndex={clubs.currentPluginIndex}
   />
 </div>

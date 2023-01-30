@@ -7,6 +7,7 @@ import type {
   ClubsFunctionThemePlugin,
   ClubsPluginOptions,
   ClubsThemePluginMeta,
+  ClubsPluginOption,
 } from '@devprotocol/clubs-core'
 import { ClubsPluginCategory } from '@devprotocol/clubs-core'
 import { default as Layout } from './layouts/Default.astro'
@@ -22,27 +23,49 @@ import membershipOpt3 from '@assets/membership-opt-3.png'
 import { utils } from 'ethers'
 import { generateRGBA } from './utils/generateRGBA'
 
-export type Colors = { [key: string]: [number, number, number] }
-const colors: Colors = {
-  'smoke-blue': [131, 138, 176],
-  purple: [204, 0, 255],
-}
-const colorPresets = {
+export const colorPresets = {
   Purple: {
-    bg: generateRGBA(colors['smoke-blue'], 1),
-    backgroundGradient: [
-      generateRGBA(colors['purple'], 0.2),
-      generateRGBA(colors['purple'], 0),
-    ],
+    bg: 'rgba(131, 138, 176, 1)',
+    backgroundGradient: ['rgba(204, 0, 255, 0.2)', 'rgba(204, 0, 255, 0)'],
+  },
+  Grey: {
+    bg: 'rgba(173, 173, 173, 1)',
+  },
+  Black: {
+    bg: 'rgba(29, 36, 38, 1)',
+  },
+  Brown: {
+    bg: 'rgba(68, 59, 45, 1)',
+    backgroundGradient: ['rgba(255, 201, 119, 0.2)', 'rgba(255, 201, 119, 0)'],
+  },
+  Stone: {
+    bg: 'rgba(96, 119, 124, 1)',
+    backgroundGradient: ['rgba(196, 196, 196, 0.5)', 'rgba(196, 196, 196, 0)'],
+  },
+  Matcha: {
+    bg: 'rgba(63, 78, 38, 1)',
   },
 }
 
 const lorem = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`
+
+export type GlobalConfigValue = {
+  bg?: string
+  backgroundGradient?: [string, string]
+}
+
+export type HomeConfigValue = {
+  hero?: {
+    image?: string
+  }
+  description?: string
+  body?: string
+}
 // TODO: THIS CONFIGURATION IS JUST FOR DEVELOPMENT
-const options: ClubsPluginOptions = [
+const options = [
   {
     key: 'globalConfig',
-    value: colorPresets.Purple,
+    value: colorPresets.Purple as GlobalConfigValue,
   },
   {
     key: 'homeConfig',
@@ -53,7 +76,7 @@ const options: ClubsPluginOptions = [
       },
       description: lorem,
       body: `https://www.youtube.com/watch?v=EK9MUwep4pY\n\n ${lorem}\n ### Heading\n 2 ${lorem}`,
-    },
+    } as HomeConfigValue,
   },
 ]
 // TODO: THIS CONFIGURATION IS JUST FOR DEVELOPMENT
@@ -240,7 +263,7 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
   {
     paths: ['theme'],
     component: Admin,
-    props: { options, config },
+    props: { options, config, colorPresets },
   },
 ]
 
@@ -249,7 +272,7 @@ export const getLayout: ClubsFunctionGetLayout = async (_, __) => {
   const homeConfig = options.find((opt) => opt.key === 'homeConfig')?.value
   return {
     layout: Layout,
-    props: { config, homeConfig, globalConfig, colors },
+    props: { config, homeConfig, globalConfig },
   }
 }
 
