@@ -32,7 +32,13 @@
               ? 'opacity-50'
               : 'opacity-20'
           "
-          :disabled="!connected || addressFromNiwaOrConfigIsValid"
+          :disabled="
+            !connected ||
+            addressFromNiwaOrConfigIsValid ||
+            isTokenizing ||
+            initMbmershipTxnProcessing ||
+            setupMemberhipTxnProcessing
+          "
         >
           <p class="font-DMSans text-center text-base font-bold text-[#FFFFFF]">
             Polygon
@@ -53,7 +59,13 @@
               ? 'opacity-50'
               : 'opacity-20'
           "
-          :disabled="!connected || addressFromNiwaOrConfigIsValid"
+          :disabled="
+            !connected ||
+            addressFromNiwaOrConfigIsValid ||
+            isTokenizing ||
+            initMbmershipTxnProcessing ||
+            setupMemberhipTxnProcessing
+          "
         >
           <p class="font-DMSans text-center text-xs text-[#FFFFFF]">Arbitrum</p>
         </button>
@@ -69,7 +81,13 @@
               ? 'opacity-50'
               : 'opacity-20'
           "
-          :disabled="!connected || addressFromNiwaOrConfigIsValid"
+          :disabled="
+            !connected ||
+            addressFromNiwaOrConfigIsValid ||
+            isTokenizing ||
+            initMbmershipTxnProcessing ||
+            setupMemberhipTxnProcessing
+          "
         >
           <p class="font-DMSans text-center text-xs text-[#FFFFFF]">Ethereum</p>
         </button>
@@ -87,7 +105,13 @@
               ? 'opacity-50'
               : 'opacity-20'
           "
-          :disabled="!connected || addressFromNiwaOrConfigIsValid"
+          :disabled="
+            !connected ||
+            addressFromNiwaOrConfigIsValid ||
+            isTokenizing ||
+            initMbmershipTxnProcessing ||
+            setupMemberhipTxnProcessing
+          "
         >
           <p class="font-DMSans text-center text-xs text-[#FFFFFF]">
             Polygon Mumbai
