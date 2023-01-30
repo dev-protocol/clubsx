@@ -214,7 +214,9 @@
               !connected ||
               !membershipInitialized
                 ? 'text-[#3A4158]'
-                : 'text-white'
+                : setupMemberhipTxnProcessing
+                ? ' animate-pulse text-white'
+                : ' text-white'
             "
           >
             3
@@ -233,11 +235,18 @@
         v-bind:class="
           !step3Enabled
             ? 'opacity-50'
-            : isTokenizing || initMbmershipTxnProcessing
+            : isTokenizing ||
+              initMbmershipTxnProcessing ||
+              setupMemberhipTxnProcessing
             ? ' animate-pulse'
             : ''
         "
-        :disabled="!step3Enabled || isTokenizing || initMbmershipTxnProcessing"
+        :disabled="
+          !step3Enabled ||
+          isTokenizing ||
+          initMbmershipTxnProcessing ||
+          setupMemberhipTxnProcessing
+        "
       >
         <p class="font-DMSans text-center text-base font-bold text-[#FFFFFF]">
           {{ step3InterStepButtonText }}
@@ -298,6 +307,8 @@ type Data = {
   tokenizingStatusMsg: string
   initMbmershipTxnProcessing: boolean
   initMembershipTxnStatusMsg: string
+  setupMemberhipTxnProcessing: boolean
+  setupMbmershipTxnStatusMsg: string
 }
 
 let provider: BaseProvider | undefined
@@ -339,6 +350,8 @@ export default defineComponent({
       initMbmershipTxnProcessing: false,
       tokenizingStatusMsg: 'Activate',
       initMembershipTxnStatusMsg: 'Initialize your memberships',
+      setupMemberhipTxnProcessing: false,
+      setupMbmershipTxnStatusMsg: 'Setup memberships',
     }
   },
   computed: {
@@ -408,7 +421,7 @@ export default defineComponent({
         ? this.tokenizingStatusMsg
         : !this.membershipInitialized
         ? this.initMembershipTxnStatusMsg
-        : 'Setup memberships'
+        : this.setupMbmershipTxnStatusMsg
     },
     step3InterStepSubInfo() {
       return !this.addressFromNiwaOrConfigIsValid
@@ -601,47 +614,69 @@ export default defineComponent({
     },
 
     async setMemberships() {
+      if (this.setupMemberhipTxnProcessing) return
+
+      this.setupMemberhipTxnProcessing = true
+      this.setupMbmershipTxnStatusMsg = 'Setting up memberships...'
+
       if (
         !signer ||
         !this.addressFromNiwaOrConfigIsValid ||
         !this.membershipInitialized
       ) {
+        this.setupMemberhipTxnProcessing = false
+        this.setupMbmershipTxnStatusMsg = 'Setup failed, try again!'
         return
       }
 
-      const propertyAddress = Boolean(this.addressFromNiwa)
-        ? (this.addressFromNiwa as string)
-        : (this.addressFromNiwaOrConfig as string)
-      const images: Image[] =
-        this.membershipsPluginOptions?.map((opt) => ({
-          src: opt.imageSrc,
-          requiredETHAmount: parseUnits(String(opt.price)).toString(),
-          requiredETHFee: opt.fee?.percentage
-            ? parseUnits(
-                new BigNumber(opt.price).times(opt.fee.percentage).toFixed()
-              ).toString()
-            : 0,
-          gateway: this.currentWalletAddress,
-        })) || []
-      const keys: string[] =
-        this.membershipsPluginOptions?.map((opt) => keccak256(opt.payload)) ||
-        []
+      try {
+        const propertyAddress = Boolean(this.addressFromNiwa)
+          ? (this.addressFromNiwa as string)
+          : (this.addressFromNiwaOrConfig as string)
+        const images: Image[] =
+          this.membershipsPluginOptions?.map((opt) => ({
+            src: opt.imageSrc,
+            requiredETHAmount: parseUnits(String(opt.price)).toString(),
+            requiredETHFee: opt.fee?.percentage
+              ? parseUnits(
+                  new BigNumber(opt.price).times(opt.fee.percentage).toFixed()
+                ).toString()
+              : 0,
+            gateway: this.currentWalletAddress,
+          })) || []
+        const keys: string[] =
+          this.membershipsPluginOptions?.map((opt) => keccak256(opt.payload)) ||
+          []
 
-      const tx = await callSimpleCollections(signer, 'setImages', [
-        propertyAddress,
-        images,
-        keys,
-      ])
-      const response = await tx?.wait(1)
+        this.setupMbmershipTxnStatusMsg =
+          'Awaiting transaction confirmation on wallet...'
+        const tx = await callSimpleCollections(signer, 'setImages', [
+          propertyAddress,
+          images,
+          keys,
+        ])
 
-      if (response?.status) {
-        this.membershipSet = true
-        window.location.href = new URL(
-          '/admin/overview',
-          `${location.protocol}//${this.site}.${location.host}`
-        ).toString()
-      } else {
+        this.setupMbmershipTxnStatusMsg =
+          'Transaction processing on the blockchain...'
+        const response = await tx?.wait(1)
+
+        if (response?.status) {
+          this.membershipSet = true
+          this.setupMbmershipTxnStatusMsg =
+            'Setup complete, loading admin panel...'
+          window.location.href = new URL(
+            '/admin/overview',
+            `${location.protocol}//${this.site}.${location.host}`
+          ).toString()
+        } else {
+          this.setupMbmershipTxnStatusMsg = 'Setup failed, try again!'
+          this.membershipSet = false
+        }
+      } catch (error) {
         this.membershipSet = false
+        this.setupMbmershipTxnStatusMsg = 'Setup failed, try again!'
+      } finally {
+        this.setupMemberhipTxnProcessing = false
       }
     },
   },
