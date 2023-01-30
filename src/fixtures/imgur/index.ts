@@ -10,7 +10,7 @@ export const uploadImageAndGetPath = async (image: File) => {
     const formData = new FormData()
     formData.append('image', image)
 
-    const response = await fetch('https://api.imgur.com/3/upload', {
+    const response = await fetch('https://api.imgur.com/3/image', {
       method: 'POST',
       body: formData,
       headers: {
