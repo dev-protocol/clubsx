@@ -338,11 +338,7 @@ export default defineComponent({
       networkSelected: '',
       connected: false,
       popupWindow: null as Window | null,
-      addressFromNiwa:
-        !this.config.propertyAddress ||
-        this.config.propertyAddress === ethers.constants.AddressZero
-          ? ''
-          : this.config.propertyAddress,
+      addressFromNiwa: '',
       membershipInitialized: false,
       membershipSet: false,
       currentWalletAddress: '',
