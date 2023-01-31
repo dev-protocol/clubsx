@@ -13,10 +13,11 @@ import nft from '@plugins/nft'
 import perks from '@plugins/perks'
 import quests from '@plugins/quests'
 import message from '@plugins/message'
+import memberships from '@plugins/memberships'
 import PageNotFound from '@pages/404.astro'
 
 const { site, page } = Astro.params
-const { getStaticPaths, getCurrentConfig } = pageFactory({
+const { getStaticPaths } = pageFactory({
   config: async () => await _config(site),
   plugins: {
     defaultTheme,
@@ -27,6 +28,7 @@ const { getStaticPaths, getCurrentConfig } = pageFactory({
     join,
     me,
     members,
+    memberships,
     message,
     nft,
     perks,
@@ -37,7 +39,6 @@ const path = (await getStaticPaths()).find(({ params }) => params.page === page)
 
 const Layout = path?.props.layout
 const Content = path?.props.component
-const config = await getCurrentConfig()
 
 const siteBaseUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
   new URL(Astro.request.url)
@@ -46,7 +47,7 @@ const siteBaseUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
 
 {
   path && Layout && Content ? (
-    <Layout {config}>
+    <Layout {...path.props}>
       <Content {...path.props} />
     </Layout>
   ) : (

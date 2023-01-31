@@ -31,15 +31,15 @@ const siteBaseUrl = ((url) =>
 
 {
   path ? (
-    <SetupLayout {config} {...path.props} setupStep="PREVIEW">
+    <SetupLayout {config} {...path.props} setupStep="PREVIEW" aside={false}>
       <section class="grid gap-16">
         <h2 class="font-title text-2xl font-bold">Preview</h2>
         <iframe
-          width="200%"
-          height="1200"
-          style="transform: scale(0.5); transform-origin: 0 0"
+          width="142%"
+          height="800"
+          style="transform: scale(0.7); transform-origin: 0 0"
           src={baseUrl}
-          class="-mb-[600px] rounded-lg bg-dp-black-600 shadow-lg"
+          class="-mb-[240px] rounded-lg bg-dp-black-600 shadow-lg"
         />
         <a class="hs-button is-filled is-large" href={baseUrl} target="_blank">
           Open external

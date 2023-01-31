@@ -1,7 +1,7 @@
 ---
 import JoinClub from '@components/Join/JoinClub.vue'
 
-const { tiers, propertyAddress, name, rpcUrl } = Astro.props
+const { tiers, propertyAddress, name, rpcUrl, preferedCurrency } = Astro.props
 ---
 
 <div class="p-4">
@@ -10,6 +10,7 @@ const { tiers, propertyAddress, name, rpcUrl } = Astro.props
     propertyAddress={propertyAddress}
     tiers={tiers}
     tenantName={name}
+    preferedCurrency={preferedCurrency}
     rpcUrl={rpcUrl}
   />
 </div>

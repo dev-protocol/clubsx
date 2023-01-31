@@ -1,33 +1,69 @@
-import type { Tiers } from '@constants/tier'
 import type { UndefinedOr } from '@devprotocol/util-ts'
-import {
+import type {
   ClubsFunctionGetAdminPaths,
   ClubsFunctionGetLayout,
   ClubsFunctionGetPagePaths,
   ClubsFunctionThemePlugin,
-  ClubsPluginCategory,
   ClubsThemePluginMeta,
 } from '@devprotocol/clubs-core'
-import { default as Layout } from '@layouts/Default.astro'
-import { default as Index } from '@plugins/home/index.astro'
+import { ClubsPluginCategory } from '@devprotocol/clubs-core'
+import { default as Layout } from './layouts/Default.astro'
+import { default as Index } from './pages/index.astro'
 import { default as Admin } from './admin.astro'
 import type { HomeConfig } from '../../constants/homeConfig'
 import type { NavLink } from '@constants/navLink'
-import { default as Temples } from '@plugins/home/index-for-temples.astro'
 import type { Membership } from '@plugins/memberships'
+
+export const colorPresets = {
+  Purple: {
+    bg: 'rgba(131, 138, 176, 1)',
+    backgroundGradient: ['rgba(204, 0, 255, 0.2)', 'rgba(204, 0, 255, 0)'],
+  },
+  Grey: {
+    bg: 'rgba(173, 173, 173, 1)',
+  },
+  Black: {
+    bg: 'rgba(29, 36, 38, 1)',
+  },
+  Brown: {
+    bg: 'rgba(68, 59, 45, 1)',
+    backgroundGradient: ['rgba(255, 201, 119, 0.2)', 'rgba(255, 201, 119, 0)'],
+  },
+  Stone: {
+    bg: 'rgba(96, 119, 124, 1)',
+    backgroundGradient: ['rgba(196, 196, 196, 0.5)', 'rgba(196, 196, 196, 0)'],
+  },
+  Matcha: {
+    bg: 'rgba(63, 78, 38, 1)',
+  },
+}
+
+export type GlobalConfigValue = {
+  bg?: string
+  backgroundGradient?: [string, string]
+}
+
+export type HomeConfigValue = {
+  hero?: {
+    image?: string
+  }
+  description?: string
+  body?: string
+}
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
-  { name, propertyAddress, rpcUrl, chainId, plugins, ...config }
+  config,
+  { getPluginConfigById }
 ) => {
-  const tiers = options.find((opt) => opt.key === 'tiers')
-    ?.value as UndefinedOr<Tiers>
+  const { name, propertyAddress, rpcUrl, chainId } = config
 
-  const memberships = plugins
-    .find((plg) => plg.name === 'memberships')
-    ?.options.find((opt) => opt.key === 'memberships')?.value as UndefinedOr<
-    Membership[]
-  >
+  const membershipConfig = getPluginConfigById(
+    'devprotocol:clubs:simple-memberships'
+  )
+  const memberships = membershipConfig?.options.find(
+    (opt) => opt.key === 'memberships'
+  )?.value as UndefinedOr<Membership[]>
 
   const homeConfig = options.find((opt) => opt.key === 'homeConfig')
     ?.value as UndefinedOr<HomeConfig>
@@ -44,18 +80,14 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
     (option) => option.key === 'avatarImgSrc'
   )?.value
 
-  const IS_TEMPLES_DAO =
-    propertyAddress === '0x541f7914ed2a4a8b477edc711fa349a77983f3ad'
-
   return homeConfig
     ? [
         {
           paths: [],
-          component: IS_TEMPLES_DAO ? Temples : Index,
+          component: Index,
           props: {
             name,
             propertyAddress,
-            tiers,
             memberships,
             homeConfig,
             rpcUrl,
@@ -76,16 +108,21 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
   {
     paths: ['theme'],
     component: Admin,
-    props: { options, config },
+    props: { options, config, colorPresets },
   },
 ]
 
-export const getLayout: ClubsFunctionGetLayout = async () => ({
-  layout: Layout,
-  props: {},
-})
+export const getLayout: ClubsFunctionGetLayout = async (options, config) => {
+  const globalConfig = options.find((opt) => opt.key === 'globalConfig')?.value
+  const homeConfig = options.find((opt) => opt.key === 'homeConfig')?.value
+  return {
+    layout: Layout,
+    props: { config, homeConfig, globalConfig },
+  }
+}
 
 export const meta: ClubsThemePluginMeta = {
+  id: 'devprotocol:clubs:theme-1',
   displayName: 'Default theme',
   category: ClubsPluginCategory.Theme,
   theme: {

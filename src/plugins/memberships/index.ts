@@ -108,6 +108,7 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
 }
 
 export const meta: ClubsPluginMeta = {
+  id: 'devprotocol:clubs:simple-memberships',
   displayName: 'Memberships',
   category: ClubsPluginCategory.Monetization,
 }

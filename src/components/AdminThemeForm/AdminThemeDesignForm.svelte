@@ -1,0 +1,196 @@
+<script lang="ts">
+  import type { ClubsPluginOptions } from '@devprotocol/clubs-core'
+  import { setOptions } from '@devprotocol/clubs-core'
+  import { uploadImageAndGetPath } from '@fixtures/imgur'
+  import type {
+    colorPresets as ColorPresets,
+    GlobalConfigValue,
+    HomeConfigValue,
+  } from '@plugins/default-theme'
+  import { equals } from 'ramda'
+
+  export let colorPresets: typeof ColorPresets
+  export let homeConfig: HomeConfigValue = {}
+  export let globalConfig: GlobalConfigValue =
+    colorPresets.Purple as GlobalConfigValue
+  export let currentPluginIndex: number
+  export let onUpdate: undefined | ((next: ClubsPluginOptions) => void)
+  let uploading = false
+  let selectedColorPreset: keyof typeof ColorPresets = 'Purple'
+
+  const update = (e?: any) => {
+    globalConfig = colorPresets[selectedColorPreset] as GlobalConfigValue
+    const newOptions: ClubsPluginOptions = [
+      {
+        key: 'globalConfig',
+        value: globalConfig,
+      },
+      {
+        key: 'homeConfig',
+        value: homeConfig,
+      },
+    ]
+    setOptions(newOptions, currentPluginIndex)
+    onUpdate && onUpdate(newOptions)
+  }
+
+  const onFileSelected = async (
+    e: Event & {
+      currentTarget: EventTarget & HTMLInputElement
+    }
+  ) => {
+    if (!e.currentTarget.files) {
+      return
+    }
+    uploading = true
+
+    const file = e.currentTarget.files[0]
+
+    const image = await uploadImageAndGetPath(file)
+    homeConfig = {
+      ...homeConfig,
+      hero: {
+        ...homeConfig.hero,
+        image,
+      },
+    }
+    uploading = false
+  }
+
+  const getColor = (
+    key: string
+  ): {
+    bg: string
+    backgroundGradient?: [string, string]
+  } => {
+    return colorPresets[key as keyof typeof ColorPresets] as {
+      bg: string
+      backgroundGradient?: [string, string]
+    }
+  }
+</script>
+
+<div role="presentation" class="hs-form-field mb-16">
+  <span class="hs-form-field__label"> Preview </span>
+  <div
+    class="aspect-square max-w-lg overflow-hidden rounded-xl transition"
+    style={`background-color: ${globalConfig.bg}`}
+  >
+    <div class="relative mb-6 h-[50%]">
+      <div
+        class="absolute bottom-0 left-1/2 aspect-square w-[120%] translate-x-[-50%] translate-y-[50%] rounded-full transition"
+        style={((gradient) =>
+          `background: radial-gradient(50% 50% at 50% 50%, ${
+            gradient ? gradient[0] : 'rgba(0,0,0,0)'
+          } 0%, ${gradient ? gradient[1] : 'rgba(0,0,0,0)'} 100%)`)(
+          globalConfig.backgroundGradient
+        )}
+      />
+      {#if homeConfig.hero?.image && homeConfig.hero.image != '' && uploading === false}
+        <img
+          src={homeConfig.hero.image}
+          class="absolute h-full w-full max-w-full object-cover"
+          alt="Hero"
+        />
+      {/if}
+      {#if uploading}
+        <div role="presentation" class="absolute h-full w-full max-w-full">
+          <div class="absolute h-full w-full bg-zinc-500" />
+          <div class="h-full animate-pulse bg-zinc-400" />
+        </div>
+      {/if}
+    </div>
+    <div class="grid gap-6 px-6">
+      <span class="h-3 w-[10%] rounded bg-white/30" />
+      <span class="h-3 w-[50%] rounded bg-white/30" />
+      <span class="h-3 w-[30%] rounded bg-white/30" />
+    </div>
+  </div>
+</div>
+
+<form
+  on:change|preventDefault={(e) => update()}
+  class="grid justify-start gap-16"
+>
+  <div class="hs-form-field grid justify-items-start gap-2">
+    <span class="hs-form-field__label"> Theme color </span>
+    <div class="flex flex-wrap gap-6">
+      {#each Object.keys(colorPresets) as presetKey}
+        <label class="cursor-pointer">
+          <input
+            type="radio"
+            class="hidden"
+            name="selectedColorPreset"
+            value={presetKey}
+            bind:group={selectedColorPreset}
+            checked={equals(getColor(presetKey), globalConfig)}
+          />
+          <div
+            class={`h-16 w-16 overflow-hidden rounded ${
+              equals(getColor(presetKey), globalConfig)
+                ? 'shadow-[0_0_0_3px_rgba(255,255,255,1)]'
+                : ''
+            }`}
+            style={`background-color: ${getColor(presetKey).bg}`}
+          >
+            {#if getColor(presetKey).backgroundGradient !== undefined}
+              <div
+                class="h-full w-full"
+                style={((gradient) =>
+                  `background: linear-gradient(135deg, ${
+                    gradient && gradient[0]
+                  } 0%, ${gradient && gradient[1]} 100%);`)(
+                  getColor(presetKey).backgroundGradient
+                )}
+              />
+            {/if}
+          </div></label
+        >
+      {/each}
+    </div>
+  </div>
+
+  <div>
+    <label class="hs-form-field grid justify-items-start gap-2">
+      <span class="hs-form-field__label"> Cover image </span>
+      <div>
+        <span class="hs-button is-filled is-large cursor-pointer"
+          >Upload to change</span
+        >
+
+        <input
+          id="hero-image"
+          name="hero-image"
+          style="display:none"
+          type="file"
+          on:change={onFileSelected}
+        />
+      </div>
+    </label>
+  </div>
+
+  <label class="hs-form-field is-filled">
+    <span class="hs-form-field__label">
+      Short description to introduce about you
+    </span>
+    <textarea
+      rows="5"
+      class="hs-form-field__input"
+      bind:value={homeConfig.description}
+      id="club-description"
+      name="club-description"
+    />
+  </label>
+
+  <label class="hs-form-field is-filled">
+    <span class="hs-form-field__label"> Your introduction </span>
+    <textarea
+      rows="10"
+      class="hs-form-field__input"
+      bind:value={homeConfig.body}
+      id="club-body"
+      name="club-body"
+    />
+    <p class="text-sm">Markdown is available</p>
+  </label>
+</form>
