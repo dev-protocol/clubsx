@@ -65,10 +65,10 @@
     "@astrojs/webapi" "^2.0.0"
     esbuild "^0.15.18"
 
-"@astrojs/prefetch@0.1.1":
-  version "0.1.1"
-  resolved "https://registry.npmjs.org/@astrojs/prefetch/-/prefetch-0.1.1.tgz"
-  integrity sha512-+XZcjivPHTo9thQshDWKnnORHJ1dE6odIzhmKHac2ptwla092eohkiJw7Y31+PYmuJkc3Jp+3AawuCvfqCnQ2Q==
+"@astrojs/prefetch@0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@astrojs/prefetch/-/prefetch-0.1.2.tgz#ec3cdfb52dd4c7e79348d796986ff177241e55af"
+  integrity sha512-Plf1GLKDyvTHjEKVMH922wc1AmvlFYvEXrbdaMAlgJuoqTRXirP1CennildFHndTetH8swWMlVGwxdG57dN7cA==
   dependencies:
     throttles "^1.0.1"
 
