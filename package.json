@@ -37,14 +37,14 @@
     "prettier-plugin-svelte": "2.9.0",
     "prettier-plugin-tailwindcss": "0.2.2",
     "type-fest": "3.5.4",
-    "typescript": "4.9.4"
+    "typescript": "4.9.5"
   },
   "dependencies": {
     "@astrojs/netlify": "2.0.0",
-    "@astrojs/prefetch": "0.1.1",
+    "@astrojs/prefetch": "0.1.2",
     "@astrojs/react": "2.0.1",
     "@astrojs/svelte": "2.0.0",
-    "@astrojs/tailwind": "3.0.0",
+    "@astrojs/tailwind": "3.0.1",
     "@astrojs/vercel": "3.0.0",
     "@astrojs/vue": "2.0.0",
     "@devprotocol/clubs-core": "0.26.0",
@@ -70,7 +70,7 @@
     "ramda": "0.28.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "redis": "4.6.3",
+    "redis": "4.6.4",
     "rxjs": "7.8.0",
     "sass": "1.57.1",
     "svelte": "3.55.1",

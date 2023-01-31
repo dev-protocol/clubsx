@@ -65,10 +65,10 @@
     "@astrojs/webapi" "^2.0.0"
     esbuild "^0.15.18"
 
-"@astrojs/prefetch@0.1.1":
-  version "0.1.1"
-  resolved "https://registry.npmjs.org/@astrojs/prefetch/-/prefetch-0.1.1.tgz"
-  integrity sha512-+XZcjivPHTo9thQshDWKnnORHJ1dE6odIzhmKHac2ptwla092eohkiJw7Y31+PYmuJkc3Jp+3AawuCvfqCnQ2Q==
+"@astrojs/prefetch@0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@astrojs/prefetch/-/prefetch-0.1.2.tgz#ec3cdfb52dd4c7e79348d796986ff177241e55af"
+  integrity sha512-Plf1GLKDyvTHjEKVMH922wc1AmvlFYvEXrbdaMAlgJuoqTRXirP1CennildFHndTetH8swWMlVGwxdG57dN7cA==
   dependencies:
     throttles "^1.0.1"
 
@@ -95,10 +95,10 @@
     "@sveltejs/vite-plugin-svelte" "^2.0.2"
     svelte2tsx "^0.5.11"
 
-"@astrojs/tailwind@3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@astrojs/tailwind/-/tailwind-3.0.0.tgz#a1d6ad0ad2cb256dd9fb1d61b7ef923737a96f6f"
-  integrity sha512-Ul0LzTIW+QD/qXUaTDSDoe/uNOPSAX6Ce7yTMzl7v+9OlZ4vlgkj1CUq/WkhlKnJ2+SnJvLArEj6yYs/M2V8nA==
+"@astrojs/tailwind@3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@astrojs/tailwind/-/tailwind-3.0.1.tgz#81e363b6c59b0d8b36b29818835cf0a6691feb30"
+  integrity sha512-QSYh/xmz454j1yZU9rjw2J24PpH7j3h2ClesqMaAniOtcuL8RfP7KYCnCrk01xvjwqqO+QBpZNDD/SUhHNtFFg==
   dependencies:
     "@proload/core" "^0.3.2"
     autoprefixer "^10.4.7"
@@ -1867,10 +1867,10 @@
   resolved "https://registry.yarnpkg.com/@redis/bloom/-/bloom-1.2.0.tgz#d3fd6d3c0af3ef92f26767b56414a370c7b63b71"
   integrity sha512-HG2DFjYKbpNmVXsa0keLHp/3leGJz1mjh09f2RLGGLQZzSHpkmZWuwJbAvo3QcRY8p80m5+ZdXZdYOSBLlp7Cg==
 
-"@redis/client@1.5.4":
-  version "1.5.4"
-  resolved "https://registry.yarnpkg.com/@redis/client/-/client-1.5.4.tgz#7ff66602168e0a2d51813189e0411f719818ad04"
-  integrity sha512-inTBWktJX6rRUCmhpVCnSb7pHOOiGCFIiy5IuEa0GgjcOJsKvw4zHkT9dfYm5UGoUi0I1c4i/f3ScMW5gkNpmQ==
+"@redis/client@1.5.5":
+  version "1.5.5"
+  resolved "https://registry.yarnpkg.com/@redis/client/-/client-1.5.5.tgz#330aa9c2dafe1e2a2aa603619e58095fe33c3a1e"
+  integrity sha512-fuMnpDYSjT5JXR9rrCW1YWA4L8N/9/uS4ImT3ZEC/hcaQRI1D/9FvwjriRj1UvepIgzZXthFVKMNRzP/LNL7BQ==
   dependencies:
     cluster-key-slot "1.1.2"
     generic-pool "3.9.0"
@@ -6628,13 +6628,13 @@ readdirp@~3.6.0:
   dependencies:
     picomatch "^2.2.1"
 
-redis@4.6.3:
-  version "4.6.3"
-  resolved "https://registry.yarnpkg.com/redis/-/redis-4.6.3.tgz#fef5c02edf44a93880149321a41c9ddb5afd46e6"
-  integrity sha512-2UBX8APh9xIXotVwbt3/jUSeu9kwoke9fNzCMQppuQhmOUmEBkM73sdUifXiabjH7YUN0VireJcgw7ky4DnC+A==
+redis@4.6.4:
+  version "4.6.4"
+  resolved "https://registry.yarnpkg.com/redis/-/redis-4.6.4.tgz#fe84169de000b247009c70c2740f22d1f85bc2de"
+  integrity sha512-wi2tgDdQ+Q8q+PR5FLRx4QvDiWaA+PoJbrzsyFqlClN5R4LplHqN3scs/aGjE//mbz++W19SgxiEnQ27jnCRaA==
   dependencies:
     "@redis/bloom" "1.2.0"
-    "@redis/client" "1.5.4"
+    "@redis/client" "1.5.5"
     "@redis/graph" "1.1.0"
     "@redis/json" "1.0.4"
     "@redis/search" "1.1.1"
@@ -7525,10 +7525,10 @@ typescript@*:
   resolved "https://registry.npmjs.org/typescript/-/typescript-4.8.3.tgz"
   integrity sha512-goMHfm00nWPa8UvR/CPSvykqf6dVV8x/dp0c5mFTMTIu0u0FlGWRioyy7Nn0PGAdHxpJZnuO/ut+PpQ8UiHAig==
 
-typescript@4.9.4:
-  version "4.9.4"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.9.4.tgz#a2a3d2756c079abda241d75f149df9d561091e78"
-  integrity sha512-Uz+dTXYzxXXbsFpM86Wh3dKCxrQqUcVMxwU54orwlJjOpO3ao8L7j5lH+dWfTwgCwIuM9GQ2kvVotzYJMXTBZg==
+typescript@4.9.5:
+  version "4.9.5"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.9.5.tgz#095979f9bcc0d09da324d58d03ce8f8374cbe65a"
+  integrity sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==
 
 uc.micro@^1.0.1, uc.micro@^1.0.5:
   version "1.0.6"
