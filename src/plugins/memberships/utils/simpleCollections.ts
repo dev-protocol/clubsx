@@ -14,33 +14,33 @@ type Address = {
 export const address: Address[] = [
   {
     chainId: 1,
-    address: '0x541F7914ED2A4a8B477edc711FA349A77983F3AD',
+    address: '0x0000000000000000000000000000000000000000',
   },
   {
     chainId: 4,
-    address: '0x541F7914ED2A4a8B477edc711FA349A77983F3AD',
+    address: '0x0000000000000000000000000000000000000000',
   },
   {
     chainId: 42161,
-    address: '0x541F7914ED2A4a8B477edc711FA349A77983F3AD',
+    address: '0x0000000000000000000000000000000000000000',
   },
   {
     chainId: 421611,
-    address: '0x541F7914ED2A4a8B477edc711FA349A77983F3AD',
+    address: '0x0000000000000000000000000000000000000000',
   },
   {
     chainId: 137,
-    address: '0x541F7914ED2A4a8B477edc711FA349A77983F3AD',
+    address: '0x007bfb81A0f4E8EEBC1D0570ad4dB6E04594bd43',
   },
   {
     chainId: 80001,
-    address: '0x541F7914ED2A4a8B477edc711FA349A77983F3AD',
+    address: '0x6D9D177c7Aa936a3d6b6F95255Ed63ac6c4601c2',
   },
 ]
 
 const defaultAddress: Address = {
-  chainId: 1,
-  address: '0x541F7914ED2A4a8B477edc711FA349A77983F3AD',
+  chainId: 137,
+  address: '0x007bfb81A0f4E8EEBC1D0570ad4dB6E04594bd43',
 }
 
 const simpleCollectionsAbi = [

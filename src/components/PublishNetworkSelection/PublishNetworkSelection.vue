@@ -59,7 +59,9 @@
               ? 'opacity-50'
               : 'opacity-20'
           "
+          title="Currently, Clubs is not supporting this chain"
           :disabled="
+            true ||
             !connected ||
             addressFromNiwaOrConfigIsValid ||
             isTokenizing ||
@@ -81,7 +83,9 @@
               ? 'opacity-50'
               : 'opacity-20'
           "
+          title="Currently, Clubs is not supporting this chain"
           :disabled="
+            true ||
             !connected ||
             addressFromNiwaOrConfigIsValid ||
             isTokenizing ||
