@@ -4,7 +4,7 @@ import Memberships from '../components/Memberships/Memberships.astro'
 import type { Membership } from '@plugins/memberships'
 
 const { memberships, homeConfig, name } = Astro.props as {
-  memberships: Membership[]
+  memberships?: Membership[]
   homeConfig: {
     hero: {
       image: string
@@ -18,10 +18,20 @@ const { memberships, homeConfig, name } = Astro.props as {
 
 <article class="grid gap-6">
   <section class="grid">
-    <h2 class="text-center text-xl font-bold lg:text-4xl">
-      {memberships.length > 1 ? 'Select a membership' : 'Became a member'}
-    </h2>
-    <Memberships memberships={memberships} />
+    {
+      memberships ? (
+        <>
+          <h2 class="text-center text-xl font-bold lg:text-4xl">
+            {memberships.length > 1 ? 'Select a membership' : 'Became a member'}
+          </h2>
+          <Memberships memberships={memberships} />
+        </>
+      ) : (
+        <h2 class="text-center text-xl font-bold lg:text-4xl">
+          (Membership is not defined 😲)
+        </h2>
+      )
+    }
   </section>
 
   <h2 class="text-center text-xl font-bold lg:text-4xl">About {name}</h2>
