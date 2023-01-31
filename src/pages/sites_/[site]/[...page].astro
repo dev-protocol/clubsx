@@ -13,6 +13,7 @@ import nft from '@plugins/nft'
 import perks from '@plugins/perks'
 import quests from '@plugins/quests'
 import message from '@plugins/message'
+import memberships from '@plugins/memberships'
 import PageNotFound from '@pages/404.astro'
 
 const { site, page } = Astro.params
@@ -27,6 +28,7 @@ const { getStaticPaths, getCurrentConfig } = pageFactory({
     join,
     me,
     members,
+    memberships,
     message,
     nft,
     perks,
