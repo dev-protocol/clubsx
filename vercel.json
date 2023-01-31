@@ -4,8 +4,9 @@
       "source": "/",
       "has": [
         {
-          "type": "host",
-          "key": "clubs.place"
+          "type": "header",
+          "key": "Host",
+          "value": "clubs.place"
         }
       ],
       "headers": [
