@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="!stakeSuccessful"
-    class="relative mx-auto mb-12 grid items-start px-4 lg:container lg:mt-12 lg:grid-cols-[auto,_480px] lg:gap-12"
+    class="shadow relative mx-auto mb-12 grid items-start rounded-xl bg-dp-blue-grey-300 p-4 lg:container lg:mt-12 lg:grid-cols-[auto,_480px] lg:gap-12"
   >
     <section class="flex flex-col">
       <h2 class="mb-8 font-title text-4xl font-bold">
@@ -95,9 +95,9 @@
       </div>
     </section>
     <div
-      class="grid grid-cols-1 content-start overflow-hidden rounded border border-dp-black-200"
+      class="grid grid-cols-1 content-start overflow-hidden rounded border border-white/30"
     >
-      <section class="border-b border-dp-black-200 p-4">
+      <section class="border-b border-white/30 p-4">
         <h3 class="mb-2 text-xl opacity-70">Purchase</h3>
         <p class="flex items-center text-2xl uppercase">
           <Skeleton
@@ -117,7 +117,7 @@
         </p>
         <aside
           v-if="usedCurrency !== currencyOption.DEV"
-          class="mt-4 ml-4 border-l border-dp-black-200 pl-4"
+          class="mt-4 ml-4 border-l border-white/30 pl-4"
         >
           <h4 class="text-md mb-2 opacity-70">Replace</h4>
           <Skeleton

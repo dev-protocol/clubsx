@@ -3,7 +3,7 @@ import type { NavLink } from '@constants/navLink'
 
 const { links, current } = Astro.props as {
   links: NavLink[]
-  current: NavLink
+  current?: NavLink
 }
 ---
 
@@ -15,7 +15,7 @@ const { links, current } = Astro.props as {
           <a
             href={link.enable !== false ? link.path : undefined}
             class={`inline-block p-5 text-sm font-bold text-white transition lg:text-xl ${
-              current.path === link.path
+              current?.path === link.path
                 ? ''
                 : link.enable !== false
                 ? 'opacity-60'

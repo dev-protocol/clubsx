@@ -61,7 +61,6 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
   const membershipConfig = getPluginConfigById(
     'devprotocol:clubs:simple-memberships'
   )
-  console.log({ membershipConfig })
   const memberships = membershipConfig?.options.find(
     (opt) => opt.key === 'memberships'
   )?.value as UndefinedOr<Membership[]>
