@@ -34,6 +34,8 @@ type Data = {
   connected: boolean
   modalProvider?: Web3Modal
   connection?: typeof Connection
+  isAwaitingWalletConfirmation: boolean
+  connectButtonTextMsg: string
 }
 
 export default defineComponent({
@@ -46,6 +48,8 @@ export default defineComponent({
       modalProvider: undefined,
       connection: undefined,
       connected: false,
+      isAwaitingWalletConfirmation: false,
+      connectButtonTextMsg: 'Connect',
     }
   },
   computed: {
@@ -57,10 +61,12 @@ export default defineComponent({
         : classes +
             (!this.connection
               ? ' animate-pulse cursor-progress rounded bg-gray-500/60'
+              : this.isAwaitingWalletConfirmation
+              ? ' animate-pulse'
               : '')
     },
     buttonText() {
-      return this.connected ? 'Connected' : 'Connect'
+      return this.connectButtonTextMsg
     },
     stepTextClasses() {
       const classes = 'font-title text-2xl font-bold'
@@ -75,16 +81,30 @@ export default defineComponent({
           import('@devprotocol/clubs-core/connection'),
           import('@fixtures/wallet'),
         ])
-      this.connection = connection
-      this.modalProvider = GetModalProvider()
-      const { currentAddress, provider } = await ReConnectWallet(
-        this.modalProvider
-      )
-      if (currentAddress) {
-        this.connected = true
-      }
-      if (provider) {
-        this.setSigner(provider)
+
+      try {
+        this.connection = connection
+        this.modalProvider = GetModalProvider()
+        this.isAwaitingWalletConfirmation = true
+        this.connectButtonTextMsg = 'Fetching wallet details...'
+        const { currentAddress, provider } = await ReConnectWallet(
+          this.modalProvider
+        )
+        if (currentAddress) {
+          this.connected = true
+          this.connectButtonTextMsg = 'Connected'
+        } else {
+          this.connected = false
+          this.connectButtonTextMsg = 'Connect'
+        }
+        if (provider) {
+          this.setSigner(provider)
+        }
+      } catch (error) {
+        this.connected = false
+        this.connectButtonTextMsg = 'Connect'
+      } finally {
+        this.isAwaitingWalletConfirmation = false
       }
     })
   },
@@ -94,18 +114,36 @@ export default defineComponent({
     },
 
     async connect() {
-      if (this.connected) return
+      if (this.connected) {
+        this.connectButtonTextMsg = 'Connected'
+        this.isAwaitingWalletConfirmation = false
+        return
+      }
 
-      const connectedProvider = await this.modalProvider!.connect()
-      const newProvider = whenDefined(connectedProvider, (p) => {
-        const provider = new providers.Web3Provider(p)
-        this.setSigner(provider)
-        return provider
-      })
+      try {
+        this.isAwaitingWalletConfirmation = true
+        this.connectButtonTextMsg =
+          'Awaiting connection confirmation on wallet...'
+        const connectedProvider = await this.modalProvider!.connect()
+        const newProvider = whenDefined(connectedProvider, (p) => {
+          const provider = new providers.Web3Provider(p)
+          this.setSigner(provider)
+          return provider
+        })
 
-      const currentAddress = await newProvider?.getSigner().getAddress()
-      if (currentAddress) {
-        this.connected = true
+        const currentAddress = await newProvider?.getSigner().getAddress()
+        if (currentAddress) {
+          this.connected = true
+          this.connectButtonTextMsg = 'Connected'
+        } else {
+          this.connected = false
+          this.connectButtonTextMsg = 'Connect'
+        }
+      } catch (error) {
+        this.connected = false
+        this.connectButtonTextMsg = 'Wallet connection failed, try again!'
+      } finally {
+        this.isAwaitingWalletConfirmation = false
       }
     },
   },

@@ -32,7 +32,13 @@
               ? 'opacity-50'
               : 'opacity-20'
           "
-          :disabled="!connected"
+          :disabled="
+            !connected ||
+            addressFromNiwaOrConfigIsValid ||
+            isTokenizing ||
+            initMbmershipTxnProcessing ||
+            setupMemberhipTxnProcessing
+          "
         >
           <p class="font-DMSans text-center text-base font-bold text-[#FFFFFF]">
             Polygon
@@ -53,7 +59,13 @@
               ? 'opacity-50'
               : 'opacity-20'
           "
-          :disabled="!connected"
+          :disabled="
+            !connected ||
+            addressFromNiwaOrConfigIsValid ||
+            isTokenizing ||
+            initMbmershipTxnProcessing ||
+            setupMemberhipTxnProcessing
+          "
         >
           <p class="font-DMSans text-center text-xs text-[#FFFFFF]">Arbitrum</p>
         </button>
@@ -69,7 +81,13 @@
               ? 'opacity-50'
               : 'opacity-20'
           "
-          :disabled="!connected"
+          :disabled="
+            !connected ||
+            addressFromNiwaOrConfigIsValid ||
+            isTokenizing ||
+            initMbmershipTxnProcessing ||
+            setupMemberhipTxnProcessing
+          "
         >
           <p class="font-DMSans text-center text-xs text-[#FFFFFF]">Ethereum</p>
         </button>
@@ -87,7 +105,13 @@
               ? 'opacity-50'
               : 'opacity-20'
           "
-          :disabled="!connected"
+          :disabled="
+            !connected ||
+            addressFromNiwaOrConfigIsValid ||
+            isTokenizing ||
+            initMbmershipTxnProcessing ||
+            setupMemberhipTxnProcessing
+          "
         >
           <p class="font-DMSans text-center text-xs text-[#FFFFFF]">
             Polygon Mumbai
@@ -124,12 +148,15 @@
               addressFromNiwaOrConfigIsValid ? checkImage : roundedSquareImage
             "
             class="h-3 w-3"
+            v-bind:class="isTokenizing ? 'animate-pulse' : ''"
           />
           <p
             class="font-DMSans text-base font-bold"
             v-bind:class="
               networkSelected === '' || !networkSelected || !connected
                 ? 'text-[#3A4158]'
+                : isTokenizing
+                ? 'animate-pulse text-white'
                 : 'text-white'
             "
           >
@@ -159,6 +186,7 @@
                 : roundedSquareImage
             "
             class="h-3 w-3"
+            v-bind:class="initMbmershipTxnProcessing ? ' animate-pulse' : ''"
           />
           <p
             class="font-DMSans text-base font-bold"
@@ -168,7 +196,9 @@
               !connected ||
               !addressFromNiwaOrConfigIsValid
                 ? 'text-[#3A4158]'
-                : 'text-white'
+                : initMbmershipTxnProcessing
+                ? ' animate-pulse text-white'
+                : ' text-white'
             "
           >
             2
@@ -208,7 +238,9 @@
               !connected ||
               !membershipInitialized
                 ? 'text-[#3A4158]'
-                : 'text-white'
+                : setupMemberhipTxnProcessing
+                ? ' animate-pulse text-white'
+                : ' text-white'
             "
           >
             3
@@ -224,8 +256,21 @@
             : setMemberships()
         "
         class="hs-button is-filled is-large"
-        v-bind:class="!step3Enabled ? 'opacity-50' : ''"
-        :disabled="!step3Enabled"
+        v-bind:class="
+          !step3Enabled
+            ? 'opacity-50'
+            : isTokenizing ||
+              initMbmershipTxnProcessing ||
+              setupMemberhipTxnProcessing
+            ? ' animate-pulse'
+            : ''
+        "
+        :disabled="
+          !step3Enabled ||
+          isTokenizing ||
+          initMbmershipTxnProcessing ||
+          setupMemberhipTxnProcessing
+        "
       >
         <p class="font-DMSans text-center text-base font-bold text-[#FFFFFF]">
           {{ step3InterStepButtonText }}
@@ -282,6 +327,12 @@ type Data = {
   membershipInitialized: boolean
   membershipSet: boolean
   currentWalletAddress: string
+  isTokenizing: boolean
+  tokenizingStatusMsg: string
+  initMbmershipTxnProcessing: boolean
+  initMembershipTxnStatusMsg: string
+  setupMemberhipTxnProcessing: boolean
+  setupMbmershipTxnStatusMsg: string
 }
 
 let provider: BaseProvider | undefined
@@ -308,21 +359,35 @@ export default defineComponent({
     return {
       modalProvider: undefined,
       connection: undefined,
-      networkSelected: '',
+      networkSelected:
+        !this.config.propertyAddress ||
+        this.config.propertyAddress === ethers.constants.AddressZero
+          ? ''
+          : this.getNetworkFromChainId(this.config.chainId),
       connected: false,
       popupWindow: null as Window | null,
-      addressFromNiwa: '',
+      addressFromNiwa:
+        !this.config.propertyAddress ||
+        this.config.propertyAddress === ethers.constants.AddressZero
+          ? ''
+          : this.config.propertyAddress,
       membershipInitialized: false,
       membershipSet: false,
       currentWalletAddress: '',
+      isTokenizing: false,
+      initMbmershipTxnProcessing: false,
+      tokenizingStatusMsg: 'Activate',
+      initMembershipTxnStatusMsg: 'Initialize your memberships',
+      setupMemberhipTxnProcessing: false,
+      setupMbmershipTxnStatusMsg: 'Setup memberships',
     }
   },
   computed: {
-    addressFromNiwaOrConfigIsValid() {
+    addressFromNiwaOrConfigIsValid(): boolean {
       const address = Boolean(this.addressFromNiwa)
         ? this.addressFromNiwa
         : this.config.propertyAddress
-      return address && address !== constants.AddressZero
+      return !!address && address !== constants.AddressZero
     },
     buttonClasses() {
       const classes =
@@ -357,10 +422,10 @@ export default defineComponent({
     link() {
       const url = new URL(this.baseTokenizationLink)
       url.host = `${this.networkSelected.toLowerCase()}.${url.host}`
-      return url
+      return url.toString()
     },
     linkOrigin() {
-      return new URL(this.link).origin
+      return new URL(this.link).origin as string
     },
     baseTokenizationLinkOrigin() {
       return new URL(this.baseTokenizationLink).origin
@@ -380,24 +445,22 @@ export default defineComponent({
         : this.addressFromNiwa
     },
     step3InterStepButtonText() {
-      return !this.connected ||
-        !this.networkSelected ||
-        this.networkSelected === '' ||
-        !this.addressFromNiwaOrConfigIsValid
-        ? 'Activate'
+      return !this.addressFromNiwaOrConfigIsValid
+        ? this.tokenizingStatusMsg
         : !this.membershipInitialized
-        ? 'Initialize your memberships'
-        : 'Setup memberships'
+        ? this.initMembershipTxnStatusMsg
+        : this.setupMbmershipTxnStatusMsg
     },
     step3InterStepSubInfo() {
-      return !this.connected ||
-        !this.networkSelected ||
-        this.networkSelected === '' ||
-        !this.addressFromNiwaOrConfigIsValid
+      return !this.addressFromNiwaOrConfigIsValid
         ? 'What is activating?'
         : !this.membershipInitialized
         ? 'Enable a memberships contract to use memberships.'
         : 'Store your memberships to a contract.'
+    },
+    async initMembershipStatus() {
+      return (await this.getStep2CompletionStatusAndMessages())
+        .membershipInitialized
     },
   },
   async mounted() {
@@ -406,21 +469,108 @@ export default defineComponent({
         import('@devprotocol/clubs-core/connection'),
       ])
       this.connection = connection
-      connection().provider.subscribe((prov) => {
+      connection().provider.subscribe(async (prov) => {
         provider = prov
+        await this.updateStep2CompletionStatus()
       })
-      connection().account.subscribe((acc) => {
+      connection().account.subscribe(async (acc) => {
         if (acc) {
           this.currentWalletAddress = acc
           this.connected = true
+          await this.updateStep2CompletionStatus()
         }
       })
-      connection().signer.subscribe((sig) => {
+      connection().signer.subscribe(async (sig) => {
         signer = sig
+        await this.updateStep2CompletionStatus()
       })
     })
   },
   methods: {
+    async getStep2CompletionStatusAndMessages() {
+      let initMbmershipTxnProcessing = true
+      let initMembershipTxnStatusMsg = 'Fetching initialization details...'
+      let membershipInitialized = false
+
+      const currentChainId: number | null = this.getChainId()
+      if (!provider || !this.addressFromNiwaOrConfig || !currentChainId) {
+        initMbmershipTxnProcessing = false
+        initMembershipTxnStatusMsg = 'Initialize your memberships'
+        membershipInitialized = false
+        return {
+          initMbmershipTxnProcessing,
+          initMembershipTxnStatusMsg,
+          membershipInitialized,
+        }
+      }
+
+      const [l1, l2] = await clientsSTokens(provider as BaseProvider)
+      const propertyAddress = Boolean(this.addressFromNiwa)
+        ? (this.addressFromNiwa as string)
+        : (this.addressFromNiwaOrConfig as string)
+
+      const descriptiorAddress: string | undefined = address.find(
+        (address) => address.chainId === currentChainId
+      )?.address
+      if (!descriptiorAddress) {
+        initMbmershipTxnProcessing = false
+        initMembershipTxnStatusMsg = 'Initialize your memberships'
+        membershipInitialized = false
+        return {
+          initMbmershipTxnProcessing,
+          initMembershipTxnStatusMsg,
+          membershipInitialized,
+        }
+      }
+
+      const contract = (l1 || l2)?.contract()
+      const descriptorAddressInContract: string = await contract?.descriptorOf(
+        propertyAddress
+      )
+      initMbmershipTxnProcessing = false
+      membershipInitialized =
+        descriptorAddressInContract?.toLowerCase() ===
+        descriptiorAddress?.toLocaleLowerCase()
+      initMembershipTxnStatusMsg = membershipInitialized
+        ? 'Membership initialized, fetching setup details...'
+        : 'Initialize your memberships'
+
+      return {
+        initMbmershipTxnProcessing,
+        initMembershipTxnStatusMsg,
+        membershipInitialized,
+      }
+    },
+
+    async updateStep2CompletionStatus() {
+      this.membershipInitialized = false
+      this.initMbmershipTxnProcessing = true
+      this.initMembershipTxnStatusMsg = 'Fetching initialization details...'
+
+      const {
+        initMbmershipTxnProcessing,
+        initMembershipTxnStatusMsg,
+        membershipInitialized,
+      } = await this.getStep2CompletionStatusAndMessages()
+      this.initMbmershipTxnProcessing = initMbmershipTxnProcessing
+      this.membershipInitialized = membershipInitialized
+      this.initMembershipTxnStatusMsg = initMembershipTxnStatusMsg
+    },
+
+    getNetworkFromChainId(chainId: number | null) {
+      return chainId === 1
+        ? 'ethereum'
+        : chainId === 137
+        ? 'polygon'
+        : chainId === 80001
+        ? 'polygon-mumbai'
+        : chainId === 42161
+        ? 'arbitrum'
+        : chainId === 80001
+        ? 'polygon-mumbai'
+        : ''
+    },
+
     getChainId() {
       return this.networkSelected === 'ethereum'
         ? 1
@@ -450,12 +600,23 @@ export default defineComponent({
     },
 
     async changeNetwork(network: string) {
-      if (!this.connected) return
+      if (
+        !this.connected ||
+        this.isTokenizing ||
+        this.addressFromNiwaOrConfigIsValid ||
+        this.membershipInitialized ||
+        this.membershipSet ||
+        this.initMbmershipTxnProcessing ||
+        this.setupMemberhipTxnProcessing
+      )
+        return
       this.networkSelected = network
       this.updateConfig()
     },
 
     openNiwa(link: string) {
+      if (this.isTokenizing) return
+
       const popupLink = link + '?popup=true'
       this.popupWindow = window.open(
         popupLink,
@@ -463,7 +624,12 @@ export default defineComponent({
         'popup,width=500,height=700'
       )
       if (this.popupWindow) {
+        this.isTokenizing = true
+        this.tokenizingStatusMsg = 'Activation in process...'
         window.addEventListener('message', this.listenForAddress, false)
+      } else {
+        this.isTokenizing = false
+        this.tokenizingStatusMsg = 'Activating failed, try again!'
       }
     },
 
@@ -473,10 +639,23 @@ export default defineComponent({
         event.origin !== this.baseTokenizationLinkOrigin
       )
         return
+
       const { address } = event.data
-      if (!address) return
-      this.addressFromNiwa = address
-      this.updateConfig()
+      if (!address) {
+        this.isTokenizing = false
+        this.tokenizingStatusMsg = 'Activation failed, try again!'
+        return
+      }
+
+      try {
+        this.addressFromNiwa = address
+        this.updateConfig()
+        this.tokenizingStatusMsg = 'Activated, setting up initialization..'
+      } catch (error) {
+        this.tokenizingStatusMsg = 'Activated failed, try again!'
+      } finally {
+        this.isTokenizing = false
+      }
     },
 
     updateConfig() {
@@ -484,16 +663,20 @@ export default defineComponent({
         ? (this.addressFromNiwa as string)
         : (this.addressFromNiwaOrConfig as string)
       const rpcUrl = this.getRpcUrl()
+      const chainId = this.getChainId()
+      if (!chainId) return
       const nextConfig: ClubsConfiguration = {
         ...this.config,
         rpcUrl,
+        chainId,
         propertyAddress,
       }
       onUpdatedConfiguration(
         () => {
           if (
             this.config.propertyAddress === propertyAddress &&
-            this.config.rpcUrl === rpcUrl
+            this.config.rpcUrl === rpcUrl &&
+            this.config.chainId === chainId
           ) {
             return
           }
@@ -505,12 +688,20 @@ export default defineComponent({
     },
 
     async initializeMemberships() {
+      if (this.initMbmershipTxnProcessing) return
+
+      this.initMbmershipTxnProcessing = true
+      this.initMembershipTxnStatusMsg = 'Initializing memberhips...'
+
       const currentChainId: number | null = this.getChainId()
       if (
         !provider ||
         !this.addressFromNiwaOrConfigIsValid ||
-        !currentChainId
+        !currentChainId ||
+        !signer
       ) {
+        this.initMbmershipTxnProcessing = false
+        this.initMembershipTxnStatusMsg = 'Initialization failed, try again!'
         return
       }
 
@@ -518,69 +709,118 @@ export default defineComponent({
         (address) => address.chainId === currentChainId
       )?.address
       if (!descriptiorAddress) {
+        this.initMbmershipTxnProcessing = false
+        this.initMembershipTxnStatusMsg = 'Initialization failed, try again!'
         return
       }
 
-      const [l1, l2] = await clientsSTokens(provider as BaseProvider)
-      const propertyAddress = Boolean(this.addressFromNiwa)
-        ? (this.addressFromNiwa as string)
-        : (this.addressFromNiwaOrConfig as string)
-      const tx = await (l1 || l2)?.setTokenURIDescriptor(
-        propertyAddress,
-        descriptiorAddress
-      )
-      const response = await tx?.wait(1)
+      try {
+        const [l1, l2] = await clientsSTokens(provider as BaseProvider)
+        const propertyAddress = Boolean(this.addressFromNiwa)
+          ? (this.addressFromNiwa as string)
+          : (this.addressFromNiwaOrConfig as string)
 
-      // const response = { status: true }
-      if (response?.status) {
-        this.membershipInitialized = true
-      } else {
+        this.initMembershipTxnStatusMsg =
+          'Awaiting transaction confirmation on wallet...'
+
+        const l = l1 || l2
+        if (!l) {
+          this.initMbmershipTxnProcessing = false
+          this.initMembershipTxnStatusMsg = 'Initialization failed, try again!'
+          return
+        }
+
+        const tx = await l
+          .contract()
+          .connect(signer)
+          [`setTokenURIDescriptor(address,address)`](
+            propertyAddress,
+            descriptiorAddress
+          )
+
+        this.initMembershipTxnStatusMsg =
+          'Transaction processing on the blockchain...'
+        const response = await tx?.wait(1)
+
+        if (response?.status) {
+          this.initMembershipTxnStatusMsg = 'Initialization done.'
+          this.membershipInitialized = true
+        } else {
+          this.initMembershipTxnStatusMsg = 'Initialization failed, try again!'
+          this.membershipInitialized = false
+        }
+      } catch (error) {
         this.membershipInitialized = false
+        this.initMembershipTxnStatusMsg = 'Initialization failed, try again!'
+      } finally {
+        this.initMbmershipTxnProcessing = false
       }
     },
 
     async setMemberships() {
+      if (this.setupMemberhipTxnProcessing) return
+
+      this.setupMemberhipTxnProcessing = true
+      this.setupMbmershipTxnStatusMsg = 'Setting up memberships...'
+
       if (
         !signer ||
         !this.addressFromNiwaOrConfigIsValid ||
         !this.membershipInitialized
       ) {
+        this.setupMemberhipTxnProcessing = false
+        this.setupMbmershipTxnStatusMsg = 'Setup failed, try again!'
         return
       }
 
-      const propertyAddress = Boolean(this.addressFromNiwa)
-        ? (this.addressFromNiwa as string)
-        : (this.addressFromNiwaOrConfig as string)
-      const images: Image[] =
-        this.membershipsPluginOptions?.map((opt) => ({
-          src: opt.imageSrc,
-          requiredETHAmount: parseUnits(String(opt.price)).toString(),
-          requiredETHFee: opt.fee?.percentage
-            ? parseUnits(
-                new BigNumber(opt.price).times(opt.fee.percentage).toFixed()
-              ).toString()
-            : 0,
-          gateway: this.currentWalletAddress,
-        })) || []
-      const keys: string[] =
-        this.membershipsPluginOptions?.map((opt) => keccak256(opt.payload)) ||
-        []
+      try {
+        const propertyAddress = Boolean(this.addressFromNiwa)
+          ? (this.addressFromNiwa as string)
+          : (this.addressFromNiwaOrConfig as string)
+        const images: Image[] =
+          this.membershipsPluginOptions?.map((opt) => ({
+            src: opt.imageSrc,
+            requiredETHAmount: parseUnits(String(opt.price)).toString(),
+            requiredETHFee: opt.fee?.percentage
+              ? parseUnits(
+                  new BigNumber(opt.price).times(opt.fee.percentage).toFixed()
+                ).toString()
+              : 0,
+            gateway: this.currentWalletAddress,
+          })) || []
+        const keys: string[] =
+          this.membershipsPluginOptions?.map((opt) => keccak256(opt.payload)) ||
+          []
 
-      const tx = await callSimpleCollections(signer, 'setImages', [
-        propertyAddress,
-        images,
-        keys,
-      ])
-      const response = await tx?.wait(1)
+        this.setupMbmershipTxnStatusMsg =
+          'Awaiting transaction confirmation on wallet...'
+        const tx = await callSimpleCollections(signer, 'setImages', [
+          propertyAddress,
+          images,
+          keys,
+        ])
 
-      if (response?.status) {
-        this.membershipSet = true
-        window.location.href = new URL(
-          '/admin/overview',
-          `${location.protocol}//${this.site}.${location.host}`
-        ).toString()
-      } else {
+        this.setupMbmershipTxnStatusMsg =
+          'Transaction processing on the blockchain...'
+        const response = await tx?.wait(1)
+
+        if (response?.status) {
+          this.membershipSet = true
+          this.setupMbmershipTxnStatusMsg =
+            'Setup complete, loading admin panel...'
+          window.location.href = new URL(
+            '/admin/overview',
+            `${location.protocol}//${this.site}.${location.host}`
+          ).toString()
+        } else {
+          this.setupMbmershipTxnStatusMsg = 'Setup failed, try again!'
+          this.membershipSet = false
+        }
+      } catch (error) {
         this.membershipSet = false
+        this.setupMbmershipTxnStatusMsg = 'Setup failed, try again!'
+      } finally {
+        this.setupMemberhipTxnProcessing = false
       }
     },
   },
