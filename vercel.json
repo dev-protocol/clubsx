@@ -2,6 +2,12 @@
   "headers": [
     {
       "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "key": "clubs.place"
+        }
+      ],
       "headers": [
         {
           "key": "Cache-Control",
