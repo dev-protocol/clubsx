@@ -8,7 +8,6 @@
     HomeConfigValue,
   } from '@plugins/default-theme'
   import { equals } from 'ramda'
-  import { onMount } from 'svelte'
 
   export let colorPresets: typeof ColorPresets
   export let homeConfig: HomeConfigValue = {}
@@ -18,17 +17,6 @@
   export let onUpdate: undefined | ((next: ClubsPluginOptions) => void)
   let uploading = false
   let selectedColorPreset: keyof typeof ColorPresets = 'Purple'
-
-  onMount(() => {
-    console.log({
-      colorPresets,
-      homeConfig,
-      globalConfig,
-      currentPluginIndex,
-      onUpdate,
-      selectedColorPreset,
-    })
-  })
 
   const update = (e?: any) => {
     globalConfig = colorPresets[selectedColorPreset] as GlobalConfigValue
@@ -125,7 +113,7 @@
   class="grid justify-start gap-16"
 >
   <div class="hs-form-field grid justify-items-start gap-2">
-    <span class="hs-form-field__label"> Choose colors </span>
+    <span class="hs-form-field__label"> Theme color </span>
     <div class="flex flex-wrap gap-6">
       {#each Object.keys(colorPresets) as presetKey}
         <label class="cursor-pointer">
