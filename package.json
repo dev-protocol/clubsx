@@ -42,7 +42,7 @@
   "dependencies": {
     "@astrojs/netlify": "2.0.0",
     "@astrojs/prefetch": "0.1.2",
-    "@astrojs/react": "2.0.1",
+    "@astrojs/react": "2.0.2",
     "@astrojs/svelte": "2.0.1",
     "@astrojs/tailwind": "3.0.1",
     "@astrojs/vercel": "3.0.0",
