@@ -31,7 +31,13 @@ const siteBaseUrl = ((url) =>
 
 {
   path ? (
-    <SetupLayout {config} {...path.props} setupStep="PREVIEW" aside={false}>
+    <SetupLayout
+      {config}
+      {...path.props}
+      setupStep="PREVIEW"
+      aside={false}
+      title="Setup Clubs | Preview"
+    >
       <section class="grid gap-16">
         <h2 class="font-title text-2xl font-bold">Preview</h2>
         <iframe

@@ -45,7 +45,12 @@ const siteBaseUrl = ((url) =>
 
 {
   path && props ? (
-    <SetupLayout {config} {...props} setupStep="MEMBERSHIPS">
+    <SetupLayout
+      {config}
+      {...props}
+      setupStep="MEMBERSHIPS"
+      title={`Setup Clubs | Memberships | ${preset}`}
+    >
       <section class="grid gap-16">
         <h1 class="font-title text-lg font-bold">Memberships</h1>
 

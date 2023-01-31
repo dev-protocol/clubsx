@@ -51,7 +51,13 @@ const baseDomainUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
 
 {
   path ? (
-    <SetupLayout {config} {...path.props} setupStep="PUBLISH" aside={false}>
+    <SetupLayout
+      {config}
+      {...path.props}
+      setupStep="PUBLISH"
+      aside={false}
+      title="Setup Clubs | Publish"
+    >
       <section class="grid gap-16">
         <h2 class="font-title text-2xl font-bold">Publish</h2>
         <PublishConnect client:load checkImage={checkImage} />
