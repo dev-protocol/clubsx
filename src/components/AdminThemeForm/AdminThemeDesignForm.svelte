@@ -180,7 +180,6 @@
       id="club-description"
       name="club-description"
     />
-    <p class="text-sm">Markdown is available</p>
   </label>
 
   <label class="hs-form-field is-filled">
