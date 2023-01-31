@@ -9,9 +9,6 @@ import { default as Admin } from './admin.astro'
 import { default as AdminNew } from './admin-new.astro'
 import { default as AdminEdit } from './admin-id.astro'
 import type { UndefinedOr } from '@devprotocol/util-ts'
-import membershipOpt1 from '@assets/membership-opt-1.png'
-import membershipOpt2 from '@assets/membership-opt-2.png'
-import membershipOpt3 from '@assets/membership-opt-3.png'
 import { utils } from 'ethers'
 import type { DraftOptions } from '@constants/draft'
 
@@ -33,7 +30,7 @@ const presets: Membership[] = [
   {
     id: 'preset-casual',
     name: 'Casual',
-    imageSrc: membershipOpt1,
+    imageSrc: 'https://i.imgur.com/80cN1P3.png',
     currency: 'ETH',
     price: 0.003,
     description: 'lorem ipsum',
@@ -42,7 +39,7 @@ const presets: Membership[] = [
   {
     id: 'preset-luxury',
     name: 'Luxury',
-    imageSrc: membershipOpt2,
+    imageSrc: 'https://i.imgur.com/eKOWcfP.png',
     currency: 'ETH',
     price: 1,
     description: 'lorem ipsum',
@@ -51,7 +48,7 @@ const presets: Membership[] = [
   {
     id: 'preset-edge',
     name: 'Edge',
-    imageSrc: membershipOpt3,
+    imageSrc: 'https://i.imgur.com/m1v5j6g.png',
     currency: 'ETH',
     price: 0.5,
     description: 'lorem ipsum',
