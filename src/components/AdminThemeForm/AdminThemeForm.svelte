@@ -49,24 +49,24 @@
   )?.value
 
   const update = (e?: any) => {
+    const _navigationLinks = {
+      key: 'navigationLinks',
+      value: navigationLinks,
+    }
+    const _socialLinks = {
+      key: 'socialLinks',
+      value: socialLinks,
+    }
     const newConfig: ClubsConfiguration = {
       ...config,
       options: config.options
-        ? (config.options.map((opt: ClubsPluginOption) => {
-            if (opt.key === 'navigationLinks') {
-              return {
-                key: 'navigationLinks',
-                value: navigationLinks,
-              }
-            }
-            if (opt.key === 'socialLinks') {
-              return {
-                key: 'socialLinks',
-                value: socialLinks,
-              }
-            }
-            return opt
-          }) as ClubsPluginOptions)
+        ? ([
+            ...config.options.filter(
+              ({ key }) => key !== 'navigationLinks' && key !== 'socialLinks'
+            ),
+            _navigationLinks,
+            _socialLinks,
+          ] as ClubsPluginOptions)
         : undefined,
       plugins: config.plugins
         ? (config.plugins.map((plg: ClubsPlugin, i) => {

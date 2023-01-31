@@ -110,7 +110,7 @@
 
 <form
   on:change|preventDefault={(e) => update()}
-  class="grid justify-start gap-16"
+  class="justify-stretch grid gap-16"
 >
   <div class="hs-form-field grid justify-items-start gap-2">
     <span class="hs-form-field__label"> Theme color </span>
