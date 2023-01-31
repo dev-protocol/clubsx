@@ -20,11 +20,13 @@ const {
   setupStep,
   clubs,
   aside = true,
+  title,
 } = Astro.props as {
   config: ClubsConfiguration
   setupStep: 'DESIGN' | 'MEMBERSHIPS' | 'PREVIEW' | 'BASIC' | 'PUBLISH'
   clubs: ClubsPropsAdminPages['clubs']
   aside?: boolean
+  title?: string
 }
 const steps = {
   current:
@@ -64,6 +66,8 @@ const avatarImgSrc: string | undefined = config.options?.find(
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg" href="/favicon.svg" />
+    <title>{title ?? 'Setup Clubs'}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /><link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap"

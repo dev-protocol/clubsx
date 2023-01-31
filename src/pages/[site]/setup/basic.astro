@@ -26,7 +26,12 @@ const siteBaseUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
 
 {
   path ? (
-    <SetupLayout {config} {...path.props} setupStep="BASIC">
+    <SetupLayout
+      {config}
+      {...path.props}
+      setupStep="BASIC"
+      title="Setup Clubs | Basic"
+    >
       <ProfileSetupForm client:load config={config} />
       <NextButton
         next={`/${site}/setup/design`}
