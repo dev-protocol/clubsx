@@ -190,6 +190,7 @@ const avatarImgSrc: string | undefined = config.options?.find(
     .value
 
   const decodedConfig = decode(config)
+  console.log({ decodedConfig })
   const isInDraftWithFirebase = Boolean(
     (
       decodedConfig.options?.find(
