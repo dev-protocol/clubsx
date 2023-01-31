@@ -6,7 +6,6 @@ import Header from '../components/Header/Header.astro'
 import Hero from '../components/Hero/Hero.astro'
 import type { NavLink } from '@constants/navLink'
 import Navigation from '../components/Navigation/Navigation.astro'
-import type { Membership } from '@plugins/memberships'
 
 const { page } = Astro.params
 const { metaTitle, config, homeConfig, globalConfig } = Astro.props as {
@@ -34,12 +33,6 @@ const ogp = config.options?.find((option) => option.key === 'ogp')
 const avatarImgSrc: UndefinedOr<string> = config.options?.find(
   (option) => option.key === 'avatarImgSrc'
 )?.value as string
-
-const memberships = config.plugins
-  .find((plg) => plg.name === 'memberships')
-  ?.options.find((opt) => opt.key === 'memberships')?.value as UndefinedOr<
-  Membership[]
->
 
 const socialLinks =
   config.options?.find((option) => option.key === 'socialLinks')?.value ??
