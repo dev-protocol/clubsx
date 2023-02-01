@@ -15,14 +15,15 @@
   })
 
   const walletConnect = async () => {
-    const { provider, currentAddress } = await EthersProviderFrom(
-      GetModalProvider
-    )
-    if (!currentAddress || !provider) {
+    const { currentAddress } = await EthersProviderFrom(GetModalProvider)
+    if (!currentAddress) {
       return
     }
 
-    // TODO: authenticate and navigate
+    window.location.href = new URL(
+      `/user/${currentAddress}`,
+      window.location.origin
+    ).toString()
   }
 </script>
 
