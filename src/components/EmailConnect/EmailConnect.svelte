@@ -18,12 +18,14 @@
 
     await fetch(emailEndpoint, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: siteName
         ? JSON.stringify({ email, subDomain: siteName })
         : JSON.stringify({ email }),
     })
       .then(() => {
-        window.localStorage.setItem('emailForSignIn', email)
         emailSent = true
       })
       .catch((err) => {

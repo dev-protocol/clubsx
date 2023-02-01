@@ -24,7 +24,6 @@ const { siteName } = Astro.params
 </Layout>
 
 <script>
-  import { isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth'
   import { instanceStore } from '../../fixtures/firebase/clientInstance'
   import {
     ClubsConfiguration,
@@ -41,67 +40,52 @@ const { siteName } = Astro.params
   const siteName = (document.getElementById('siteName') as HTMLInputElement)
     ?.value as string
 
-  if (isSignInWithEmailLink(auth, window.location.href)) {
-    let email = window.localStorage.getItem('emailForSignIn')
-    if (!email) {
-      // User opened the link on a different device. To prevent session fixation
-      // attacks, ask the user to provide the associated email again. For example:
-      email = window.prompt('Please provide your email for confirmation')
+  auth.onIdTokenChanged(async (user) => {
+    if (!user) {
+      return
     }
 
-    signInWithEmailLink(auth, email ?? '', window.location.href).then(
-      async (result) => {
-        // Clear email from storage.
-        window.localStorage.removeItem('emailForSignIn')
+    const jwtToken = await user.getIdToken()
+    const site: string | undefined =
+      window.location.pathname.split('/').pop() || siteName
 
-        const jwtToken = await result.user.getIdToken()
-        const site: string | undefined =
-          window.location.pathname.split('/').pop() || siteName
-        const uid = result.user.uid
+    const config: ClubsConfiguration = {
+      ...defaultConfig,
+      name: site,
+      options: [
+        ...(defaultConfig.options ? defaultConfig.options : []),
+        {
+          key: '__draft',
+          value: {
+            isInDraft: true,
+            uid: user.uid,
+          },
+        } as DraftOptions,
+      ],
+    }
 
-        // If it is a new user, set the __draft user
-        if (uid) {
-          // Make the default config.
-          const config: ClubsConfiguration = {
-            ...defaultConfig,
-            name: site,
-            options: [
-              ...(defaultConfig.options ? defaultConfig.options : []),
-              {
-                key: '__draft',
-                value: {
-                  isInDraft: true,
-                  uid: uid,
-                },
-              } as DraftOptions,
-            ],
-          }
+    const body = {
+      site,
+      config: encode(config),
+      uid: user.uid,
+    }
 
-          const body = {
-            site,
-            config: encode(config),
-            uid,
-          }
+    // Save the config to db.
+    const res = await fetch('/api/addDaoToDraft', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwtToken}`,
+      },
+      body: JSON.stringify(body),
+    })
 
-          // Save the config to db.
-          const res = await fetch('/api/addDaoToDraft', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${jwtToken}`,
-            },
-            body: JSON.stringify(body),
-          })
-
-          if (res.ok) {
-            setConfig(config)
-            window.location.href = new URL(
-              `${siteName}/setup/basic`,
-              `${location.protocol}//${location.host}`
-            ).toString()
-          }
-        }
-      }
-    )
-  }
+    if (res.ok) {
+      setConfig(config)
+      window.location.href = new URL(
+        `${siteName}/setup/basic`,
+        `${location.protocol}//${location.host}`
+      ).toString()
+    }
+  })
 </script>

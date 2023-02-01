@@ -21,36 +21,16 @@ import Layout from '@layouts/Landing.astro'
 </Layout>
 
 <script>
-  import { isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth'
   import { instanceStore } from '../../fixtures/firebase/clientInstance'
 
-  // Confirm the link is a sign-in with email link.
   const auth = instanceStore.initializedApp
 
-  if (isSignInWithEmailLink(auth, window.location.href)) {
-    let email = window.localStorage.getItem('emailForSignIn')
-    if (!email) {
-      // User opened the link on a different device. To prevent session fixation
-      // attacks, ask the user to provide the associated email again. For example:
-      email = window.prompt('Please provide your email for confirmation')
+  auth.onIdTokenChanged((user) => {
+    if (user && user.uid) {
+      window.location.href = new URL(
+        `/user/${user.uid}`,
+        `${location.protocol}//${location.host}`
+      ).toString()
     }
-
-    signInWithEmailLink(auth, email ?? '', window.location.href).then(
-      async (result) => {
-        // Clear email from storage.
-        window.localStorage.removeItem('emailForSignIn')
-
-        // const jwtToken = await result.user.getIdToken()
-        const uid = result.user.uid
-
-        // If it is a new user, set the __draft user
-        if (uid) {
-          window.location.href = new URL(
-            `/user/${uid}`,
-            `${location.protocol}//${location.host}`
-          ).toString()
-        }
-      }
-    )
-  }
+  })
 </script>
