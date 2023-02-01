@@ -53,7 +53,7 @@
     <div class="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-8">
       {#if publishedClubs.length > 0}
         {#each publishedClubs as club}
-          <UserClubItem config={club} />
+          <UserClubItem config={club} isDraft={false} />
         {/each}
       {:else}
         <span class="font-bold">No published clubs found</span>
@@ -65,7 +65,7 @@
     <h3>Draft</h3>
     {#if draftClubs.length > 0}
       {#each draftClubs as club}
-        <UserClubItem config={club} />
+        <UserClubItem config={club} isDraft={true} />
       {/each}
     {:else}
       <span class="font-bold">No draft clubs found</span>
