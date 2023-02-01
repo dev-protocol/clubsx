@@ -148,6 +148,89 @@ const simpleCollectionsAbi = [
         type: 'bytes32',
       },
     ],
+    name: 'description',
+    outputs: [
+      {
+        internalType: 'string',
+        name: '',
+        type: 'string',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'id',
+        type: 'uint256',
+      },
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+      {
+        components: [
+          {
+            internalType: 'address',
+            name: 'property',
+            type: 'address',
+          },
+          {
+            internalType: 'uint256',
+            name: 'amount',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'price',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'cumulativeReward',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'pendingReward',
+            type: 'uint256',
+          },
+        ],
+        internalType: 'struct ISTokensManagerStruct.StakingPositions',
+        name: '_positions',
+        type: 'tuple',
+      },
+      {
+        components: [
+          {
+            internalType: 'uint256',
+            name: 'entireReward',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'cumulativeReward',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'withdrawableReward',
+            type: 'uint256',
+          },
+        ],
+        internalType: 'struct ISTokensManagerStruct.Rewards',
+        name: '',
+        type: 'tuple',
+      },
+      {
+        internalType: 'bytes32',
+        name: 'key',
+        type: 'bytes32',
+      },
+    ],
     name: 'image',
     outputs: [
       {
@@ -170,6 +253,89 @@ const simpleCollectionsAbi = [
     name: 'initialize',
     outputs: [],
     stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'id',
+        type: 'uint256',
+      },
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+      {
+        components: [
+          {
+            internalType: 'address',
+            name: 'property',
+            type: 'address',
+          },
+          {
+            internalType: 'uint256',
+            name: 'amount',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'price',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'cumulativeReward',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'pendingReward',
+            type: 'uint256',
+          },
+        ],
+        internalType: 'struct ISTokensManagerStruct.StakingPositions',
+        name: '_positions',
+        type: 'tuple',
+      },
+      {
+        components: [
+          {
+            internalType: 'uint256',
+            name: 'entireReward',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'cumulativeReward',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'withdrawableReward',
+            type: 'uint256',
+          },
+        ],
+        internalType: 'struct ISTokensManagerStruct.Rewards',
+        name: '',
+        type: 'tuple',
+      },
+      {
+        internalType: 'bytes32',
+        name: 'key',
+        type: 'bytes32',
+      },
+    ],
+    name: 'name',
+    outputs: [
+      {
+        internalType: 'string',
+        name: '',
+        type: 'string',
+      },
+    ],
+    stateMutability: 'view',
     type: 'function',
   },
   {
@@ -267,6 +433,16 @@ const simpleCollectionsAbi = [
         type: 'string',
       },
       {
+        internalType: 'string',
+        name: 'name',
+        type: 'string',
+      },
+      {
+        internalType: 'string',
+        name: 'description',
+        type: 'string',
+      },
+      {
         internalType: 'uint256',
         name: 'requiredETHAmount',
         type: 'uint256',
@@ -325,6 +501,16 @@ const simpleCollectionsAbi = [
             type: 'string',
           },
           {
+            internalType: 'string',
+            name: 'name',
+            type: 'string',
+          },
+          {
+            internalType: 'string',
+            name: 'description',
+            type: 'string',
+          },
+          {
             internalType: 'uint256',
             name: 'requiredETHAmount',
             type: 'uint256',
@@ -351,6 +537,19 @@ const simpleCollectionsAbi = [
       },
     ],
     name: 'setImages',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_contract',
+        type: 'address',
+      },
+    ],
+    name: 'setSwapAndStake',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',

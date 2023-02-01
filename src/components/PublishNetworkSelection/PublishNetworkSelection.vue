@@ -784,6 +784,8 @@ export default defineComponent({
         const images: Image[] =
           this.membershipsPluginOptions?.map((opt) => ({
             src: opt.imageSrc,
+            name: opt.name,
+            description: opt.description,
             requiredETHAmount: parseUnits(String(opt.price)).toString(),
             requiredETHFee: opt.fee?.percentage
               ? parseUnits(
