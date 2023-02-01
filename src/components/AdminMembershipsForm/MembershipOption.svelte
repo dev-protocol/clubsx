@@ -17,9 +17,6 @@
     alt={`${name} Membership`}
   />
 
-  <!-- TODO: how is this different than description? -->
-  <span class="text-sm">Foo</span>
-
   <span class="font-semibold">{ethPrice} ETH</span>
 
   <span class="text-sm">{description}</span>

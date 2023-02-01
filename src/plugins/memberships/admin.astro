@@ -11,7 +11,9 @@ const { memberships, presets, clubs } = Astro.props as ClubsPropsAdminPages & {
 ---
 
 <div>
-  <h1 class="mb-16 font-title text-lg font-bold">Membership</h1>
+  <h1 class="mb-16 font-title text-lg font-bold">Memberships</h1>
+
+  <h2 class="mb-8 text-2xl">Create a new Membership by selecting a template</h2>
 
   <AdminMembershipsForm
     client:only="svelte"
