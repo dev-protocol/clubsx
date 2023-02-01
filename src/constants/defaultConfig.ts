@@ -91,9 +91,5 @@ export const defaultConfig: ClubsConfiguration = {
       name: 'message',
       options: [],
     },
-    {
-      name: 'marketplace',
-      options: [],
-    },
   ],
 }
