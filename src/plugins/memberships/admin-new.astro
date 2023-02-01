@@ -74,6 +74,8 @@ const { membership, memberships, presets, clubs, rpcUrl, propertyAddress } =
 
     const images = memOpts.map((opt) => ({
       src: opt.imageSrc,
+      name: opt.name,
+      description: opt.description,
       requiredETHAmount: parseUnits(String(opt.price)).toString(),
       requiredETHFee: opt.fee?.percentage
         ? parseUnits(
