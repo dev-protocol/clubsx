@@ -7,6 +7,7 @@ interface ImportMetaEnv {
   readonly PUBLIC_FIREBASE_MESSAGING_SENDER_ID: string
   readonly PUBLIC_FIREBASE_APP_ID: string
   readonly PUBLIC_FIREBASE_CALLBACK_SIGNIN_URL: string
+  readonly PUBLIC_EMAIL_AUTH_ENDPOINT: string
 }
 
 interface ImportMeta {

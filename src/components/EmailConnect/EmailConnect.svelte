@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { instanceStore } from '@fixtures/firebase/clientInstance'
-  import { sendSignInLinkToEmail } from 'firebase/auth'
+  import type { UndefinedOr } from '@devprotocol/util-ts'
 
-  export let firebaseCallbackUrl: string
+  export let siteName: UndefinedOr<string> = undefined
 
   let email = ''
   let emailErrorMessage = ''
   let emailSent = false
   let emailSending = false
+  const emailEndpoint = import.meta.env.PUBLIC_EMAIL_AUTH_ENDPOINT
 
   const sendMagicLink = async () => {
     if (emailSent) {
@@ -16,32 +16,19 @@
 
     emailSending = true
 
-    const actionCodeSettings = {
-      // URL you want to redirect back to. The domain (www.example.com) for this
-      // URL must be in the authorized domains list in the Firebase Console.
-      // url: 'https://www.example.com/finishSignUp?cartId=1234',
-      // url: `${window.location.origin}/authentication/${siteName}`,
-      url: firebaseCallbackUrl,
-      // This must be true.
-      handleCodeInApp: true,
-    }
-
-    const auth = instanceStore.initializedApp
-
-    console.log({ auth, email, actionCodeSettings })
-
-    sendSignInLinkToEmail(auth, email, actionCodeSettings)
+    await fetch(emailEndpoint, {
+      method: 'POST',
+      body: siteName
+        ? JSON.stringify({ email, subDomain: siteName })
+        : JSON.stringify({ email }),
+    })
       .then(() => {
-        // The link was successfully sent. Inform the user.
-        // Save the email locally so you don't need to ask the user for it again
-        // if they open the link on the same device.
         window.localStorage.setItem('emailForSignIn', email)
         emailSent = true
-        // ...
       })
-      .catch((error) => {
-        emailErrorMessage = error.message
-        // ...
+      .catch((err) => {
+        console.error(`error sending login email: ${JSON.stringify(err)}`)
+        emailErrorMessage = err?.message ?? 'Error sending login email'
       })
       .finally(() => {
         emailSending = false
