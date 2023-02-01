@@ -94,10 +94,12 @@
       display: '',
       path: '',
     })
+    update()
   }
 
   const removeNavigationLinks = (display: string) => {
     navigationLinks = navigationLinks.filter((link) => link.display !== display)
+    update()
   }
 </script>
 
