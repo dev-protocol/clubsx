@@ -9,7 +9,7 @@ import PageNotFound from '@pages/404.astro'
 
 const { site } = Astro.params
 
-const created = new URL(Astro.request.url).searchParams.get('created')
+const created = new URL(Astro.request.url).searchParams.has('created')
 
 const { getStaticPaths, getCurrentConfig } = adminFactory({
   config: async () => await _config(site),
@@ -43,19 +43,21 @@ const clubs = path?.props.clubs
       <section class="grid gap-16">
         <h1 class="font-title text-lg font-bold">Memberships</h1>
 
-        <div class="text-2xl">
-          Create a new Membership by selecting a template
-        </div>
+        {!created && (
+          <h2 class="-mb-8 text-2xl">
+            Create a new Membership by selecting a template
+          </h2>
+        )}
 
         <AdminMembershipsForm
           client:load
           currentPluginIndex={clubs.currentPluginIndex}
           memberships={path.props.memberships as Membership[]}
-          presets={path.props.presets as Membership[]}
+          presets={created ? [] : (path.props.presets as Membership[])}
           base={`/${site}/setup`}
         />
 
-        {created === '' && (
+        {created && (
           <aside class="grid gap-2">
             <p class="text-center text-4xl">Congratulation!</p>
             <p class="text-center">

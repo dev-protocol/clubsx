@@ -14,10 +14,10 @@
 </script>
 
 <div>
-  <div
-    class="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] justify-between gap-4	"
-  >
-    {#if memberships.length === 0}
+  {#if presets.length > 0}
+    <div
+      class="mb-16 grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] justify-between gap-4	"
+    >
       {#each presets as opt, i}
         <div>
           <MembershipOptionCard
@@ -33,8 +33,13 @@
           >
         </div>
       {/each}
-    {:else}
-      <!-- TODO: Display existing memberships -->
+    </div>
+  {/if}
+  {#if memberships.length > 0}
+    <h2 class="mb-8 text-2xl">Exsiting memberships</h2>
+    <div
+      class="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] justify-between gap-4	"
+    >
       {#each memberships as membership, i}
         <div>
           <MembershipOptionCard
@@ -50,6 +55,6 @@
           >
         </div>
       {/each}
-    {/if}
-  </div>
+    </div>
+  {/if}
 </div>
