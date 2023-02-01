@@ -30,17 +30,17 @@ export const address: Address[] = [
   },
   {
     chainId: 137,
-    address: '0x007bfb81A0f4E8EEBC1D0570ad4dB6E04594bd43',
+    address: '0xF235ff0A6B33e074daFd98bB4BD2b300c1561339',
   },
   {
     chainId: 80001,
-    address: '0x6D9D177c7Aa936a3d6b6F95255Ed63ac6c4601c2',
+    address: '0x672bA772beD905Ad9Ecb924bD9c47eAb156153C0',
   },
 ]
 
 const defaultAddress: Address = {
   chainId: 137,
-  address: '0x007bfb81A0f4E8EEBC1D0570ad4dB6E04594bd43',
+  address: '0xF235ff0A6B33e074daFd98bB4BD2b300c1561339',
 }
 
 const simpleCollectionsAbi = [
