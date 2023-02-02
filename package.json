@@ -79,7 +79,7 @@
     "three": "0.149.0",
     "truncate-eth-address": "1.0.2",
     "unique-string": "^3.0.0",
-    "vue": "3.2.45",
+    "vue": "3.2.47",
     "web3modal": "1.9.12"
   },
   "repository": "https://github.com/dev-protocol/clubs.git",
