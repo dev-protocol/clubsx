@@ -58,6 +58,7 @@
     const config: ClubsConfiguration = {
       ...defaultConfig,
       name: siteName,
+      url: `https://${siteName}.clubs.place`,
       options: [
         ...(defaultConfig.options ? defaultConfig.options : []),
         {

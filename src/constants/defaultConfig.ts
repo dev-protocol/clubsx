@@ -25,10 +25,6 @@ export const defaultConfig: ClubsConfiguration = {
       ],
     },
     {
-      key: 'fullPageViewPaths',
-      value: [{ path: '', exact: true }, { path: 'join/' }],
-    },
-    {
       key: 'avatarImgSrc',
       value: '',
     },
@@ -55,7 +51,7 @@ export const defaultConfig: ClubsConfiguration = {
           key: 'homeConfig',
           value: {
             hero: {
-              image: 'https://i.imgur.com/MyGIFqA.jpg',
+              image: 'https://i.imgur.com/hyqFcB6.png',
             },
             description: `I create art in Canada using flowers and light refraction. Recently, I have focused on creating online artworks that allow user interaction through JavaScript.`,
             body: Body(),

@@ -53,6 +53,7 @@ const { siteName } = Astro.params
     const config: ClubsConfiguration = {
       ...defaultConfig,
       name: site,
+      url: `https://${siteName}.clubs.place`,
       options: [
         ...(defaultConfig.options ? defaultConfig.options : []),
         {
