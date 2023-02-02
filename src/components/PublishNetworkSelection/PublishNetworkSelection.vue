@@ -37,7 +37,11 @@
             addressFromNiwaOrConfigIsValid ||
             isTokenizing ||
             initMbmershipTxnProcessing ||
-            setupMemberhipTxnProcessing
+            setupMemberhipTxnProcessing ||
+            isRemovingDraftStatus ||
+            membershipInitialized ||
+            membershipSet ||
+            clubPublished
           "
         >
           <p class="font-DMSans text-center text-base font-bold text-[#FFFFFF]">
@@ -66,7 +70,11 @@
             addressFromNiwaOrConfigIsValid ||
             isTokenizing ||
             initMbmershipTxnProcessing ||
-            setupMemberhipTxnProcessing
+            setupMemberhipTxnProcessing ||
+            isRemovingDraftStatus ||
+            membershipInitialized ||
+            membershipSet ||
+            clubPublished
           "
         >
           <p class="font-DMSans text-center text-xs text-[#FFFFFF]">Arbitrum</p>
@@ -90,7 +98,11 @@
             addressFromNiwaOrConfigIsValid ||
             isTokenizing ||
             initMbmershipTxnProcessing ||
-            setupMemberhipTxnProcessing
+            setupMemberhipTxnProcessing ||
+            isRemovingDraftStatus ||
+            membershipInitialized ||
+            membershipSet ||
+            clubPublished
           "
         >
           <p class="font-DMSans text-center text-xs text-[#FFFFFF]">Ethereum</p>
@@ -114,7 +126,11 @@
             addressFromNiwaOrConfigIsValid ||
             isTokenizing ||
             initMbmershipTxnProcessing ||
-            setupMemberhipTxnProcessing
+            setupMemberhipTxnProcessing ||
+            isRemovingDraftStatus ||
+            membershipInitialized ||
+            membershipSet ||
+            clubPublished
           "
         >
           <p class="font-DMSans text-center text-xs text-[#FFFFFF]">
@@ -257,7 +273,9 @@
             ? openNiwa(link)
             : !membershipInitialized
             ? initializeMemberships()
-            : setMemberships()
+            : !membershipSet
+            ? setMemberships()
+            : updateConfig(true)
         "
         class="hs-button is-filled is-large"
         v-bind:class="
@@ -265,7 +283,8 @@
             ? 'opacity-50'
             : isTokenizing ||
               initMbmershipTxnProcessing ||
-              setupMemberhipTxnProcessing
+              setupMemberhipTxnProcessing ||
+              isRemovingDraftStatus
             ? ' animate-pulse'
             : ''
         "
@@ -274,7 +293,8 @@
           isTokenizing ||
           initMbmershipTxnProcessing ||
           setupMemberhipTxnProcessing ||
-          membershipSet
+          isRemovingDraftStatus ||
+          clubPublished
         "
       >
         <p class="font-DMSans text-center text-base font-bold text-[#FFFFFF]">
@@ -339,6 +359,9 @@ type Data = {
   initMembershipTxnStatusMsg: string
   setupMemberhipTxnProcessing: boolean
   setupMbmershipTxnStatusMsg: string
+  removingDraftStatusMsg: string
+  isRemovingDraftStatus: boolean
+  clubPublished: boolean
 }
 
 let provider: BaseProvider | undefined
@@ -386,6 +409,9 @@ export default defineComponent({
       initMembershipTxnStatusMsg: 'Initialize your memberships',
       setupMemberhipTxnProcessing: false,
       setupMbmershipTxnStatusMsg: 'Setup memberships',
+      removingDraftStatusMsg: 'Publish your club',
+      isRemovingDraftStatus: false,
+      clubPublished: false,
     }
   },
   computed: {
@@ -455,7 +481,9 @@ export default defineComponent({
         ? this.tokenizingStatusMsg
         : !this.membershipInitialized
         ? this.initMembershipTxnStatusMsg
-        : this.setupMbmershipTxnStatusMsg
+        : !this.membershipSet
+        ? this.setupMbmershipTxnStatusMsg
+        : this.removingDraftStatusMsg
     },
     step3InterStepSubInfo() {
       return !this.addressFromNiwaOrConfigIsValid
@@ -664,6 +692,33 @@ export default defineComponent({
       }
     },
 
+    onRemovingDraft() {
+      return document.body.addEventListener(
+        ClubsEvents.FinishConfiguration,
+        (ev: any) => {
+          this.isRemovingDraftStatus = true
+          this.removingDraftStatusMsg = 'Finalizing publishing...'
+
+          if (typeof ev.detail.success === 'boolean') {
+            if (ev.detail.success) {
+              this.clubPublished = true
+              this.removingDraftStatusMsg =
+                'Your Club is published, loading overview...'
+              window.location.href = new URL(
+                '/admin/overview',
+                `${location.protocol}//${this.site}.${location.host}`
+              ).toString()
+            } else {
+              this.clubPublished = false
+              this.removingDraftStatusMsg = 'Publishing failed, try again!'
+            }
+          }
+
+          this.isRemovingDraftStatus = false
+        }
+      )
+    },
+
     updateConfig(disableDraft: boolean = false) {
       const propertyAddress = Boolean(this.addressFromNiwa)
         ? (this.addressFromNiwa as string)
@@ -708,11 +763,25 @@ export default defineComponent({
           ) {
             return
           }
-          buildConfig()
+
+          try {
+            this.isRemovingDraftStatus = true
+            this.removingDraftStatusMsg = 'Publishing your club...'
+            buildConfig()
+          } catch (error) {
+            this.clubPublished = false
+            this.removingDraftStatusMsg = 'Publish failed, try again!'
+            this.isRemovingDraftStatus = false
+          }
         },
         { once: true }
       )
 
+      if (disableDraft) {
+        this.isRemovingDraftStatus = true
+        this.removingDraftStatusMsg = 'Preparing publishing your club...'
+        this.onRemovingDraft() // Attach the onFinishConfigurationListener to update states.
+      }
       setConfig(nextConfig)
     },
 
@@ -837,16 +906,9 @@ export default defineComponent({
 
         if (response?.status) {
           this.membershipSet = true
-          this.setupMbmershipTxnStatusMsg =
-            'Setup complete, loading admin panel...'
-
+          this.setupMbmershipTxnStatusMsg = 'Memberships setup complete'
           // Disable the draft.
           this.updateConfig(true)
-
-          // window.location.href = new URL(
-          //   '/admin/overview',
-          //   `${location.protocol}//${this.site}.${location.host}`
-          // ).toString()
         } else {
           this.setupMbmershipTxnStatusMsg = 'Setup failed, try again!'
           this.membershipSet = false
