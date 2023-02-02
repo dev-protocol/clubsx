@@ -1,14 +1,10 @@
 ---
 import Layout from '@layouts/Landing.astro'
-import { Debug } from 'astro/components'
-
 import { config as _config } from '@fixtures/config'
-import { decode } from '@devprotocol/clubs-core'
 
 const { siteName } = Astro.params
 
 const config = await _config(siteName).catch((err: Error) => err)
-const decodedConfig = config instanceof Error ? undefined : decode(config)
 
 if (config instanceof Error) {
   console.error({ config })
@@ -17,12 +13,7 @@ if (config instanceof Error) {
 
 <Layout>
   {
-    config instanceof Error ? (
-    <Debug {{cause:config.cause, message:config.message,name:config.name, stack:config.stack }} />
-    ) :
-    (
-
-      <Debug {{config, decodedConfig}} />
+    !(config instanceof Error) && (
       <input type="hidden" id="encodedConfig" value={config} />
     )
   }
@@ -31,7 +22,8 @@ if (config instanceof Error) {
 <script>
   import { decode } from '@devprotocol/clubs-core'
 
-  const config = (document.getElementById('encodedConfig') as HTMLInputElement).value
+  const config = (document.getElementById('encodedConfig') as HTMLInputElement)
+    .value
   const decodedConfig = decode(config)
 
   console.log({ decodedConfig })
