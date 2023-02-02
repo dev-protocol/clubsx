@@ -35,59 +35,71 @@ const { siteName } = Astro.params
 
   import type { DraftOptions } from '@constants/draft'
 
+  import { isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth'
+
   // Confirm the link is a sign-in with email link.
   const auth = instanceStore.initializedApp
   const siteName = (document.getElementById('siteName') as HTMLInputElement)
     ?.value as string
 
-  auth.onIdTokenChanged(async (user) => {
-    console.log('auth.onIdTokenChanged', { user })
-    if (!user) {
-      return
+  if (isSignInWithEmailLink(auth, window.location.href)) {
+    let email = window.localStorage.getItem('emailForSignIn')
+    if (!email) {
+      // User opened the link on a different device. To prevent session fixation
+      // attacks, ask the user to provide the associated email again. For example:
+      email = window.prompt('Please provide your email for confirmation')
     }
 
-    const jwtToken = await user.getIdToken()
-    const site: string | undefined =
-      window.location.pathname.split('/').pop() || siteName
-
-    const config: ClubsConfiguration = {
-      ...defaultConfig,
-      name: site,
-      url: `https://${siteName}.clubs.place`,
-      options: [
-        ...(defaultConfig.options ? defaultConfig.options : []),
-        {
-          key: '__draft',
-          value: {
-            isInDraft: true,
-            uid: user.uid,
-          },
-        } as DraftOptions,
-      ],
-    }
-
-    const body = {
-      site,
-      config: encode(config),
-      uid: user.uid,
-    }
-
-    // Save the config to db.
-    const res = await fetch('/api/addDaoToDraft', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${jwtToken}`,
-      },
-      body: JSON.stringify(body),
-    })
-
-    if (res.ok) {
-      setConfig(config)
-      window.location.href = new URL(
-        `${siteName}/setup/basic`,
-        `${location.protocol}//${location.host}`
-      ).toString()
-    }
-  })
+    signInWithEmailLink(auth, email ?? '', window.location.href)
+      .then(async (result) => {
+        // Clear email from storage.
+        window.localStorage.removeItem('emailForSignIn')
+        const jwtToken = await result.user.getIdToken()
+        const site: string | undefined =
+          window.location.pathname.split('/').pop() || siteName
+        const uid = result.user.uid
+        // If it is a new user, set the __draft user
+        if (uid) {
+          // Make the default config.
+          const config: ClubsConfiguration = {
+            ...defaultConfig,
+            name: site,
+            options: [
+              ...(defaultConfig.options ? defaultConfig.options : []),
+              {
+                key: '__draft',
+                value: {
+                  isInDraft: true,
+                  uid: uid,
+                },
+              } as DraftOptions,
+            ],
+          }
+          const body = {
+            site,
+            config: encode(config),
+            uid,
+          }
+          // Save the config to db.
+          const res = await fetch('/api/addDaoToDraft', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${jwtToken}`,
+            },
+            body: JSON.stringify(body),
+          })
+          if (res.ok) {
+            setConfig(config)
+            window.location.href = new URL(
+              `${siteName}/setup/basic`,
+              `${location.protocol}//${location.host}`
+            ).toString()
+          }
+        }
+      })
+      .catch((err) => {
+        console.error('error using signInWithEmailLink: ', err)
+      })
+  }
 </script>
