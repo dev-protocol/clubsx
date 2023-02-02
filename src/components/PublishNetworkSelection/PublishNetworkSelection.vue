@@ -765,13 +765,17 @@ export default defineComponent({
           }
 
           try {
-            this.isRemovingDraftStatus = true
-            this.removingDraftStatusMsg = 'Publishing your club...'
+            if (disableDraft) {
+              this.isRemovingDraftStatus = true
+              this.removingDraftStatusMsg = 'Publishing your club...'
+            }
             buildConfig()
           } catch (error) {
-            this.clubPublished = false
-            this.removingDraftStatusMsg = 'Publish failed, try again!'
-            this.isRemovingDraftStatus = false
+            if (disableDraft) {
+              this.clubPublished = false
+              this.removingDraftStatusMsg = 'Publish failed, try again!'
+              this.isRemovingDraftStatus = false
+            }
           }
         },
         { once: true }
