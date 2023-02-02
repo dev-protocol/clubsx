@@ -59,7 +59,7 @@
     "@vercel/analytics": "0.1.8",
     "@vercel/edge": "0.2.7",
     "@vue/composition-api": "1.7.1",
-    "astro": "2.0.4",
+    "astro": "2.0.5",
     "autoprefixer": "10.4.13",
     "bignumber.js": "9.1.1",
     "ethers": "5.7.2",
