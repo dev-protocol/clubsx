@@ -320,6 +320,7 @@ import {
   onMountClient,
   onUpdatedConfiguration,
 } from '@devprotocol/clubs-core/events'
+import type { DraftOptions } from '@constants/draft'
 
 type Data = {
   networkSelected: String
@@ -662,19 +663,36 @@ export default defineComponent({
       }
     },
 
-    updateConfig() {
+    updateConfig(disableDraft: boolean = false) {
       const propertyAddress = Boolean(this.addressFromNiwa)
         ? (this.addressFromNiwa as string)
         : (this.addressFromNiwaOrConfig as string)
       const rpcUrl = this.getRpcUrl()
       const chainId = this.getChainId()
       if (!chainId) return
+
+      const __draftOptions: DraftOptions | undefined =
+        this.config?.options?.find((op) => op.key === '__draft') as DraftOptions
+      if (!__draftOptions) return
+      const __updatedDraftOptions: DraftOptions = disableDraft
+        ? {
+            ...__draftOptions,
+            value: { ...__draftOptions.value, isInDraft: false },
+          }
+        : __draftOptions
+      if (!__updatedDraftOptions) return
+
       const nextConfig: ClubsConfiguration = {
         ...this.config,
         rpcUrl,
         chainId,
         propertyAddress,
+        options: [
+          ...(this.config.options ? this.config.options : []),
+          __updatedDraftOptions as DraftOptions,
+        ],
       }
+
       onUpdatedConfiguration(
         () => {
           if (
@@ -814,6 +832,10 @@ export default defineComponent({
           this.membershipSet = true
           this.setupMbmershipTxnStatusMsg =
             'Setup complete, loading admin panel...'
+
+          // Disable the draft.
+          this.updateConfig(true)
+
           window.location.href = new URL(
             '/admin/overview',
             `${location.protocol}//${this.site}.${location.host}`
