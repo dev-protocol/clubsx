@@ -7,20 +7,31 @@ import { decode } from '@devprotocol/clubs-core'
 
 const { siteName } = Astro.params
 
-const config = await _config(siteName)
-const decodedConfig = decode(config)
+const config = await _config(siteName).catch((err: Error) => err)
+const decodedConfig = config instanceof Error ? undefined : decode(config)
+
+if (config instanceof Error) {
+  console.error({ config })
+}
 ---
 
 <Layout>
-  <Debug {{config, decodedConfig}} />
-  <input type="hidden" id="encodedConfig" value={config} />
+  {
+    config instanceof Error ? (
+    <Debug {{cause:config.cause, message:config.message,name:config.name, stack:config.stack }} />
+    ) :
+    (
+
+      <Debug {{config, decodedConfig}} />
+      <input type="hidden" id="encodedConfig" value={config} />
+    )
+  }
 </Layout>
 
 <script>
   import { decode } from '@devprotocol/clubs-core'
 
-  const config = (document.getElementById('encodedConfig') as HTMLInputElement)
-    .value
+  const config = (document.getElementById('encodedConfig') as HTMLInputElement).value
   const decodedConfig = decode(config)
 
   console.log({ decodedConfig })
