@@ -1,4 +1,5 @@
 ---
+import DefaultLayout from '@layouts/Default.astro'
 import { pageFactory } from '@devprotocol/clubs-core'
 import { config as _config } from '@fixtures/config'
 import defaultTheme from '@plugins/default-theme'
@@ -17,7 +18,7 @@ import memberships from '@plugins/memberships'
 import PageNotFound from '@pages/404.astro'
 
 const { site, page } = Astro.params
-const { getStaticPaths } = pageFactory({
+const { getStaticPaths, getCurrentConfig } = pageFactory({
   config: async () => await _config(site),
   plugins: {
     defaultTheme,
@@ -36,6 +37,7 @@ const { getStaticPaths } = pageFactory({
   },
 })
 const path = (await getStaticPaths()).find(({ params }) => params.page === page)
+const config = await getCurrentConfig()
 
 const Layout = path?.props.layout
 const Content = path?.props.component
@@ -45,15 +47,17 @@ const siteBaseUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
 )
 ---
 
-{
-  path && Layout && Content ? (
-    <Layout {...path.props}>
-      <Content {...path.props} />
-    </Layout>
-  ) : (
-    <PageNotFound
-      redirectionCtaText={`Take me back ${site} homepage`}
-      redirectionCtaUrl={siteBaseUrl}
-    />
-  )
-}
+<DefaultLayout config={config}>
+  {
+    path && Layout && Content ? (
+      <Layout {...path.props}>
+        <Content {...path.props} />
+      </Layout>
+    ) : (
+      <PageNotFound
+        redirectionCtaText={`Take me back ${site} homepage`}
+        redirectionCtaUrl={siteBaseUrl}
+      />
+    )
+  }
+</DefaultLayout>

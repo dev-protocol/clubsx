@@ -1,131 +1,18 @@
 ---
 import type { ClubsConfiguration } from '@devprotocol/clubs-core'
-import Navbar from '@components/Global/Navbar.vue'
-import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
-import Sidebar from '@components/Sidebar/Sidebar.vue'
-import Footer from '@components/Global/Footer.astro'
-import '@devprotocol/clubs-core/styles'
-import type { NavLink, PathCondition } from '@constants/navLink'
-import type { UndefinedOr } from '@devprotocol/util-ts'
 import VercelAnalytics from '@components/Analytics/VercelAnalytics.astro'
 import PreviewBanner from '@components/PreviewBanner/PreviewBanner.svelte'
 import type { DraftOptions } from '@constants/draft'
 
-const { page } = Astro.params
-const { metaTitle, config } = Astro.props as {
-  metaTitle?: string
-  config: ClubsConfiguration
+const { config } = Astro.props as {
+  config?: ClubsConfiguration
 }
 
-const title = metaTitle ? `${config.name} : ${metaTitle}` : config.name
-
-const draftOptions = config.options?.find((option) => option.key === '__draft')
+const draftOptions = config?.options?.find((option) => option.key === '__draft')
   ?.value as DraftOptions['value']
 const isInDraft = Boolean(draftOptions?.isInDraft)
-
-const ogp = config.options?.find((option) => option.key === 'ogp')
-  ?.value as UndefinedOr<{ image?: string }>
-
-const headerLinks =
-  config.options?.find((option) => option.key === 'headerLinks')?.value ??
-  ([] as NavLink[])
-
-const navLinks =
-  config.options?.find((option) => option.key === 'navLinks')?.value ??
-  ([] as NavLink[])
-
-const socialLinks =
-  config.options?.find((option) => option.key === 'socialLinks')?.value ??
-  ([] as NavLink[])
-
-const sidebarPrimaryLinks =
-  config.options?.find((option) => option.key === 'sidebarPrimaryLinks')
-    ?.value ?? ([] as NavLink[])
-
-const sidebarLinks =
-  config.options?.find((option) => option.key === 'sidebarLinks')?.value ??
-  ([] as NavLink[])
-
-const avatarImgSrc: string | undefined = config.options?.find(
-  (option) => option.key === 'avatarImgSrc'
-)?.value as string
-
-const fullPageViewPaths =
-  (config.options?.find((option) => option.key === 'fullPageViewPaths')
-    ?.value as PathCondition[]) ?? ([] as PathCondition[])
-
-const isFullPageView = fullPageViewPaths.some((path) =>
-  path.exact || page === undefined
-    ? path.path === (page ?? '')
-    : page !== undefined
-    ? page.toString().startsWith(path.path)
-    : false
-)
-
-const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
 ---
 
-<!DOCTYPE html>
-<html class="dark" lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>{title}</title>
-    <link rel="icon" type="image/svg" href={avatarImgSrc || '/favicon.svg'} />
-    <meta name="description" content={`${config.description}`} />
-    <meta property="og:title" content={title} />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={url} />
-    <meta property="og:image" content={`${ogp?.image}`} />
-    <meta property="og:description" content={config.description} />
-    <meta property="og:site_name" content={config.name} />
-    <meta name="twitter:site" content={config.twitterHandle} />
-    <meta name="twitter:creator" content={config.twitterHandle} />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={config.description} />
-    <meta name="twitter:image" content={`${ogp?.image}`} />
-  </head>
-
-  <body class="min-h-screen bg-dp-black-300 font-body text-white">
-    <Navbar
-      client:load
-      tenantName={config.name}
-      headerLinks={headerLinks}
-      navLinks={navLinks}
-      socialLinks={socialLinks}
-      chainId={config.chainId}
-    />
-    {
-      isFullPageView ? (
-        <main>
-          <slot />
-
-          {isInDraft && <PreviewBanner />}
-        </main>
-      ) : (
-        <>
-          <main>
-            <CLBWrapper>
-              <Sidebar
-                client:load
-                propertyAddress={config.propertyAddress}
-                tenantName={config.name}
-                links={sidebarLinks}
-                primaryLinks={sidebarPrimaryLinks}
-                avatarImgSrc={avatarImgSrc}
-                rpcUrl={config.rpcUrl}
-                chainId={config.chainId}
-              />
-              <slot />
-            </CLBWrapper>
-          </main>
-          <Footer />
-
-          {isInDraft && <PreviewBanner />}
-        </>
-      )
-    }
-  </body>
-  <VercelAnalytics />
-</html>
+<slot />
+{isInDraft && <PreviewBanner />}
+<VercelAnalytics />
