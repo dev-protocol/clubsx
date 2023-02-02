@@ -36,6 +36,10 @@ export const colorPresets = {
   Matcha: {
     bg: 'rgba(63, 78, 38, 1)',
   },
+  Pink: {
+    bg: 'rgba(255, 187, 195, 1)',
+    backgroundGradient: ['rgba(255, 173, 217, 1)', 'rgba(255, 173, 217, 0)'],
+  },
 }
 
 export type GlobalConfigValue = {
