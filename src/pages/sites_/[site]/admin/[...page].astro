@@ -1,6 +1,7 @@
 ---
+import DefaultLayout from '@layouts/Default.astro'
 import { Admin } from '@devprotocol/clubs-core/layouts'
-import { adminFactory } from '@devprotocol/clubs-core'
+import { adminFactory, decode } from '@devprotocol/clubs-core'
 import { config as _config } from '@fixtures/config'
 import defaultTheme from '@plugins/default-theme'
 import admin from '@plugins/admin'
@@ -28,8 +29,8 @@ const { getStaticPaths } = adminFactory({
     marketplace,
   },
 })
-
 const path = (await getStaticPaths()).find(({ params }) => params.page === page)
+const config = path && decode(path.props.clubs.encodedClubsConfiguration)
 
 const Content = path?.props.component
 
@@ -45,57 +46,59 @@ const siteBaseUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
 )
 ---
 
-{
-  path && Content ? (
-    <>
-      <section class="flex justify-center bg-dp-blue-grey-600 p-2">
-        <p class="text-xs">
-          Clubs is now public-beta version. There may be bugs, or features under
-          update. If you notice anything,{' '}
+<DefaultLayout config={config}>
+  {
+    path && Content ? (
+      <>
+        <section class="bg-dp-blue-grey-600 flex justify-center p-2">
+          <p class="text-xs">
+            Clubs is now public-beta version. There may be bugs, or features
+            under update. If you notice anything,{' '}
+            <a
+              class="text-xs underline"
+              href="https://airtable.com/shrClLKosbLG7LFCm"
+              target="_blank"
+              rel="noopener"
+            >
+              please give us feedback here
+            </a>
+            .
+          </p>
+        </section>
+        <Admin {...path.props}>
           <a
-            class="text-xs underline"
-            href="https://airtable.com/shrClLKosbLG7LFCm"
-            target="_blank"
-            rel="noopener"
+            slot="sidebar:before-title"
+            class="hover:text-native-blue-300 flex items-center gap-2 transition-colors"
+            href={`${baseUrl}/me`}
           >
-            please give us feedback here
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="h-4 w-4"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M19.5 12h-15m0 0l6.75 6.75M4.5 12l6.75-6.75"
+              />
+            </svg>
+            Projects
           </a>
-          .
-        </p>
-      </section>
-      <Admin {...path.props}>
-        <a
-          slot="sidebar:before-title"
-          class="flex items-center gap-2 transition-colors hover:text-native-blue-300"
-          href={`${baseUrl}/me`}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="h-4 w-4"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M19.5 12h-15m0 0l6.75 6.75M4.5 12l6.75-6.75"
-            />
-          </svg>
-          Projects
-        </a>
-        <Content {...path.props} />
-        <VercelAnalytics />
-      </Admin>
-    </>
-  ) : (
-    <PageNotFound
-      redirectionCtaText={`Take me back ${site} homepage`}
-      redirectionCtaUrl={siteBaseUrl}
-    />
-  )
-}
+          <Content {...path.props} />
+          <VercelAnalytics />
+        </Admin>
+      </>
+    ) : (
+      <PageNotFound
+        redirectionCtaText={`Take me back ${site} homepage`}
+        redirectionCtaUrl={siteBaseUrl}
+      />
+    )
+  }
+</DefaultLayout>
 
 <script>
   import type { ethers } from 'ethers'
