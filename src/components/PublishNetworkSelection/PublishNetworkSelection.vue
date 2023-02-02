@@ -273,7 +273,8 @@
           !step3Enabled ||
           isTokenizing ||
           initMbmershipTxnProcessing ||
-          setupMemberhipTxnProcessing
+          setupMemberhipTxnProcessing ||
+          membershipSet
         "
       >
         <p class="font-DMSans text-center text-base font-bold text-[#FFFFFF]">
@@ -616,7 +617,7 @@ export default defineComponent({
       )
         return
       this.networkSelected = network
-      this.updateConfig()
+      this.updateConfig(false)
     },
 
     openNiwa(link: string) {
@@ -654,7 +655,7 @@ export default defineComponent({
 
       try {
         this.addressFromNiwa = address
-        this.updateConfig()
+        this.updateConfig(false)
         this.tokenizingStatusMsg = 'Activated, setting up initialization..'
       } catch (error) {
         this.tokenizingStatusMsg = 'Activated failed, try again!'
@@ -688,8 +689,12 @@ export default defineComponent({
         chainId,
         propertyAddress,
         options: [
-          ...(this.config.options ? this.config.options : []),
-          __updatedDraftOptions as DraftOptions,
+          ...(this.config.options
+            ? [
+                ...this.config.options.filter((op) => op.key !== '__draft'),
+                __updatedDraftOptions,
+              ]
+            : []),
         ],
       }
 
@@ -698,7 +703,8 @@ export default defineComponent({
           if (
             this.config.propertyAddress === propertyAddress &&
             this.config.rpcUrl === rpcUrl &&
-            this.config.chainId === chainId
+            this.config.chainId === chainId &&
+            !disableDraft // Since when disabling the draft all the config properties will be same.
           ) {
             return
           }
@@ -706,6 +712,7 @@ export default defineComponent({
         },
         { once: true }
       )
+
       setConfig(nextConfig)
     },
 
@@ -836,10 +843,10 @@ export default defineComponent({
           // Disable the draft.
           this.updateConfig(true)
 
-          window.location.href = new URL(
-            '/admin/overview',
-            `${location.protocol}//${this.site}.${location.host}`
-          ).toString()
+          // window.location.href = new URL(
+          //   '/admin/overview',
+          //   `${location.protocol}//${this.site}.${location.host}`
+          // ).toString()
         } else {
           this.setupMbmershipTxnStatusMsg = 'Setup failed, try again!'
           this.membershipSet = false
