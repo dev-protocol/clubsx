@@ -7,6 +7,7 @@
 
   export let propertyAddress: UndefinedOr<string> = undefined
   export let rpcUrl: UndefinedOr<string> = undefined
+  export let isInDraft = false
   let members: UndefinedOr<number> = undefined
 
   onMount(async () => {
@@ -19,7 +20,12 @@
   })
 </script>
 
-{#if members === undefined}
+{#if isInDraft}
+  <span
+    ><span class="font-bold lg:text-2xl">0</span>
+    <span class="lg:text-2xl">members</span></span
+  >
+{:else if members === undefined}
   <span
     class="inline-block h-[5ex] w-28 animate-pulse rounded bg-gray-500/60"
   />

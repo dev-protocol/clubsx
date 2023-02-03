@@ -6,6 +6,7 @@ import Header from '../components/Header/Header.astro'
 import Hero from '../components/Hero/Hero.astro'
 import type { NavLink } from '@constants/navLink'
 import Navigation from '../components/Navigation/Navigation.astro'
+import type { DraftOptions } from '@constants/draft'
 
 const { page } = Astro.params
 const { metaTitle, config, homeConfig, globalConfig, signals } =
@@ -51,6 +52,10 @@ const currentLink = navigationLinks?.find((link) =>
   ((pathname) => pathname === link.path)(`/${page ?? ''}`)
 )
 
+const draftOptions = config?.options?.find((option) => option.key === '__draft')
+  ?.value as DraftOptions['value']
+const isInDraft = Boolean(draftOptions?.isInDraft)
+
 const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
 
 const backgroundColor = globalConfig?.bg ?? '#ADADAD'
@@ -85,7 +90,7 @@ const backgroundColor = globalConfig?.bg ?? '#ADADAD'
   </head>
 
   <body class="min-h-screen overflow-x-hidden font-body text-white">
-    <Header chainId={chainId} />
+    <Header chainId={chainId} config={config} />
     <Hero
       image={homeConfig.hero.image}
       avatar={avatarImgSrc}
@@ -96,6 +101,7 @@ const backgroundColor = globalConfig?.bg ?? '#ADADAD'
       description={homeConfig.description}
       globalConfig={globalConfig}
       compact={displayFullPage}
+      isInDraft={isInDraft}
     />
     {
       displayFullPage ? (

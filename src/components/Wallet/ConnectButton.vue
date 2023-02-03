@@ -1,55 +1,66 @@
 <template>
-  <div
-    v-bind:class="`relative hs-wallet${
-      truncateWalletAddress &&
-      formattedUserBalance.length > 0 &&
-      supportedNetwork
-        ? ' is-connected'
-        : ''
-    }`"
-  >
-    <HSButton
-      :type="`${type ? ' ' + type : ''}`"
-      v-if="
+  <div v-if="isDisabled">
+    <button
+      v-bind:class="`hs-button rounded-md font-bold`"
+      role="button"
+      :disabled="true"
+    >
+      <span class="hs-button__label">Connect Wallet</span>
+    </button>
+  </div>
+  <div v-else>
+    <div
+      v-bind:class="`relative hs-wallet${
         truncateWalletAddress &&
         formattedUserBalance.length > 0 &&
         supportedNetwork
-      "
-      link="/me"
+          ? ' is-connected'
+          : ''
+      }`"
     >
-      {{ truncateWalletAddress }}
-    </HSButton>
-    <HSButton
-      :type="`${type ? ' ' + type : ''}`"
-      v-else-if="truncateWalletAddress && !supportedNetwork"
-      v-on:click="connect"
-    >
-      Unsupported Network
-    </HSButton>
-    <HSButton
-      :type="`${type ? ' ' + type : ''}`"
-      v-else
-      v-on:click="connect"
-      :loading="connection === undefined || modalProvider === undefined"
-    >
-      Connect Wallet
-    </HSButton>
-    <span
-      v-if="truncateWalletAddress && !supportedNetwork"
-      class="absolute top-14 z-50 block rounded bg-orange-600 p-4 text-sm shadow"
-    >
-      Please connect to {{ chainName }}
-    </span>
-    <ul
-      class="hs-wallet__details"
-      v-if="
-        truncateWalletAddress &&
-        formattedUserBalance.length > 0 &&
-        supportedNetwork
-      "
-    >
-      <li>Balance: {{ formattedUserBalance }} $DEV</li>
-    </ul>
+      <HSButton
+        :type="`${type ? ' ' + type : ''}`"
+        v-if="
+          truncateWalletAddress &&
+          formattedUserBalance.length > 0 &&
+          supportedNetwork
+        "
+        link="/me"
+      >
+        {{ truncateWalletAddress }}
+      </HSButton>
+      <HSButton
+        :type="`${type ? ' ' + type : ''}`"
+        v-else-if="truncateWalletAddress && !supportedNetwork"
+        v-on:click="connect"
+      >
+        Unsupported Network
+      </HSButton>
+      <HSButton
+        :type="`${type ? ' ' + type : ''}`"
+        v-else
+        v-on:click="connect"
+        :loading="connection === undefined || modalProvider === undefined"
+      >
+        Connect Wallet
+      </HSButton>
+      <span
+        v-if="truncateWalletAddress && !supportedNetwork"
+        class="absolute top-14 z-50 block rounded bg-orange-600 p-4 text-sm shadow"
+      >
+        Please connect to {{ chainName }}
+      </span>
+      <ul
+        class="hs-wallet__details"
+        v-if="
+          truncateWalletAddress &&
+          formattedUserBalance.length > 0 &&
+          supportedNetwork
+        "
+      >
+        <li>Balance: {{ formattedUserBalance }} $DEV</li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -68,6 +79,7 @@ type Data = {
   truncateWalletAddress: String
   formattedUserBalance: String
   supportedNetwork: boolean
+  isDisabled: boolean
   connection?: typeof Connection
 }
 
@@ -80,6 +92,7 @@ export default defineComponent({
       type: String,
       required: false,
     },
+    isDisabled: Boolean,
   },
   data(): Data {
     return {
@@ -88,6 +101,7 @@ export default defineComponent({
       formattedUserBalance: '',
       supportedNetwork: false,
       connection: undefined,
+      isDisabled: this.isDisabled,
     }
   },
   computed: {
@@ -111,7 +125,7 @@ export default defineComponent({
       ])
     this.connection = connection
     this.modalProvider = GetModalProvider()
-    connection().chain.subscribe((chainId: number) => {
+    connection().chain.subscribe((chainId) => {
       this.supportedNetwork = chainId === this.chainId
     })
     const { currentAddress, provider } = await ReConnectWallet(
