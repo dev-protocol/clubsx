@@ -1,7 +1,10 @@
 <script lang="ts">
+  import type { UndefinedOr } from '@devprotocol/util-ts'
+
   export let name: string
   export let imagePath: string
-  export let ethPrice: string
+  export let ethPrice: UndefinedOr<string> = undefined
+  export let devPrice: UndefinedOr<string> = undefined
   export let description: string
   export let className: string = ''
 </script>
@@ -17,7 +20,12 @@
     alt={`${name} Membership`}
   />
 
-  <span class="font-semibold">{ethPrice} ETH</span>
+  {#if ethPrice}
+    <span class="font-semibold">{ethPrice} ETH</span>
+  {/if}
+  {#if devPrice}
+    <span class="font-semibold">{devPrice} DEV</span>
+  {/if}
 
   <span class="text-sm">{description}</span>
 </div>
