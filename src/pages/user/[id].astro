@@ -7,7 +7,7 @@ const { id } = Astro.params
 
 <Layout>
   <div class="mb-32 mt-44 text-center">
-    <h2 class="font-body text-5xl font-bold text-white">Your all clubs</h2>
+    <h2 class="font-body text-5xl font-bold text-white">User Clubs</h2>
   </div>
 
   <UserClubs client:load id={id ?? ''} />
