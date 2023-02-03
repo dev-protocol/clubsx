@@ -13,7 +13,8 @@ const { memberships } = Astro.props as {
       <li>
         <MembershipOption
           name={mem.name}
-          ethPrice={String(mem.price)}
+          ethPrice={mem.currency === 'ETH' ? String(mem.price) : undefined}
+          devPrice={mem.currency === 'DEV' ? String(mem.price) : undefined}
           description={mem.description}
           imagePath={mem.imageSrc}
           className="w-40	xl:w-64"

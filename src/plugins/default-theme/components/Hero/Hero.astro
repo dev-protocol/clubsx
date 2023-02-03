@@ -37,7 +37,7 @@ const {
 const twitter = socialLinks?.find((l) => l.kind === 'twitter')
 const discord = socialLinks?.find((l) => l.kind === 'discord')
 const socials =
-  twitter || discord ? [twitter, discord].map((x) => x) : undefined
+  twitter || discord ? [twitter, discord].map((x) => x) : socialLinks
 
 const backgroundGradientColorFrom = globalConfig?.backgroundGradient?.[0]
 const backgroundGradientColorTo = globalConfig?.backgroundGradient?.[1]

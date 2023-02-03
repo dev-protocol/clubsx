@@ -18,7 +18,7 @@ const { metaTitle, config, homeConfig, globalConfig, signals } =
       bg: string
       backgroundGradient?: [string, string]
     }
-    homeConfig: {
+    homeConfig?: {
       hero: {
         image: string
       }
@@ -51,6 +51,9 @@ const navigationLinks: NavLink[] = [
 const currentLink = navigationLinks?.find((link) =>
   ((pathname) => pathname === link.path)(`/${page ?? ''}`)
 )
+const footerLinks =
+  (config.options?.find((option) => option.key === 'footerLinks')
+    ?.value as UndefinedOr<NavLink[]>) ?? ([] as NavLink[])
 
 const draftOptions = config?.options?.find((option) => option.key === '__draft')
   ?.value as DraftOptions['value']
@@ -92,13 +95,13 @@ const backgroundColor = globalConfig?.bg ?? '#ADADAD'
   <body class="min-h-screen overflow-x-hidden font-body text-white">
     <Header chainId={chainId} config={config} />
     <Hero
-      image={homeConfig.hero.image}
+      image={homeConfig?.hero.image}
       avatar={avatarImgSrc}
       name={name}
       propertyAddress={propertyAddress}
       rpcUrl={rpcUrl}
       socialLinks={socialLinks}
-      description={homeConfig.description}
+      description={homeConfig?.description}
       globalConfig={globalConfig}
       compact={displayFullPage}
       isInDraft={isInDraft}
@@ -136,6 +139,21 @@ const backgroundColor = globalConfig?.bg ?? '#ADADAD'
           </svg> Clubs
         </p></a
       >
+      {
+        footerLinks && (
+          <section>
+            <ul class="my-4 grid gap-2">
+              {footerLinks.map((x) => (
+                <li>
+                  <a href={x.path} class="text-sm opacity-80">
+                    {x.display}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
     </footer>
   </body>
 </html>
