@@ -15,7 +15,7 @@
 
 <a href={path} class="flex items-center rounded bg-white py-2 px-4 text-black">
   <div class="h-16 w-16 overflow-hidden rounded-full">
-    <img class="w-full" src={imagePath} alt={config.name} />
+    <img class="w-full" src={imagePath || '/favicon.svg'} alt={config.name} />
   </div>
 
   <span class="ml-4 font-bold">{config.name}</span>

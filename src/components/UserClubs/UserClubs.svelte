@@ -46,10 +46,9 @@
   })
 </script>
 
-<div>
-  <div class="mb-12">
-    <h3 class="mb-4">Published</h3>
-
+<div class="ml-auto mr-auto w-[50%] max-w-[50%]">
+  <div class="mb-24">
+    <h3 class="mb-8 font-body text-2xl font-bold text-white">Published</h3>
     <div class="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-8">
       {#if publishedClubs.length > 0}
         {#each publishedClubs as club}
@@ -62,7 +61,7 @@
   </div>
 
   <div>
-    <h3>Draft</h3>
+    <h3 class="mb-8 font-body text-2xl font-bold text-white">Draft</h3>
     {#if draftClubs.length > 0}
       {#each draftClubs as club}
         <UserClubItem config={club} isDraft={true} />
