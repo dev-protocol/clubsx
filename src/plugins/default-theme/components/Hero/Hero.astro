@@ -17,6 +17,7 @@ const {
   rpcUrl,
   socialLinks,
   compact,
+  isInDraft,
 } = Astro.props as {
   globalConfig?: {
     bg: string
@@ -30,6 +31,7 @@ const {
   rpcUrl?: string
   socialLinks?: NavLink[]
   compact?: boolean
+  isInDraft?: boolean
 }
 
 const twitter = socialLinks?.find((l) => l.kind === 'twitter')
@@ -145,6 +147,7 @@ const backgroundGradientColorTo = globalConfig?.backgroundGradient?.[1]
             client:load
             propertyAddress={propertyAddress}
             rpcUrl={rpcUrl}
+            isInDraft={isInDraft}
           />
         </p>
         {socials && (

@@ -2,8 +2,9 @@
 import ClubsColor from '@assets/clubs--color.svg'
 import ConnectButton from '@components/Wallet/ConnectButton.vue'
 
-const { chainId } = Astro.props as {
+const { chainId, isInDraft } = Astro.props as {
   chainId: number
+  isInDraft?: boolean
 }
 ---
 
@@ -16,6 +17,11 @@ const { chainId } = Astro.props as {
     class="container mx-auto flex max-w-7xl items-center justify-between px-6 xl:px-0"
   >
     <i class="h-16" role="presentation"></i>
-    <ConnectButton client:only="vue" chainId={chainId} type="filled" />
+    <ConnectButton
+      client:only="vue"
+      chainId={chainId}
+      type="filled"
+      isDisabled={isInDraft}
+    />
   </div>
 </header>
