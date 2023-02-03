@@ -13,10 +13,18 @@
     : `https://${config.name}.clubs.place`
 </script>
 
-<a href={path} class="flex items-center rounded bg-white py-2 px-4 text-black">
+<a
+  href={path}
+  class="item-shadow flex items-center justify-start gap-2.5 rounded-[5px] bg-white p-4 text-black"
+>
   <div class="h-16 w-16 overflow-hidden rounded-full">
-    <img class="w-full" src={imagePath} alt={config.name} />
+    <img class="w-full" src={imagePath || '/favicon.svg'} alt={config.name} />
   </div>
-
-  <span class="ml-4 font-bold">{config.name}</span>
+  <span class="font-body text-2xl font-bold text-black">{config.name}</span>
 </a>
+
+<style>
+  .item-shadow {
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
+  }
+</style>
