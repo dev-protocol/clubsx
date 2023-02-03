@@ -248,11 +248,19 @@ const avatarImgSrc: string | undefined = config.options?.find(
       connection().signer.next(signer)
 
       const hash = utils.hashMessage(data)
-      const sig = await signer.signMessage(hash)
+      let sig: string
+      try {
+        sig = await signer.signMessage(hash)
+      } catch (error) {
+        onFinish({ success: false })
+        return
+      }
+
       if (!sig) {
         onFinish({ success: false })
         return
       }
+
       // Update the request body to use hash and sig. Keeping headers the same.
       body['hash'] = hash
       body['sig'] = sig
