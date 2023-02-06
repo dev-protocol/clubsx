@@ -3,8 +3,8 @@ import { generateId } from '@fixtures/api/keys'
 import { instanceStore } from '@fixtures/firebase/instance'
 import { utils } from 'ethers'
 import { createClient } from 'redis'
-import type { ClubsData, ClubsRawResponse } from './fetchClubs'
-import { fetchClubs } from './fetchClubs'
+import type { ClubsData } from './fetchClubs'
+import { hasCreationLimitReached } from './hasCreationLimitReached'
 
 export const post = async ({ request }: { request: Request }) => {
   const { site, config, sig, hash, expectedAddress, uid } =
@@ -52,14 +52,21 @@ export const post = async ({ request }: { request: Request }) => {
 
   // Check that user has no more than 3 clubs at the moment to avoid domain parking.
   try {
-    const res: ClubsRawResponse = await fetchClubs(
-      uidAndTokenGiven ? uid : expectedAddress
-    )
-    if (res.configs.length >= 3) {
+    const identifier: string | undefined = uid ?? expectedAddress
+    if (!identifier) {
+      return new Response(
+        JSON.stringify({ error: 'No user identifier passed' }),
+        {
+          status: 401,
+        }
+      )
+    }
+
+    if (await hasCreationLimitReached(identifier)) {
       return new Response(
         JSON.stringify({ message: 'You already have crated 3 clubs' }),
         {
-          status: 500,
+          status: 400,
         }
       )
     }

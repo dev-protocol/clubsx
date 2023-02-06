@@ -3,12 +3,10 @@ import { generateId } from '@fixtures/api/keys'
 
 import type { ClubsData } from './fetchClubs'
 
-export const hasCreatedMoreThanLimit = async (
+export const hasCreationLimitReached = async (
   identifier: string
 ): Promise<boolean> => {
-  if (!identifier) {
-    return false
-  }
+  if (!identifier) return true
 
   const client = createClient({
     url: process.env.REDIS_URL,
@@ -31,8 +29,8 @@ export const hasCreatedMoreThanLimit = async (
 
   await client.disconnect()
   return (userSites &&
-    userSites.length <
-      Number(import.meta.env.MAX_CLUBS_CREATION_ALLOWED)) as boolean
+    userSites.length >=
+      Number(import.meta.env.MAX_CLUBS_CREATION_ALLOWED || 3)) as boolean
 }
 
 export const post = async ({ request }: { request: Request }) => {
@@ -49,8 +47,10 @@ export const post = async ({ request }: { request: Request }) => {
     )
   }
 
-  const response: boolean = await hasCreatedMoreThanLimit(identifier)
-  return new Response(JSON.stringify({ hasCreatedMoreThanLimit: response }), {
+  const isCreationLimitReached: boolean = await hasCreationLimitReached(
+    identifier
+  )
+  return new Response(JSON.stringify({ isCreationLimitReached }), {
     status: 200,
   })
 }
