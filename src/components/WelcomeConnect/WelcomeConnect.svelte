@@ -54,6 +54,21 @@
       return
     }
 
+    const isReachedCreationLimitsRes = await fetch(
+      `/api/hasCreationLimitReached/${currentAddress}`
+    )
+    const isReachedCreationLimitsResJson =
+      await isReachedCreationLimitsRes.json()
+    if (
+      !isReachedCreationLimitsRes.ok ||
+      isReachedCreationLimitsResJson?.isCreationLimitReached
+    ) {
+      walletAwaitingUserConfirmation = false
+      walletConnectStatusMsg =
+        'You have reached limit of clubs creation! You cannot create more clubs'
+      return
+    }
+
     // Make the default config.
     const config: ClubsConfiguration = {
       ...defaultConfig,
@@ -82,12 +97,10 @@
       walletConnectStatusMsg =
         'Awaiting clubs creation confirmation on wallet...'
       sig = await signer.signMessage(hash)
-      walletConnectStatusMsg =
-        'Clubs Creation confirmed on wallet, loading setup...'
+      walletConnectStatusMsg = 'Creating your club...'
     } catch (error: any) {
-      walletConnectStatusMsg = 'Clubs creation confirmation failed, try again!'
-    } finally {
       walletAwaitingUserConfirmation = false
+      walletConnectStatusMsg = 'Clubs creation confirmation failed, try again!'
     }
 
     if (!sig) {
@@ -110,13 +123,27 @@
 
     if (res.ok) {
       setConfig(config)
+      walletAwaitingUserConfirmation = false
+      walletConnectStatusMsg = 'Clubs creation confirmed, loading setup...'
       window.location.href = new URL(
         `${siteName}/setup/basic`,
         `${location.protocol}//${location.host}`
       ).toString()
     } else {
+      const jsonResponse = await res.json()
       walletAwaitingUserConfirmation = false
-      walletConnectStatusMsg = 'Clubs creation confirmation failed, try again!'
+      if (
+        jsonResponse.message &&
+        jsonResponse.message
+          .toLowerCase()
+          .includes('you already have crated 3 clubs')
+      ) {
+        walletConnectStatusMsg =
+          'You have reached limit of clubs creation! You cannot create more clubs'
+      } else {
+        walletConnectStatusMsg =
+          'Clubs creation confirmation failed, try again!'
+      }
     }
   }
 </script>
@@ -142,13 +169,15 @@
 
       <button
         class={`hs-button is-filled border-0 bg-native-blue-300 px-8 py-4 text-inherit ${
-          !GetModalProvider || !EthersProviderFrom
+          !GetModalProvider ||
+          !EthersProviderFrom ||
+          walletAwaitingUserConfirmation
             ? 'animate-pulse bg-gray-500/60'
             : ''
-        } ${
-          walletAwaitingUserConfirmation ? 'animate-pulse bg-gray-500/60' : ''
         }`}
-        disabled={!GetModalProvider || !EthersProviderFrom}
+        disabled={!GetModalProvider ||
+          !EthersProviderFrom ||
+          walletAwaitingUserConfirmation}
         on:click|preventDefault={(_) => walletConnect()}
       >
         {walletConnectStatusMsg == ''
