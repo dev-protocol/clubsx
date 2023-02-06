@@ -18,8 +18,10 @@ import memberships from '@plugins/memberships'
 import PageNotFound from '@pages/404.astro'
 
 const { site, page } = Astro.params
-const { getStaticPaths, getCurrentConfig } = pageFactory({
-  config: async () => await _config(site),
+const config = await _config(site)
+
+const { getStaticPaths } = pageFactory({
+  config: () => Promise.resolve(config),
   plugins: {
     defaultTheme,
     buy,
@@ -37,7 +39,6 @@ const { getStaticPaths, getCurrentConfig } = pageFactory({
   },
 })
 const path = (await getStaticPaths()).find(({ params }) => params.page === page)
-const config = await getCurrentConfig()
 
 const Layout = path?.props.layout
 const Content = path?.props.component
