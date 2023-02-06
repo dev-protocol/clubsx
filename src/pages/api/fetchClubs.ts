@@ -1,4 +1,4 @@
-import { ClubsConfiguration, decode } from '@devprotocol/clubs-core'
+import { decode } from '@devprotocol/clubs-core'
 import { generateId } from '@fixtures/api/keys'
 import { createClient } from 'redis'
 
@@ -7,21 +7,18 @@ export type ClubsData = {
   created: string
 }
 
-export type ClubsRawResponse = {
-  error: string
-  status: number
-  configs: ClubsConfiguration[]
-}
+export const post = async ({ request }: { request: Request }) => {
+  const { identifier } = (await request.json()) as {
+    identifier: string
+  }
 
-export const fetchClubs = async (
-  identifier: string | undefined
-): Promise<ClubsRawResponse> => {
   if (!identifier) {
-    return {
-      error: 'No user identifier passed',
-      status: 401,
-      configs: [] as ClubsConfiguration[],
-    }
+    return new Response(
+      JSON.stringify({ error: 'No user identifier passed' }),
+      {
+        status: 401,
+      }
+    )
   }
 
   const client = createClient({
@@ -46,48 +43,23 @@ export const fetchClubs = async (
     (await client.get(generateId(identifier))) ?? '[]'
   ) as ClubsData[] | null
   if (!userSites) {
-    return {
+    return new Response(JSON.stringify({ error: 'No user sites found' }), {
       status: 400,
-      error: 'No user sites found',
-      configs: [] as ClubsConfiguration[],
-    }
+    })
   }
 
   /**
    * Fetch user clubs configs
    */
-  const configs: ClubsConfiguration[] = [] as ClubsConfiguration[]
+  const configs = []
 
   for (const site of userSites) {
-    const config: string | null = await client.get(site.name)
+    const config = await client.get(site.name)
     if (!config) continue
     configs.push(decode(config))
   }
 
   await client.disconnect()
-  return { status: 200, error: '', configs: configs }
-}
 
-export const post = async ({ request }: { request: Request }) => {
-  const { identifier } = (await request.json()) as {
-    identifier: string
-  }
-
-  if (!identifier) {
-    return new Response(
-      JSON.stringify({ error: 'No user identifier passed' }),
-      {
-        status: 401,
-      }
-    )
-  }
-
-  const res = await fetchClubs(identifier)
-
-  return new Response(
-    JSON.stringify(
-      res.error && res.error !== '' ? { error: res.error } : res.configs
-    ),
-    { status: res.status }
-  )
+  return new Response(JSON.stringify(configs), { status: 200 })
 }
