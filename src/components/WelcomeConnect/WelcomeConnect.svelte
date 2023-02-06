@@ -68,6 +68,8 @@
       walletConnectStatusMsg =
         'You have reached limit of clubs creation! You cannot create more clubs'
       return
+    } else {
+      disableCreationUsingWallet = false
     }
 
     // Make the default config.
@@ -143,6 +145,7 @@
         walletConnectStatusMsg =
           'You have reached limit of clubs creation! You cannot create more clubs'
       } else {
+        disableCreationUsingWallet = false
         walletConnectStatusMsg =
           'Clubs creation confirmation failed, try again!'
       }
