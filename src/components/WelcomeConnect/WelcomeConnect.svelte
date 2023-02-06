@@ -114,6 +114,9 @@
         `${siteName}/setup/basic`,
         `${location.protocol}//${location.host}`
       ).toString()
+    } else {
+      walletAwaitingUserConfirmation = false
+      walletConnectStatusMsg = 'Clubs creation confirmation failed, try again!'
     }
   }
 </script>
