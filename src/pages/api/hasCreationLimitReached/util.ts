@@ -30,5 +30,5 @@ export const hasCreationLimitReached = async (
   await client.disconnect()
   return (userSites &&
     userSites.length >=
-      Number(import.meta.env.MAX_CLUBS_CREATION_ALLOWED || 3)) as boolean
+      Number(import.meta.env.CREATOR_CLUBS_CREATION_LIMIT || 3)) as boolean
 }

@@ -15,7 +15,7 @@
 
   let walletAwaitingUserConfirmation: boolean = false
   let walletConnectStatusMsg: string = ''
-
+  let disableCreationUsingWallet: boolean = false
   let GetModalProvider: Web3Modal
   let EthersProviderFrom: typeof TypeEthersProviderFrom
 
@@ -63,6 +63,7 @@
       !isReachedCreationLimitsRes.ok ||
       isReachedCreationLimitsResJson?.isCreationLimitReached
     ) {
+      disableCreationUsingWallet = true
       walletAwaitingUserConfirmation = false
       walletConnectStatusMsg =
         'You have reached limit of clubs creation! You cannot create more clubs'
@@ -138,6 +139,7 @@
           .toLowerCase()
           .includes('you already have crated 3 clubs')
       ) {
+        disableCreationUsingWallet = true
         walletConnectStatusMsg =
           'You have reached limit of clubs creation! You cannot create more clubs'
       } else {
@@ -174,10 +176,11 @@
           walletAwaitingUserConfirmation
             ? 'animate-pulse bg-gray-500/60'
             : ''
-        }`}
+        } ${disableCreationUsingWallet ? 'bg-gray-500/60' : ''}`}
         disabled={!GetModalProvider ||
           !EthersProviderFrom ||
-          walletAwaitingUserConfirmation}
+          walletAwaitingUserConfirmation ||
+          disableCreationUsingWallet}
         on:click|preventDefault={(_) => walletConnect()}
       >
         {walletConnectStatusMsg == ''
