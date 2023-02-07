@@ -14,9 +14,14 @@ export default defineComponent({
     },
   },
   methods: {
-    updateOptions() {
+    updateOptions(event: Event) {
       setOptions(
-        [{ key: 'deworkUrl', value: this.deworkUrl }],
+        [
+          {
+            key: 'deworkUrl',
+            value: (event.target as HTMLInputElement)?.value || this.deworkUrl,
+          },
+        ],
         this.currentPluginIndex
       )
     },
