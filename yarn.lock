@@ -620,14 +620,14 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
-"@devprotocol/clubs-core@^0.27.1":
-  version "0.27.1"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.27.1.tgz#20b77f99a504fcaffef9f2563795acc128783d1c"
-  integrity sha512-XTdqrl1BcHNzgVMIh5qkn9Wc+PAO1wnZCW18jVL5mFQZ6h3nOFmnbwO3DtE2a3ZZslgyjql9j0ulLUawks/Kyw==
+"@devprotocol/clubs-core@0.28.0":
+  version "0.28.0"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.28.0.tgz#f316979e7727485fc25cc489d1152b645605289c"
+  integrity sha512-lX+zLtLs7WaEpaajtDMnNAe3YFlDliiCPnkUFAJd34giG8ixD6fInEBxrGbAMxXebSnjx28r6VJN6hW9POv0vA==
   dependencies:
-    "@devprotocol/dev-kit" "7.1.2"
+    "@devprotocol/dev-kit" "7.2.0"
     "@devprotocol/elements" "0.2.2"
-    "@devprotocol/hashi" "1.7.0"
+    "@devprotocol/hashi" "1.8.0"
     "@devprotocol/util-ts" "3.0.0"
     "@metamask/detect-provider" "^2.0.0"
     ethers "^5.7.0"
@@ -641,16 +641,6 @@
     react-dom "^18.0.0"
     svelte "^3.49.0"
     vue "^3.2.0"
-
-"@devprotocol/dev-kit@7.1.2":
-  version "7.1.2"
-  resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-7.1.2.tgz#12858bd63d9d52099f2a3d5a8ccefe3d24e37564"
-  integrity sha512-R3G1qwXOnj2p2DwsgV0aKdeeJcuNQpsQZ+/dvFphPNnNTeXKv3Q+t/bePN/35N65bHuH5c88t+35aEnfO0DmIA==
-  dependencies:
-    "@devprotocol/util-ts" "3.0.0"
-    bignumber.js "9.1.1"
-    js-base64 "^3.7.2"
-    ramda "^0.28.0"
 
 "@devprotocol/dev-kit@7.2.0":
   version "7.2.0"
@@ -666,13 +656,6 @@
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/@devprotocol/elements/-/elements-0.2.2.tgz#7325fb3354f2fb77c08f91634656a9e87ce0fa80"
   integrity sha512-8Kj3hw84GVAIrQnX5gFE0iZSMvzbKqga5Kdo7rHI7ZS6lUBgG1EwxYv78iIz9SwdBki9zyGxfrQb4j3dI4Sv9w==
-
-"@devprotocol/hashi@1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/hashi/-/hashi-1.7.0.tgz#5803fb9bc28feb141c1d8c1617004337bc8789c9"
-  integrity sha512-OPThDmJDZEg65fTGyUXN6dMBQ7O/SHJmGr25s/jVe0gkTvjEdsLalBe8VhZGPZ3Z4m0ZnIyCQU6C7bQD5bcweQ==
-  dependencies:
-    "@matteusan/sentro" "0.1.25"
 
 "@devprotocol/hashi@1.8.0":
   version "1.8.0"

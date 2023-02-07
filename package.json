@@ -47,7 +47,7 @@
     "@astrojs/tailwind": "3.0.1",
     "@astrojs/vercel": "3.0.1",
     "@astrojs/vue": "2.0.1",
-    "@devprotocol/clubs-core": "^0.27.1",
+    "@devprotocol/clubs-core": "0.28.0",
     "@devprotocol/dev-kit": "7.2.0",
     "@devprotocol/elements": "0.2.2",
     "@devprotocol/hashi": "1.8.0",
