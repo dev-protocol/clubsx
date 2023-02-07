@@ -17,25 +17,24 @@ import type { UndefinedOr } from '@devprotocol/util-ts'
 import type { Membership } from '@plugins/memberships'
 import uniqueString from 'unique-string'
 
-const getMemberships = (plugins: ClubsConfiguration['plugins']) => {
-  const memberships =
-    (plugins
-      .find((plg) => plg.name === 'memberships')
-      ?.options.find((opt) => opt.key === 'memberships')?.value as UndefinedOr<
-      Membership[]
-    >) ?? []
-  return memberships
-}
-
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
-  { propertyAddress, plugins }
+  { propertyAddress },
+  { getPluginConfigById }
 ) => {
   const forms =
     (options.find((opt) => opt.key === 'forms')?.value as UndefinedOr<
       GatedMessage[]
     >) ?? []
-  const memberships = getMemberships(plugins)
+  const [membershipConfig] = getPluginConfigById(
+    'devprotocol:clubs:simple-memberships'
+  )
+  const memberships =
+    (membershipConfig?.options.find((opt) => opt.key === 'memberships')
+      ?.value as UndefinedOr<Membership[]>) ?? []
+  const [, pluginIndex] = getPluginConfigById(
+    'devprotocol:clubs:gated-contact-form'
+  )
 
   return [
     {
@@ -50,7 +49,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
       return {
         paths: ['message', String(form.id)],
         component: ID,
-        props: { propertyAddress, form, requiredMemberships },
+        props: { propertyAddress, form, requiredMemberships, pluginIndex },
       }
     }),
   ]
@@ -58,13 +57,19 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
   options,
-  { plugins }
+  _,
+  { getPluginConfigById }
 ) => {
   const forms =
     (options.find((opt) => opt.key === 'forms')?.value as UndefinedOr<
       GatedMessage[]
     >) ?? []
-  const memberships = getMemberships(plugins)
+  const [membershipConfig] = getPluginConfigById(
+    'devprotocol:clubs:simple-memberships'
+  )
+  const memberships =
+    (membershipConfig?.options.find((opt) => opt.key === 'memberships')
+      ?.value as UndefinedOr<Membership[]>) ?? []
 
   return [
     {
@@ -93,6 +98,7 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
 }
 
 export const meta: ClubsPluginMeta = {
+  id: 'devprotocol:clubs:gated-contact-form',
   displayName: 'Message',
   category: ClubsPluginCategory.Growth,
 }

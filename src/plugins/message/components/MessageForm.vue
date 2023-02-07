@@ -5,8 +5,8 @@ import { utils } from 'ethers'
 import { GatedMessage } from '../types'
 import { encode } from '@devprotocol/clubs-core'
 import { checkMemberships } from '@fixtures/utility'
-import { Membership } from '@plugins/memberships'
-import { PropType } from '@vue/runtime-core'
+import type { Membership } from '@plugins/memberships'
+import type { PropType } from '@vue/runtime-core'
 
 export default defineComponent({
   props: {
@@ -19,6 +19,7 @@ export default defineComponent({
       type: Array as PropType<Membership[]>,
       required: true,
     },
+    pluginIndex: Number,
   },
   data: () => ({
     fullname: '',
@@ -93,6 +94,7 @@ export default defineComponent({
         sig,
         userAddress: await signer.getAddress(),
         propertyAddress: this.propertyAddress,
+        pluginIndex: this.pluginIndex,
       }
 
       try {

@@ -2,12 +2,13 @@ import { utils, providers, ethers, Signer } from 'ethers'
 import { createClient } from 'redis'
 import { authenticate, decode } from '@devprotocol/clubs-core'
 import { checkMemberships } from '@fixtures/utility'
-
-import json from '../../../../plugins/message/forms.json'
+import type { UndefinedOr } from '@devprotocol/util-ts'
+import type { GatedMessage } from '@plugins/message/types'
 
 export const post = async ({ request }: { request: Request }) => {
-  const { site, data, sig, hash, userAddress, propertyAddress } =
+  const { pluginIndex, site, data, sig, hash, userAddress, propertyAddress } =
     (await request.json()) as {
+      pluginIndex?: number
       site: string
       data: {
         fullname: string
@@ -33,14 +34,6 @@ export const post = async ({ request }: { request: Request }) => {
     })
   }
 
-  // Check for form data validity.
-  const formData = json.find((element) => element.id === Number(data.formId))
-  if (!formData) {
-    return new Response(JSON.stringify({ error: 'Form details not found' }), {
-      status: 401,
-    })
-  }
-
   const client = createClient({
     url: process.env.REDIS_URL,
     username: process.env.REDIS_USERNAME ?? '',
@@ -60,6 +53,19 @@ export const post = async ({ request }: { request: Request }) => {
   await client.quit()
   if (!previousConfiguration) {
     return new Response(JSON.stringify({ error: 'Encoded config not found' }), {
+      status: 401,
+    })
+  }
+
+  // Check for form data validity.
+  const configuration = decode(previousConfiguration)
+  const formData = (
+    configuration.plugins?.[pluginIndex ?? 0]?.options?.find(
+      (element) => element.key === 'forms'
+    )?.value as UndefinedOr<GatedMessage[]>
+  )?.find((element) => element.id === data.formId)
+  if (!formData) {
+    return new Response(JSON.stringify({ error: 'Form details not found' }), {
       status: 401,
     })
   }
@@ -100,6 +106,7 @@ export const post = async ({ request }: { request: Request }) => {
   }
 
   try {
+    console.log({ formData, data })
     // TODO: send email using sendgrid api.
 
     return new Response(JSON.stringify({}), { status: 200 })
