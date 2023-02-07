@@ -16,6 +16,7 @@ const { siteName } = Astro.params
       <p>Link your account to your club.</p>
     </section>
     <span
+      id="authentication-text"
       class="hs-button is-filled animate-pulse rounded border-0 bg-gray-500/60 px-8 py-4 text-inherit"
       >Authenticating...</span
     >
@@ -60,6 +61,24 @@ const { siteName } = Astro.params
         const uid = result.user.uid
         // If it is a new user, set the __draft user
         if (uid) {
+          const isReachedCreationLimitsRes = await fetch(
+            `/api/hasCreationLimitReached/${uid}`
+          )
+          const isReachedCreationLimitsResJson =
+            await isReachedCreationLimitsRes.json()
+          if (
+            !isReachedCreationLimitsRes.ok ||
+            isReachedCreationLimitsResJson?.isCreationLimitReached
+          ) {
+            const element = document.getElementById('authentication-text')
+            if (element) {
+              element.innerText =
+                'You have reached limit of clubs creation! You cannot create more clubs'
+              element.classList.remove('animate-pulse')
+            }
+            return
+          }
+
           // Make the default config.
           const config: ClubsConfiguration = {
             ...defaultConfig,
@@ -95,6 +114,23 @@ const { siteName } = Astro.params
               `${siteName}/setup/basic`,
               `${location.protocol}//${location.host}`
             ).toString()
+          } else {
+            const jsonResponse = await res.json()
+            if (
+              res.status === 400 &&
+              jsonResponse.message &&
+              jsonResponse.message
+                .toLowerCase()
+                .includes('you already have created 3 clubs')
+            ) {
+              const element = document.getElementById('authentication-text')
+              if (element) {
+                element.innerText =
+                  'You have reached limit of clubs creation! You cannot create more clubs'
+                element.classList.remove('animate-pulse')
+              }
+              return
+            }
           }
         }
       })
