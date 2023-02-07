@@ -115,6 +115,8 @@ export const checkMemberships = async (
   requiredMemberships: Membership[],
   userAddress: string = '0x0000000000000000000000000000000000000000'
 ) => {
+  console.log({ propertyAddress, requiredMemberships })
+
   // Check if we are validating at server or ui. because server can
   // provide userAddress.
   if (userAddress === '0x0000000000000000000000000000000000000000') {
@@ -135,6 +137,7 @@ export const checkMemberships = async (
     detector(propertyAddress, userAddress)
   )
   if (!allSTokens) return false
+  console.log({ allSTokens })
 
   // https://ramdajs.com/docs/#xprod
   const pairs = xprod(requiredMemberships, allSTokens)

@@ -13,7 +13,7 @@
     description: '',
     requiredMembershipIds: [],
     presetName: 'PRESET_NAME_AND_FREE_INPUT',
-    sendGridEnvKey: '',
+    sendGridEnvKey: import.meta.env.PUBLIC_GATED_CONTACT_FORM_SENDGRID_ENV_KEY,
     destinationEmail: '',
   }
 

@@ -4,14 +4,22 @@ import MessageForm from './components/MessageForm.vue'
 import type { Membership } from '@plugins/memberships'
 import type { GatedMessage } from './types'
 
-const { propertyAddress, form, requiredMemberships } = Astro.props as {
+const {
+  propertyAddress,
+  form,
+  requiredMemberships,
+  pluginIndex,
+  membershipPluginIndex,
+} = Astro.props as {
   form: GatedMessage
   requiredMemberships: Membership[]
   propertyAddress: string
+  pluginIndex?: number
+  membershipPluginIndex?: number
 }
 ---
 
-<article class="container mx-auto max-w-6xl px-4">
+<article class="container mx-auto grid max-w-6xl gap-16 px-4">
   <section class="mb-12">
     <h1 class="mb-5 font-title text-2xl font-semibold">{form.title}</h1>
     <p>{form.description}</p>
@@ -28,7 +36,7 @@ const { propertyAddress, form, requiredMemberships } = Astro.props as {
             <CLBTier
               key={i}
               title={membership.id}
-              subtitle={`${membership.amount} ${membership.currency}`}
+              subtitle={`${membership.price} ${membership.currency}`}
               media={`${membership.imageSrc}`}
             />
           </div>
@@ -39,9 +47,12 @@ const { propertyAddress, form, requiredMemberships } = Astro.props as {
 
   <section>
     <MessageForm
-      client:only="vue"
+      client:load
       propertyAddress={propertyAddress}
       formId={form.id}
+      pluginIndex={pluginIndex}
+      membershipPluginIndex={membershipPluginIndex}
+      requiredMemberships={requiredMemberships}
     />
   </section>
 </article>
