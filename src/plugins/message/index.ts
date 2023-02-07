@@ -40,7 +40,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
     {
       paths: ['message'],
       component: Index,
-      props: { forms },
+      props: { forms, memberships },
     },
     ...forms.map((form) => {
       const requiredMemberships = memberships.filter((mem) =>

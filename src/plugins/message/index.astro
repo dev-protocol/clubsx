@@ -1,7 +1,20 @@
 ---
 import CLBTier from '@components/Primitives/CLBTier.vue'
+import type { Membership } from '@plugins/memberships'
+import type { GatedMessage } from './types'
 
-const { forms } = Astro.props
+const { forms, memberships } = Astro.props as {
+  forms: GatedMessage[]
+  memberships: Membership[]
+}
+
+const findMembership = (id: string): Membership | undefined =>
+  memberships.find((m) => m.id === id)
+
+const extendedForms = forms.map((form) => ({
+  ...form,
+  requiredMemberships: form.requiredMembershipIds.map(findMembership),
+}))
 ---
 
 <article class="container mx-auto max-w-6xl px-4">
@@ -16,37 +29,41 @@ const { forms } = Astro.props
       </h1>
     </div>
   </section>
-  <section class="mb-12">
-    <h3 class="font-Syne text-4xl font-bold">{forms[0].title}</h3>
-  </section>
-  <section class="mb-4 mt-12">
-    <h3 class="family-title text-base">{forms[0].description}</h3>
-  </section>
-  <section class="mb-4">
-    <a
-      href={`/message/${forms[0]?.id || '1'}`}
-      class="rounded border-[##171717] bg-[#D500E6] py-2 px-7"
-    >
-      Open
-    </a>
-  </section>
-  <section class="mb-4">
-    <h3 class="font-Syne text-2xl font-bold">Required membership(s)</h3>
-  </section>
-  <div class="mb-5 flex flex-row flex-wrap gap-8">
-    {
-      forms[0].requiredMemberships.map((membership: any, i: any) => (
-        <div class="h-[240px] max-h-[240px] min-h-[240px] w-[25%] capitalize">
-          <CLBTier
-            key={i}
-            title={membership.id}
-            subtitle={`${membership.amount} ${membership.currency}`}
-            media={`${membership.imageSrc}`}
-          />
+  {
+    extendedForms.map((form) => (
+      <>
+        <section class="mb-12">
+          <h3 class="font-Syne text-4xl font-bold">{form.title}</h3>
+        </section>
+        <section class="mb-4 mt-12">
+          <h3 class="family-title text-base">{form.description}</h3>
+        </section>
+        <section class="mb-4">
+          <a
+            href={`/message/${form.id || '1'}`}
+            class="rounded border-[##171717] bg-[#D500E6] py-2 px-7"
+          >
+            Open
+          </a>
+        </section>
+        <section class="mb-4">
+          <h3 class="font-Syne text-2xl font-bold">Required membership(s)</h3>
+        </section>
+        <div class="mb-5 flex flex-row flex-wrap gap-8">
+          {form.requiredMemberships.map((membership, i) => (
+            <div class="h-[240px] max-h-[240px] min-h-[240px] w-[25%] capitalize">
+              <CLBTier
+                key={i}
+                title={membership?.name}
+                subtitle={`${membership?.price} ${membership?.currency}`}
+                media={`${membership?.imageSrc}`}
+              />
+            </div>
+          ))}
         </div>
-      ))
-    }
-  </div>
+      </>
+    ))
+  }
 </article>
 
 <style lang="scss">
