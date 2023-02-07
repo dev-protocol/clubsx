@@ -62,7 +62,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
 ) => {
   const { name, propertyAddress, rpcUrl, chainId } = config
 
-  const membershipConfig = getPluginConfigById(
+  const [membershipConfig] = getPluginConfigById(
     'devprotocol:clubs:simple-memberships'
   )
   const memberships = membershipConfig?.options.find(
