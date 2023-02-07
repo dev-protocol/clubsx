@@ -26,7 +26,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
     (options.find((opt) => opt.key === 'forms')?.value as UndefinedOr<
       GatedMessage[]
     >) ?? []
-  const [membershipConfig] = getPluginConfigById(
+  const [membershipConfig, membershipPluginIndex] = getPluginConfigById(
     'devprotocol:clubs:simple-memberships'
   )
   const memberships =
@@ -49,7 +49,13 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
       return {
         paths: ['message', String(form.id)],
         component: ID,
-        props: { propertyAddress, form, requiredMemberships, pluginIndex },
+        props: {
+          propertyAddress,
+          form,
+          requiredMemberships,
+          pluginIndex,
+          membershipPluginIndex,
+        },
       }
     }),
   ]

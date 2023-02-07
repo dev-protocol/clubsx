@@ -4,26 +4,31 @@ import { authenticate, decode } from '@devprotocol/clubs-core'
 import { checkMemberships } from '@fixtures/utility'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import type { GatedMessage } from '@plugins/message/types'
+import type { Membership } from '@plugins/memberships'
+import sgMail from '@sendgrid/mail'
 
 export const post = async ({ request }: { request: Request }) => {
-  const { pluginIndex, site, data, sig, hash, userAddress, propertyAddress } =
-    (await request.json()) as {
-      pluginIndex?: number
-      site: string
-      data: {
-        fullname: string
-        addressLine1: string
-        addressLine2: string
-        zipCode: string
-        city: string
-        country: string
-        formId: string
-      }
-      hash: string
-      sig: string
-      userAddress: string
-      propertyAddress: string
-    }
+  const {
+    pluginIndex,
+    membershipPluginIndex,
+    site,
+    formId,
+    data,
+    sig,
+    hash,
+    userAddress,
+    propertyAddress,
+  } = (await request.json()) as {
+    pluginIndex?: number
+    membershipPluginIndex?: number
+    site: string
+    formId: string
+    data: any
+    hash: string
+    sig: string
+    userAddress: string
+    propertyAddress: string
+  }
 
   // Check that the user has signed the message.
   const verificationDigest = utils.hashMessage(hash)
@@ -63,12 +68,26 @@ export const post = async ({ request }: { request: Request }) => {
     configuration.plugins?.[pluginIndex ?? 0]?.options?.find(
       (element) => element.key === 'forms'
     )?.value as UndefinedOr<GatedMessage[]>
-  )?.find((element) => element.id === data.formId)
+  )?.find((element) => element.id === formId)
   if (!formData) {
     return new Response(JSON.stringify({ error: 'Form details not found' }), {
       status: 401,
     })
   }
+
+  const membershipsData = configuration.plugins?.[
+    membershipPluginIndex ?? 0
+  ]?.options?.find((element) => element.key === 'memberships')
+    ?.value as UndefinedOr<Membership[]>
+  if (!membershipsData) {
+    return new Response(JSON.stringify({ error: 'Memberships not found' }), {
+      status: 401,
+    })
+  }
+
+  const requiredMemberships = formData.requiredMembershipIds.map((id) =>
+    membershipsData.find((mem) => mem.id === id)
+  )
 
   // Check for required membership validity
   try {
@@ -79,7 +98,7 @@ export const post = async ({ request }: { request: Request }) => {
       web3Provider,
       propertyAddress,
       // @ts-ignore
-      formData.requiredMemberships,
+      requiredMemberships,
       userAddress
     ).catch((err) => {
       throw Error('Not a member')
@@ -106,8 +125,22 @@ export const post = async ({ request }: { request: Request }) => {
   }
 
   try {
-    console.log({ formData, data })
-    // TODO: send email using sendgrid api.
+    sgMail.setApiKey(process.env[formData.sendGridEnvKey]!)
+
+    await sgMail.send({
+      to: formData.destinationEmail,
+      from: process.env.SENDGRID_FROM_EMAIL!,
+      subject: 'Sent from Clubs Gated Contact Form',
+      text:
+        formData.presetName === 'PRESET_NAME_AND_FREE_INPUT'
+          ? `
+Name: ${data.name}
+
+Message:
+${data.body}
+`
+          : data,
+    })
 
     return new Response(JSON.stringify({}), { status: 200 })
   } catch (error) {
