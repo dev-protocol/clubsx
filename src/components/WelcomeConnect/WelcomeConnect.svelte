@@ -139,7 +139,7 @@
         jsonResponse.message &&
         jsonResponse.message
           .toLowerCase()
-          .includes('you already have crated 3 clubs')
+          .includes('you already have created 3 clubs')
       ) {
         disableCreationUsingWallet = true
         walletConnectStatusMsg =

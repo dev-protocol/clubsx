@@ -65,7 +65,7 @@ export const post = async ({ request }: { request: Request }) => {
 
     if (await hasCreationLimitReached(identifier)) {
       return new Response(
-        JSON.stringify({ message: 'You already have crated 3 clubs' }),
+        JSON.stringify({ message: 'You already have created 3 clubs' }),
         {
           status: 400,
         }
