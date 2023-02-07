@@ -136,6 +136,7 @@
       const jsonResponse = await res.json()
       walletAwaitingUserConfirmation = false
       if (
+        res.status === 400 &&
         jsonResponse.message &&
         jsonResponse.message
           .toLowerCase()

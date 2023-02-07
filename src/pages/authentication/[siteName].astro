@@ -117,6 +117,7 @@ const { siteName } = Astro.params
           } else {
             const jsonResponse = await res.json()
             if (
+              res.status === 400 &&
               jsonResponse.message &&
               jsonResponse.message
                 .toLowerCase()
