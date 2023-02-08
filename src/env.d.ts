@@ -10,7 +10,6 @@ interface ImportMetaEnv {
   readonly PUBLIC_EMAIL_AUTH_ENDPOINT: string
   readonly PUBLIC_GATED_CONTACT_FORM_SENDGRID_ENV_KEY: string
   readonly PUBLIC_VERCEL_ANALYTICS_VITALS_URL: string
-  readonly PUBLIC_VERCEL_ANALYTICS_ID: string
 }
 
 interface ImportMeta {

@@ -12,7 +12,7 @@
     inject({ mode: 'development' })
   }
 
-  let analyticsId = import.meta.env.PUBLIC_VERCEL_ANALYTICS_ID
+  let analyticsId = import.meta.env.VERCEL_ANALYTICS_ID
   if (analyticsId) {
     webVitals({
       path: location.pathname,
