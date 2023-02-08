@@ -6,7 +6,18 @@
 
 <script>
   import { inject } from '@vercel/analytics'
+  import { webVitals } from '../../lib/webVitals'
+
   if ((import.meta.env.MODE as 'development' | 'production') !== 'production') {
     inject({ mode: 'development' })
+  }
+
+  let analyticsId = import.meta.env.PUBLIC_VERCEL_ANALYTICS_ID
+  if (analyticsId) {
+    webVitals({
+      path: location.pathname,
+      params: location.search,
+      analyticsId,
+    })
   }
 </script>
