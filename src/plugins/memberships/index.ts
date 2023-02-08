@@ -8,6 +8,7 @@ import { ClubsPluginCategory } from '@devprotocol/clubs-core'
 import { default as Admin } from './admin.astro'
 import { default as AdminNew } from './admin-new.astro'
 import { default as AdminEdit } from './admin-id.astro'
+import { default as Modal } from './modal.astro'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import { utils } from 'ethers'
 import type { DraftOptions } from '@constants/draft'
@@ -88,6 +89,9 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
         draftOptions: draftOptionsValue,
         rpcUrl,
       },
+      slots: {
+        'modal:content': Modal,
+      },
     })) ?? []),
     ...(presets.map((membership) => ({
       paths: ['memberships', 'new', membership.id],
@@ -99,6 +103,9 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
         presets,
         draftOptions: draftOptionsValue,
         rpcUrl,
+      },
+      slots: {
+        'modal:content': Modal,
       },
     })) ?? []),
   ]
