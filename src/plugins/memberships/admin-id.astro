@@ -36,7 +36,7 @@ const { membership, memberships, clubs, rpcUrl, propertyAddress } =
 <script>
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
   import type { ethers } from 'ethers'
-  import { onMountClient } from '@devprotocol/clubs-core/events'
+  import { controlModal, onMountClient } from '@devprotocol/clubs-core/events'
   import { ClubsEvents } from '@devprotocol/clubs-core'
   import { constants } from 'ethers'
   import { keccak256, parseUnits } from 'ethers/lib/utils'
@@ -94,10 +94,19 @@ const { membership, memberships, clubs, rpcUrl, propertyAddress } =
 
     console.log({ keys, images, propAddress })
 
+    controlModal({
+      open: true,
+      state: 'loading',
+      blocks: true,
+      closeButton: { label: 'Cancel' },
+    })
+
     await callSimpleCollections(signer, 'setImages', [
       propAddress,
       images,
       keys,
-    ])
+    ]).then((res) => res.wait())
+
+    controlModal({ open: false })
   })
 </script>

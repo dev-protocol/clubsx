@@ -33,7 +33,7 @@ const { membership, memberships, presets, clubs, rpcUrl, propertyAddress } =
 <script>
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
   import type { ethers } from 'ethers'
-  import { onMountClient } from '@devprotocol/clubs-core/events'
+  import { controlModal, onMountClient } from '@devprotocol/clubs-core/events'
   import { ClubsEvents } from '@devprotocol/clubs-core'
   import type { Membership } from '@plugins/memberships'
   import { constants } from 'ethers'
@@ -90,10 +90,19 @@ const { membership, memberships, presets, clubs, rpcUrl, propertyAddress } =
 
     console.log({ keys, images, propAddress })
 
+    controlModal({
+      open: true,
+      state: 'loading',
+      blocks: true,
+      closeButton: { label: 'Cancel' },
+    })
+
     await callSimpleCollections(signer, 'setImages', [
       propAddress,
       images,
       keys,
-    ])
+    ]).then((res) => res.wait())
+
+    controlModal({ open: false })
   })
 </script>
