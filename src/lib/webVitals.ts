@@ -44,6 +44,7 @@ export function sendToAnalytics(metric: Metric, options: SendAnalyticsOptions) {
     console.log('[Analytics]', metric.name, JSON.stringify(body, null, 2))
   }
 
+  // @ts-ignore
   const blob = new Blob([new URLSearchParams(body).toString()], {
     // This content type is necessary for `sendBeacon`
     type: 'application/x-www-form-urlencoded',
