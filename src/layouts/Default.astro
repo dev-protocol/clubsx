@@ -3,6 +3,7 @@ import type { ClubsConfiguration } from '@devprotocol/clubs-core'
 import VercelAnalytics from '@components/Analytics/VercelAnalytics.astro'
 import PreviewBanner from '@components/PreviewBanner/PreviewBanner.svelte'
 import type { DraftOptions } from '@constants/draft'
+import Footer from '@components/Footer/Footer.astro'
 
 const { config } = Astro.props as {
   config?: ClubsConfiguration
@@ -15,4 +16,5 @@ const isInDraft = Boolean(draftOptions?.isInDraft)
 
 <slot />
 {isInDraft && <PreviewBanner />}
+<Footer />
 <VercelAnalytics />
