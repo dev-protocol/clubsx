@@ -20,6 +20,11 @@
   resolved "https://registry.yarnpkg.com/@astrojs/compiler/-/compiler-1.0.1.tgz#ed5d758c9824cc497361b632f1570d9ce2a4ce31"
   integrity sha512-77aacobLKcL98NmhK3OBS5EHIrX9gs1ckB/vGSIdkVZuB7u51V4jh05I6W0tSvG7/86tALv6QtHTRZ8rLhFTbQ==
 
+"@astrojs/compiler@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/compiler/-/compiler-1.1.0.tgz#ab77b1c9ed5dfa30588c99346974fb3038b96833"
+  integrity sha512-C4kTwirys+HafufMqaxCbML2wqkGaXJM+5AekXh/v1IIOnMIdcEON9GBYsG6qa8aAmLhZ58aUZGPhzcA3Dx7Uw==
+
 "@astrojs/language-server@^0.28.3":
   version "0.28.3"
   resolved "https://registry.npmjs.org/@astrojs/language-server/-/language-server-0.28.3.tgz"
@@ -2696,12 +2701,12 @@ arrify@^2.0.0:
   resolved "https://registry.yarnpkg.com/arrify/-/arrify-2.0.1.tgz#c9655e9331e0abcd588d2a7cad7e9956f66701fa"
   integrity sha512-3duEwti880xqi4eAMN8AyR4a0ByT90zoYdLlevfrvU43vb0YZwZVfxOgxWrLXXXpyugL0hNZc9G6BiB5B3nUug==
 
-astro@2.0.6:
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/astro/-/astro-2.0.6.tgz#94d903066514b4e95a04a71121a0403716e9f025"
-  integrity sha512-aI8Ijy2EpMyP5SpjmDJpEUdNL6CUAxnja6IeaBC1BokD/mNAnijtmMnTyWVI3UeEZ727wYLISQMyqCfEUq8VNA==
+astro@2.0.7:
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/astro/-/astro-2.0.7.tgz#b34260185d943f643d6d498d2a88de4efc7646b6"
+  integrity sha512-MEjJKKexUOuBJqkZb2F3so5hhw7sOJedXbqBH0UGK+ab3Rwq+3FWsVgLl6s3rkUYSP4DoreOTpj9GBn/gTFWvg==
   dependencies:
-    "@astrojs/compiler" "^1.0.1"
+    "@astrojs/compiler" "^1.1.0"
     "@astrojs/language-server" "^0.28.3"
     "@astrojs/markdown-remark" "^2.0.1"
     "@astrojs/telemetry" "^2.0.0"
