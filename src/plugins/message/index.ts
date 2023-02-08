@@ -12,10 +12,12 @@ import { default as Admin } from './pages/Admin.astro'
 import { default as AdminNew } from './pages/AdminNew.astro'
 import { default as AdminEdit } from './pages/AdminEdit.astro'
 import { default as RemoveButton } from './components/RemoveButton.astro'
+import { default as AddNavigationLink } from '@components/AddNavigationLink/AddNavigationLink.astro'
 import type { GatedMessage } from './types'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import type { Membership } from '@plugins/memberships'
 import uniqueString from 'unique-string'
+import type { NavLink } from '@constants/navLink'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
@@ -63,7 +65,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
   options,
-  _,
+  config,
   { getPluginConfigById }
 ) => {
   const forms =
@@ -81,7 +83,18 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
     {
       paths: ['gated-form'],
       component: Admin,
-      props: { forms, memberships },
+      props: {
+        forms,
+        memberships,
+        forAddNavigationLink: {
+          config,
+          label: `Add 'Contact form' to the menu`,
+          link: { display: 'Contact form', path: '/message' } as NavLink,
+        },
+      },
+      slots: {
+        'aside:after-built-in-buttons': AddNavigationLink,
+      },
     },
     {
       paths: ['gated-form', 'new'],
