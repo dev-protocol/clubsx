@@ -14,6 +14,7 @@
   import { onMount } from 'svelte'
   import BigNumber from 'bignumber.js'
   import { clientsSTokens } from '@devprotocol/dev-kit'
+  import { keccak256 } from 'ethers/lib/utils'
 
   export let currentPluginIndex: number
   export let presets: UndefinedOr<Membership[]> = undefined
@@ -187,7 +188,10 @@
     for (const position of positions) {
       const positionPayload = await contract?.payloadOf(position)
 
-      if (!membershipExists && positionPayload) {
+      if (
+        keccak256(membership.payload) === positionPayload &&
+        !membershipExists
+      ) {
         membershipExists = true
         break
       }
