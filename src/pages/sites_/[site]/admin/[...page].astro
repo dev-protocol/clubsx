@@ -46,7 +46,7 @@ const siteBaseUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
 )
 ---
 
-<DefaultLayout config={config}>
+<DefaultLayout config={config} footer={false}>
   {
     path && Content ? (
       <>

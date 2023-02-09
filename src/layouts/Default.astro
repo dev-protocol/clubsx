@@ -5,8 +5,9 @@ import PreviewBanner from '@components/PreviewBanner/PreviewBanner.svelte'
 import type { DraftOptions } from '@constants/draft'
 import Footer from '@components/Footer/Footer.astro'
 
-const { config } = Astro.props as {
+const { config, footer = true } = Astro.props as {
   config?: ClubsConfiguration
+  footer?: boolean
 }
 
 const draftOptions = config?.options?.find((option) => option.key === '__draft')
@@ -16,5 +17,5 @@ const isInDraft = Boolean(draftOptions?.isInDraft)
 
 <slot />
 {isInDraft && <PreviewBanner />}
-<Footer />
+{footer && <Footer />}
 <VercelAnalytics />
