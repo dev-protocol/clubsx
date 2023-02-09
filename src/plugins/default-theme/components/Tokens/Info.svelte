@@ -121,7 +121,9 @@
   </dd>
   <dt>Tokenized assets</dt>
   <dd>
-    {#if assets === undefined}<Skeleton />{:else}<ul>
+    {#if chainId === 1}
+      <span class="text-xs">(This data is not supported on Ethereum)</span>
+    {:else if assets === undefined}<Skeleton />{:else}<ul>
         {#each assets as asset}
           <li>
             {#if slugToLink(asset.marketSlug)}
