@@ -86,7 +86,13 @@ const { membership, memberships, presets, clubs, rpcUrl, propertyAddress } =
     }))
 
     const keys: string[] =
-      memOpts?.map((opt) => keccak256(new Uint8Array(opt.payload))) || []
+      memOpts?.map((opt) =>
+        keccak256(
+          // Uint8Array through JSON.stringify/JSON.parse is converted to a special object.
+          // https://discord.com/channels/1060730242429358080/1060730242924281976/1073196956677054484
+          new Uint8Array((opt.payload as unknown as { data: number[] }).data)
+        )
+      ) || []
 
     console.log({ keys, images, propAddress })
 
