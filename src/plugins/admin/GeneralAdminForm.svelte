@@ -3,8 +3,8 @@
   import { setConfig } from '@devprotocol/clubs-core'
   export let config: ClubsConfiguration
 
-  let { name, description, twitterHandle, propertyAddress } = config
-  let adminRolePoints = ''
+  let { name, description, twitterHandle, propertyAddress, adminRolePoints } =
+    config
   let network = 'polygon'
   let dangerLocked = true
   const networkOptions = [
@@ -21,6 +21,7 @@
       description,
       twitterHandle,
       propertyAddress,
+      adminRolePoints, // represented in basis points
     })
     setConfig(updatedConfig)
   }
@@ -65,6 +66,9 @@
         id="roleHolder"
         name="roleHolder"
       />
+      <span class="text-sm"
+        >This number should basis points. For example, 100% would equal 10000.</span
+      >
     </div>
 
     <div class="mb-10 flex flex-col">
