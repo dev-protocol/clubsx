@@ -12,28 +12,11 @@ import { default as Marketplace } from '../../pages/coming-soon.astro'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async () => []
 
-export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
-  _,
-  {
-    name,
-    description,
-    twitterHandle,
-    propertyAddress,
-    rpcUrl,
-    url,
-    adminRolePoints,
-  }
-) => [
+export const getAdminPaths: ClubsFunctionGetAdminPaths = async (_, config) => [
   {
     paths: ['general'],
     component: Index,
-    props: {
-      name,
-      description,
-      twitterHandle,
-      propertyAddress,
-      adminRolePoints,
-    },
+    props: { config },
   },
   {
     paths: ['plugins'],
@@ -43,14 +26,17 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
   {
     paths: ['overview'],
     component: Overview,
-    props: { propertyAddress, rpcUrl },
+    props: { propertyAddress: config.propertyAddress, rpcUrl: config.rpcUrl },
   },
   {
     paths: ['marketplace'],
     component: Marketplace,
     props: {
-      redirectionCtaUrl: url.replace('<USERS_SITE_NAME_HERE>', name),
-      redirectionCtaText: `Take me to ${name} homepage`,
+      redirectionCtaUrl: config.url.replace(
+        '<USERS_SITE_NAME_HERE>',
+        config.name
+      ),
+      redirectionCtaText: `Take me to ${config.name} homepage`,
     },
   },
 ]
