@@ -14,12 +14,26 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async () => []
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
   _,
-  { name, description, twitterHandle, propertyAddress, rpcUrl, url }
+  {
+    name,
+    description,
+    twitterHandle,
+    propertyAddress,
+    rpcUrl,
+    url,
+    adminRolePoints,
+  }
 ) => [
   {
     paths: ['general'],
     component: Index,
-    props: { name, description, twitterHandle, propertyAddress },
+    props: {
+      name,
+      description,
+      twitterHandle,
+      propertyAddress,
+      adminRolePoints,
+    },
   },
   {
     paths: ['plugins'],

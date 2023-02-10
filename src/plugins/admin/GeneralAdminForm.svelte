@@ -3,8 +3,8 @@
   import { setConfig } from '@devprotocol/clubs-core'
   export let config: ClubsConfiguration
 
-  let { name, description, twitterHandle, propertyAddress } = config
-  let adminRolePoints = ''
+  let { name, description, twitterHandle, propertyAddress, adminRolePoints } =
+    config
   let network = 'polygon'
   let dangerLocked = true
   const networkOptions = [
@@ -21,6 +21,7 @@
       description,
       twitterHandle,
       propertyAddress,
+      adminRolePoints,
     })
     setConfig(updatedConfig)
   }
