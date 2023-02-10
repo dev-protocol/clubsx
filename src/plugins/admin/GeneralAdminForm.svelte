@@ -16,6 +16,8 @@
   ]
 
   const updateConfig = () => {
+    adminRolePoints = adminRolePoints > 100 ? 100 : adminRolePoints
+
     const updatedConfig = Object.assign(config, {
       name,
       description,
@@ -66,9 +68,6 @@
         id="roleHolder"
         name="roleHolder"
       />
-      <span class="text-sm"
-        >This number should basis points. For example, 100% would equal 10000.</span
-      >
     </div>
 
     <div class="mb-10 flex flex-col">
