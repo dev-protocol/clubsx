@@ -21,7 +21,7 @@
       description,
       twitterHandle,
       propertyAddress,
-      adminRolePoints,
+      adminRolePoints: adminRolePoints * 100, // represented in basis points
     })
     setConfig(updatedConfig)
   }
@@ -66,6 +66,10 @@
         id="roleHolder"
         name="roleHolder"
       />
+      <span class="text-sm"
+        >This number should be a percentage. For example, anyone with 80% of the
+        token share can edit the admin area.</span
+      >
     </div>
 
     <div class="mb-10 flex flex-col">
