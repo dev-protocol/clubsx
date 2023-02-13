@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { setOptions } from '@devprotocol/clubs-core'
+  import { ClubsEvents, setOptions } from '@devprotocol/clubs-core'
   import MembershipOptionCard from './MembershipOption.svelte'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
-  import type { Membership } from '@plugins/memberships'
+  import type { Membership } from '@plugins/memberships/index'
   import { whenDefined, whenDefinedAll } from '@devprotocol/util-ts'
   import type { UndefinedOr } from '@devprotocol/util-ts'
-  import { providers, utils } from 'ethers'
+  import { ethers, providers, utils } from 'ethers'
   import {
     positionsCreateWithEth,
     estimationsAPY,
@@ -15,7 +15,12 @@
   import BigNumber from 'bignumber.js'
   import { clientsSTokens } from '@devprotocol/dev-kit'
   import { keccak256 } from 'ethers/lib/utils'
+  import type { connection as Connection } from '@devprotocol/clubs-core/connection'
+  import { controlModal, onMountClient } from '@devprotocol/clubs-core/events'
+  import { callSimpleCollections } from '@plugins/memberships/utils/simpleCollections'
+  import type { Image } from '@plugins/memberships/utils/types/setImageArg'
 
+  export let useOnFinishCallback: boolean = false
   export let currentPluginIndex: number
   export let presets: UndefinedOr<Membership[]> = undefined
   export let membership: Membership
@@ -44,10 +49,33 @@
   let loading = false
   let subscriptionStreamingLoading = true
 
+  let connection: typeof Connection
+  let signer: ethers.Signer | undefined
+  let currentAddress: string | undefined
+
+  const connectOnMount = async () => {
+    const _connection = await import('@devprotocol/clubs-core/connection')
+    connection = _connection.connection
+    connection().signer.subscribe((s) => {
+      signer = s
+    })
+    connection().account.subscribe((a) => {
+      currentAddress = a
+    })
+  }
+
   onMount(() => {
     onChangePrice()
     fetchPositionsOfProperty()
     update()
+    connectOnMount()
+
+    if (useOnFinishCallback) {
+      document.body.addEventListener(
+        ClubsEvents.FinishConfiguration,
+        onFinishCallback
+      )
+    }
   })
 
   const update = () => {
@@ -198,6 +226,50 @@
     }
 
     loading = false
+  }
+
+  const onFinishCallback = async () => {
+    const memOpts = existingMemberships as Membership[]
+    const propAddress = propertyAddress as string
+
+    if (!currentAddress || !signer) {
+      return
+    }
+
+    const images: Image[] = memOpts.map((opt) => ({
+      src: opt.imageSrc,
+      name: opt.name,
+      description: opt.description,
+      requiredETHAmount: ethers.utils.parseUnits(String(opt.price)).toString(),
+      requiredETHFee: opt.fee?.percentage
+        ? ethers.utils
+            .parseUnits(
+              new BigNumber(opt.price).times(opt.fee.percentage).toFixed()
+            )
+            .toString()
+        : 0,
+      gateway: opt.fee?.beneficiary ?? ethers.constants.AddressZero,
+    }))
+
+    const keys: string[] =
+      memOpts?.map((opt) => keccak256(new Uint8Array(opt.payload))) || []
+
+    console.log({ keys, images, propAddress })
+
+    controlModal({
+      open: true,
+      state: 'loading',
+      blocks: true,
+      closeButton: { label: 'Cancel' },
+    })
+
+    await callSimpleCollections(signer, 'setImages', [
+      propAddress,
+      images,
+      keys,
+    ]).then((res: ethers.providers.TransactionResponse) => res.wait())
+
+    controlModal({ open: false })
   }
 </script>
 
