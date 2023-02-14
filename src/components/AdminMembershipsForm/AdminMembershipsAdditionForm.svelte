@@ -31,6 +31,8 @@
   export let propertyAddress: string | null | undefined = undefined
 
   let priceInputOutsideRange: boolean = false
+  let invalidPriceMsg: string = ''
+
   let estimatedEarnings: {
     dev?: [number, number]
     usd?: [number, number]
@@ -86,15 +88,22 @@
     const minValue = Number(utils.formatEther(1))
     const maxValue = Number(utils.formatEther(ethers.constants.MaxUint256))
 
-    if (value < minValue || value > maxValue) {
+    if (value < minValue) {
       priceInputOutsideRange = true
+      membership.price = minValue
+      invalidPriceMsg = `Minimum price allowed is ${minValue}`
+    } else if (value > maxValue) {
+      priceInputOutsideRange = true
+      membership.price = maxValue
+      invalidPriceMsg = `Maximum price allowed is ${maxValue.toExponential()}`
     } else {
       priceInputOutsideRange = false
+      invalidPriceMsg = ''
     }
   }
 
   const update = () => {
-    if (priceInputOutsideRange) return
+    if (priceInputOutsideRange || invalidPriceMsg !== '') return
 
     const search = mode === 'edit' ? originalId : membership.id
     const payload = mode === 'edit' ? membership.payload : utils.randomBytes(8)
@@ -378,9 +387,11 @@
             name="membership-price"
             type="number"
             disabled={membershipExists}
+            min={Number(utils.formatEther(1))}
+            max={Number(utils.formatEther(ethers.constants.MaxUint256))}
           />
           {#if priceInputOutsideRange}
-            <p class="text-danger-300">* Invalid price</p>
+            <p class="text-danger-300">* {invalidPriceMsg}</p>
           {/if}
         </label>
 
