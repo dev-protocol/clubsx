@@ -8,9 +8,12 @@
     (config.options?.find((option) => option.key === 'avatarImgSrc')
       ?.value as string) ?? ''
 
+  // Fail safe to replace default sitename
+  const url = new URL(config.url.replace('<USERS_SITE_NAME_HERE>', config.name))
+
   const path = isDraft
-    ? `/${config.name}/setup/basic`
-    : `https://${config.name}.clubs.place`
+    ? `/${url.hostname.split('.')[0]}/setup/basic`
+    : url.toString()
 </script>
 
 <a
