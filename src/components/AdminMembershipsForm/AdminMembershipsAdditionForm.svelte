@@ -30,7 +30,6 @@
   export let rpcUrl: string
   export let propertyAddress: string | null | undefined = undefined
 
-  let priceInputOutsideRange: boolean = false
   let invalidPriceMsg: string = ''
 
   let estimatedEarnings: {
@@ -56,6 +55,9 @@
   let connection: typeof Connection
   let signer: ethers.Signer | undefined
   let currentAddress: string | undefined
+
+  const minPrice = 0.000001
+  const maxPrice = Number(utils.formatEther(ethers.constants.MaxUint256.sub(2)))
 
   const connectOnMount = async () => {
     const _connection = await import('@devprotocol/clubs-core/connection')
@@ -85,23 +87,17 @@
   const validateMembershipPrice = (event: Event) => {
     const value = Number((event.target as HTMLInputElement)?.value || 0)
 
-    const minValue = 0.000001
-    const maxValue = Number(utils.formatEther(ethers.constants.MaxUint256))
-
-    if (value < minValue) {
-      priceInputOutsideRange = true
-      invalidPriceMsg = `Minimum price allowed is ${minValue}`
-    } else if (value > maxValue) {
-      priceInputOutsideRange = true
-      invalidPriceMsg = `Maximum price allowed is ${maxValue.toExponential()}`
+    if (value < minPrice) {
+      invalidPriceMsg = `Minimum price allowed is ${minPrice}`
+    } else if (value > maxPrice) {
+      invalidPriceMsg = `Maximum price allowed is ${maxPrice.toExponential(3)}`
     } else {
-      priceInputOutsideRange = false
       invalidPriceMsg = ''
     }
   }
 
   const update = () => {
-    if (priceInputOutsideRange || invalidPriceMsg !== '') return
+    if (membership.price < minPrice || membership.price > maxPrice) return
 
     const search = mode === 'edit' ? originalId : membership.id
     const payload = mode === 'edit' ? membership.payload : utils.randomBytes(8)
@@ -149,19 +145,15 @@
 
     const value = membership.price
 
-    const minValue = 0.000001
-    const maxValue = Number(utils.formatEther(ethers.constants.MaxUint256))
-
-    if (value < minValue) {
-      priceInputOutsideRange = true
-      membership.price = minValue
-      invalidPriceMsg = `Price automatically set to minimum allowed value- ${minValue}`
-    } else if (value > maxValue) {
-      priceInputOutsideRange = true
-      membership.price = maxValue
-      invalidPriceMsg = `Price automatically set to maximum allowed value- ${maxValue.toExponential()}`
+    if (value < minPrice) {
+      membership.price = minPrice
+      invalidPriceMsg = `Price automatically set to minimum allowed value- ${minPrice}`
+    } else if (value > maxPrice) {
+      membership.price = maxPrice
+      invalidPriceMsg = `Price automatically set to maximum allowed value- ${maxPrice.toExponential(
+        3
+      )}`
     } else {
-      priceInputOutsideRange = false
       invalidPriceMsg = ''
     }
 
@@ -403,10 +395,10 @@
             name="membership-price"
             type="number"
             disabled={membershipExists}
-            min={Number(utils.formatEther(1))}
-            max={Number(utils.formatEther(ethers.constants.MaxUint256))}
+            min={minPrice}
+            max={maxPrice}
           />
-          {#if priceInputOutsideRange}
+          {#if invalidPriceMsg !== ''}
             <p class="text-danger-300">* {invalidPriceMsg}</p>
           {/if}
         </label>
