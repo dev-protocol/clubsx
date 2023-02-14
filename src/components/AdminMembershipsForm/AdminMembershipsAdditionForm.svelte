@@ -85,16 +85,14 @@
   const validateMembershipPrice = (event: Event) => {
     const value = Number((event.target as HTMLInputElement)?.value || 0)
 
-    const minValue = Number(utils.formatEther(1))
+    const minValue = 0.000001
     const maxValue = Number(utils.formatEther(ethers.constants.MaxUint256))
 
     if (value < minValue) {
       priceInputOutsideRange = true
-      membership.price = minValue
       invalidPriceMsg = `Minimum price allowed is ${minValue}`
     } else if (value > maxValue) {
       priceInputOutsideRange = true
-      membership.price = maxValue
       invalidPriceMsg = `Maximum price allowed is ${maxValue.toExponential()}`
     } else {
       priceInputOutsideRange = false
@@ -148,6 +146,24 @@
 
   const onChangePrice = async () => {
     subscriptionStreamingLoading = true
+
+    const value = membership.price
+
+    const minValue = 0.000001
+    const maxValue = Number(utils.formatEther(ethers.constants.MaxUint256))
+
+    if (value < minValue) {
+      priceInputOutsideRange = true
+      membership.price = minValue
+      invalidPriceMsg = `Price automatically set to minimum allowed value- ${minValue}`
+    } else if (value > maxValue) {
+      priceInputOutsideRange = true
+      membership.price = maxValue
+      invalidPriceMsg = `Price automatically set to maximum allowed value- ${maxValue.toExponential()}`
+    } else {
+      priceInputOutsideRange = false
+      invalidPriceMsg = ''
+    }
 
     if (membership.price === 0 || !membership.price) {
       estimatedEarnings = { dev: [0, 0], usd: [0, 0] }
