@@ -57,7 +57,7 @@
   let currentAddress: string | undefined
 
   const minPrice = 0.000001
-  const maxPrice = Number(utils.formatEther(ethers.constants.MaxUint256.sub(2)))
+  const maxPrice = 1e20
 
   const connectOnMount = async () => {
     const _connection = await import('@devprotocol/clubs-core/connection')
