@@ -6,6 +6,8 @@ import Step1 from '@assets/Step-1.png'
 import Step2 from '@assets/Step-2.png'
 import Step3 from '@assets/Step-3.png'
 import Key from '@assets/key.png'
+
+const { name } = Astro.props
 ---
 
 <div class="relative">
@@ -27,7 +29,7 @@ import Key from '@assets/key.png'
       <p class="mb-2 font-title text-lg">
         Membership is earned by staking over <span class="text-plox-400"
           >400 $DEV
-        </span> on TemplesDAO, which is the key to joining the community.
+        </span> on {name}, which is the key to joining the community.
       </p>
       <p class="mb-4 font-title text-lg">
         If you don’t have a key, get the key now with $DEV or $ETH
