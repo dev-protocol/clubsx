@@ -29,6 +29,8 @@
   export let mode: 'edit' | 'create' = 'create'
   export let rpcUrl: string
   export let propertyAddress: string | null | undefined = undefined
+
+  let priceInputOutsideRange: boolean = false
   let estimatedEarnings: {
     dev?: [number, number]
     usd?: [number, number]
@@ -78,7 +80,22 @@
     }
   })
 
+  const validateMembershipPrice = (event: Event) => {
+    const value = Number((event.target as HTMLInputElement)?.value || 0)
+
+    const minValue = Number(utils.formatEther(1))
+    const maxValue = Number(utils.formatEther(ethers.constants.MaxUint256))
+
+    if (value < minValue || value > maxValue) {
+      priceInputOutsideRange = true
+    } else {
+      priceInputOutsideRange = false
+    }
+  }
+
   const update = () => {
+    if (priceInputOutsideRange) return
+
     const search = mode === 'edit' ? originalId : membership.id
     const payload = mode === 'edit' ? membership.payload : utils.randomBytes(8)
     const newMemberships = existingMemberships.some(({ id }) => id === search)
@@ -356,11 +373,15 @@
             class="hs-form-field__input"
             bind:value={membership.price}
             on:change={onChangePrice}
+            on:keyup={validateMembershipPrice}
             id="membership-price"
             name="membership-price"
             type="number"
             disabled={membershipExists}
           />
+          {#if priceInputOutsideRange}
+            <p class="text-danger-300">* Invalid price</p>
+          {/if}
         </label>
 
         <!-- Subscription Streaming -->
