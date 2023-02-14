@@ -1,5 +1,12 @@
 ---
 import HSButton from '@components/Primitives/Hashi/HSButton.vue'
+import questImg from '@assets/quests.png'
+
+const { options } = Astro.props
+const deWorkUrl =
+  options.find(
+    (option: { key: string; value: string }) => option.key === 'deworkUrl'
+  )?.value || '#'
 ---
 
 <section class="quests">
@@ -13,13 +20,13 @@ import HSButton from '@components/Primitives/Hashi/HSButton.vue'
         contributing to the success of us.
       </h1>
       <div class="quests-digest__action">
-        <HSButton type="filled plox">Open the quests</HSButton>
+        <HSButton type="filled plox" link={deWorkUrl}>Open the quests</HSButton>
       </div>
     </div>
     <div class="quests__image relative h-[462px] w-full">
       <img
         class="absolute h-full w-full object-cover object-center"
-        src="assets/quests.png"
+        src={questImg}
         alt="a photo of a set of guild.xyz quests"
       />
     </div>
