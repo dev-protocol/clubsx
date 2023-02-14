@@ -10,9 +10,10 @@ import { default as Admin } from './admin.astro'
 import { default as AddNavigationLink } from '@components/AddNavigationLink/AddNavigationLink.astro'
 import type { NavLink } from '@constants/navLink'
 
-export const getPagePaths: ClubsFunctionGetPagePaths = async (_, { name }) => [
-  { paths: ['community'], component: Index, props: { name } },
-]
+export const getPagePaths: ClubsFunctionGetPagePaths = async (
+  options,
+  { name }
+) => [{ paths: ['community'], component: Index, props: { name, options } }]
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
   options,

@@ -7,7 +7,11 @@ import Step2 from '@assets/Step-2.png'
 import Step3 from '@assets/Step-3.png'
 import Key from '@assets/key.png'
 
-const { name } = Astro.props
+const { name, options } = Astro.props
+const guildUrl =
+  options.find(
+    (option: { key: string; value: string }) => option.key === 'guildUrl'
+  )?.value || 'https://guild.xyz/'
 ---
 
 <div class="relative">
@@ -48,26 +52,17 @@ const { name } = Astro.props
         Open the door to the community
       </h1>
       <Step step="1" label="Connect your wallet to guild.xyz" media={Step1}>
-        <HSButton
-          type="filled plox contained"
-          link="https://guild.xyz/temples-dao"
-        >
+        <HSButton type="filled plox contained" link={guildUrl}>
           guild.xyz
         </HSButton>
       </Step>
       <Step step="2" label="Join our guild" media={Step2}>
-        <HSButton
-          type="filled plox contained"
-          link="https://guild.xyz/temples-dao"
-        >
+        <HSButton type="filled plox contained" link={guildUrl}>
           guild.xyz
         </HSButton>
       </Step>
       <Step step="3" label="Open the invite link" media={Step3}>
-        <HSButton
-          type="filled plox contained"
-          link="https://guild.xyz/temples-dao"
-        >
+        <HSButton type="filled plox contained" link={guildUrl}>
           guild.xyz
         </HSButton>
       </Step>
