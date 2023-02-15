@@ -29,6 +29,9 @@
   export let mode: 'edit' | 'create' = 'create'
   export let rpcUrl: string
   export let propertyAddress: string | null | undefined = undefined
+
+  let invalidPriceMsg: string = ''
+
   let estimatedEarnings: {
     dev?: [number, number]
     usd?: [number, number]
@@ -52,6 +55,9 @@
   let connection: typeof Connection
   let signer: ethers.Signer | undefined
   let currentAddress: string | undefined
+
+  const minPrice = 0.000001
+  const maxPrice = 1e20
 
   const connectOnMount = async () => {
     const _connection = await import('@devprotocol/clubs-core/connection')
@@ -78,7 +84,21 @@
     }
   })
 
+  const validateMembershipPrice = (event: Event) => {
+    const value = Number((event.target as HTMLInputElement)?.value || 0)
+
+    if (value < minPrice) {
+      invalidPriceMsg = `Minimum price allowed is ${minPrice}`
+    } else if (value > maxPrice) {
+      invalidPriceMsg = `Maximum price allowed is ${maxPrice.toExponential(3)}`
+    } else {
+      invalidPriceMsg = ''
+    }
+  }
+
   const update = () => {
+    if (membership.price < minPrice || membership.price > maxPrice) return
+
     const search = mode === 'edit' ? originalId : membership.id
     const payload = mode === 'edit' ? membership.payload : utils.randomBytes(8)
     const newMemberships = existingMemberships.some(({ id }) => id === search)
@@ -122,6 +142,20 @@
 
   const onChangePrice = async () => {
     subscriptionStreamingLoading = true
+
+    const value = membership.price
+
+    if (value < minPrice) {
+      membership.price = minPrice
+      invalidPriceMsg = `Price automatically set to minimum allowed value- ${minPrice}`
+    } else if (value > maxPrice) {
+      membership.price = maxPrice
+      invalidPriceMsg = `Price automatically set to maximum allowed value- ${maxPrice.toExponential(
+        3
+      )}`
+    } else {
+      invalidPriceMsg = ''
+    }
 
     if (membership.price === 0 || !membership.price) {
       estimatedEarnings = { dev: [0, 0], usd: [0, 0] }
@@ -356,11 +390,17 @@
             class="hs-form-field__input"
             bind:value={membership.price}
             on:change={onChangePrice}
+            on:keyup={validateMembershipPrice}
             id="membership-price"
             name="membership-price"
             type="number"
             disabled={membershipExists}
+            min={minPrice}
+            max={maxPrice}
           />
+          {#if invalidPriceMsg !== ''}
+            <p class="text-danger-300">* {invalidPriceMsg}</p>
+          {/if}
         </label>
 
         <!-- Subscription Streaming -->
