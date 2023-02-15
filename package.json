@@ -43,7 +43,7 @@
     "@astrojs/netlify": "2.1.2",
     "@astrojs/prefetch": "0.1.2",
     "@astrojs/react": "2.0.2",
-    "@astrojs/svelte": "2.0.1",
+    "@astrojs/svelte": "2.0.2",
     "@astrojs/tailwind": "3.0.1",
     "@astrojs/vercel": "3.1.1",
     "@astrojs/vue": "2.0.1",
