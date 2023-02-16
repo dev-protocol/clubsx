@@ -4,7 +4,10 @@ import { decode, setConfig } from '@devprotocol/clubs-core'
 class AdminPlugins extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { config: decode(props.clubs.encodedClubsConfiguration), plugins: props.clubs.plugins }
+    this.state = {
+      config: decode(props.clubs.encodedClubsConfiguration),
+      plugins: props.clubs.plugins,
+    }
     this.toggleActivation = this.toggleActivation.bind(this)
   }
 
@@ -44,7 +47,10 @@ class AdminPlugins extends React.Component {
           Plugins
         </p>
         {this.state.plugins.map((plugin, i) => (
-          <div className="flex w-full flex-row items-center justify-between gap-[10px] p-0" key={i}>
+          <div
+            className="flex w-full flex-row items-center justify-between gap-[10px] p-0"
+            key={i}
+          >
             <p className="h-[24px] font-body text-base font-normal capitalize leading-6">
               {plugin.name}
             </p>
