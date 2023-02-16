@@ -71,11 +71,8 @@
       body: JSON.stringify({ text: form.destinationEmail }),
     })
 
-    console.log('res is: ', res)
-
     if (res.ok) {
       const json = (await res.json()) as { encrypted: string }
-      console.log('json is: ', json)
       form.destinationEmail = json.encrypted
 
       form.emailEncrypted = true
@@ -91,8 +88,6 @@
     if (!currentAddress || !signer) {
       return
     }
-
-    console.log('current address is: ', currentAddress)
 
     const hash = utils.hashMessage(form.destinationEmail)
     const sig = await signer.signMessage(hash)
