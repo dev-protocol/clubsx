@@ -61,6 +61,7 @@ export const defaultConfig: ClubsConfiguration = {
     },
     {
       name: 'join',
+      enable: true,
       options: [],
     },
     {
@@ -69,10 +70,12 @@ export const defaultConfig: ClubsConfiguration = {
     },
     {
       name: 'community',
+      enable: true,
       options: [],
     },
     {
       name: 'quests',
+      enable: true,
       options: [],
     },
     {
@@ -81,10 +84,12 @@ export const defaultConfig: ClubsConfiguration = {
     },
     {
       name: 'memberships',
+      enable: true,
       options: [],
     },
     {
       name: 'message',
+      enable: true,
       options: [],
     },
   ],
