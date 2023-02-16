@@ -4,13 +4,14 @@ import { decode, setConfig } from '@devprotocol/clubs-core'
 class AdminPlugins extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { config: decode(props.encodedConfig) }
+    this.state = { config: decode(props.clubs.encodedClubsConfiguration), plugins: props.clubs.plugins }
     this.toggleActivation = this.toggleActivation.bind(this)
   }
 
   toggleActivation = (pluginName) => {
     this.setState((prevState) => {
-      const plugins = prevState.config.plugins
+      // Take plugins from the prevState.
+      const plugins = prevState.plugins
 
       // 1. Find index of plugin.
       const index = plugins.findIndex((plugin) => plugin.name === pluginName)
@@ -27,7 +28,7 @@ class AdminPlugins extends React.Component {
       // 6. Set config.
       setConfig(config)
       // 7. Update component state.
-      return { ...prevState.config, plugins }
+      return { config: { ...prevState.config, plugins }, plugins: [...plugins] }
     })
   }
 
@@ -42,8 +43,8 @@ class AdminPlugins extends React.Component {
         <p className="font-Syne h-9 p-0 text-2xl font-bold leading-9">
           Plugins
         </p>
-        {this.state.config.plugins.map((plugin, i) => (
-          <div className="flex w-full flex-row items-center justify-between gap-[10px] p-0">
+        {this.state.plugins.map((plugin, i) => (
+          <div className="flex w-full flex-row items-center justify-between gap-[10px] p-0" key={i}>
             <p className="h-[24px] font-body text-base font-normal capitalize leading-6">
               {plugin.name}
             </p>
