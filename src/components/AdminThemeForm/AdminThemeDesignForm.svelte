@@ -9,6 +9,8 @@
   } from '@plugins/default-theme'
   import { equals } from 'ramda'
 
+  type ColorPresetKey = keyof typeof ColorPresets
+
   export let colorPresets: typeof ColorPresets
   export let homeConfig: HomeConfigValue = {}
   export let globalConfig: GlobalConfigValue =
@@ -16,7 +18,16 @@
   export let currentPluginIndex: number
   export let onUpdate: undefined | ((next: ClubsPluginOptions) => void)
   let uploading = false
-  let selectedColorPreset: keyof typeof ColorPresets = 'Purple'
+  let selectedColorPreset: ColorPresetKey =
+    (Object.keys(colorPresets as typeof ColorPresets) as ColorPresetKey[]).find(
+      (cp: ColorPresetKey) => {
+        // Checks globalConfig for already existing value of color
+        const preset: GlobalConfigValue = colorPresets[cp] as GlobalConfigValue
+        if (preset.bg && globalConfig.bg && preset.bg === globalConfig.bg) {
+          return cp
+        }
+      }
+    ) || 'Purple' // else defaults to Purple
 
   const update = (e?: any) => {
     globalConfig = colorPresets[selectedColorPreset] as GlobalConfigValue
