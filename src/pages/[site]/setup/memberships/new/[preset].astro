@@ -52,13 +52,34 @@ const siteBaseUrl = ((url) =>
       title={`Setup Clubs | Memberships | ${preset}`}
     >
       <section class="grid gap-16">
-        <h1 class="font-title text-lg font-bold">Memberships</h1>
+        <div class="flex items-center gap-4">
+          <a
+            href={`${baseUrl}/memberships`}
+            class="hs-button is-outlined w-fit text-white"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="h-6 w-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15.75 19.5L8.25 12l7.5-7.5"
+              />
+            </svg>
+          </a>
+
+          <h1 class="font-title text-lg font-bold">Memberships</h1>
+        </div>
 
         <AdminMembershipsAdditionForm
           client:load
           currentPluginIndex={props.clubs.currentPluginIndex}
           membership={membership}
-          presets={props.presets as Membership[]}
           existingMemberships={props.memberships as Membership[]}
           rpcUrl={props.rpcUrl as string}
           base={baseUrl}

@@ -22,7 +22,6 @@
 
   export let useOnFinishCallback: boolean = false
   export let currentPluginIndex: number
-  export let presets: UndefinedOr<Membership[]> = undefined
   export let membership: Membership
   export let existingMemberships: Membership[]
   export let base: string = '/admin'
@@ -139,14 +138,11 @@
   }
 
   const toDp2 = (v: number | string) =>
-    new BigNumber(v)
-      .dp(2)
-      .toNumber()
-      .toLocaleString('en-US', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 3,
-        useGrouping: false,
-      })
+    new BigNumber(v).dp(2).toNumber().toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 3,
+      useGrouping: false,
+    })
 
   const onChangePrice = async () => {
     subscriptionStreamingLoading = true
@@ -316,32 +312,6 @@
 </script>
 
 <div class="grid gap-16">
-  {#if presets}
-    <div class="max-w-full overflow-x-scroll">
-      <div class="flex flex-nowrap gap-4">
-        {#each presets as opt, i}
-          <div>
-            <MembershipOptionCard
-              name={opt.name}
-              imagePath={opt.imageSrc}
-              ethPrice={opt.price.toString()}
-              description={opt.description}
-              className={originalId === opt.id
-                ? 'border-[3px] border-native-blue-300 w-32'
-                : 'opacity-30 w-32'}
-            />
-            <a
-              class="mt-2 block w-full rounded bg-black py-4 text-center text-sm font-semibold text-white"
-              id={`select-opt-${i}`}
-              href={`${base}/memberships/new/${opt.id}`}
-              >{originalId === opt.id ? 'Selected' : 'Select'}</a
-            >
-          </div>
-        {/each}
-      </div>
-    </div>
-  {/if}
-
   <form
     on:change|preventDefault={(_) => update()}
     class={`grid gap-16 ${loading ? 'animate-pulse' : ''} ${
@@ -365,30 +335,48 @@
         </label>
 
         <!-- Image -->
-        <div class="flex flex-col gap-1">
-          <label class="hs-form-field" for="avatarPath">
-            <span class="hs-form-field__label">Image</span>
+        <div class="hs-form-field">
+          <span class="hs-form-field__label">Image</span>
+          <span
+            class="hs-button is-filled w-fit cursor-pointer rounded-lg bg-[#040B10] px-12 py-4"
+            >Upload to change image</span
+          >
+          <p class="text-xs opacity-60">
+            * JPEG, PNG, GIF, TIFF and animated PNG
+          </p>
 
-            {#if membership.imageSrc && membership.imageSrc != ''}
-              <img
-                src={membership.imageSrc}
-                class="h-auto max-w-full cursor-pointer rounded"
-                alt="Hero"
-              />
-            {/if}
-            <span
-              class="hs-button is-filled cursor-pointer rounded-lg bg-[#040B10] px-12 py-4"
-              >Choose Image</span
-            >
-            <input
-              id="avatarPath"
-              name="avatarPath"
-              style="display:none"
-              type="file"
-              on:change={onFileSelected}
-              disabled={membershipExists}
-            />
-          </label>
+          <p>
+            <a
+              href="https://docs.google.com/presentation/d/1bbQhOktQoaA5ynQB1RgvOc4eMWlMHFDliw1DmS35w8Y/edit?usp=sharing"
+              target="_blank"
+              class="hs-button is-filled mt-8 w-fit border-0 bg-dp-blue-grey-400"
+              rel="noopener noreferrer"
+              >Use Google Slides template <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="ml-2 h-5 w-5"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M9 13.5l3 3m0 0l3-3m-3 3v-6m1.06-4.19l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z"
+                />
+              </svg>
+            </a>
+          </p>
+
+          <input
+            id="avatarPath"
+            name="avatarPath"
+            style="display:none"
+            type="file"
+            accept=".jpg, .jpeg, .png, .gif, .apng, .tiff"
+            on:change={onFileSelected}
+            disabled={membershipExists}
+          />
         </div>
 
         <!-- Price -->
@@ -478,7 +466,23 @@
         name="membership-description"
         disabled={membershipExists}
       />
-      <p class="text-sm">Markdown is available</p>
+      <p class="mb-6 text-sm">
+        Markdown is available <a
+          href="https://www.markdownguide.org/basic-syntax"
+          target="_blank"
+          class="text-sm underline"
+          rel="noopener noreferrer">(What is Markdown? ↗)</a
+        >
+      </p>
+      <p>
+        <a
+          href="https://openai.com/"
+          target="_blank"
+          class="hs-button is-filled w-fit border-0 bg-dp-blue-grey-400 text-sm"
+          rel="noopener noreferrer"
+          >Try asking AI about "membership ideas for gaming community"</a
+        >
+      </p>
     </label>
 
     <div class="flex w-full justify-end">
