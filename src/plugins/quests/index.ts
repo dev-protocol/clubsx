@@ -13,8 +13,11 @@ import type { NavLink } from '@constants/navLink'
 
 const questParams = ['quest_starter', 'quest_stake_100', 'quest_stake_500']
 
-export const getPagePaths: ClubsFunctionGetPagePaths = async (_) => [
-  { paths: ['quests'], component: Index },
+export const getPagePaths: ClubsFunctionGetPagePaths = async (
+  options,
+  config
+) => [
+  { paths: ['quests'], component: Index, props: { options } },
   ...questParams.map((param) => ({
     paths: ['quests', param],
     component: Id,
