@@ -139,14 +139,11 @@
   }
 
   const toDp2 = (v: number | string) =>
-    new BigNumber(v)
-      .dp(2)
-      .toNumber()
-      .toLocaleString('en-US', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 3,
-        useGrouping: false,
-      })
+    new BigNumber(v).dp(2).toNumber().toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 3,
+      useGrouping: false,
+    })
 
   const onChangePrice = async () => {
     subscriptionStreamingLoading = true

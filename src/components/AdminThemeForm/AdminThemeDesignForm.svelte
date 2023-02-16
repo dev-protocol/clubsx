@@ -55,6 +55,7 @@
       },
     }
     uploading = false
+    update()
   }
 
   const getColor = (
