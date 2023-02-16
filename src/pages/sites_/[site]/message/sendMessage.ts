@@ -1,4 +1,4 @@
-import { utils, providers, ethers, Signer } from 'ethers'
+import { utils, providers, ethers } from 'ethers'
 import { createClient } from 'redis'
 import { authenticate, decode } from '@devprotocol/clubs-core'
 import { checkMemberships } from '@fixtures/utility'
@@ -6,6 +6,7 @@ import type { UndefinedOr } from '@devprotocol/util-ts'
 import type { GatedMessage } from '@plugins/message/types'
 import type { Membership } from '@plugins/memberships'
 import sgMail from '@sendgrid/mail'
+import { verify } from 'jsonwebtoken'
 
 export const post = async ({ request }: { request: Request }) => {
   const {
@@ -75,6 +76,8 @@ export const post = async ({ request }: { request: Request }) => {
     })
   }
 
+  let decodedEmail = verify(formData.destinationEmail, process.env.SALT ?? '')
+
   const membershipsData = configuration.plugins?.[
     membershipPluginIndex ?? 0
   ]?.options?.find((element) => element.key === 'memberships')
@@ -128,7 +131,7 @@ export const post = async ({ request }: { request: Request }) => {
     sgMail.setApiKey(process.env[formData.sendGridEnvKey]!)
 
     await sgMail.send({
-      to: formData.destinationEmail,
+      to: `${decodedEmail}`,
       from: process.env.SENDGRID_FROM_EMAIL!,
       subject: 'Sent from Clubs Gated Contact Form',
       text:
