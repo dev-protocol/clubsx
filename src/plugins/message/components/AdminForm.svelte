@@ -1,7 +1,10 @@
 <script lang="ts">
   import { setOptions } from '@devprotocol/clubs-core'
   import type { Membership } from '@plugins/memberships'
+  import { ethers, utils } from 'ethers'
   import type { GatedMessage } from '../types'
+  import type { connection as Connection } from '@devprotocol/clubs-core/connection'
+  import { onMount } from 'svelte'
 
   export let currentPluginIndex: number
   export let forms: GatedMessage[] = []
@@ -15,6 +18,7 @@
     presetName: 'PRESET_NAME_AND_FREE_INPUT',
     sendGridEnvKey: import.meta.env.PUBLIC_GATED_CONTACT_FORM_SENDGRID_ENV_KEY,
     destinationEmail: '',
+    emailEncrypted: false,
   }
 
   const formPresets = [
@@ -23,6 +27,25 @@
       value: 'PRESET_NAME_AND_FREE_INPUT',
     },
   ]
+
+  let connection: typeof Connection
+  let signer: ethers.Signer | undefined
+  let currentAddress: string | undefined
+
+  const connectOnMount = async () => {
+    const _connection = await import('@devprotocol/clubs-core/connection')
+    connection = _connection.connection
+    connection().signer.subscribe((s) => {
+      signer = s
+    })
+    connection().account.subscribe((a) => {
+      currentAddress = a
+    })
+  }
+
+  onMount(() => {
+    connectOnMount()
+  })
 
   const update = () => {
     const next = forms.some((form) => form.id === id)
@@ -41,6 +64,58 @@
       currentPluginIndex
     )
   }
+
+  const encryptEmail = async () => {
+    const res = await fetch('/api/encrypt', {
+      method: 'POST',
+      body: JSON.stringify({ text: form.destinationEmail }),
+    })
+
+    console.log('res is: ', res)
+
+    if (res.ok) {
+      const json = (await res.json()) as { encrypted: string }
+      console.log('json is: ', json)
+      form.destinationEmail = json.encrypted
+
+      form.emailEncrypted = true
+      form = form
+      update()
+    }
+  }
+
+  const decryptEmail = async () => {
+    const splitHostname = window.location.hostname.split('.')
+    const site = splitHostname[0]
+
+    if (!currentAddress || !signer) {
+      return
+    }
+
+    console.log('current address is: ', currentAddress)
+
+    const hash = utils.hashMessage(form.destinationEmail)
+    const sig = await signer.signMessage(hash)
+    if (!sig) {
+      return
+    }
+
+    const res = await fetch('/api/decrypt', {
+      method: 'POST',
+      body: JSON.stringify({
+        site,
+        encryptedText: form.destinationEmail,
+        hash,
+        sig,
+      }),
+    })
+
+    if (res.ok) {
+      const json = (await res.json()) as { decoded: string }
+      form.destinationEmail = json.decoded
+      form = form
+    }
+  }
 </script>
 
 <form
@@ -56,6 +131,20 @@
       name="email"
       type="email"
     />
+    {#if form.emailEncrypted}
+      <button
+        class="hs-button is-filled"
+        type="button"
+        on:click|preventDefault={(_) => decryptEmail()}
+        >Decrypt this email</button
+      >
+    {:else}
+      <button
+        on:click|preventDefault={(_) => encryptEmail()}
+        type="button"
+        class="hs-button is-filled">Encrypt this email</button
+      >
+    {/if}
   </div>
 
   <!-- Form preset -->
