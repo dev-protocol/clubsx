@@ -1,5 +1,3 @@
-import { Membership } from '@plugins/memberships'
-
 export type GatedMessage = {
   id: string
   title: string
@@ -8,6 +6,7 @@ export type GatedMessage = {
   presetName: string
   sendGridEnvKey: string
   destinationEmail: string
+  emailEncrypted: boolean
 }
 
 export enum MessageSentStatus {

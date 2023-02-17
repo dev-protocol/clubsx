@@ -125,10 +125,10 @@
     undici "^5.14.0"
     which-pm-runs "^1.1.0"
 
-"@astrojs/vercel@3.1.1":
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/@astrojs/vercel/-/vercel-3.1.1.tgz#185128598780489dc70fe2afdb785cba0cee8791"
-  integrity sha512-3u976waO1HjnmvImmdTiiHqlH+kCF/NAmppwtzWg86uTLj581gYy6OXIfzMxg5uvC1tODbciuauFJcmdEBThIw==
+"@astrojs/vercel@3.1.2":
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/@astrojs/vercel/-/vercel-3.1.2.tgz#760338b57d6c45763f29555318578aa8eebe4ecf"
+  integrity sha512-QS7Xy6AHlp+o7qesX3iHX8G/r8UlF96Fi7EcNauyi8W/VO2XrOHVmFLLhAcMnRbyZxPpyLH+mPYkuBLfxhKH7A==
   dependencies:
     "@astrojs/webapi" "^2.0.0"
     "@vercel/analytics" "^0.1.8"
@@ -2133,6 +2133,11 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-18.11.10.tgz#4c64759f3c2343b7e6c4b9caf761c7a3a05cee34"
   integrity sha512-juG3RWMBOqcOuXC643OAdSA525V44cVgGV6dUDuiFtss+8Fk5x1hI93Rsld43VeJVIeqlP9I7Fn9/qaVqoEAuQ==
 
+"@types/node@^18.13.0":
+  version "18.13.0"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.13.0.tgz#0400d1e6ce87e9d3032c19eb6c58205b0d3f7850"
+  integrity sha512-gC3TazRzGoOnoKAhUx+Q0t8S9Tzs74z7m0ipwGpSqQrleP14hKxP4/JUeEQcD3W1/aIpnWl8pHowI7WokuZpXg==
+
 "@types/parse5@^6.0.0":
   version "6.0.3"
   resolved "https://registry.npmjs.org/@types/parse5/-/parse5-6.0.3.tgz"
@@ -2214,7 +2219,12 @@
   resolved "https://registry.npmjs.org/@types/yargs-parser/-/yargs-parser-21.0.0.tgz"
   integrity sha512-iO9ZQHkZxHn4mSakYV0vFHAVDyEOIJQrV2uZ06HxEPcx+mt8swXoZHIbaaJ2crJYFfErySgktuTZ3BeLz+XmFA==
 
-"@vercel/analytics@0.1.8", "@vercel/analytics@^0.1.8":
+"@vercel/analytics@0.1.9":
+  version "0.1.9"
+  resolved "https://registry.yarnpkg.com/@vercel/analytics/-/analytics-0.1.9.tgz#434f14a0dbe635a6d92c693a3607dbac0468dd47"
+  integrity sha512-Lfus/6HAZXQBr4uv5eCtNKrEvthKWQFFcUNh5wC3fWn+4PbHxT8bqcm1TMQfYvGJ8O4TWzn0IfrQFNWh1DHDbQ==
+
+"@vercel/analytics@^0.1.8":
   version "0.1.8"
   resolved "https://registry.yarnpkg.com/@vercel/analytics/-/analytics-0.1.8.tgz#71f1f8c7bb98ac0c5c47eb3fb8ccbe8141b9fe47"
   integrity sha512-PQrOI8BJ9qUiVJuQfnKiJd15eDjDJH9TBKsNeMrtelT4NAk7d9mBVz1CoZkvoFnHQ0OW7Xnqmr1F2nScfAnznQ==
@@ -2713,10 +2723,10 @@ arrify@^2.0.0:
   resolved "https://registry.yarnpkg.com/arrify/-/arrify-2.0.1.tgz#c9655e9331e0abcd588d2a7cad7e9956f66701fa"
   integrity sha512-3duEwti880xqi4eAMN8AyR4a0ByT90zoYdLlevfrvU43vb0YZwZVfxOgxWrLXXXpyugL0hNZc9G6BiB5B3nUug==
 
-astro@2.0.11:
-  version "2.0.11"
-  resolved "https://registry.yarnpkg.com/astro/-/astro-2.0.11.tgz#22f59cbef36bd6b538e23004479092ee18729909"
-  integrity sha512-dXBuHE1ZYfafHyjhe7ZUkcZzGGInWrLCMeHAML//+mdySr/htDsiMo8DN25Ld5siKClsCvyXgxitu651wSWcyw==
+astro@2.0.12:
+  version "2.0.12"
+  resolved "https://registry.yarnpkg.com/astro/-/astro-2.0.12.tgz#4736d14fc17c8dfb0e0f7d74b91ae345a053069e"
+  integrity sha512-qtAqPSfvUuA94Lt38ErB+pe1JrPzMsdxhLLxmbMA44JLriFAjkKA60mZf+woaYxe9l8Gc0KQ0oKa4rE4ucrA8A==
   dependencies:
     "@astrojs/compiler" "^1.1.0"
     "@astrojs/language-server" "^0.28.3"
@@ -5212,6 +5222,11 @@ jsonfile@^6.0.1:
   optionalDependencies:
     graceful-fs "^4.1.6"
 
+jsonwebtoken-esm@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/jsonwebtoken-esm/-/jsonwebtoken-esm-2.0.1.tgz#e5f95d7d8849ee7cb183f793671c3e242783aa36"
+  integrity sha512-uZwq66J1WgwevzBheW8AMj8STn9QLXHLtY5cI52ztzip8VFPwoqaz/RQmgfNMivt+yD2Lfi4YS4uYHoKz0Fw9g==
+
 jsonwebtoken@^8.5.1:
   version "8.5.1"
   resolved "https://registry.yarnpkg.com/jsonwebtoken/-/jsonwebtoken-8.5.1.tgz#00e71e0b8df54c2121a1f26137df2280673bcc0d"
@@ -5227,6 +5242,16 @@ jsonwebtoken@^8.5.1:
     lodash.once "^4.0.0"
     ms "^2.1.1"
     semver "^5.6.0"
+
+jsonwebtoken@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/jsonwebtoken/-/jsonwebtoken-9.0.0.tgz#d0faf9ba1cc3a56255fe49c0961a67e520c1926d"
+  integrity sha512-tuGfYXxkQGDPnLJ7SibiQgVgeDgfbPq2k2ICcbgqW8WxWLBAxKQM/ZCu/IT8SOSwmaYl4dpTFCW5xZv7YbbWUw==
+  dependencies:
+    jws "^3.2.2"
+    lodash "^4.17.21"
+    ms "^2.1.1"
+    semver "^7.3.8"
 
 jszip@^3.10.0:
   version "3.10.1"
