@@ -1,4 +1,4 @@
-import { sign } from 'jsonwebtoken'
+import { sign } from 'jsonwebtoken-esm'
 
 export const post = async ({ request }: { request: Request }) => {
   const { text } = (await request.json()) as {
