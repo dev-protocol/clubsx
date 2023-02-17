@@ -13,7 +13,8 @@
     "prepare": "husky install",
     "install": "node ./ugly.mjs",
     "populate": "node ./scripts/populate.mjs",
-    "flushDb": "node ./scripts/flushDb.mjs"
+    "flushDb": "node ./scripts/flushDb.mjs",
+    "upgradeDb": "node ./scripts/upgrade.mjs"
   },
   "devDependencies": {
     "@types/dotenv": "8.2.0",
