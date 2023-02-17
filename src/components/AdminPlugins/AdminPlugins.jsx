@@ -4,9 +4,20 @@ import { decode, setConfig } from '@devprotocol/clubs-core'
 class AdminPlugins extends React.Component {
   constructor(props) {
     super(props)
+
+    // Filter the plugins to avoid dubplicates.
+    const pluginsCache = []
+    const pluginsCacheName = new Set()
+    for (const plugin of props.clubs.plugins) {
+      if (!pluginsCacheName.has(plugin.name)) {
+        pluginsCacheName.add(plugin.name)
+        pluginsCache.push(plugin)
+      }
+    }
+
     this.state = {
       config: decode(props.clubs.encodedClubsConfiguration),
-      plugins: props.clubs.plugins,
+      plugins: pluginsCache,
     }
     this.toggleActivation = this.toggleActivation.bind(this)
   }
