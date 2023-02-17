@@ -5222,6 +5222,11 @@ jsonfile@^6.0.1:
   optionalDependencies:
     graceful-fs "^4.1.6"
 
+jsonwebtoken-esm@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/jsonwebtoken-esm/-/jsonwebtoken-esm-2.0.1.tgz#e5f95d7d8849ee7cb183f793671c3e242783aa36"
+  integrity sha512-uZwq66J1WgwevzBheW8AMj8STn9QLXHLtY5cI52ztzip8VFPwoqaz/RQmgfNMivt+yD2Lfi4YS4uYHoKz0Fw9g==
+
 jsonwebtoken@^8.5.1:
   version "8.5.1"
   resolved "https://registry.yarnpkg.com/jsonwebtoken/-/jsonwebtoken-8.5.1.tgz#00e71e0b8df54c2121a1f26137df2280673bcc0d"
