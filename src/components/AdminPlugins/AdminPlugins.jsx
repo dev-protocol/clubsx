@@ -8,8 +8,6 @@ class AdminPlugins extends React.Component {
     let decodedConfig = decode(props.clubs.encodedClubsConfiguration)
     const injectedPlugins = props.clubs.plugins
 
-    console.log("Decoded config", decodedConfig.plugins)
-
     const plugins = []
     let adminPlugin = {}
     for (const plugin of decodedConfig.plugins) {
