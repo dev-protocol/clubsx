@@ -13,8 +13,6 @@ import message from '@plugins/message'
 import VercelAnalytics from '@components/Analytics/VercelAnalytics.astro'
 import PageNotFound from '@pages/404.astro'
 import marketplace from '@plugins/marketplace'
-import join from '@plugins/join'
-import me from '@plugins/me'
 
 const { site, page } = Astro.params
 
@@ -29,8 +27,6 @@ const { getStaticPaths } = adminFactory({
     home,
     message,
     marketplace,
-    join,
-    me,
   },
 })
 const path = (await getStaticPaths()).find(({ params }) => params.page === page)
