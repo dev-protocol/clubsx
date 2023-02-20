@@ -9,6 +9,8 @@ class AdminPlugins extends React.Component {
     const pluginsCache = []
     const pluginsCacheName = new Set()
     for (const plugin of props.clubs.plugins) {
+      if (plugin.name.toLowerCase() === 'admin') continue
+
       if (!pluginsCacheName.has(plugin.name)) {
         pluginsCacheName.add(plugin.name)
         pluginsCache.push(plugin)
