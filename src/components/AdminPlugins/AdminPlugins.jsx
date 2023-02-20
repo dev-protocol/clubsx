@@ -5,10 +5,11 @@ class AdminPlugins extends React.Component {
   constructor(props) {
     super(props)
 
+    const decodedConfig = decode(props.clubs.encodedClubsConfiguration)
     // Filter the plugins to avoid dubplicates.
     const pluginsCache = []
     const pluginsCacheName = new Set()
-    for (const plugin of props.clubs.plugins) {
+    for (const plugin of [...props.clubs.plugins, ...decodedConfig.plugins]) {
       if (plugin.name.toLowerCase() === 'admin') continue
 
       if (!pluginsCacheName.has(plugin.name)) {
@@ -18,7 +19,7 @@ class AdminPlugins extends React.Component {
     }
 
     this.state = {
-      config: decode(props.clubs.encodedClubsConfiguration),
+      config: decodedConfig,
       plugins: pluginsCache,
     }
     this.toggleActivation = this.toggleActivation.bind(this)
