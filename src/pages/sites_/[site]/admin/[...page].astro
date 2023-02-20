@@ -26,7 +26,7 @@ const { getStaticPaths } = adminFactory({
     memberships,
     home,
     message,
-    marketplace,
+    marketplace
   },
 })
 const path = (await getStaticPaths()).find(({ params }) => params.page === page)
