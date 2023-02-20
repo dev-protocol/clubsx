@@ -4,7 +4,4 @@ import AdminPlugins from '@components/AdminPlugins/AdminPlugins.jsx'
 const { clubs } = Astro.props
 ---
 
-<AdminPlugins
-  client:only="react"
-  encodedConfig={clubs.encodedClubsConfiguration}
-/>
+<AdminPlugins client:only="react" clubs={clubs} />
