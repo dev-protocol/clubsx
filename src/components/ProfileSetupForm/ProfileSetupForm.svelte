@@ -137,7 +137,7 @@
         <div class="mb-4 h-64 w-64"><Skeleton /></div>
       {:else if avatarPath && avatarPath != ''}
         <div class="mb-4 w-64 rounded bg-dp-blue-grey-600 p-3">
-          <img src={avatarPath} class="rounded" alt="" />
+          <img src={avatarPath.toString()} class="rounded" alt="" />
         </div>
       {/if}
       <div class="float-left">
@@ -152,6 +152,9 @@
         type="file"
         on:change={onFileSelected}
       />
+      <span class="mt-1 text-xs opacity-60"
+        >*Image size should be 600px x 600px</span
+      >
     </label>
   </div>
 </form>
