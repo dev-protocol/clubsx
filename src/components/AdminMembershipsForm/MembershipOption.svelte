@@ -1,43 +1,179 @@
 <script lang="ts">
   import { marked } from 'marked'
   import type { UndefinedOr } from '@devprotocol/util-ts'
+  import { onMount } from 'svelte'
 
   export let name: string
+  export let clubName: string
   export let imagePath: string
   export let ethPrice: UndefinedOr<string> = undefined
   export let devPrice: UndefinedOr<string> = undefined
   export let description: string | undefined = undefined
+  export let action: string | undefined = undefined
+  export let actionLabel: string | undefined = undefined
   export let className: string = ''
+  let modal = false
+  let modalGroup: Element | undefined
 
   const content = marked.parse(description ?? '')
+
+  const handleClickOpen = () => {
+    modal = true
+    document.body.classList.add('overflow-y-hidden')
+  }
+  const handleClickClose = () => {
+    modal = false
+    document.body.classList.remove('overflow-y-hidden')
+  }
+
+  onMount(() => {
+    modalGroup && document.body.appendChild(modalGroup)
+  })
 </script>
 
+<svelte:head>
+  <link rel="prefetch" href={imagePath} />
+</svelte:head>
+
 <div
-  class={`flex flex-col gap-3 rounded bg-white p-2.5 text-black ${className}`}
+  class={`grid grid-rows-[auto_1fr] overflow-hidden rounded-xl shadow-2xl ${className}`}
 >
-  <img
-    class="aspect-square w-full	 rounded-2xl bg-black/20 object-contain"
-    src={imagePath}
-    alt={`${name} Membership`}
-  />
+  <img class="w-full bg-black/20" src={imagePath} alt={`${name} Membership`} />
 
-  <span class="font-semibold">{name}</span>
-  {#if ethPrice}
-    <p>
-      <span class="text-sm font-semibold">{ethPrice}</span>
-      <span class="text-sm">ETH</span>
-    </p>
-  {/if}
-  {#if devPrice}
-    <span class="font-semibold">{devPrice} DEV</span>
-  {/if}
+  <div
+    class="relative grid grid-cols-[1fr_auto] content-baseline items-center gap-3 overflow-hidden p-2.5"
+  >
+    <img
+      class="pointer-events-none absolute -left-1/2 top-1/2 h-auto w-[200%] max-w-none -translate-y-1/2 blur-[120px]"
+      src={imagePath}
+      role="presentation"
+    />
 
-  {#if description}
-    <div class="md grid gap-2 text-sm">{@html content}</div>
+    <div class="relative col-start-1">
+      <p>{name}</p>
+      {#if ethPrice}
+        <p class="text-sm opacity-70">{ethPrice} ETH</p>
+      {/if}
+      {#if devPrice}
+        <p class="text-sm opacity-70">{devPrice} DEV</p>
+      {/if}
+    </div>
+
+    <button
+      class="relative col-start-2 rounded-full bg-white/50 p-2"
+      on:click={handleClickOpen}
+      ><svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="h-6 w-6"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
+        />
+      </svg>
+    </button>
+
+    {#if description}
+      <div class="md md-mini relative col-span-2 grid gap-2 text-xs opacity-70">
+        {@html content}
+      </div>
+    {/if}
+  </div>
+</div>
+
+<div
+  bind:this={modalGroup}
+  class={`inset-0 z-[9999] grid animate-[fadeIn_2s_ease-in-out_forwards] items-center justify-center overflow-y-scroll bg-black/20 p-8 backdrop-blur-3xl ${
+    modal ? 'fixed' : 'hidden'
+  }`}
+>
+  {#if modal === true}
+    <div class="grid  max-w-lg	gap-4 p-2">
+      <span class="flex items-center gap-3 overflow-hidden">
+        <button on:click={handleClickClose}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="h-6 w-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M15.75 19.5L8.25 12l7.5-7.5"
+            />
+          </svg>
+        </button>
+        <span class="truncate text-3xl font-bold">{name}</span>
+      </span>
+      <img
+        class="w-full rounded-xl bg-black/20 shadow-xl"
+        src={imagePath}
+        alt={`${name} Membership`}
+      />
+
+      <div class="px-2.5">
+        <p class="font-bold">{name}</p>
+        <p class="opacity-50">{clubName}</p>
+      </div>
+
+      <div
+        class="grid grid-cols-[1fr_auto] content-baseline items-center gap-3 overflow-hidden px-2.5"
+      >
+        {#if ethPrice}
+          <p class="text-2xl font-bold">{ethPrice} ETH</p>
+        {/if}
+        {#if devPrice}
+          <p class="text-2xl font-bold">{devPrice} DEV</p>
+        {/if}
+
+        {#if action && actionLabel}
+          <a
+            class="flex items-center gap-2 rounded-full bg-white/20 py-2.5 px-5"
+            href={action}
+            >{actionLabel}<svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="h-6 w-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12.75 15l3-3m0 0l-3-3m3 3h-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          </a>
+        {/if}
+      </div>
+
+      {#if description}
+        <div class="md grid gap-2">
+          {@html content}
+        </div>
+      {/if}
+    </div>
   {/if}
 </div>
 
 <style lang="scss">
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 100;
+    }
+  }
   .md {
     :global(h1) {
       @apply text-3xl font-bold;
@@ -67,5 +203,15 @@
     :global(pre) {
       @apply rounded p-3;
     }
+  }
+  .md.md-mini {
+    display: box;
+    overflow: hidden;
+    box-orient: vertical;
+    line-clamp: 2;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 </style>

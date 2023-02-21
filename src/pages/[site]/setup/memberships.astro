@@ -51,6 +51,7 @@ const clubs = path?.props.clubs
 
         <AdminMembershipsForm
           client:load
+          clubName={path.props.name as string}
           currentPluginIndex={clubs.currentPluginIndex}
           memberships={path.props.memberships as Membership[]}
           presets={created ? [] : (path.props.presets as Membership[])}

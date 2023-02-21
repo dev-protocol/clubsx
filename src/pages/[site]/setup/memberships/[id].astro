@@ -41,6 +41,7 @@ const { props } = path || { props: null }
 
       <AdminMembershipsAdditionForm
         client:load
+        clubName={props.name as string}
         currentPluginIndex={props.clubs.currentPluginIndex}
         membership={props.membership as Membership}
         existingMemberships={props.memberships as Membership[]}
