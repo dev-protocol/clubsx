@@ -28,6 +28,7 @@
   export let mode: 'edit' | 'create' = 'create'
   export let rpcUrl: string
   export let propertyAddress: string | null | undefined = undefined
+  export let clubName: string | undefined = undefined
 
   let invalidPriceMsg: string = ''
 
@@ -125,7 +126,8 @@
 
     const file = e.currentTarget.files[0]
 
-    membership.imageSrc = await uploadImageAndGetPath(file)
+    membership.imageSrc =
+      (await uploadImageAndGetPath(file)) || `https://i.imgur.com/sznqcmL.png`
 
     membership = membership
 
@@ -337,10 +339,19 @@
         <!-- Image -->
         <div class="hs-form-field">
           <span class="hs-form-field__label">Image</span>
-          <span
+          <label
             class="hs-button is-filled w-fit cursor-pointer rounded-lg bg-[#040B10] px-12 py-4"
-            >Upload to change image</span
-          >
+            >Upload to change image
+            <input
+              id="avatarPath"
+              name="avatarPath"
+              style="display:none"
+              type="file"
+              accept=".jpg, .jpeg, .png, .gif, .apng, .tiff"
+              on:change={onFileSelected}
+              disabled={membershipExists}
+            />
+          </label>
           <p class="text-xs opacity-60">
             * JPEG, PNG, GIF, TIFF and animated PNG
           </p>
@@ -371,16 +382,6 @@
               </svg>
             </a>
           </p>
-
-          <input
-            id="avatarPath"
-            name="avatarPath"
-            style="display:none"
-            type="file"
-            accept=".jpg, .jpeg, .png, .gif, .apng, .tiff"
-            on:change={onFileSelected}
-            disabled={membershipExists}
-          />
         </div>
 
         <!-- Price -->
@@ -451,6 +452,7 @@
         <h3>Preview</h3>
         <div class="sticky top-4">
           <MembershipOptionCard
+            clubName={clubName ?? 'Your Club'}
             name={membership.name}
             imagePath={membership.imageSrc}
             ethPrice={membership.price?.toString() || '0'}

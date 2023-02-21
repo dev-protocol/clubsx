@@ -7,6 +7,7 @@
   export let memberships: Membership[]
   export let presets: Membership[]
   export let base: string = '/admin'
+  export let clubName: string | undefined = undefined
 
   const update = () => {
     setOptions([{ key: 'memberships', value: {} }], currentPluginIndex)
@@ -50,7 +51,7 @@
 <div>
   {#if presets.length > 0}
     <div
-      class="mb-16 grid max-w-5xl grid-cols-1 justify-between gap-4 rounded-xl border border-white/20 bg-white/5 p-8 lg:grid-cols-[repeat(3,_minmax(200px,_290px))]"
+      class="mb-16 grid max-w-5xl grid-cols-1 justify-between gap-4 lg:grid-cols-[repeat(3,_minmax(200px,_290px))]"
     >
       {#each presets as opt, i}
         <h3
@@ -64,6 +65,7 @@
           {presetExplanations[i].desc}
         </p>
         <MembershipOptionCard
+          clubName={clubName ?? 'Your Club'}
           name={opt.name}
           imagePath={opt.imageSrc}
           ethPrice={opt.price.toString()}
@@ -88,6 +90,7 @@
       {#each memberships as membership, i}
         <div>
           <MembershipOptionCard
+            clubName={clubName ?? 'Your Club'}
             name={membership.name}
             imagePath={membership.imageSrc}
             ethPrice={membership.price.toString()}

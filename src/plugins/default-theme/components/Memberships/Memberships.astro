@@ -2,22 +2,28 @@
 import MembershipOption from '@components/AdminMembershipsForm/MembershipOption.svelte'
 import type { Membership } from '@plugins/memberships'
 
-const { memberships } = Astro.props as {
+const { memberships, name } = Astro.props as {
   memberships: Membership[]
+  name: string
 }
 ---
 
-<ul class="-mx-6 flex flex-row gap-4 overflow-x-auto p-6 xl:gap-9">
+<ul
+  class="-mx-6 grid grid-cols-[repeat(auto-fit,_minmax(230px,_360px))] justify-center gap-4 p-6 xl:gap-9"
+>
   {
     memberships.map((mem) => (
       <li>
         <MembershipOption
+          client:load
+          clubName={name}
           name={mem.name}
           ethPrice={mem.currency === 'ETH' ? String(mem.price) : undefined}
           devPrice={mem.currency === 'DEV' ? String(mem.price) : undefined}
           description={mem.description}
           imagePath={mem.imageSrc}
-          className="w-40	xl:w-64"
+          action={`/join/${mem.id}`}
+          actionLabel={'Purchase'}
         />
       </li>
     ))

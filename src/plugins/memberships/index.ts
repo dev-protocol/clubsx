@@ -61,7 +61,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async () => []
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
   options,
-  { rpcUrl, propertyAddress }
+  { name, rpcUrl, propertyAddress }
 ) => {
   const memberships =
     (options.find((opt) => opt.key === 'memberships')?.value as UndefinedOr<
@@ -76,7 +76,7 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
     {
       paths: ['memberships'],
       component: Admin,
-      props: { memberships, presets, draftOptions: draftOptionsValue },
+      props: { memberships, presets, name, draftOptions: draftOptionsValue },
     },
     ...(memberships?.map((membership) => ({
       paths: ['memberships', membership.id],
@@ -88,6 +88,7 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
         propertyAddress,
         draftOptions: draftOptionsValue,
         rpcUrl,
+        name,
       },
       slots: {
         'modal:content': Modal,
@@ -103,6 +104,7 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
         presets,
         draftOptions: draftOptionsValue,
         rpcUrl,
+        name,
       },
       slots: {
         'modal:content': Modal,
