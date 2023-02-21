@@ -345,6 +345,10 @@
             * JPEG, PNG, GIF, TIFF and animated PNG
           </p>
 
+          <span class="mt-1 text-xs opacity-60"
+            >* Image size should be 600 x 600 px</span
+          >
+
           <p>
             <a
               href="https://docs.google.com/presentation/d/1bbQhOktQoaA5ynQB1RgvOc4eMWlMHFDliw1DmS35w8Y/edit?usp=sharing"

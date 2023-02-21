@@ -177,6 +177,9 @@
           type="file"
           on:change={onFileSelected}
         />
+        <span class="mt-1 text-xs opacity-60"
+          >*Image size should be 2400 x 1200 px</span
+        >
       </div>
     </label>
   </div>
