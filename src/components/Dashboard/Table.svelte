@@ -44,7 +44,7 @@
           </td>
           <td class="px-6 py-4">
             <a
-              href={`https://${club.name}.clubs.place`}
+              href={club.url}
               target="_blank"
               rel="noreferrer"
               class="font-medium text-blue-600 hover:underline dark:text-blue-500"
