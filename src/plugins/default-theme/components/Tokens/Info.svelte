@@ -16,11 +16,13 @@
   let author: string | undefined
   let stakers: number | undefined
   let totalStaked: string | undefined
-  let assets: {
-    readonly market: string
-    readonly marketSlug?: string
-    readonly id: string
-  }[]
+  let assets:
+    | ReadonlyArray<{
+        readonly market: string
+        readonly marketSlug?: string
+        readonly id: string
+      }>
+    | undefined
 
   const chainName =
     chainId === 1
@@ -88,7 +90,7 @@
 </script>
 
 <dl
-  class="grid grid-cols-[minmax(0,1fr)_minmax(0,3fr)] gap-2 rounded border border-white/30 bg-black/20 p-2 text-sm"
+  class="grid grid-cols-[minmax(0,1fr)_minmax(0,3fr)] gap-y-2 rounded border border-white/30 bg-black/20 p-2 text-sm"
 >
   <dt>Token</dt>
   <dd class="truncate">
@@ -168,6 +170,13 @@
 
 <style lang="scss">
   dt {
-    @apply font-bold;
+    @apply pr-2 font-bold;
+  }
+  dt,
+  dd {
+    @apply border-b border-white/30 pb-2;
+    &:last-of-type {
+      @apply border-0 pb-0;
+    }
   }
 </style>
