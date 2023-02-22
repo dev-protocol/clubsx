@@ -2,6 +2,7 @@ import {
   ClubsConfiguration,
   ClubsFunctionGetAdminPaths,
   ClubsFunctionGetPagePaths,
+  ClubsFunctionGetSlots,
   ClubsFunctionPlugin,
   ClubsPluginCategory,
   ClubsPluginMeta,
@@ -65,7 +66,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
   options,
-  config,
+  _,
   { getPluginConfigById }
 ) => {
   const forms =
@@ -86,14 +87,6 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
       props: {
         forms,
         memberships,
-        forAddNavigationLink: {
-          config,
-          label: `Add 'Contact form' to the menu`,
-          link: { display: 'Contact form', path: '/message' } as NavLink,
-        },
-      },
-      slots: {
-        'aside:after-built-in-buttons': AddNavigationLink,
       },
     },
     {
@@ -109,11 +102,50 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
         memberships,
         id: form.id,
       },
-      slots: {
-        'aside:after-built-in-buttons': RemoveButton,
-      },
     })) ?? []),
   ]
+}
+
+export const getSlots: ClubsFunctionGetSlots = async (
+  options,
+  config,
+  { paths, factory }
+) => {
+  const forms =
+    (options.find((opt) => opt.key === 'forms')?.value as UndefinedOr<
+      GatedMessage[]
+    >) ?? []
+  const [path1, id] = paths
+  return {
+    'admin:aside:after-built-in-buttons':
+      factory === 'admin' && path1 === 'gated-form' && id
+        ? [
+            {
+              component: RemoveButton,
+              props: {
+                forms,
+                id,
+              },
+            },
+          ]
+        : factory === 'admin' && path1 === 'gated-form'
+        ? [
+            {
+              component: AddNavigationLink,
+              props: {
+                forAddNavigationLink: {
+                  config,
+                  label: `Add 'Contact form' to the menu`,
+                  link: {
+                    display: 'Contact form',
+                    path: '/message',
+                  } as NavLink,
+                },
+              },
+            },
+          ]
+        : [],
+  }
 }
 
 export const meta: ClubsPluginMeta = {
@@ -125,5 +157,6 @@ export const meta: ClubsPluginMeta = {
 export default {
   getPagePaths,
   getAdminPaths,
+  getSlots,
   meta,
 } as ClubsFunctionPlugin

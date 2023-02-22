@@ -1,6 +1,7 @@
 import type {
   ClubsFunctionGetAdminPaths,
   ClubsFunctionGetPagePaths,
+  ClubsFunctionGetSlots,
   ClubsFunctionPlugin,
   ClubsPluginMeta,
 } from '@devprotocol/clubs-core'
@@ -90,9 +91,6 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
         rpcUrl,
         name,
       },
-      slots: {
-        'modal:content': Modal,
-      },
     })) ?? []),
     ...(presets.map((membership) => ({
       paths: ['memberships', 'new', membership.id],
@@ -106,11 +104,25 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
         rpcUrl,
         name,
       },
-      slots: {
-        'modal:content': Modal,
-      },
     })) ?? []),
   ]
+}
+
+export const getSlots: ClubsFunctionGetSlots = async (
+  _,
+  __,
+  { paths, factory }
+) => {
+  const [path1, path2] = paths
+  return factory === 'admin' && path1 === 'memberships' && path2
+    ? {
+        'admin:modal:content': [
+          {
+            component: Modal,
+          },
+        ],
+      }
+    : {}
 }
 
 export const meta: ClubsPluginMeta = {
@@ -122,5 +134,6 @@ export const meta: ClubsPluginMeta = {
 export default {
   getPagePaths,
   getAdminPaths,
+  getSlots,
   meta,
 } as ClubsFunctionPlugin
