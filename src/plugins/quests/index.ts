@@ -1,6 +1,7 @@
 import {
   ClubsFunctionGetAdminPaths,
   ClubsFunctionGetPagePaths,
+  ClubsFunctionGetSlots,
   ClubsFunctionPlugin,
   ClubsPluginCategory,
   ClubsPluginMeta,
@@ -24,27 +25,39 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
   })),
 ]
 
-export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
-  options,
-  config
-) => [
+export const getAdminPaths: ClubsFunctionGetAdminPaths = async (options) => [
   {
     paths: ['quests'],
     component: Admin,
     props: {
       options,
-      forAddNavigationLink: {
-        config,
-        label: `Add 'Quests' to the menu`,
-        link: { display: 'Quests', path: '/quests' } as NavLink,
-      },
-    },
-    slots: {
-      'aside:after-built-in-buttons': AddNavigationLink,
     },
   },
 ]
 
+export const getSlots: ClubsFunctionGetSlots = async (
+  _,
+  config,
+  { paths, factory }
+) => {
+  const [path] = paths
+  return factory === 'admin' && path === 'quests'
+    ? {
+        'admin:aside:after-built-in-buttons': [
+          {
+            component: AddNavigationLink,
+            props: {
+              forAddNavigationLink: {
+                config,
+                label: `Add 'Quests' to the menu`,
+                link: { display: 'Quests', path: '/quests' } as NavLink,
+              },
+            },
+          },
+        ],
+      }
+    : {}
+}
 export const meta: ClubsPluginMeta = {
   displayName: 'Quests',
   category: ClubsPluginCategory.Growth,
@@ -53,5 +66,6 @@ export const meta: ClubsPluginMeta = {
 export default {
   getPagePaths,
   getAdminPaths,
+  getSlots,
   meta,
 } as ClubsFunctionPlugin

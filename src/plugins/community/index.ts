@@ -1,6 +1,7 @@
 import {
   ClubsFunctionGetAdminPaths,
   ClubsFunctionGetPagePaths,
+  ClubsFunctionGetSlots,
   ClubsFunctionPlugin,
   ClubsPluginCategory,
   ClubsPluginMeta,
@@ -15,26 +16,39 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
   { name }
 ) => [{ paths: ['community'], component: Index, props: { name, options } }]
 
-export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
-  options,
-  config
-) => [
+export const getAdminPaths: ClubsFunctionGetAdminPaths = async (options) => [
   {
     paths: ['community'],
     component: Admin,
     props: {
       options,
-      forAddNavigationLink: {
-        config,
-        label: `Add 'Community' to the menu`,
-        link: { display: 'Community', path: '/community' } as NavLink,
-      },
-    },
-    slots: {
-      'aside:after-built-in-buttons': AddNavigationLink,
     },
   },
 ]
+
+export const getSlots: ClubsFunctionGetSlots = async (
+  _,
+  config,
+  { paths, factory }
+) => {
+  const [path] = paths
+  return factory === 'admin' && path === 'community'
+    ? {
+        'admin:aside:after-built-in-buttons': [
+          {
+            component: AddNavigationLink,
+            props: {
+              forAddNavigationLink: {
+                config,
+                label: `Add 'Community' to the menu`,
+                link: { display: 'Community', path: '/community' } as NavLink,
+              },
+            },
+          },
+        ],
+      }
+    : {}
+}
 
 export const meta: ClubsPluginMeta = {
   displayName: 'Community',
@@ -44,5 +58,6 @@ export const meta: ClubsPluginMeta = {
 export default {
   getPagePaths,
   getAdminPaths,
+  getSlots,
   meta,
 } as ClubsFunctionPlugin

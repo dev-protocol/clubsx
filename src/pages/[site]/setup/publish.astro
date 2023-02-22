@@ -83,7 +83,7 @@ const baseDomainUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
 
       <NextButton
         next={new URL('/admin/overview', baseDomainUrl).toString()}
-        slot="aside:after-built-in-buttons"
+        slot="admin:aside:after-built-in-buttons"
       />
     </SetupLayout>
   ) : (

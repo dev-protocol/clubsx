@@ -36,7 +36,7 @@ const siteBaseUrl = ((url) =>
       setupStep="DESIGN"
       title="Setup Clubs | Design"
     >
-      <h2 class="mb-16 font-title text-2xl font-bold">Design</h2>
+      <h2 class="font-title mb-16 text-2xl font-bold">Design</h2>
 
       <SetupDesign
         client:load
@@ -47,7 +47,7 @@ const siteBaseUrl = ((url) =>
 
       <NextButton
         next={`/${site}/setup/memberships`}
-        slot="aside:after-built-in-buttons"
+        slot="admin:aside:after-built-in-buttons"
       />
     </SetupLayout>
   ) : (
