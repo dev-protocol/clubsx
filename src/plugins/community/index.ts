@@ -33,21 +33,20 @@ export const getSlots: ClubsFunctionGetSlots = async (
 ) => {
   const [path] = paths
   return factory === 'admin' && path === 'community'
-    ? {
-        'admin:aside:after-built-in-buttons': [
-          {
-            component: AddNavigationLink,
-            props: {
-              forAddNavigationLink: {
-                config,
-                label: `Add 'Community' to the menu`,
-                link: { display: 'Community', path: '/community' } as NavLink,
-              },
+    ? [
+        {
+          slot: 'admin:aside:after-built-in-buttons',
+          component: AddNavigationLink,
+          props: {
+            forAddNavigationLink: {
+              config,
+              label: `Add 'Community' to the menu`,
+              link: { display: 'Community', path: '/community' } as NavLink,
             },
           },
-        ],
-      }
-    : {}
+        },
+      ]
+    : []
 }
 
 export const meta: ClubsPluginMeta = {

@@ -115,14 +115,13 @@ export const getSlots: ClubsFunctionGetSlots = async (
 ) => {
   const [path1, path2] = paths
   return factory === 'admin' && path1 === 'memberships' && path2
-    ? {
-        'admin:modal:content': [
-          {
-            component: Modal,
-          },
-        ],
-      }
-    : {}
+    ? [
+        {
+          slot: 'admin:modal:content',
+          component: Modal,
+        },
+      ]
+    : []
 }
 
 export const meta: ClubsPluginMeta = {

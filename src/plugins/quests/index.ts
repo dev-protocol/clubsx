@@ -42,21 +42,20 @@ export const getSlots: ClubsFunctionGetSlots = async (
 ) => {
   const [path] = paths
   return factory === 'admin' && path === 'quests'
-    ? {
-        'admin:aside:after-built-in-buttons': [
-          {
-            component: AddNavigationLink,
-            props: {
-              forAddNavigationLink: {
-                config,
-                label: `Add 'Quests' to the menu`,
-                link: { display: 'Quests', path: '/quests' } as NavLink,
-              },
+    ? [
+        {
+          slot: 'admin:aside:after-built-in-buttons',
+          component: AddNavigationLink,
+          props: {
+            forAddNavigationLink: {
+              config,
+              label: `Add 'Quests' to the menu`,
+              link: { display: 'Quests', path: '/quests' } as NavLink,
             },
           },
-        ],
-      }
-    : {}
+        },
+      ]
+    : []
 }
 export const meta: ClubsPluginMeta = {
   displayName: 'Quests',
