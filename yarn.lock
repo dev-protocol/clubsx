@@ -111,10 +111,10 @@
     postcss "^8.4.14"
     postcss-load-config "^4.0.1"
 
-"@astrojs/telemetry@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@astrojs/telemetry/-/telemetry-2.0.0.tgz#025961cccca062fe010938441db7d1e607c2253a"
-  integrity sha512-RnWojVMIsql3GGWDP5pNWmhmBQVkCpxGNZ8yPr2cbmUqsUYGSvErhqfkLfro9j2/STi5UDmSpNgjPkQmXpgnKw==
+"@astrojs/telemetry@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@astrojs/telemetry/-/telemetry-2.0.1.tgz#6c21b8697ce683a50124c55cbd4751bc883fe580"
+  integrity sha512-68BLBb9CcvQMkWHE6h6VTgm5g6agm3+xm8eb3cdkmX9nP1LSQ/fiD49Jb1qAgCtWcY8yQJiWQQXwcdyStD+VoA==
   dependencies:
     ci-info "^3.3.1"
     debug "^4.3.4"
@@ -122,7 +122,7 @@
     dset "^3.1.2"
     is-docker "^3.0.0"
     is-wsl "^2.2.0"
-    undici "^5.14.0"
+    undici "^5.20.0"
     which-pm-runs "^1.1.0"
 
 "@astrojs/vercel@3.1.3":
@@ -153,6 +153,13 @@
   integrity sha512-aOOHa86W5Ux77A3dS91YrVlSxtBSJsVK4UhvcXHY0gAl0ZrOStSKSBO45gZ6tFi2AiHu3bzpMtZjwrPHtl+cyg==
   dependencies:
     undici "5.18.0"
+
+"@astrojs/webapi@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@astrojs/webapi/-/webapi-2.0.2.tgz#24afaeed1ee44576c150ac83983a86ef31c6053e"
+  integrity sha512-uSNtxLuvCWOcwy/DdIy30ocIcIUedEZpyhn1MHW3XuZ3PZHg4PMej3EP38Ns6uKgDKqMyEdscca9bMLuf4cO/w==
+  dependencies:
+    undici "5.20.0"
 
 "@babel/code-frame@^7.18.6":
   version "7.18.6"
@@ -2718,16 +2725,16 @@ arrify@^2.0.0:
   resolved "https://registry.yarnpkg.com/arrify/-/arrify-2.0.1.tgz#c9655e9331e0abcd588d2a7cad7e9956f66701fa"
   integrity sha512-3duEwti880xqi4eAMN8AyR4a0ByT90zoYdLlevfrvU43vb0YZwZVfxOgxWrLXXXpyugL0hNZc9G6BiB5B3nUug==
 
-astro@2.0.15:
-  version "2.0.15"
-  resolved "https://registry.yarnpkg.com/astro/-/astro-2.0.15.tgz#fa4d356d9b3b152f68a9882b094fa487be2be752"
-  integrity sha512-CUJNrcdgcSjASValRNEesTgXSefgQ8Z9GHrZXckmTivatoBlVkYb8G8tmk7dgRt6JF+bwfOsA6cGdv7+G7hCbA==
+astro@2.0.16:
+  version "2.0.16"
+  resolved "https://registry.yarnpkg.com/astro/-/astro-2.0.16.tgz#ebc24390f6b73edd7e55f08d1ba2573028a7129e"
+  integrity sha512-noQL+bbBZaCLbh7wmpVON+e4kDxymDsIQkEUzzuMKLQodYynxr/Sp7RBA/JnEqXz4CRyd7IrgeQBN0cKOuBtzQ==
   dependencies:
     "@astrojs/compiler" "^1.1.0"
     "@astrojs/language-server" "^0.28.3"
     "@astrojs/markdown-remark" "^2.0.1"
-    "@astrojs/telemetry" "^2.0.0"
-    "@astrojs/webapi" "^2.0.1"
+    "@astrojs/telemetry" "^2.0.1"
+    "@astrojs/webapi" "^2.0.2"
     "@babel/core" "^7.18.2"
     "@babel/generator" "^7.18.2"
     "@babel/parser" "^7.18.4"
@@ -7700,10 +7707,10 @@ undici@5.18.0:
   dependencies:
     busboy "^1.6.0"
 
-undici@^5.14.0:
-  version "5.16.0"
-  resolved "https://registry.yarnpkg.com/undici/-/undici-5.16.0.tgz#6b64f9b890de85489ac6332bd45ca67e4f7d9943"
-  integrity sha512-KWBOXNv6VX+oJQhchXieUznEmnJMqgXMbs0xxH2t8q/FUAWSJvOSr/rMaZKnX5RIVq7JDn0JbP4BOnKG2SGXLQ==
+undici@5.20.0, undici@^5.20.0:
+  version "5.20.0"
+  resolved "https://registry.yarnpkg.com/undici/-/undici-5.20.0.tgz#6327462f5ce1d3646bcdac99da7317f455bcc263"
+  integrity sha512-J3j60dYzuo6Eevbawwp1sdg16k5Tf768bxYK4TUJRH7cBM4kFCbf3mOnM/0E3vQYXvpxITbbWmBafaDbxLDz3g==
   dependencies:
     busboy "^1.6.0"
 
