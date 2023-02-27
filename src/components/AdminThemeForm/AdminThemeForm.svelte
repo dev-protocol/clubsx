@@ -3,12 +3,12 @@
   import type {
     ClubsConfiguration,
     ClubsPlugin,
-    ClubsPluginOption,
     ClubsPluginOptions,
   } from '@devprotocol/clubs-core'
   import { setConfig } from '@devprotocol/clubs-core'
   import type { UndefinedOr } from '@devprotocol/util-ts'
   import { isNotNil } from '@devprotocol/util-ts'
+  import { uploadImageAndGetPath } from '@fixtures/imgur'
   import type {
     colorPresets as ColorPresets,
     GlobalConfigValue,
@@ -29,11 +29,16 @@
   export let homeHeroDefaultImgSrc: string
   export let currentPluginIndex: number
 
+  let uploading = false
+
   if (socialLinks.length < 2) {
     socialLinks = Array.from(
       new Set([...socialLinks, ...defaultSocialLinks])
     ).filter(isNotNil)
   }
+
+  let ogpValue = config.options?.find((option) => option.key === 'ogp')
+    ?.value as UndefinedOr<{ image?: string }>
 
   const globalConfig = (
     options.find((option) => option.key === 'globalConfig') as UndefinedOr<{
@@ -57,15 +62,23 @@
       key: 'socialLinks',
       value: socialLinks,
     }
+    const _ogp = {
+      key: 'ogp',
+      value: ogpValue,
+    }
     const newConfig: ClubsConfiguration = {
       ...config,
       options: config.options
         ? ([
             ...config.options.filter(
-              ({ key }) => key !== 'navigationLinks' && key !== 'socialLinks'
+              ({ key }) =>
+                key !== 'navigationLinks' &&
+                key !== 'socialLinks' &&
+                key !== 'ogp'
             ),
             _navigationLinks,
             _socialLinks,
+            _ogp,
           ] as ClubsPluginOptions)
         : undefined,
       plugins: config.plugins
@@ -97,6 +110,30 @@
     update()
   }
 
+  const onFileSelected = async (
+    e: Event & {
+      currentTarget: EventTarget & HTMLInputElement
+    }
+  ) => {
+    if (!e.currentTarget.files) {
+      return
+    }
+
+    // already uploading
+    if (uploading) {
+      return
+    }
+
+    uploading = true
+
+    const file = e.currentTarget.files[0]
+
+    const image = await uploadImageAndGetPath(file)
+    ogpValue = { image }
+    uploading = false
+    update()
+  }
+
   const removeNavigationLinks = (display: string) => {
     navigationLinks = navigationLinks.filter((link) => link.display !== display)
     update()
@@ -104,7 +141,7 @@
 </script>
 
 <form on:change|preventDefault={(e) => update(e)} class="grid gap-16">
-  <section class="hs-form-field is-filled w-full ">
+  <section class="hs-form-field is-filled w-full">
     <p class="hs-form-field__label">Navigation links</p>
     {#each navigationLinks as link, i}
       <section
@@ -166,6 +203,28 @@
       </div>
     {/each}
   </label>
+
+  <div>
+    <label class="hs-form-field grid justify-items-start gap-2">
+      <span class="hs-form-field__label"> OGP (Open Graph Protocol) Image</span>
+      <div>
+        <span class="hs-button is-filled is-large cursor-pointer"
+          >Upload to change</span
+        >
+
+        <input
+          id="ogp-image"
+          name="ogp-image"
+          style="display:none"
+          type="file"
+          on:change={onFileSelected}
+        />
+        <span class="mt-1 text-xs opacity-60"
+          >*Image size should be 1200 x 630 pixels</span
+        >
+      </div>
+    </label>
+  </div>
 
   <h2 class="font-title text-2xl font-bold">Design</h2>
 
