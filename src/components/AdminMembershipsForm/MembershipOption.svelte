@@ -6,6 +6,7 @@
   export let name: string
   export let clubName: string
   export let imagePath: string
+  export let id: string
   export let ethPrice: UndefinedOr<string> = undefined
   export let devPrice: UndefinedOr<string> = undefined
   export let description: string | undefined = undefined
@@ -17,16 +18,31 @@
 
   const content = marked.parse(description ?? '')
 
+  const hash = `#membership:${id}`
+  const handleHashChange = (event: HashChangeEvent) => {
+    console.log({ event })
+    const newUrl = new URL(event.newURL)
+    const oldUrl = new URL(event.oldURL)
+    if (newUrl.hash === hash) {
+      modal = true
+      document.body.classList.add('overflow-y-hidden')
+    }
+    if (oldUrl.hash === hash) {
+      modal = false
+      document.body.classList.remove('overflow-y-hidden')
+    }
+  }
+
   const handleClickOpen = () => {
-    modal = true
-    document.body.classList.add('overflow-y-hidden')
+    window.location.hash = hash
   }
   const handleClickClose = () => {
-    modal = false
-    document.body.classList.remove('overflow-y-hidden')
+    window.history.back()
   }
 
   onMount(() => {
+    window.addEventListener('hashchange', handleHashChange)
+
     modalGroup && document.body.appendChild(modalGroup)
   })
 </script>

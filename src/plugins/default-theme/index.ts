@@ -99,6 +99,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
             sidebarPrimaryLinks,
             sidebarLinks,
             avatarImgSrc,
+            signals: ['connection-button-hide'],
           },
         },
       ]

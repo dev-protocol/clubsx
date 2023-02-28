@@ -9,14 +9,15 @@ const { memberships, name } = Astro.props as {
 ---
 
 <ul
-  class="-mx-6 grid grid-cols-[repeat(auto-fit,_minmax(230px,_360px))] justify-center gap-4 p-6 xl:gap-9"
+  class="-mx-6 grid grid-cols-[repeat(auto-fit,_minmax(120px,_1fr))] justify-center gap-4 p-6 xl:gap-9"
 >
   {
     memberships.map((mem) => (
-      <li>
+      <li class="only:mx-auto only:max-w-[360px]">
         <MembershipOption
           client:load
           clubName={name}
+          id={mem.id}
           name={mem.name}
           ethPrice={mem.currency === 'ETH' ? String(mem.price) : undefined}
           devPrice={mem.currency === 'DEV' ? String(mem.price) : undefined}

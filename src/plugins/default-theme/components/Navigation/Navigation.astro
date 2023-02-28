@@ -8,24 +8,23 @@ const { links, current } = Astro.props as {
 ---
 
 <nav>
-  <ul class="flex gap-6 overflow-x-auto border-b border-white/30 px-3 lg:px-0">
+  <ul class="grid gap-6">
     {
-      links.map((link) => (
-        <li>
-          <a
-            href={link.enable !== false ? link.path : undefined}
-            class={`inline-block p-5 text-sm font-bold text-white transition lg:text-xl ${
-              current?.path === link.path
-                ? ''
-                : link.enable !== false
-                ? 'opacity-60'
-                : 'opacity-30'
-            } ${link.enable !== false ? 'hover:opacity-100' : ''} `}
-          >
-            {link.display}
-          </a>
-        </li>
-      ))
+      links.map(
+        (link) =>
+          link.enable !== false && (
+            <li>
+              <a
+                href={link.path}
+                class={`hs-button is-filled rounded-full border-0 bg-white p-5 text-xl font-bold text-black transition hover:opacity-100 lg:text-2xl ${
+                  current?.path === link.path ? '' : 'opacity-30'
+                }`}
+              >
+                {link.display}
+              </a>
+            </li>
+          )
+      )
     }
   </ul>
 </nav>

@@ -13,18 +13,13 @@
   </p>
 </section>
 
-<style>
+<style lang="scss">
   .close {
     display: box;
     box-orient: vertical;
-    line-clamp: 3;
+    line-clamp: 1;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-  }
-  @media (min-width: 890px) {
-    .close {
-      display: block;
-    }
+    -webkit-line-clamp: 1;
   }
 </style>

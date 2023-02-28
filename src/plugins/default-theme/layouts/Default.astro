@@ -9,6 +9,9 @@ import Navigation from '../components/Navigation/Navigation.astro'
 import type { DraftOptions } from '@constants/draft'
 import TokensInfo from '../components/Tokens/Info.svelte'
 import StartWithClubs from '../assets/Start-with-Clubs--dark.png'
+import Twitter from '@components/Icons/Twitter.astro'
+import Discord from '@components/Icons/Discord.astro'
+import Share from '../components/Share/Share.svelte'
 
 const { page } = Astro.params
 const { metaTitle, config, homeConfig, globalConfig, signals } =
@@ -30,6 +33,7 @@ const { metaTitle, config, homeConfig, globalConfig, signals } =
   }
 
 const displayFullPage = signals?.includes(ClubsPluginSignal.DisplayFullPage)
+const notDisplayConnection = signals?.includes('connection-button-hide')
 
 const { name, propertyAddress, rpcUrl, chainId } = config
 const title = metaTitle ? `${config.name} : ${metaTitle}` : config.name
@@ -42,8 +46,13 @@ const avatarImgSrc: UndefinedOr<string> = config.options?.find(
 )?.value as string
 
 const socialLinks =
-  config.options?.find((option) => option.key === 'socialLinks')?.value ??
-  ([] as NavLink[])
+  (config.options?.find((option) => option.key === 'socialLinks')
+    ?.value as UndefinedOr<NavLink[]>) ?? ([] as NavLink[])
+
+const twitter = socialLinks?.find((l) => l.kind === 'twitter')
+const discord = socialLinks?.find((l) => l.kind === 'discord')
+const socials =
+  twitter || discord ? [twitter, discord].map((x) => x) : socialLinks
 
 const navigationLinks: NavLink[] = [
   { path: '/', display: 'Club' },
@@ -53,9 +62,9 @@ const navigationLinks: NavLink[] = [
 const currentLink = navigationLinks?.find((link) =>
   ((pathname) => pathname === link.path)(`/${page ?? ''}`)
 )
-const footerLinks =
-  (config.options?.find((option) => option.key === 'footerLinks')
-    ?.value as UndefinedOr<NavLink[]>) ?? ([] as NavLink[])
+const footerLinks = config.options?.find(
+  (option) => option.key === 'footerLinks'
+)?.value as UndefinedOr<NavLink[]>
 
 const draftOptions = config?.options?.find((option) => option.key === '__draft')
   ?.value as DraftOptions['value']
@@ -94,8 +103,12 @@ const backgroundColor = globalConfig?.bg ?? '#ADADAD'
     <meta name="twitter:image" content={`${ogp?.image}`} />
   </head>
 
-  <body class="min-h-screen overflow-x-hidden font-body text-white">
-    <Header chainId={chainId} config={config} />
+  <body class="grid min-h-screen gap-5 overflow-x-hidden font-body text-white">
+    <Header
+      chainId={chainId}
+      config={config}
+      connection={!notDisplayConnection}
+    />
     <Hero
       image={homeConfig?.hero.image}
       avatar={avatarImgSrc}
@@ -109,19 +122,111 @@ const backgroundColor = globalConfig?.bg ?? '#ADADAD'
       isInDraft={isInDraft}
     />
     {
-      displayFullPage ? (
-        <hr class="my-16 opacity-30" />
-      ) : (
-        <div class="container relative mx-auto my-12 mb-5 max-w-7xl lg:my-20 lg:mb-16 xl:px-0">
-          <Navigation links={navigationLinks} current={currentLink} />
-        </div>
+      !displayFullPage && (
+        <section class="container relative mx-auto grid max-w-2xl grid-cols-2 items-stretch justify-between gap-4 px-6">
+          <span>
+            <a
+              href="/join"
+              class="hs-button is-filled w-fit gap-2 rounded-full border-0 bg-white px-7 py-2 text-2xl font-bold text-black"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="h-6 w-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"
+                />
+              </svg>
+              Join
+            </a>
+          </span>
+          <span class="flex items-stretch justify-end gap-4">
+            <a
+              href="#info"
+              class="inline-flex aspect-square items-center justify-center rounded-full border-2"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="h-6 w-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"
+                />
+              </svg>
+            </a>
+            <Share
+              client:load
+              title={title}
+              text=""
+              url={url}
+              className="inline-flex aspect-square items-center justify-center rounded-full border-2"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="h-6 w-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
+                />
+              </svg>
+            </Share>
+          </span>
+        </section>
       )
     }
     <main class="container relative mx-auto max-w-4xl px-6 xl:px-0">
       <slot />
+      {
+        socials && (
+          <ul class="my-16 mx-auto flex justify-center gap-12">
+            {socials.map((link) => (
+              <a
+                href={link?.path}
+                target="_blank"
+                rel="noopener"
+                class="inline-flex aspect-square items-center justify-center rounded-full border-2 p-4"
+              >
+                {link?.kind === 'twitter' ? (
+                  <Twitter />
+                ) : link?.kind === 'discord' ? (
+                  <Discord />
+                ) : (
+                  link?.display
+                )}
+              </a>
+            ))}
+          </ul>
+        )
+      }{
+        !displayFullPage && (
+          <>
+            <hr class="my-16 opacity-30" />
+            <Navigation links={navigationLinks} current={currentLink} />
+          </>
+        )
+      }
     </main>
     <footer
-      class="container mx-auto grid max-w-2xl justify-center justify-items-center gap-24 py-24 px-4"
+      id="info"
+      class="container mx-auto grid max-w-2xl justify-center justify-items-center gap-24 py-16 px-4"
     >
       {
         footerLinks && (
@@ -138,14 +243,18 @@ const backgroundColor = globalConfig?.bg ?? '#ADADAD'
           </section>
         )
       }
-      <div>
-        <TokensInfo
-          client:load
-          propertyAddress={config.propertyAddress}
-          chainId={config.chainId}
-          rpcUrl={config.rpcUrl}
-        />
-      </div>
+      {
+        !displayFullPage && (
+          <div>
+            <TokensInfo
+              client:load
+              propertyAddress={config.propertyAddress}
+              chainId={config.chainId}
+              rpcUrl={config.rpcUrl}
+            />
+          </div>
+        )
+      }
       <a href="https://clubs.place"
         ><img
           src={StartWithClubs}

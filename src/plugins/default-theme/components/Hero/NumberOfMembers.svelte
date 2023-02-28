@@ -21,17 +21,22 @@
 </script>
 
 {#if isInDraft}
-  <span
-    ><span class="font-bold lg:text-2xl">0</span>
-    <span class="lg:text-2xl">members</span></span
-  >
+  <p class="text-center font-bold leading-3 lg:text-2xl	lg:leading-3">
+    0<br /><span class="text-sm opacity-50">Members</span>
+  </p>
 {:else if members === undefined}
-  <span
-    class="inline-block h-[5ex] w-28 animate-pulse rounded bg-gray-500/60"
-  />
-{:else}
-  <span
-    ><span class="font-bold lg:text-2xl">{members}</span>
-    <span class="lg:text-2xl">members</span></span
+  <p
+    class="text-center font-bold leading-[.75em] lg:text-2xl lg:leading-[.75em]"
   >
+    <span
+      class="inline-block h-[3ex] w-14 animate-pulse rounded bg-gray-500/60"
+    />
+    <br /><span class="text-sm opacity-50">Members</span>
+  </p>
+{:else}
+  <p
+    class="text-center font-bold leading-[.75em] lg:text-2xl lg:leading-[.75em]"
+  >
+    {members}<br /><span class="text-sm opacity-50">Members</span>
+  </p>
 {/if}

@@ -66,6 +66,7 @@
         </p>
         <MembershipOptionCard
           clubName={clubName ?? 'Your Club'}
+          id={opt.id}
           name={opt.name}
           imagePath={opt.imageSrc}
           ethPrice={opt.price.toString()}
@@ -91,6 +92,7 @@
         <div>
           <MembershipOptionCard
             clubName={clubName ?? 'Your Club'}
+            id={membership.id}
             name={membership.name}
             imagePath={membership.imageSrc}
             ethPrice={membership.price.toString()}
