@@ -1,27 +1,40 @@
 ---
 import ClubsColor from '@assets/clubs--color.svg'
 import ConnectButton from '@components/Wallet/ConnectButton.vue'
+import type {
+  ClubsPluginSignal,
+  ClubsPropsPages,
+} from '@devprotocol/clubs-core'
 
-const { chainId, isInDraft } = Astro.props as {
+const {
+  chainId,
+  isInDraft,
+  connection = true,
+} = Astro.props as ClubsPropsPages & {
   chainId: number
   isInDraft?: boolean
+  connection?: boolean
 }
 ---
 
 <header class="absolute z-10 flex w-full items-center">
   <span
-    class="absolute left-0 top-0 flex h-16 w-16 items-center justify-center bg-surface-200"
-    ><img src={ClubsColor} class="h-8 w-8" /></span
+    class="absolute left-0 top-0 m-4 flex h-12 w-12 items-center justify-center rounded-full bg-surface-200"
+    ><img src={ClubsColor} class="h-6 w-6" /></span
   >
   <div
     class="container mx-auto flex max-w-7xl items-center justify-between px-6 xl:px-0"
   >
     <i class="h-16" role="presentation"></i>
-    <ConnectButton
-      client:only="vue"
-      chainId={chainId}
-      type="filled"
-      isDisabled={isInDraft}
-    />
+    {
+      connection && (
+        <ConnectButton
+          client:only="vue"
+          chainId={chainId}
+          type="filled"
+          isDisabled={isInDraft}
+        />
+      )
+    }
   </div>
 </header>

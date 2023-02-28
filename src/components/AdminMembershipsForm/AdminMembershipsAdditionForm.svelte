@@ -453,6 +453,7 @@
         <div class="sticky top-4">
           <MembershipOptionCard
             clubName={clubName ?? 'Your Club'}
+            id={membership.id}
             name={membership.name}
             imagePath={membership.imageSrc}
             ethPrice={membership.price?.toString() || '0'}
