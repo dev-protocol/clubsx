@@ -35,7 +35,7 @@ const siteBaseUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
       <ProfileSetupForm client:load config={config} />
       <NextButton
         next={`/${site}/setup/design`}
-        slot="admin:aside:after-built-in-buttons"
+        slot="aside:after-built-in-buttons"
       />
     </SetupLayout>
   ) : (
