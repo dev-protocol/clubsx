@@ -1,7 +1,11 @@
 <script lang="ts">
   import type { ClubsConfiguration } from '@devprotocol/clubs-core'
+  type TotalClubs = {
+    date: Date
+    config: ClubsConfiguration
+  }
 
-  export let config: ClubsConfiguration[]
+  export let config: TotalClubs[]
 </script>
 
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -14,6 +18,7 @@
         <th scope="col" class="px-6 py-3"> Blockchain </th>
         <th scope="col" class="px-6 py-3"> Status </th>
         <th scope="col" class="px-6 py-3"> Action </th>
+        <th scope="col" class="px-6 py-3"> Date </th>
       </tr>
     </thead>
     <tbody>
@@ -23,34 +28,46 @@
             scope="row"
             class="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
           >
-            {club.name}
+            {club.config.name}
           </th>
           <td class="px-6 py-4">
-            {club.chainId === 1
+            {club.config.chainId === 1
               ? 'Ethereum'
-              : club.chainId === 137
+              : club.config.chainId === 137
               ? 'Polygon'
-              : club.chainId === 4
+              : club.config.chainId === 4
               ? 'Rinkeby'
-              : club.chainId === 80001
+              : club.config.chainId === 80001
               ? 'Mumbai'
               : 'Unknown'}
           </td>
           <td class="px-6 py-4">
-            {club.options?.find((option) => option.key === '__draft')?.value
-              .isInDraft
+            {club.config.options?.find((option) => option.key === '__draft')
+              ?.value.isInDraft
               ? 'Draft'
               : 'Published'}
           </td>
           <td class="px-6 py-4">
             <a
-              href={club.url}
+              href={club.config.url}
               target="_blank"
               rel="noreferrer"
               class="font-medium text-blue-600 hover:underline dark:text-blue-500"
               >Link</a
             >
           </td>
+          {#if club.date}
+            <td class="px-6 py-4">
+              {new Date(club.date).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                timeZone: 'UTC',
+              })}
+            </td>
+          {:else}
+            <td class="px-6 py-4">Unknown</td>
+          {/if}
         </tr>
       {/each}
     </tbody>

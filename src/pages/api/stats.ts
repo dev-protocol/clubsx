@@ -1,28 +1,68 @@
 import { createClient } from 'redis'
 
-export const post = async () => {
+export type ClubsData = {
+  name: string
+  created: string
+}
+
+export const allClubs = async () => {
   const client = createClient({
     url: process.env.REDIS_URL,
     username: process.env.REDIS_USERNAME ?? '',
     password: process.env.REDIS_PASSWORD ?? '',
     socket: {
       keepAlive: 1,
-      reconnectStrategy: 1,
+      reconnectStrategy: () => {
+        return 1000
+      },
     },
   })
-  await client.connect()
 
-  client.on('error', (e) => {
-    console.error('redis connection error: ', e)
-  })
-  const keys = (await client.keys('*')).filter((key) => !key.startsWith('id::'))
-  const data = []
+  try {
+    await client.connect()
 
-  for (const key of keys) {
-    const config = await client.get(key)
-    if (!config) continue
-    data.push(config)
+    const keys = (await client.keys('*')).filter((key) =>
+      key.startsWith('id::')
+    )
+    const data = []
+
+    for (const key of keys) {
+      const sites = JSON.parse((await client.get(key)) ?? '[]') as
+        | ClubsData[]
+        | null
+
+      if (!sites) {
+        return new Response(JSON.stringify({ error: 'No user sites found' }), {
+          status: 400,
+        })
+      }
+
+      for (const site of sites) {
+        const config = await client.get(site.name)
+
+        if (!config) {
+          continue
+        }
+
+        data.push({ date: new Date(site.created), config: config })
+      }
+    }
+
+    return new Response(JSON.stringify(data), { status: 200 })
+  } catch (error) {
+    console.error('redis connection error: ', error)
+    return new Response('Internal Server Error', { status: 500 })
+  } finally {
+    await client.quit()
   }
-  await client.disconnect()
-  return new Response(JSON.stringify(data), { status: 200 })
+}
+
+export const post = async ({ request }: { request: Request }) => {
+  const route = request.url.split('?').pop()
+
+  if (route === 'allClubs') {
+    return await allClubs()
+  } else {
+    return new Response('Not found', { status: 404 })
+  }
 }
