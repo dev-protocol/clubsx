@@ -22,7 +22,7 @@ fs.outputFileSync(
   ((file) =>
     file.replace(
       `body: get_raw_body(req, bodySizeLimit)`,
-      `body: get_raw_body(req, bodySizeLimit), ...{duplex: 'half'},`
+      `body: get_raw_body(req, bodySizeLimit), ...{duplex: 'half'}`
     ))(fs.readFileSync(pathRequestTransform, 'utf8'))
 )
 
