@@ -17,19 +17,21 @@
         <th scope="col" class="px-6 py-3"> Clubs Name </th>
         <th scope="col" class="px-6 py-3"> Blockchain </th>
         <th scope="col" class="px-6 py-3"> Status </th>
-        <th scope="col" class="px-6 py-3"> Action </th>
         <th scope="col" class="px-6 py-3"> Date </th>
       </tr>
     </thead>
     <tbody>
       {#each config as club}
         <tr class="border-b bg-white dark:border-gray-700 dark:bg-gray-900">
-          <th
-            scope="row"
-            class="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
-          >
-            {club.config.name}
-          </th>
+          <td class="px-6 py-4">
+            <a
+              href={club.config.url}
+              target="_blank"
+              rel="noreferrer"
+              class="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
+              >{club.config.name}</a
+            >
+          </td>
           <td class="px-6 py-4">
             {club.config.chainId === 1
               ? 'Ethereum'
@@ -44,30 +46,17 @@
           <td class="px-6 py-4">
             {club.config.options?.find((option) => option.key === '__draft')
               ?.value.isInDraft
-              ? 'Draft'
-              : 'Published'}
+              ? 'ℹ️'
+              : '✅'}
           </td>
           <td class="px-6 py-4">
-            <a
-              href={club.config.url}
-              target="_blank"
-              rel="noreferrer"
-              class="font-medium text-blue-600 hover:underline dark:text-blue-500"
-              >Link</a
-            >
+            {club.date?.toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+              timeZone: 'UTC',
+            }) ?? 'Unknown'}
           </td>
-          {#if club.date}
-            <td class="px-6 py-4">
-              {new Date(club.date).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                timeZone: 'UTC',
-              })}
-            </td>
-          {:else}
-            <td class="px-6 py-4">Unknown</td>
-          {/if}
         </tr>
       {/each}
     </tbody>

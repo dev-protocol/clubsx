@@ -5,13 +5,13 @@
   import type { ClubsConfiguration } from '@devprotocol/clubs-core'
   import Table from './Table.svelte'
 
-  type TotalClubs = {
+  type ClubsData = {
     date: Date
     config: ClubsConfiguration
   }
 
   let isLoading = true
-  let allClubs: TotalClubs[] = []
+  let allClubs: ClubsData[] = []
   let publishedClubs = 0
 
   const fetchTotalClubs = async () => {
@@ -39,11 +39,10 @@
         allClubs = allClubs.sort((a, b) => b.date.getTime() - a.date.getTime())
       }
       // uncomment while debugging
-      // console.log(draftClubs)
+      // console.log(allClubs)
       isLoading = false
     } catch (error) {
       console.error(error)
-      // Display an error message to the user
     } finally {
       isLoading = false
     }
@@ -72,16 +71,16 @@
       <h5
         class="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white"
       >
-        Overview
+        Overview 🔍
       </h5>
       <p class="text-gray-600 dark:text-gray-400">
-        Total Clubs Created: {allClubs.length}
+        🔥 Total Clubs Created: {allClubs.length}
       </p>
       <p class="text-gray-600 dark:text-gray-400">
-        Published: {publishedClubs}
+        ✅ Published: {publishedClubs}
       </p>
       <p class="text-gray-600 dark:text-gray-400">
-        In Draft: {allClubs.length - publishedClubs}
+        ℹ️ In Draft: {allClubs.length - publishedClubs}
       </p>
     </div>
     <div class="w-3/4 items-center justify-center py-8">
