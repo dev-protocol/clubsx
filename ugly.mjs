@@ -16,13 +16,13 @@ fs.outputFileSync(
     ))(fs.readFileSync(pathRequestTransform, 'utf8'))
 )
 
-// Add duplex option (ref: https://github.com/nodejs/node/issues/46221#issuecomment-1426707013)
+// Add duplex option (ref: https://github.com/nodejs/node/issues/46221)
 fs.outputFileSync(
   pathRequestTransform,
   ((file) =>
     file.replace(
       `body: get_raw_body(req, bodySizeLimit)`,
-      `body: get_raw_body(req, bodySizeLimit), ...{duplex: true},`
+      `body: get_raw_body(req, bodySizeLimit), ...{duplex: 'half'},`
     ))(fs.readFileSync(pathRequestTransform, 'utf8'))
 )
 
