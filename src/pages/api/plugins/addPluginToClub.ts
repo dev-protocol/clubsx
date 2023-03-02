@@ -37,16 +37,15 @@ export const post = async ({ request }: { request: Request }) => {
   })
 
   const clubPluginsDbId = generateClubPluginsId(site)
-  const clubsPlugins = JSON.parse((await client.get(clubPluginsDbId)) ?? '[]') as string[]
+  const clubsPlugins = JSON.parse(
+    (await client.get(clubPluginsDbId)) ?? '[]'
+  ) as string[]
 
   const address = utils.recoverAddress(utils.hashMessage(hash), sig)
   if (address.toLowerCase() != expectedAddress.toLowerCase()) {
-    return new Response(
-      JSON.stringify({ error: 'Auth failed: invalid sig' }),
-      {
-        status: 401,
-      }
-    )
+    return new Response(JSON.stringify({ error: 'Auth failed: invalid sig' }), {
+      status: 401,
+    })
   }
 
   try {
