@@ -30,7 +30,9 @@
       }
 
       const allclubs = await acReq.value.json()
-      uniqueCreators = await ucRep.value.json().then((res) => res.uniqueCreators)
+      uniqueCreators = await ucRep.value
+        .json()
+        .then((res) => res.uniqueCreators)
 
       for (const club of allclubs) {
         const { date, config } = club
