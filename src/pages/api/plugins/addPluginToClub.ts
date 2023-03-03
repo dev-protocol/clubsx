@@ -1,6 +1,7 @@
 import { utils } from 'ethers'
 import { createClient } from 'redis'
 
+import { InstallablePlugins, installablePlugins } from '@constants/plugins'
 import { generateClubPluginsId } from '@fixtures/api/keys'
 
 export const post = async ({ request }: { request: Request }) => {
@@ -44,6 +45,16 @@ export const post = async ({ request }: { request: Request }) => {
   const address = utils.recoverAddress(utils.hashMessage(hash), sig)
   if (address.toLowerCase() != expectedAddress.toLowerCase()) {
     return new Response(JSON.stringify({ error: 'Auth failed: invalid sig' }), {
+      status: 401,
+    })
+  }
+
+  // The plugin name should be in the list of installable plugins.
+  const isPluginInstallable = installablePlugins.find(
+    (ip: InstallablePlugins) => ip.name === pluginName
+  )
+  if (!isPluginInstallable) {
+    return new Response(JSON.stringify({ error: 'Invalid plugin' }), {
       status: 401,
     })
   }
