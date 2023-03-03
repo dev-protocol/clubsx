@@ -13,18 +13,24 @@
   let isLoading = true
   let allClubs: ClubsData[] = []
   let publishedClubs = 0
+  let uniqueCreators = 0
 
   const fetchTotalClubs = async () => {
     try {
-      const [dreq] = await Promise.all([
+      const [acReq, ucRep] = await Promise.allSettled([
         fetch('/api/stats?allClubs', { method: 'POST' }),
+        fetch('/api/stats?uniqueCreators', { method: 'POST' }),
       ])
 
-      if (!dreq.ok) {
+      if (!acReq || acReq.status !== 'fulfilled' || !acReq.value.ok) {
         throw new Error('Failed to fetch clubs data')
       }
+      if (!ucRep || ucRep.status !== 'fulfilled' || !ucRep.value.ok) {
+        throw new Error('Failed to fetch unique creators data')
+      }
 
-      const allclubs = await dreq.json()
+      const allclubs = await acReq.value.json()
+      uniqueCreators = await ucRep.value.json().then((res) => res.uniqueCreators)
 
       for (const club of allclubs) {
         const { date, config } = club
@@ -36,11 +42,10 @@
           publishedClubs++
         }
         allClubs.push({ date: new Date(date), config: decoded })
-        allClubs = allClubs.sort((a, b) => b.date.getTime() - a.date.getTime())
       }
+      allClubs.sort((a, b) => b.date.getTime() - a.date.getTime())
       // uncomment while debugging
       // console.log(allClubs)
-      isLoading = false
     } catch (error) {
       console.error(error)
     } finally {
@@ -49,7 +54,12 @@
   }
 
   onMount(async () => {
-    await fetchTotalClubs()
+    try {
+      await fetchTotalClubs()
+    } catch (error) {
+      console.error(error)
+    }
+    isLoading = false
   })
 </script>
 
@@ -69,17 +79,20 @@
       class="max-w-sm justify-start rounded-lg border border-[3px] border-native-blue-400 bg-white p-6 shadow dark:border-gray-700 dark:bg-gray-800"
     >
       <h5
-        class="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white"
+        class="mb-2 text-center text-3xl font-semibold tracking-tight text-gray-900 dark:text-white"
       >
         Overview 🔍
       </h5>
-      <p class="text-gray-600 dark:text-gray-400">
+      <p class="text-2xl text-gray-600 dark:text-gray-400">
         🔥 Total Clubs Created: {allClubs.length}
       </p>
-      <p class="text-gray-600 dark:text-gray-400">
+      <p class="text-xl text-gray-600 dark:text-gray-400">
+        🖼️ Unique Creators: {uniqueCreators}
+      </p>
+      <p class="text-lg text-gray-600 dark:text-gray-400">
         ✅ Published: {publishedClubs}
       </p>
-      <p class="text-gray-600 dark:text-gray-400">
+      <p class="text-base text-gray-600 dark:text-gray-400">
         ℹ️ In Draft: {allClubs.length - publishedClubs}
       </p>
     </div>
