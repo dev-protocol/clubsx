@@ -16,7 +16,7 @@ export const post = async ({ request }: { request: Request }) => {
 
   // We need hash and signature.
   const hashAndSignGiven = !!hash && !!sig && !!expectedAddress
-  if (!hashAndSignGiven) {
+  if (!hashAndSignGiven || !pluginName || !site) {
     return new Response(JSON.stringify({ error: 'Auth failed' }), {
       status: 401,
     })
