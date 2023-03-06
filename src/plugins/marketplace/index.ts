@@ -5,22 +5,16 @@ import {
   ClubsPluginCategory,
   ClubsPluginMeta,
 } from '@devprotocol/clubs-core'
-import { default as Index } from '../../pages/coming-soon.astro'
+import { default as Admin } from './admin.astro'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async () => []
 
-export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
-  _,
-  { name, url }
-) => {
-  const redirectionCtaText: string = `Take me to ${name} homepage`
-  const redirectionCtaUrl: string = url.replace('<USERS_SITE_NAME_HERE>', name)
-
+export const getAdminPaths: ClubsFunctionGetAdminPaths = async (_, config) => {
   return [
     {
       paths: ['marketplace'],
-      component: Index,
-      props: { redirectionCtaUrl, redirectionCtaText },
+      component: Admin,
+      props: config,
     },
   ]
 }
