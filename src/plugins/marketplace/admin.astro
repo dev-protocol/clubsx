@@ -1,6 +1,24 @@
 ---
 import image from '@assets/maxim-berg-unsplash.jpg'
 import newUpcomingPluginImage1 from '@assets/marketplace-new-upcoming-1.svg'
+
+const newAndUpcoming = [
+  {
+    imageSrc: newUpcomingPluginImage1,
+    name: 'Plugin Name',
+    desc: `is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries`,
+  },
+  {
+    imageSrc: newUpcomingPluginImage1,
+    name: 'Plugin Name',
+    desc: `is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries`,
+  },
+  {
+    imageSrc: newUpcomingPluginImage1,
+    name: 'Plugin Name',
+    desc: `is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries`,
+  },
+]
 ---
 
 <section>
@@ -22,58 +40,25 @@ import newUpcomingPluginImage1 from '@assets/marketplace-new-upcoming-1.svg'
     </p>
   </div>
   <div class="mb-[85px] w-full p-0">
-    <p class="font-DMSans mb-8 text-[40px] font-bold text-white">
+    <p class="font-DMSans mb-9 text-[40px] font-bold text-white">
       New & Upcoming
     </p>
-    <div class="flex w-full items-start gap-16 p-0">
-      <div class="flex items-start gap-[18px]">
-        <img
-          src={newUpcomingPluginImage1}
-          class="h-[92px] w-[92px] rounded-2xl"
-        />
-        <section>
-          <p class="font-DMSans text-2xl font-bold text-white">Plugin name</p>
-          <p class="font-DMSans text-base font-normal text-white">
-            is simply dummy text of the printing and typesetting industry. Lorem
-            Ipsum has been the industry's standard dummy text ever since the
-            1500s, when an unknown printer took a galley of type and scrambled
-            it to make a type specimen book. It has survived not only five
-            centuries
-          </p>
-        </section>
-      </div>
-      <div class="flex items-start gap-[18px]">
-        <img
-          src={newUpcomingPluginImage1}
-          class="h-[92px] w-[92px] rounded-2xl"
-        />
-        <section>
-          <p class="font-DMSans text-2xl font-bold text-white">Plugin name</p>
-          <p class="font-DMSans text-base font-normal text-white">
-            is simply dummy text of the printing and typesetting industry. Lorem
-            Ipsum has been the industry's standard dummy text ever since the
-            1500s, when an unknown printer took a galley of type and scrambled
-            it to make a type specimen book. It has survived not only five
-            centuries
-          </p>
-        </section>
-      </div>
-      <div class="flex items-start gap-[18px]">
-        <img
-          src={newUpcomingPluginImage1}
-          class="h-[92px] w-[92px] rounded-2xl"
-        />
-        <section>
-          <p class="font-DMSans text-2xl font-bold text-white">Plugin name</p>
-          <p class="font-DMSans text-base font-normal text-white">
-            is simply dummy text of the printing and typesetting industry. Lorem
-            Ipsum has been the industry's standard dummy text ever since the
-            1500s, when an unknown printer took a galley of type and scrambled
-            it to make a type specimen book. It has survived not only five
-            centuries
-          </p>
-        </section>
-      </div>
+    <div class="flex h-[132px] w-full items-start gap-16 p-0">
+      {
+        newAndUpcoming.map((nAu) => (
+          <div class="flex h-[132px] items-start gap-[18px]">
+            <img src={nAu.imageSrc} class="h-[92px] w-[92px] rounded-2xl" />
+            <div class="flex flex-col gap-[5px] p-0">
+              <span class="font-DMSans text-2xl font-bold text-white">
+                {nAu.name}
+              </span>
+              <span class="font-DMSans h-full overflow-hidden text-base font-normal text-white">
+                {nAu.desc}
+              </span>
+            </div>
+          </div>
+        ))
+      }
     </div>
   </div>
 </section>
