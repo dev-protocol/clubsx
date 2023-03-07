@@ -43,18 +43,18 @@ const newAndUpcoming = [
     <p class="font-DMSans mb-9 text-[40px] font-bold text-white">
       New & Upcoming
     </p>
-    <div class="flex h-[132px] w-full items-start gap-16 p-0">
+    <div class="flex h-[132px] w-full max-w-full items-start gap-16 p-0">
       {
         newAndUpcoming.map((nAu) => (
           <div class="flex h-[132px] items-start gap-[18px]">
             <img src={nAu.imageSrc} class="h-[92px] w-[92px] rounded-2xl" />
-            <div class="flex flex-col gap-[5px] p-0">
-              <span class="font-DMSans text-2xl font-bold text-white">
+            <div class="flex h-[132px] flex-col gap-[5px] p-0">
+              <p class="font-DMSans text-2xl font-bold text-white">
                 {nAu.name}
-              </span>
-              <span class="font-DMSans h-full overflow-hidden text-base font-normal text-white">
+              </p>
+              <p class="font-DMSans overflow-hidden text-ellipsis whitespace-normal text-base font-normal text-white">
                 {nAu.desc}
-              </span>
+              </p>
             </div>
           </div>
         ))
