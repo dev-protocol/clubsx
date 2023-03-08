@@ -1,21 +1,59 @@
 ---
 import image from '@assets/maxim-berg-unsplash.jpg'
+import themesPluginImage1 from '@assets/marketplace-themes-1.svg'
 import newUpcomingPluginImage1 from '@assets/marketplace-new-upcoming-1.svg'
 
 const newAndUpcoming = [
   {
-    imageSrc: newUpcomingPluginImage1,
+    avatarImageSrc: newUpcomingPluginImage1,
     name: 'Plugin Name',
+    fee: 0,
+    feeCurrency: 'ETH',
+    enlargedAvatarImageSrc: themesPluginImage1,
     desc: `is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries`,
   },
   {
-    imageSrc: newUpcomingPluginImage1,
+    avatarImageSrc: newUpcomingPluginImage1,
     name: 'Plugin Name',
+    fee: 0,
+    feeCurrency: 'ETH',
+    enlargedAvatarImageSrc: themesPluginImage1,
     desc: `is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries`,
   },
   {
-    imageSrc: newUpcomingPluginImage1,
+    avatarImageSrc: newUpcomingPluginImage1,
     name: 'Plugin Name',
+    fee: 0,
+    feeCurrency: 'ETH',
+    enlargedAvatarImageSrc: themesPluginImage1,
+    desc: `is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries`,
+  },
+]
+
+const themes = [
+  {
+    avatarImageSrc: newUpcomingPluginImage1,
+    name: 'Plugin Name',
+    fee: 0,
+    enlargedAvatarImageSrc: themesPluginImage1,
+    feeCurrency: 'ETH',
+
+    desc: `is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries`,
+  },
+  {
+    avatarImageSrc: newUpcomingPluginImage1,
+    name: 'Plugin Name',
+    fee: 0,
+    feeCurrency: 'ETH',
+    enlargedAvatarImageSrc: themesPluginImage1,
+    desc: `is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries`,
+  },
+  {
+    avatarImageSrc: newUpcomingPluginImage1,
+    name: 'Plugin Name',
+    fee: 0,
+    feeCurrency: 'ETH',
+    enlargedAvatarImageSrc: themesPluginImage1,
     desc: `is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries`,
   },
 ]
@@ -39,27 +77,63 @@ const newAndUpcoming = [
       in 5 minutes instead of search 5 days.
     </p>
   </div>
+
+  <!-- New and Upcoming section -->
+  <!-- TODO: add upcoming and free tags -->
   <div class="mb-[85px] w-full p-0">
     <p class="font-DMSans mb-10 text-4xl font-bold text-white">
       New & Upcoming
     </p>
     <div
-      class="flex h-[132px] w-full max-w-full flex-wrap items-start gap-16 p-0"
+      class="flex h-[155px] w-full max-w-full flex-wrap items-start justify-between gap-16 p-0"
     >
       {
         newAndUpcoming.map((nAu) => (
-          <div class="flex h-[132px] max-w-[29%] items-start gap-[18px]">
+          <div class="flex h-[155px] max-w-[29%] items-start gap-[18px]">
             <img
-              src={nAu.imageSrc}
+              src={nAu.avatarImageSrc}
               class="m-0 h-[92px] w-[92px] rounded-2xl p-0"
             />
-            <div class="flex h-[132px] flex-col gap-[5px] p-0">
+            <div class="flex h-[155px] flex-col gap-[5px] p-0">
               <p class="font-DMSans text-2xl font-bold text-white">
                 {nAu.name}
               </p>
               <p class="font-DMSans overflow-hidden text-ellipsis text-base font-normal text-white">
                 {nAu.desc}
               </p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- Themes section -->
+  <div class="mb-[85px] w-full p-0">
+    <p class="font-DMSans mb-10 text-4xl font-bold text-white">Themes</p>
+    <div
+      class="flex h-[427px] w-full max-w-full flex-wrap items-start justify-between gap-16 p-0"
+    >
+      {
+        themes.map((theme) => (
+          <div class="flex h-[427px] max-w-[29%] flex-col items-start justify-center gap-[18px] p-0">
+            <img
+              src={theme.enlargedAvatarImageSrc}
+              class="m-0 h-[331px] w-[28.33%] rounded-lg p-0"
+            />
+            <div class="flex items-start gap-[18px]">
+              <img
+                src={theme.avatarImageSrc}
+                class="m-0 h-[92px] w-[92px] rounded-2xl p-0"
+              />
+              <div class="flex h-[155px] flex-col gap-[5px] p-0">
+                <p class="font-DMSans text-2xl font-bold text-white">
+                  {theme.name}
+                </p>
+                <p class="font-DMSans overflow-hidden text-ellipsis text-base font-normal text-white">
+                  {theme.desc}
+                </p>
+              </div>
             </div>
           </div>
         ))
