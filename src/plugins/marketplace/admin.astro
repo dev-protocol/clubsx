@@ -135,7 +135,7 @@ const themes = [
                 <p class="font-DMSans text-2xl font-bold text-white">
                   {theme.name}
                 </p>
-                <p class="font-DMSans h-full overflow-hidden text-ellipsis text-base font-normal text-white">
+                <p class="font-DMSans overflow-hidden text-ellipsis text-base font-normal text-white">
                   {theme.desc}
                 </p>
               </div>
@@ -145,4 +145,33 @@ const themes = [
       }
     </div>
   </div>
+
+  <!-- Basics section -->
+  <div class="mb-[85px] w-full p-0">
+    <p class="font-DMSans mb-10 text-4xl font-bold text-white">Basics</p>
+    <div
+      class="flex h-[155px] w-full max-w-full flex-wrap items-start justify-between gap-16 p-0"
+    >
+      {
+        [...newAndUpcoming, ...newAndUpcoming, ...themes].map((nAu) => (
+          <div class="flex h-[155px] max-w-[29%] items-start gap-[18px]">
+            <img
+              src={nAu.avatarImageSrc}
+              class="m-0 h-[92px] w-[92px] rounded-2xl p-0"
+            />
+            <div class="flex h-[155px] flex-col gap-[5px] p-0">
+              <p class="font-DMSans text-2xl font-bold text-white">
+                {nAu.name}
+              </p>
+              <p class="font-DMSans overflow-hidden text-ellipsis text-base font-normal text-white">
+                {nAu.desc}
+              </p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- Join developer community -->
 </section>
