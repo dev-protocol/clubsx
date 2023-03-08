@@ -62,19 +62,19 @@
     unist-util-visit "^4.1.0"
     vfile "^5.3.2"
 
-"@astrojs/netlify@2.1.3":
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/@astrojs/netlify/-/netlify-2.1.3.tgz#91c432cd85fa435e7f4b52d4539eab6188573b98"
-  integrity sha512-DILtrApsMayUSO+9HM6lxawiB8zSjpL4QIhuaye81lha41fJUvfyM7gACJgKFplKvhce1cNCCd0g8Emv1BFnNw==
+"@astrojs/netlify@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/netlify/-/netlify-2.2.0.tgz#abca648b3487e21f649c5608c435a29c19d542be"
+  integrity sha512-zpWb7yI96Gxmp6CuhFw7U0I4rH7LMHH6nIyf14gLXmRSLp9YHDux1a1T6zz1SZPNkbwkaHYHCCBnIMszHpkLCQ==
   dependencies:
-    "@astrojs/webapi" "^2.0.1"
+    "@astrojs/webapi" "^2.1.0"
     "@netlify/functions" "^1.0.0"
     esbuild "^0.15.18"
 
-"@astrojs/prefetch@0.1.2":
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/@astrojs/prefetch/-/prefetch-0.1.2.tgz#ec3cdfb52dd4c7e79348d796986ff177241e55af"
-  integrity sha512-Plf1GLKDyvTHjEKVMH922wc1AmvlFYvEXrbdaMAlgJuoqTRXirP1CennildFHndTetH8swWMlVGwxdG57dN7cA==
+"@astrojs/prefetch@0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/prefetch/-/prefetch-0.2.0.tgz#d9750301a20d8429d7b4752cf50b859eca4e5523"
+  integrity sha512-q68916tIId0tnRFphNL2OcORgoATnfVItaQAugz7wfIq4ghivNISG1scN86uAyF/md1N1YcKu6XPukT5f2lShQ==
   dependencies:
     throttles "^1.0.1"
 
@@ -85,26 +85,26 @@
   dependencies:
     prismjs "^1.28.0"
 
-"@astrojs/react@2.0.2":
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/@astrojs/react/-/react-2.0.2.tgz#22e1dfb01f481dc2e6b58607f8b131a8754a2d91"
-  integrity sha512-UmQNvzJul5M/Q9aZJXnqz4z0ODZXkLuaNvgsYoKB7OdM8c2v85FsTjMZZJ7BvFo4On31jJ0rL/gwTaCeuYqmpw==
+"@astrojs/react@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/react/-/react-2.1.0.tgz#6b913baefa0d2a717bf5ff3d96ab299c7b0e4708"
+  integrity sha512-AzopsCVjsHlX1oVkgLusDRngnpJfoi03kj6c8p/K6+i/PQ3ZnVwRmJl7IgFBC2YJSbexyNxK2BmLvwkjGvQaCA==
   dependencies:
     "@babel/core" ">=7.0.0-0 <8.0.0"
     "@babel/plugin-transform-react-jsx" "^7.17.12"
 
-"@astrojs/svelte@2.0.2":
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/@astrojs/svelte/-/svelte-2.0.2.tgz#c699e4906b030fd162b350936b146251ca14ad57"
-  integrity sha512-EkJT7Roft6v9CkI3/Hga8XQbmmI6kKcpOAx6E0gfepuJuqI68xLqnEl3TSJ9uH3dwJt8ThscB1TGxsc8B4JUdg==
+"@astrojs/svelte@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/svelte/-/svelte-2.1.0.tgz#34a55434473390b0773b145083c425dfce16d624"
+  integrity sha512-upfkscrNuZbQvqVB5EG38FPJCgHCxO/LOJLAap75rO/++c1T7ztbVru4uSYVBRJkzTDuH3TS52T8kFTVgHXx/g==
   dependencies:
     "@sveltejs/vite-plugin-svelte" "^2.0.2"
     svelte2tsx "^0.5.11"
 
-"@astrojs/tailwind@3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@astrojs/tailwind/-/tailwind-3.0.1.tgz#81e363b6c59b0d8b36b29818835cf0a6691feb30"
-  integrity sha512-QSYh/xmz454j1yZU9rjw2J24PpH7j3h2ClesqMaAniOtcuL8RfP7KYCnCrk01xvjwqqO+QBpZNDD/SUhHNtFFg==
+"@astrojs/tailwind@3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/tailwind/-/tailwind-3.1.0.tgz#90ed15186b69d4beceeb756c2355ec8b84815a51"
+  integrity sha512-eNflzlCdCtLZjc8pK0xQb/hXYnN/mVGVJFRAMWStrFwg8Tsvj6WVCPyRy77D5NL2tQ1piS2wiouOzAgiy1Dsiw==
   dependencies:
     "@proload/core" "^0.3.2"
     autoprefixer "^10.4.7"
@@ -137,27 +137,34 @@
     set-cookie-parser "^2.5.1"
     web-vitals "^3.1.1"
 
-"@astrojs/vue@2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@astrojs/vue/-/vue-2.0.1.tgz#660c7df0a8ee748826c7dcb0680cd6883ef1a07c"
-  integrity sha512-IV1GAugMRDQfAarec6h/0TGNR0yHTW6QnpCkHFuRH3GXytY9ZXbnWUGpNHARQwclM5r5QzcfycxuPxfkcKrecw==
+"@astrojs/vue@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/vue/-/vue-2.1.0.tgz#52a21096c2dece9a41ab0fd00cfd6928b6d8899d"
+  integrity sha512-cHOE8m5Dtb2Unb4Oi0P6Bl3KcMmOMDlblkpqmdEeESnyhRZGuTWE0jLQlcGASMxcHgE851tByDKxcKC3PuPfoA==
   dependencies:
     "@vitejs/plugin-vue" "^4.0.0"
     "@vitejs/plugin-vue-jsx" "^3.0.0"
     "@vue/babel-plugin-jsx" "^1.1.1"
     "@vue/compiler-sfc" "^3.2.39"
 
-"@astrojs/webapi@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@astrojs/webapi/-/webapi-2.0.1.tgz#b8459a2f3ad6d8d8fea0bb45bc41f7aa6436bcea"
-  integrity sha512-aOOHa86W5Ux77A3dS91YrVlSxtBSJsVK4UhvcXHY0gAl0ZrOStSKSBO45gZ6tFi2AiHu3bzpMtZjwrPHtl+cyg==
-  dependencies:
-    undici "5.18.0"
-
 "@astrojs/webapi@^2.0.2":
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/@astrojs/webapi/-/webapi-2.0.2.tgz#24afaeed1ee44576c150ac83983a86ef31c6053e"
   integrity sha512-uSNtxLuvCWOcwy/DdIy30ocIcIUedEZpyhn1MHW3XuZ3PZHg4PMej3EP38Ns6uKgDKqMyEdscca9bMLuf4cO/w==
+  dependencies:
+    undici "5.20.0"
+
+"@astrojs/webapi@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@astrojs/webapi/-/webapi-2.0.3.tgz#55309c3876971e3ec555ba9633bc11ff37986d60"
+  integrity sha512-jDyqYRTnbWsWOQ9Vzo6MYuVcn6fN6JVAjda3IoDJSDNl8R8iJ5oIE4OU5dUbiDQqODLEnROUfuCDX89xcROW2A==
+  dependencies:
+    undici "5.20.0"
+
+"@astrojs/webapi@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/webapi/-/webapi-2.1.0.tgz#0cbe21efd278456a4450afe0288c99d680cc2a32"
+  integrity sha512-sbF44s/uU33jAdefzKzXZaENPeXR0sR3ptLs+1xp9xf5zIBhedH2AfaFB5qTEv9q5udUVoKxubZGT3G1nWs6rA==
   dependencies:
     undici "5.20.0"
 
@@ -634,10 +641,10 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
-"@devprotocol/clubs-core@0.33.0":
-  version "0.33.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.33.0.tgz#5960a59cfe604df4d92635c25cf54516dd5306a5"
-  integrity sha512-3TaBvSbGj3NSMQzm4/S4qtdc6ogCbn7+XsElZpmTpMGBX0x4wDtGA82g/5sftJw7NC0suRw5HnvHO49WsRgKLQ==
+"@devprotocol/clubs-core@0.34.0":
+  version "0.34.0"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.34.0.tgz#a4c4a18e905033be6e4a6e6f477f8983d651d5d9"
+  integrity sha512-9k5qoqQX/AD/qnzq3jW78vSyJrsyjAbMiltN+tZwbawxfQczLkL4W0VCc3V/I6zgklA5AvW5ieqsyTHNHw6oyA==
   dependencies:
     "@devprotocol/dev-kit" "7.3.0"
     "@devprotocol/elements" "0.2.2"
@@ -2725,16 +2732,16 @@ arrify@^2.0.0:
   resolved "https://registry.yarnpkg.com/arrify/-/arrify-2.0.1.tgz#c9655e9331e0abcd588d2a7cad7e9956f66701fa"
   integrity sha512-3duEwti880xqi4eAMN8AyR4a0ByT90zoYdLlevfrvU43vb0YZwZVfxOgxWrLXXXpyugL0hNZc9G6BiB5B3nUug==
 
-astro@2.0.17:
-  version "2.0.17"
-  resolved "https://registry.yarnpkg.com/astro/-/astro-2.0.17.tgz#889ec009c0a9732570bbe90b7707ec0941258692"
-  integrity sha512-K/SAoe4Tfhg4XhOu1mFOp9qiC/m8YuBmL3//WAA+mcPTlg9A21nlXH/jmsfbizQdZn/AyoPrkTWQm1pnU05OsQ==
+astro@2.0.18:
+  version "2.0.18"
+  resolved "https://registry.yarnpkg.com/astro/-/astro-2.0.18.tgz#64f4a3743674270da75180a4bf19cf684e18988f"
+  integrity sha512-Jfi58oISn4uOvROek+u3WESDpCbruV80L4ds/5jq0SC4texfynSkbato2jAwMKj7MvROHP+/LmnKzfH1wNrBuA==
   dependencies:
     "@astrojs/compiler" "^1.2.0"
     "@astrojs/language-server" "^0.28.3"
     "@astrojs/markdown-remark" "^2.0.1"
     "@astrojs/telemetry" "^2.0.1"
-    "@astrojs/webapi" "^2.0.2"
+    "@astrojs/webapi" "^2.0.3"
     "@babel/core" "^7.18.2"
     "@babel/generator" "^7.18.2"
     "@babel/parser" "^7.18.4"
@@ -7699,13 +7706,6 @@ underscore@~1.13.2:
   version "1.13.6"
   resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.13.6.tgz#04786a1f589dc6c09f761fc5f45b89e935136441"
   integrity sha512-+A5Sja4HP1M08MaXya7p5LvjuM7K6q/2EaC0+iovj/wOcMsTzMvDFbasi/oSapiwOlt252IqsKqPjCl7huKS0A==
-
-undici@5.18.0:
-  version "5.18.0"
-  resolved "https://registry.yarnpkg.com/undici/-/undici-5.18.0.tgz#e88a77a74d991a30701e9a6751e4193a26fabda9"
-  integrity sha512-1iVwbhonhFytNdg0P4PqyIAXbdlVZVebtPDvuM36m66mRw4OGrCm2MYynJv/UENFLdP13J1nPVQzVE2zTs1OeA==
-  dependencies:
-    busboy "^1.6.0"
 
 undici@5.20.0, undici@^5.20.0:
   version "5.20.0"
