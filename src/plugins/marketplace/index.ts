@@ -14,7 +14,7 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (_, config) => {
     {
       paths: ['marketplace'],
       component: Admin,
-      props: config,
+      props: { config, showAside: false },
     },
   ]
 }
