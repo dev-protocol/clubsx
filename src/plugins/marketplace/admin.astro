@@ -110,23 +110,28 @@ const themes = [
 
   <!-- Themes section -->
   <div class="mb-[85px] w-full p-0">
-    <p class="font-DMSans mb-10 text-4xl font-bold text-white">Themes</p>
+    <p class="font-DMSans mb-9 text-4xl font-bold text-white">Themes</p>
     <div
       class="flex h-[427px] w-full max-w-full flex-wrap items-start justify-between gap-16 p-0"
     >
       {
         themes.map((theme) => (
           <div class="flex h-[427px] max-w-[29%] flex-col items-start justify-center gap-[18px] p-0">
-            <img
-              src={theme.enlargedAvatarImageSrc}
-              class="m-0 h-[331px] w-[28.33%] rounded-lg p-0"
-            />
-            <div class="flex items-start gap-[18px]">
+            <div
+              class="m-0 h-[331px] w-full rounded-lg p-0"
+              style={{
+                backgroundImage: `url(${theme.enlargedAvatarImageSrc})`,
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center center',
+              }}
+            ></div>
+            <div class="flex h-[95px] items-start gap-[18px]">
               <img
                 src={theme.avatarImageSrc}
-                class="m-0 h-[92px] w-[92px] rounded-2xl p-0"
+                class="m-0 h-[52px] w-[52px] rounded-[11px] p-0"
               />
-              <div class="flex h-[155px] flex-col gap-[5px] p-0">
+              <div class="flex flex-col gap-[5px] p-0">
                 <p class="font-DMSans text-2xl font-bold text-white">
                   {theme.name}
                 </p>
