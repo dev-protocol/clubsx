@@ -46,7 +46,7 @@
     "@astrojs/prefetch": "0.2.0",
     "@astrojs/react": "2.0.2",
     "@astrojs/svelte": "2.0.2",
-    "@astrojs/tailwind": "3.0.1",
+    "@astrojs/tailwind": "3.1.0",
     "@astrojs/vercel": "3.1.4",
     "@astrojs/vue": "2.0.1",
     "@devprotocol/clubs-core": "0.34.0",
