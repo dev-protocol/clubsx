@@ -12,7 +12,7 @@ const newAndUpcoming = [
     fee: 0,
     feeCurrency: 'ETH',
     enlargedAvatarImageSrc: themesPluginImage1,
-    desc: `is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries`,
+    desc: `is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries`,
   },
   {
     avatarImageSrc: newUpcomingPluginImage1,
@@ -99,20 +99,20 @@ const themes = [
       New & Upcoming
     </p>
     <div
-      class="flex w-full max-w-full flex-wrap items-start justify-between gap-16 p-0"
+      class="flex w-full max-w-full flex-wrap items-start justify-start gap-16 p-0"
     >
       {
         newAndUpcoming.map((nAu) => (
-          <div class="flex h-[155px] max-w-[29%] items-start gap-[18px]">
+          <div class="flex h-[155px] max-w-[45%] grow items-start justify-start gap-[18px]">
             <img
               src={nAu.avatarImageSrc}
-              class="m-0 h-[92px] w-[92px] rounded-2xl p-0"
+              class="m-0 h-[92px] max-h-full w-[92px] max-w-[45%] rounded-2xl p-0"
             />
-            <div class="flex h-[155px] flex-col gap-[5px] p-0">
+            <div class="flex h-[155px] max-w-[45%] flex-col gap-[5px]">
               <p class="font-DMSans text-2xl font-bold text-white">
                 {nAu.name}
               </p>
-              <p class="font-DMSans overflow-hidden text-ellipsis text-base font-normal text-white">
+              <p class="font-DMSans truncate whitespace-normal text-base font-normal text-white">
                 {nAu.desc}
               </p>
             </div>
