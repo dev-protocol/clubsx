@@ -140,13 +140,13 @@ const themes = [
   <div class="mb-[85px] w-full p-0">
     <p class="font-DMSans mb-9 text-4xl font-bold text-white">Themes</p>
     <div
-      class="flex w-full max-w-full flex-wrap items-start justify-between gap-16 p-0"
+      class="flex w-full max-w-full flex-wrap items-start justify-start gap-16 p-0"
     >
       {
         themes.map((theme) => (
           <div class="flex h-[427px] max-w-[29%] flex-col items-start justify-center gap-[18px] p-0">
             <div
-              class="m-0 h-[331px] w-full rounded-lg p-0"
+              class="m-0 h-[331px] max-h-[78%] w-full max-w-full rounded-lg p-0"
               style={{
                 backgroundImage: `url(${theme.enlargedAvatarImageSrc})`,
                 backgroundRepeat: 'no-repeat',
@@ -165,6 +165,9 @@ const themes = [
                 </p>
                 <p class="font-DMSans overflow-hidden text-ellipsis text-base font-normal text-white">
                   {theme.desc}
+                </p>
+                <p class="font-DMSans w-fit max-w-full rounded-[999px] bg-[#43C451] py-0 px-[7px] text-xs font-normal text-black">
+                  Free
                 </p>
               </div>
             </div>
