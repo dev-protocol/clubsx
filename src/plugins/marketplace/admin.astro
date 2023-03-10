@@ -154,16 +154,27 @@ const themes = [
                 backgroundPosition: 'center center',
               }}
             />
-            <div class="flex h-[95px] max-h-[20%] w-full max-w-full items-start justify-start gap-[18px]">
+            <div class="flex h-[95px] max-h-[21%] w-full max-w-full items-start justify-start gap-[18px]">
               <img
                 src={theme.avatarImageSrc}
                 class="m-0 h-[52px] max-h-full w-[52px] max-w-[40%] rounded-[11px] p-0"
               />
-              <div class="flex h-full flex-col gap-[5px] p-0">
-                <p class="font-DMSans text-2xl font-bold text-white">
-                  {theme.name}
-                </p>
-                <p class="font-DMSans overflow-hidden text-ellipsis text-base font-normal text-white">
+              <div class="flex h-full w-full flex-col gap-[5px] p-0">
+                <div class="flex max-w-full items-center justify-between">
+                  <p class="font-DMSans grow py-0 text-2xl font-bold text-white">
+                    {theme.name}
+                  </p>
+                  <div class="flex h-fit w-fit items-center justify-around gap-0.5 rounded-[999px] bg-[#DF3737] py-[1px] px-[7px]">
+                    <img
+                      src={clockImage}
+                      class="m-0 h-[13px] max-h-full w-[13px] max-w-[40%] p-0"
+                    />
+                    <p class="font-DMSans h-fit w-fit text-xs font-normal text-black">
+                      Added
+                    </p>
+                  </div>
+                </div>
+                <p class="font-DMSans whitspace-nowrap grow overflow-hidden text-base font-normal text-white">
                   {theme.desc}
                 </p>
                 <p class="font-DMSans w-fit max-w-full rounded-[999px] bg-[#43C451] py-0 px-[7px] text-xs font-normal text-black">
