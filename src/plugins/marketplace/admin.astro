@@ -1,6 +1,7 @@
 ---
 import HSButton from '@components/Primitives/Hashi/HSButton.vue'
 
+import clockImage from '@assets/clock.svg'
 import image from '@assets/maxim-berg-unsplash.jpg'
 import themesPluginImage1 from '@assets/marketplace-themes-1.svg'
 import newUpcomingPluginImage1 from '@assets/marketplace-new-upcoming-1.svg'
@@ -93,7 +94,6 @@ const themes = [
   </div>
 
   <!-- New and Upcoming section -->
-  <!-- TODO: add upcoming and free tags -->
   <div class="mb-[85px] w-full p-0">
     <p class="font-DMSans mb-10 text-4xl font-bold text-white">
       New & Upcoming
@@ -106,12 +106,23 @@ const themes = [
           <div class="flex h-[155px] max-w-[45%] grow items-start justify-start gap-[18px]">
             <img
               src={nAu.avatarImageSrc}
-              class="m-0 h-[92px] max-h-full w-[92px] max-w-[45%] rounded-2xl p-0"
+              class="m-0 h-[92px] max-h-full w-[92px] max-w-[40%] rounded-2xl p-0"
             />
-            <div class="flex h-[155px] max-w-[45%] flex-col gap-[5px]">
-              <p class="font-DMSans text-2xl font-bold text-white">
-                {nAu.name}
-              </p>
+            <div class="flex h-[155px] max-w-[60%] flex-col gap-[5px]">
+              <div class="flex max-w-full items-start justify-between">
+                <p class="font-DMSans grow py-0 text-2xl font-bold text-white">
+                  {nAu.name}
+                </p>
+                <div class="flex h-fit w-fit items-center justify-around gap-0.5 rounded-[999px] bg-[#DF3737] py-[1px] px-[7px]">
+                  <img
+                    src={clockImage}
+                    class="m-0 h-[13px] max-h-full w-[13px] max-w-[40%] p-0"
+                  />
+                  <p class="font-DMSans h-fit w-fit text-xs font-normal text-black">
+                    Upcoming
+                  </p>
+                </div>
+              </div>
               <p class="font-DMSans grow truncate whitespace-normal text-base font-normal text-white">
                 {nAu.desc}
               </p>
