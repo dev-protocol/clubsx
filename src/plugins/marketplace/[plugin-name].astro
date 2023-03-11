@@ -16,82 +16,76 @@ const pluginData = {
   club: 'https://club-name.clubs.place',
   website: 'https://devprotocol.xyz',
 }
+
+const {
+  icon,
+  name,
+  description,
+  corousel,
+  overview,
+  tag,
+  developer,
+  club,
+  website,
+} = pluginData
 ---
 
 <section>
   <div class="inline-flex items-start justify-start space-x-24 py-16">
     <div class="inline-flex flex-col items-start justify-start space-y-20">
-      <p class="text-4xl font-bold text-white">{pluginData.name}</p>
+      <p class="text-4xl font-bold text-white">{name}</p>
       <div class="inline-flex items-start justify-between space-x-16">
         <div class="flex items-start justify-start space-x-4">
-          <img class="h-24 w-1/6 rounded-2xl" src={pluginData.icon} />
+          <img class="h-24 w-1/6 rounded-2xl" src={icon} />
           <div class="inline-flex flex-col items-start justify-start space-y-1">
-            <p class="text-2xl font-bold text-white">{pluginData.name}</p>
+            <p class="text-2xl font-bold text-white">{name}</p>
             <p class="text-base leading-normal text-white">
-              {pluginData.description}
+              {description}
             </p>
             <div
               class="inline-flex items-center justify-center rounded-full bg-green-500 px-1.5"
             >
-              <p class="text-xs leading-none text-black">{pluginData.tag}</p>
+              <p class="text-xs leading-none text-black">{tag}</p>
             </div>
           </div>
         </div>
         <div
           class="flex items-center justify-center rounded-full border border-green-500 bg-green-500 px-7 py-2"
         >
-          <p
+          <button
             class="w-[231px] text-center text-base font-bold leading-normal text-white"
           >
             Add to Your DAO name
-          </p>
+          </button>
         </div>
       </div>
-      <div
-        class="inline-flex items-start justify-start space-x-8 overflow-auto"
-      >
-        <img
-          class="rounded-lg"
-          style="width: 411px; height: 411px;"
-          src={pluginData.corousel[0]}
-        />
-        <img class="rounded-lg" src={pluginData.corousel[1]} />
-        <img class="rounded-lg" src={pluginData.corousel[2]} />
+      <div class="flex items-start justify-start space-x-8 overflow-auto">
+        {corousel.map((image) => <img class="rounded-lg" src={image} />)}
       </div>
       <div class="flex flex-col items-start justify-start space-y-8">
         <p class="w-80 text-2xl font-bold text-white">Overview</p>
         <p class="text-xl font-medium text-white" style="width: 840px;">
-          {pluginData.overview}
+          {overview}
         </p>
       </div>
       <div class="flex flex-col items-start justify-start space-y-8">
         <div class="flex flex-col items-start justify-start space-y-2">
-          <p
-            class="text-base font-medium text-white text-opacity-70"
-            style="width: 840px;"
-          >
+          <p class="text-base font-medium text-white text-opacity-70">
             Developer
           </p>
-          <p class="text-xl font-medium text-white" style="width: 840px;">
-            {pluginData.developer}
-          </p>
+          <p class="max-w-xl text-xl font-medium text-white">{developer}</p>
         </div>
         <div class="flex flex-col items-start justify-start space-y-2">
           <p class="text-base font-medium text-white text-opacity-70">Clubs</p>
-          <a class="text-xl font-medium text-white" href={pluginData.club}>
-            {pluginData.club}
-          </a>
+          <a class="text-xl font-medium text-white" href={club}>{club}</a>
         </div>
         <div class="flex flex-col items-start justify-start space-y-2">
           <p class="text-base font-medium text-white text-opacity-70">
             Repository
           </p>
-          <a
-            class="text-xl font-medium text-white underline"
-            href={pluginData.website}
+          <a class="text-xl font-medium text-white underline" href={website}
+            >{website}</a
           >
-            {pluginData.website}
-          </a>
         </div>
       </div>
     </div>
