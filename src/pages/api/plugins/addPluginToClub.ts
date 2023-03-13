@@ -1,24 +1,27 @@
-import { utils } from 'ethers'
+import { providers, utils } from 'ethers'
 import { createClient } from 'redis'
 
+import { InstallablePlugins, installablePlugins } from '@constants/plugins'
 import { generateClubPluginsId } from '@fixtures/api/keys'
+import { authenticate, decode } from '@devprotocol/clubs-core'
 
 export const post = async ({ request }: { request: Request }) => {
-  const { site, pluginName, sig, hash, expectedAddress } =
-    (await request.json()) as {
-      sig: string
-      site: string
-      hash: string
-      pluginName: string
-      expectedAddress: string
-    }
+  const { site, pluginName, sig, hash } = (await request.json()) as {
+    sig: string
+    site: string
+    hash: string
+    pluginName: string
+  }
 
   // We need hash and signature.
-  const hashAndSignGiven = !!hash && !!sig && !!expectedAddress
-  if (!hashAndSignGiven) {
-    return new Response(JSON.stringify({ error: 'Auth failed' }), {
-      status: 401,
-    })
+  const hashAndSignGiven = !!hash && !!sig
+  if (!hashAndSignGiven || !pluginName || !site) {
+    return new Response(
+      JSON.stringify({ error: 'Invalid request: missing required params' }),
+      {
+        status: 401,
+      }
+    )
   }
 
   const client = createClient({
@@ -36,16 +39,39 @@ export const post = async ({ request }: { request: Request }) => {
     console.error('redis connection error: ', e)
   })
 
+  const previousConfiguration = await client.get(site)
+  if (!previousConfiguration) {
+    return new Response(JSON.stringify({ error: 'Encoded config not found' }), {
+      status: 401,
+    })
+  }
+
   const clubPluginsDbId = generateClubPluginsId(site)
   const clubsPlugins = JSON.parse(
     (await client.get(clubPluginsDbId)) ?? '[]'
   ) as string[]
 
-  const address = utils.recoverAddress(utils.hashMessage(hash), sig)
-  if (address.toLowerCase() != expectedAddress.toLowerCase()) {
-    return new Response(JSON.stringify({ error: 'Auth failed: invalid sig' }), {
+  // The plugin name should be in the list of installable plugins.
+  const isPluginInstallable = installablePlugins.find(
+    (ip: InstallablePlugins) => ip.name === pluginName
+  )
+  if (!isPluginInstallable) {
+    return new Response(JSON.stringify({ error: 'Invalid plugin' }), {
       status: 401,
     })
+  }
+
+  const authenticated = await authenticate({
+    message: hash,
+    signature: sig,
+    previousConfiguration,
+    provider: providers.getDefaultProvider(
+      decode(previousConfiguration).rpcUrl
+    ),
+  })
+
+  if (!authenticated) {
+    return new Response(JSON.stringify({}), { status: 401 })
   }
 
   try {
