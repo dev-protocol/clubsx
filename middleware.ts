@@ -6,6 +6,11 @@ export const config = {
 
 const redirects = [
   {
+    host: 'clubs.place',
+    matchers: ['/', new RegExp('^/(plugins|dev|blog|pricing)(|/.*)$')],
+    destination: 'https://www.clubs.place',
+  },
+  {
     tenant: 'temples',
     host: 'temples.clubs.stakes.social',
     destination: 'https://temples.clubs.place',
@@ -20,7 +25,17 @@ const redirects = [
 export default function middleware(req: Request) {
   const url = new URL(req.url)
 
-  const matchToRedirects = redirects.find(({ host }) => host === url.host)
+  const matchToRedirects = redirects.find(
+    ({ host, matchers }) =>
+      host === url.host &&
+      (matchers
+        ? matchers.some((matcher) =>
+            typeof matcher === 'string'
+              ? matcher === url.pathname
+              : matcher.test(url.pathname)
+          )
+        : true)
+  )
 
   if (matchToRedirects) {
     return Response.redirect(
