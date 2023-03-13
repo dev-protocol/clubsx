@@ -7,7 +7,7 @@ export const config = {
 const redirects = [
   {
     host: 'clubs.place',
-    matchers: ['/', new RegExp('^/(plugins|dev|blog|pricing)(|/.*)$')],
+    matchers: ['/', new RegExp('^/(plugins|dev|blog|post|pricing)(|/.*)$')],
     destination: 'https://www.clubs.place',
   },
   {
