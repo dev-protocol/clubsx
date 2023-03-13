@@ -2,6 +2,7 @@
 import HSButton from '@components/Primitives/Hashi/HSButton.vue'
 
 import clockImage from '@assets/clock.svg'
+import checkImage from '@assets/check.svg'
 import image from '@assets/maxim-berg-unsplash.jpg'
 import themesPluginImage1 from '@assets/marketplace-themes-1.svg'
 import newUpcomingPluginImage1 from '@assets/marketplace-new-upcoming-1.svg'
@@ -72,7 +73,7 @@ const themes = [
 
 <section>
   <div
-    class="grants-bg-cover mb-[85px] h-[293px] w-full rounded-[32px] p-[94px]"
+    class="grants-bg-cover mb-[85px] h-fit max-h-fit min-h-[293px] w-full rounded-[32px] p-[94px]"
     style={{
       backgroundImage: `url(${image})`,
       backgroundRepeat: 'no-repeat',
@@ -164,9 +165,9 @@ const themes = [
                   <p class="font-DMSans grow py-0 text-2xl font-bold text-white">
                     {theme.name}
                   </p>
-                  <div class="flex h-fit w-fit items-center justify-around gap-0.5 rounded-[999px] bg-[#DF3737] py-[1px] px-[7px]">
+                  <div class="flex h-fit w-fit items-center justify-around gap-0.5 rounded-[999px] bg-[#88AEFF] py-[1px] px-[7px]">
                     <img
-                      src={clockImage}
+                      src={checkImage}
                       class="m-0 h-[13px] max-h-full w-[13px] max-w-[40%] p-0"
                     />
                     <p class="font-DMSans h-fit w-fit text-xs font-normal text-black">
@@ -206,9 +207,9 @@ const themes = [
                 <p class="font-DMSans grow py-0 text-2xl font-bold text-white">
                   {nAu.name}
                 </p>
-                <div class="flex h-fit w-fit items-center justify-around gap-0.5 rounded-[999px] bg-[#DF3737] py-[1px] px-[7px]">
+                <div class="flex h-fit w-fit items-center justify-around gap-0.5 rounded-[999px] bg-[#88AEFF] py-[1px] px-[7px]">
                   <img
-                    src={clockImage}
+                    src={checkImage}
                     class="m-0 h-[13px] max-h-full w-[13px] max-w-[40%] p-0"
                   />
                   <p class="font-DMSans h-fit w-fit text-xs font-normal text-black">
@@ -231,7 +232,7 @@ const themes = [
 
   <!-- Join developer community -->
   <div
-    class="h-[244px] w-full rounded-2xl py-10 px-[117px]"
+    class="h-fit max-h-fit min-h-[244px] w-full rounded-2xl py-10 px-[117px]"
     style={{
       background: 'linear-gradient(91.9deg, #5B8BF5 0.33%, #FFC751 101.64%)',
     }}
