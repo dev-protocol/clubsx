@@ -1,0 +1,254 @@
+---
+import HSButton from '@components/Primitives/Hashi/HSButton.vue'
+
+import clockImage from '@assets/clock.svg'
+import checkImage from '@assets/check.svg'
+import image from '@assets/maxim-berg-unsplash.jpg'
+import themesPluginImage1 from '@assets/marketplace-themes-1.svg'
+import newUpcomingPluginImage1 from '@assets/marketplace-new-upcoming-1.svg'
+
+const newAndUpcoming = [
+  {
+    avatarImageSrc: newUpcomingPluginImage1,
+    name: 'Plugin Name',
+    fee: 0,
+    feeCurrency: 'ETH',
+    enlargedAvatarImageSrc: themesPluginImage1,
+    desc: `is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries`,
+  },
+  {
+    avatarImageSrc: newUpcomingPluginImage1,
+    name: 'Plugin Name',
+    fee: 0,
+    feeCurrency: 'ETH',
+    enlargedAvatarImageSrc: themesPluginImage1,
+    desc: `is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries`,
+  },
+  {
+    avatarImageSrc: newUpcomingPluginImage1,
+    name: 'Plugin Name',
+    fee: 0,
+    feeCurrency: 'ETH',
+    enlargedAvatarImageSrc: themesPluginImage1,
+    desc: `is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries`,
+  },
+  {
+    avatarImageSrc: newUpcomingPluginImage1,
+    name: 'Plugin Name',
+    fee: 0,
+    feeCurrency: 'ETH',
+    enlargedAvatarImageSrc: themesPluginImage1,
+    desc: `is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries`,
+  },
+]
+
+const themes = [
+  {
+    avatarImageSrc: newUpcomingPluginImage1,
+    name: 'Plugin Name',
+    fee: 0,
+    enlargedAvatarImageSrc: themesPluginImage1,
+    feeCurrency: 'ETH',
+
+    desc: `is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries`,
+  },
+  {
+    avatarImageSrc: newUpcomingPluginImage1,
+    name: 'Plugin Name',
+    fee: 0,
+    feeCurrency: 'ETH',
+    enlargedAvatarImageSrc: themesPluginImage1,
+    desc: `is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries`,
+  },
+  {
+    avatarImageSrc: newUpcomingPluginImage1,
+    name: 'Plugin Name',
+    fee: 0,
+    feeCurrency: 'ETH',
+    enlargedAvatarImageSrc: themesPluginImage1,
+    desc: `is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries`,
+  },
+]
+---
+
+<section>
+  <div
+    class="grants-bg-cover mb-[85px] h-fit max-h-fit min-h-[293px] w-full rounded-[32px] p-[94px]"
+    style={{
+      backgroundImage: `url(${image})`,
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center center',
+    }}
+  >
+    <p
+      class="font-DMSans ml-auto mr-auto mb-2.5 w-[60%] max-w-[60%] text-4xl font-bold text-white"
+    >
+      Explore plugins for your Club <br />
+    </p>
+    <p
+      class="font-DMSans ml-auto mr-auto w-[60%] max-w-[60%] text-base font-normal text-white"
+    >
+      Open plugin marketplace for all Clubs and builders. Enhance your community
+      in 5 minutes instead of search 5 days.
+    </p>
+  </div>
+
+  <!-- New and Upcoming section -->
+  <div class="mb-[85px] w-full p-0">
+    <p class="font-DMSans mb-10 text-4xl font-bold text-white">
+      New & Upcoming
+    </p>
+    <div
+      class="flex w-full max-w-full flex-wrap items-start justify-start gap-16 p-0"
+    >
+      {
+        newAndUpcoming.map((nAu) => (
+          <div class="flex h-[155px] max-w-[45%] grow items-start justify-start gap-[18px]">
+            <img
+              src={nAu.avatarImageSrc}
+              class="m-0 h-[92px] max-h-full w-[92px] max-w-[40%] rounded-2xl p-0"
+            />
+            <div class="flex h-[155px] max-w-[60%] flex-col gap-[5px]">
+              <div class="flex max-w-full items-center justify-between">
+                <p class="font-DMSans grow py-0 text-2xl font-bold text-white">
+                  {nAu.name}
+                </p>
+                <div class="flex h-fit w-fit items-center justify-around gap-0.5 rounded-[999px] bg-[#DF3737] py-[1px] px-[7px]">
+                  <img
+                    src={clockImage}
+                    class="m-0 h-[13px] max-h-full w-[13px] max-w-[40%] p-0"
+                  />
+                  <p class="font-DMSans h-fit w-fit text-xs font-normal text-black">
+                    Upcoming
+                  </p>
+                </div>
+              </div>
+              <p class="font-DMSans grow truncate whitespace-normal text-base font-normal text-white">
+                {nAu.desc}
+              </p>
+              <p class="font-DMSans w-fit max-w-full rounded-[999px] bg-[#43C451] py-0 px-[7px] text-xs font-normal text-black">
+                Free
+              </p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- Themes section -->
+  <div class="mb-[85px] w-full p-0">
+    <p class="font-DMSans mb-9 text-4xl font-bold text-white">Themes</p>
+    <div
+      class="flex w-full max-w-full flex-wrap items-start justify-start gap-16 p-0"
+    >
+      {
+        themes.map((theme) => (
+          <div class="flex h-[427px] max-w-[45%] flex-col items-start justify-center gap-[18px] p-0">
+            <div
+              class="m-0 h-[331px] max-h-[78%] w-full max-w-full rounded-lg p-0"
+              style={{
+                backgroundImage: `url(${theme.enlargedAvatarImageSrc})`,
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center center',
+              }}
+            />
+            <div class="flex h-[95px] max-h-[21%] w-full max-w-full items-start justify-start gap-[18px]">
+              <img
+                src={theme.avatarImageSrc}
+                class="m-0 h-[52px] max-h-full w-[52px] max-w-[40%] rounded-[11px] p-0"
+              />
+              <div class="flex h-full w-full flex-col gap-[5px] p-0">
+                <div class="flex max-w-full items-center justify-between">
+                  <p class="font-DMSans grow py-0 text-2xl font-bold text-white">
+                    {theme.name}
+                  </p>
+                  <div class="flex h-fit w-fit items-center justify-around gap-0.5 rounded-[999px] bg-[#88AEFF] py-[1px] px-[7px]">
+                    <img
+                      src={checkImage}
+                      class="m-0 h-[13px] max-h-full w-[13px] max-w-[40%] p-0"
+                    />
+                    <p class="font-DMSans h-fit w-fit text-xs font-normal text-black">
+                      Added
+                    </p>
+                  </div>
+                </div>
+                <p class="font-DMSans whitspace-nowrap grow overflow-hidden text-base font-normal text-white">
+                  {theme.desc}
+                </p>
+                <p class="font-DMSans w-fit max-w-full rounded-[999px] bg-[#43C451] py-0 px-[7px] text-xs font-normal text-black">
+                  Free
+                </p>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- Basics section -->
+  <div class="mb-[85px] w-full p-0">
+    <p class="font-DMSans mb-10 text-4xl font-bold text-white">Basics</p>
+    <div
+      class="flex w-full max-w-full flex-wrap items-start justify-start gap-16 p-0"
+    >
+      {
+        [...newAndUpcoming, ...themes].map((nAu) => (
+          <div class="flex h-[155px] max-w-[45%] grow items-start justify-start gap-[18px]">
+            <img
+              src={nAu.avatarImageSrc}
+              class="m-0 h-[92px] max-h-full w-[92px] max-w-[40%] rounded-2xl p-0"
+            />
+            <div class="flex h-[155px] max-w-[60%] flex-col gap-[5px]">
+              <div class="flex max-w-full items-center justify-between">
+                <p class="font-DMSans grow py-0 text-2xl font-bold text-white">
+                  {nAu.name}
+                </p>
+                <div class="flex h-fit w-fit items-center justify-around gap-0.5 rounded-[999px] bg-[#88AEFF] py-[1px] px-[7px]">
+                  <img
+                    src={checkImage}
+                    class="m-0 h-[13px] max-h-full w-[13px] max-w-[40%] p-0"
+                  />
+                  <p class="font-DMSans h-fit w-fit text-xs font-normal text-black">
+                    Added
+                  </p>
+                </div>
+              </div>
+              <p class="font-DMSans grow truncate whitespace-normal text-base font-normal text-white">
+                {nAu.desc}
+              </p>
+              <p class="font-DMSans w-fit max-w-full rounded-[999px] bg-[#43C451] py-0 px-[7px] text-xs font-normal text-black">
+                Free
+              </p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- Join developer community -->
+  <div
+    class="h-fit max-h-fit min-h-[244px] w-full rounded-2xl py-10 px-[117px]"
+    style={{
+      background: 'linear-gradient(91.9deg, #5B8BF5 0.33%, #FFC751 101.64%)',
+    }}
+  >
+    <div class="mb-4 font-title text-[42px] font-bold text-black">
+      Join our developer community
+    </div>
+    <div class="mb-2.5 font-title text-2xl font-bold text-black">
+      Publish your original plugins!
+    </div>
+    <HSButton
+      type="filled"
+      class="w-fit rounded font-body text-2xl font-bold text-white"
+      link="`/connect/${daoName}`"
+    >
+      Join
+    </HSButton>
+  </div>
+</section>

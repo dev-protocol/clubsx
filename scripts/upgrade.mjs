@@ -13,6 +13,15 @@ const upgrade = (key, config) => {
 
     upgradedConfig.url = `https://${key}.clubs.place`
   }
+
+  if (upgradedConfig.plugins.every((p) => p.name !== 'marketplace')) {
+    console.log(key, 'has not marketplace on `plugins`')
+
+    upgradedConfig.plugins = [
+      ...upgradedConfig.plugins,
+      { name: 'marketplace', options: [] },
+    ]
+  }
   return encode(upgradedConfig)
 }
 
