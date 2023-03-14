@@ -1,23 +1,27 @@
 import { rewrite, next } from '@vercel/edge'
 
+const hosts = (process.env.HOSTS ?? 'clubs.place')
+  .split(',')
+  .map((x) => x.trim())
+
 export const config = {
   matcher: ['/((?!api|assets|chunks|_vercel|[\\w-]+\\.\\w+).*)'],
 }
 
 const redirects = [
-  {
-    host: 'clubs.place',
+  ...hosts.map((host) => ({
+    host,
     matchers: ['/', new RegExp('^/(plugins|dev|blog|post|pricing)(|/.*)$')],
     destination: 'https://www.clubs.place',
-  },
+  })),
   {
-    tenant: 'temples',
     host: 'temples.clubs.stakes.social',
+    matchers: undefined,
     destination: 'https://temples.clubs.place',
   },
   {
-    tenant: 'kougenji',
     host: 'kougenji.clubs.stakes.social',
+    matchers: undefined,
     destination: 'https://kougenji.clubs.place',
   },
 ]
@@ -49,9 +53,6 @@ export default function middleware(req: Request) {
   const hostnames = url.host.split('.') ?? []
   const [tenant] = hostnames
   const html = req.headers.get('accept')?.includes('text/html')
-  const hosts = (process.env.HOSTS ?? 'clubs.place')
-    .split(',')
-    .map((x) => x.trim())
 
   const primaryHost =
     hosts.find((h) => url.host === h) ?? hosts.find((h) => url.host.endsWith(h))
