@@ -52,7 +52,7 @@ export const getSlots: ClubsFunctionGetSlots = async (
 }
 
 export const meta: ClubsPluginMeta = {
-  id: 'devprotocol:clubs:community',
+  id: 'devprotocol:clubs:plugin:community',
   displayName: 'Community',
   category: ClubsPluginCategory.Growth,
   icon: Icon,
