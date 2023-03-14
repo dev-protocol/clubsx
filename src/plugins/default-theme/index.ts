@@ -14,6 +14,8 @@ import type { HomeConfig } from '../../constants/homeConfig'
 import type { NavLink } from '@constants/navLink'
 import type { Membership } from '@plugins/memberships'
 import PreviewImage from './assets/preview.png'
+import { default as Icon } from '@assets/CaseStudyMedia1.png'
+import { default as Readme } from './README.md'
 
 export const colorPresets = {
   Purple: {
@@ -134,6 +136,14 @@ export const meta: ClubsThemePluginMeta = {
   theme: {
     previewImage: PreviewImage,
   },
+  icon: Icon,
+  offer: {
+    price: 0,
+    priceCurrency: 'DEV',
+  },
+  description: `is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`,
+  previewImages: [Icon, Icon, Icon],
+  readme: Readme,
 }
 
 export default {
