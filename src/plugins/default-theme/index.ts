@@ -13,6 +13,7 @@ import { default as Admin } from './admin.astro'
 import type { HomeConfig } from '../../constants/homeConfig'
 import type { NavLink } from '@constants/navLink'
 import type { Membership } from '@plugins/memberships'
+import PreviewImage from './assets/preview.png'
 
 export const colorPresets = {
   Purple: {
@@ -131,7 +132,7 @@ export const meta: ClubsThemePluginMeta = {
   displayName: 'Default theme',
   category: ClubsPluginCategory.Theme,
   theme: {
-    previewImage: 'https://dummyimage.com/600x400/000/fff',
+    previewImage: PreviewImage,
   },
 }
 
