@@ -14,7 +14,7 @@ import type { HomeConfig } from '../../constants/homeConfig'
 import type { NavLink } from '@constants/navLink'
 import type { Membership } from '@plugins/memberships'
 import PreviewImage from './assets/preview.png'
-import { default as Icon } from '@assets/marketplace-new-upcoming-1.svg'
+import { default as Icon } from '@assets/CaseStudyMedia1.png'
 import { default as Readme } from './README.md'
 
 export const colorPresets = {
