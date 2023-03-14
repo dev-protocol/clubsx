@@ -205,9 +205,22 @@
   </label>
 
   <div>
-    <label class="hs-form-field grid justify-items-start gap-2">
-      <span class="hs-form-field__label"> OGP (Open Graph Protocol) Image</span>
-      <div>
+    <div class="grid justify-items-start gap-2">
+      <span class="hs-form-field">
+        <span class="hs-form-field__label">
+          OGP (Open Graph Protocol) Image</span
+        >
+      </span>
+      {#if ogpValue?.image && uploading === false}
+        <img src={ogpValue.image} class="max-w-md rounded" alt="OGP" />
+      {/if}
+      {#if uploading}
+        <div
+          role="presentation"
+          class="aspect-video w-full max-w-md animate-pulse rounded bg-zinc-400"
+        />
+      {/if}
+      <label class="hs-form-field w-fit">
         <span class="hs-button is-filled is-large cursor-pointer"
           >Upload to change</span
         >
@@ -217,13 +230,14 @@
           name="ogp-image"
           style="display:none"
           type="file"
+          class="hs-button is-filled is-large cursor-pointer"
           on:change={onFileSelected}
         />
         <span class="mt-1 text-xs opacity-60"
           >*Image size should be 1200 x 630 pixels</span
         >
-      </div>
-    </label>
+      </label>
+    </div>
   </div>
 
   <h2 class="font-title text-2xl font-bold">Design</h2>
