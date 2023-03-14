@@ -17,7 +17,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async () => []
 
 export const meta: ClubsPluginMeta = {
-  id: 'devprotocol:clubs:plugin:join',
+  id: 'devprotocol:clubs:plugin:me',
   displayName: 'Me',
   category: ClubsPluginCategory.Uncategorized,
   icon: Icon,
