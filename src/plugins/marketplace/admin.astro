@@ -4,71 +4,35 @@ import HSButton from '@components/Primitives/Hashi/HSButton.vue'
 import clockImage from '@assets/clock.svg'
 import checkImage from '@assets/check.svg'
 import image from '@assets/maxim-berg-unsplash.jpg'
-import themesPluginImage1 from '@assets/marketplace-themes-1.svg'
-import newUpcomingPluginImage1 from '@assets/marketplace-new-upcoming-1.svg'
+import pluginDefaultPreviewImage from '@assets/marketplace-themes-1.svg'
+import pluginDefaultIcon from '@assets/marketplace-new-upcoming-1.svg'
+import type { InstallablePlugins } from '@constants/plugins'
+import type { ClubsPluginMeta } from '@devprotocol/clubs-core'
 
-const newAndUpcoming = [
-  {
-    avatarImageSrc: newUpcomingPluginImage1,
-    name: 'Plugin Name',
-    fee: 0,
-    feeCurrency: 'ETH',
-    enlargedAvatarImageSrc: themesPluginImage1,
-    desc: `is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries`,
-  },
-  {
-    avatarImageSrc: newUpcomingPluginImage1,
-    name: 'Plugin Name',
-    fee: 0,
-    feeCurrency: 'ETH',
-    enlargedAvatarImageSrc: themesPluginImage1,
-    desc: `is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries`,
-  },
-  {
-    avatarImageSrc: newUpcomingPluginImage1,
-    name: 'Plugin Name',
-    fee: 0,
-    feeCurrency: 'ETH',
-    enlargedAvatarImageSrc: themesPluginImage1,
-    desc: `is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries`,
-  },
-  {
-    avatarImageSrc: newUpcomingPluginImage1,
-    name: 'Plugin Name',
-    fee: 0,
-    feeCurrency: 'ETH',
-    enlargedAvatarImageSrc: themesPluginImage1,
-    desc: `is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries`,
-  },
-]
+const url = new URL(Astro.request.url)
+const hosts = url.host.split('.')
+const host = hosts.length > 1 ? hosts[hosts.length - 1] : hosts[0]
+const allInstallablePluginsRes = await fetch(
+  `${url.protocol}//${host}/api/plugins/installablePlugins`
+)
 
-const themes = [
-  {
-    avatarImageSrc: newUpcomingPluginImage1,
-    name: 'Plugin Name',
-    fee: 0,
-    enlargedAvatarImageSrc: themesPluginImage1,
-    feeCurrency: 'ETH',
+let allInstallablePlugins: ClubsPluginMeta[] = []
+if (allInstallablePluginsRes.ok) {
+  const plugins: InstallablePlugins[] =
+    (await allInstallablePluginsRes.json())?.plugins || []
+  allInstallablePlugins = await Promise.all(
+    plugins.map(async (plugin: InstallablePlugins) => {
+      const importedPlugin =
+        plugin.src === '.'
+          ? await import(`../${plugin.name}/${plugin.main}`)
+          : await import(`${plugin.name}/${plugin.main}`)
 
-    desc: `is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries`,
-  },
-  {
-    avatarImageSrc: newUpcomingPluginImage1,
-    name: 'Plugin Name',
-    fee: 0,
-    feeCurrency: 'ETH',
-    enlargedAvatarImageSrc: themesPluginImage1,
-    desc: `is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries`,
-  },
-  {
-    avatarImageSrc: newUpcomingPluginImage1,
-    name: 'Plugin Name',
-    fee: 0,
-    feeCurrency: 'ETH',
-    enlargedAvatarImageSrc: themesPluginImage1,
-    desc: `is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries`,
-  },
-]
+      return {
+        ...(importedPlugin?.meta as ClubsPluginMeta),
+      }
+    })
+  )
+}
 ---
 
 <section>
@@ -103,16 +67,16 @@ const themes = [
       class="flex w-full max-w-full flex-wrap items-start justify-start gap-16 p-0"
     >
       {
-        newAndUpcoming.map((nAu) => (
+        allInstallablePlugins.map((nAu: ClubsPluginMeta) => (
           <div class="flex h-[155px] max-w-[45%] grow items-start justify-start gap-[18px]">
             <img
-              src={nAu.avatarImageSrc}
+              src={nAu.icon || pluginDefaultIcon}
               class="m-0 h-[92px] max-h-full w-[92px] max-w-[40%] rounded-2xl p-0"
             />
             <div class="flex h-[155px] max-w-[60%] flex-col gap-[5px]">
               <div class="flex max-w-full items-center justify-between">
                 <p class="font-DMSans grow py-0 text-2xl font-bold text-white">
-                  {nAu.name}
+                  {nAu.displayName}
                 </p>
                 <div class="flex h-fit w-fit items-center justify-around gap-0.5 rounded-[999px] bg-[#DF3737] py-[1px] px-[7px]">
                   <img
@@ -125,10 +89,15 @@ const themes = [
                 </div>
               </div>
               <p class="font-DMSans grow truncate whitespace-normal text-base font-normal text-white">
-                {nAu.desc}
+                {nAu.description}
               </p>
               <p class="font-DMSans w-fit max-w-full rounded-[999px] bg-[#43C451] py-0 px-[7px] text-xs font-normal text-black">
-                Free
+                {nAu?.offer?.price
+                  ? `${Number(nAu?.offer?.price).toLocaleString('en-US', {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 3,
+                    })} ${nAu?.offer?.priceCurrency}`
+                  : 'Free'}
               </p>
             </div>
           </div>
@@ -144,12 +113,16 @@ const themes = [
       class="flex w-full max-w-full flex-wrap items-start justify-start gap-16 p-0"
     >
       {
-        themes.map((theme) => (
+        allInstallablePlugins.map((theme: ClubsPluginMeta) => (
           <div class="flex h-[427px] max-w-[45%] flex-col items-start justify-center gap-[18px] p-0">
             <div
               class="m-0 h-[331px] max-h-[78%] w-full max-w-full rounded-lg p-0"
               style={{
-                backgroundImage: `url(${theme.enlargedAvatarImageSrc})`,
+                backgroundImage: `url(${
+                  theme.previewImages?.length
+                    ? theme.previewImages[0]
+                    : pluginDefaultPreviewImage
+                })`,
                 backgroundRepeat: 'no-repeat',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center center',
@@ -157,13 +130,13 @@ const themes = [
             />
             <div class="flex h-[95px] max-h-[21%] w-full max-w-full items-start justify-start gap-[18px]">
               <img
-                src={theme.avatarImageSrc}
+                src={theme.icon || pluginDefaultIcon}
                 class="m-0 h-[52px] max-h-full w-[52px] max-w-[40%] rounded-[11px] p-0"
               />
               <div class="flex h-full w-full flex-col gap-[5px] p-0">
                 <div class="flex max-w-full items-center justify-between">
                   <p class="font-DMSans grow py-0 text-2xl font-bold text-white">
-                    {theme.name}
+                    {theme.displayName}
                   </p>
                   <div class="flex h-fit w-fit items-center justify-around gap-0.5 rounded-[999px] bg-[#88AEFF] py-[1px] px-[7px]">
                     <img
@@ -176,10 +149,15 @@ const themes = [
                   </div>
                 </div>
                 <p class="font-DMSans whitspace-nowrap grow overflow-hidden text-base font-normal text-white">
-                  {theme.desc}
+                  {theme.description}
                 </p>
                 <p class="font-DMSans w-fit max-w-full rounded-[999px] bg-[#43C451] py-0 px-[7px] text-xs font-normal text-black">
-                  Free
+                  {theme?.offer?.price
+                    ? `${Number(theme?.offer?.price).toLocaleString('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 3,
+                      })} ${theme?.offer?.priceCurrency}`
+                    : 'Free'}
                 </p>
               </div>
             </div>
@@ -196,16 +174,16 @@ const themes = [
       class="flex w-full max-w-full flex-wrap items-start justify-start gap-16 p-0"
     >
       {
-        [...newAndUpcoming, ...themes].map((nAu) => (
+        allInstallablePlugins.map((nAu: ClubsPluginMeta) => (
           <div class="flex h-[155px] max-w-[45%] grow items-start justify-start gap-[18px]">
             <img
-              src={nAu.avatarImageSrc}
+              src={nAu.icon || pluginDefaultIcon}
               class="m-0 h-[92px] max-h-full w-[92px] max-w-[40%] rounded-2xl p-0"
             />
             <div class="flex h-[155px] max-w-[60%] flex-col gap-[5px]">
               <div class="flex max-w-full items-center justify-between">
                 <p class="font-DMSans grow py-0 text-2xl font-bold text-white">
-                  {nAu.name}
+                  {nAu.displayName}
                 </p>
                 <div class="flex h-fit w-fit items-center justify-around gap-0.5 rounded-[999px] bg-[#88AEFF] py-[1px] px-[7px]">
                   <img
@@ -218,10 +196,15 @@ const themes = [
                 </div>
               </div>
               <p class="font-DMSans grow truncate whitespace-normal text-base font-normal text-white">
-                {nAu.desc}
+                {nAu.description}
               </p>
               <p class="font-DMSans w-fit max-w-full rounded-[999px] bg-[#43C451] py-0 px-[7px] text-xs font-normal text-black">
-                Free
+                {nAu?.offer?.price
+                  ? `${Number(nAu?.offer?.price).toLocaleString('en-US', {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 3,
+                    })} ${nAu?.offer?.priceCurrency}`
+                  : 'Free'}
               </p>
             </div>
           </div>
