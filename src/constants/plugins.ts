@@ -1,57 +1,66 @@
 export type InstallablePlugins = {
-  src: string
+  id: string
   name: string
-  main: string
-  srcType: 'local' | 'npm'
+  isExternalModule: boolean
+  entryPoint: string // File name representing main entry point of plugin config.
+  tag: 'NEW & UPCOMING' | 'THEME' | 'BASICS'
 }
 
 export const installablePlugins: InstallablePlugins[] = [
   {
+    id: 'devprotocol:clubs:plugin:community',
     name: 'community',
-    srcType: 'local',
-    src: '.',
-    main: 'index.ts',
+    entryPoint: 'index.ts',
+    tag: 'BASICS',
+    isExternalModule: false,
   },
   {
+    id: 'devprotocol:clubs:theme-1',
     name: 'default-theme',
-    srcType: 'local',
-    src: '.',
-    main: 'index.ts',
+    entryPoint: 'index.ts',
+    tag: 'THEME',
+    isExternalModule: false,
   },
   {
+    id: 'devprotocol:clubs:plugin:join',
     name: 'join',
-    srcType: 'local',
-    src: '.',
-    main: 'index.ts',
+    entryPoint: 'index.ts',
+    tag: 'BASICS',
+    isExternalModule: false,
   },
   {
+    id: 'devprotocol:clubs:plugin:me',
     name: 'me',
-    srcType: 'local',
-    src: '.',
-    main: 'index.ts',
+    entryPoint: 'index.ts',
+    tag: 'BASICS',
+    isExternalModule: false,
   },
   {
+    id: 'devprotocol:clubs:plugin:members',
     name: 'members',
-    srcType: 'local',
-    src: '.',
-    main: 'index.ts',
+    entryPoint: 'index.ts',
+    tag: 'BASICS',
+    isExternalModule: false,
   },
   {
+    id: 'devprotocol:clubs:simple-memberships',
     name: 'memberships',
-    srcType: 'local',
-    src: '.',
-    main: 'index.ts',
+    entryPoint: 'index.ts',
+    tag: 'BASICS',
+    isExternalModule: false,
   },
   {
+    id: 'devprotocol:clubs:gated-contact-form',
     name: 'message',
-    srcType: 'local',
-    src: '.',
-    main: 'index.ts',
+    entryPoint: 'index.ts',
+    tag: 'BASICS',
+    isExternalModule: false,
   },
   {
+    id: 'devprotocol:clubs:plugin:quests',
     name: 'quests',
-    srcType: 'local',
-    src: '.',
-    main: 'index.ts',
+    entryPoint: 'index.ts',
+    tag: 'BASICS',
+    isExternalModule: false,
   },
 ]
