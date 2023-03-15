@@ -7,8 +7,9 @@ import image from '@assets/maxim-berg-unsplash.jpg'
 import pluginDefaultPreviewImage from '@assets/marketplace-themes-1.svg'
 import pluginDefaultIcon from '@assets/marketplace-new-upcoming-1.svg'
 import type { InstallablePlugins } from '@constants/plugins'
-import type { ClubsPluginMeta } from '@devprotocol/clubs-core'
+import type { ClubsPlugin, ClubsPluginMeta } from '@devprotocol/clubs-core'
 
+const { config } = Astro.props
 const url = new URL(Astro.request.url)
 const hosts = url.host.split('.')
 const host = hosts.length > 1 ? hosts[hosts.length - 1] : hosts[0]
@@ -16,7 +17,9 @@ const allInstallablePluginsRes = await fetch(
   `${url.protocol}//${host}/api/plugins/installablePlugins`
 )
 
-let allInstallablePlugins: ClubsPluginMeta[] = []
+type PluginMeta = ClubsPluginMeta & { added: boolean }
+
+let allInstallablePlugins: PluginMeta[] = []
 if (allInstallablePluginsRes.ok) {
   const plugins: InstallablePlugins[] =
     (await allInstallablePluginsRes.json())?.plugins || []
@@ -29,6 +32,9 @@ if (allInstallablePluginsRes.ok) {
 
       return {
         ...(importedPlugin?.meta as ClubsPluginMeta),
+        added: !!config.plugins.find(
+          (plg: ClubsPlugin) => plg.name === plugin.name
+        ),
       }
     })
   )
@@ -67,7 +73,7 @@ if (allInstallablePluginsRes.ok) {
       class="flex w-full max-w-full flex-wrap items-start justify-start gap-16 p-0"
     >
       {
-        allInstallablePlugins.map((nAu: ClubsPluginMeta) => (
+        allInstallablePlugins.map((nAu: PluginMeta) => (
           <div class="flex h-[155px] max-w-[45%] grow items-start justify-start gap-[18px]">
             <img
               src={nAu.icon || pluginDefaultIcon}
@@ -113,7 +119,7 @@ if (allInstallablePluginsRes.ok) {
       class="flex w-full max-w-full flex-wrap items-start justify-start gap-16 p-0"
     >
       {
-        allInstallablePlugins.map((theme: ClubsPluginMeta) => (
+        allInstallablePlugins.map((theme: PluginMeta) => (
           <div class="flex h-[427px] max-w-[45%] flex-col items-start justify-center gap-[18px] p-0">
             <div
               class="m-0 h-[331px] max-h-[78%] w-full max-w-full rounded-lg p-0"
@@ -138,15 +144,17 @@ if (allInstallablePluginsRes.ok) {
                   <p class="font-DMSans grow py-0 text-2xl font-bold text-white">
                     {theme.displayName}
                   </p>
-                  <div class="flex h-fit w-fit items-center justify-around gap-0.5 rounded-[999px] bg-[#88AEFF] py-[1px] px-[7px]">
-                    <img
-                      src={checkImage}
-                      class="m-0 h-[13px] max-h-full w-[13px] max-w-[40%] p-0"
-                    />
-                    <p class="font-DMSans h-fit w-fit text-xs font-normal text-black">
-                      Added
-                    </p>
-                  </div>
+                  {theme.added && (
+                    <div class="flex h-fit w-fit items-center justify-around gap-0.5 rounded-[999px] bg-[#88AEFF] py-[1px] px-[7px]">
+                      <img
+                        src={checkImage}
+                        class="m-0 h-[13px] max-h-full w-[13px] max-w-[40%] p-0"
+                      />
+                      <p class="font-DMSans h-fit w-fit text-xs font-normal text-black">
+                        Added
+                      </p>
+                    </div>
+                  )}
                 </div>
                 <p class="font-DMSans whitspace-nowrap grow overflow-hidden text-base font-normal text-white">
                   {theme.description}
@@ -174,7 +182,7 @@ if (allInstallablePluginsRes.ok) {
       class="flex w-full max-w-full flex-wrap items-start justify-start gap-16 p-0"
     >
       {
-        allInstallablePlugins.map((nAu: ClubsPluginMeta) => (
+        allInstallablePlugins.map((nAu: PluginMeta) => (
           <div class="flex h-[155px] max-w-[45%] grow items-start justify-start gap-[18px]">
             <img
               src={nAu.icon || pluginDefaultIcon}
@@ -185,15 +193,17 @@ if (allInstallablePluginsRes.ok) {
                 <p class="font-DMSans grow py-0 text-2xl font-bold text-white">
                   {nAu.displayName}
                 </p>
-                <div class="flex h-fit w-fit items-center justify-around gap-0.5 rounded-[999px] bg-[#88AEFF] py-[1px] px-[7px]">
-                  <img
-                    src={checkImage}
-                    class="m-0 h-[13px] max-h-full w-[13px] max-w-[40%] p-0"
-                  />
-                  <p class="font-DMSans h-fit w-fit text-xs font-normal text-black">
-                    Added
-                  </p>
-                </div>
+                {nAu.added && (
+                  <div class="flex h-fit w-fit items-center justify-around gap-0.5 rounded-[999px] bg-[#88AEFF] py-[1px] px-[7px]">
+                    <img
+                      src={checkImage}
+                      class="m-0 h-[13px] max-h-full w-[13px] max-w-[40%] p-0"
+                    />
+                    <p class="font-DMSans h-fit w-fit text-xs font-normal text-black">
+                      Added
+                    </p>
+                  </div>
+                )}
               </div>
               <p class="font-DMSans grow truncate whitespace-normal text-base font-normal text-white">
                 {nAu.description}
