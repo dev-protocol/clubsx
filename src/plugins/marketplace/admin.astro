@@ -1,43 +1,51 @@
 ---
+import type { InstallablePlugins, PluginMeta } from '@constants/plugins'
+import type { ClubsPlugin, ClubsPluginMeta } from '@devprotocol/clubs-core'
+
 import HSButton from '@components/Primitives/Hashi/HSButton.vue'
 
 import clockImage from '@assets/clock.svg'
 import checkImage from '@assets/check.svg'
 import image from '@assets/maxim-berg-unsplash.jpg'
-import pluginDefaultPreviewImage from '@assets/marketplace-themes-1.svg'
 import pluginDefaultIcon from '@assets/marketplace-new-upcoming-1.svg'
-import type { InstallablePlugins } from '@constants/plugins'
-import type { ClubsPlugin, ClubsPluginMeta } from '@devprotocol/clubs-core'
+import pluginDefaultPreviewImage from '@assets/marketplace-themes-1.svg'
 
 const { config } = Astro.props
-const url = new URL(Astro.request.url)
-const hosts = url.host.split('.')
-const host = hosts.length > 1 ? hosts[hosts.length - 1] : hosts[0]
-const allInstallablePluginsRes = await fetch(
-  `${url.protocol}//${host}/api/plugins/installablePlugins`
+
+const requestUrl = new URL(Astro.request.url)
+const requestHosts = requestUrl.host.split('.')
+const requestMainDomain =
+  requestHosts.length > 1
+    ? requestHosts[requestHosts.length - 1]
+    : requestHosts[0]
+
+const allPluginsResponse = await fetch(
+  `${requestUrl.protocol}//${requestMainDomain}/api/plugins/installablePlugins`
+).then((res) => res.json())
+
+const allPluginsPromise: Promise<PluginMeta>[] = (
+  allPluginsResponse?.plugins || []
+).map(async (plugin: InstallablePlugins) => {
+  const importedPlugin = plugin.isExternalModule
+    ? await import(`${plugin.moduleNameForImport}/${plugin.entryPoint}`)
+    : await import(`../${plugin.moduleNameForImport}/${plugin.entryPoint}`)
+
+  return {
+    ...importedPlugin.meta,
+    added: !!config.plugins.find(
+      (plg: ClubsPlugin) => plg.name === plugin.configName
+    ),
+    tag: plugin.tag,
+  }
+})
+
+const allPlugins: PluginMeta[] = await Promise.all(allPluginsPromise)
+
+const newAndUpcomingPlugins = allPlugins.filter(
+  (plg) => plg.tag === 'NEW & UPCOMING'
 )
-
-type PluginMeta = ClubsPluginMeta & { added: boolean }
-
-let allInstallablePlugins: PluginMeta[] = []
-if (allInstallablePluginsRes.ok) {
-  const plugins: InstallablePlugins[] =
-    (await allInstallablePluginsRes.json())?.plugins || []
-  allInstallablePlugins = await Promise.all(
-    plugins.map(async (plugin: InstallablePlugins) => {
-      const importedPlugin = plugin.isExternalModule
-        ? await import(`../${plugin.moduleNameForImport}/${plugin.entryPoint}`)
-        : await import(`${plugin.moduleNameForImport}/${plugin.entryPoint}`)
-
-      return {
-        ...(importedPlugin?.meta as ClubsPluginMeta),
-        added: !!config.plugins.find(
-          (plg: ClubsPlugin) => plg.name === plugin.name
-        ),
-      }
-    })
-  )
-}
+const themePlugins = allPlugins.filter((plg) => plg.tag === 'THEME')
+const basicsPlugins = allPlugins.filter((plg) => plg.tag === 'BASICS')
 ---
 
 <section>
@@ -72,7 +80,7 @@ if (allInstallablePluginsRes.ok) {
       class="flex w-full max-w-full flex-wrap items-start justify-start gap-16 p-0"
     >
       {
-        allInstallablePlugins.map((nAu: PluginMeta) => (
+        newAndUpcomingPlugins.map((nAu: PluginMeta) => (
           <div class="flex h-[155px] max-w-[45%] grow items-start justify-start gap-[18px]">
             <img
               src={nAu.icon || pluginDefaultIcon}
@@ -118,7 +126,7 @@ if (allInstallablePluginsRes.ok) {
       class="flex w-full max-w-full flex-wrap items-start justify-start gap-16 p-0"
     >
       {
-        allInstallablePlugins.map((theme: PluginMeta) => (
+        themePlugins.map((theme: PluginMeta) => (
           <div class="flex h-[427px] max-w-[45%] flex-col items-start justify-center gap-[18px] p-0">
             <div
               class="m-0 h-[331px] max-h-[78%] w-full max-w-full rounded-lg p-0"
@@ -181,7 +189,7 @@ if (allInstallablePluginsRes.ok) {
       class="flex w-full max-w-full flex-wrap items-start justify-start gap-16 p-0"
     >
       {
-        allInstallablePlugins.map((nAu: PluginMeta) => (
+        basicsPlugins.map((nAu: PluginMeta) => (
           <div class="flex h-[155px] max-w-[45%] grow items-start justify-start gap-[18px]">
             <img
               src={nAu.icon || pluginDefaultIcon}
