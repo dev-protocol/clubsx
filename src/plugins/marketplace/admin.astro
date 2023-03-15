@@ -26,8 +26,8 @@ if (allInstallablePluginsRes.ok) {
   allInstallablePlugins = await Promise.all(
     plugins.map(async (plugin: InstallablePlugins) => {
       const importedPlugin = plugin.isExternalModule
-        ? await import(`../${plugin.name}/${plugin.entryPoint}`)
-        : await import(`${plugin.name}/${plugin.entryPoint}`)
+        ? await import(`../${plugin.moduleNameForImport}/${plugin.entryPoint}`)
+        : await import(`${plugin.moduleNameForImport}/${plugin.entryPoint}`)
 
       return {
         ...(importedPlugin?.meta as ClubsPluginMeta),
