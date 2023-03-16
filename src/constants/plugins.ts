@@ -1,4 +1,7 @@
-import type { ClubsPluginMeta } from '@devprotocol/clubs-core'
+import type {
+  ClubsPluginMeta,
+  ClubsThemePluginMeta,
+} from '@devprotocol/clubs-core'
 
 export type InstallablePlugins = {
   id: string
@@ -10,7 +13,7 @@ export type InstallablePlugins = {
   moduleNameForImport: string
 }
 
-export type PluginMeta = ClubsPluginMeta & {
+export type PluginMeta = (ClubsPluginMeta & Partial<ClubsThemePluginMeta>) & {
   added: boolean
   tag: 'NEW & UPCOMING' | 'THEME' | 'BASICS'
 }
