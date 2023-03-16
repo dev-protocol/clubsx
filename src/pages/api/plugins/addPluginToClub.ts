@@ -53,7 +53,7 @@ export const post = async ({ request }: { request: Request }) => {
 
   // The plugin name should be in the list of installable plugins.
   const isPluginInstallable = installablePlugins.find(
-    (ip: InstallablePlugins) => ip.name === pluginName
+    (ip: InstallablePlugins) => ip.name === pluginName // TODO: use plugin.id in future.
   )
   if (!isPluginInstallable) {
     return new Response(JSON.stringify({ error: 'Invalid plugin' }), {
