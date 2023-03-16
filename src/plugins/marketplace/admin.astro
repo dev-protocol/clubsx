@@ -1,6 +1,7 @@
 ---
 import type { InstallablePlugins, PluginMeta } from '@constants/plugins'
-import type { ClubsPlugin, ClubsPluginMeta } from '@devprotocol/clubs-core'
+import type { ClubsFunctionPlugin, ClubsPlugin } from '@devprotocol/clubs-core'
+import PluginItem from './components/PluginItem.astro'
 
 import HSButton from '@components/Primitives/Hashi/HSButton.vue'
 
@@ -26,7 +27,7 @@ const allPluginsResponse = await fetch(
 const allPluginsPromise: Promise<PluginMeta>[] = (
   allPluginsResponse?.plugins || []
 ).map(async (plugin: InstallablePlugins) => {
-  const importedPlugin = plugin.isExternalModule
+  const importedPlugin: ClubsFunctionPlugin = plugin.isExternalModule
     ? await import(`${plugin.moduleNameForImport}/${plugin.entryPoint}`)
     : await import(`../${plugin.moduleNameForImport}/${plugin.entryPoint}`)
 
@@ -48,9 +49,9 @@ const themePlugins = allPlugins.filter((plg) => plg.tag === 'THEME')
 const basicsPlugins = allPlugins.filter((plg) => plg.tag === 'BASICS')
 ---
 
-<section class="grid gap-20">
-  <div
-    class="grants-bg-cover h-fit max-h-fit min-h-[293px] w-full rounded-[32px] p-[94px]"
+<div class="grid gap-20 pb-12">
+  <section
+    class="grid rounded-2xl py-7 px-7 xl:py-14 xl:px-28"
     style={{
       backgroundImage: `url(${Heading})`,
       backgroundRepeat: 'no-repeat',
@@ -58,197 +59,76 @@ const basicsPlugins = allPlugins.filter((plg) => plg.tag === 'BASICS')
       backgroundPosition: 'center center',
     }}
   >
-    <p
-      class="font-DMSans ml-auto mr-auto mb-2.5 w-[60%] max-w-[60%] text-4xl font-bold text-white"
-    >
+    <p class="mx-auto mb-2.5 max-w-lg text-4xl font-bold text-white">
       Explore plugins for your Club <br />
     </p>
-    <p
-      class="font-DMSans ml-auto mr-auto w-[60%] max-w-[60%] text-base font-normal text-white"
-    >
+    <p class="mx-auto max-w-lg text-base font-normal text-white">
       Open plugin marketplace for all Clubs and builders. Enhance your community
       in 5 minutes instead of search 5 days.
     </p>
-  </div>
+  </section>
 
   <!-- New and Upcoming section -->
-  <div class="w-full p-0">
-    <p class="font-DMSans mb-10 text-4xl font-bold text-white">
-      New & Upcoming
-    </p>
+  <section>
+    <p class="mb-10 text-4xl font-bold text-white">New & Upcoming</p>
     <div
-      class="flex w-full max-w-full flex-wrap items-start justify-start gap-16 p-0"
+      class="grid items-start justify-start gap-16 lg:grid-cols-[repeat(auto-fill,_minmax(400px,_1fr))]"
     >
       {
         newAndUpcomingPlugins.map((nAu: PluginMeta) => (
-          <div class="flex h-[155px] max-w-[45%] grow items-start justify-start gap-[18px]">
-            <img
-              src={nAu.icon || pluginDefaultIcon}
-              class="m-0 h-[92px] max-h-full w-[92px] max-w-[40%] rounded-2xl p-0"
-            />
-            <div class="flex h-[155px] max-w-[60%] flex-col gap-[5px]">
-              <div class="flex max-w-full items-center justify-between">
-                <p class="font-DMSans grow py-0 text-2xl font-bold text-white">
-                  {nAu.displayName}
-                </p>
-                <div class="flex h-fit w-fit items-center justify-around gap-0.5 rounded-[999px] bg-[#DF3737] py-[1px] px-[7px]">
-                  <img
-                    src={clockImage}
-                    class="m-0 h-[13px] max-h-full w-[13px] max-w-[40%] p-0"
-                  />
-                  <p class="font-DMSans h-fit w-fit text-xs font-normal text-black">
-                    Upcoming
-                  </p>
-                </div>
-              </div>
-              <p class="font-DMSans grow truncate whitespace-normal text-base font-normal text-white">
-                {nAu.description}
-              </p>
-              <p class="font-DMSans w-fit max-w-full rounded-[999px] bg-[#43C451] py-0 px-[7px] text-xs font-normal text-black">
-                {nAu?.offer?.price
-                  ? `${Number(nAu?.offer?.price).toLocaleString('en-US', {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 3,
-                    })} ${nAu?.offer?.priceCurrency}`
-                  : 'Free'}
-              </p>
-            </div>
-          </div>
+          <PluginItem plugin={nAu} markAsUpcoming={true} truncate={false} />
         ))
       }
     </div>
-  </div>
+  </section>
 
   <!-- Themes section -->
-  <div class="w-full p-0">
-    <p class="font-DMSans mb-9 text-4xl font-bold text-white">Themes</p>
+  <section>
+    <p class="mb-9 text-4xl font-bold text-white">Themes</p>
     <div
-      class="flex w-full max-w-full flex-wrap items-start justify-start gap-16 p-0"
+      class="grid grid-cols-[repeat(auto-fill,_minmax(300px,_1fr))] items-start justify-start gap-16"
     >
       {
         themePlugins.map((theme: PluginMeta) => (
-          <div class="flex h-[427px] max-w-[45%] flex-col items-start justify-center gap-[18px] p-0">
-            <div
-              class="m-0 h-[331px] max-h-[78%] w-full max-w-full rounded-lg p-0"
-              style={{
-                backgroundImage: `url(${
-                  theme.previewImages?.length
-                    ? theme.previewImages[0]
-                    : pluginDefaultPreviewImage
-                })`,
-                backgroundRepeat: 'no-repeat',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center center',
-              }}
-            />
-            <div class="flex h-[95px] max-h-[21%] w-full max-w-full items-start justify-start gap-[18px]">
-              <img
-                src={theme.icon || pluginDefaultIcon}
-                class="m-0 h-[52px] max-h-full w-[52px] max-w-[40%] rounded-[11px] p-0"
-              />
-              <div class="flex h-full w-full flex-col gap-[5px] p-0">
-                <div class="flex max-w-full items-center justify-between">
-                  <p class="font-DMSans grow py-0 text-2xl font-bold text-white">
-                    {theme.displayName}
-                  </p>
-                  {theme.added && (
-                    <div class="flex h-fit w-fit items-center justify-around gap-0.5 rounded-[999px] bg-[#88AEFF] py-[1px] px-[7px]">
-                      <img
-                        src={checkImage}
-                        class="m-0 h-[13px] max-h-full w-[13px] max-w-[40%] p-0"
-                      />
-                      <p class="font-DMSans h-fit w-fit text-xs font-normal text-black">
-                        Added
-                      </p>
-                    </div>
-                  )}
-                </div>
-                <p class="font-DMSans whitspace-nowrap grow overflow-hidden text-base font-normal text-white">
-                  {theme.description}
-                </p>
-                <p class="font-DMSans w-fit max-w-full rounded-[999px] bg-[#43C451] py-0 px-[7px] text-xs font-normal text-black">
-                  {theme?.offer?.price
-                    ? `${Number(theme?.offer?.price).toLocaleString('en-US', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 3,
-                      })} ${theme?.offer?.priceCurrency}`
-                    : 'Free'}
-                </p>
-              </div>
-            </div>
-          </div>
+          <PluginItem
+            plugin={theme}
+            preview={theme.theme?.previewImage}
+            size="small"
+          />
         ))
       }
     </div>
-  </div>
+  </section>
 
   <!-- Basics section -->
-  <div class="w-full p-0">
-    <p class="font-DMSans mb-10 text-4xl font-bold text-white">Basics</p>
+  <section>
+    <p class="mb-10 text-4xl font-bold text-white">Basics</p>
     <div
-      class="flex w-full max-w-full flex-wrap items-start justify-start gap-16 p-0"
+      class="grid grid-cols-[repeat(auto-fill,_minmax(300px,_1fr))] items-start justify-start gap-16"
     >
-      {
-        basicsPlugins.map((nAu: PluginMeta) => (
-          <div class="flex h-[155px] max-w-[45%] grow items-start justify-start gap-[18px]">
-            <img
-              src={nAu.icon || pluginDefaultIcon}
-              class="m-0 h-[92px] max-h-full w-[92px] max-w-[40%] rounded-2xl p-0"
-            />
-            <div class="flex h-[155px] max-w-[60%] flex-col gap-[5px]">
-              <div class="flex max-w-full items-center justify-between">
-                <p class="font-DMSans grow py-0 text-2xl font-bold text-white">
-                  {nAu.displayName}
-                </p>
-                {nAu.added && (
-                  <div class="flex h-fit w-fit items-center justify-around gap-0.5 rounded-[999px] bg-[#88AEFF] py-[1px] px-[7px]">
-                    <img
-                      src={checkImage}
-                      class="m-0 h-[13px] max-h-full w-[13px] max-w-[40%] p-0"
-                    />
-                    <p class="font-DMSans h-fit w-fit text-xs font-normal text-black">
-                      Added
-                    </p>
-                  </div>
-                )}
-              </div>
-              <p class="font-DMSans grow truncate whitespace-normal text-base font-normal text-white">
-                {nAu.description}
-              </p>
-              <p class="font-DMSans w-fit max-w-full rounded-[999px] bg-[#43C451] py-0 px-[7px] text-xs font-normal text-black">
-                {nAu?.offer?.price
-                  ? `${Number(nAu?.offer?.price).toLocaleString('en-US', {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 3,
-                    })} ${nAu?.offer?.priceCurrency}`
-                  : 'Free'}
-              </p>
-            </div>
-          </div>
-        ))
-      }
+      {basicsPlugins.map((nAu: PluginMeta) => <PluginItem plugin={nAu} />)}
     </div>
-  </div>
+  </section>
 
   <!-- Join developer community -->
-  <div
-    class="h-fit max-h-fit min-h-[244px] w-full rounded-2xl py-10 px-[117px]"
+  <aside
+    class="grid rounded-2xl py-7 px-7 xl:py-14 xl:px-28"
     style={{
       background: 'linear-gradient(91.9deg, #5B8BF5 0.33%, #FFC751 101.64%)',
     }}
   >
-    <div class="mb-4 font-title text-[42px] font-bold text-black">
+    <div class="mb-4 font-title text-3xl font-bold text-black lg:text-4xl">
       Join our developer community
     </div>
-    <div class="mb-2.5 font-title text-2xl font-bold text-black">
+    <div class="mb-2.5 font-title text-xl font-bold text-black lg:text-2xl">
       Publish your original plugins!
     </div>
     <HSButton
       type="filled"
       class="w-fit rounded font-body text-2xl font-bold text-white"
-      link="`/connect/${daoName}`"
+      link="https://docs.devprotocol.xyz/clubs/"
     >
       Join
     </HSButton>
-  </div>
-</section>
+  </aside>
+</div>

@@ -19,7 +19,7 @@ import type { UndefinedOr } from '@devprotocol/util-ts'
 import type { Membership } from '@plugins/memberships'
 import uniqueString from 'unique-string'
 import type { NavLink } from '@constants/navLink'
-import { default as Icon } from '@assets/CaseStudyMedia1.png'
+import { default as Icon } from '@assets/default-plugin-icon.jpg'
 import { default as Readme } from './README.md'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (

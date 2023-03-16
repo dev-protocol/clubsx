@@ -6,7 +6,7 @@ import {
   ClubsPluginMeta,
 } from '@devprotocol/clubs-core'
 import { default as Index } from './index.astro'
-import { default as Icon } from '@assets/CaseStudyMedia1.png'
+import { default as Icon } from '@assets/default-plugin-icon.jpg'
 import { default as Readme } from './README.md'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
