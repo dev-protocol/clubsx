@@ -31,10 +31,12 @@ export const defaultConfig: ClubsConfiguration = {
   ],
   plugins: [
     {
+      id: 'clubs-core:admin',
       name: 'admin',
       options: [],
     },
     {
+      id: 'devprotocol:clubs:theme-1',
       name: 'defaultTheme',
       options: [
         {
@@ -60,34 +62,42 @@ export const defaultConfig: ClubsConfiguration = {
       ],
     },
     {
+      id: 'devprotocol:clubs:plugin:join',
       name: 'join',
       options: [],
     },
     {
+      id: 'devprotocol:clubs:plugin:me',
       name: 'me',
       options: [],
     },
     {
+      id: 'devprotocol:clubs:plugin:community',
       name: 'community',
       options: [],
     },
     {
+      id: 'devprotocol:clubs:plugin:quests',
       name: 'quests',
       options: [],
     },
     {
+      id: 'devprotocol:clubs:plugin:members',
       name: 'members',
       options: [],
     },
     {
+      id: 'devprotocol:clubs:simple-memberships',
       name: 'memberships',
       options: [],
     },
     {
+      id: 'devprotocol:clubs:gated-contact-form',
       name: 'message',
       options: [],
     },
     {
+      id: 'devprotocol:clubs:clubsx:marketplace',
       name: 'marketplace',
       options: [],
     },

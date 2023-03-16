@@ -63,6 +63,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async () => []
 
 export const meta: ClubsPluginMeta = {
+  id: 'devprotocol:clubs:plugin:fiat',
   displayName: 'FIAT',
   category: ClubsPluginCategory.Monetization,
 }

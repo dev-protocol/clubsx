@@ -22,7 +22,7 @@ const config = await _config(site)
 
 const { getStaticPaths } = pageFactory({
   config: () => Promise.resolve(config),
-  plugins: {
+  plugins: [
     defaultTheme,
     buy,
     community,
@@ -36,7 +36,7 @@ const { getStaticPaths } = pageFactory({
     nft,
     perks,
     quests,
-  },
+  ],
 })
 const path = (await getStaticPaths()).find(({ params }) => params.page === page)
 
