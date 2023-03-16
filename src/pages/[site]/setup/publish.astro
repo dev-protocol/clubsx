@@ -33,7 +33,7 @@ const draftOptionsValue = draftOptions?.value as UndefinedOr<
 >
 
 const membershipsPlugin = config.plugins.find(
-  (plgn) => plgn.name === 'memberships'
+  (plgn) => plgn.name === 'memberships' // TODO: use plgn.id in future.
 )
 const membershipsPluginOptions = membershipsPlugin?.options?.find(
   (opt) => opt.key === 'memberships'
