@@ -19,7 +19,7 @@ const { site, page } = Astro.params
 
 const { getStaticPaths } = adminFactory({
   config: async () => await _config(site),
-  plugins: {
+  plugins: [
     defaultTheme,
     admin,
     quests,
@@ -28,7 +28,7 @@ const { getStaticPaths } = adminFactory({
     home,
     message,
     marketplace,
-  },
+  ],
 })
 const path = (await getStaticPaths()).find(({ params }) => params.page === page)
 const config = path && decode(path.props.clubs.encodedClubsConfiguration)
@@ -51,7 +51,7 @@ const siteBaseUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
   {
     path && Content ? (
       <>
-        <section class="flex justify-center bg-dp-blue-grey-600 p-2">
+        <section class="bg-dp-blue-grey-600 flex justify-center p-2">
           <p class="text-xs">
             Clubs is now public-beta version. There may be bugs, or features
             under update. If you notice anything,{' '}
@@ -69,7 +69,7 @@ const siteBaseUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
         <Admin {...path.props}>
           <a
             slot="admin:sidebar:before-title"
-            class="flex items-center gap-2 transition-colors hover:text-native-blue-300"
+            class="hover:text-native-blue-300 flex items-center gap-2 transition-colors"
             href={`${baseUrl}/signin`}
           >
             <svg

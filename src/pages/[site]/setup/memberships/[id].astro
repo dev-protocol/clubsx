@@ -11,9 +11,7 @@ const { site, id } = Astro.params
 
 const { getStaticPaths, getCurrentConfig } = adminFactory({
   config: async () => await _config(site),
-  plugins: {
-    memberships,
-  },
+  plugins: [memberships],
 })
 
 const config = await getCurrentConfig()
@@ -37,7 +35,7 @@ const { props } = path || { props: null }
       setupStep="MEMBERSHIPS"
       title={`Setup Clubs | Memberships | ${id}`}
     >
-      <h1 class="mb-8 font-title text-lg font-bold">Memberships</h1>
+      <h1 class="font-title mb-8 text-lg font-bold">Memberships</h1>
 
       <AdminMembershipsAdditionForm
         client:load

@@ -26,6 +26,7 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (_, config) => {
 }
 
 export const meta: ClubsPluginMeta = {
+  id: 'devprotocol:clubs:clubsx:marketplace',
   displayName: 'Marketplace',
   category: ClubsPluginCategory.Uncategorized,
 }
