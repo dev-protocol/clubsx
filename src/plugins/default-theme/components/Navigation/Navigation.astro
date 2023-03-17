@@ -16,9 +16,7 @@ const { links, current } = Astro.props as {
             <li>
               <a
                 href={link.path}
-                class={`hs-button is-filled rounded-full border-0 bg-white p-5 text-xl font-bold text-black transition hover:opacity-100 lg:text-2xl ${
-                  current?.path === link.path ? '' : 'opacity-30'
-                }`}
+                class="hs-button is-filled rounded-full border-0 bg-white p-5 text-xl font-bold text-black transition hover:bg-white/80 lg:text-2xl"
               >
                 {link.display}
               </a>
