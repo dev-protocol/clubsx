@@ -34,7 +34,7 @@ const allPluginsPromise: Promise<PluginMeta>[] = (
   return {
     ...importedPlugin.meta,
     added: !!config.plugins.find(
-      (plg: ClubsPlugin) => plg.name === plugin.configName // TODO: use plugin.id in future.
+      (plg: ClubsPlugin) => plg.id === plugin.id // TODO: use plugin.id in future.
     ),
     tag: plugin.tag,
   }
