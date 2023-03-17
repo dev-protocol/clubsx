@@ -270,9 +270,9 @@
 
   const onFinishCallback = async () => {
     const memOpts = existingMemberships as Membership[]
-    const propAddress = propertyAddress as string
+    const propAddress = propertyAddress
 
-    if (!currentAddress || !signer) {
+    if (!currentAddress || !signer || !propAddress) {
       return
     }
 
@@ -357,7 +357,7 @@
           </p>
 
           <span class="mt-1 text-xs opacity-60"
-            >* Image size should be 600 x 600 px</span
+            >* Recommended image size is 600 x 600 px</span
           >
 
           <p>

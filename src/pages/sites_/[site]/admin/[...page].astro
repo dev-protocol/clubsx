@@ -14,6 +14,7 @@ import VercelAnalytics from '@components/Analytics/VercelAnalytics.astro'
 import PageNotFound from '@pages/404.astro'
 import marketplace from '@plugins/marketplace'
 import IconGlobe from '@components/Icons/globe-europe-africa.astro'
+import Banner from '@components/Global/Banner.astro'
 
 const { site, page } = Astro.params
 
@@ -51,21 +52,7 @@ const siteBaseUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
   {
     path && Content ? (
       <>
-        <section class="flex justify-center bg-dp-blue-grey-600 p-2">
-          <p class="text-xs">
-            Clubs is now public-beta version. There may be bugs, or features
-            under update. If you notice anything,{' '}
-            <a
-              class="text-xs underline"
-              href="https://airtable.com/shrClLKosbLG7LFCm"
-              target="_blank"
-              rel="noopener"
-            >
-              please give us feedback here
-            </a>
-            .
-          </p>
-        </section>
+        <Banner />
         <Admin {...path.props}>
           <a
             slot="admin:sidebar:before-title"
@@ -121,7 +108,8 @@ const siteBaseUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
 <script>
   import type { ethers } from 'ethers'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
-  import { onSubmitConfig } from '@devprotocol/clubs-core'
+  import type { DraftOptions } from '@constants/draft'
+  import { decode, onSubmitConfig } from '@devprotocol/clubs-core'
   import { onMountClient } from '@devprotocol/clubs-core/events'
   import { utils } from 'ethers'
 
@@ -165,12 +153,22 @@ const siteBaseUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
       expectedAddress: currentAddress,
     }
 
-    const res = await fetch('/api/updateConfig', {
-      method: 'POST',
-      body: JSON.stringify(body),
-    })
+    const isInDraft = Boolean(
+      (
+        decode(data).options?.find((option) => option.key === '__draft')
+          ?.value as DraftOptions['value']
+      )?.isInDraft
+    )
 
-    const success = res.ok
+    const res = await fetch(
+      isInDraft ? '/api/updateDraftConfig' : '/api/updateConfig',
+      {
+        method: 'POST',
+        body: JSON.stringify(body),
+      }
+    )
+
+    const success = Boolean(res?.ok)
     onFinish({ success })
   })
 </script>
