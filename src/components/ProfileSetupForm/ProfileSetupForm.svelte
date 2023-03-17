@@ -13,16 +13,16 @@
 
   const projectCategories = [
     {
+      label: 'Discord',
+      value: 'DISCORD',
+    },
+    {
       label: 'YouTube',
       value: 'YOUTUBE',
     },
     {
       label: 'GitHub',
       value: 'GITHUB',
-    },
-    {
-      label: 'Discord',
-      value: 'DISCORD',
     },
   ]
 
@@ -31,7 +31,7 @@
       config?.options?.find(
         (option) => option.key === '__draft'
       ) as UndefinedOr<DraftOptions>
-    )?.value?.category?.toUpperCase() || 'GITHUB'
+    )?.value?.category?.toUpperCase() || 'DISCORD'
 
   let avatarPath =
     config.options?.find((opt) => opt.key === 'avatarImgSrc')?.value ?? ''
@@ -117,6 +117,15 @@
         <option value={cat.value}>{cat.label}</option>
       {/each}
     </select>
+    <span class="mt-1 text-sm opacity-60"
+      >These are used only for authentication when publishing. If you don't have
+      any of these, we recommend <a
+        href="https://support.discord.com/hc/en-us/articles/204849977"
+        class="hs-link text-sm text-white"
+        target="_blank"
+        rel="noopener noreferrer">creating a Discord ↗</a
+      >.</span
+    >
   </label>
 
   <label class="hs-form-field is-filled">
@@ -129,22 +138,22 @@
     />
   </label>
 
-  <div class="flex flex-col items-start gap-1">
-    <label class="hs-form-field" for="avatarPath">
+  <div class="flex flex-col items-start">
+    <span class="hs-form-field">
       <span class="hs-form-field__label">Avatar</span>
+    </span>
 
-      {#if avatarUploading}
-        <div class="mb-4 h-64 w-64"><Skeleton /></div>
-      {:else if avatarPath && avatarPath != ''}
-        <div class="mb-4 w-64 rounded bg-dp-blue-grey-600 p-3">
-          <img src={avatarPath.toString()} class="rounded" alt="" />
-        </div>
-      {/if}
-      <div class="float-left">
-        <span class="hs-button is-filled is-large cursor-pointer"
-          >Choose Image</span
-        >
+    {#if avatarUploading}
+      <div class="mb-4 h-64 w-64"><Skeleton /></div>
+    {:else if avatarPath && avatarPath != ''}
+      <div class="mb-4 w-64 rounded bg-dp-blue-grey-600 p-3">
+        <img src={avatarPath.toString()} class="rounded" alt="" />
       </div>
+    {/if}
+    <label class="hs-form-field w-fit" for="avatarPath">
+      <span class="hs-button is-filled is-large w-fit cursor-pointer"
+        >Choose Image</span
+      >
       <input
         id="avatarPath"
         name="avatarPath"
@@ -152,9 +161,9 @@
         type="file"
         on:change={onFileSelected}
       />
-      <span class="mt-1 text-xs opacity-60"
-        >*Image size should be 600px x 600px</span
-      >
     </label>
+    <span class="mt-1 text-xs opacity-60"
+      >* Recommended image size is 600px x 600px</span
+    >
   </div>
 </form>

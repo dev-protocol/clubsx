@@ -163,9 +163,11 @@
   </div>
 
   <div>
-    <label class="hs-form-field grid justify-items-start gap-2">
-      <span class="hs-form-field__label"> Cover image </span>
-      <div>
+    <div class="grid justify-items-start">
+      <span class="hs-form-field">
+        <span class="hs-form-field__label"> Cover image </span></span
+      >
+      <label class="hs-form-field w-fit">
         <span class="hs-button is-filled is-large cursor-pointer"
           >Upload to change</span
         >
@@ -177,11 +179,11 @@
           type="file"
           on:change={onFileSelected}
         />
-        <span class="mt-1 text-xs opacity-60"
-          >*Image size should be 2400 x 1200 px</span
-        >
-      </div>
-    </label>
+      </label>
+      <span class="mt-1 text-xs opacity-60"
+        >* Recommended image size is 2400 x 1200 px</span
+      >
+    </div>
   </div>
 
   <label class="hs-form-field is-filled">

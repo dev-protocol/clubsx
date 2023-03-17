@@ -31,11 +31,11 @@ export type Membership = {
 const presets: Membership[] = [
   {
     id: 'preset-community',
-    name: `Alice's small world`,
+    name: `Alice's`,
     imageSrc: 'https://i.imgur.com/sznqcmL.png',
     currency: 'ETH',
     price: 0.005,
-    description: `This membership gives you access to an exclusive Discord, where you can participate in monthly community hours and view hand-drawn illustrations and posts.`,
+    description: `Always be with Alice! This membership gives you access to an exclusive Discord, where you can participate in monthly community hours and view hand-drawn illustrations and posts.`,
     payload: utils.toUtf8Bytes('Community'),
   },
   {
@@ -44,7 +44,7 @@ const presets: Membership[] = [
     imageSrc: 'https://i.imgur.com/YaNNZ2F.png',
     currency: 'ETH',
     price: 0.005,
-    description: `lorem ipsum`,
+    description: `Want to be an Awesome-band contributor? This is it! Help organize events, manage co-creation projects with external collaborators, and see some of the special productions that only the band team can see.`,
     payload: utils.toUtf8Bytes('Team'),
   },
   {
@@ -53,7 +53,7 @@ const presets: Membership[] = [
     imageSrc: 'https://i.imgur.com/wwJ2rBf.png',
     currency: 'ETH',
     price: 0.005,
-    description: `lorem ipsum`,
+    description: `As a core member of XYZ, a DAO pushing seismic waveform research, join the team that manages the measurement nodes, reporting data, and organization.`,
     payload: utils.toUtf8Bytes('DAO'),
   },
 ]

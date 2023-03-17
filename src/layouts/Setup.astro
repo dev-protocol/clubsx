@@ -12,6 +12,7 @@ import {
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import type { DraftOptions } from '@constants/draft'
 import VercelAnalytics from '@components/Analytics/VercelAnalytics.astro'
+import Banner from '@components/Global/Banner.astro'
 
 const { site } = Astro.params
 
@@ -77,6 +78,7 @@ const avatarImgSrc: string | undefined = config.options?.find(
   </head>
 
   <body class="bg-dp-blue-grey-300 font-body text-white">
+    <Banner />
     <div
       class="grid min-h-screen gap-20 lg:mr-20 lg:auto-cols-[18rem_minmax(auto,_1fr)_12rem] lg:grid-flow-col"
     >

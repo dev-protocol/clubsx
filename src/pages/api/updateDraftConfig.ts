@@ -60,8 +60,8 @@ export const post = async ({ request }: { request: Request }) => {
   // Get the value of the __draftOptions.
   const value = __draftOption.value as {
     isInDraft: boolean
-    address: string
-    uid: string
+    address?: string
+    uid?: string
   }
 
   // We also check whether the site is currently in drafting phase or not.
@@ -76,7 +76,7 @@ export const post = async ({ request }: { request: Request }) => {
   // We check that the signature matches the address in the draftOptions.
   if (hashAndSignGiven) {
     const address = utils.recoverAddress(utils.hashMessage(hash), sig)
-    if (address.toLowerCase() !== value.address.toLowerCase()) {
+    if (address.toLowerCase() !== value.address?.toLowerCase()) {
       return new Response(JSON.stringify({ error: 'Invalid sig' }), {
         status: 401,
       })
