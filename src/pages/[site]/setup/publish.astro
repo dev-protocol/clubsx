@@ -19,9 +19,7 @@ const testnets = Astro.url.searchParams.get('testnets') === ''
 
 const { getStaticPaths, getCurrentConfig } = adminFactory({
   config: async () => await _config(site),
-  plugins: {
-    admin,
-  },
+  plugins: [admin],
 })
 
 const config = await getCurrentConfig()
@@ -33,7 +31,7 @@ const draftOptionsValue = draftOptions?.value as UndefinedOr<
 >
 
 const membershipsPlugin = config.plugins.find(
-  (plgn) => plgn.name === 'memberships' // TODO: use plugin.id in future.
+  (plgn) => plgn.id === 'devprotocol:clubs:simple-memberships'
 )
 const membershipsPluginOptions = membershipsPlugin?.options?.find(
   (opt) => opt.key === 'memberships'

@@ -13,9 +13,7 @@ const created = new URL(Astro.request.url).searchParams.has('created')
 
 const { getStaticPaths, getCurrentConfig } = adminFactory({
   config: async () => await _config(site),
-  plugins: {
-    memberships,
-  },
+  plugins: [memberships],
 })
 
 const config = await getCurrentConfig()

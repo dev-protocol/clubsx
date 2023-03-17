@@ -19,7 +19,7 @@ const { site, page } = Astro.params
 
 const { getStaticPaths } = adminFactory({
   config: async () => await _config(site),
-  plugins: {
+  plugins: [
     defaultTheme,
     admin,
     quests,
@@ -28,7 +28,7 @@ const { getStaticPaths } = adminFactory({
     home,
     message,
     marketplace,
-  },
+  ],
 })
 const path = (await getStaticPaths()).find(({ params }) => params.page === page)
 const config = path && decode(path.props.clubs.encodedClubsConfiguration)
