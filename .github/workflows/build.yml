@@ -23,5 +23,8 @@ jobs:
       - name: lint
         run: yarn lint
 
+      - name: astro check
+        run: yarn astro check
+
       - name: build
         run: yarn build
