@@ -43,12 +43,10 @@ const path = (await getStaticPaths()).find(({ params }) => params.page === page)
 const Layout = path?.props.layout
 const Content = path?.props.component
 
-const siteBaseUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
-  new URL(Astro.request.url)
-)
+const siteBaseUrl = new URL(Astro.request.url).origin
 ---
 
-<DefaultLayout config={config}>
+<DefaultLayout config={config} footer={false}>
   {
     path && Layout && Content ? (
       <Layout {...path.props}>

@@ -43,9 +43,7 @@ const baseUrl = ((host) =>
   new URL(Astro.request.url).host
 )
 
-const siteBaseUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
-  new URL(Astro.request.url)
-)
+const siteBaseUrl = new URL(Astro.request.url).origin
 ---
 
 <DefaultLayout config={config} footer={false}>
@@ -56,7 +54,7 @@ const siteBaseUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
         <Admin {...path.props}>
           <a
             slot="admin:sidebar:before-title"
-            class="flex items-center gap-2 transition-colors hover:text-native-blue-300"
+            class="hover:text-native-blue-300 flex items-center gap-2 transition-colors"
             href={`${baseUrl}/signin`}
           >
             <svg
@@ -77,7 +75,7 @@ const siteBaseUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
           </a>
           <a
             slot="admin:sidebar:before-title"
-            class="flex items-center gap-2 transition-colors hover:text-native-blue-300"
+            class="hover:text-native-blue-300 flex items-center gap-2 transition-colors"
             target="_blank"
             rel="noopener norefferer"
             href={siteBaseUrl}
@@ -122,7 +120,9 @@ const siteBaseUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
     ) : (
       <PageNotFound
         redirectionCtaText={`Take me back ${site} homepage`}
-        redirectionCtaUrl={siteBaseUrl}
+        redirectionCtaUrl={`${
+          new URL(Astro.request.url).origin
+        }/admin/overview`}
       />
     )
   }
