@@ -68,10 +68,18 @@
     <div class="relative col-start-1">
       <p>{name}</p>
       {#if ethPrice}
-        <p class="text-sm opacity-70">{ethPrice} ETH</p>
+        <p
+          class="grid grid-cols-[auto_1fr] items-center gap-1 text-sm opacity-70"
+        >
+          <span class="truncate">{ethPrice}</span> ETH
+        </p>
       {/if}
       {#if devPrice}
-        <p class="text-sm opacity-70">{devPrice} DEV</p>
+        <p
+          class="grid grid-cols-[auto_1fr]  items-center gap-1 text-sm opacity-70"
+        >
+          <span class="truncate">{devPrice}</span> DEV
+        </p>
       {/if}
     </div>
 
