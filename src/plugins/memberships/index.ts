@@ -14,7 +14,7 @@ import type { UndefinedOr } from '@devprotocol/util-ts'
 import { utils } from 'ethers'
 import type { DraftOptions } from '@constants/draft'
 import { default as Icon } from '@assets/default-plugin-icon.jpg'
-import { default as Readme } from './README.md'
+import { Content as Readme } from './README.md'
 
 export type Membership = {
   id: string
