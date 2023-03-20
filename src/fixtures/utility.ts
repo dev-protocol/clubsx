@@ -23,7 +23,7 @@ export const validImageUri = (path: string) => {
   return src
 }
 
-export const fetchBadgeImageSrc = async (opts: {
+export const fetchSTokens = async (opts: {
   provider: BaseProvider
   tokenAddress: string
   amount?: number | string
@@ -37,8 +37,8 @@ export const fetchBadgeImageSrc = async (opts: {
     opts.payload,
     opts.owner
   )
-  const src = res ? validImageUri(res.image) : undefined
-  return src
+  const image = res ? validImageUri(res.image) : (undefined as never)
+  return { ...res, image }
 }
 
 export const fetchEthForDev = async (opts: {
@@ -85,7 +85,7 @@ export const composeTiers = async ({
     sourceTiers.map(async ({ ...tier }) => {
       const badgeImageSrc =
         tier.badgeImageSrc ??
-        (await fetchBadgeImageSrc({
+        (await fetchSTokens({
           provider,
           tokenAddress,
           amount: tier.amount,
