@@ -18,7 +18,7 @@ const { getStaticPaths, getCurrentConfig } = adminFactory({
 
 const config = await getCurrentConfig()
 const path = (await getStaticPaths()).find(
-  ({ params }) => params.page === `memberships`
+  ({ params }) => params.page === `memberships/new/${preset}`
 )
 
 const { props } = path || { props: undefined }
