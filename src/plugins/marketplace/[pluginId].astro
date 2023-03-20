@@ -14,35 +14,8 @@ const {
   size?: 'medium' | 'small'
 }
 
-const pluginData = {
-  icon: 'https://i.ibb.co/vLN203z/image-1.png',
-  name: 'Plugin name',
-  description:
-    'Short description here Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore',
-  corousel: [
-    'https://i.ibb.co/VLL0wB9/33ff80158568657.png',
-    'https://i.ibb.co/BBG83Ps/9a5de1134099941.png',
-    'https://i.ibb.co/N62wRhq/809230162757317.png',
-  ],
-  overview:
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. \n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-  tag: 'Free',
-  developer: 'Dev Protocol',
-  club: 'https://club-name.clubs.place',
-  website: 'https://devprotocol.xyz',
-}
-
-const {
-  icon,
-  name,
-  description,
-  corousel,
-  overview,
-  tag,
-  developer,
-  club,
-  website,
-} = pluginData
+const overview =
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. \n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
 ---
 
 <section>
@@ -131,8 +104,9 @@ const {
           <p class="text-base font-medium text-white text-opacity-70">
             Repository
           </p>
-          <a class="text-xl font-medium text-white underline" href={website}
-            >{plugin.repositoryUrl}</a
+          <a
+            class="text-xl font-medium text-white underline"
+            href={plugin.repositoryUrl}>{plugin.repositoryUrl}</a
           >
         </div>
       </div>
