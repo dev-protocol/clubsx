@@ -1,3 +1,4 @@
+import type { InstallablePlugins, PluginMeta } from '@constants/plugins'
 import {
   ClubsFunctionGetAdminPaths,
   ClubsFunctionGetPagePaths,
@@ -11,17 +12,28 @@ import { default as Plugins } from './[plugin-name].astro'
 export const getPagePaths: ClubsFunctionGetPagePaths = async () => []
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async (_, config) => {
+  let allPlugins: InstallablePlugins[] = []
+
+  try {
+    const allPluginsResponse = await fetch(
+      `http://localhost:3000/api/plugins/installablePlugins`
+    ) // TODO: replace this.
+    allPlugins = (await allPluginsResponse.json())?.plugins || []
+  } catch (error) {
+    allPlugins = []
+  }
+
   return [
     {
       paths: ['marketplace'],
       component: Admin,
       props: { config, showAside: false },
     },
-    {
-      paths: ['marketplace', 'plugin-name'],
+    ...allPlugins.map((plugin) => ({
+      paths: ['marketplace', plugin.id],
       component: Plugins,
       props: { config, showAside: false },
-    },
+    })),
   ]
 }
 
