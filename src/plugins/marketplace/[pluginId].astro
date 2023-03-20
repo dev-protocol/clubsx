@@ -91,12 +91,17 @@ const {
           </button>
         </div>
       </div>
-      <div class="flex items-start justify-start space-x-8 overflow-auto">
+      <div class="flex items-start justify-start space-x-8 overflow-x-auto">
         {
           (plugin?.previewImages?.length
             ? plugin.previewImages
             : [pluginDefaultIcon, pluginDefaultIcon, pluginDefaultIcon]
-          ).map((image) => <img class="rounded-lg" src={image} />)
+          ).map((image) => (
+            <img
+              class="aspect-square w-[33%] min-w-[31%] max-w-[35%] rounded-lg"
+              src={image}
+            />
+          ))
         }
       </div>
       <div class="flex flex-col items-start justify-start space-y-8">
