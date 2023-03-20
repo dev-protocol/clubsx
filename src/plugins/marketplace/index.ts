@@ -36,6 +36,9 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (_, config) => {
           (plg: ClubsPlugin) => plg.id === plugin.id // TODO: use plugin.id in future.
         ),
         tag: plugin.tag,
+        developer: plugin.developer,
+        repositoryUrl: plugin.repositoryUrl,
+        clubsUrl: plugin.clubsUrl,
       }
     }
   )
