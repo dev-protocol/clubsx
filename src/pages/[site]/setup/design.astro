@@ -1,7 +1,11 @@
 ---
 import SetupDesign from '@components/SetupDesign/SetupDesign.svelte'
 import { config as _config } from '@fixtures/config'
-import { ClubsPluginOptions, adminFactory } from '@devprotocol/clubs-core'
+import {
+  type ClubsConfiguration,
+  adminFactory,
+  encode,
+} from '@devprotocol/clubs-core'
 import defaultTheme from '@plugins/default-theme'
 import SetupLayout from '@layouts/Setup.astro'
 import NextButton from '@components/Setup/NextButton.astro'
@@ -40,7 +44,9 @@ const siteBaseUrl = ((url) =>
 
       <SetupDesign
         client:load
-        options={path?.props.options as ClubsPluginOptions}
+        encodedOptions={encode(
+          path?.props.options as unknown as ClubsConfiguration
+        )}
         colorPresets={path?.props.colorPresets as typeof ColorPresets}
         currentPluginIndex={path?.props.clubs.currentPluginIndex}
       />

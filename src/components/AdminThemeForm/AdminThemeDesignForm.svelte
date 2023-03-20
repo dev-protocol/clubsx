@@ -1,6 +1,7 @@
 <script lang="ts">
-  import type { ClubsPluginOptions } from '@devprotocol/clubs-core'
+  import { type ClubsPluginOptions, decode } from '@devprotocol/clubs-core'
   import { setOptions } from '@devprotocol/clubs-core'
+  import type { UndefinedOr } from '@devprotocol/util-ts'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import type {
     colorPresets as ColorPresets,
@@ -11,10 +12,25 @@
 
   type ColorPresetKey = keyof typeof ColorPresets
 
+  export let encodedOptions: string
+  let options: ClubsPluginOptions = decode(
+    encodedOptions
+  ) as unknown as ClubsPluginOptions
   export let colorPresets: typeof ColorPresets
-  export let homeConfig: HomeConfigValue = {}
-  export let globalConfig: GlobalConfigValue =
-    colorPresets.Purple as GlobalConfigValue
+  let homeConfig: HomeConfigValue =
+    (
+      options.find((option) => option.key === 'homeConfig') as UndefinedOr<{
+        key: 'homeConfig'
+        value: HomeConfigValue
+      }>
+    )?.value ?? {}
+  let globalConfig: GlobalConfigValue =
+    (
+      options.find((option) => option.key === 'globalConfig') as UndefinedOr<{
+        key: 'globalConfig'
+        value: GlobalConfigValue
+      }>
+    )?.value ?? (colorPresets.Purple as GlobalConfigValue)
   export let currentPluginIndex: number
   export let onUpdate: undefined | ((next: ClubsPluginOptions) => void)
   let uploading = false
