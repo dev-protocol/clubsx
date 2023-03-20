@@ -1,4 +1,12 @@
 ---
+import type { PluginMeta } from '@constants/plugins'
+import type { ClubsConfiguration } from '@devprotocol/clubs-core'
+
+const { config, plugin } = Astro.props as {
+  config: ClubsConfiguration
+  plugin: PluginMeta
+}
+
 const pluginData = {
   icon: 'https://i.ibb.co/vLN203z/image-1.png',
   name: 'Plugin name',

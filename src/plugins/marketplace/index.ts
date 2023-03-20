@@ -8,7 +8,7 @@ import {
   ClubsPluginMeta,
 } from '@devprotocol/clubs-core'
 import { default as Admin } from './admin.astro'
-import { default as Plugins } from './[plugin-name].astro'
+import { default as Plugin } from './[pluginId].astro'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async () => []
 
@@ -49,8 +49,8 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (_, config) => {
     },
     ...allPlugins.map((plugin) => ({
       paths: ['marketplace', plugin.id],
-      component: Plugins,
-      props: { config, showAside: false },
+      component: Plugin,
+      props: { config, showAside: false, plugin },
     })),
   ]
 }
