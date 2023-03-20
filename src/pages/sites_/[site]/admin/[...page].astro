@@ -54,7 +54,7 @@ const siteBaseUrl = new URL(Astro.request.url).origin
         <Admin {...path.props}>
           <a
             slot="admin:sidebar:before-title"
-            class="hover:text-native-blue-300 flex items-center gap-2 transition-colors"
+            class="flex items-center gap-2 transition-colors hover:text-native-blue-300"
             href={`${baseUrl}/signin`}
           >
             <svg
@@ -75,7 +75,7 @@ const siteBaseUrl = new URL(Astro.request.url).origin
           </a>
           <a
             slot="admin:sidebar:before-title"
-            class="hover:text-native-blue-300 flex items-center gap-2 transition-colors"
+            class="flex items-center gap-2 transition-colors hover:text-native-blue-300"
             target="_blank"
             rel="noopener norefferer"
             href={siteBaseUrl}
