@@ -11,7 +11,7 @@ import { default as Admin } from './admin.astro'
 import { default as AddNavigationLink } from '@components/AddNavigationLink/AddNavigationLink.astro'
 import type { NavLink } from '@constants/navLink'
 import { default as Icon } from '@assets/default-plugin-icon.jpg'
-import { default as Readme } from './README.md'
+import { Content as Readme } from './README.md'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
