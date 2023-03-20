@@ -1,6 +1,10 @@
 ---
 import type { InstallablePlugins, PluginMeta } from '@constants/plugins'
-import type { ClubsFunctionPlugin, ClubsPlugin } from '@devprotocol/clubs-core'
+import type {
+  ClubsConfiguration,
+  ClubsFunctionPlugin,
+  ClubsPlugin,
+} from '@devprotocol/clubs-core'
 import PluginItem from './components/PluginItem.astro'
 
 import HSButton from '@components/Primitives/Hashi/HSButton.vue'
@@ -11,21 +15,13 @@ import Heading from './assets/Heading.png'
 import pluginDefaultIcon from '@assets/marketplace-new-upcoming-1.svg'
 import pluginDefaultPreviewImage from '@assets/marketplace-themes-1.svg'
 
-const { config } = Astro.props
-
-const requestUrl = new URL(Astro.request.url)
-const requestHosts = requestUrl.host.split('.')
-const requestMainDomain =
-  requestHosts.length > 1
-    ? requestHosts[requestHosts.length - 1]
-    : requestHosts[0]
-
-const allPluginsResponse = await fetch(
-  `${requestUrl.protocol}//${requestMainDomain}/api/plugins/installablePlugins`
-).then((res) => res.json())
+const { config, allInstallablePlugins } = Astro.props as {
+  config: ClubsConfiguration
+  allInstallablePlugins: InstallablePlugins[]
+}
 
 const allPluginsPromise: Promise<PluginMeta>[] = (
-  allPluginsResponse?.plugins || []
+  allInstallablePlugins || []
 ).map(async (plugin: InstallablePlugins) => {
   const importedPlugin: ClubsFunctionPlugin = plugin.isExternalModule
     ? await import(`${plugin.moduleNameForImport}/${plugin.entryPoint}`)
