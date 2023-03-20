@@ -83,7 +83,12 @@ const {
         </div>
       </div>
       <div class="flex items-start justify-start space-x-8 overflow-auto">
-        {corousel.map((image) => <img class="rounded-lg" src={image} />)}
+        {
+          (plugin?.previewImages?.length
+            ? plugin.previewImages
+            : [pluginDefaultIcon, pluginDefaultIcon, pluginDefaultIcon]
+          ).map((image) => <img class="rounded-lg" src={image} />)
+        }
       </div>
       <div class="flex flex-col items-start justify-start space-y-8">
         <p class="w-80 text-2xl font-bold text-white">Overview</p>
