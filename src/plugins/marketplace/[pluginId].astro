@@ -52,7 +52,7 @@ const {
           />
           <div class="inline-flex flex-col items-start justify-start space-y-1">
             <p class="text-2xl font-bold text-white">{plugin.displayName}</p>
-            <p class="text-base leading-normal text-white">
+            <p class="text-justify text-base leading-normal text-white">
               {plugin.description}
             </p>
             <div
@@ -76,8 +76,9 @@ const {
         >
           <button
             class="w-[231px] text-center text-base font-bold leading-normal text-white"
+            disabled={plugin.added}
           >
-            Add to Your DAO name
+            {plugin.added ? `Already added` : `Add to your ${config.name}`}
           </button>
         </div>
       </div>
