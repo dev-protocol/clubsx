@@ -11,28 +11,9 @@ import HSButton from '@components/Primitives/Hashi/HSButton.vue'
 
 import Heading from './assets/Heading.png'
 
-const { config, allInstallablePlugins } = Astro.props as {
-  config: ClubsConfiguration
-  allInstallablePlugins: InstallablePlugins[]
+const { allPlugins } = Astro.props as {
+  allPlugins: PluginMeta[]
 }
-
-const allPluginsPromise: Promise<PluginMeta>[] = (
-  allInstallablePlugins || []
-).map(async (plugin: InstallablePlugins) => {
-  const importedPlugin: ClubsFunctionPlugin = plugin.isExternalModule
-    ? await import(`${plugin.moduleNameForImport}/${plugin.entryPoint}`)
-    : await import(`../${plugin.moduleNameForImport}/${plugin.entryPoint}`)
-
-  return {
-    ...importedPlugin.meta,
-    added: !!config.plugins.find(
-      (plg: ClubsPlugin) => plg.id === plugin.id // TODO: use plugin.id in future.
-    ),
-    tag: plugin.tag,
-  }
-})
-
-const allPlugins: PluginMeta[] = await Promise.all(allPluginsPromise)
 
 const newAndUpcomingPlugins = allPlugins.filter(
   (plg) => plg.tag === 'NEW & UPCOMING'
