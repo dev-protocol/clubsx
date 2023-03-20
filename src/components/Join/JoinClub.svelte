@@ -86,7 +86,7 @@
   </form>
 
   <h3 class="mb-4 text-2xl font-bold">Select a membership</h3>
-  <div class="mb-8 grid grid-cols-2 gap-8 lg:grid-cols-4">
+  <div class="mb-8 grid gap-8 lg:grid-cols-2">
     {#each composedTiers[currency] as tier, i}
       {#if tier.badgeImageSrc}
         <div>
