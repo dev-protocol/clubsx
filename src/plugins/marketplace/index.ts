@@ -12,15 +12,15 @@ import { default as Plugins } from './[plugin-name].astro'
 export const getPagePaths: ClubsFunctionGetPagePaths = async () => []
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async (_, config) => {
-  let allPlugins: InstallablePlugins[] = []
+  let allInstallablePlugins: InstallablePlugins[] = []
 
   try {
     const allPluginsResponse = await fetch(
       `http://localhost:3000/api/plugins/installablePlugins`
     ) // TODO: replace this.
-    allPlugins = (await allPluginsResponse.json())?.plugins || []
+    allInstallablePlugins = (await allPluginsResponse.json())?.plugins || []
   } catch (error) {
-    allPlugins = []
+    allInstallablePlugins = []
   }
 
   return [
@@ -29,7 +29,7 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (_, config) => {
       component: Admin,
       props: { config, showAside: false },
     },
-    ...allPlugins.map((plugin) => ({
+    ...allInstallablePlugins.map((plugin) => ({
       paths: ['marketplace', plugin.id],
       component: Plugins,
       props: { config, showAside: false },
