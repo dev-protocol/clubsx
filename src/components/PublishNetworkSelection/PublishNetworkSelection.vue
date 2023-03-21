@@ -890,7 +890,7 @@ export default defineComponent({
                   new BigNumber(opt.price).times(opt.fee.percentage).toFixed()
                 ).toString()
               : 0,
-            gateway: this.currentWalletAddress,
+            gateway: opt.fee?.beneficiary ?? constants.AddressZero,
           })) || []
         const keys: string[] =
           this.membershipsPluginOptions?.map((opt) => keccak256(opt.payload)) ||
