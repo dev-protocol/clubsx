@@ -10,15 +10,7 @@ class AdminPlugins extends React.Component {
 
     const plugins = []
     let adminPlugin = {}
-    let marketPlacePlugin = {}
-
     for (const plugin of decodedConfig.plugins) {
-      // Marketplace should not be deactivated.
-      if (plugin.name.toLowerCase() === 'marketplace') {
-        marketPlacePlugin = plugin
-        continue
-      }
-
       // Skip the admin plugin, but maintain a backup to add it later while doing setConfig in order to
       // avoid overriding it.
       if (plugin.name.toLowerCase() === 'admin') {
@@ -41,17 +33,13 @@ class AdminPlugins extends React.Component {
       plugins, // NOTE: this doesn't contain the 'admin' plugin, it has to be added back in when we are update the config in the db.
     }
 
-    this.state = { config: decodedConfig, adminPlugin, marketPlacePlugin }
+    this.state = { config: decodedConfig, adminPlugin }
     this.toggleActivation = this.toggleActivation.bind(this)
   }
 
   toggleActivation = (pluginName) => {
     // Fail safe to avoid toggling admin plugin
-    if (
-      pluginName.toLowerCase() === 'admin' ||
-      pluginName.toLowerCase() === 'marketplace'
-    )
-      return
+    if (pluginName.toLowerCase() === 'admin') return
 
     this.setState((prevState) => {
       const plugins = prevState.config.plugins
@@ -69,11 +57,7 @@ class AdminPlugins extends React.Component {
       // 5. Update the config.
       const config = {
         ...prevState.config,
-        plugins: [
-          ...plugins,
-          prevState.adminPlugin,
-          prevState.marketPlacePlugin,
-        ], // HERE: we have added back the admin plugin in the config.
+        plugins: [...plugins, prevState.adminPlugin], // HERE: we have added back the admin plugin in the config.
       }
       // 6. Set config.
       setConfig(config)

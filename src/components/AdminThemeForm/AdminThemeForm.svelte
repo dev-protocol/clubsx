@@ -1,32 +1,31 @@
 <script lang="ts">
   import type { NavLink } from '@constants/navLink'
-  import type {
-    ClubsConfiguration,
-    ClubsPlugin,
-    ClubsPluginOptions,
+  import {
+    type ClubsConfiguration,
+    type ClubsPlugin,
+    type ClubsPluginOptions,
+    decode,
   } from '@devprotocol/clubs-core'
   import { setConfig } from '@devprotocol/clubs-core'
   import type { UndefinedOr } from '@devprotocol/util-ts'
   import { isNotNil } from '@devprotocol/util-ts'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
-  import type {
-    colorPresets as ColorPresets,
-    GlobalConfigValue,
-    HomeConfigValue,
-  } from '@plugins/default-theme'
+  import type { colorPresets as ColorPresets } from '@plugins/default-theme'
   import AdminThemeDesignForm from './AdminThemeDesignForm.svelte'
 
   const defaultSocialLinks: NavLink[] = [
     { path: '', display: 'Twitter', kind: 'twitter' },
     { path: '', display: 'Discord', kind: 'discord' },
   ]
-  export let options: ClubsPluginOptions
+  export let encodedOptions: string
+  let options: ClubsPluginOptions = decode(
+    encodedOptions
+  ) as unknown as ClubsPluginOptions
   export let colorPresets: typeof ColorPresets
   export let config: ClubsConfiguration
   export let socialLinks: NavLink[] = defaultSocialLinks
   export let navigationLinks: NavLink[]
   export let whiteRightArrowImgSrc: string
-  export let homeHeroDefaultImgSrc: string
   export let currentPluginIndex: number
 
   let uploading = false
@@ -39,19 +38,6 @@
 
   let ogpValue = config.options?.find((option) => option.key === 'ogp')
     ?.value as UndefinedOr<{ image?: string }>
-
-  const globalConfig = (
-    options.find((option) => option.key === 'globalConfig') as UndefinedOr<{
-      key: 'globalConfig'
-      value: GlobalConfigValue
-    }>
-  )?.value
-  const homeConfig = (
-    options.find((option) => option.key === 'homeConfig') as UndefinedOr<{
-      key: 'homeConfig'
-      value: HomeConfigValue
-    }>
-  )?.value
 
   const update = (e?: any) => {
     const _navigationLinks = {
@@ -243,11 +229,9 @@
   <h2 class="font-title text-2xl font-bold">Design</h2>
 
   <AdminThemeDesignForm
-    {globalConfig}
-    {homeConfig}
     {currentPluginIndex}
     {colorPresets}
-    {homeHeroDefaultImgSrc}
+    {encodedOptions}
     onUpdate={onUpdateThemeOptions}
   />
 </form>

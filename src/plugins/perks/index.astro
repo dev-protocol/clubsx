@@ -1,14 +1,14 @@
 ---
 import Perks from '@components/Perks/Perks.astro'
 import { tiers } from '@constants/tier'
-import { fetchBadgeImageSrc } from '@fixtures/utility'
+import { fetchSTokens } from '@fixtures/utility'
 import { providers } from 'ethers'
 
 const { propertyAddress, perks, rpcUrl } = Astro.props
 
 const listOfTier = await Promise.all(
   tiers.map(async ({ ...tier }) => {
-    const badgeImageSrc = await fetchBadgeImageSrc({
+    const { image: badgeImageSrc } = await fetchSTokens({
       provider: new providers.JsonRpcProvider(rpcUrl),
       tokenAddress: propertyAddress,
       amount: tier.amount,

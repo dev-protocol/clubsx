@@ -1,10 +1,10 @@
 <template>
   <section class="flex flex-col rounded-xl bg-dp-blue-grey-300 p-4 shadow">
-    <h2 class="mb-4 font-title text-4xl font-bold">Join</h2>
+    <h2 class="mb-4 text-4xl font-bold">Join</h2>
     <!-- DAOName from YAML config -->
     <div class="mb-8">Join {{ tenantName }} in support of the project.</div>
 
-    <h3 class="mb-4 font-title text-2xl font-bold">Purchase with</h3>
+    <h3 class="mb-4 text-2xl font-bold">Purchase with</h3>
     <form class="mb-8 flex flex-col gap-2 md:flex-row" ref="form">
       <CLBRadio
         v-if="preferedCurrency === 'dev'"
@@ -27,7 +27,7 @@
       />
     </form>
 
-    <h3 class="mb-4 font-title text-2xl font-bold">Select a membership</h3>
+    <h3 class="mb-4 text-2xl font-bold">Select a membership</h3>
     <div class="mb-8 grid grid-cols-2 gap-8 lg:grid-cols-4">
       <Tier
         v-for="tier in composedTiers[currency]"

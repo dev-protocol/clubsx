@@ -2,19 +2,15 @@
 import AdminThemeForm from '@components/AdminThemeForm/AdminThemeForm.svelte'
 import type { NavLink } from '@constants/navLink'
 import whiteRightArrowImgSrc from '@assets/white-arrow-right.svg'
-import homeHeroDefaultImgSrc from '@assets/home-config-default-hero-img.svg'
 import type {
   ClubsConfiguration,
   ClubsPluginOption,
   ClubsPluginOptions,
   ClubsPropsAdminPages,
 } from '@devprotocol/clubs-core'
-import type {
-  GlobalConfigValue,
-  HomeConfigValue,
-  colorPresets as ColorPresets,
-} from '.'
+import type { colorPresets as ColorPresets } from '.'
 import type { UndefinedOr } from '@devprotocol/util-ts'
+import { encode } from '@devprotocol/clubs-core/encode'
 
 const { options, config, colorPresets, clubs } =
   Astro.props as ClubsPropsAdminPages & {
@@ -32,6 +28,8 @@ const socialLinks: NavLink[] =
 const navigationLinks: NavLink[] =
   (allOptions?.find((option) => option.key === 'navigationLinks')
     ?.value as NavLink[]) ?? []
+
+const encodedOptions = encode(options as unknown as ClubsConfiguration)
 ---
 
 <div>
@@ -40,8 +38,7 @@ const navigationLinks: NavLink[] =
     whiteRightArrowImgSrc={whiteRightArrowImgSrc}
     navigationLinks={navigationLinks}
     socialLinks={socialLinks}
-    homeHeroDefaultImgSrc={homeHeroDefaultImgSrc}
-    options={options}
+    encodedOptions={encodedOptions}
     config={config}
     colorPresets={colorPresets}
     currentPluginIndex={clubs.currentPluginIndex}

@@ -12,10 +12,12 @@ import StartWithClubs from '../assets/Start-with-Clubs--dark.png'
 import Twitter from '@components/Icons/Twitter.astro'
 import Discord from '@components/Icons/Discord.astro'
 import Share from '../components/Share/Share.svelte'
+import type { Membership } from '@plugins/memberships'
 
 const { page } = Astro.params
-const { metaTitle, config, homeConfig, globalConfig, signals } =
+const { metaTitle, config, homeConfig, globalConfig, signals, memberships } =
   Astro.props as {
+    memberships?: Membership[]
     signals?: string[]
     metaTitle?: string
     config: ClubsConfiguration
@@ -73,6 +75,8 @@ const isInDraft = Boolean(draftOptions?.isInDraft)
 const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
 
 const backgroundColor = globalConfig?.bg ?? '#ADADAD'
+
+const hasNotAMembership = memberships ? memberships.length < 1 : true
 ---
 
 <style define:vars={{ backgroundColor }}>
@@ -126,8 +130,12 @@ const backgroundColor = globalConfig?.bg ?? '#ADADAD'
         <section class="container relative mx-auto grid max-w-2xl grid-cols-2 items-stretch justify-between gap-4 px-6">
           <span>
             <a
-              href="/join"
-              class="hs-button is-filled w-fit gap-2 rounded-full border-0 bg-white px-7 py-2 text-2xl font-bold text-black"
+              href={hasNotAMembership ? undefined : '/join'}
+              class:list={[
+                'hs-button is-filled w-fit gap-2 rounded-full border-0 bg-white px-7 py-2 text-2xl font-bold text-black',
+                { 'cursor-wait': hasNotAMembership },
+                { 'text-black/30': hasNotAMembership },
+              ]}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

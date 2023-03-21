@@ -120,12 +120,23 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
   },
 ]
 
-export const getLayout: ClubsFunctionGetLayout = async (options, config) => {
+export const getLayout: ClubsFunctionGetLayout = async (
+  options,
+  config,
+  { getPluginConfigById }
+) => {
+  const [membershipConfig] = getPluginConfigById(
+    'devprotocol:clubs:simple-memberships'
+  )
+  const memberships = membershipConfig?.options.find(
+    (opt) => opt.key === 'memberships'
+  )?.value as UndefinedOr<Membership[]>
+
   const globalConfig = options.find((opt) => opt.key === 'globalConfig')?.value
   const homeConfig = options.find((opt) => opt.key === 'homeConfig')?.value
   return {
     layout: Layout,
-    props: { config, homeConfig, globalConfig },
+    props: { config, homeConfig, globalConfig, memberships },
   }
 }
 

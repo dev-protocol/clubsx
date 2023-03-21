@@ -24,7 +24,7 @@ const renderer = {
 
     return youtube
       ? `<iframe class="youtube aspect-video mx-auto w-full max-w-2xl rounded" src="https://www.youtube.com/embed/${v}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`
-      : text
+      : `<a href="${href}">${text}</a>`
   },
 }
 
@@ -63,6 +63,8 @@ const content = marked.parse(body)
     }
     :global(a) {
       @apply inline-block rounded p-1 underline transition hover:bg-white/20;
+      font-size: var(--fontSizeP);
+      line-height: var(--lineHeightP);
     }
     :global(ul) {
       @apply grid list-disc gap-2;
