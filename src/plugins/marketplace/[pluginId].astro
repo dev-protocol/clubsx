@@ -20,8 +20,12 @@ const READMEComponent = plugin.readme
 ---
 
 <section>
-  <div class="inline-flex items-start justify-start space-x-24 py-16">
-    <div class="inline-flex flex-col items-start justify-start space-y-20">
+  <div
+    class="inline-flex w-full max-w-full items-start justify-start space-x-24 py-16"
+  >
+    <div
+      class="inline-flex w-full max-w-full flex-col items-start justify-start space-y-20"
+    >
       <div class="inline-flex w-full max-w-full items-center justify-between">
         <p class="mtext-white text-4xl font-bold">{plugin.displayName}</p>
         <ConnectButton
@@ -30,7 +34,9 @@ const READMEComponent = plugin.readme
           chainId={config.chainId}
         />
       </div>
-      <div class="inline-flex items-start justify-between space-x-16">
+      <div
+        class="inline-flex w-[75%] max-w-[75%] items-start justify-between space-x-16"
+      >
         <div class="flex items-start justify-start space-x-4">
           <img
             src={plugin.icon || pluginDefaultIcon}
@@ -100,13 +106,17 @@ const READMEComponent = plugin.readme
           ))
         }
       </div>
-      <div class="flex flex-col items-start justify-start space-y-8">
+      <div
+        class="flex w-[75%] max-w-[75%] flex-col items-start justify-start space-y-8"
+      >
         <p class="w-80 text-2xl font-bold text-white">Overview</p>
         <p class="text-xl font-medium text-white" style="width: 840px;">
           <READMEComponent />
         </p>
       </div>
-      <div class="flex flex-col items-start justify-start space-y-8">
+      <div
+        class="flex w-[75%] max-w-[75%] flex-col items-start justify-start space-y-8"
+      >
         <div class="flex flex-col items-start justify-start space-y-2">
           <p class="text-base font-medium text-white text-opacity-70">
             Developer
