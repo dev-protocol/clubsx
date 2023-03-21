@@ -1,0 +1,107 @@
+---
+import type { InstallablePlugins, PluginMeta } from '@constants/plugins'
+import type {
+  ClubsConfiguration,
+  ClubsFunctionPlugin,
+  ClubsPlugin,
+} from '@devprotocol/clubs-core'
+import PluginItem from './components/PluginItem.astro'
+
+import HSButton from '@components/Primitives/Hashi/HSButton.vue'
+
+import Heading from './assets/Heading.png'
+
+const { allPlugins } = Astro.props as {
+  allPlugins: PluginMeta[]
+}
+
+const newAndUpcomingPlugins = allPlugins.filter(
+  (plg) => plg.tag === 'NEW & UPCOMING'
+)
+const themePlugins = allPlugins.filter((plg) => plg.tag === 'THEME')
+const basicsPlugins = allPlugins.filter((plg) => plg.tag === 'BASICS')
+---
+
+<div class="grid gap-20 pb-12">
+  <section
+    class="grid rounded-2xl py-7 px-7 xl:py-14 xl:px-28"
+    style={{
+      backgroundImage: `url(${Heading})`,
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center center',
+    }}
+  >
+    <p class="mx-auto mb-2.5 max-w-lg text-4xl font-bold text-white">
+      Explore plugins for your Club <br />
+    </p>
+    <p class="mx-auto max-w-lg text-base font-normal text-white">
+      Open plugin marketplace for all Clubs and builders. Enhance your community
+      in 5 minutes instead of search 5 days.
+    </p>
+  </section>
+
+  <!-- New and Upcoming section -->
+  <section>
+    <p class="mb-10 text-4xl font-bold text-white">New & Upcoming</p>
+    <div
+      class="grid items-start justify-start gap-16 lg:grid-cols-[repeat(auto-fill,_minmax(400px,_1fr))]"
+    >
+      {
+        newAndUpcomingPlugins.map((nAu: PluginMeta) => (
+          <PluginItem plugin={nAu} markAsUpcoming={true} truncate={false} />
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Themes section -->
+  <section>
+    <p class="mb-9 text-4xl font-bold text-white">Themes</p>
+    <div
+      class="grid grid-cols-[repeat(auto-fill,_minmax(300px,_1fr))] items-start justify-start gap-16"
+    >
+      {
+        themePlugins.map((theme: PluginMeta) => (
+          <PluginItem
+            plugin={theme}
+            preview={theme.theme?.previewImage}
+            size="small"
+          />
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Basics section -->
+  <section>
+    <p class="mb-10 text-4xl font-bold text-white">Basics</p>
+    <div
+      class="grid grid-cols-[repeat(auto-fill,_minmax(300px,_1fr))] items-start justify-start gap-16"
+    >
+      {basicsPlugins.map((nAu: PluginMeta) => <PluginItem plugin={nAu} />)}
+    </div>
+  </section>
+
+  <!-- Join developer community -->
+  <aside
+    class="grid rounded-2xl py-7 px-7 xl:py-14 xl:px-28"
+    style={{
+      background: 'linear-gradient(91.9deg, #5B8BF5 0.33%, #FFC751 101.64%)',
+    }}
+  >
+    <div class="mb-4 font-title text-3xl font-bold text-black lg:text-4xl">
+      Join our developer community
+    </div>
+    <div class="mb-2.5 font-title text-xl font-bold text-black lg:text-2xl">
+      Publish your original plugins!
+    </div>
+    <HSButton
+      type="filled"
+      class="w-fit rounded font-body text-2xl font-bold text-white"
+      link="https://docs.devprotocol.xyz/clubs/"
+    >
+      Join
+    </HSButton>
+  </aside>
+</div>

@@ -1,0 +1,82 @@
+---
+import type { PluginMeta } from '@constants/plugins'
+import checkImage from '@assets/check.svg'
+import clockImage from '@assets/clock.svg'
+import pluginDefaultIcon from '@assets/default-plugin-icon.jpg'
+
+const {
+  plugin,
+  preview,
+  truncate = true,
+  markAsUpcoming = false,
+  size = 'medium',
+} = Astro.props as {
+  plugin: PluginMeta
+  markAsUpcoming?: boolean
+  truncate?: boolean
+  preview?: string
+  size?: 'small' | 'medium'
+}
+
+const pluginUrl = ((url) =>
+  `${url.protocol}//${url.host}/admin/marketplace/${plugin.id}`)(
+  new URL(Astro.request.url)
+)
+---
+
+<a href={pluginUrl}>
+  <div
+    class="grid grid-cols-[auto,1fr] items-start justify-start gap-x-4 gap-y-0"
+  >
+    {
+      preview && (
+        <img
+          src={preview}
+          class="col-span-2 mb-4 aspect-square w-full max-w-full rounded-lg object-cover"
+        />
+      )
+    }
+    <img
+      src={plugin.icon || pluginDefaultIcon}
+      class:list={[
+        'row-span-3 aspect-square rounded-[20%]',
+        { 'h-16 lg:h-20': size === 'medium' },
+        { 'h-11 lg:h-12': size === 'small' },
+      ]}
+    />
+    <div class="col-start-2 flex items-center justify-between truncate">
+      <p class="truncate text-2xl font-bold">{plugin.displayName}</p>
+      {
+        markAsUpcoming && (
+          <div class="flex h-fit w-fit items-center justify-around gap-0.5 rounded-full bg-danger-200 px-2">
+            <img src={clockImage} class="h-3 max-h-full w-3" />
+            <p class="h-fit w-fit text-xs text-black">Upcoming</p>
+          </div>
+        )
+      }
+      {
+        !markAsUpcoming && plugin.added && (
+          <div class="flex h-fit w-fit items-center justify-around gap-0.5 rounded-full bg-native-blue-200 px-2">
+            <img src={checkImage} class="h-3 max-h-full w-3" />
+            <p class="h-fit w-fit text-xs text-black">Added</p>
+          </div>
+        )
+      }
+    </div>
+    <p class:list={['col-start-2', { truncate: truncate }]}>
+      {plugin.description}
+    </p>
+    <p
+      class="col-start-2 w-fit rounded-full bg-success-300 px-2 text-xs text-black"
+    >
+      {
+        plugin?.offer?.price
+          ? `${Number(plugin?.offer?.price).toLocaleString('en-US', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 3,
+            })} ${plugin?.offer?.priceCurrency}`
+          : 'Free'
+      }
+    </p>
+  </div>
+</a>
