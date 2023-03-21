@@ -24,7 +24,11 @@ const READMEComponent = plugin.readme
     <div class="inline-flex flex-col items-start justify-start space-y-20">
       <div class="inline-flex w-full max-w-full items-center justify-between">
         <p class="mtext-white text-4xl font-bold">{plugin.displayName}</p>
-        <ConnectButton client:load type="filled large" chainId={config.chainId} />
+        <ConnectButton
+          client:load
+          type="filled large"
+          chainId={config.chainId}
+        />
       </div>
       <div class="inline-flex items-start justify-between space-x-16">
         <div class="flex items-start justify-start space-x-4">
