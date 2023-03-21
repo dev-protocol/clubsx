@@ -11,11 +11,17 @@ export type InstallablePlugins = {
   entryPoint: string // File name representing main entry point of plugin config.
   tag: 'NEW & UPCOMING' | 'THEME' | 'BASICS'
   moduleNameForImport: string
+  developer: string
+  clubsUrl: string
+  repositoryUrl: string
 }
 
 export type PluginMeta = (ClubsPluginMeta & Partial<ClubsThemePluginMeta>) & {
   added: boolean
   tag: 'NEW & UPCOMING' | 'THEME' | 'BASICS'
+  developer: string
+  repositoryUrl: string
+  clubsUrl: string
 }
 
 export const installablePlugins: InstallablePlugins[] = [
@@ -27,6 +33,9 @@ export const installablePlugins: InstallablePlugins[] = [
     isExternalModule: false,
     moduleNameForImport: 'community',
     configName: 'community',
+    developer: 'Dev Protocol',
+    clubsUrl: 'https://clubs.place',
+    repositoryUrl: 'https://github.com/dev-protocol/clubsx',
   },
   {
     id: 'devprotocol:clubs:theme-1',
@@ -36,6 +45,9 @@ export const installablePlugins: InstallablePlugins[] = [
     isExternalModule: false,
     moduleNameForImport: 'default-theme',
     configName: 'defaultTheme',
+    developer: 'Dev Protocol',
+    clubsUrl: 'https://clubs.place',
+    repositoryUrl: 'https://github.com/dev-protocol/clubsx',
   },
   {
     id: 'devprotocol:clubs:plugin:join',
@@ -45,6 +57,9 @@ export const installablePlugins: InstallablePlugins[] = [
     isExternalModule: false,
     moduleNameForImport: 'join',
     configName: 'join',
+    developer: 'Dev Protocol',
+    clubsUrl: 'https://clubs.place',
+    repositoryUrl: 'https://github.com/dev-protocol/clubsx',
   },
   {
     id: 'devprotocol:clubs:plugin:me',
@@ -54,6 +69,9 @@ export const installablePlugins: InstallablePlugins[] = [
     isExternalModule: false,
     moduleNameForImport: 'me',
     configName: 'me',
+    developer: 'Dev Protocol',
+    clubsUrl: 'https://clubs.place',
+    repositoryUrl: 'https://github.com/dev-protocol/clubsx',
   },
   {
     id: 'devprotocol:clubs:plugin:members',
@@ -63,6 +81,9 @@ export const installablePlugins: InstallablePlugins[] = [
     isExternalModule: false,
     moduleNameForImport: 'members',
     configName: 'members',
+    developer: 'Dev Protocol',
+    clubsUrl: 'https://clubs.place',
+    repositoryUrl: 'https://github.com/dev-protocol/clubsx',
   },
   {
     id: 'devprotocol:clubs:simple-memberships',
@@ -72,6 +93,9 @@ export const installablePlugins: InstallablePlugins[] = [
     isExternalModule: false,
     moduleNameForImport: 'memberships',
     configName: 'memberships',
+    developer: 'Dev Protocol',
+    clubsUrl: 'https://clubs.place',
+    repositoryUrl: 'https://github.com/dev-protocol/clubsx',
   },
   {
     id: 'devprotocol:clubs:gated-contact-form',
@@ -81,6 +105,9 @@ export const installablePlugins: InstallablePlugins[] = [
     isExternalModule: false,
     moduleNameForImport: 'message',
     configName: 'message',
+    developer: 'Dev Protocol',
+    clubsUrl: 'https://clubs.place',
+    repositoryUrl: 'https://github.com/dev-protocol/clubsx',
   },
   {
     id: 'devprotocol:clubs:plugin:quests',
@@ -90,5 +117,8 @@ export const installablePlugins: InstallablePlugins[] = [
     isExternalModule: false,
     moduleNameForImport: 'quests',
     configName: 'quests',
+    developer: 'Dev Protocol',
+    clubsUrl: 'https://clubs.place',
+    repositoryUrl: 'https://github.com/dev-protocol/clubsx',
   },
 ]
