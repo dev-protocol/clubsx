@@ -412,7 +412,7 @@ export default defineComponent({
                 provider: prov,
                 propertyAddress: destination,
                 ethAmount: amount.toString(),
-                gatewayAddress: this.feeBeneficiary,
+                gatewayAddress: this.feeBeneficiary ?? undefined,
                 gatewayBasisPoints: this.feePercentage
                   ? this.feePercentage * 10_000
                   : undefined,
@@ -439,7 +439,7 @@ export default defineComponent({
                 provider: prov,
                 destination,
                 ethAmount: parsedAmount,
-                gatewayAddress: this.feeBeneficiary,
+                gatewayAddress: this.feeBeneficiary ?? undefined,
                 gatewayBasisPoints: this.feePercentage
                   ? this.feePercentage * 10_000
                   : undefined,
