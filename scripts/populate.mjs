@@ -455,7 +455,7 @@ const populate = async () => {
                   {
                     id: 'tier-3',
                     name: 'Tier 3',
-                    description: `蒔絵師による作品/ やすらぎ壇「蓮華」`,
+                    description: `蒔絵師による作品/ やすらぎ壇「蓮華」\n\n### 特典:\n\n限定ECサイト(低額商品)での購入権、非公開YouTube動画、月1回のコミュニティアワーやメンバー限定クエストへの参加などサポーター限定の情報`,
                     price: 400,
                     currency: 'DEV',
                     imageSrc:
@@ -466,7 +466,7 @@ const populate = async () => {
                   {
                     id: 'tier-2',
                     name: 'Tier 2',
-                    description: `蒔絵師による作品/ やすらぎ壇 「光輝」`,
+                    description: `蒔絵師による作品/ やすらぎ壇 「光輝」\n\n### 特典:\n\nTier 3 + オークションへの参加権、特級品の購入権など(オンラインでの特典)`,
                     price: 4000,
                     currency: 'DEV',
                     imageSrc:
@@ -477,7 +477,7 @@ const populate = async () => {
                   {
                     id: 'tier-1',
                     name: 'Tier 1',
-                    description: `大本山 總持寺 仁王像（總持寺型仁王像）`,
+                    description: `大本山 總持寺 仁王像（總持寺型仁王像）\n\n### 特典:\n\nTier 2 + 特別な場所を訪れたり、物理的な体験をすることができる権利(最大年2回まで)`,
                     price: 10000,
                     currency: 'DEV',
                     imageSrc:
@@ -488,7 +488,7 @@ const populate = async () => {
                   {
                     id: 'super',
                     name: 'Super',
-                    description: `大本山護国寺 如意輪観世音菩薩像`,
+                    description: `大本山護国寺 如意輪観世音菩薩像\n\n### 特典:\n\nTier 1 + オーダーメード権利(通常お寺様からのオーダー依頼で作る職人にご希望の商品を作製して貰える権利。内容は要相談)`,
                     price: 15000,
                     currency: 'DEV',
                     imageSrc:
