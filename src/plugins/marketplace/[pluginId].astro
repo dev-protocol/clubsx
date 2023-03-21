@@ -4,6 +4,7 @@ import type { ClubsConfiguration } from '@devprotocol/clubs-core'
 
 import checkImage from '@assets/check.svg'
 import pluginDefaultIcon from '@assets/default-plugin-icon.jpg'
+import ConnectButton from '@components/Wallet/ConnectButton.vue'
 
 const {
   config,
@@ -21,7 +22,10 @@ const READMEComponent = plugin.readme
 <section>
   <div class="inline-flex items-start justify-start space-x-24 py-16">
     <div class="inline-flex flex-col items-start justify-start space-y-20">
-      <p class="text-4xl font-bold text-white">{plugin.displayName}</p>
+      <div class="inline-flex w-full max-w-full items-center justify-between">
+        <p class="mtext-white text-4xl font-bold">{plugin.displayName}</p>
+        <ConnectButton client:load type="filled large" chainId={config.chainId} />
+      </div>
       <div class="inline-flex items-start justify-between space-x-16">
         <div class="flex items-start justify-start space-x-4">
           <img
