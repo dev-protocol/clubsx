@@ -68,7 +68,7 @@
     "firebase-admin": "^11.3.0",
     "jsonwebtoken": "^9.0.0",
     "jsonwebtoken-esm": "^2.0.1",
-    "marked": "4.2.12",
+    "marked": "4.3.0",
     "postcss": "8.4.21",
     "ramda": "0.28.0",
     "react": "18.2.0",
