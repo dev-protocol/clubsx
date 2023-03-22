@@ -36,7 +36,7 @@
     "husky": "8.0.3",
     "prettier": "2.8.6",
     "prettier-plugin-astro": "0.8.0",
-    "prettier-plugin-svelte": "2.9.0",
+    "prettier-plugin-svelte": "2.10.0",
     "prettier-plugin-tailwindcss": "0.2.5",
     "type-fest": "3.6.1",
     "typescript": "5.0.2"
