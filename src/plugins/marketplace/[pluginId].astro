@@ -21,8 +21,6 @@ const {
 const plugin = await createGetPluginMeta(config)(installablePlugins)
 
 const READMEComponent = plugin.readme
-
-console.log('Conig', config)
 ---
 
 <section>
@@ -76,16 +74,19 @@ console.log('Conig', config)
         <div
           class={`flex grow items-center justify-center rounded-full border border-green-500 ${
             plugin.added ? 'bg-native-blue-200' : 'bg-green-500'
-          } px-7 py-2`}
+          } px-7 py-2 gap-0.5`}
         >
           {
             plugin.added ? (
-              <div class="m-0 flex w-full max-w-full items-center justify-around gap-0.5 rounded-full p-0 px-2">
-                <img src={checkImage} class="h-3 max-h-full w-3 font-bold" />
-                <p class="h-fit w-fit text-base font-bold leading-normal text-black">
+              <>
+                <img
+                  src={checkImage}
+                  class="m-0 h-3 max-h-full w-3 font-bold"
+                />
+                <p class="m-0 h-fit w-fit text-base font-bold leading-normal text-black">
                   Added
                 </p>
-              </div>
+              </>
             ) : (
               <AddPluginButton
                 client:only="vue"
