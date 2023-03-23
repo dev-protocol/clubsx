@@ -17,21 +17,25 @@ import type { GlobalConfigValue, HomeConfigValue } from '..'
 
 const { page } = Astro.params
 const {
-  metaTitle,
-  config,
-  homeConfig,
-  globalConfig,
-  signals,
-  memberships,
-  description,
+  theme1: {
+    metaTitle,
+    config,
+    homeConfig,
+    globalConfig,
+    signals,
+    memberships,
+    description,
+  },
 } = Astro.props as {
-  memberships?: Membership[]
-  signals?: string[]
-  metaTitle?: string
-  config: ClubsConfiguration
-  globalConfig?: GlobalConfigValue
-  homeConfig?: HomeConfigValue
-  description?: string
+  theme1: {
+    memberships?: Membership[]
+    signals?: string[]
+    metaTitle?: string
+    config: ClubsConfiguration
+    globalConfig?: GlobalConfigValue
+    homeConfig?: HomeConfigValue
+    description?: string
+  }
 }
 
 const displayFullPage = signals?.includes(ClubsPluginSignal.DisplayFullPage)

@@ -137,7 +137,9 @@ export const getLayout: ClubsFunctionGetLayout = async (
 
   return {
     layout: Layout,
-    props: { config, homeConfig, globalConfig, memberships, description },
+    props: {
+      theme1: { config, homeConfig, globalConfig, memberships, description },
+    },
   }
 }
 
