@@ -10,7 +10,7 @@ const has = (id: string): id is keyof typeof modules => id in modules
 export const createGetPluginMeta =
   (config: ClubsConfiguration) => async (plugin: InstallablePlugins) => {
     const importedPlugin: ClubsFunctionPlugin = has(plugin.id)
-      ? modules[plugin.id]
+      ? await modules[plugin.id]()
       : // TODO: supports unexpected situation
         (undefined as never)
 
