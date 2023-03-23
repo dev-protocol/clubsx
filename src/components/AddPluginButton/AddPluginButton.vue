@@ -9,13 +9,14 @@
 </template>
 
 <script lang="ts">
-import type { ethers } from 'ethers'
+import { ethers, utils } from 'ethers'
 import type Web3Modal from 'web3modal'
 import { defineComponent, PropType } from 'vue'
 import type { PluginMeta } from '@constants/plugins'
 import type { BaseProvider } from '@ethersproject/providers'
 import type { connection as Connection } from '@devprotocol/clubs-core/connection'
 import { onMountClient } from '@devprotocol/clubs-core/events'
+import { EthersProviderFrom, GetModalProvider } from '@fixtures/wallet'
 
 type Data = {
   connected: boolean
@@ -54,7 +55,52 @@ export default defineComponent({
   },
   methods: {
     async addPluginToClub() {
+      // Fetch the site info
+      const splitHostname = window.location.hostname.split('.')
+      const site = splitHostname[0]
+
+      // Fetch and connect provider, wallet and signer.
+      const modalProvider = GetModalProvider()
+      const { provider, currentAddress } = await EthersProviderFrom(
+        modalProvider
+      )
+      if (!currentAddress || !provider) {
+        return
+      }
+      const signer = provider.getSigner()
+      this.connection && this.connection().signer.next(signer)
+
+      // Sign the data.
+      const hash = utils.hashMessage(this.plugin.id)
+      let sig: string
+      try {
+        sig = await signer.signMessage(hash)
+      } catch (error) {
+        return
+      }
+      if (!sig) {
+        return
+      }
+
+      let body: {
+        site: string
+        pluginId: string
+        hash: string
+        sig: string
+      } = {
+        site,
+        pluginId: this.plugin.id,
+        hash,
+        sig,
+      }
+
+      const res = await fetch('/api/plugins/addPluginToClub', {
+        method: 'POST',
+        body: JSON.stringify(body),
+      })
+
       console.log('HERE', this.connected, this.plugin)
+      console.log('Response', res)
     },
   },
   async mounted() {
