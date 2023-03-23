@@ -73,7 +73,9 @@ const READMEComponent = plugin.readme
         </div>
         <div
           class={`flex grow items-center justify-center rounded-full border border-green-500 ${
-            plugin.added ? 'bg-native-blue-200' : 'bg-green-500'
+            plugin.added
+              ? 'bg-native-blue-200 cursor-not-allowed'
+              : 'bg-green-500'
           } px-7 py-2 gap-0.5`}
         >
           {

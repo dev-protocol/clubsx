@@ -1,15 +1,22 @@
 <template>
   <button
     class="m-0 w-full max-w-full whitespace-normal text-center text-base font-bold leading-normal text-white"
-    :disabled="isAdded || !connected"
+    :disabled="isAdded || !connected || isAddingPluginToClubs"
     @click="addPluginToClub"
+    v-bind:class="
+      isAddingPluginToClubs
+        ? 'cursor-progress'
+        : isAdded || !connected
+        ? 'cursor-not-allowed'
+        : 'cursor-pointer'
+    "
   >
-    Add to your {{ clubName }}
+    {{ addingPluginToClubsStatusMsg }}
   </button>
 </template>
 
 <script lang="ts">
-import { ethers, utils } from 'ethers'
+import { utils } from 'ethers'
 import type Web3Modal from 'web3modal'
 import { defineComponent, PropType } from 'vue'
 import type { PluginMeta } from '@constants/plugins'
@@ -22,11 +29,9 @@ type Data = {
   connected: boolean
   modalProvider?: Web3Modal
   connection?: typeof Connection
-  currentWalletAddress: string
+  isAddingPluginToClubs: boolean
+  addingPluginToClubsStatusMsg: string
 }
-
-let provider: BaseProvider | undefined
-let signer: ethers.Signer | undefined
 
 export default defineComponent({
   name: 'AddPluginButton',
@@ -45,7 +50,8 @@ export default defineComponent({
       modalProvider: undefined,
       connection: undefined,
       connected: false,
-      currentWalletAddress: '',
+      addingPluginToClubsStatusMsg: `Add to your ${this.clubName}`,
+      isAddingPluginToClubs: false,
     }
   },
   computed: {
@@ -55,6 +61,9 @@ export default defineComponent({
   },
   methods: {
     async addPluginToClub() {
+      this.isAddingPluginToClubs = true
+      this.addingPluginToClubsStatusMsg = 'Adding plugin...'
+
       // Fetch the site info
       const splitHostname = window.location.hostname.split('.')
       const site = splitHostname[0]
@@ -65,6 +74,8 @@ export default defineComponent({
         modalProvider
       )
       if (!currentAddress || !provider) {
+        this.isAddingPluginToClubs = false
+        this.addingPluginToClubsStatusMsg = 'Adding failed, try again!'
         return
       }
       const signer = provider.getSigner()
@@ -76,13 +87,17 @@ export default defineComponent({
       try {
         sig = await signer.signMessage(hash)
       } catch (error) {
+        this.isAddingPluginToClubs = false
+        this.addingPluginToClubsStatusMsg = 'Adding failed, try again!'
         return
       }
       if (!sig) {
+        this.isAddingPluginToClubs = false
+        this.addingPluginToClubsStatusMsg = 'Adding failed, try again!'
         return
       }
 
-      let body: {
+      const body: {
         site: string
         pluginId: string
         hash: string
@@ -99,8 +114,15 @@ export default defineComponent({
         body: JSON.stringify(body),
       })
 
-      console.log('HERE', this.connected, this.plugin)
-      console.log('Response', res)
+      if (res.ok) {
+        this.isAddingPluginToClubs = false
+        this.addingPluginToClubsStatusMsg =
+          'Add successful, refreshing plugin...'
+        window.location.reload()
+      } else {
+        this.isAddingPluginToClubs = false
+        this.addingPluginToClubsStatusMsg = 'Adding failed, try again!'
+      }
     },
   },
   async mounted() {
@@ -108,18 +130,10 @@ export default defineComponent({
       const [{ connection }] = await Promise.all([
         import('@devprotocol/clubs-core/connection'),
       ])
+
       this.connection = connection
-
-      connection().provider.subscribe(async (prov) => {
-        provider = prov
-      })
-      connection().signer.subscribe(async (sig) => {
-        signer = sig
-      })
-
       connection().account.subscribe(async (acc) => {
         if (acc) {
-          this.currentWalletAddress = acc
           this.connected = true
         }
       })
