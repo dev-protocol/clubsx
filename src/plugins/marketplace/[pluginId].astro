@@ -6,6 +6,7 @@ import checkImage from '@assets/check.svg'
 import pluginDefaultIcon from '@assets/default-plugin-icon.jpg'
 import ConnectButton from '@components/Wallet/ConnectButton.vue'
 import { createGetPluginMeta } from './utils/createGetPluginMeta'
+import AddPluginButton from '@components/AddPluginButton/AddPluginButton.vue'
 
 const {
   config,
@@ -84,12 +85,11 @@ const READMEComponent = plugin.readme
                 </p>
               </div>
             ) : (
-              <button
-                class=" m-0 w-full max-w-full whitespace-normal text-center text-base font-bold leading-normal text-white"
-                disabled={plugin.added}
-              >
-                {`Add to your ${config.name}`}
-              </button>
+              <AddPluginButton
+                client:only="vue"
+                plugin={plugin}
+                clubName={config.name}
+              />
             )
           }
         </div>
