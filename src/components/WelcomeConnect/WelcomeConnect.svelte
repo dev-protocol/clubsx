@@ -160,12 +160,12 @@
     <p>Link your account to your club.</p>
   </section>
 
-  <section class="grid gap-24	">
+  <section class="grid gap-24">
     <EmailConnect {siteName} />
 
     <p
       role="separator"
-      class="grid grid-cols-[1fr_auto_1fr] items-center gap-4 before:block before:border-b before:content-[''] after:block after:border-b after:content-[''] "
+      class="grid grid-cols-[1fr_auto_1fr] items-center gap-4 before:block before:border-b before:content-[''] after:block after:border-b after:content-['']"
     >
       or
     </p>

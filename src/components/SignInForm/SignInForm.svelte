@@ -32,7 +32,7 @@
     <h1 class="text-2xl font-bold md:text-5xl">Sign in to Clubs</h1>
   </section>
 
-  <section class="grid gap-24	">
+  <section class="grid gap-24">
     <div class="flex flex-col items-center">
       <span class="mb-4">Use your wallet</span>
 
@@ -51,7 +51,7 @@
 
     <p
       role="separator"
-      class="grid grid-cols-[1fr_auto_1fr] items-center gap-4 before:block before:border-b before:content-[''] after:block after:border-b after:content-[''] "
+      class="grid grid-cols-[1fr_auto_1fr] items-center gap-4 before:block before:border-b before:content-[''] after:block after:border-b after:content-['']"
     >
       or
     </p>

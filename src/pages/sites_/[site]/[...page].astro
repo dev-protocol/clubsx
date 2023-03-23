@@ -1,6 +1,6 @@
 ---
 import DefaultLayout from '@layouts/Default.astro'
-import { pageFactory } from '@devprotocol/clubs-core'
+import { decode, pageFactory } from '@devprotocol/clubs-core'
 import { config as _config } from '@fixtures/config'
 import defaultTheme from '@plugins/default-theme'
 import buy from '@plugins/buy'
@@ -46,7 +46,7 @@ const Content = path?.props.component
 const siteBaseUrl = new URL(Astro.request.url).origin
 ---
 
-<DefaultLayout config={config} footer={false}>
+<DefaultLayout {...path?.props ?? {}} config={decode(config)}>
   {
     path && Layout && Content ? (
       <Layout {...path.props}>

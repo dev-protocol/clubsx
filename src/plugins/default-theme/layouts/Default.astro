@@ -13,26 +13,26 @@ import Twitter from '@components/Icons/Twitter.astro'
 import Discord from '@components/Icons/Discord.astro'
 import Share from '../components/Share/Share.svelte'
 import type { Membership } from '@plugins/memberships'
+import type { GlobalConfigValue, HomeConfigValue } from '..'
 
 const { page } = Astro.params
-const { metaTitle, config, homeConfig, globalConfig, signals, memberships } =
-  Astro.props as {
-    memberships?: Membership[]
-    signals?: string[]
-    metaTitle?: string
-    config: ClubsConfiguration
-    globalConfig?: {
-      bg: string
-      backgroundGradient?: [string, string]
-    }
-    homeConfig?: {
-      hero: {
-        image: string
-      }
-      description: string
-      body: string
-    }
-  }
+const {
+  metaTitle,
+  config,
+  homeConfig,
+  globalConfig,
+  signals,
+  memberships,
+  description,
+} = Astro.props as {
+  memberships?: Membership[]
+  signals?: string[]
+  metaTitle?: string
+  config: ClubsConfiguration
+  globalConfig?: GlobalConfigValue
+  homeConfig?: HomeConfigValue
+  description?: string
+}
 
 const displayFullPage = signals?.includes(ClubsPluginSignal.DisplayFullPage)
 const notDisplayConnection = signals?.includes('connection-button-hide')
@@ -77,6 +77,11 @@ const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
 const backgroundColor = globalConfig?.bg ?? '#ADADAD'
 
 const hasNotAMembership = memberships ? memberships.length < 1 : true
+
+const truncatedDescription = ((desc) =>
+  desc.slice(0, 139).join('') + (desc.length > 139 ? '...' : ''))([
+  ...(description?.replace(/[\s|\n|\r\n|\r]/g, ' ') ?? ''),
+])
 ---
 
 <style define:vars={{ backgroundColor }}>
@@ -92,18 +97,18 @@ const hasNotAMembership = memberships ? memberships.length < 1 : true
     <meta name="viewport" content="width=device-width" />
     <title>{title}</title>
     <link rel="icon" type="image/svg" href={avatarImgSrc || '/favicon.svg'} />
-    <meta name="description" content={`${homeConfig?.description}`} />
+    <meta name="description" content={`${truncatedDescription}`} />
     <meta property="og:title" content={title} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={url} />
     <meta property="og:image" content={`${ogp?.image}`} />
-    <meta property="og:description" content={homeConfig?.description} />
+    <meta property="og:description" content={truncatedDescription} />
     <meta property="og:site_name" content={config.name} />
     <meta name="twitter:site" content={config.twitterHandle} />
     <meta name="twitter:creator" content={config.twitterHandle} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={homeConfig?.description} />
+    <meta name="twitter:description" content={truncatedDescription} />
     <meta name="twitter:image" content={`${ogp?.image}`} />
   </head>
 
@@ -114,7 +119,7 @@ const hasNotAMembership = memberships ? memberships.length < 1 : true
       connection={!notDisplayConnection}
     />
     <Hero
-      image={homeConfig?.hero.image}
+      image={homeConfig?.hero?.image}
       avatar={avatarImgSrc}
       name={name}
       propertyAddress={propertyAddress}
