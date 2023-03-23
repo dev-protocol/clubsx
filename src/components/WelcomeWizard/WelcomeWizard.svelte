@@ -19,7 +19,7 @@
     <IconClubs />
     <span class="font-['Poppins']">Clubs</span>
   </h1>
-  <div class="relative grid gap-4	">
+  <div class="relative grid gap-4">
     <WelcomeWizardStep
       label="Basic info"
       isActive={step === 'BASIC'}

@@ -121,7 +121,7 @@
   <div class="flex flex-col gap-1">
     <label for="email"> Destination email </label>
     <input
-      class="max-w-sm rounded	bg-[#040B10] px-8 py-4"
+      class="max-w-sm rounded bg-[#040B10] px-8 py-4"
       bind:value={form.destinationEmail}
       name="email"
       type="email"

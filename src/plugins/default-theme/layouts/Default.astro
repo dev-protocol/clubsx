@@ -82,7 +82,6 @@ const truncatedDescription = ((desc) =>
   desc.slice(0, 139).join('') + (desc.length > 139 ? '...' : ''))([
   ...(description?.replace(/[\s|\n|\r\n|\r]/g, ' ') ?? ''),
 ])
-
 ---
 
 <style define:vars={{ backgroundColor }}>

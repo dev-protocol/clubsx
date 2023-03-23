@@ -76,7 +76,7 @@
       {/if}
       {#if devPrice}
         <p
-          class="grid grid-cols-[auto_1fr]  items-center gap-1 text-sm opacity-70"
+          class="grid grid-cols-[auto_1fr] items-center gap-1 text-sm opacity-70"
         >
           <span class="truncate">{devPrice}</span> DEV
         </p>
@@ -117,7 +117,7 @@
   }`}
 >
   {#if modal === true}
-    <div class="grid  max-w-lg	gap-4 p-2">
+    <div class="grid max-w-lg gap-4 p-2">
       <span class="flex items-center gap-3 overflow-hidden">
         <button on:click={handleClickClose}>
           <svg
