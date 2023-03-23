@@ -46,7 +46,12 @@ const baseUrl = ((host) =>
 const siteBaseUrl = new URL(Astro.request.url).origin
 ---
 
-<DefaultLayout config={config} footer={false}>
+<DefaultLayout
+  {...path?.props ?? {}}
+  config={config}
+  footer={false}
+  inAdmin={true}
+>
   {
     path && Content ? (
       <>
@@ -54,7 +59,7 @@ const siteBaseUrl = new URL(Astro.request.url).origin
         <Admin {...path.props}>
           <a
             slot="admin:sidebar:before-title"
-            class="flex items-center gap-2 transition-colors hover:text-native-blue-300"
+            class="hover:text-native-blue-300 flex items-center gap-2 transition-colors"
             href={`${baseUrl}/signin`}
           >
             <svg
@@ -75,7 +80,7 @@ const siteBaseUrl = new URL(Astro.request.url).origin
           </a>
           <a
             slot="admin:sidebar:before-title"
-            class="flex items-center gap-2 transition-colors hover:text-native-blue-300"
+            class="hover:text-native-blue-300 flex items-center gap-2 transition-colors"
             target="_blank"
             rel="noopener norefferer"
             href={siteBaseUrl}
