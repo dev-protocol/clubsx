@@ -39,7 +39,8 @@
     "prettier-plugin-svelte": "2.9.0",
     "prettier-plugin-tailwindcss": "0.2.5",
     "type-fest": "3.6.1",
-    "typescript": "5.0.2"
+    "typescript": "5.0.2",
+    "vite-plugin-dynamic-import": "^1.2.7"
   },
   "dependencies": {
     "@astrojs/netlify": "2.2.0",

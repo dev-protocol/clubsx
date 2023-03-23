@@ -7820,6 +7820,13 @@ vfile@^5.0.0, vfile@^5.3.2:
     unist-util-stringify-position "^3.0.0"
     vfile-message "^3.0.0"
 
+vite-plugin-dynamic-import@^1.2.7:
+  version "1.2.7"
+  resolved "https://registry.yarnpkg.com/vite-plugin-dynamic-import/-/vite-plugin-dynamic-import-1.2.7.tgz#d0bf7aef82edffe430fa0ecabc39f971784cff7b"
+  integrity sha512-n1fjBaYF8ByqORv7hpEaZQiQie8sNiWGU61DpYs+fgToGmzGIgThUI8BCnW3RICVK4gJC2sDNn7NK1RzTvRyEA==
+  dependencies:
+    fast-glob "^3.2.12"
+
 vite@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/vite/-/vite-4.1.2.tgz#6908882984e490c44c28e784a2c52de556f04b41"

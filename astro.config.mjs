@@ -7,6 +7,7 @@ import tailwind from '@astrojs/tailwind'
 import vue from '@astrojs/vue'
 import react from '@astrojs/react'
 import svelte from '@astrojs/svelte'
+import dynamicImport from 'vite-plugin-dynamic-import'
 
 config()
 
@@ -50,6 +51,7 @@ export default defineConfig({
     svelte(),
   ],
   vite: {
+    plugins: [dynamicImport()],
     server: {
       hmr: {
         timeout: 360000,
