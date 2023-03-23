@@ -1,20 +1,23 @@
 ---
-import type { PluginMeta } from '@constants/plugins'
+import type { InstallablePlugins, PluginMeta } from '@constants/plugins'
 import type { ClubsConfiguration } from '@devprotocol/clubs-core'
 
 import checkImage from '@assets/check.svg'
 import pluginDefaultIcon from '@assets/default-plugin-icon.jpg'
 import ConnectButton from '@components/Wallet/ConnectButton.vue'
+import { createGetPluginMeta } from './utils/createGetPluginMeta'
 
 const {
   config,
-  plugin,
+  plugin: installablePlugins,
   size = 'medium',
 } = Astro.props as {
   config: ClubsConfiguration
-  plugin: PluginMeta
+  plugin: InstallablePlugins
   size?: 'medium' | 'small'
 }
+
+const plugin = await createGetPluginMeta(config)(installablePlugins)
 
 const READMEComponent = plugin.readme
 ---
