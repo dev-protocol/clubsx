@@ -1,19 +1,25 @@
 ---
 import type { InstallablePlugins, PluginMeta } from '@constants/plugins'
-import type {
+import {
   ClubsConfiguration,
   ClubsFunctionPlugin,
   ClubsPlugin,
+  ClubsPropsAdminPages,
+decode
 } from '@devprotocol/clubs-core'
 import PluginItem from './components/PluginItem.astro'
 
 import HSButton from '@components/Primitives/Hashi/HSButton.vue'
 
 import Heading from './assets/Heading.png'
+import { createGetPluginMeta } from './utils/createGetPluginMeta'
 
-const { allPlugins } = Astro.props as {
-  allPlugins: PluginMeta[]
+const { allInstallablePlugins,clubs } = Astro.props as ClubsPropsAdminPages & {
+  allInstallablePlugins: InstallablePlugins[]
 }
+
+const getPluginMeta = createGetPluginMeta(decode(clubs.encodedClubsConfiguration))
+const allPlugins = await Promise.all(allInstallablePlugins.map(getPluginMeta))
 
 const newAndUpcomingPlugins = allPlugins.filter(
   (plg) => plg.tag === 'NEW & UPCOMING'
