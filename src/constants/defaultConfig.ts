@@ -61,21 +61,21 @@ export const defaultConfig: ClubsConfiguration = {
         },
       ],
     },
-    // {
-    //   id: 'devprotocol:clubs:plugin:join',
-    //   name: 'join',
-    //   options: [],
-    // },
-    // {
-    //   id: 'devprotocol:clubs:plugin:me',
-    //   name: 'me',
-    //   options: [],
-    // },
-    // {
-    //   id: 'devprotocol:clubs:plugin:community',
-    //   name: 'community',
-    //   options: [],
-    // },
+    {
+      id: 'devprotocol:clubs:plugin:join',
+      name: 'join',
+      options: [],
+    },
+    {
+      id: 'devprotocol:clubs:plugin:me',
+      name: 'me',
+      options: [],
+    },
+    {
+      id: 'devprotocol:clubs:plugin:community',
+      name: 'community',
+      options: [],
+    },
     {
       id: 'devprotocol:clubs:plugin:quests',
       name: 'quests',
