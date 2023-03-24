@@ -25,7 +25,7 @@ export const meta: ClubsPluginMeta = {
     price: 0,
     priceCurrency: 'DEV',
   },
-  description: `User’s personal page.`,
+  description: `User's personal page.`,
   previewImages: [Icon, Icon, Icon],
   readme: Readme,
 }
