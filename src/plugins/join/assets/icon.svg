@@ -1,0 +1,24 @@
+<svg width="360" height="360" viewBox="0 0 360 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_1_2)">
+<rect width="360" height="360" fill="#CAD0E3"/>
+<circle cx="123.948" cy="236.448" r="87.6443" transform="rotate(-45 123.948 236.448)" fill="white"/>
+<g filter="url(#filter0_b_1_2)">
+<circle cx="220.774" cy="139.212" r="98.4375" transform="rotate(-45 220.774 139.212)" fill="url(#paint0_linear_1_2)"/>
+</g>
+</g>
+<defs>
+<filter id="filter0_b_1_2" x="118.337" y="36.7741" width="204.875" height="204.875" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feGaussianBlur in="BackgroundImageFix" stdDeviation="2"/>
+<feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_1_2"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_1_2" result="shape"/>
+</filter>
+<linearGradient id="paint0_linear_1_2" x1="220.774" y1="40.7741" x2="220.774" y2="237.649" gradientUnits="userSpaceOnUse">
+<stop stop-color="#3D4EE3"/>
+<stop offset="1" stop-color="#413DE3" stop-opacity="0.5"/>
+</linearGradient>
+<clipPath id="clip0_1_2">
+<rect width="360" height="360" fill="white"/>
+</clipPath>
+</defs>
+</svg>
