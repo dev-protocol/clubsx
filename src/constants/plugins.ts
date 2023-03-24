@@ -1,5 +1,6 @@
 import type {
   ClubsPluginMeta,
+  ClubsPluginOptions,
   ClubsThemePluginMeta,
 } from '@devprotocol/clubs-core'
 
@@ -14,6 +15,7 @@ export type InstallablePlugins = {
   developer: string
   clubsUrl: string
   repositoryUrl: string
+  pluginOptions: ClubsPluginOptions
 }
 
 export type PluginMeta = (ClubsPluginMeta & Partial<ClubsThemePluginMeta>) & {
@@ -36,6 +38,7 @@ export const installablePlugins: InstallablePlugins[] = [
     developer: 'Dev Protocol',
     clubsUrl: 'https://clubs.place',
     repositoryUrl: 'https://github.com/dev-protocol/clubsx',
+    pluginOptions: [],
   },
   {
     id: 'devprotocol:clubs:theme-1',
@@ -48,6 +51,7 @@ export const installablePlugins: InstallablePlugins[] = [
     developer: 'Dev Protocol',
     clubsUrl: 'https://clubs.place',
     repositoryUrl: 'https://github.com/dev-protocol/clubsx',
+    pluginOptions: [],
   },
   {
     id: 'devprotocol:clubs:plugin:join',
@@ -60,6 +64,7 @@ export const installablePlugins: InstallablePlugins[] = [
     developer: 'Dev Protocol',
     clubsUrl: 'https://clubs.place',
     repositoryUrl: 'https://github.com/dev-protocol/clubsx',
+    pluginOptions: [],
   },
   {
     id: 'devprotocol:clubs:plugin:me',
@@ -72,6 +77,7 @@ export const installablePlugins: InstallablePlugins[] = [
     developer: 'Dev Protocol',
     clubsUrl: 'https://clubs.place',
     repositoryUrl: 'https://github.com/dev-protocol/clubsx',
+    pluginOptions: [],
   },
   {
     id: 'devprotocol:clubs:plugin:members',
@@ -84,6 +90,7 @@ export const installablePlugins: InstallablePlugins[] = [
     developer: 'Dev Protocol',
     clubsUrl: 'https://clubs.place',
     repositoryUrl: 'https://github.com/dev-protocol/clubsx',
+    pluginOptions: [],
   },
   {
     id: 'devprotocol:clubs:simple-memberships',
@@ -96,6 +103,7 @@ export const installablePlugins: InstallablePlugins[] = [
     developer: 'Dev Protocol',
     clubsUrl: 'https://clubs.place',
     repositoryUrl: 'https://github.com/dev-protocol/clubsx',
+    pluginOptions: [],
   },
   {
     id: 'devprotocol:clubs:gated-contact-form',
@@ -108,6 +116,7 @@ export const installablePlugins: InstallablePlugins[] = [
     developer: 'Dev Protocol',
     clubsUrl: 'https://clubs.place',
     repositoryUrl: 'https://github.com/dev-protocol/clubsx',
+    pluginOptions: [],
   },
   {
     id: 'devprotocol:clubs:plugin:quests',
@@ -120,5 +129,6 @@ export const installablePlugins: InstallablePlugins[] = [
     developer: 'Dev Protocol',
     clubsUrl: 'https://clubs.place',
     repositoryUrl: 'https://github.com/dev-protocol/clubsx',
+    pluginOptions: [],
   },
 ]

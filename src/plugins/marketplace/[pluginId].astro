@@ -6,6 +6,7 @@ import checkImage from '@assets/check.svg'
 import pluginDefaultIcon from '@assets/default-plugin-icon.jpg'
 import ConnectButton from '@components/Wallet/ConnectButton.vue'
 import { createGetPluginMeta } from './utils/createGetPluginMeta'
+import AddPluginButton from '@components/AddPluginButton/AddPluginButton.vue'
 
 const {
   config,
@@ -38,9 +39,9 @@ const READMEComponent = plugin.readme
         />
       </div>
       <div
-        class="inline-flex w-[75%] max-w-[75%] items-start justify-between space-x-16"
+        class="inline-flex w-[70%] max-w-[70%] items-start justify-between space-x-16"
       >
-        <div class="flex items-start justify-start space-x-4">
+        <div class="flex max-w-[64%] items-start justify-start space-x-4">
           <img
             src={plugin.icon || pluginDefaultIcon}
             class:list={[
@@ -51,7 +52,7 @@ const READMEComponent = plugin.readme
           />
           <div class="inline-flex flex-col items-start justify-start space-y-1">
             <p class="text-2xl font-bold text-white">{plugin.displayName}</p>
-            <p class="text-justify text-base leading-normal text-white">
+            <p class="text-base leading-normal text-white">
               {plugin.description}
             </p>
             <div
@@ -71,25 +72,29 @@ const READMEComponent = plugin.readme
           </div>
         </div>
         <div
-          class={`flex items-center justify-center rounded-full border border-green-500 ${
-            plugin.added ? 'bg-native-blue-200' : 'bg-green-500'
-          } px-7 py-2`}
+          class={`flex grow items-center justify-center rounded-full border border-green-500 ${
+            plugin.added
+              ? 'bg-native-blue-200 cursor-not-allowed'
+              : 'bg-green-500'
+          } px-7 py-2 gap-0.5`}
         >
           {
             plugin.added ? (
-              <div class="m-0 flex w-full max-w-full items-center justify-around gap-0.5 rounded-full p-0 px-2">
-                <img src={checkImage} class="h-3 max-h-full w-3 font-bold" />
-                <p class="h-fit w-fit text-base font-bold leading-normal text-black">
+              <>
+                <img
+                  src={checkImage}
+                  class="m-0 h-3 max-h-full w-3 font-bold"
+                />
+                <p class="m-0 h-fit w-fit text-base font-bold leading-normal text-black">
                   Added
                 </p>
-              </div>
+              </>
             ) : (
-              <button
-                class="max-w-[231px] text-center text-base font-bold leading-normal text-white"
-                disabled={plugin.added}
-              >
-                {`Add to your ${config.name}`}
-              </button>
+              <AddPluginButton
+                client:only="vue"
+                plugin={plugin}
+                clubName={config.name}
+              />
             )
           }
         </div>
