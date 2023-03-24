@@ -1,14 +1,7 @@
----
-title: Hello, World
----
+Create and manage simple membership NFTs with multiple tiers.
 
-# Hi there!
+The NFTs created by Memberships Plugin are integrated with Dev Protocol, and you earn ongoing revenue from staking.
 
-This Markdown file creates a page at `your-domain.com/page-1/`
+And the NFT supports pricing by ETH (WETH).
 
-It probably isn't styled much, but Markdown does support:
-
-- **bold** and _italics._
-- lists
-- [links](https://astro.build)
-- and more!
+The NFT will defer its minting until your club’s users have paid, so you pay for gas only for the NFT initial setup.
