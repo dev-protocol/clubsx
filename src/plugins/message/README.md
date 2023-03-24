@@ -1,14 +1,5 @@
----
-title: Hello, World
----
+This creates a contact form that only membership holders can submit.
 
-# Hi there!
+Multiple contact forms can be created and managed.
 
-This Markdown file creates a page at `your-domain.com/page-1/`
-
-It probably isn't styled much, but Markdown does support:
-
-- **bold** and _italics._
-- lists
-- [links](https://astro.build)
-- and more!
+You can select multiple memberships for each single contact form. Memberships created by the Membership Plugin are supported.
