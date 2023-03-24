@@ -1,17 +1,23 @@
 <template>
   <button
-    class="m-0 w-full max-w-full whitespace-normal text-center text-base font-bold leading-normal text-white"
+    class="hs-button is-large flex justify-center gap-2 rounded-full py-3 text-white"
     :disabled="isAdded || !connected || isAddingPluginToClubs"
+    :title="addingPluginToClubsStatusMsg"
     @click="addPluginToClub"
     v-bind:class="
       isAddingPluginToClubs
         ? 'cursor-progress'
         : isAdded || !connected
-        ? 'cursor-not-allowed'
-        : 'cursor-pointer'
+        ? 'cursor-not-allowed bg-native-blue-200'
+        : 'cursor-pointer bg-success-300'
     "
   >
-    {{ addingPluginToClubsStatusMsg }}
+    <span
+      v-if="addingPluginToClubsStatusMsg"
+      role="presentation"
+      class="h-3 w-3 animate-spin rounded-full border-l border-t border-r border-white"
+    />
+    {{ isAdded ? 'Added' : 'Add' }}
   </button>
 </template>
 
@@ -36,10 +42,6 @@ type Data = {
 export default defineComponent({
   name: 'AddPluginButton',
   props: {
-    clubName: {
-      type: String,
-      default: 'Club',
-    },
     plugin: {
       type: Object as PropType<PluginMeta>,
       default: {},
@@ -50,7 +52,7 @@ export default defineComponent({
       modalProvider: undefined,
       connection: undefined,
       connected: false,
-      addingPluginToClubsStatusMsg: `Add to your ${this.clubName}`,
+      addingPluginToClubsStatusMsg: '',
       isAddingPluginToClubs: false,
     }
   },
