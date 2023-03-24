@@ -7,6 +7,8 @@ import pluginDefaultIcon from '@assets/default-plugin-icon.jpg'
 import ConnectButton from '@components/Wallet/ConnectButton.vue'
 import { createGetPluginMeta } from './utils/createGetPluginMeta'
 import AddPluginButton from '@components/AddPluginButton/AddPluginButton.vue'
+import PluginItem from './components/PluginItem.astro'
+import Markdown from '@components/Markdown/Markdown.astro'
 
 const {
   config,
@@ -23,132 +25,85 @@ const plugin = await createGetPluginMeta(config)(installablePlugins)
 const READMEComponent = plugin.readme
 ---
 
-<section>
-  <div
-    class="inline-flex w-full max-w-full items-start justify-start space-x-24 py-16"
-  >
+<section class="my-16">
+  <div class="grid gap-16">
+    <div class="flex items-center justify-between">
+      <p class="text-4xl font-bold">{plugin.displayName}</p>
+      <ConnectButton client:load type="filled large" chainId={config.chainId} />
+    </div>
     <div
-      class="inline-flex w-full max-w-full flex-col items-start justify-start space-y-20"
+      class="grid max-w-3xl items-start justify-between gap-8 lg:grid-cols-[3fr_1fr]"
     >
-      <div class="inline-flex w-full max-w-full items-center justify-between">
-        <p class="mtext-white text-4xl font-bold">{plugin.displayName}</p>
-        <ConnectButton
-          client:load
-          type="filled large"
-          chainId={config.chainId}
-        />
-      </div>
-      <div
-        class="inline-flex w-[70%] max-w-[70%] items-start justify-between space-x-16"
-      >
-        <div class="flex max-w-[64%] items-start justify-start space-x-4">
-          <img
-            src={plugin.icon || pluginDefaultIcon}
-            class:list={[
-              'row-span-3 aspect-square rounded-2xl',
-              { 'h-16 lg:h-20': size === 'medium' },
-              { 'h-11 lg:h-12': size === 'small' },
-            ]}
-          />
-          <div class="inline-flex flex-col items-start justify-start space-y-1">
-            <p class="text-2xl font-bold text-white">{plugin.displayName}</p>
-            <p class="text-base leading-normal text-white">
-              {plugin.description}
-            </p>
-            <div
-              class="inline-flex items-center justify-center rounded-full bg-green-500 px-1.5"
-            >
-              <p class="text-xs leading-none text-black">
-                {
-                  plugin?.offer?.price
-                    ? `${Number(plugin?.offer?.price).toLocaleString('en-US', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 3,
-                      })} ${plugin?.offer?.priceCurrency}`
-                    : 'Free'
-                }
-              </p>
-            </div>
-          </div>
-        </div>
-        <div
-          class={`flex grow items-center justify-center rounded-full border border-green-500 ${
-            plugin.added
-              ? 'bg-native-blue-200 cursor-not-allowed'
-              : 'bg-green-500'
-          } px-7 py-2 gap-0.5`}
-        >
-          {
-            plugin.added ? (
-              <>
-                <img
-                  src={checkImage}
-                  class="m-0 h-3 max-h-full w-3 font-bold"
-                />
-                <p class="m-0 h-fit w-fit text-base font-bold leading-normal text-black">
-                  Added
-                </p>
-              </>
-            ) : (
-              <AddPluginButton
-                client:only="vue"
-                plugin={plugin}
-                clubName={config.name}
-              />
-            )
-          }
-        </div>
-      </div>
-      <div
-        class="flex w-full max-w-full items-start justify-start space-x-8 overflow-x-auto"
-      >
+      <PluginItem plugin={plugin} truncate={false} displayStatus={false} />
+      <div>
         {
-          (plugin?.previewImages?.length
-            ? plugin.previewImages
-            : [pluginDefaultIcon, pluginDefaultIcon, pluginDefaultIcon]
-          ).map((image) => (
-            <img
-              class="aspect-square w-[33%] min-w-[31%] max-w-[35%] rounded-lg"
-              src={image}
-            />
-          ))
+          false ? (
+            <span class="bg-native-blue-200 flex cursor-not-allowed items-center justify-center rounded-full px-8 py-4">
+              <img src={checkImage} class="h-3 max-h-full w-3 font-bold" />
+              <p class="font-bold text-black">Added</p>
+            </span>
+          ) : (
+            <AddPluginButton client:load plugin={plugin} />
+          )
         }
       </div>
-      <div
-        class="flex w-[75%] max-w-[75%] flex-col items-start justify-start space-y-8"
-      >
-        <p class="w-80 text-2xl font-bold text-white">Overview</p>
-        <p class="text-xl font-medium text-white" style="width: 840px;">
-          <READMEComponent />
-        </p>
-      </div>
-      <div
-        class="flex w-[75%] max-w-[75%] flex-col items-start justify-start space-y-8"
-      >
-        <div class="flex flex-col items-start justify-start space-y-2">
-          <p class="text-base font-medium text-white text-opacity-70">
-            Developer
-          </p>
-          <p class="max-w-xl text-xl font-medium text-white">
-            {plugin.developer}
-          </p>
-        </div>
-        <div class="flex flex-col items-start justify-start space-y-2">
-          <p class="text-base font-medium text-white text-opacity-70">Clubs</p>
-          <a class="text-xl font-medium text-white" href={plugin.clubsUrl}
-            >{plugin.clubsUrl}</a
-          >
-        </div>
-        <div class="flex flex-col items-start justify-start space-y-2">
-          <p class="text-base font-medium text-white text-opacity-70">
-            Repository
-          </p>
-          <a
-            class="text-xl font-medium text-white underline"
-            href={plugin.repositoryUrl}>{plugin.repositoryUrl}</a
-          >
-        </div>
-      </div>
+    </div>
+    <div class="flex items-start justify-start gap-8 overflow-x-auto pb-4">
+      {
+        (plugin?.previewImages?.length
+          ? plugin.previewImages
+          : [pluginDefaultIcon, pluginDefaultIcon, pluginDefaultIcon]
+        ).map((image) => <img class="h-80 w-auto rounded-lg" src={image} />)
+      }
+    </div>
+    <div class="grid max-w-3xl gap-8">
+      <p class="text-2xl font-bold text-white">Overview</p>
+      <p class="">
+        <Markdown>
+          {READMEComponent && <READMEComponent />}
+        </Markdown>
+      </p>
+    </div>
+    <div class="grid max-w-2xl gap-8">
+      {
+        plugin.developer && (
+          <div class="flex flex-col items-start justify-start space-y-2">
+            <p class="text-base font-medium text-white text-opacity-70">
+              Developer
+            </p>
+            <p class="max-w-xl text-xl font-medium text-white">
+              {plugin.developer}
+            </p>
+          </div>
+        )
+      }
+      {
+        plugin.clubsUrl && (
+          <div class="flex flex-col items-start justify-start space-y-2">
+            <p class="text-base font-medium text-white text-opacity-70">
+              Clubs
+            </p>
+            <a class="text-xl font-medium text-white" href={plugin.clubsUrl}>
+              {plugin.clubsUrl}
+            </a>
+          </div>
+        )
+      }
+      {
+        plugin.repositoryUrl && (
+          <div class="flex flex-col items-start justify-start space-y-2">
+            <p class="text-base font-medium text-white text-opacity-70">
+              Repository
+            </p>
+            <a
+              class="text-xl font-medium text-white underline"
+              href={plugin.repositoryUrl}
+            >
+              {plugin.repositoryUrl}
+            </a>
+          </div>
+        )
+      }
     </div>
   </div>
 </section>
