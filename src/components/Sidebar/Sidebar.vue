@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="fixed left-0 top-14 z-50 lg:sticky lg:left-auto lg:top-12">
+    <div class="fixed left-0 top-14 z-40 lg:sticky lg:left-auto lg:top-12">
       <button
         class="rounded-r-full bg-white px-0.5 py-1 text-black lg:hidden"
         @click="toggle"
@@ -59,9 +59,16 @@
               class="grid justify-items-start gap-1 md:justify-items-center md:gap-2"
             >
               <h2 class="font-title text-xl font-bold">{{ tenantName }}</h2>
-              <p class="flex items-center gap-2 font-body text-xs">
-                $TEMPL on
-                <img :src="images.ETH" class="h-[1.8em]" alt="Ethereum" />
+              <p class="flex items-center gap-1 font-body text-xs">
+                <span class="text-xs" v-if="propertySymbol.length > 0">
+                  ${{ propertySymbol }} on
+                </span>
+                <ETH v-if="chainId === 1" class="h-[1.8em]" />
+                <POLYGON
+                  v-if="chainId === 137 || chainId === 80001"
+                  class="h-[1.8em]"
+                />
+                <ARBITRUM v-if="chainId === 42161" class="h-[1.8em]" />
               </p>
             </header>
           </div>
@@ -75,6 +82,7 @@
             type="filled fullwidth"
             :link="primaryLink.path"
             :isDisabled="primaryLink.enable === false"
+            class="border-0 bg-white text-black"
             >{{ primaryLink.display }}</HSButton
           >
           <div class="grid w-full gap-3">
@@ -82,6 +90,7 @@
               v-for="link in links"
               :link="link.path"
               :isDisabled="link.enable === false"
+              :class="`${link.enable !== false && 'text-white'}`"
               >{{ link.display }}</HSButton
             >
           </div>
@@ -92,16 +101,21 @@
 </template>
 
 <script lang="ts">
-import ETH from '@assets/ETH.svg'
-import { providers } from 'ethers'
-import { detectStokensByPropertyAddress } from '@fixtures/dev-kit'
+import ETH from '@components/Icons/ETH.vue'
+import POLYGON from '@components/Icons/POLYGON.vue'
+import ARBITRUM from '@components/Icons/ARBITRUM.vue'
+import { constants, providers } from 'ethers'
+import {
+  detectStokensByPropertyAddress,
+  propertySymbol,
+} from '@fixtures/dev-kit'
 import HSButton from '../Primitives/Hashi/HSButton.vue'
-import { PropType } from '@vue/runtime-core'
-import { NavLink } from '@constants/navLink'
+import type { PropType } from '@vue/runtime-core'
+import type { NavLink } from '@constants/navLink'
 
 export default {
   name: 'Sidebar',
-  components: { HSButton },
+  components: { HSButton, ETH, POLYGON, ARBITRUM },
   props: {
     propertyAddress: String,
     tenantName: String,
@@ -115,13 +129,14 @@ export default {
     },
     avatarImgSrc: String,
     rpcUrl: String,
+    chainId: Number,
   },
   data() {
     return {
       members: 0,
       toggleOpen: false,
+      propertySymbol: '',
       images: {
-        ETH,
         avatar: this.avatarImgSrc,
       },
     }
@@ -129,11 +144,17 @@ export default {
   async created() {
     const providerURL = this.rpcUrl
     const provider = new providers.JsonRpcProvider(providerURL)
+    if (this.propertyAddress === constants.AddressZero) {
+      return
+    }
     await detectStokensByPropertyAddress(provider, this.propertyAddress).then(
       (res) => {
         this.members = res.length
       }
     )
+    await propertySymbol(provider, this.propertyAddress).then((res) => {
+      this.propertySymbol = res ?? 'CLUB'
+    })
   },
   methods: {
     toggle() {

@@ -1,112 +1,196 @@
 <script lang="ts">
-  import { initializeFirebase } from '../../fixtures/firebase'
-  import { sendSignInLinkToEmail } from 'firebase/auth'
-  import { GetModalProvider, ReConnectWallet } from '@fixtures/wallet'
-  import { ClubsConfiguration, setConfig } from '@devprotocol/clubs-core'
+  import type { EthersProviderFrom as TypeEthersProviderFrom } from '@fixtures/wallet'
+  import type Web3Modal from 'web3modal'
 
-  export let config: ClubsConfiguration
+  import type { ClubsConfiguration } from '@devprotocol/clubs-core'
+  import { encode, setConfig } from '@devprotocol/clubs-core'
+  import { providers, utils } from 'ethers'
+  import { defaultConfig } from '@constants/defaultConfig'
+  import { onMount } from 'svelte'
+  import EmailConnect from '../EmailConnect/EmailConnect.svelte'
+  import type { DraftOptions } from '@constants/draft'
+  import type { UndefinedOr } from '@devprotocol/util-ts'
 
-  let email = ''
-  let emailErrorMessage = ''
-  let emailSent = false
+  export let siteName: string
 
-  const sendMagicLink = async () => {
-    if (emailSent) {
-      return
-    }
+  let walletAwaitingUserConfirmation: boolean = false
+  let walletConnectStatusMsg: string = ''
+  let disableCreationUsingWallet: boolean = false
+  let GetModalProvider: Web3Modal
+  let EthersProviderFrom: typeof TypeEthersProviderFrom
 
-    const actionCodeSettings = {
-      // URL you want to redirect back to. The domain (www.example.com) for this
-      // URL must be in the authorized domains list in the Firebase Console.
-      // url: 'https://www.example.com/finishSignUp?cartId=1234',
-      url: import.meta.env.PUBLIC_FIREBASE_CALLBACK_URL,
-      // This must be true.
-      handleCodeInApp: true,
-    }
+  onMount(async () => {
+    const wallet = await import('@fixtures/wallet')
+    GetModalProvider = wallet.GetModalProvider()
+    EthersProviderFrom = wallet.EthersProviderFrom
+  })
 
-    const auth = initializeFirebase()
-
-    sendSignInLinkToEmail(auth, email, actionCodeSettings)
-      .then(() => {
-        // The link was successfully sent. Inform the user.
-        // Save the email locally so you don't need to ask the user for it again
-        // if they open the link on the same device.
-        window.localStorage.setItem('emailForSignIn', email)
-        emailSent = true
-        // ...
-      })
-      .catch((error) => {
-        emailErrorMessage = error.message
-        console.log('error is: ', error)
-        // ...
-      })
-  }
   const walletConnect = async () => {
-    const modalProvider = GetModalProvider()
-    const { provider, currentAddress } = await ReConnectWallet(modalProvider)
+    let provider: UndefinedOr<providers.Web3Provider>
+    let currentAddress: string | undefined
+
+    try {
+      walletAwaitingUserConfirmation = true
+      walletConnectStatusMsg =
+        'Awaiting wallet connection confirmation on wallet...'
+      const connection = await EthersProviderFrom(GetModalProvider)
+      walletConnectStatusMsg =
+        'Wallet connection confirmed, initiating clubs creation...'
+
+      provider = connection.provider
+      currentAddress = connection.currentAddress
+    } catch (error: any) {
+      walletConnectStatusMsg = 'Wallet connection failed, try again!'
+    } finally {
+      walletAwaitingUserConfirmation = false
+    }
+
     if (!currentAddress || !provider) {
       return
     }
 
-    const updatedUptions = Object.assign({}, config.options, {
-      key: '__draftOptions',
-      value: {
-        isInDraft: true,
-        address: currentAddress,
-      },
+    const siteNameCheckRes = await fetch(`/api/verifySiteName/${siteName}`)
+    if (!siteNameCheckRes.ok) {
+      return
+    }
+
+    const isReachedCreationLimitsRes = await fetch(
+      `/api/hasCreationLimitReached/${currentAddress}`
+    )
+    const isReachedCreationLimitsResJson =
+      await isReachedCreationLimitsRes.json()
+    if (
+      !isReachedCreationLimitsRes.ok ||
+      isReachedCreationLimitsResJson?.isCreationLimitReached
+    ) {
+      disableCreationUsingWallet = true
+      walletAwaitingUserConfirmation = false
+      walletConnectStatusMsg =
+        'You have reached limit of clubs creation! You cannot create more clubs'
+      return
+    } else {
+      disableCreationUsingWallet = false
+    }
+
+    // Make the default config.
+    const config: ClubsConfiguration = {
+      ...defaultConfig,
+      name: siteName,
+      url: `https://${siteName}.clubs.place`,
+      options: [
+        ...(defaultConfig.options ? defaultConfig.options : []),
+        {
+          key: '__draft',
+          value: {
+            isInDraft: true,
+            address: currentAddress,
+          },
+        } as DraftOptions,
+      ],
+    }
+
+    // Get the signature ready.
+    const signer = provider.getSigner()
+    const encodedConfig = encode(config)
+    const hash = utils.hashMessage(encodedConfig)
+
+    let sig: string | undefined
+    try {
+      walletAwaitingUserConfirmation = true
+      walletConnectStatusMsg =
+        'Awaiting clubs creation confirmation on wallet...'
+      sig = await signer.signMessage(hash)
+      walletConnectStatusMsg = 'Creating your club...'
+    } catch (error: any) {
+      walletAwaitingUserConfirmation = false
+      walletConnectStatusMsg = 'Clubs creation confirmation failed, try again!'
+    }
+
+    if (!sig) {
+      return
+    }
+
+    const body = {
+      site: siteName,
+      config: encode(config),
+      hash,
+      sig,
+      expectedAddress: currentAddress,
+    }
+
+    // Save the config to db.
+    const res = await fetch('/api/addDaoToDraft', {
+      method: 'POST',
+      body: JSON.stringify(body),
     })
 
-    const updatedConfig = Object.assign(config, {
-      options: updatedUptions,
-    })
-
-    await setConfig(updatedConfig)
-
-    // // TODO
-    // // navigate to next page
-    // window.location.href = '/setup/homepage'
+    if (res.ok) {
+      setConfig(config)
+      walletAwaitingUserConfirmation = false
+      walletConnectStatusMsg = 'Clubs creation confirmed, loading setup...'
+      window.location.href = new URL(
+        `${siteName}/setup/basic`,
+        `${location.protocol}//${location.host}`
+      ).toString()
+    } else {
+      const jsonResponse = await res.json()
+      walletAwaitingUserConfirmation = false
+      if (
+        res.status === 400 &&
+        jsonResponse.message &&
+        jsonResponse.message
+          .toLowerCase()
+          .includes('you already have created 3 clubs')
+      ) {
+        disableCreationUsingWallet = true
+        walletConnectStatusMsg =
+          'You have reached limit of clubs creation! You cannot create more clubs'
+      } else {
+        disableCreationUsingWallet = false
+        walletConnectStatusMsg =
+          'Clubs creation confirmation failed, try again!'
+      }
+    }
   }
 </script>
 
-<div class="flex flex-col items-center">
-  <section class="mb-8 pb-8 mt-8 border-b-2 border-gray-400">
-    <div class="flex items-center">
-      <div class="mr-2">
-        <input
-          bind:value={email}
-          id="email"
-          name="email"
-          type="email"
-          placeholder="Your email"
-          class="rounded bg-gray-700 py-3 px-4 w-64 text-right"
-        />
-      </div>
-
-      <button
-        on:click|preventDefault={(_) => sendMagicLink()}
-        class="text-sm bg-blue-500 px-4 rounded-xl py-3 px-6"
-      >
-        {#if emailSent}
-          Check your inbox
-        {:else}
-          Send Magic Link
-        {/if}
-      </button>
-
-      {#if emailErrorMessage.length > 0}
-        <span class="text-sm">{emailErrorMessage}</span>
-      {/if}
-    </div>
+<div class="relative grid justify-center p-4 md:p-0">
+  <section class="my-16 grid gap-8 text-center md:my-32">
+    <h1 class="text-2xl font-bold md:text-5xl">Connect Your Account</h1>
+    <p>Link your account to your club.</p>
   </section>
 
-  <div class="flex flex-col items-center">
-    <span class="text-sm text-gray-400 mb-4">Already have a wallet?</span>
+  <section class="grid gap-24">
+    <EmailConnect {siteName} />
 
-    <button
-      class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-xl py-3 px-6"
-      on:click|preventDefault={(_) => walletConnect()}
+    <p
+      role="separator"
+      class="grid grid-cols-[1fr_auto_1fr] items-center gap-4 before:block before:border-b before:content-[''] after:block after:border-b after:content-['']"
     >
-      Sign with your wallet
-    </button>
-  </div>
+      or
+    </p>
+
+    <div class="flex flex-col items-center">
+      <span class="mb-4">Already have a wallet?</span>
+
+      <button
+        class={`hs-button is-filled border-0 bg-native-blue-300 px-8 py-4 text-inherit ${
+          !GetModalProvider ||
+          !EthersProviderFrom ||
+          walletAwaitingUserConfirmation
+            ? 'animate-pulse bg-gray-500/60'
+            : ''
+        } ${disableCreationUsingWallet ? 'bg-gray-500/60' : ''}`}
+        disabled={!GetModalProvider ||
+          !EthersProviderFrom ||
+          walletAwaitingUserConfirmation ||
+          disableCreationUsingWallet}
+        on:click|preventDefault={(_) => walletConnect()}
+      >
+        {walletConnectStatusMsg == ''
+          ? 'Sign with your wallet'
+          : walletConnectStatusMsg}
+      </button>
+    </div>
+  </section>
 </div>

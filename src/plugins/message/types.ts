@@ -1,19 +1,12 @@
-export type GatedMessageRequiredMemberships = {
-  id: string
-  amount: number
-  currency: string
-  imageSrc: string
-  payload?: number[]
-}
-
 export type GatedMessage = {
-  id: number
+  id: string
   title: string
   description: string
-  requiredMemberships: GatedMessageRequiredMemberships[]
+  requiredMembershipIds: string[]
   presetName: string
   sendGridEnvKey: string
   destinationEmail: string
+  emailEncrypted: boolean
 }
 
 export enum MessageSentStatus {

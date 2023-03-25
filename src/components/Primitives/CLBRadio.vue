@@ -33,7 +33,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use 'node_modules/@devprotocol/hashi' with (
+@use '@devprotocol/hashi' with (
   $vue-mode: true
 );
 
@@ -55,7 +55,6 @@ export default {
   }
 
   .clb-radio__label {
-    font-family: hashi.token-get('family-subtitle');
     @apply text-xl;
     font-weight: hashi.token-get('weight-bold');
     line-height: hashi.token-get('line-height-condensed');

@@ -1,50 +1,66 @@
 <template>
-  <div
-    v-bind:class="`relative hs-wallet${
-      truncateWalletAddress &&
-      formattedUserBalance.length > 0 &&
-      supportedNetwork
-        ? ' is-connected'
-        : ''
-    }`"
-  >
-    <HSButton
-      type="outlined"
-      v-if="
+  <div v-if="isDisabled">
+    <button
+      v-bind:class="`hs-button rounded-md font-bold`"
+      role="button"
+      :disabled="true"
+    >
+      <span class="hs-button__label">Connect Wallet</span>
+    </button>
+  </div>
+  <div v-else>
+    <div
+      v-bind:class="`relative hs-wallet${
         truncateWalletAddress &&
         formattedUserBalance.length > 0 &&
         supportedNetwork
-      "
-      link="/me"
+          ? ' is-connected'
+          : ''
+      }`"
     >
-      {{ truncateWalletAddress }}
-    </HSButton>
-    <HSButton
-      type="outlined"
-      v-else-if="truncateWalletAddress && !supportedNetwork"
-      v-on:click="connect"
-    >
-      Unsupported Network
-    </HSButton>
-    <HSButton type="outlined" v-else v-on:click="connect">
-      Connect Wallet
-    </HSButton>
-    <span
-      v-if="truncateWalletAddress && !supportedNetwork"
-      class="absolute top-14 z-50 block rounded bg-orange-600 p-4 text-sm shadow"
-    >
-      Please connect to {{ chainName }}
-    </span>
-    <ul
-      class="hs-wallet__details"
-      v-if="
-        truncateWalletAddress &&
-        formattedUserBalance.length > 0 &&
-        supportedNetwork
-      "
-    >
-      <li>Balance: {{ formattedUserBalance }} $DEV</li>
-    </ul>
+      <HSButton
+        :type="`${type ? ' ' + type : ''}`"
+        v-if="
+          truncateWalletAddress &&
+          formattedUserBalance.length > 0 &&
+          supportedNetwork
+        "
+        link="/me"
+      >
+        {{ truncateWalletAddress }}
+      </HSButton>
+      <HSButton
+        :type="`${type ? ' ' + type : ''}`"
+        v-else-if="truncateWalletAddress && !supportedNetwork"
+        v-on:click="connect"
+      >
+        Unsupported Network
+      </HSButton>
+      <HSButton
+        :type="`${type ? ' ' + type : ''}`"
+        v-else
+        v-on:click="connect"
+        :loading="connection === undefined || modalProvider === undefined"
+      >
+        Connect Wallet
+      </HSButton>
+      <span
+        v-if="truncateWalletAddress && !supportedNetwork"
+        class="absolute top-14 z-50 block rounded bg-orange-600 p-4 text-sm shadow"
+      >
+        Please connect to {{ chainName }}
+      </span>
+      <ul
+        class="hs-wallet__details"
+        v-if="
+          truncateWalletAddress &&
+          formattedUserBalance.length > 0 &&
+          supportedNetwork
+        "
+      >
+        <li>Balance: {{ formattedUserBalance }} $DEV</li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -52,18 +68,19 @@
 import { providers, utils } from 'ethers'
 import truncateEthAddress from 'truncate-eth-address'
 import { whenDefined } from '@devprotocol/util-ts'
-import { ReConnectWallet, GetModalProvider } from '@fixtures/wallet'
-import { connection } from '@devprotocol/clubs-core/connection'
-import Core from 'web3modal'
+import type { connection as Connection } from '@devprotocol/clubs-core/connection'
+import type Web3Modal from 'web3modal'
 import { defineComponent } from '@vue/runtime-core'
 import { clientsDev } from '@devprotocol/dev-kit/agent'
 import HSButton from '../Primitives/Hashi/HSButton.vue'
 
 type Data = {
-  modalProvider: Core
+  modalProvider?: Web3Modal
   truncateWalletAddress: String
   formattedUserBalance: String
   supportedNetwork: boolean
+  isDisabled: boolean
+  connection?: typeof Connection
 }
 
 export default defineComponent({
@@ -71,14 +88,20 @@ export default defineComponent({
   components: { HSButton },
   props: {
     chainId: Number,
+    type: {
+      type: String,
+      required: false,
+    },
+    isDisabled: Boolean,
   },
   data(): Data {
-    const modalProvider = GetModalProvider()
     return {
-      modalProvider,
+      modalProvider: undefined,
       truncateWalletAddress: '',
       formattedUserBalance: '',
       supportedNetwork: false,
+      connection: undefined,
+      isDisabled: this.isDisabled,
     }
   },
   computed: {
@@ -95,7 +118,14 @@ export default defineComponent({
     },
   },
   async mounted() {
-    connection().chain.subscribe((chainId: number) => {
+    const [{ connection }, { GetModalProvider, ReConnectWallet }] =
+      await Promise.all([
+        import('@devprotocol/clubs-core/connection'),
+        import('@fixtures/wallet'),
+      ])
+    this.connection = connection
+    this.modalProvider = GetModalProvider()
+    connection().chain.subscribe((chainId) => {
       this.supportedNetwork = chainId === this.chainId
     })
     const { currentAddress, provider } = await ReConnectWallet(
@@ -113,10 +143,10 @@ export default defineComponent({
   },
   methods: {
     setSigner(provider: providers.Web3Provider) {
-      connection().signer.next(provider.getSigner())
+      this.connection!().signer.next(provider.getSigner())
     },
     async connect() {
-      const connectedProvider = await this.modalProvider.connect()
+      const connectedProvider = await this.modalProvider!.connect()
       const newProvider = whenDefined(connectedProvider, (p) => {
         const provider = new providers.Web3Provider(p)
         this.setSigner(provider)
@@ -133,7 +163,7 @@ export default defineComponent({
     },
     async fetchUserBalance(
       currentAddress: string,
-      provider: providers.Provider
+      provider: providers.BaseProvider
     ) {
       const [l1, l2] = await clientsDev(provider)
       const balance = await (l1 || l2)?.balanceOf(currentAddress)

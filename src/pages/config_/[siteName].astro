@@ -1,0 +1,30 @@
+---
+import Layout from '@layouts/Landing.astro'
+import { config as _config } from '@fixtures/config'
+
+const { siteName } = Astro.params
+
+const config = await _config(siteName).catch((err: Error) => err)
+
+if (config instanceof Error) {
+  console.error({ config })
+}
+---
+
+<Layout>
+  {
+    !(config instanceof Error) && (
+      <input type="hidden" id="encodedConfig" value={config} />
+    )
+  }
+</Layout>
+
+<script>
+  import { decode } from '@devprotocol/clubs-core'
+
+  const config = (document.getElementById('encodedConfig') as HTMLInputElement)
+    .value
+  const decodedConfig = decode(config)
+
+  console.log({ decodedConfig })
+</script>

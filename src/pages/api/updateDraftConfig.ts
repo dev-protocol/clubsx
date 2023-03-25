@@ -1,23 +1,20 @@
-import {
-  authenticate,
-  ClubsPluginOption,
-  ClubsPluginOptionValue,
-  decode,
-} from '@devprotocol/clubs-core'
-import { providers, utils } from 'ethers'
+import { ClubsPluginOption, decode } from '@devprotocol/clubs-core'
+import { instanceStore } from '@fixtures/firebase/instance'
+import { utils } from 'ethers'
 import { createClient } from 'redis'
 
 export const post = async ({ request }: { request: Request }) => {
-  const { site, config, sig, hash, jwtIdToken } = (await request.json()) as {
+  const { site, config, sig, hash } = (await request.json()) as {
     site: string
     config: string
     hash?: string
     sig?: string
-    jwtIdToken?: string
   }
 
   // We need either signautre or firebase jwt token to authenticate the draft.
-  if (!sig && !jwtIdToken) {
+  const hashAndSignGiven = !!hash && !!sig
+  const jwtIdTokenGiven = !!request.headers.has('authorization')
+  if (!hashAndSignGiven && !jwtIdTokenGiven) {
     return new Response(JSON.stringify({ error: 'Auth failed' }), {
       status: 401,
     })
@@ -28,6 +25,10 @@ export const post = async ({ request }: { request: Request }) => {
     url: process.env.REDIS_URL,
     username: process.env.REDIS_USERNAME ?? '',
     password: process.env.REDIS_PASSWORD ?? '',
+    socket: {
+      keepAlive: 1,
+      reconnectStrategy: 1,
+    },
   })
   await client.connect()
 
@@ -59,8 +60,8 @@ export const post = async ({ request }: { request: Request }) => {
   // Get the value of the __draftOptions.
   const value = __draftOption.value as {
     isInDraft: boolean
-    address: string
-    uid: string
+    address?: string
+    uid?: string
   }
 
   // We also check whether the site is currently in drafting phase or not.
@@ -72,34 +73,42 @@ export const post = async ({ request }: { request: Request }) => {
     })
   }
 
-  let authenticated: boolean = false
-
   // We check that the signature matches the address in the draftOptions.
-  if (sig) {
-    const address = utils.recoverAddress(utils.hashMessage(hash || ''), sig)
-    authenticated = address.toLowerCase() === value.address.toLowerCase()
-    if (!authenticated) {
+  if (hashAndSignGiven) {
+    const address = utils.recoverAddress(utils.hashMessage(hash), sig)
+    if (address.toLowerCase() !== value.address?.toLowerCase()) {
       return new Response(JSON.stringify({ error: 'Invalid sig' }), {
         status: 401,
       })
     }
   }
 
-  // TODO: uncomment once we have signup and some draft flow ready to test.
   // We now check that the jwt matches the user in the draftOptions.
-  // if (jwtIdToken) {
-  //   const auth = initializeFirebase();
-  //   try {
-  //     const decodedJwtData = await auth.verifyIdToken(jwtIdToken);
-  //     const uidInJwt = decodedJwtData.uid;
-  //     authenticated = uidInJwt === value.uid;
-  //     if (!authenticated) {
-  //       return new Response(JSON.stringify({}), { status: 401 })
-  //     }
-  //   } catch (error: any) {
-  //     return new Response(JSON.stringify({ error }), { status: error?.response?.status || 500 })
-  //   }
-  // }
+  if (jwtIdTokenGiven) {
+    const authorization: string | null = request.headers.get('authorization')
+    // Get the token out of the header.
+    const jwtTokenId: string | undefined = authorization?.split('Bearer ')[1]
+    if (!jwtTokenId) {
+      return new Response(JSON.stringify({ error: 'Auth missing' }), {
+        status: 401,
+      })
+    }
+
+    // Initialize the firebase app and check that token is valid.
+    const auth = instanceStore.initializedAdminApp
+    // Then we compare the token.
+    try {
+      const decodedJwtData = await auth.verifyIdToken(jwtTokenId)
+      const uidInJwt = decodedJwtData.uid
+      if (uidInJwt !== value.uid) {
+        return new Response(JSON.stringify({}), { status: 401 })
+      }
+    } catch (error: any) {
+      return new Response(JSON.stringify({ error }), {
+        status: error?.response?.status || 500,
+      })
+    }
+  }
 
   try {
     await client.set(site, config)

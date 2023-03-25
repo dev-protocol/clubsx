@@ -1,0 +1,142 @@
+---
+/**
+ * This page is for when the user clicks from the Firebase email authentication link
+ * For Verifying a new account
+ */
+
+import Layout from '@layouts/Landing.astro'
+
+const { siteName } = Astro.params
+---
+
+<Layout>
+  <section class="grid justify-center p-4 md:p-0">
+    <section class="my-16 grid gap-8 text-center md:my-32">
+      <h1 class="text-2xl font-bold md:text-5xl">Connect Your Account</h1>
+      <p>Link your account to your club.</p>
+    </section>
+    <span
+      id="authentication-text"
+      class="hs-button is-filled animate-pulse rounded border-0 bg-gray-500/60 px-8 py-4 text-inherit"
+      >Authenticating...</span
+    >
+  </section>
+  <input id="siteName" type="hidden" value={siteName} disabled />
+</Layout>
+
+<script>
+  import { instanceStore } from '../../fixtures/firebase/clientInstance'
+  import {
+    ClubsConfiguration,
+    encode,
+    setConfig,
+  } from '@devprotocol/clubs-core'
+
+  import { defaultConfig } from '@constants/defaultConfig'
+
+  import type { DraftOptions } from '@constants/draft'
+
+  import { isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth'
+
+  // Confirm the link is a sign-in with email link.
+  const auth = instanceStore.initializedApp
+  const siteName = (document.getElementById('siteName') as HTMLInputElement)
+    ?.value as string
+
+  if (isSignInWithEmailLink(auth, window.location.href)) {
+    let email = window.localStorage.getItem('emailForSignIn')
+    if (!email) {
+      // User opened the link on a different device. To prevent session fixation
+      // attacks, ask the user to provide the associated email again. For example:
+      email = window.prompt('Please provide your email for confirmation')
+    }
+
+    signInWithEmailLink(auth, email ?? '', window.location.href)
+      .then(async (result) => {
+        // Clear email from storage.
+        window.localStorage.removeItem('emailForSignIn')
+        const jwtToken = await result.user.getIdToken()
+        const site: string | undefined =
+          window.location.pathname.split('/').pop() || siteName
+        const uid = result.user.uid
+        // If it is a new user, set the __draft user
+        if (uid) {
+          const isReachedCreationLimitsRes = await fetch(
+            `/api/hasCreationLimitReached/${uid}`
+          )
+          const isReachedCreationLimitsResJson =
+            await isReachedCreationLimitsRes.json()
+          if (
+            !isReachedCreationLimitsRes.ok ||
+            isReachedCreationLimitsResJson?.isCreationLimitReached
+          ) {
+            const element = document.getElementById('authentication-text')
+            if (element) {
+              element.innerText =
+                'You have reached limit of clubs creation! You cannot create more clubs'
+              element.classList.remove('animate-pulse')
+            }
+            return
+          }
+
+          // Make the default config.
+          const config: ClubsConfiguration = {
+            ...defaultConfig,
+            name: site,
+            url: `https://${site}.clubs.place`,
+            options: [
+              ...(defaultConfig.options ? defaultConfig.options : []),
+              {
+                key: '__draft',
+                value: {
+                  isInDraft: true,
+                  uid: uid,
+                },
+              } as DraftOptions,
+            ],
+          }
+          const body = {
+            site,
+            config: encode(config),
+            uid,
+          }
+          // Save the config to db.
+          const res = await fetch('/api/addDaoToDraft', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${jwtToken}`,
+            },
+            body: JSON.stringify(body),
+          })
+          if (res.ok) {
+            setConfig(config)
+            window.location.href = new URL(
+              `${siteName}/setup/basic`,
+              `${location.protocol}//${location.host}`
+            ).toString()
+          } else {
+            const jsonResponse = await res.json()
+            if (
+              res.status === 400 &&
+              jsonResponse.message &&
+              jsonResponse.message
+                .toLowerCase()
+                .includes('you already have created 3 clubs')
+            ) {
+              const element = document.getElementById('authentication-text')
+              if (element) {
+                element.innerText =
+                  'You have reached limit of clubs creation! You cannot create more clubs'
+                element.classList.remove('animate-pulse')
+              }
+              return
+            }
+          }
+        }
+      })
+      .catch((err) => {
+        console.error('error using signInWithEmailLink: ', err)
+      })
+  }
+</script>

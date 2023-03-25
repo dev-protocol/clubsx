@@ -1,0 +1,109 @@
+---
+import { config as _config } from '@fixtures/config'
+import { adminFactory } from '@devprotocol/clubs-core'
+import admin from '@plugins/admin'
+import SetupLayout from '@layouts/Setup.astro'
+import PublishGrants from '@components/PublishGrants/PublishGrants'
+import checkImage from '@assets/step-check.svg'
+import roundedSquareImage from '@assets/step-rounded-square.svg'
+import PublishConnect from '@components/PublishConnect/PublishConnect.vue'
+import PublishNetworkSelection from '@components/PublishNetworkSelection/PublishNetworkSelection.vue'
+import type { UndefinedOr } from '@devprotocol/util-ts'
+import type { DraftOptions } from '@constants/draft'
+import NextButton from '@components/Setup/NextButton.astro'
+import PageNotFound from '@pages/404.astro'
+
+const { site } = Astro.params
+
+const testnets = Astro.url.searchParams.get('testnets') === ''
+
+const { getStaticPaths, getCurrentConfig } = adminFactory({
+  config: async () => await _config(site),
+  plugins: {
+    admin,
+  },
+})
+
+const config = await getCurrentConfig()
+const path = (await getStaticPaths()).find(({ props }) => props.clubs)
+
+const draftOptions = config.options?.find((opt) => opt.key === '__draft')
+const draftOptionsValue = draftOptions?.value as UndefinedOr<
+  DraftOptions['value']
+>
+
+const membershipsPlugin = config.plugins.find(
+  (plgn) => plgn.name === 'memberships'
+)
+const membershipsPluginOptions = membershipsPlugin?.options?.find(
+  (opt) => opt.key === 'memberships'
+)?.value
+
+const siteBaseUrl = ((url) =>
+  `${url.protocol}//${url.host}/${site}/setup/preview`)(
+  new URL(Astro.request.url)
+)
+
+const baseDomainUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
+  new URL(Astro.request.url)
+)
+---
+
+{
+  path ? (
+    <SetupLayout
+      {config}
+      {...path.props}
+      setupStep="PUBLISH"
+      aside={false}
+      title="Setup Clubs | Publish"
+    >
+      <section class="grid gap-16">
+        <h2 class="font-title text-2xl font-bold">Publish</h2>
+        <PublishConnect client:load checkImage={checkImage} />
+        <PublishNetworkSelection
+          client:load
+          checkImage={checkImage}
+          roundedSquareImage={roundedSquareImage}
+          category={draftOptionsValue?.category}
+          membershipsPluginOptions={membershipsPluginOptions}
+          showTestnets={testnets}
+          config={config}
+          site={site}
+        />
+        {draftOptionsValue?.isInDraft && (
+          <div>
+            <a
+              href={new URL('/admin/overview', baseDomainUrl).toString()}
+              class="grid gap-4 overflow-hidden rounded-2xl bg-dp-blue-grey-600 p-4 transition-shadow hover:shadow-[0_0_0_8px_rgba(255,255,255,0.2)]"
+            >
+              <p class="text-2xl font-bold">Skip</p>
+              <p class="text-sm">
+                Want to skip publish for now? You can try out the admin pages
+                now to publish later.
+              </p>
+            </a>
+          </div>
+        )}
+        <a
+          href="https://clubs-starter-grant.webflow.io/"
+          target="_blank"
+          rel="noopener"
+          class="overflow-hidden rounded-2xl transition-shadow hover:shadow-[0_0_0_8px_rgba(255,255,255,0.2)]"
+        >
+          <PublishGrants />
+        </a>
+      </section>
+
+      <NextButton
+        next={new URL('/admin/overview', baseDomainUrl).toString()}
+        slot="admin:aside:after-built-in-buttons"
+      />
+    </SetupLayout>
+  ) : (
+    <PageNotFound
+      redirectionCtaText={`Take me back to previous page `}
+      redirectionCtaUrl={siteBaseUrl}
+    />
+  )
+}

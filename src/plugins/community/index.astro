@@ -6,6 +6,12 @@ import Step1 from '@assets/Step-1.png'
 import Step2 from '@assets/Step-2.png'
 import Step3 from '@assets/Step-3.png'
 import Key from '@assets/key.png'
+
+const { name, options } = Astro.props
+const guildUrl =
+  options.find(
+    (option: { key: string; value: string }) => option.key === 'guildUrl'
+  )?.value || 'https://guild.xyz/'
 ---
 
 <div class="relative">
@@ -25,18 +31,18 @@ import Key from '@assets/key.png'
     <section>
       <h1 class="mb-6 font-title text-2xl font-bold">Do you have a key?</h1>
       <p class="mb-2 font-title text-lg">
-        Membership is earned by staking over <span class="text-plox-400"
-          >400 $DEV
-        </span> on TemplesDAO, which is the key to joining the community.
+        Memberships of {name} are open <a href="/join" class="text-lg underline"
+          >here</a
+        >, and it is also the key to joining the community.
       </p>
       <p class="mb-4 font-title text-lg">
-        If you don’t have a key, get the key now with $DEV or $ETH
+        If you don't have a key, get the key now with $DEV or $ETH
       </p>
-      <HSButton type="filled plox">Join</HSButton>
+      <HSButton type="filled plox" link="/join">Join</HSButton>
     </section>
     <section class="my-6 h-[229px] overflow-hidden">
       <img
-        class="h-full w-full object-cover object-center"
+        class="h-full w-full rounded-2xl object-cover object-center"
         src={Key}
         alt="A picture of a chrome plated key"
       />
@@ -46,24 +52,18 @@ import Key from '@assets/key.png'
         Open the door to the community
       </h1>
       <Step step="1" label="Connect your wallet to guild.xyz" media={Step1}>
-        <HSButton
-          type="filled plox contained"
-          link="https://guild.xyz/temples-dao"
-          >guild.xyz
+        <HSButton type="filled plox contained" link={guildUrl}>
+          guild.xyz
         </HSButton>
       </Step>
       <Step step="2" label="Join our guild" media={Step2}>
-        <HSButton
-          type="filled plox contained"
-          link="https://guild.xyz/temples-dao"
-          >guild.xyz
+        <HSButton type="filled plox contained" link={guildUrl}>
+          guild.xyz
         </HSButton>
       </Step>
       <Step step="3" label="Open the invite link" media={Step3}>
-        <HSButton
-          type="filled plox contained"
-          link="https://guild.xyz/temples-dao"
-          >guild.xyz
+        <HSButton type="filled plox contained" link={guildUrl}>
+          guild.xyz
         </HSButton>
       </Step>
     </section>

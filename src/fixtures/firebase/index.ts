@@ -1,5 +1,5 @@
-import { initializeApp } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
+import { initializeApp, getApp, getApps, FirebaseApp } from 'firebase/app'
 
 export const initializeFirebase = () => {
   // Your web app's Firebase configuration
@@ -12,8 +12,16 @@ export const initializeFirebase = () => {
     appId: import.meta.env.PUBLIC_FIREBASE_APP_ID,
   }
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig)
+  let app: FirebaseApp
+
+  const apps: FirebaseApp[] = getApps()
+  if (apps.length > 0) {
+    app = getApp()
+  } else {
+    // Initialize Firebase
+    app = initializeApp(firebaseConfig)
+  }
+
   const auth = getAuth(app)
 
   return auth

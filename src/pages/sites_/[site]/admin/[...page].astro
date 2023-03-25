@@ -1,56 +1,173 @@
 ---
-import Admin from '@devprotocol/clubs-core/admin'
-import { adminFactory } from '@devprotocol/clubs-core'
+import DefaultLayout from '@layouts/Default.astro'
+import { Admin } from '@devprotocol/clubs-core/layouts'
+import { adminFactory, decode } from '@devprotocol/clubs-core'
 import { config as _config } from '@fixtures/config'
+import defaultTheme from '@plugins/default-theme'
 import admin from '@plugins/admin'
 import community from '@plugins/community'
-import membership from '@plugins/membership'
+import memberships from '@plugins/memberships'
 import quests from '@plugins/quests'
 import home from '@plugins/home'
+import message from '@plugins/message'
+import VercelAnalytics from '@components/Analytics/VercelAnalytics.astro'
+import PageNotFound from '@pages/404.astro'
+import marketplace from '@plugins/marketplace'
+import IconGlobe from '@components/Icons/globe-europe-africa.astro'
+import Banner from '@components/Global/Banner.astro'
 
 const { site, page } = Astro.params
 
 const { getStaticPaths } = adminFactory({
   config: async () => await _config(site),
   plugins: {
+    defaultTheme,
     admin,
     quests,
     community,
-    membership,
+    memberships,
     home,
+    message,
+    marketplace,
   },
 })
-
 const path = (await getStaticPaths()).find(({ params }) => params.page === page)
+const config = path && decode(path.props.clubs.encodedClubsConfiguration)
 
-if (!path) {
-  throw new Error('Path undefined: ', path)
-}
+const Content = path?.props.component
 
-const Content = path.props.component
+const baseUrl = ((host) =>
+  host.includes('localhost')
+    ? host.replace(/^.*\.(localhost.*)$/, 'http://$1')
+    : `https://${host.split('.').slice(1, Infinity).join('.')}`)(
+  new URL(Astro.request.url).host
+)
+
+const siteBaseUrl = new URL(Astro.request.url).origin
 ---
 
-<Admin {...path.props}>
-  <Content {...path.props} />
-</Admin>
+<DefaultLayout
+  {...path?.props ?? {}}
+  config={config}
+  footer={false}
+  inAdmin={true}
+>
+  {
+    path && Content ? (
+      <>
+        <Banner />
+        <Admin {...path.props}>
+          <a
+            slot="admin:sidebar:before-title"
+            class="flex items-center gap-2 transition-colors hover:text-native-blue-300"
+            href={`${baseUrl}/signin`}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="h-4 w-4"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M19.5 12h-15m0 0l6.75 6.75M4.5 12l6.75-6.75"
+              />
+            </svg>
+            Projects
+          </a>
+          <a
+            slot="admin:sidebar:before-title"
+            class="flex items-center gap-2 transition-colors hover:text-native-blue-300"
+            target="_blank"
+            rel="noopener norefferer"
+            href={siteBaseUrl}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="h-4 w-4"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"
+              />
+            </svg>
+            Club page
+          </a>
+          <li slot="admin:sidebar:before-theme-link">
+            <a
+              class:list={[
+                '-mx-3 flex items-center gap-2 rounded p-3 font-bold transition-colors duration-500',
+                page?.startsWith('marketplace')
+                  ? 'bg-white text-black'
+                  : 'hover:bg-slate-800',
+              ]}
+              href="/admin/marketplace"
+            >
+              <span class="text-[#D500E6]">
+                <IconGlobe />
+              </span>
+              Marketplace
+            </a>
+          </li>
+
+          <Content {...path.props} />
+          <VercelAnalytics />
+        </Admin>
+      </>
+    ) : (
+      <PageNotFound
+        redirectionCtaText={`Take me back ${site} homepage`}
+        redirectionCtaUrl={`${
+          new URL(Astro.request.url).origin
+        }/admin/overview`}
+      />
+    )
+  }
+</DefaultLayout>
 
 <script>
-  import { onSubmitConfig } from '@devprotocol/clubs-core'
-  import { GetModalProvider, ReConnectWallet } from '@fixtures/wallet'
+  import type { ethers } from 'ethers'
+  import type { connection as Connection } from '@devprotocol/clubs-core/connection'
+  import type { DraftOptions } from '@constants/draft'
+  import { decode, onSubmitConfig } from '@devprotocol/clubs-core'
+  import { onMountClient } from '@devprotocol/clubs-core/events'
   import { utils } from 'ethers'
+
+  let connection: typeof Connection
+  let signer: ethers.Signer | undefined
+  let currentAddress: string | undefined
+
+  onMountClient(async () => {
+    const _connection = await import('@devprotocol/clubs-core/connection')
+    connection = _connection.connection
+    connection().signer.subscribe((s) => {
+      signer = s
+    })
+    connection().account.subscribe((a) => {
+      currentAddress = a
+    })
+  })
 
   onSubmitConfig(async (data, onFinish) => {
     const splitHostname = window.location.hostname.split('.')
     const site = splitHostname[0]
 
-    const modalProvider = GetModalProvider()
-    const { provider, currentAddress } = await ReConnectWallet(modalProvider)
-    if (!currentAddress || !provider) {
-      return
+    if (!currentAddress || !signer) {
+      return onFinish({
+        success: false,
+        error: new Error('Please connect your wallet first'),
+      })
     }
-    const signer = provider.getSigner()
 
-    const hash = await utils.hashMessage(data)
+    const hash = utils.hashMessage(data)
     const sig = await signer.signMessage(hash)
     if (!sig) {
       return
@@ -64,12 +181,22 @@ const Content = path.props.component
       expectedAddress: currentAddress,
     }
 
-    const res = await fetch('/api/updateConfig', {
-      method: 'POST',
-      body: JSON.stringify(body),
-    })
+    const isInDraft = Boolean(
+      (
+        decode(data).options?.find((option) => option.key === '__draft')
+          ?.value as DraftOptions['value']
+      )?.isInDraft
+    )
 
-    const success = res.ok
+    const res = await fetch(
+      isInDraft ? '/api/updateDraftConfig' : '/api/updateConfig',
+      {
+        method: 'POST',
+        body: JSON.stringify(body),
+      }
+    )
+
+    const success = Boolean(res?.ok)
     onFinish({ success })
   })
 </script>

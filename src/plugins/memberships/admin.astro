@@ -1,0 +1,27 @@
+---
+import AdminMembershipsForm from '@components/AdminMembershipsForm/AdminMembershipsForm.svelte'
+import type { ClubsPropsAdminPages } from '@devprotocol/clubs-core'
+import type { Membership } from '.'
+
+const { memberships, presets, name, clubs } =
+  Astro.props as ClubsPropsAdminPages & {
+    memberships: Membership[]
+    presets: Membership[]
+    rpcUrl: string
+    name: string
+  }
+---
+
+<div>
+  <h1 class="mb-16 font-title text-lg font-bold">Memberships</h1>
+
+  <h2 class="mb-8 text-2xl">Create a new Membership by selecting a template</h2>
+
+  <AdminMembershipsForm
+    client:only="svelte"
+    clubName={name}
+    currentPluginIndex={clubs.currentPluginIndex}
+    memberships={memberships}
+    presets={presets}
+  />
+</div>

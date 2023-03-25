@@ -1,6 +1,5 @@
 ---
 import type { Products } from '@constants/products'
-import Footer from '@components/Global/Footer.astro'
 import Hero from '@components/Hero/hero'
 import Hero2 from '@components/Hero/hero2'
 import Cards from '@components/list/cards'
@@ -16,7 +15,7 @@ const { products, coverImgSrc, title, description, projectName, avatarImgSrc } =
   }
 ---
 
-<div class="container mx-auto grid gap-8 bg-black md:gap-16">
+<div class="container mx-auto grid gap-8 md:gap-16">
   <Hero projectName={projectName} coverImgSrc={coverImgSrc} />
   <Hero2
     title={title}
@@ -24,6 +23,5 @@ const { products, coverImgSrc, title, description, projectName, avatarImgSrc } =
     projectName={projectName}
     avatarImgSrc={avatarImgSrc}
   />
-  <Cards products={products} />
+  <Cards products={[...products]} />
 </div>
-<Footer />

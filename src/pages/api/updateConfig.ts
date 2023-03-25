@@ -14,6 +14,10 @@ export const post = async ({ request }: { request: Request }) => {
     url: process.env.REDIS_URL,
     username: process.env.REDIS_USERNAME ?? '',
     password: process.env.REDIS_PASSWORD ?? '',
+    socket: {
+      keepAlive: 1,
+      reconnectStrategy: 1,
+    },
   })
   await client.connect()
 
@@ -28,15 +32,26 @@ export const post = async ({ request }: { request: Request }) => {
     })
   }
 
-  const provider = providers.getDefaultProvider(
-    decode(previousConfiguration).rpcUrl
+  const isInDraft = decode(config).options?.some(
+    (x) =>
+      x.key === '__draft' &&
+      (
+        x.value as {
+          isInDraft: boolean
+        }
+      ).isInDraft === true
   )
-  const authenticated = await authenticate({
-    message: hash,
-    signature: sig,
-    previousConfiguration,
-    provider,
-  })
+
+  const authenticated = isInDraft
+    ? true
+    : await authenticate({
+        message: hash,
+        signature: sig,
+        previousConfiguration,
+        provider: providers.getDefaultProvider(
+          decode(previousConfiguration).rpcUrl
+        ),
+      })
 
   if (!authenticated) {
     return new Response(JSON.stringify({}), { status: 401 })

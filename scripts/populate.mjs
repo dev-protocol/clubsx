@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 import { encode } from '@devprotocol/clubs-core/encode'
 import { createClient } from 'redis'
 import { utils } from 'ethers'
-import BigNumber from 'bignumber.js'
+import fs from 'fs-extra'
 
 dotenv.config()
 
@@ -202,10 +202,6 @@ const kougenjiProducts = [
     },
   },
 ]
-const kougenjiProductsMumbai = kougenjiProducts.map((item) => ({
-  ...item,
-  price: new BigNumber(item.price).div(100).toFixed(),
-}))
 
 const tiers = [
   {
@@ -244,11 +240,11 @@ const perks = [
     descriptions: [
       {
         lang: 'en_US',
-        description: `A privilege to enjoy shopping low price products at members-limited EC sites, supporters-only information such as private YouTube videos`,
+        description: `A privilege to enjoy shopping low price products at members-limited EC sites, supporters-only information such as private YouTube videos, participation to the monthly community hour and members-only quests`,
       },
       {
         lang: 'ja_JP',
-        description: `限定ECサイト（低額商品）での購入権、非公開YouTube動画などサポーター限定の情報`,
+        description: `限定ECサイト（低額商品）での購入権、非公開YouTube動画、月1回のコミュニティアワーやメンバー限定クエストへの参加などサポーター限定の情報`,
       },
     ],
   },
@@ -257,19 +253,11 @@ const perks = [
     descriptions: [
       {
         lang: 'en_US',
-        description: `Tier 3 + a privilege to join auctions, a privilege to purchase luxurious items, etc.`,
-      },
-      {
-        lang: 'en_US',
-        description: `(Online Perks)`,
+        description: `Tier 3 + a privilege to join auctions, a privilege to purchase luxurious items, etc. (Online Perks)`,
       },
       {
         lang: 'ja_JP',
-        description: `Tier3₊オークションへの参加権、特級品の購入権など`,
-      },
-      {
-        lang: 'ja_JP',
-        description: `（オンラインでの特典）`,
+        description: `Tier 3 + オークションへの参加権、特級品の購入権など（オンラインでの特典）`,
       },
     ],
   },
@@ -282,7 +270,7 @@ const perks = [
       },
       {
         lang: 'ja_JP',
-        description: `Tier2+ 特別な場所を訪れることができる権利（半年1回まで）（物理的な体験を含む特典）`,
+        description: `Tier 2 + 特別な場所を訪れたり、物理的な体験をすることができる権利（最大年2回まで）`,
       },
     ],
   },
@@ -295,52 +283,9 @@ const perks = [
       },
       {
         lang: 'ja_JP',
-        description: `Tier1+ オーダーメード権利`,
+        description: `Tier 1 + オーダーメード権利（通常お寺様からのオーダー依頼で作る職人にご希望の商品を作製して貰える権利。内容は要相談）`,
       },
     ],
-  },
-]
-
-const memberships = [
-  {
-    id: 'tier-3',
-    name: 'Tier 3',
-    description: undefined,
-    price: 400,
-    currency: 'DEV',
-    imageSrc: '',
-    payload: new Uint8Array(),
-    fee: undefined,
-  },
-  {
-    id: 'tier-2',
-    name: 'Tier 2',
-    description: undefined,
-    price: 4000,
-    currency: 'DEV',
-    imageSrc: '',
-    payload: new Uint8Array(),
-    fee: undefined,
-  },
-  {
-    id: 'tier-1',
-    name: 'Tier 1',
-    description: undefined,
-    price: 10000,
-    currency: 'DEV',
-    imageSrc: '',
-    payload: new Uint8Array(),
-    fee: undefined,
-  },
-  {
-    id: 'super',
-    name: 'Super',
-    description: undefined,
-    price: 15000,
-    currency: 'DEV',
-    imageSrc: '',
-    payload: new Uint8Array(),
-    fee: undefined,
   },
 ]
 
@@ -349,64 +294,6 @@ const guild = {
   value: 'https://guild.xyz/temples-dao',
 }
 
-const templesHomeConfig = {
-  hero: {
-    image: 'https://i.imgur.com/oNf7FsR.jpg',
-    text: 'Join the DAO that makes the next 1000 years',
-  },
-  whatWeDo: {
-    text: 'We make everything for temples. Let’s continue to create history by passing on culture.',
-    images: [
-      {
-        image: 'https://i.imgur.com/9gAz9wI.png',
-        description: 'Zuiunji-temple, Hokkaido / 瑞雲寺 楼門',
-      },
-      {
-        image: 'https://i.imgur.com/lKyjs9f.png',
-        description: 'Narita san Shinshoji-temple, Chiba / 成田山新勝寺 荘厳具',
-      },
-    ],
-  },
-  perks: {
-    headerText:
-      'Receive NFTs, authentic art pieces by traditional artisans and more.',
-    subText:
-      'Get NFTs, and redeem authentic art pieces by real traditional craftsmanship.',
-    images: [
-      {
-        image: 'https://i.imgur.com/m5HQXhz.png',
-        description: '40 Makie lacquer-work plate',
-      },
-      {
-        image: 'https://i.imgur.com/UStVM2Y.png',
-        description: '92 Transformable panel',
-      },
-      {
-        image: 'https://i.imgur.com/XQqkt1f.png',
-        description: '89 Metal panel, moon and autumn grasses',
-      },
-      {
-        image: 'https://i.imgur.com/60ALfQp.png',
-        description: '12 Lotus petal dish flower in the moon',
-      },
-      {
-        image: 'https://i.imgur.com/1yoKPeb.png',
-        description: '125 Virupaksa (Buddhist deity)',
-      },
-      {
-        image: 'https://i.imgur.com/JMHaZVn.png',
-        description: '101 Meditation Room',
-      },
-      {
-        image: 'https://i.imgur.com/BePYk2f.png',
-        description:
-          "108 The Light Beyond, Ryunosuke Akutagawa, The Spider's Thread",
-      },
-    ],
-  },
-  quote:
-    "Let's get good craftsmen to do good work. It is important to pass on the skills of skilled craftsmen to the next generation.",
-}
 const populate = async () => {
   try {
     const client = createClient({
@@ -416,13 +303,14 @@ const populate = async () => {
     })
     await client.connect()
 
+    // await client.del('aggre')
     await client.set(
       'temples',
       encode({
-        name: 'TemplesDAO',
+        name: '寺DAO',
         twitterHandle: '@templesdao',
         description: 'DAO that makes the next 1000 years',
-        url: 'https://temples.clubs.stakes.social',
+        url: 'https://temples.clubs.place',
         propertyAddress: '0x541f7914ed2a4a8b477edc711fa349a77983f3ad',
         adminRolePoints: 0,
         chainId: 1,
@@ -433,39 +321,16 @@ const populate = async () => {
             value: { image: 'https://i.imgur.com/lcyO9Bn.jpg' },
           },
           {
-            key: 'headerLinks',
-            value: [
-              {
-                display: 'Kougenji',
-                path: 'https://kougenji.clubs.stakes.social/',
-              },
-            ],
-          },
-          {
-            key: 'socialLinks',
-            value: [
-              {
-                display: 'Stakes.social',
-                path: '#',
-              },
-              {
-                display: 'YouTube',
-                path: 'https://www.youtube.com/user/suiundo/',
-              },
-            ],
-          },
-          {
-            key: 'sidebarPrimaryLinks',
+            key: 'navigationLinks',
             value: [
               {
                 display: 'Join',
                 path: '/join',
               },
-            ],
-          },
-          {
-            key: 'sidebarLinks',
-            value: [
+              {
+                display: 'Kougenji',
+                path: 'https://kougenji.clubs.place',
+              },
               {
                 display: 'Community',
                 path: '/community',
@@ -492,13 +357,17 @@ const populate = async () => {
             ],
           },
           {
-            key: 'fullPageViewPaths',
-            value: [{ path: '', exact: true }, { path: 'join/' }],
+            key: 'socialLinks',
+            value: [
+              {
+                display: 'YouTube',
+                path: 'https://www.youtube.com/user/suiundo/',
+              },
+            ],
           },
           {
             key: 'avatarImgSrc',
-            value:
-              'https://temples.clubs.stakes.social/assets/avatar.445c55eb.png',
+            value: 'https://i.imgur.com/jDel1t9.png',
           },
         ],
         plugins: [
@@ -508,23 +377,33 @@ const populate = async () => {
             options: [],
           },
           {
-            name: 'home',
+            name: 'defaultTheme',
             enable: true,
             options: [
               {
-                key: 'tiers',
-                value: tiers,
+                key: 'globalConfig',
+                value: {
+                  bg: 'rgba(68, 59, 45, 1)',
+                  backgroundGradient: [
+                    'rgba(255, 201, 119, 0.2)',
+                    'rgba(255, 201, 119, 0)',
+                  ],
+                },
               },
               {
                 key: 'homeConfig',
-                value: templesHomeConfig,
+                value: {
+                  hero: {
+                    image: 'https://i.imgur.com/oNf7FsR.jpg',
+                  },
+                  description: `寺DAOでは、寺院建築、荘厳仏具に携わる工芸士、職人の伝統的技術を伝え、後世に残すことを目的とした支援を行っております。`,
+                  body: fs.readFileSync(
+                    './src/assets/homeConfig.temples.body.md',
+                    'utf-8'
+                  ),
+                },
               },
             ],
-          },
-          {
-            name: 'fiat',
-            enable: true,
-            options: [],
           },
           {
             name: 'join',
@@ -543,11 +422,6 @@ const populate = async () => {
           },
           {
             name: 'members',
-            enable: true,
-            options: [],
-          },
-          {
-            name: 'message',
             enable: true,
             options: [],
           },
@@ -574,20 +448,69 @@ const populate = async () => {
           {
             name: 'memberships',
             enable: true,
-            options: [memberships],
+            options: [
+              {
+                key: 'memberships',
+                value: [
+                  {
+                    id: 'tier-3',
+                    name: 'Tier 3',
+                    description: `蒔絵師による作品/ やすらぎ壇「蓮華」\n\n**特典** - 限定ECサイト(低額商品)での購入権、非公開YouTube動画、月1回のコミュニティアワーやメンバー限定クエストへの参加などサポーター限定の情報`,
+                    price: 400,
+                    currency: 'DEV',
+                    imageSrc:
+                      'https://bafybeiav46h6zegh4e7zfdcgk6xjpg6if2kdxtvp3ejtyicvpgc2iucpim.ipfs.nftstorage.link',
+                    payload: undefined,
+                    fee: undefined,
+                  },
+                  {
+                    id: 'tier-2',
+                    name: 'Tier 2',
+                    description: `蒔絵師による作品/ やすらぎ壇 「光輝」\n\n**特典** - Tier 3 + オークションへの参加権、特級品の購入権など(オンラインでの特典)`,
+                    price: 4000,
+                    currency: 'DEV',
+                    imageSrc:
+                      'https://bafybeic3d2otapykfdp3ktqbdonn4ylrove5ccs5vv2udydwbgudstrcwu.ipfs.nftstorage.link',
+                    payload: undefined,
+                    fee: undefined,
+                  },
+                  {
+                    id: 'tier-1',
+                    name: 'Tier 1',
+                    description: `大本山 總持寺 仁王像（總持寺型仁王像）\n\n**特典** - Tier 2 + 特別な場所を訪れたり、物理的な体験をすることができる権利(最大年2回まで)`,
+                    price: 10000,
+                    currency: 'DEV',
+                    imageSrc:
+                      'https://bafybeib745w7vjcsh37mepaluvbmqrbjq4gax46oirkmrjeqeh55gjiyzi.ipfs.nftstorage.link',
+                    payload: undefined,
+                    fee: undefined,
+                  },
+                  {
+                    id: 'super',
+                    name: 'Super',
+                    description: `大本山護国寺 如意輪観世音菩薩像\n\n**特典** - Tier 1 + オーダーメード権利(通常お寺様からのオーダー依頼で作る職人にご希望の商品を作製して貰える権利。内容は要相談)`,
+                    price: 15000,
+                    currency: 'DEV',
+                    imageSrc:
+                      'https://bafybeiagvn4exdbwokm4g6t6a2s3xvl2fu7zutvlf6sgwd4fjrdrc23hsu.ipfs.nftstorage.link',
+                    payload: undefined,
+                    fee: undefined,
+                  },
+                ],
+              },
+            ],
           },
         ],
       })
     )
 
-    // await client.del('kogenji')
     await client.set(
       'kougenji',
       encode({
         name: 'Kougenji',
         twitterHandle: '@templesdao',
         description: '',
-        url: 'https://kougenji.clubs.stakes.social',
+        url: 'https://kougenji.clubs.place',
         propertyAddress: '0x23d67953FE2e61e9fAc78447526D9358cD05d40d', // Polygon: 0x23d67953FE2e61e9fAc78447526D9358cD05d40d // Mumbai: 0x70a8B9a4B2d407a542c205adBbEA38289c3285eB
         chainId: 137, // Polygon: 137 // Mumbai: 80001
         rpcUrl:
@@ -599,11 +522,11 @@ const populate = async () => {
             value: { image: 'https://i.imgur.com/I6Yr0V7.jpg' },
           },
           {
-            key: 'headerLinks',
+            key: 'navigationLinks',
             value: [
               {
                 display: 'ETH での支援',
-                path: 'nft',
+                path: '/nft',
               },
               {
                 display: '特典について',
@@ -616,7 +539,7 @@ const populate = async () => {
             ],
           },
           {
-            key: 'navLinks',
+            key: 'footerLinks',
             value: [
               {
                 display: 'About',
@@ -640,27 +563,8 @@ const populate = async () => {
             key: 'avatarImgSrc',
             value: 'https://i.imgur.com/453nyAX.jpg',
           },
-          {
-            key: 'fullPageViewPaths',
-            value: [{ path: '' }],
-          },
         ],
         plugins: [
-          {
-            name: 'me',
-            enable: true,
-            options: [],
-          },
-          {
-            name: 'buy',
-            enable: true,
-            options: [
-              {
-                key: 'products',
-                value: kougenjiProducts, // Polygon: kougenjiProducts // Mumbai: kougenjiProductsMumbai
-              },
-            ],
-          },
           {
             name: 'fiat',
             enable: true,
@@ -762,103 +666,26 @@ const populate = async () => {
             ],
           },
           {
-            name: 'nft',
+            name: 'defaultTheme',
             enable: true,
             options: [
               {
-                key: 'products',
-                value: kougenjiProducts, // Polygon: kougenjiProducts // Mumbai: kougenjiProductsMumbai
+                key: 'globalConfig',
+                value: {
+                  bg: 'rgba(29, 36, 38, 1)',
+                },
               },
               {
-                key: 'coverImgSrc',
-                value: 'https://i.imgur.com/I6Yr0V7.jpg',
-              },
-              {
-                key: 'title',
-                value: '光源寺/ Kougenji',
-              },
-              {
-                key: 'description',
-                value: [
-                  `光源寺の天女絵修復プロジェクトでのご支援金は、天女の表具欄間彩色修復等に使われます。支援者の方は光源寺のDiscordチャンネルに参加し、修復状況（写真等）を見ることができます。また、NFTの種類により様々な特典をご用意しております。`,
-                  `The funds raised for Kougenji will be used to restore the celestial maiden paper picture frame on the decorative transom and other cultural assets within the temple. Supporters are allowed to join Kougenji's Discord channel for the latest news and updates about the restoration (photos, etc.). We also plan to provide a variety of perks according to the types of NFT you'll purchase.`,
-                ],
+                key: 'homeConfig',
+                value: {
+                  hero: {
+                    image: 'https://i.imgur.com/I6Yr0V7.jpg',
+                  },
+                  description: `The funds raised for Kougenji will be used to restore the celestial maiden paper picture frame on the decorative transom and other cultural assets within the temple. Supporters are allowed to join Kougenji's Discord channel for the latest news and updates about the restoration (photos, etc.). We also plan to provide a variety of perks according to the types of NFT you'll purchase.`,
+                },
               },
             ],
           },
-          {
-            name: 'message',
-            enable: true,
-            options: [],
-          },
-        ],
-      })
-    )
-    await client.set(
-      'kougenji-test',
-      encode({
-        name: 'Kougenji',
-        twitterHandle: '@templesdao',
-        description: '',
-        url: 'https://kougenji.clubs.stakes.social',
-        propertyAddress: '0x70a8B9a4B2d407a542c205adBbEA38289c3285eB', // Polygon: 0x23d67953FE2e61e9fAc78447526D9358cD05d40d // Mumbai: 0x70a8B9a4B2d407a542c205adBbEA38289c3285eB
-        chainId: 80001, // Polygon: 137 // Mumbai: 80001
-        rpcUrl:
-          'https://polygon-mumbai.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920', // Polygon: https://polygon-mainnet.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920 // Mumbai: https://polygon-mumbai.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920
-        adminRolePoints: 0,
-        options: [
-          {
-            key: 'ogp',
-            value: { image: 'https://i.imgur.com/I6Yr0V7.jpg' },
-          },
-          {
-            key: 'headerLinks',
-            value: [
-              {
-                display: 'ETH での支援',
-                path: 'nft',
-              },
-              {
-                display: '特典について',
-                path: 'https://sites.google.com/view/kougenjidao/%E3%83%9B%E3%83%BC%E3%83%A0/%E3%81%94%E6%94%AF%E6%8F%B4%E3%81%AE%E7%89%B9%E5%85%B8',
-              },
-              {
-                display: '光源寺 DAO への参加',
-                path: 'https://guild.xyz/temples-dao',
-              },
-            ],
-          },
-          {
-            key: 'navLinks',
-            value: [
-              {
-                display: 'About',
-                path: 'https://sites.google.com/view/kougenjidao',
-              },
-              {
-                display: 'Terms & Conditions',
-                path: 'https://kougenjidao.notion.site/5558b9a7d5b74453a2cf8c3640f63b5a',
-              },
-              {
-                display: 'Privacy Policy',
-                path: 'https://kougenjidao.notion.site/1d8d0410286443d4b7742549960eb588',
-              },
-              {
-                display: 'Act on specified commercial transactions',
-                path: 'https://kougenjidao.notion.site/edd00237c45c4f01a006ad17264e676e',
-              },
-            ],
-          },
-          {
-            key: 'avatarImgSrc',
-            value: 'https://i.imgur.com/453nyAX.jpg',
-          },
-          {
-            key: 'fullPageViewPaths',
-            value: [{ path: '' }],
-          },
-        ],
-        plugins: [
           {
             name: 'me',
             enable: true,
@@ -870,107 +697,7 @@ const populate = async () => {
             options: [
               {
                 key: 'products',
-                value: kougenjiProductsMumbai, // Polygon: kougenjiProducts // Mumbai: kougenjiProductsMumbai
-              },
-            ],
-          },
-          {
-            name: 'fiat',
-            enable: true,
-            options: [
-              {
-                key: 'products',
-                value: kougenjiProductsMumbai, // Polygon: kougenjiProducts // Mumbai: kougenjiProductsMumbai
-              },
-              {
-                key: 'priceOverrides',
-                value: [
-                  {
-                    id: '1',
-                    price: 100_000,
-                    currency: 'YEN',
-                    purchaseLink: 'https://buy.stripe.com/4gw14A6Jh1LEaZicMP',
-                  },
-                  {
-                    id: '2',
-                    price: 80_000,
-                    currency: 'YEN',
-                    purchaseLink: 'https://buy.stripe.com/fZebJe8RpfCu1oI8wA',
-                  },
-                  {
-                    id: '3',
-                    price: 70_000,
-                    currency: 'YEN',
-                    purchaseLink: 'https://buy.stripe.com/00g4gM2t1dumaZifZ3',
-                  },
-                  {
-                    id: '4',
-                    price: 10_000,
-                    currency: 'YEN',
-                    purchaseLink: 'https://buy.stripe.com/eVabJe9VtgGyd7q006',
-                  },
-                  {
-                    id: '5',
-                    price: 10_000,
-                    currency: 'YEN',
-                    purchaseLink: 'https://buy.stripe.com/eVabJe5Fd3TMc3m5kr',
-                  },
-                  {
-                    id: '6',
-                    price: 10_000,
-                    currency: 'YEN',
-                    purchaseLink: 'https://buy.stripe.com/eVa14A5Fdbmed7q7sA',
-                  },
-                  {
-                    id: '7',
-                    price: 10_000,
-                    currency: 'YEN',
-                    purchaseLink: 'https://buy.stripe.com/3cs3cI4B99e6d7q6ox',
-                  },
-                  {
-                    id: '8',
-                    price: 10_000,
-                    currency: 'YEN',
-                    purchaseLink: 'https://buy.stripe.com/eVadRmc3B0HA3wQ4gq',
-                  },
-                  {
-                    id: '9',
-                    price: 10_000,
-                    currency: 'YEN',
-                    purchaseLink: 'https://buy.stripe.com/cN2dRmffN2PI8Ra28j',
-                  },
-                  {
-                    id: '10',
-                    price: 10_000,
-                    currency: 'YEN',
-                    purchaseLink: 'https://buy.stripe.com/bIYbJeffN4XQ2sMaEQ',
-                  },
-                  {
-                    id: '11',
-                    price: 10_000,
-                    currency: 'YEN',
-                    purchaseLink: 'https://buy.stripe.com/8wM28E1oX1LE9Ve00d',
-                  },
-                ],
-              },
-              {
-                key: 'hero',
-                value: {
-                  coverImgSrc: 'https://i.imgur.com/I6Yr0V7.jpg',
-                  title: '光源寺/ Kougenji',
-                  description: [
-                    `光源寺の天女絵修復プロジェクトでのご支援金は、天女の表具欄間彩色修復等に使われます。支援者の方は光源寺のDiscordチャンネルに参加し、修復状況（写真等）を見ることができます。また、NFTの種類により様々な特典をご用意しております。`,
-                    `The funds raised for Kougenji will be used to restore the celestial maiden paper picture frame on the decorative transom and other cultural assets within the temple. Supporters are allowed to join Kougenji's Discord channel for the latest news and updates about the restoration (photos, etc.). We also plan to provide a variety of perks according to the types of NFT you'll purchase.`,
-                  ],
-                },
-              },
-              {
-                key: 'title',
-                value: undefined,
-              },
-              {
-                key: 'slug',
-                value: [],
+                value: kougenjiProducts, // Polygon: kougenjiProducts // Mumbai: kougenjiProductsMumbai
               },
             ],
           },
@@ -980,7 +707,7 @@ const populate = async () => {
             options: [
               {
                 key: 'products',
-                value: kougenjiProductsMumbai, // Polygon: kougenjiProducts // Mumbai: kougenjiProductsMumbai
+                value: kougenjiProducts, // Polygon: kougenjiProducts // Mumbai: kougenjiProductsMumbai
               },
               {
                 key: 'coverImgSrc',

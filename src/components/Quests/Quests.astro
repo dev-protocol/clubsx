@@ -2,14 +2,19 @@
 import QuestCard from '@components/Quests/QuestCard/QuestCard.vue'
 import quests from './quests.json'
 
-const filteredQuests = quests.filter((quest) => quest.listed)
+const filteredQuests = quests.filter((quest: any) => quest.listed) as {
+  id: string
+  title: string
+  description: string
+  badgeImageSrc: string
+}[]
 ---
 
 <section class="mx-4 bg-cover bg-center">
   <h2 class="text-3xl">Quests</h2>
   <p>Complete quests and collect additional badges.</p>
   <div
-    class="grid items-center justify-center gap-8 p-4 text-black dark:text-white md:grid-cols-2 md:text-left lg:px-0"
+    class="grid items-center justify-center gap-8 p-4 text-white md:grid-cols-2 md:text-left lg:px-0"
   >
     {
       filteredQuests.length > 0 ? (

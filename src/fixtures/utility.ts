@@ -1,4 +1,4 @@
-import { BaseProvider } from '@ethersproject/providers'
+import type { BaseProvider } from '@ethersproject/providers'
 import BigNumber from 'bignumber.js'
 import { ethers, utils } from 'ethers'
 import type { Tiers } from '@constants/tier'
@@ -7,7 +7,7 @@ import { clientsSTokens, client } from '@devprotocol/dev-kit'
 import { whenDefined } from '@devprotocol/util-ts'
 import { xprod } from 'ramda'
 
-import { GatedMessageRequiredMemberships } from '../plugins/message/types'
+import type { Membership } from '@plugins/memberships'
 
 const falsyOrZero = <T>(num?: T): T | 0 => (num ? num : 0)
 
@@ -23,7 +23,7 @@ export const validImageUri = (path: string) => {
   return src
 }
 
-export const fetchBadgeImageSrc = async (opts: {
+export const fetchSTokens = async (opts: {
   provider: BaseProvider
   tokenAddress: string
   amount?: number | string
@@ -37,8 +37,8 @@ export const fetchBadgeImageSrc = async (opts: {
     opts.payload,
     opts.owner
   )
-  const src = res ? validImageUri(res.image) : undefined
-  return src
+  const image = res ? validImageUri(res.image) : (undefined as never)
+  return { ...res, image }
 }
 
 export const fetchEthForDev = async (opts: {
@@ -85,7 +85,7 @@ export const composeTiers = async ({
     sourceTiers.map(async ({ ...tier }) => {
       const badgeImageSrc =
         tier.badgeImageSrc ??
-        (await fetchBadgeImageSrc({
+        (await fetchSTokens({
           provider,
           tokenAddress,
           amount: tier.amount,
@@ -112,9 +112,11 @@ export const composeTiers = async ({
 export const checkMemberships = async (
   provider: ethers.providers.Web3Provider | ethers.providers.JsonRpcProvider,
   propertyAddress: string,
-  requiredMemberships: GatedMessageRequiredMemberships[],
+  requiredMemberships: Membership[],
   userAddress: string = '0x0000000000000000000000000000000000000000'
 ) => {
+  console.log({ propertyAddress, requiredMemberships })
+
   // Check if we are validating at server or ui. because server can
   // provide userAddress.
   if (userAddress === '0x0000000000000000000000000000000000000000') {
@@ -135,6 +137,7 @@ export const checkMemberships = async (
     detector(propertyAddress, userAddress)
   )
   if (!allSTokens) return false
+  console.log({ allSTokens })
 
   // https://ramdajs.com/docs/#xprod
   const pairs = xprod(requiredMemberships, allSTokens)
@@ -152,11 +155,13 @@ export const checkMemberships = async (
       )
 
       // if it has not payload, test the staking amount
-      const testForAmount = payload
-        ? undefined
-        : ethers.BigNumber.from((await contract.positions(tokenId)).amount).gte(
-            utils.parseEther(membership.amount.toString())
-          )
+      // This works for only direct DEV staking
+      const testForAmount =
+        payload && membership.currency === 'DEV'
+          ? undefined
+          : ethers.BigNumber.from(
+              (await contract.positions(tokenId)).amount
+            ).gte(utils.parseEther(membership.price.toString()))
 
       if (testForPayload || testForAmount) {
         return tokenId

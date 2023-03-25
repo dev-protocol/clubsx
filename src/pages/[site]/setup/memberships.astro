@@ -1,0 +1,96 @@
+---
+import AdminMembershipsForm from '@components/AdminMembershipsForm/AdminMembershipsForm.svelte'
+import { config as _config } from '@fixtures/config'
+import { adminFactory } from '@devprotocol/clubs-core'
+import memberships, { Membership } from '@plugins/memberships'
+import SetupLayout from '@layouts/Setup.astro'
+import NextButton from '@components/Setup/NextButton.astro'
+import PageNotFound from '@pages/404.astro'
+
+const { site } = Astro.params
+
+const created = new URL(Astro.request.url).searchParams.has('created')
+
+const { getStaticPaths, getCurrentConfig } = adminFactory({
+  config: async () => await _config(site),
+  plugins: {
+    memberships,
+  },
+})
+
+const config = await getCurrentConfig()
+const path = (await getStaticPaths()).find(
+  ({ params }) => params.page === 'memberships'
+)
+
+const siteBaseUrl = ((url) =>
+  `${url.protocol}//${url.host}/${site}/setup/design`)(
+  new URL(Astro.request.url)
+)
+
+const clubs = path?.props.clubs
+---
+
+{
+  path && clubs ? (
+    <SetupLayout
+      {config}
+      {...path.props}
+      setupStep="MEMBERSHIPS"
+      aside={false}
+      title="Setup Clubs | Memberships"
+    >
+      <section class="grid gap-16">
+        <h1 class="font-title text-lg font-bold">Memberships</h1>
+
+        {!created && (
+          <h2 class="-mb-8 text-2xl">
+            What would you like to create? Choose one.
+          </h2>
+        )}
+
+        <AdminMembershipsForm
+          client:load
+          clubName={path.props.name as string}
+          currentPluginIndex={clubs.currentPluginIndex}
+          memberships={path.props.memberships as Membership[]}
+          presets={created ? [] : (path.props.presets as Membership[])}
+          base={`/${site}/setup`}
+        />
+
+        {created && (
+          <aside class="grid gap-2">
+            <p class="text-center text-4xl">Congratulation!</p>
+            <p class="text-center">
+              You can add more anytime. Let's save and proceed to preview.
+            </p>
+            <a
+              class="hs-button inline-block bg-black py-4 text-center text-sm font-semibold text-white"
+              href={`/${site}/setup/preview`}
+            >
+              Preview
+            </a>
+          </aside>
+        )}
+      </section>
+
+      <NextButton
+        next={`/${site}/setup/preview`}
+        slot="aside:after-built-in-buttons"
+      />
+    </SetupLayout>
+  ) : (
+    <PageNotFound
+      redirectionCtaText={`Take me back to previous page `}
+      redirectionCtaUrl={siteBaseUrl}
+    />
+  )
+}
+
+<script>
+  import { ClubsEvents } from '@devprotocol/clubs-core'
+
+  document.body.addEventListener(ClubsEvents.FinishConfiguration, () => {
+    console.log('Save button clicked and updated the data remotely!!')
+  })
+</script>

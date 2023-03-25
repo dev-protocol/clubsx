@@ -1,7 +1,8 @@
 ---
-import { pageFactory } from '@devprotocol/clubs-core'
-import Layout from '@layouts/Default.astro'
+import DefaultLayout from '@layouts/Default.astro'
+import { decode, pageFactory } from '@devprotocol/clubs-core'
 import { config as _config } from '@fixtures/config'
+import defaultTheme from '@plugins/default-theme'
 import buy from '@plugins/buy'
 import community from '@plugins/community'
 import fiat from '@plugins/fiat'
@@ -13,11 +14,16 @@ import nft from '@plugins/nft'
 import perks from '@plugins/perks'
 import quests from '@plugins/quests'
 import message from '@plugins/message'
+import memberships from '@plugins/memberships'
+import PageNotFound from '@pages/404.astro'
 
 const { site, page } = Astro.params
-const { getStaticPaths, getCurrentConfig } = pageFactory({
-  config: async () => await _config(site),
+const config = await _config(site)
+
+const { getStaticPaths } = pageFactory({
+  config: () => Promise.resolve(config),
   plugins: {
+    defaultTheme,
     buy,
     community,
     fiat,
@@ -25,6 +31,7 @@ const { getStaticPaths, getCurrentConfig } = pageFactory({
     join,
     me,
     members,
+    memberships,
     message,
     nft,
     perks,
@@ -32,13 +39,24 @@ const { getStaticPaths, getCurrentConfig } = pageFactory({
   },
 })
 const path = (await getStaticPaths()).find(({ params }) => params.page === page)
-if (!path) {
-  throw new Error('Path undefined: ', path)
-}
-const Content = path.props.component
-const config = await getCurrentConfig()
+
+const Layout = path?.props.layout
+const Content = path?.props.component
+
+const siteBaseUrl = new URL(Astro.request.url).origin
 ---
 
-<Layout {config}>
-  <Content {...path.props} />
-</Layout>
+<DefaultLayout {...path?.props ?? {}} config={decode(config)}>
+  {
+    path && Layout && Content ? (
+      <Layout {...path.props}>
+        <Content {...path.props} />
+      </Layout>
+    ) : (
+      <PageNotFound
+        redirectionCtaText={`Take me back ${site} homepage`}
+        redirectionCtaUrl={siteBaseUrl}
+      />
+    )
+  }
+</DefaultLayout>

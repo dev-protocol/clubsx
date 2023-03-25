@@ -1,11 +1,12 @@
 import { config } from 'dotenv'
 import { defineConfig } from 'astro/config'
+import clubs from '@devprotocol/clubs-core'
 import vercel from '@astrojs/vercel/serverless'
+import netlify from '@astrojs/netlify/functions'
 import tailwind from '@astrojs/tailwind'
 import vue from '@astrojs/vue'
 import react from '@astrojs/react'
 import svelte from '@astrojs/svelte'
-import prefetch from '@astrojs/prefetch'
 
 config()
 
@@ -16,8 +17,9 @@ export default defineConfig({
     port: 3000,
   },
   output: 'server',
-  adapter: vercel(),
+  adapter: (process.env.NETLIFY ? netlify : vercel)(),
   integrations: [
+    clubs(),
     {
       name: 'clubs:multi-tenant',
       hooks: {
@@ -44,19 +46,20 @@ export default defineConfig({
       },
     }),
     react(),
-    tailwind({
-      config: {
-        path: './tailwind.config.js',
-      },
-    }),
+    tailwind(),
     svelte(),
-    prefetch({
-      throttle: 10,
-    }),
   ],
   vite: {
+    server: {
+      hmr: {
+        timeout: 360000,
+      },
+    },
     resolve: {
-      conditions: [],
+      alias: {
+        'three/examples/jsm/controls/OrbitControls':
+          '/node_modules/three/examples/jsm/controls/OrbitControls',
+      },
     },
   },
 })

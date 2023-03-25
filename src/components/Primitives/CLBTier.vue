@@ -46,7 +46,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use 'node_modules/@devprotocol/hashi' with (
+@use '@devprotocol/hashi' with (
   $vue-mode: true
 );
 
@@ -62,14 +62,12 @@ export default {
   }
 
   .clb-tier__title {
-    font-family: hashi.token-get('family-title');
     font-size: hashi.token-get('size-subtitle');
     font-weight: hashi.token-get('weight-bold');
     line-height: hashi.token-get('line-height-condensed');
   }
 
   .clb-tier__subtitle {
-    font-family: hashi.token-get('family-subtitle');
     font-size: hashi.token-get('size-body');
     font-weight: hashi.token-get('weight-normal');
     line-height: hashi.token-get('line-height-condensed');

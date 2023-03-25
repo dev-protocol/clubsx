@@ -1,0 +1,30 @@
+---
+import AdminMembershipsAdditionForm from '@components/AdminMembershipsForm/AdminMembershipsAdditionForm.svelte'
+import type { ClubsPropsAdminPages } from '@devprotocol/clubs-core'
+import type { Membership } from '.'
+
+const { membership, memberships, clubs, rpcUrl, propertyAddress, name } =
+  Astro.props as ClubsPropsAdminPages & {
+    membership: Membership
+    memberships: Membership[]
+    rpcUrl: string
+    propertyAddress: string
+    name: string
+  }
+---
+
+<div>
+  <h1 class="mb-8 font-title text-lg font-bold">Memberships</h1>
+
+  <AdminMembershipsAdditionForm
+    client:load
+    clubName={name}
+    currentPluginIndex={clubs.currentPluginIndex}
+    membership={membership as Membership}
+    existingMemberships={memberships as Membership[]}
+    mode="edit"
+    rpcUrl={rpcUrl}
+    propertyAddress={propertyAddress}
+    useOnFinishCallback={true}
+  />
+</div>

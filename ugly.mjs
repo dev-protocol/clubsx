@@ -1,12 +1,15 @@
 import fs from 'fs-extra'
 
-const path =
+const pathRequestTransform =
   './node_modules/@astrojs/vercel/dist/serverless/request-transform.js'
+
+// Rewrite the requested URL
+// Note: Requests rewritten by middleware (./middleware.ts) have `x-rewritten-url` header
 fs.outputFileSync(
-  path,
+  pathRequestTransform,
   ((file) =>
     file.replace(
-      'base + req.url',
-      `((paths)=> paths.length > 3 ? base + '/sites_/' + paths[0] + req.url : base + req.url)(base.replace('https://', '').split('.'))`
-    ))(fs.readFileSync(path, 'utf8'))
+      `base + req.url,`,
+      `(()=>req.headers['x-rewritten-url'] ? req.headers['x-rewritten-url'] : base + req.url)(),`
+    ))(fs.readFileSync(pathRequestTransform, 'utf8'))
 )

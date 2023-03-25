@@ -1,4 +1,4 @@
-import { Tier } from './tier'
+import type { Tier } from './tier'
 
 export type Perk = Readonly<{
   tier: Tier['id']

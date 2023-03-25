@@ -1,8 +1,8 @@
 ---
-import { ClubsConfiguration } from '@devprotocol/clubs-core'
+import type { ClubsConfiguration } from '@devprotocol/clubs-core'
 import GeneralAdminForm from './GeneralAdminForm.svelte'
 
-const config = Astro.props as ClubsConfiguration
+const { config } = Astro.props as { config: ClubsConfiguration }
 ---
 
 <div class="flex flex-col">

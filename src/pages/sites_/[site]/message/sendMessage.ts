@@ -1,28 +1,35 @@
-import { utils, providers, ethers, Signer } from 'ethers'
+import { utils, providers, ethers } from 'ethers'
 import { createClient } from 'redis'
 import { authenticate, decode } from '@devprotocol/clubs-core'
 import { checkMemberships } from '@fixtures/utility'
-
-import json from '../../../../plugins/message/forms.json'
+import type { UndefinedOr } from '@devprotocol/util-ts'
+import type { GatedMessage } from '@plugins/message/types'
+import type { Membership } from '@plugins/memberships'
+import sgMail from '@sendgrid/mail'
+import { verify } from 'jsonwebtoken-esm'
 
 export const post = async ({ request }: { request: Request }) => {
-  const { site, data, sig, hash, userAddress, propertyAddress } =
-    (await request.json()) as {
-      site: string
-      data: {
-        fullname: string
-        addressLine1: string
-        addressLine2: string
-        zipCode: string
-        city: string
-        country: string
-        formId: string
-      }
-      hash: string
-      sig: string
-      userAddress: string
-      propertyAddress: string
-    }
+  const {
+    pluginIndex,
+    membershipPluginIndex,
+    site,
+    formId,
+    data,
+    sig,
+    hash,
+    userAddress,
+    propertyAddress,
+  } = (await request.json()) as {
+    pluginIndex?: number
+    membershipPluginIndex?: number
+    site: string
+    formId: string
+    data: any
+    hash: string
+    sig: string
+    userAddress: string
+    propertyAddress: string
+  }
 
   // Check that the user has signed the message.
   const verificationDigest = utils.hashMessage(hash)
@@ -33,18 +40,14 @@ export const post = async ({ request }: { request: Request }) => {
     })
   }
 
-  // Check for form data validity.
-  const formData = json.find((element) => element.id === Number(data.formId))
-  if (!formData) {
-    return new Response(JSON.stringify({ error: 'Form details not found' }), {
-      status: 401,
-    })
-  }
-
   const client = createClient({
     url: process.env.REDIS_URL,
     username: process.env.REDIS_USERNAME ?? '',
     password: process.env.REDIS_PASSWORD ?? '',
+    socket: {
+      keepAlive: 1,
+      reconnectStrategy: 1,
+    },
   })
   await client.connect()
 
@@ -60,6 +63,35 @@ export const post = async ({ request }: { request: Request }) => {
     })
   }
 
+  // Check for form data validity.
+  const configuration = decode(previousConfiguration)
+  const formData = (
+    configuration.plugins?.[pluginIndex ?? 0]?.options?.find(
+      (element) => element.key === 'forms'
+    )?.value as UndefinedOr<GatedMessage[]>
+  )?.find((element) => element.id === formId)
+  if (!formData) {
+    return new Response(JSON.stringify({ error: 'Form details not found' }), {
+      status: 401,
+    })
+  }
+
+  let decodedEmail = verify(formData.destinationEmail, process.env.SALT ?? '')
+
+  const membershipsData = configuration.plugins?.[
+    membershipPluginIndex ?? 0
+  ]?.options?.find((element) => element.key === 'memberships')
+    ?.value as UndefinedOr<Membership[]>
+  if (!membershipsData) {
+    return new Response(JSON.stringify({ error: 'Memberships not found' }), {
+      status: 401,
+    })
+  }
+
+  const requiredMemberships = formData.requiredMembershipIds.map((id) =>
+    membershipsData.find((mem) => mem.id === id)
+  )
+
   // Check for required membership validity
   try {
     const web3Provider = new ethers.providers.JsonRpcProvider(
@@ -68,7 +100,8 @@ export const post = async ({ request }: { request: Request }) => {
     const isMember = await checkMemberships(
       web3Provider,
       propertyAddress,
-      formData.requiredMemberships,
+      // @ts-ignore
+      requiredMemberships,
       userAddress
     ).catch((err) => {
       throw Error('Not a member')
@@ -95,7 +128,22 @@ export const post = async ({ request }: { request: Request }) => {
   }
 
   try {
-    // TODO: send email using sendgrid api.
+    sgMail.setApiKey(process.env[formData.sendGridEnvKey]!)
+
+    await sgMail.send({
+      to: `${decodedEmail}`,
+      from: process.env.SENDGRID_FROM_EMAIL!,
+      subject: 'Sent from Clubs Gated Contact Form',
+      text:
+        formData.presetName === 'PRESET_NAME_AND_FREE_INPUT'
+          ? `
+Name: ${data.name}
+
+Message:
+${data.body}
+`
+          : data,
+    })
 
     return new Response(JSON.stringify({}), { status: 200 })
   } catch (error) {

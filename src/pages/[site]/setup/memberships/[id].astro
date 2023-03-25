@@ -1,0 +1,67 @@
+---
+import AdminMembershipsAdditionForm from '@components/AdminMembershipsForm/AdminMembershipsAdditionForm.svelte'
+import { config as _config } from '@fixtures/config'
+import { adminFactory } from '@devprotocol/clubs-core'
+import type { Membership } from '@plugins/memberships'
+import memberships from '@plugins/memberships'
+import SetupLayout from '@layouts/Setup.astro'
+import PageNotFound from '@pages/404.astro'
+
+const { site, id } = Astro.params
+
+const { getStaticPaths, getCurrentConfig } = adminFactory({
+  config: async () => await _config(site),
+  plugins: {
+    memberships,
+  },
+})
+
+const config = await getCurrentConfig()
+const path = (await getStaticPaths()).find(
+  ({ params }) => params.page === `memberships/${id}`
+)
+
+const siteBaseUrl = ((url) =>
+  `${url.protocol}//${url.host}/${site}/setup/memberships`)(
+  new URL(Astro.request.url)
+)
+
+const { props } = path || { props: null }
+---
+
+{
+  path && props ? (
+    <SetupLayout
+      {config}
+      {...props}
+      setupStep="MEMBERSHIPS"
+      title={`Setup Clubs | Memberships | ${id}`}
+    >
+      <h1 class="mb-8 font-title text-lg font-bold">Memberships</h1>
+
+      <AdminMembershipsAdditionForm
+        client:load
+        clubName={props.name as string}
+        currentPluginIndex={props.clubs.currentPluginIndex}
+        membership={props.membership as Membership}
+        existingMemberships={props.memberships as Membership[]}
+        base={`/${site}/setup`}
+        rpcUrl={props.rpcUrl as string}
+        mode="edit"
+      />
+    </SetupLayout>
+  ) : (
+    <PageNotFound
+      redirectionCtaText={`Take me back to previous page `}
+      redirectionCtaUrl={siteBaseUrl}
+    />
+  )
+}
+
+<script>
+  import { ClubsEvents } from '@devprotocol/clubs-core'
+
+  document.body.addEventListener(ClubsEvents.FinishConfiguration, () => {
+    console.log('Save button clicked and updated the data remotely!!')
+  })
+</script>

@@ -1,19 +1,20 @@
 <template>
-  <section class="flex flex-col">
-    <h2 class="mb-4 font-title text-4xl font-bold">Join</h2>
+  <section class="flex flex-col rounded-xl bg-dp-blue-grey-300 p-4 shadow">
+    <h2 class="mb-4 text-4xl font-bold">Join</h2>
     <!-- DAOName from YAML config -->
     <div class="mb-8">Join {{ tenantName }} in support of the project.</div>
 
-    <h3 class="mb-4 font-title text-2xl font-bold">Purchase with</h3>
+    <h3 class="mb-4 text-2xl font-bold">Purchase with</h3>
     <form class="mb-8 flex flex-col gap-2 md:flex-row" ref="form">
       <CLBRadio
+        v-if="preferedCurrency === 'dev'"
         label="$DEV"
         :media="images.DEV"
         media-alt="Dev Token logo"
         helper="Best way to sustainably support with staking."
         value="dev"
         :action="switchInputs"
-        :checked="true"
+        :checked="currency === 'dev'"
       />
       <CLBRadio
         label="$ETH"
@@ -21,11 +22,12 @@
         media-alt="Ethereum logo"
         helper="You will earn $DEV by staking."
         value="eth"
+        :checked="currency === 'eth'"
         :action="switchInputs"
       />
     </form>
 
-    <h3 class="mb-4 font-title text-2xl font-bold">Select a tier</h3>
+    <h3 class="mb-4 text-2xl font-bold">Select a membership</h3>
     <div class="mb-8 grid grid-cols-2 gap-8 lg:grid-cols-4">
       <Tier
         v-for="tier in composedTiers[currency]"
@@ -37,15 +39,6 @@
         :badgeImageSrc="tier.badgeImageSrc"
       />
     </div>
-
-    <section>
-      <a
-        rel="prefetch"
-        href="/perks"
-        class="block rounded border border-native-blue-400 p-4 text-xl transition-all duration-[var(--hs-transition-time)] ease-in-out hover:bg-[rgba(116,172,255,0.2)]"
-        >Perks →</a
-      >
-    </section>
   </section>
 </template>
 
@@ -56,9 +49,9 @@ import type { Tiers } from '@constants/tier'
 import Tier from '@components/Join/Tier.vue'
 import { providers } from 'ethers'
 import { composeTiers } from '@fixtures/utility'
-import { UndefinedOr } from '@devprotocol/util-ts'
+import type { UndefinedOr } from '@devprotocol/util-ts'
 import { defineComponent, PropType } from '@vue/runtime-core'
-import { CurrencyOption } from '@constants/currencyOption'
+import type { CurrencyOption } from '@constants/currencyOption'
 import CLBRadio from '@components/Primitives/CLBRadio.vue'
 
 type Data = {
@@ -82,11 +75,18 @@ export default defineComponent({
     },
     tenantName: String,
     rpcUrl: String,
+    preferedCurrency: {
+      type: String as PropType<'dev' | 'eth'>,
+      required: true,
+    },
   },
   data(): Data {
     return {
-      currency: 'dev',
-      composedTiers: { dev: [...this.tiers], eth: undefined },
+      currency: this.preferedCurrency,
+      composedTiers: {
+        dev: this.preferedCurrency === 'dev' ? [...this.tiers] : undefined,
+        eth: this.preferedCurrency === 'eth' ? [...this.tiers] : undefined,
+      },
       images: {
         DEV,
         ETH,
@@ -98,6 +98,9 @@ export default defineComponent({
       'input'
     ) as null | Data['currency']
     this.currency = input as 'dev' | 'eth'
+    if (this.preferedCurrency === 'eth') {
+      return
+    }
     this.composedTiers = await composeTiers({
       sourceTiers: this.tiers,
       provider: new providers.JsonRpcProvider(this.rpcUrl),

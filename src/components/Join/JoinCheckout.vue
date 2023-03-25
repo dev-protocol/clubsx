@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="!stakeSuccessful"
-    class="relative mx-auto mb-12 grid items-start px-4 lg:container lg:mt-12 lg:grid-cols-[auto,_480px] lg:gap-12"
+    class="relative mx-auto mb-12 grid items-start rounded-xl bg-dp-blue-grey-300 p-4 shadow lg:container lg:mt-12 lg:grid-cols-[auto,_480px] lg:gap-12"
   >
     <section class="flex flex-col">
       <h2 class="mb-8 font-title text-4xl font-bold">
@@ -17,7 +17,7 @@
           @click="approve"
           v-if="approveNeeded || approveNeeded === undefined"
           :disabled="isApproving || approveNeeded === undefined"
-          class="flex items-center rounded-sm border bg-gray-600 p-2 px-4"
+          class="flex items-center rounded border bg-gray-600 p-2 px-4"
         >
           <svg
             v-if="isApproving"
@@ -45,27 +45,25 @@
         <button
           v-if="approveNeeded === false"
           disabled
-          class="rounded-sm border border-gray-400 bg-gray-600 p-2 px-4 text-gray-400"
+          class="rounded border border-gray-400 bg-gray-600 p-2 px-4 text-gray-400"
         >
           You've already approved
         </button>
       </div>
       <div class="mb-8">
-        <h3 class="mb-4 text-2xl" v-if="page === 'BUY'">Purchase NFT</h3>
-        <h3 class="mb-4 text-2xl" v-if="page === 'JOIN'">Stake</h3>
+        <h3 class="mb-4 text-2xl">Purchase membership</h3>
         <button
           v-if="approveNeeded"
           disabled
-          class="rounded-sm border border-gray-400 bg-gray-600 p-2 px-4 text-gray-400"
+          class="rounded border border-gray-400 bg-gray-600 p-2 px-4 text-gray-400"
         >
-          <span v-if="page === 'BUY'">Buy</span>
-          <span v-if="page === 'JOIN'">Stake</span>
+          <span>Purchase</span>
         </button>
         <button
           v-if="!approveNeeded"
           @click="submitStake"
           :disabled="isStaking || approveNeeded"
-          class="flex items-center rounded-sm border bg-gray-600 p-2 px-4"
+          class="flex items-center rounded border bg-gray-600 p-2 px-4"
         >
           <svg
             v-if="isStaking"
@@ -89,15 +87,14 @@
             ></path>
           </svg>
 
-          <span v-if="page === 'BUY'">Buy</span>
-          <span v-if="page === 'JOIN'">Stake</span>
+          <span>Purchase</span>
         </button>
       </div>
     </section>
     <div
-      class="grid grid-cols-1 content-start overflow-hidden rounded border border-dp-black-200"
+      class="grid grid-cols-1 content-start overflow-hidden rounded border border-white/30"
     >
-      <section class="border-b border-dp-black-200 p-4">
+      <section class="border-b border-white/30 p-4">
         <h3 class="mb-2 text-xl opacity-70">Purchase</h3>
         <p class="flex items-center text-2xl uppercase">
           <Skeleton
@@ -117,7 +114,7 @@
         </p>
         <aside
           v-if="usedCurrency !== currencyOption.DEV"
-          class="mt-4 ml-4 border-l border-dp-black-200 pl-4"
+          class="mt-4 ml-4 border-l border-white/30 pl-4"
         >
           <h4 class="text-md mb-2 opacity-70">Replace</h4>
           <Skeleton
@@ -134,11 +131,16 @@
       <section class="p-4">
         <h3 class="mb-2 text-xl opacity-70">Preview</h3>
         <div
-          class="mx-auto flex aspect-square justify-center rounded bg-zinc-900 p-4"
+          class="mx-auto flex flex-col justify-center gap-4 rounded bg-zinc-900 p-4"
         >
+          <div>
+            <Skeleton v-if="previewName === undefined" class="min-h-[1.5em]" />
+            <span v-if="previewName" class="text-sm">{{ previewName }}</span>
+          </div>
+
           <Skeleton
             v-if="previewImageSrc === undefined"
-            class="mx-auto aspect-square h-full"
+            class="mx-auto aspect-square h-full w-full"
           />
           <img
             v-if="previewImageSrc"
@@ -169,14 +171,9 @@ import { UndefinedOr, whenDefined, whenDefinedAll } from '@devprotocol/util-ts'
 import { defineComponent } from '@vue/composition-api'
 import { BigNumberish, constants, providers, utils } from 'ethers'
 import BigNumber from 'bignumber.js'
-import { parse } from 'query-string'
 import { Subscription, zip } from 'rxjs'
 import { CurrencyOption } from '@constants/currencyOption'
-import {
-  fetchDevForEth,
-  fetchEthForDev,
-  fetchBadgeImageSrc,
-} from '@fixtures/utility'
+import { fetchDevForEth, fetchEthForDev, fetchSTokens } from '@fixtures/utility'
 import Skeleton from '@components/Global/Skeleton.vue'
 import { stakeWithEthForPolygon } from '@fixtures/dev-kit'
 
@@ -193,6 +190,7 @@ type Data = {
   ethFeeAmount: UndefinedOr<string>
   chain: UndefinedOr<number>
   previewImageSrc: UndefinedOr<string>
+  previewName: UndefinedOr<string>
 }
 
 let providerPool: UndefinedOr<providers.BaseProvider>
@@ -224,12 +222,14 @@ export default defineComponent({
       ethFeeAmount: undefined,
       chain: undefined,
       previewImageSrc: undefined,
+      previewName: undefined,
     } as Data
   },
   computed: {
     verifiedInputCurrency(): CurrencyOption {
-      const query = parse(location.search)
-      const input = String(query.input).toLowerCase()
+      const inputFromQuery =
+        new URL(location.href).searchParams.get('input') ?? ''
+      const input = String(inputFromQuery).toLowerCase()
       return input.toUpperCase() === 'ETH'
         ? CurrencyOption.ETH
         : CurrencyOption.DEV
@@ -326,12 +326,14 @@ export default defineComponent({
         this.ethFeeAmount = whenDefined(ethAmount, (_eth) =>
           new BigNumber(_eth).times(feeDeposit).dp(9).toFixed().toString()
         )
-        this.previewImageSrc = await fetchBadgeImageSrc({
+        const sTokens = await fetchSTokens({
           provider,
           tokenAddress: destination,
           amount: devAmount,
           payload: this.payload,
         })
+        this.previewImageSrc = sTokens.image
+        this.previewName = sTokens.name
       }
     )
   },
@@ -410,10 +412,11 @@ export default defineComponent({
                 provider: prov,
                 propertyAddress: destination,
                 ethAmount: amount.toString(),
-                gatewayAddress: this.feeBeneficiary,
-                gatewayBasisPoints: this.feePercentage
-                  ? this.feePercentage * 10_000
-                  : undefined,
+                gatewayAddress: this.feeBeneficiary ?? undefined,
+                gatewayBasisPoints:
+                  typeof this.feePercentage === 'number'
+                    ? (String(this.feePercentage * 10_000) as unknown as number)
+                    : undefined,
                 payload: this.payload,
                 from: account,
               })
@@ -437,10 +440,11 @@ export default defineComponent({
                 provider: prov,
                 destination,
                 ethAmount: parsedAmount,
-                gatewayAddress: this.feeBeneficiary,
-                gatewayBasisPoints: this.feePercentage
-                  ? this.feePercentage * 10_000
-                  : undefined,
+                gatewayAddress: this.feeBeneficiary ?? undefined,
+                gatewayBasisPoints:
+                  typeof this.feePercentage === 'number'
+                    ? (String(this.feePercentage * 10_000) as unknown as number)
+                    : undefined,
                 payload: this.payload,
               })
               await whenDefined(res, async (x) => {

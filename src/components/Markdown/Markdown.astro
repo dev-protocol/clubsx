@@ -1,0 +1,83 @@
+---
+import { marked } from 'marked'
+
+const {
+  body = '',
+  class: className,
+  vars,
+} = Astro.props as {
+  body?: string
+  class?: string
+  vars?: {
+    p?: {
+      fontSize?: string
+      lineHeight?: string
+    }
+  }
+}
+
+const renderer = {
+  link(href: string, title: string, text: string) {
+    const url = new URL(href)
+    const youtube = url.host === 'youtube.com' || url.host === 'www.youtube.com'
+    const v = url.searchParams.get('v')
+
+    return youtube
+      ? `<iframe class="youtube aspect-video mx-auto w-full max-w-2xl rounded" src="https://www.youtube.com/embed/${v}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`
+      : `<a href="${href}">${text}</a>`
+  },
+}
+
+marked.use({ renderer })
+
+const content = marked.parse(body)
+---
+
+<div
+  class:list={[className, 'md', 'grid', 'grid-flow-row', 'gap-12']}
+  set:html={content}
+/>
+
+<style
+  lang="scss"
+  define:vars={{
+    fontSizeP: vars?.p?.fontSize,
+    lineHeightP: vars?.p?.lineHeight,
+  }}
+>
+  .md {
+    :global(h1) {
+      @apply text-5xl font-bold;
+    }
+    :global(h2) {
+      @apply text-4xl font-bold;
+    }
+    :global(h3) {
+      @apply text-3xl;
+    }
+    :global(h4) {
+      @apply text-2xl;
+    }
+    :global(h5) {
+      @apply text-xl;
+    }
+    :global(a) {
+      @apply inline-block rounded p-1 underline transition hover:bg-white/20;
+      font-size: var(--fontSizeP);
+      line-height: var(--lineHeightP);
+    }
+    :global(ul) {
+      @apply grid list-disc gap-2;
+      :global(li) {
+        list-style: revert;
+      }
+    }
+    :global(pre) {
+      @apply rounded p-3;
+    }
+    :global(p) {
+      font-size: var(--fontSizeP);
+      line-height: var(--lineHeightP);
+    }
+  }
+</style>

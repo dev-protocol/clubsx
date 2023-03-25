@@ -1,5 +1,5 @@
 ---
-import Footer from '@components/Global/Footer.astro'
+import type { ExtendedProducts } from '@components/list/cards'
 import Cards from '@components/list/cards'
 import Hero from '@components/Hero/hero'
 import Hero2 from '@components/Hero/hero2'
@@ -23,7 +23,6 @@ const {
     projectName: string
   }
 }
-const tdStyles = 'border border-slate-500 px-4 py-2 w-1/3'
 const products = _products
   .map((prod) => {
     const override = priceOverrides.find((x) => x.id === prod.id)
@@ -36,7 +35,7 @@ const products = _products
         }
       : undefined
   })
-  .filter((x) => x)
+  .filter((x) => x) as ExtendedProducts
 ---
 
 <div class="container mx-auto my-16 grid gap-16 px-4">
@@ -75,7 +74,7 @@ const products = _products
     </p>
   </div>
 
-  <Cards products={products} />
+  <Cards products={[...products]} />
 
   <section id="faq">
     <h2 class="mb-12 font-title text-4xl font-bold">FAQ</h2>
@@ -120,7 +119,6 @@ const products = _products
     </div>
   </section>
 </div>
-<Footer />
 
 <style>
   /** credit to https://css.gg/arrow-long-down */

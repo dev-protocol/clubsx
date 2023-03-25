@@ -1,0 +1,47 @@
+---
+import ProfileSetupForm from '@components/ProfileSetupForm/ProfileSetupForm.svelte'
+import NextButton from '@components/Setup/NextButton.astro'
+import { config as _config } from '@fixtures/config'
+import { adminFactory } from '@devprotocol/clubs-core'
+import admin from '@plugins/admin'
+import SetupLayout from '@layouts/Setup.astro'
+import PageNotFound from '@pages/404.astro'
+
+const { site } = Astro.params
+
+const { getStaticPaths, getCurrentConfig } = adminFactory({
+  config: async () => await _config(site),
+  plugins: {
+    admin,
+  },
+})
+
+const config = await getCurrentConfig()
+const path = (await getStaticPaths()).find(({ props }) => props.clubs)
+
+const siteBaseUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
+  new URL(Astro.request.url)
+)
+---
+
+{
+  path ? (
+    <SetupLayout
+      {config}
+      {...path.props}
+      setupStep="BASIC"
+      title="Setup Clubs | Basic"
+    >
+      <ProfileSetupForm client:load config={config} />
+      <NextButton
+        next={`/${site}/setup/design`}
+        slot="aside:after-built-in-buttons"
+      />
+    </SetupLayout>
+  ) : (
+    <PageNotFound
+      redirectionCtaText={`Take me to ${site?.toUpperCase()} homepage`}
+      redirectionCtaUrl={siteBaseUrl}
+    />
+  )
+}

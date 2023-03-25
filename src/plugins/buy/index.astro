@@ -8,9 +8,11 @@ import Cards from '@components/list/cards'
 const { products } = Astro.props as { products: Products }
 ---
 
-<div class="bg-black">
+<div>
+  {/* @ts-ignore */}
   <Hero />
+  {/* @ts-ignore */}
   <Hero2 />
-  <Cards products={products} />
+  <Cards products={[...products]} />
 </div>
 <Footer />

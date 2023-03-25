@@ -1,54 +1,21 @@
-import { ClubsPlugin } from '@devprotocol/clubs-core'
+export type InstallablePlugins = {
+  src: string
+  name: string
+  main: string
+  srcType: 'local' | 'npm'
+}
 
-export const defaultPlugins: ClubsPlugin[] = [
+export const installablePlugins: InstallablePlugins[] = [
   {
-    name: 'home',
-    enable: true,
-    options: [],
+    name: '@plugins/community',
+    srcType: 'local',
+    src: '.',
+    main: 'index.ts',
   },
   {
-    name: 'buy',
-    enable: true,
-    options: [],
-  },
-  {
-    name: 'fiat',
-    enable: true,
-    options: [],
-  },
-  {
-    name: 'join',
-    enable: true,
-    options: [],
-  },
-  {
-    name: 'me',
-    enable: true,
-    options: [],
-  },
-  {
-    name: 'members',
-    enable: true,
-    options: [],
-  },
-  {
-    name: 'nft',
-    enable: true,
-    options: [],
-  },
-  {
-    name: 'perks',
-    enable: true,
-    options: [],
-  },
-  {
-    name: 'quests',
-    enable: true,
-    options: [],
-  },
-  {
-    name: 'memberships',
-    enable: true,
-    options: [],
+    name: '@plugins/join',
+    srcType: 'npm',
+    src: '.',
+    main: 'index.ts',
   },
 ]

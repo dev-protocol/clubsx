@@ -1,9 +1,10 @@
-import { providers, utils } from 'ethers'
+import { constants, providers, utils } from 'ethers'
 import {
   positionsCreateWithEth,
   positionsCreateWithEthForPolygon,
   clientsSTokens,
   clientsProperty,
+  clientsLockup,
 } from '@devprotocol/dev-kit/agent'
 import { UndefinedOr, whenDefined } from '@devprotocol/util-ts'
 import { positionsCreate } from '@devprotocol/dev-kit'
@@ -66,6 +67,9 @@ export const detectStokensByPropertyAddress = async (
   prov: providers.BaseProvider,
   propertyAddress: string
 ) => {
+  if (propertyAddress === constants.AddressZero) {
+    return undefined
+  }
   const [l1, l2] = await clientsSTokens(prov)
   return (l1 || l2)?.positionsOfProperty(propertyAddress)
 }
@@ -75,6 +79,9 @@ export const balanceOfProperty = async (
   propertyAddress: string,
   accountAddress: string
 ) => {
+  if (propertyAddress === constants.AddressZero) {
+    return undefined
+  }
   const [l1, l2] = await clientsProperty(prov, propertyAddress)
   if (accountAddress) {
     return (l1 || l2)?.balanceOf(accountAddress)
@@ -94,6 +101,9 @@ export const getBalances = async (
   prov: providers.BaseProvider,
   propertyAddress: string
 ) => {
+  if (propertyAddress === constants.AddressZero) {
+    return undefined
+  }
   // only for L2
   const [, l2] = await clientsProperty(prov, propertyAddress)
   return l2?.getBalances()
@@ -207,4 +217,23 @@ export const tokenURISim = async (
     payload,
     owner,
   })
+}
+
+export const calculateRewardAmount = async (
+  prov: providers.BaseProvider,
+  propertyAddress: string
+) => {
+  const [l1, l2] = await clientsLockup(prov)
+  return (l1 || l2)?.calculateRewardAmount(propertyAddress)
+}
+
+export const propertySymbol = async (
+  prov: providers.BaseProvider,
+  propertyAddress: string
+) => {
+  if (propertyAddress === constants.AddressZero) {
+    return undefined
+  }
+  const [l1, l2] = await clientsProperty(prov, propertyAddress)
+  return (l1 || l2)?.symbol()
 }

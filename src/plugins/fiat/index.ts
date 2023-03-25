@@ -1,11 +1,12 @@
-import { Products } from '@constants/products'
-import {
+import type { Products } from '@constants/products'
+import type {
   ClubsFunctionGetAdminPaths,
   ClubsFunctionGetPagePaths,
   ClubsFunctionPlugin,
   ClubsPluginMeta,
 } from '@devprotocol/clubs-core'
-import { UndefinedOr } from '@devprotocol/util-ts'
+import { ClubsPluginCategory } from '@devprotocol/clubs-core'
+import type { UndefinedOr } from '@devprotocol/util-ts'
 import { default as Index } from './index.astro'
 
 export type PriceOverrides = {
@@ -61,7 +62,10 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async () => []
 
-export const meta: ClubsPluginMeta = { displayName: 'FIAT' }
+export const meta: ClubsPluginMeta = {
+  displayName: 'FIAT',
+  category: ClubsPluginCategory.Monetization,
+}
 
 export default {
   getPagePaths,

@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { providers } from 'ethers'
+import { ethers, providers, utils } from 'ethers'
 import { getBalances } from '@fixtures/dev-kit'
 import Avator from '@components/Members/Avator.vue'
 
@@ -36,7 +36,12 @@ export default {
   async created() {
     const providerURL = this.rpcUrl
     const provider = new providers.JsonRpcProvider(providerURL)
-    const balances = await getBalances(provider, this.propertyAddress)
+    const balances =
+      this.propertyAddress !== ethers.constants.AddressZero &&
+      this.propertyAddress !== '' &&
+      this.propertyAddress
+        ? await getBalances(provider, this.propertyAddress)
+        : []
     this.creators = balances.map((balance) => ({
       accountAddress: balance.account,
     }))

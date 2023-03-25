@@ -1,0 +1,61 @@
+---
+import type { Membership } from '@plugins/memberships'
+import type { GatedMessage } from '../types'
+
+const { forms, memberships } = Astro.props as {
+  forms: GatedMessage[]
+  memberships: Membership[]
+}
+
+const findRequiredMemberships = (form: GatedMessage) =>
+  memberships.filter((mem) => form.requiredMembershipIds.includes(mem.id))
+---
+
+<div class="grid justify-items-start gap-16">
+  <h1 class="font-title text-lg font-bold">Gated form</h1>
+
+  <a
+    href="/admin/gated-form/new"
+    class="hs-button is-black is-filled is-large inline w-auto"
+    >New gated-form</a
+  >
+
+  <section
+    class="grid w-full grid-cols-[repeat(auto-fill,minmax(220px,1fr))] justify-between gap-4"
+  >
+    {
+      forms.map((form) => (
+        <a
+          class="grid gap-4 rounded bg-white p-4 text-black transition-shadow	hover:shadow-[0_0_0_3px_rgba(136,174,255,1)]"
+          href={`/admin/gated-form/${form.id}`}
+        >
+          <h3 class="font-bold">{form.title}</h3>
+          <span class="flex gap-2">
+            {findRequiredMemberships(form).map((mem) => (
+              <img
+                src={mem.imageSrc}
+                class="h-12 w-12 rounded-full"
+                alt={mem.name}
+                title={mem.name}
+              />
+            ))}
+          </span>
+          <p class="desc">{form.description}</p>
+        </a>
+      ))
+    }
+  </section>
+</div>
+
+<style lang="scss">
+  .desc {
+    display: box;
+    overflow: hidden;
+    box-orient: vertical;
+    line-clamp: 3;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+</style>

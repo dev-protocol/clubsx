@@ -1,0 +1,10 @@
+---
+import Layout from '@layouts/Landing.astro'
+import WelcomeConnect from '@components/WelcomeConnect/WelcomeConnect.svelte'
+
+const { siteName } = Astro.params as { siteName: string }
+---
+
+<Layout>
+  <WelcomeConnect client:load siteName={siteName} />
+</Layout>

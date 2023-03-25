@@ -1,0 +1,19 @@
+---
+import Layout from '@layouts/Landing.astro'
+import Basic from '@components/Dashboard/Basic.svelte'
+---
+
+<html lang="en">
+  <head>
+    <meta name="robots" content="noindex" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg" href="/favicon.svg" />
+    <title>Dashboard</title>
+  </head>
+</html>
+<Layout>
+  <div>
+    <Basic client:load />
+  </div>
+</Layout>

@@ -1,0 +1,46 @@
+---
+import AdminThemeForm from '@components/AdminThemeForm/AdminThemeForm.svelte'
+import type { NavLink } from '@constants/navLink'
+import whiteRightArrowImgSrc from '@assets/white-arrow-right.svg'
+import type {
+  ClubsConfiguration,
+  ClubsPluginOption,
+  ClubsPluginOptions,
+  ClubsPropsAdminPages,
+} from '@devprotocol/clubs-core'
+import type { colorPresets as ColorPresets } from '.'
+import type { UndefinedOr } from '@devprotocol/util-ts'
+import { encode } from '@devprotocol/clubs-core/encode'
+
+const { options, config, colorPresets, clubs } =
+  Astro.props as ClubsPropsAdminPages & {
+    options: ClubsPluginOptions
+    config: ClubsConfiguration
+    colorPresets: typeof ColorPresets
+  }
+
+const allOptions = config.options
+
+const socialLinks: NavLink[] =
+  (allOptions?.find((option: ClubsPluginOption) => option.key === 'socialLinks')
+    ?.value as NavLink[]) ?? []
+
+const navigationLinks: NavLink[] =
+  (allOptions?.find((option) => option.key === 'navigationLinks')
+    ?.value as NavLink[]) ?? []
+
+const encodedOptions = encode(options as unknown as ClubsConfiguration)
+---
+
+<div>
+  <AdminThemeForm
+    client:only="svelte"
+    whiteRightArrowImgSrc={whiteRightArrowImgSrc}
+    navigationLinks={navigationLinks}
+    socialLinks={socialLinks}
+    encodedOptions={encodedOptions}
+    config={config}
+    colorPresets={colorPresets}
+    currentPluginIndex={clubs.currentPluginIndex}
+  />
+</div>

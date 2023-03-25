@@ -1,0 +1,91 @@
+---
+import { config as _config } from '@fixtures/config'
+import { adminFactory } from '@devprotocol/clubs-core'
+import admin from '@plugins/admin'
+import SetupLayout from '@layouts/Setup.astro'
+import image from '@assets/preview-overview-chart.png'
+import NextButton from '@components/Setup/NextButton.astro'
+import PageNotFound from '@pages/404.astro'
+
+const { site } = Astro.params
+
+const { getStaticPaths, getCurrentConfig } = adminFactory({
+  config: async () => await _config(site),
+  plugins: {
+    admin,
+  },
+})
+
+const config = await getCurrentConfig()
+const path = (await getStaticPaths()).find(({ props }) => props.clubs)
+
+const baseUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
+  new URL(Astro.request.url)
+)
+
+const siteBaseUrl = ((url) =>
+  `${url.protocol}//${url.host}/${site}/setup/memberships`)(
+  new URL(Astro.request.url)
+)
+---
+
+{
+  path ? (
+    <SetupLayout
+      {config}
+      {...path.props}
+      setupStep="PREVIEW"
+      aside={false}
+      title="Setup Clubs | Preview"
+    >
+      <section class="grid gap-16">
+        <h2 class="font-title text-2xl font-bold">Preview</h2>
+        <iframe
+          width="142%"
+          height="800"
+          style="transform: scale(0.7); transform-origin: 0 0"
+          src={baseUrl}
+          class="-mb-[240px] rounded-lg bg-dp-black-600 shadow-lg"
+        />
+        <a class="hs-button is-filled is-large" href={baseUrl} target="_blank">
+          Open external
+        </a>
+
+        <a
+          href={`/${site}/setup/publish`}
+          class="grid w-full gap-14 overflow-hidden rounded-[32px] bg-native-blue-400 pt-14"
+        >
+          <h3 class="text-center font-title text-4xl font-bold">
+            Almost there!
+          </h3>
+          <div>
+            <p class="text-center text-base font-normal">Next?</p>
+            <p class="text-center font-title text-2xl font-bold">
+              Publish your club to unlock more features
+            </p>
+          </div>
+          <div class="relative ml-24 flex content-end justify-end">
+            <img
+              class="rounded-tl-[32px] object-cover object-center"
+              src={image}
+              width="750"
+              height="755"
+              alt="Post sales chart"
+            />
+            <div class="absolute inset-0 bg-gradient-to-r from-transparent to-native-blue-400" />
+          </div>
+        </a>
+      </section>
+
+      <NextButton
+        next={`/${site}/setup/publish`}
+        slot="aside:after-built-in-buttons"
+      />
+    </SetupLayout>
+  ) : (
+    <PageNotFound
+      redirectionCtaText={`Take me back to previous page`}
+      redirectionCtaUrl={siteBaseUrl}
+    />
+  )
+}

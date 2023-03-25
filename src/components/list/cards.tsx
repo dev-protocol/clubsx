@@ -17,7 +17,7 @@
 
 import type { Product } from '@constants/products'
 
-type ExtendedProducts = (Product & { purchaseLink?: string })[]
+export type ExtendedProducts = (Product & { purchaseLink?: string })[]
 
 type Params = {
   products: ExtendedProducts
@@ -25,7 +25,7 @@ type Params = {
 
 export default function Cards({ products }: Params) {
   return (
-    <div className="bg-black">
+    <div>
       <div className="mx-auto max-w-2xl px-6 md:max-w-7xl md:px-8">
         <div className="grid grid-cols-1 gap-y-4 gap-x-6 md:grid-cols-2 md:gap-x-8 lg:grid-cols-3">
           {products.map((product) => (
