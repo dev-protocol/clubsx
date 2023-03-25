@@ -1,14 +1,7 @@
----
-title: Hello, World
----
+Join plugin adds a list of memberships and membership checkout pages for memberships created with the Memberships plugin.
 
-# Hi there!
+The URL for the membership list page is always /join.
 
-This Markdown file creates a page at `your-domain.com/page-1/`
+And the URL for the checkout page is /join/ + the membership ID.
 
-It probably isn't styled much, but Markdown does support:
-
-- **bold** and _italics._
-- lists
-- [links](https://astro.build)
-- and more!
+This plugin has no admin page, just install and enable to add these pages!

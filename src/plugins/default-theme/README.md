@@ -1,14 +1,5 @@
----
-title: Hello, World
----
+Built-in home page:
 
-# Hi there!
-
-This Markdown file creates a page at `your-domain.com/page-1/`
-
-It probably isn't styled much, but Markdown does support:
-
-- **bold** and _italics._
-- lists
-- [links](https://astro.build)
-- and more!
+Display all your memberships in beautifully
+Short description to let people know about your project
+YouTube-embed enabled profiles to show more detailed descriptions
