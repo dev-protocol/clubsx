@@ -44,12 +44,12 @@
 
 {#if emailSending}
   <span
-    class="hs-button is-filled animate-pulse rounded border-0 bg-gray-500/60 px-8 py-4 text-inherit"
+    class="hs-button is-filled animate-pulse rounded bg-gray-500/60 px-8 py-4 text-inherit"
     >Sending a magic link</span
   >
 {:else if emailSent}
   <span
-    class="hs-button is-filled cursor-default border-0 bg-success-300 px-8 py-4 text-inherit"
+    class="hs-button is-filled cursor-default bg-success-300 px-8 py-4 text-inherit"
     >Check your inbox</span
   >
 {:else}
@@ -66,7 +66,7 @@
     </label>
     <button
       on:click|preventDefault={(_) => sendMagicLink()}
-      class="hs-button is-filled border-0 bg-native-blue-300 px-8 py-4 text-inherit"
+      class="hs-button is-filled bg-native-blue-300 px-8 py-4 text-inherit"
     >
       Continue
     </button>
