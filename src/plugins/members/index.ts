@@ -8,6 +8,7 @@ import {
 import { default as Index } from './index.astro'
 import { default as Icon } from './assets/icon.svg'
 import { Content as Readme } from './README.md'
+import Preview1 from './assets/members-1.jpg'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   _,
@@ -28,7 +29,7 @@ export const meta: ClubsPluginMeta = {
     priceCurrency: 'DEV',
   },
   description: `List of membership holders.`,
-  previewImages: [Icon, Icon, Icon],
+  previewImages: [Preview1],
   readme: Readme,
 }
 

@@ -53,7 +53,7 @@ const pluginUrl = ((url) =>
       <p class="truncate text-2xl font-bold">{plugin.displayName}</p>
       {
         markAsUpcoming && (
-          <div class="bg-danger-200 flex h-fit w-fit items-center justify-around gap-0.5 rounded-full px-2">
+          <div class="flex h-fit w-fit items-center justify-around gap-0.5 rounded-full bg-danger-200 px-2">
             <img src={clockImage} class="h-3 max-h-full w-3" />
             <p class="h-fit w-fit text-xs text-black">Upcoming</p>
           </div>
@@ -61,7 +61,7 @@ const pluginUrl = ((url) =>
       }
       {
         !markAsUpcoming && displayStatus && plugin.added && (
-          <div class="bg-native-blue-200 flex h-fit w-fit items-center justify-around gap-0.5 rounded-full px-2">
+          <div class="flex h-fit w-fit items-center justify-around gap-0.5 rounded-full bg-native-blue-200 px-2">
             <img src={checkImage} class="h-3 max-h-full w-3" />
             <p class="h-fit w-fit text-xs text-black">Added</p>
           </div>

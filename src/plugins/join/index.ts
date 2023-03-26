@@ -12,6 +12,8 @@ import { default as Id } from './[id].astro'
 import type { Membership } from '@plugins/memberships'
 import { default as Icon } from './assets/icon.svg'
 import { Content as Readme } from './README.md'
+import Preview1 from './assets/join-1.jpg'
+import Preview2 from './assets/join-2.jpg'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
@@ -80,7 +82,7 @@ export const meta: ClubsPluginMeta = {
     priceCurrency: 'DEV',
   },
   description: `Add checkout pages for each tier.`,
-  previewImages: [Icon, Icon, Icon],
+  previewImages: [Preview1, Preview2],
   readme: Readme,
 }
 

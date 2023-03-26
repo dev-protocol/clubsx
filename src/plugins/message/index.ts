@@ -21,6 +21,9 @@ import uniqueString from 'unique-string'
 import type { NavLink } from '@constants/navLink'
 import { default as Icon } from './assets/icon.svg'
 import { Content as Readme } from './README.md'
+import Preview1 from './assets/message-1.jpg'
+import Preview2 from './assets/message-2.jpg'
+import Preview3 from './assets/message-3.jpg'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
@@ -159,7 +162,7 @@ export const meta: ClubsPluginMeta = {
     priceCurrency: 'DEV',
   },
   description: `Token-gated contact form.`,
-  previewImages: [Icon, Icon, Icon],
+  previewImages: [Preview1, Preview2, Preview3],
   readme: Readme,
 }
 

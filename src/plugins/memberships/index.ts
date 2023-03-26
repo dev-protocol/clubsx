@@ -15,6 +15,9 @@ import { utils } from 'ethers'
 import type { DraftOptions } from '@constants/draft'
 import { default as Icon } from './assets/icon.svg'
 import { Content as Readme } from './README.md'
+import Preview1 from './assets/memberships-1.jpg'
+import Preview2 from './assets/memberships-2.jpg'
+import Preview3 from './assets/memberships-3.jpg'
 
 export type Membership = {
   id: string
@@ -136,7 +139,7 @@ export const meta: ClubsPluginMeta = {
     priceCurrency: 'DEV',
   },
   description: `Simplest tool for creating membership NFT.`,
-  previewImages: [Icon, Icon, Icon],
+  previewImages: [Preview1, Preview2, Preview3],
   readme: Readme,
 }
 

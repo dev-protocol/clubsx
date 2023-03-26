@@ -4,4 +4,4 @@ The NFTs created by Memberships Plugin are integrated with Dev Protocol, and you
 
 And the NFT supports pricing by ETH (WETH).
 
-The NFT will defer its minting until your club’s users have paid, so you pay for gas only for the NFT initial setup.
+The NFT will defer its minting until your users have paid, so you pay for gas only for the NFT initial setup.
