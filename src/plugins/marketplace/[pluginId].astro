@@ -38,7 +38,7 @@ const READMEComponent = plugin.readme
       <div>
         {
           false ? (
-            <span class="flex cursor-not-allowed items-center justify-center rounded-full bg-native-blue-200 px-8 py-4">
+            <span class="bg-native-blue-200 flex cursor-not-allowed items-center justify-center rounded-full px-8 py-4">
               <img src={checkImage} class="h-3 max-h-full w-3 font-bold" />
               <p class="font-bold text-black">Added</p>
             </span>
@@ -48,12 +48,16 @@ const READMEComponent = plugin.readme
         }
       </div>
     </div>
-    <div class="flex items-start justify-start gap-8 overflow-x-auto pb-4">
+    <div
+      class="mx-[calc((100vw-100%)/-2)] flex items-start justify-start gap-8 overflow-x-auto px-4 pb-4 lg:mx-0 lg:px-0"
+    >
       {
         (plugin?.previewImages?.length
           ? plugin.previewImages
           : [pluginDefaultIcon, pluginDefaultIcon, pluginDefaultIcon]
-        ).map((image) => <img class="h-80 w-auto rounded-lg" src={image} />)
+        ).map((image) => (
+          <img class="h-[30rem] w-auto max-w-none rounded-lg" src={image} />
+        ))
       }
     </div>
     <div class="grid max-w-3xl gap-8">

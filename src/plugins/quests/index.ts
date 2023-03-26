@@ -13,6 +13,7 @@ import { default as AddNavigationLink } from '@components/AddNavigationLink/AddN
 import type { NavLink } from '@constants/navLink'
 import { default as Icon } from './assets/icon.svg'
 import { Content as Readme } from './README.md'
+import Preview1 from './assets/quests-1.jpg'
 
 const questParams = ['quest_starter', 'quest_stake_100', 'quest_stake_500']
 
@@ -69,7 +70,7 @@ export const meta: ClubsPluginMeta = {
     priceCurrency: 'DEV',
   },
   description: `Add Dework link.`,
-  previewImages: [Icon, Icon, Icon],
+  previewImages: [Preview1],
   readme: Readme,
 }
 

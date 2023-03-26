@@ -16,6 +16,9 @@ import type { Membership } from '@plugins/memberships'
 import PreviewImage from './assets/preview.png'
 import { default as Icon } from './assets/icon.svg'
 import { Content as Readme } from './README.md'
+import Preview1 from './assets/default-theme-1.jpg'
+import Preview2 from './assets/default-theme-2.jpg'
+import Preview3 from './assets/default-theme-3.jpg'
 
 export const colorPresets = {
   Purple: {
@@ -153,7 +156,7 @@ export const meta: ClubsThemePluginMeta = {
     priceCurrency: 'DEV',
   },
   description: `Basic theme with multiple color schemes.`,
-  previewImages: [Icon, Icon, Icon],
+  previewImages: [Preview1, Preview2, Preview3],
   readme: Readme,
 }
 

@@ -31,8 +31,24 @@ const { getStaticPaths } = adminFactory({
     marketplace,
   ],
 })
-const path = (await getStaticPaths()).find(({ params }) => params.page === page)
-const config = path && decode(path.props.clubs.encodedClubsConfiguration)
+const _path = (await getStaticPaths()).find(
+  ({ params }) => params.page === page
+)
+const path = {
+  ..._path,
+  props: {
+    ..._path?.props,
+    clubs: {
+      ..._path?.props.clubs,
+      plugins: _path?.props.clubs.plugins.filter(
+        (p) => p.id !== 'devprotocol:clubs:clubsx:marketplace'
+      ),
+    },
+  },
+}
+const config =
+  path.props.clubs.encodedClubsConfiguration &&
+  decode(path.props.clubs.encodedClubsConfiguration)
 
 const Content = path?.props.component
 
@@ -54,7 +70,7 @@ const siteBaseUrl = new URL(Astro.request.url).origin
         <Admin {...path.props}>
           <a
             slot="admin:sidebar:before-title"
-            class="flex items-center gap-2 transition-colors hover:text-native-blue-300"
+            class="hover:text-native-blue-300 flex items-center gap-2 transition-colors"
             href={`${baseUrl}/signin`}
           >
             <svg
@@ -75,7 +91,7 @@ const siteBaseUrl = new URL(Astro.request.url).origin
           </a>
           <a
             slot="admin:sidebar:before-title"
-            class="flex items-center gap-2 transition-colors hover:text-native-blue-300"
+            class="hover:text-native-blue-300 flex items-center gap-2 transition-colors"
             target="_blank"
             rel="noopener norefferer"
             href={siteBaseUrl}
