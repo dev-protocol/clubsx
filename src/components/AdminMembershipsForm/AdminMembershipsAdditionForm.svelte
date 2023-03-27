@@ -135,7 +135,15 @@
   }
 
   const onChangeName = () => {
-    const id = membership.name.toLowerCase().replace(/\W/g, '-')
+    let id = membership.name.toLowerCase().replace(/\W/g, '-')
+    // Duplication detection
+    let count = 1
+    let _id = id
+    while (existingMemberships.some((x) => x.id === id)) {
+      count = count + 1
+      id = `${_id}-${count}`
+    }
+
     membership.id = id
   }
 
