@@ -424,12 +424,12 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
-"@devprotocol/clubs-core@0.37.1":
-  version "0.37.1"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.37.1.tgz#2cfacd3d53bd2ae931d67f9b881100585c28b9d4"
-  integrity sha512-xZNClgv6TR4glHyMp/4qBSJgcJ3KH15Ktn/jZ85D8yXu8wSQOkBApojs8Is0ubeL87bEPQ/DiHv/+QXuEhvmUw==
+"@devprotocol/clubs-core@0.38.0":
+  version "0.38.0"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.38.0.tgz#b5c3e2c91a40a7b65d5ce5e6cb1ba8e1f6340e80"
+  integrity sha512-+zSC8V2RJng+pvKDKQUbnrP/1tb6alL3tvAJ3G8bBbcNPAD2CVNh75/iFN90uo1O6Vnp47UyOlpl8T/lw/XSpw==
   dependencies:
-    "@devprotocol/dev-kit" "7.3.0"
+    "@devprotocol/dev-kit" "7.3.2"
     "@devprotocol/elements" "0.2.2"
     "@devprotocol/hashi" "1.8.0"
     "@devprotocol/util-ts" "3.0.0"
@@ -445,16 +445,6 @@
     react-dom "^18.0.0"
     svelte "^3.49.0"
     vue "^3.2.0"
-
-"@devprotocol/dev-kit@7.3.0":
-  version "7.3.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-7.3.0.tgz#4a009892ae75b9e440fea3640c073b3fc9759d81"
-  integrity sha512-zKKwzDHowdpGJcd6/VFprKzjfZFrhIZL/sAF668AnkwyBBx/HWraiOK+yUzlD91MQVdRkk7aX1M5ditFuwHhlA==
-  dependencies:
-    "@devprotocol/util-ts" "3.0.0"
-    bignumber.js "9.1.1"
-    js-base64 "^3.7.2"
-    ramda "^0.28.0"
 
 "@devprotocol/dev-kit@7.3.2":
   version "7.3.2"
