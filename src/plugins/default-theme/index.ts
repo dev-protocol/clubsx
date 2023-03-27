@@ -14,6 +14,11 @@ import type { HomeConfig } from '../../constants/homeConfig'
 import type { NavLink } from '@constants/navLink'
 import type { Membership } from '@plugins/memberships'
 import PreviewImage from './assets/preview.png'
+import { default as Icon } from './assets/icon.svg'
+import { Content as Readme } from './README.md'
+import Preview1 from './assets/default-theme-1.jpg'
+import Preview2 from './assets/default-theme-2.jpg'
+import Preview3 from './assets/default-theme-3.jpg'
 
 export const colorPresets = {
   Purple: {
@@ -150,6 +155,14 @@ export const meta: ClubsThemePluginMeta = {
   theme: {
     previewImage: PreviewImage,
   },
+  icon: Icon,
+  offer: {
+    price: 0,
+    priceCurrency: 'DEV',
+  },
+  description: `Basic theme with multiple color schemes.`,
+  previewImages: [Preview1, Preview2, Preview3],
+  readme: Readme,
 }
 
 export default {

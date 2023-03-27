@@ -11,6 +11,9 @@ import { default as Admin } from './admin.astro'
 import { default as Id } from './[id].astro'
 import { default as AddNavigationLink } from '@components/AddNavigationLink/AddNavigationLink.astro'
 import type { NavLink } from '@constants/navLink'
+import { default as Icon } from './assets/icon.svg'
+import { Content as Readme } from './README.md'
+import Preview1 from './assets/quests-1.jpg'
 
 const questParams = ['quest_starter', 'quest_stake_100', 'quest_stake_500']
 
@@ -58,8 +61,17 @@ export const getSlots: ClubsFunctionGetSlots = async (
     : []
 }
 export const meta: ClubsPluginMeta = {
+  id: 'devprotocol:clubs:plugin:quests',
   displayName: 'Quests',
   category: ClubsPluginCategory.Growth,
+  icon: Icon,
+  offer: {
+    price: 0,
+    priceCurrency: 'DEV',
+  },
+  description: `Add Dework link.`,
+  previewImages: [Preview1],
+  readme: Readme,
 }
 
 export default {

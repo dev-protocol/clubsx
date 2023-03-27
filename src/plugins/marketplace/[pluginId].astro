@@ -1,0 +1,116 @@
+---
+import type { InstallablePlugins, PluginMeta } from '@constants/plugins'
+import type { ClubsConfiguration } from '@devprotocol/clubs-core'
+
+import checkImage from '@assets/check.svg'
+import pluginDefaultIcon from '@assets/default-plugin-icon.jpg'
+import ConnectButton from '@components/Wallet/ConnectButton.vue'
+import { createGetPluginMeta } from './utils/createGetPluginMeta'
+import AddPluginButton from '@components/AddPluginButton/AddPluginButton.vue'
+import PluginItem from './components/PluginItem.astro'
+import Markdown from '@components/Markdown/Markdown.astro'
+
+const {
+  config,
+  plugin: installablePlugins,
+  size = 'medium',
+} = Astro.props as {
+  config: ClubsConfiguration
+  plugin: InstallablePlugins
+  size?: 'medium' | 'small'
+}
+
+const plugin = await createGetPluginMeta(config)(installablePlugins)
+
+const READMEComponent = plugin.readme
+---
+
+<section class="my-16">
+  <div class="grid gap-16">
+    <div class="flex items-center justify-between">
+      <p class="text-4xl font-bold">{plugin.displayName}</p>
+      <ConnectButton client:load type="filled large" chainId={config.chainId} />
+    </div>
+    <div
+      class="grid max-w-3xl items-start justify-between gap-8 lg:grid-cols-[3fr_1fr]"
+    >
+      <PluginItem plugin={plugin} truncate={false} displayStatus={false} />
+      <div>
+        {
+          false ? (
+            <span class="flex cursor-not-allowed items-center justify-center rounded-full bg-native-blue-200 px-8 py-4">
+              <img src={checkImage} class="h-3 max-h-full w-3 font-bold" />
+              <p class="font-bold text-black">Added</p>
+            </span>
+          ) : (
+            <AddPluginButton client:load plugin={plugin} />
+          )
+        }
+      </div>
+    </div>
+    <div
+      class="mx-[calc((100vw-100%)/-2)] flex items-start justify-start gap-8 overflow-x-auto px-4 pb-4 lg:mx-0 lg:px-0"
+    >
+      {
+        (plugin?.previewImages?.length
+          ? plugin.previewImages
+          : [pluginDefaultIcon, pluginDefaultIcon, pluginDefaultIcon]
+        ).map((image) => (
+          <img
+            class="h-[24rem] w-auto max-w-none rounded-lg lg:h-[30rem]"
+            src={image}
+          />
+        ))
+      }
+    </div>
+    <div class="grid max-w-3xl gap-8">
+      <p class="text-2xl font-bold text-white">Overview</p>
+      <p class="">
+        <Markdown>
+          {READMEComponent && <READMEComponent />}
+        </Markdown>
+      </p>
+    </div>
+    <div class="grid max-w-2xl gap-8">
+      {
+        plugin.developer && (
+          <div class="flex flex-col items-start justify-start space-y-2">
+            <p class="text-base font-medium text-white text-opacity-70">
+              Developer
+            </p>
+            <p class="max-w-xl text-xl font-medium text-white">
+              {plugin.developer}
+            </p>
+          </div>
+        )
+      }
+      {
+        plugin.clubsUrl && (
+          <div class="flex flex-col items-start justify-start space-y-2">
+            <p class="text-base font-medium text-white text-opacity-70">
+              Clubs
+            </p>
+            <a class="text-xl font-medium text-white" href={plugin.clubsUrl}>
+              {plugin.clubsUrl}
+            </a>
+          </div>
+        )
+      }
+      {
+        plugin.repositoryUrl && (
+          <div class="flex flex-col items-start justify-start space-y-2">
+            <p class="text-base font-medium text-white text-opacity-70">
+              Repository
+            </p>
+            <a
+              class="text-xl font-medium text-white underline"
+              href={plugin.repositoryUrl}
+            >
+              {plugin.repositoryUrl}
+            </a>
+          </div>
+        )
+      }
+    </div>
+  </div>
+</section>

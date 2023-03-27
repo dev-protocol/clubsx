@@ -14,13 +14,14 @@ class AdminPlugins extends React.Component {
       // Skip the admin plugin, but maintain a backup to add it later while doing setConfig in order to
       // avoid overriding it.
       if (plugin.name.toLowerCase() === 'admin') {
+        // TODO: use plugin.id in future.
         adminPlugin = plugin
         continue
       }
 
       // Find how many plugisn match the same name and are enabled.
       const matchingInjectedPlugins = injectedPlugins.filter(
-        (iP) => iP.name.toLowerCase() === plugin.name.toLowerCase() && iP.enable
+        (iP) => iP.name.toLowerCase() === plugin.name.toLowerCase() && iP.enable // TODO: use plugin.id in future.
       )
       plugins.push({
         ...plugin,
@@ -45,7 +46,7 @@ class AdminPlugins extends React.Component {
       const plugins = prevState.config.plugins
 
       // 1. Find index of plugin.
-      const index = plugins.findIndex((plugin) => plugin.name === pluginName)
+      const index = plugins.findIndex((plugin) => plugin.name === pluginName) // TODO: use plugin.id in future.
       if (index === -1) return prevState
 
       // 2. Extract it's details.
@@ -83,14 +84,19 @@ class AdminPlugins extends React.Component {
             key={i}
           >
             <p className="h-[24px] font-body text-base font-normal capitalize leading-6">
-              {plugin.name}
+              {
+                plugin.name // TODO: use plugin.id in future.
+              }
             </p>
             <div className="flex h-[68px] flex-row items-center justify-start gap-[16px] rounded-[99px] border-[3px] border-[##040B10] border-[#040B10] p-1.5">
               <div
                 onClick={
                   !plugin.enable
                     ? () => {}
-                    : () => this.toggleActivation(plugin.name)
+                    : () =>
+                        this.toggleActivation(
+                          plugin.name // TODO: use plugin.id in future.
+                        )
                 }
                 className={
                   !plugin.enable ? toggleEnableClasses : toggleDisableClasses
@@ -107,7 +113,10 @@ class AdminPlugins extends React.Component {
                 onClick={
                   plugin.enable
                     ? () => {}
-                    : () => this.toggleActivation(plugin.name)
+                    : () =>
+                        this.toggleActivation(
+                          plugin.name // TODO: use plugin.id in future.
+                        )
                 }
                 className={
                   plugin.enable ? toggleEnableClasses : toggleDisableClasses

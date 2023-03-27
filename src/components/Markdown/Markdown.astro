@@ -2,7 +2,7 @@
 import { marked } from 'marked'
 
 const {
-  body = '',
+  body,
   class: className,
   vars,
 } = Astro.props as {
@@ -30,13 +30,23 @@ const renderer = {
 
 marked.use({ renderer })
 
-const content = marked.parse(body)
+const content = body ? marked.parse(body) : undefined
 ---
 
-<div
-  class:list={[className, 'md', 'grid', 'grid-flow-row', 'gap-12']}
-  set:html={content}
-/>
+{
+  content ? (
+    <div
+      class:list={[className, 'md', 'grid', 'grid-flow-row', 'gap-12']}
+      set:html={content}
+    >
+      <slot />
+    </div>
+  ) : (
+    <div class:list={[className, 'md', 'grid', 'grid-flow-row', 'gap-12']}>
+      <slot />
+    </div>
+  )
+}
 
 <style
   lang="scss"

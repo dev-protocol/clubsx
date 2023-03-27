@@ -1,4 +1,3 @@
-import type { Tier, Tiers } from '@constants/tier'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import {
   ClubsFunctionGetAdminPaths,
@@ -11,6 +10,10 @@ import {
 import { default as Index } from './index.astro'
 import { default as Id } from './[id].astro'
 import type { Membership } from '@plugins/memberships'
+import { default as Icon } from './assets/icon.svg'
+import { Content as Readme } from './README.md'
+import Preview1 from './assets/join-1.jpg'
+import Preview2 from './assets/join-2.jpg'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
@@ -70,8 +73,17 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async () => []
 
 export const meta: ClubsPluginMeta = {
+  id: 'devprotocol:clubs:plugin:join',
   displayName: 'Join',
   category: ClubsPluginCategory.Uncategorized,
+  icon: Icon,
+  offer: {
+    price: 0,
+    priceCurrency: 'DEV',
+  },
+  description: `Add checkout pages for each tier.`,
+  previewImages: [Preview1, Preview2],
+  readme: Readme,
 }
 
 export default {

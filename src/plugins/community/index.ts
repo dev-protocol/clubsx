@@ -10,6 +10,9 @@ import { default as Index } from './index.astro'
 import { default as Admin } from './admin.astro'
 import { default as AddNavigationLink } from '@components/AddNavigationLink/AddNavigationLink.astro'
 import type { NavLink } from '@constants/navLink'
+import { default as Icon } from './assets/icon.svg'
+import { Content as Readme } from './README.md'
+import Preview1 from './assets/community-1.jpg'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
@@ -50,8 +53,17 @@ export const getSlots: ClubsFunctionGetSlots = async (
 }
 
 export const meta: ClubsPluginMeta = {
+  id: 'devprotocol:clubs:plugin:community',
   displayName: 'Community',
   category: ClubsPluginCategory.Growth,
+  icon: Icon,
+  offer: {
+    price: 0,
+    priceCurrency: 'DEV',
+  },
+  description: `Add guild.xyz link.`,
+  previewImages: [Preview1],
+  readme: Readme,
 }
 
 export default {

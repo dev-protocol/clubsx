@@ -19,6 +19,11 @@ import type { UndefinedOr } from '@devprotocol/util-ts'
 import type { Membership } from '@plugins/memberships'
 import uniqueString from 'unique-string'
 import type { NavLink } from '@constants/navLink'
+import { default as Icon } from './assets/icon.svg'
+import { Content as Readme } from './README.md'
+import Preview1 from './assets/message-1.jpg'
+import Preview2 from './assets/message-2.jpg'
+import Preview3 from './assets/message-3.jpg'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
@@ -151,6 +156,14 @@ export const meta: ClubsPluginMeta = {
   id: 'devprotocol:clubs:gated-contact-form',
   displayName: 'Message',
   category: ClubsPluginCategory.Growth,
+  icon: Icon,
+  offer: {
+    price: 0,
+    priceCurrency: 'DEV',
+  },
+  description: `Token-gated contact form.`,
+  previewImages: [Preview1, Preview2, Preview3],
+  readme: Readme,
 }
 
 export default {
