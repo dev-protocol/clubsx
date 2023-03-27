@@ -39,10 +39,10 @@ export const installablePlugins: InstallablePlugins[] = [
       meta: {
         id: '#',
         category: '',
-        displayName: 'Feeds',
+        displayName: 'Posts',
         icon: Feeds,
         description:
-          'Timeline-like post feed, where you can use token-gated posts by membership, or public posts, and communication with comments and emoji reaction.',
+          'Extendable Post Timeline for DAO. Token-gated posts by membership, or public posts, and communication with comments and emoji reaction. And, it has an extendable nature for new features such as voting, bounty posts, video/music posts.',
       },
     },
   },
