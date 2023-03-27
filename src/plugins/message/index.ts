@@ -154,7 +154,7 @@ export const getSlots: ClubsFunctionGetSlots = async (
 
 export const meta: ClubsPluginMeta = {
   id: 'devprotocol:clubs:gated-contact-form',
-  displayName: 'Message',
+  displayName: 'Contact form',
   category: ClubsPluginCategory.Growth,
   icon: Icon,
   offer: {

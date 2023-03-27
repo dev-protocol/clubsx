@@ -6,13 +6,42 @@ import type {
 } from '@devprotocol/clubs-core'
 import Feeds from '@assets/Plugins/Feeds.svg'
 
+export type PluginTag =
+  | 'New & Upcoming'
+  | 'Memberships'
+  | 'Commerce & Business'
+  | 'Messaging'
+  | 'Finance & Payments'
+  | 'Governance'
+  | 'Crowdfunding'
+  | 'Theme'
+  | 'Widgets'
+  | 'Analytics'
+  | 'Utility'
+  | 'Social'
+
+export const allTags: PluginTag[] = [
+  'New & Upcoming',
+  'Theme',
+  'Memberships',
+  'Governance',
+  'Crowdfunding',
+  'Messaging',
+  'Widgets',
+  'Commerce & Business',
+  'Finance & Payments',
+  'Analytics',
+  'Social',
+  'Utility',
+]
+
 export type InstallablePlugins = {
   id: string
   name?: string
   configName?: string
   isExternalModule?: boolean
   entryPoint?: string // File name representing main entry point of plugin config.
-  tag: 'NEW & UPCOMING' | 'THEME' | 'BASICS'
+  tag: PluginTag
   moduleNameForImport?: string
   developer?: string
   clubsUrl?: string
@@ -23,7 +52,7 @@ export type InstallablePlugins = {
 
 export type PluginMeta = (ClubsPluginMeta & Partial<ClubsThemePluginMeta>) & {
   added: boolean
-  tag: 'NEW & UPCOMING' | 'THEME' | 'BASICS'
+  tag: PluginTag
   developer?: string
   repositoryUrl?: string
   clubsUrl?: string
@@ -33,7 +62,7 @@ export type PluginMeta = (ClubsPluginMeta & Partial<ClubsThemePluginMeta>) & {
 export const installablePlugins: InstallablePlugins[] = [
   {
     id: 'upcoming:feeds',
-    tag: 'NEW & UPCOMING',
+    tag: 'New & Upcoming',
     pluginOptions: [],
     planned: {
       meta: {
@@ -50,7 +79,7 @@ export const installablePlugins: InstallablePlugins[] = [
     id: 'devprotocol:clubs:simple-memberships',
     name: 'memberships',
     entryPoint: 'index.ts',
-    tag: 'BASICS',
+    tag: 'Memberships',
     isExternalModule: false,
     moduleNameForImport: 'memberships',
     configName: 'memberships',
@@ -62,7 +91,7 @@ export const installablePlugins: InstallablePlugins[] = [
     id: 'devprotocol:clubs:plugin:join',
     name: 'join',
     entryPoint: 'index.ts',
-    tag: 'BASICS',
+    tag: 'Memberships',
     isExternalModule: false,
     moduleNameForImport: 'join',
     configName: 'join',
@@ -74,7 +103,7 @@ export const installablePlugins: InstallablePlugins[] = [
     id: 'devprotocol:clubs:gated-contact-form',
     name: 'message',
     entryPoint: 'index.ts',
-    tag: 'BASICS',
+    tag: 'Commerce & Business',
     isExternalModule: false,
     moduleNameForImport: 'message',
     configName: 'message',
@@ -86,7 +115,7 @@ export const installablePlugins: InstallablePlugins[] = [
     id: 'devprotocol:clubs:plugin:me',
     name: 'me',
     entryPoint: 'index.ts',
-    tag: 'BASICS',
+    tag: 'Utility',
     isExternalModule: false,
     moduleNameForImport: 'me',
     configName: 'me',
@@ -98,7 +127,7 @@ export const installablePlugins: InstallablePlugins[] = [
     id: 'devprotocol:clubs:plugin:members',
     name: 'members',
     entryPoint: 'index.ts',
-    tag: 'BASICS',
+    tag: 'Utility',
     isExternalModule: false,
     moduleNameForImport: 'members',
     configName: 'members',
@@ -110,7 +139,7 @@ export const installablePlugins: InstallablePlugins[] = [
     id: 'devprotocol:clubs:plugin:community',
     name: 'community',
     entryPoint: 'index.ts',
-    tag: 'BASICS',
+    tag: 'Social',
     isExternalModule: false,
     moduleNameForImport: 'community',
     configName: 'community',
@@ -122,7 +151,7 @@ export const installablePlugins: InstallablePlugins[] = [
     id: 'devprotocol:clubs:theme-1',
     name: 'default-theme',
     entryPoint: 'index.ts',
-    tag: 'THEME',
+    tag: 'Theme',
     isExternalModule: false,
     moduleNameForImport: 'default-theme',
     configName: 'defaultTheme',
@@ -134,7 +163,7 @@ export const installablePlugins: InstallablePlugins[] = [
     id: 'devprotocol:clubs:plugin:quests',
     name: 'quests',
     entryPoint: 'index.ts',
-    tag: 'BASICS',
+    tag: 'Social',
     isExternalModule: false,
     moduleNameForImport: 'quests',
     configName: 'quests',

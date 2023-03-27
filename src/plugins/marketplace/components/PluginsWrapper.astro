@@ -1,0 +1,49 @@
+---
+import type { PluginMeta, PluginTag } from '@constants/plugins'
+import PluginItem from './PluginItem.astro'
+
+const {
+  plugins,
+  tag,
+  title,
+  preview = false,
+  featuring = false,
+} = Astro.props as {
+  plugins: PluginMeta[]
+  tag: PluginTag
+  title: string
+  preview?: boolean
+  featuring?: boolean
+}
+
+const filteredPlugins = plugins.filter((plg) => plg.tag === tag)
+---
+
+{
+  filteredPlugins.length > 0 && (
+    <section id={tag.toLowerCase().replace(/\W/g, '')} class="pt-20">
+      <p class="mb-10 text-4xl font-bold">{title}</p>
+      <div
+        class:list={[
+          'grid  items-start justify-start gap-16',
+          {
+            'grid-cols-[repeat(auto-fill,_minmax(300px,_1fr))]': !featuring,
+          },
+          {
+            'lg:grid-cols-[repeat(auto-fill,_minmax(400px,_1fr))]': featuring,
+          },
+        ]}
+      >
+        {filteredPlugins.map((nAu: PluginMeta) => (
+          <PluginItem
+            plugin={nAu}
+            preview={preview ? nAu.theme?.previewImage : undefined}
+            size={preview ? 'small' : undefined}
+            markAsUpcoming={Boolean(nAu.planned)}
+            truncate={!featuring}
+          />
+        ))}
+      </div>
+    </section>
+  )
+}
