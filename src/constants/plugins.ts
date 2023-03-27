@@ -76,6 +76,20 @@ export const installablePlugins: InstallablePlugins[] = [
     },
   },
   {
+    id: 'upcoming:governance-templetes',
+    tag: 'New & Upcoming',
+    pluginOptions: [],
+    planned: {
+      meta: {
+        id: '#',
+        category: '',
+        displayName: 'Governance Templetes',
+        description:
+          'Simplifying Governance Complexity. Based on the premise of stakeholder analysis, envisaged appropriate behavior, and fiduciary responsibilities, governance templates arrive at rules around representation and incentivization for a fair representation of interests at stake in your Club.',
+      },
+    },
+  },
+  {
     id: 'devprotocol:clubs:simple-memberships',
     name: 'memberships',
     entryPoint: 'index.ts',
