@@ -18,6 +18,7 @@
         <th scope="col" class="px-6 py-3"> Blockchain </th>
         <th scope="col" class="px-6 py-3"> Status </th>
         <th scope="col" class="px-6 py-3"> Date </th>
+        <th scope="col" class="px-6 py-3"> Tokenised asset </th>
       </tr>
     </thead>
     <tbody>
@@ -56,6 +57,10 @@
               day: 'numeric',
               timeZone: 'UTC',
             }) ?? 'Unknown'}
+          </td>
+          <td class="px-6 py-4">
+            {club.config.options?.find((option) => option.key === '__draft')
+              ?.value.category}
           </td>
         </tr>
       {/each}
