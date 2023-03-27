@@ -103,7 +103,7 @@ export const installablePlugins: InstallablePlugins[] = [
     id: 'devprotocol:clubs:gated-contact-form',
     name: 'message',
     entryPoint: 'index.ts',
-    tag: 'Commerce & Business',
+    tag: 'Messaging',
     isExternalModule: false,
     moduleNameForImport: 'message',
     configName: 'message',
