@@ -11,9 +11,7 @@ const { site } = Astro.params
 
 const { getStaticPaths, getCurrentConfig } = adminFactory({
   config: async () => await _config(site),
-  plugins: {
-    admin,
-  },
+  plugins: [admin],
 })
 
 const config = await getCurrentConfig()

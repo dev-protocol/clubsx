@@ -20,7 +20,7 @@ const { site, page } = Astro.params
 
 const { getStaticPaths } = adminFactory({
   config: async () => await _config(site),
-  plugins: {
+  plugins: [
     defaultTheme,
     admin,
     quests,
@@ -29,10 +29,26 @@ const { getStaticPaths } = adminFactory({
     home,
     message,
     marketplace,
-  },
+  ],
 })
-const path = (await getStaticPaths()).find(({ params }) => params.page === page)
-const config = path && decode(path.props.clubs.encodedClubsConfiguration)
+const _path = (await getStaticPaths()).find(
+  ({ params }) => params.page === page
+)
+const path = {
+  ..._path,
+  props: {
+    ..._path?.props,
+    clubs: {
+      ..._path?.props.clubs,
+      plugins: _path?.props.clubs.plugins.filter(
+        (p) => p.id !== 'devprotocol:clubs:clubsx:marketplace'
+      ),
+    },
+  },
+}
+const config =
+  path.props.clubs.encodedClubsConfiguration &&
+  decode(path.props.clubs.encodedClubsConfiguration)
 
 const Content = path?.props.component
 

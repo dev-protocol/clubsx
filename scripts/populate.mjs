@@ -372,11 +372,13 @@ const populate = async () => {
         ],
         plugins: [
           {
+            id: 'clubs-core:admin',
             name: 'admin',
             enable: true,
             options: [],
           },
           {
+            id: 'devprotocol:clubs:theme-1',
             name: 'defaultTheme',
             enable: true,
             options: [
@@ -406,6 +408,7 @@ const populate = async () => {
             ],
           },
           {
+            id: 'devprotocol:clubs:plugin:join',
             name: 'join',
             enable: true,
             options: [
@@ -416,16 +419,19 @@ const populate = async () => {
             ],
           },
           {
+            id: 'devprotocol:clubs:plugin:me',
             name: 'me',
             enable: true,
             options: [],
           },
           {
+            id: 'devprotocol:clubs:plugin:members',
             name: 'members',
             enable: true,
             options: [],
           },
           {
+            id: 'devprotocol:clubs:plugin:perks',
             name: 'perks',
             enable: true,
             options: [
@@ -436,16 +442,19 @@ const populate = async () => {
             ],
           },
           {
+            id: 'devprotocol:clubs:plugin:quests',
             name: 'quests',
             enable: true,
             options: [],
           },
           {
+            id: 'devprotocol:clubs:plugin:community',
             name: 'community',
             enable: true,
             options: [guild],
           },
           {
+            id: 'devprotocol:clubs:simple-memberships',
             name: 'memberships',
             enable: true,
             options: [
@@ -566,6 +575,7 @@ const populate = async () => {
         ],
         plugins: [
           {
+            id: 'devprotocol:clubs:plugin:fiat',
             name: 'fiat',
             enable: true,
             options: [
@@ -666,6 +676,7 @@ const populate = async () => {
             ],
           },
           {
+            id: 'devprotocol:clubs:theme-1',
             name: 'defaultTheme',
             enable: true,
             options: [
@@ -687,11 +698,13 @@ const populate = async () => {
             ],
           },
           {
+            id: 'devprotocol:clubs:plugin:me',
             name: 'me',
             enable: true,
             options: [],
           },
           {
+            id: 'devprotocol:clubs:plugin:buy',
             name: 'buy',
             enable: true,
             options: [
@@ -702,6 +715,7 @@ const populate = async () => {
             ],
           },
           {
+            id: 'devprotocol:clubs:plugin:nft',
             name: 'nft',
             enable: true,
             options: [
@@ -727,6 +741,7 @@ const populate = async () => {
             ],
           },
           {
+            id: 'devprotocol:clubs:gated-contact-form',
             name: 'message',
             enable: true,
             options: [],

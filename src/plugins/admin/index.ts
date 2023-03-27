@@ -29,19 +29,14 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (_, config) => [
     props: { propertyAddress: config.propertyAddress, rpcUrl: config.rpcUrl },
   },
   {
-    paths: ['marketplace'],
-    component: Marketplace,
-    props: {
-      redirectionCtaUrl: config.url.replace(
-        '<USERS_SITE_NAME_HERE>',
-        config.name
-      ),
-      redirectionCtaText: `Take me to ${config.name} homepage`,
-    },
+    paths: [''],
+    component: Overview,
+    props: { propertyAddress: config.propertyAddress, rpcUrl: config.rpcUrl },
   },
 ]
 
 export const meta: ClubsPluginMeta = {
+  id: 'clubs-core:admin',
   displayName: 'Example',
   category: ClubsPluginCategory.Uncategorized,
 }
