@@ -412,10 +412,11 @@ export default defineComponent({
                 provider: prov,
                 propertyAddress: destination,
                 ethAmount: amount.toString(),
-                gatewayAddress: this.feeBeneficiary,
-                gatewayBasisPoints: this.feePercentage
-                  ? this.feePercentage * 10_000
-                  : undefined,
+                gatewayAddress: this.feeBeneficiary ?? undefined,
+                gatewayBasisPoints:
+                  typeof this.feePercentage === 'number'
+                    ? (String(this.feePercentage * 10_000) as unknown as number)
+                    : undefined,
                 payload: this.payload,
                 from: account,
               })
@@ -439,10 +440,11 @@ export default defineComponent({
                 provider: prov,
                 destination,
                 ethAmount: parsedAmount,
-                gatewayAddress: this.feeBeneficiary,
-                gatewayBasisPoints: this.feePercentage
-                  ? this.feePercentage * 10_000
-                  : undefined,
+                gatewayAddress: this.feeBeneficiary ?? undefined,
+                gatewayBasisPoints:
+                  typeof this.feePercentage === 'number'
+                    ? (String(this.feePercentage * 10_000) as unknown as number)
+                    : undefined,
                 payload: this.payload,
               })
               await whenDefined(res, async (x) => {

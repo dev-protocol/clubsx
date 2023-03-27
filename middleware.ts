@@ -52,7 +52,12 @@ export default function middleware(req: Request) {
 
   const hostnames = url.host.split('.') ?? []
   const [tenant] = hostnames
-  const html = req.headers.get('accept')?.includes('text/html')
+  const html =
+    req.headers.get('accept')?.includes('text/html') ||
+    url.pathname
+      .split('/')
+      .slice(-1)
+      .every((p) => !/\..+$/.test(p))
 
   const primaryHost =
     hosts.find((h) => url.host === h) ?? hosts.find((h) => url.host.endsWith(h))

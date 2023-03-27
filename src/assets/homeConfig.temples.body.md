@@ -1,35 +1,131 @@
-## Receive NFTs, authentic art pieces by traditional artisans and more.
+## NFT を受け取ったり、作家、伝統技術者に依頼しオリジナルの作品や美術品を受け取ることができます。
 
-### Get NFTs, and redeem authentic art pieces by real traditional craftsmanship.
+### NFT を入手することで、伝統的工芸士の技への理解を深め、彼らの技術を支援するコミュニテイに参加することができます。
 
 <div class="grid justify-items-center gap-6">
 
-Makie lacquer-work plate
+彩色師による作品/ 仏画 釈迦如来座像 絹本着色
 
-![40 Makie lacquer-work plate](https://i.imgur.com/m5HQXhz.png)
+![](https://i.imgur.com/LjJ7OnR.jpg)
 
-Transformable panel
+彩色師による作品/ 仏画 聖観音菩薩像 絹本着色画
 
-![92 Transformable panel](https://i.imgur.com/UStVM2Y.png)
+![](https://i.imgur.com/IdMXshG.jpg)
 
-Metal panel, moon and autumn grasses
+彩色師による作品/ 仏画 地蔵菩薩像 絹本着色画
 
-![89 Metal panel, moon and autumn grasses](https://i.imgur.com/XQqkt1f.png)
+![](https://i.imgur.com/uf55ErY.jpg)
 
-Lotus petal dish flower in the moon
+仏師による作品/ 「誕生佛」 木曽桧 極彩色仕上げ
 
-![12 Lotus petal dish flower in the moon](https://i.imgur.com/60ALfQp.png)
+![](https://i.imgur.com/riiVbYu.jpg)
 
-Virupaksa (Buddhist deity)
+</div>
 
-![125 Virupaksa (Buddhist deity)](https://i.imgur.com/1yoKPeb.png)
+### 仏師による作品
 
-Meditation Room
+<div class="grid justify-items-center gap-6">
 
-![101 Meditation Room](https://i.imgur.com/JMHaZVn.png)
+持国天像/ FRP 製
 
-The Light Beyond, Ryunosuke Akutagawa, The Spider's Thread
+![](https://i.imgur.com/1yoKPeb.png)
 
-![108 The Light Beyond, Ryunosuke Akutagawa, The Spider's Thread](https://i.imgur.com/BePYk2f.png)
+</div>
+
+### 蒔絵師による作品
+
+<div class="grid justify-items-center gap-6">
+
+蒔絵壁掛け/ 「瞑想の部屋」
+
+![](https://i.imgur.com/JMHaZVn.png)
+
+蒔絵壁掛け/ 「彼方の光 芥川龍之介 蜘蛛の糸」
+
+![](https://i.imgur.com/BePYk2f.png)
+
+</div>
+
+### 伝統的工芸士による作品実績
+
+<div class="grid gap-6">
+
+#### 金師
+
+##### 截金細工
+
+4 枚の金箔を膠（にかわ）で 1 枚の厚さに接着し、細く線状に裁断加工したものを文様にあわせて 1 本ずつ金線を描いていく技術。
+
+![](https://i.imgur.com/h7NBxzG.jpg)
+
+膠を金線の接着剤として使用し、様々な文様や金線を描く。
+とても繊細な作業。
+1 本 1 本の線が非常に細いため、絵柄を完成させるまでに長い時間が必要となる。
+指先の感覚と息 1 つ吹きかけられない極度の集中力とが必要となる。
+
+#### 四菩薩立像
+
+尾州桧材 白木仕上げ
+
+![](https://i.imgur.com/Y3R2oTy.jpg)
+
+#### 蒔絵師
+
+##### 蒔絵技法
+
+漆を用いて絵や文字、文様、模様を描く技法。色漆（いろうるし）で色を表現し、金や銀などの金属粉や、螺鈿（らでん）などで表面に細かな加飾を行う。
+
+![](https://i.imgur.com/dLENe9Y.jpg)
+
+研出高蒔絵では、接着された金属粉の上から黒呂色漆を使って金属粉が見えなくなるほど黒く塗り重る。その後、炭を使って表面を細かく磨ぎ上げることにより、隠れていた金属粉が見えるまで炭で研ぎ出す。
+
+研ぎ出し磨くことにより、金属粉が漆の表面と均一の高さとなる。
+
+#### 宝塔蒔絵板
+
+##### 尾州桧材
+
+研出高蒔絵
+
+![](https://i.imgur.com/bw5ZUiC.jpg)
+
+#### 彩色師
+
+##### 置上(盛上)彩色技法
+
+岩絵具などを使い絵柄や文様を描く技法。接着に使う膠が垂れて落ちないようその日の天候や、膠の濃度を考慮して彩色を行う必要がある。
+
+彩色師による高いデザイン力はもちろんのこと、日本の伝統的な絵柄を用いたり、各寺院に似合う模様や配色を表現する。
+
+![](https://i.imgur.com/8tBbS0r.jpg)
+
+#### 内陣荘厳具 一式
+
+多数の職人による高度な技術により仏具を製作し、仏の世界を具現化している
+
+![](https://i.imgur.com/0j0XPBd.jpg)
+
+##### 各仏像
+
+仏師の手により仏像彫刻が施され、仕上げに截金細工を行う。
+
+##### 貫や台輪、柱上部
+
+彩色師による岩絵具を用いた彩色。
+
+##### 丸柱
+
+箔押師による、漆を接着剤とした金箔押しを行う。
+
+##### 内部床
+
+塗師による堅地下地、黒呂色漆艶消塗仕上げ。
+
+##### 須弥壇
+
+宮大工の手により、尾州桧材から木地を作成し、塗師による堅地下地から黒呂色磨き仕上げ。
+須弥壇の框などには彫金師による銅地の透かし金具を作成し、水銀鍍金師による水銀鍍金仕上げを行う。
+
+他にも多数の職人による高度な技術により仏具を製作し、仏の世界を具現化する。
 
 </div>

@@ -62,7 +62,12 @@ const baseUrl = ((host) =>
 const siteBaseUrl = new URL(Astro.request.url).origin
 ---
 
-<DefaultLayout config={config} footer={false}>
+<DefaultLayout
+  {...path?.props ?? {}}
+  config={config}
+  footer={false}
+  inAdmin={true}
+>
   {
     path && Content ? (
       <>

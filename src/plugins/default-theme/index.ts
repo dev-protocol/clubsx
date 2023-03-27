@@ -136,10 +136,15 @@ export const getLayout: ClubsFunctionGetLayout = async (
   )?.value as UndefinedOr<Membership[]>
 
   const globalConfig = options.find((opt) => opt.key === 'globalConfig')?.value
-  const homeConfig = options.find((opt) => opt.key === 'homeConfig')?.value
+  const homeConfig = options.find((opt) => opt.key === 'homeConfig')
+    ?.value as UndefinedOr<HomeConfigValue>
+  const description = homeConfig?.description
+
   return {
     layout: Layout,
-    props: { config, homeConfig, globalConfig, memberships },
+    props: {
+      theme1: { config, homeConfig, globalConfig, memberships, description },
+    },
   }
 }
 

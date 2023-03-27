@@ -240,11 +240,11 @@ const perks = [
     descriptions: [
       {
         lang: 'en_US',
-        description: `A privilege to enjoy shopping low price products at members-limited EC sites, supporters-only information such as private YouTube videos`,
+        description: `A privilege to enjoy shopping low price products at members-limited EC sites, supporters-only information such as private YouTube videos, participation to the monthly community hour and members-only quests`,
       },
       {
         lang: 'ja_JP',
-        description: `限定ECサイト（低額商品）での購入権、非公開YouTube動画などサポーター限定の情報`,
+        description: `限定ECサイト（低額商品）での購入権、非公開YouTube動画、月1回のコミュニティアワーやメンバー限定クエストへの参加などサポーター限定の情報`,
       },
     ],
   },
@@ -253,19 +253,11 @@ const perks = [
     descriptions: [
       {
         lang: 'en_US',
-        description: `Tier 3 + a privilege to join auctions, a privilege to purchase luxurious items, etc.`,
-      },
-      {
-        lang: 'en_US',
-        description: `(Online Perks)`,
+        description: `Tier 3 + a privilege to join auctions, a privilege to purchase luxurious items, etc. (Online Perks)`,
       },
       {
         lang: 'ja_JP',
-        description: `Tier3₊オークションへの参加権、特級品の購入権など`,
-      },
-      {
-        lang: 'ja_JP',
-        description: `（オンラインでの特典）`,
+        description: `Tier 3 + オークションへの参加権、特級品の購入権など（オンラインでの特典）`,
       },
     ],
   },
@@ -278,7 +270,7 @@ const perks = [
       },
       {
         lang: 'ja_JP',
-        description: `Tier2+ 特別な場所を訪れることができる権利（半年1回まで）（物理的な体験を含む特典）`,
+        description: `Tier 2 + 特別な場所を訪れたり、物理的な体験をすることができる権利（最大年2回まで）`,
       },
     ],
   },
@@ -291,7 +283,7 @@ const perks = [
       },
       {
         lang: 'ja_JP',
-        description: `Tier1+ オーダーメード権利`,
+        description: `Tier 1 + オーダーメード権利（通常お寺様からのオーダー依頼で作る職人にご希望の商品を作製して貰える権利。内容は要相談）`,
       },
     ],
   },
@@ -315,7 +307,7 @@ const populate = async () => {
     await client.set(
       'temples',
       encode({
-        name: 'TemplesDAO',
+        name: '寺DAO',
         twitterHandle: '@templesdao',
         description: 'DAO that makes the next 1000 years',
         url: 'https://temples.clubs.place',
@@ -406,7 +398,7 @@ const populate = async () => {
                   hero: {
                     image: 'https://i.imgur.com/oNf7FsR.jpg',
                   },
-                  description: `We make everything for temples. Let's continue to create history by passing on culture.`,
+                  description: `寺DAOでは、寺院建築、荘厳仏具に携わる工芸士、職人の伝統的技術を伝え、後世に残すことを目的とした支援を行っております。`,
                   body: fs.readFileSync(
                     './src/assets/homeConfig.temples.body.md',
                     'utf-8'
@@ -472,7 +464,7 @@ const populate = async () => {
                   {
                     id: 'tier-3',
                     name: 'Tier 3',
-                    description: `"Yasuragi dan Renge (a Buddhist altar, lotus)" embossed gilt lacquer work with inlaid mother-of-pearl`,
+                    description: `蒔絵師による作品/ やすらぎ壇「蓮華」\n\n**特典** - 限定ECサイト(低額商品)での購入権、非公開YouTube動画、月1回のコミュニティアワーやメンバー限定クエストへの参加などサポーター限定の情報`,
                     price: 400,
                     currency: 'DEV',
                     imageSrc:
@@ -483,7 +475,7 @@ const populate = async () => {
                   {
                     id: 'tier-2',
                     name: 'Tier 2',
-                    description: `"Yasuragi dan Koki (a Buddhist altar, brightness)" embossed gilt lacquer work`,
+                    description: `蒔絵師による作品/ やすらぎ壇 「光輝」\n\n**特典** - Tier 3 + オークションへの参加権、特級品の購入権など(オンラインでの特典)`,
                     price: 4000,
                     currency: 'DEV',
                     imageSrc:
@@ -494,7 +486,7 @@ const populate = async () => {
                   {
                     id: 'tier-1',
                     name: 'Tier 1',
-                    description: `Sojiij Head Monastry : Nioh statue (statues of the two Deva kings)`,
+                    description: `大本山 總持寺 仁王像（總持寺型仁王像）\n\n**特典** - Tier 2 + 特別な場所を訪れたり、物理的な体験をすることができる権利(最大年2回まで)`,
                     price: 10000,
                     currency: 'DEV',
                     imageSrc:
@@ -505,7 +497,7 @@ const populate = async () => {
                   {
                     id: 'super',
                     name: 'Super',
-                    description: `Gokokuji= Head Monastry : Nyoirin Kannon statue (Cintāmaṇicakra statue)`,
+                    description: `大本山護国寺 如意輪観世音菩薩像\n\n**特典** - Tier 1 + オーダーメード権利(通常お寺様からのオーダー依頼で作る職人にご希望の商品を作製して貰える権利。内容は要相談)`,
                     price: 15000,
                     currency: 'DEV',
                     imageSrc:

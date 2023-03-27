@@ -160,12 +160,12 @@
     <p>Link your account to your club.</p>
   </section>
 
-  <section class="grid gap-24	">
+  <section class="grid gap-24">
     <EmailConnect {siteName} />
 
     <p
       role="separator"
-      class="grid grid-cols-[1fr_auto_1fr] items-center gap-4 before:block before:border-b before:content-[''] after:block after:border-b after:content-[''] "
+      class="grid grid-cols-[1fr_auto_1fr] items-center gap-4 before:block before:border-b before:border-white/20 before:content-[''] after:block after:border-b after:border-white/20 after:content-['']"
     >
       or
     </p>
@@ -174,7 +174,7 @@
       <span class="mb-4">Already have a wallet?</span>
 
       <button
-        class={`hs-button is-filled border-0 bg-native-blue-300 px-8 py-4 text-inherit ${
+        class={`hs-button is-filled bg-native-blue-300 px-8 py-4 text-inherit ${
           !GetModalProvider ||
           !EthersProviderFrom ||
           walletAwaitingUserConfirmation

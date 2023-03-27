@@ -21,7 +21,7 @@
 </script>
 
 {#if isInDraft}
-  <p class="text-center font-bold leading-3 lg:text-2xl	lg:leading-3">
+  <p class="text-center font-bold leading-3 lg:text-2xl lg:leading-3">
     0<br /><span class="text-sm opacity-50">Members</span>
   </p>
 {:else if members === undefined}
