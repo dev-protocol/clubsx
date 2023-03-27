@@ -14,19 +14,6 @@ const upgrade = (key, config) => {
     upgradedConfig.url = `https://${key}.clubs.place`
   }
 
-  if (
-    upgradedConfig.plugins.every(
-      (p) => p.id !== 'devprotocol:clubs:clubsx:marketplace'
-    )
-  ) {
-    console.log(key, 'has not marketplace on `plugins`')
-
-    upgradedConfig.plugins = [
-      ...upgradedConfig.plugins,
-      { id: 'devprotocol:clubs:clubsx:marketplace', options: [] },
-    ]
-  }
-
   upgradedConfig.plugins = upgradedConfig.plugins.map((plg) => {
     if (plg.id) {
       // no need to upgrade
@@ -69,6 +56,19 @@ const upgrade = (key, config) => {
           return plg
         })()
   })
+
+  if (
+    upgradedConfig.plugins.every(
+      (p) => p.id !== 'devprotocol:clubs:clubsx:marketplace'
+    )
+  ) {
+    console.log(key, 'has not marketplace on `plugins`')
+
+    upgradedConfig.plugins = [
+      ...upgradedConfig.plugins,
+      { id: 'devprotocol:clubs:clubsx:marketplace', options: [] },
+    ]
+  }
 
   return encode(upgradedConfig)
 }
