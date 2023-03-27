@@ -38,7 +38,7 @@ const READMEComponent = plugin.readme
       <div>
         {
           false ? (
-            <span class="flex cursor-not-allowed items-center justify-center rounded-full bg-native-blue-200 px-8 py-4">
+            <span class="bg-native-blue-200 flex cursor-not-allowed items-center justify-center rounded-full px-8 py-4">
               <img src={checkImage} class="h-3 max-h-full w-3 font-bold" />
               <p class="font-bold text-black">Added</p>
             </span>
@@ -56,7 +56,10 @@ const READMEComponent = plugin.readme
           ? plugin.previewImages
           : [pluginDefaultIcon, pluginDefaultIcon, pluginDefaultIcon]
         ).map((image) => (
-          <img class="h-[30rem] w-auto max-w-none rounded-lg" src={image} />
+          <img
+            class="h-[24rem] w-auto max-w-none rounded-lg lg:h-[30rem]"
+            src={image}
+          />
         ))
       }
     </div>
