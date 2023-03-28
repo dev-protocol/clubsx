@@ -329,26 +329,25 @@
   }
 </script>
 
-<div class="grid gap-16">
+<div class="relative grid gap-16">
+  <!-- Form no editable message -->
+  {#if noOfPositions && membershipExists}
+    <div
+      class={`absolute inset-0 z-[1000] flex items-center justify-center bg-black/30 p-4 backdrop-blur-sm`}
+    >
+      <p
+        class="absolute top-[50%] h-full max-h-full w-full max-w-full text-center font-bold text-white"
+      >
+        This membership cannot be edited since it already has {noOfPositions} members.
+      </p>
+    </div>
+  {/if}
   <form
     on:change|preventDefault={(_) => update()}
     class={`grid gap-16 ${loading ? 'animate-pulse' : ''} ${
       membershipExists ? 'opacity-30' : ''
     }`}
   >
-    <!-- Form no editable message -->
-    {#if noOfPositions && membershipExists}
-      <div
-        class="fixed top-0 left-0 right-0 bottom-0 z-50 h-full w-full bg-transparent"
-      >
-        <p
-          class="absolute top-[50%] h-full max-h-full w-full max-w-full text-center font-bold text-white"
-        >
-          This membership cannot be edited since it already has {noOfPositions} members.
-        </p>
-      </div>
-    {/if}
-
     <div class="grid gap-16 lg:grid-cols-[3fr_2fr]">
       <!-- Form -->
       <div class="grid gap-8">
