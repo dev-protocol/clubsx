@@ -30,6 +30,8 @@
   export let propertyAddress: string | null | undefined = undefined
   export let clubName: string | undefined = undefined
 
+  let noOfPositions: number = 0
+
   let invalidPriceMsg: string = ''
 
   let estimatedEarnings: {
@@ -256,7 +258,9 @@
 
     const contract = l1 ?? l2
     const positions = await contract?.positionsOfProperty(propertyAddress)
-    if (!positions) {
+    noOfPositions = positions?.length || 0
+
+    if (!positions || !positions?.length) {
       loading = false
       return
     }
@@ -265,7 +269,11 @@
       const positionPayload = await contract?.payloadOf(position)
 
       if (
-        keccak256(membership.payload) === positionPayload &&
+        keccak256(
+          typeof membership.payload === typeof {} // If membership.payload is an object
+            ? Object.values(membership.payload) // then we use only values
+            : membership.payload // else we use the array directly
+        ) === positionPayload &&
         !membershipExists
       ) {
         membershipExists = true
@@ -321,7 +329,19 @@
   }
 </script>
 
-<div class="grid gap-16">
+<div class="relative grid gap-16">
+  <!-- Form no editable message -->
+  {#if noOfPositions && membershipExists}
+    <div
+      class={`absolute inset-0 z-[1000] flex items-center justify-center bg-black/30 p-4 backdrop-blur-sm`}
+    >
+      <p
+        class="absolute top-[50%] h-full max-h-full w-full max-w-full text-center font-bold text-white"
+      >
+        This membership cannot be edited since it already has {noOfPositions} members.
+      </p>
+    </div>
+  {/if}
   <form
     on:change|preventDefault={(_) => update()}
     class={`grid gap-16 ${loading ? 'animate-pulse' : ''} ${
