@@ -256,7 +256,7 @@
 
     const contract = l1 ?? l2
     const positions = await contract?.positionsOfProperty(propertyAddress)
-    if (!positions) {
+    if (!positions || !positions?.length) {
       loading = false
       return
     }
