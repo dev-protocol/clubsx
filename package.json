@@ -50,7 +50,7 @@
     "@astrojs/vercel": "3.2.1",
     "@astrojs/vue": "2.1.0",
     "@devprotocol/clubs-core": "0.39.0",
-    "@devprotocol/dev-kit": "7.3.2",
+    "@devprotocol/dev-kit": "7.3.3",
     "@devprotocol/elements": "0.2.2",
     "@devprotocol/hashi": "1.8.0",
     "@devprotocol/util-ts": "3.0.0",
