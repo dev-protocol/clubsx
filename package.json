@@ -21,7 +21,7 @@
     "@types/marked": "^4.0.8",
     "@types/node": "^18.13.0",
     "@types/ramda": "0.28.23",
-    "@types/react": "18.0.30",
+    "@types/react": "18.0.31",
     "@types/three": "0.150.0",
     "dotenv": "16.0.3",
     "eslint": "8.37.0",
