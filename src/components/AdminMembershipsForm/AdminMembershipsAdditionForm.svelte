@@ -237,10 +237,12 @@
     const preset = existingMemberships.find(
       (preset) => preset.id === membership.id
     )
+
     if (!preset) {
       console.error('no matching preset found for: ', membership.id)
       return
     }
+
     membership = preset
   }
 
@@ -520,7 +522,12 @@
       </p>
     </label>
 
-    <div class="flex w-full justify-end">
+    <div class="flex w-full justify-end gap-[20px]">
+      <button
+        class="hs-button is-filled w-fit bg-dp-blue-grey-400"
+        type="button"
+        on:click|preventDefault={() => cancel()}>Delete</button
+      >
       <button type="button" on:click|preventDefault={() => cancel()}
         >Cancel</button
       >
