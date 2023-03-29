@@ -31,6 +31,7 @@ export type Membership = {
     percentage: number
     beneficiary: string
   }
+  deprecated?: boolean
 }
 
 const presets: Membership[] = [
