@@ -244,6 +244,8 @@
     }
 
     membership = preset
+    // Redirect to base page
+    window.location.href = base
   }
 
   const fetchPositionsOfProperty = async () => {

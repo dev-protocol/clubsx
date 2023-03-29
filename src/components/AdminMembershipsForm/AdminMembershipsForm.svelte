@@ -2,6 +2,7 @@
   import { setOptions } from '@devprotocol/clubs-core'
   import MembershipOptionCard from './MembershipOption.svelte'
   import type { Membership } from '@plugins/memberships'
+  import { buildConfig } from '@devprotocol/clubs-core/events'
 
   export let currentPluginIndex: number
   export let memberships: Membership[]
@@ -9,8 +10,42 @@
   export let base: string = '/admin'
   export let clubName: string | undefined = undefined
 
-  const update = () => {
-    setOptions([{ key: 'memberships', value: {} }], currentPluginIndex)
+  const deleteMembership = (id: string) => {
+    const membership = memberships.find((m: Membership) => m.id === id)
+
+    setOptions(
+      [
+        {
+          key: 'memberships',
+          value: [
+            ...memberships.filter((m: Membership) => m.id !== id),
+            { ...membership, deprecated: true },
+          ],
+        },
+      ],
+      currentPluginIndex
+    )
+
+    setTimeout(buildConfig, 50)
+  }
+
+  const activateMembership = (id: string) => {
+    const membership = memberships.find((m: Membership) => m.id === id)
+
+    setOptions(
+      [
+        {
+          key: 'memberships',
+          value: [
+            ...memberships.filter((m: Membership) => m.id !== id),
+            { ...membership, deprecated: false },
+          ],
+        },
+      ],
+      currentPluginIndex
+    )
+
+    setTimeout(buildConfig, 50)
   }
 
   const presetExplanations = [
@@ -103,6 +138,26 @@
             id={`select-opt-${i}`}
             href={`${base}/memberships/${membership.id}`}>Select</a
           >
+          {#if !membership.deprecated}
+            <button
+              class={`mt-2 block w-full rounded bg-dp-blue-grey-400 py-4 text-center text-sm font-semibold text-white lg:row-start-4 ${getColStart(
+                i
+              )}`}
+              id={`delete-opt-${i}`}
+              on:click|preventDefault={() => deleteMembership(membership.id)}
+              >Delete</button
+            >
+          {/if}
+          {#if membership.deprecated}
+            <button
+              class={`mt-2 block w-full rounded bg-dp-blue-grey-400 py-4 text-center text-sm font-semibold text-white lg:row-start-4 ${getColStart(
+                i
+              )}`}
+              id={`delete-opt-${i}`}
+              on:click|preventDefault={() => activateMembership(membership.id)}
+              >Activate</button
+            >
+          {/if}
         </div>
       {/each}
     </div>
