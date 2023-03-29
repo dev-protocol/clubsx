@@ -153,7 +153,7 @@
               class={`mt-2 block w-full rounded bg-dp-blue-grey-400 py-4 text-center text-sm font-semibold text-white lg:row-start-4 ${getColStart(
                 i
               )}`}
-              id={`delete-opt-${i}`}
+              id={`activate-opt-${i}`}
               on:click|preventDefault={() => activateMembership(membership.id)}
               >Activate</button
             >
