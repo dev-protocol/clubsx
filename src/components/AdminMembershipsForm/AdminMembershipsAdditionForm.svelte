@@ -523,11 +523,13 @@
     </label>
 
     <div class="flex w-full justify-end gap-[20px]">
-      <button
-        class="hs-button is-filled w-fit bg-dp-blue-grey-400"
-        type="button"
-        on:click|preventDefault={() => cancel()}>Delete</button
-      >
+      {#if mode === 'edit'}
+        <button
+          class="hs-button is-filled w-fit bg-dp-blue-grey-400"
+          type="button"
+          on:click|preventDefault={() => cancel()}>Delete</button
+        >
+      {/if}
       <button type="button" on:click|preventDefault={() => cancel()}
         >Cancel</button
       >
