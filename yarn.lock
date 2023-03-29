@@ -424,12 +424,12 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
-"@devprotocol/clubs-core@0.37.1":
-  version "0.37.1"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.37.1.tgz#2cfacd3d53bd2ae931d67f9b881100585c28b9d4"
-  integrity sha512-xZNClgv6TR4glHyMp/4qBSJgcJ3KH15Ktn/jZ85D8yXu8wSQOkBApojs8Is0ubeL87bEPQ/DiHv/+QXuEhvmUw==
+"@devprotocol/clubs-core@0.40.0":
+  version "0.40.0"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.40.0.tgz#80818e54f3b362d4cb7d04ce42dc38c8c63faf91"
+  integrity sha512-y5vLpINJV2UZO5FnEmiad+tkwCfVhvHntcJshntJKhunGYc30FvqaD7f1EzH6bhimJ7uFbVHChwmba7CoLnXcw==
   dependencies:
-    "@devprotocol/dev-kit" "7.3.0"
+    "@devprotocol/dev-kit" "7.3.2"
     "@devprotocol/elements" "0.2.2"
     "@devprotocol/hashi" "1.8.0"
     "@devprotocol/util-ts" "3.0.0"
@@ -446,20 +446,20 @@
     svelte "^3.49.0"
     vue "^3.2.0"
 
-"@devprotocol/dev-kit@7.3.0":
-  version "7.3.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-7.3.0.tgz#4a009892ae75b9e440fea3640c073b3fc9759d81"
-  integrity sha512-zKKwzDHowdpGJcd6/VFprKzjfZFrhIZL/sAF668AnkwyBBx/HWraiOK+yUzlD91MQVdRkk7aX1M5ditFuwHhlA==
+"@devprotocol/dev-kit@7.3.2":
+  version "7.3.2"
+  resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-7.3.2.tgz#332483b6adf506fa9aa9bc17dd39640b78d23fc5"
+  integrity sha512-qx01VoxrgkZYNQOwZhFaGNNt4yKj6XH8pnBaRrEe0nZkhy3u5wyhbOw7fBgP+yBlyfLhm+4WOrEwG0rnugIzIw==
   dependencies:
     "@devprotocol/util-ts" "3.0.0"
     bignumber.js "9.1.1"
     js-base64 "^3.7.2"
     ramda "^0.28.0"
 
-"@devprotocol/dev-kit@7.3.2":
-  version "7.3.2"
-  resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-7.3.2.tgz#332483b6adf506fa9aa9bc17dd39640b78d23fc5"
-  integrity sha512-qx01VoxrgkZYNQOwZhFaGNNt4yKj6XH8pnBaRrEe0nZkhy3u5wyhbOw7fBgP+yBlyfLhm+4WOrEwG0rnugIzIw==
+"@devprotocol/dev-kit@7.3.3":
+  version "7.3.3"
+  resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-7.3.3.tgz#bace6918a335570a0a14911b8ba2b6c93f82cb18"
+  integrity sha512-+kSZt9VC6D90KLv21FHONvNoaHnwkotD6zBVJ4LSk1khbjaTSO7mCbGtFZc0Luq3UvesFqgndErDz4TqUhbt9w==
   dependencies:
     "@devprotocol/util-ts" "3.0.0"
     bignumber.js "9.1.1"
@@ -1992,10 +1992,10 @@
   resolved "https://registry.yarnpkg.com/@types/range-parser/-/range-parser-1.2.4.tgz#cd667bcfdd025213aafb7ca5915a932590acdcdc"
   integrity sha512-EEhsLsD6UsDM1yFhAvy0Cjr6VwmpMWqFBCb9w07wVugF7w9nfajxLuVmngTIpgS6svCnm6Vaw+MZhoDCKnOfsw==
 
-"@types/react@18.0.29":
-  version "18.0.29"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.0.29.tgz#4cead505172c0020c5b51940199e31fc6ff2f63a"
-  integrity sha512-wXHktgUABxplw1+UnljseDq4+uztQyp2tlWZRIxHlpchsCFqiYkvaDS8JR7eKOQm8wziTH/el5qL7D6gYNkYcw==
+"@types/react@18.0.30":
+  version "18.0.30"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.0.30.tgz#83944e679fc7aeab3f042b76d63c4d755b56b7c4"
+  integrity sha512-AnME2cHDH11Pxt/yYX6r0w448BfTwQOLEhQEjCdwB7QskEI7EKtxhGUsExTQe/MsY3D9D5rMtu62WRocw9A8FA==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -2027,12 +2027,20 @@
     "@types/mime" "*"
     "@types/node" "*"
 
-"@types/three@0.149.0":
-  version "0.149.0"
-  resolved "https://registry.yarnpkg.com/@types/three/-/three-0.149.0.tgz#f48c03ffcf35b2d196f3532b51bc845e96f6090e"
-  integrity sha512-fgNBm9LWc65ER/W0cvoXdC0iMy7Ke9e2CONmEr6Jt8sDSY3sw4DgOubZfmdZ747dkPhbQrgRQAWwDEr2S/7IEg==
+"@types/stats.js@*":
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/@types/stats.js/-/stats.js-0.17.0.tgz#0ed81d48e03b590c24da85540c1d952077a9fe20"
+  integrity sha512-9w+a7bR8PeB0dCT/HBULU2fMqf6BAzvKbxFboYhmDtDkKPiyXYbjoe2auwsXlEFI7CFNMF1dCv3dFH5Poy9R1w==
+
+"@types/three@0.150.0":
+  version "0.150.0"
+  resolved "https://registry.yarnpkg.com/@types/three/-/three-0.150.0.tgz#efeeaac7c546aa4c7820cc37720569eeec25cb77"
+  integrity sha512-AGhnz/pfV9lajfPMrzRyP/nySpZYfpoXdayGk0Tiwkzc6hsWOCkz/Q696Muxn9HV2EkQJ3u8g/dDt7jcP5Tecg==
   dependencies:
+    "@types/stats.js" "*"
     "@types/webxr" "*"
+    fflate "~0.6.9"
+    lil-gui "~0.17.0"
 
 "@types/trusted-types@^2.0.2":
   version "2.0.3"
@@ -3755,6 +3763,11 @@ faye-websocket@0.11.4:
   dependencies:
     websocket-driver ">=0.5.1"
 
+fflate@~0.6.9:
+  version "0.6.10"
+  resolved "https://registry.yarnpkg.com/fflate/-/fflate-0.6.10.tgz#5f40f9659205936a2d18abf88b2e7781662b6d43"
+  integrity sha512-IQrh3lEPM93wVCEczc9SaAOvkmcoQn/G8Bo1e8ZPlY3X3bnAxWaBdvTdvM1hP62iZp0BXWDy4vTAy4fF0+Dlpg==
+
 file-entry-cache@^6.0.1:
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/file-entry-cache/-/file-entry-cache-6.0.1.tgz#211b2dd9659cb0394b073e7323ac3c933d522027"
@@ -4846,6 +4859,11 @@ levn@~0.3.0:
   dependencies:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
+
+lil-gui@~0.17.0:
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/lil-gui/-/lil-gui-0.17.0.tgz#b41ae55d0023fcd9185f7395a218db0f58189663"
+  integrity sha512-MVBHmgY+uEbmJNApAaPbtvNh1RCAeMnKym82SBjtp5rODTYKWtM+MXHCifLe2H2Ti1HuBGBtK/5SyG4ShQ3pUQ==
 
 lilconfig@^2.0.5, lilconfig@^2.0.6:
   version "2.1.0"
