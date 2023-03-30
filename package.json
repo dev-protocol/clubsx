@@ -79,7 +79,7 @@
     "svelte": "3.57.0",
     "swiper": "9.1.1",
     "tailwindcss": "^3.2.4",
-    "three": "0.150.1",
+    "three": "0.151.0",
     "truncate-eth-address": "1.0.2",
     "unique-string": "^3.0.0",
     "vue": "3.2.47",
