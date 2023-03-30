@@ -14,6 +14,14 @@
 
   let updatingMembershipsStatus: boolean = false
 
+  const tryCatchBuildConfig = () => {
+    try {
+      buildConfig()
+    } catch (error) {
+      updatingMembershipsStatus = false
+    }
+  }
+
   const deleteMembership = (selectedMembership: Membership) => {
     updatingMembershipsStatus = true
 
@@ -39,7 +47,7 @@
       currentPluginIndex
     )
 
-    setTimeout(buildConfig, 50)
+    setTimeout(tryCatchBuildConfig, 50)
   }
 
   const activateMembership = (selectedMembership: Membership) => {
@@ -67,7 +75,7 @@
       currentPluginIndex
     )
 
-    setTimeout(buildConfig, 50)
+    setTimeout(tryCatchBuildConfig, 50)
   }
 
   const presetExplanations = [
@@ -163,11 +171,7 @@
       class="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] justify-between gap-4"
     >
       {#each memberships as membership, i}
-        <div
-          class={`${
-            updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
-          }`}
-        >
+        <div>
           <MembershipOptionCard
             clubName={clubName ?? 'Your Club'}
             id={membership.id}
