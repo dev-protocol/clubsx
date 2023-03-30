@@ -599,7 +599,7 @@
     </label>
 
     <div class="flex w-full justify-end gap-[20px]">
-      {#if mode === 'edit' && membership.deprecated}
+      {#if mode === 'edit' && !membership.deprecated}
         <button
           class="hs-button is-filled w-fit bg-dp-blue-grey-400"
           type="button"
@@ -607,7 +607,7 @@
           >Delete</button
         >
       {/if}
-      {#if mode === 'edit' && !membership.deprecated}
+      {#if mode === 'edit' && membership.deprecated}
         <button
           class="hs-button is-filled w-fit bg-dp-blue-grey-400"
           type="button"
