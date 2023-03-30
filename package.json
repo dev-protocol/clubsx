@@ -39,7 +39,7 @@
     "prettier-plugin-svelte": "2.10.0",
     "prettier-plugin-tailwindcss": "0.2.6",
     "type-fest": "3.7.2",
-    "typescript": "5.0.2"
+    "typescript": "5.0.3"
   },
   "dependencies": {
     "@astrojs/netlify": "2.2.0",
