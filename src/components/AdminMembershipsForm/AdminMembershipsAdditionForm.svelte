@@ -65,15 +65,22 @@
   const minPrice = 0.000001
   const maxPrice = 1e20
 
-  const deleteMembership = (id: string) => {
-    const membership = existingMemberships.find((m: Membership) => m.id === id)
+  const deleteMembership = (selectedMembership: Membership) => {
+    const membership = existingMemberships.find(
+      (m: Membership) =>
+        m.id === selectedMembership.id &&
+        m.name === selectedMembership.name &&
+        JSON.stringify(m.payload) === JSON.stringify(selectedMembership.payload)
+    )
 
     setOptions(
       [
         {
           key: 'memberships',
           value: [
-            ...existingMemberships.filter((m: Membership) => m.id !== id),
+            ...existingMemberships.filter(
+              (m: Membership) => m.id !== selectedMembership.id
+            ),
             { ...membership, deprecated: true },
           ],
         },
@@ -84,15 +91,22 @@
     setTimeout(buildConfig, 50)
   }
 
-  const activateMembership = (id: string) => {
-    const membership = existingMemberships.find((m: Membership) => m.id === id)
+  const activateMembership = (selectedMembership: Membership) => {
+    const membership = existingMemberships.find(
+      (m: Membership) =>
+        m.id === selectedMembership.id &&
+        m.name === selectedMembership.name &&
+        JSON.stringify(m.payload) === JSON.stringify(selectedMembership.payload)
+    )
 
     setOptions(
       [
         {
           key: 'memberships',
           value: [
-            ...existingMemberships.filter((m: Membership) => m.id !== id),
+            ...existingMemberships.filter(
+              (m: Membership) => m.id !== selectedMembership.id
+            ),
             { ...membership, deprecated: false },
           ],
         },
@@ -390,7 +404,7 @@
           <button
             class={`mt-2 w-fit rounded bg-dp-blue-grey-400 p-4 text-center text-sm font-semibold text-white`}
             id={`delete-opt`}
-            on:click|preventDefault={() => deleteMembership(membership.id)}
+            on:click|preventDefault={() => deleteMembership(membership)}
             >Delete</button
           >
         {/if}
@@ -399,7 +413,7 @@
           <button
             class={`mt-2 w-fit rounded bg-dp-blue-grey-400 p-4 text-center text-sm font-semibold text-white`}
             id={`activate-opt`}
-            on:click|preventDefault={() => activateMembership(membership.id)}
+            on:click|preventDefault={() => activateMembership(membership)}
             >Activate</button
           >
         {/if}
@@ -589,7 +603,7 @@
         <button
           class="hs-button is-filled w-fit bg-dp-blue-grey-400"
           type="button"
-          on:click|preventDefault={() => deleteMembership(membership.id)}
+          on:click|preventDefault={() => deleteMembership(membership)}
           >Delete</button
         >
       {/if}
@@ -597,7 +611,7 @@
         <button
           class="hs-button is-filled w-fit bg-dp-blue-grey-400"
           type="button"
-          on:click|preventDefault={() => activateMembership(membership.id)}
+          on:click|preventDefault={() => activateMembership(membership)}
           >Activate</button
         >
       {/if}

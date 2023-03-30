@@ -10,15 +10,22 @@
   export let base: string = '/admin'
   export let clubName: string | undefined = undefined
 
-  const deleteMembership = (id: string) => {
-    const membership = memberships.find((m: Membership) => m.id === id)
+  const deleteMembership = (selectedMembership: Membership) => {
+    const membership = memberships.find(
+      (m: Membership) =>
+        m.id === selectedMembership.id &&
+        m.name === selectedMembership.name &&
+        JSON.stringify(m.payload) === JSON.stringify(selectedMembership.payload)
+    )
 
     setOptions(
       [
         {
           key: 'memberships',
           value: [
-            ...memberships.filter((m: Membership) => m.id !== id),
+            ...memberships.filter(
+              (m: Membership) => m.id !== selectedMembership.id
+            ),
             { ...membership, deprecated: true },
           ],
         },
@@ -29,15 +36,22 @@
     setTimeout(buildConfig, 50)
   }
 
-  const activateMembership = (id: string) => {
-    const membership = memberships.find((m: Membership) => m.id === id)
+  const activateMembership = (selectedMembership: Membership) => {
+    const membership = memberships.find(
+      (m: Membership) =>
+        m.id === selectedMembership.id &&
+        m.name === selectedMembership.name &&
+        JSON.stringify(m.payload) === JSON.stringify(selectedMembership.payload)
+    )
 
     setOptions(
       [
         {
           key: 'memberships',
           value: [
-            ...memberships.filter((m: Membership) => m.id !== id),
+            ...memberships.filter(
+              (m: Membership) => m.id !== selectedMembership.id
+            ),
             { ...membership, deprecated: false },
           ],
         },
@@ -144,7 +158,7 @@
                 i
               )}`}
               id={`delete-opt-${i}`}
-              on:click|preventDefault={() => deleteMembership(membership.id)}
+              on:click|preventDefault={() => deleteMembership(membership)}
               >Delete</button
             >
           {/if}
@@ -154,7 +168,7 @@
                 i
               )}`}
               id={`activate-opt-${i}`}
-              on:click|preventDefault={() => activateMembership(membership.id)}
+              on:click|preventDefault={() => activateMembership(membership)}
               >Activate</button
             >
           {/if}
