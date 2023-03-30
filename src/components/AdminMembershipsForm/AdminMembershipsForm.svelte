@@ -14,14 +14,6 @@
 
   let updatingMembershipsStatus: boolean = false
 
-  const tryCatchBuildConfig = () => {
-    try {
-      buildConfig()
-    } catch (error) {
-      updatingMembershipsStatus = false
-    }
-  }
-
   const deleteMembership = (selectedMembership: Membership) => {
     updatingMembershipsStatus = true
 
@@ -47,7 +39,7 @@
       currentPluginIndex
     )
 
-    setTimeout(tryCatchBuildConfig, 50)
+    setTimeout(buildConfig, 50)
   }
 
   const activateMembership = (selectedMembership: Membership) => {
@@ -75,7 +67,7 @@
       currentPluginIndex
     )
 
-    setTimeout(tryCatchBuildConfig, 50)
+    setTimeout(buildConfig, 50)
   }
 
   const presetExplanations = [
