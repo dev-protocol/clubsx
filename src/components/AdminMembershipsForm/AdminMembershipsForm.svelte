@@ -1,5 +1,7 @@
 <script lang="ts">
-  import { setOptions } from '@devprotocol/clubs-core'
+  import { onMount } from 'svelte'
+
+  import { ClubsEvents, setOptions } from '@devprotocol/clubs-core'
   import MembershipOptionCard from './MembershipOption.svelte'
   import type { Membership } from '@plugins/memberships'
   import { buildConfig } from '@devprotocol/clubs-core/events'
@@ -10,7 +12,11 @@
   export let base: string = '/admin'
   export let clubName: string | undefined = undefined
 
+  let updatingMembershipsStatus: boolean = false
+
   const deleteMembership = (selectedMembership: Membership) => {
+    updatingMembershipsStatus = true
+
     const membership = memberships.find(
       (m: Membership) =>
         m.id === selectedMembership.id &&
@@ -37,6 +43,8 @@
   }
 
   const activateMembership = (selectedMembership: Membership) => {
+    updatingMembershipsStatus = true
+
     const membership = memberships.find(
       (m: Membership) =>
         m.id === selectedMembership.id &&
@@ -95,6 +103,22 @@
       : i === 7
       ? 'lg:col-start-8'
       : 'lg:col-start-9'
+
+  onMount(() => {
+    document.body.addEventListener(
+      ClubsEvents.FinishConfiguration,
+      (ev: any) => {
+        if (typeof ev.detail.success === 'boolean') {
+          if (ev.detail.success) {
+            updatingMembershipsStatus = false
+            window.location.reload()
+          } else {
+            // TODO: Add an error handling
+          }
+        }
+      }
+    )
+  })
 </script>
 
 <div>
@@ -154,9 +178,12 @@
           >
           {#if !membership.deprecated}
             <button
+              disabled={updatingMembershipsStatus}
               class={`mt-2 block w-full rounded bg-dp-blue-grey-400 py-4 text-center text-sm font-semibold text-white lg:row-start-4 ${getColStart(
                 i
-              )}`}
+              )} ${
+                updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
+              }`}
               id={`delete-opt-${i}`}
               on:click|preventDefault={() => deleteMembership(membership)}
               >Delete</button
@@ -164,9 +191,12 @@
           {/if}
           {#if membership.deprecated}
             <button
+              disabled={updatingMembershipsStatus}
               class={`mt-2 block w-full rounded bg-dp-blue-grey-400 py-4 text-center text-sm font-semibold text-white lg:row-start-4 ${getColStart(
                 i
-              )}`}
+              )} ${
+                updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
+              }`}
               id={`activate-opt-${i}`}
               on:click|preventDefault={() => activateMembership(membership)}
               >Activate</button
