@@ -12,11 +12,15 @@
   export let base: string = '/admin'
   export let clubName: string | undefined = undefined
 
-  let updatingMembershipsStatus: boolean = false
+  let updatingMembershipsStatus: Set<string> = new Set()
 
   const deleteMembership = (selectedMembership: Membership) => {
-    updatingMembershipsStatus = true
-
+    updatingMembershipsStatus = new Set([
+      ...updatingMembershipsStatus.values(),
+      `${selectedMembership.id}:${selectedMembership.name}:${JSON.stringify(
+        selectedMembership.payload
+      )}`,
+    ])
     const membership = memberships.find(
       (m: Membership) =>
         m.id === selectedMembership.id &&
@@ -43,7 +47,12 @@
   }
 
   const activateMembership = (selectedMembership: Membership) => {
-    updatingMembershipsStatus = true
+    updatingMembershipsStatus = new Set([
+      ...updatingMembershipsStatus.values(),
+      `${selectedMembership.id}:${selectedMembership.name}:${JSON.stringify(
+        selectedMembership.payload
+      )}`,
+    ])
 
     const membership = memberships.find(
       (m: Membership) =>
@@ -109,7 +118,7 @@
       ClubsEvents.FinishConfiguration,
       (ev: any) => {
         if (typeof ev.detail.success === 'boolean') {
-          updatingMembershipsStatus = false
+          updatingMembershipsStatus = new Set()
 
           if (ev.detail.success) {
             window.location.reload()
@@ -179,11 +188,21 @@
           >
           {#if !membership.deprecated}
             <button
-              disabled={updatingMembershipsStatus}
+              disabled={updatingMembershipsStatus.has(
+                `${membership.id}:${membership.name}:${JSON.stringify(
+                  membership.payload
+                )}`
+              )}
               class={`mt-2 block w-full rounded bg-dp-blue-grey-400 py-4 text-center text-sm font-semibold text-white lg:row-start-4 ${getColStart(
                 i
               )} ${
-                updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
+                updatingMembershipsStatus.has(
+                  `${membership.id}:${membership.name}:${JSON.stringify(
+                    membership.payload
+                  )}`
+                )
+                  ? 'animate-pulse bg-gray-500/60'
+                  : ''
               }`}
               id={`delete-opt-${i}`}
               on:click|preventDefault={() => deleteMembership(membership)}
@@ -192,11 +211,21 @@
           {/if}
           {#if membership.deprecated}
             <button
-              disabled={updatingMembershipsStatus}
+              disabled={updatingMembershipsStatus.has(
+                `${membership.id}:${membership.name}:${JSON.stringify(
+                  membership.payload
+                )}`
+              )}
               class={`mt-2 block w-full rounded bg-dp-blue-grey-400 py-4 text-center text-sm font-semibold text-white lg:row-start-4 ${getColStart(
                 i
               )} ${
-                updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
+                updatingMembershipsStatus.has(
+                  `${membership.id}:${membership.name}:${JSON.stringify(
+                    membership.payload
+                  )}`
+                )
+                  ? 'animate-pulse bg-gray-500/60'
+                  : ''
               }`}
               id={`activate-opt-${i}`}
               on:click|preventDefault={() => activateMembership(membership)}
