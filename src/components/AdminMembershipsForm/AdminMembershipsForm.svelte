@@ -109,8 +109,9 @@
       ClubsEvents.FinishConfiguration,
       (ev: any) => {
         if (typeof ev.detail.success === 'boolean') {
+          updatingMembershipsStatus = false
+
           if (ev.detail.success) {
-            updatingMembershipsStatus = false
             window.location.reload()
           } else {
             // TODO: Add an error handling
@@ -162,7 +163,11 @@
       class="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] justify-between gap-4"
     >
       {#each memberships as membership, i}
-        <div>
+        <div
+          class={`${
+            updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
+          }`}
+        >
           <MembershipOptionCard
             clubName={clubName ?? 'Your Club'}
             id={membership.id}
