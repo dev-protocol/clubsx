@@ -34,6 +34,8 @@
   export let propertyAddress: string | null | undefined = undefined
   export let clubName: string | undefined = undefined
 
+  let updatingMembershipsStatus: boolean = false
+
   let noOfPositions: number = 0
 
   let invalidPriceMsg: string = ''
@@ -66,6 +68,8 @@
   const maxPrice = 1e20
 
   const deleteMembership = (selectedMembership: Membership) => {
+    updatingMembershipsStatus = true
+
     const membership = existingMemberships.find(
       (m: Membership) =>
         m.id === selectedMembership.id &&
@@ -92,6 +96,8 @@
   }
 
   const activateMembership = (selectedMembership: Membership) => {
+    updatingMembershipsStatus = true
+
     const membership = existingMemberships.find(
       (m: Membership) =>
         m.id === selectedMembership.id &&
@@ -344,7 +350,13 @@
     loading = false
   }
 
-  const onFinishCallback = async () => {
+  const onFinishCallback = async (ev: any) => {
+    updatingMembershipsStatus = false
+
+    if (!ev.detail.success) {
+      return
+    }
+
     const memOpts = existingMemberships as Membership[]
     const propAddress = propertyAddress
 
@@ -402,7 +414,9 @@
         <br />
         {#if !membership.deprecated}
           <button
-            class={`mt-2 w-fit rounded bg-dp-blue-grey-400 p-4 text-center text-sm font-semibold text-white`}
+            class={`mt-2 w-fit rounded bg-dp-blue-grey-400 p-4 text-center text-sm font-semibold text-white ${
+              updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
+            }`}
             id={`delete-opt`}
             on:click|preventDefault={() => deleteMembership(membership)}
             >Delete</button
@@ -411,7 +425,9 @@
         <br />
         {#if membership.deprecated}
           <button
-            class={`mt-2 w-fit rounded bg-dp-blue-grey-400 p-4 text-center text-sm font-semibold text-white`}
+            class={`mt-2 w-fit rounded bg-dp-blue-grey-400 p-4 text-center text-sm font-semibold text-white ${
+              updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
+            }`}
             id={`activate-opt`}
             on:click|preventDefault={() => activateMembership(membership)}
             >Activate</button
@@ -601,7 +617,9 @@
     <div class="flex w-full justify-end gap-[20px]">
       {#if mode === 'edit' && !membership.deprecated}
         <button
-          class="hs-button is-filled w-fit bg-dp-blue-grey-400"
+          class={`hs-button is-filled w-fit bg-dp-blue-grey-400 ${
+            updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
+          }`}
           type="button"
           on:click|preventDefault={() => deleteMembership(membership)}
           >Delete</button
@@ -609,7 +627,9 @@
       {/if}
       {#if mode === 'edit' && membership.deprecated}
         <button
-          class="hs-button is-filled w-fit bg-dp-blue-grey-400"
+          class={`hs-button is-filled w-fit bg-dp-blue-grey-400 ${
+            updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
+          }`}
           type="button"
           on:click|preventDefault={() => activateMembership(membership)}
           >Activate</button
