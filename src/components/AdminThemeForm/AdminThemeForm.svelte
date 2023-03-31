@@ -153,7 +153,7 @@
           placeholder={link.path}
         />
         <button
-          class="hs-button is-filled is-large"
+          class="hs-button is-danger is-filled is-large"
           type="button"
           id={`navigationLinks-${i}-remove-btn`}
           name={`navigationLinks-${i}-remove-btn`}
