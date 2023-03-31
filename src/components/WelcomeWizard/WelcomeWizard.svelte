@@ -12,7 +12,7 @@
 </script>
 
 <div
-  class={`relative grid h-full content-start gap-16 bg-[url('/assets/bg-wizard.jpg')] bg-cover bg-center bg-no-repeat	py-16	px-8`}
+  class={`relative grid h-full content-start gap-16 bg-[url('/assets/bg-wizard.jpg')] bg-cover bg-center bg-no-repeat	px-8	py-16`}
 >
   <div role="presentation" class="absolute inset-0 bg-black/30" />
   <h1 class="relative flex items-center gap-2">

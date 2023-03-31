@@ -114,7 +114,7 @@
         </p>
         <aside
           v-if="usedCurrency !== currencyOption.DEV"
-          class="mt-4 ml-4 border-l border-white/30 pl-4"
+          class="ml-4 mt-4 border-l border-white/30 pl-4"
         >
           <h4 class="text-md mb-2 opacity-70">Replace</h4>
           <Skeleton

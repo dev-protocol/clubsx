@@ -160,7 +160,7 @@
 
         {#if action && actionLabel}
           <a
-            class="flex items-center gap-2 rounded-full bg-white/20 py-2.5 px-5"
+            class="flex items-center gap-2 rounded-full bg-white/20 px-5 py-2.5"
             href={action}
             >{actionLabel}<svg
               xmlns="http://www.w3.org/2000/svg"

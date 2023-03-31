@@ -27,7 +27,7 @@ export default function Cards({ products }: Params) {
   return (
     <div>
       <div className="mx-auto max-w-2xl px-6 md:max-w-7xl md:px-8">
-        <div className="grid grid-cols-1 gap-y-4 gap-x-6 md:grid-cols-2 md:gap-x-8 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-2 md:gap-x-8 lg:grid-cols-3">
           {products.map((product) => (
             <div
               key={product.id}
