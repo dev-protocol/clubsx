@@ -165,6 +165,7 @@
                 : ''
             }`}
             style={`background-color: ${getColor(presetKey).bg}`}
+            title={presetKey}
           >
             {#if getColor(presetKey).backgroundGradient !== undefined}
               <div
