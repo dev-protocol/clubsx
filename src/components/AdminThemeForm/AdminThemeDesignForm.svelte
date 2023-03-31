@@ -89,11 +89,13 @@
     key: string
   ): {
     bg: string
-    backgroundGradient?: [string, string]
+    backgroundGradient?: [string, string],
+    ink?: string,
   } => {
     return colorPresets[key as keyof typeof ColorPresets] as {
       bg: string
-      backgroundGradient?: [string, string]
+      backgroundGradient?: [string, string],
+      ink?: string,
     }
   }
 </script>
@@ -102,9 +104,9 @@
   <span class="hs-form-field__label"> Preview </span>
   <div
     class="aspect-square max-w-lg overflow-hidden rounded-xl transition"
-    style={`background-color: ${globalConfig.bg}`}
+    style={`background-color: ${globalConfig.bg}; color: ${globalConfig.ink};`}
   >
-    <div class="relative mb-6 h-[50%]">
+    <section class="relative mb-6 h-[50%]">
       <div
         class="absolute bottom-0 left-1/2 aspect-square w-[120%] translate-x-[-50%] translate-y-[50%] rounded-full transition"
         style={((gradient) =>
@@ -113,7 +115,7 @@
           } 0%, ${gradient ? gradient[1] : 'rgba(0,0,0,0)'} 100%)`)(
           globalConfig.backgroundGradient
         )}
-      />
+      ></div>
       {#if homeConfig.hero?.image && homeConfig.hero.image != '' && uploading === false}
         <img
           src={homeConfig.hero.image}
@@ -123,16 +125,19 @@
       {/if}
       {#if uploading}
         <div role="presentation" class="absolute h-full w-full max-w-full">
-          <div class="absolute h-full w-full bg-zinc-500" />
-          <div class="h-full animate-pulse bg-zinc-400" />
+          <div class="absolute h-full w-full bg-zinc-500"></div>
+          <div class="h-full animate-pulse bg-zinc-400"></div>
         </div>
       {/if}
-    </div>
-    <div class="grid gap-6 px-6">
-      <span class="h-3 w-[10%] rounded bg-white/30" />
-      <span class="h-3 w-[50%] rounded bg-white/30" />
-      <span class="h-3 w-[30%] rounded bg-white/30" />
-    </div>
+    </section>
+    <section class="px-6">
+      <h3 class="mb-3" style="font-size: var(--hs-theme-size-subtitle); font-weight: var(--hs-theme-weight-black); z-index: 10">Clubs</h3>
+      <section class="grid gap-2">
+        <div class="h-3 w-[50%] rounded opacity-[40%]" style="background: {globalConfig.ink}"></div>
+        <div class="h-3 w-[20%] rounded opacity-[40%]" style="background: {globalConfig.ink}"></div>
+        <div class="h-3 w-[35%] rounded opacity-[40%]" style="background: {globalConfig.ink}"></div>
+      </section>
+    </section>
   </div>
 </div>
 
@@ -154,7 +159,7 @@
             checked={equals(getColor(presetKey), globalConfig)}
           />
           <div
-            class={`h-16 w-16 overflow-hidden rounded ${
+            class={`h-16 w-16 overflow-hidden relative rounded ${
               equals(getColor(presetKey), globalConfig)
                 ? 'shadow-[0_0_0_3px_rgba(255,255,255,1)]'
                 : ''
@@ -163,14 +168,21 @@
           >
             {#if getColor(presetKey).backgroundGradient !== undefined}
               <div
-                class="h-full w-full"
+                class="h-full w-full absolute"
                 style={((gradient) =>
                   `background: linear-gradient(135deg, ${
                     gradient && gradient[0]
                   } 0%, ${gradient && gradient[1]} 100%);`)(
                   getColor(presetKey).backgroundGradient
-                )}
-              />
+                )}></div>
+            {/if}
+            {#if getColor(presetKey).ink !== undefined}
+              <div
+                class="h-full w-full absolute grid place-items-center font-bold"
+                style={((ink) =>
+                  `color: ${ink};`)(
+                  getColor(presetKey).ink
+                )}>Text</div>
             {/if}
           </div></label
         >
