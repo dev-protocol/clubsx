@@ -88,13 +88,6 @@ const truncatedDescription = ((desc) =>
 ])
 ---
 
-<style define:vars={{ backgroundColor }}>
-  html,
-  body {
-    background-color: var(--backgroundColor);
-  }
-</style>
-
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -114,6 +107,12 @@ const truncatedDescription = ((desc) =>
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={truncatedDescription} />
     <meta name="twitter:image" content={`${ogp?.image}`} />
+    <style define:vars={{ backgroundColor }}>
+      html,
+      body {
+        background-color: var(--backgroundColor);
+      }
+    </style>
   </head>
 
   <body class="grid min-h-screen gap-5 overflow-x-hidden font-body text-white">
