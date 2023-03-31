@@ -415,7 +415,7 @@ export default defineComponent({
                 gatewayAddress: this.feeBeneficiary ?? undefined,
                 gatewayBasisPoints:
                   typeof this.feePercentage === 'number'
-                    ? (String(this.feePercentage * 10_000) as unknown as number)
+                    ? this.feePercentage * 10_000
                     : undefined,
                 payload: this.payload,
                 from: account,
@@ -443,7 +443,7 @@ export default defineComponent({
                 gatewayAddress: this.feeBeneficiary ?? undefined,
                 gatewayBasisPoints:
                   typeof this.feePercentage === 'number'
-                    ? (String(this.feePercentage * 10_000) as unknown as number)
+                    ? this.feePercentage * 10_000
                     : undefined,
                 payload: this.payload,
               })
