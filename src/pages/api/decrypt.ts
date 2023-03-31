@@ -1,6 +1,6 @@
 import { authenticate, decode } from '@devprotocol/clubs-core'
 import { providers } from 'ethers'
-import { verify } from 'jsonwebtoken-esm'
+import { verify } from 'jsonwebtoken'
 import { createClient } from 'redis'
 
 export const post = async ({ request }: { request: Request }) => {
