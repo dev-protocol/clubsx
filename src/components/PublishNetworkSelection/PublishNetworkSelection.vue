@@ -142,7 +142,7 @@
   </section>
 
   <!-- Step 3 -->
-  <section class="justify-stretch grid items-start gap-8 md:grid-cols-2">
+  <section class="grid items-start justify-stretch gap-8 md:grid-cols-2">
     <section class="grid gap-3">
       <p class="font-mono text-base font-normal">3/</p>
       <section

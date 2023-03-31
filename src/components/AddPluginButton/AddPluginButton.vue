@@ -15,7 +15,7 @@
     <span
       v-if="addingPluginToClubsStatusMsg"
       role="presentation"
-      class="h-3 w-3 animate-spin rounded-full border-l border-t border-r border-white"
+      class="h-3 w-3 animate-spin rounded-full border-l border-r border-t border-white"
     />
     {{ isAdded ? 'Added' : 'Add' }}
   </button>

@@ -97,7 +97,7 @@ export default {
           <span class="ml-1 text-lg font-bold">.clubs.place</span>
           <p
             v-if="fetching === false && typeof valid === 'boolean'"
-            class="absolute top-[100%] left-0 mt-2 rounded-md bg-white p-2 text-sm"
+            class="absolute left-0 top-[100%] mt-2 rounded-md bg-white p-2 text-sm"
           >
             <span v-if="valid === true" class="text-success-300"
               >Domain available</span

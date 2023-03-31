@@ -65,7 +65,7 @@ export default {
           socialMedia.toLowerCase() === 'youtube' ? 'filled' : 'outlined'
         "
         @click.prevent="setSocialMedia('youtube')"
-        class="w-full gap-0.5 py-4 px-6"
+        class="w-full gap-0.5 px-6 py-4"
       >
         Youtube
       </HSButton>
@@ -78,7 +78,7 @@ export default {
         v-bind:type="
           socialMedia.toLowerCase() === 'github' ? 'filled' : 'outlined'
         "
-        class="py-4 px-6"
+        class="px-6 py-4"
         >Github</HSButton
       >
       <HSButton
@@ -86,7 +86,7 @@ export default {
         v-bind:type="
           socialMedia.toLowerCase() === 'discord' ? 'filled' : 'outlined'
         "
-        class="py-4 px-6"
+        class="px-6 py-4"
         >Discord</HSButton
       >
     </section>
@@ -106,7 +106,7 @@ export default {
       <HSButton
         @click.prevent="openNiwa(link)"
         type="outlined"
-        class="w-full gap-0.5 py-2 px-6"
+        class="w-full gap-0.5 px-6 py-2"
         >Next</HSButton
       >
     </section>

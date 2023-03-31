@@ -88,7 +88,7 @@
     </label>
 
     <!-- Danger Zone-->
-    <div class="rounded-lg border border-2 border-red-500 py-12 px-12">
+    <div class="rounded-lg border border-2 border-red-500 px-12 py-12">
       <div class="mb-10 flex items-center justify-between">
         <span class="font-title text-lg font-bold">Danger Zone</span>
         <button
