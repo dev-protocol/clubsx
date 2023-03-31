@@ -184,9 +184,25 @@ const siteBaseUrl = new URL(Astro.request.url).origin
     }
 
     const hash = utils.hashMessage(data)
-    const sig = await signer.signMessage(hash)
+    let sig: string
+    try {
+      sig = await signer.signMessage(hash)
+    } catch (error: any) {
+      return onFinish({
+        success: false,
+        error: new Error(
+          error?.message?.includes('user rejected signing')
+            ? 'Wallet confirmation denied'
+            : 'Transaction failed'
+        ),
+      })
+    }
+
     if (!sig) {
-      return
+      return onFinish({
+        success: false,
+        error: new Error('Wallet confirmation missing'),
+      })
     }
 
     const body = {
