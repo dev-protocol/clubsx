@@ -71,9 +71,14 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
   const [membershipConfig] = getPluginConfigById(
     'devprotocol:clubs:simple-memberships'
   )
-  const memberships = membershipConfig?.options.find(
+  const allMemberships = membershipConfig?.options.find(
     (opt) => opt.key === 'memberships'
   )?.value as UndefinedOr<Membership[]>
+
+  // Filter out deprecated memberships.
+  const memberships = allMemberships?.filter(
+    (membership) => !membership.deprecated
+  )
 
   const homeConfig = options.find((opt) => opt.key === 'homeConfig')
     ?.value as UndefinedOr<HomeConfig>

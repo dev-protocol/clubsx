@@ -16,7 +16,11 @@
   import { clientsSTokens } from '@devprotocol/dev-kit'
   import { keccak256 } from 'ethers/lib/utils'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
-  import { controlModal, onMountClient } from '@devprotocol/clubs-core/events'
+  import {
+    buildConfig,
+    controlModal,
+    onMountClient,
+  } from '@devprotocol/clubs-core/events'
   import { callSimpleCollections } from '@plugins/memberships/utils/simpleCollections'
   import type { Image } from '@plugins/memberships/utils/types/setImageArg'
 
@@ -29,6 +33,8 @@
   export let rpcUrl: string
   export let propertyAddress: string | null | undefined = undefined
   export let clubName: string | undefined = undefined
+
+  let updatingMembershipsStatus: boolean = false
 
   let noOfPositions: number = 0
 
@@ -60,6 +66,62 @@
 
   const minPrice = 0.000001
   const maxPrice = 1e20
+
+  const deleteMembership = (selectedMembership: Membership) => {
+    updatingMembershipsStatus = true
+
+    const membership = existingMemberships.find(
+      (m: Membership) =>
+        m.id === selectedMembership.id &&
+        m.name === selectedMembership.name &&
+        JSON.stringify(m.payload) === JSON.stringify(selectedMembership.payload)
+    )
+
+    setOptions(
+      [
+        {
+          key: 'memberships',
+          value: [
+            ...existingMemberships.filter(
+              (m: Membership) => m.id !== selectedMembership.id
+            ),
+            { ...membership, deprecated: true },
+          ],
+        },
+      ],
+      currentPluginIndex
+    )
+
+    setTimeout(buildConfig, 50)
+  }
+
+  const activateMembership = (selectedMembership: Membership) => {
+    updatingMembershipsStatus = true
+
+    const membership = existingMemberships.find(
+      (m: Membership) =>
+        m.id === selectedMembership.id &&
+        m.name === selectedMembership.name &&
+        JSON.stringify(m.payload) === JSON.stringify(selectedMembership.payload)
+    )
+
+    setOptions(
+      [
+        {
+          key: 'memberships',
+          value: [
+            ...existingMemberships.filter(
+              (m: Membership) => m.id !== selectedMembership.id
+            ),
+            { ...membership, deprecated: false },
+          ],
+        },
+      ],
+      currentPluginIndex
+    )
+
+    setTimeout(buildConfig, 50)
+  }
 
   const connectOnMount = async () => {
     const _connection = await import('@devprotocol/clubs-core/connection')
@@ -237,11 +299,15 @@
     const preset = existingMemberships.find(
       (preset) => preset.id === membership.id
     )
+
     if (!preset) {
       console.error('no matching preset found for: ', membership.id)
       return
     }
+
     membership = preset
+    // Redirect to base page
+    window.location.href = base
   }
 
   const fetchPositionsOfProperty = async () => {
@@ -284,7 +350,13 @@
     loading = false
   }
 
-  const onFinishCallback = async () => {
+  const onFinishCallback = async (ev: any) => {
+    updatingMembershipsStatus = false
+
+    if (!ev.detail.success) {
+      return
+    }
+
     const memOpts = existingMemberships as Membership[]
     const propAddress = propertyAddress
 
@@ -339,6 +411,28 @@
         class="absolute top-[50%] h-full max-h-full w-full max-w-full text-center font-bold text-white"
       >
         This membership cannot be edited since it already has {noOfPositions} members.
+        <br />
+        {#if !membership.deprecated}
+          <button
+            class={`mt-2 w-fit rounded bg-dp-blue-grey-400 p-4 text-center text-sm font-semibold text-white ${
+              updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
+            }`}
+            id={`delete-opt`}
+            on:click|preventDefault={() => deleteMembership(membership)}
+            >Delete</button
+          >
+        {/if}
+        <br />
+        {#if membership.deprecated}
+          <button
+            class={`mt-2 w-fit rounded bg-dp-blue-grey-400 p-4 text-center text-sm font-semibold text-white ${
+              updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
+            }`}
+            id={`activate-opt`}
+            on:click|preventDefault={() => activateMembership(membership)}
+            >Activate</button
+          >
+        {/if}
       </p>
     </div>
   {/if}
@@ -520,7 +614,27 @@
       </p>
     </label>
 
-    <div class="flex w-full justify-end">
+    <div class="flex w-full justify-end gap-[20px]">
+      {#if mode === 'edit' && !membership.deprecated}
+        <button
+          class={`hs-button is-filled w-fit bg-dp-blue-grey-400 ${
+            updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
+          }`}
+          type="button"
+          on:click|preventDefault={() => deleteMembership(membership)}
+          >Delete</button
+        >
+      {/if}
+      {#if mode === 'edit' && membership.deprecated}
+        <button
+          class={`hs-button is-filled w-fit bg-dp-blue-grey-400 ${
+            updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
+          }`}
+          type="button"
+          on:click|preventDefault={() => activateMembership(membership)}
+          >Activate</button
+        >
+      {/if}
       <button type="button" on:click|preventDefault={() => cancel()}
         >Cancel</button
       >
