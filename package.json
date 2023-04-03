@@ -70,7 +70,7 @@
     "jsonwebtoken-esm": "^2.0.1",
     "marked": "4.3.0",
     "postcss": "8.4.21",
-    "ramda": "0.28.0",
+    "ramda": "0.29.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "redis": "4.6.5",
