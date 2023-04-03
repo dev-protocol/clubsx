@@ -54,7 +54,9 @@ export const post = async ({ request }: { request: Request }) => {
       })
 
   if (!authenticated) {
-    return new Response(JSON.stringify({}), { status: 401 })
+    return new Response(JSON.stringify({ error: 'Authentication failed' }), {
+      status: 401,
+    })
   }
 
   try {

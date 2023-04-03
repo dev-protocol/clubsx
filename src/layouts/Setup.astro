@@ -90,7 +90,7 @@ const avatarImgSrc: string | undefined = config.options?.find(
         <WelcomeWizard step={setupStep} site={site || ''} />
         <button
           id="__clubs:setup:sidebar-close__"
-          class="fixed left-1/2 bottom-[3rem] flex aspect-square w-14 -translate-x-1/2 items-center justify-center rounded-full bg-white text-dp-white-ink shadow-2xl lg:hidden"
+          class="fixed bottom-[3rem] left-1/2 flex aspect-square w-14 -translate-x-1/2 items-center justify-center rounded-full bg-white text-dp-white-ink shadow-2xl lg:hidden"
           ><svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -128,7 +128,7 @@ const avatarImgSrc: string | undefined = config.options?.find(
     >
       <button
         id="__clubs:setup:sidebar-open__"
-        class="flex items-center gap-3 rounded-full bg-white py-2 px-3 text-dp-white-ink shadow-2xl"
+        class="flex items-center gap-3 rounded-full bg-white px-3 py-2 text-dp-white-ink shadow-2xl"
       >
         <div class="ml-2 flex items-stretch gap-2">
           <span class="font-bold">Step {steps.current}</span><span

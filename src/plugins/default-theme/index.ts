@@ -24,33 +24,41 @@ export const colorPresets = {
   Purple: {
     bg: 'rgba(131, 138, 176, 1)',
     backgroundGradient: ['rgba(204, 0, 255, 0.2)', 'rgba(204, 0, 255, 0)'],
+    ink: 'rgba(255, 255, 255)',
   },
   Grey: {
     bg: 'rgba(173, 173, 173, 1)',
+    ink: '#111111',
   },
   Black: {
     bg: 'rgba(29, 36, 38, 1)',
+    ink: 'rgba(255, 255, 255, 1)',
   },
   Brown: {
     bg: 'rgba(68, 59, 45, 1)',
     backgroundGradient: ['rgba(255, 201, 119, 0.2)', 'rgba(255, 201, 119, 0)'],
+    ink: 'rgb(252, 225, 203)',
   },
   Stone: {
     bg: 'rgba(96, 119, 124, 1)',
     backgroundGradient: ['rgba(196, 196, 196, 0.5)', 'rgba(196, 196, 196, 0)'],
+    ink: 'rgba(255, 255, 255, 1)',
   },
   Matcha: {
     bg: 'rgba(63, 78, 38, 1)',
+    ink: 'rgb(252, 225, 203)',
   },
   Pink: {
     bg: 'rgba(255, 187, 195, 1)',
     backgroundGradient: ['rgba(255, 173, 217, 1)', 'rgba(255, 173, 217, 0)'],
+    ink: 'rgba(255, 255, 255)',
   },
 }
 
 export type GlobalConfigValue = {
   bg?: string
   backgroundGradient?: [string, string]
+  ink?: string
 }
 
 export type HomeConfigValue = {
@@ -71,9 +79,14 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
   const [membershipConfig] = getPluginConfigById(
     'devprotocol:clubs:simple-memberships'
   )
-  const memberships = membershipConfig?.options.find(
+  const allMemberships = membershipConfig?.options.find(
     (opt) => opt.key === 'memberships'
   )?.value as UndefinedOr<Membership[]>
+
+  // Filter out deprecated memberships.
+  const memberships = allMemberships?.filter(
+    (membership) => !membership.deprecated
+  )
 
   const homeConfig = options.find((opt) => opt.key === 'homeConfig')
     ?.value as UndefinedOr<HomeConfig>

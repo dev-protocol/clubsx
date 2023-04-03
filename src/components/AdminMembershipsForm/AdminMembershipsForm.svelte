@@ -1,7 +1,10 @@
 <script lang="ts">
-  import { setOptions } from '@devprotocol/clubs-core'
+  import { onMount } from 'svelte'
+
+  import { ClubsEvents, setOptions } from '@devprotocol/clubs-core'
   import MembershipOptionCard from './MembershipOption.svelte'
   import type { Membership } from '@plugins/memberships'
+  import { buildConfig } from '@devprotocol/clubs-core/events'
 
   export let currentPluginIndex: number
   export let memberships: Membership[]
@@ -9,8 +12,71 @@
   export let base: string = '/admin'
   export let clubName: string | undefined = undefined
 
-  const update = () => {
-    setOptions([{ key: 'memberships', value: {} }], currentPluginIndex)
+  let updatingMembershipsStatus: Set<string> = new Set()
+
+  const deleteMembership = (selectedMembership: Membership) => {
+    updatingMembershipsStatus = new Set([
+      ...updatingMembershipsStatus.values(),
+      `${selectedMembership.id}:${selectedMembership.name}:${JSON.stringify(
+        selectedMembership.payload
+      )}`,
+    ])
+    const membership = memberships.find(
+      (m: Membership) =>
+        m.id === selectedMembership.id &&
+        m.name === selectedMembership.name &&
+        JSON.stringify(m.payload) === JSON.stringify(selectedMembership.payload)
+    )
+
+    setOptions(
+      [
+        {
+          key: 'memberships',
+          value: [
+            ...memberships.filter(
+              (m: Membership) => m.id !== selectedMembership.id
+            ),
+            { ...membership, deprecated: true },
+          ],
+        },
+      ],
+      currentPluginIndex
+    )
+
+    setTimeout(buildConfig, 50)
+  }
+
+  const activateMembership = (selectedMembership: Membership) => {
+    updatingMembershipsStatus = new Set([
+      ...updatingMembershipsStatus.values(),
+      `${selectedMembership.id}:${selectedMembership.name}:${JSON.stringify(
+        selectedMembership.payload
+      )}`,
+    ])
+
+    const membership = memberships.find(
+      (m: Membership) =>
+        m.id === selectedMembership.id &&
+        m.name === selectedMembership.name &&
+        JSON.stringify(m.payload) === JSON.stringify(selectedMembership.payload)
+    )
+
+    setOptions(
+      [
+        {
+          key: 'memberships',
+          value: [
+            ...memberships.filter(
+              (m: Membership) => m.id !== selectedMembership.id
+            ),
+            { ...membership, deprecated: false },
+          ],
+        },
+      ],
+      currentPluginIndex
+    )
+
+    setTimeout(buildConfig, 50)
   }
 
   const presetExplanations = [
@@ -46,6 +112,23 @@
       : i === 7
       ? 'lg:col-start-8'
       : 'lg:col-start-9'
+
+  onMount(() => {
+    document.body.addEventListener(
+      ClubsEvents.FinishConfiguration,
+      (ev: any) => {
+        if (typeof ev.detail.success === 'boolean') {
+          updatingMembershipsStatus = new Set()
+
+          if (ev.detail.success) {
+            window.location.reload()
+          } else {
+            // TODO: Add an error handling
+          }
+        }
+      }
+    )
+  })
 </script>
 
 <div>
@@ -84,7 +167,7 @@
     </div>
   {/if}
   {#if memberships.length > 0}
-    <h2 class="mb-8 text-2xl">Exsiting memberships</h2>
+    <h2 class="mb-8 text-2xl">Existing memberships</h2>
     <div
       class="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] justify-between gap-4"
     >
@@ -103,6 +186,52 @@
             id={`select-opt-${i}`}
             href={`${base}/memberships/${membership.id}`}>Select</a
           >
+          {#if !membership.deprecated}
+            <button
+              disabled={updatingMembershipsStatus.has(
+                `${membership.id}:${membership.name}:${JSON.stringify(
+                  membership.payload
+                )}`
+              )}
+              class={`mt-2 block w-full rounded bg-dp-blue-grey-400 py-4 text-center text-sm font-semibold text-white lg:row-start-4 ${getColStart(
+                i
+              )} ${
+                updatingMembershipsStatus.has(
+                  `${membership.id}:${membership.name}:${JSON.stringify(
+                    membership.payload
+                  )}`
+                )
+                  ? 'animate-pulse bg-gray-500/60'
+                  : ''
+              }`}
+              id={`delete-opt-${i}`}
+              on:click|preventDefault={() => deleteMembership(membership)}
+              >Delete</button
+            >
+          {/if}
+          {#if membership.deprecated}
+            <button
+              disabled={updatingMembershipsStatus.has(
+                `${membership.id}:${membership.name}:${JSON.stringify(
+                  membership.payload
+                )}`
+              )}
+              class={`mt-2 block w-full rounded bg-dp-blue-grey-400 py-4 text-center text-sm font-semibold text-white lg:row-start-4 ${getColStart(
+                i
+              )} ${
+                updatingMembershipsStatus.has(
+                  `${membership.id}:${membership.name}:${JSON.stringify(
+                    membership.payload
+                  )}`
+                )
+                  ? 'animate-pulse bg-gray-500/60'
+                  : ''
+              }`}
+              id={`activate-opt-${i}`}
+              on:click|preventDefault={() => activateMembership(membership)}
+              >Activate</button
+            >
+          {/if}
         </div>
       {/each}
     </div>
