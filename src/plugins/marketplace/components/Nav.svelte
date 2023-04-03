@@ -32,7 +32,7 @@
   style={navInitialHeight && isStuck ? `height: ${navInitialHeight}px` : ''}
 >
   <ul
-    class={`flex items-start justify-start gap-4 overflow-x-auto bg-dp-white-300 px-2 pt-5 pb-4 ${
+    class={`flex items-start justify-start gap-4 overflow-x-auto bg-dp-white-300 px-2 pb-4 pt-5 ${
       isStuck ? 'border-b border-b-black/20' : 'lg:flex-wrap'
     }`}
   >
