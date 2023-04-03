@@ -45,6 +45,9 @@
       }
     ) || 'Purple' // else defaults to Purple
 
+  // Assigns the passed colorPresets (that may have been updated) into globalConfig
+  globalConfig = colorPresets[selectedColorPreset] as GlobalConfigValue
+
   const update = (e?: any) => {
     globalConfig = colorPresets[selectedColorPreset] as GlobalConfigValue
     const newOptions: ClubsPluginOptions = [
@@ -89,13 +92,13 @@
     key: string
   ): {
     bg: string
-    backgroundGradient?: [string, string],
-    ink?: string,
+    backgroundGradient?: [string, string]
+    ink?: string
   } => {
     return colorPresets[key as keyof typeof ColorPresets] as {
       bg: string
-      backgroundGradient?: [string, string],
-      ink?: string,
+      backgroundGradient?: [string, string]
+      ink?: string
     }
   }
 </script>
@@ -115,7 +118,7 @@
           } 0%, ${gradient ? gradient[1] : 'rgba(0,0,0,0)'} 100%)`)(
           globalConfig.backgroundGradient
         )}
-      ></div>
+      />
       {#if homeConfig.hero?.image && homeConfig.hero.image != '' && uploading === false}
         <img
           src={homeConfig.hero.image}
@@ -125,17 +128,31 @@
       {/if}
       {#if uploading}
         <div role="presentation" class="absolute h-full w-full max-w-full">
-          <div class="absolute h-full w-full bg-zinc-500"></div>
-          <div class="h-full animate-pulse bg-zinc-400"></div>
+          <div class="absolute h-full w-full bg-zinc-500" />
+          <div class="h-full animate-pulse bg-zinc-400" />
         </div>
       {/if}
     </section>
     <section class="px-6">
-      <h3 class="mb-3" style="font-size: var(--hs-theme-size-subtitle); font-weight: var(--hs-theme-weight-black); z-index: 10">Clubs</h3>
+      <h3
+        class="mb-3"
+        style="font-size: var(--hs-theme-size-subtitle); font-weight: var(--hs-theme-weight-black); z-index: 10"
+      >
+        Clubs
+      </h3>
       <section class="grid gap-2">
-        <div class="h-3 w-[50%] rounded opacity-[40%]" style="background: {globalConfig.ink}"></div>
-        <div class="h-3 w-[20%] rounded opacity-[40%]" style="background: {globalConfig.ink}"></div>
-        <div class="h-3 w-[35%] rounded opacity-[40%]" style="background: {globalConfig.ink}"></div>
+        <div
+          class="h-3 w-[50%] rounded opacity-[40%]"
+          style="background: {globalConfig.ink}"
+        />
+        <div
+          class="h-3 w-[20%] rounded opacity-[40%]"
+          style="background: {globalConfig.ink}"
+        />
+        <div
+          class="h-3 w-[35%] rounded opacity-[40%]"
+          style="background: {globalConfig.ink}"
+        />
       </section>
     </section>
   </div>
@@ -159,7 +176,7 @@
             checked={equals(getColor(presetKey), globalConfig)}
           />
           <div
-            class={`h-16 w-16 overflow-hidden relative rounded ${
+            class={`relative h-16 w-16 overflow-hidden rounded ${
               equals(getColor(presetKey), globalConfig)
                 ? 'shadow-[0_0_0_3px_rgba(255,255,255,1)]'
                 : ''
@@ -169,21 +186,22 @@
           >
             {#if getColor(presetKey).backgroundGradient !== undefined}
               <div
-                class="h-full w-full absolute"
+                class="absolute h-full w-full"
                 style={((gradient) =>
                   `background: linear-gradient(135deg, ${
                     gradient && gradient[0]
                   } 0%, ${gradient && gradient[1]} 100%);`)(
                   getColor(presetKey).backgroundGradient
-                )}></div>
+                )}
+              />
             {/if}
             {#if getColor(presetKey).ink !== undefined}
               <div
-                class="h-full w-full absolute grid place-items-center font-bold"
-                style={((ink) =>
-                  `color: ${ink};`)(
-                  getColor(presetKey).ink
-                )}>Text</div>
+                class="absolute grid h-full w-full place-items-center font-bold"
+                style={((ink) => `color: ${ink};`)(getColor(presetKey).ink)}
+              >
+                Text
+              </div>
             {/if}
           </div></label
         >
