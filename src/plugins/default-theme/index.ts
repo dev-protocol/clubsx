@@ -57,8 +57,8 @@ export const colorPresets = {
 
 export type GlobalConfigValue = {
   bg?: string
-  backgroundGradient?: [string, string],
-  ink?: string,
+  backgroundGradient?: [string, string]
+  ink?: string
 }
 
 export type HomeConfigValue = {
