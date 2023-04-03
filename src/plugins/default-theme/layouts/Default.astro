@@ -78,6 +78,7 @@ const isInDraft = Boolean(draftOptions?.isInDraft)
 
 const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
 
+const bodyColor = globalConfig?.ink ?? '#fff'
 const backgroundColor = globalConfig?.bg ?? '#ADADAD'
 
 const hasNotAMembership = memberships ? memberships.length < 1 : true
@@ -107,15 +108,16 @@ const truncatedDescription = ((desc) =>
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={truncatedDescription} />
     <meta name="twitter:image" content={`${ogp?.image}`} />
-    <style define:vars={{ backgroundColor }}>
+    <style define:vars={{ bodyColor, backgroundColor }}>
       html,
       body {
+        color: var(--bodyColor);
         background-color: var(--backgroundColor);
       }
     </style>
   </head>
 
-  <body class="grid min-h-screen gap-5 overflow-x-hidden font-body text-white">
+  <body class="grid min-h-screen gap-5 overflow-x-hidden font-body">
     <Header
       chainId={chainId}
       config={config}
@@ -162,7 +164,7 @@ const truncatedDescription = ((desc) =>
               Join
             </a>
           </span>
-          <span class="flex items-stretch justify-end gap-4">
+          <span class="flex items-stretch justify-end gap-4 text-white">
             <a
               href="#info"
               class="inline-flex aspect-square items-center justify-center rounded-full border-2"

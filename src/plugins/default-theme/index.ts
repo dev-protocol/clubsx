@@ -51,7 +51,7 @@ export const colorPresets = {
   Pink: {
     bg: 'rgba(255, 187, 195, 1)',
     backgroundGradient: ['rgba(255, 173, 217, 1)', 'rgba(255, 173, 217, 0)'],
-    ink: 'rgba(24, 0, 8, 1)',
+    ink: 'rgba(255, 255, 255)',
   },
 }
 

@@ -8,7 +8,7 @@
 
 <a
   href={dist}
-  class="fixed bottom-0 left-1 right-1 z-50 block rounded-t-3xl bg-black/50 px-8 py-4 backdrop-blur-3xl transition-all hover:bg-black/70 hover:py-8"
+  class="fixed bottom-0 left-1 right-1 z-50 block rounded-t-3xl bg-black/50 px-8 py-4 text-white backdrop-blur-3xl transition-all hover:bg-black/70 hover:py-8"
 >
   {#if inAdmin}
     <p class="mb-2 text-center text-sm opacity-70">
