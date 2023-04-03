@@ -6,7 +6,7 @@ import type { UndefinedOr } from '@devprotocol/util-ts'
 import type { GatedMessage } from '@plugins/message/types'
 import type { Membership } from '@plugins/memberships'
 import sgMail from '@sendgrid/mail'
-import { verify } from 'jsonwebtoken-esm'
+import { verify } from 'jsonwebtoken'
 
 export const post = async ({ request }: { request: Request }) => {
   const {
