@@ -1,6 +1,6 @@
 import { authenticate, decode } from '@devprotocol/clubs-core'
 import { providers } from 'ethers'
-import { verify } from 'jsonwebtoken'
+import jsonwebtoken from 'jsonwebtoken'
 import { createClient } from 'redis'
 
 export const post = async ({ request }: { request: Request }) => {
@@ -54,7 +54,7 @@ export const post = async ({ request }: { request: Request }) => {
     return new Response(JSON.stringify({}), { status: 401 })
   }
 
-  let decoded = verify(encryptedText, process.env.SALT ?? '')
+  let decoded = jsonwebtoken.verify(encryptedText, process.env.SALT ?? '')
 
   return new Response(
     JSON.stringify({
