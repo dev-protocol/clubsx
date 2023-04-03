@@ -9,6 +9,7 @@
     HomeConfigValue,
   } from '@plugins/default-theme'
   import { equals } from 'ramda'
+  import { onMount } from 'svelte'
 
   type ColorPresetKey = keyof typeof ColorPresets
 
@@ -44,9 +45,6 @@
         }
       }
     ) || 'Purple' // else defaults to Purple
-
-  // Assigns the passed colorPresets (that may have been updated) into globalConfig
-  globalConfig = colorPresets[selectedColorPreset] as GlobalConfigValue
 
   const update = (e?: any) => {
     globalConfig = colorPresets[selectedColorPreset] as GlobalConfigValue
@@ -101,6 +99,13 @@
       ink?: string
     }
   }
+
+  onMount(() => {
+    // Assigns the passed colorPresets (that may have been updated) into globalConfig
+    if (false === equals(getColor(selectedColorPreset), globalConfig)) {
+      update()
+    }
+  })
 </script>
 
 <div role="presentation" class="hs-form-field mb-16">
