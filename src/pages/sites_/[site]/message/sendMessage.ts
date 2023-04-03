@@ -76,7 +76,10 @@ export const post = async ({ request }: { request: Request }) => {
     })
   }
 
-  let decodedEmail = jsonwebtoken.(formData.destinationEmail, process.env.SALT ?? '')
+  let decodedEmail = jsonwebtoken.verify(
+    formData.destinationEmail,
+    process.env.SALT ?? ''
+  )
 
   const membershipsData = configuration.plugins?.[
     membershipPluginIndex ?? 0
