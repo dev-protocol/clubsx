@@ -167,7 +167,7 @@
     </div>
   {/if}
   {#if memberships.length > 0}
-    <h2 class="mb-8 text-2xl">Exsiting memberships</h2>
+    <h2 class="mb-8 text-2xl">Existing memberships</h2>
     <div
       class="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] justify-between gap-4"
     >
