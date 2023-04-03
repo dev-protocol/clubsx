@@ -138,7 +138,7 @@
         </div>
       {/if}
     </section>
-    <section class="px-6">
+    <section class="relative px-6">
       <h3
         class="mb-3"
         style="font-size: var(--hs-theme-size-subtitle); font-weight: var(--hs-theme-weight-black); z-index: 10"
