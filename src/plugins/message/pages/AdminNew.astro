@@ -4,6 +4,8 @@ import AdminForm from '../components/AdminForm.svelte'
 import type { ClubsPropsAdminPages } from '@devprotocol/clubs-core'
 import type { GatedMessage } from '../types'
 
+const { site } = Astro.params
+
 const { forms, memberships, id, clubs } =
   Astro.props as ClubsPropsAdminPages & {
     forms: GatedMessage[]
@@ -21,6 +23,6 @@ const { forms, memberships, id, clubs } =
     memberships={memberships}
     forms={forms}
     id={id}
-    configuration={clubs.encodedClubsConfiguration}
+    site={site as string}
   />
 </div>

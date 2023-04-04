@@ -4,6 +4,8 @@ import type { Membership } from '@plugins/memberships'
 import type { GatedMessage } from '../types'
 import type { ClubsPropsAdminPages } from '@devprotocol/clubs-core'
 
+const { site } = Astro.params
+
 const { forms, id, memberships, clubs } =
   Astro.props as ClubsPropsAdminPages & {
     forms: GatedMessage[]
@@ -21,6 +23,6 @@ const { forms, id, memberships, clubs } =
     memberships={memberships}
     forms={forms}
     id={id}
-    configuration={clubs.encodedClubsConfiguration}
+    site={site as string}
   />
 </div>

@@ -10,7 +10,7 @@
   export let forms: GatedMessage[] = []
   export let memberships: Membership[] = []
   export let id: string
-  export let configuration: string
+  export let site: string
   let form: GatedMessage = forms.find((f) => f.id === id) ?? {
     id,
     title: '',
@@ -100,7 +100,7 @@
     const res = await fetch('/api/decrypt', {
       method: 'POST',
       body: JSON.stringify({
-        configuration,
+        site,
         encryptedText: form.destinationEmail,
         hash,
         sig,
