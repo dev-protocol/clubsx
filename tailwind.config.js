@@ -1,18 +1,8 @@
 const { clubs } = require('@devprotocol/clubs-core/tailwind')
 
-const {
-  content,
-  theme: {
-    extend: { screens, ...x },
-    ...y
-  },
-  ...z
-} = clubs
-const clubsWithoutScreen = { content, theme: { extend: { ...x }, ...y }, ...z }
-
 module.exports = {
   mode: 'jit',
-  presets: [clubsWithoutScreen],
+  presets: [clubs],
   theme: {
     extend: {
       animation: {
