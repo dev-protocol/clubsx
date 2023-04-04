@@ -54,6 +54,15 @@ const allPlugins = await Promise.all(allInstallablePlugins.map(getPluginMeta))
       )
     }
 
+    <BannerPresetFeaturing
+      class="mt-20"
+      baseColor="#d39ed7"
+      textColor="#fff"
+      image="https://images.unsplash.com/photo-1655635131607-3202827a52a2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2232&q=80"
+      body="What's plugin?"
+      link="#"
+    />
+
     <!-- Themes section -->
     {
       (
@@ -65,17 +74,6 @@ const allPlugins = await Promise.all(allInstallablePlugins.map(getPluginMeta))
         />
       )
     }
-
-    <!-- 
-    <BannerPresetFeaturing
-      class="mt-20"
-      baseColor="#d39ed7"
-      textColor="#fff"
-      image="https://images.unsplash.com/photo-1655635131607-3202827a52a2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2232&q=80"
-      body="Let's build it"
-      link="#"
-    />
--->
 
     {
       allTags

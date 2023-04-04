@@ -54,7 +54,7 @@ export const getSlots: ClubsFunctionGetSlots = async (
 
 export const meta: ClubsPluginMeta = {
   id: 'devprotocol:clubs:plugin:community',
-  displayName: 'Community',
+  displayName: 'Discord',
   category: ClubsPluginCategory.Growth,
   icon: Icon,
   offer: {
