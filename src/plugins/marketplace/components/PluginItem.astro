@@ -54,7 +54,7 @@ const pluginUrl = ((url) =>
       <p class="truncate text-2xl font-bold">{plugin.displayName}</p>
       {
         markAsUpcoming && (
-          <div class="bg-danger-200 flex h-fit w-fit items-center justify-around gap-0.5 rounded-full px-2">
+          <div class="flex h-fit w-fit items-center justify-around gap-0.5 rounded-full bg-danger-200 px-2">
             <img src={clockImage} class="h-3 max-h-full w-3" />
             <p class="h-fit w-fit text-xs text-black">Upcoming</p>
           </div>
@@ -62,7 +62,7 @@ const pluginUrl = ((url) =>
       }
       {
         !markAsUpcoming && displayStatus && plugin.added && (
-          <div class="bg-native-blue-200 flex h-fit w-fit items-center justify-around gap-0.5 rounded-full px-2">
+          <div class="flex h-fit w-fit items-center justify-around gap-0.5 rounded-full bg-native-blue-200 px-2">
             <img src={checkImage} class="h-3 max-h-full w-3" />
             <p class="h-fit w-fit text-xs text-black">Added</p>
           </div>
@@ -74,7 +74,7 @@ const pluginUrl = ((url) =>
     </p>
     {
       plugin?.developer && (
-        <p class="bg-dp-white-400 col-start-2 flex items-center gap-1 truncate rounded-full px-2 text-black">
+        <p class="col-start-2 flex items-center gap-1 truncate rounded-full bg-dp-white-400 px-2 text-black">
           <At class="h-3 w-3" />
           <span class="truncate text-xs">{plugin.developer}</span>
         </p>
