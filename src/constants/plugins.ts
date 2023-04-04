@@ -18,7 +18,7 @@ export type PluginTag =
   | 'Widgets'
   | 'Analytics'
   | 'Utility'
-  | 'Social'
+  | 'Community'
 
 export const allTags: PluginTag[] = [
   'New & Upcoming',
@@ -31,7 +31,7 @@ export const allTags: PluginTag[] = [
   'Commerce & Business',
   'Finance & Payments',
   'Analytics',
-  'Social',
+  'Community',
   'Utility',
 ]
 
@@ -72,20 +72,6 @@ export const installablePlugins: InstallablePlugins[] = [
         icon: Feeds,
         description:
           'Extendable Post Timeline for DAO. Token-gated posts by membership, or public posts, and communication with comments and emoji reaction. And, it has an extendable nature for new features such as voting, bounty posts, video/music posts.',
-      },
-    },
-  },
-  {
-    id: 'upcoming:governance-templetes',
-    tag: 'New & Upcoming',
-    pluginOptions: [],
-    planned: {
-      meta: {
-        id: '#',
-        category: '',
-        displayName: 'Governance Templetes',
-        description:
-          'Simplifying Governance Complexity. Based on the premise of stakeholder analysis, envisaged appropriate behavior, and fiduciary responsibilities, governance templates arrive at rules around representation and incentivization for a fair representation of interests at stake in your Club.',
       },
     },
   },
@@ -153,7 +139,7 @@ export const installablePlugins: InstallablePlugins[] = [
     id: 'devprotocol:clubs:plugin:community',
     name: 'community',
     entryPoint: 'index.ts',
-    tag: 'Social',
+    tag: 'Community',
     isExternalModule: false,
     moduleNameForImport: 'community',
     configName: 'community',
@@ -177,7 +163,7 @@ export const installablePlugins: InstallablePlugins[] = [
     id: 'devprotocol:clubs:plugin:quests',
     name: 'quests',
     entryPoint: 'index.ts',
-    tag: 'Social',
+    tag: 'Community',
     isExternalModule: false,
     moduleNameForImport: 'quests',
     configName: 'quests',

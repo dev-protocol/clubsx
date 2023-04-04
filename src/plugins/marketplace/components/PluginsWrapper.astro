@@ -26,12 +26,7 @@ const filteredPlugins = plugins.filter((plg) => plg.tag === tag)
       <div
         class:list={[
           'grid  items-start justify-start gap-16',
-          {
-            'grid-cols-[repeat(auto-fill,_minmax(300px,_1fr))]': !featuring,
-          },
-          {
-            'lg:grid-cols-[repeat(auto-fill,_minmax(400px,_1fr))]': featuring,
-          },
+          'lg:grid-cols-[repeat(auto-fill,_minmax(400px,_1fr))]',
         ]}
       >
         {filteredPlugins.map((nAu: PluginMeta) => (

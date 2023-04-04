@@ -1,0 +1,35 @@
+---
+import Banner from './Banner.astro'
+const {
+  baseColor,
+  image,
+  textColor,
+  body,
+  link,
+  class: className,
+} = Astro.props
+---
+
+<a href={link}>
+  <Banner
+    style={{ background: baseColor, color: textColor }}
+    class={`relative ${className}`}
+  >
+    <img src={image} class="cover-image absolute right-0 top-0 h-full w-auto" />
+    <span class="relative">
+      {body}
+    </span>
+    <span class="">Check it out</span>
+  </Banner>
+</a>
+
+<style>
+  .cover-image {
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 40%,
+      black 100%
+    );
+  }
+</style>

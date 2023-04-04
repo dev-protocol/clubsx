@@ -2,12 +2,14 @@
 import type { InstallablePlugins } from '@constants/plugins'
 import { type ClubsPropsAdminPages, decode } from '@devprotocol/clubs-core'
 import HSButton from '@components/Primitives/Hashi/HSButton.vue'
+import Banner from './components/Banner.astro'
 
 import Heading from './assets/Heading.jpg'
 import { createGetPluginMeta } from './utils/createGetPluginMeta'
 import PluginsWrapper from './components/PluginsWrapper.astro'
 import Nav from './components/Nav.svelte'
 import { allTags } from '@constants/plugins'
+import BannerPresetFeaturing from './components/BannerPresetFeaturing.astro'
 
 const { allInstallablePlugins, clubs } = Astro.props as ClubsPropsAdminPages & {
   allInstallablePlugins: InstallablePlugins[]
@@ -38,7 +40,7 @@ const allPlugins = await Promise.all(allInstallablePlugins.map(getPluginMeta))
     </p>
   </section>
 
-  <div>
+  <div class="mt-20">
     <Nav client:load plugins={allPlugins} />
     <!-- New and Upcoming section -->
     {
@@ -64,6 +66,17 @@ const allPlugins = await Promise.all(allInstallablePlugins.map(getPluginMeta))
       )
     }
 
+    <!-- 
+    <BannerPresetFeaturing
+      class="mt-20"
+      baseColor="#d39ed7"
+      textColor="#fff"
+      image="https://images.unsplash.com/photo-1655635131607-3202827a52a2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2232&q=80"
+      body="Let's build it"
+      link="#"
+    />
+-->
+
     {
       allTags
         .filter((tag) => tag !== 'New & Upcoming' && tag !== 'Theme')
@@ -74,8 +87,8 @@ const allPlugins = await Promise.all(allInstallablePlugins.map(getPluginMeta))
   </div>
 
   <!-- Join developer community -->
-  <aside
-    class="grid rounded-2xl px-7 py-7 xl:px-28 xl:py-14"
+  <Banner
+    class="mt-20"
     style={{
       background: 'linear-gradient(91.9deg, #5B8BF5 0.33%, #FFC751 101.64%)',
     }}
@@ -100,7 +113,7 @@ const allPlugins = await Promise.all(allInstallablePlugins.map(getPluginMeta))
     >
       Developer Documentation
     </HSButton>
-  </aside>
+  </Banner>
 </div>
 
 <style lang="scss">
