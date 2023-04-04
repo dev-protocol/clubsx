@@ -53,6 +53,10 @@
   })
 
   const update = () => {
+    if (decryptedDestinationEmail !== undefined) {
+      // Always encrypt the email address if it is not already encrypted.
+      return encryptEmail()
+    }
     const next = forms.some((form) => form.id === id)
       ? // If the ID is already exists, override it. This is a safeguard to avoid duplicate data.
         forms.map((form) => (form.id === id ? form : form))
