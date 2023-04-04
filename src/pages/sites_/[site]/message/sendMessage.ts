@@ -140,10 +140,14 @@ export const post = async ({ request }: { request: Request }) => {
       text:
         formData.presetName === 'PRESET_NAME_AND_FREE_INPUT'
           ? `
-Name: ${data.name}
+* Name: ${data.name}
 
-Message:
+* Message:
 ${data.body}
+
+* Gated Form: ${formData.title} (id: ${formData.id})
+
+* This user: ${userAddress}
 `
           : data,
     })
