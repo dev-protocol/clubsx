@@ -64,6 +64,7 @@ export const installablePlugins: InstallablePlugins[] = [
     id: 'upcoming:feeds',
     tag: 'New & Upcoming',
     pluginOptions: [],
+    developer: 'Dev Protocol',
     planned: {
       meta: {
         id: '#',
