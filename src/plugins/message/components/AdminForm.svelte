@@ -10,6 +10,7 @@
   export let forms: GatedMessage[] = []
   export let memberships: Membership[] = []
   export let id: string
+  export let site: string
   let form: GatedMessage = forms.find((f) => f.id === id) ?? {
     id,
     title: '',
@@ -18,8 +19,12 @@
     presetName: 'PRESET_NAME_AND_FREE_INPUT',
     sendGridEnvKey: import.meta.env.PUBLIC_GATED_CONTACT_FORM_SENDGRID_ENV_KEY,
     destinationEmail: '',
-    emailEncrypted: false,
   }
+  let decryptedDestinationEmail: string | undefined = form.destinationEmail
+    ? form.destinationEmail.includes('@') // Fallback to supports old option structure
+      ? form.destinationEmail
+      : undefined
+    : ''
 
   const formPresets = [
     {
@@ -48,6 +53,10 @@
   })
 
   const update = () => {
+    if (decryptedDestinationEmail !== undefined) {
+      // Always encrypt the email address if it is not already encrypted.
+      return encryptEmail()
+    }
     const next = forms.some((form) => form.id === id)
       ? // If the ID is already exists, override it. This is a safeguard to avoid duplicate data.
         forms.map((form) => (form.id === id ? form : form))
@@ -68,23 +77,20 @@
   const encryptEmail = async () => {
     const res = await fetch('/api/encrypt', {
       method: 'POST',
-      body: JSON.stringify({ text: form.destinationEmail }),
+      body: JSON.stringify({ text: decryptedDestinationEmail }),
     })
 
     if (res.ok) {
       const json = (await res.json()) as { encrypted: string }
       form.destinationEmail = json.encrypted
 
-      form.emailEncrypted = true
+      decryptedDestinationEmail = undefined
       form = form
       update()
     }
   }
 
   const decryptEmail = async () => {
-    const splitHostname = window.location.hostname.split('.')
-    const site = splitHostname[0]
-
     if (!currentAddress || !signer) {
       return
     }
@@ -107,8 +113,7 @@
 
     if (res.ok) {
       const json = (await res.json()) as { decoded: string }
-      form.destinationEmail = json.decoded
-      form = form
+      decryptedDestinationEmail = json.decoded
     }
   }
 </script>
@@ -118,28 +123,37 @@
   class="flex flex-col justify-items-start gap-16"
 >
   <!-- Email -->
-  <div class="flex flex-col gap-1">
-    <label for="email"> Destination email </label>
-    <input
-      class="max-w-sm rounded bg-[#040B10] px-8 py-4"
-      bind:value={form.destinationEmail}
-      name="email"
-      type="email"
-    />
-    {#if form.emailEncrypted}
-      <button
-        class="hs-button is-filled"
-        type="button"
-        on:click|preventDefault={(_) => decryptEmail()}
-        >Decrypt this email</button
-      >
-    {:else}
-      <button
-        on:click|preventDefault={(_) => encryptEmail()}
-        type="button"
-        class="hs-button is-filled">Encrypt this email</button
-      >
-    {/if}
+  <div class="hs-form-field is-filled">
+    <label class="hs-form-field__label" for="email"> Destination email </label>
+    <div class="flex flex-row gap-1">
+      {#if decryptedDestinationEmail !== undefined}
+        <input
+          class="hs-form-field__input grow"
+          bind:value={decryptedDestinationEmail}
+          name="email"
+          type="email"
+        />
+        <button
+          on:click|preventDefault={(_) => encryptEmail()}
+          type="button"
+          class="hs-button is-filled h-[initial] w-fit"
+          >Encrypt this email</button
+        >
+      {:else}
+        <input
+          class="hs-form-field__input grow"
+          bind:value={form.destinationEmail}
+          name="email"
+          disabled
+        />
+        <button
+          class="hs-button is-filled h-[initial] w-fit"
+          type="button"
+          on:click|preventDefault={(_) => decryptEmail()}
+          >Decrypt this email</button
+        >
+      {/if}
+    </div>
   </div>
 
   <!-- Form preset -->
@@ -157,26 +171,26 @@
   </div>
 
   <!-- Title -->
-  <div class="flex flex-col gap-1">
-    <label for="title"> Title </label>
+  <label class="hs-form-field is-filled">
+    <span class="hs-form-field__label"> Title </span>
     <input
-      class="max-w-sm rounded bg-[#040B10] px-8 py-4"
+      class="hs-form-field__input"
       bind:value={form.title}
       name="title"
       type="text"
     />
-  </div>
+  </label>
 
   <!-- Description -->
-  <div class="flex flex-col">
-    <label for="description"> Description </label>
+  <label class="hs-form-field is-filled">
+    <span class="hs-form-field__label"> Description </span>
     <textarea
-      class="w-full rounded bg-[#040B10] px-8 py-4"
+      class="hs-form-field__input"
       bind:value={form.description}
       id="description"
       name="description"
     />
-  </div>
+  </label>
 
   <!-- Required memberships -->
   <div class="flex flex-col items-start gap-1">

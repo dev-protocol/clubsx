@@ -6,7 +6,6 @@ export type GatedMessage = {
   presetName: string
   sendGridEnvKey: string
   destinationEmail: string
-  emailEncrypted: boolean
 }
 
 export enum MessageSentStatus {
