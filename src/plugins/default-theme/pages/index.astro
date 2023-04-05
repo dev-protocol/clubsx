@@ -2,18 +2,24 @@
 import Markdown from '@components/Markdown/Markdown.astro'
 import Memberships from '../components/Memberships/Memberships.astro'
 import type { Membership } from '@plugins/memberships'
+import { ClubsSlotName, type ClubsPropsPages } from '@devprotocol/clubs-core'
 
-const { memberships, homeConfig, name } = Astro.props as {
-  memberships?: Membership[]
-  homeConfig: {
-    hero: {
-      image: string
+const { memberships, homeConfig, name, clubs } =
+  Astro.props as ClubsPropsPages & {
+    memberships?: Membership[]
+    homeConfig: {
+      hero: {
+        image: string
+      }
+      description: string
+      body: string
     }
-    description: string
-    body: string
+    name: string
   }
-  name: string
-}
+
+const SlotsPageContentHomeBeforeContent = clubs.slots.filter(({ slot }) => {
+  return slot === ClubsSlotName.PageContentHomeBeforeContent
+})
 ---
 
 <article class="grid gap-6">
@@ -35,6 +41,13 @@ const { memberships, homeConfig, name } = Astro.props as {
       )
     }
   </section>
+
+  {
+    // Display slots of PageContentHomeBeforeContent
+    SlotsPageContentHomeBeforeContent.map((Slot) => (
+      <Slot.component {...Slot.props} />
+    ))
+  }
 
   <h2 class="text-center text-xl font-bold lg:text-4xl">About {name}</h2>
   <Markdown

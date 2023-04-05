@@ -424,10 +424,10 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
-"@devprotocol/clubs-core@0.42.0":
-  version "0.42.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.42.0.tgz#e2a780af5051c4ad50f710f89b0b0fc82333fac6"
-  integrity sha512-mV7y7Y2GwWd8jdT3pxeNldhqES3FOTEAQbtFvpQGQkgYqySjgLfmI14M0xdhDH+CsFjBDcT9eoaX359bvXSBgw==
+"@devprotocol/clubs-core@0.43.1":
+  version "0.43.1"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.43.1.tgz#ee2bcb82f856d464415771e040a42367ae8f5e92"
+  integrity sha512-hBd+jSSWSYVQNxy9Ij7xTt4okXqvNBk8evRbfb0jvn5DE+yVnyX6dZ0TzdP8PxbD/1V7pVo9ZVefgpROWRO4HA==
   dependencies:
     "@devprotocol/dev-kit" "7.3.3"
     "@devprotocol/elements" "0.2.2"
@@ -1982,10 +1982,10 @@
   resolved "https://registry.yarnpkg.com/@types/range-parser/-/range-parser-1.2.4.tgz#cd667bcfdd025213aafb7ca5915a932590acdcdc"
   integrity sha512-EEhsLsD6UsDM1yFhAvy0Cjr6VwmpMWqFBCb9w07wVugF7w9nfajxLuVmngTIpgS6svCnm6Vaw+MZhoDCKnOfsw==
 
-"@types/react@18.0.32":
-  version "18.0.32"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.0.32.tgz#5e88b2af6833251d54ec7fe86d393224499f41d5"
-  integrity sha512-gYGXdtPQ9Cj0w2Fwqg5/ak6BcK3Z15YgjSqtyDizWUfx7mQ8drs0NBUzRRsAdoFVTO8kJ8L2TL8Skm7OFPnLUw==
+"@types/react@18.0.33":
+  version "18.0.33"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.0.33.tgz#a1575160cb4376787c2f5fe0312302f824baa61e"
+  integrity sha512-sHxzVxeanvQyQ1lr8NSHaj0kDzcNiGpILEVt69g9S31/7PfMvNCKLKcsHw4lYKjs3cGNJjXSP4mYzX43QlnjNA==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -4759,11 +4759,6 @@ jsonfile@^6.0.1:
   optionalDependencies:
     graceful-fs "^4.1.6"
 
-jsonwebtoken-esm@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/jsonwebtoken-esm/-/jsonwebtoken-esm-2.0.1.tgz#e5f95d7d8849ee7cb183f793671c3e242783aa36"
-  integrity sha512-uZwq66J1WgwevzBheW8AMj8STn9QLXHLtY5cI52ztzip8VFPwoqaz/RQmgfNMivt+yD2Lfi4YS4uYHoKz0Fw9g==
-
 jsonwebtoken@^9.0.0:
   version "9.0.0"
   resolved "https://registry.yarnpkg.com/jsonwebtoken/-/jsonwebtoken-9.0.0.tgz#d0faf9ba1cc3a56255fe49c0961a67e520c1926d"
@@ -6184,15 +6179,15 @@ quick-lru@^5.1.1:
   resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-5.1.1.tgz#366493e6b3e42a3a6885e2e99d18f80fb7a8c932"
   integrity sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==
 
-ramda@0.28.0, ramda@^0.28.0:
-  version "0.28.0"
-  resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.28.0.tgz#acd785690100337e8b063cab3470019be427cc97"
-  integrity sha512-9QnLuG/kPVgWvMQ4aODhsBUFKOUmnbUnsSXACv+NCQZcHbeb+v8Lodp8OVxtRULN1/xOyYLLaL6npE6dMq5QTA==
-
-ramda@^0.29.0:
+ramda@0.29.0, ramda@^0.29.0:
   version "0.29.0"
   resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.29.0.tgz#fbbb67a740a754c8a4cbb41e2a6e0eb8507f55fb"
   integrity sha512-BBea6L67bYLtdbOqfp8f58fPMqEwx0doL+pAi8TZyp2YWz8R9G8z9x75CZI8W+ftqhFHCpEX2cRnUUXK130iKA==
+
+ramda@^0.28.0:
+  version "0.28.0"
+  resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.28.0.tgz#acd785690100337e8b063cab3470019be427cc97"
+  integrity sha512-9QnLuG/kPVgWvMQ4aODhsBUFKOUmnbUnsSXACv+NCQZcHbeb+v8Lodp8OVxtRULN1/xOyYLLaL6npE6dMq5QTA==
 
 react-dom@18.2.0, react-dom@^18.0.0:
   version "18.2.0"
@@ -6973,10 +6968,10 @@ thenify-all@^1.0.0:
   dependencies:
     any-promise "^1.0.0"
 
-three@0.151.2:
-  version "0.151.2"
-  resolved "https://registry.yarnpkg.com/three/-/three-0.151.2.tgz#b5b1906165499fa0586dd4adcc8c40dd781514c2"
-  integrity sha512-tGaLRP2H6++tj2JumHD25slhFAx0C619rl6G6Utjq7JTrDGJwDxpu+J2XpnYIUMfEmhNvIFDQJfp79JtKmNBWw==
+three@0.151.3:
+  version "0.151.3"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.151.3.tgz#0b3c7de4b070d5b66b15217f42465d67cbfa6004"
+  integrity sha512-+vbuqxFy8kzLeO5MgpBHUvP/EAiecaDwDuOPPDe6SbrZr96kccF0ktLngXc7xA7bzyd3N0t2f6mw3Z9y6JCojQ==
 
 throttles@^1.0.1:
   version "1.0.1"
@@ -7434,9 +7429,9 @@ web-namespaces@^2.0.0:
   integrity sha512-bKr1DkiNa2krS7qxNtdrtHAmzuYGFQLiQ13TsorsdT6ULTkPLKuu5+GsFpDlg6JFjUTwX2DyhMPG2be8uPrqsQ==
 
 web-vitals@^3.1.1:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/web-vitals/-/web-vitals-3.3.0.tgz#2e14bcbb3acf71d00c49519ab92cc517511476d5"
-  integrity sha512-GZsEmJBNclIpViS/7QVOTr7Kbt4BgLeR7kQ5zCCtJVuiWsA+K6xTXaoEXssvl8yYFICEyNmA2Nr+vgBYTnS4bA==
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/web-vitals/-/web-vitals-3.3.1.tgz#f80e4fd01784476c023c8b2c4219075bbe96f64d"
+  integrity sha512-LTfY5GjcY3ngFzNsYFSYL+AmVmlWrzPTUxSMDis2rZbf+SzT7HH3NH4Y/l45XOlrAIunOBeURN9qtBHkRskAiA==
 
 web3modal@1.9.12, web3modal@^1.9.9:
   version "1.9.12"
