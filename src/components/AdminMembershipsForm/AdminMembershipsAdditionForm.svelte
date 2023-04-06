@@ -161,7 +161,11 @@
   }
 
   const update = () => {
-    if (membership.price < minPrice || membership.price > maxPrice) return
+    if (
+      Number(membership.price) < minPrice ||
+      Number(membership.price) > maxPrice
+    )
+      return
 
     const search = mode === 'edit' ? originalId : membership.id
     const payload = mode === 'edit' ? membership.payload : utils.randomBytes(8)
@@ -221,7 +225,7 @@
   const onChangePrice = async () => {
     subscriptionStreamingLoading = true
 
-    const value = membership.price
+    const value = Number(membership.price)
 
     if (value < minPrice) {
       membership.price = minPrice
