@@ -1,8 +1,8 @@
 ---
 import type { InstallablePlugins } from '@constants/plugins'
 import { type ClubsPropsAdminPages, decode } from '@devprotocol/clubs-core'
-import HSButton from '@components/Primitives/Hashi/HSButton.vue'
-import Banner from './components/Banner.astro'
+import BgPeople from './assets/BgPeople.jpg'
+import BgCode from './assets/BgCode.png'
 
 import Heading from './assets/Heading.jpg'
 import { createGetPluginMeta } from './utils/createGetPluginMeta'
@@ -21,7 +21,7 @@ const getPluginMeta = createGetPluginMeta(
 const allPlugins = await Promise.all(allInstallablePlugins.map(getPluginMeta))
 ---
 
-<div class="grid pb-12 text-dp-blue-grey-600">
+<div class="grid pb-24 text-dp-blue-grey-600">
   <section
     class="grid rounded-2xl px-7 py-7 xl:px-28 xl:py-14"
     style={{
@@ -56,11 +56,12 @@ const allPlugins = await Promise.all(allInstallablePlugins.map(getPluginMeta))
 
     <BannerPresetFeaturing
       class="mt-20"
-      baseColor="#d39ed7"
+      baseColor="#8370da"
       textColor="#fff"
-      image="https://images.unsplash.com/photo-1655635131607-3202827a52a2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2232&q=80"
+      image={BgPeople}
       body="What's plugin?"
-      link="#"
+      description="Publish your own products to the world!"
+      link="https://www.notion.so/MarketPlace-1-0bc32159696d4d38b2f9fa332d965691"
     />
 
     <!-- Themes section -->
@@ -82,36 +83,17 @@ const allPlugins = await Promise.all(allInstallablePlugins.map(getPluginMeta))
           <PluginsWrapper plugins={allPlugins} tag={tag} title={tag} />
         ))
     }
-  </div>
 
-  <!-- Join developer community -->
-  <Banner
-    class="mt-20"
-    style={{
-      background: 'linear-gradient(91.9deg, #5B8BF5 0.33%, #FFC751 101.64%)',
-    }}
-  >
-    <div class="mb-4 font-title text-3xl font-bold text-black lg:text-4xl">
-      Join our developer community
-    </div>
-    <div class="mb-2.5 font-title text-xl font-bold text-black lg:text-2xl">
-      Publish your original plugins!
-    </div>
-    <HSButton
-      type="filled"
-      class="mb-2.5 w-fit rounded font-body text-2xl font-bold text-white"
-      link="https://airtable.com/shrnJDMkjUW0MWWPh"
-    >
-      Join
-    </HSButton>
-    <HSButton
-      type="outlined"
-      class="w-fit rounded font-body text-2xl font-bold text-white"
-      link="https://docs.devprotocol.xyz/clubs/"
-    >
-      Developer Documentation
-    </HSButton>
-  </Banner>
+    <BannerPresetFeaturing
+      class="mt-20"
+      baseColor="#2C18FF"
+      textColor="#fff"
+      image={BgCode}
+      body="Join our Club for developers"
+      description="Get early access & inspirations from community."
+      link="https://dev.clubs.place"
+    />
+  </div>
 </div>
 
 <style lang="scss">
