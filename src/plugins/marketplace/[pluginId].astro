@@ -43,7 +43,7 @@ const READMEComponent = plugin.readme
               <p class="font-bold text-black">Added</p>
             </span>
           ) : (
-            <AddPluginButton client:load plugin={plugin} />
+            <AddPluginButton client:only="vue" plugin={plugin} />
           )
         }
       </div>

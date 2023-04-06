@@ -6,7 +6,7 @@ import type { UndefinedOr } from '@devprotocol/util-ts'
 import type { GatedMessage } from '@plugins/message/types'
 import type { Membership } from '@plugins/memberships'
 import sgMail from '@sendgrid/mail'
-import { verify } from 'jsonwebtoken-esm'
+import jsonwebtoken from 'jsonwebtoken'
 
 export const post = async ({ request }: { request: Request }) => {
   const {
@@ -76,7 +76,10 @@ export const post = async ({ request }: { request: Request }) => {
     })
   }
 
-  let decodedEmail = verify(formData.destinationEmail, process.env.SALT ?? '')
+  let decodedEmail = jsonwebtoken.verify(
+    formData.destinationEmail,
+    process.env.SALT ?? ''
+  )
 
   const membershipsData = configuration.plugins?.[
     membershipPluginIndex ?? 0
@@ -137,10 +140,14 @@ export const post = async ({ request }: { request: Request }) => {
       text:
         formData.presetName === 'PRESET_NAME_AND_FREE_INPUT'
           ? `
-Name: ${data.name}
+* Name: ${data.name}
 
-Message:
+* Message:
 ${data.body}
+
+* Gated Form: ${formData.title} (id: ${formData.id})
+
+* This user: ${userAddress}
 `
           : data,
     })

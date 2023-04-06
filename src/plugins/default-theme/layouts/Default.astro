@@ -78,6 +78,7 @@ const isInDraft = Boolean(draftOptions?.isInDraft)
 
 const url = Astro.url.href.replace(/(.*)\/sites_\/\w*(.*)/i, '$1$2')
 
+const bodyColor = globalConfig?.ink ?? '#fff'
 const backgroundColor = globalConfig?.bg ?? '#ADADAD'
 
 const hasNotAMembership = memberships ? memberships.length < 1 : true
@@ -87,13 +88,6 @@ const truncatedDescription = ((desc) =>
   ...(description?.replace(/[\s|\n|\r\n|\r]/g, ' ') ?? ''),
 ])
 ---
-
-<style define:vars={{ backgroundColor }}>
-  html,
-  body {
-    background-color: var(--backgroundColor);
-  }
-</style>
 
 <html lang="en">
   <head>
@@ -114,9 +108,16 @@ const truncatedDescription = ((desc) =>
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={truncatedDescription} />
     <meta name="twitter:image" content={`${ogp?.image}`} />
+    <style define:vars={{ bodyColor, backgroundColor }}>
+      html,
+      body {
+        color: var(--bodyColor);
+        background-color: var(--backgroundColor);
+      }
+    </style>
   </head>
 
-  <body class="grid min-h-screen gap-5 overflow-x-hidden font-body text-white">
+  <body class="grid min-h-screen gap-5 overflow-x-hidden font-body">
     <Header
       chainId={chainId}
       config={config}
@@ -163,7 +164,7 @@ const truncatedDescription = ((desc) =>
               Join
             </a>
           </span>
-          <span class="flex items-stretch justify-end gap-4">
+          <span class="flex items-stretch justify-end gap-4 text-white">
             <a
               href="#info"
               class="inline-flex aspect-square items-center justify-center rounded-full border-2"
@@ -213,7 +214,7 @@ const truncatedDescription = ((desc) =>
       <slot />
       {
         socials && (
-          <ul class="my-16 mx-auto flex justify-center gap-12">
+          <ul class="mx-auto my-16 flex justify-center gap-12">
             {socials.map((link) => (
               <a
                 href={link?.path}
@@ -243,7 +244,7 @@ const truncatedDescription = ((desc) =>
     </main>
     <footer
       id="info"
-      class="container mx-auto grid max-w-2xl justify-center justify-items-center gap-24 py-16 px-4"
+      class="container mx-auto grid max-w-2xl justify-center justify-items-center gap-24 px-4 py-16"
     >
       {
         footerLinks && (

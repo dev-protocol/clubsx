@@ -11,7 +11,10 @@ export const config = {
 const redirects = [
   ...hosts.map((host) => ({
     host,
-    matchers: ['/', new RegExp('^/(plugins|dev|blog|post|pricing)(|/.*)$')],
+    matchers: [
+      '/',
+      new RegExp('^/(plugins|dev-tokens|blog|post|pricing)(|/.*)$'),
+    ],
     destination: 'https://www.clubs.place',
   })),
   {

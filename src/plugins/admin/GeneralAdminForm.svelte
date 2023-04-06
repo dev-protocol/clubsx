@@ -7,6 +7,7 @@
     config
   let network = 'polygon'
   let dangerLocked = true
+  const MAX_OF_ADMIN_ROLE_HOLDER_POINTS = 95
   const networkOptions = [
     { name: 'Mainnet', value: 'mainnet' },
     { name: 'Polygon', value: 'polygon' },
@@ -16,7 +17,10 @@
   ]
 
   const updateConfig = () => {
-    adminRolePoints = adminRolePoints > 100 ? 100 : adminRolePoints
+    adminRolePoints =
+      adminRolePoints > MAX_OF_ADMIN_ROLE_HOLDER_POINTS
+        ? MAX_OF_ADMIN_ROLE_HOLDER_POINTS
+        : adminRolePoints
 
     const updatedConfig = Object.assign(config, {
       name,
@@ -31,58 +35,60 @@
 
 <div>
   <div>
-    <div class="mb-10 flex flex-col">
-      <label class="mb-1" for="dao-name">
-        DAO Name
-        <span class="text-purple-400">*</span>
-      </label>
+    <label class="hs-form-field is-filled is-required mb-10 flex flex-col">
+      <span class="hs-form-field__label"> DAO Name </span>
       <input
-        class="rounded bg-[#040B10] px-8 py-4"
+        class="hs-form-field__input"
         bind:value={name}
         on:change={updateConfig}
         id="dao-name"
         name="dao-name"
       />
-    </div>
+    </label>
 
-    <div class="mb-10 flex flex-col">
-      <label class="mb-1" for="description"> Description </label>
+    <label class="hs-form-field is-filled mb-10 flex flex-col">
+      <span class="hs-form-field__label"> Description </span>
       <input
-        class="rounded bg-[#040B10] px-8 py-4"
+        class="hs-form-field__input"
         bind:value={description}
         on:change={updateConfig}
         id="description"
         name="description"
       />
-    </div>
+    </label>
 
-    <div class="mb-10 flex flex-col">
-      <label class="mb-1" for="roleHolder">
-        Editable Role Holder
-        <span class="text-purple-400">*</span>
-      </label>
+    <label class="hs-form-field is-filled is-required mb-10 flex flex-col">
+      <span class="hs-form-field__label"> Editable Role Holder </span>
       <input
-        class="rounded bg-[#040B10] px-8 py-4"
+        class="hs-form-field__input w-fit"
         bind:value={adminRolePoints}
         on:change={updateConfig}
         id="roleHolder"
         name="roleHolder"
+        type="number"
+        min="0"
+        max={MAX_OF_ADMIN_ROLE_HOLDER_POINTS}
       />
-    </div>
+      <p class="mt-1 text-xs opacity-60">
+        This value is the proportion of the tokens minted on Clubs required to
+        edit this Club. Note that if you set a higher value than you have, you
+        will be locked out.
+      </p>
+    </label>
 
-    <div class="mb-10 flex flex-col">
-      <label class="mb-1" for="twitter"> Twitter Handle </label>
+    <label class="hs-form-field is-filled mb-10 flex flex-col">
+      <span class="hs-form-field__label"> Twitter Handle </span>
       <input
-        class="rounded bg-[#040B10] px-8 py-4"
+        class="hs-form-field__input w-fit"
         bind:value={twitterHandle}
         on:change={updateConfig}
         id="twitter"
         name="twitter"
       />
-    </div>
+    </label>
 
     <!-- Danger Zone-->
-    <div class="rounded-lg border border-2 border-red-500 py-12 px-12">
+    <div class="rounded-lg border border-2 border-red-500 px-12 py-12">
       <div class="mb-10 flex items-center justify-between">
         <span class="font-title text-lg font-bold">Danger Zone</span>
         <button
