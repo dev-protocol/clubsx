@@ -1,16 +1,15 @@
 ---
 import JoinClub from '@components/Join/JoinClub.svelte'
 
-const { tiers, propertyAddress, name, rpcUrl, preferedCurrency } = Astro.props
+const { memberships, propertyAddress, name, rpcUrl } = Astro.props
 ---
 
 <div class="p-4">
   <JoinClub
     client:load
     propertyAddress={propertyAddress}
-    tiers={tiers}
+    memberships={memberships}
     tenantName={name}
-    preferedCurrency={preferedCurrency}
     rpcUrl={rpcUrl}
   />
 </div>

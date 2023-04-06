@@ -2,7 +2,7 @@
 import JoinCheckout from '@components/Join/JoinCheckout.vue'
 
 const {
-  amount,
+  price,
   propertyAddress,
   currency,
   rpcUrl,
@@ -14,7 +14,7 @@ const {
 
 <JoinCheckout
   client:only="vue"
-  amount={amount}
+  amount={price}
   destination={propertyAddress}
   currency={currency}
   feeBeneficiary={feeBeneficiary}

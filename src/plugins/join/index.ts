@@ -32,37 +32,24 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
     (membership) => !membership.deprecated
   )
 
-  const tiers = memberships?.map((mem) => ({
-    ...mem,
-    currency: mem.currency.toLocaleLowerCase(),
-    title: mem.name,
-    amount: mem.price,
-    badgeImageSrc: mem.imageSrc,
-    badgeImageDescription: mem.description,
-  }))
-  const preferedCurrency = tiers?.every((t) => t.currency === 'eth')
-    ? 'eth'
-    : 'dev'
-
-  return tiers
+  return memberships
     ? [
         {
           paths: ['join'],
           component: Index,
           props: {
-            tiers,
+            memberships,
             propertyAddress,
             name,
             rpcUrl,
-            preferedCurrency,
             signals: [ClubsPluginSignal.DisplayFullPage],
           },
         },
-        ...tiers.map(({ id, amount, currency, fee, payload }) => ({
+        ...memberships.map(({ id, price, currency, fee, payload }) => ({
           paths: ['join', id],
           component: Id,
           props: {
-            amount,
+            price,
             currency,
             propertyAddress,
             rpcUrl,

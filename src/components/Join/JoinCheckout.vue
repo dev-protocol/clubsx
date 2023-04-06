@@ -232,18 +232,19 @@ export default defineComponent({
       const input = String(inputFromQuery).toLowerCase()
       return input.toUpperCase() === 'ETH'
         ? CurrencyOption.ETH
-        : CurrencyOption.DEV
+        : input.toUpperCase() === 'DEV'
+        ? CurrencyOption.DEV
+        : this.verifiedPropsCurrency
     },
     verifiedPropsCurrency(): CurrencyOption {
       return this.currency?.toUpperCase() === 'ETH'
         ? CurrencyOption.ETH
+        : this.currency?.toUpperCase() === 'DEV'
+        ? CurrencyOption.DEV
         : CurrencyOption.DEV
     },
     usedCurrency(): CurrencyOption {
-      return this.verifiedPropsCurrency === CurrencyOption.ETH ||
-        this.verifiedInputCurrency === CurrencyOption.ETH
-        ? CurrencyOption.ETH
-        : CurrencyOption.DEV
+      return this.verifiedInputCurrency
     },
     usePolygonWETH(): boolean {
       return (

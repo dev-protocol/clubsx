@@ -1,7 +1,6 @@
 import type { BaseProvider } from '@ethersproject/providers'
 import BigNumber from 'bignumber.js'
 import { ethers, utils } from 'ethers'
-import type { Tiers } from '@constants/tier'
 import { stakeWithEth, stakeWithEthForPolygon, tokenURISim } from './dev-kit'
 import { clientsSTokens, client } from '@devprotocol/dev-kit'
 import { whenDefined } from '@devprotocol/util-ts'
@@ -77,35 +76,38 @@ export const composeTiers = async ({
   provider,
   tokenAddress,
 }: {
-  sourceTiers: Tiers
+  sourceTiers: Membership[]
   provider: BaseProvider
   tokenAddress: string
-}): Promise<{ dev: Tiers; eth: Tiers }> => {
-  const forDev = await Promise.all(
-    sourceTiers.map(async ({ ...tier }) => {
-      const badgeImageSrc =
-        tier.badgeImageSrc ??
-        (await fetchSTokens({
+}): Promise<{ dev: Membership[]; eth: Membership[] }> => {
+  const onlyDev = sourceTiers.filter((mem) => mem.currency === 'DEV')
+  const onlyEth = sourceTiers.filter((mem) => mem.currency === 'ETH')
+  const [ethFromDev, devFromEth] = await Promise.all([
+    Promise.all(
+      onlyDev.map(async ({ ...mem }): Promise<Membership> => {
+        const price = await fetchEthForDev({
           provider,
           tokenAddress,
-          amount: tier.amount,
-        }))
-      return { ...tier, badgeImageSrc }
-    })
-  )
-  const forEth = await Promise.all(
-    forDev.map(async ({ ...tier }) => {
-      const amount = await fetchEthForDev({
-        provider,
-        tokenAddress,
-        amount: tier.amount,
+          amount: mem.price,
+        })
+        return { ...mem, price: utils.formatEther(price), currency: 'ETH' }
       })
-      return { ...tier, amount: utils.formatEther(amount) }
-    })
-  )
+    ),
+    Promise.all(
+      onlyEth.map(async ({ ...mem }): Promise<Membership> => {
+        const price = await fetchDevForEth({
+          provider,
+          tokenAddress,
+          amount: mem.price,
+        })
+        return { ...mem, price: utils.formatEther(price), currency: 'DEV' }
+      })
+    ),
+  ])
+
   return {
-    dev: forDev,
-    eth: forEth,
+    dev: [...onlyDev, ...devFromEth],
+    eth: [...onlyEth, ...ethFromDev],
   }
 }
 
