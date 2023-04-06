@@ -53,6 +53,10 @@ export const colorPresets = {
     backgroundGradient: ['rgba(255, 173, 217, 1)', 'rgba(255, 173, 217, 0)'],
     ink: 'rgba(255, 255, 255)',
   },
+  Blue: {
+    bg: 'rgba(91, 139, 245, 1)',
+    ink: 'rgba(255, 255, 255)',
+  },
 }
 
 export type GlobalConfigValue = {
