@@ -38,7 +38,7 @@
     "prettier-plugin-astro": "0.8.0",
     "prettier-plugin-svelte": "2.10.0",
     "prettier-plugin-tailwindcss": "0.2.7",
-    "type-fest": "3.7.2",
+    "type-fest": "3.8.0",
     "typescript": "5.0.3"
   },
   "dependencies": {
@@ -48,7 +48,7 @@
     "@astrojs/svelte": "2.1.0",
     "@astrojs/tailwind": "3.1.1",
     "@astrojs/vercel": "3.2.2",
-    "@astrojs/vue": "2.1.0",
+    "@astrojs/vue": "2.1.1",
     "@devprotocol/clubs-core": "0.43.1",
     "@devprotocol/dev-kit": "7.3.3",
     "@devprotocol/elements": "0.2.2",
@@ -61,7 +61,7 @@
     "@tailwindcss/aspect-ratio": "0.4.2",
     "@vercel/edge": "0.3.1",
     "@vue/composition-api": "1.7.1",
-    "astro": "2.1.9",
+    "astro": "2.2.0",
     "autoprefixer": "10.4.14",
     "bignumber.js": "9.1.1",
     "ethers": "5.7.2",
