@@ -15,3 +15,8 @@
 | Stone | <img src="https://i.imgur.com/XQ2SVr0.png" width=50 height=50 /> |
 | Matcha | <img src="https://i.imgur.com/CYW8Ov9.png" width=50 height=50 /> |
 | Pink | <img src="https://i.imgur.com/cdrh8AT.png" width=50 height=50 /> |
+
+**Supported slots:**
+
+- `ClubsSlotName.PageContentHomeBeforeContent` = "page:content:home:before-content"
+- `ClubsSlotName.PageContentHomeAfterContent` = "page:content:home:after-content"
