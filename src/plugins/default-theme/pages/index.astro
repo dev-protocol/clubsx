@@ -20,6 +20,9 @@ const { memberships, homeConfig, name, clubs } =
 const SlotsPageContentHomeBeforeContent = clubs.slots.filter(({ slot }) => {
   return slot === ClubsSlotName.PageContentHomeBeforeContent
 })
+const SlotsPageContentHomeAfterContent = clubs.slots.filter(({ slot }) => {
+  return slot === ClubsSlotName.PageContentHomeAfterContent
+})
 ---
 
 <article class="grid gap-6">
@@ -55,4 +58,11 @@ const SlotsPageContentHomeBeforeContent = clubs.slots.filter(({ slot }) => {
     class="mx-auto mt-4 w-full max-w-2xl lg:mt-6"
     vars={{ p: { fontSize: '1.25rem', lineHeight: '1.75rem' } }}
   />
+
+  {
+    // Display slots of SlotsPageContentHomeAfterContent
+    SlotsPageContentHomeAfterContent.map((Slot) => (
+      <Slot.component {...Slot.props} />
+    ))
+  }
 </article>
