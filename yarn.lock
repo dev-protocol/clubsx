@@ -1587,10 +1587,10 @@
   dependencies:
     lodash "^4.17.21"
 
-"@kazu80/clubs-plugin-links@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@kazu80/clubs-plugin-links/-/clubs-plugin-links-0.1.0.tgz#95ef9a34c2773b32f47b648bfbe8eb03c753f78f"
-  integrity sha512-TI/oogDfCqC+C7Ez81dlYQpC1KOYJ2hx52jPyeAtxuhWeh0K3KqKggovIgSOL2iY2CzvbWL14PkuTdOYYEvmhA==
+"@kazu80/clubs-plugin-links@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@kazu80/clubs-plugin-links/-/clubs-plugin-links-1.0.1.tgz#a2e06e3b36c236521c0d873c9607ea585f2402a7"
+  integrity sha512-N+KCq34l68rPv04jyExIRTWtTSB6OJMysOmRbEg2+5tr3Jv9fi+/amLxjtZflD39o7m8KXpBoxp9tnXCpDdFyQ==
   dependencies:
     "@devprotocol/clubs-core" "0.37.1"
     "@devprotocol/dev-kit" "7.3.2"

@@ -92,7 +92,6 @@ export const post = async ({ request }: { request: Request }) => {
       {
         id: isPluginInstallable.id,
         enable: true,
-        name: isPluginInstallable.name,
         options: isPluginInstallable.pluginOptions,
       },
     ],

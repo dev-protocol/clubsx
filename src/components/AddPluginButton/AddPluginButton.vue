@@ -6,7 +6,7 @@
     @click="addPluginToClub"
     v-bind:class="
       isAddingPluginToClubs
-        ? 'cursor-progress'
+        ? 'cursor-progress bg-success-300'
         : isAdded || !connected
         ? 'cursor-not-allowed bg-native-blue-200'
         : 'cursor-pointer bg-success-300'
