@@ -17,13 +17,14 @@ import { default as AddNavigationLink } from '@components/AddNavigationLink/AddN
 import type { GatedMessage } from './types'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import type { Membership } from '@plugins/memberships'
-import uniqueString from 'unique-string'
+import { v5 as uuidv5 } from 'uuid'
 import type { NavLink } from '@constants/navLink'
 import { default as Icon } from './assets/icon.svg'
 import { Content as Readme } from './README.md'
 import Preview1 from './assets/message-1.jpg'
 import Preview2 from './assets/message-2.jpg'
 import Preview3 from './assets/message-3.jpg'
+import { utils } from 'ethers'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
@@ -71,7 +72,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
   options,
-  _,
+  { url },
   { getPluginConfigById }
 ) => {
   const forms =
@@ -85,6 +86,9 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
     (membershipConfig?.options.find((opt) => opt.key === 'memberships')
       ?.value as UndefinedOr<Membership[]>) ?? []
 
+  const namespace = uuidv5(url, uuidv5.URL)
+  const uuid = uuidv5(utils.randomBytes(32), namespace)
+
   return [
     {
       paths: ['gated-form'],
@@ -97,7 +101,7 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
     {
       paths: ['gated-form', 'new'],
       component: AdminNew,
-      props: { forms, memberships, id: uniqueString() },
+      props: { forms, memberships, id: uuid },
     },
     ...(forms?.map((form) => ({
       paths: ['gated-form', form.id],
