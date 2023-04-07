@@ -1,0 +1,13 @@
+---
+const { class: classList, style } = Astro.props
+---
+
+<div
+  class:list={[
+    'grid rounded-2xl overflow-hidden px-7 py-7 xl:px-28 xl:py-14',
+    classList,
+  ]}
+  style={style}
+>
+  <slot />
+</div>

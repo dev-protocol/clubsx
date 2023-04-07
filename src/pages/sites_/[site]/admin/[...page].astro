@@ -3,33 +3,19 @@ import DefaultLayout from '@layouts/Default.astro'
 import { Admin } from '@devprotocol/clubs-core/layouts'
 import { adminFactory, decode } from '@devprotocol/clubs-core'
 import { config as _config } from '@fixtures/config'
-import defaultTheme from '@plugins/default-theme'
-import admin from '@plugins/admin'
-import community from '@plugins/community'
-import memberships from '@plugins/memberships'
-import quests from '@plugins/quests'
-import home from '@plugins/home'
-import message from '@plugins/message'
 import VercelAnalytics from '@components/Analytics/VercelAnalytics.astro'
 import PageNotFound from '@pages/404.astro'
+import admin from '@plugins/admin'
 import marketplace from '@plugins/marketplace'
 import IconGlobe from '@components/Icons/globe-europe-africa.astro'
 import Banner from '@components/Global/Banner.astro'
+import { plugins } from '@constants/plugins'
 
 const { site, page } = Astro.params
 
 const { getStaticPaths } = adminFactory({
   config: async () => await _config(site),
-  plugins: [
-    defaultTheme,
-    admin,
-    quests,
-    community,
-    memberships,
-    home,
-    message,
-    marketplace,
-  ],
+  plugins: [admin, marketplace, ...plugins],
 })
 const _path = (await getStaticPaths()).find(
   ({ params }) => params.page === page

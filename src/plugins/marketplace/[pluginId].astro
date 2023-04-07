@@ -10,6 +10,8 @@ import AddPluginButton from '@components/AddPluginButton/AddPluginButton.vue'
 import PluginItem from './components/PluginItem.astro'
 import Markdown from '@components/Markdown/Markdown.astro'
 
+const { site } = Astro.params
+
 const {
   config,
   plugin: installablePlugins,
@@ -25,7 +27,7 @@ const plugin = await createGetPluginMeta(config)(installablePlugins)
 const READMEComponent = plugin.readme
 ---
 
-<section class="my-16">
+<section class="my-16 text-dp-blue-grey-600">
   <div class="grid gap-16">
     <div class="flex items-center justify-between">
       <p class="text-4xl font-bold">{plugin.displayName}</p>
@@ -43,7 +45,7 @@ const READMEComponent = plugin.readme
               <p class="font-bold text-black">Added</p>
             </span>
           ) : (
-            <AddPluginButton client:only="vue" plugin={plugin} />
+            <AddPluginButton client:only="vue" plugin={plugin} site={site} />
           )
         }
       </div>
@@ -64,7 +66,7 @@ const READMEComponent = plugin.readme
       }
     </div>
     <div class="grid max-w-3xl gap-8">
-      <p class="text-2xl font-bold text-white">Overview</p>
+      <p class="text-2xl font-bold">Overview</p>
       <p class="">
         <Markdown>
           {READMEComponent && <READMEComponent />}
@@ -75,22 +77,16 @@ const READMEComponent = plugin.readme
       {
         plugin.developer && (
           <div class="flex flex-col items-start justify-start space-y-2">
-            <p class="text-base font-medium text-white text-opacity-70">
-              Developer
-            </p>
-            <p class="max-w-xl text-xl font-medium text-white">
-              {plugin.developer}
-            </p>
+            <p class="text-base font-medium text-opacity-70">Developer</p>
+            <p class="max-w-xl text-xl font-medium">{plugin.developer}</p>
           </div>
         )
       }
       {
         plugin.clubsUrl && (
           <div class="flex flex-col items-start justify-start space-y-2">
-            <p class="text-base font-medium text-white text-opacity-70">
-              Clubs
-            </p>
-            <a class="text-xl font-medium text-white" href={plugin.clubsUrl}>
+            <p class="text-base font-medium text-opacity-70">Clubs</p>
+            <a class="text-xl font-medium" href={plugin.clubsUrl}>
               {plugin.clubsUrl}
             </a>
           </div>
@@ -99,11 +95,9 @@ const READMEComponent = plugin.readme
       {
         plugin.repositoryUrl && (
           <div class="flex flex-col items-start justify-start space-y-2">
-            <p class="text-base font-medium text-white text-opacity-70">
-              Repository
-            </p>
+            <p class="text-base font-medium text-opacity-70">Repository</p>
             <a
-              class="text-xl font-medium text-white underline"
+              class="text-xl font-medium underline"
               href={plugin.repositoryUrl}
             >
               {plugin.repositoryUrl}

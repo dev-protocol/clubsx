@@ -6,14 +6,53 @@ import type {
 } from '@devprotocol/clubs-core'
 import Feeds from '@assets/Plugins/Feeds.svg'
 
+import $1 from '@plugins/default-theme'
+import $2 from '@plugins/buy'
+import $3 from '@plugins/community'
+import $4 from '@plugins/fiat'
+import $5 from '@plugins/home'
+import $6 from '@plugins/join'
+import $7 from '@plugins/me'
+import $8 from '@plugins/members'
+import $9 from '@plugins/nft'
+import $10 from '@plugins/perks'
+import $11 from '@plugins/quests'
+import $12 from '@plugins/message'
+import $13 from '@plugins/memberships'
+import $14 from '@kazu80/clubs-plugin-links'
+
+export type PluginTag =
+  | 'New & Upcoming'
+  | 'Memberships'
+  | 'Commerce & Business'
+  | 'Messaging'
+  | 'Finance & Payments'
+  | 'Governance'
+  | 'Crowdfunding'
+  | 'Theme'
+  | 'Widgets'
+  | 'Analytics'
+  | 'Utility'
+  | 'Community'
+
+export const allTags: PluginTag[] = [
+  'New & Upcoming',
+  'Theme',
+  'Memberships',
+  'Governance',
+  'Crowdfunding',
+  'Messaging',
+  'Widgets',
+  'Commerce & Business',
+  'Finance & Payments',
+  'Analytics',
+  'Community',
+  'Utility',
+]
+
 export type InstallablePlugins = {
   id: string
-  name?: string
-  configName?: string
-  isExternalModule?: boolean
-  entryPoint?: string // File name representing main entry point of plugin config.
-  tag: 'NEW & UPCOMING' | 'THEME' | 'BASICS'
-  moduleNameForImport?: string
+  tag: PluginTag
   developer?: string
   clubsUrl?: string
   repositoryUrl?: string
@@ -23,7 +62,7 @@ export type InstallablePlugins = {
 
 export type PluginMeta = (ClubsPluginMeta & Partial<ClubsThemePluginMeta>) & {
   added: boolean
-  tag: 'NEW & UPCOMING' | 'THEME' | 'BASICS'
+  tag: PluginTag
   developer?: string
   repositoryUrl?: string
   clubsUrl?: string
@@ -32,9 +71,17 @@ export type PluginMeta = (ClubsPluginMeta & Partial<ClubsThemePluginMeta>) & {
 
 export const installablePlugins: InstallablePlugins[] = [
   {
-    id: 'upcoming:feeds',
-    tag: 'NEW & UPCOMING',
+    id: $14.meta.id,
+    tag: 'New & Upcoming',
     pluginOptions: [],
+    developer: 'kazu80',
+    repositoryUrl: 'https://github.com/kazu80/clubs-links',
+  },
+  {
+    id: 'upcoming:feeds',
+    tag: 'New & Upcoming',
+    pluginOptions: [],
+    developer: 'Dev Protocol',
     planned: {
       meta: {
         id: '#',
@@ -48,98 +95,75 @@ export const installablePlugins: InstallablePlugins[] = [
   },
   {
     id: 'devprotocol:clubs:simple-memberships',
-    name: 'memberships',
-    entryPoint: 'index.ts',
-    tag: 'BASICS',
-    isExternalModule: false,
-    moduleNameForImport: 'memberships',
-    configName: 'memberships',
+    tag: 'Memberships',
     developer: 'Dev Protocol',
     repositoryUrl: 'https://github.com/dev-protocol/clubsx',
     pluginOptions: [],
   },
   {
     id: 'devprotocol:clubs:plugin:join',
-    name: 'join',
-    entryPoint: 'index.ts',
-    tag: 'BASICS',
-    isExternalModule: false,
-    moduleNameForImport: 'join',
-    configName: 'join',
+    tag: 'Memberships',
     developer: 'Dev Protocol',
     repositoryUrl: 'https://github.com/dev-protocol/clubsx',
     pluginOptions: [],
   },
   {
     id: 'devprotocol:clubs:gated-contact-form',
-    name: 'message',
-    entryPoint: 'index.ts',
-    tag: 'BASICS',
-    isExternalModule: false,
-    moduleNameForImport: 'message',
-    configName: 'message',
+    tag: 'Messaging',
     developer: 'Dev Protocol',
     repositoryUrl: 'https://github.com/dev-protocol/clubsx',
     pluginOptions: [],
   },
   {
     id: 'devprotocol:clubs:plugin:me',
-    name: 'me',
-    entryPoint: 'index.ts',
-    tag: 'BASICS',
-    isExternalModule: false,
-    moduleNameForImport: 'me',
-    configName: 'me',
+    tag: 'Utility',
     developer: 'Dev Protocol',
     repositoryUrl: 'https://github.com/dev-protocol/clubsx',
     pluginOptions: [],
   },
   {
     id: 'devprotocol:clubs:plugin:members',
-    name: 'members',
-    entryPoint: 'index.ts',
-    tag: 'BASICS',
-    isExternalModule: false,
-    moduleNameForImport: 'members',
-    configName: 'members',
+    tag: 'Utility',
     developer: 'Dev Protocol',
     repositoryUrl: 'https://github.com/dev-protocol/clubsx',
     pluginOptions: [],
   },
   {
     id: 'devprotocol:clubs:plugin:community',
-    name: 'community',
-    entryPoint: 'index.ts',
-    tag: 'BASICS',
-    isExternalModule: false,
-    moduleNameForImport: 'community',
-    configName: 'community',
+    tag: 'Community',
     developer: 'Dev Protocol',
     repositoryUrl: 'https://github.com/dev-protocol/clubsx',
     pluginOptions: [],
   },
   {
     id: 'devprotocol:clubs:theme-1',
-    name: 'default-theme',
-    entryPoint: 'index.ts',
-    tag: 'THEME',
-    isExternalModule: false,
-    moduleNameForImport: 'default-theme',
-    configName: 'defaultTheme',
+    tag: 'Theme',
     developer: 'Dev Protocol',
     repositoryUrl: 'https://github.com/dev-protocol/clubsx',
     pluginOptions: [],
   },
   {
     id: 'devprotocol:clubs:plugin:quests',
-    name: 'quests',
-    entryPoint: 'index.ts',
-    tag: 'BASICS',
-    isExternalModule: false,
-    moduleNameForImport: 'quests',
-    configName: 'quests',
+    tag: 'Community',
     developer: 'Dev Protocol',
     repositoryUrl: 'https://github.com/dev-protocol/clubsx',
     pluginOptions: [],
   },
+]
+
+export const plugins = [
+  $1,
+  $2,
+  $3,
+  $4,
+  $5,
+  $6,
+  $7,
+  $8,
+  $9,
+  $10,
+  $11,
+  $12,
+  $13,
+  $14,
 ]

@@ -2,41 +2,15 @@
 import DefaultLayout from '@layouts/Default.astro'
 import { decode, pageFactory } from '@devprotocol/clubs-core'
 import { config as _config } from '@fixtures/config'
-import defaultTheme from '@plugins/default-theme'
-import buy from '@plugins/buy'
-import community from '@plugins/community'
-import fiat from '@plugins/fiat'
-import home from '@plugins/home'
-import join from '@plugins/join'
-import me from '@plugins/me'
-import members from '@plugins/members'
-import nft from '@plugins/nft'
-import perks from '@plugins/perks'
-import quests from '@plugins/quests'
-import message from '@plugins/message'
-import memberships from '@plugins/memberships'
 import PageNotFound from '@pages/404.astro'
+import { plugins } from '@constants/plugins'
 
 const { site, page } = Astro.params
 const config = await _config(site)
 
 const { getStaticPaths } = pageFactory({
   config: () => Promise.resolve(config),
-  plugins: [
-    defaultTheme,
-    buy,
-    community,
-    fiat,
-    home,
-    join,
-    me,
-    members,
-    memberships,
-    message,
-    nft,
-    perks,
-    quests,
-  ],
+  plugins,
 })
 const path = (await getStaticPaths()).find(({ params }) => params.page === page)
 
