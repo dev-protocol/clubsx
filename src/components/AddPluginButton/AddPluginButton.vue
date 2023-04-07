@@ -46,6 +46,10 @@ export default defineComponent({
       type: Object as PropType<PluginMeta>,
       default: {},
     },
+    site: {
+      type: String,
+      required: true,
+    },
   },
   data(): Data {
     return {
@@ -65,10 +69,6 @@ export default defineComponent({
     async addPluginToClub() {
       this.isAddingPluginToClubs = true
       this.addingPluginToClubsStatusMsg = 'Adding plugin...'
-
-      // Fetch the site info
-      const splitHostname = window.location.hostname.split('.')
-      const site = splitHostname[0]
 
       // Fetch and connect provider, wallet and signer.
       const modalProvider = GetModalProvider()
@@ -105,7 +105,7 @@ export default defineComponent({
         hash: string
         sig: string
       } = {
-        site,
+        site: this.site,
         pluginId: this.plugin.id,
         hash,
         sig,

@@ -5,6 +5,8 @@ import type {
   ClubsThemePluginMeta,
 } from '@devprotocol/clubs-core'
 import Feeds from '@assets/Plugins/Feeds.svg'
+// @ts-ignore
+import $1 from '@kazu80/clubs-plugin-links'
 
 export type PluginTag =
   | 'New & Upcoming'
@@ -60,6 +62,13 @@ export type PluginMeta = (ClubsPluginMeta & Partial<ClubsThemePluginMeta>) & {
 }
 
 export const installablePlugins: InstallablePlugins[] = [
+  {
+    id: $1.meta.id,
+    tag: 'New & Upcoming',
+    pluginOptions: [],
+    developer: 'kazu80',
+    repositoryUrl: 'https://github.com/kazu80/clubs-links',
+  },
   {
     id: 'upcoming:feeds',
     tag: 'New & Upcoming',
