@@ -6,10 +6,12 @@ import {
 import {
   ClubsFunctionGetAdminPaths,
   ClubsFunctionGetPagePaths,
+  ClubsFunctionGetSlots,
   ClubsFunctionPlugin,
   ClubsPlugin,
   ClubsPluginCategory,
   ClubsPluginMeta,
+  ClubsSlotName,
 } from '@devprotocol/clubs-core'
 import { default as Admin } from './admin.astro'
 import { default as Plugin } from './[pluginId].astro'

@@ -13,7 +13,7 @@ import { default as Admin } from './admin.astro'
 import type { HomeConfig } from '../../constants/homeConfig'
 import type { NavLink } from '@constants/navLink'
 import type { Membership } from '@plugins/memberships'
-import PreviewImage from './assets/preview.png'
+import PreviewImage from './assets/preview.jpg'
 import { default as Icon } from './assets/icon.svg'
 import { Content as Readme } from './README.md'
 import Preview1 from './assets/default-theme-1.jpg'
@@ -167,7 +167,7 @@ export const getLayout: ClubsFunctionGetLayout = async (
 
 export const meta: ClubsThemePluginMeta = {
   id: 'devprotocol:clubs:theme-1',
-  displayName: 'Default theme',
+  displayName: 'Minimalist',
   category: ClubsPluginCategory.Theme,
   theme: {
     previewImage: PreviewImage,

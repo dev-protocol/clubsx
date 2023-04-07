@@ -1,0 +1,61 @@
+---
+import Banner from './Banner.astro'
+const {
+  baseColor,
+  image,
+  textColor,
+  body,
+  description,
+  link,
+  class: className,
+} = Astro.props as {
+  baseColor: string
+  image: string
+  textColor: string
+  body?: string
+  description?: string
+  link: string
+  class?: string
+}
+---
+
+<a href={link} class="group" target="_blank" rel="referrer noopener">
+  <Banner
+    style={{ background: baseColor, color: textColor }}
+    class={`-z-10 content-center justify-items-start shadow justify-start mx-auto lg:max-w-[calc(100%_-_6px)] min-h-[10rem] sm:min-h-[14rem] md:min-h-[17rem] lg:min-h-[20rem] xl:min-h-[23rem] relative ${className}`}
+  >
+    <img
+      src={image}
+      class="cover-image absolute right-0 top-0 aspect-[4/3] h-full w-auto object-cover"
+    />
+    {
+      body && (
+        <span class="relative text-xl font-bold sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl">
+          {body}
+        </span>
+      )
+    }
+    {
+      description && (
+        <span class="relative font-bold sm:text-xl lg:text-2xl">
+          {description}
+        </span>
+      )
+    }
+    <span
+      class="relative mt-4 inline-block rounded border px-4 py-2 transition group-hover:bg-white/20"
+      >Check it out</span
+    >
+  </Banner>
+</a>
+
+<style>
+  .cover-image {
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 40%,
+      black 100%
+    );
+  }
+</style>
