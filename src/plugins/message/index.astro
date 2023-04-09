@@ -18,36 +18,39 @@ const extendedForms = forms.map((form) => ({
 ---
 
 <article class="container mx-auto max-w-6xl px-4">
-  <section class="mb-12">
-    <h3 class="family-title mb-6 text-lg">Contact</h3>
-    <div
-      class="community-digest mt-12 grid place-items-center rounded-[36px] px-10 py-20"
-    >
-      <h1 class="family-supertitle font-black uppercase md:text-2xl">
-        EXERCISE YOUR SPECIAL RIGHTS WITH ACCESS TO EXCLUSIVE CONTACTS OPEN ONLY
-        TO MEMBERSHIP HOLDERS.
-      </h1>
-    </div>
-  </section>
   {
     extendedForms.map((form) => (
       <>
-        <section class="mb-12">
-          <h3 class="font-Syne text-4xl font-bold">{form.title}</h3>
+        <section class="mb-6 mt-12">
+          <h3 class="text-4xl font-bold">{form.title}</h3>
         </section>
-        <section class="mb-4 mt-12">
-          <h3 class="family-title text-base">{form.description}</h3>
+        <section class="mb-4">
+          <h3 class="text-xl">{form.description}</h3>
         </section>
         <section class="mb-4">
           <a
             href={`/message/${form.id || '1'}`}
-            class="rounded border-[##171717] bg-[#D500E6] px-7 py-2"
+            class="hs-button is-plox is-filled w-fit px-7 py-2"
           >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="h-5 w-5"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
+              />
+            </svg>
             Open
           </a>
         </section>
         <section class="mb-4">
-          <h3 class="font-Syne text-2xl font-bold">Required membership(s)</h3>
+          <h3 class="text-2xl font-bold">Required membership(s)</h3>
         </section>
         <div class="mb-5 flex flex-row flex-wrap gap-8">
           {form.requiredMemberships.map((membership, i) => (

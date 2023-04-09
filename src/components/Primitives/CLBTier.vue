@@ -1,5 +1,5 @@
 <template>
-  <div class="clb-tier">
+  <div class="clb-tier gap-2 rounded-xl bg-black/20 p-3 shadow">
     <img
       v-if="media"
       :src="media"
@@ -7,9 +7,9 @@
       :alt="`Media file of the ${title} badge.`"
     />
     <Skeleton v-if="!media" class="min-h-[16rem] w-full" />
-    <div class="mb-2 grid">
+    <div class="grid gap-2">
       <div class="clb-tier__title">{{ title }}</div>
-      <div class="clb-tier__subtitle">{{ subtitle }}</div>
+      <div class="clb-tier__subtitle opacity-70">{{ subtitle }}</div>
     </div>
     <div v-if="hasAction" class="clb-tier__actions">
       <slot></slot>
