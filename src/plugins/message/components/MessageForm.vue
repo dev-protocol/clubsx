@@ -124,11 +124,11 @@ export default defineComponent({
     >
       Checking you have access...
     </div>
-    <div v-else-if="isMember">
-      <h1 class="text-xl font-bold text-green-500">You have the access</h1>
+    <div v-else-if="isMember" class="rounded bg-green-500 p-2">
+      <h1 class="text-xl font-bold text-white">You have the access</h1>
     </div>
-    <div class="text-red-500" v-else>
-      <h1 class="text-xl font-bold">You don't have the access</h1>
+    <div class="rounded bg-red-500 p-2" v-else>
+      <h1 class="text-xl font-bold text-white">You don't have the access</h1>
       <p>By purchasing a membership to any one of them, you gain access.</p>
     </div>
   </section>
