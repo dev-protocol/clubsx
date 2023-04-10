@@ -62,10 +62,10 @@
     unist-util-visit "^4.1.0"
     vfile "^5.3.2"
 
-"@astrojs/netlify@2.2.1":
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/@astrojs/netlify/-/netlify-2.2.1.tgz#a45857ed0058930cac76e585a8931af705ae37a9"
-  integrity sha512-4QvUWVprT2h8be5g6hBY57tjzZFqFveODX0jTQLzHnN6Na3SKpg5kNPnTNS8kDhLmfhhrbRC8fUKohk7XCtx9g==
+"@astrojs/netlify@2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@astrojs/netlify/-/netlify-2.2.2.tgz#a2b4c59674330c859a30734c83aa24a355a188a4"
+  integrity sha512-/G7jfG1WK27MxLN0whYCDyaAIw4VE54R7ifC+OSphyIGhc1AwxJh7KqkUbJPYMHhWYsxqQ6zkiG5b7mUJe4gtw==
   dependencies:
     "@astrojs/webapi" "^2.1.0"
     "@netlify/functions" "^1.0.0"
