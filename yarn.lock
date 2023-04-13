@@ -62,10 +62,10 @@
     unist-util-visit "^4.1.0"
     vfile "^5.3.2"
 
-"@astrojs/netlify@2.2.1":
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/@astrojs/netlify/-/netlify-2.2.1.tgz#a45857ed0058930cac76e585a8931af705ae37a9"
-  integrity sha512-4QvUWVprT2h8be5g6hBY57tjzZFqFveODX0jTQLzHnN6Na3SKpg5kNPnTNS8kDhLmfhhrbRC8fUKohk7XCtx9g==
+"@astrojs/netlify@2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@astrojs/netlify/-/netlify-2.2.2.tgz#a2b4c59674330c859a30734c83aa24a355a188a4"
+  integrity sha512-/G7jfG1WK27MxLN0whYCDyaAIw4VE54R7ifC+OSphyIGhc1AwxJh7KqkUbJPYMHhWYsxqQ6zkiG5b7mUJe4gtw==
   dependencies:
     "@astrojs/webapi" "^2.1.0"
     "@netlify/functions" "^1.0.0"
@@ -125,10 +125,10 @@
     undici "^5.20.0"
     which-pm-runs "^1.1.0"
 
-"@astrojs/vercel@3.2.2":
-  version "3.2.2"
-  resolved "https://registry.yarnpkg.com/@astrojs/vercel/-/vercel-3.2.2.tgz#2430ebd80f08652a39f8a19c89325927a35d8fd0"
-  integrity sha512-w8vfIrJnVvHNoZRTMH5CqeOUN/8xR2wWYh8vyv4HEj8vJyZKehfDT7W1edAgnbK4n0OOuWX+uGPZRGLeEsz7Lg==
+"@astrojs/vercel@3.2.3":
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/@astrojs/vercel/-/vercel-3.2.3.tgz#c532f34c77b464ca2544513084a3f7885cf00e53"
+  integrity sha512-JQFqSpaUxLVSFWNREMFmeVNwLuBexjZ3CrLnas5iSWncY4e4eFzZJsQBW28Dnf96bRwIdPNdOle0GYILkakueA==
   dependencies:
     "@astrojs/webapi" "^2.1.0"
     "@vercel/analytics" "^0.1.8"
@@ -502,6 +502,16 @@
     bignumber.js "9.1.1"
     js-base64 "^3.7.2"
     ramda "^0.28.0"
+
+"@devprotocol/dev-kit@7.3.4":
+  version "7.3.4"
+  resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-7.3.4.tgz#f2c6fb8dc38b8bb51c8ba021ac612dec0a8e6114"
+  integrity sha512-SUdAIJIOviOsKZCMVHit3spEoIuyouQhwlMNhceK02G4Bp/iwgtVocn7z96nmJZ0J8M+RqEySgj3gyKoADjpEg==
+  dependencies:
+    "@devprotocol/util-ts" "3.0.0"
+    bignumber.js "9.1.1"
+    js-base64 "^3.7.2"
+    ramda "^0.29.0"
 
 "@devprotocol/elements@0.2.2":
   version "0.2.2"
@@ -2027,22 +2037,22 @@
   resolved "https://registry.yarnpkg.com/@types/qs/-/qs-6.9.7.tgz#63bb7d067db107cc1e457c303bc25d511febf6cb"
   integrity sha512-FGa1F62FT09qcrueBA6qYTrJPVDzah9a+493+o2PCXsesWHIn27G98TsSMs3WPNbZIEj4+VJf6saSFpvD+3Zsw==
 
-"@types/ramda@0.28.23":
-  version "0.28.23"
-  resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.28.23.tgz#d04279865a86c330c03c99ac61161d9905f276f5"
-  integrity sha512-9TYWiwkew+mCMsL7jZ+kkzy6QXn8PL5/SKmBPmjgUlTpkokZWTBr+OhiIUDztpAEbslWyt24NNfEmZUBFmnXig==
+"@types/ramda@0.28.24":
+  version "0.28.24"
+  resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.28.24.tgz#0dc1924109a5acb283bd2b5ef83fbd215c78377e"
+  integrity sha512-VxCMFlrqYFzsarNI0b9RZS2fistW3/CGwslZ9pCrx0xCNC4utASpYPEDMg3wgzeb04mNlxb4BYAiqqSOdqjdIQ==
   dependencies:
-    ts-toolbelt "^6.15.1"
+    types-ramda "^0.29.1"
 
 "@types/range-parser@*":
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/@types/range-parser/-/range-parser-1.2.4.tgz#cd667bcfdd025213aafb7ca5915a932590acdcdc"
   integrity sha512-EEhsLsD6UsDM1yFhAvy0Cjr6VwmpMWqFBCb9w07wVugF7w9nfajxLuVmngTIpgS6svCnm6Vaw+MZhoDCKnOfsw==
 
-"@types/react@18.0.33":
-  version "18.0.33"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.0.33.tgz#a1575160cb4376787c2f5fe0312302f824baa61e"
-  integrity sha512-sHxzVxeanvQyQ1lr8NSHaj0kDzcNiGpILEVt69g9S31/7PfMvNCKLKcsHw4lYKjs3cGNJjXSP4mYzX43QlnjNA==
+"@types/react@18.0.35":
+  version "18.0.35"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.0.35.tgz#192061cb1044fe01f2d3a94272cd35dd50502741"
+  integrity sha512-6Laome31HpetaIUGFWl1VQ3mdSImwxtFZ39rh059a1MNnKGqBpC88J6NJ8n/Is3Qx7CefDGLgf/KhN/sYCf7ag==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -2458,10 +2468,10 @@ arrify@^2.0.0:
   resolved "https://registry.yarnpkg.com/arrify/-/arrify-2.0.1.tgz#c9655e9331e0abcd588d2a7cad7e9956f66701fa"
   integrity sha512-3duEwti880xqi4eAMN8AyR4a0ByT90zoYdLlevfrvU43vb0YZwZVfxOgxWrLXXXpyugL0hNZc9G6BiB5B3nUug==
 
-astro@2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/astro/-/astro-2.2.1.tgz#548ba89ec695592a205e2c1b6e39aa8f78d6f1bc"
-  integrity sha512-yYPRzh3su38bi3VBCKmYAUBkQSaFQMKFsu8JAVDzFRoGLbskJ/6JkDX2abSB9/iRug8GAKaH/FWxXOTzIsSQ7Q==
+astro@2.2.3:
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/astro/-/astro-2.2.3.tgz#62ab6bdeffa4f44d879ea9c89db6015230fd2ee4"
+  integrity sha512-Pd67ZBoYxqeyHCZ0UpdmDZYNgcs7JTwc0NMzUScrH4y2hjSY4S8iwmNUtd9pf65gkxMpEbqfvQj06kLzgi4HZg==
   dependencies:
     "@astrojs/compiler" "^1.3.1"
     "@astrojs/language-server" "^0.28.3"
@@ -6542,10 +6552,10 @@ sass@1.60.0:
     immutable "^4.0.0"
     source-map-js ">=0.6.2 <2.0.0"
 
-sass@1.61.0:
-  version "1.61.0"
-  resolved "https://registry.yarnpkg.com/sass/-/sass-1.61.0.tgz#d1f6761bb833887b8fdab32a24e052c40531d02b"
-  integrity sha512-PDsN7BrVkNZK2+dj/dpKQAWZavbAQ87IXqVvw2+oEYI+GwlTWkvbQtL7F2cCNbMqJEYKPh1EcjSxsnqIb/kyaQ==
+sass@1.62.0:
+  version "1.62.0"
+  resolved "https://registry.yarnpkg.com/sass/-/sass-1.62.0.tgz#3686b2195b93295d20765135e562366b33ece37d"
+  integrity sha512-Q4USplo4pLYgCi+XlipZCWUQz5pkg/ruSSgJ0WRDSb/+3z9tXUOkQ7QPYn4XrhZKYAK4HlpaQecRwKLJX6+DBg==
   dependencies:
     chokidar ">=3.0.0 <4.0.0"
     immutable "^4.0.0"
@@ -7057,10 +7067,10 @@ ts-interface-checker@^0.1.9:
   resolved "https://registry.yarnpkg.com/ts-interface-checker/-/ts-interface-checker-0.1.13.tgz#784fd3d679722bc103b1b4b8030bcddb5db2a699"
   integrity sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==
 
-ts-toolbelt@^6.15.1:
-  version "6.15.5"
-  resolved "https://registry.yarnpkg.com/ts-toolbelt/-/ts-toolbelt-6.15.5.tgz#cb3b43ed725cb63644782c64fbcad7d8f28c0a83"
-  integrity sha512-FZIXf1ksVyLcfr7M317jbB67XFJhOO1YqdTcuGaq9q5jLUoTikukZ+98TPjKiP2jC5CgmYdWWYs0s2nLSU0/1A==
+ts-toolbelt@^9.6.0:
+  version "9.6.0"
+  resolved "https://registry.yarnpkg.com/ts-toolbelt/-/ts-toolbelt-9.6.0.tgz#50a25426cfed500d4a09bd1b3afb6f28879edfd5"
+  integrity sha512-nsZd8ZeNUzukXPlJmTBwUAuABDe/9qtVDelJeT/qW0ow3ZS3BsQJtNkan1802aM9Uf68/Y8ljw86Hu0h5IUW3w==
 
 tsconfig-paths@^3.14.1:
   version "3.14.2"
@@ -7136,6 +7146,13 @@ typed-array-length@^1.0.4:
     call-bind "^1.0.2"
     for-each "^0.3.3"
     is-typed-array "^1.1.9"
+
+types-ramda@^0.29.1:
+  version "0.29.1"
+  resolved "https://registry.yarnpkg.com/types-ramda/-/types-ramda-0.29.1.tgz#08c6ddf583ba359ec1113c7069e30a44ef73896d"
+  integrity sha512-pdEF8VXcBTSu3fPupZahieG6Lh8eBWPtcaH/OB5QPCoN2hz4vBbspoMLB3X9kwzXRD3lwD4/j0hwj3Z/PAzzcA==
+  dependencies:
+    ts-toolbelt "^9.6.0"
 
 typescript@*:
   version "5.0.3"
