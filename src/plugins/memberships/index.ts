@@ -98,11 +98,11 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
         name,
       },
     })) ?? []),
-    ...(presets.map((membership) => ({
-      paths: ['memberships', 'new', membership.id],
+    ...(presets.map((preset) => ({
+      paths: ['memberships', 'new', preset.id],
       component: AdminNew,
       props: {
-        membership,
+        membership: { ...preset, payload: utils.randomBytes(8) },
         memberships,
         propertyAddress,
         presets,

@@ -33,6 +33,7 @@
   export let rpcUrl: string
   export let propertyAddress: string | null | undefined = undefined
   export let clubName: string | undefined = undefined
+  const metaOfPayload = utils.keccak256(membership.payload)
 
   let updatingMembershipsStatus: boolean = false
 
@@ -164,14 +165,13 @@
     if (membership.price < minPrice || membership.price > maxPrice) return
 
     const search = mode === 'edit' ? originalId : membership.id
-    const payload = mode === 'edit' ? membership.payload : utils.randomBytes(8)
     const newMemberships = existingMemberships.some(({ id }) => id === search)
       ? // If the ID is already exists, override it. This is a safeguard to avoid duplicate data.
         existingMemberships.map((_mem) =>
-          _mem.id === search ? { ...membership, payload } : _mem
+          _mem.id === search ? membership : _mem
         )
       : // If not, add it.
-        [...existingMemberships, { ...membership, payload }]
+        [...existingMemberships, membership]
 
     setOptions(
       [{ key: 'memberships', value: newMemberships }],
@@ -612,6 +612,12 @@
           >Try asking AI about "membership ideas for gaming community"</a
         >
       </p>
+    </label>
+
+    <!-- Display payload as string -->
+    <label class="hs-form-field">
+      <span class="hs-form-field__label"> Payload </span>
+      <input class="bg-transparent text-sm" value={metaOfPayload} disabled />
     </label>
 
     <div class="flex w-full justify-end gap-[20px]">
