@@ -8,6 +8,7 @@ import checkImage from '@assets/step-check.svg'
 import roundedSquareImage from '@assets/step-rounded-square.svg'
 import PublishConnect from '@components/PublishConnect/PublishConnect.vue'
 import PublishNetworkSelection from '@components/PublishNetworkSelection/PublishNetworkSelection.vue'
+import Modal from '@components/Modal/modal.jsx'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import type { DraftOptions } from '@constants/draft'
 import NextButton from '@components/Setup/NextButton.astro'
@@ -70,6 +71,7 @@ const baseDomainUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
           site={site}
         />
         {draftOptionsValue?.isInDraft && (
+          <Modal />
           <div>
             <a
               href={new URL('/admin/overview', baseDomainUrl).toString()}
