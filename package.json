@@ -56,6 +56,7 @@
     "@devprotocol/elements": "0.2.2",
     "@devprotocol/hashi": "1.8.0",
     "@devprotocol/util-ts": "3.0.0",
+    "@fontsource/ibm-plex-mono": "^4.5.13",
     "@kazu80/clubs-plugin-links": "1.0.1",
     "@metamask/detect-provider": "2.0.0",
     "@redis/json": "1.0.4",

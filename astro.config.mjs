@@ -59,6 +59,8 @@ export default defineConfig({
       alias: {
         'three/examples/jsm/controls/OrbitControls':
           '/node_modules/three/examples/jsm/controls/OrbitControls',
+        '~@fontsource/ibm-plex-mono/400.css':
+          '/node_modules/@fontsource/ibm-plex-mono/400.css',
       },
     },
   },
