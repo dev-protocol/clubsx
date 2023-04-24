@@ -8,4 +8,5 @@ export const modules = {
   'devprotocol:clubs:gated-contact-form': () => import('@plugins/message'),
   'devprotocol:clubs:plugin:quests': () => import('@plugins/quests'),
   'clubs-plugin-links': () => import('@kazu80/clubs-plugin-links'),
+  'devprotocol:clubs:collections': () => import('@plugins/collections'),
 }

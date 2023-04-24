@@ -20,6 +20,7 @@ import $11 from '@plugins/quests'
 import $12 from '@plugins/message'
 import $13 from '@plugins/memberships'
 import $14 from '@kazu80/clubs-plugin-links'
+import $15 from '@plugins/collections'
 
 export type PluginTag =
   | 'New & Upcoming'
@@ -149,6 +150,13 @@ export const installablePlugins: InstallablePlugins[] = [
     repositoryUrl: 'https://github.com/dev-protocol/clubsx',
     pluginOptions: [],
   },
+  {
+    id: 'devprotocol:clubs:collections',
+    tag: 'Commerce & Business',
+    developer: 'Dev Protocol',
+    repositoryUrl: 'https://github.com/dev-protocol/clubsx',
+    pluginOptions: [],
+  },
 ]
 
 export const plugins = [
@@ -166,4 +174,5 @@ export const plugins = [
   $12,
   $13,
   $14,
+  $15,
 ]
