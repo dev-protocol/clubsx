@@ -8,9 +8,8 @@ import { ClubsPluginCategory } from '@devprotocol/clubs-core'
 import { default as Admin } from './admin.astro'
 import { default as Icon } from './assets/icon.svg'
 import { Content as Readme } from './README.md'
-import Preview1 from './assets/memberships-1.jpg'
-import Preview2 from './assets/memberships-2.jpg'
-import Preview3 from './assets/memberships-3.jpg'
+import Preview1 from './assets/limited-number-of-items.svg'
+import Preview2 from './assets/time-limited-collection.svg'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async () => []
 
@@ -34,7 +33,7 @@ export const meta: ClubsPluginMeta = {
     priceCurrency: 'DEV',
   },
   description: `Dummy is a content generation toolkit designed to make the development.`,
-  previewImages: [Preview1, Preview2, Preview3],
+  previewImages: [Preview1, Preview2],
   readme: Readme,
 }
 
