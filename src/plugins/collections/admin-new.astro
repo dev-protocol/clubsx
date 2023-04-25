@@ -1,4 +1,5 @@
 ---
+import CreateCollections from '@components/Collections/CreateCollections.svelte'
 import limitedNoOfItemsImg from './assets/limited-number-of-items.svg'
 import timeLimitedCollectionImg from './assets/time-limited-collection.svg'
 
@@ -8,27 +9,7 @@ const { isTimeLimitedCollection = false } = Astro.props as {
 ---
 
 <div>
-  <h1 class="mb-16 font-title text-2xl font-bold">Collections</h1>
-  <h2 class="mb-16 text-[32px] font-normal">Create a new collection</h2>
+  <h1 class="mb-[62px] font-title text-2xl font-bold">Collections</h1>
 
-  <div class="flex min-h-[272px] max-w-full items-center gap-16 p-2.5">
-    {
-      !isTimeLimitedCollection && (
-        <div class="flex h-full w-[47%] grow flex-col items-center justify-center gap-4 rounded-[5px] bg-white p-2.5">
-          <img src={limitedNoOfItemsImg} class="h-[212px] max-h-[212px]" />
-          <p class="text-center text-[15px] font-bold text-black">
-            Limited collection with a limited number of items
-          </p>
-        </div>
-      )
-    }
-    <div
-      class="flex h-full w-[47%] grow flex-col items-center justify-center gap-4 rounded-[5px] bg-white p-2.5"
-    >
-      <img src={timeLimitedCollectionImg} class="h-[212px] max-h-[212px]" />
-      <p class="text-center text-[15px] font-bold text-black">
-        Time-limited collection
-      </p>
-    </div>
-  </div>
+  <CreateCollections client:only="svelte" />
 </div>
