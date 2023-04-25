@@ -27,7 +27,7 @@
       </div>
       <label class="hs-form-field w-fit">
         <span
-          class="hs-button is-filled is-large cursor-pointer rounded border-[3px] border-black px-8 py-6"
+          class="hs-button is-filled is-large cursor-pointer rounded border-[3px] border-black px-8 py-6 font-bold text-white"
           >Upload to change</span
         >
         <input
