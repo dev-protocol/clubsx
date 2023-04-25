@@ -75,16 +75,17 @@
     {/if}
 
     <div
-      class="mb-[62px] flex w-[52.2%] flex-col items-start justify-start gap-[7px]"
+      class="mb-[62px] flex w-[99.1%] flex-col items-start justify-start gap-[7px]"
     >
       <div class="m-0 w-full items-center p-0">
         <span class="mr-[13px] font-body">Description</span>
         <span class="font-body text-[#EB48F8]"> * </span>
       </div>
       <textarea
-        class="hs-form-field__input"
+        class="w-full rounded border-[3px] border-black bg-[#040B10] px-8 py-6"
         id="membership-description"
         name="membership-description"
+        rows="10"
       />
       <p class="text-xs">Markdown is available</p>
     </div>
