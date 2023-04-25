@@ -243,5 +243,47 @@
         Make items empty
       </button>
     </div>
+
+    <div
+      class="mb-16 flex w-[99.1%] flex-col items-start justify-start gap-[13px]"
+    >
+      <span class="font-body">Allowlist</span>
+      <div
+        class="grid w-full grid-cols-[repeat(auto-fill,minmax(160px,1fr))] justify-between gap-16"
+      >
+        {#each memberships as mem}
+          <div class="flex flex-col items-center gap-4">
+            <label>
+              <input
+                type="checkbox"
+                name="membershipAllowList"
+                value={mem.id}
+                class="hidden"
+              />
+              <div
+                class={`flex flex-col gap-4 rounded-[5px] bg-white p-2.5 text-black`}
+              >
+                <span class="text-xl font-bold">{mem.name}</span>
+                <img
+                  class="aspect-square w-full rounded-[5px]"
+                  src={mem.imageSrc}
+                  alt={`${mem.name} Membership`}
+                />
+                <span class="text-xl font-bold"
+                  >{mem.price} {mem.currency.toUpperCase()}</span
+                >
+                <span class="text-base">{mem.description}</span>
+              </div>
+            </label>
+            <button
+              type="button"
+              class={`hs-button is-large is-filled w-full rounded px-8 py-6 text-base font-bold text-white`}
+            >
+              Edit
+            </button>
+          </div>
+        {/each}
+      </div>
+    </div>
   </div>
 </form>
