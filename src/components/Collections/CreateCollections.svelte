@@ -1,4 +1,7 @@
 <script lang="ts">
+  import type { Membership } from '@plugins/memberships'
+
+  export let memberships: Membership[] = []
   export let isTimeLimitedCollection: boolean = false
 
   const update = (e?: any) => {}
@@ -74,7 +77,7 @@
   {/if}
 
   <div
-    class="mb-[62px] flex w-[99.1%] flex-col items-start justify-start gap-[7px]"
+    class="mb-16 flex w-[99.1%] flex-col items-start justify-start gap-[7px]"
   >
     <div class="m-0 w-full items-center p-0">
       <span class="mr-[13px] font-body">Description</span>
@@ -87,5 +90,39 @@
       rows="3"
     />
     <p class="text-xs">Markdown is available</p>
+  </div>
+
+  <div
+    class="mb-16 flex w-[99.1%] flex-col items-start justify-start gap-[13px]"
+  >
+    <span class="font-body">Allowlist</span>
+    <div
+      class="grid w-full grid-cols-[repeat(auto-fill,minmax(160px,1fr))] justify-between gap-16"
+    >
+      {#each memberships as mem}
+        <label>
+          <input
+            type="checkbox"
+            name="membershipAllowList"
+            value={mem.id}
+            class="hidden"
+          />
+          <div
+            class={`flex flex-col gap-4 rounded-[5px] bg-white p-2.5 text-black`}
+          >
+            <span class="text-xl font-bold">{mem.name}</span>
+            <img
+              class="aspect-square w-full rounded-[5px]"
+              src={mem.imageSrc}
+              alt={`${mem.name} Membership`}
+            />
+            <span class="text-xl font-bold"
+              >{mem.price} {mem.currency.toUpperCase()}</span
+            >
+            <span class="text-base">{mem.description}</span>
+          </div>
+        </label>
+      {/each}
+    </div>
   </div>
 </form>

@@ -3,6 +3,7 @@ import type {
   ClubsFunctionGetPagePaths,
   ClubsFunctionPlugin,
   ClubsPluginMeta,
+  ClubsPluginOption,
 } from '@devprotocol/clubs-core'
 import { ClubsPluginCategory } from '@devprotocol/clubs-core'
 import { default as Admin } from './admin.astro'
@@ -11,10 +12,25 @@ import { default as Icon } from './assets/icon.svg'
 import { Content as Readme } from './README.md'
 import Preview1 from './assets/limited-number-of-items.svg'
 import Preview2 from './assets/time-limited-collection.svg'
+import type { Membership } from '@plugins/memberships'
+import type { UndefinedOr } from '@devprotocol/util-ts'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async () => []
 
-export const getAdminPaths: ClubsFunctionGetAdminPaths = async () => {
+export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
+  options,
+  config,
+  { getPluginConfigById }
+) => {
+  const [membershipConfig] = getPluginConfigById(
+    'devprotocol:clubs:simple-memberships'
+  )
+
+  const memberships =
+    (membershipConfig?.options.find(
+      (opt: ClubsPluginOption) => opt.key === 'memberships'
+    )?.value as UndefinedOr<Membership[]>) ?? []
+
   return [
     {
       paths: ['collections'],
@@ -24,12 +40,12 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async () => {
     {
       paths: ['collections', 'new'],
       component: AdminNew,
-      props: { isTimeLimitedCollection: false },
+      props: { isTimeLimitedCollection: false, memberships },
     },
     {
       paths: ['collections', 'new', 'time-limited-collection'],
       component: AdminNew,
-      props: { isTimeLimitedCollection: true },
+      props: { isTimeLimitedCollection: true, memberships },
     },
   ]
 }
