@@ -6,6 +6,7 @@ import type {
 } from '@devprotocol/clubs-core'
 import { ClubsPluginCategory } from '@devprotocol/clubs-core'
 import { default as Admin } from './admin.astro'
+import { default as AdminNew } from './admin-new.astro'
 import { default as Icon } from './assets/icon.svg'
 import { Content as Readme } from './README.md'
 import Preview1 from './assets/limited-number-of-items.svg'
@@ -19,6 +20,16 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async () => {
       paths: ['collections'],
       component: Admin,
       props: {},
+    },
+    {
+      paths: ['collections', 'new'],
+      component: AdminNew,
+      props: { isTimeLimitedCollection: false },
+    },
+    {
+      paths: ['collections', 'new', 'time-limited-collection'],
+      component: AdminNew,
+      props: { isTimeLimitedCollection: true },
     },
   ]
 }

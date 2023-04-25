@@ -1,6 +1,8 @@
 ---
 import limitedNoOfItemsImg from './assets/limited-number-of-items.svg'
 import timeLimitedCollectionImg from './assets/time-limited-collection.svg'
+
+const baseRedirectionUrl = '/admin/collections/new'
 ---
 
 <div>
@@ -8,22 +10,28 @@ import timeLimitedCollectionImg from './assets/time-limited-collection.svg'
   <h2 class="mb-16 text-[32px] font-normal">Create a new collection</h2>
 
   <div class="flex min-h-[272px] max-w-full items-center gap-16 p-2.5">
-    <div
-      class="flex h-full w-[47%] grow flex-col items-center justify-center gap-4 rounded-[5px] bg-white p-2.5"
+    <a href={baseRedirectionUrl} class="h-full w-[47%]">
+      <div
+        class="flex h-full w-full grow flex-col items-center justify-center gap-4 rounded-[5px] bg-white p-2.5"
+      >
+        <img src={limitedNoOfItemsImg} class="h-[212px] max-h-[212px]" />
+        <p class="text-center text-[15px] font-bold text-black">
+          Limited collection with a limited number of items
+        </p>
+      </div>
+    </a>
+    <a
+      href={`${baseRedirectionUrl}/time-limited-collection`}
+      class="h-full w-[47%]"
     >
-      <img src={limitedNoOfItemsImg} class="h-[212px] max-h-[212px]" />
-      <p class="text-center text-[15px] font-bold text-black">
-        Limited collection with a limited number of items
-      </p>
-    </div>
-
-    <div
-      class="flex h-full w-[47%] grow flex-col items-center justify-center gap-4 rounded-[5px] bg-white p-2.5"
-    >
-      <img src={timeLimitedCollectionImg} class="h-[212px] max-h-[212px]" />
-      <p class="text-center text-[15px] font-bold text-black">
-        Time-limited collection
-      </p>
-    </div>
+      <div
+        class="flex h-full w-full grow flex-col items-center justify-center gap-4 rounded-[5px] bg-white p-2.5"
+      >
+        <img src={timeLimitedCollectionImg} class="h-[212px] max-h-[212px]" />
+        <p class="text-center text-[15px] font-bold text-black">
+          Time-limited collection
+        </p>
+      </div>
+    </a>
   </div>
 </div>
