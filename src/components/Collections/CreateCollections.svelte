@@ -130,12 +130,110 @@
 
   <div class="w-full">
     <h1 class="mb-16 font-title text-2xl font-bold">Collection Items</h1>
-    <div class="flex items-start gap-16">
+    <div class="mb-16 flex items-start gap-16">
       <button
         type="button"
         class={`hs-button is-large is-filled w-fit rounded px-8 py-6 text-base font-bold text-white`}
       >
         + Add
+      </button>
+
+      <button
+        type="button"
+        class={`hs-button is-large is-filled w-fit rounded px-8 py-6 text-base font-bold text-white`}
+      >
+        Make items empty
+      </button>
+    </div>
+
+    <div
+      class="mb-[62px] flex w-[52.2%] flex-col items-start justify-start gap-[7px]"
+    >
+      <div class="m-0 w-full items-center p-0">
+        <span class="mr-[13px] font-body">Name</span>
+        <span class="font-body text-[#EB48F8]"> * </span>
+      </div>
+      <input
+        class="w-full rounded border-[3px] border-black bg-[#040B10] px-8 py-6"
+        id="collection-item-name"
+        name="collection-item-name"
+      />
+    </div>
+
+    <div
+      class="mb-[62px] flex w-[52.2%] flex-col items-start justify-start gap-[7px]"
+    >
+      <div class="m-0 w-full items-center p-0">
+        <span class="mr-[13px] font-body">Image</span>
+        <span class="font-body text-[#EB48F8]"> * </span>
+      </div>
+      <label class="hs-form-field w-fit">
+        <span
+          class="hs-button is-filled is-large cursor-pointer rounded border-[3px] border-black px-8 py-6 font-bold text-white"
+          >Upload to change</span
+        >
+        <input
+          id="collection-item-image"
+          name="collection-item-image"
+          style="display:none"
+          type="file"
+          class="hs-button is-filled is-large cursor-pointer"
+        />
+      </label>
+    </div>
+
+    {#if !isTimeLimitedCollection}
+      <div
+        class="mb-[62px] flex w-[52.2%] flex-col items-start justify-start gap-[7px]"
+      >
+        <div class="m-0 w-full items-center p-0">
+          <span class="mr-[13px] font-body">Max supply</span>
+          <span class="font-body text-[#EB48F8]"> * </span>
+        </div>
+        <input
+          class="w-full rounded border-[3px] border-black bg-[#040B10] px-8 py-6"
+          id="collection-item-max-supply"
+          name="collection-item-max-supply"
+        />
+      </div>
+    {/if}
+
+    <div
+      class="mb-[62px] flex w-[52.2%] flex-col items-start justify-start gap-[7px]"
+    >
+      <div class="m-0 w-full items-center p-0">
+        <span class="mr-[13px] font-body">Price</span>
+        <span class="font-body text-[#EB48F8]"> * </span>
+      </div>
+      <input
+        class="w-full rounded border-[3px] border-black bg-[#040B10] px-8 py-6"
+        id="collection-item-price"
+        name="collection-item-price"
+      />
+    </div>
+
+    <div
+      class="mb-16 flex w-[99.1%] flex-col items-start justify-start gap-[7px]"
+    >
+      <div class="m-0 w-full items-center p-0">
+        <span class="mr-[13px] font-body">Description</span>
+        <span class="font-body text-[#EB48F8]"> * </span>
+      </div>
+      <textarea
+        class="w-full rounded border-[3px] border-black bg-[#040B10] px-8 py-6"
+        id="collection-item-description"
+        name="collection-item-description"
+        rows="3"
+      />
+      <p class="text-xs">Markdown is available</p>
+    </div>
+
+    <div class="mb-16 flex items-start gap-16">
+      <button
+        type="button"
+        class={`hs-button is-large is-filled w-fit rounded px-8 py-6 text-base font-bold text-white`}
+      >
+        Save
       </button>
 
       <button
