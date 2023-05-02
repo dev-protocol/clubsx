@@ -106,14 +106,14 @@
     "@sveltejs/vite-plugin-svelte" "^2.1.1"
     svelte2tsx "^0.5.11"
 
-"@astrojs/tailwind@3.1.1":
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/@astrojs/tailwind/-/tailwind-3.1.1.tgz#8d8c2f875401e8e88692cf2b99b48de9d5d82156"
-  integrity sha512-Wx/ZtVnmtfqHWGVzvUEYZm8rufVKVgDIef0q6fzwUxoT1EpTTwBkTbpnzooogewMLOh2eTscasGe3Ih2HC1wVA==
+"@astrojs/tailwind@3.1.2":
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/@astrojs/tailwind/-/tailwind-3.1.2.tgz#0de7912535554f3c2fcfc8eca94767f618603100"
+  integrity sha512-KyZ84WExLRU/TRIQm09ce+ND/0UG9AK9+7k/gjCbxuKScc/RieZ73oh4MkoEFrN/9OToMklvt+wmkAt3+u/ubQ==
   dependencies:
-    "@proload/core" "^0.3.2"
-    autoprefixer "^10.4.7"
-    postcss "^8.4.14"
+    "@proload/core" "^0.3.3"
+    autoprefixer "^10.4.14"
+    postcss "^8.4.23"
     postcss-load-config "^4.0.1"
 
 "@astrojs/telemetry@^2.1.0":
@@ -1689,7 +1689,7 @@
     tiny-glob "^0.2.9"
     tslib "^2.4.0"
 
-"@proload/core@^0.3.2":
+"@proload/core@^0.3.3":
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/@proload/core/-/core-0.3.3.tgz#0a30c5ab69e21254b339813c674a6197a42337c3"
   integrity sha512-7dAFWsIK84C90AMl24+N/ProHKm4iw0akcnoKjRvbfHifJZBLhaDsDus1QJmhG12lXj4e/uB/8mB/0aduCW+NQ==
@@ -2534,7 +2534,7 @@ async-sema@^3.1.1:
   resolved "https://registry.yarnpkg.com/async-sema/-/async-sema-3.1.1.tgz#e527c08758a0f8f6f9f15f799a173ff3c40ea808"
   integrity sha512-tLRNUXati5MFePdAk8dw7Qt7DpxPB60ofAgn8WRhW6a2rcimZnYBP9oxHiv0OHy+Wz7kPMG+t4LGdt31+4EmGg==
 
-autoprefixer@10.4.14, autoprefixer@^10.4.7:
+autoprefixer@10.4.14, autoprefixer@^10.4.14:
   version "10.4.14"
   resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-10.4.14.tgz#e28d49902f8e759dd25b153264e862df2705f79d"
   integrity sha512-FQzyfOsTlwVzjHxKEqRIAdJx9niO6VCBCoEwax/VLSoQF29ggECcPuBqUMZ+u8jCZOPSy8b8/8KnuFbp0SaFZQ==
@@ -6035,7 +6035,7 @@ postcss@8.4.23, postcss@^8.4.23:
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
-postcss@^8.1.10, postcss@^8.4.14, postcss@^8.4.21:
+postcss@^8.1.10, postcss@^8.4.21:
   version "8.4.21"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.21.tgz#c639b719a57efc3187b13a1d765675485f4134f4"
   integrity sha512-tP7u/Sn/dVxK2NnruI4H9BG+x+Wxz6oeZ1cJ8P6G/PZY0IKk4k/63TDsQf2kQq3+qoJeLm2kIBUNlZe3zgb4Zg==
