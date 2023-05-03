@@ -127,12 +127,12 @@
     undici "^5.22.0"
     which-pm-runs "^1.1.0"
 
-"@astrojs/vercel@3.2.5":
-  version "3.2.5"
-  resolved "https://registry.yarnpkg.com/@astrojs/vercel/-/vercel-3.2.5.tgz#22d0861bb35092dc481cfedceb2e31b9e14b5191"
-  integrity sha512-Az2Qcd0GSJHqZV7eWLe8q3h3tzbMApvSQbO6kCoJ9G4cUlQN1UeMZYQcJEG0WBB9YmHQNvttt8qyowVPACnwuQ==
+"@astrojs/vercel@3.3.0":
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/vercel/-/vercel-3.3.0.tgz#b02044b6bb0ab1d8cc5f20217571b0a3559dd9d0"
+  integrity sha512-OwbxRL7kw5TFVwPn18/M9Dqp14SrPlEUSqzx+7WSvID/3W/MMuiwC5Ey0CoKUVPYruXxOaacDJKa1bzNoYgV/A==
   dependencies:
-    "@astrojs/webapi" "^2.1.0"
+    "@astrojs/webapi" "^2.1.1"
     "@vercel/analytics" "^0.1.8"
     "@vercel/nft" "^0.22.1"
     fast-glob "^3.2.11"
