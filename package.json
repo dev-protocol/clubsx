@@ -53,7 +53,7 @@
     "@devprotocol/clubs-core": "0.44.0",
     "@devprotocol/dev-kit": "7.3.4",
     "@devprotocol/elements": "0.2.2",
-    "@devprotocol/hashi": "1.8.0",
+    "@devprotocol/hashi": "2.0.0-alpha",
     "@devprotocol/util-ts": "3.0.0",
     "@kazu80/clubs-plugin-links": "1.0.1",
     "@metamask/detect-provider": "2.0.0",
