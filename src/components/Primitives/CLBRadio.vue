@@ -34,7 +34,7 @@ export default {
 
 <style lang="scss" scoped>
 @use '@devprotocol/hashi' with (
-  $vue-mode: true
+  $modular-mode: true
 );
 
 .clb-radio {
