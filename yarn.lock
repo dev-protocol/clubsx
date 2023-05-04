@@ -741,12 +741,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@devprotocol/hashi@npm:2.0.0-alpha":
-  version: 2.0.0-alpha
-  resolution: "@devprotocol/hashi@npm:2.0.0-alpha"
+"@devprotocol/hashi@npm:2.0.0-beta":
+  version: 2.0.0-beta
+  resolution: "@devprotocol/hashi@npm:2.0.0-beta"
   dependencies:
     "@matteusan/sentro": 0.1.25
-  checksum: 087822d7b36efa24695cc4260d83978ab53dcd37fd8f9300a1d72dc55dafd07e758eccb544f46d8615a18e19fe3e4434a87d0c6de6580512fd097c699d0b53be
+  checksum: 5287693ee77b4502c70ab4eed3f76c872fea172baf65a5ccb069f471918ad568f28b825ef797a9843a1e2594cd16510a58ee7bcb6ee82fa2a442a609bc45ed3e
   languageName: node
   linkType: hard
 
@@ -3912,7 +3912,7 @@ __metadata:
     "@devprotocol/clubs-core": 0.44.0
     "@devprotocol/dev-kit": 7.3.4
     "@devprotocol/elements": 0.2.2
-    "@devprotocol/hashi": 2.0.0-alpha
+    "@devprotocol/hashi": 2.0.0-beta
     "@devprotocol/util-ts": 3.0.0
     "@kazu80/clubs-plugin-links": 1.0.1
     "@metamask/detect-provider": 2.0.0
