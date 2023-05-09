@@ -40,7 +40,7 @@
       <li>
         <a
           href={nav.anchor}
-          class="inline-block whitespace-nowrap break-keep rounded-full px-4 py-2 text-sm capitalize shadow-[0_0_0_1px_rgba(0,0,0,1)] transition hover:shadow-[0_0_0_3px_rgba(0,0,0,1)]"
+          class="inline-block whitespace-nowrap break-keep rounded-full border px-4 py-2 text-sm capitalize transition {nav.tag === 'New & Upcoming' ? 'bg-[#fdad00] border-[#fdad00] text-black hover:border-[#ffc751]' : 'bg-surface-200 border-surface-200 text-surface-ink hover:border-accent-200'}"
         >
           {nav.tag}
         </a>
@@ -49,7 +49,7 @@
     {#each navs.filter((x) => !x.exists) as nav}
       <li>
         <span
-          class="inline-block flex items-center gap-2 whitespace-nowrap break-keep rounded-full px-4 py-2 text-sm capitalize text-black/50 shadow-[0_0_0_1px_rgba(0,0,0,0.5)]"
+          class="inline-flex items-center gap-2 whitespace-nowrap break-keep rounded-full px-4 py-2 text-surface-200 text-sm capitalize bg-surface-400 border-surface-200 border"
         >
           {nav.tag}
           <svg

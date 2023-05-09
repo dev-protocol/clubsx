@@ -21,7 +21,7 @@ const getPluginMeta = createGetPluginMeta(
 const allPlugins = await Promise.all(allInstallablePlugins.map(getPluginMeta))
 ---
 
-<div class="grid pb-24 text-dp-blue-grey-600">
+<div class="grid pb-24">
   <section
     class="grid rounded-2xl px-7 py-7 xl:px-28 xl:py-14"
     style={{
@@ -95,9 +95,3 @@ const allPlugins = await Promise.all(allInstallablePlugins.map(getPluginMeta))
     />
   </div>
 </div>
-
-<style lang="scss">
-  :global(body[data-page^='marketplace']) {
-    @apply bg-dp-white-300;
-  }
-</style>

@@ -108,8 +108,8 @@ const siteBaseUrl = new URL(Astro.request.url).origin
               class:list={[
                 '-mx-3 flex items-center gap-2 rounded p-3 font-bold transition-colors duration-500',
                 page?.startsWith('marketplace')
-                  ? 'bg-white text-black'
-                  : 'hover:bg-slate-800',
+                  ? 'bg-surface-200'
+                  : 'hover:bg-surface-200',
               ]}
               href="/admin/marketplace"
             >
