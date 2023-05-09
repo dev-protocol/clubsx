@@ -32,8 +32,8 @@
   style={navInitialHeight && isStuck ? `height: ${navInitialHeight}px` : ''}
 >
   <ul
-    class={`flex items-start justify-start gap-4 overflow-x-auto bg-dp-white-300 px-2 pb-4 pt-5 ${
-      isStuck ? 'border-b border-b-black/20' : 'lg:flex-wrap'
+    class={`flex items-start justify-start gap-4 overflow-x-auto bg-surface-300 px-5 py-4 rounded-b-[0.5rem] rounded-t-[0.5rem] ${
+      isStuck ? 'border-b border-b-black/20 rounded-t-none' : 'lg:flex-wrap'
     }`}
   >
     {#each navs.filter((x) => x.exists) as nav}
