@@ -172,8 +172,8 @@
     </button>
   </section>
 
-  <label class="hs-form-field is-filled">
-    <span class="hs-form-field__label"> Social links </span>
+  <label class="hs-form-field">
+    <span class="hs-form-field__label mb-4"> Social links </span>
     {#each socialLinks as link, i}
       <div class="mb-4 flex flex-col items-start lg:flex-row lg:items-center">
         <span class="hs-form-field__label w-28 text-sm capitalize"

@@ -108,7 +108,13 @@
   })
 </script>
 
-<div role="presentation" class="hs-form-field mb-16">
+<style>
+  .theme-chip:focus-visible {
+    outline: 2px solid var(--hs-theme-accent-300);
+  }
+</style>
+
+<div role="presentation" class="hs-form-field">
   <span class="hs-form-field__label"> Preview </span>
   <div
     class="aspect-square max-w-lg overflow-hidden rounded-xl transition"
@@ -171,7 +177,7 @@
     <span class="hs-form-field__label"> Theme color </span>
     <div class="flex flex-wrap gap-6">
       {#each Object.keys(colorPresets) as presetKey}
-        <label class="cursor-pointer">
+        <label class="theme-chip cursor-pointer">
           <input
             type="radio"
             class="hidden"
@@ -231,6 +237,10 @@
           type="file"
           on:change={onFileSelected}
         />
+
+        <span class="hs-form-field__helper opacity-60"
+          >* Recommended image size is 2400 x 1200 px</span
+        >
       </label>
       <span class="mt-1 text-xs opacity-60"
         >* Recommended image size is 2400 x 1200 px</span
@@ -238,7 +248,7 @@
     </div>
   </div>
 
-  <label class="hs-form-field is-filled">
+  <label class="hs-form-field">
     <span class="hs-form-field__label">
       Short description to introduce about you
     </span>
@@ -251,7 +261,7 @@
     />
   </label>
 
-  <label class="hs-form-field is-filled">
+  <label class="hs-form-field">
     <span class="hs-form-field__label"> Your introduction </span>
     <textarea
       rows="10"
@@ -260,6 +270,6 @@
       id="club-body"
       name="club-body"
     />
-    <p class="text-sm">Markdown is available</p>
+    <span class="hs-form-field__helper">Markdown is available</span>
   </label>
 </form>

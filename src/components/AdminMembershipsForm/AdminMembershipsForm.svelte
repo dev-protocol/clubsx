@@ -157,11 +157,13 @@
           className={`lg:row-start-3 ${getColStart(i)}`}
         />
         <a
-          class={`mt-2 block w-full rounded bg-black py-4 text-center text-sm font-semibold text-white lg:row-start-4 ${getColStart(
+          class={`hs-button is-filled is-fullwidth lg:row-start-4 ${getColStart(
             i
           )}`}
           id={`select-opt-${i}`}
-          href={`${base}/memberships/new/${opt.id}`}>Select</a
+          href={`${base}/memberships/new/${opt.id}`}>
+          <span class="hs-button__label">Select</span>
+        </a
         >
       {/each}
     </div>
@@ -182,9 +184,11 @@
             description={membership.description}
           />
           <a
-            class="mt-2 block w-full rounded bg-black py-4 text-center text-sm font-semibold text-white"
+            class="hs-button is-filled is-fullwidth mt-4"
             id={`select-opt-${i}`}
-            href={`${base}/memberships/${membership.id}`}>Select</a
+            href={`${base}/memberships/${membership.id}`}>
+            <span class="hs-button__label">Select</span>
+          </a
           >
           {#if !membership.deprecated}
             <button
@@ -193,7 +197,7 @@
                   membership.payload
                 )}`
               )}
-              class={`mt-2 block w-full rounded bg-dp-blue-grey-400 py-4 text-center text-sm font-semibold text-white lg:row-start-4 ${getColStart(
+              class={`hs-button is-filled is-fullwidth is-error mt-4 lg:row-start-4 ${getColStart(
                 i
               )} ${
                 updatingMembershipsStatus.has(
@@ -206,7 +210,9 @@
               }`}
               id={`delete-opt-${i}`}
               on:click|preventDefault={() => deleteMembership(membership)}
-              >Delete</button
+              >
+              <span class="hs-button__label">Delete</span>
+            </button
             >
           {/if}
           {#if membership.deprecated}

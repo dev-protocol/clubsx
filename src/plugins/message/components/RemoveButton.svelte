@@ -38,7 +38,7 @@
   <button
     type="button"
     on:click|preventDefault={() => remove()}
-    class={`hs-button is-large is-filled bg-danger-300 ${
+    class={`hs-button is-large is-filled is-error ${
       removing ? 'animate-pulse bg-gray-500/60' : ''
     }`}
     disabled={removing}>Remove</button
