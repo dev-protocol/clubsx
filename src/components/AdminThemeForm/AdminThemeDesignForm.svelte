@@ -242,9 +242,6 @@
           >* Recommended image size is 2400 x 1200 px</span
         >
       </label>
-      <span class="mt-1 text-xs opacity-60"
-        >* Recommended image size is 2400 x 1200 px</span
-      >
     </div>
   </div>
 
