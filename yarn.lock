@@ -6978,10 +6978,10 @@ svg-tags@^1.0.0:
   resolved "https://registry.yarnpkg.com/svg-tags/-/svg-tags-1.0.0.tgz#58f71cee3bd519b59d4b2a843b6c7de64ac04764"
   integrity sha512-ovssysQTa+luh7A5Weu3Rta6FJlFBBbInjOh722LIt6klpU2/HtdUbszju/G4devcvk8PGt7FCLv5wftu3THUA==
 
-swiper@9.3.0:
-  version "9.3.0"
-  resolved "https://registry.yarnpkg.com/swiper/-/swiper-9.3.0.tgz#75628713eee7970cb28f252fb49e1ea934b16566"
-  integrity sha512-iELlQVvWLdyfUjQSfhg8UTKBvgfm3uCfv3wJ3f9wbSWP6spzoOTLcob87A8ywPS2FRc552JmrnyL5+LYfN8j9Q==
+swiper@9.3.1:
+  version "9.3.1"
+  resolved "https://registry.yarnpkg.com/swiper/-/swiper-9.3.1.tgz#f2fdd42ae8d73105a72522ee9ec8d09e7a786714"
+  integrity sha512-YBDf0DLBLO7O4rwYHfz+HltkY4sDwKSbRf1it56rngpkYHxiKg0NkPMXAFmw2nGvMNQJwV14Dse47hQIifJzzA==
   dependencies:
     ssr-window "^4.0.2"
 
