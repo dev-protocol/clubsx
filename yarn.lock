@@ -69,12 +69,12 @@
     unist-util-visit "^4.1.0"
     vfile "^5.3.2"
 
-"@astrojs/netlify@2.2.2":
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/@astrojs/netlify/-/netlify-2.2.2.tgz#a2b4c59674330c859a30734c83aa24a355a188a4"
-  integrity sha512-/G7jfG1WK27MxLN0whYCDyaAIw4VE54R7ifC+OSphyIGhc1AwxJh7KqkUbJPYMHhWYsxqQ6zkiG5b7mUJe4gtw==
+"@astrojs/netlify@2.2.3":
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/@astrojs/netlify/-/netlify-2.2.3.tgz#08aaaede143d271ad8ca08a0dfe0d8b9853cf6a8"
+  integrity sha512-CzhyFgXY4rnqFkKnaGp1mtQy0ZhcLWv7r8dFISliqEDmEqg4kL8eDljAQGBU/ednqsTVDgxf4EzkeqpVdqbMkQ==
   dependencies:
-    "@astrojs/webapi" "^2.1.0"
+    "@astrojs/webapi" "^2.1.1"
     "@netlify/functions" "^1.0.0"
     esbuild "^0.15.18"
 
@@ -153,13 +153,6 @@
     "@vitejs/plugin-vue-jsx" "^3.0.0"
     "@vue/babel-plugin-jsx" "^1.1.1"
     "@vue/compiler-sfc" "^3.2.39"
-
-"@astrojs/webapi@^2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@astrojs/webapi/-/webapi-2.1.0.tgz#0cbe21efd278456a4450afe0288c99d680cc2a32"
-  integrity sha512-sbF44s/uU33jAdefzKzXZaENPeXR0sR3ptLs+1xp9xf5zIBhedH2AfaFB5qTEv9q5udUVoKxubZGT3G1nWs6rA==
-  dependencies:
-    undici "5.20.0"
 
 "@astrojs/webapi@^2.1.1":
   version "2.1.1"
@@ -7357,13 +7350,6 @@ underscore@~1.13.2:
   version "1.13.6"
   resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.13.6.tgz#04786a1f589dc6c09f761fc5f45b89e935136441"
   integrity sha512-+A5Sja4HP1M08MaXya7p5LvjuM7K6q/2EaC0+iovj/wOcMsTzMvDFbasi/oSapiwOlt252IqsKqPjCl7huKS0A==
-
-undici@5.20.0:
-  version "5.20.0"
-  resolved "https://registry.yarnpkg.com/undici/-/undici-5.20.0.tgz#6327462f5ce1d3646bcdac99da7317f455bcc263"
-  integrity sha512-J3j60dYzuo6Eevbawwp1sdg16k5Tf768bxYK4TUJRH7cBM4kFCbf3mOnM/0E3vQYXvpxITbbWmBafaDbxLDz3g==
-  dependencies:
-    busboy "^1.6.0"
 
 undici@^5.22.0:
   version "5.22.0"
