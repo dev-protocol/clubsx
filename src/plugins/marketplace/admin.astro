@@ -1,8 +1,9 @@
 ---
-import type { InstallablePlugins } from '@constants/plugins'
+import type { ExternalTool, InstallablePlugins } from '@constants/plugins'
 import { type ClubsPropsAdminPages, decode } from '@devprotocol/clubs-core'
 import BgPeople from './assets/BgPeople.jpg'
 import BgCode from './assets/BgCode.png'
+import SuperFluid from './assets/Superfluid.png'
 
 import Heading from './assets/Heading.jpg'
 import { createGetPluginMeta } from './utils/createGetPluginMeta'
@@ -10,6 +11,7 @@ import PluginsWrapper from './components/PluginsWrapper.astro'
 import Nav from './components/Nav.svelte'
 import { allTags } from '@constants/plugins'
 import BannerPresetFeaturing from './components/BannerPresetFeaturing.astro'
+import ExternalToolWrapper from './components/ExternalToolWrapper.astro'
 
 const { allInstallablePlugins, clubs } = Astro.props as ClubsPropsAdminPages & {
   allInstallablePlugins: InstallablePlugins[]
@@ -19,6 +21,15 @@ const getPluginMeta = createGetPluginMeta(
   decode(clubs.encodedClubsConfiguration)
 )
 const allPlugins = await Promise.all(allInstallablePlugins.map(getPluginMeta))
+
+const externalTools: ExternalTool[] = [
+  {
+    name: 'Superfluid',
+    imageSrc: SuperFluid,
+    description: 'Protocol for streaming money on Ethereum.',
+    url: 'https://superfluid.finance/',
+  },
+]
 ---
 
 <div class="grid pb-24 text-dp-blue-grey-600">
@@ -83,6 +94,8 @@ const allPlugins = await Promise.all(allInstallablePlugins.map(getPluginMeta))
           <PluginsWrapper plugins={allPlugins} tag={tag} title={tag} />
         ))
     }
+
+    {(<ExternalToolWrapper tools={externalTools} />)}
 
     <BannerPresetFeaturing
       class="mt-10"

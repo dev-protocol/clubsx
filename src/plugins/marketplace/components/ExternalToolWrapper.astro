@@ -1,0 +1,26 @@
+---
+import type { ExternalTool } from '@constants/plugins'
+import ExternalToolItem from './ExternalToolItem.astro'
+
+const { tools } = Astro.props as {
+  tools: ExternalTool[]
+}
+---
+
+{
+  tools.length > 0 && (
+    <section id="external-tools" class="pt-10">
+      <p class="mb-10 text-4xl font-bold">External Tools</p>
+      <div
+        class:list={[
+          'grid  items-start justify-start gap-16',
+          'lg:grid-cols-[repeat(auto-fill,_minmax(400px,_1fr))]',
+        ]}
+      >
+        {tools.map((tool) => (
+          <ExternalToolItem tool={tool} />
+        ))}
+      </div>
+    </section>
+  )
+}
