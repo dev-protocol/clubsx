@@ -78,10 +78,10 @@
     "@netlify/functions" "^1.0.0"
     esbuild "^0.15.18"
 
-"@astrojs/prefetch@0.2.1":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@astrojs/prefetch/-/prefetch-0.2.1.tgz#365bb38ce9da06febf78fad1dfc40291281f8885"
-  integrity sha512-kVDhUl0BzN/3D1NJL5ndgKK5Dk/mdSf5LinKrPIVVVND+hrdErkihV53sA3pyffdw488pFvAiFu2+LW/DWhiHA==
+"@astrojs/prefetch@0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@astrojs/prefetch/-/prefetch-0.2.2.tgz#c199d6f696d2e0d2060e6cb757f5883fdb3b0339"
+  integrity sha512-KGXHFYkSAzMPpMZA/r7dNEjPmV5HXlZpa8LkRWf4O/aXmgu8X/Y/D8QXY7lInkk/CnRg4fz1WdoCPtSVUGzkwQ==
   dependencies:
     throttles "^1.0.1"
 
