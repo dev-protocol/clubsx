@@ -885,11 +885,13 @@ export default defineComponent({
             name: opt.name,
             description: opt.description,
             requiredETHAmount: parseUnits(String(opt.price)).toString(),
-            requiredETHFee: opt.fee?.percentage
-              ? parseUnits(
-                  new BigNumber(opt.price).times(opt.fee.percentage).toFixed()
-                ).toString()
-              : 0,
+            // ---- Older code that would allow staking with some non-staking percentage ----
+            // requiredETHFee: opt.fee?.percentage
+            //   ? parseUnits(
+            //       new BigNumber(opt.price).times(opt.fee.percentage).toFixed()
+            //     ).toString()
+            //   : 0,
+            requiredETHFee: 100, // To stop staking.
             gateway: opt.fee?.beneficiary ?? constants.AddressZero,
           })) || []
         const keys: string[] =
