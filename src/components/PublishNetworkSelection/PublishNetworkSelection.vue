@@ -891,7 +891,7 @@ export default defineComponent({
             //       new BigNumber(opt.price).times(opt.fee.percentage).toFixed()
             //     ).toString()
             //   : 0,
-            requiredETHFee: 100, // To stop staking.
+            requiredETHFee: 100, // To stop staking .
             gateway: opt.fee?.beneficiary ?? constants.AddressZero,
           })) || []
         const keys: string[] =
