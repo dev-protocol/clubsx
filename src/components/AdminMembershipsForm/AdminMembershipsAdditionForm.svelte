@@ -35,6 +35,18 @@
   export let clubName: string | undefined = undefined
   const metaOfPayload = utils.keccak256(membership.payload)
 
+  // To stop staking.
+  // 1. This will modify the current edit membership.
+  membership = {
+    ...membership,
+    fee: {
+      percentage: 1,
+      beneficiary: membership.fee
+        ? membership.fee.beneficiary
+        : ethers.constants.AddressZero,
+    },
+  }
+
   let updatingMembershipsStatus: boolean = false
 
   let noOfPositions: number = 0
