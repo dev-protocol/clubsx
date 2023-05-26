@@ -3,24 +3,13 @@
   import MembershipOptionCard from './MembershipOption.svelte'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import type { Membership } from '@plugins/memberships/index'
-  import { whenDefined, whenDefinedAll } from '@devprotocol/util-ts'
-  import type { UndefinedOr } from '@devprotocol/util-ts'
   import { ethers, providers, utils } from 'ethers'
-  import {
-    positionsCreateWithEth,
-    estimationsAPY,
-  } from '@devprotocol/dev-kit/agent'
-  import { usdByDev } from '@fixtures/coingecko/api'
   import { onMount } from 'svelte'
   import BigNumber from 'bignumber.js'
   import { clientsSTokens } from '@devprotocol/dev-kit'
   import { keccak256 } from 'ethers/lib/utils'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
-  import {
-    buildConfig,
-    controlModal,
-    onMountClient,
-  } from '@devprotocol/clubs-core/events'
+  import { buildConfig, controlModal } from '@devprotocol/clubs-core/events'
   import { callSimpleCollections } from '@plugins/memberships/utils/simpleCollections'
   import type { Image } from '@plugins/memberships/utils/types/setImageArg'
 
@@ -41,25 +30,10 @@
 
   let invalidPriceMsg: string = ''
 
-  let estimatedEarnings: {
-    dev?: [number, number]
-    usd?: [number, number]
-  } = {
-    dev: undefined,
-    usd: undefined,
-  }
-  let usersDeposit: {
-    dev?: [number, number]
-    usd?: [number, number]
-  } = {
-    dev: undefined,
-    usd: undefined,
-  }
   const originalId = membership.id
   const provider = new providers.JsonRpcProvider(rpcUrl)
   let membershipExists = false
   let loading = false
-  let subscriptionStreamingLoading = true
 
   let connection: typeof Connection
   let signer: ethers.Signer | undefined
@@ -211,16 +185,7 @@
     membership.id = id
   }
 
-  const toDp2 = (v: number | string) =>
-    new BigNumber(v).dp(2).toNumber().toLocaleString('en-US', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 3,
-      useGrouping: false,
-    })
-
   const onChangePrice = async () => {
-    subscriptionStreamingLoading = true
-
     const value = membership.price
 
     if (value < minPrice) {
@@ -236,63 +201,8 @@
     }
 
     if (membership.price === 0 || !membership.price) {
-      estimatedEarnings = { dev: [0, 0], usd: [0, 0] }
-      usersDeposit = { dev: [0, 0], usd: [0, 0] }
-      subscriptionStreamingLoading = false
       return
     }
-
-    estimatedEarnings = { dev: [0, 0], usd: [0, 0] }
-    usersDeposit = { dev: [0, 0], usd: [0, 0] }
-
-    /**
-     * devApy: $DEV APY for creator
-     * staking: Estimation for $DEV staking
-     */
-    const [[, devApy], staking] = await Promise.all([
-      estimationsAPY({ provider }),
-      positionsCreateWithEth({
-        provider,
-        ethAmount:
-          utils.parseEther(membership.price?.toString() || '0')?.toString() ||
-          '0',
-        destination: '',
-        gatewayBasisPoints: new BigNumber(10000)
-          .times(membership.fee?.percentage ?? 0)
-          .toNumber(),
-      }),
-    ])
-    const stakedDev = utils.formatUnits(staking.estimatedDev).toString()
-    const estimatedEarningsDev = whenDefinedAll(
-      [devApy, stakedDev],
-      ([apy, stake]) => new BigNumber(stake).times(apy).toNumber()
-    )
-    const [estimatedEarningsUsd, usersDepositUsd] = await Promise.all([
-      whenDefined(estimatedEarningsDev, usdByDev),
-      whenDefined(stakedDev, (stake) => usdByDev(Number(stake))),
-    ])
-    estimatedEarnings = {
-      dev: whenDefined(
-        estimatedEarningsDev,
-        (v) => toDp2(v).toString().split('.').map(Number) as [number, number]
-      ),
-      usd: whenDefined(
-        estimatedEarningsUsd,
-        (v) => toDp2(v).toString().split('.').map(Number) as [number, number]
-      ),
-    }
-    usersDeposit = {
-      dev: whenDefined(
-        stakedDev,
-        (v) => toDp2(v).toString().split('.').map(Number) as [number, number]
-      ),
-      usd: whenDefined(
-        usersDepositUsd,
-        (v) => toDp2(v).toString().split('.').map(Number) as [number, number]
-      ),
-    }
-
-    subscriptionStreamingLoading = false
   }
 
   const cancel = () => {
@@ -312,8 +222,6 @@
 
   const fetchPositionsOfProperty = async () => {
     loading = true
-    // const modalProvider = GetModalProvider()
-    // const { provider } = await ReConnectWallet(modalProvider)
 
     if (!provider || !propertyAddress) {
       loading = false
@@ -525,48 +433,6 @@
             <p class="text-danger-300">* {invalidPriceMsg}</p>
           {/if}
         </label>
-
-        <!-- Subscription Streaming -->
-        <div class="rounded-lg border-[3px] border-blue-500 px-4 py-6">
-          <h3 class="mb-8 font-title font-bold">Subscription Streaming</h3>
-
-          <div class="grid gap-2">
-            <p class="text-sm">Estimated Earnings/year (per 1 membership):</p>
-            {#if !estimatedEarnings.usd || !estimatedEarnings.dev || subscriptionStreamingLoading}
-              <p
-                class="h-[2rem] w-full animate-pulse cursor-progress rounded bg-gray-500/60"
-              />
-            {:else}
-              <p>
-                <span class="font-bold">{estimatedEarnings.usd[0]}</span>.<span
-                  class="text-sm">{estimatedEarnings.usd[1]}</span
-                >
-                USD
-                <span class="font-bold">{estimatedEarnings.dev[0]}</span>.<span
-                  class="text-sm">{estimatedEarnings.dev[1]}</span
-                >
-                DEV
-              </p>
-            {/if}
-            <p class="text-sm">User will earn (when unsubscribed):</p>
-            {#if !usersDeposit.usd || !usersDeposit.dev || subscriptionStreamingLoading}
-              <p
-                class="h-[2rem] w-full animate-pulse cursor-progress rounded bg-gray-500/60"
-              />
-            {:else}
-              <p>
-                <span class="font-bold">{usersDeposit.usd[0]}</span>.<span
-                  class="text-sm">{usersDeposit.usd[1]}</span
-                >
-                USD
-                <span class="font-bold">{usersDeposit.dev[0]}</span>.<span
-                  class="text-sm">{usersDeposit.dev[1]}</span
-                >
-                DEV
-              </p>
-            {/if}
-          </div>
-        </div>
       </div>
 
       <!-- Preview -->
