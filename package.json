@@ -39,7 +39,7 @@
     "prettier-plugin-astro": "0.9.1",
     "prettier-plugin-svelte": "2.10.1",
     "prettier-plugin-tailwindcss": "0.3.0",
-    "type-fest": "3.11.0",
+    "type-fest": "3.11.1",
     "typescript": "5.0.4"
   },
   "dependencies": {
