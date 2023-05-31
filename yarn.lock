@@ -145,10 +145,10 @@
     set-cookie-parser "^2.5.1"
     web-vitals "^3.1.1"
 
-"@astrojs/vue@2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@astrojs/vue/-/vue-2.2.0.tgz#b8e73254889b6ae712ddb10ba7a3d68d1813a231"
-  integrity sha512-C0i5EzX4++JQ6o550JpmQ35KAhuL3PaVBnEDZMiy2EEvRcImEw17ErmMm8/+B+JKPofMcSwSPIONPJs+HxBL5w==
+"@astrojs/vue@2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@astrojs/vue/-/vue-2.2.1.tgz#f05a8eeba0e94a66fb28ab4ea2b6178b202166ca"
+  integrity sha512-fq+RKFAKpIRcobF/803kMJWv/lobf9IIk6K5As5fWE/eYTpykkgHtxd+zDnf7d4I2V7K9XLKV06Oi6Q+oTJmDw==
   dependencies:
     "@vitejs/plugin-vue" "^4.0.0"
     "@vitejs/plugin-vue-jsx" "^3.0.0"
