@@ -11,13 +11,13 @@
       <p class="text-base">How do I create a wallet?</p>
     </section>
     <button
-      v-bind:class="buttonClasses"
+      class="hs-button is-large is-filled"
       @click="connect"
       :disabled="connected || !connection"
     >
-      <p class="font-DMSans text-base font-bold text-[#FFFFFF]">
+      <span class="hs-button__label">
         {{ buttonText }}
-      </p>
+      </span>
     </button>
   </section>
 </template>
