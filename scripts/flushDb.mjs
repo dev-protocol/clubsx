@@ -17,7 +17,6 @@ const flushDb = async () => {
     console.log('DB Flushed')
     await client.quit()
     console.log('Closed the DB connection')
-    return
   } catch (error) {
     console.error('error flushing db: ', error)
   }
