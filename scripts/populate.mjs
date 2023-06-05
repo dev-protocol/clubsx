@@ -203,6 +203,24 @@ const kougenjiProducts = [
   },
 ]
 
+const ccbProducts = [
+  {
+    id: 'visitor',
+    name: 'Visitor',
+    description: `Xxx...`,
+    price: 0.01,
+    currency: 'ETH',
+    imageSrc:
+      'https://bafybeifmshinu5cjv5gddsburhwmwaut2awoxkl4bsmhzqwxsl7pgx5bbi.ipfs.nftstorage.link/',
+    imageAlt: 'lorem ipsum',
+    payload: toBytes32('visitor'),
+    fee: {
+      percentage: 0.95,
+      beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
+    },
+  },
+]
+
 const tiers = [
   {
     title: 'Tier 3',
@@ -751,6 +769,150 @@ const populate = async () => {
             name: 'message',
             enable: true,
             options: [],
+          },
+        ],
+      })
+    )
+
+    await client.set(
+      'ccb',
+      encode({
+        name: 'CCB',
+        twitterHandle: '@',
+        description: '',
+        url: 'https://ccb.clubs.place',
+        propertyAddress: '0x23d67953FE2e61e9fAc78447526D9358cD05d40d',
+        chainId: 137,
+        rpcUrl:
+          'https://polygon-mainnet.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920',
+        adminRolePoints: 0,
+        options: [
+          {
+            key: 'ogp',
+            value: { image: 'https://i.imgur.com/I6Yr0V7.jpg' },
+          },
+          {
+            key: 'navigationLinks',
+            value: [
+              {
+                display: 'ETH',
+                path: '/nft',
+              },
+            ],
+          },
+          {
+            key: 'footerLinks',
+            value: [
+              {
+                display: 'About',
+                path: 'https://example.com',
+              },
+            ],
+          },
+          {
+            key: 'avatarImgSrc',
+            value: 'https://i.imgur.com/453nyAX.jpg',
+          },
+        ],
+        plugins: [
+          {
+            id: 'devprotocol:clubs:plugin:fiat',
+            enable: true,
+            options: [
+              {
+                key: 'stripeAccountId',
+                value: '{{CONNECTED_ACCOUNT_ID}}',
+              },
+              {
+                key: 'products',
+                value: ccbProducts,
+              },
+              {
+                key: 'priceOverrides',
+                value: [
+                  {
+                    id: ccbProducts[0].id,
+                    price: 2_000,
+                    currency: 'JPY',
+                    stripePriceId: '{{PRICE_ID}}',
+                  },
+                ],
+              },
+              {
+                key: 'hero',
+                value: {
+                  coverImgSrc: 'https://i.imgur.com/I6Yr0V7.jpg',
+                  title: 'CCB',
+                  description: [`Xxx...`],
+                },
+              },
+              {
+                key: 'title',
+                value: undefined,
+              },
+              {
+                key: 'slug',
+                value: [],
+              },
+            ],
+          },
+          {
+            id: 'devprotocol:clubs:theme-1',
+            enable: true,
+            options: [
+              {
+                key: 'globalConfig',
+                value: {
+                  bg: 'rgba(29, 36, 38, 1)',
+                },
+              },
+              {
+                key: 'homeConfig',
+                value: {
+                  hero: {
+                    image: 'https://i.imgur.com/I6Yr0V7.jpg',
+                  },
+                  description: `The funds raised for Kougenji will be used to restore the celestial maiden paper picture frame on the decorative transom and other cultural assets within the temple. Supporters are allowed to join Kougenji's Discord channel for the latest news and updates about the restoration (photos, etc.). We also plan to provide a variety of perks according to the types of NFT you'll purchase.`,
+                },
+              },
+            ],
+          },
+          {
+            id: 'devprotocol:clubs:plugin:me',
+            enable: true,
+            options: [],
+          },
+          {
+            id: 'devprotocol:clubs:plugin:buy',
+            enable: true,
+            options: [
+              {
+                key: 'products',
+                value: ccbProducts,
+              },
+            ],
+          },
+          {
+            id: 'devprotocol:clubs:plugin:nft',
+            enable: true,
+            options: [
+              {
+                key: 'products',
+                value: ccbProducts,
+              },
+              {
+                key: 'coverImgSrc',
+                value: 'https://i.imgur.com/I6Yr0V7.jpg',
+              },
+              {
+                key: 'title',
+                value: 'CCB',
+              },
+              {
+                key: 'description',
+                value: [`Xxx...`],
+              },
+            ],
           },
         ],
       })
