@@ -74,12 +74,13 @@
     unist-util-visit "^4.1.0"
     vfile "^5.3.2"
 
-"@astrojs/netlify@2.2.3":
-  version "2.2.3"
-  resolved "https://registry.yarnpkg.com/@astrojs/netlify/-/netlify-2.2.3.tgz#08aaaede143d271ad8ca08a0dfe0d8b9853cf6a8"
-  integrity sha512-CzhyFgXY4rnqFkKnaGp1mtQy0ZhcLWv7r8dFISliqEDmEqg4kL8eDljAQGBU/ednqsTVDgxf4EzkeqpVdqbMkQ==
+"@astrojs/netlify@2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/netlify/-/netlify-2.3.0.tgz#e88b77cb8b8264f35c2fa75459da26cf553977b9"
+  integrity sha512-gd9Ij4IYKnzbtwdQntknorWI/2oWSlfYnS7WoFUetLgYZzWsPw9WYa3dIiL1YofQcNSByik/1Asf6uZofG+xHA==
   dependencies:
-    "@astrojs/webapi" "^2.1.1"
+    "@astrojs/underscore-redirects" "^0.1.0"
+    "@astrojs/webapi" "^2.2.0"
     "@netlify/functions" "^1.0.0"
     esbuild "^0.15.18"
 
@@ -137,6 +138,11 @@
     undici "^5.22.0"
     which-pm-runs "^1.1.0"
 
+"@astrojs/underscore-redirects@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/underscore-redirects/-/underscore-redirects-0.1.0.tgz#57eb6c3cef511eec97af94f1d76c301413a4ac5c"
+  integrity sha512-ZVBhD1Tj+gIY3sPu80UCrtbU8qLf6CevlRC6xeuGK8s09YpLzRkwmkxu+T1qVyv63hsW/ObTqu03RBoLuFBq2A==
+
 "@astrojs/vercel@3.4.1":
   version "3.4.1"
   resolved "https://registry.yarnpkg.com/@astrojs/vercel/-/vercel-3.4.1.tgz#95a74c2bfc77feecd9e1e88c1cc3d2a07693188f"
@@ -159,13 +165,6 @@
     "@vitejs/plugin-vue-jsx" "^3.0.0"
     "@vue/babel-plugin-jsx" "^1.1.1"
     "@vue/compiler-sfc" "^3.2.39"
-
-"@astrojs/webapi@^2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@astrojs/webapi/-/webapi-2.1.1.tgz#965bcc35a72ca40e60e1ed4c2e4350f215bee179"
-  integrity sha512-mHZ7VgPNMeV3TYIw3SGHTKaJosBxA8bTzZ3QhNw509qvCJca4Lkjes8JywimuwTn+TMjEiv7ksNfwRluad3jqA==
-  dependencies:
-    undici "^5.22.0"
 
 "@astrojs/webapi@^2.2.0":
   version "2.2.0"
