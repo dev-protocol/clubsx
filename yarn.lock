@@ -607,14 +607,14 @@
     svelte "^3.49.0"
     vue "^3.2.0"
 
-"@devprotocol/clubs-core@0.44.0":
-  version "0.44.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.44.0.tgz#a4fe6e089b9f5da9de8ff99bc30936cf2faeacd2"
-  integrity sha512-En4Dos0M4MA/iedr4Zd1ZG63UzLQ6EVORUzW/cTzVjxO7RTq45McKtPmOJia2lhw6f2rixmcnBsLUdiciKULWA==
+"@devprotocol/clubs-core@0.45.2":
+  version "0.45.2"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-0.45.2.tgz#4215d15cbcd3a53c644681136129bcd2689adeb5"
+  integrity sha512-9stlAc4mpYFsB/mrqOIJnPRQkrrk7k93rDjOecT0w1numjwQ487cB4IuCbu8BRjIICTIr63KDfpuY8ojGI+j1A==
   dependencies:
     "@devprotocol/dev-kit" "7.3.4"
     "@devprotocol/elements" "0.2.2"
-    "@devprotocol/hashi" "1.8.0"
+    "@devprotocol/hashi" "2.1.0"
     "@devprotocol/util-ts" "3.0.0"
     "@metamask/detect-provider" "^2.0.0"
     ethers "^5.7.0"
@@ -622,7 +622,7 @@
     lit "^2.3.1"
     ramda "^0.29.0"
     web3modal "^1.9.9"
-    yaml "2.2.1"
+    yaml "2.3.1"
   optionalDependencies:
     react "^18.0.0"
     react-dom "^18.0.0"
@@ -668,6 +668,13 @@
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/@devprotocol/hashi/-/hashi-1.8.0.tgz#5a00703c92fb6aec5e4f878130107649eded28b2"
   integrity sha512-2CT9Bn+J43/xJ9ueYfQOrFgZWZJCLRrGUibEMFFIai8TaQxuGSE7pCeiPvMFt8QIpUjObrhuwl7FF+MDDKwB9g==
+  dependencies:
+    "@matteusan/sentro" "0.1.25"
+
+"@devprotocol/hashi@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@devprotocol/hashi/-/hashi-2.1.0.tgz#b0e14f973b16affb84bc842eef4194c1eba805bd"
+  integrity sha512-fsjgc4QMozhj8m8TMlvGMnyIJOF4f7Px4sPPTJshQL3A7OGdJ38M6K5BPJ6NUql0qARrcl9T+9ADxkOytEAKFg==
   dependencies:
     "@matteusan/sentro" "0.1.25"
 
@@ -8085,6 +8092,11 @@ yaml@2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.2.1.tgz#3014bf0482dcd15147aa8e56109ce8632cd60ce4"
   integrity sha512-e0WHiYql7+9wr4cWMx3TVQrNwejKaEe7/rHNmQmqRjazfOP5W8PB6Jpebb5o6fIapbz9o9+2ipcaTM2ZwDI6lw==
+
+yaml@2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.3.1.tgz#02fe0975d23cd441242aa7204e09fc28ac2ac33b"
+  integrity sha512-2eHWfjaoXgTBC2jNM1LRef62VQa0umtvRiDSk6HSzW7RvS5YtkabJrwYLLEKWBc8a5U2PTSCs+dJjUTJdlHsWQ==
 
 yaml@^2.1.1:
   version "2.2.2"
