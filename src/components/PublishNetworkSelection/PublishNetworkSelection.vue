@@ -30,7 +30,7 @@
               ? ''
               : networkSelected === 'polygon'
               ? 'opacity-50'
-              : 'opacity-20'
+              : ''
           "
           :disabled="
             !connected ||
@@ -44,12 +44,12 @@
             clubPublished
           "
         >
-          <p class="font-DMSans text-center text-base font-bold text-[#FFFFFF]">
+          <span class="hs-button__label">
             Polygon
-          </p>
-          <p class="font-DMSans text-center text-xs font-medium text-[#FFFFFF]">
+          </span>
+          <span class="text-center text-xs">
             Recommended
-          </p>
+          </span>
         </button>
         <button
           @click="changeNetwork('arbitrum')"
@@ -61,7 +61,7 @@
               ? ''
               : networkSelected === 'arbitrum'
               ? 'opacity-50'
-              : 'opacity-20'
+              : ''
           "
           title="Currently, Clubs is not supporting this chain"
           :disabled="
@@ -77,7 +77,7 @@
             clubPublished
           "
         >
-          <p class="font-DMSans text-center text-xs text-[#FFFFFF]">Arbitrum</p>
+          <span class="hs-button__label">Arbitrum</span>
         </button>
         <button
           @click="changeNetwork('ethereum')"
@@ -89,7 +89,7 @@
               ? ''
               : networkSelected === 'ethereum'
               ? 'opacity-50'
-              : 'opacity-20'
+              : ''
           "
           title="Currently, Clubs is not supporting this chain"
           :disabled="
@@ -105,7 +105,7 @@
             clubPublished
           "
         >
-          <p class="font-DMSans text-center text-xs text-[#FFFFFF]">Ethereum</p>
+          <span class="hs-button__label">Ethereum</span>
         </button>
       </section>
       <div v-if="showTestnets" class="mt-4">
@@ -119,7 +119,7 @@
               ? ''
               : networkSelected === 'polygon-mumbai'
               ? 'opacity-50'
-              : 'opacity-20'
+              : ''
           "
           :disabled="
             !connected ||
@@ -133,9 +133,9 @@
             clubPublished
           "
         >
-          <p class="font-DMSans text-center text-xs text-[#FFFFFF]">
+          <span class="hs-button__label">
             Polygon Mumbai
-          </p>
+          </span>
         </button>
       </div>
     </div>
@@ -297,9 +297,9 @@
           clubPublished
         "
       >
-        <p class="font-DMSans text-center text-base font-bold text-[#FFFFFF]">
+        <span class="hs-button__label">
           {{ step3InterStepButtonText }}
-        </p>
+        </span>
       </button>
       <p class="font-DMSans text-base font-normal text-white">
         {{ step3InterStepSubInfo }}

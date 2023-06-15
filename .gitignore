@@ -26,3 +26,5 @@ yarn-error.log*
 
 # use yarn
 package-lock.json
+.yarn
+.yarnrc.yml

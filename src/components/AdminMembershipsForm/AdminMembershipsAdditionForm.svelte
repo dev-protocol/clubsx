@@ -369,9 +369,9 @@
         <!-- Image -->
         <div class="hs-form-field">
           <span class="hs-form-field__label">Image</span>
-          <label
-            class="hs-button is-filled w-fit cursor-pointer rounded-lg bg-[#040B10] px-12 py-4"
-            >Upload to change image
+
+          <label class="hs-button is-filled w-fit cursor-pointer rounded-lg px-12 py-4">
+            <span class="hs-button__label">Upload to change image</span>
             <input
               id="avatarPath"
               name="avatarPath"
@@ -382,34 +382,34 @@
               disabled={membershipExists}
             />
           </label>
-          <p class="text-xs opacity-60">
-            * JPEG, PNG, GIF, TIFF and animated PNG
-          </p>
-
-          <span class="mt-1 text-xs opacity-60"
-            >* Recommended image size is 600 x 600 px</span
-          >
+          <p class="hs-form-field__helper mt-2">* JPEG, PNG, GIF, TIFF and animated PNG</p>
+          <span class="hs-form-field__helper">* Recommended image size is 600 x 600 px</span>
 
           <p>
             <a
               href="https://docs.google.com/presentation/d/1bbQhOktQoaA5ynQB1RgvOc4eMWlMHFDliw1DmS35w8Y/edit?usp=sharing"
               target="_blank"
-              class="hs-button is-filled mt-8 w-fit border-0 bg-dp-blue-grey-400"
+              class="hs-button is-filled mt-8 w-fit is-small"
               rel="noopener noreferrer"
-              >Use Google Slides template <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="ml-2 h-5 w-5"
               >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M9 13.5l3 3m0 0l3-3m-3 3v-6m1.06-4.19l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z"
-                />
-              </svg>
+              <span class="hs-button__icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M9 13.5l3 3m0 0l3-3m-3 3v-6m1.06-4.19l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z"
+                  />
+                </svg>
+              </span>
+              <span class="hs-button__label">
+                Use Google Slides template
+              </span>
             </a>
           </p>
         </div>
@@ -452,63 +452,73 @@
     </div>
 
     <!-- Description -->
-    <label class="hs-form-field is-filled is-requred">
+    <label class="hs-form-field is-filled is-required">
       <span class="hs-form-field__label"> Description </span>
       <textarea
         class="hs-form-field__input"
         bind:value={membership.description}
         id="membership-description"
         name="membership-description"
-        disabled={membershipExists}
-      />
-      <p class="mb-6 text-sm">
+        disabled={membershipExists}></textarea>
+      <span class="hs-form-field__helper">
         Markdown is available <a
           href="https://www.markdownguide.org/basic-syntax"
           target="_blank"
-          class="text-sm underline"
+          class="underline [font-size:inherit]"
           rel="noopener noreferrer">(What is Markdown? ↗)</a
         >
-      </p>
-      <p>
-        <a
-          href="https://openai.com/"
-          target="_blank"
-          class="hs-button is-filled w-fit border-0 bg-dp-blue-grey-400 text-sm"
-          rel="noopener noreferrer"
-          >Try asking AI about "membership ideas for gaming community"</a
-        >
-      </p>
+      </span>
     </label>
+    <a
+      href="https://openai.com/"
+      target="_blank"
+      class="hs-button is-filled w-fit is-small"
+      rel="noopener noreferrer"
+    >
+          <span class="hs-button__label">
+            Need help? Try asking an AI
+          </span>
+    </a
+    >
 
     <!-- Display payload as string -->
     <label class="hs-form-field">
       <span class="hs-form-field__label"> Payload </span>
-      <input class="bg-transparent text-sm" value={metaOfPayload} disabled />
+      <input class="hs-form-field__input" value={metaOfPayload} readonly />
     </label>
 
     <div class="flex w-full justify-end gap-[20px]">
       {#if mode === 'edit' && !membership.deprecated}
         <button
-          class={`hs-button is-filled w-fit bg-dp-blue-grey-400 ${
+          class={`hs-button is-filled is-error w-fit ${
             updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
           }`}
           type="button"
           on:click|preventDefault={() => deleteMembership(membership)}
-          >Delete</button
+          >
+          <span class="hs-button__label">
+            Delete
+          </span>
+        </button
         >
       {/if}
       {#if mode === 'edit' && membership.deprecated}
         <button
-          class={`hs-button is-filled w-fit bg-dp-blue-grey-400 ${
+          class={`hs-button is-filled w-fit ${
             updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
           }`}
           type="button"
-          on:click|preventDefault={() => activateMembership(membership)}
-          >Activate</button
+          on:click|preventDefault={() => activateMembership(membership)}>
+          <span class="hs-button__label">
+            Activate
+          </span>
+        </button
         >
       {/if}
-      <button type="button" on:click|preventDefault={() => cancel()}
-        >Cancel</button
+      <button class="hs-button is-outlined is-error" type="button" on:click|preventDefault={() => cancel()}
+        >
+        <span class="hs-button__label">Cancel</span>
+      </button
       >
     </div>
   </form>
