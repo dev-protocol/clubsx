@@ -14,6 +14,7 @@ export default {
   name: 'AlmostThere',
   components: { HSButton },
   props: {
+    namePreset: String,
     containerId: {
       type: String,
       required: true,
@@ -43,6 +44,10 @@ export default {
   },
   mounted() {
     renderSpotlight({ containerId: this.containerId })
+    if (this.namePreset) {
+      this.daoName = this.namePreset
+      this.verifySiteName()
+    }
   },
   computed: {
     network() {
