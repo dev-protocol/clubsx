@@ -3,24 +3,13 @@
   import MembershipOptionCard from './MembershipOption.svelte'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import type { Membership } from '@plugins/memberships/index'
-  import { whenDefined, whenDefinedAll } from '@devprotocol/util-ts'
-  import type { UndefinedOr } from '@devprotocol/util-ts'
   import { ethers, providers, utils } from 'ethers'
-  import {
-    positionsCreateWithEth,
-    estimationsAPY,
-  } from '@devprotocol/dev-kit/agent'
-  import { usdByDev } from '@fixtures/coingecko/api'
   import { onMount } from 'svelte'
   import BigNumber from 'bignumber.js'
   import { clientsSTokens } from '@devprotocol/dev-kit'
   import { keccak256 } from 'ethers/lib/utils'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
-  import {
-    buildConfig,
-    controlModal,
-    onMountClient,
-  } from '@devprotocol/clubs-core/events'
+  import { buildConfig, controlModal } from '@devprotocol/clubs-core/events'
   import { callSimpleCollections } from '@plugins/memberships/utils/simpleCollections'
   import type { Image } from '@plugins/memberships/utils/types/setImageArg'
 
@@ -41,25 +30,10 @@
 
   let invalidPriceMsg: string = ''
 
-  let estimatedEarnings: {
-    dev?: [number, number]
-    usd?: [number, number]
-  } = {
-    dev: undefined,
-    usd: undefined,
-  }
-  let usersDeposit: {
-    dev?: [number, number]
-    usd?: [number, number]
-  } = {
-    dev: undefined,
-    usd: undefined,
-  }
   const originalId = membership.id
   const provider = new providers.JsonRpcProvider(rpcUrl)
   let membershipExists = false
   let loading = false
-  let subscriptionStreamingLoading = true
 
   let connection: typeof Connection
   let signer: ethers.Signer | undefined
@@ -211,16 +185,7 @@
     membership.id = id
   }
 
-  const toDp2 = (v: number | string) =>
-    new BigNumber(v).dp(2).toNumber().toLocaleString('en-US', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 3,
-      useGrouping: false,
-    })
-
   const onChangePrice = async () => {
-    subscriptionStreamingLoading = true
-
     const value = membership.price
 
     if (value < minPrice) {
@@ -236,63 +201,8 @@
     }
 
     if (membership.price === 0 || !membership.price) {
-      estimatedEarnings = { dev: [0, 0], usd: [0, 0] }
-      usersDeposit = { dev: [0, 0], usd: [0, 0] }
-      subscriptionStreamingLoading = false
       return
     }
-
-    estimatedEarnings = { dev: [0, 0], usd: [0, 0] }
-    usersDeposit = { dev: [0, 0], usd: [0, 0] }
-
-    /**
-     * devApy: $DEV APY for creator
-     * staking: Estimation for $DEV staking
-     */
-    const [[, devApy], staking] = await Promise.all([
-      estimationsAPY({ provider }),
-      positionsCreateWithEth({
-        provider,
-        ethAmount:
-          utils.parseEther(membership.price?.toString() || '0')?.toString() ||
-          '0',
-        destination: '',
-        gatewayBasisPoints: new BigNumber(10000)
-          .times(membership.fee?.percentage ?? 0)
-          .toNumber(),
-      }),
-    ])
-    const stakedDev = utils.formatUnits(staking.estimatedDev).toString()
-    const estimatedEarningsDev = whenDefinedAll(
-      [devApy, stakedDev],
-      ([apy, stake]) => new BigNumber(stake).times(apy).toNumber()
-    )
-    const [estimatedEarningsUsd, usersDepositUsd] = await Promise.all([
-      whenDefined(estimatedEarningsDev, usdByDev),
-      whenDefined(stakedDev, (stake) => usdByDev(Number(stake))),
-    ])
-    estimatedEarnings = {
-      dev: whenDefined(
-        estimatedEarningsDev,
-        (v) => toDp2(v).toString().split('.').map(Number) as [number, number]
-      ),
-      usd: whenDefined(
-        estimatedEarningsUsd,
-        (v) => toDp2(v).toString().split('.').map(Number) as [number, number]
-      ),
-    }
-    usersDeposit = {
-      dev: whenDefined(
-        stakedDev,
-        (v) => toDp2(v).toString().split('.').map(Number) as [number, number]
-      ),
-      usd: whenDefined(
-        usersDepositUsd,
-        (v) => toDp2(v).toString().split('.').map(Number) as [number, number]
-      ),
-    }
-
-    subscriptionStreamingLoading = false
   }
 
   const cancel = () => {
@@ -312,8 +222,6 @@
 
   const fetchPositionsOfProperty = async () => {
     loading = true
-    // const modalProvider = GetModalProvider()
-    // const { provider } = await ReConnectWallet(modalProvider)
 
     if (!provider || !propertyAddress) {
       loading = false
@@ -461,9 +369,9 @@
         <!-- Image -->
         <div class="hs-form-field">
           <span class="hs-form-field__label">Image</span>
-          <label
-            class="hs-button is-filled w-fit cursor-pointer rounded-lg bg-[#040B10] px-12 py-4"
-            >Upload to change image
+
+          <label class="hs-button is-filled w-fit cursor-pointer rounded-lg px-12 py-4">
+            <span class="hs-button__label">Upload to change image</span>
             <input
               id="avatarPath"
               name="avatarPath"
@@ -474,34 +382,34 @@
               disabled={membershipExists}
             />
           </label>
-          <p class="text-xs opacity-60">
-            * JPEG, PNG, GIF, TIFF and animated PNG
-          </p>
-
-          <span class="mt-1 text-xs opacity-60"
-            >* Recommended image size is 600 x 600 px</span
-          >
+          <p class="hs-form-field__helper mt-2">* JPEG, PNG, GIF, TIFF and animated PNG</p>
+          <span class="hs-form-field__helper">* Recommended image size is 600 x 600 px</span>
 
           <p>
             <a
               href="https://docs.google.com/presentation/d/1bbQhOktQoaA5ynQB1RgvOc4eMWlMHFDliw1DmS35w8Y/edit?usp=sharing"
               target="_blank"
-              class="hs-button is-filled mt-8 w-fit border-0 bg-dp-blue-grey-400"
+              class="hs-button is-filled mt-8 w-fit is-small"
               rel="noopener noreferrer"
-              >Use Google Slides template <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="ml-2 h-5 w-5"
               >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M9 13.5l3 3m0 0l3-3m-3 3v-6m1.06-4.19l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z"
-                />
-              </svg>
+              <span class="hs-button__icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M9 13.5l3 3m0 0l3-3m-3 3v-6m1.06-4.19l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z"
+                  />
+                </svg>
+              </span>
+              <span class="hs-button__label">
+                Use Google Slides template
+              </span>
             </a>
           </p>
         </div>
@@ -525,48 +433,6 @@
             <p class="text-danger-300">* {invalidPriceMsg}</p>
           {/if}
         </label>
-
-        <!-- Subscription Streaming -->
-        <div class="rounded-lg border-[3px] border-blue-500 px-4 py-6">
-          <h3 class="mb-8 font-title font-bold">Subscription Streaming</h3>
-
-          <div class="grid gap-2">
-            <p class="text-sm">Estimated Earnings/year (per 1 membership):</p>
-            {#if !estimatedEarnings.usd || !estimatedEarnings.dev || subscriptionStreamingLoading}
-              <p
-                class="h-[2rem] w-full animate-pulse cursor-progress rounded bg-gray-500/60"
-              />
-            {:else}
-              <p>
-                <span class="font-bold">{estimatedEarnings.usd[0]}</span>.<span
-                  class="text-sm">{estimatedEarnings.usd[1]}</span
-                >
-                USD
-                <span class="font-bold">{estimatedEarnings.dev[0]}</span>.<span
-                  class="text-sm">{estimatedEarnings.dev[1]}</span
-                >
-                DEV
-              </p>
-            {/if}
-            <p class="text-sm">User will earn (when unsubscribed):</p>
-            {#if !usersDeposit.usd || !usersDeposit.dev || subscriptionStreamingLoading}
-              <p
-                class="h-[2rem] w-full animate-pulse cursor-progress rounded bg-gray-500/60"
-              />
-            {:else}
-              <p>
-                <span class="font-bold">{usersDeposit.usd[0]}</span>.<span
-                  class="text-sm">{usersDeposit.usd[1]}</span
-                >
-                USD
-                <span class="font-bold">{usersDeposit.dev[0]}</span>.<span
-                  class="text-sm">{usersDeposit.dev[1]}</span
-                >
-                DEV
-              </p>
-            {/if}
-          </div>
-        </div>
       </div>
 
       <!-- Preview -->
@@ -586,63 +452,73 @@
     </div>
 
     <!-- Description -->
-    <label class="hs-form-field is-filled is-requred">
+    <label class="hs-form-field is-filled is-required">
       <span class="hs-form-field__label"> Description </span>
       <textarea
         class="hs-form-field__input"
         bind:value={membership.description}
         id="membership-description"
         name="membership-description"
-        disabled={membershipExists}
-      />
-      <p class="mb-6 text-sm">
+        disabled={membershipExists}></textarea>
+      <span class="hs-form-field__helper">
         Markdown is available <a
           href="https://www.markdownguide.org/basic-syntax"
           target="_blank"
-          class="text-sm underline"
+          class="underline [font-size:inherit]"
           rel="noopener noreferrer">(What is Markdown? ↗)</a
         >
-      </p>
-      <p>
-        <a
-          href="https://openai.com/"
-          target="_blank"
-          class="hs-button is-filled w-fit border-0 bg-dp-blue-grey-400 text-sm"
-          rel="noopener noreferrer"
-          >Try asking AI about "membership ideas for gaming community"</a
-        >
-      </p>
+      </span>
     </label>
+    <a
+      href="https://openai.com/"
+      target="_blank"
+      class="hs-button is-filled w-fit is-small"
+      rel="noopener noreferrer"
+    >
+          <span class="hs-button__label">
+            Need help? Try asking an AI
+          </span>
+    </a
+    >
 
     <!-- Display payload as string -->
     <label class="hs-form-field">
       <span class="hs-form-field__label"> Payload </span>
-      <input class="bg-transparent text-sm" value={metaOfPayload} disabled />
+      <input class="hs-form-field__input" value={metaOfPayload} readonly />
     </label>
 
     <div class="flex w-full justify-end gap-[20px]">
       {#if mode === 'edit' && !membership.deprecated}
         <button
-          class={`hs-button is-filled w-fit bg-dp-blue-grey-400 ${
+          class={`hs-button is-filled is-error w-fit ${
             updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
           }`}
           type="button"
           on:click|preventDefault={() => deleteMembership(membership)}
-          >Delete</button
+          >
+          <span class="hs-button__label">
+            Delete
+          </span>
+        </button
         >
       {/if}
       {#if mode === 'edit' && membership.deprecated}
         <button
-          class={`hs-button is-filled w-fit bg-dp-blue-grey-400 ${
+          class={`hs-button is-filled w-fit ${
             updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
           }`}
           type="button"
-          on:click|preventDefault={() => activateMembership(membership)}
-          >Activate</button
+          on:click|preventDefault={() => activateMembership(membership)}>
+          <span class="hs-button__label">
+            Activate
+          </span>
+        </button
         >
       {/if}
-      <button type="button" on:click|preventDefault={() => cancel()}
-        >Cancel</button
+      <button class="hs-button is-outlined is-error" type="button" on:click|preventDefault={() => cancel()}
+        >
+        <span class="hs-button__label">Cancel</span>
+      </button
       >
     </div>
   </form>

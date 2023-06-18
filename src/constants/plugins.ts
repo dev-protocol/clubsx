@@ -69,6 +69,13 @@ export type PluginMeta = (ClubsPluginMeta & Partial<ClubsThemePluginMeta>) & {
   planned: boolean
 }
 
+export type ExternalTool = {
+  name: string
+  imageSrc: string
+  description: string
+  url: string
+}
+
 export const installablePlugins: InstallablePlugins[] = [
   {
     id: $14.meta.id,

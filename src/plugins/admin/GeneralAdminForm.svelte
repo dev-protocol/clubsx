@@ -69,11 +69,11 @@
         min="0"
         max={MAX_OF_ADMIN_ROLE_HOLDER_POINTS}
       />
-      <p class="mt-1 text-xs opacity-60">
+      <span class="hs-form-field__helper">
         This value is the proportion of the tokens minted on Clubs required to
         edit this Club. Note that if you set a higher value than you have, you
         will be locked out.
-      </p>
+      </span>
     </label>
 
     <label class="hs-form-field is-filled mb-10 flex flex-col">
@@ -88,60 +88,53 @@
     </label>
 
     <!-- Danger Zone-->
-    <div class="rounded-lg border border-2 border-red-500 px-12 py-12">
+    <div class="rounded-lg border-2 border-error-400 px-12 py-12">
       <div class="mb-10 flex items-center justify-between">
         <span class="font-title text-lg font-bold">Danger Zone</span>
         <button
           on:click|preventDefault={(_) => (dangerLocked = !dangerLocked)}
-          class="rounded bg-[#040B10] px-8 py-4"
+          class="hs-button is-outlined is-contained"
         >
           {#if dangerLocked}
-            <span>Unlock</span>
+            <span class="hs-button__label">Unlock</span>
           {:else}
-            <span>Lock</span>
+            <span class="hs-button__label">Lock</span>
           {/if}
         </button>
       </div>
 
       <div class="mb-10 flex flex-col">
-        <label class="mb-1" for="network">
-          Network
-          <span class="text-purple-400">*</span>
+        <label class="hs-select-field is-required" for="network">
+          <span class="hs-select-field__label">Network</span>
+          <select
+            class={`hs-select-field__input`}
+            disabled={dangerLocked}
+            bind:value={network}
+            on:change={updateConfig}
+            id="network"
+            name="network"
+          >
+            {#each networkOptions as option}
+              <option value={option.value}>
+                {option.name}
+              </option>
+            {/each}
+          </select>
         </label>
-
-        <select
-          class={`rounded border border-2 border-[#040B10] px-8 py-4 ${
-            dangerLocked ? 'bg-[#1E1E1E]' : 'bg-[#040B10]'
-          }`}
-          disabled={dangerLocked}
-          bind:value={network}
-          on:change={updateConfig}
-          id="network"
-          name="network"
-        >
-          {#each networkOptions as option}
-            <option value={option.value}>
-              {option.name}
-            </option>
-          {/each}
-        </select>
       </div>
 
       <div class="flex flex-col">
-        <label class="mb-1" for="tokenAddress">
-          Token Address
-          <span class="text-purple-400">*</span>
+        <label class="hs-form-field is-required" for="tokenAddress">
+          <span class="hs-form-field__label">Token Address</span>
+          <input
+            disabled={dangerLocked}
+            class={`hs-form-field__input`}
+            bind:value={propertyAddress}
+            on:change={updateConfig}
+            id="tokenAddress"
+            name="tokenAddress"
+          />
         </label>
-        <input
-          disabled={dangerLocked}
-          class={`rounded border border-2 border-[#040B10] px-8 py-4 ${
-            dangerLocked ? 'bg-[#1E1E1E]' : 'bg-[#040B10]'
-          }`}
-          bind:value={propertyAddress}
-          on:change={updateConfig}
-          id="tokenAddress"
-          name="tokenAddress"
-        />
       </div>
     </div>
   </div>

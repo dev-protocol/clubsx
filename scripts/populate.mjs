@@ -425,6 +425,12 @@ const populate = async () => {
             options: [],
           },
           {
+            id: 'devprotocol:clubs:clubsx:marketplace',
+            name: 'marketplace',
+            enable: true,
+            options: [],
+          },
+          {
             id: 'devprotocol:clubs:plugin:members',
             name: 'members',
             enable: true,
