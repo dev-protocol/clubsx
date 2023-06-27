@@ -48,7 +48,7 @@
     "@astrojs/react": "2.2.1",
     "@astrojs/svelte": "3.0.0",
     "@astrojs/tailwind": "4.0.0",
-    "@astrojs/vercel": "3.5.0",
+    "@astrojs/vercel": "3.5.1",
     "@astrojs/vue": "2.2.1",
     "@devprotocol/clubs-core": "0.45.2",
     "@devprotocol/dev-kit": "7.3.4",
