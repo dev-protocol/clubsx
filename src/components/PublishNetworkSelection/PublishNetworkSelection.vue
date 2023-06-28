@@ -379,6 +379,7 @@ export default defineComponent({
       required: true,
     },
     showTestnets: Boolean,
+    allowAccess: Boolean,
     site: {
       type: String,
       required: true,
@@ -454,6 +455,10 @@ export default defineComponent({
     link() {
       const url = new URL(this.baseTokenizationLink)
       url.host = `${this.networkSelected.toLowerCase()}.${url.host}`
+      const urlParams = new URLSearchParams(url.search)
+      urlParams.set('popup', 'true')
+      this.allowAccess && urlParams.set('allowAccess', 'true')
+      url.search = urlParams.toString()
       return url.toString()
     },
     linkOrigin() {
@@ -651,7 +656,7 @@ export default defineComponent({
     openNiwa(link: string) {
       if (this.isTokenizing) return
 
-      const popupLink = link + '?popup=true'
+      const popupLink = link
       this.popupWindow = window.open(
         popupLink,
         'Niwa',
