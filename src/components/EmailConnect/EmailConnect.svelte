@@ -42,35 +42,6 @@
   }
 </script>
 
-<style lang="scss">
-  @use '@devprotocol/hashi/hs-button';
-
-  @include hs-button.extend('filled.native-blue') {
-    @include hs-button.color((
-      fill: 'native-blue.400',
-      ink: 'native-blue.ink',
-      border: 'native-blue.400'
-    ));
-
-    &:hover,
-    &:focus {
-      @include hs-button.color((
-        fill: 'native-blue.300',
-        ink: 'native-blue.ink',
-        border: 'native-blue.300'
-      ));
-    }
-
-    &:active {
-      @include hs-button.color((
-        fill: 'native-blue.200',
-        ink: 'native-blue.ink',
-        border: 'native-blue.200'
-      ));
-    }
-  }
-</style>
-
 {#if emailSending}
   <span
     class="hs-button is-filled animate-pulse rounded bg-gray-500/60 px-8 py-4 text-inherit"
@@ -78,7 +49,7 @@
   >
 {:else if emailSent}
   <span
-    class="hs-button is-filled cursor-default bg-success-300 px-8 py-4 text-inherit"
+    class="hs-button is-filled bg-success-300 cursor-default px-8 py-4 text-inherit"
     >Check your inbox</span
   >
 {:else}
@@ -100,9 +71,44 @@
       Continue
     </button>
     {#if emailErrorMessage.length > 0}
-      <span class="col-span-2 rounded-md bg-danger-300 px-8 py-4 text-sm"
+      <span class="bg-danger-300 col-span-2 rounded-md px-8 py-4 text-sm"
         >{emailErrorMessage}</span
       >
     {/if}
   </div>
 {/if}
+
+<style lang="scss">
+  @use '@devprotocol/hashi/hs-button';
+
+  @include hs-button.extend('filled.native-blue') {
+    @include hs-button.color(
+      (
+        fill: 'native-blue.400',
+        ink: 'native-blue.ink',
+        border: 'native-blue.400'
+      )
+    );
+
+    &:hover,
+    &:focus {
+      @include hs-button.color(
+        (
+          fill: 'native-blue.300',
+          ink: 'native-blue.ink',
+          border: 'native-blue.300'
+        )
+      );
+    }
+
+    &:active {
+      @include hs-button.color(
+        (
+          fill: 'native-blue.200',
+          ink: 'native-blue.ink',
+          border: 'native-blue.200'
+        )
+      );
+    }
+  }
+</style>

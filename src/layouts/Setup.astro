@@ -84,13 +84,13 @@ const avatarImgSrc: string | undefined = config.options?.find(
     >
       <header
         id="__clubs:setup:header__"
-        class="fixed z-50 hidden max-h-screen min-h-screen w-full content-start gap-16 overflow-y-scroll bg-dp-blue-grey-400 lg:relative lg:block lg:max-h-fit lg:overflow-y-auto"
+        class="bg-dp-blue-grey-400 fixed z-50 hidden max-h-screen min-h-screen w-full content-start gap-16 overflow-y-scroll lg:relative lg:block lg:max-h-fit lg:overflow-y-auto"
       >
         <!-- TODO: replace this default '' value for site prop in welcome wizard -->
         <WelcomeWizard step={setupStep} site={site || ''} />
         <button
           id="__clubs:setup:sidebar-close__"
-          class="fixed bottom-[3rem] left-1/2 flex aspect-square w-14 -translate-x-1/2 items-center justify-center rounded-full bg-white text-dp-white-ink shadow-2xl lg:hidden"
+          class="text-dp-white-ink fixed bottom-[3rem] left-1/2 flex aspect-square w-14 -translate-x-1/2 items-center justify-center rounded-full bg-white shadow-2xl lg:hidden"
           ><svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -128,7 +128,7 @@ const avatarImgSrc: string | undefined = config.options?.find(
     >
       <button
         id="__clubs:setup:sidebar-open__"
-        class="flex items-center gap-3 rounded-full bg-white px-3 py-2 text-dp-white-ink shadow-2xl"
+        class="text-dp-white-ink flex items-center gap-3 rounded-full bg-white px-3 py-2 shadow-2xl"
       >
         <div class="ml-2 flex items-stretch gap-2">
           <span class="font-bold">Step {steps.current}</span><span

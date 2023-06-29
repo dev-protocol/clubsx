@@ -100,7 +100,7 @@
       {:else if draftClubs.length <= 0 && publishedClubs.length > 0}
         <a
           href={'/domain'}
-          class="hs-button is-filled w-fit border-0 bg-native-blue-300 px-8 py-4 text-inherit no-underline"
+          class="hs-button is-filled bg-native-blue-300 w-fit border-0 px-8 py-4 text-inherit no-underline"
         >
           {'No draft clubs found. Create clubs now'}
         </a>
@@ -116,7 +116,7 @@
     {#if draftClubs.length <= 0 && publishedClubs.length <= 0 && isLoading === false}
       <a
         href={'/domain'}
-        class="hs-button is-filled w-fit border-0 bg-native-blue-300 px-8 py-4 text-inherit no-underline"
+        class="hs-button is-filled bg-native-blue-300 w-fit border-0 px-8 py-4 text-inherit no-underline"
       >
         {'Create clubs now'}
       </a>
