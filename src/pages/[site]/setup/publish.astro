@@ -16,6 +16,7 @@ import PageNotFound from '@pages/404.astro'
 const { site } = Astro.params
 
 const testnets = Astro.url.searchParams.get('testnets') === ''
+const allowAccess = Astro.url.searchParams.get('allowAccess') === 'true'
 
 const { getStaticPaths, getCurrentConfig } = adminFactory({
   config: async () => await _config(site),
@@ -66,6 +67,7 @@ const baseDomainUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
           category={draftOptionsValue?.category}
           membershipsPluginOptions={membershipsPluginOptions}
           showTestnets={testnets}
+          allowAccess={allowAccess}
           config={config}
           site={site}
         />
