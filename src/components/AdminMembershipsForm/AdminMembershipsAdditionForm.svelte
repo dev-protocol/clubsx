@@ -322,7 +322,7 @@
         <br />
         {#if !membership.deprecated}
           <button
-            class={`mt-2 w-fit rounded bg-dp-blue-grey-400 p-4 text-center text-sm font-semibold text-white ${
+            class={`bg-dp-blue-grey-400 mt-2 w-fit rounded p-4 text-center text-sm font-semibold text-white ${
               updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
             }`}
             id={`delete-opt`}
@@ -333,7 +333,7 @@
         <br />
         {#if membership.deprecated}
           <button
-            class={`mt-2 w-fit rounded bg-dp-blue-grey-400 p-4 text-center text-sm font-semibold text-white ${
+            class={`bg-dp-blue-grey-400 mt-2 w-fit rounded p-4 text-center text-sm font-semibold text-white ${
               updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
             }`}
             id={`activate-opt`}
@@ -370,7 +370,9 @@
         <div class="hs-form-field">
           <span class="hs-form-field__label">Image</span>
 
-          <label class="hs-button is-filled w-fit cursor-pointer rounded-lg px-12 py-4">
+          <label
+            class="hs-button is-filled w-fit cursor-pointer rounded-lg px-12 py-4"
+          >
             <span class="hs-button__label">Upload to change image</span>
             <input
               id="avatarPath"
@@ -382,16 +384,20 @@
               disabled={membershipExists}
             />
           </label>
-          <p class="hs-form-field__helper mt-2">* JPEG, PNG, GIF, TIFF and animated PNG</p>
-          <span class="hs-form-field__helper">* Recommended image size is 600 x 600 px</span>
+          <p class="hs-form-field__helper mt-2">
+            * JPEG, PNG, GIF, TIFF and animated PNG
+          </p>
+          <span class="hs-form-field__helper"
+            >* Recommended image size is 600 x 600 px</span
+          >
 
           <p>
             <a
               href="https://docs.google.com/presentation/d/1bbQhOktQoaA5ynQB1RgvOc4eMWlMHFDliw1DmS35w8Y/edit?usp=sharing"
               target="_blank"
-              class="hs-button is-filled mt-8 w-fit is-small"
+              class="hs-button is-filled is-small mt-8 w-fit"
               rel="noopener noreferrer"
-              >
+            >
               <span class="hs-button__icon">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -407,9 +413,7 @@
                   />
                 </svg>
               </span>
-              <span class="hs-button__label">
-                Use Google Slides template
-              </span>
+              <span class="hs-button__label"> Use Google Slides template </span>
             </a>
           </p>
         </div>
@@ -459,7 +463,8 @@
         bind:value={membership.description}
         id="membership-description"
         name="membership-description"
-        disabled={membershipExists}></textarea>
+        disabled={membershipExists}
+      />
       <span class="hs-form-field__helper">
         Markdown is available <a
           href="https://www.markdownguide.org/basic-syntax"
@@ -472,14 +477,11 @@
     <a
       href="https://openai.com/"
       target="_blank"
-      class="hs-button is-filled w-fit is-small"
+      class="hs-button is-filled is-small w-fit"
       rel="noopener noreferrer"
     >
-          <span class="hs-button__label">
-            Need help? Try asking an AI
-          </span>
-    </a
-    >
+      <span class="hs-button__label"> Need help? Try asking an AI </span>
+    </a>
 
     <!-- Display payload as string -->
     <label class="hs-form-field">
@@ -495,12 +497,9 @@
           }`}
           type="button"
           on:click|preventDefault={() => deleteMembership(membership)}
-          >
-          <span class="hs-button__label">
-            Delete
-          </span>
-        </button
         >
+          <span class="hs-button__label"> Delete </span>
+        </button>
       {/if}
       {#if mode === 'edit' && membership.deprecated}
         <button
@@ -508,18 +507,18 @@
             updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
           }`}
           type="button"
-          on:click|preventDefault={() => activateMembership(membership)}>
-          <span class="hs-button__label">
-            Activate
-          </span>
-        </button
+          on:click|preventDefault={() => activateMembership(membership)}
         >
+          <span class="hs-button__label"> Activate </span>
+        </button>
       {/if}
-      <button class="hs-button is-outlined is-error" type="button" on:click|preventDefault={() => cancel()}
-        >
-        <span class="hs-button__label">Cancel</span>
-      </button
+      <button
+        class="hs-button is-outlined is-error"
+        type="button"
+        on:click|preventDefault={() => cancel()}
       >
+        <span class="hs-button__label">Cancel</span>
+      </button>
     </div>
   </form>
 </div>

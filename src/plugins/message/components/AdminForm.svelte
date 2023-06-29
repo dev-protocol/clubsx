@@ -160,7 +160,11 @@
   <div class="flex flex-col items-start gap-1">
     <label class="hs-select-field">
       <span class="hs-select-field__label">Select</span>
-      <select name="form-preset" bind:value={form.presetName} class="hs-select-field__input">
+      <select
+        name="form-preset"
+        bind:value={form.presetName}
+        class="hs-select-field__input"
+      >
         {#each formPresets as cat}
           <option value={cat.value}>{cat.label}</option>
         {/each}

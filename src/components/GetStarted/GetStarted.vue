@@ -61,7 +61,9 @@ export default {
     </section>
     <section class="mb-4">
       <HSButton
-        v-bind:type="`contained large ${socialMedia.toLowerCase() === 'youtube' ? 'filled' : 'outlined'}`"
+        v-bind:type="`contained large ${
+          socialMedia.toLowerCase() === 'youtube' ? 'filled' : 'outlined'
+        }`"
         @click.prevent="setSocialMedia('youtube')"
       >
         Youtube
@@ -72,12 +74,16 @@ export default {
     >
       <HSButton
         @click.prevent="setSocialMedia('github')"
-        v-bind:type="`contained large ${socialMedia.toLowerCase() === 'github' ? 'filled' : 'outlined'}`"
+        v-bind:type="`contained large ${
+          socialMedia.toLowerCase() === 'github' ? 'filled' : 'outlined'
+        }`"
         >Github</HSButton
       >
       <HSButton
         @click.prevent="setSocialMedia('discord')"
-        v-bind:type="`contained large ${socialMedia.toLowerCase() === 'discord' ? 'filled' : 'outlined'}`"
+        v-bind:type="`contained large ${
+          socialMedia.toLowerCase() === 'discord' ? 'filled' : 'outlined'
+        }`"
         >Discord</HSButton
       >
     </section>

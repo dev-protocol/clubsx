@@ -36,7 +36,7 @@
 <div class="grid gap-16">
   <section class="grid grid-cols-2 items-stretch justify-between gap-16">
     <div
-      class="grid gap-16 rounded-lg border border-[3px] border-native-blue-400 p-8"
+      class="border-native-blue-400 grid gap-16 rounded-lg border border-[3px] p-8"
     >
       <span class="font-title text-lg font-bold">Number of members</span>
       {#if typeof members === 'number'}
@@ -52,7 +52,7 @@
     </div>
 
     <div
-      class="grid gap-16 rounded-lg border border-[3px] border-native-blue-400 p-8"
+      class="border-native-blue-400 grid gap-16 rounded-lg border border-[3px] p-8"
     >
       <span class="font-title text-lg font-bold">Total earnings</span>
       <div class="grid gap-2">
@@ -88,7 +88,7 @@
       <div
         class="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100"
       >
-        <p class="rounded-md bg-dp-blue-grey-600 px-6 py-4">
+        <p class="bg-dp-blue-grey-600 rounded-md px-6 py-4">
           Charts will be available in future updates.
         </p>
       </div>

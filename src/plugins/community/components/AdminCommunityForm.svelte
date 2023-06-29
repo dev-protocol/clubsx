@@ -12,10 +12,13 @@
   <div class="mb-10 flex flex-col">
     <label class="hs-form-field">
       <span class="hs-form-field__label">Guild URL</span>
-      <input class="hs-form-field__input" id="guild-url"
-             name="guild-url" type="text"
-             bind:value={guildUrl}
-             on:input={updateCommunityOptions}
+      <input
+        class="hs-form-field__input"
+        id="guild-url"
+        name="guild-url"
+        type="text"
+        bind:value={guildUrl}
+        on:input={updateCommunityOptions}
       />
     </label>
   </div>

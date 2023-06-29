@@ -33,7 +33,7 @@
     <li>
       <a
         href={path}
-        class="rounded bg-native-blue-200 px-2 py-1 transition hover:bg-native-blue-300"
+        class="bg-native-blue-200 hover:bg-native-blue-300 rounded px-2 py-1 transition"
         >{isDraft ? 'Edit' : 'Manage'}</a
       >
     </li>
@@ -41,7 +41,7 @@
       <li>
         <a
           href={url.toString()}
-          class="rounded bg-native-blue-200 px-2 py-1 transition hover:bg-native-blue-300"
+          class="bg-native-blue-200 hover:bg-native-blue-300 rounded px-2 py-1 transition"
           >Club page</a
         >
       </li>
