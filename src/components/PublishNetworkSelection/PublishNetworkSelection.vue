@@ -44,12 +44,8 @@
             clubPublished
           "
         >
-          <span class="hs-button__label">
-            Polygon
-          </span>
-          <span class="text-center text-xs">
-            Recommended
-          </span>
+          <span class="hs-button__label"> Polygon </span>
+          <span class="text-center text-xs"> Recommended </span>
         </button>
         <button
           @click="changeNetwork('arbitrum')"
@@ -133,9 +129,7 @@
             clubPublished
           "
         >
-          <span class="hs-button__label">
-            Polygon Mumbai
-          </span>
+          <span class="hs-button__label"> Polygon Mumbai </span>
         </button>
       </div>
     </div>
@@ -306,7 +300,7 @@
       </p>
       <p
         v-if="!category || !membershipsPluginOptions?.length"
-        class="font-DMSans rounded bg-danger-300 px-4 py-2 text-base font-normal text-white"
+        class="font-DMSans bg-danger-300 rounded px-4 py-2 text-base font-normal text-white"
       >
         Complete Basic info, Design, Memberships before activation.
       </p>

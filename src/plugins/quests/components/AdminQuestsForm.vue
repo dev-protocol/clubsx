@@ -34,11 +34,13 @@ export default defineComponent({
     <div class="mb-10 flex flex-col">
       <label class="hs-form-field">
         <span class="hs-form-field__label">Dework URL</span>
-        <input class="hs-form-field__input" type="text"
-               :value="deworkUrl"
-               @input="updateOptions"
-               id="dework-url"
-               name="dework-url"
+        <input
+          class="hs-form-field__input"
+          type="text"
+          :value="deworkUrl"
+          @input="updateOptions"
+          id="dework-url"
+          name="dework-url"
         />
       </label>
     </div>

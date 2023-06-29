@@ -108,12 +108,6 @@
   })
 </script>
 
-<style>
-  .theme-chip:focus-visible {
-    outline: 2px solid var(--hs-theme-accent-300);
-  }
-</style>
-
 <div role="presentation" class="hs-form-field">
   <span class="hs-form-field__label"> Preview </span>
   <div
@@ -270,3 +264,9 @@
     <span class="hs-form-field__helper">Markdown is available</span>
   </label>
 </form>
+
+<style>
+  .theme-chip:focus-visible {
+    outline: 2px solid var(--hs-theme-accent-300);
+  }
+</style>

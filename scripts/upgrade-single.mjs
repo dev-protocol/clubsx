@@ -39,7 +39,6 @@ const app = async () => {
 
     await client.quit()
     console.log('Closed the DB connection')
-    return
   } catch (error) {
     console.error('error upgrading db: ', error)
   }

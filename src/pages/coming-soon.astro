@@ -18,7 +18,9 @@ const homePageUrl: string = ((url) => `${url.protocol}//${url.host}/`)(
       href={redirectionCtaUrl || homePageUrl}
       class="hs-button is-filled is-large is-native-blue"
     >
-      <span class="hs-button__label">{redirectionCtaText || 'Take me to Home page'}</span>
+      <span class="hs-button__label"
+        >{redirectionCtaText || 'Take me to Home page'}</span
+      >
     </a>
   </div>
 </Layout>

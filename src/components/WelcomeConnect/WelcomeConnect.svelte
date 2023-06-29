@@ -154,35 +154,6 @@
   }
 </script>
 
-<style lang="scss">
-  @use '@devprotocol/hashi/hs-button';
-
-  @include hs-button.extend('filled.native-blue') {
-    @include hs-button.color((
-      fill: 'native-blue.400',
-      ink: 'native-blue.ink',
-      border: 'native-blue.400'
-    ));
-
-    &:hover,
-    &:focus {
-      @include hs-button.color((
-        fill: 'native-blue.300',
-        ink: 'native-blue.ink',
-        border: 'native-blue.300'
-      ));
-    }
-
-    &:active {
-      @include hs-button.color((
-        fill: 'native-blue.200',
-        ink: 'native-blue.ink',
-        border: 'native-blue.200'
-      ));
-    }
-  }
-</style>
-
 <div class="relative grid justify-center p-4 md:p-0">
   <section class="my-16 grid gap-8 text-center md:my-32">
     <h1 class="text-2xl font-bold md:text-5xl">Connect Your Account</h1>
@@ -223,3 +194,38 @@
     </div>
   </section>
 </div>
+
+<style lang="scss">
+  @use '@devprotocol/hashi/hs-button';
+
+  @include hs-button.extend('filled.native-blue') {
+    @include hs-button.color(
+      (
+        fill: 'native-blue.400',
+        ink: 'native-blue.ink',
+        border: 'native-blue.400'
+      )
+    );
+
+    &:hover,
+    &:focus {
+      @include hs-button.color(
+        (
+          fill: 'native-blue.300',
+          ink: 'native-blue.ink',
+          border: 'native-blue.300'
+        )
+      );
+    }
+
+    &:active {
+      @include hs-button.color(
+        (
+          fill: 'native-blue.200',
+          ink: 'native-blue.ink',
+          border: 'native-blue.200'
+        )
+      );
+    }
+  }
+</style>
