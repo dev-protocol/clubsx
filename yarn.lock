@@ -141,10 +141,10 @@
   resolved "https://registry.yarnpkg.com/@astrojs/underscore-redirects/-/underscore-redirects-0.1.0.tgz#57eb6c3cef511eec97af94f1d76c301413a4ac5c"
   integrity sha512-ZVBhD1Tj+gIY3sPu80UCrtbU8qLf6CevlRC6xeuGK8s09YpLzRkwmkxu+T1qVyv63hsW/ObTqu03RBoLuFBq2A==
 
-"@astrojs/vercel@3.5.1":
-  version "3.5.1"
-  resolved "https://registry.yarnpkg.com/@astrojs/vercel/-/vercel-3.5.1.tgz#af7d599b1286000e06e595794a047d1d0268ea7f"
-  integrity sha512-qMJ0iLHOhHnFMNMK0qfwjSuaiGFo7Qjyl6WaS3ryKL53z8za1Z8PsgKdd83mM4Hjzir8/340GUNgSv3KW257qQ==
+"@astrojs/vercel@3.6.0":
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/vercel/-/vercel-3.6.0.tgz#a0b8346223dcc8d44c157d698e57ca99e2c02852"
+  integrity sha512-+Vffr34F+1xwAutr0yqckKfNQJMFKY+pH4H/okMXPCWNltQkEjxegxpjZXHvcEN/wOigKhTjUCtFZogJpkpyFA==
   dependencies:
     "@astrojs/internal-helpers" "^0.1.1"
     "@astrojs/webapi" "^2.2.0"
