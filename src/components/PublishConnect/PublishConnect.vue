@@ -88,7 +88,7 @@ export default defineComponent({
         this.isAwaitingWalletConfirmation = true
         this.connectButtonTextMsg = 'Fetching wallet details...'
         const { currentAddress, provider } = await ReConnectWallet(
-          this.modalProvider
+          this.modalProvider,
         )
         if (currentAddress) {
           this.connected = true

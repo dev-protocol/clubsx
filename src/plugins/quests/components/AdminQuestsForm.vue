@@ -22,7 +22,7 @@ export default defineComponent({
             value: (event.target as HTMLInputElement)?.value || this.deworkUrl,
           },
         ],
-        this.currentPluginIndex
+        this.currentPluginIndex,
       )
     },
   },

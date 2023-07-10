@@ -36,7 +36,7 @@ export const EthersProviderFrom = async (modalProvider: any) => {
   const connectedProvider = await modalProvider.connect()
   const newProvider = whenDefined(
     connectedProvider,
-    (p) => new providers.Web3Provider(p)
+    (p) => new providers.Web3Provider(p),
   )
 
   const currentAddress = await newProvider?.getSigner().getAddress()

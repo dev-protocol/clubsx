@@ -46,7 +46,7 @@ export const post = async ({ request }: { request: Request }) => {
     signature: sig,
     previousConfiguration,
     provider: providers.getDefaultProvider(
-      decode(previousConfiguration).rpcUrl
+      decode(previousConfiguration).rpcUrl,
     ),
   })
 
@@ -60,6 +60,6 @@ export const post = async ({ request }: { request: Request }) => {
     JSON.stringify({
       decoded,
     }),
-    { status: 200 }
+    { status: 200 },
   )
 }

@@ -76,20 +76,20 @@ export type HomeConfigValue = {
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
   config,
-  { getPluginConfigById }
+  { getPluginConfigById },
 ) => {
   const { name, propertyAddress, rpcUrl, chainId } = config
 
   const [membershipConfig] = getPluginConfigById(
-    'devprotocol:clubs:simple-memberships'
+    'devprotocol:clubs:simple-memberships',
   )
   const allMemberships = membershipConfig?.options.find(
-    (opt) => opt.key === 'memberships'
+    (opt) => opt.key === 'memberships',
   )?.value as UndefinedOr<Membership[]>
 
   // Filter out deprecated memberships.
   const memberships = allMemberships?.filter(
-    (membership) => !membership.deprecated
+    (membership) => !membership.deprecated,
   )
 
   const homeConfig = options.find((opt) => opt.key === 'homeConfig')
@@ -104,7 +104,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
     ([] as NavLink[])
 
   const avatarImgSrc = config.options?.find(
-    (option) => option.key === 'avatarImgSrc'
+    (option) => option.key === 'avatarImgSrc',
   )?.value
 
   return homeConfig
@@ -131,7 +131,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
   options,
-  config
+  config,
 ) => [
   {
     paths: ['theme'],
@@ -143,13 +143,13 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
 export const getLayout: ClubsFunctionGetLayout = async (
   options,
   config,
-  { getPluginConfigById }
+  { getPluginConfigById },
 ) => {
   const [membershipConfig] = getPluginConfigById(
-    'devprotocol:clubs:simple-memberships'
+    'devprotocol:clubs:simple-memberships',
   )
   const memberships = membershipConfig?.options.find(
-    (opt) => opt.key === 'memberships'
+    (opt) => opt.key === 'memberships',
   )?.value as UndefinedOr<Membership[]>
 
   const globalConfig = options.find((opt) => opt.key === 'globalConfig')?.value

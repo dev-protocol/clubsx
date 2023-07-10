@@ -150,7 +150,7 @@ export default {
     await detectStokensByPropertyAddress(provider, this.propertyAddress).then(
       (res) => {
         this.members = res.length
-      }
+      },
     )
     await propertySymbol(provider, this.propertyAddress).then((res) => {
       this.propertySymbol = res ?? 'CLUB'

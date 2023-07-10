@@ -41,7 +41,7 @@ export const detectChain = async (ethersProvider?: providers.BaseProvider) => {
 
 export const getStokenPositions = async (
   prov: providers.BaseProvider,
-  sTokenID: number
+  sTokenID: number,
 ) => {
   const [l1, l2] = await clientsSTokens(prov)
   return (l1 || l2)?.positions(sTokenID)
@@ -49,7 +49,7 @@ export const getStokenPositions = async (
 
 export const getStokenOwnerOf = async (
   prov: providers.BaseProvider,
-  sTokenID: number
+  sTokenID: number,
 ) => {
   const [l1, l2] = await clientsSTokens(prov)
   return (l1 || l2)?.ownerOf(sTokenID)
@@ -57,7 +57,7 @@ export const getStokenOwnerOf = async (
 
 export const getStokenTokenURI = async (
   prov: providers.BaseProvider,
-  sTokenID: number
+  sTokenID: number,
 ) => {
   const [l1, l2] = await clientsSTokens(prov)
   return (l1 || l2)?.tokenURI(sTokenID)
@@ -65,7 +65,7 @@ export const getStokenTokenURI = async (
 
 export const detectStokensByPropertyAddress = async (
   prov: providers.BaseProvider,
-  propertyAddress: string
+  propertyAddress: string,
 ) => {
   if (propertyAddress === constants.AddressZero) {
     return undefined
@@ -77,7 +77,7 @@ export const detectStokensByPropertyAddress = async (
 export const balanceOfProperty = async (
   prov: providers.BaseProvider,
   propertyAddress: string,
-  accountAddress: string
+  accountAddress: string,
 ) => {
   if (propertyAddress === constants.AddressZero) {
     return undefined
@@ -91,7 +91,7 @@ export const balanceOfProperty = async (
 
 export const positionsOfOwner = async (
   prov: providers.BaseProvider,
-  accountAddress: string
+  accountAddress: string,
 ) => {
   const [l1, l2] = await clientsSTokens(prov)
   return (l1 || l2)?.positionsOfOwner(accountAddress)
@@ -99,7 +99,7 @@ export const positionsOfOwner = async (
 
 export const getBalances = async (
   prov: providers.BaseProvider,
-  propertyAddress: string
+  propertyAddress: string,
 ) => {
   if (propertyAddress === constants.AddressZero) {
     return undefined
@@ -113,7 +113,7 @@ export const stake = async (
   provider: providers.BaseProvider,
   propertyAddress: string,
   from: string,
-  devAmount: number | string
+  devAmount: number | string,
 ) => {
   const amount = utils.parseUnits(devAmount.toString(), 18).toString()
   const res = await positionsCreate({
@@ -145,10 +145,10 @@ export const stakeWithEth = async ({
   const { estimatedEth, estimatedDev, create } = await positionsCreateWithEth({
     provider,
     devAmount: whenDefined(devAmount, (dev) =>
-      utils.parseUnits(dev, 18).toString()
+      utils.parseUnits(dev, 18).toString(),
     ),
     ethAmount: whenDefined(ethAmount, (eth) =>
-      utils.parseUnits(eth, 18).toString()
+      utils.parseUnits(eth, 18).toString(),
     ),
     destination: propertyAddress,
     payload,
@@ -178,16 +178,16 @@ export const stakeWithEthForPolygon = async (
     from?: string
     gatewayAddress?: string
     gatewayBasisPoints?: number
-  } // For example 10000 is 100%
+  }, // For example 10000 is 100%
 ) => {
   const { estimatedEth, estimatedDev, create } =
     await positionsCreateWithEthForPolygon({
       provider,
       devAmount: whenDefined(devAmount, (dev) =>
-        utils.parseUnits(dev, 18).toString()
+        utils.parseUnits(dev, 18).toString(),
       ),
       ethAmount: whenDefined(ethAmount, (eth) =>
-        utils.parseUnits(eth, 18).toString()
+        utils.parseUnits(eth, 18).toString(),
       ),
       destination: propertyAddress,
       payload,
@@ -204,13 +204,13 @@ export const tokenURISim = async (
   propertyAddress: string,
   amount?: number | string,
   payload?: string | Uint8Array,
-  owner?: string
+  owner?: string,
 ) => {
   const [l1, l2] = await clientsSTokens(prov)
   return (l1 || l2)?.tokenURISim({
     positions: {
       amount: whenDefined(amount, (x) =>
-        utils.parseUnits(x.toString(), 18).toString()
+        utils.parseUnits(x.toString(), 18).toString(),
       ),
       property: propertyAddress,
     },
@@ -221,7 +221,7 @@ export const tokenURISim = async (
 
 export const calculateRewardAmount = async (
   prov: providers.BaseProvider,
-  propertyAddress: string
+  propertyAddress: string,
 ) => {
   const [l1, l2] = await clientsLockup(prov)
   return (l1 || l2)?.calculateRewardAmount(propertyAddress)
@@ -229,7 +229,7 @@ export const calculateRewardAmount = async (
 
 export const propertySymbol = async (
   prov: providers.BaseProvider,
-  propertyAddress: string
+  propertyAddress: string,
 ) => {
   if (propertyAddress === constants.AddressZero) {
     return undefined

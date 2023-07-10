@@ -543,7 +543,7 @@ export default defineComponent({
         : (this.addressFromNiwaOrConfig as string)
 
       const descriptiorAddress: string | undefined = address.find(
-        (address) => address.chainId === currentChainId
+        (address) => address.chainId === currentChainId,
       )?.address
       if (!descriptiorAddress) {
         initMbmershipTxnProcessing = false
@@ -558,7 +558,7 @@ export default defineComponent({
 
       const contract = (l1 || l2)?.contract()
       const descriptorAddressInContract: string = await contract?.descriptorOf(
-        propertyAddress
+        propertyAddress,
       )
       initMbmershipTxnProcessing = false
       membershipInitialized =
@@ -654,7 +654,7 @@ export default defineComponent({
       this.popupWindow = window.open(
         popupLink,
         'Niwa',
-        'popup,width=500,height=700'
+        'popup,width=500,height=700',
       )
       if (this.popupWindow) {
         this.isTokenizing = true
@@ -705,7 +705,7 @@ export default defineComponent({
                 'Your Club is published, loading overview...'
               window.location.href = new URL(
                 '/admin/overview',
-                `${location.protocol}//${this.site}.${location.host}`
+                `${location.protocol}//${this.site}.${location.host}`,
               ).toString()
             } else {
               this.clubPublished = false
@@ -714,7 +714,7 @@ export default defineComponent({
           }
 
           this.isRemovingDraftStatus = false
-        }
+        },
       )
     },
 
@@ -777,7 +777,7 @@ export default defineComponent({
             }
           }
         },
-        { once: true }
+        { once: true },
       )
 
       if (disableDraft) {
@@ -807,7 +807,7 @@ export default defineComponent({
       }
 
       const descriptiorAddress: string | undefined = address.find(
-        (address) => address.chainId === currentChainId
+        (address) => address.chainId === currentChainId,
       )?.address
       if (!descriptiorAddress) {
         this.initMbmershipTxnProcessing = false
@@ -836,7 +836,7 @@ export default defineComponent({
           .connect(signer)
           [`setTokenURIDescriptor(address,address)`](
             propertyAddress,
-            descriptiorAddress
+            descriptiorAddress,
           )
 
         this.initMembershipTxnStatusMsg =
@@ -886,7 +886,7 @@ export default defineComponent({
             requiredETHAmount: parseUnits(String(opt.price)).toString(),
             requiredETHFee: opt.fee?.percentage
               ? parseUnits(
-                  new BigNumber(opt.price).times(opt.fee.percentage).toFixed()
+                  new BigNumber(opt.price).times(opt.fee.percentage).toFixed(),
                 ).toString()
               : 0,
             gateway: opt.fee?.beneficiary ?? constants.AddressZero,

@@ -609,25 +609,25 @@ const simpleCollectionsAbi = [
 export async function callSimpleCollections(
   provider: ethers.Signer,
   functionName: 'setImages',
-  args: [propertyAddress: string, images: Image[], keys: string[]]
+  args: [propertyAddress: string, images: Image[], keys: string[]],
 ): Promise<TransactionResponse>
 
 export async function callSimpleCollections(
   provider: BaseProvider,
   functionName: 'removeImage',
-  args: [propertyAddress: string, key: string]
+  args: [propertyAddress: string, key: string],
 ): Promise<TransactionResponse>
 
 export async function callSimpleCollections(
   provider: BaseProvider,
   functionName: 'propertyImages',
-  args: [propertyAddress: string, key: string]
+  args: [propertyAddress: string, key: string],
 ): Promise<Image>
 
 export async function callSimpleCollections(
   provider: BaseProvider | ethers.Signer,
   functionName: string,
-  args: unknown[]
+  args: unknown[],
 ): Promise<unknown> {
   const chainId = await ('getChainId' in provider
     ? (provider as ethers.Signer).getChainId()
@@ -642,11 +642,11 @@ export async function callSimpleCollections(
   const contract = new ethers.Contract(
     simpleCollectionaddress,
     simpleCollectionsAbi,
-    provider
+    provider,
   )
 
   const result: TransactionReceipt = await contract.functions[functionName](
-    ...args
+    ...args,
   )
   return result
 }

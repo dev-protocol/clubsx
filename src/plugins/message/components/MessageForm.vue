@@ -37,7 +37,7 @@ export default defineComponent({
       isMember: false,
       isInVerification: true,
       messageSentStatus: 'not-sent',
-    } as Data),
+    }) as Data,
   async mounted() {
     const { connection } = await import('@devprotocol/clubs-core/connection')
     connection().provider.subscribe(async (prov) => {
@@ -54,7 +54,7 @@ export default defineComponent({
         const isMember = await checkMemberships(
           provider,
           this.propertyAddress,
-          this.requiredMemberships
+          this.requiredMemberships,
         )
         this.isMember = isMember
       } catch {

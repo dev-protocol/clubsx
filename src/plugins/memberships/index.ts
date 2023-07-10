@@ -68,7 +68,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async () => []
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
   options,
-  { name, rpcUrl, propertyAddress }
+  { name, rpcUrl, propertyAddress },
 ) => {
   const memberships =
     (options.find((opt) => opt.key === 'memberships')?.value as UndefinedOr<
@@ -117,7 +117,7 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
 export const getSlots: ClubsFunctionGetSlots = async (
   _,
   __,
-  { paths, factory }
+  { paths, factory },
 ) => {
   const [path1, path2] = paths
   return factory === 'admin' && path1 === 'memberships' && path2

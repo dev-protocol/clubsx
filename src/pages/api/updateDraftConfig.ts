@@ -48,7 +48,7 @@ export const post = async ({ request }: { request: Request }) => {
   const decodedPreviousConfig = decode(previousConfiguration)
   const __draftOption: ClubsPluginOption | undefined =
     decodedPreviousConfig.options?.filter(
-      (option) => option.key === '__draft'
+      (option) => option.key === '__draft',
     )[0]
   // The draft should be there, since we are setting config when signup occurs.
   if (!__draftOption || !__draftOption.value) {

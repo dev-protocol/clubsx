@@ -59,7 +59,7 @@ export const post = async ({ request }: { request: Request }) => {
         JSON.stringify({ error: 'No user identifier passed' }),
         {
           status: 401,
-        }
+        },
       )
     }
 
@@ -68,7 +68,7 @@ export const post = async ({ request }: { request: Request }) => {
         JSON.stringify({ message: 'You already have created 3 clubs' }),
         {
           status: 400,
-        }
+        },
       )
     }
   } catch (error: any) {
@@ -122,7 +122,7 @@ export const post = async ({ request }: { request: Request }) => {
     // associate user address with site
     // first we check if user has other sites associated with their address
     let existingSites = JSON.parse(
-      (await client.get(keyEnumerable)) ?? '[]'
+      (await client.get(keyEnumerable)) ?? '[]',
     ) as ClubsData[] | null
     if (!existingSites) {
       existingSites = []

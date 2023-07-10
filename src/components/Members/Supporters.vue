@@ -44,7 +44,7 @@ export default {
     const provider = new providers.JsonRpcProvider(providerURL)
     const stokenIDs = await detectStokensByPropertyAddress(
       provider,
-      this.propertyAddress
+      this.propertyAddress,
     )
     const ret = await Promise.all(
       stokenIDs.map(async (stokenID) => {
@@ -54,9 +54,9 @@ export default {
               id: stokenID,
               ownerAddress,
             }
-          }
+          },
         )
-      })
+      }),
     )
     this.members = ret
   },

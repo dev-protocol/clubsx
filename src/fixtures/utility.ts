@@ -35,7 +35,7 @@ export const fetchSTokens = async (opts: {
     opts.tokenAddress,
     opts.amount,
     opts.payload,
-    opts.owner
+    opts.owner,
   )
   const image = res ? validImageUri(res.image) : (undefined as never)
   return { ...res, image }
@@ -91,7 +91,7 @@ export const composeTiers = async ({
           amount: tier.amount,
         }))
       return { ...tier, badgeImageSrc }
-    })
+    }),
   )
   const forEth = await Promise.all(
     forDev.map(async ({ ...tier }) => {
@@ -101,7 +101,7 @@ export const composeTiers = async ({
         amount: tier.amount,
       })
       return { ...tier, amount: utils.formatEther(amount) }
-    })
+    }),
   )
   return {
     dev: forDev,
@@ -113,7 +113,7 @@ export const checkMemberships = async (
   provider: ethers.providers.Web3Provider | ethers.providers.JsonRpcProvider,
   propertyAddress: string,
   requiredMemberships: Membership[],
-  userAddress: string = '0x0000000000000000000000000000000000000000'
+  userAddress: string = '0x0000000000000000000000000000000000000000',
 ) => {
   console.log({ propertyAddress, requiredMemberships })
 
@@ -134,7 +134,7 @@ export const checkMemberships = async (
 
   // gets all sTokens of the passed Property address that the visitor have
   const allSTokens = await whenDefined(detectSTokens, (detector) =>
-    detector(propertyAddress, userAddress)
+    detector(propertyAddress, userAddress),
   )
   if (!allSTokens) return false
   console.log({ allSTokens })
@@ -151,7 +151,7 @@ export const checkMemberships = async (
       // if it has payload, test the payload
       const testForPayload = await whenDefined(
         payload,
-        async (v) => (await sTokenContract.payloadOf(tokenId)) === v
+        async (v) => (await sTokenContract.payloadOf(tokenId)) === v,
       )
 
       // if it has not payload, test the staking amount
@@ -160,7 +160,7 @@ export const checkMemberships = async (
         payload && membership.currency === 'DEV'
           ? undefined
           : ethers.BigNumber.from(
-              (await contract.positions(tokenId)).amount
+              (await contract.positions(tokenId)).amount,
             ).gte(utils.parseEther(membership.price.toString()))
 
       if (testForPayload || testForAmount) {
@@ -168,7 +168,7 @@ export const checkMemberships = async (
       }
 
       return Promise.reject('Membership not found')
-    })
+    }),
   )
 
   // returns the result

@@ -95,7 +95,7 @@ export default defineComponent({
   },
   async mounted() {
     const input = new FormData(this.$refs.form as HTMLFormElement).get(
-      'input'
+      'input',
     ) as null | Data['currency']
     this.currency = input as 'dev' | 'eth'
     if (this.preferedCurrency === 'eth') {

@@ -39,17 +39,17 @@ export default function middleware(req: Request) {
         ? matchers.some((matcher) =>
             typeof matcher === 'string'
               ? matcher === url.pathname
-              : matcher.test(url.pathname)
+              : matcher.test(url.pathname),
           )
-        : true)
+        : true),
   )
 
   if (matchToRedirects) {
     return Response.redirect(
       new URL(
         `${url.pathname}${url.search ? url.search : ''}`,
-        matchToRedirects.destination
-      )
+        matchToRedirects.destination,
+      ),
     )
   }
 

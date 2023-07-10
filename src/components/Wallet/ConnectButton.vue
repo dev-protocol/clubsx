@@ -129,7 +129,7 @@ export default defineComponent({
       this.supportedNetwork = chainId === this.chainId
     })
     const { currentAddress, provider } = await ReConnectWallet(
-      this.modalProvider
+      this.modalProvider,
     )
     if (currentAddress) {
       this.truncateWalletAddress = truncateEthAddress(currentAddress)
@@ -163,7 +163,7 @@ export default defineComponent({
     },
     async fetchUserBalance(
       currentAddress: string,
-      provider: providers.BaseProvider
+      provider: providers.BaseProvider,
     ) {
       const [l1, l2] = await clientsDev(provider)
       const balance = await (l1 || l2)?.balanceOf(currentAddress)

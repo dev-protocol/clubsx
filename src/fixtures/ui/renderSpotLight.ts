@@ -41,7 +41,7 @@ export const renderSpotlight = ({ containerId }: { containerId: string }) => {
       50,
       window.innerWidth / window.innerHeight,
       0.1,
-      100
+      100,
     )
     camera.position.x = -4
     camera.position.z = 4

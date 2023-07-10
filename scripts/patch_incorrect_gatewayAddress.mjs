@@ -44,7 +44,7 @@ const upgrade = (key, config) => {
                       },
                     })),
                   }
-                : pluginOptions
+                : pluginOptions,
             ),
           }
         : plugin

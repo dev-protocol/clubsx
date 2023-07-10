@@ -67,7 +67,7 @@ export const post = async ({ request }: { request: Request }) => {
   const configuration = decode(previousConfiguration)
   const formData = (
     configuration.plugins?.[pluginIndex ?? 0]?.options?.find(
-      (element) => element.key === 'forms'
+      (element) => element.key === 'forms',
     )?.value as UndefinedOr<GatedMessage[]>
   )?.find((element) => element.id === formId)
   if (!formData) {
@@ -78,7 +78,7 @@ export const post = async ({ request }: { request: Request }) => {
 
   let decodedEmail = jsonwebtoken.verify(
     formData.destinationEmail,
-    process.env.SALT ?? ''
+    process.env.SALT ?? '',
   )
 
   const membershipsData = configuration.plugins?.[
@@ -92,20 +92,20 @@ export const post = async ({ request }: { request: Request }) => {
   }
 
   const requiredMemberships = formData.requiredMembershipIds.map((id) =>
-    membershipsData.find((mem) => mem.id === id)
+    membershipsData.find((mem) => mem.id === id),
   )
 
   // Check for required membership validity
   try {
     const web3Provider = new ethers.providers.JsonRpcProvider(
-      decode(previousConfiguration).rpcUrl
+      decode(previousConfiguration).rpcUrl,
     )
     const isMember = await checkMemberships(
       web3Provider,
       propertyAddress,
       // @ts-ignore
       requiredMemberships,
-      userAddress
+      userAddress,
     ).catch((err) => {
       throw Error('Not a member')
     })
@@ -118,7 +118,7 @@ export const post = async ({ request }: { request: Request }) => {
   }
 
   const provider = providers.getDefaultProvider(
-    decode(previousConfiguration).rpcUrl
+    decode(previousConfiguration).rpcUrl,
   )
   const authenticated = await authenticate({
     message: hash,

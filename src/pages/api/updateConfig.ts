@@ -39,7 +39,7 @@ export const post = async ({ request }: { request: Request }) => {
         x.value as {
           isInDraft: boolean
         }
-      ).isInDraft === true
+      ).isInDraft === true,
   )
 
   const authenticated = isInDraft
@@ -49,7 +49,7 @@ export const post = async ({ request }: { request: Request }) => {
         signature: sig,
         previousConfiguration,
         provider: providers.getDefaultProvider(
-          decode(previousConfiguration).rpcUrl
+          decode(previousConfiguration).rpcUrl,
         ),
       })
 

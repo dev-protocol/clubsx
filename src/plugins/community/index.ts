@@ -16,7 +16,7 @@ import Preview1 from './assets/community-1.jpg'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
-  { name }
+  { name },
 ) => [{ paths: ['community'], component: Index, props: { name, options } }]
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async (options) => [
@@ -32,7 +32,7 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (options) => [
 export const getSlots: ClubsFunctionGetSlots = async (
   _,
   config,
-  { paths, factory }
+  { paths, factory },
 ) => {
   const [path] = paths
   return factory === 'admin' && path === 'community'

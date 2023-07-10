@@ -19,7 +19,7 @@ const questParams = ['quest_starter', 'quest_stake_100', 'quest_stake_500']
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
-  config
+  config,
 ) => [
   { paths: ['quests'], component: Index, props: { options } },
   ...questParams.map((param) => ({
@@ -41,7 +41,7 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (options) => [
 export const getSlots: ClubsFunctionGetSlots = async (
   _,
   config,
-  { paths, factory }
+  { paths, factory },
 ) => {
   const [path] = paths
   return factory === 'admin' && path === 'quests'

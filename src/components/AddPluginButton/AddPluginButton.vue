@@ -73,7 +73,7 @@ export default defineComponent({
       // Fetch and connect provider, wallet and signer.
       const modalProvider = GetModalProvider()
       const { provider, currentAddress } = await EthersProviderFrom(
-        modalProvider
+        modalProvider,
       )
       if (!currentAddress || !provider) {
         this.isAddingPluginToClubs = false

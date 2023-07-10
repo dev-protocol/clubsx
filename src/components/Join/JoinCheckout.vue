@@ -265,7 +265,7 @@ export default defineComponent({
     const sub = zip(
       connection.provider,
       connection.account,
-      connection.chain
+      connection.chain,
     ).subscribe(async ([provider, account, chain]) => {
       providerPool = provider
       this.account = account
@@ -279,9 +279,9 @@ export default defineComponent({
               userAddress,
               destination,
               amount,
-              this.usePolygonWETH
+              this.usePolygonWETH,
             )
-        }
+        },
       )
     })
     this.subscriptions.push(sub)
@@ -324,7 +324,7 @@ export default defineComponent({
           .toFixed()
           .toString()
         this.ethFeeAmount = whenDefined(ethAmount, (_eth) =>
-          new BigNumber(_eth).times(feeDeposit).dp(9).toFixed().toString()
+          new BigNumber(_eth).times(feeDeposit).dp(9).toFixed().toString(),
         )
         const sTokens = await fetchSTokens({
           provider,
@@ -334,7 +334,7 @@ export default defineComponent({
         })
         this.previewImageSrc = sTokens.image
         this.previewName = sTokens.name
-      }
+      },
     )
   },
   destroyed() {
@@ -370,7 +370,7 @@ export default defineComponent({
             this.isApproving = false
             this.approveNeeded = false
           })
-        }
+        },
       )
     },
     async checkApproved(
@@ -378,7 +378,7 @@ export default defineComponent({
       userAddress: string,
       destination: string,
       amount: BigNumberish,
-      isPolygonWETH: boolean
+      isPolygonWETH: boolean,
     ) {
       const res = isPolygonWETH
         ? await stakeWithEthForPolygon({
@@ -477,7 +477,7 @@ export default defineComponent({
               this.stakeSuccessful = true
             })
           }
-        }
+        },
       )
     },
   },

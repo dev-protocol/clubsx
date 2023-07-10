@@ -2,7 +2,7 @@ import { createClient } from 'redis'
 import { ClubsConfiguration, encode } from '@devprotocol/clubs-core'
 
 export const config = async (
-  site: string | number | undefined
+  site: string | number | undefined,
 ): Promise<string> => {
   const client = createClient({
     url: process.env.REDIS_URL,

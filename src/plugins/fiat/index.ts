@@ -18,7 +18,7 @@ export type PriceOverrides = {
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
-  { name, options: configOptions = [] }
+  { name, options: configOptions = [] },
 ) => {
   const products = options.find((opt) => opt.key === 'products')
     ?.value as UndefinedOr<Products>

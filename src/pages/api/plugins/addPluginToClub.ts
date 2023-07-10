@@ -24,7 +24,7 @@ export const post = async ({ request }: { request: Request }) => {
       JSON.stringify({ error: 'Invalid request: missing required params' }),
       {
         status: 401,
-      }
+      },
     )
   }
 
@@ -54,7 +54,7 @@ export const post = async ({ request }: { request: Request }) => {
 
   // The plugin id should be in the list of installable plugins.
   const isPluginInstallable = installablePlugins.find(
-    (ip: InstallablePlugins) => ip.id === pluginId
+    (ip: InstallablePlugins) => ip.id === pluginId,
   )
   if (!isPluginInstallable) {
     return new Response(JSON.stringify({ error: 'Invalid plugin' }), {
@@ -64,7 +64,7 @@ export const post = async ({ request }: { request: Request }) => {
 
   // To avoid adding the plugin, if it's already present in clubs config.
   const isPluginAlreadyAdded = decodedPreviousConfiguration.plugins.find(
-    (plugin) => plugin.id === pluginId
+    (plugin) => plugin.id === pluginId,
   )
   if (isPluginAlreadyAdded) {
     return new Response(JSON.stringify({ error: 'Plugin already added' }), {
@@ -87,7 +87,7 @@ export const post = async ({ request }: { request: Request }) => {
     ...decodedPreviousConfiguration,
     plugins: [
       ...decodedPreviousConfiguration.plugins.filter(
-        (plugin) => plugin.id !== pluginId
+        (plugin) => plugin.id !== pluginId,
       ), // Fail safe to avoid adding same plugins twice.
       {
         id: isPluginInstallable.id,
