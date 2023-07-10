@@ -203,6 +203,93 @@ const kougenjiProducts = [
   },
 ]
 
+const debugProducts = [
+  {
+    id: '1',
+    name: '#1',
+    description: `Lorem ipsum.`,
+    price: 0.6,
+    currency: 'MATIC',
+    imageSrc: 'https://source.unsplash.com/800x800/?nature',
+    imageAlt: 'lorem ipsum',
+    payload: toBytes32('#1'),
+    fee: {
+      percentage: 0.95,
+      beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
+    },
+  },
+  {
+    id: '2',
+    name: '#2',
+    description: `Lorem ipsum.`,
+    price: 0.5,
+    currency: 'MATIC',
+    imageSrc: 'https://source.unsplash.com/800x800/?nature',
+    imageAlt: 'lorem ipsum',
+    payload: toBytes32('#2'),
+    fee: {
+      percentage: 0.95,
+      beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
+    },
+  },
+  {
+    id: '3',
+    name: '#3',
+    description: `Lorem ipsum.`,
+    price: 0.4,
+    currency: 'MATIC',
+    imageSrc: 'https://source.unsplash.com/800x800/?nature',
+    imageAlt: 'lorem ipsum',
+    payload: toBytes32('#3'),
+    fee: {
+      percentage: 0.95,
+      beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
+    },
+  },
+  {
+    id: '4',
+    name: '#4',
+    description: `Lorem ipsum.`,
+    price: 0.3,
+    currency: 'MATIC',
+    imageSrc: 'https://source.unsplash.com/800x800/?nature',
+    imageAlt: 'lorem ipsum',
+    payload: toBytes32('#4'),
+    fee: {
+      percentage: 0.95,
+      beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
+    },
+  },
+  {
+    id: '5',
+    name: '#5',
+    description: `Lorem ipsum.`,
+    price: 0.2,
+    currency: 'MATIC',
+    imageSrc: 'https://source.unsplash.com/800x800/?nature',
+    imageAlt: 'lorem ipsum',
+    payload: toBytes32('#5'),
+    fee: {
+      percentage: 0.95,
+      beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
+    },
+  },
+  {
+    id: '6',
+    name: '#6',
+    description: `Lorem ipsum.`,
+    price: 0.1,
+    currency: 'MATIC',
+    imageSrc: 'https://source.unsplash.com/800x800/?nature',
+    imageAlt: 'lorem ipsum',
+    payload: toBytes32('#6'),
+    fee: {
+      percentage: 0.95,
+      beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
+    },
+  },
+]
+
 const tiers = [
   {
     title: 'Tier 3',
@@ -401,7 +488,7 @@ const populate = async () => {
                   description: `寺DAOでは、寺院建築、荘厳仏具に携わる工芸士、職人の伝統的技術を伝え、後世に残すことを目的とした支援を行っております。`,
                   body: fs.readFileSync(
                     './src/assets/homeConfig.temples.body.md',
-                    'utf-8'
+                    'utf-8',
                   ),
                 },
               },
@@ -516,7 +603,7 @@ const populate = async () => {
             ],
           },
         ],
-      })
+      }),
     )
 
     await client.set(
@@ -753,7 +840,186 @@ const populate = async () => {
             options: [],
           },
         ],
-      })
+      }),
+    )
+
+    await client.set(
+      'debug-cc-payments',
+      encode({
+        name: 'debug-cc-payments',
+        twitterHandle: '',
+        description: '',
+        url: 'https://debug-cc-payments.prerelease.clubs.place',
+        propertyAddress: '0x70a8B9a4B2d407a542c205adBbEA38289c3285eB',
+        chainId: 80001, // Polygon: 137 // Mumbai: 80001
+        rpcUrl:
+          'https://polygon-mumbai.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920', // Polygon: https://polygon-mainnet.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920 // Mumbai: https://polygon-mumbai.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920
+        adminRolePoints: 0,
+        options: [
+          {
+            key: 'ogp',
+            value: { image: 'https://i.imgur.com/I6Yr0V7.jpg' },
+          },
+          {
+            key: 'navigationLinks',
+            value: [
+              {
+                display: 'Use MATIC',
+                path: '/nft',
+              },
+            ],
+          },
+          {
+            key: 'footerLinks',
+            value: [
+              // {
+              //   display: 'About',
+              //   path: 'https://sites.google.com/view/kougenjidao',
+              // },
+            ],
+          },
+          {
+            key: 'avatarImgSrc',
+            value: 'https://source.unsplash.com/400x400/?nature',
+          },
+        ],
+        plugins: [
+          {
+            id: 'devprotocol:clubs:plugin:fiat',
+            name: 'fiat',
+            enable: true,
+            options: [
+              {
+                key: 'products',
+                value: debugProducts,
+              },
+              {
+                key: 'priceOverrides',
+                value: [
+                  {
+                    id: '1',
+                    price: 100_000,
+                    currency: 'YEN',
+                  },
+                  {
+                    id: '2',
+                    price: 80_000,
+                    currency: 'YEN',
+                  },
+                  {
+                    id: '3',
+                    price: 70_000,
+                    currency: 'YEN',
+                  },
+                  {
+                    id: '4',
+                    price: 10_000,
+                    currency: 'YEN',
+                  },
+                  {
+                    id: '5',
+                    price: 10_000,
+                    currency: 'YEN',
+                  },
+                  {
+                    id: '6',
+                    price: 10_000,
+                    currency: 'YEN',
+                  },
+                ],
+              },
+              {
+                key: 'hero',
+                value: {
+                  coverImgSrc: 'https://source.unsplash.com/1200x600/?nature',
+                  title: 'Debug',
+                  description: [
+                    `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`,
+                  ],
+                },
+              },
+              {
+                key: 'title',
+                value: undefined,
+              },
+              {
+                key: 'slug',
+                value: [],
+              },
+            ],
+          },
+          {
+            id: 'devprotocol:clubs:theme-1',
+            name: 'defaultTheme',
+            enable: true,
+            options: [
+              {
+                key: 'globalConfig',
+                value: {
+                  bg: 'rgba(29, 36, 38, 1)',
+                },
+              },
+              {
+                key: 'homeConfig',
+                value: {
+                  hero: {
+                    image: 'https://source.unsplash.com/1200x600/?nature',
+                  },
+                  description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`,
+                },
+              },
+            ],
+          },
+          {
+            id: 'devprotocol:clubs:plugin:me',
+            name: 'me',
+            enable: true,
+            options: [],
+          },
+          {
+            id: 'devprotocol:clubs:plugin:buy',
+            name: 'buy',
+            enable: true,
+            options: [
+              {
+                key: 'products',
+                value: debugProducts,
+              },
+            ],
+          },
+          {
+            id: 'devprotocol:clubs:plugin:nft',
+            name: 'nft',
+            enable: true,
+            options: [
+              {
+                key: 'products',
+                value: debugProducts,
+              },
+              {
+                key: 'coverImgSrc',
+                value: 'https://source.unsplash.com/1200x600/?nature',
+              },
+              {
+                key: 'title',
+                value: 'Debug',
+              },
+              {
+                key: 'description',
+                value: [
+                  `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`,
+                ],
+              },
+            ],
+          },
+          {
+            id: 'devprotocol:clubs:gated-contact-form',
+            name: 'message',
+            enable: true,
+            options: [],
+          },
+        ],
+      }),
     )
 
     console.log('Tenants set')
