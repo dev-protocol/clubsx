@@ -3,21 +3,12 @@ import type { ExtendedProducts } from '@components/list/cards'
 import Cards from '@components/list/cards'
 import Hero from '@components/Hero/hero'
 import Hero2 from '@components/Hero/hero2'
-import type { Currency } from '@crossmint/client-sdk-base'
 
 const {
-  cm,
-  paymentCurrency,
   products,
   title,
   hero,
 } = Astro.props as {
-  cm: {
-    projectId: string,
-    collectionId: string,
-    environment?: string,
-  }
-  paymentCurrency?:Currency,
   products: ExtendedProducts
   title?: string
   hero?: {
@@ -46,7 +37,7 @@ const {
     )
   }
 
-  <Cards client:load cm={cm} paymentCurrency={paymentCurrency} products={[...products]} />
+  <Cards client:load products={[...products]} />
 
 </div>
 

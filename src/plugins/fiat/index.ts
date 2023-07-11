@@ -85,10 +85,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
         {
           paths: [...slug],
           props: {
-            cm,
-            paymentCurrency,
             products,
-            priceOverrides,
             hero: hero
               ? {
                   ...hero,
