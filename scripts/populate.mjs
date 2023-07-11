@@ -626,10 +626,10 @@ const populate = async () => {
           {
             key: 'navigationLinks',
             value: [
-              {
-                display: 'ETH での支援',
-                path: '/nft',
-              },
+              // {
+              //   display: 'ETH での支援',
+              //   path: '/nft',
+              // },
               {
                 display: '特典について',
                 path: 'https://sites.google.com/view/kougenjidao/%E3%83%9B%E3%83%BC%E3%83%A0/%E3%81%94%E6%94%AF%E6%8F%B4%E3%81%AE%E7%89%B9%E5%85%B8',
@@ -670,7 +670,7 @@ const populate = async () => {
           {
             id: 'devprotocol:clubs:plugin:fiat',
             name: 'fiat',
-            enable: true,
+            enable: false,
             options: [
               {
                 key: 'products',
@@ -762,32 +762,10 @@ const populate = async () => {
                 key: 'title',
                 value: undefined,
               },
-              {
-                key: 'slug',
-                value: [],
-              },
-            ],
-          },
-          {
-            id: 'devprotocol:clubs:theme-1',
-            name: 'defaultTheme',
-            enable: true,
-            options: [
-              {
-                key: 'globalConfig',
-                value: {
-                  bg: 'rgba(29, 36, 38, 1)',
-                },
-              },
-              {
-                key: 'homeConfig',
-                value: {
-                  hero: {
-                    image: 'https://i.imgur.com/I6Yr0V7.jpg',
-                  },
-                  description: `The funds raised for Kougenji will be used to restore the celestial maiden paper picture frame on the decorative transom and other cultural assets within the temple. Supporters are allowed to join Kougenji's Discord channel for the latest news and updates about the restoration (photos, etc.). We also plan to provide a variety of perks according to the types of NFT you'll purchase.`,
-                },
-              },
+              // {
+              //   key: 'slug',
+              //   value: [],
+              // },
             ],
           },
           {
@@ -831,6 +809,10 @@ const populate = async () => {
                   `The funds raised for Kougenji will be used to restore the celestial maiden paper picture frame on the decorative transom and other cultural assets within the temple. Supporters are allowed to join Kougenji's Discord channel for the latest news and updates about the restoration (photos, etc.). We also plan to provide a variety of perks according to the types of NFT you'll purchase.`,
                 ],
               },
+              {
+                key: 'slug',
+                value: [],
+              },
             ],
           },
           {
@@ -838,6 +820,28 @@ const populate = async () => {
             name: 'message',
             enable: true,
             options: [],
+          },
+          {
+            id: 'devprotocol:clubs:theme-1',
+            name: 'defaultTheme',
+            enable: true,
+            options: [
+              {
+                key: 'globalConfig',
+                value: {
+                  bg: 'rgba(29, 36, 38, 1)',
+                },
+              },
+              {
+                key: 'homeConfig',
+                value: {
+                  hero: {
+                    image: 'https://i.imgur.com/I6Yr0V7.jpg',
+                  },
+                  description: `The funds raised for Kougenji will be used to restore the celestial maiden paper picture frame on the decorative transom and other cultural assets within the temple. Supporters are allowed to join Kougenji's Discord channel for the latest news and updates about the restoration (photos, etc.). We also plan to provide a variety of perks according to the types of NFT you'll purchase.`,
+                },
+              },
+            ],
           },
         ],
       }),
