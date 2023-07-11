@@ -8,9 +8,12 @@ import type {
   ClubsFunctionPlugin,
   ClubsPluginMeta,
 } from '@devprotocol/clubs-core'
-import { ClubsPluginCategory } from '@devprotocol/clubs-core'
-import type { UndefinedOr } from '@devprotocol/util-ts'
+import { ClubsPluginCategory, ClubsPluginSignal } from '@devprotocol/clubs-core'
+import { type UndefinedOr, whenDefinedAll } from '@devprotocol/util-ts'
 import { default as Index } from './index.astro'
+import { default as Id } from './id.astro'
+import type { Currency } from '@crossmint/client-sdk-base'
+import type { ExtendedProducts } from '@components/list/cards'
 
 export type PriceOverrides = {
   id: string
@@ -36,10 +39,12 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
   { name, chainId, options: configOptions = [] },
 ) => {
-  const products = options.find((opt) => opt.key === 'products')
+  const _products = options.find((opt) => opt.key === 'products')
     ?.value as UndefinedOr<Products>
   const priceOverrides = options.find((opt) => opt.key === 'priceOverrides')
     ?.value as UndefinedOr<PriceOverrides>
+  const paymentCurrency = options.find((opt) => opt.key === 'paymentCurrency')
+    ?.value as UndefinedOr<Currency>
   const slug = (options.find((opt) => opt.key === 'slug')?.value as UndefinedOr<
     string[]
   >) ?? ['fiat']
@@ -57,12 +62,31 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
 
   const cm = chainId === 137 ? CM.Production : CM.Staging
 
-  return products && priceOverrides
+  const products = whenDefinedAll(
+    [_products, priceOverrides],
+    ([prods, overrides]) =>
+      prods
+        .map((prod) => {
+          const override = overrides.find((x) => x.id === prod.id)
+          return override
+            ? {
+                ...prod,
+                currency: override.currency as any,
+                price: override.price,
+                purchaseLink: override.purchaseLink,
+              }
+            : undefined
+        })
+        .filter((x) => x) as ExtendedProducts,
+  )
+
+  return products
     ? [
         {
           paths: [...slug],
           props: {
             cm,
+            paymentCurrency,
             products,
             priceOverrides,
             hero: hero
@@ -75,6 +99,16 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
           },
           component: Index,
         },
+        ...products.map((product) => ({
+          paths: ['buy-with-cc', product.id],
+          props: {
+            cm,
+            paymentCurrency,
+            product,
+            signals: [ClubsPluginSignal.DisplayFullPage],
+          },
+          component: Id,
+        })),
       ]
     : []
 }

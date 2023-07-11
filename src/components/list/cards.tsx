@@ -15,8 +15,23 @@
   ```
 */
 
+import React, {
+  MouseEvent,
+  ChangeEvent,
+  useState,
+  useEffect,
+  useMemo,
+} from 'react'
 import type { Product } from '@constants/products'
 import { version } from '@crossmint/client-sdk-react-ui/package.json'
+import {
+  Currency,
+  clientNames,
+  crossmintModalService,
+  crossmintPayButtonService,
+} from '@crossmint/client-sdk-base'
+import { utils } from 'ethers'
+import { onMountClient } from '@devprotocol/clubs-core/events'
 
 export type ExtendedProducts = (Product & { purchaseLink?: string })[]
 
@@ -26,11 +41,80 @@ type Params = {
     collectionId: string
     environment?: string
   }
+  paymentCurrency?: Currency
   products: ExtendedProducts
 }
 
-export default function Cards({ cm, products }: Params) {
-  console.log({ cm, version })
+export default function Cards({ cm, paymentCurrency, products }: Params) {
+  const [connecting, setConnecting] = useState(false)
+  const [selectedId, setSelectedId] = useState('')
+  const [account, setAccount] = useState<string>()
+  const [email, setEmail] = useState<string>('')
+
+  console.log({ paymentCurrency, connecting, selectedId, account, email })
+
+  const { connect } = useMemo(
+    () =>
+      crossmintModalService({
+        clientId: cm.collectionId,
+        projectId: cm.projectId,
+        environment: cm.environment,
+        setConnecting,
+        locale: 'en-US',
+        currency: paymentCurrency ?? 'USD',
+        libVersion: version,
+        showOverlay: true,
+        clientName: clientNames.reactUi,
+      }),
+    [cm, paymentCurrency],
+  )
+  const { handleClick } = useMemo(
+    () =>
+      crossmintPayButtonService({
+        connecting,
+        locale: 'en-US',
+      }),
+    [connecting],
+  )
+
+  const _handleClick = useMemo(
+    () =>
+      (opt: { product: Product }) =>
+      (event: MouseEvent<HTMLButtonElement>) => {
+        setSelectedId(opt.product.id)
+        handleClick(event, () => {
+          connect(
+            {
+              type: 'erc-721', // Required param of Crossmint
+              quantity: '1', // Required param of Crossmint
+              totalPrice: '1', // TODO: Replace the value to a calculated MATIC amount in YEN
+              /**
+               * TODO: Change the following options to match the new SwapAndStake contract interface.
+               */
+              _payload: utils.keccak256(opt.product.payload),
+            },
+            account, // Destination EOA
+            account ? undefined : email, // Destination Email
+          )
+        })
+      },
+    [account, email],
+  )
+
+  const _handleChange = useMemo(
+    () => (event: ChangeEvent<HTMLInputElement>) =>
+      setEmail(event.currentTarget.value),
+    [],
+  )
+
+  useEffect(() => {
+    onMountClient(async () => {
+      const [{ connection }] = await Promise.all([
+        import('@devprotocol/clubs-core/connection'),
+      ])
+      connection().account.subscribe(setAccount)
+    })
+  })
 
   return (
     <div>
@@ -39,7 +123,9 @@ export default function Cards({ cm, products }: Params) {
           {products.map((product) => (
             <div
               key={product.id}
-              className="group relative flex flex-col overflow-hidden rounded-[32px] border border-gray-500 bg-white"
+              className={`text-left	group relative flex flex-col overflow-hidden rounded-[32px] border border-gray-500 bg-white hover:cursor-pointer ${
+                connecting && selectedId === product.id && 'animate-pulse'
+              }`}
             >
               <div className="bg-gray-200 group-hover:opacity-75">
                 <img
@@ -50,14 +136,7 @@ export default function Cards({ cm, products }: Params) {
               </div>
               <div className="flex flex-1 flex-col space-y-2 p-4">
                 <h3 className="font-Syne text-4xl font-normal text-gray-900">
-                  <a
-                    rel="prefetch"
-                    href={
-                      product.purchaseLink
-                        ? product.purchaseLink
-                        : `buy/${product.id}?input=eth`
-                    }
-                  >
+                  <a rel="prefetch" href={`buy-with-cc/${product.id}`}>
                     <span aria-hidden="true" className="absolute inset-0" />
                     {product.name}
                   </a>

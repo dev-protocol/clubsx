@@ -3,13 +3,12 @@ import type { ExtendedProducts } from '@components/list/cards'
 import Cards from '@components/list/cards'
 import Hero from '@components/Hero/hero'
 import Hero2 from '@components/Hero/hero2'
-import type { Products } from '@constants/products'
-import type { PriceOverrides } from '@plugins/fiat'
+import type { Currency } from '@crossmint/client-sdk-base'
 
 const {
   cm,
-  products: _products,
-  priceOverrides,
+  paymentCurrency,
+  products,
   title,
   hero,
 } = Astro.props as {
@@ -18,8 +17,8 @@ const {
     collectionId: string,
     environment?: string,
   }
-  products: Products
-  priceOverrides: PriceOverrides
+  paymentCurrency?:Currency,
+  products: ExtendedProducts
   title?: string
   hero?: {
     coverImgSrc: string
@@ -29,19 +28,6 @@ const {
     projectName: string
   }
 }
-const products = _products
-  .map((prod) => {
-    const override = priceOverrides.find((x) => x.id === prod.id)
-    return override
-      ? {
-          ...prod,
-          currency: override.currency as any,
-          price: override.price,
-          purchaseLink: override.purchaseLink,
-        }
-      : undefined
-  })
-  .filter((x) => x) as ExtendedProducts
 ---
 
 <div class="container mx-auto my-16 grid gap-16 px-4">
@@ -60,7 +46,7 @@ const products = _products
     )
   }
 
-  <Cards client:load cm={cm} products={[...products]} />
+  <Cards client:load cm={cm} paymentCurrency={paymentCurrency} products={[...products]} />
 
 </div>
 
