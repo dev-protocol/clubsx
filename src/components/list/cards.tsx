@@ -24,8 +24,7 @@ type Params = {
   products: ExtendedProducts
 }
 
-export default function Cards({  products }: Params) {
-
+export default function Cards({ products }: Params) {
   return (
     <div>
       <div className="mx-auto max-w-2xl px-6 md:max-w-7xl md:px-8">
