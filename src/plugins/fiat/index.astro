@@ -7,11 +7,17 @@ import type { Products } from '@constants/products'
 import type { PriceOverrides } from '@plugins/fiat'
 
 const {
+  cm,
   products: _products,
   priceOverrides,
   title,
   hero,
 } = Astro.props as {
+  cm: {
+    projectId: string,
+    collectionId: string,
+    environment?: string,
+  }
   products: Products
   priceOverrides: PriceOverrides
   title?: string
@@ -54,7 +60,7 @@ const products = _products
     )
   }
 
-  <Cards products={[...products]} />
+  <Cards client:load cm={cm} products={[...products]} />
 
 </div>
 

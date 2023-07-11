@@ -16,14 +16,22 @@
 */
 
 import type { Product } from '@constants/products'
+import { version } from '@crossmint/client-sdk-react-ui/package.json'
 
 export type ExtendedProducts = (Product & { purchaseLink?: string })[]
 
 type Params = {
+  cm: {
+    projectId: string
+    collectionId: string
+    environment?: string
+  }
   products: ExtendedProducts
 }
 
-export default function Cards({ products }: Params) {
+export default function Cards({ cm, products }: Params) {
+  console.log({ cm, version })
+
   return (
     <div>
       <div className="mx-auto max-w-2xl px-6 md:max-w-7xl md:px-8">

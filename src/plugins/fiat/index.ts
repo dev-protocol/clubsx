@@ -1,3 +1,6 @@
+/**
+ * WARN: Don't publish as a npm because this package is only working on clubsx.
+ */
 import type { Products } from '@constants/products'
 import type {
   ClubsFunctionGetAdminPaths,
@@ -16,9 +19,22 @@ export type PriceOverrides = {
   purchaseLink: string
 }[]
 
+const CM = {
+  Production: {
+    projectId: '', // TODO: Replace with a production environment
+    collectionId: '', // TODO: Replace with a production environment
+    environment: undefined,
+  },
+  Staging: {
+    projectId: '50a70688-7796-4dd4-8381-7cba8e18afb2', // TODO: Replace with a new project used new SwapAndStake contract
+    collectionId: '1bcb5542-ac61-4673-a6b3-3266aa0db24f', // TODO: Replace with a new project used new SwapAndStake contract
+    environment: 'staging',
+  },
+}
+
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
-  { name, options: configOptions = [] },
+  { name, chainId, options: configOptions = [] },
 ) => {
   const products = options.find((opt) => opt.key === 'products')
     ?.value as UndefinedOr<Products>
@@ -39,11 +55,14 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
   const title = options.find((opt) => opt.key === 'title')
     ?.value as UndefinedOr<string>
 
+  const cm = chainId === 137 ? CM.Production : CM.Staging
+
   return products && priceOverrides
     ? [
         {
           paths: [...slug],
           props: {
+            cm,
             products,
             priceOverrides,
             hero: hero
