@@ -78,14 +78,14 @@
     unist-util-visit "^4.1.0"
     vfile "^5.3.2"
 
-"@astrojs/netlify@2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@astrojs/netlify/-/netlify-2.3.0.tgz#e88b77cb8b8264f35c2fa75459da26cf553977b9"
-  integrity sha512-gd9Ij4IYKnzbtwdQntknorWI/2oWSlfYnS7WoFUetLgYZzWsPw9WYa3dIiL1YofQcNSByik/1Asf6uZofG+xHA==
+"@astrojs/netlify@2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/netlify/-/netlify-2.4.0.tgz#9f6248555b1231e91643f8b159917b396b39867c"
+  integrity sha512-lki6PlnkohcStYzgP6EJPdqyLd3qzOSf4KvwRins5HerGxAR6C4opkHhWLTFZQBqQPikrrcm6iWxstpuxL3UQg==
   dependencies:
-    "@astrojs/underscore-redirects" "^0.1.0"
+    "@astrojs/underscore-redirects" "^0.2.0"
     "@astrojs/webapi" "^2.2.0"
-    "@netlify/functions" "^1.0.0"
+    "@netlify/functions" "^1.6.0"
     esbuild "^0.15.18"
 
 "@astrojs/prefetch@0.3.0":
@@ -141,10 +141,10 @@
     undici "^5.22.0"
     which-pm-runs "^1.1.0"
 
-"@astrojs/underscore-redirects@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@astrojs/underscore-redirects/-/underscore-redirects-0.1.0.tgz#57eb6c3cef511eec97af94f1d76c301413a4ac5c"
-  integrity sha512-ZVBhD1Tj+gIY3sPu80UCrtbU8qLf6CevlRC6xeuGK8s09YpLzRkwmkxu+T1qVyv63hsW/ObTqu03RBoLuFBq2A==
+"@astrojs/underscore-redirects@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/underscore-redirects/-/underscore-redirects-0.2.0.tgz#17e686188bae8837e0b8df5f383501147c58b3da"
+  integrity sha512-TP+uEdqMGNC7Lyci6WmbHvvMElBDSyHlTsvGH9E9/2duvD/n4KJVyr59klycEroaZJiAi5tzlXL8Jsl9/R32gQ==
 
 "@astrojs/vercel@3.7.1":
   version "3.7.1"
@@ -1716,7 +1716,7 @@
   resolved "https://registry.yarnpkg.com/@metamask/detect-provider/-/detect-provider-2.0.0.tgz#4bc2795e5e6f7d8b84b2e845058d2f222c99917d"
   integrity sha512-sFpN+TX13E9fdBDh9lvQeZdJn4qYoRb/6QF2oZZK/Pn559IhCFacPMU1rMuqyXoFQF3JSJfii2l98B87QDPeCQ==
 
-"@netlify/functions@^1.0.0":
+"@netlify/functions@^1.6.0":
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/@netlify/functions/-/functions-1.6.0.tgz#c373423e6fef0e6f7422ac0345e8bbf2cb692366"
   integrity sha512-6G92AlcpFrQG72XU8YH8pg94eDnq7+Q0YJhb8x4qNpdGsvuzvrfHWBmqFGp/Yshmv4wex9lpsTRZOocdrA2erQ==
