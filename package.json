@@ -52,7 +52,7 @@
     "@astrojs/vue": "2.2.1",
     "@crossmint/client-sdk-base": "^1.0.1-alpha.1",
     "@crossmint/client-sdk-react-ui": "^1.0.1-alpha.1",
-    "@devprotocol/clubs-core": "0.45.2",
+    "@devprotocol/clubs-core": "1.0.2",
     "@devprotocol/dev-kit": "7.3.4",
     "@devprotocol/elements": "0.2.2",
     "@devprotocol/hashi": "2.1.1",
