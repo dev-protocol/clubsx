@@ -1,3 +1,4 @@
+import type { BaseProvider } from '@ethersproject/providers'
 import { ethers } from 'ethers'
 import type {
   TransactionResponse,

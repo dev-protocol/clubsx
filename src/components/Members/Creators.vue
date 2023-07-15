@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { ethers, JsonRpcProvider, ZeroAddress } from 'ethers'
+import { JsonRpcProvider, ZeroAddress } from 'ethers'
 import { getBalances } from '@fixtures/dev-kit'
 import Avator from '@components/Members/Avator.vue'
 

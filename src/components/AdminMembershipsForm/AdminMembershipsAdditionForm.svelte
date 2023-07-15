@@ -3,7 +3,7 @@
   import MembershipOptionCard from './MembershipOption.svelte'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import type { Membership } from '@plugins/memberships/index'
-  import { ethers, parseUnits,keccak256, JsonRpcProvider, ZeroAddress } from 'ethers'
+  import { parseUnits, keccak256, JsonRpcProvider, ZeroAddress, Signer } from 'ethers'
   import { onMount } from 'svelte'
   import BigNumber from 'bignumber.js'
   import { clientsSTokens } from '@devprotocol/dev-kit'
@@ -35,7 +35,7 @@
   let loading = false
 
   let connection: typeof Connection
-  let signer: ethers.Signer | undefined
+  let signer: Signer | undefined
   let currentAddress: string | undefined
 
   const minPrice = 0.000001
