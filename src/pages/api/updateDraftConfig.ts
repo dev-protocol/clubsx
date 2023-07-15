@@ -1,6 +1,6 @@
 import { ClubsPluginOption, decode } from '@devprotocol/clubs-core'
 import { instanceStore } from '@fixtures/firebase/instance'
-import { utils } from 'ethers'
+import { hashMessage, recoverAddress } from 'ethers'
 import { createClient } from 'redis'
 
 export const post = async ({ request }: { request: Request }) => {
@@ -75,7 +75,7 @@ export const post = async ({ request }: { request: Request }) => {
 
   // We check that the signature matches the address in the draftOptions.
   if (hashAndSignGiven) {
-    const address = utils.recoverAddress(utils.hashMessage(hash), sig)
+    const address = recoverAddress(hashMessage(hash), sig)
     if (address.toLowerCase() !== value.address?.toLowerCase()) {
       return new Response(JSON.stringify({ error: 'Invalid sig' }), {
         status: 401,

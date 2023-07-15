@@ -4,7 +4,7 @@
   import { propertiesAssets } from '@devprotocol/dev-kit/agent'
   import { clientsSTokens } from '@devprotocol/dev-kit/agent'
   import { whenDefined } from '@devprotocol/util-ts'
-  import { providers, utils } from 'ethers'
+  import { JsonRpcProvider, formatEther } from 'ethers'
   import { onMount } from 'svelte'
   import YouTube from '@components/Icons/YouTube.svelte'
   import Discord from '@components/Icons/Discord.svelte'
@@ -46,7 +46,7 @@
       ? 'https://arbiscan.io'
       : undefined
 
-  const provider = new providers.JsonRpcProvider(rpcUrl)
+  const provider = new JsonRpcProvider(rpcUrl)
 
   const slugToLink = (slug?: string) =>
     slug === 'discord'
@@ -85,7 +85,7 @@
       : l2
       ? l2.totalLockedForProperty(propertyAddress)
       : undefined)
-    totalStaked = whenDefined(tl, (v) => utils.formatEther(v).toString())
+    totalStaked = whenDefined(tl, (v) => formatEther(v).toString())
   })
 </script>
 

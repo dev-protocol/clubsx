@@ -6,12 +6,12 @@
   } from '@fixtures/dev-kit'
   import { whenDefined } from '@devprotocol/util-ts'
   import { onMount } from 'svelte'
-  import { ethers, BigNumber, providers } from 'ethers'
+  import { JsonRpcProvider } from 'ethers'
   import { usdByDev } from '@fixtures/coingecko/api'
   export let config: ClubsConfiguration
 
   let { propertyAddress, rpcUrl } = config
-  const provider = new providers.JsonRpcProvider(rpcUrl)
+  const provider = new JsonRpcProvider(rpcUrl)
   let members: number | undefined = 0
   let earningsInDev: number | undefined
   let earnings: number | undefined

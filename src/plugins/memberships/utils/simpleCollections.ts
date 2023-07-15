@@ -1,11 +1,11 @@
-import type { BaseProvider } from '@ethersproject/providers'
 import { ethers } from 'ethers'
 import type {
   TransactionResponse,
   TransactionReceipt,
-} from '@ethersproject/abstract-provider'
-import type { UndefinedOr } from '@devprotocol/util-ts'
-import type { BigNumber } from 'ethers'
+  BrowserProvider,
+  Signer,
+  Provider,
+} from 'ethers'
 import type { Image } from './types/setImageArg'
 type Address = {
   chainId: number
@@ -607,33 +607,33 @@ const simpleCollectionsAbi = [
 ]
 
 export async function callSimpleCollections(
-  provider: ethers.Signer,
+  provider: Signer,
   functionName: 'setImages',
   args: [propertyAddress: string, images: Image[], keys: string[]],
 ): Promise<TransactionResponse>
 
 export async function callSimpleCollections(
-  provider: BaseProvider,
+  provider: Signer,
   functionName: 'removeImage',
   args: [propertyAddress: string, key: string],
 ): Promise<TransactionResponse>
 
 export async function callSimpleCollections(
-  provider: BaseProvider,
+  provider: BrowserProvider,
   functionName: 'propertyImages',
   args: [propertyAddress: string, key: string],
 ): Promise<Image>
 
 export async function callSimpleCollections(
-  provider: BaseProvider | ethers.Signer,
+  provider: BrowserProvider | Signer,
   functionName: string,
   args: unknown[],
 ): Promise<unknown> {
-  const chainId = await ('getChainId' in provider
-    ? (provider as ethers.Signer).getChainId()
-    : (provider as BaseProvider).getNetwork()
+  const chainId = await ('getNetwork' in provider
+    ? (provider as BrowserProvider).getNetwork()
+    : ((provider as Signer).provider as Provider).getNetwork()
   ).then((network) => {
-    return typeof network === 'number' ? network : network.chainId
+    return Number(network.chainId)
   })
 
   const simpleCollectionaddress =
@@ -645,8 +645,6 @@ export async function callSimpleCollections(
     provider,
   )
 
-  const result: TransactionReceipt = await contract.functions[functionName](
-    ...args,
-  )
+  const result: TransactionReceipt = await contract[functionName](...args)
   return result
 }

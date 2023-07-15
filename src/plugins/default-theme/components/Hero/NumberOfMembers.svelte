@@ -2,7 +2,7 @@
   import type { UndefinedOr } from '@devprotocol/util-ts'
   import { whenDefined } from '@devprotocol/util-ts'
   import { detectStokensByPropertyAddress } from '@fixtures/dev-kit'
-  import { constants, providers } from 'ethers'
+  import { JsonRpcProvider, ZeroAddress } from 'ethers'
   import { onMount } from 'svelte'
 
   export let propertyAddress: UndefinedOr<string> = undefined
@@ -11,8 +11,8 @@
   let members: UndefinedOr<number> = undefined
 
   onMount(async () => {
-    const provider = new providers.JsonRpcProvider(rpcUrl)
-    if (!propertyAddress || propertyAddress === constants.AddressZero) {
+    const provider = new JsonRpcProvider(rpcUrl)
+    if (!propertyAddress || propertyAddress === ZeroAddress) {
       return
     }
     const res = await detectStokensByPropertyAddress(provider, propertyAddress)

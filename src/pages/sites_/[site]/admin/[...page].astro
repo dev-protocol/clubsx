@@ -141,7 +141,7 @@ const siteBaseUrl = new URL(Astro.request.url).origin
   import type { DraftOptions } from '@constants/draft'
   import { decode, onSubmitConfig } from '@devprotocol/clubs-core'
   import { onMountClient } from '@devprotocol/clubs-core/events'
-  import { utils } from 'ethers'
+  import { hashMessage } from 'ethers'
 
   let connection: typeof Connection
   let signer: ethers.Signer | undefined
@@ -169,7 +169,7 @@ const siteBaseUrl = new URL(Astro.request.url).origin
       })
     }
 
-    const hash = utils.hashMessage(data)
+    const hash = hashMessage(data)
     let sig: string
     try {
       sig = await signer.signMessage(hash)

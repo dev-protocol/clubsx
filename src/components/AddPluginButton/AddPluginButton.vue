@@ -22,11 +22,10 @@
 </template>
 
 <script lang="ts">
-import { utils } from 'ethers'
+import { hashMessage } from 'ethers'
 import type Web3Modal from 'web3modal'
 import { defineComponent, PropType } from 'vue'
 import type { PluginMeta } from '@constants/plugins'
-import type { BaseProvider } from '@ethersproject/providers'
 import type { connection as Connection } from '@devprotocol/clubs-core/connection'
 import { onMountClient } from '@devprotocol/clubs-core/events'
 import { EthersProviderFrom, GetModalProvider } from '@fixtures/wallet'
@@ -80,11 +79,11 @@ export default defineComponent({
         this.addingPluginToClubsStatusMsg = 'Adding failed, try again!'
         return
       }
-      const signer = provider.getSigner()
+      const signer = await provider.getSigner()
       this.connection && this.connection().signer.next(signer)
 
       // Sign the data.
-      const hash = utils.hashMessage(this.plugin.id)
+      const hash = hashMessage(this.plugin.id)
       let sig: string
       try {
         sig = await signer.signMessage(hash)

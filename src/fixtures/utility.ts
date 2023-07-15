@@ -1,6 +1,12 @@
-import type { BaseProvider } from '@ethersproject/providers'
 import BigNumber from 'bignumber.js'
-import { ethers, utils } from 'ethers'
+import {
+  BrowserProvider,
+  ContractRunner,
+  JsonRpcProvider,
+  formatEther,
+  keccak256,
+  parseEther,
+} from 'ethers'
 import type { Tiers } from '@constants/tier'
 import { stakeWithEth, stakeWithEthForPolygon, tokenURISim } from './dev-kit'
 import { clientsSTokens, client } from '@devprotocol/dev-kit'
@@ -24,7 +30,7 @@ export const validImageUri = (path: string) => {
 }
 
 export const fetchSTokens = async (opts: {
-  provider: BaseProvider
+  provider: ContractRunner
   tokenAddress: string
   amount?: number | string
   payload?: string | Uint8Array
@@ -42,7 +48,7 @@ export const fetchSTokens = async (opts: {
 }
 
 export const fetchEthForDev = async (opts: {
-  provider: BaseProvider
+  provider: ContractRunner
   tokenAddress: string
   amount: number | string
 }) => {
@@ -55,7 +61,7 @@ export const fetchEthForDev = async (opts: {
 }
 
 export const fetchDevForEth = async (opts: {
-  provider: BaseProvider
+  provider: ContractRunner
   tokenAddress: string
   amount: number | string
   chain?: number
@@ -78,18 +84,20 @@ export const composeTiers = async ({
   tokenAddress,
 }: {
   sourceTiers: Tiers
-  provider: BaseProvider
+  provider: ContractRunner
   tokenAddress: string
 }): Promise<{ dev: Tiers; eth: Tiers }> => {
   const forDev = await Promise.all(
     sourceTiers.map(async ({ ...tier }) => {
       const badgeImageSrc =
         tier.badgeImageSrc ??
-        (await fetchSTokens({
-          provider,
-          tokenAddress,
-          amount: tier.amount,
-        }))
+        (
+          await fetchSTokens({
+            provider,
+            tokenAddress,
+            amount: tier.amount,
+          })
+        ).image
       return { ...tier, badgeImageSrc }
     }),
   )
@@ -100,7 +108,7 @@ export const composeTiers = async ({
         tokenAddress,
         amount: tier.amount,
       })
-      return { ...tier, amount: utils.formatEther(amount) }
+      return { ...tier, amount: formatEther(amount) }
     }),
   )
   return {
@@ -110,7 +118,7 @@ export const composeTiers = async ({
 }
 
 export const checkMemberships = async (
-  provider: ethers.providers.Web3Provider | ethers.providers.JsonRpcProvider,
+  provider: BrowserProvider | JsonRpcProvider,
   propertyAddress: string,
   requiredMemberships: Membership[],
   userAddress: string = '0x0000000000000000000000000000000000000000',
@@ -121,7 +129,7 @@ export const checkMemberships = async (
   // provide userAddress.
   if (userAddress === '0x0000000000000000000000000000000000000000') {
     // gets the visitor's address
-    const signer = provider.getSigner()
+    const signer = await provider.getSigner()
     userAddress = await signer.getAddress()
   }
 
@@ -145,7 +153,7 @@ export const checkMemberships = async (
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/any
   const testResult = await Promise.any(
     pairs.map(async ([membership, tokenId]) => {
-      const payload = whenDefined(membership.payload, utils.keccak256)
+      const payload = whenDefined(membership.payload, keccak256)
 
       const sTokenContract = contract.contract()
       // if it has payload, test the payload
@@ -159,9 +167,8 @@ export const checkMemberships = async (
       const testForAmount =
         payload && membership.currency === 'DEV'
           ? undefined
-          : ethers.BigNumber.from(
-              (await contract.positions(tokenId)).amount,
-            ).gte(utils.parseEther(membership.price.toString()))
+          : BigInt((await contract.positions(tokenId)).amount) >
+            BigInt(parseEther(membership.price.toString()))
 
       if (testForPayload || testForAmount) {
         return tokenId
