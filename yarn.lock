@@ -509,10 +509,10 @@
     svelte "^3.49.0"
     vue "^3.2.0"
 
-"@devprotocol/clubs-core@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-1.0.0.tgz#abdf3217b07542bbaf9cc5503b6e9a8c21062c55"
-  integrity sha512-2a+vvYzI59QFOZkGjD1PR7ygpLJ//08DcKodglNW5uoj9+SuQWUj4Es4dvkAi0Q0TDk5x5WmnVXjlAwlst3xMg==
+"@devprotocol/clubs-core@1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-1.0.2.tgz#87613b2100a1a11143ef79f7d541d91462321efd"
+  integrity sha512-OmLepPuTxCuJhWmhGk5HBn2pbpxqlb2LuZdWL6ufUvvE/aD2RbxJ0CyYGNGY1I5dEtmiohMWHcDsoyMV0tK3Ag==
   dependencies:
     "@devprotocol/dev-kit" "8.0.0"
     "@devprotocol/elements" "1.0.0"
@@ -523,6 +523,7 @@
     js-base64 "^3.7.2"
     lit "^2.3.1"
     ramda "^0.29.0"
+    rxjs "^7.8.1"
     web3modal "^1.9.9"
     yaml "2.3.1"
   optionalDependencies:
@@ -555,6 +556,16 @@
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-8.0.0.tgz#6a080f5f397798a143b6c46ca9cbaba3dfa7905a"
   integrity sha512-AvxMPSrshSMnlU+KnTEWU5z/3UuYE8eeVMayqGjNWuZrnAmj2NQRk02i/OhwI2nm2H/QCONySx9dO7tGRr0RoA==
+  dependencies:
+    "@devprotocol/util-ts" "3.0.0"
+    bignumber.js "9.1.1"
+    js-base64 "^3.7.2"
+    ramda "^0.29.0"
+
+"@devprotocol/dev-kit@8.0.2":
+  version "8.0.2"
+  resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-8.0.2.tgz#faa2dbc3aa6d47da8bff99c1ec8aa91f3b22a012"
+  integrity sha512-rqqK6wzaITAbkQiIkq1Korh5bmI+xSQkSkYkC1KfhZgTfD8hxjCpb3uKHIIv/N3KO1XYC8AO4YupL/EoaQDwpw==
   dependencies:
     "@devprotocol/util-ts" "3.0.0"
     bignumber.js "9.1.1"
@@ -7046,7 +7057,7 @@ run-parallel@^1.1.9:
   dependencies:
     queue-microtask "^1.2.2"
 
-rxjs@7.8.1:
+rxjs@7.8.1, rxjs@^7.8.1:
   version "7.8.1"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-7.8.1.tgz#6f6f3d99ea8044291efd92e7c7fcf562c4057543"
   integrity sha512-AA3TVj+0A2iuIoQkWEK/tqFjBq2j+6PO6Y0zJcvzLAFhEFIO3HL0vls9hWLncZbAAbK0mar7oZ4V079I/qPMxg==

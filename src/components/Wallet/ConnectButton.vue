@@ -78,6 +78,7 @@ import type Web3Modal from 'web3modal'
 import { defineComponent } from '@vue/runtime-core'
 import { clientsDev } from '@devprotocol/dev-kit/agent'
 import HSButton from '../Primitives/Hashi/HSButton.vue'
+import { combineLatest } from 'rxjs'
 
 type Data = {
   modalProvider?: Web3Modal
@@ -130,9 +131,12 @@ export default defineComponent({
       ])
     this.connection = connection
     this.modalProvider = GetModalProvider()
-    connection().chain.subscribe((chainId) => {
-      this.supportedNetwork = chainId === this.chainId
-    })
+    combineLatest([connection().chain, connection().account]).subscribe(
+      ([chainId, acc]) => {
+        this.supportedNetwork = chainId === this.chainId
+        this.truncateWalletAddress = acc ? truncateEthAddress(acc) : ''
+      },
+    )
     const { currentAddress, connectedProvider, provider } =
       await ReConnectWallet(this.modalProvider)
     if (currentAddress) {
@@ -147,7 +151,7 @@ export default defineComponent({
   },
   methods: {
     setSigner(provider: Eip1193Provider) {
-      this.connection!().setEip1193Provider(provider)
+      this.connection!().setEip1193Provider(provider, BrowserProvider)
     },
     async connect() {
       const connectedProvider: Eip1193Provider =
