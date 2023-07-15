@@ -15,6 +15,7 @@
   ```
 */
 
+import React from 'react'
 import type { Product } from '@constants/products'
 
 export type ExtendedProducts = (Product & { purchaseLink?: string })[]
@@ -31,7 +32,7 @@ export default function Cards({ products }: Params) {
           {products.map((product) => (
             <div
               key={product.id}
-              className="group relative flex flex-col overflow-hidden rounded-[32px] border border-gray-500 bg-white"
+              className="text-left	group relative flex flex-col overflow-hidden rounded-[32px] border border-gray-500 bg-white hover:cursor-pointer"
             >
               <div className="bg-gray-200 group-hover:opacity-75">
                 <img
@@ -42,14 +43,7 @@ export default function Cards({ products }: Params) {
               </div>
               <div className="flex flex-1 flex-col space-y-2 p-4">
                 <h3 className="font-Syne text-4xl font-normal text-gray-900">
-                  <a
-                    rel="prefetch"
-                    href={
-                      product.purchaseLink
-                        ? product.purchaseLink
-                        : `buy/${product.id}?input=eth`
-                    }
-                  >
+                  <a rel="prefetch" href={`buy-with-cc/${product.id}`}>
                     <span aria-hidden="true" className="absolute inset-0" />
                     {product.name}
                   </a>
