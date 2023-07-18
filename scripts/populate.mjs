@@ -598,6 +598,28 @@ const populate = async () => {
                     payload: undefined,
                     fee: undefined,
                   },
+                  {
+                    id: 'tier-4-1',
+                    name: 'Tier 4 #1',
+                    description: `林檎天井絵\n\n**特典** - 寺DAODiscordへの参加権\n月1回のコミュニティアワーやメンバー限定クエストへ参加できます`,
+                    price: 200,
+                    currency: 'DEV',
+                    imageSrc:
+                      'https://bafybeigis7fdpwizu34v5iwjvc2lcdk4g75keqa3xe72jekldmhjopahnu.ipfs.nftstorage.link',
+                    payload: toBytes32('林檎天井絵'),
+                    fee: undefined,
+                  },
+                  {
+                    id: 'tier-4-2',
+                    name: 'Tier 4 #2',
+                    description: `蓮華一本立木華\n\n**特典** - 寺DAODiscordへの参加権\n月1回のコミュニティアワーやメンバー限定クエストへ参加できます`,
+                    price: 200,
+                    currency: 'DEV',
+                    imageSrc:
+                      'https://bafybeihrh7haq3yadt6nfltynv6ukgovm4hgfhd6o7zpkaf33cjl6tuoau.ipfs.nftstorage.link',
+                    payload: toBytes32('蓮華一本立木華'),
+                    fee: undefined,
+                  },
                 ],
               },
             ],
