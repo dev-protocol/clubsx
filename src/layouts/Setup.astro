@@ -166,7 +166,7 @@ const avatarImgSrc: string | undefined = config.options?.find(
   import type { UndefinedOr } from '@devprotocol/util-ts'
   import { instanceStore } from '@fixtures/firebase/clientInstance'
   import { GetModalProvider, EthersProviderFrom } from '@fixtures/wallet'
-  import { utils } from 'ethers'
+  import { hashMessage } from 'ethers'
   import type { Auth } from 'firebase/auth'
 
   const siteName = (document.getElementById('siteName') as HTMLInputElement)
@@ -246,10 +246,10 @@ const avatarImgSrc: string | undefined = config.options?.find(
         onFinish({ success: false })
         return
       }
-      const signer = provider.getSigner()
+      const signer = await provider.getSigner()
       connection().signer.next(signer)
 
-      const hash = utils.hashMessage(data)
+      const hash = hashMessage(data)
       let sig: string
       try {
         sig = await signer.signMessage(hash)

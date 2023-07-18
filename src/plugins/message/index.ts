@@ -24,7 +24,7 @@ import { Content as Readme } from './README.md'
 import Preview1 from './assets/message-1.jpg'
 import Preview2 from './assets/message-2.jpg'
 import Preview3 from './assets/message-3.jpg'
-import { utils } from 'ethers'
+import { randomBytes } from 'ethers'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
@@ -87,7 +87,7 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
       ?.value as UndefinedOr<Membership[]>) ?? []
 
   const namespace = uuidv5(url, uuidv5.URL)
-  const uuid = uuidv5(utils.randomBytes(32), namespace)
+  const uuid = uuidv5(randomBytes(32), namespace)
 
   return [
     {

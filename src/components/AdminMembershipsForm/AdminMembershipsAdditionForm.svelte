@@ -3,11 +3,10 @@
   import MembershipOptionCard from './MembershipOption.svelte'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import type { Membership } from '@plugins/memberships/index'
-  import { ethers, providers, utils } from 'ethers'
+  import { parseUnits, keccak256, JsonRpcProvider, ZeroAddress, Signer } from 'ethers'
   import { onMount } from 'svelte'
   import BigNumber from 'bignumber.js'
   import { clientsSTokens } from '@devprotocol/dev-kit'
-  import { keccak256 } from 'ethers/lib/utils'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
   import { buildConfig, controlModal } from '@devprotocol/clubs-core/events'
   import { callSimpleCollections } from '@plugins/memberships/utils/simpleCollections'
@@ -22,7 +21,7 @@
   export let rpcUrl: string
   export let propertyAddress: string | null | undefined = undefined
   export let clubName: string | undefined = undefined
-  const metaOfPayload = utils.keccak256(membership.payload)
+  const metaOfPayload = keccak256(membership.payload)
 
   let updatingMembershipsStatus: boolean = false
 
@@ -31,12 +30,12 @@
   let invalidPriceMsg: string = ''
 
   const originalId = membership.id
-  const provider = new providers.JsonRpcProvider(rpcUrl)
+  const provider = new JsonRpcProvider(rpcUrl)
   let membershipExists = false
   let loading = false
 
   let connection: typeof Connection
-  let signer: ethers.Signer | undefined
+  let signer: Signer | undefined
   let currentAddress: string | undefined
 
   const minPrice = 0.000001
@@ -245,7 +244,7 @@
       if (
         keccak256(
           typeof membership.payload === typeof {} // If membership.payload is an object
-            ? Object.values(membership.payload) // then we use only values
+            ? new Uint8Array(Object.values(membership.payload)) // then we use only values
             : membership.payload // else we use the array directly
         ) === positionPayload &&
         !membershipExists
@@ -276,15 +275,14 @@
       src: opt.imageSrc,
       name: opt.name,
       description: opt.description,
-      requiredETHAmount: ethers.utils.parseUnits(String(opt.price)).toString(),
+      requiredETHAmount: parseUnits(String(opt.price)).toString(),
       requiredETHFee: opt.fee?.percentage
-        ? ethers.utils
-            .parseUnits(
+        ? parseUnits(
               new BigNumber(opt.price).times(opt.fee.percentage).toFixed()
             )
             .toString()
         : 0,
-      gateway: opt.fee?.beneficiary ?? ethers.constants.AddressZero,
+      gateway: opt.fee?.beneficiary ?? ZeroAddress,
     }))
 
     const keys: string[] =
@@ -303,7 +301,7 @@
       propAddress,
       images,
       keys,
-    ]).then((res: ethers.providers.TransactionResponse) => res.wait())
+    ]).then((res) => res.wait())
 
     controlModal({ open: false })
   }

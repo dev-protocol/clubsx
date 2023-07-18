@@ -1,5 +1,5 @@
 import { authenticate, decode } from '@devprotocol/clubs-core'
-import { providers } from 'ethers'
+import { getDefaultProvider } from 'ethers'
 import { createClient } from 'redis'
 
 export const post = async ({ request }: { request: Request }) => {
@@ -48,9 +48,7 @@ export const post = async ({ request }: { request: Request }) => {
         message: hash,
         signature: sig,
         previousConfiguration,
-        provider: providers.getDefaultProvider(
-          decode(previousConfiguration).rpcUrl,
-        ),
+        provider: getDefaultProvider(decode(previousConfiguration).rpcUrl),
       })
 
   if (!authenticated) {

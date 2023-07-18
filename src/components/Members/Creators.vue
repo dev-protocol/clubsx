@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { ethers, providers, utils } from 'ethers'
+import { JsonRpcProvider, ZeroAddress } from 'ethers'
 import { getBalances } from '@fixtures/dev-kit'
 import Avator from '@components/Members/Avator.vue'
 
@@ -35,9 +35,9 @@ export default {
   },
   async created() {
     const providerURL = this.rpcUrl
-    const provider = new providers.JsonRpcProvider(providerURL)
+    const provider = new JsonRpcProvider(providerURL)
     const balances =
-      this.propertyAddress !== ethers.constants.AddressZero &&
+      this.propertyAddress !== ZeroAddress &&
       this.propertyAddress !== '' &&
       this.propertyAddress
         ? await getBalances(provider, this.propertyAddress)

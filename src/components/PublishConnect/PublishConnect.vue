@@ -24,7 +24,7 @@
 
 <script lang="ts">
 import type Web3Modal from 'web3modal'
-import { providers } from 'ethers'
+import { BrowserProvider, Eip1193Provider } from 'ethers'
 import { whenDefined } from '@devprotocol/util-ts'
 import { defineComponent } from '@vue/runtime-core'
 import type { connection as Connection } from '@devprotocol/clubs-core/connection'
@@ -87,9 +87,8 @@ export default defineComponent({
         this.modalProvider = GetModalProvider()
         this.isAwaitingWalletConfirmation = true
         this.connectButtonTextMsg = 'Fetching wallet details...'
-        const { currentAddress, provider } = await ReConnectWallet(
-          this.modalProvider,
-        )
+        const { currentAddress, connectedProvider, provider } =
+          await ReConnectWallet(this.modalProvider)
         if (currentAddress) {
           this.connected = true
           this.connectButtonTextMsg = 'Connected'
@@ -97,8 +96,8 @@ export default defineComponent({
           this.connected = false
           this.connectButtonTextMsg = 'Connect'
         }
-        if (provider) {
-          this.setSigner(provider)
+        if (connectedProvider) {
+          this.setSigner(connectedProvider)
         }
       } catch (error) {
         this.connected = false
@@ -109,8 +108,8 @@ export default defineComponent({
     })
   },
   methods: {
-    setSigner(provider: providers.Web3Provider) {
-      this.connection!().signer.next(provider.getSigner())
+    setSigner(provider: Eip1193Provider) {
+      this.connection!().setEip1193Provider(provider)
     },
 
     async connect() {
@@ -124,14 +123,17 @@ export default defineComponent({
         this.isAwaitingWalletConfirmation = true
         this.connectButtonTextMsg =
           'Awaiting connection confirmation on wallet...'
-        const connectedProvider = await this.modalProvider!.connect()
+        const connectedProvider: Eip1193Provider =
+          await this.modalProvider!.connect()
         const newProvider = whenDefined(connectedProvider, (p) => {
-          const provider = new providers.Web3Provider(p)
-          this.setSigner(provider)
+          const provider = new BrowserProvider(p)
+          this.setSigner(connectedProvider)
           return provider
         })
 
-        const currentAddress = await newProvider?.getSigner().getAddress()
+        const currentAddress = await (
+          await newProvider?.getSigner()
+        )?.getAddress()
         if (currentAddress) {
           this.connected = true
           this.connectButtonTextMsg = 'Connected'

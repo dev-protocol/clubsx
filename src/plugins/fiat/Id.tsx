@@ -13,7 +13,7 @@ import {
   crossmintModalService,
   crossmintPayButtonService,
 } from '@crossmint/client-sdk-base'
-import { utils } from 'ethers'
+import { keccak256 } from 'ethers'
 import { onMountClient } from '@devprotocol/clubs-core/events'
 
 export type ExtendedProducts = (Product & { purchaseLink?: string })[]
@@ -71,7 +71,7 @@ export default ({ cm, paymentCurrency, product }: Params) => {
             /**
              * TODO: Change the following options to match the new SwapAndStake contract interface.
              */
-            _payload: utils.keccak256(product.payload),
+            _payload: keccak256(product.payload),
           },
           account, // Destination EOA
           account ? undefined : email, // Destination Email

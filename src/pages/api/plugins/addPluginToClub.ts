@@ -1,4 +1,4 @@
-import { providers, utils } from 'ethers'
+import { getDefaultProvider } from 'ethers'
 import { createClient } from 'redis'
 
 import {
@@ -76,7 +76,7 @@ export const post = async ({ request }: { request: Request }) => {
     message: hash,
     signature: sig,
     previousConfiguration,
-    provider: providers.getDefaultProvider(decodedPreviousConfiguration.rpcUrl),
+    provider: getDefaultProvider(decodedPreviousConfiguration.rpcUrl),
   })
 
   if (!authenticated) {

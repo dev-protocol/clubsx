@@ -4,7 +4,7 @@
 
   import type { ClubsConfiguration } from '@devprotocol/clubs-core'
   import { encode, setConfig } from '@devprotocol/clubs-core'
-  import { providers, utils } from 'ethers'
+  import { BrowserProvider, hashMessage } from 'ethers'
   import { defaultConfig } from '@constants/defaultConfig'
   import { onMount } from 'svelte'
   import EmailConnect from '../EmailConnect/EmailConnect.svelte'
@@ -26,7 +26,7 @@
   })
 
   const walletConnect = async () => {
-    let provider: UndefinedOr<providers.Web3Provider>
+    let provider: UndefinedOr<BrowserProvider>
     let currentAddress: string | undefined
 
     try {
@@ -90,9 +90,9 @@
     }
 
     // Get the signature ready.
-    const signer = provider.getSigner()
+    const signer = await provider.getSigner()
     const encodedConfig = encode(config)
-    const hash = utils.hashMessage(encodedConfig)
+    const hash = hashMessage(encodedConfig)
 
     let sig: string | undefined
     try {
