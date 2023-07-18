@@ -40,7 +40,10 @@ export default {
   },
   data() {
     return {
-      memberships: [],
+      memberships: [] as {
+        id: number
+        ownerAddress?: string
+      }[],
     }
   },
   async mounted() {

@@ -1,7 +1,7 @@
 import { whenDefined } from '@devprotocol/util-ts'
 import { generateId } from '@fixtures/api/keys'
 import { instanceStore } from '@fixtures/firebase/instance'
-import { utils } from 'ethers'
+import { hashMessage, recoverAddress } from 'ethers'
 import { createClient } from 'redis'
 
 import type { ClubsData } from './fetchClubs'
@@ -108,7 +108,7 @@ export const post = async ({ request }: { request: Request }) => {
 
   if (hashAndSignGiven) {
     // Else we are using wallet signature to do the same.
-    const address = utils.recoverAddress(utils.hashMessage(hash), sig)
+    const address = recoverAddress(hashMessage(hash), sig)
     if (address.toLowerCase() != expectedAddress.toLowerCase()) {
       return new Response(JSON.stringify({ error: 'Invalid address' }), {
         status: 401,

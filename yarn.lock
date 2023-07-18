@@ -552,16 +552,6 @@
     js-base64 "^3.7.2"
     ramda "^0.28.0"
 
-"@devprotocol/dev-kit@7.3.4":
-  version "7.3.4"
-  resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-7.3.4.tgz#f2c6fb8dc38b8bb51c8ba021ac612dec0a8e6114"
-  integrity sha512-SUdAIJIOviOsKZCMVHit3spEoIuyouQhwlMNhceK02G4Bp/iwgtVocn7z96nmJZ0J8M+RqEySgj3gyKoADjpEg==
-  dependencies:
-    "@devprotocol/util-ts" "3.0.0"
-    bignumber.js "9.1.1"
-    js-base64 "^3.7.2"
-    ramda "^0.29.0"
-
 "@devprotocol/dev-kit@8.0.2":
   version "8.0.2"
   resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-8.0.2.tgz#faa2dbc3aa6d47da8bff99c1ec8aa91f3b22a012"
@@ -3978,6 +3968,19 @@ ethers@5.7.2, ethers@^5.7.0, ethers@^5.7.2:
     "@ethersproject/wallet" "5.7.0"
     "@ethersproject/web" "5.7.1"
     "@ethersproject/wordlists" "5.7.0"
+
+ethers@6.6.3:
+  version "6.6.3"
+  resolved "https://registry.yarnpkg.com/ethers/-/ethers-6.6.3.tgz#9bf11d1bd0f18c7c55087d1a52fdc8f3c33c8bab"
+  integrity sha512-g8wLXeRWSGDD0T+wsL3pvyc3aYnmxEEAwH8LSoDTDRhRsmJeNs9YMXlNU7ax2caO+zHkeI9MkHiz6rwxEjN4Mw==
+  dependencies:
+    "@adraffy/ens-normalize" "1.9.2"
+    "@noble/hashes" "1.1.2"
+    "@noble/secp256k1" "1.7.1"
+    "@types/node" "18.15.13"
+    aes-js "4.0.0-beta.5"
+    tslib "2.4.0"
+    ws "8.5.0"
 
 ethers@6.6.4:
   version "6.6.4"

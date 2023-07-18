@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { providers } from 'ethers'
+import { JsonRpcProvider } from 'ethers'
 import {
   detectStokensByPropertyAddress,
   getStokenOwnerOf,
@@ -41,7 +41,7 @@ export default {
   },
   async created() {
     const providerURL = this.rpcUrl
-    const provider = new providers.JsonRpcProvider(providerURL)
+    const provider = new JsonRpcProvider(providerURL)
     const stokenIDs = await detectStokensByPropertyAddress(
       provider,
       this.propertyAddress,

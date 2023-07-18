@@ -19,7 +19,7 @@
 
 <script>
 import BigNumber from 'bignumber.js'
-import { providers } from 'ethers'
+import { JsonRpcProvider } from 'ethers'
 import { getStokenPositions, getStokenTokenURI } from '@fixtures/dev-kit'
 import { toNaturalNumber, validImageUri } from '@fixtures/utility'
 
@@ -35,7 +35,7 @@ export default {
   },
   async created() {
     const providerURL = this.rpcUrl
-    const provider = new providers.JsonRpcProvider(providerURL)
+    const provider = new JsonRpcProvider(providerURL)
 
     const balances = await getStokenPositions(provider, this.stokenID)
     const uri = await getStokenTokenURI(provider, this.stokenID)

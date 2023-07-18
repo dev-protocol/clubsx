@@ -309,13 +309,11 @@
 </template>
 
 <script lang="ts">
-import { ethers } from 'ethers'
-import { constants } from 'ethers'
+import { ContractRunner, Signer, ZeroAddress } from 'ethers'
 import type Web3Modal from 'web3modal'
 import { PropType, defineComponent } from '@vue/runtime-core'
 import { clientsSTokens } from '@devprotocol/dev-kit/agent'
 import type { connection as Connection } from '@devprotocol/clubs-core/connection'
-import type { BaseProvider } from '@ethersproject/providers'
 import {
   address,
   callSimpleCollections,
@@ -358,8 +356,8 @@ type Data = {
   clubPublished: boolean
 }
 
-let provider: BaseProvider | undefined
-let signer: ethers.Signer | undefined
+let provider: ContractRunner | undefined
+let signer: Signer | undefined
 
 export default defineComponent({
   name: 'PublishNetworkSelection',
@@ -385,14 +383,14 @@ export default defineComponent({
       connection: undefined,
       networkSelected:
         !this.config.propertyAddress ||
-        this.config.propertyAddress === ethers.constants.AddressZero
+        this.config.propertyAddress === ZeroAddress
           ? ''
           : this.getNetworkFromChainId(this.config.chainId),
       connected: false,
       popupWindow: null as Window | null,
       addressFromNiwa:
         !this.config.propertyAddress ||
-        this.config.propertyAddress === ethers.constants.AddressZero
+        this.config.propertyAddress === ZeroAddress
           ? ''
           : this.config.propertyAddress,
       membershipInitialized: false,
@@ -414,7 +412,7 @@ export default defineComponent({
       const address = Boolean(this.addressFromNiwa)
         ? this.addressFromNiwa
         : this.config.propertyAddress
-      return !!address && address !== constants.AddressZero
+      return !!address && address !== ZeroAddress
     },
     buttonClasses() {
       const classes =
@@ -471,7 +469,7 @@ export default defineComponent({
     },
     addressFromNiwaOrConfig() {
       return this.config.propertyAddress &&
-        this.config.propertyAddress != ethers.constants.AddressZero
+        this.config.propertyAddress != ZeroAddress
         ? this.config.propertyAddress
         : this.addressFromNiwa
     },
@@ -537,7 +535,7 @@ export default defineComponent({
         }
       }
 
-      const [l1, l2] = await clientsSTokens(provider as BaseProvider)
+      const [l1, l2] = await clientsSTokens(provider)
       const propertyAddress = Boolean(this.addressFromNiwa)
         ? (this.addressFromNiwa as string)
         : (this.addressFromNiwaOrConfig as string)
@@ -816,7 +814,7 @@ export default defineComponent({
       }
 
       try {
-        const [l1, l2] = await clientsSTokens(provider as BaseProvider)
+        const [l1, l2] = await clientsSTokens(provider)
         const propertyAddress = Boolean(this.addressFromNiwa)
           ? (this.addressFromNiwa as string)
           : (this.addressFromNiwaOrConfig as string)
@@ -831,13 +829,10 @@ export default defineComponent({
           return
         }
 
-        const tx = await l
-          .contract()
-          .connect(signer)
-          [`setTokenURIDescriptor(address,address)`](
-            propertyAddress,
-            descriptiorAddress,
-          )
+        const tx = await l.setTokenURIDescriptor(
+          propertyAddress,
+          descriptiorAddress,
+        )
 
         this.initMembershipTxnStatusMsg =
           'Transaction processing on the blockchain...'
@@ -889,7 +884,7 @@ export default defineComponent({
                   new BigNumber(opt.price).times(opt.fee.percentage).toFixed(),
                 ).toString()
               : 0,
-            gateway: opt.fee?.beneficiary ?? constants.AddressZero,
+            gateway: opt.fee?.beneficiary ?? ZeroAddress,
           })) || []
         const keys: string[] =
           this.membershipsPluginOptions?.map((opt) => keccak256(opt.payload)) ||

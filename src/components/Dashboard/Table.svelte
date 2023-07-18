@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { ClubsConfiguration } from '@devprotocol/clubs-core'
   import { detectStokensByPropertyAddress } from '@fixtures/dev-kit'
-  import { providers } from 'ethers'
+  import { JsonRpcProvider } from 'ethers'
   type TotalClubs = {
     date: Date
     config: ClubsConfiguration
@@ -66,7 +66,7 @@
               ?.value.category}
           </td>
           <td class="px-6 py-4">
-            {#await detectStokensByPropertyAddress(new providers.JsonRpcProvider(club.config.rpcUrl), club.config.propertyAddress)}
+            {#await detectStokensByPropertyAddress(new JsonRpcProvider(club.config.rpcUrl), club.config.propertyAddress)}
               <span
                 class="block animate-pulse rounded bg-gray-500/60 text-5xl text-transparent"
                 >0</span

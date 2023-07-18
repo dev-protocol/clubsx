@@ -11,7 +11,7 @@ import { default as AdminNew } from './admin-new.astro'
 import { default as AdminEdit } from './admin-id.astro'
 import { default as Modal } from './modal.astro'
 import type { UndefinedOr } from '@devprotocol/util-ts'
-import { utils } from 'ethers'
+import { randomBytes, toUtf8Bytes } from 'ethers'
 import type { DraftOptions } from '@constants/draft'
 import { default as Icon } from './assets/icon.svg'
 import { Content as Readme } from './README.md'
@@ -42,7 +42,7 @@ const presets: Membership[] = [
     currency: 'ETH',
     price: 0.005,
     description: `Always be with Alice! This membership gives you access to an exclusive Discord, where you can participate in monthly community hours and view hand-drawn illustrations and posts.`,
-    payload: utils.toUtf8Bytes('Community'),
+    payload: toUtf8Bytes('Community'),
   },
   {
     id: 'preset-team',
@@ -51,7 +51,7 @@ const presets: Membership[] = [
     currency: 'ETH',
     price: 0.005,
     description: `Want to be an Awesome-band contributor? This is it! Help organize events, manage co-creation projects with external collaborators, and see some of the special productions that only the band team can see.`,
-    payload: utils.toUtf8Bytes('Team'),
+    payload: toUtf8Bytes('Team'),
   },
   {
     id: 'preset-dao',
@@ -60,7 +60,7 @@ const presets: Membership[] = [
     currency: 'ETH',
     price: 0.005,
     description: `As a core member of XYZ, a DAO pushing seismic waveform research, join the team that manages the measurement nodes, reporting data, and organization.`,
-    payload: utils.toUtf8Bytes('DAO'),
+    payload: toUtf8Bytes('DAO'),
   },
 ]
 
@@ -102,7 +102,7 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
       paths: ['memberships', 'new', preset.id],
       component: AdminNew,
       props: {
-        membership: { ...preset, payload: utils.randomBytes(8) },
+        membership: { ...preset, payload: randomBytes(8) },
         memberships,
         propertyAddress,
         presets,
