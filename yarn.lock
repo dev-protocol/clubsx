@@ -151,10 +151,10 @@
   resolved "https://registry.yarnpkg.com/@astrojs/underscore-redirects/-/underscore-redirects-0.2.0.tgz#17e686188bae8837e0b8df5f383501147c58b3da"
   integrity sha512-TP+uEdqMGNC7Lyci6WmbHvvMElBDSyHlTsvGH9E9/2duvD/n4KJVyr59klycEroaZJiAi5tzlXL8Jsl9/R32gQ==
 
-"@astrojs/vercel@3.7.1":
-  version "3.7.1"
-  resolved "https://registry.yarnpkg.com/@astrojs/vercel/-/vercel-3.7.1.tgz#cb41028c275836d49ff3877c3130908b6560d9d7"
-  integrity sha512-V6/o2Ug2uq55V/H41B24XuuzSQ9RUwtRPb0+F0pJlqw3qe9qXdCXwzM0qdNvub+H5Bk3hxdrE283ajn6TKmhYw==
+"@astrojs/vercel@3.7.2":
+  version "3.7.2"
+  resolved "https://registry.yarnpkg.com/@astrojs/vercel/-/vercel-3.7.2.tgz#dd54661682a93e65501f3cc98d033ccad59333db"
+  integrity sha512-sCdsQ7aCDvZ5KtaENns7i6fdHilNi3PmP9LqnEgCVECCRqAm6Te0CyV1tAIVxVyX/ZC6+rLvzumVjSK2uGLTXw==
   dependencies:
     "@astrojs/internal-helpers" "^0.1.1"
     "@astrojs/webapi" "^2.2.0"
@@ -509,17 +509,17 @@
     svelte "^3.49.0"
     vue "^3.2.0"
 
-"@devprotocol/clubs-core@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-1.0.2.tgz#87613b2100a1a11143ef79f7d541d91462321efd"
-  integrity sha512-OmLepPuTxCuJhWmhGk5HBn2pbpxqlb2LuZdWL6ufUvvE/aD2RbxJ0CyYGNGY1I5dEtmiohMWHcDsoyMV0tK3Ag==
+"@devprotocol/clubs-core@1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-1.0.3.tgz#f560b53668eb9dd80d8bf857e77e910d0fe028b8"
+  integrity sha512-bAgX1GL4bIvVHU9PDLyYPNXim9rNF3reZmVq9nDvaZzyezDlh8D8/cVUvcDOXlRK0y8+s/Hk7iO+dOdtUJg9fg==
   dependencies:
-    "@devprotocol/dev-kit" "8.0.0"
+    "@devprotocol/dev-kit" "8.0.2"
     "@devprotocol/elements" "1.0.0"
     "@devprotocol/hashi" "2.1.1"
     "@devprotocol/util-ts" "3.0.0"
     "@metamask/detect-provider" "^2.0.0"
-    ethers "6.6.3"
+    ethers "6.6.4"
     js-base64 "^3.7.2"
     lit "^2.3.1"
     ramda "^0.29.0"
@@ -551,16 +551,6 @@
     bignumber.js "9.1.1"
     js-base64 "^3.7.2"
     ramda "^0.28.0"
-
-"@devprotocol/dev-kit@8.0.0":
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-8.0.0.tgz#6a080f5f397798a143b6c46ca9cbaba3dfa7905a"
-  integrity sha512-AvxMPSrshSMnlU+KnTEWU5z/3UuYE8eeVMayqGjNWuZrnAmj2NQRk02i/OhwI2nm2H/QCONySx9dO7tGRr0RoA==
-  dependencies:
-    "@devprotocol/util-ts" "3.0.0"
-    bignumber.js "9.1.1"
-    js-base64 "^3.7.2"
-    ramda "^0.29.0"
 
 "@devprotocol/dev-kit@8.0.2":
   version "8.0.2"
@@ -3983,6 +3973,19 @@ ethers@6.6.3:
   version "6.6.3"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-6.6.3.tgz#9bf11d1bd0f18c7c55087d1a52fdc8f3c33c8bab"
   integrity sha512-g8wLXeRWSGDD0T+wsL3pvyc3aYnmxEEAwH8LSoDTDRhRsmJeNs9YMXlNU7ax2caO+zHkeI9MkHiz6rwxEjN4Mw==
+  dependencies:
+    "@adraffy/ens-normalize" "1.9.2"
+    "@noble/hashes" "1.1.2"
+    "@noble/secp256k1" "1.7.1"
+    "@types/node" "18.15.13"
+    aes-js "4.0.0-beta.5"
+    tslib "2.4.0"
+    ws "8.5.0"
+
+ethers@6.6.4:
+  version "6.6.4"
+  resolved "https://registry.yarnpkg.com/ethers/-/ethers-6.6.4.tgz#f03a86effcd55e82aed96a2fb9a56a9febd3e3d5"
+  integrity sha512-r3myN2hEnydmu23iiIj5kjWnCh5JNzlqrE/z+Kw5UqH173F+JOWzU6qkFB4HVC50epgxzKSL2Hq1oNXA877vwQ==
   dependencies:
     "@adraffy/ens-normalize" "1.9.2"
     "@noble/hashes" "1.1.2"
@@ -7718,10 +7721,10 @@ type-check@~0.3.2:
   dependencies:
     prelude-ls "~1.1.2"
 
-type-fest@3.13.0:
-  version "3.13.0"
-  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-3.13.0.tgz#b088347ae73779a750c461694b264340c4c8c0d7"
-  integrity sha512-Gur3yQGM9qiLNs0KPP7LPgeRbio2QTt4xXouobMCarR0/wyW3F+F/+OWwshg3NG0Adon7uQfSZBpB46NfhoF1A==
+type-fest@4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-4.0.0.tgz#1c87b05c3f0304a2f911b5a47bb45fa4d62031db"
+  integrity sha512-d/oYtUnPM9zar2fqqGLYPzgcY0qUlYK0evgNVti93xpzfjGkMgZHu9Lvgrkn0rqGXTgsFRxFamzjGoD9Uo+dgw==
 
 type-fest@^0.13.1:
   version "0.13.1"

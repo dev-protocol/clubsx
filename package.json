@@ -39,7 +39,7 @@
     "prettier-plugin-astro": "0.11.0",
     "prettier-plugin-svelte": "2.10.1",
     "prettier-plugin-tailwindcss": "0.4.1",
-    "type-fest": "3.13.0",
+    "type-fest": "4.0.0",
     "typescript": "5.1.6"
   },
   "dependencies": {
@@ -48,11 +48,11 @@
     "@astrojs/react": "2.2.1",
     "@astrojs/svelte": "3.1.0",
     "@astrojs/tailwind": "4.0.0",
-    "@astrojs/vercel": "3.7.1",
+    "@astrojs/vercel": "3.7.2",
     "@astrojs/vue": "2.2.1",
     "@crossmint/client-sdk-base": "^1.0.1-alpha.1",
     "@crossmint/client-sdk-react-ui": "^1.0.1-alpha.1",
-    "@devprotocol/clubs-core": "1.0.2",
+    "@devprotocol/clubs-core": "1.0.3",
     "@devprotocol/dev-kit": "8.0.2",
     "@devprotocol/elements": "1.0.0",
     "@devprotocol/hashi": "2.1.1",
