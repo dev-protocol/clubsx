@@ -83,10 +83,10 @@
     unist-util-visit "^4.1.0"
     vfile "^5.3.2"
 
-"@astrojs/netlify@2.4.0":
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/@astrojs/netlify/-/netlify-2.4.0.tgz#9f6248555b1231e91643f8b159917b396b39867c"
-  integrity sha512-lki6PlnkohcStYzgP6EJPdqyLd3qzOSf4KvwRins5HerGxAR6C4opkHhWLTFZQBqQPikrrcm6iWxstpuxL3UQg==
+"@astrojs/netlify@2.5.0":
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/netlify/-/netlify-2.5.0.tgz#cf55c971f59d590706e041035dc84aa36de61f33"
+  integrity sha512-trxTbDqiA/Vk3FaSeUrn8sYZIgInp1ukQizyPZmQtBJ1zSaM/pBhOxbRQRnsGtLAapAqpgl/zVrFPO2kprf3+A==
   dependencies:
     "@astrojs/underscore-redirects" "^0.2.0"
     "@astrojs/webapi" "^2.2.0"
