@@ -586,6 +586,13 @@
   dependencies:
     "@matteusan/sentro" "0.1.25"
 
+"@devprotocol/hashi@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@devprotocol/hashi/-/hashi-2.2.0.tgz#887af0dd26af24989c32901c2443f7ef12fef006"
+  integrity sha512-F20g3lD2MkOQOARrryURIIOtgvuQjLRKtzkCu/CRcd701cp9y9JVWNU3HaTRfeH9YSkabLHORE5ddDGVTqn4Vg==
+  dependencies:
+    "@matteusan/sentro" "0.1.25"
+
 "@devprotocol/util-ts@3.0.0":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@devprotocol/util-ts/-/util-ts-3.0.0.tgz#031b251d59dfd9199a4beee421d8b28c0d2ee7aa"
