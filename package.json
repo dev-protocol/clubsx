@@ -53,7 +53,7 @@
     "@crossmint/client-sdk-base": "^1.0.1-alpha.1",
     "@crossmint/client-sdk-react-ui": "^1.0.1-alpha.1",
     "@devprotocol/clubs-core": "1.0.3",
-    "@devprotocol/dev-kit": "8.0.2",
+    "@devprotocol/dev-kit": "8.1.0",
     "@devprotocol/elements": "1.0.0",
     "@devprotocol/hashi": "2.2.0",
     "@devprotocol/util-ts": "3.0.0",
