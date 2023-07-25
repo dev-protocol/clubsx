@@ -16,30 +16,24 @@ import {
 import { JsonRpcProvider, ZeroAddress, keccak256, parseUnits } from 'ethers'
 import { onMountClient } from '@devprotocol/clubs-core/events'
 import type { CMValues } from '.'
+import BigNumber from 'bignumber.js'
 
 export type ExtendedProducts = (Product & { purchaseLink?: string })[]
 
 type Params = {
   cm: CMValues
-  paymentCurrency?: Currency
   product: Product
   rpcUrl: string
   propertyAddress: string
 }
 
-export default ({
-  cm,
-  paymentCurrency,
-  product,
-  rpcUrl,
-  propertyAddress,
-}: Params) => {
+export default ({ cm, product, rpcUrl, propertyAddress }: Params) => {
   const [connecting, setConnecting] = useState(false)
   const [usingWallet, setUsingWallet] = useState(true)
   const [account, setAccount] = useState<string>()
   const [email, setEmail] = useState<string>('')
 
-  console.log({ paymentCurrency, connecting, account, email })
+  console.log({ connecting, account, email })
 
   const { connect } = useMemo(
     () =>
@@ -49,12 +43,12 @@ export default ({
         environment: cm.environment,
         setConnecting,
         locale: 'en-US',
-        currency: paymentCurrency ?? 'USD',
+        currency: 'USD',
         libVersion: version,
         showOverlay: true,
         clientName: clientNames.reactUi,
       }),
-    [cm, paymentCurrency],
+    [cm],
   )
   const { handleClick } = useMemo(
     () =>
@@ -65,6 +59,10 @@ export default ({
     [connecting],
   )
   const provider = useMemo(() => new JsonRpcProvider(rpcUrl), [rpcUrl])
+  const priceString = useMemo(
+    () => new BigNumber(product.price).toFixed(),
+    [product.price],
+  )
 
   const _handleClick = useMemo(
     () => (event: MouseEvent<HTMLButtonElement>) =>
@@ -72,24 +70,32 @@ export default ({
         const tsFromBlock = (await provider.getBlock('latest'))?.timestamp
         const deadline =
           600 + (tsFromBlock ?? Math.floor(new Date().getTime() / 1000))
+        const props = {
+          type: 'erc-721', // Required param of Crossmint
+          quantity: '1', // Required param of Crossmint
+          totalPrice: priceString, // Required param of Crossmint
+          // totalPrice: '0.000001', // Required param of Crossmint
+          /**
+           * the below values are additional args
+           */
+          token: cm.args.token,
+          path: cm.args.path,
+          property: propertyAddress,
+          amount: parseUnits(priceString, 6).toString(), // USDC has 6 decimal points
+          // amount: '1', // USDC has 6 decimal points
+          _amountOut: '0', // TODO: This value should be calculated with the result of `getEstimatedTokensForDev`
+          deadline: String(deadline),
+          payload:
+            typeof product.payload === 'string'
+              ? product.payload
+              : keccak256(product.payload),
+          gatewayAddress: product.fee?.beneficiary ?? ZeroAddress,
+          gatewayFee: product.fee?.percentage ?? '0',
+          // gatewayFee: '0',
+        }
+        console.log({ props })
         return connect(
-          {
-            type: 'erc-721', // Required param of Crossmint
-            quantity: '1', // Required param of Crossmint
-            totalPrice: product.price, // Required param of Crossmint
-            /**
-             * the below values are additional args
-             */
-            token: cm.args.token,
-            path: cm.args.path,
-            property: propertyAddress,
-            amount: parseUnits(product.price.toString(), 6).toString(), // USDC has 6 decimal points
-            _amountOut: 0, // TODO: This value should be calculated with the result of `getEstimatedTokensForDev`
-            deadline,
-            payload: keccak256(product.payload),
-            gatewayAddress: product.fee?.beneficiary ?? ZeroAddress,
-            gatewayFee: product.fee?.percentage ?? 0,
-          },
+          props,
           account, // Destination EOA
           account ? undefined : email, // Destination Email
         )

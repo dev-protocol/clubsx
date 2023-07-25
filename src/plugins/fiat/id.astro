@@ -6,13 +6,11 @@ import type {CMValues} from '.'
 
 const {
   cm,
-  paymentCurrency,
   product,
   rpcUrl,
   propertyAddress
 } = Astro.props as {
   cm: CMValues
-  paymentCurrency?:Currency,
   product: Product
   rpcUrl:string
   propertyAddress: string
@@ -20,5 +18,5 @@ const {
 ---
 
 
-<IdPage client:load cm={cm} rpcUrl={rpcUrl} propertyAddress={propertyAddress} paymentCurrency={paymentCurrency} product={product} />
+<IdPage client:load cm={cm} rpcUrl={rpcUrl} propertyAddress={propertyAddress} product={product} />
 
