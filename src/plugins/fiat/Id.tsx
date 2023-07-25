@@ -13,22 +13,27 @@ import {
   crossmintModalService,
   crossmintPayButtonService,
 } from '@crossmint/client-sdk-base'
-import { keccak256 } from 'ethers'
+import { JsonRpcProvider, ZeroAddress, keccak256, parseUnits } from 'ethers'
 import { onMountClient } from '@devprotocol/clubs-core/events'
+import type { CMValues } from '.'
 
 export type ExtendedProducts = (Product & { purchaseLink?: string })[]
 
 type Params = {
-  cm: {
-    projectId: string
-    collectionId: string
-    environment?: string
-  }
+  cm: CMValues
   paymentCurrency?: Currency
   product: Product
+  rpcUrl: string
+  propertyAddress: string
 }
 
-export default ({ cm, paymentCurrency, product }: Params) => {
+export default ({
+  cm,
+  paymentCurrency,
+  product,
+  rpcUrl,
+  propertyAddress,
+}: Params) => {
   const [connecting, setConnecting] = useState(false)
   const [usingWallet, setUsingWallet] = useState(true)
   const [account, setAccount] = useState<string>()
@@ -59,24 +64,36 @@ export default ({ cm, paymentCurrency, product }: Params) => {
       }),
     [connecting],
   )
+  const provider = useMemo(() => new JsonRpcProvider(rpcUrl), [rpcUrl])
 
   const _handleClick = useMemo(
     () => (event: MouseEvent<HTMLButtonElement>) =>
-      handleClick(event, () =>
-        connect(
+      handleClick(event, async () => {
+        const tsFromBlock = (await provider.getBlock('latest'))?.timestamp
+        const deadline =
+          300 + (tsFromBlock ?? Math.floor(new Date().getTime() / 1000))
+        return connect(
           {
             type: 'erc-721', // Required param of Crossmint
             quantity: '1', // Required param of Crossmint
-            totalPrice: '1', // TODO: Replace the value to a calculated MATIC amount in YEN
+            totalPrice: product.price, // Required param of Crossmint
             /**
-             * TODO: Change the following options to match the new SwapAndStake contract interface.
+             * the below values are additional args
              */
-            _payload: keccak256(product.payload),
+            token: cm.args.token,
+            path: cm.args.path,
+            property: propertyAddress,
+            amount: parseUnits(product.price.toString(), 6).toString(), // USDC has 6 decimal points
+            _amountOut: 0, // TODO: This value should be calculated with the result of `getEstimatedTokensForDev`
+            deadline,
+            payload: keccak256(product.payload),
+            gatewayAddress: product.fee?.beneficiary ?? ZeroAddress,
+            gatewayFee: product.fee?.percentage ?? 0,
           },
           account, // Destination EOA
           account ? undefined : email, // Destination Email
-        ),
-      ),
+        )
+      }),
     [account, email],
   )
 

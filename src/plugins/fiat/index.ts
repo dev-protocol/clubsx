@@ -22,22 +22,40 @@ export type PriceOverrides = {
   purchaseLink: string
 }[]
 
-const CM = {
+export type CMValues = {
+  projectId: string
+  collectionId: string
+  environment?: string
+  args: {
+    token: string
+    path: string
+  }
+}
+
+const CM: Record<string, CMValues> = {
   Production: {
     projectId: '', // TODO: Replace with a production environment
     collectionId: '', // TODO: Replace with a production environment
     environment: undefined,
+    args: {
+      token: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174', // USDC on Polygon
+      path: '',
+    },
   },
   Staging: {
-    projectId: '50a70688-7796-4dd4-8381-7cba8e18afb2', // TODO: Replace with a new project used new SwapAndStake contract
-    collectionId: '1bcb5542-ac61-4673-a6b3-3266aa0db24f', // TODO: Replace with a new project used new SwapAndStake contract
+    projectId: '50a70688-7796-4dd4-8381-7cba8e18afb2',
+    collectionId: '04968007-9e46-4ad1-b1e9-0d3e2c35d289',
     environment: 'staging',
+    args: {
+      token: '0xe6b8a5CF854791412c1f6EFC7CAf629f5Df1c747', // USDC on Mumbai
+      path: '',
+    },
   },
 }
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
-  { name, chainId, options: configOptions = [] },
+  { name, chainId, rpcUrl, propertyAddress, options: configOptions = [] },
 ) => {
   const _products = options.find((opt) => opt.key === 'products')
     ?.value as UndefinedOr<Products>
@@ -102,6 +120,8 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
             cm,
             paymentCurrency,
             product,
+            rpcUrl,
+            propertyAddress,
             signals: [ClubsPluginSignal.DisplayFullPage],
           },
           component: Id,
