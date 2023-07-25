@@ -71,7 +71,7 @@ export default ({
       handleClick(event, async () => {
         const tsFromBlock = (await provider.getBlock('latest'))?.timestamp
         const deadline =
-          300 + (tsFromBlock ?? Math.floor(new Date().getTime() / 1000))
+          600 + (tsFromBlock ?? Math.floor(new Date().getTime() / 1000))
         return connect(
           {
             type: 'erc-721', // Required param of Crossmint
