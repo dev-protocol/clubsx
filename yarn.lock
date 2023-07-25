@@ -470,7 +470,7 @@
     "@babel/helper-validator-identifier" "^7.22.5"
     to-fast-properties "^2.0.0"
 
-"@crossmint/client-sdk-base@^1.0.1-alpha.1", "@crossmint/client-sdk-base@^1.0.1-alpha.2":
+"@crossmint/client-sdk-base@^1.0.1-alpha.1", "@crossmint/client-sdk-base@^1.0.1-alpha.3":
   version "1.0.1-alpha.3"
   resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-base/-/client-sdk-base-1.0.1-alpha.3.tgz#9c5ab68782e44e503eac6532b53996ed8265ebdb"
   integrity sha512-shkjTJYgVN/kKXxbTGmX1ArpzLure6AWw1zrNEQFZ5jcTEDdG/8yYvzW2tFrrjYaIO6GTVo723mas2qWTv6+Ag==
@@ -479,11 +479,11 @@
     uuid "^8.3.2"
 
 "@crossmint/client-sdk-react-ui@^1.0.1-alpha.1":
-  version "1.0.1-alpha.2"
-  resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-react-ui/-/client-sdk-react-ui-1.0.1-alpha.2.tgz#3e3abc3de96a978284da4e466b177f9c542f4d64"
-  integrity sha512-2Aw8m7nxTZMOkn9KgkjXINRPREbReGJoqmdZ0vYKE570WESqpPb45vFaLdLQuEMtfY8WYA0syzlexyYH6vYciQ==
+  version "1.0.1-alpha.3"
+  resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-react-ui/-/client-sdk-react-ui-1.0.1-alpha.3.tgz#e0fbd578ede6f99dcd3afab86f47b302cc3aeab8"
+  integrity sha512-KmcEwhi1fkHUUobHEsvvTRbp4XZLPn9Fn/m129Y0Yu5Rt5tUi1WJ1VC5cYE0ayeaTZGawkvTODZowOPMEOMe2A==
   dependencies:
-    "@crossmint/client-sdk-base" "^1.0.1-alpha.2"
+    "@crossmint/client-sdk-base" "^1.0.1-alpha.3"
     react-jss "10.9.2"
     uuid "^8.3.2"
 
