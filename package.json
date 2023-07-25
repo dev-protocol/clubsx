@@ -18,7 +18,7 @@
   },
   "devDependencies": {
     "@types/dotenv": "8.2.0",
-    "@types/marked": "^4.0.8",
+    "@types/marked": "^5.0.0",
     "@types/node": "^18.13.0",
     "@types/ramda": "0.29.3",
     "@types/react": "18.2.16",
@@ -71,7 +71,7 @@
     "firebase": "^10.0.0",
     "firebase-admin": "^11.3.0",
     "jsonwebtoken": "^9.0.0",
-    "marked": "4.3.0",
+    "marked": "5.1.2",
     "postcss": "8.4.27",
     "ramda": "0.29.0",
     "react": "18.2.0",
