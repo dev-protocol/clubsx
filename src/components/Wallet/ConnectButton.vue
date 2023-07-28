@@ -105,7 +105,7 @@ export default defineComponent({
       modalProvider: undefined,
       truncateWalletAddress: '',
       formattedUserBalance: '',
-      supportedNetwork: false,
+      supportedNetwork: true,
       connection: undefined,
       isDisabled: this.isDisabled,
     }
@@ -133,7 +133,7 @@ export default defineComponent({
     this.modalProvider = GetModalProvider()
     combineLatest([connection().chain, connection().account]).subscribe(
       ([chainId, acc]) => {
-        this.supportedNetwork = chainId === this.chainId
+        this.supportedNetwork = this.chainId ? chainId === this.chainId : true
         this.truncateWalletAddress = acc ? truncateEthAddress(acc) : ''
       },
     )
