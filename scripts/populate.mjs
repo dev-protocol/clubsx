@@ -1,12 +1,12 @@
 import dotenv from 'dotenv'
 import { encode } from '@devprotocol/clubs-core/encode'
 import { createClient } from 'redis'
-import { utils } from 'ethers'
+import { keccak256, toUtf8Bytes } from 'ethers'
 import fs from 'fs-extra'
 
 dotenv.config()
 
-const toBytes32 = (str) => utils.keccak256(utils.toUtf8Bytes(str))
+const toBytes32 = (str) => keccak256(toUtf8Bytes(str))
 
 const kougenjiProducts = [
   {
@@ -209,13 +209,13 @@ const debugProducts = [
     name: '#1',
     description: `Lorem ipsum.`,
     price: 0.6,
-    currency: 'MATIC',
+    currency: 'USDC',
     imageSrc: 'https://source.unsplash.com/800x800/?nature',
     imageAlt: 'lorem ipsum',
     payload: toBytes32('#1'),
     fee: {
       percentage: 0.95,
-      beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
+      beneficiary: '0x57E21bd98612DE0Bd1723F4bf81A944eF7BfF526',
     },
   },
   {
@@ -223,13 +223,13 @@ const debugProducts = [
     name: '#2',
     description: `Lorem ipsum.`,
     price: 0.5,
-    currency: 'MATIC',
+    currency: 'USDC',
     imageSrc: 'https://source.unsplash.com/800x800/?nature',
     imageAlt: 'lorem ipsum',
     payload: toBytes32('#2'),
     fee: {
       percentage: 0.95,
-      beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
+      beneficiary: '0x57E21bd98612DE0Bd1723F4bf81A944eF7BfF526',
     },
   },
   {
@@ -237,13 +237,13 @@ const debugProducts = [
     name: '#3',
     description: `Lorem ipsum.`,
     price: 0.4,
-    currency: 'MATIC',
+    currency: 'USDC',
     imageSrc: 'https://source.unsplash.com/800x800/?nature',
     imageAlt: 'lorem ipsum',
     payload: toBytes32('#3'),
     fee: {
       percentage: 0.95,
-      beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
+      beneficiary: '0x57E21bd98612DE0Bd1723F4bf81A944eF7BfF526',
     },
   },
   {
@@ -251,13 +251,13 @@ const debugProducts = [
     name: '#4',
     description: `Lorem ipsum.`,
     price: 0.3,
-    currency: 'MATIC',
+    currency: 'USDC',
     imageSrc: 'https://source.unsplash.com/800x800/?nature',
     imageAlt: 'lorem ipsum',
     payload: toBytes32('#4'),
     fee: {
       percentage: 0.95,
-      beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
+      beneficiary: '0x57E21bd98612DE0Bd1723F4bf81A944eF7BfF526',
     },
   },
   {
@@ -265,13 +265,13 @@ const debugProducts = [
     name: '#5',
     description: `Lorem ipsum.`,
     price: 0.2,
-    currency: 'MATIC',
+    currency: 'USDC',
     imageSrc: 'https://source.unsplash.com/800x800/?nature',
     imageAlt: 'lorem ipsum',
     payload: toBytes32('#5'),
     fee: {
       percentage: 0.95,
-      beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
+      beneficiary: '0x57E21bd98612DE0Bd1723F4bf81A944eF7BfF526',
     },
   },
   {
@@ -279,13 +279,13 @@ const debugProducts = [
     name: '#6',
     description: `Lorem ipsum.`,
     price: 0.1,
-    currency: 'MATIC',
+    currency: 'USDC',
     imageSrc: 'https://source.unsplash.com/800x800/?nature',
     imageAlt: 'lorem ipsum',
     payload: toBytes32('#6'),
     fee: {
       percentage: 0.95,
-      beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
+      beneficiary: '0x57E21bd98612DE0Bd1723F4bf81A944eF7BfF526',
     },
   },
 ]
@@ -876,7 +876,7 @@ const populate = async () => {
         twitterHandle: '',
         description: '',
         url: 'https://debug-cc-payments.prerelease.clubs.place',
-        propertyAddress: '0x70a8B9a4B2d407a542c205adBbEA38289c3285eB',
+        propertyAddress: '0x2950e762461B16d552BC4dafE32f70dE555f0Bd9',
         chainId: 80001, // Polygon: 137 // Mumbai: 80001
         rpcUrl:
           'https://polygon-mumbai.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920', // Polygon: https://polygon-mainnet.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920 // Mumbai: https://polygon-mumbai.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920
@@ -916,44 +916,44 @@ const populate = async () => {
             enable: true,
             options: [
               {
-                key: 'products',
-                value: debugProducts,
+                key: 'importFrom',
+                value: ['devprotocol:clubs:plugin:nft'],
               },
-              {
-                key: 'priceOverrides',
-                value: [
-                  {
-                    id: '1',
-                    price: 100_000,
-                    currency: 'YEN',
-                  },
-                  {
-                    id: '2',
-                    price: 80_000,
-                    currency: 'YEN',
-                  },
-                  {
-                    id: '3',
-                    price: 70_000,
-                    currency: 'YEN',
-                  },
-                  {
-                    id: '4',
-                    price: 10_000,
-                    currency: 'YEN',
-                  },
-                  {
-                    id: '5',
-                    price: 10_000,
-                    currency: 'YEN',
-                  },
-                  {
-                    id: '6',
-                    price: 10_000,
-                    currency: 'YEN',
-                  },
-                ],
-              },
+              // {
+              //   key: 'priceOverrides',
+              //   value: [
+              //     {
+              //       id: '1',
+              //       price: 100_000,
+              //       currency: 'YEN',
+              //     },
+              //     {
+              //       id: '2',
+              //       price: 80_000,
+              //       currency: 'YEN',
+              //     },
+              //     {
+              //       id: '3',
+              //       price: 70_000,
+              //       currency: 'YEN',
+              //     },
+              //     {
+              //       id: '4',
+              //       price: 10_000,
+              //       currency: 'YEN',
+              //     },
+              //     {
+              //       id: '5',
+              //       price: 10_000,
+              //       currency: 'YEN',
+              //     },
+              //     {
+              //       id: '6',
+              //       price: 10_000,
+              //       currency: 'YEN',
+              //     },
+              //   ],
+              // },
               {
                 key: 'hero',
                 value: {
