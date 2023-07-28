@@ -60,8 +60,8 @@ const CM: Record<string, CMValues> = {
         ['address', 'uint24', 'address', 'uint24', 'address'],
         [
           '0xFEca406dA9727A25E71e732F9961F680059eF1F9', // USDC
-          '500',
-          '0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa', // WETH
+          '10000',
+          '0x3c8d6A6420C922c88577352983aFFdf7b0F977cA', // devWETH
           '10000',
           '0xcbc698ed514dF6e54932a22515d6D0C27E4DA091', // DEV
         ],

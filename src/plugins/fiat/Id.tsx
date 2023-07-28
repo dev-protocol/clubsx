@@ -12,6 +12,7 @@ import {
   clientNames,
   crossmintModalService,
   crossmintPayButtonService,
+  type PayButtonConfig,
 } from '@crossmint/client-sdk-base'
 import { JsonRpcProvider, ZeroAddress, keccak256, parseUnits } from 'ethers'
 import { onMountClient } from '@devprotocol/clubs-core/events'
@@ -70,11 +71,10 @@ export default ({ cm, product, rpcUrl, propertyAddress }: Params) => {
         const tsFromBlock = (await provider.getBlock('latest'))?.timestamp
         const deadline =
           600 + (tsFromBlock ?? Math.floor(new Date().getTime() / 1000))
-        const props = {
+        const props: PayButtonConfig = {
           type: 'erc-721', // Required param of Crossmint
           quantity: '1', // Required param of Crossmint
           totalPrice: priceString, // Required param of Crossmint
-          // totalPrice: '0.000001', // Required param of Crossmint
           /**
            * the below values are additional args
            */
@@ -82,7 +82,6 @@ export default ({ cm, product, rpcUrl, propertyAddress }: Params) => {
           path: cm.args.path,
           property: propertyAddress,
           amount: parseUnits(priceString, 6).toString(), // USDC has 6 decimal points
-          // amount: '1', // USDC has 6 decimal points
           _amountOut: '0', // TODO: This value should be calculated with the result of `getEstimatedTokensForDev`
           deadline: String(deadline),
           payload:
@@ -90,8 +89,9 @@ export default ({ cm, product, rpcUrl, propertyAddress }: Params) => {
               ? product.payload
               : keccak256(product.payload),
           gatewayAddress: product.fee?.beneficiary ?? ZeroAddress,
-          gatewayFee: product.fee?.percentage ?? '0',
-          // gatewayFee: '0',
+          gatewayFee: new BigNumber(product.fee?.percentage ?? 0)
+            .times(10000)
+            .toFixed(),
         }
         console.log({ props })
         return connect(
