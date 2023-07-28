@@ -32,7 +32,7 @@ export default function Cards({ products }: Params) {
           {products.map((product) => (
             <div
               key={product.id}
-              className="text-left	group relative flex flex-col overflow-hidden rounded-[32px] border border-gray-500 bg-white hover:cursor-pointer"
+              className="group	relative flex flex-col overflow-hidden rounded-[32px] border border-gray-500 bg-white text-left hover:cursor-pointer"
             >
               <div className="bg-gray-200 group-hover:opacity-75">
                 <img

@@ -129,7 +129,7 @@ export default ({ cm, product, rpcUrl, propertyAddress }: Params) => {
 
   return (
     <>
-      <div className="bg-black relative mx-auto mb-12 grid items-start rounded-xl p-4 shadow lg:container lg:mt-12 lg:grid-cols-2 lg:gap-12">
+      <div className="relative mx-auto mb-12 grid items-start rounded-xl bg-black p-4 shadow lg:container lg:mt-12 lg:grid-cols-2 lg:gap-12">
         <section className="flex flex-col gap-8">
           <h2 className="text-4xl font-bold">Buy</h2>
           <div className="grid gap-4">
@@ -137,18 +137,18 @@ export default ({ cm, product, rpcUrl, propertyAddress }: Params) => {
               <>
                 <h3 className="mb-4 text-2xl">Wallet</h3>
                 {account && (
-                  <p className="truncate p-2 rounded-md text-xl bg-gray-500/60 border-[3px] border-transparent">
+                  <p className="truncate rounded-md border-[3px] border-transparent bg-gray-500/60 p-2 text-xl">
                     {account}
                   </p>
                 )}
                 {!account && (
-                  <p className="p-2 rounded-md text-xl animate-pulse bg-gray-500/60 border-[3px] border-transparent	text-center">
+                  <p className="animate-pulse rounded-md border-[3px] border-transparent bg-gray-500/60 p-2 text-center	text-xl">
                     Please connect a wallet
                   </p>
                 )}
                 <button
                   onClick={_toggleUsingWallet}
-                  className="rounded-full p-1 bg-gray-800"
+                  className="rounded-full bg-gray-800 p-1"
                 >
                   Or use email instead
                 </button>
@@ -158,7 +158,7 @@ export default ({ cm, product, rpcUrl, propertyAddress }: Params) => {
               <>
                 <h3 className="mb-4 text-2xl">Email</h3>
                 <input
-                  className="p-2 rounded-md text-xl bg-gray-500/60 outline-0 transition-colors border-[3px] border-gray-500/60 focus:border-gray-300"
+                  className="rounded-md border-[3px] border-gray-500/60 bg-gray-500/60 p-2 text-xl outline-0 transition-colors focus:border-gray-300"
                   placeholder="Enter your email"
                   type="email"
                   onChange={_handleChange}
@@ -166,7 +166,7 @@ export default ({ cm, product, rpcUrl, propertyAddress }: Params) => {
                 />
                 <button
                   onClick={_toggleUsingWallet}
-                  className="rounded-full p-1 bg-gray-800"
+                  className="rounded-full bg-gray-800 p-1"
                 >
                   Or use wallet
                 </button>
@@ -174,7 +174,7 @@ export default ({ cm, product, rpcUrl, propertyAddress }: Params) => {
             )}
           </div>
           <button
-            className="rounded-full my-8 transition-colors hover:bg-blue-600 bg-blue-600/40 border-blue-600 border-[3px] w-full disabled:border-gray-400 disabled:bg-gray-600 p-2 px-4 text-2xl disabled:text-gray-400"
+            className="my-8 w-full rounded-full border-[3px] border-blue-600 bg-blue-600/40 p-2 px-4 text-2xl transition-colors hover:bg-blue-600 disabled:border-gray-400 disabled:bg-gray-600 disabled:text-gray-400"
             onClick={_handleClick}
             disabled={
               connecting ||
@@ -186,22 +186,22 @@ export default ({ cm, product, rpcUrl, propertyAddress }: Params) => {
           </button>
         </section>
         <section className="flex flex-col gap-6">
-          <div className="bg-white/10 p-4 rounded-lg border border-white/20">
+          <div className="rounded-lg border border-white/20 bg-white/10 p-4">
             <img
               src={product.imageSrc}
               alt={product.imageAlt}
-              className="h-auto rounded w-full object-cover object-center sm:h-full sm:w-full"
+              className="h-auto w-full rounded object-cover object-center sm:h-full sm:w-full"
             />
           </div>
           <div>
             <h3 className="text-sm text-white/50">
               <span>{product.name}</span>
             </h3>
-            <p className="text-2xl mt-2">
+            <p className="mt-2 text-2xl">
               {`${Number(product.price).toLocaleString()} ${product.currency}`}
             </p>
             {product.description && (
-              <p className="text-xl mt-6 text-white/80">
+              <p className="mt-6 text-xl text-white/80">
                 {product.description}
               </p>
             )}
