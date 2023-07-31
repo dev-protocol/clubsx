@@ -78,19 +78,20 @@ export default ({ cm, product, rpcUrl, propertyAddress }: Params) => {
           /**
            * the below values are additional args
            */
-          token: cm.args.token,
-          path: cm.args.path,
-          property: propertyAddress,
-          amount: parseUnits(priceString, 6).toString(), // USDC has 6 decimal points
+          _token: cm.args.token,
+          _path: cm.args.path,
+          _property: propertyAddress,
+          _amount: parseUnits(priceString, 6).toString(), // USDC has 6 decimal points
           _amountOut: '0', // TODO: This value should be calculated with the result of `getEstimatedTokensForDev`
-          deadline: String(deadline),
-          payload:
+          _deadline: String(deadline),
+          _payload:
             typeof product.payload === 'string'
               ? product.payload
               : keccak256(product.payload),
-          gatewayAddress: product.fee?.beneficiary ?? ZeroAddress,
-          gatewayFee: new BigNumber(product.fee?.percentage ?? 0)
+          _gatewayAddress: product.fee?.beneficiary ?? ZeroAddress,
+          _gatewayFee: new BigNumber(product.fee?.percentage ?? 0)
             .times(10000)
+            .dp(0)
             .toFixed(),
         }
         console.log({ props })

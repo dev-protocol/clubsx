@@ -33,8 +33,8 @@ export type CMValues = {
 
 const CM: Record<string, CMValues> = {
   Production: {
-    projectId: '', // TODO: Replace with a production environment
-    collectionId: '', // TODO: Replace with a production environment
+    projectId: '153ad47b-5d4f-4017-af84-492596b99c56',
+    collectionId: '5bfe4b7b-bba8-4577-a2de-e443ea92f1d8',
     environment: undefined,
     args: {
       token: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174', // USDC on Polygon
@@ -52,7 +52,7 @@ const CM: Record<string, CMValues> = {
   },
   Staging: {
     projectId: '50a70688-7796-4dd4-8381-7cba8e18afb2',
-    collectionId: 'b61c38fb-fa66-4217-9706-9e8f3d758719',
+    collectionId: '8c3350a1-d877-4357-ba75-4c7e7a91412b',
     environment: 'staging',
     args: {
       token: '0xFEca406dA9727A25E71e732F9961F680059eF1F9', // USDC on Mumbai
