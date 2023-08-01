@@ -43,7 +43,7 @@
     "typescript": "5.1.6"
   },
   "dependencies": {
-    "@astrojs/netlify": "2.5.1",
+    "@astrojs/netlify": "2.5.2",
     "@astrojs/prefetch": "0.3.0",
     "@astrojs/react": "2.2.1",
     "@astrojs/svelte": "3.1.0",
