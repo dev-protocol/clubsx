@@ -18,18 +18,18 @@ import Preview2 from './assets/join-2.jpg'
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
   { propertyAddress, name, rpcUrl },
-  { getPluginConfigById }
+  { getPluginConfigById },
 ) => {
   const [membershipConfig] = getPluginConfigById(
-    'devprotocol:clubs:simple-memberships'
+    'devprotocol:clubs:simple-memberships',
   )
   const allMemberships = membershipConfig?.options.find(
-    (opt) => opt.key === 'memberships'
+    (opt) => opt.key === 'memberships',
   )?.value as UndefinedOr<Membership[]>
 
   // Filter out deprecated memberships.
   const memberships = allMemberships?.filter(
-    (membership) => !membership.deprecated
+    (membership) => !membership.deprecated,
   )
 
   const tiers = memberships?.map((mem) => ({

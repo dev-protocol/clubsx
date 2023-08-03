@@ -40,7 +40,7 @@ export default {
   },
   async created() {
     const { provider, currentAddress } = await ReConnectWallet(
-      this.modalProvider
+      this.modalProvider,
     )
     this.provider = provider
     this.truncateCurrentAddress = truncateEthAddress(currentAddress)

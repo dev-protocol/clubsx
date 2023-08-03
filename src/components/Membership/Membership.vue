@@ -40,7 +40,10 @@ export default {
   },
   data() {
     return {
-      memberships: [],
+      memberships: [] as {
+        id: number
+        ownerAddress?: string
+      }[],
     }
   },
   async mounted() {
@@ -53,13 +56,13 @@ export default {
           async ([prov, userAddress, propertyAddress]) => {
             const stokenIDs = await detectStokensByPropertyAddress(
               prov,
-              propertyAddress
+              propertyAddress,
             )
 
             const accountStokenIDs = await positionsOfOwner(prov, userAddress)
 
-            const membershipStokenIDs = accountStokenIDs?.filter((stokenID) =>
-              stokenIDs?.includes(stokenID)
+            const membershipStokenIDs = accountStokenIDs?.filter(
+              (stokenID) => stokenIDs?.includes(stokenID),
             )
 
             const ret = await whenDefined(membershipStokenIDs, (ids) =>
@@ -71,16 +74,16 @@ export default {
                         id: stokenID,
                         ownerAddress,
                       }
-                    }
+                    },
                   )
-                })
-              )
+                }),
+              ),
             )
             console.log({ ret })
             this.memberships = ret ?? []
-          }
+          },
         )
-      }
+      },
     )
   },
   components: {

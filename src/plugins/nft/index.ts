@@ -11,7 +11,7 @@ import { default as Index } from './index.astro'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
-  config
+  config,
 ) => {
   let products: Products | undefined = []
 

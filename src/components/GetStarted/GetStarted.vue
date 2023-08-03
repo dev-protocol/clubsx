@@ -19,13 +19,13 @@ export default {
       this.popupWindow = window.open(
         popupLink,
         'Niwa',
-        'popup,width=500,height=700'
+        'popup,width=500,height=700',
       )
       if (this.popupWindow) {
         this.popupWindow.addEventListener(
           'message',
           this.listenForAddress,
-          false
+          false,
         )
       }
     },

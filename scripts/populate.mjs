@@ -1,12 +1,12 @@
 import dotenv from 'dotenv'
 import { encode } from '@devprotocol/clubs-core/encode'
 import { createClient } from 'redis'
-import { utils } from 'ethers'
+import { keccak256, toUtf8Bytes } from 'ethers'
 import fs from 'fs-extra'
 
 dotenv.config()
 
-const toBytes32 = (str) => utils.keccak256(utils.toUtf8Bytes(str))
+const toBytes32 = (str) => keccak256(toUtf8Bytes(str))
 
 const kougenjiProducts = [
   {
@@ -199,6 +199,93 @@ const kougenjiProducts = [
     fee: {
       percentage: 0.5,
       beneficiary: '0x2d69c991782ac67218dc0167af6f7c91498587c1',
+    },
+  },
+]
+
+const debugProducts = [
+  {
+    id: '1',
+    name: '#1',
+    description: `Lorem ipsum.`,
+    price: 0.6,
+    currency: 'USDC',
+    imageSrc: 'https://source.unsplash.com/800x800/?nature',
+    imageAlt: 'lorem ipsum',
+    payload: toBytes32('#1'),
+    fee: {
+      percentage: 0.95,
+      beneficiary: '0x57E21bd98612DE0Bd1723F4bf81A944eF7BfF526',
+    },
+  },
+  {
+    id: '2',
+    name: '#2',
+    description: `Lorem ipsum.`,
+    price: 0.5,
+    currency: 'USDC',
+    imageSrc: 'https://source.unsplash.com/800x800/?nature',
+    imageAlt: 'lorem ipsum',
+    payload: toBytes32('#2'),
+    fee: {
+      percentage: 0.95,
+      beneficiary: '0x57E21bd98612DE0Bd1723F4bf81A944eF7BfF526',
+    },
+  },
+  {
+    id: '3',
+    name: '#3',
+    description: `Lorem ipsum.`,
+    price: 0.4,
+    currency: 'USDC',
+    imageSrc: 'https://source.unsplash.com/800x800/?nature',
+    imageAlt: 'lorem ipsum',
+    payload: toBytes32('#3'),
+    fee: {
+      percentage: 0.95,
+      beneficiary: '0x57E21bd98612DE0Bd1723F4bf81A944eF7BfF526',
+    },
+  },
+  {
+    id: '4',
+    name: '#4',
+    description: `Lorem ipsum.`,
+    price: 0.3,
+    currency: 'USDC',
+    imageSrc: 'https://source.unsplash.com/800x800/?nature',
+    imageAlt: 'lorem ipsum',
+    payload: toBytes32('#4'),
+    fee: {
+      percentage: 0.95,
+      beneficiary: '0x57E21bd98612DE0Bd1723F4bf81A944eF7BfF526',
+    },
+  },
+  {
+    id: '5',
+    name: '#5',
+    description: `Lorem ipsum.`,
+    price: 0.2,
+    currency: 'USDC',
+    imageSrc: 'https://source.unsplash.com/800x800/?nature',
+    imageAlt: 'lorem ipsum',
+    payload: toBytes32('#5'),
+    fee: {
+      percentage: 0.95,
+      beneficiary: '0x57E21bd98612DE0Bd1723F4bf81A944eF7BfF526',
+    },
+  },
+  {
+    id: '6',
+    name: '#6',
+    description: `Lorem ipsum.`,
+    price: 0.1,
+    currency: 'USDC',
+    imageSrc: 'https://source.unsplash.com/800x800/?nature',
+    imageAlt: 'lorem ipsum',
+    payload: toBytes32('#6'),
+    fee: {
+      percentage: 0.95,
+      beneficiary: '0x57E21bd98612DE0Bd1723F4bf81A944eF7BfF526',
     },
   },
 ]
@@ -401,7 +488,7 @@ const populate = async () => {
                   description: `寺DAOでは、寺院建築、荘厳仏具に携わる工芸士、職人の伝統的技術を伝え、後世に残すことを目的とした支援を行っております。`,
                   body: fs.readFileSync(
                     './src/assets/homeConfig.temples.body.md',
-                    'utf-8'
+                    'utf-8',
                   ),
                 },
               },
@@ -511,12 +598,34 @@ const populate = async () => {
                     payload: undefined,
                     fee: undefined,
                   },
+                  {
+                    id: 'tier-4-1',
+                    name: 'Tier 4 #1',
+                    description: `林檎天井絵\n\n**特典** - 寺DAODiscordへの参加権\n月1回のコミュニティアワーやメンバー限定クエストへ参加できます`,
+                    price: 200,
+                    currency: 'DEV',
+                    imageSrc:
+                      'https://bafybeigis7fdpwizu34v5iwjvc2lcdk4g75keqa3xe72jekldmhjopahnu.ipfs.nftstorage.link',
+                    payload: toBytes32('林檎天井絵'),
+                    fee: undefined,
+                  },
+                  {
+                    id: 'tier-4-2',
+                    name: 'Tier 4 #2',
+                    description: `蓮華一本立木華\n\n**特典** - 寺DAODiscordへの参加権\n月1回のコミュニティアワーやメンバー限定クエストへ参加できます`,
+                    price: 200,
+                    currency: 'DEV',
+                    imageSrc:
+                      'https://bafybeihrh7haq3yadt6nfltynv6ukgovm4hgfhd6o7zpkaf33cjl6tuoau.ipfs.nftstorage.link',
+                    payload: toBytes32('蓮華一本立木華'),
+                    fee: undefined,
+                  },
                 ],
               },
             ],
           },
         ],
-      })
+      }),
     )
 
     await client.set(
@@ -539,10 +648,10 @@ const populate = async () => {
           {
             key: 'navigationLinks',
             value: [
-              {
-                display: 'ETH での支援',
-                path: '/nft',
-              },
+              // {
+              //   display: 'ETH での支援',
+              //   path: '/nft',
+              // },
               {
                 display: '特典について',
                 path: 'https://sites.google.com/view/kougenjidao/%E3%83%9B%E3%83%BC%E3%83%A0/%E3%81%94%E6%94%AF%E6%8F%B4%E3%81%AE%E7%89%B9%E5%85%B8',
@@ -583,7 +692,7 @@ const populate = async () => {
           {
             id: 'devprotocol:clubs:plugin:fiat',
             name: 'fiat',
-            enable: true,
+            enable: false,
             options: [
               {
                 key: 'products',
@@ -675,32 +784,10 @@ const populate = async () => {
                 key: 'title',
                 value: undefined,
               },
-              {
-                key: 'slug',
-                value: [],
-              },
-            ],
-          },
-          {
-            id: 'devprotocol:clubs:theme-1',
-            name: 'defaultTheme',
-            enable: true,
-            options: [
-              {
-                key: 'globalConfig',
-                value: {
-                  bg: 'rgba(29, 36, 38, 1)',
-                },
-              },
-              {
-                key: 'homeConfig',
-                value: {
-                  hero: {
-                    image: 'https://i.imgur.com/I6Yr0V7.jpg',
-                  },
-                  description: `The funds raised for Kougenji will be used to restore the celestial maiden paper picture frame on the decorative transom and other cultural assets within the temple. Supporters are allowed to join Kougenji's Discord channel for the latest news and updates about the restoration (photos, etc.). We also plan to provide a variety of perks according to the types of NFT you'll purchase.`,
-                },
-              },
+              // {
+              //   key: 'slug',
+              //   value: [],
+              // },
             ],
           },
           {
@@ -744,6 +831,211 @@ const populate = async () => {
                   `The funds raised for Kougenji will be used to restore the celestial maiden paper picture frame on the decorative transom and other cultural assets within the temple. Supporters are allowed to join Kougenji's Discord channel for the latest news and updates about the restoration (photos, etc.). We also plan to provide a variety of perks according to the types of NFT you'll purchase.`,
                 ],
               },
+              {
+                key: 'slug',
+                value: [],
+              },
+            ],
+          },
+          {
+            id: 'devprotocol:clubs:gated-contact-form',
+            name: 'message',
+            enable: true,
+            options: [],
+          },
+          {
+            id: 'devprotocol:clubs:theme-1',
+            name: 'defaultTheme',
+            enable: true,
+            options: [
+              {
+                key: 'globalConfig',
+                value: {
+                  bg: 'rgba(29, 36, 38, 1)',
+                },
+              },
+              {
+                key: 'homeConfig',
+                value: {
+                  hero: {
+                    image: 'https://i.imgur.com/I6Yr0V7.jpg',
+                  },
+                  description: `The funds raised for Kougenji will be used to restore the celestial maiden paper picture frame on the decorative transom and other cultural assets within the temple. Supporters are allowed to join Kougenji's Discord channel for the latest news and updates about the restoration (photos, etc.). We also plan to provide a variety of perks according to the types of NFT you'll purchase.`,
+                },
+              },
+            ],
+          },
+        ],
+      }),
+    )
+
+    await client.set(
+      'debug-cc-payments',
+      encode({
+        name: 'debug-cc-payments',
+        twitterHandle: '',
+        description: '',
+        url: 'https://debug-cc-payments.prerelease.clubs.place',
+        propertyAddress: '0x2950e762461B16d552BC4dafE32f70dE555f0Bd9',
+        chainId: 80001, // Polygon: 137 // Mumbai: 80001
+        rpcUrl:
+          'https://polygon-mumbai.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920', // Polygon: https://polygon-mainnet.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920 // Mumbai: https://polygon-mumbai.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920
+        adminRolePoints: 0,
+        options: [
+          {
+            key: 'ogp',
+            value: { image: 'https://i.imgur.com/I6Yr0V7.jpg' },
+          },
+          {
+            key: 'navigationLinks',
+            value: [
+              {
+                display: 'Use MATIC',
+                path: '/nft',
+              },
+            ],
+          },
+          {
+            key: 'footerLinks',
+            value: [
+              // {
+              //   display: 'About',
+              //   path: 'https://sites.google.com/view/kougenjidao',
+              // },
+            ],
+          },
+          {
+            key: 'avatarImgSrc',
+            value: 'https://source.unsplash.com/400x400/?nature',
+          },
+        ],
+        plugins: [
+          {
+            id: 'devprotocol:clubs:plugin:fiat',
+            name: 'fiat',
+            enable: true,
+            options: [
+              {
+                key: 'importFrom',
+                value: ['devprotocol:clubs:plugin:nft'],
+              },
+              // {
+              //   key: 'priceOverrides',
+              //   value: [
+              //     {
+              //       id: '1',
+              //       price: 100_000,
+              //       currency: 'YEN',
+              //     },
+              //     {
+              //       id: '2',
+              //       price: 80_000,
+              //       currency: 'YEN',
+              //     },
+              //     {
+              //       id: '3',
+              //       price: 70_000,
+              //       currency: 'YEN',
+              //     },
+              //     {
+              //       id: '4',
+              //       price: 10_000,
+              //       currency: 'YEN',
+              //     },
+              //     {
+              //       id: '5',
+              //       price: 10_000,
+              //       currency: 'YEN',
+              //     },
+              //     {
+              //       id: '6',
+              //       price: 10_000,
+              //       currency: 'YEN',
+              //     },
+              //   ],
+              // },
+              {
+                key: 'hero',
+                value: {
+                  coverImgSrc: 'https://source.unsplash.com/1200x600/?nature',
+                  title: 'Debug',
+                  description: [
+                    `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`,
+                  ],
+                },
+              },
+              {
+                key: 'title',
+                value: undefined,
+              },
+              {
+                key: 'slug',
+                value: [],
+              },
+            ],
+          },
+          {
+            id: 'devprotocol:clubs:theme-1',
+            name: 'defaultTheme',
+            enable: true,
+            options: [
+              {
+                key: 'globalConfig',
+                value: {
+                  bg: 'rgba(29, 36, 38, 1)',
+                },
+              },
+              {
+                key: 'homeConfig',
+                value: {
+                  hero: {
+                    image: 'https://source.unsplash.com/1200x600/?nature',
+                  },
+                  description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`,
+                },
+              },
+            ],
+          },
+          {
+            id: 'devprotocol:clubs:plugin:me',
+            name: 'me',
+            enable: true,
+            options: [],
+          },
+          {
+            id: 'devprotocol:clubs:plugin:buy',
+            name: 'buy',
+            enable: true,
+            options: [
+              {
+                key: 'products',
+                value: debugProducts,
+              },
+            ],
+          },
+          {
+            id: 'devprotocol:clubs:plugin:nft',
+            name: 'nft',
+            enable: true,
+            options: [
+              {
+                key: 'products',
+                value: debugProducts,
+              },
+              {
+                key: 'coverImgSrc',
+                value: 'https://source.unsplash.com/1200x600/?nature',
+              },
+              {
+                key: 'title',
+                value: 'Debug',
+              },
+              {
+                key: 'description',
+                value: [
+                  `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`,
+                ],
+              },
             ],
           },
           {
@@ -753,7 +1045,7 @@ const populate = async () => {
             options: [],
           },
         ],
-      })
+      }),
     )
 
     console.log('Tenants set')

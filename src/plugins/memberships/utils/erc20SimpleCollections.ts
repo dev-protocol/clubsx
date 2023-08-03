@@ -7,7 +7,6 @@ import type {
   Signer,
   Provider,
 } from 'ethers'
-import type { Image } from './types/setImageArg'
 type Address = {
   chainId: number
   address: string
@@ -31,20 +30,20 @@ export const address: Address[] = [
   },
   {
     chainId: 137,
-    address: '0xF235ff0A6B33e074daFd98bB4BD2b300c1561339',
+    address: '0xeda487e4cd25098e78fe2f87ae1705787500b492',
   },
   {
     chainId: 80001,
-    address: '0x672bA772beD905Ad9Ecb924bD9c47eAb156153C0',
+    address: '0x2cB27C2827b1812B8C817fCcA2fdb6C545465A46',
   },
 ]
 
 const defaultAddress: Address = {
   chainId: 137,
-  address: '0xF235ff0A6B33e074daFd98bB4BD2b300c1561339',
+  address: '0xeda487e4cd25098e78fe2f87ae1705787500b492',
 }
 
-const simpleCollectionsAbi = [
+const erc20SimpleCollectionsAbi = [
   {
     anonymous: false,
     inputs: [
@@ -76,6 +75,51 @@ const simpleCollectionsAbi = [
     ],
     name: 'OwnershipTransferred',
     type: 'event',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_token',
+        type: 'address',
+      },
+    ],
+    name: 'allowListToken',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    name: 'allowlistedTokens',
+    outputs: [
+      {
+        internalType: 'bool',
+        name: '',
+        type: 'bool',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_token',
+        type: 'address',
+      },
+    ],
+    name: 'denyListToken',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [
@@ -445,17 +489,22 @@ const simpleCollectionsAbi = [
       },
       {
         internalType: 'uint256',
-        name: 'requiredETHAmount',
+        name: 'requiredTokenAmount',
         type: 'uint256',
       },
       {
         internalType: 'uint256',
-        name: 'requiredETHFee',
+        name: 'requiredTokenFee',
         type: 'uint256',
       },
       {
         internalType: 'address',
         name: 'gateway',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: 'token',
         type: 'address',
       },
     ],
@@ -513,12 +562,12 @@ const simpleCollectionsAbi = [
           },
           {
             internalType: 'uint256',
-            name: 'requiredETHAmount',
+            name: 'requiredTokenAmount',
             type: 'uint256',
           },
           {
             internalType: 'uint256',
-            name: 'requiredETHFee',
+            name: 'requiredTokenFee',
             type: 'uint256',
           },
           {
@@ -526,8 +575,13 @@ const simpleCollectionsAbi = [
             name: 'gateway',
             type: 'address',
           },
+          {
+            internalType: 'address',
+            name: 'token',
+            type: 'address',
+          },
         ],
-        internalType: 'struct SimpleCollections.Image[]',
+        internalType: 'struct ERC20SimpleCollections.Image[]',
         name: '_images',
         type: 'tuple[]',
       },
@@ -584,7 +638,7 @@ const simpleCollectionsAbi = [
     name: 'swapAndStake',
     outputs: [
       {
-        internalType: 'contract ISwapAndStake',
+        internalType: 'contract IDynamicTokenSwapAndStake',
         name: '',
         type: 'address',
       },
@@ -607,25 +661,35 @@ const simpleCollectionsAbi = [
   },
 ]
 
-export async function callSimpleCollections(
+export type ERC20Image = {
+  src: string
+  name: string
+  description: string
+  requiredTokenAmount: string
+  requiredTokenFee: string
+  gateway: string
+  token: string
+}
+
+export async function callERC20SimpleCollections(
   provider: Signer,
   functionName: 'setImages',
-  args: [propertyAddress: string, images: Image[], keys: string[]],
+  args: [propertyAddress: string, images: ERC20Image[], keys: string[]],
 ): Promise<TransactionResponse>
 
-export async function callSimpleCollections(
+export async function callERC20SimpleCollections(
   provider: Signer,
   functionName: 'removeImage',
   args: [propertyAddress: string, key: string],
 ): Promise<TransactionResponse>
 
-export async function callSimpleCollections(
+export async function callERC20SimpleCollections(
   provider: BrowserProvider,
   functionName: 'propertyImages',
   args: [propertyAddress: string, key: string],
-): Promise<Image>
+): Promise<ERC20Image>
 
-export async function callSimpleCollections(
+export async function callERC20SimpleCollections(
   provider: BrowserProvider | Signer,
   functionName: string,
   args: unknown[],
@@ -637,12 +701,12 @@ export async function callSimpleCollections(
     return Number(network.chainId)
   })
 
-  const simpleCollectionaddress =
+  const erc20SimpleCollectionaddress =
     address.find((a) => a.chainId === chainId)?.address ||
     defaultAddress.address
   const contract = new ethers.Contract(
-    simpleCollectionaddress,
-    simpleCollectionsAbi,
+    erc20SimpleCollectionaddress,
+    erc20SimpleCollectionsAbi,
     provider,
   )
 

@@ -1,13 +1,22 @@
 ---
 import UserClubs from '@components/UserClubs/UserClubs.svelte'
+import UserProfile from '@components/UserProfile/UserProfile.svelte'
 import Layout from '@layouts/Landing.astro'
+import { isAddress } from 'ethers'
 
 const { id } = Astro.params
+const isEOA = isAddress(id)
 ---
 
-<Layout>
+<Layout connectButton="show">
   <div class="mb-32 mt-44 text-center">
-    <h2 class="font-body text-5xl font-bold text-white">User Clubs</h2>
+    <h2 class="font-body text-5xl font-bold text-white">Profile</h2>
+  </div>
+
+  {isEOA && <UserProfile client:load id={id ?? ''} />}
+
+  <div class="mb-32 mt-44 text-center">
+    <h2 class="font-body text-5xl font-bold text-white">Clubs</h2>
   </div>
 
   <UserClubs client:load id={id ?? ''} />

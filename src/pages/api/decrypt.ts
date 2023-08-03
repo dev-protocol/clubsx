@@ -1,5 +1,5 @@
 import { authenticate, decode } from '@devprotocol/clubs-core'
-import { providers } from 'ethers'
+import { getDefaultProvider } from 'ethers'
 import jsonwebtoken from 'jsonwebtoken'
 import { createClient } from 'redis'
 
@@ -45,9 +45,7 @@ export const post = async ({ request }: { request: Request }) => {
     message: hash,
     signature: sig,
     previousConfiguration,
-    provider: providers.getDefaultProvider(
-      decode(previousConfiguration).rpcUrl
-    ),
+    provider: getDefaultProvider(decode(previousConfiguration).rpcUrl),
   })
 
   if (!authenticated) {
@@ -60,6 +58,6 @@ export const post = async ({ request }: { request: Request }) => {
     JSON.stringify({
       decoded,
     }),
-    { status: 200 }
+    { status: 200 },
   )
 }

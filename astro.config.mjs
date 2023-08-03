@@ -59,6 +59,8 @@ export default defineConfig({
       alias: {
         'three/examples/jsm/controls/OrbitControls':
           '/node_modules/three/examples/jsm/controls/OrbitControls',
+        '@crossmint/client-sdk-react-ui/package.json':
+          '/node_modules/@crossmint/client-sdk-react-ui/package.json',
       },
     },
   },

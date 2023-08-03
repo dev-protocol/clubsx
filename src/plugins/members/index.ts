@@ -12,7 +12,7 @@ import Preview1 from './assets/members-1.jpg'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   _,
-  { propertyAddress, rpcUrl }
+  { propertyAddress, rpcUrl },
 ) => [
   { paths: ['members'], component: Index, props: { propertyAddress, rpcUrl } },
 ]

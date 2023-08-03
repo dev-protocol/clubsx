@@ -22,20 +22,20 @@ const {
     config,
     homeConfig,
     globalConfig,
-    signals,
     memberships,
     description,
   },
+  signals,
 } = Astro.props as {
   theme1: {
     memberships?: Membership[]
-    signals?: string[]
     metaTitle?: string
     config: ClubsConfiguration
     globalConfig?: GlobalConfigValue
     homeConfig?: HomeConfigValue
     description?: string
   }
+  signals?: string[]
 }
 
 const displayFullPage = signals?.includes(ClubsPluginSignal.DisplayFullPage)

@@ -2,7 +2,7 @@
   import ETH from '@assets/ETH.svg'
   import DEV from '@assets/devtoken.png'
   import type { Tiers } from '@constants/tier'
-  import { providers } from 'ethers'
+  import { JsonRpcProvider } from 'ethers'
   import { composeTiers } from '@fixtures/utility'
   import type { UndefinedOr } from '@devprotocol/util-ts'
   import type { CurrencyOption } from '@constants/currencyOption'
@@ -27,7 +27,7 @@
     }
     composedTiers = await composeTiers({
       sourceTiers: tiers,
-      provider: new providers.JsonRpcProvider(rpcUrl),
+      provider: new JsonRpcProvider(rpcUrl),
       tokenAddress: propertyAddress ?? '',
     })
   })

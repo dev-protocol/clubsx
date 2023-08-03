@@ -47,7 +47,7 @@ import ETH from '@assets/ETH.svg'
 import DEV from '@assets/devtoken.png'
 import type { Tiers } from '@constants/tier'
 import Tier from '@components/Join/Tier.vue'
-import { providers } from 'ethers'
+import { JsonRpcProvider } from 'ethers'
 import { composeTiers } from '@fixtures/utility'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import { defineComponent, PropType } from '@vue/runtime-core'
@@ -95,7 +95,7 @@ export default defineComponent({
   },
   async mounted() {
     const input = new FormData(this.$refs.form as HTMLFormElement).get(
-      'input'
+      'input',
     ) as null | Data['currency']
     this.currency = input as 'dev' | 'eth'
     if (this.preferedCurrency === 'eth') {
@@ -103,7 +103,7 @@ export default defineComponent({
     }
     this.composedTiers = await composeTiers({
       sourceTiers: this.tiers,
-      provider: new providers.JsonRpcProvider(this.rpcUrl),
+      provider: new JsonRpcProvider(this.rpcUrl),
       tokenAddress: this.propertyAddress ?? '',
     })
   },

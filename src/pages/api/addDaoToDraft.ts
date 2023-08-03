@@ -1,7 +1,7 @@
 import { whenDefined } from '@devprotocol/util-ts'
 import { generateId } from '@fixtures/api/keys'
 import { instanceStore } from '@fixtures/firebase/instance'
-import { utils } from 'ethers'
+import { hashMessage, recoverAddress } from 'ethers'
 import { createClient } from 'redis'
 
 import type { ClubsData } from './fetchClubs'
@@ -59,7 +59,7 @@ export const post = async ({ request }: { request: Request }) => {
         JSON.stringify({ error: 'No user identifier passed' }),
         {
           status: 401,
-        }
+        },
       )
     }
 
@@ -68,7 +68,7 @@ export const post = async ({ request }: { request: Request }) => {
         JSON.stringify({ message: 'You already have created 3 clubs' }),
         {
           status: 400,
-        }
+        },
       )
     }
   } catch (error: any) {
@@ -108,7 +108,7 @@ export const post = async ({ request }: { request: Request }) => {
 
   if (hashAndSignGiven) {
     // Else we are using wallet signature to do the same.
-    const address = utils.recoverAddress(utils.hashMessage(hash), sig)
+    const address = recoverAddress(hashMessage(hash), sig)
     if (address.toLowerCase() != expectedAddress.toLowerCase()) {
       return new Response(JSON.stringify({ error: 'Invalid address' }), {
         status: 401,
@@ -122,7 +122,7 @@ export const post = async ({ request }: { request: Request }) => {
     // associate user address with site
     // first we check if user has other sites associated with their address
     let existingSites = JSON.parse(
-      (await client.get(keyEnumerable)) ?? '[]'
+      (await client.get(keyEnumerable)) ?? '[]',
     ) as ClubsData[] | null
     if (!existingSites) {
       existingSites = []

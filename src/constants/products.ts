@@ -6,7 +6,7 @@ export type Product = Readonly<{
   currency: 'DEV' | 'ETH'
   imageSrc: string
   imageAlt: string
-  payload: Uint8Array
+  payload: Uint8Array | string
   fee?: {
     percentage: number
     beneficiary: string

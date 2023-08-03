@@ -1,12 +1,11 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { utils } from 'ethers'
+import { hashMessage, type BrowserProvider } from 'ethers'
 import { checkMemberships } from '@fixtures/utility'
 import type { Membership } from '@plugins/memberships'
 import type { PropType } from '@vue/runtime-core'
-import type { Web3Provider } from '@ethersproject/providers'
 
-let provider: Web3Provider
+let provider: BrowserProvider
 
 type Data = {
   name: string
@@ -37,13 +36,13 @@ export default defineComponent({
       isMember: false,
       isInVerification: true,
       messageSentStatus: 'not-sent',
-    } as Data),
+    }) as Data,
   async mounted() {
     const { connection } = await import('@devprotocol/clubs-core/connection')
     connection().provider.subscribe(async (prov) => {
       if (!prov) return
 
-      provider = prov as Web3Provider
+      provider = prov as BrowserProvider
 
       if (!this.requiredMemberships.length) {
         this.isMember = false
@@ -54,7 +53,7 @@ export default defineComponent({
         const isMember = await checkMemberships(
           provider,
           this.propertyAddress,
-          this.requiredMemberships
+          this.requiredMemberships,
         )
         this.isMember = isMember
       } catch {
@@ -73,7 +72,7 @@ export default defineComponent({
 
       const splitHostname = window.location.hostname.split('.')
       const site = splitHostname[0]
-      const signer = provider.getSigner()
+      const signer = await provider.getSigner()
       const formId = this.formId
       const data = {
         name: this.name,
@@ -81,7 +80,7 @@ export default defineComponent({
       }
 
       const encodedData = window.btoa(JSON.stringify(data))
-      const hash = utils.hashMessage(encodedData)
+      const hash = hashMessage(encodedData)
       const sig = await signer.signMessage(hash)
       if (!sig) {
         return

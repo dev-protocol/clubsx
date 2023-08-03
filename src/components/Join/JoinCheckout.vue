@@ -169,7 +169,14 @@ import {
 import { connection as getConnection } from '@devprotocol/clubs-core/connection'
 import { UndefinedOr, whenDefined, whenDefinedAll } from '@devprotocol/util-ts'
 import { defineComponent } from '@vue/composition-api'
-import { BigNumberish, constants, providers, utils } from 'ethers'
+import {
+  BigNumberish,
+  ContractRunner,
+  JsonRpcProvider,
+  MaxUint256,
+  formatUnits,
+  parseUnits,
+} from 'ethers'
 import BigNumber from 'bignumber.js'
 import { Subscription, zip } from 'rxjs'
 import { CurrencyOption } from '@constants/currencyOption'
@@ -193,7 +200,7 @@ type Data = {
   previewName: UndefinedOr<string>
 }
 
-let providerPool: UndefinedOr<providers.BaseProvider>
+let providerPool: UndefinedOr<ContractRunner>
 
 export default defineComponent({
   props: {
@@ -208,9 +215,7 @@ export default defineComponent({
   },
   data() {
     return {
-      parsedAmount: this.amount
-        ? utils.parseUnits(this.amount.toString(), 18)
-        : 0,
+      parsedAmount: this.amount ? parseUnits(this.amount.toString(), 18) : 0,
       approveNeeded: undefined,
       subscriptions: [],
       stakeSuccessful: false,
@@ -265,7 +270,7 @@ export default defineComponent({
     const sub = zip(
       connection.provider,
       connection.account,
-      connection.chain
+      connection.chain,
     ).subscribe(async ([provider, account, chain]) => {
       providerPool = provider
       this.account = account
@@ -279,15 +284,15 @@ export default defineComponent({
               userAddress,
               destination,
               amount,
-              this.usePolygonWETH
+              this.usePolygonWETH,
             )
-        }
+        },
       )
     })
     this.subscriptions.push(sub)
 
-    const provider = new providers.JsonRpcProvider(this.rpcUrl)
-    const chain = (await provider.getNetwork()).chainId
+    const provider = new JsonRpcProvider(this.rpcUrl)
+    const chain = Number((await provider.getNetwork()).chainId)
 
     whenDefinedAll(
       [this.destination, this.amount],
@@ -305,14 +310,14 @@ export default defineComponent({
                   .times(new BigNumber(1).minus(feeDeposit))
                   .toNumber(),
                 chain,
-              }).then(utils.formatUnits),
+              }).then(formatUnits),
           this.verifiedPropsCurrency === CurrencyOption.ETH
             ? this.amount
             : await fetchEthForDev({
                 provider,
                 tokenAddress: destination,
                 amount: amount,
-              }).then(utils.formatUnits),
+              }).then(formatUnits),
         ])
 
         this.devAmount = new BigNumber(devAmount ?? 0)
@@ -324,7 +329,7 @@ export default defineComponent({
           .toFixed()
           .toString()
         this.ethFeeAmount = whenDefined(ethAmount, (_eth) =>
-          new BigNumber(_eth).times(feeDeposit).dp(9).toFixed().toString()
+          new BigNumber(_eth).times(feeDeposit).dp(9).toFixed().toString(),
         )
         const sTokens = await fetchSTokens({
           provider,
@@ -334,7 +339,7 @@ export default defineComponent({
         })
         this.previewImageSrc = sTokens.image
         this.previewName = sTokens.name
-      }
+      },
     )
   },
   destroyed() {
@@ -362,7 +367,7 @@ export default defineComponent({
               })
           whenDefined(res, async (results) => {
             const { waitOrSkipApproval } = await results.approveIfNeeded({
-              amount: constants.MaxUint256.toString(),
+              amount: MaxUint256.toString(),
             })
             this.isApproving = true
             await waitOrSkipApproval()
@@ -370,15 +375,15 @@ export default defineComponent({
             this.isApproving = false
             this.approveNeeded = false
           })
-        }
+        },
       )
     },
     async checkApproved(
-      provider: providers.BaseProvider,
+      provider: ContractRunner,
       userAddress: string,
       destination: string,
       amount: BigNumberish,
-      isPolygonWETH: boolean
+      isPolygonWETH: boolean,
     ) {
       const res = isPolygonWETH
         ? await stakeWithEthForPolygon({
@@ -477,7 +482,7 @@ export default defineComponent({
               this.stakeSuccessful = true
             })
           }
-        }
+        },
       )
     },
   },

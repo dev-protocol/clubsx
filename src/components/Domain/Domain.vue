@@ -25,7 +25,7 @@ export default {
       daoName: '',
       fetching: undefined,
       valid: undefined,
-    } as Data),
+    }) as Data,
   methods: {
     async verifySiteName() {
       clearTimeout(timer)

@@ -17,7 +17,7 @@ export const post = async ({ request }: { request: Request }) => {
       JSON.stringify({ error: 'No user identifier passed' }),
       {
         status: 401,
-      }
+      },
     )
   }
 
@@ -40,7 +40,7 @@ export const post = async ({ request }: { request: Request }) => {
    * Fetch site names associated with user
    */
   const userSites = JSON.parse(
-    (await client.get(generateId(identifier))) ?? '[]'
+    (await client.get(generateId(identifier))) ?? '[]',
   ) as ClubsData[] | null
   if (!userSites) {
     return new Response(JSON.stringify({ error: 'No user sites found' }), {
