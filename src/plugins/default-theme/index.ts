@@ -57,6 +57,11 @@ export const colorPresets = {
     bg: 'rgba(91, 139, 245, 1)',
     ink: 'rgba(255, 255, 255)',
   },
+  Orange: {
+    bg: 'rgba(255, 131, 83, 1)',
+    backgroundGradient: ['rgba(249, 192, 82, 1)', 'rgba(249, 192, 82, 0)'],
+    ink: 'rgba(255, 255, 255)',
+  },
 }
 
 export type GlobalConfigValue = {
