@@ -1,15 +1,15 @@
 ---
-import JoinCheckout from '@components/Join/JoinCheckout.vue'
+import Checkout from '@components/Checkout/Checkout.astro'
 import type { Product } from '@constants/products'
 
-const { propertyAddress, product, rpcUrl } = Astro.props as {
+const { propertyAddress, product, rpcUrl, ...others } = Astro.props as {
   propertyAddress: string
   product: Product
   rpcUrl: string
 }
 ---
 
-<JoinCheckout
+<Checkout
   client:only="vue"
   amount={product.price}
   destination={propertyAddress}
@@ -19,4 +19,5 @@ const { propertyAddress, product, rpcUrl } = Astro.props as {
   feePercentage={product.fee?.percentage}
   payload={product.payload}
   rpcUrl={rpcUrl}
+  {...others}
 />

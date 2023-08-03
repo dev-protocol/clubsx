@@ -1,14 +1,16 @@
 ---
-import JoinClub from '@components/Join/JoinClub.svelte'
+import JoinClubLegacy from '@components/Join/JoinClubLegacy.svelte'
 
 const { tiers, propertyAddress, name, rpcUrl, preferedCurrency } = Astro.props
 ---
 
 <div class="p-4">
-  <JoinClub
+  <JoinClubLegacy
     client:load
+    propertyAddress={propertyAddress}
     tiers={tiers}
     tenantName={name}
     preferedCurrency={preferedCurrency}
+    rpcUrl={rpcUrl}
   />
 </div>
