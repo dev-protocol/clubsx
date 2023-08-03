@@ -2,15 +2,35 @@
   import ETH from '@assets/ETH.svg'
   import DEV from '@assets/devtoken.png'
   import type { Tiers } from '@constants/tier'
-  import { CurrencyOption } from '@constants/currencyOption'
+  import { JsonRpcProvider } from 'ethers'
+  import { composeTiers } from '@fixtures/utility'
+  import type { UndefinedOr } from '@devprotocol/util-ts'
+  import type { CurrencyOption } from '@constants/currencyOption'
   import MembershipOption from '@components/AdminMembershipsForm/MembershipOption.svelte'
+  import { onMount } from 'svelte'
 
+  export let propertyAddress: string
   export let tiers: Tiers
   export let tenantName: string
+  export let rpcUrl: string
   export let preferedCurrency: 'dev' | 'eth'
 
-  let currency: 'dev' | 'eth' = 'eth'
-  let currencies = new Set(tiers.map((t) => t.currency))
+  let currency: typeof preferedCurrency = preferedCurrency
+  let composedTiers: { dev: Tiers; eth: Tiers } = {
+    dev: preferedCurrency === 'dev' ? [...tiers] : [],
+    eth: preferedCurrency === 'eth' ? [...tiers] : [],
+  }
+
+  onMount(async () => {
+    if (preferedCurrency === 'eth') {
+      return
+    }
+    composedTiers = await composeTiers({
+      sourceTiers: tiers,
+      provider: new JsonRpcProvider(rpcUrl),
+      tokenAddress: propertyAddress ?? '',
+    })
+  })
 
   const switchInputs = async (ev: Event) => {
     const { value } = ev.target as HTMLInputElement
@@ -26,10 +46,10 @@
   <h3 class="mb-4 text-2xl font-bold">Purchase with</h3>
   <form
     class={`mb-8 grid gap-2 ${
-      currencies.has(CurrencyOption.DEV) ? 'md:grid-cols-2' : ''
+      preferedCurrency === 'dev' ? 'md:grid-cols-2' : ''
     }`}
   >
-    {#if currencies.has(CurrencyOption.DEV)}
+    {#if preferedCurrency === 'dev'}
       <label
         class={`flex items-center gap-2 rounded border p-8 py-4 ${
           currency === 'dev' ? 'border-native-blue-400' : 'border-white/20'
@@ -49,9 +69,7 @@
     {/if}
     <label
       class={`flex items-center gap-2 rounded border p-8 py-4 ${
-        currencies.has(CurrencyOption.ETH)
-          ? 'border-native-blue-400'
-          : 'border-white/20'
+        currency === 'eth' ? 'border-native-blue-400' : 'border-white/20'
       }`}
     >
       <input
@@ -69,7 +87,7 @@
 
   <h3 class="mb-4 text-2xl font-bold">Select a membership</h3>
   <div class="mb-8 grid gap-8 lg:grid-cols-2">
-    {#each tiers.filter((t) => t.currency === currency) as tier, i}
+    {#each composedTiers[currency] as tier, i}
       {#if tier.badgeImageSrc}
         <div>
           <MembershipOption
@@ -84,7 +102,9 @@
           <a
             class="mt-2 block w-full rounded bg-black py-4 text-center text-sm font-semibold text-white"
             id={`select-opt-${i}-${currency}`}
-            href={`/join/${tier.id}`}>Select</a
+            href={`/join/${tier.id}${
+              currency !== 'dev' ? `?input=${currency}` : ''
+            }`}>Select</a
           >
         </div>
       {/if}

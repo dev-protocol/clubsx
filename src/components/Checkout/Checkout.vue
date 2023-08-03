@@ -4,12 +4,14 @@
     class="bg-dp-blue-grey-300 relative mx-auto mb-12 grid items-start rounded-xl p-4 shadow lg:container lg:mt-12 lg:grid-cols-[auto,_480px] lg:gap-12"
   >
     <section class="flex flex-col">
+      <slot name="before:transaction-form"></slot>
+
       <h2 class="mb-8 font-title text-4xl font-bold">
         <span v-if="page === 'BUY'">BUY</span>
         <span v-if="page === 'JOIN'">JOIN</span>
       </h2>
       <div
-        v-if="usedCurrency === currencyOption.DEV || usePolygonWETH"
+        v-if="verifiedPropsCurrency === currencyOption.DEV || usePolygonWETH"
         class="mb-8"
       >
         <h3 class="mb-4 text-2xl">Approval</h3>
@@ -99,21 +101,21 @@
         <p class="flex items-center text-2xl uppercase">
           <Skeleton
             v-if="
-              (usedCurrency == currencyOption.ETH && !ethAmount) ||
-              (usedCurrency == currencyOption.DEV && !devAmount)
+              (verifiedPropsCurrency == currencyOption.ETH && !ethAmount) ||
+              (verifiedPropsCurrency == currencyOption.DEV && !devAmount)
             "
             class="mr-4 inline-block h-[1.2em] w-24"
           />
 
-          <span v-if="usedCurrency == currencyOption.DEV && devAmount"
+          <span v-if="verifiedPropsCurrency == currencyOption.DEV && devAmount"
             >{{ devAmount }} $DEV</span
           >
-          <span v-if="usedCurrency == currencyOption.ETH && ethAmount"
+          <span v-if="verifiedPropsCurrency == currencyOption.ETH && ethAmount"
             >{{ ethAmount }} $ETH</span
           >
         </p>
         <aside
-          v-if="usedCurrency !== currencyOption.DEV"
+          v-if="verifiedPropsCurrency !== currencyOption.DEV"
           class="ml-4 mt-4 border-l border-white/30 pl-4"
         >
           <h4 class="text-md mb-2 opacity-70">Replace</h4>
@@ -162,9 +164,6 @@
 </template>
 
 <script lang="ts">
-/**
- * WARN: THIS COMPONENT IS THE LEGACY ONE AND DEPRECATED!!
- */
 import {
   positionsCreate,
   positionsCreateWithEth,
@@ -205,10 +204,6 @@ type Data = {
 
 let providerPool: UndefinedOr<ContractRunner>
 
-/**
- * WARN: THIS COMPONENT IS THE LEGACY ONE AND DEPRECATED!!
- */
-
 export default defineComponent({
   props: {
     amount: Number,
@@ -238,28 +233,14 @@ export default defineComponent({
     } as Data
   },
   computed: {
-    verifiedInputCurrency(): CurrencyOption {
-      const inputFromQuery =
-        new URL(location.href).searchParams.get('input') ?? ''
-      const input = String(inputFromQuery).toLowerCase()
-      return input.toUpperCase() === 'ETH'
-        ? CurrencyOption.ETH
-        : CurrencyOption.DEV
-    },
-    verifiedPropsCurrency(): CurrencyOption {
+    d(): CurrencyOption {
       return this.currency?.toUpperCase() === 'ETH'
-        ? CurrencyOption.ETH
-        : CurrencyOption.DEV
-    },
-    usedCurrency(): CurrencyOption {
-      return this.verifiedPropsCurrency === CurrencyOption.ETH ||
-        this.verifiedInputCurrency === CurrencyOption.ETH
         ? CurrencyOption.ETH
         : CurrencyOption.DEV
     },
     usePolygonWETH(): boolean {
       return (
-        this.usedCurrency === CurrencyOption.ETH &&
+        this.verifiedPropsCurrency === CurrencyOption.ETH &&
         (this.chain === 137 || this.chain === 80001)
       )
     },
@@ -271,9 +252,6 @@ export default defineComponent({
   async mounted() {
     const connection = getConnection()
 
-    if (this.usedCurrency === CurrencyOption.ETH) {
-      this.approveNeeded = false
-    }
     const sub = zip(
       connection.provider,
       connection.account,
@@ -285,7 +263,8 @@ export default defineComponent({
       whenDefinedAll(
         [providerPool, account, this.destination, this.amount],
         async ([prov, userAddress, destination, amount]) => {
-          ;(this.usedCurrency !== CurrencyOption.ETH || this.usePolygonWETH) &&
+          ;(this.verifiedPropsCurrency !== CurrencyOption.ETH ||
+            this.usePolygonWETH) &&
             this.checkApproved(
               prov,
               userAddress,
@@ -418,7 +397,7 @@ export default defineComponent({
           this.parsedAmount?.toString(),
         ],
         async ([prov, account, destination, amount, parsedAmount]) => {
-          if (this.usedCurrency === CurrencyOption.ETH) {
+          if (this.verifiedPropsCurrency === CurrencyOption.ETH) {
             if (this.usePolygonWETH) {
               const res = await stakeWithEthForPolygon({
                 provider: prov,
