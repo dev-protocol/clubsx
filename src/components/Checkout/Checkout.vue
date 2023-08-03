@@ -4,7 +4,7 @@
     class="bg-dp-blue-grey-300 relative mx-auto mb-12 grid items-start rounded-xl p-4 shadow lg:container lg:mt-12 lg:grid-cols-[auto,_480px] lg:gap-12"
   >
     <section class="flex flex-col">
-      <slot name="checkout:before:transaction-form"></slot>
+      <slot name="before:transaction-form"></slot>
 
       <h2 class="mb-8 font-title text-4xl font-bold">
         <span v-if="page === 'BUY'">BUY</span>

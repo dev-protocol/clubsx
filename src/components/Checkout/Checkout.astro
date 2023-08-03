@@ -38,10 +38,13 @@ const SlotsCheckoutBeforeTransactionForm = clubs.slots.filter(
   rpcUrl={rpcUrl}
   payload={payload}
 >
-  <slot name="checkout:before:transaction-form" />
+  <slot
+    name="checkout:before:transaction-form"
+    slot="before:transaction-form"
+  />
   {
     SlotsCheckoutBeforeTransactionForm.map((Slot) => (
-      <Slot.component {...Slot.props} />
+      <Slot.component {...Slot.props} slot="before:transaction-form" />
     ))
   }
 </Checkout>
