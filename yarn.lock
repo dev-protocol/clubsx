@@ -514,17 +514,17 @@
     svelte "^3.49.0"
     vue "^3.2.0"
 
-"@devprotocol/clubs-core@1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-1.0.3.tgz#f560b53668eb9dd80d8bf857e77e910d0fe028b8"
-  integrity sha512-bAgX1GL4bIvVHU9PDLyYPNXim9rNF3reZmVq9nDvaZzyezDlh8D8/cVUvcDOXlRK0y8+s/Hk7iO+dOdtUJg9fg==
+"@devprotocol/clubs-core@1.0.4-alpha.0":
+  version "1.0.4-alpha.0"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-1.0.4-alpha.0.tgz#14f5adf34a6a75dd657b479e3307fa90f9d02486"
+  integrity sha512-hI/XP3qvtWFRe89MSf3Rgk5lp99Zgt7TNtJ2VGQPAvppY5APTljXww9ceKqn2VK7PiFfaphkwhqvR2Sh2Y6PMA==
   dependencies:
-    "@devprotocol/dev-kit" "8.0.2"
+    "@devprotocol/dev-kit" "8.1.0"
     "@devprotocol/elements" "1.0.0"
-    "@devprotocol/hashi" "2.1.1"
+    "@devprotocol/hashi" "2.2.0"
     "@devprotocol/util-ts" "3.0.0"
     "@metamask/detect-provider" "^2.0.0"
-    ethers "6.6.4"
+    ethers "6.7.0"
     js-base64 "^3.7.2"
     lit "^2.3.1"
     ramda "^0.29.0"
@@ -557,16 +557,6 @@
     js-base64 "^3.7.2"
     ramda "^0.28.0"
 
-"@devprotocol/dev-kit@8.0.2":
-  version "8.0.2"
-  resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-8.0.2.tgz#faa2dbc3aa6d47da8bff99c1ec8aa91f3b22a012"
-  integrity sha512-rqqK6wzaITAbkQiIkq1Korh5bmI+xSQkSkYkC1KfhZgTfD8hxjCpb3uKHIIv/N3KO1XYC8AO4YupL/EoaQDwpw==
-  dependencies:
-    "@devprotocol/util-ts" "3.0.0"
-    bignumber.js "9.1.1"
-    js-base64 "^3.7.2"
-    ramda "^0.29.0"
-
 "@devprotocol/dev-kit@8.1.0":
   version "8.1.0"
   resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-8.1.0.tgz#d53ab64ef452f301840d2159e70c264119883ca4"
@@ -591,13 +581,6 @@
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/@devprotocol/hashi/-/hashi-1.8.0.tgz#5a00703c92fb6aec5e4f878130107649eded28b2"
   integrity sha512-2CT9Bn+J43/xJ9ueYfQOrFgZWZJCLRrGUibEMFFIai8TaQxuGSE7pCeiPvMFt8QIpUjObrhuwl7FF+MDDKwB9g==
-  dependencies:
-    "@matteusan/sentro" "0.1.25"
-
-"@devprotocol/hashi@2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@devprotocol/hashi/-/hashi-2.1.1.tgz#623cf88aaf1a9cff8029df7cdd54350c39b6305f"
-  integrity sha512-Nb18dQnsMUBJZiYKz5qJP0V4S8txLd7E4SdoKO1dRYasRJxt2DHSXWE6LBopcYjntPxcaQ7Cx3daRcN9C5DlEA==
   dependencies:
     "@matteusan/sentro" "0.1.25"
 
@@ -4217,19 +4200,6 @@ ethers@5.7.2, ethers@^5.7.0, ethers@^5.7.2:
     "@ethersproject/wallet" "5.7.0"
     "@ethersproject/web" "5.7.1"
     "@ethersproject/wordlists" "5.7.0"
-
-ethers@6.6.4:
-  version "6.6.4"
-  resolved "https://registry.yarnpkg.com/ethers/-/ethers-6.6.4.tgz#f03a86effcd55e82aed96a2fb9a56a9febd3e3d5"
-  integrity sha512-r3myN2hEnydmu23iiIj5kjWnCh5JNzlqrE/z+Kw5UqH173F+JOWzU6qkFB4HVC50epgxzKSL2Hq1oNXA877vwQ==
-  dependencies:
-    "@adraffy/ens-normalize" "1.9.2"
-    "@noble/hashes" "1.1.2"
-    "@noble/secp256k1" "1.7.1"
-    "@types/node" "18.15.13"
-    aes-js "4.0.0-beta.5"
-    tslib "2.4.0"
-    ws "8.5.0"
 
 ethers@6.7.0:
   version "6.7.0"
