@@ -1,0 +1,53 @@
+---
+import type { CurrencyOption } from '@constants/currencyOption'
+import Checkout from '@components/Checkout/Checkout.vue'
+import type { ClubsPropsPages } from '@devprotocol/clubs-core'
+import type { CheckoutOptions } from './types'
+
+const {
+  amount,
+  propertyAddress,
+  currency,
+  rpcUrl,
+  feeBeneficiary,
+  feePercentage,
+  payload,
+  clubs,
+} = Astro.props as ClubsPropsPages & CheckoutOptions
+
+const checkoutOptions:CheckoutOptions = {
+  amount,
+  propertyAddress,
+  currency,
+  rpcUrl,
+  feeBeneficiary,
+  feePercentage,
+  payload,
+}
+
+const SlotsCheckoutBeforeTransactionForm = clubs.slots.filter(
+  (slot) => slot.slot === 'checkout:before:transaction-form',
+)
+---
+
+<Checkout
+  client:only="vue"
+  amount={amount}
+  destination={propertyAddress}
+  currency={currency}
+  feeBeneficiary={feeBeneficiary}
+  feePercentage={feePercentage}
+  page="JOIN"
+  rpcUrl={rpcUrl}
+  payload={payload}
+>
+  <slot
+    name="checkout:before:transaction-form"
+    slot="before:transaction-form"
+  />
+  {
+    SlotsCheckoutBeforeTransactionForm.map((Slot) => (
+      <Slot.component {...Slot.props, checkoutOptions} slot="before:transaction-form" />
+    ))
+  }
+</Checkout>

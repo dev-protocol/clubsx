@@ -35,15 +35,20 @@
   resolved "https://registry.yarnpkg.com/@astrojs/compiler/-/compiler-1.5.6.tgz#1bccd2c986643cde0094466c3d5bd5d6c54644f2"
   integrity sha512-gtcpm20y4EUUQNc7evn+ffSJLTlrZRKfBS6kT7r1aB9u+AAeP2BZIiyuSdgXJUS679pCV4sqbM80u8Iek575lg==
 
-"@astrojs/compiler@^1.6.3":
-  version "1.6.3"
-  resolved "https://registry.yarnpkg.com/@astrojs/compiler/-/compiler-1.6.3.tgz#4351db26f7dc84c4182273542d67163e48b0161e"
-  integrity sha512-n0xTuBznKspc0plk6RHBOlSv/EwQGyMNSxEOPj7HMeiRNnXX4woeSopN9hQsLkqraDds1eRvB4u99buWgVNJig==
+"@astrojs/compiler@^1.8.0":
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/compiler/-/compiler-1.8.0.tgz#c5c4d90969ff203c3c4a5b8775e876371cb852a3"
+  integrity sha512-E0TI/uyO8n+IPSZ4Fvl9Lne8JKEasR6ZMGvE2G096oTWOXSsPAhRs2LomV3z+/VRepo2h+t/SdVo54wox4eJwA==
 
 "@astrojs/internal-helpers@^0.1.1":
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/@astrojs/internal-helpers/-/internal-helpers-0.1.1.tgz#97fbe1d845753ab492ee2c967d44c8add34f1f9c"
   integrity sha512-+LySbvFbjv2nO2m/e78suleQOGEru4Cnx73VsZbrQgB2u7A4ddsQg3P2T0zC0e10jgcT+c6nNlKeLpa6nRhQIg==
+
+"@astrojs/internal-helpers@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@astrojs/internal-helpers/-/internal-helpers-0.1.2.tgz#2b113950d380942ebb50278a54415c20d2751f0b"
+  integrity sha512-YXLk1CUDdC9P5bjFZcGjz+cE/ZDceXObDTXn/GCID4r8LjThuexxi+dlJqukmUpkSItzQqgzfWnrPLxSFPejdA==
 
 "@astrojs/language-server@^1.0.0":
   version "1.0.8"
@@ -151,10 +156,10 @@
   resolved "https://registry.yarnpkg.com/@astrojs/underscore-redirects/-/underscore-redirects-0.2.0.tgz#17e686188bae8837e0b8df5f383501147c58b3da"
   integrity sha512-TP+uEdqMGNC7Lyci6WmbHvvMElBDSyHlTsvGH9E9/2duvD/n4KJVyr59klycEroaZJiAi5tzlXL8Jsl9/R32gQ==
 
-"@astrojs/vercel@3.7.5":
-  version "3.7.5"
-  resolved "https://registry.yarnpkg.com/@astrojs/vercel/-/vercel-3.7.5.tgz#30d585659f50776eee66de2e4cbe3a97966311af"
-  integrity sha512-Pg++Wot+krpTcccEZXgcKzyyb9793xfOsWxD8AJ3Oq5NsDQXovaZq6Ikv8PrLIzHN2Rlzx+Z52etU/VkX/6PPg==
+"@astrojs/vercel@3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/vercel/-/vercel-3.8.0.tgz#00cd9698be6214308f7a0d78371713c5fc1ad375"
+  integrity sha512-o9oeY8VgsvrxUTQoxv2XusoFk2IJvJhC3X0FUHkilXEyIgZOTHlTLbydO6iJHjKVHxF+aQI7/qwZmxGSV9L3dg==
   dependencies:
     "@astrojs/internal-helpers" "^0.1.1"
     "@astrojs/webapi" "^2.2.0"
@@ -509,17 +514,17 @@
     svelte "^3.49.0"
     vue "^3.2.0"
 
-"@devprotocol/clubs-core@1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-1.0.3.tgz#f560b53668eb9dd80d8bf857e77e910d0fe028b8"
-  integrity sha512-bAgX1GL4bIvVHU9PDLyYPNXim9rNF3reZmVq9nDvaZzyezDlh8D8/cVUvcDOXlRK0y8+s/Hk7iO+dOdtUJg9fg==
+"@devprotocol/clubs-core@1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-1.0.4.tgz#31d69cbcc9fa5c0593a5d9a55c71983d47c86f68"
+  integrity sha512-FcuFD5odRWWvjl6voHNMjcc6JvlERLJLM1LHqkoxqP9gbS/Akbhi8FbDmtGaGz3xf1uHdAKLXUxs+a4UAQmfGQ==
   dependencies:
-    "@devprotocol/dev-kit" "8.0.2"
+    "@devprotocol/dev-kit" "8.1.0"
     "@devprotocol/elements" "1.0.0"
-    "@devprotocol/hashi" "2.1.1"
+    "@devprotocol/hashi" "2.2.0"
     "@devprotocol/util-ts" "3.0.0"
     "@metamask/detect-provider" "^2.0.0"
-    ethers "6.6.4"
+    ethers "6.7.0"
     js-base64 "^3.7.2"
     lit "^2.3.1"
     ramda "^0.29.0"
@@ -552,16 +557,6 @@
     js-base64 "^3.7.2"
     ramda "^0.28.0"
 
-"@devprotocol/dev-kit@8.0.2":
-  version "8.0.2"
-  resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-8.0.2.tgz#faa2dbc3aa6d47da8bff99c1ec8aa91f3b22a012"
-  integrity sha512-rqqK6wzaITAbkQiIkq1Korh5bmI+xSQkSkYkC1KfhZgTfD8hxjCpb3uKHIIv/N3KO1XYC8AO4YupL/EoaQDwpw==
-  dependencies:
-    "@devprotocol/util-ts" "3.0.0"
-    bignumber.js "9.1.1"
-    js-base64 "^3.7.2"
-    ramda "^0.29.0"
-
 "@devprotocol/dev-kit@8.1.0":
   version "8.1.0"
   resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-8.1.0.tgz#d53ab64ef452f301840d2159e70c264119883ca4"
@@ -586,13 +581,6 @@
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/@devprotocol/hashi/-/hashi-1.8.0.tgz#5a00703c92fb6aec5e4f878130107649eded28b2"
   integrity sha512-2CT9Bn+J43/xJ9ueYfQOrFgZWZJCLRrGUibEMFFIai8TaQxuGSE7pCeiPvMFt8QIpUjObrhuwl7FF+MDDKwB9g==
-  dependencies:
-    "@matteusan/sentro" "0.1.25"
-
-"@devprotocol/hashi@2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@devprotocol/hashi/-/hashi-2.1.1.tgz#623cf88aaf1a9cff8029df7cdd54350c39b6305f"
-  integrity sha512-Nb18dQnsMUBJZiYKz5qJP0V4S8txLd7E4SdoKO1dRYasRJxt2DHSXWE6LBopcYjntPxcaQ7Cx3daRcN9C5DlEA==
   dependencies:
     "@matteusan/sentro" "0.1.25"
 
@@ -2292,9 +2280,9 @@
   integrity sha512-N+0kuo9KgrUQ1Sn/ifDXsvg0TTleP7rIy4zOBGECxAljqvqfqpTfzx0Q1NUedOixRMBfe2Whhb056a42cWs26Q==
 
 "@types/node@^18.13.0":
-  version "18.17.1"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.17.1.tgz#84c32903bf3a09f7878c391d31ff08f6fe7d8335"
-  integrity sha512-xlR1jahfizdplZYRU59JlUx9uzF1ARa8jbhM11ccpCJya8kvos5jwdm2ZAgxSCwOl0fq21svP18EVwPBXMQudw==
+  version "18.17.2"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.17.2.tgz#95b4df6c724e146ef932043a1fb6b8f80975e461"
+  integrity sha512-wBo3KqP/PBqje5TI9UTiuL3yWfP6sdPtjtygSOqcYZWT232dfDeDOnkDps5wqZBP9NgGgYrNejinl0faAuE+HQ==
 
 "@types/parse5@^6.0.0":
   version "6.0.3"
@@ -2798,13 +2786,13 @@ arrify@^2.0.0:
   resolved "https://registry.yarnpkg.com/arrify/-/arrify-2.0.1.tgz#c9655e9331e0abcd588d2a7cad7e9956f66701fa"
   integrity sha512-3duEwti880xqi4eAMN8AyR4a0ByT90zoYdLlevfrvU43vb0YZwZVfxOgxWrLXXXpyugL0hNZc9G6BiB5B3nUug==
 
-astro@2.9.7:
-  version "2.9.7"
-  resolved "https://registry.yarnpkg.com/astro/-/astro-2.9.7.tgz#a54290fcbbd07b34e9df4c1ab0e9c13bc408d0a7"
-  integrity sha512-gEm6SyiF2sh2qn9smPd/Z5yXhSLlsNqM5hsOo2B1ibb5S3BjxE1srmGGW7cUhM0dcxxIwixdevgamS4oxUNa/A==
+astro@2.10.1:
+  version "2.10.1"
+  resolved "https://registry.yarnpkg.com/astro/-/astro-2.10.1.tgz#984e0562f988ccf16a53e52cb58e4e1250920199"
+  integrity sha512-t3y9laRaOZTAu6omVpI5x/wE80t2yTCWO/UTCPJYAYy2Aoi+snupwk8ZFBLgVd0lwO7KhjRKA0pUScfkn3bnXw==
   dependencies:
-    "@astrojs/compiler" "^1.6.3"
-    "@astrojs/internal-helpers" "^0.1.1"
+    "@astrojs/compiler" "^1.8.0"
+    "@astrojs/internal-helpers" "^0.1.2"
     "@astrojs/language-server" "^1.0.0"
     "@astrojs/markdown-remark" "^2.2.1"
     "@astrojs/telemetry" "^2.1.1"
@@ -2838,7 +2826,7 @@ astro@2.9.7:
     html-escaper "^3.0.3"
     js-yaml "^4.1.0"
     kleur "^4.1.4"
-    magic-string "^0.27.0"
+    magic-string "^0.30.2"
     mime "^3.0.0"
     network-information-types "^0.1.1"
     ora "^6.3.1"
@@ -3930,10 +3918,10 @@ escodegen@^1.13.0:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-config-prettier@8.9.0:
-  version "8.9.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-8.9.0.tgz#094b6254b2804b0544f7cee535f802b6d29ee10b"
-  integrity sha512-+sbni7NfVXnOpnRadUA8S28AUlsZt9GjgFvABIRL9Hkn8KqNzOp+7Lw4QWtrwn20KzU3wqu1QoOj2m+7rKRqkA==
+eslint-config-prettier@8.10.0:
+  version "8.10.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-8.10.0.tgz#3a06a662130807e2502fc3ff8b4143d8a0658e11"
+  integrity sha512-SM8AMJdeQqRYT9O9zguiruQZaN7+z+E4eAP9oiLNGKMtomwaB1E9dcgUD6ZAn/eQAb52USbvezbiljfZUhbJcg==
 
 eslint-config-standard@17.1.0:
   version "17.1.0"
@@ -4213,23 +4201,10 @@ ethers@5.7.2, ethers@^5.7.0, ethers@^5.7.2:
     "@ethersproject/web" "5.7.1"
     "@ethersproject/wordlists" "5.7.0"
 
-ethers@6.6.4:
-  version "6.6.4"
-  resolved "https://registry.yarnpkg.com/ethers/-/ethers-6.6.4.tgz#f03a86effcd55e82aed96a2fb9a56a9febd3e3d5"
-  integrity sha512-r3myN2hEnydmu23iiIj5kjWnCh5JNzlqrE/z+Kw5UqH173F+JOWzU6qkFB4HVC50epgxzKSL2Hq1oNXA877vwQ==
-  dependencies:
-    "@adraffy/ens-normalize" "1.9.2"
-    "@noble/hashes" "1.1.2"
-    "@noble/secp256k1" "1.7.1"
-    "@types/node" "18.15.13"
-    aes-js "4.0.0-beta.5"
-    tslib "2.4.0"
-    ws "8.5.0"
-
-ethers@6.6.7:
-  version "6.6.7"
-  resolved "https://registry.yarnpkg.com/ethers/-/ethers-6.6.7.tgz#9cf773bcbc0ca56d783d4774e9b73b4d1aff9962"
-  integrity sha512-1SdT3W5/IPAcx9l5/+9qKRYR/iqVIdNQIct18yeh+XvN+I4RK44mvOsAerMwJYCAwdQfsOgf3OkfozeuMInbtQ==
+ethers@6.7.0:
+  version "6.7.0"
+  resolved "https://registry.yarnpkg.com/ethers/-/ethers-6.7.0.tgz#0f772c31a9450de28aa518b181c8cb269bbe7fd1"
+  integrity sha512-pxt5hK82RNwcTX2gOZP81t6qVPVspnkpeivwEgQuK9XUvbNtghBnT8GNIb/gPh+WnVSfi8cXC9XlfT8sqc6D6w==
   dependencies:
     "@adraffy/ens-normalize" "1.9.2"
     "@noble/hashes" "1.1.2"
@@ -5807,19 +5782,19 @@ lru-memoizer@^2.1.4:
     lodash.clonedeep "^4.5.0"
     lru-cache "~4.0.0"
 
-magic-string@^0.27.0:
-  version "0.27.0"
-  resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.27.0.tgz#e4a3413b4bab6d98d2becffd48b4a257effdbbf3"
-  integrity sha512-8UnnX2PeRAPZuN12svgR9j7M1uWMovg/CEnIwIG0LFkXSJJe4PdfUGiTGl8V9bsBHFUtfVINcSyYxd7q+kx9fA==
-  dependencies:
-    "@jridgewell/sourcemap-codec" "^1.4.13"
-
 magic-string@^0.30.0:
   version "0.30.0"
   resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.30.0.tgz#fd58a4748c5c4547338a424e90fa5dd17f4de529"
   integrity sha512-LA+31JYDJLs82r2ScLrlz1GjSgu66ZV518eyWT+S8VhyQn/JL0u9MeBOvQMGYiPk1DBiSN9DDMOcXvigJZaViQ==
   dependencies:
     "@jridgewell/sourcemap-codec" "^1.4.13"
+
+magic-string@^0.30.2:
+  version "0.30.2"
+  resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.30.2.tgz#dcf04aad3d0d1314bc743d076c50feb29b3c7aca"
+  integrity sha512-lNZdu7pewtq/ZvWUp9Wpf/x7WzMTsR26TWV03BRZrXFsv+BI6dy8RAiKgm1uM/kyR0rCfUcqvOlXKG66KhIGug==
+  dependencies:
+    "@jridgewell/sourcemap-codec" "^1.4.15"
 
 make-dir@^3.1.0:
   version "3.1.0"
@@ -6910,15 +6885,20 @@ prettier-plugin-tailwindcss@0.4.1:
   resolved "https://registry.yarnpkg.com/prettier-plugin-tailwindcss/-/prettier-plugin-tailwindcss-0.4.1.tgz#f7ed664199540978b2cbd037bac3a337d6689e86"
   integrity sha512-hwn2EiJmv8M+AW4YDkbjJ6HlZCTzLyz1QlySn9sMuKV/Px0fjwldlB7tol8GzdgqtkdPtzT3iJ4UzdnYXP25Ag==
 
-prettier@3.0.0, prettier@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.0.0.tgz#e7b19f691245a21d618c68bc54dc06122f6105ae"
-  integrity sha512-zBf5eHpwHOGPC47h0zrPyNn+eAEIdEzfywMoYn2XPi0P44Zp0tSq64rq0xAREh4auw2cJZHo9QUob+NqCQky4g==
+prettier@3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.0.1.tgz#65271fc9320ce4913c57747a70ce635b30beaa40"
+  integrity sha512-fcOWSnnpCrovBsmFZIGIy9UqK2FaI7Hqax+DIO0A9UxeVoY4iweyaFjS5TavZN97Hfehph0nhsZnjlVKzEQSrQ==
 
 prettier@^2.8.3, prettier@^2.8.8:
   version "2.8.8"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.8.8.tgz#e8c5d7e98a4305ffe3de2e1fc4aca1a71c28b1da"
   integrity sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==
+
+prettier@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.0.0.tgz#e7b19f691245a21d618c68bc54dc06122f6105ae"
+  integrity sha512-zBf5eHpwHOGPC47h0zrPyNn+eAEIdEzfywMoYn2XPi0P44Zp0tSq64rq0xAREh4auw2cJZHo9QUob+NqCQky4g==
 
 prismjs@^1.28.0:
   version "1.29.0"

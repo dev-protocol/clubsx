@@ -495,7 +495,7 @@ const populate = async () => {
             ],
           },
           {
-            id: 'devprotocol:clubs:plugin:join',
+            id: 'devprotocol:clubs:plugin:join-legacy',
             name: 'join',
             enable: true,
             options: [

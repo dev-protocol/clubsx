@@ -156,7 +156,7 @@ const avatarImgSrc: string | undefined = config.options?.find(
   <input id="setupStep" hidden value={setupStep} />
   <input id="encodedConfig" hidden value={clubs.encodedClubsConfiguration} />
   <input id="siteName" hidden value={site} disabled />
-  <AdminConfigurationManager {clubs} />
+  <AdminConfigurationManager client:only="svelte" {clubs} />
 </html>
 
 <script>

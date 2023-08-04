@@ -1,0 +1,25 @@
+---
+import JoinCheckout from '@components/Join/JoinCheckout.vue'
+
+const {
+  amount,
+  propertyAddress,
+  currency,
+  rpcUrl,
+  feeBeneficiary,
+  feePercentage,
+  payload,
+} = Astro.props
+---
+
+<JoinCheckout
+  client:only="vue"
+  amount={amount}
+  destination={propertyAddress}
+  currency={currency}
+  feeBeneficiary={feeBeneficiary}
+  feePercentage={feePercentage}
+  page="JOIN"
+  rpcUrl={rpcUrl}
+  payload={payload}
+/>
