@@ -2,6 +2,7 @@
 import type { CurrencyOption } from '@constants/currencyOption'
 import Checkout from '@components/Checkout/Checkout.vue'
 import type { ClubsPropsPages } from '@devprotocol/clubs-core'
+import type { CheckoutOptions } from './types'
 
 const {
   amount,
@@ -12,14 +13,16 @@ const {
   feePercentage,
   payload,
   clubs,
-} = Astro.props as ClubsPropsPages & {
-  amount: number
-  propertyAddress: string
-  currency: CurrencyOption
-  rpcUrl: string
-  feeBeneficiary?: string
-  feePercentage?: number
-  payload?: string
+} = Astro.props as ClubsPropsPages & CheckoutOptions
+
+const checkoutOptions:CheckoutOptions = {
+  amount,
+  propertyAddress,
+  currency,
+  rpcUrl,
+  feeBeneficiary,
+  feePercentage,
+  payload,
 }
 
 const SlotsCheckoutBeforeTransactionForm = clubs.slots.filter(
@@ -44,7 +47,7 @@ const SlotsCheckoutBeforeTransactionForm = clubs.slots.filter(
   />
   {
     SlotsCheckoutBeforeTransactionForm.map((Slot) => (
-      <Slot.component {...Slot.props} slot="before:transaction-form" />
+      <Slot.component {...Slot.props, checkoutOptions} slot="before:transaction-form" />
     ))
   }
 </Checkout>
