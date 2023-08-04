@@ -18,7 +18,7 @@ const { getStaticPaths } = adminFactory({
   plugins: [admin, marketplace, ...plugins],
 })
 const _path = (await getStaticPaths()).find(
-  ({ params }) => params.page === page,
+  ({ params }) => params.page === page
 )
 const path = {
   ..._path,
@@ -27,7 +27,7 @@ const path = {
     clubs: {
       ..._path?.props.clubs,
       plugins: _path?.props.clubs.plugins.filter(
-        (p) => p.id !== 'devprotocol:clubs:clubsx:marketplace',
+        (p) => p.id !== 'devprotocol:clubs:clubsx:marketplace'
       ),
     },
   },
@@ -42,7 +42,7 @@ const baseUrl = ((host) =>
   host.includes('localhost')
     ? host.replace(/^.*\.(localhost.*)$/, 'http://$1')
     : `https://${host.split('.').slice(1, Infinity).join('.')}`)(
-  new URL(Astro.request.url).host,
+  new URL(Astro.request.url).host
 )
 
 const siteBaseUrl = new URL(Astro.request.url).origin
@@ -162,8 +162,6 @@ const siteBaseUrl = new URL(Astro.request.url).origin
     const splitHostname = window.location.hostname.split('.')
     const site = splitHostname[0]
 
-    console.log({ splitHostname, site, currentAddress, signer })
-
     if (!currentAddress || !signer) {
       return onFinish({
         success: false,
@@ -174,20 +172,17 @@ const siteBaseUrl = new URL(Astro.request.url).origin
     const hash = hashMessage(data)
     let sig: string
     try {
-      console.log({ hash })
       sig = await signer.signMessage(hash)
     } catch (error: any) {
-      console.log({ error })
       return onFinish({
         success: false,
         error: new Error(
           error?.message?.includes('user rejected signing')
             ? 'Wallet confirmation denied'
-            : 'Transaction failed',
+            : 'Transaction failed'
         ),
       })
     }
-    console.log({ sig })
 
     if (!sig) {
       return onFinish({
@@ -203,24 +198,21 @@ const siteBaseUrl = new URL(Astro.request.url).origin
       sig,
       expectedAddress: currentAddress,
     }
-    console.log({ body })
 
     const isInDraft = Boolean(
       (
         decode(data).options?.find((option) => option.key === '__draft')
           ?.value as DraftOptions['value']
-      )?.isInDraft,
+      )?.isInDraft
     )
-    console.log({ isInDraft })
 
     const res = await fetch(
       isInDraft ? '/api/updateDraftConfig' : '/api/updateConfig',
       {
         method: 'POST',
         body: JSON.stringify(body),
-      },
+      }
     )
-    console.log({ res })
 
     const success = Boolean(res?.ok)
     const error = success
