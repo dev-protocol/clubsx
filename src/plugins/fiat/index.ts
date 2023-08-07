@@ -2,6 +2,7 @@
  * WARN: Don't publish as a npm because this package is only working on clubsx.
  */
 import type { Product, Products } from '@constants/products'
+import type { Membership } from '@plugins/memberships'
 import type {
   ClubsFunctionGetAdminPaths,
   ClubsFunctionGetPagePaths,
@@ -11,7 +12,7 @@ import type {
 import { ClubsPluginCategory, ClubsPluginSignal } from '@devprotocol/clubs-core'
 import { default as Index } from './index.astro'
 import { default as Id } from './id.astro'
-import { solidityPacked } from 'ethers'
+import { keccak256, solidityPacked } from 'ethers'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 
 export type PriceOverrides = {
@@ -71,26 +72,46 @@ const CM: Record<string, CMValues> = {
 }
 
 export enum SupportedPlugins {
+  DevprotocolClubsSimpleMemberships = 'devprotocol:clubs:simple-memberships',
   DevprotocolClubsPluginNft = 'devprotocol:clubs:plugin:nft',
 }
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
-  { name, chainId, rpcUrl, propertyAddress, options: configOptions = [] },
+  { chainId, rpcUrl, propertyAddress, options: configOptions = [] },
   { getPluginConfigById },
 ) => {
-  const importFrom = options.find((opt) => opt.key === 'importFrom')
-    ?.value as UndefinedOr<string[]>
-  const products = (importFrom ?? [])
+  const products: Products = [
+    SupportedPlugins.DevprotocolClubsSimpleMemberships,
+    SupportedPlugins.DevprotocolClubsPluginNft,
+  ]
     .map((plugin) => {
       switch (plugin) {
+        case SupportedPlugins.DevprotocolClubsSimpleMemberships:
+          /**
+           * Import from devprotocol:clubs:simple-memberships
+           */
+          const [simpleMemberships] = getPluginConfigById(
+            SupportedPlugins.DevprotocolClubsSimpleMemberships,
+          )
+          const memberships = simpleMemberships?.options.find(
+            (x) => x.key === 'memberships',
+          )?.value as UndefinedOr<Membership[]>
+          return memberships?.filter(
+            (p) => !p.deprecated && (p.currency as string) === 'USDC',
+          )
+
         case SupportedPlugins.DevprotocolClubsPluginNft:
-          const [plg] = getPluginConfigById(
+          /**
+           * Import from devprotocol:clubs:plugin:nft
+           */
+          const [nft] = getPluginConfigById(
             SupportedPlugins.DevprotocolClubsPluginNft,
           )
-          const products = plg?.options.find((x) => x.key === 'products')
+          const products = nft?.options.find((x) => x.key === 'products')
             ?.value as UndefinedOr<Products>
-          return products?.map((p) => p) // do not format
+          return products?.filter((p) => (p.currency as string) === 'USDC')
+
         default:
           return undefined
       }
@@ -155,7 +176,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
           component: Index,
         },
         ...products.map((product) => ({
-          paths: ['fiat', product.id],
+          paths: ['fiat', keccak256(product.payload)],
           props: {
             cm,
             product,
