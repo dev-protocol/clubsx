@@ -47,18 +47,18 @@ const steps = {
 const isInDraftWithFirebase = Boolean(
   (
     config.options?.find(
-      (x) => x.key === '__draft'
+      (x) => x.key === '__draft',
     ) as UndefinedOr<DraftOptions>
   )?.value.isInDraft &&
     (
       config.options?.find(
-        (x) => x.key === '__draft'
+        (x) => x.key === '__draft',
       ) as UndefinedOr<DraftOptions>
-    )?.value.uid
+    )?.value.uid,
 )
 
 const avatarImgSrc: string | undefined = config.options?.find(
-  (option) => option.key === 'avatarImgSrc'
+  (option) => option.key === 'avatarImgSrc',
 )?.value as string
 ---
 
@@ -156,7 +156,7 @@ const avatarImgSrc: string | undefined = config.options?.find(
   <input id="setupStep" hidden value={setupStep} />
   <input id="encodedConfig" hidden value={clubs.encodedClubsConfiguration} />
   <input id="siteName" hidden value={site} disabled />
-  <AdminConfigurationManager client:only="svelte" {clubs} />
+  <AdminConfigurationManager {clubs} />
 </html>
 
 <script>
@@ -200,14 +200,14 @@ const avatarImgSrc: string | undefined = config.options?.find(
   const isInDraftWithFirebase = Boolean(
     (
       decodedConfig.options?.find(
-        (x) => x.key === '__draft'
+        (x) => x.key === '__draft',
       ) as UndefinedOr<DraftOptions>
     )?.value.isInDraft &&
       (
         decodedConfig.options?.find(
-          (x) => x.key === '__draft'
+          (x) => x.key === '__draft',
         ) as UndefinedOr<DraftOptions>
-      )?.value.uid
+      )?.value.uid,
   )
 
   const auth: Auth = instanceStore.initializedApp
@@ -240,7 +240,7 @@ const avatarImgSrc: string | undefined = config.options?.find(
     if (!isInDraftWithFirebase) {
       const modalProvider = GetModalProvider()
       const { provider, currentAddress } = await EthersProviderFrom(
-        modalProvider
+        modalProvider,
       )
       if (!currentAddress || !provider) {
         onFinish({ success: false })
