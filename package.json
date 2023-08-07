@@ -71,7 +71,7 @@
     "firebase": "^10.0.0",
     "firebase-admin": "^11.3.0",
     "jsonwebtoken": "^9.0.0",
-    "marked": "6.0.0",
+    "marked": "7.0.0",
     "postcss": "8.4.27",
     "ramda": "0.29.0",
     "react": "18.2.0",
