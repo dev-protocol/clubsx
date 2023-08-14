@@ -24,7 +24,7 @@ export type Membership = {
   name: string
   description: string
   price: number
-  currency: 'DEV' | 'ETH'
+  currency: 'DEV' | 'ETH' | 'USDC'
   imageSrc: string
   payload: Uint8Array
   fee?: {
