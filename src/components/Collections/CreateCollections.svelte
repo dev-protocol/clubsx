@@ -1,8 +1,11 @@
 <script lang="ts">
   import type { Membership } from '@plugins/memberships'
+  import MembershipOption from '@components/AdminMembershipsForm/MembershipOption.svelte'
 
   export let memberships: Membership[] = []
   export let isTimeLimitedCollection: boolean = false
+  export let name: string
+  export let isAdding: boolean = false
 
   const update = (e?: any) => {}
 </script>
@@ -98,8 +101,54 @@
     </div>
 
     <!-- Allowlist -->
+    <div class="max-w-4xl flex flex-col items-start flex-shrink-0 gap-[7px] h-[682px]">
+      <span class="text-base font-normal">Allowlist</span>
+      <span class="text-base font-normal">Please set the people who can access this collection. Add new memberships from [here].</span>
+      <div class="flex flex-col items-start self-stretch">
+        <span class="text-lg font-medium uppercase text-[#EB48F8]">When the allowlist is empty. Or, by clicking this, it makes the allowlist empty.</span>
+        <div class="flex p-5 items-start self-stretch gap-[12px] rounded-[12px] bg-[#040B10]">
+          <div class="flex items-center">
+            <input id="access" name="notification-method" type="radio" checked class="h-4 w-4 border-gray-300 text-[#3043EB] focus:ring-[#3043EB] dark:focus:ring-[#3043EB]">
+            <label for="access" class="ml-3 block text-justify text-base font-normal text-white">Pubic access (Open to everyone)</label>
+          </div>
+        </div>
+      </div>
+      <div class="flex pt-2.5 justify-between items-start gap-4">
+        <MembershipOption
+        clubName={'Your Club'}
+        id={'1'}
+        name={ 'Membership Name'}
+        imagePath={ 'https://i.ibb.co/hLD6byP/1.jpg'}
+        usdcPrice={ '32'}
+        description={'Membership Description'}
+        className={`w-[276px] h-[436px]`}
+        />
+        <MembershipOption
+        clubName={'Your Club'}
+        id={'2'}
+        name={ 'Membership Name'}
+        imagePath={ 'https://i.ibb.co/Kyjr50C/Image.png'}
+        usdcPrice={ '32'}
+        description={'Membership Description'}
+        className={`w-[276px] h-[436px]`}
+        />
+        <MembershipOption
+        clubName={'Your Club'}
+        id={'3'}
+        name={ 'Membership Name'}
+        imagePath={ 'https://i.ibb.co/nrdKDQy/Image-1.png'}
+        usdcPrice={ '32'}
+        description={'Membership Description'}
+        className={`w-[276px] h-[436px]`}
+        />
+      </div>  
+    </div>
+
+
+    <!-- collection items -->
     <div class="w-full">
       <h1 class="mb-16 font-title text-2xl font-bold">Collection Items</h1>
+      {#if isAdding}
       <div class="mb-16 flex items-start gap-16">
         <button
           type="button"
@@ -116,9 +165,7 @@
         </button>
       </div>
 
-      <div
-        class="mb-[62px] flex w-[52.2%] flex-col items-start justify-start gap-[7px]"
-      >
+      <div class="mb-[62px] flex w-[52.2%] flex-col items-start justify-start gap-[7px]">
         <div class="m-0 w-full items-center p-0">
           <span class="mr-[13px] font-body">Name</span>
           <span class="font-body text-[#EB48F8]"> * </span>
@@ -130,9 +177,7 @@
         />
       </div>
 
-      <div
-        class="mb-[62px] flex w-[52.2%] flex-col items-start justify-start gap-[7px]"
-      >
+      <div class="mb-[62px] flex w-[52.2%] flex-col items-start justify-start gap-[7px]" >
         <div class="m-0 w-full items-center p-0">
           <span class="mr-[13px] font-body">Image</span>
           <span class="font-body text-[#EB48F8]"> * </span>
@@ -168,9 +213,7 @@
         </div>
       {/if}
 
-      <div
-        class="mb-[62px] flex w-[52.2%] flex-col items-start justify-start gap-[7px]"
-      >
+      <div class="mb-[62px] flex w-[52.2%] flex-col items-start justify-start gap-[7px]">
         <div class="m-0 w-full items-center p-0">
           <span class="mr-[13px] font-body">Price</span>
           <span class="font-body text-[#EB48F8]"> * </span>
@@ -182,9 +225,7 @@
         />
       </div>
 
-      <div
-        class="mb-16 flex w-[99.1%] flex-col items-start justify-start gap-[7px]"
-      >
+      <div class="mb-16 flex w-[99.1%] flex-col items-start justify-start gap-[7px]">
         <div class="m-0 w-full items-center p-0">
           <span class="mr-[13px] font-body">Description</span>
           <span class="font-body text-[#EB48F8]"> * </span>
@@ -213,47 +254,20 @@
           Make items empty
         </button>
       </div>
-
-      <div
-        class="mb-16 flex w-[99.1%] flex-col items-start justify-start gap-[13px]"
-      >
-        <span class="font-body">Allowlist</span>
-        <div
-          class="grid w-full grid-cols-[repeat(auto-fill,minmax(160px,1fr))] justify-between gap-16"
-        >
-          {#each memberships as mem}
-            <div class="flex flex-col items-center gap-4">
-              <label>
-                <input
-                  type="checkbox"
-                  name="membershipAllowList"
-                  value={mem.id}
-                  class="hidden"
-                />
-                <div
-                  class={`flex flex-col gap-4 rounded-[5px] bg-white p-2.5 text-black`}
-                >
-                  <span class="text-xl font-bold">{mem.name}</span>
-                  <img
-                    class="aspect-square w-full rounded-[5px]"
-                    src={mem.imageSrc}
-                    alt={`${mem.name} Membership`}
-                  />
-                  <span class="text-xl font-bold"
-                    >{mem.price} {mem.currency.toUpperCase()}</span
-                  >
-                  <span class="text-base">{mem.description}</span>
-                </div>
-              </label>
-              <button
-                type="button"
-                class={`hs-button is-large is-filled w-full rounded px-8 py-6 text-base font-bold text-white`}
-              >
-                Edit
-              </button>
-            </div>
-          {/each}
-        </div>
+      {/if}
+      <!-- Previous Memberships -->
+      <div class="flex justify-between items-start gap-4">
+        {#each memberships as mem}
+        <MembershipOption
+          clubName={name}
+          id={mem.id}
+          name={mem.name}
+          imagePath={mem.imageSrc}
+          usdcPrice={mem.price.toString()}
+          description={mem.description}
+          className={`w-[276px] h-[436px]`}
+        />
+        {/each}
       </div>
     </div>
   </div>

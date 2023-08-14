@@ -19,7 +19,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async () => []
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
   options,
-  config,
+  {name},
   { getPluginConfigById }
 ) => {
   const [membershipConfig] = getPluginConfigById(
@@ -35,17 +35,17 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
     {
       paths: ['collections'],
       component: Admin,
-      props: {},
+      props: {memberships},
     },
     {
       paths: ['collections', 'new'],
       component: AdminNew,
-      props: { isTimeLimitedCollection: false, memberships },
+      props: { isTimeLimitedCollection: false, memberships, name },
     },
     {
       paths: ['collections', 'new', 'time-limited-collection'],
       component: AdminNew,
-      props: { isTimeLimitedCollection: true, memberships },
+      props: { isTimeLimitedCollection: true, memberships, name },
     },
   ]
 }
