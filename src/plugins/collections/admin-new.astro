@@ -2,7 +2,11 @@
 import CreateCollections from '@components/Collections/CreateCollections.svelte'
 import type { Membership } from '@plugins/memberships'
 
-const { isTimeLimitedCollection = false, memberships = [] , name } = Astro.props as {
+const {
+  isTimeLimitedCollection = false,
+  memberships = [],
+  name,
+} = Astro.props as {
   isTimeLimitedCollection: boolean
   memberships: Membership[]
   name: string

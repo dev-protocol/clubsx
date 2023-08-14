@@ -3,8 +3,8 @@ import limitedNoOfItemsImg from './assets/limited-number-of-items.svg'
 import timeLimitedCollectionImg from './assets/time-limited-collection.svg'
 import CollectionCard from '@components/Collections/CollectionCard.svelte'
 import type { Membership } from '@plugins/memberships'
-const { memberships =[]} = Astro.props as { 
-  memberships: Membership[] 
+const { memberships = [] } = Astro.props as {
+  memberships: Membership[]
 }
 
 const baseRedirectionUrl = '/admin/collections/new'
@@ -53,8 +53,9 @@ const existingCollections = true
     existingCollections ? (
       <div class="mt-16 flex flex-col">
         <h2 class="mb-16 text-[32px] font-normal">Existing collections</h2>
-        <CollectionCard client:only="svelte"
-        memberships={[...memberships, ...memberships, ...memberships]}
+        <CollectionCard
+          client:only="svelte"
+          memberships={[...memberships, ...memberships, ...memberships]}
         />
       </div>
     ) : null

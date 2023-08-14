@@ -29,15 +29,15 @@
       cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
       est laborum.
     </p>
-    <div class="overflow-hidden flex items-start gap-2.5">
+    <div class="flex items-start gap-2.5 overflow-hidden">
       {#if memberships.length > 0}
-      {#each memberships as membership, i}
-      <img
-      class="h-16 w-16 rounded-md"
-      src={membership.imageSrc}
-      alt={`membership-image ${i}`}
-    />
-      {/each}
+        {#each memberships as membership, i}
+          <img
+            class="h-16 w-16 rounded-md"
+            src={membership.imageSrc}
+            alt={`membership-image ${i}`}
+          />
+        {/each}
       {/if}
     </div>
   </div>
