@@ -11,6 +11,7 @@
   import { buildConfig, controlModal } from '@devprotocol/clubs-core/events'
   import { callSimpleCollections } from '@plugins/memberships/utils/simpleCollections'
   import type { Image } from '@plugins/memberships/utils/types/setImageArg'
+  import MembershipOption from './MembershipOption.svelte'
 
   export let useOnFinishCallback: boolean = false
   export let currentPluginIndex: number
@@ -23,10 +24,11 @@
   export let clubName: string | undefined = undefined
   const metaOfPayload = keccak256(membership.payload)
 
+  type MembershipPaymentType = 'instant' | 'stake' | 'custom'
+
+  let membershipPaymentType: MembershipPaymentType = 'instant'
   let updatingMembershipsStatus: boolean = false
-
   let noOfPositions: number = 0
-
   let invalidPriceMsg: string = ''
 
   const originalId = membership.id
@@ -95,6 +97,10 @@
     )
 
     setTimeout(buildConfig, 50)
+  }
+
+  const changeMembershipPaymentType = async (type: MembershipPaymentType) => {
+    membershipPaymentType = type
   }
 
   const connectOnMount = async () => {
@@ -450,6 +456,43 @@
           {#if invalidPriceMsg !== ''}
             <p class="text-danger-300">* {invalidPriceMsg}</p>
           {/if}
+        </label>
+
+        <!-- Payment type -->
+        <label class="hs-form-field is-filled is-required">
+          <span class="hs-form-field__label"> Payment type </span>
+          <div class="flex justify-start items-center gap-2 w-full">
+            <button
+              on:click|preventDefault={() => changeMembershipPaymentType('instant')}
+              class="hs-form-field__input w-fit"
+              id="membership-fee"
+            >
+              Instant
+            </button>
+            <button
+              on:click|preventDefault={() => changeMembershipPaymentType('stake')}
+              class="hs-form-field__input w-fit"
+              id="membership-fee"
+            >Stake</button>
+            {#if  membershipPaymentType !== 'custom'}
+              <button
+                on:click|preventDefault={() => changeMembershipPaymentType('custom')}
+                class="hs-form-field__input w-fit"
+                id="membership-fee"
+              >Custom</button>
+            {/if}
+            {#if  membershipPaymentType === 'custom'}
+              <input
+                class="hs-form-field__input"
+                id="membership-fee-value"
+                name="membership-fee-value"
+                type="number"
+                disabled={membershipExists}
+                min={minPrice}
+                max={maxPrice}
+              />
+            {/if}
+          </div>
         </label>
       </div>
 
