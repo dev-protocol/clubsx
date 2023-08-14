@@ -3,7 +3,7 @@
   import MembershipOptionCard from './MembershipOption.svelte'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import type { Membership } from '@plugins/memberships/index'
-  import { parseUnits, keccak256, JsonRpcProvider, ZeroAddress, Signer } from 'ethers'
+  import { parseUnits, keccak256, JsonRpcProvider, ZeroAddress, type Signer } from 'ethers'
   import { onMount } from 'svelte'
   import BigNumber from 'bignumber.js'
   import { clientsSTokens } from '@devprotocol/dev-kit'
