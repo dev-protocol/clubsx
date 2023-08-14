@@ -419,18 +419,34 @@
         <!-- Price -->
         <label class="hs-form-field is-filled is-required">
           <span class="hs-form-field__label"> Price </span>
-          <input
-            class="hs-form-field__input"
-            bind:value={membership.price}
-            on:change={onChangePrice}
-            on:keyup={validateMembershipPrice}
-            id="membership-price"
-            name="membership-price"
-            type="number"
-            disabled={membershipExists}
-            min={minPrice}
-            max={maxPrice}
-          />
+          <div class="flex justify-start items-center">
+            <input
+              class="hs-form-field__input"
+              bind:value={membership.price}
+              on:change={onChangePrice}
+              on:keyup={validateMembershipPrice}
+              id="membership-price"
+              name="membership-price"
+              type="number"
+              disabled={membershipExists}
+              min={minPrice}
+              max={maxPrice}
+            />
+            <select
+              bind:value={membership.currency}
+              name="membership-currency"
+              class="hs-form-field__input"
+              id="membership-currency"
+              disabled={membershipExists}
+            >
+              <option value="USDC">USDC</option>
+              <option value="ETH">ETH</option>
+              <option value="DEV">DEV</option>
+            </select>
+          </div>
+          <p class="hs-form-field__helper mt-2">
+            * If you choose USDC, you can active <u>the credit card payment plugin.</u>
+          </p>
           {#if invalidPriceMsg !== ''}
             <p class="text-danger-300">* {invalidPriceMsg}</p>
           {/if}
