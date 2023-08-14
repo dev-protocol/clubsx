@@ -461,37 +461,39 @@
         <!-- Payment type -->
         <label class="hs-form-field is-filled is-required">
           <span class="hs-form-field__label"> Payment type </span>
-          <div class="flex justify-start items-center gap-2 w-full">
+          <div class="flex justify-start items-center gap-2 w-full max-w-full">
             <button
               on:click|preventDefault={() => changeMembershipPaymentType('instant')}
-              class="hs-form-field__input w-fit"
+              class="hs-form-field__input grow max-w-[33%]"
               id="membership-fee"
             >
               Instant
             </button>
             <button
               on:click|preventDefault={() => changeMembershipPaymentType('stake')}
-              class="hs-form-field__input w-fit"
+              class="hs-form-field__input grow max-w-[33%]"
               id="membership-fee"
             >Stake</button>
-            {#if  membershipPaymentType !== 'custom'}
-              <button
-                on:click|preventDefault={() => changeMembershipPaymentType('custom')}
-                class="hs-form-field__input w-fit"
-                id="membership-fee"
-              >Custom</button>
-            {/if}
-            {#if  membershipPaymentType === 'custom'}
-              <input
-                class="hs-form-field__input"
-                id="membership-fee-value"
-                name="membership-fee-value"
-                type="number"
-                disabled={membershipExists}
-                min={minPrice}
-                max={maxPrice}
-              />
-            {/if}
+            <div class="grow max-w-[33%]">
+              {#if  membershipPaymentType !== 'custom'}
+                <button
+                  on:click|preventDefault={() => changeMembershipPaymentType('custom')}
+                  class="hs-form-field__input w-full max-w-full"
+                  id="membership-fee"
+                >Custom</button>
+              {/if}
+              {#if  membershipPaymentType === 'custom'}
+                <input
+                  class="hs-form-field__input w-full max-w-full"
+                  id="membership-fee-value"
+                  name="membership-fee-value"
+                  type="number"
+                  disabled={membershipExists}
+                  min={minPrice}
+                  max={maxPrice}
+                />
+              {/if}
+            </div>
           </div>
         </label>
       </div>
