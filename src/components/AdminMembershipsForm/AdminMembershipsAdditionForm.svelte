@@ -496,6 +496,20 @@
             </div>
           </div>
         </label>
+
+        <!-- Earning info -->
+        <div class="hs-form-field">
+          <div class="flex gap-0 w-full max-w-full p-0">
+            <div class="h-6 rounded-[99px] w-[90%] bg-[#00D0FD]"></div>
+            <div class="h-6 rounded-[99px] w-[10%] bg-[#43C451]"></div>
+          </div>
+          <p class="mt-1">
+            It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
+          </p>
+          <p class="hs-form-field__helper mt-2">
+            * <u>What is staking?</u>
+          </p>
+        </div>
       </div>
 
       <!-- Preview -->
