@@ -533,6 +533,7 @@
               class={`hs-form-field__input grow max-w-[33%] flex gap-2 justify-center items-center ${membershipPaymentType === 'instant' ? '!border-[#e5e7eb]' : ''}`}
               id="membership-fee-instant"
               name="membership-fee-instant"
+              disabled={membership.currency === 'DEV'}
             >
               <span class="h-auto w-auto max-w-[48%]">
                 <svg width="22" height="19" viewBox="0 0 22 19" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -546,6 +547,7 @@
               class={`hs-form-field__input grow max-w-[33%] flex gap-2 justify-center items-center ${membershipPaymentType === 'stake' ? '!border-[#e5e7eb]' : ''}`}
               id="membership-fee-stake"
               name="membership-fee-stake"
+              disabled={membership.currency === 'DEV'}
             >
               <span class="h-auto w-auto max-w-[48%]">
                 <svg width="22" height="20" viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg">
