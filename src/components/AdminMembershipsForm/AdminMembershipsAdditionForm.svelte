@@ -203,7 +203,6 @@
   }
 
   const update = () => {
-    console.log("Memberships", membership)
     if (membership.price < minPrice || membership.price > maxPrice) return
 
     const search = mode === 'edit' ? originalId : membership.id
