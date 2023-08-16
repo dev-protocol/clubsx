@@ -119,6 +119,7 @@
         }
       }
 
+      update() // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
       return;
     }
 
@@ -151,6 +152,7 @@
     }
 
     membershipPaymentType = type
+    update() // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
   }
 
   const connectOnMount = async () => {
@@ -288,6 +290,8 @@
         }
       }
 
+      // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
+      update()
       return;
     }
 
@@ -314,6 +318,9 @@
           beneficiary: ZeroAddress // TODO: change this to default value
         }
     }
+
+    // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
+    update()
 
     if (membershipCustomFee === 0 || !membershipCustomFee) {
       return
