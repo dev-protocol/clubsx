@@ -11,7 +11,7 @@
   import { buildConfig, controlModal } from '@devprotocol/clubs-core/events'
   import { callSimpleCollections } from '@plugins/memberships/utils/simpleCollections'
   import type { Image } from '@plugins/memberships/utils/types/setImageArg'
-  import { PAYMENT_TYPE_INSTANT_FEE, PAYMENT_TYPE_STAKE_FEE } from '@constants/memberships'
+  import { DEV_TOKEN_PAYMENT_TYPE_FEE, PAYMENT_TYPE_INSTANT_FEE, PAYMENT_TYPE_STAKE_FEE } from '@constants/memberships'
 
   export let useOnFinishCallback: boolean = false
   export let currentPluginIndex: number
@@ -26,8 +26,8 @@
 
   type MembershipPaymentType = 'instant' | 'stake' | 'custom'
 
-  let membershipPaymentType: MembershipPaymentType = 'instant'
-  let membershipCustomFee: number = PAYMENT_TYPE_INSTANT_FEE
+  let membershipPaymentType: MembershipPaymentType = membership.currency === 'DEV' ? 'custom' : 'instant'
+  let membershipCustomFee: number = membership.currency === 'DEV' ? DEV_TOKEN_PAYMENT_TYPE_FEE : PAYMENT_TYPE_INSTANT_FEE
   let updatingMembershipsStatus: boolean = false
   let noOfPositions: number = 0
   let invalidPriceMsg: string = ''
@@ -104,6 +104,21 @@
   }
 
   const changeMembershipPaymentType = async (type: MembershipPaymentType) => {
+    if (membership.currency === 'DEV') {
+      // Update the membership fee in case of currency change to dev token.
+      membershipPaymentType = 'custom'
+      membershipCustomFee = 0
+      membership = {
+        ...membership,
+        fee: membership.fee ? {
+          ...membership.fee,
+          percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
+        } : undefined
+      }
+
+      return;
+    }
+
     if (type === 'instant') {
       // Update the membership state directly
       membership = {
@@ -250,6 +265,21 @@
   }
 
   const onChangeCustomFee = async () => {
+    if (membership.currency === 'DEV') {
+      // Update the membership fee in case of currency change to dev token.
+      membershipPaymentType = 'custom'
+      membershipCustomFee = 0
+      membership = {
+        ...membership,
+        fee: membership.fee ? {
+          ...membership.fee,
+          percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
+        } : undefined
+      }
+
+      return;
+    }
+
     const value = membershipCustomFee
 
     if (value < maxCustomFee) {
@@ -375,6 +405,14 @@
 
     controlModal({ open: false })
   }
+
+  const resetMembershipFee = () => {
+    if (membership.currency !== 'DEV') return;
+
+    membershipCustomFee = 0
+    membershipPaymentType = 'custom'
+  }
+
 </script>
 
 <div class="relative grid gap-16">
@@ -508,6 +546,7 @@
               class="hs-form-field__input w-fit"
               id="membership-currency"
               disabled={membershipExists}
+              on:change={resetMembershipFee}
             >
               <option value="USDC">USDC</option>
               <option value="ETH">ETH</option>
@@ -573,7 +612,7 @@
                   id="membership-fee-value"
                   name="membership-fee-value"
                   type="number"
-                  disabled={membershipExists}
+                  disabled={membership.currency === 'DEV'}
                   min={minCustomFee}
                   max={maxCustomFee}
                 />
@@ -582,7 +621,7 @@
           </div>
           {#if membership.currency === 'DEV'}
             <p class="hs-form-field__helper mt-2">
-              * Custom option is disabled for DEV token.
+              * Payment type option is currently disabled for DEV
             </p>
             {/if}
           {#if invalidFeeMsg !== ''}
