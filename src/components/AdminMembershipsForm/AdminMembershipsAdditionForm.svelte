@@ -27,7 +27,7 @@
   type MembershipPaymentType = 'instant' | 'stake' | 'custom'
 
   let membershipPaymentType: MembershipPaymentType = membership.currency === 'DEV' ? 'custom' : 'instant'
-  let membershipCustomFee: number = membership.currency === 'DEV' ? DEV_TOKEN_PAYMENT_TYPE_FEE : PAYMENT_TYPE_INSTANT_FEE
+  let membershipCustomFee: number = membership.currency === 'DEV' ? DEV_TOKEN_PAYMENT_TYPE_FEE : 0
   let updatingMembershipsStatus: boolean = false
   let noOfPositions: number = 0
   let invalidPriceMsg: string = ''
@@ -146,6 +146,19 @@
           percentage: PAYMENT_TYPE_STAKE_FEE,
         } :  {
           percentage: PAYMENT_TYPE_STAKE_FEE,
+          beneficiary: ZeroAddress // TODO: change this to default value
+        }
+      }
+    }
+
+    if (type === 'custom') {
+      membership = {
+        ...membership,
+        fee: membership.fee ? {
+          ...membership.fee,
+          percentage: membershipCustomFee,
+        } :  {
+          percentage: membershipCustomFee,
           beneficiary: ZeroAddress // TODO: change this to default value
         }
       }
@@ -297,7 +310,7 @@
 
     const value = membershipCustomFee
 
-    if (value < maxCustomFee) {
+    if (value < minCustomFee) {
       membershipCustomFee = minCustomFee
       invalidFeeMsg = `Fee automatically set to minimum allowed value- ${minCustomFee}`
     } else if (value > maxCustomFee) {
@@ -432,6 +445,17 @@
 
     membershipCustomFee = 0
     membershipPaymentType = 'custom'
+    // Update the membership state.
+    membership = {
+      ...membership,
+      fee: membership.fee ? {
+        ...membership.fee,
+        percentage: membershipCustomFee,
+      } : {
+          percentage: membershipCustomFee,
+          beneficiary: ZeroAddress // TODO: change this to default value
+        }
+    }
   }
 
 </script>
