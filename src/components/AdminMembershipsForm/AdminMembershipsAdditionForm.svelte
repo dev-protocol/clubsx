@@ -469,7 +469,7 @@
               class="hs-form-field__input grow max-w-[33%] flex gap-2 justify-center itmes-center"
               id="membership-fee"
             >
-              <img src={InstantMembershipsPaymentType} alt="Instant Memberships" class="h-auto w-auto" />
+              <img src={InstantMembershipsPaymentType} alt="Instant Memberships" class="h-auto w-auto max-w-[48%]" />
               Instant
             </button>
             <button
@@ -477,7 +477,7 @@
               class="hs-form-field__input grow max-w-[33%] flex gap-2 justify-center itmes-center"
               id="membership-fee"
             >
-              <img src={StakeMembershipsPaymentType} alt="Stake Memberships" class="h-auto w-auto " />
+              <img src={StakeMembershipsPaymentType} alt="Stake Memberships" class="h-auto w-auto max-w-[48%]" />
               Stake
             </button>
             <div class="grow max-w-[33%]">
