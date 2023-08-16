@@ -530,7 +530,7 @@
           <div class="flex justify-start items-center gap-2 w-full max-w-full">
             <button
               on:click|preventDefault={() => changeMembershipPaymentType('instant')}
-              class="hs-form-field__input grow max-w-[33%] flex gap-2 justify-center items-center"
+              class={`hs-form-field__input grow max-w-[33%] flex gap-2 justify-center items-center ${membershipPaymentType === 'instant' ? '!border-[#e5e7eb]' : ''}`}
               id="membership-fee-instant"
               name="membership-fee-instant"
             >
@@ -539,7 +539,7 @@
             </button>
             <button
               on:click|preventDefault={() => changeMembershipPaymentType('stake')}
-              class="hs-form-field__input grow max-w-[33%] flex gap-2 justify-center items-center"
+              class={`hs-form-field__input grow max-w-[33%] flex gap-2 justify-center items-center ${membershipPaymentType === 'stake' ? '!border-[#e5e7eb]' : ''}`}
               id="membership-fee-stake"
               name="membership-fee-stake"
             >
@@ -561,7 +561,7 @@
                   bind:value={membershipCustomFee}
                   on:change={onChangeCustomFee}
                   on:keyup={validateCustomMembershipFee}
-                  class="hs-form-field__input w-full max-w-full"
+                  class={`hs-form-field__input w-full max-w-full ${membershipPaymentType === 'custom' ? '!border-[#e5e7eb]' : ''}`}
                   id="membership-fee-value"
                   name="membership-fee-value"
                   type="number"
