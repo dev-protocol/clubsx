@@ -489,7 +489,7 @@
         </div>
 
         <!-- Price -->
-        <label class="hs-form-field is-filled is-required">
+        <div class="hs-form-field is-filled is-required">
           <span class="hs-form-field__label"> Price </span>
           <div class="flex justify-start items-center w-full max-w-full gap-1">
             <input
@@ -522,10 +522,10 @@
           {#if invalidPriceMsg !== ''}
             <p class="text-danger-300">* {invalidPriceMsg}</p>
           {/if}
-        </label>
+        </div>
 
         <!-- Payment type -->
-        <label class="hs-form-field is-filled is-required">
+        <div class="hs-form-field is-filled is-required">
           <span class="hs-form-field__label"> Payment type </span>
           <div class="flex justify-start items-center gap-2 w-full max-w-full">
             <button
@@ -588,7 +588,7 @@
           {#if invalidFeeMsg !== ''}
             <p class="text-danger-300">* {invalidFeeMsg}</p>
           {/if}
-        </label>
+        </div>
 
         <!-- Earning info -->
         <div class="hs-form-field">
