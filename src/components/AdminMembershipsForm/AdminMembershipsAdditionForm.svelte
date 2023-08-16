@@ -12,6 +12,8 @@
   import { callSimpleCollections } from '@plugins/memberships/utils/simpleCollections'
   import type { Image } from '@plugins/memberships/utils/types/setImageArg'
   import MembershipOption from './MembershipOption.svelte'
+  import InstantMembershipsPaymentType from '@assets/Instant-Memberships-Payment-Type.svg'
+  import StakeMembershipsPaymentType from '@assets/Stake-Memberships-Payment-Type.svg'
 
   export let useOnFinishCallback: boolean = false
   export let currentPluginIndex: number
@@ -464,16 +466,20 @@
           <div class="flex justify-start items-center gap-2 w-full max-w-full">
             <button
               on:click|preventDefault={() => changeMembershipPaymentType('instant')}
-              class="hs-form-field__input grow max-w-[33%]"
+              class="hs-form-field__input grow max-w-[33%] flex gap-2 justify-center itmes-center"
               id="membership-fee"
             >
+              <img src={InstantMembershipsPaymentType} alt="Instant Memberships" class="h-auto w-auto" />
               Instant
             </button>
             <button
               on:click|preventDefault={() => changeMembershipPaymentType('stake')}
-              class="hs-form-field__input grow max-w-[33%]"
+              class="hs-form-field__input grow max-w-[33%] flex gap-2 justify-center itmes-center"
               id="membership-fee"
-            >Stake</button>
+            >
+              <img src={StakeMembershipsPaymentType} alt="Stake Memberships" class="h-auto w-auto " />
+              Stake
+            </button>
             <div class="grow max-w-[33%]">
               {#if  membershipPaymentType !== 'custom'}
                 <button
