@@ -530,7 +530,7 @@
           <div class="flex justify-start items-center gap-2 w-full max-w-full">
             <button
               on:click|preventDefault={() => changeMembershipPaymentType('instant')}
-              class="hs-form-field__input grow max-w-[33%] flex gap-2 justify-center itmes-center"
+              class="hs-form-field__input grow max-w-[33%] flex gap-2 justify-center items-center"
               id="membership-fee-instant"
               name="membership-fee-instant"
             >
@@ -539,7 +539,7 @@
             </button>
             <button
               on:click|preventDefault={() => changeMembershipPaymentType('stake')}
-              class="hs-form-field__input grow max-w-[33%] flex gap-2 justify-center itmes-center"
+              class="hs-form-field__input grow max-w-[33%] flex gap-2 justify-center items-center"
               id="membership-fee-stake"
               name="membership-fee-stake"
             >
