@@ -362,8 +362,6 @@
     const keys: string[] =
       memOpts?.map((opt) => keccak256(new Uint8Array(opt.payload))) || []
 
-    console.log({ keys, images, propAddress })
-
     controlModal({
       open: true,
       state: 'loading',
