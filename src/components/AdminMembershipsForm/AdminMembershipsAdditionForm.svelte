@@ -113,7 +113,10 @@
         fee: membership.fee ? {
           ...membership.fee,
           percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
-        } : undefined
+        } : {
+          percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
+          beneficiary: ZeroAddress // TODO: change this to default value
+        }
       }
 
       return;
@@ -126,7 +129,10 @@
         fee: membership.fee ? {
           ...membership.fee,
           percentage: PAYMENT_TYPE_INSTANT_FEE,
-        } : undefined
+        } :  {
+          percentage: PAYMENT_TYPE_INSTANT_FEE,
+          beneficiary: ZeroAddress // TODO: change this to default value
+        }
       }
     }
 
@@ -137,7 +143,10 @@
         fee: membership.fee ? {
           ...membership.fee,
           percentage: PAYMENT_TYPE_STAKE_FEE,
-        } : undefined
+        } :  {
+          percentage: PAYMENT_TYPE_STAKE_FEE,
+          beneficiary: ZeroAddress // TODO: change this to default value
+        }
       }
     }
 
@@ -274,7 +283,10 @@
         fee: membership.fee ? {
           ...membership.fee,
           percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
-        } : undefined
+        } :  {
+          beneficiary: ZeroAddress, // TODO: change this to default value
+          percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
+        }
       }
 
       return;
@@ -298,7 +310,10 @@
       fee: membership.fee ? {
         ...membership.fee,
         percentage: membershipCustomFee,
-      } : undefined
+      } : {
+          percentage: membershipCustomFee,
+          beneficiary: ZeroAddress // TODO: change this to default value
+        }
     }
 
     if (membershipCustomFee === 0 || !membershipCustomFee) {
