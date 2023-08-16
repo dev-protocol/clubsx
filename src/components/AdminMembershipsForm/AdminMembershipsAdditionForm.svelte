@@ -11,9 +11,7 @@
   import { buildConfig, controlModal } from '@devprotocol/clubs-core/events'
   import { callSimpleCollections } from '@plugins/memberships/utils/simpleCollections'
   import type { Image } from '@plugins/memberships/utils/types/setImageArg'
-  import MembershipOption from './MembershipOption.svelte'
-  import InstantMembershipsPaymentType from '@assets/Instant-Memberships-Payment-Type.svg'
-  import StakeMembershipsPaymentType from '@assets/Stake-Memberships-Payment-Type.svg'
+  import { PAYMENT_TYPE_INSTANT_FEE, PAYMENT_TYPE_STAKE_FEE } from '@constants/memberships'
 
   export let useOnFinishCallback: boolean = false
   export let currentPluginIndex: number
@@ -29,7 +27,7 @@
   type MembershipPaymentType = 'instant' | 'stake' | 'custom'
 
   let membershipPaymentType: MembershipPaymentType = 'instant'
-  let membershipCustomFee: number = 90
+  let membershipCustomFee: number = PAYMENT_TYPE_INSTANT_FEE
   let updatingMembershipsStatus: boolean = false
   let noOfPositions: number = 0
   let invalidPriceMsg: string = ''
@@ -112,7 +110,7 @@
         ...membership,
         fee: membership.fee ? {
           ...membership.fee,
-          percentage: 90,
+          percentage: PAYMENT_TYPE_INSTANT_FEE,
         } : undefined
       }
     }
@@ -123,7 +121,7 @@
         ...membership,
         fee: membership.fee ? {
           ...membership.fee,
-          percentage: 10,
+          percentage: PAYMENT_TYPE_STAKE_FEE,
         } : undefined
       }
     }
