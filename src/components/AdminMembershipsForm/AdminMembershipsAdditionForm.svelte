@@ -32,6 +32,7 @@
   let updatingMembershipsStatus: boolean = false
   let noOfPositions: number = 0
   let invalidPriceMsg: string = ''
+  let invalidFeeMsg: string = ''
 
   const originalId = membership.id
   const provider = new JsonRpcProvider(rpcUrl)
@@ -44,6 +45,8 @@
 
   const minPrice = 0.000001
   const maxPrice = 1e20
+  const minCustomFee = 0
+  const maxCustomFee = 95
 
   const deleteMembership = (selectedMembership: Membership) => {
     updatingMembershipsStatus = true
@@ -142,6 +145,18 @@
     }
   }
 
+  const validateCustomMembershipFee = (event: Event) => {
+    const value = Number((event.target as HTMLInputElement)?.value || 0)
+
+    if (value < minCustomFee) {
+      invalidFeeMsg = `Minimum payment type fee allowed is ${minCustomFee}`
+    } else if (value > maxCustomFee) {
+      invalidFeeMsg = `Maximum price allowed is ${maxCustomFee}`
+    } else {
+      invalidFeeMsg = ''
+    }
+  }
+
   const update = () => {
     if (membership.price < minPrice || membership.price > maxPrice) return
 
@@ -210,6 +225,25 @@
     if (membership.price === 0 || !membership.price) {
       return
     }
+  }
+
+  const onChangeCustomFee = async () => {
+    const value = 95.1
+
+    if (value < maxCustomFee) {
+      // TODO: membership.price = minPrice
+      invalidFeeMsg = `Fee automatically set to minimum allowed value- ${minCustomFee}`
+    } else if (value > maxCustomFee) {
+      // TODO: membership.price = maxPrice
+      invalidFeeMsg = `Fee automatically set to maximum allowed value- ${maxCustomFee}`
+    } else {
+      invalidFeeMsg = ''
+    }
+
+    // TODO
+    // if (membership.price === 0 || !membership.price) {
+    //   return
+    // }
   }
 
   const cancel = () => {
@@ -486,21 +520,32 @@
                   on:click|preventDefault={() => changeMembershipPaymentType('custom')}
                   class="hs-form-field__input w-full max-w-full"
                   id="membership-fee"
+                  disabled={membership.currency === 'DEV'}
                 >Custom</button>
               {/if}
               {#if  membershipPaymentType === 'custom'}
                 <input
+                  on:change={onChangeCustomFee}
+                  on:keyup={validateCustomMembershipFee}
                   class="hs-form-field__input w-full max-w-full"
                   id="membership-fee-value"
                   name="membership-fee-value"
                   type="number"
                   disabled={membershipExists}
-                  min={minPrice}
-                  max={maxPrice}
+                  min={minCustomFee}
+                  max={maxCustomFee}
                 />
               {/if}
             </div>
           </div>
+          {#if membership.currency === 'DEV'}
+            <p class="hs-form-field__helper mt-2">
+              * Custom option is disabled for DEV token.
+            </p>
+            {/if}
+          {#if invalidFeeMsg !== ''}
+            <p class="text-danger-300">* {invalidFeeMsg}</p>
+          {/if}
         </label>
 
         <!-- Earning info -->
