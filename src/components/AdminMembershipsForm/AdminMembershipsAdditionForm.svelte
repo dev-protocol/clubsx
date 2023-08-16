@@ -425,9 +425,9 @@
         <!-- Price -->
         <label class="hs-form-field is-filled is-required">
           <span class="hs-form-field__label"> Price </span>
-          <div class="flex justify-start items-center">
+          <div class="flex justify-start items-center w-full max-w-full gap-1">
             <input
-              class="hs-form-field__input"
+              class="hs-form-field__input grow"
               bind:value={membership.price}
               on:change={onChangePrice}
               on:keyup={validateMembershipPrice}
@@ -441,7 +441,7 @@
             <select
               bind:value={membership.currency}
               name="membership-currency"
-              class="hs-form-field__input"
+              class="hs-form-field__input w-fit"
               id="membership-currency"
               disabled={membershipExists}
             >

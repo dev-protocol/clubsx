@@ -555,9 +555,8 @@ export default defineComponent({
       }
 
       const contract = (l1 || l2)?.contract()
-      const descriptorAddressInContract: string = await contract?.descriptorOf(
-        propertyAddress,
-      )
+      const descriptorAddressInContract: string =
+        await contract?.descriptorOf(propertyAddress)
       initMbmershipTxnProcessing = false
       membershipInitialized =
         descriptorAddressInContract?.toLowerCase() ===
