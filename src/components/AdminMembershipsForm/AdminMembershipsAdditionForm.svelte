@@ -29,6 +29,7 @@
   type MembershipPaymentType = 'instant' | 'stake' | 'custom'
 
   let membershipPaymentType: MembershipPaymentType = 'instant'
+  let membershipCustomFee: number = 90
   let updatingMembershipsStatus: boolean = false
   let noOfPositions: number = 0
   let invalidPriceMsg: string = ''
@@ -105,6 +106,28 @@
   }
 
   const changeMembershipPaymentType = async (type: MembershipPaymentType) => {
+    if (type === 'instant') {
+      // Update the membership state directly
+      membership = {
+        ...membership,
+        fee: membership.fee ? {
+          ...membership.fee,
+          percentage: 90,
+        } : undefined
+      }
+    }
+
+    // Update the membership state directly
+    if (type === 'stake'){
+      membership = {
+        ...membership,
+        fee: membership.fee ? {
+          ...membership.fee,
+          percentage: 10,
+        } : undefined
+      }
+    }
+
     membershipPaymentType = type
   }
 
@@ -158,6 +181,7 @@
   }
 
   const update = () => {
+    console.log("Memberships", membership)
     if (membership.price < minPrice || membership.price > maxPrice) return
 
     const search = mode === 'edit' ? originalId : membership.id
@@ -228,22 +252,30 @@
   }
 
   const onChangeCustomFee = async () => {
-    const value = 95.1
+    const value = membershipCustomFee
 
     if (value < maxCustomFee) {
-      // TODO: membership.price = minPrice
+      membershipCustomFee = minCustomFee
       invalidFeeMsg = `Fee automatically set to minimum allowed value- ${minCustomFee}`
     } else if (value > maxCustomFee) {
-      // TODO: membership.price = maxPrice
+      membershipCustomFee = maxCustomFee
       invalidFeeMsg = `Fee automatically set to maximum allowed value- ${maxCustomFee}`
     } else {
       invalidFeeMsg = ''
     }
 
-    // TODO
-    // if (membership.price === 0 || !membership.price) {
-    //   return
-    // }
+    // Update the membership state.
+    membership = {
+      ...membership,
+      fee: membership.fee ? {
+        ...membership.fee,
+        percentage: membershipCustomFee,
+      } : undefined
+    }
+
+    if (membershipCustomFee === 0 || !membershipCustomFee) {
+      return
+    }
   }
 
   const cancel = () => {
@@ -501,7 +533,8 @@
             <button
               on:click|preventDefault={() => changeMembershipPaymentType('instant')}
               class="hs-form-field__input grow max-w-[33%] flex gap-2 justify-center itmes-center"
-              id="membership-fee"
+              id="membership-fee-instant"
+              name="membership-fee-instant"
             >
               <img src={InstantMembershipsPaymentType} alt="Instant Memberships" class="h-auto w-auto max-w-[48%]" />
               Instant
@@ -509,7 +542,8 @@
             <button
               on:click|preventDefault={() => changeMembershipPaymentType('stake')}
               class="hs-form-field__input grow max-w-[33%] flex gap-2 justify-center itmes-center"
-              id="membership-fee"
+              id="membership-fee-stake"
+              name="membership-fee-stake"
             >
               <img src={StakeMembershipsPaymentType} alt="Stake Memberships" class="h-auto w-auto max-w-[48%]" />
               Stake
@@ -519,12 +553,14 @@
                 <button
                   on:click|preventDefault={() => changeMembershipPaymentType('custom')}
                   class="hs-form-field__input w-full max-w-full"
-                  id="membership-fee"
+                  id="membership-fee-custom"
+                  name="membership-fee-custom"
                   disabled={membership.currency === 'DEV'}
                 >Custom</button>
               {/if}
               {#if  membershipPaymentType === 'custom'}
                 <input
+                  bind:value={membershipCustomFee}
                   on:change={onChangeCustomFee}
                   on:keyup={validateCustomMembershipFee}
                   class="hs-form-field__input w-full max-w-full"
