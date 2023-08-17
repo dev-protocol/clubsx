@@ -6,12 +6,14 @@ import type { Membership } from '@plugins/memberships'
 import type {
   ClubsFunctionGetAdminPaths,
   ClubsFunctionGetPagePaths,
+  ClubsFunctionGetSlots,
   ClubsFunctionPlugin,
   ClubsPluginMeta,
 } from '@devprotocol/clubs-core'
 import { ClubsPluginCategory, ClubsPluginSignal } from '@devprotocol/clubs-core'
 import { default as Index } from './index.astro'
 import { default as Id } from './id.astro'
+import { default as Slot } from './slot.astro'
 import { keccak256, solidityPacked } from 'ethers'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 
@@ -192,6 +194,17 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async () => []
 
+export const getSlots: ClubsFunctionGetSlots = async (_, __, { factory }) => {
+  return factory === 'page'
+    ? [
+        {
+          slot: 'checkout:before:transaction-form',
+          component: Slot,
+        },
+      ]
+    : []
+}
+
 export const meta: ClubsPluginMeta = {
   id: 'devprotocol:clubs:plugin:fiat',
   displayName: 'FIAT',
@@ -201,5 +214,6 @@ export const meta: ClubsPluginMeta = {
 export default {
   getPagePaths,
   getAdminPaths,
+  getSlots,
   meta,
 } as ClubsFunctionPlugin

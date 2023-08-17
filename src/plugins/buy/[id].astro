@@ -12,8 +12,7 @@ const { propertyAddress, product, rpcUrl, ...others } = Astro.props as {
 <Checkout
   amount={product.price}
   destination={propertyAddress}
-  currency={'ETH'}
-  page="BUY"
+  currency={product.currency}
   feeBeneficiary={product.fee?.beneficiary}
   feePercentage={product.fee?.percentage}
   payload={product.payload}

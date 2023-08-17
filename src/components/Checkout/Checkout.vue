@@ -4,10 +4,10 @@
     class="relative mx-auto mb-12 grid items-start rounded-xl bg-white p-6 text-black shadow lg:container lg:mt-12 lg:grid-cols-2 lg:gap-12"
   >
     <section class="flex flex-col">
-      <slot name="before:transaction-form"></slot>
-
       <!-- Transaction form -->
       <div class="grid gap-16 p-5">
+        <slot name="before:transaction-form"></slot>
+
         <span
           v-if="!account"
           class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white"

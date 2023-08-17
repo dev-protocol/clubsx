@@ -49,7 +49,7 @@ const SlotsCheckoutBeforeTransactionForm = clubs.slots.filter(
   />
   {
     SlotsCheckoutBeforeTransactionForm.map((Slot) => (
-      <Slot.component {...Slot.props, checkoutOptions} slot="before:transaction-form" />
+      <Slot.component {...Slot.props} checkoutOptions={checkoutOptions} slot="before:transaction-form" />
     ))
   }
 </Checkout>
