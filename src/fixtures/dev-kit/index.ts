@@ -223,6 +223,14 @@ export const tokenURISim = async (
   })
 }
 
+export const calculateRewardAmount = async (
+  prov: ContractRunner,
+  propertyAddress: string,
+) => {
+  const [l1, l2] = await clientsLockup(prov)
+  return (l1 || l2)?.calculateRewardAmount(propertyAddress)
+}
+
 export const stakeWithAnyTokens = async (
   {
     provider,
