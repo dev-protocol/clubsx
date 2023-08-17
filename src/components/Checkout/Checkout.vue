@@ -1,158 +1,104 @@
 <template>
   <div
     v-if="!stakeSuccessful"
-    class="bg-dp-blue-grey-300 relative mx-auto mb-12 grid items-start rounded-xl p-4 shadow lg:container lg:mt-12 lg:grid-cols-[auto,_480px] lg:gap-12"
+    class="relative mx-auto mb-12 grid items-start rounded-xl bg-white p-6 text-black shadow lg:container lg:mt-12 lg:grid-cols-2 lg:gap-12"
   >
     <section class="flex flex-col">
-      <slot name="before:transaction-form"></slot>
+      <!-- Transaction form -->
+      <div class="grid gap-16 p-5">
+        <slot name="before:transaction-form"></slot>
 
-      <h2 class="mb-8 font-title text-4xl font-bold">
-        <span v-if="page === 'BUY'">BUY</span>
-        <span v-if="page === 'JOIN'">JOIN</span>
-      </h2>
-      <div
-        v-if="verifiedPropsCurrency === currencyOption.DEV || usePolygonWETH"
-        class="mb-8"
-      >
-        <h3 class="mb-4 text-2xl">Approval</h3>
-        <button
-          @click="approve"
-          v-if="approveNeeded || approveNeeded === undefined"
-          :disabled="isApproving || approveNeeded === undefined"
-          class="flex items-center rounded border bg-gray-600 p-2 px-4"
+        <span
+          v-if="!account"
+          class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white"
+          >Please connect a wallet</span
         >
-          <svg
-            v-if="isApproving"
-            class="-ml-1 mr-3 h-5 w-5 animate-spin text-white"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <circle
-              class="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              stroke-width="4"
-            ></circle>
-            <path
-              class="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-            ></path>
-          </svg>
-          Sign with wallet and approve
-        </button>
-        <button
-          v-if="approveNeeded === false"
-          disabled
-          class="rounded border border-gray-400 bg-gray-600 p-2 px-4 text-gray-400"
-        >
-          You've already approved
-        </button>
-      </div>
-      <div class="mb-8">
-        <h3 class="mb-4 text-2xl">Purchase membership</h3>
-        <button
-          v-if="approveNeeded"
-          disabled
-          class="rounded border border-gray-400 bg-gray-600 p-2 px-4 text-gray-400"
-        >
-          <span>Purchase</span>
-        </button>
-        <button
-          v-if="!approveNeeded"
-          @click="submitStake"
-          :disabled="isStaking || approveNeeded"
-          class="flex items-center rounded border bg-gray-600 p-2 px-4"
-        >
-          <svg
-            v-if="isStaking"
-            class="-ml-1 mr-3 h-5 w-5 animate-spin text-white"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <circle
-              class="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              stroke-width="4"
-            ></circle>
-            <path
-              class="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-            ></path>
-          </svg>
 
-          <span>Purchase</span>
-        </button>
+        <span v-if="useERC20" class="flex flex-col justify-stretch">
+          <!-- Approval -->
+          <button
+            v-if="!account"
+            class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white"
+            disabled
+          >
+            Approve
+          </button>
+          <button
+            @click="approve"
+            v-if="account && (approveNeeded || approveNeeded === undefined)"
+            :disabled="isApproving || approveNeeded === undefined"
+            :data-is-approving="isApproving"
+            class="rounded-full bg-black px-8 py-4 text-center font-bold text-white disabled:bg-neutral-300 data-[is-approving=true]:animate-pulse"
+          >
+            Sign with wallet and approve
+          </button>
+          <button
+            v-if="account && approveNeeded === false"
+            class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white"
+            disabled
+          >
+            You've already approved
+          </button>
+        </span>
+
+        <span class="flex flex-col justify-stretch">
+          <!-- Pay -->
+          <button
+            v-if="approveNeeded"
+            class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white"
+            disabled
+          >
+            Pay with {{ verifiedPropsCurrency.toUpperCase() }}
+          </button>
+          <button
+            v-if="!approveNeeded"
+            @click="submitStake"
+            :disabled="isStaking || approveNeeded"
+            :data-is-staking="isStaking"
+            class="rounded-full bg-black px-8 py-4 text-center font-bold text-white disabled:bg-neutral-300 data-[is-staking=true]:animate-pulse"
+          >
+            Pay with {{ verifiedPropsCurrency.toUpperCase() }}
+          </button>
+        </span>
       </div>
     </section>
-    <div
-      class="grid grid-cols-1 content-start overflow-hidden rounded border border-white/30"
-    >
-      <section class="border-b border-white/30 p-4">
-        <h3 class="mb-2 text-xl opacity-70">Purchase</h3>
-        <p class="flex items-center text-2xl uppercase">
-          <Skeleton
-            v-if="
-              (verifiedPropsCurrency == currencyOption.ETH && !ethAmount) ||
-              (verifiedPropsCurrency == currencyOption.DEV && !devAmount)
-            "
-            class="mr-4 inline-block h-[1.2em] w-24"
-          />
-
-          <span v-if="verifiedPropsCurrency == currencyOption.DEV && devAmount"
-            >{{ devAmount }} $DEV</span
-          >
-          <span v-if="verifiedPropsCurrency == currencyOption.ETH && ethAmount"
-            >{{ ethAmount }} $ETH</span
-          >
+    <section class="flex flex-col gap-6">
+      <div class="rounded-lg border border-black/20 bg-black/10 p-4">
+        <img
+          v-if="previewImageSrc"
+          :src="previewImageSrc"
+          class="h-auto w-full rounded object-cover object-center sm:h-full sm:w-full"
+        />
+        <Skeleton
+          v-if="previewImageSrc === undefined"
+          class="mx-auto aspect-square h-full w-full"
+        />
+      </div>
+      <span>
+        <h3 class="text-sm text-black/50">
+          <span>{{ previewName }}</span>
+        </h3>
+        <p class="text-2xl font-bold">
+          {{
+            `${
+              Number(amount) > 1 ? Number(amount).toLocaleString() : amount
+            } ${verifiedPropsCurrency.toUpperCase()}`
+          }}
         </p>
-        <aside
-          v-if="verifiedPropsCurrency !== currencyOption.DEV"
-          class="ml-4 mt-4 border-l border-white/30 pl-4"
-        >
-          <h4 class="text-md mb-2 opacity-70">Replace</h4>
-          <Skeleton
-            v-if="!devAmount"
-            class="mr-4 inline-block h-[1.2em] w-32"
-          />
-          <p v-if="devAmount" class="text-sm uppercase">{{ devAmount }} $DEV</p>
-          <div v-if="ethFeeAmount" class="mt-2">
-            <h4 class="text-md mb-2 opacity-70">Fee included</h4>
-            <p class="text-sm uppercase">{{ ethFeeAmount }} $ETH</p>
-          </div>
-        </aside>
-      </section>
-      <section class="p-4">
-        <h3 class="mb-2 text-xl opacity-70">Preview</h3>
-        <div
-          class="mx-auto flex flex-col justify-center gap-4 rounded bg-zinc-900 p-4"
-        >
-          <div>
-            <Skeleton v-if="previewName === undefined" class="min-h-[1.5em]" />
-            <span v-if="previewName" class="text-sm">{{ previewName }}</span>
-          </div>
-
-          <Skeleton
-            v-if="previewImageSrc === undefined"
-            class="mx-auto aspect-square h-full w-full"
-          />
-          <img
-            v-if="previewImageSrc"
-            :src="previewImageSrc"
-            class="h-full w-full"
-          />
-        </div>
-      </section>
-    </div>
+        <p v-if="stakingAmount" class="text-sm text-black/90">
+          {{
+            `${stakingAmount.toLocaleString()} DEV will be staked automatically.`
+          }}
+        </p>
+      </span>
+      <aside
+        v-if="htmlDescription"
+        v-html="htmlDescription"
+        class="mt-6 text-xl text-black/80"
+      ></aside>
+    </section>
   </div>
+
   <section
     style="height: calc(100vh - 74px)"
     class="flex flex-col items-center justify-center"
@@ -177,14 +123,21 @@ import {
   JsonRpcProvider,
   MaxUint256,
   formatUnits,
+  keccak256,
   parseUnits,
 } from 'ethers'
 import BigNumber from 'bignumber.js'
-import { Subscription, zip } from 'rxjs'
+import { Subscription, combineLatest, zip } from 'rxjs'
 import { CurrencyOption } from '@constants/currencyOption'
-import { fetchDevForEth, fetchEthForDev, fetchSTokens } from '@fixtures/utility'
+import {
+  fetchDevForEth,
+  fetchDevForUsdc,
+  fetchEthForDev,
+  fetchSTokens,
+} from '@fixtures/utility'
 import Skeleton from '@components/Global/Skeleton.vue'
-import { stakeWithEthForPolygon } from '@fixtures/dev-kit'
+import { stakeWithEthForPolygon, stakeWithAnyTokens } from '@fixtures/dev-kit'
+import { marked } from 'marked'
 
 type Data = {
   parsedAmount: BigNumberish
@@ -194,12 +147,11 @@ type Data = {
   subscriptions: Subscription[]
   stakeSuccessful: boolean
   account?: string
-  ethAmount: UndefinedOr<string>
-  devAmount: UndefinedOr<string>
-  ethFeeAmount: UndefinedOr<string>
+  feeAmount: UndefinedOr<number>
   chain: UndefinedOr<number>
   previewImageSrc: UndefinedOr<string>
   previewName: UndefinedOr<string>
+  stakingAmount: UndefinedOr<number>
 }
 
 let providerPool: UndefinedOr<ContractRunner>
@@ -209,33 +161,44 @@ export default defineComponent({
     amount: Number,
     destination: String,
     currency: String, // 'DEV' or 'ETH'
-    page: String, // 'JOIN or BUY'
     feeBeneficiary: String,
     feePercentage: Number,
-    payload: String,
+    payload: Uint8Array,
     rpcUrl: String,
+    description: String,
   },
   data() {
     return {
-      parsedAmount: this.amount ? parseUnits(this.amount.toString(), 18) : 0,
+      parsedAmount: this.amount
+        ? parseUnits(
+            this.amount.toString(),
+            this.verifiedPropsCurrency === CurrencyOption.ETH ||
+              this.verifiedPropsCurrency === CurrencyOption.DEV
+              ? 18
+              : this.verifiedPropsCurrency === CurrencyOption.USDC
+              ? 6
+              : (18 as never),
+          )
+        : 0,
       approveNeeded: undefined,
       subscriptions: [],
       stakeSuccessful: false,
       account: undefined,
       isApproving: false,
       isStaking: false,
-      ethAmount: undefined,
-      devAmount: undefined,
-      ethFeeAmount: undefined,
+      feeAmount: undefined,
       chain: undefined,
       previewImageSrc: undefined,
       previewName: undefined,
+      stakingAmount: undefined,
     } as Data
   },
   computed: {
-    d(): CurrencyOption {
+    verifiedPropsCurrency(): CurrencyOption {
       return this.currency?.toUpperCase() === 'ETH'
         ? CurrencyOption.ETH
+        : this.currency?.toUpperCase() === 'USDC'
+        ? CurrencyOption.USDC
         : CurrencyOption.DEV
     },
     usePolygonWETH(): boolean {
@@ -244,27 +207,32 @@ export default defineComponent({
         (this.chain === 137 || this.chain === 80001)
       )
     },
+    useERC20(): boolean {
+      return (
+        this.verifiedPropsCurrency !== CurrencyOption.ETH || this.usePolygonWETH
+      )
+    },
     currencyOption() {
       return CurrencyOption
+    },
+    htmlDescription() {
+      return this.description && marked.parse(this.description ?? '')
     },
   },
   components: { Skeleton },
   async mounted() {
-    const connection = getConnection()
-
-    const sub = zip(
-      connection.provider,
-      connection.account,
-      connection.chain,
-    ).subscribe(async ([provider, account, chain]) => {
+    const sub = combineLatest([
+      getConnection().provider,
+      getConnection().account,
+      getConnection().chain,
+    ]).subscribe(async ([provider, account, chain]) => {
       providerPool = provider
       this.account = account
       this.chain = chain
       whenDefinedAll(
         [providerPool, account, this.destination, this.amount],
         async ([prov, userAddress, destination, amount]) => {
-          ;(this.verifiedPropsCurrency !== CurrencyOption.ETH ||
-            this.usePolygonWETH) &&
+          this.useERC20 &&
             this.checkApproved(
               prov,
               userAddress,
@@ -286,45 +254,47 @@ export default defineComponent({
         const feeDeposit = this.feePercentage
           ? new BigNumber(this.feePercentage)
           : 0
-        const [devAmount, ethAmount] = await Promise.all([
+
+        const exactFee = new BigNumber(amount).times(feeDeposit).toFixed()
+        this.feeAmount = new BigNumber(exactFee).dp(6).toNumber()
+
+        const [devAmount] = await Promise.all([
           this.verifiedPropsCurrency === CurrencyOption.DEV
             ? this.amount
-            : await fetchDevForEth({
+            : this.verifiedPropsCurrency === CurrencyOption.ETH
+            ? await fetchDevForEth({
                 provider,
                 tokenAddress: destination,
                 amount: new BigNumber(amount)
                   .times(new BigNumber(1).minus(feeDeposit))
                   .toNumber(),
                 chain,
-              }).then(formatUnits),
-          this.verifiedPropsCurrency === CurrencyOption.ETH
-            ? this.amount
-            : await fetchEthForDev({
+              }).then(formatUnits)
+            : this.verifiedPropsCurrency === CurrencyOption.USDC
+            ? await fetchDevForUsdc({
                 provider,
                 tokenAddress: destination,
-                amount: amount,
-              }).then(formatUnits),
+                amount: new BigNumber(amount)
+                  .times(new BigNumber(1).minus(feeDeposit))
+                  .toNumber(),
+                chain,
+              }).then(formatUnits)
+            : undefined,
         ])
 
-        this.devAmount = new BigNumber(devAmount ?? 0)
-          .dp(9)
-          .toFixed()
-          .toString()
-        this.ethAmount = new BigNumber(ethAmount ?? 0)
-          .dp(9)
-          .toFixed()
-          .toString()
-        this.ethFeeAmount = whenDefined(ethAmount, (_eth) =>
-          new BigNumber(_eth).times(feeDeposit).dp(9).toFixed().toString(),
-        )
+        this.stakingAmount = new BigNumber(devAmount).dp(6).toNumber()
+
         const sTokens = await fetchSTokens({
           provider,
           tokenAddress: destination,
           amount: devAmount,
           payload: this.payload,
+        }).catch((err) => {
+          console.log(err)
+          return undefined
         })
-        this.previewImageSrc = sTokens.image
-        this.previewName = sTokens.name
+        this.previewImageSrc = sTokens?.image
+        this.previewName = sTokens?.name
       },
     )
   },
@@ -378,6 +348,15 @@ export default defineComponent({
             from: userAddress,
             ethAmount: amount.toString(),
           }).then((res) => res.create())
+        : this.verifiedPropsCurrency === CurrencyOption.USDC
+        ? await stakeWithAnyTokens({
+            provider,
+            propertyAddress: destination,
+            tokenAmount: amount.toString(),
+            tokenDecimals: 6,
+            currency: CurrencyOption.USDC,
+            from: userAddress,
+          }).then((res) => res?.create())
         : await positionsCreate({
             provider,
             destination,
@@ -385,6 +364,7 @@ export default defineComponent({
             amount: amount.toString(),
           })
       this.approveNeeded = whenDefined(res, (x) => x.approvalNeeded)
+      console.log('this.approveNeeded', this.approveNeeded)
     },
     async submitStake() {
       debugger
@@ -408,7 +388,7 @@ export default defineComponent({
                   typeof this.feePercentage === 'number'
                     ? this.feePercentage * 10_000
                     : undefined,
-                payload: this.payload,
+                payload: this.payload && keccak256(this.payload),
                 from: account,
               })
               await whenDefined(res, async (x) => {
@@ -436,7 +416,7 @@ export default defineComponent({
                   typeof this.feePercentage === 'number'
                     ? this.feePercentage * 10_000
                     : undefined,
-                payload: this.payload,
+                payload: this.payload && keccak256(this.payload),
               })
               await whenDefined(res, async (x) => {
                 this.isStaking = true
@@ -447,6 +427,35 @@ export default defineComponent({
                 this.stakeSuccessful = true
               })
             }
+          } else if (this.verifiedPropsCurrency === CurrencyOption.USDC) {
+            const res = await stakeWithAnyTokens({
+              provider: prov,
+              propertyAddress: destination,
+              tokenAmount: amount.toString(),
+              tokenDecimals: 6,
+              currency: CurrencyOption.USDC,
+              gatewayAddress: this.feeBeneficiary ?? undefined,
+              gatewayBasisPoints:
+                typeof this.feePercentage === 'number'
+                  ? this.feePercentage * 10_000
+                  : undefined,
+              payload: this.payload && keccak256(this.payload),
+              from: account,
+            })
+            await whenDefined(res, async (x) => {
+              this.isStaking = true
+              const create = await x.create()
+              const approveIfNeeded = await create?.approveIfNeeded({
+                amount: parsedAmount,
+              })
+              const waitOrSkipApproval =
+                await approveIfNeeded?.waitOrSkipApproval()
+              const run = await waitOrSkipApproval?.run()
+              const res = await run?.wait()
+              console.log('res is: ', res)
+              this.isStaking = false
+              this.stakeSuccessful = true
+            })
           } else {
             // handle DEV stake
             const res = await positionsCreate({

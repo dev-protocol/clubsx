@@ -14,9 +14,8 @@ export const get = async ({
     )
   }
 
-  const isCreationLimitReached: boolean = await hasCreationLimitReached(
-    identifier,
-  )
+  const isCreationLimitReached: boolean =
+    await hasCreationLimitReached(identifier)
   return new Response(JSON.stringify({ isCreationLimitReached }), {
     status: 200,
   })

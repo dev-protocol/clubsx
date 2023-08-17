@@ -71,9 +71,8 @@ export default defineComponent({
 
       // Fetch and connect provider, wallet and signer.
       const modalProvider = GetModalProvider()
-      const { provider, currentAddress } = await EthersProviderFrom(
-        modalProvider,
-      )
+      const { provider, currentAddress } =
+        await EthersProviderFrom(modalProvider)
       if (!currentAddress || !provider) {
         this.isAddingPluginToClubs = false
         this.addingPluginToClubsStatusMsg = 'Adding failed, try again!'
