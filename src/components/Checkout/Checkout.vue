@@ -1,69 +1,88 @@
 <template>
   <div
     v-if="!stakeSuccessful"
-    class="relative mx-auto mb-12 grid items-start rounded-xl bg-white text-black p-6 shadow lg:container lg:mt-12 lg:grid-cols-2 lg:gap-12"
+    class="relative mx-auto mb-12 grid items-start rounded-xl bg-white p-6 text-black shadow lg:container lg:mt-12 lg:grid-cols-2 lg:gap-12"
   >
     <section class="flex flex-col">
       <slot name="before:transaction-form"></slot>
 
       <!-- Transaction form -->
-      <div class="p-5 grid gap-16">
-        <span v-if="!account" class="rounded-full bg-neutral-300 text-white px-8 py-4 font-bold text-center">Please connect a wallet</span>
+      <div class="grid gap-16 p-5">
+        <span
+          v-if="!account"
+          class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white"
+          >Please connect a wallet</span
+        >
 
         <span v-if="useERC20" class="flex flex-col justify-stretch">
           <!-- Approval -->
-          <button v-if="!account" class="rounded-full bg-neutral-300 text-white px-8 py-4 font-bold text-center" disabled>Approve</button>
           <button
-          @click="approve"
-          v-if="account && (approveNeeded || approveNeeded === undefined)"
-          :disabled="isApproving || approveNeeded === undefined"
-          class="rounded-full bg-black text-white px-8 py-4 font-bold text-center disabled:bg-neutral-300"
-        >
-          <svg
-            v-if="isApproving"
-            class="-ml-1 mr-3 h-5 w-5 animate-spin text-white"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
+            v-if="!account"
+            class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white"
+            disabled
           >
-            <circle
-              class="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              stroke-width="4"
-            ></circle>
-            <path
-              class="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-            ></path>
-          </svg>
-          Sign with wallet and approve
-        </button>
-          <button v-if="account && approveNeeded === false" class="rounded-full bg-neutral-300 text-white px-8 py-4 font-bold text-center" disabled>You've already approved</button>
+            Approve
+          </button>
+          <button
+            @click="approve"
+            v-if="account && (approveNeeded || approveNeeded === undefined)"
+            :disabled="isApproving || approveNeeded === undefined"
+            class="rounded-full bg-black px-8 py-4 text-center font-bold text-white disabled:bg-neutral-300"
+          >
+            <svg
+              v-if="isApproving"
+              class="-ml-1 mr-3 h-5 w-5 animate-spin text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+            Sign with wallet and approve
+          </button>
+          <button
+            v-if="account && approveNeeded === false"
+            class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white"
+            disabled
+          >
+            You've already approved
+          </button>
         </span>
 
         <span class="flex flex-col justify-stretch">
           <!-- Pay -->
-          <button v-if="approveNeeded" class="rounded-full bg-neutral-300 text-white px-8 py-4 font-bold text-center" disabled>Pay with {{verifiedPropsCurrency.toUpperCase()}}</button>
+          <button
+            v-if="approveNeeded"
+            class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white"
+            disabled
+          >
+            Pay with {{ verifiedPropsCurrency.toUpperCase() }}
+          </button>
           <button
             v-if="!approveNeeded"
             @click="submitStake"
             :disabled="isStaking || approveNeeded"
             :data-is-staking="isStaking"
-            class="rounded-full bg-black text-white px-8 py-4 font-bold text-center disabled:bg-neutral-300 data-[is-staking=true]:animate-pulse"
+            class="rounded-full bg-black px-8 py-4 text-center font-bold text-white disabled:bg-neutral-300 data-[is-staking=true]:animate-pulse"
           >
-            Pay with {{verifiedPropsCurrency.toUpperCase()}}
+            Pay with {{ verifiedPropsCurrency.toUpperCase() }}
           </button>
-      </span>
-
+        </span>
       </div>
     </section>
-    <section
-      class="flex flex-col gap-6"
-    >
+    <section class="flex flex-col gap-6">
       <div class="rounded-lg border border-black/20 bg-black/10 p-4">
         <img
           v-if="previewImageSrc"
@@ -80,13 +99,23 @@
           <span>{{ previewName }}</span>
         </h3>
         <p class="text-2xl">
-          {{`${Number(amount) > 1 ? Number(amount).toLocaleString() : amount} ${verifiedPropsCurrency.toUpperCase()}`}}
+          {{
+            `${
+              Number(amount) > 1 ? Number(amount).toLocaleString() : amount
+            } ${verifiedPropsCurrency.toUpperCase()}`
+          }}
         </p>
       </span>
       <p v-if="feeAmount" class="text-sm">
-        {{`${feeAmount.toLocaleString()} ${verifiedPropsCurrency.toUpperCase()} will be staked automatically.`}}
+        {{
+          `${feeAmount.toLocaleString()} ${verifiedPropsCurrency.toUpperCase()} will be staked automatically.`
+        }}
       </p>
-      <aside v-if="htmlDescription" v-html="htmlDescription" class="mt-6 text-xl text-black/80"></aside>
+      <aside
+        v-if="htmlDescription"
+        v-html="htmlDescription"
+        class="mt-6 text-xl text-black/80"
+      ></aside>
     </section>
   </div>
 
@@ -151,14 +180,19 @@ export default defineComponent({
     feePercentage: Number,
     payload: Uint8Array,
     rpcUrl: String,
-    description: String
+    description: String,
   },
   data() {
     return {
-      parsedAmount: this.amount ? parseUnits(
-        this.amount.toString(),
-        this.verifiedPropsCurrency === CurrencyOption.ETH || this.verifiedPropsCurrency === CurrencyOption.DEV ? 18 : 18
-      ) : 0,
+      parsedAmount: this.amount
+        ? parseUnits(
+            this.amount.toString(),
+            this.verifiedPropsCurrency === CurrencyOption.ETH ||
+              this.verifiedPropsCurrency === CurrencyOption.DEV
+              ? 18
+              : 18,
+          )
+        : 0,
       approveNeeded: undefined,
       subscriptions: [],
       stakeSuccessful: false,
@@ -185,8 +219,7 @@ export default defineComponent({
     },
     useERC20(): boolean {
       return (
-        this.verifiedPropsCurrency !== CurrencyOption.ETH ||
-        this.usePolygonWETH
+        this.verifiedPropsCurrency !== CurrencyOption.ETH || this.usePolygonWETH
       )
     },
     currencyOption() {
@@ -198,18 +231,18 @@ export default defineComponent({
   },
   components: { Skeleton },
   async mounted() {
-    const sub = combineLatest(
-      [getConnection().provider,
+    const sub = combineLatest([
+      getConnection().provider,
       getConnection().account,
-      getConnection().chain]
-    ).subscribe(async ([provider, account, chain]) => {
+      getConnection().chain,
+    ]).subscribe(async ([provider, account, chain]) => {
       providerPool = provider
       this.account = account
       this.chain = chain
       whenDefinedAll(
         [providerPool, account, this.destination, this.amount],
         async ([prov, userAddress, destination, amount]) => {
-          ;(this.useERC20) &&
+          this.useERC20 &&
             this.checkApproved(
               prov,
               userAddress,
@@ -241,7 +274,7 @@ export default defineComponent({
                   .times(new BigNumber(1).minus(feeDeposit))
                   .toNumber(),
                 chain,
-              }).then(formatUnits)
+              }).then(formatUnits),
         ])
 
         const sTokens = await fetchSTokens({
@@ -249,7 +282,7 @@ export default defineComponent({
           tokenAddress: destination,
           amount: devAmount,
           payload: this.payload,
-        }).catch(err => {
+        }).catch((err) => {
           console.log(err)
           return undefined
         })

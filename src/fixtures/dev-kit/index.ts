@@ -196,7 +196,7 @@ export const stakeWithEthForPolygon = async (
       gatewayBasisPoints,
       from,
     })
-  console.log({ estimatedEth, estimatedDev})
+  console.log({ estimatedEth, estimatedDev })
   return { estimatedEth, estimatedDev, create }
 }
 
