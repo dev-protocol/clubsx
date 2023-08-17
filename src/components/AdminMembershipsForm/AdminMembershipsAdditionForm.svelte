@@ -9,9 +9,10 @@
   import { clientsSTokens } from '@devprotocol/dev-kit'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
   import { buildConfig, controlModal } from '@devprotocol/clubs-core/events'
-  import { callSimpleCollections } from '@plugins/memberships/utils/simpleCollections'
-  import type { Image } from '@plugins/memberships/utils/types/setImageArg'
+  import { callERC20SimpleCollections } from '@plugins/memberships/utils/simpleCollections'
+  import type { ERC20Image } from '@plugins/memberships/utils/types/setImageArg'
   import { DEV_TOKEN_PAYMENT_TYPE_FEE, PAYMENT_TYPE_INSTANT_FEE, PAYMENT_TYPE_STAKE_FEE } from '@constants/memberships'
+  import { tokenInfo } from '@constants/common'
 
   export let useOnFinishCallback: boolean = false
   export let currentPluginIndex: number
@@ -407,18 +408,21 @@
       return
     }
 
-    const images: Image[] = memOpts.map((opt) => ({
+    const chainId: number = Number((await provider.getNetwork()).chainId)
+    const images: ERC20Image[] = memOpts.map((opt) => ({
       src: opt.imageSrc,
       name: opt.name,
       description: opt.description,
-      requiredETHAmount: parseUnits(String(opt.price)).toString(),
-      requiredETHFee: opt.fee?.percentage
+      requiredTokenAmount: parseUnits(String(opt.price), tokenInfo[opt.currency][chainId].decimals).toString(),
+      requiredTokenFee: opt.fee?.percentage
         ? parseUnits(
-              new BigNumber(opt.price).times(opt.fee.percentage).toFixed()
+              new BigNumber(opt.price).times(opt.fee.percentage).toFixed(),
+              tokenInfo[opt.currency][chainId].decimals
             )
             .toString()
         : 0,
       gateway: opt.fee?.beneficiary ?? ZeroAddress,
+      token: tokenInfo[opt.currency][chainId].address
     }))
 
     const keys: string[] =
@@ -431,7 +435,7 @@
       closeButton: { label: 'Cancel' },
     })
 
-    await callSimpleCollections(signer, 'setImages', [
+    await callERC20SimpleCollections(signer, 'setImages', [
       propAddress,
       images,
       keys,
