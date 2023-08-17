@@ -8,4 +8,5 @@ export type CheckoutOptions = {
   feeBeneficiary?: string
   feePercentage?: number
   payload?: Uint8Array | string
+  description?:string
 }

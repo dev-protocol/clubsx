@@ -18,5 +18,6 @@ const { propertyAddress, product, rpcUrl, ...others } = Astro.props as {
   feePercentage={product.fee?.percentage}
   payload={product.payload}
   rpcUrl={rpcUrl}
+  description={product.description}
   {...others}
 />
