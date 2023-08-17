@@ -7861,10 +7861,10 @@ svg-tags@^1.0.0:
   resolved "https://registry.yarnpkg.com/svg-tags/-/svg-tags-1.0.0.tgz#58f71cee3bd519b59d4b2a843b6c7de64ac04764"
   integrity sha512-ovssysQTa+luh7A5Weu3Rta6FJlFBBbInjOh722LIt6klpU2/HtdUbszju/G4devcvk8PGt7FCLv5wftu3THUA==
 
-swiper@10.1.0:
-  version "10.1.0"
-  resolved "https://registry.yarnpkg.com/swiper/-/swiper-10.1.0.tgz#02536bcf34ba0c37cf837c5193005a8e87aa43c8"
-  integrity sha512-E+wh+hcSbwlRfXuwBTclcOOikOjNdSF0a2Sdg3J4cIWtHO64A7SaLRfezfrJ67CW3GEc15AduYU2YKlElsjqsQ==
+swiper@10.2.0:
+  version "10.2.0"
+  resolved "https://registry.yarnpkg.com/swiper/-/swiper-10.2.0.tgz#e7369ff56f4e10069f2244a4436f732b8925deb0"
+  integrity sha512-nktQsOtBInJjr3f5DicxC8eHYGcLXDVIGPSon0QoXRaO6NjKnATCbQ8SZsD3dN1Ph1RH4EhVPwSYCcuDRFWHGQ==
 
 symbol-observable@^1.2.0:
   version "1.2.0"
