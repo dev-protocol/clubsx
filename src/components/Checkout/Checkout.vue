@@ -78,19 +78,19 @@
         <h3 class="text-sm text-black/50">
           <span>{{ previewName }}</span>
         </h3>
-        <p class="text-2xl">
+        <p class="text-2xl font-bold">
           {{
             `${
               Number(amount) > 1 ? Number(amount).toLocaleString() : amount
             } ${verifiedPropsCurrency.toUpperCase()}`
           }}
         </p>
+        <p v-if="stakingAmount" class="text-sm text-black/90">
+          {{
+            `${stakingAmount.toLocaleString()} DEV will be staked automatically.`
+          }}
+        </p>
       </span>
-      <p v-if="feeAmount" class="text-sm">
-        {{
-          `${feeAmount.toLocaleString()} ${verifiedPropsCurrency.toUpperCase()} will be staked automatically.`
-        }}
-      </p>
       <aside
         v-if="htmlDescription"
         v-html="htmlDescription"
@@ -129,9 +129,14 @@ import {
 import BigNumber from 'bignumber.js'
 import { Subscription, combineLatest, zip } from 'rxjs'
 import { CurrencyOption } from '@constants/currencyOption'
-import { fetchDevForEth, fetchEthForDev, fetchSTokens } from '@fixtures/utility'
+import {
+  fetchDevForEth,
+  fetchDevForUsdc,
+  fetchEthForDev,
+  fetchSTokens,
+} from '@fixtures/utility'
 import Skeleton from '@components/Global/Skeleton.vue'
-import { stakeWithEthForPolygon } from '@fixtures/dev-kit'
+import { stakeWithEthForPolygon, stakeWithAnyTokens } from '@fixtures/dev-kit'
 import { marked } from 'marked'
 
 type Data = {
@@ -146,6 +151,7 @@ type Data = {
   chain: UndefinedOr<number>
   previewImageSrc: UndefinedOr<string>
   previewName: UndefinedOr<string>
+  stakingAmount: UndefinedOr<number>
 }
 
 let providerPool: UndefinedOr<ContractRunner>
@@ -155,7 +161,6 @@ export default defineComponent({
     amount: Number,
     destination: String,
     currency: String, // 'DEV' or 'ETH'
-    page: String, // 'JOIN or BUY'
     feeBeneficiary: String,
     feePercentage: Number,
     payload: Uint8Array,
@@ -170,7 +175,9 @@ export default defineComponent({
             this.verifiedPropsCurrency === CurrencyOption.ETH ||
               this.verifiedPropsCurrency === CurrencyOption.DEV
               ? 18
-              : 18,
+              : this.verifiedPropsCurrency === CurrencyOption.USDC
+              ? 6
+              : (18 as never),
           )
         : 0,
       approveNeeded: undefined,
@@ -183,12 +190,15 @@ export default defineComponent({
       chain: undefined,
       previewImageSrc: undefined,
       previewName: undefined,
+      stakingAmount: undefined,
     } as Data
   },
   computed: {
     verifiedPropsCurrency(): CurrencyOption {
       return this.currency?.toUpperCase() === 'ETH'
         ? CurrencyOption.ETH
+        : this.currency?.toUpperCase() === 'USDC'
+        ? CurrencyOption.USDC
         : CurrencyOption.DEV
     },
     usePolygonWETH(): boolean {
@@ -244,18 +254,35 @@ export default defineComponent({
         const feeDeposit = this.feePercentage
           ? new BigNumber(this.feePercentage)
           : 0
+
+        const exactFee = new BigNumber(amount).times(feeDeposit).toFixed()
+        this.feeAmount = new BigNumber(exactFee).dp(6).toNumber()
+
         const [devAmount] = await Promise.all([
           this.verifiedPropsCurrency === CurrencyOption.DEV
             ? this.amount
-            : await fetchDevForEth({
+            : this.verifiedPropsCurrency === CurrencyOption.ETH
+            ? await fetchDevForEth({
                 provider,
                 tokenAddress: destination,
                 amount: new BigNumber(amount)
                   .times(new BigNumber(1).minus(feeDeposit))
                   .toNumber(),
                 chain,
-              }).then(formatUnits),
+              }).then(formatUnits)
+            : this.verifiedPropsCurrency === CurrencyOption.USDC
+            ? await fetchDevForUsdc({
+                provider,
+                tokenAddress: destination,
+                amount: new BigNumber(amount)
+                  .times(new BigNumber(1).minus(feeDeposit))
+                  .toNumber(),
+                chain,
+              }).then(formatUnits)
+            : undefined,
         ])
+
+        this.stakingAmount = new BigNumber(devAmount).dp(6).toNumber()
 
         const sTokens = await fetchSTokens({
           provider,
@@ -321,6 +348,15 @@ export default defineComponent({
             from: userAddress,
             ethAmount: amount.toString(),
           }).then((res) => res.create())
+        : this.verifiedPropsCurrency === CurrencyOption.USDC
+        ? await stakeWithAnyTokens({
+            provider,
+            propertyAddress: destination,
+            tokenAmount: amount.toString(),
+            tokenDecimals: 6,
+            currency: CurrencyOption.USDC,
+            from: userAddress,
+          }).then((res) => res?.create())
         : await positionsCreate({
             provider,
             destination,
@@ -391,6 +427,35 @@ export default defineComponent({
                 this.stakeSuccessful = true
               })
             }
+          } else if (this.verifiedPropsCurrency === CurrencyOption.USDC) {
+            const res = await stakeWithAnyTokens({
+              provider: prov,
+              propertyAddress: destination,
+              tokenAmount: amount.toString(),
+              tokenDecimals: 6,
+              currency: CurrencyOption.USDC,
+              gatewayAddress: this.feeBeneficiary ?? undefined,
+              gatewayBasisPoints:
+                typeof this.feePercentage === 'number'
+                  ? this.feePercentage * 10_000
+                  : undefined,
+              payload: this.payload && keccak256(this.payload),
+              from: account,
+            })
+            await whenDefined(res, async (x) => {
+              this.isStaking = true
+              const create = await x.create()
+              const approveIfNeeded = await create?.approveIfNeeded({
+                amount: parsedAmount,
+              })
+              const waitOrSkipApproval =
+                await approveIfNeeded?.waitOrSkipApproval()
+              const run = await waitOrSkipApproval?.run()
+              const res = await run?.wait()
+              console.log('res is: ', res)
+              this.isStaking = false
+              this.stakeSuccessful = true
+            })
           } else {
             // handle DEV stake
             const res = await positionsCreate({
