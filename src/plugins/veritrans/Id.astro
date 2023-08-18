@@ -1,9 +1,12 @@
 ---
 import type { ComposedItem } from '.'
-import IdPage from './Id.svelte'
+import TransactionForm from './TransactionForm.svelte'
+import Checkout from '@components/Checkout/Checkout.astro'
 
-const { item } = Astro.props as {
+const { item, propertyAddress, rpcUrl, ...other } = Astro.props as {
   item: ComposedItem
+  propertyAddress: string
+  rpcUrl: string
 }
 
 const { PUBLIC_POP_CLIENT_KEY } = import.meta.env
@@ -15,4 +18,22 @@ const { PUBLIC_POP_CLIENT_KEY } = import.meta.env
   src="https://pay.veritrans.co.jp/pop/v1/javascripts/pop.js"
   data-client-key={PUBLIC_POP_CLIENT_KEY}></script>
 
-<IdPage client:load item={item} />
+<Checkout
+  amount={item.price.yen}
+  destination={propertyAddress}
+  fiatCurrency="YEN"
+  rpcUrl={rpcUrl}
+  payload={item.source.payload}
+  description={item.source.description}
+  useDiscretePaymentFlow={true}
+  useInjectedTransactionForm={true}
+  itemImageSrc={item.source.imageSrc}
+  itemName={item.source.name}
+  {...other}
+>
+  <TransactionForm
+    client:load
+    slot="checkout:main:transaction-form"
+    item={item}
+  />
+</Checkout>

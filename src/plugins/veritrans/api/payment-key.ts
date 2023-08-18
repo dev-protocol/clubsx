@@ -114,6 +114,7 @@ export const get: ({
 }) => APIRoute =
   ({ propertyAddress, chainId, items: _items }) =>
   async ({ request, url }) => {
+    console.log('********', url)
     /**
      * Get request parameters.
      */
@@ -125,6 +126,14 @@ export const get: ({
       'email.customer_email_address',
     )
 
+    console.log({
+      membershipId,
+      eoa,
+      dummy,
+      customer_name,
+      customer_email_address,
+    })
+
     /**
      * Get the expected overridden membership and its source.
      */
@@ -132,7 +141,6 @@ export const get: ({
 
     if (membership === undefined) {
       return {
-        status: 400,
         body: JSON.stringify({
           result_code: 'E1',
           status: 'failure',

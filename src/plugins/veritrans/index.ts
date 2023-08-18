@@ -27,12 +27,10 @@ export type ComposedItem = Override & { source: Membership }
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
-  _,
+  { propertyAddress, rpcUrl },
   utils,
 ) => {
   const items = composeItems(options, utils)
-
-  console.log({ items })
 
   return items
     ? [
@@ -46,6 +44,8 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
           ],
           props: {
             item,
+            propertyAddress,
+            rpcUrl,
             signals: [ClubsPluginSignal.DisplayFullPage],
           },
           component: Id,
