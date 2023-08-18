@@ -5,61 +5,70 @@
   >
     <section class="flex flex-col">
       <!-- Transaction form -->
-      <div class="grid gap-16 p-5">
+      <div class="p-5">
         <slot name="before:transaction-form"></slot>
 
         <span
-          v-if="!account"
-          class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white"
-          >Please connect a wallet</span
+          v-if="useInjectedTransactionForm"
+          @checkout:completed="onCompleted"
         >
+          <slot name="main:transaction-form"></slot>
+        </span>
 
-        <span v-if="useERC20" class="flex flex-col justify-stretch">
-          <!-- Approval -->
-          <button
+        <div v-if="!useInjectedTransactionForm" class="grid gap-16">
+          <span
             v-if="!account"
             class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white"
-            disabled
+            >Please connect a wallet</span
           >
-            Approve
-          </button>
-          <button
-            @click="approve"
-            v-if="account && (approveNeeded || approveNeeded === undefined)"
-            :disabled="isApproving || approveNeeded === undefined"
-            :data-is-approving="isApproving"
-            class="rounded-full bg-black px-8 py-4 text-center font-bold text-white disabled:bg-neutral-300 data-[is-approving=true]:animate-pulse"
-          >
-            Sign with wallet and approve
-          </button>
-          <button
-            v-if="account && approveNeeded === false"
-            class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white"
-            disabled
-          >
-            You've already approved
-          </button>
-        </span>
 
-        <span class="flex flex-col justify-stretch">
-          <!-- Pay -->
-          <button
-            v-if="approveNeeded"
-            class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white"
-            disabled
-          >
-            Pay with {{ verifiedPropsCurrency.toUpperCase() }}
-          </button>
-          <button
-            v-if="!approveNeeded"
-            @click="submitStake"
-            :disabled="isStaking || approveNeeded"
-            :data-is-staking="isStaking"
-            class="rounded-full bg-black px-8 py-4 text-center font-bold text-white disabled:bg-neutral-300 data-[is-staking=true]:animate-pulse"
-          >
-            Pay with {{ verifiedPropsCurrency.toUpperCase() }}
-          </button>
-        </span>
+          <span v-if="useERC20" class="flex flex-col justify-stretch">
+            <!-- Approval -->
+            <button
+              v-if="!account"
+              class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white"
+              disabled
+            >
+              Approve
+            </button>
+            <button
+              @click="approve"
+              v-if="account && (approveNeeded || approveNeeded === undefined)"
+              :disabled="isApproving || approveNeeded === undefined"
+              :data-is-approving="isApproving"
+              class="rounded-full bg-black px-8 py-4 text-center font-bold text-white disabled:bg-neutral-300 data-[is-approving=true]:animate-pulse"
+            >
+              Sign with wallet and approve
+            </button>
+            <button
+              v-if="account && approveNeeded === false"
+              class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white"
+              disabled
+            >
+              You've already approved
+            </button>
+          </span>
+
+          <span class="flex flex-col justify-stretch">
+            <!-- Pay -->
+            <button
+              v-if="approveNeeded"
+              class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white"
+              disabled
+            >
+              Pay with {{ verifiedPropsCurrency.toUpperCase() }}
+            </button>
+            <button
+              v-if="!approveNeeded"
+              @click="submitStake"
+              :disabled="!account || isStaking || approveNeeded"
+              :data-is-staking="isStaking"
+              class="rounded-full bg-black px-8 py-4 text-center font-bold text-white disabled:bg-neutral-300 data-[is-staking=true]:animate-pulse"
+            >
+              Pay with {{ verifiedPropsCurrency.toUpperCase() }}
+            </button>
+          </span>
+        </div>
       </div>
     </section>
     <section class="flex flex-col gap-6">
@@ -82,7 +91,7 @@
           {{
             `${
               Number(amount) > 1 ? Number(amount).toLocaleString() : amount
-            } ${verifiedPropsCurrency.toUpperCase()}`
+            } ${(fiatCurrency ?? verifiedPropsCurrency).toUpperCase()}`
           }}
         </p>
         <p v-if="stakingAmount" class="text-sm text-black/90">
@@ -140,7 +149,7 @@ import { stakeWithEthForPolygon, stakeWithAnyTokens } from '@fixtures/dev-kit'
 import { marked } from 'marked'
 
 type Data = {
-  parsedAmount: BigNumberish
+  parsedAmount: UndefinedOr<BigNumberish>
   approveNeeded: UndefinedOr<boolean>
   isApproving: boolean
   isStaking: boolean
@@ -160,26 +169,32 @@ export default defineComponent({
   props: {
     amount: Number,
     destination: String,
-    currency: String, // 'DEV' or 'ETH'
+    currency: String, // 'DEV' | 'ETH' | 'USDC'
     feeBeneficiary: String,
     feePercentage: Number,
     payload: Uint8Array,
     rpcUrl: String,
     description: String,
+    useDiscretePaymentFlow: Boolean,
+    useInjectedTransactionForm: Boolean,
+    fiatCurrency: String,
+    itemImageSrc: String,
+    itemName: String,
   },
   data() {
     return {
-      parsedAmount: this.amount
-        ? parseUnits(
-            this.amount.toString(),
-            this.verifiedPropsCurrency === CurrencyOption.ETH ||
-              this.verifiedPropsCurrency === CurrencyOption.DEV
-              ? 18
-              : this.verifiedPropsCurrency === CurrencyOption.USDC
-              ? 6
-              : (18 as never),
-          )
-        : 0,
+      parsedAmount:
+        this.amount && !this.useDiscretePaymentFlow
+          ? parseUnits(
+              this.amount.toString(),
+              this.verifiedPropsCurrency === CurrencyOption.ETH ||
+                this.verifiedPropsCurrency === CurrencyOption.DEV
+                ? 18
+                : this.verifiedPropsCurrency === CurrencyOption.USDC
+                ? 6
+                : (18 as never),
+            )
+          : undefined,
       approveNeeded: undefined,
       subscriptions: [],
       stakeSuccessful: false,
@@ -188,8 +203,8 @@ export default defineComponent({
       isStaking: false,
       feeAmount: undefined,
       chain: undefined,
-      previewImageSrc: undefined,
-      previewName: undefined,
+      previewImageSrc: this.itemImageSrc,
+      previewName: this.itemName,
       stakingAmount: undefined,
     } as Data
   },
@@ -230,15 +245,17 @@ export default defineComponent({
       this.account = account
       this.chain = chain
       whenDefinedAll(
-        [providerPool, account, this.destination, this.amount],
-        async ([prov, userAddress, destination, amount]) => {
+        [providerPool, account, this.destination, this.amount, this.chain],
+        async ([prov, userAddress, destination, amount, chain]) => {
           this.useERC20 &&
+            !this.useDiscretePaymentFlow &&
             this.checkApproved(
               prov,
               userAddress,
               destination,
               amount,
               this.usePolygonWETH,
+              chain,
             )
         },
       )
@@ -282,7 +299,13 @@ export default defineComponent({
             : undefined,
         ])
 
-        this.stakingAmount = new BigNumber(devAmount).dp(6).toNumber()
+        this.stakingAmount = !this.useDiscretePaymentFlow
+          ? new BigNumber(devAmount ?? 0).dp(6).toNumber()
+          : undefined
+
+        if (this.previewImageSrc || this.previewName) {
+          return
+        }
 
         const sTokens = await fetchSTokens({
           provider,
@@ -340,6 +363,7 @@ export default defineComponent({
       destination: string,
       amount: BigNumberish,
       isPolygonWETH: boolean,
+      chain: number,
     ) {
       const res = isPolygonWETH
         ? await stakeWithEthForPolygon({
@@ -356,6 +380,7 @@ export default defineComponent({
             tokenDecimals: 6,
             currency: CurrencyOption.USDC,
             from: userAddress,
+            chain,
           }).then((res) => res?.create())
         : await positionsCreate({
             provider,
@@ -375,8 +400,9 @@ export default defineComponent({
           this.destination,
           this.amount,
           this.parsedAmount?.toString(),
+          this.chain,
         ],
-        async ([prov, account, destination, amount, parsedAmount]) => {
+        async ([prov, account, destination, amount, parsedAmount, chain]) => {
           if (this.verifiedPropsCurrency === CurrencyOption.ETH) {
             if (this.usePolygonWETH) {
               const res = await stakeWithEthForPolygon({
@@ -388,7 +414,7 @@ export default defineComponent({
                   typeof this.feePercentage === 'number'
                     ? this.feePercentage * 10_000
                     : undefined,
-                payload: this.payload && keccak256(this.payload),
+                payload: this.payload,
                 from: account,
               })
               await whenDefined(res, async (x) => {
@@ -402,8 +428,7 @@ export default defineComponent({
                 const run = await waitOrSkipApproval?.run()
                 const res = await run?.wait()
                 console.log('res is: ', res)
-                this.isStaking = false
-                this.stakeSuccessful = true
+                this.onCompleted()
               })
             } else {
               // handle ETH stake
@@ -416,15 +441,14 @@ export default defineComponent({
                   typeof this.feePercentage === 'number'
                     ? this.feePercentage * 10_000
                     : undefined,
-                payload: this.payload && keccak256(this.payload),
+                payload: this.payload,
               })
               await whenDefined(res, async (x) => {
                 this.isStaking = true
                 const create = await x.create()
                 const res = await create.wait()
                 console.log('res is: ', res)
-                this.isStaking = false
-                this.stakeSuccessful = true
+                this.onCompleted()
               })
             }
           } else if (this.verifiedPropsCurrency === CurrencyOption.USDC) {
@@ -439,8 +463,9 @@ export default defineComponent({
                 typeof this.feePercentage === 'number'
                   ? this.feePercentage * 10_000
                   : undefined,
-              payload: this.payload && keccak256(this.payload),
+              payload: this.payload,
               from: account,
+              chain,
             })
             await whenDefined(res, async (x) => {
               this.isStaking = true
@@ -453,8 +478,7 @@ export default defineComponent({
               const run = await waitOrSkipApproval?.run()
               const res = await run?.wait()
               console.log('res is: ', res)
-              this.isStaking = false
-              this.stakeSuccessful = true
+              this.onCompleted()
             })
           } else {
             // handle DEV stake
@@ -463,6 +487,7 @@ export default defineComponent({
               from: account,
               destination,
               amount: parsedAmount,
+              payload: this.payload,
             })
 
             await whenDefined(res, async (x) => {
@@ -473,12 +498,15 @@ export default defineComponent({
               const run = await waitOrSkipApproval.run()
               const res = await run.wait()
               console.log('res is: ', res)
-              this.isStaking = false
-              this.stakeSuccessful = true
+              this.onCompleted()
             })
           }
         },
       )
+    },
+    onCompleted() {
+      this.isStaking = false
+      this.stakeSuccessful = true
     },
   },
 })

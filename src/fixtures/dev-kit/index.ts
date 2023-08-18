@@ -3,6 +3,7 @@ import {
   ContractRunner,
   JsonRpcProvider,
   ZeroAddress,
+  keccak256,
   parseUnits,
 } from 'ethers'
 import {
@@ -178,7 +179,7 @@ export const stakeWithEthForPolygon = async (
     propertyAddress: string
     devAmount?: string
     ethAmount?: string
-    payload?: string
+    payload?: string | Uint8Array
     from?: string
     gatewayAddress?: string
     gatewayBasisPoints?: number
@@ -243,25 +244,21 @@ export const stakeWithAnyTokens = async (
     gatewayBasisPoints,
     mintTo,
     currency,
-    chain: _chain,
+    chain,
   }: {
-    provider: JsonRpcProvider
+    provider: ContractRunner
     propertyAddress: string
     tokenAmount?: string
     tokenDecimals?: number
-    payload?: string
+    payload?: string | Uint8Array
     from?: string
     gatewayAddress?: string
     gatewayBasisPoints?: number
     mintTo?: string
     currency: CurrencyOption
-    chain?: number
+    chain: number
   }, // For example 10000 is 100%
 ) => {
-  const chain =
-    typeof _chain === 'number'
-      ? _chain
-      : Number((await provider.getNetwork()).chainId)
   const path =
     currency === CurrencyOption.USDC && chain === 137
       ? [
