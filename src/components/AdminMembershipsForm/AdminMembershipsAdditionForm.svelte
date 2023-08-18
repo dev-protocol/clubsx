@@ -293,6 +293,7 @@
       // Update the membership fee in case of currency change to dev token.
       membershipPaymentType = 'custom'
       membershipCustomFee = 0
+      invalidFeeMsg = ''
       membership = {
         ...membership,
         fee: membership.fee ? {
@@ -449,6 +450,7 @@
 
     membershipCustomFee = 0
     membershipPaymentType = 'custom'
+    invalidFeeMsg = ''
     // Update the membership state.
     membership = {
       ...membership,
