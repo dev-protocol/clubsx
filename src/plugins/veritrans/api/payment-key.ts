@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro'
-import fetch from 'node-fetch'
+import fetch from 'cross-fetch'
 import {
   AbiCoder,
   ZeroAddress,
