@@ -25,9 +25,9 @@
   export let clubName: string | undefined = undefined
   const metaOfPayload = keccak256(membership.payload)
 
-  type MembershipPaymentType = 'instant' | 'stake' | 'custom'
+  type MembershipPaymentType = 'instant' | 'stake' | 'custom' | ''
 
-  let membershipPaymentType: MembershipPaymentType = membership.currency === 'DEV' ? 'custom' : 'instant'
+  let membershipPaymentType: MembershipPaymentType = membership.currency === 'DEV' ? 'custom' : ''
   let membershipCustomFee: number = membership.currency === 'DEV' ? DEV_TOKEN_PAYMENT_TYPE_FEE : 0
   let updatingMembershipsStatus: boolean = false
   let noOfPositions: number = 0
@@ -683,11 +683,12 @@
         <!-- Earning info -->
         <div class="hs-form-field">
           <div class="flex gap-0 w-full max-w-full p-0">
-            <div class="h-6 rounded-[99px] w-[90%] bg-[#00D0FD]"></div>
-            <div class="h-6 rounded-[99px] w-[10%] bg-[#43C451]"></div>
+            <div class="h-6 rounded-[99px] max-w-full w-[{membership.fee?.percentage || 0}%] bg-[#00D0FD]"></div>
+            <div class="h-6 rounded-[99px] max-w-full w-fit grow bg-[#43C451]"></div>
           </div>
           <p class="mt-1">
-            It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
+            <span class="text-[#00D0FD]">{membership.price * (membership.fee?.percentage || 0)/ 100} {membership.currency} ({membership.fee?.percentage || 0}%)</span>  will earn at 1 time, <span class="text-[#43C451]">and {membership.price * (100 - (membership.fee?.percentage || 0))/ 100} ({(100 - (membership.fee?.percentage || 0))}%)
+            </span> will be staked to earn dev continuously.
           </p>
           <p class="hs-form-field__helper mt-2">
             * <u>What is staking?</u>
