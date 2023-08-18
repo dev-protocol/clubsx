@@ -13,22 +13,37 @@ const {
   feePercentage,
   payload,
   description,
+  useDiscretePaymentFlow,
+  useInjectedTransactionForm,
+  fiatCurrency,
+  itemImageSrc,
+  itemName,
   clubs,
-} = Astro.props as ClubsPropsPages & CheckoutOptions
+} = Astro.props as ClubsPropsPages &
+  CheckoutOptions & {
+    useDiscretePaymentFlow?: boolean
+    useInjectedTransactionForm?: boolean
+    itemImageSrc?: string
+    itemName?: string
+  }
 
-const checkoutOptions:CheckoutOptions = {
+const checkoutOptions: CheckoutOptions = {
   amount,
   propertyAddress,
   currency,
+  fiatCurrency,
   rpcUrl,
   feeBeneficiary,
   feePercentage,
   payload,
-  description
+  description,
 }
 
 const SlotsCheckoutBeforeTransactionForm = clubs.slots.filter(
   (slot) => slot.slot === 'checkout:before:transaction-form',
+)
+const SlotsCheckoutMainTransactionForm = clubs.slots.filter(
+  (slot) => slot.slot === 'checkout:main:transaction-form',
 )
 ---
 
@@ -42,14 +57,34 @@ const SlotsCheckoutBeforeTransactionForm = clubs.slots.filter(
   rpcUrl={rpcUrl}
   payload={payload}
   description={description}
+  useDiscretePaymentFlow={useDiscretePaymentFlow}
+  useInjectedTransactionForm={useInjectedTransactionForm}
+  fiatCurrency={fiatCurrency}
+  itemImageSrc={itemImageSrc}
+  itemName={itemName}
 >
   <slot
     name="checkout:before:transaction-form"
     slot="before:transaction-form"
   />
+  <slot name="checkout:main:transaction-form" slot="main:transaction-form" />
+
   {
     SlotsCheckoutBeforeTransactionForm.map((Slot) => (
-      <Slot.component {...Slot.props} checkoutOptions={checkoutOptions} slot="before:transaction-form" />
+      <Slot.component
+        {...Slot.props}
+        checkoutOptions={checkoutOptions}
+        slot="before:transaction-form"
+      />
+    ))
+  }
+  {
+    SlotsCheckoutMainTransactionForm.map((Slot) => (
+      <Slot.component
+        {...Slot.props}
+        checkoutOptions={checkoutOptions}
+        slot="main:transaction-form"
+      />
     ))
   }
 </Checkout>

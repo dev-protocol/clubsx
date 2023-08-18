@@ -3,16 +3,28 @@ import { CurrencyOption } from '@constants/currencyOption'
 import type { CheckoutOptions } from '@components/Checkout/types'
 import { keccak256 } from 'ethers'
 
-const {checkoutOptions} = Astro.props as {checkoutOptions:CheckoutOptions}
+const { checkoutOptions } = Astro.props as { checkoutOptions: CheckoutOptions }
 
-const {currency, payload} = checkoutOptions
-const isUSDC = currency.toLowerCase() === CurrencyOption.USDC
-const hex = isUSDC && payload ? typeof payload === 'string'? payload: keccak256(payload):undefined
+const { currency, payload } = checkoutOptions
+const isUSDC = currency?.toLowerCase() === CurrencyOption.USDC
+const hex =
+  isUSDC && payload
+    ? typeof payload === 'string'
+      ? payload
+      : keccak256(payload)
+    : undefined
 ---
 
 {
-  hex && <>
-    <a href={`/fiat/${hex}`} class="hover:bg-[#315AB4] transition rounded-full bg-[#5B8BF5] px-8 py-4 text-center font-bold text-white">Pay with a credit card</a>
-    <hr class="bg-[#DFDFDF]" />
-  </>
+  hex && (
+    <>
+      <a
+        href={`/fiat/${hex}`}
+        class="rounded-full bg-[#5B8BF5] px-8 py-4 text-center font-bold text-white transition hover:bg-[#315AB4]"
+      >
+        Pay with a credit card
+      </a>
+      <hr class="bg-[#DFDFDF]" />
+    </>
+  )
 }

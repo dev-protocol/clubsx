@@ -141,8 +141,6 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
 
   const cm = chainId === 137 ? CM.Production : CM.Staging
 
-  console.log({ products })
-
   // const products = whenDefinedAll(
   //   [_products, priceOverrides],
   //   ([prods, overrides]) =>

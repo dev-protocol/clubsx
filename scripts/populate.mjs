@@ -919,41 +919,6 @@ const populate = async () => {
                 key: 'importFrom',
                 value: ['devprotocol:clubs:plugin:nft'],
               },
-              // {
-              //   key: 'priceOverrides',
-              //   value: [
-              //     {
-              //       id: '1',
-              //       price: 100_000,
-              //       currency: 'YEN',
-              //     },
-              //     {
-              //       id: '2',
-              //       price: 80_000,
-              //       currency: 'YEN',
-              //     },
-              //     {
-              //       id: '3',
-              //       price: 70_000,
-              //       currency: 'YEN',
-              //     },
-              //     {
-              //       id: '4',
-              //       price: 10_000,
-              //       currency: 'YEN',
-              //     },
-              //     {
-              //       id: '5',
-              //       price: 10_000,
-              //       currency: 'YEN',
-              //     },
-              //     {
-              //       id: '6',
-              //       price: 10_000,
-              //       currency: 'YEN',
-              //     },
-              //   ],
-              // },
               {
                 key: 'hero',
                 value: {
@@ -971,6 +936,56 @@ const populate = async () => {
               {
                 key: 'slug',
                 value: [],
+              },
+            ],
+          },
+          {
+            id: 'devprotocol:clubs:plugin:veritrans',
+            name: 'fiat',
+            enable: true,
+            options: [
+              {
+                key: 'override',
+                value: [
+                  {
+                    id: 'tier-1',
+                    importFrom: 'devprotocol:clubs:simple-memberships',
+                    key: 'memberships',
+                    payload: debugProducts[0].payload,
+                    price: {
+                      yen: 5000,
+                    },
+                  },
+                  {
+                    id: 'tier-2',
+                    importFrom: 'devprotocol:clubs:simple-memberships',
+                    key: 'memberships',
+                    payload: debugProducts[1].payload,
+                    price: {
+                      yen: 12000,
+                    },
+                  },
+                  {
+                    id: 'tier-3',
+                    importFrom: 'devprotocol:clubs:simple-memberships',
+                    key: 'memberships',
+                    payload: debugProducts[2].payload,
+                    price: {
+                      yen: 20000,
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            id: 'devprotocol:clubs:simple-memberships',
+            name: 'memberships',
+            enable: true,
+            options: [
+              {
+                key: 'memberships',
+                value: debugProducts,
               },
             ],
           },

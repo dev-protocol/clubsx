@@ -217,7 +217,7 @@ export default defineComponent({
     page: String, // 'JOIN or BUY'
     feeBeneficiary: String,
     feePercentage: Number,
-    payload: String,
+    payload: Uint8Array,
     rpcUrl: String,
   },
   data() {
@@ -475,6 +475,7 @@ export default defineComponent({
               from: account,
               destination,
               amount: parsedAmount,
+              payload: this.payload,
             })
 
             await whenDefined(res, async (x) => {
