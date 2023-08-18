@@ -58,7 +58,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
             signals: [ClubsPluginSignal.DisplayFullPage],
           },
         },
-        ...tiers.map(({ id, amount, currency, fee, payload }) => ({
+        ...tiers.map(({ id, amount, currency, fee, payload, description }) => ({
           paths: ['join', id],
           component: Id,
           props: {
@@ -67,6 +67,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
             propertyAddress,
             rpcUrl,
             payload,
+            description,
             feeBeneficiary: fee?.beneficiary,
             feePercentage: fee?.percentage,
             signals: [ClubsPluginSignal.DisplayFullPage],

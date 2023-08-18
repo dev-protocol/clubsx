@@ -12,6 +12,7 @@ const {
   feeBeneficiary,
   feePercentage,
   payload,
+  description,
   clubs,
 } = Astro.props as ClubsPropsPages & CheckoutOptions
 
@@ -23,6 +24,7 @@ const checkoutOptions:CheckoutOptions = {
   feeBeneficiary,
   feePercentage,
   payload,
+  description
 }
 
 const SlotsCheckoutBeforeTransactionForm = clubs.slots.filter(
@@ -37,9 +39,9 @@ const SlotsCheckoutBeforeTransactionForm = clubs.slots.filter(
   currency={currency}
   feeBeneficiary={feeBeneficiary}
   feePercentage={feePercentage}
-  page="JOIN"
   rpcUrl={rpcUrl}
   payload={payload}
+  description={description}
 >
   <slot
     name="checkout:before:transaction-form"
@@ -47,7 +49,7 @@ const SlotsCheckoutBeforeTransactionForm = clubs.slots.filter(
   />
   {
     SlotsCheckoutBeforeTransactionForm.map((Slot) => (
-      <Slot.component {...Slot.props, checkoutOptions} slot="before:transaction-form" />
+      <Slot.component {...Slot.props} checkoutOptions={checkoutOptions} slot="before:transaction-form" />
     ))
   }
 </Checkout>
