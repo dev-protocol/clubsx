@@ -115,10 +115,10 @@
     "@babel/core" "^7.22.5"
     "@babel/plugin-transform-react-jsx" "^7.22.5"
 
-"@astrojs/svelte@3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@astrojs/svelte/-/svelte-3.1.0.tgz#ee1079d24fc0710630f0365a72eb2bb2464938a5"
-  integrity sha512-yk2cp+P7O1SlzfEGMPHFBNSY5XMHwqsfQelTUxMzYYOrUIYSXoSok1k8a/3/k//eE/9hCoXvcPG4xHKLTLzwhA==
+"@astrojs/svelte@3.1.1":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@astrojs/svelte/-/svelte-3.1.1.tgz#ffcc0de464604dfb624b00126fa4796583841447"
+  integrity sha512-sPTe43zqFVvZq7qjCgT6vkOpMyKI0uEpqm/X3zSRse0Sn1ZyMEipes2KLmJQvPOZw3Zxy4+PX3E3Ns59hwRX1Q==
   dependencies:
     "@sveltejs/vite-plugin-svelte" "^2.4.2"
     svelte2tsx "^0.6.15"
