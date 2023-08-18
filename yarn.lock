@@ -509,17 +509,17 @@
     svelte "^3.49.0"
     vue "^3.2.0"
 
-"@devprotocol/clubs-core@1.0.6":
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-1.0.6.tgz#a8ebfb13486ec8383208034b38f14a203a9d2249"
-  integrity sha512-9j+Gi91ZYWMMrbBQlHiK8ENbTOJ3mHtnn5/TKOeInJvs+DAn0GfFDIcjcE+lIxtgO+cADUbf2n92tX4c3JJwRQ==
+"@devprotocol/clubs-core@1.0.8":
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-1.0.8.tgz#96d4a7cb88cf4a71e861d60d0533260bae03aeb3"
+  integrity sha512-UwxWWKUZMbe5Baptn05so8ze2R7hIOjSHJG3IaEoY+Y9NOyY3dREQSzS0y6ZkTMjyaE1o07sqxy1t7Xa1HQ9XQ==
   dependencies:
-    "@devprotocol/dev-kit" "8.1.0"
+    "@devprotocol/dev-kit" "8.1.3"
     "@devprotocol/elements" "1.0.0"
     "@devprotocol/hashi" "2.2.0"
     "@devprotocol/util-ts" "3.0.0"
     "@metamask/detect-provider" "^2.0.0"
-    ethers "6.7.0"
+    ethers "6.7.1"
     js-base64 "^3.7.2"
     lit "^2.3.1"
     ramda "^0.29.0"
@@ -551,16 +551,6 @@
     bignumber.js "9.1.1"
     js-base64 "^3.7.2"
     ramda "^0.28.0"
-
-"@devprotocol/dev-kit@8.1.0":
-  version "8.1.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-8.1.0.tgz#d53ab64ef452f301840d2159e70c264119883ca4"
-  integrity sha512-O4v7dVkhgcIhj+mckMSF5t9VLxhjW93P2HFsQlgabIJYeMxReBxfb6nHrbU9pmGgbrwZiTgs7MQKAPy8Hh1lKg==
-  dependencies:
-    "@devprotocol/util-ts" "3.0.0"
-    bignumber.js "9.1.1"
-    js-base64 "^3.7.2"
-    ramda "^0.29.0"
 
 "@devprotocol/dev-kit@8.1.3":
   version "8.1.3"
@@ -4224,19 +4214,6 @@ ethers@5.7.2, ethers@^5.7.0, ethers@^5.7.2:
     "@ethersproject/wallet" "5.7.0"
     "@ethersproject/web" "5.7.1"
     "@ethersproject/wordlists" "5.7.0"
-
-ethers@6.7.0:
-  version "6.7.0"
-  resolved "https://registry.yarnpkg.com/ethers/-/ethers-6.7.0.tgz#0f772c31a9450de28aa518b181c8cb269bbe7fd1"
-  integrity sha512-pxt5hK82RNwcTX2gOZP81t6qVPVspnkpeivwEgQuK9XUvbNtghBnT8GNIb/gPh+WnVSfi8cXC9XlfT8sqc6D6w==
-  dependencies:
-    "@adraffy/ens-normalize" "1.9.2"
-    "@noble/hashes" "1.1.2"
-    "@noble/secp256k1" "1.7.1"
-    "@types/node" "18.15.13"
-    aes-js "4.0.0-beta.5"
-    tslib "2.4.0"
-    ws "8.5.0"
 
 ethers@6.7.1:
   version "6.7.1"
