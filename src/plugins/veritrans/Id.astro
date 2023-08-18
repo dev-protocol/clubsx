@@ -1,0 +1,18 @@
+---
+import type { ComposedItem } from '.'
+import IdPage from './Id.svelte'
+
+const { item } = Astro.props as {
+  item: ComposedItem
+}
+
+const { PUBLIC_POP_CLIENT_KEY } = import.meta.env
+---
+
+<!-- Load Veritrans SDK: This will be exposed as `window.pop` -->
+<script
+  type="text/javascript"
+  src="https://pay.veritrans.co.jp/pop/v1/javascripts/pop.js"
+  data-client-key={PUBLIC_POP_CLIENT_KEY}></script>
+
+<IdPage client:load item={item} />
