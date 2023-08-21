@@ -219,7 +219,7 @@
   }
 
   const update = () => {
-    if (membership.price < minPrice || membership.price > maxPrice) return
+    if (membership.price < minPrice || membership.price > maxPrice || membershipPaymentType === '') return
 
     const search = mode === 'edit' ? originalId : membership.id
     const newMemberships = existingMemberships.some(({ id }) => id === search)
