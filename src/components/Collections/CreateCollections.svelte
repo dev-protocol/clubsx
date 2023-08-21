@@ -1,7 +1,11 @@
 <script lang="ts">
   import type { Membership } from '@plugins/memberships'
   import MembershipOption from '@components/AdminMembershipsForm/MembershipOption.svelte'
-  import { DEV_TOKEN_PAYMENT_TYPE_FEE, PAYMENT_TYPE_INSTANT_FEE, PAYMENT_TYPE_STAKE_FEE } from '@constants/memberships'
+  import {
+    DEV_TOKEN_PAYMENT_TYPE_FEE,
+    PAYMENT_TYPE_INSTANT_FEE,
+    PAYMENT_TYPE_STAKE_FEE,
+  } from '@constants/memberships'
 
   import { utils } from 'ethers'
   export let existingMemberships: Membership[] = []
@@ -27,8 +31,10 @@
 
   type MembershipPaymentType = 'instant' | 'stake' | 'custom' | ''
 
-  let membershipPaymentType: MembershipPaymentType = membership.currency === 'DEV' ? 'custom' : ''  
-  let membershipCustomFee: number = membership.currency === 'DEV' ? DEV_TOKEN_PAYMENT_TYPE_FEE : 0
+  let membershipPaymentType: MembershipPaymentType =
+    membership.currency === 'DEV' ? 'custom' : ''
+  let membershipCustomFee: number =
+    membership.currency === 'DEV' ? DEV_TOKEN_PAYMENT_TYPE_FEE : 0
   let updatingMembershipsStatus: boolean = false
   let noOfPositions: number = 0
   let invalidPriceMsg: string = ''
@@ -49,18 +55,20 @@
       invalidFeeMsg = ''
       membership = {
         ...membership,
-        fee: membership.fee ? {
-          ...membership.fee,
-          percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
-        } :  {
-          beneficiary: ZeroAddress, // TODO: change this to default value
-          percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
-        }
+        fee: membership.fee
+          ? {
+              ...membership.fee,
+              percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
+            }
+          : {
+              beneficiary: ZeroAddress, // TODO: change this to default value
+              percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
+            },
       }
 
       // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
       update()
-      return;
+      return
     }
 
     const value = membershipCustomFee
@@ -78,13 +86,15 @@
     // Update the membership state.
     membership = {
       ...membership,
-      fee: membership.fee ? {
-        ...membership.fee,
-        percentage: membershipCustomFee,
-      } : {
-          percentage: membershipCustomFee,
-          beneficiary: ZeroAddress // TODO: change this to default value
-        }
+      fee: membership.fee
+        ? {
+            ...membership.fee,
+            percentage: membershipCustomFee,
+          }
+        : {
+            percentage: membershipCustomFee,
+            beneficiary: ZeroAddress, // TODO: change this to default value
+          },
     }
 
     // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
@@ -94,7 +104,6 @@
       return
     }
   }
-
 
   const validateCustomMembershipFee = (event: Event) => {
     const value = Number((event.target as HTMLInputElement)?.value || 0)
@@ -107,7 +116,7 @@
       invalidFeeMsg = ''
     }
   }
-  
+
   const changeMembershipPaymentType = async (type: MembershipPaymentType) => {
     if (membership.currency === 'DEV') {
       // Update the membership fee in case of currency change to dev token.
@@ -115,57 +124,65 @@
       membershipCustomFee = 0
       membership = {
         ...membership,
-        fee: membership.fee ? {
-          ...membership.fee,
-          percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
-        } : {
-          percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
-          beneficiary: ZeroAddress // TODO: change this to default value
-        }
+        fee: membership.fee
+          ? {
+              ...membership.fee,
+              percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
+            }
+          : {
+              percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
+              beneficiary: ZeroAddress, // TODO: change this to default value
+            },
       }
 
       update() // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
-      return;
+      return
     }
 
     if (type === 'instant') {
       // Update the membership state directly
       membership = {
         ...membership,
-        fee: membership.fee ? {
-          ...membership.fee,
-          percentage: PAYMENT_TYPE_INSTANT_FEE,
-        } :  {
-          percentage: PAYMENT_TYPE_INSTANT_FEE,
-          beneficiary: ZeroAddress // TODO: change this to default value
-        }
+        fee: membership.fee
+          ? {
+              ...membership.fee,
+              percentage: PAYMENT_TYPE_INSTANT_FEE,
+            }
+          : {
+              percentage: PAYMENT_TYPE_INSTANT_FEE,
+              beneficiary: ZeroAddress, // TODO: change this to default value
+            },
       }
     }
 
     // Update the membership state directly
-    if (type === 'stake'){
+    if (type === 'stake') {
       membership = {
         ...membership,
-        fee: membership.fee ? {
-          ...membership.fee,
-          percentage: PAYMENT_TYPE_STAKE_FEE,
-        } :  {
-          percentage: PAYMENT_TYPE_STAKE_FEE,
-          beneficiary: ZeroAddress // TODO: change this to default value
-        }
+        fee: membership.fee
+          ? {
+              ...membership.fee,
+              percentage: PAYMENT_TYPE_STAKE_FEE,
+            }
+          : {
+              percentage: PAYMENT_TYPE_STAKE_FEE,
+              beneficiary: ZeroAddress, // TODO: change this to default value
+            },
       }
     }
 
     if (type === 'custom') {
       membership = {
         ...membership,
-        fee: membership.fee ? {
-          ...membership.fee,
-          percentage: membershipCustomFee,
-        } :  {
-          percentage: membershipCustomFee,
-          beneficiary: ZeroAddress // TODO: change this to default value
-        }
+        fee: membership.fee
+          ? {
+              ...membership.fee,
+              percentage: membershipCustomFee,
+            }
+          : {
+              percentage: membershipCustomFee,
+              beneficiary: ZeroAddress, // TODO: change this to default value
+            },
       }
     }
 
@@ -206,7 +223,7 @@
   }
 
   const resetMembershipFee = () => {
-    if (membership.currency !== 'DEV') return;
+    if (membership.currency !== 'DEV') return
 
     membershipCustomFee = 0
     membershipPaymentType = 'custom'
@@ -214,13 +231,15 @@
     // Update the membership state.
     membership = {
       ...membership,
-      fee: membership.fee ? {
-        ...membership.fee,
-        percentage: membershipCustomFee,
-      } : {
-          percentage: membershipCustomFee,
-          beneficiary: ZeroAddress // TODO: change this to default value
-        }
+      fee: membership.fee
+        ? {
+            ...membership.fee,
+            percentage: membershipCustomFee,
+          }
+        : {
+            percentage: membershipCustomFee,
+            beneficiary: ZeroAddress, // TODO: change this to default value
+          },
     }
   }
 
@@ -460,7 +479,7 @@
         <!-- Price -->
         <div class="hs-form-field is-filled is-required">
           <span class="hs-form-field__label"> Price </span>
-          <div class="flex justify-start items-center w-full max-w-full gap-1">
+          <div class="flex w-full max-w-full items-center justify-start gap-1">
             <input
               class="hs-form-field__input grow"
               bind:value={membership.price}
@@ -487,62 +506,98 @@
             </select>
           </div>
           <p class="hs-form-field__helper mt-2">
-            * If you choose USDC, you can active <u>the credit card payment plugin.</u>
+            * If you choose USDC, you can active <u
+              >the credit card payment plugin.</u
+            >
           </p>
           {#if invalidPriceMsg !== ''}
             <p class="text-danger-300">* {invalidPriceMsg}</p>
           {/if}
         </div>
 
-
         <!-- Payment Type -->
         <div class="hs-form-field is-filled is-required">
           <span class="hs-form-field__label"> Payment type </span>
-          <div class="flex justify-start items-center gap-2 w-full max-w-full">
+          <div class="flex w-full max-w-full items-center justify-start gap-2">
             <button
-              on:click|preventDefault={() => changeMembershipPaymentType('instant')}
-              class={`hs-form-field__input grow max-w-[33%] flex gap-2 justify-center items-center ${membershipPaymentType === 'instant' ? '!border-[#e5e7eb]' : ''}`}
+              on:click|preventDefault={() =>
+                changeMembershipPaymentType('instant')}
+              class={`hs-form-field__input flex max-w-[33%] grow items-center justify-center gap-2 ${
+                membershipPaymentType === 'instant' ? '!border-[#e5e7eb]' : ''
+              }`}
               id="membership-fee-instant"
               name="membership-fee-instant"
               disabled={membership.currency === 'DEV'}
             >
               <span class="h-auto w-auto max-w-[48%]">
-                <svg width="22" height="19" viewBox="0 0 22 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M7.69141 1.75H5.60341C5.12236 1.75009 4.654 1.90435 4.26705 2.19015C3.8801 2.47595 3.59494 2.87824 3.45341 3.338L1.04141 11.177C0.975343 11.3911 0.941638 11.6139 0.941406 11.838V16C0.941406 16.5967 1.17846 17.169 1.60042 17.591C2.02237 18.0129 2.59467 18.25 3.19141 18.25H18.1914C18.7881 18.25 19.3604 18.0129 19.7824 17.591C20.2044 17.169 20.4414 16.5967 20.4414 16V11.838C20.4414 11.614 20.4074 11.391 20.3414 11.177L17.9314 3.338C17.7899 2.87824 17.5047 2.47595 17.1178 2.19015C16.7308 1.90435 16.2625 1.75009 15.7814 1.75H13.6914M0.941406 11.5H4.80141C5.2192 11.5001 5.62872 11.6165 5.98408 11.8363C6.33944 12.056 6.6266 12.3703 6.81341 12.744L7.06941 13.256C7.25628 13.6299 7.54361 13.9443 7.89916 14.164C8.25471 14.3837 8.66444 14.5001 9.08241 14.5H12.3004C12.7184 14.5001 13.1281 14.3837 13.4837 14.164C13.8392 13.9443 14.1265 13.6299 14.3134 13.256L14.5694 12.744C14.7563 12.3701 15.0436 12.0557 15.3992 11.836C15.7547 11.6163 16.1644 11.4999 16.5824 11.5H20.4414M10.6914 1V9.25M10.6914 9.25L7.69141 6.25M10.6914 9.25L13.6914 6.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <svg
+                  width="22"
+                  height="19"
+                  viewBox="0 0 22 19"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7.69141 1.75H5.60341C5.12236 1.75009 4.654 1.90435 4.26705 2.19015C3.8801 2.47595 3.59494 2.87824 3.45341 3.338L1.04141 11.177C0.975343 11.3911 0.941638 11.6139 0.941406 11.838V16C0.941406 16.5967 1.17846 17.169 1.60042 17.591C2.02237 18.0129 2.59467 18.25 3.19141 18.25H18.1914C18.7881 18.25 19.3604 18.0129 19.7824 17.591C20.2044 17.169 20.4414 16.5967 20.4414 16V11.838C20.4414 11.614 20.4074 11.391 20.3414 11.177L17.9314 3.338C17.7899 2.87824 17.5047 2.47595 17.1178 2.19015C16.7308 1.90435 16.2625 1.75009 15.7814 1.75H13.6914M0.941406 11.5H4.80141C5.2192 11.5001 5.62872 11.6165 5.98408 11.8363C6.33944 12.056 6.6266 12.3703 6.81341 12.744L7.06941 13.256C7.25628 13.6299 7.54361 13.9443 7.89916 14.164C8.25471 14.3837 8.66444 14.5001 9.08241 14.5H12.3004C12.7184 14.5001 13.1281 14.3837 13.4837 14.164C13.8392 13.9443 14.1265 13.6299 14.3134 13.256L14.5694 12.744C14.7563 12.3701 15.0436 12.0557 15.3992 11.836C15.7547 11.6163 16.1644 11.4999 16.5824 11.5H20.4414M10.6914 1V9.25M10.6914 9.25L7.69141 6.25M10.6914 9.25L13.6914 6.25"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
                 </svg>
               </span>
               Instant
             </button>
             <button
-              on:click|preventDefault={() => changeMembershipPaymentType('stake')}
-              class={`hs-form-field__input grow max-w-[33%] flex gap-2 justify-center items-center ${membershipPaymentType === 'stake' ? '!border-[#e5e7eb]' : ''}`}
+              on:click|preventDefault={() =>
+                changeMembershipPaymentType('stake')}
+              class={`hs-form-field__input flex max-w-[33%] grow items-center justify-center gap-2 ${
+                membershipPaymentType === 'stake' ? '!border-[#e5e7eb]' : ''
+              }`}
               id="membership-fee-stake"
               name="membership-fee-stake"
               disabled={membership.currency === 'DEV'}
             >
               <span class="h-auto w-auto max-w-[48%]">
-                <svg width="22" height="20" viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2.32422 1V12.25C2.32422 12.8467 2.56127 13.419 2.98323 13.841C3.40519 14.2629 3.97748 14.5 4.57422 14.5H6.82422M2.32422 1H0.824219M2.32422 1H18.8242M6.82422 14.5H14.3242M6.82422 14.5L5.82422 17.5M18.8242 1H20.3242M18.8242 1V12.25C18.8242 12.8467 18.5872 13.419 18.1652 13.841C17.7433 14.2629 17.171 14.5 16.5742 14.5H14.3242M14.3242 14.5L15.3242 17.5M5.82422 17.5H15.3242M5.82422 17.5L5.32422 19M15.3242 17.5L15.8242 19M6.07422 10L9.07422 7L11.2222 9.148C12.2314 7.69929 13.5464 6.48982 15.0742 5.605" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <svg
+                  width="22"
+                  height="20"
+                  viewBox="0 0 22 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M2.32422 1V12.25C2.32422 12.8467 2.56127 13.419 2.98323 13.841C3.40519 14.2629 3.97748 14.5 4.57422 14.5H6.82422M2.32422 1H0.824219M2.32422 1H18.8242M6.82422 14.5H14.3242M6.82422 14.5L5.82422 17.5M18.8242 1H20.3242M18.8242 1V12.25C18.8242 12.8467 18.5872 13.419 18.1652 13.841C17.7433 14.2629 17.171 14.5 16.5742 14.5H14.3242M14.3242 14.5L15.3242 17.5M5.82422 17.5H15.3242M5.82422 17.5L5.32422 19M15.3242 17.5L15.8242 19M6.07422 10L9.07422 7L11.2222 9.148C12.2314 7.69929 13.5464 6.48982 15.0742 5.605"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
                 </svg>
               </span>
               Stake
             </button>
-            <div class="grow max-w-[33%]">
-              {#if  membershipPaymentType !== 'custom'}
+            <div class="max-w-[33%] grow">
+              {#if membershipPaymentType !== 'custom'}
                 <button
-                  on:click|preventDefault={() => changeMembershipPaymentType('custom')}
+                  on:click|preventDefault={() =>
+                    changeMembershipPaymentType('custom')}
                   class="hs-form-field__input w-full max-w-full"
                   id="membership-fee-custom"
                   name="membership-fee-custom"
-                  disabled={membership.currency === 'DEV'}
-                >Custom</button>
+                  disabled={membership.currency === 'DEV'}>Custom</button
+                >
               {/if}
-              {#if  membershipPaymentType === 'custom'}
+              {#if membershipPaymentType === 'custom'}
                 <input
                   bind:value={membershipCustomFee}
                   on:change={onChangeCustomFee}
                   on:keyup={validateCustomMembershipFee}
-                  class={`hs-form-field__input w-full max-w-full ${membershipPaymentType === 'custom' ? '!border-[#e5e7eb]' : ''}`}
+                  class={`hs-form-field__input w-full max-w-full ${
+                    membershipPaymentType === 'custom'
+                      ? '!border-[#e5e7eb]'
+                      : ''
+                  }`}
                   id="membership-fee-value"
                   name="membership-fee-value"
                   type="number"
@@ -557,7 +612,7 @@
             <p class="hs-form-field__helper mt-2">
               * Payment type option is currently disabled for DEV
             </p>
-            {/if}
+          {/if}
           {#if invalidFeeMsg !== ''}
             <p class="text-danger-300">* {invalidFeeMsg}</p>
           {/if}
@@ -565,12 +620,25 @@
 
         <!-- Earning info -->
         <div class="hs-form-field">
-          <div class="flex gap-0 w-full max-w-full p-0">
-            <div class="h-6 rounded-[99px] max-w-full w-[{membership.fee?.percentage || 0}%] bg-[#00D0FD]"></div>
-            <div class="h-6 rounded-[99px] max-w-full w-fit grow bg-[#43C451]"></div>
+          <div class="flex w-full max-w-full gap-0 p-0">
+            <div
+              class="h-6 max-w-full rounded-[99px] w-[{membership.fee
+                ?.percentage || 0}%] bg-[#00D0FD]"
+            />
+            <div
+              class="h-6 w-fit max-w-full grow rounded-[99px] bg-[#43C451]"
+            />
           </div>
           <p class="mt-1">
-            <span class="text-[#00D0FD]">{membership.price * (membership.fee?.percentage || 0)/ 100} {membership.currency} ({membership.fee?.percentage || 0}%)</span>  will earn at 1 time, <span class="text-[#43C451]">and {membership.price * (100 - (membership.fee?.percentage || 0))/ 100} ({(100 - (membership.fee?.percentage || 0))}%)
+            <span class="text-[#00D0FD]"
+              >{(membership.price * (membership.fee?.percentage || 0)) / 100}
+              {membership.currency} ({membership.fee?.percentage || 0}%)</span
+            >
+            will earn at 1 time,
+            <span class="text-[#43C451]"
+              >and {(membership.price *
+                (100 - (membership.fee?.percentage || 0))) /
+                100} ({100 - (membership.fee?.percentage || 0)}%)
             </span> will be staked to earn dev continuously.
           </p>
           <p class="hs-form-field__helper mt-2">
@@ -579,7 +647,9 @@
         </div>
 
         <!-- Description -->
-        <div class="mb-16 flex w-[99.1%] flex-col items-start justify-start gap-[7px]">
+        <div
+          class="mb-16 flex w-[99.1%] flex-col items-start justify-start gap-[7px]"
+        >
           <div class="m-0 w-full items-center p-0">
             <span class="mr-[13px] font-body">Description</span>
             <span class="font-body text-[#EB48F8]"> * </span>

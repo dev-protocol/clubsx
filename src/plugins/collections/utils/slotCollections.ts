@@ -72,24 +72,24 @@ const defaultAddress: Address = {
 }
 
 export async function callSlotCollections(
-    provider: BaseProvider | ethers.Signer,
-    functionName: 'setImages',
-    isTimeSlot: boolean,
-    args: [propertyAddress: string, images: Image[], keys: string[]]
+  provider: BaseProvider | ethers.Signer,
+  functionName: 'setImages',
+  isTimeSlot: boolean,
+  args: [propertyAddress: string, images: Image[], keys: string[]]
 ): Promise<TransactionResponse>
 
 export async function callSlotCollections(
-    provider: BaseProvider,
-    functionName: 'removeImage',
-    isTimeSlot: boolean,
-    args: [propertyAddress: string, key: string]
-) : Promise<TransactionResponse>
+  provider: BaseProvider,
+  functionName: 'removeImage',
+  isTimeSlot: boolean,
+  args: [propertyAddress: string, key: string]
+): Promise<TransactionResponse>
 
 export async function callSlotCollections(
-    provider: BaseProvider,
-    functionName: 'propertyImages',
-    isTimeSlot: boolean,
-    args: [propertyAddress: string, key: string]
+  provider: BaseProvider,
+  functionName: 'propertyImages',
+  isTimeSlot: boolean,
+  args: [propertyAddress: string, key: string]
 ): Promise<Image>
 
 export async function callSlotCollections(
