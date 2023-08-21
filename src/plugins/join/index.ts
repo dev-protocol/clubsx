@@ -71,6 +71,8 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
             feeBeneficiary: fee?.beneficiary,
             feePercentage: fee?.percentage,
             signals: [ClubsPluginSignal.DisplayFullPage],
+            accessControlUrl: undefined, //TODO: Pass the value
+            accessControlDescription: undefined, //TODO: Pass the value
           },
         })),
       ]

@@ -29,6 +29,7 @@ import {
 import Skeleton from '@components/Global/Skeleton.vue'
 import { stakeWithEthForPolygon, stakeWithAnyTokens } from '@fixtures/dev-kit'
 import { marked } from 'marked'
+import DOMPurify from 'dompurify'
 
 let providerPool: UndefinedOr<ContractRunner>
 let subscriptions: Subscription[] = []
@@ -47,6 +48,8 @@ type Props = {
   fiatCurrency?: string
   itemImageSrc?: string
   itemName?: string
+  accessControlUrl?: string
+  accessControlDescription?: string
 }
 const props = defineProps<Props>()
 
@@ -70,7 +73,25 @@ const useERC20: ComputedRef<boolean> = computed(() => {
   )
 })
 const htmlDescription: ComputedRef<UndefinedOr<string>> = computed(() => {
-  return props.description && marked.parse(props.description ?? '')
+  return (
+    props.description && DOMPurify.sanitize(marked.parse(props.description))
+  )
+})
+const htmlVerificationFlow: ComputedRef<UndefinedOr<string>> = computed(() => {
+  return (
+    props.accessControlDescription &&
+    DOMPurify.sanitize(marked.parse(props.accessControlDescription))
+  )
+})
+const accessControlUrl: ComputedRef<UndefinedOr<URL>> = computed(() => {
+  return whenDefinedAll(
+    [props.accessControlUrl, account.value],
+    ([_accessControl, _account]) => {
+      const url = new URL(_accessControl)
+      url.searchParams.set('account', _account)
+      return url
+    },
+  )
 })
 
 const parsedAmount = ref<UndefinedOr<bigint>>(
@@ -96,6 +117,8 @@ const chain = ref<UndefinedOr<number>>(undefined)
 const previewImageSrc = ref<UndefinedOr<string>>(props.itemImageSrc)
 const previewName = ref<UndefinedOr<string>>(props.itemName)
 const stakingAmount = ref<UndefinedOr<number>>(undefined)
+const isCheckingAccessControl = ref<boolean>(false)
+const accessAllowed = ref<UndefinedOr<boolean>>(undefined)
 
 const approve = function () {
   whenDefinedAll(
@@ -317,6 +340,17 @@ onMounted(async () => {
           )
       },
     )
+
+    accessAllowed.value = await whenDefined(
+      accessControlUrl.value,
+      async (_accessControl) => {
+        isCheckingAccessControl.value = true
+        const res = await fetch(_accessControl)
+        const body = res.ok ? await res.text() : ''
+        isCheckingAccessControl.value = false
+        return Number(body) === 1
+      },
+    )
   })
   subscriptions.push(sub)
 
@@ -394,8 +428,35 @@ onUnmounted(() => {
   >
     <section class="flex flex-col">
       <!-- Transaction form -->
-      <div class="p-5">
+      <div class="grid gap-16 p-5">
         <slot name="before:transaction-form"></slot>
+
+        <div v-if="props.accessControlUrl" class="grid gap-16">
+          <!-- Access control section -->
+          <p
+            :data-is-loading="isCheckingAccessControl"
+            :data-is-valid="accessAllowed"
+            class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white data-[is-loading=true]:animate-pulse data-[is-valid=false]:border data-[is-valid=false]:border-neutral-300 data-[is-valid=false]:bg-white data-[is-valid=true]:bg-[#43C451] data-[is-valid=false]:text-black"
+          >
+            {{
+              !account
+                ? `Connect wallet to check you're verified`
+                : isCheckingAccessControl
+                ? `Now checking the verification status`
+                : accessAllowed
+                ? `Verified`
+                : `Unverified`
+            }}
+          </p>
+
+          <div
+            v-if="!accessAllowed && htmlVerificationFlow"
+            v-html="htmlVerificationFlow"
+            class="md"
+          ></div>
+
+          <hr class="bg-[#DFDFDF]" />
+        </div>
 
         <span
           v-if="useInjectedTransactionForm"
@@ -423,7 +484,11 @@ onUnmounted(() => {
             <button
               @click="approve"
               v-if="account && (approveNeeded || approveNeeded === undefined)"
-              :disabled="isApproving || approveNeeded === undefined"
+              :disabled="
+                isApproving ||
+                approveNeeded === undefined ||
+                Boolean(props.accessControlUrl && !accessAllowed)
+              "
               :data-is-approving="isApproving"
               class="rounded-full bg-black px-8 py-4 text-center font-bold text-white disabled:bg-neutral-300 data-[is-approving=true]:animate-pulse"
             >
@@ -450,7 +515,12 @@ onUnmounted(() => {
             <button
               v-if="!approveNeeded"
               @click="submitStake"
-              :disabled="!account || isStaking || approveNeeded"
+              :disabled="
+                !account ||
+                isStaking ||
+                approveNeeded ||
+                Boolean(props.accessControlUrl && !accessAllowed)
+              "
               :data-is-staking="isStaking"
               class="rounded-full bg-black px-8 py-4 text-center font-bold text-white disabled:bg-neutral-300 data-[is-staking=true]:animate-pulse"
             >
@@ -506,3 +576,35 @@ onUnmounted(() => {
     <a href="/" class="text-blue-400">Back to top</a>
   </section>
 </template>
+
+<style lang="scss">
+.md {
+  h1 {
+    @apply text-3xl font-bold;
+  }
+  h2 {
+    @apply text-2xl font-bold;
+  }
+  h3 {
+    @apply text-xl;
+  }
+  h4 {
+    @apply font-bold;
+  }
+  h5 {
+    @apply font-bold;
+  }
+  a {
+    @apply inline-block rounded p-1 underline transition hover:bg-white/20;
+  }
+  ul li {
+    @apply list-disc;
+  }
+  ol li {
+    @apply list-decimal;
+  }
+  pre {
+    @apply rounded p-3;
+  }
+}
+</style>
