@@ -417,7 +417,7 @@
       requiredTokenAmount: parseUnits(String(opt.price), tokenInfo[opt.currency][chainId].decimals).toString(),
       requiredTokenFee: opt.fee?.percentage
         ? parseUnits(
-              new BigNumber(opt.price).times(opt.fee.percentage).toFixed(),
+              new BigNumber(opt.price).times(opt.fee.percentage * 100).toFixed(),
               tokenInfo[opt.currency][chainId].decimals
             )
             .toString()
