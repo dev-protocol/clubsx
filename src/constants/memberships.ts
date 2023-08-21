@@ -1,0 +1,3 @@
+export const PAYMENT_TYPE_STAKE_FEE = 10
+export const PAYMENT_TYPE_INSTANT_FEE = 90
+export const DEV_TOKEN_PAYMENT_TYPE_FEE = 0
