@@ -1,3 +1,392 @@
+<script lang="ts" setup>
+import { onMounted, onUnmounted, ref, type ComputedRef, computed } from 'vue'
+import {
+  positionsCreate,
+  positionsCreateWithEth,
+} from '@devprotocol/dev-kit/agent'
+import { connection as getConnection } from '@devprotocol/clubs-core/connection'
+import {
+  type UndefinedOr,
+  whenDefined,
+  whenDefinedAll,
+} from '@devprotocol/util-ts'
+import {
+  type BigNumberish,
+  ContractRunner,
+  JsonRpcProvider,
+  MaxUint256,
+  formatUnits,
+  parseUnits,
+} from 'ethers'
+import BigNumber from 'bignumber.js'
+import { type Subscription, combineLatest } from 'rxjs'
+import { CurrencyOption } from '@constants/currencyOption'
+import {
+  fetchDevForEth,
+  fetchDevForUsdc,
+  fetchSTokens,
+} from '@fixtures/utility'
+import Skeleton from '@components/Global/Skeleton.vue'
+import { stakeWithEthForPolygon, stakeWithAnyTokens } from '@fixtures/dev-kit'
+import { marked } from 'marked'
+
+let providerPool: UndefinedOr<ContractRunner>
+let subscriptions: Subscription[] = []
+
+type Props = {
+  amount?: number
+  destination?: string
+  currency?: 'USDC' | 'ETH' | 'DEV'
+  feeBeneficiary?: string
+  feePercentage?: number
+  payload?: Uint8Array | string
+  rpcUrl?: string
+  description?: string
+  useDiscretePaymentFlow?: boolean
+  useInjectedTransactionForm?: boolean
+  fiatCurrency?: string
+  itemImageSrc?: string
+  itemName?: string
+}
+const props = defineProps<Props>()
+
+const verifiedPropsCurrency: ComputedRef<CurrencyOption> = computed(() => {
+  return props.currency?.toUpperCase() === 'ETH'
+    ? CurrencyOption.ETH
+    : props.currency?.toUpperCase() === 'USDC'
+    ? CurrencyOption.USDC
+    : CurrencyOption.DEV
+})
+const usePolygonWETH: ComputedRef<boolean> = computed(() => {
+  return (
+    verifiedPropsCurrency.value === CurrencyOption.ETH &&
+    typeof chain.value === 'number' &&
+    (chain.value === 137 || chain.value === 80001)
+  )
+})
+const useERC20: ComputedRef<boolean> = computed(() => {
+  return (
+    verifiedPropsCurrency.value !== CurrencyOption.ETH || usePolygonWETH.value
+  )
+})
+const htmlDescription: ComputedRef<UndefinedOr<string>> = computed(() => {
+  return props.description && marked.parse(props.description ?? '')
+})
+
+const parsedAmount = ref<UndefinedOr<bigint>>(
+  props.amount && !props.useDiscretePaymentFlow
+    ? parseUnits(
+        props.amount.toString(),
+        verifiedPropsCurrency.value === CurrencyOption.ETH ||
+          verifiedPropsCurrency.value === CurrencyOption.DEV
+          ? 18
+          : verifiedPropsCurrency.value === CurrencyOption.USDC
+          ? 6
+          : (18 as never),
+      )
+    : undefined,
+)
+const approveNeeded = ref<UndefinedOr<boolean>>(undefined)
+const stakeSuccessful = ref<boolean>(false)
+const account = ref<UndefinedOr<string>>(undefined)
+const isApproving = ref<boolean>(false)
+const isStaking = ref<boolean>(false)
+const feeAmount = ref<UndefinedOr<number>>(undefined)
+const chain = ref<UndefinedOr<number>>(undefined)
+const previewImageSrc = ref<UndefinedOr<string>>(props.itemImageSrc)
+const previewName = ref<UndefinedOr<string>>(props.itemName)
+const stakingAmount = ref<UndefinedOr<number>>(undefined)
+
+const approve = function () {
+  whenDefinedAll(
+    [
+      providerPool,
+      account.value,
+      props.destination,
+      parsedAmount.value,
+      chain.value,
+    ],
+    async ([_prov, _account, _destination, _amount, _chain]) => {
+      const res = usePolygonWETH.value
+        ? await stakeWithEthForPolygon({
+            provider: _prov,
+            propertyAddress: _destination,
+            ethAmount: _amount.toString(),
+            from: _account,
+          }).then((res) => res.create())
+        : verifiedPropsCurrency.value === CurrencyOption.USDC
+        ? await stakeWithAnyTokens({
+            provider: _prov,
+            propertyAddress: _destination,
+            tokenAmount: _amount.toString(),
+            tokenDecimals: 6,
+            currency: CurrencyOption.USDC,
+            from: _account,
+            chain: _chain,
+          }).then((res) => res?.create())
+        : await positionsCreate({
+            provider: _prov,
+            destination: _destination,
+            amount: _amount.toString(),
+            from: _account,
+          })
+      whenDefined(res, async (_res) => {
+        const { waitOrSkipApproval } = await _res.approveIfNeeded({
+          amount: MaxUint256.toString(),
+        })
+        isApproving.value = true
+        await waitOrSkipApproval()
+        console.log('approve res is: ', res)
+        isApproving.value = false
+        approveNeeded.value = false
+      })
+    },
+  )
+}
+const checkApproved = async function (
+  provider: ContractRunner,
+  userAddress: string,
+  destination: string,
+  amount: BigNumberish,
+  isPolygonWETH: boolean,
+  chain: number,
+) {
+  const res = isPolygonWETH
+    ? await stakeWithEthForPolygon({
+        provider,
+        propertyAddress: destination,
+        from: userAddress,
+        ethAmount: amount.toString(),
+      }).then((res) => res.create())
+    : verifiedPropsCurrency.value === CurrencyOption.USDC
+    ? await stakeWithAnyTokens({
+        provider,
+        propertyAddress: destination,
+        tokenAmount: amount.toString(),
+        tokenDecimals: 6,
+        currency: CurrencyOption.USDC,
+        from: userAddress,
+        chain,
+      }).then((res) => res?.create())
+    : await positionsCreate({
+        provider,
+        destination,
+        from: userAddress,
+        amount: amount.toString(),
+      })
+  approveNeeded.value = whenDefined(res, (x) => x.approvalNeeded)
+  console.log({ approveNeeded })
+}
+const submitStake = async function () {
+  debugger
+  await whenDefinedAll(
+    [
+      providerPool,
+      account.value,
+      props.destination,
+      props.amount,
+      parsedAmount.value?.toString(),
+      chain.value,
+    ],
+    async ([_prov, _account, _destination, _amount, _parsedAmount, _chain]) => {
+      if (verifiedPropsCurrency.value === CurrencyOption.ETH) {
+        if (usePolygonWETH.value) {
+          const res = await stakeWithEthForPolygon({
+            provider: _prov,
+            propertyAddress: _destination,
+            ethAmount: _amount.toString(),
+            gatewayAddress: props.feeBeneficiary ?? undefined,
+            gatewayBasisPoints:
+              typeof props.feePercentage === 'number'
+                ? props.feePercentage * 10_000
+                : undefined,
+            payload: props.payload,
+            from: _account,
+          })
+          await whenDefined(res, async (_res) => {
+            isStaking.value = true
+            const create = await _res.create()
+            const approveIfNeeded = await create?.approveIfNeeded({
+              amount: _parsedAmount,
+            })
+            const waitOrSkipApproval =
+              await approveIfNeeded?.waitOrSkipApproval()
+            const run = await waitOrSkipApproval?.run()
+            const res = await run?.wait()
+            console.log('res is: ', res)
+            onCompleted()
+          })
+        } else {
+          // handle ETH stake
+          const res = await positionsCreateWithEth({
+            provider: _prov,
+            destination: _destination,
+            ethAmount: _parsedAmount,
+            gatewayAddress: props.feeBeneficiary ?? undefined,
+            gatewayBasisPoints:
+              typeof props.feePercentage === 'number'
+                ? props.feePercentage * 10_000
+                : undefined,
+            payload: props.payload,
+          })
+          await whenDefined(res, async (_res) => {
+            isStaking.value = true
+            const create = await _res.create()
+            const res = await create.wait()
+            console.log('res is: ', res)
+            onCompleted()
+          })
+        }
+      } else if (verifiedPropsCurrency.value === CurrencyOption.USDC) {
+        const res = await stakeWithAnyTokens({
+          provider: _prov,
+          propertyAddress: _destination,
+          tokenAmount: _amount.toString(),
+          tokenDecimals: 6,
+          currency: CurrencyOption.USDC,
+          gatewayAddress: props.feeBeneficiary ?? undefined,
+          gatewayBasisPoints:
+            typeof props.feePercentage === 'number'
+              ? props.feePercentage * 10_000
+              : undefined,
+          payload: props.payload,
+          from: _account,
+          chain: _chain,
+        })
+        await whenDefined(res, async (_res) => {
+          isStaking.value = true
+          const create = await _res.create()
+          const approveIfNeeded = await create?.approveIfNeeded({
+            amount: _parsedAmount,
+          })
+          const waitOrSkipApproval = await approveIfNeeded?.waitOrSkipApproval()
+          const run = await waitOrSkipApproval?.run()
+          const res = await run?.wait()
+          console.log('res is: ', res)
+          onCompleted()
+        })
+      } else {
+        // handle DEV stake
+        const res = await positionsCreate({
+          provider: _prov,
+          from: _account,
+          destination: _destination,
+          amount: _parsedAmount,
+          payload: props.payload,
+        })
+
+        await whenDefined(res, async (_x) => {
+          isStaking.value = true
+          const approveIfNeeded = await _x.approveIfNeeded()
+          const waitOrSkipApproval = await approveIfNeeded.waitOrSkipApproval()
+          const run = await waitOrSkipApproval.run()
+          const res = await run.wait()
+          console.log('res is: ', res)
+          onCompleted()
+        })
+      }
+    },
+  )
+}
+const onCompleted = function () {
+  isStaking.value = false
+  stakeSuccessful.value = true
+}
+
+onMounted(async () => {
+  const sub = combineLatest([
+    getConnection().provider,
+    getConnection().account,
+    getConnection().chain,
+  ]).subscribe(async ([_provider, _account, _chain]) => {
+    providerPool = _provider
+    account.value = _account
+    chain.value = _chain
+    whenDefinedAll(
+      [providerPool, _account, props.destination, props.amount, chain.value],
+      async ([_prov, _userAddress, _destination, _amount, _chain]) => {
+        useERC20 &&
+          !props.useDiscretePaymentFlow &&
+          checkApproved(
+            _prov,
+            _userAddress,
+            _destination,
+            _amount,
+            usePolygonWETH.value,
+            _chain,
+          )
+      },
+    )
+  })
+  subscriptions.push(sub)
+
+  const provider = new JsonRpcProvider(props.rpcUrl)
+  const chainId = Number((await provider.getNetwork()).chainId)
+
+  whenDefinedAll(
+    [props.destination, props.amount],
+    async ([_destination, _amount]) => {
+      const feeDeposit = props.feePercentage
+        ? new BigNumber(props.feePercentage)
+        : 0
+
+      const exactFee = new BigNumber(_amount).times(feeDeposit).toFixed()
+      feeAmount.value = new BigNumber(exactFee).dp(6).toNumber()
+
+      const [devAmount] = await Promise.all([
+        verifiedPropsCurrency.value === CurrencyOption.DEV
+          ? props.amount
+          : verifiedPropsCurrency.value === CurrencyOption.ETH
+          ? await fetchDevForEth({
+              provider,
+              tokenAddress: _destination,
+              amount: new BigNumber(_amount)
+                .times(new BigNumber(1).minus(feeDeposit))
+                .toNumber(),
+              chain: chainId,
+            }).then(formatUnits)
+          : verifiedPropsCurrency.value === CurrencyOption.USDC
+          ? await fetchDevForUsdc({
+              provider,
+              tokenAddress: _destination,
+              amount: new BigNumber(_amount)
+                .times(new BigNumber(1).minus(feeDeposit))
+                .toNumber(),
+              chain: chainId,
+            }).then(formatUnits)
+          : undefined,
+      ])
+
+      stakingAmount.value = !props.useDiscretePaymentFlow
+        ? new BigNumber(devAmount ?? 0).dp(6).toNumber()
+        : undefined
+
+      if (previewImageSrc.value || previewName.value) {
+        return
+      }
+
+      const sTokens = await fetchSTokens({
+        provider,
+        tokenAddress: _destination,
+        amount: devAmount,
+        payload: props.payload,
+      }).catch((err) => {
+        console.log(err)
+        return undefined
+      })
+      previewImageSrc.value = sTokens?.image
+      previewName.value = sTokens?.name
+    },
+  )
+})
+
+onUnmounted(() => {
+  for (const sub of subscriptions) {
+    sub.unsubscribe()
+  }
+})
+</script>
+
 <template>
   <div
     v-if="!stakeSuccessful"
@@ -117,397 +506,3 @@
     <a href="/" class="text-blue-400">Back to top</a>
   </section>
 </template>
-
-<script lang="ts">
-import {
-  positionsCreate,
-  positionsCreateWithEth,
-} from '@devprotocol/dev-kit/agent'
-import { connection as getConnection } from '@devprotocol/clubs-core/connection'
-import { UndefinedOr, whenDefined, whenDefinedAll } from '@devprotocol/util-ts'
-import { defineComponent } from '@vue/composition-api'
-import {
-  BigNumberish,
-  ContractRunner,
-  JsonRpcProvider,
-  MaxUint256,
-  formatUnits,
-  keccak256,
-  parseUnits,
-} from 'ethers'
-import BigNumber from 'bignumber.js'
-import { Subscription, combineLatest, zip } from 'rxjs'
-import { CurrencyOption } from '@constants/currencyOption'
-import {
-  fetchDevForEth,
-  fetchDevForUsdc,
-  fetchEthForDev,
-  fetchSTokens,
-} from '@fixtures/utility'
-import Skeleton from '@components/Global/Skeleton.vue'
-import { stakeWithEthForPolygon, stakeWithAnyTokens } from '@fixtures/dev-kit'
-import { marked } from 'marked'
-
-type Data = {
-  parsedAmount: UndefinedOr<BigNumberish>
-  approveNeeded: UndefinedOr<boolean>
-  isApproving: boolean
-  isStaking: boolean
-  subscriptions: Subscription[]
-  stakeSuccessful: boolean
-  account?: string
-  feeAmount: UndefinedOr<number>
-  chain: UndefinedOr<number>
-  previewImageSrc: UndefinedOr<string>
-  previewName: UndefinedOr<string>
-  stakingAmount: UndefinedOr<number>
-}
-
-let providerPool: UndefinedOr<ContractRunner>
-
-export default defineComponent({
-  props: {
-    amount: Number,
-    destination: String,
-    currency: String, // 'DEV' | 'ETH' | 'USDC'
-    feeBeneficiary: String,
-    feePercentage: Number,
-    payload: Uint8Array,
-    rpcUrl: String,
-    description: String,
-    useDiscretePaymentFlow: Boolean,
-    useInjectedTransactionForm: Boolean,
-    fiatCurrency: String,
-    itemImageSrc: String,
-    itemName: String,
-  },
-  data() {
-    return {
-      parsedAmount:
-        this.amount && !this.useDiscretePaymentFlow
-          ? parseUnits(
-              this.amount.toString(),
-              this.verifiedPropsCurrency === CurrencyOption.ETH ||
-                this.verifiedPropsCurrency === CurrencyOption.DEV
-                ? 18
-                : this.verifiedPropsCurrency === CurrencyOption.USDC
-                ? 6
-                : (18 as never),
-            )
-          : undefined,
-      approveNeeded: undefined,
-      subscriptions: [],
-      stakeSuccessful: false,
-      account: undefined,
-      isApproving: false,
-      isStaking: false,
-      feeAmount: undefined,
-      chain: undefined,
-      previewImageSrc: this.itemImageSrc,
-      previewName: this.itemName,
-      stakingAmount: undefined,
-    } as Data
-  },
-  computed: {
-    verifiedPropsCurrency(): CurrencyOption {
-      return this.currency?.toUpperCase() === 'ETH'
-        ? CurrencyOption.ETH
-        : this.currency?.toUpperCase() === 'USDC'
-        ? CurrencyOption.USDC
-        : CurrencyOption.DEV
-    },
-    usePolygonWETH(): boolean {
-      return (
-        this.verifiedPropsCurrency === CurrencyOption.ETH &&
-        (this.chain === 137 || this.chain === 80001)
-      )
-    },
-    useERC20(): boolean {
-      return (
-        this.verifiedPropsCurrency !== CurrencyOption.ETH || this.usePolygonWETH
-      )
-    },
-    currencyOption() {
-      return CurrencyOption
-    },
-    htmlDescription() {
-      return this.description && marked.parse(this.description ?? '')
-    },
-  },
-  components: { Skeleton },
-  async mounted() {
-    const sub = combineLatest([
-      getConnection().provider,
-      getConnection().account,
-      getConnection().chain,
-    ]).subscribe(async ([provider, account, chain]) => {
-      providerPool = provider
-      this.account = account
-      this.chain = chain
-      whenDefinedAll(
-        [providerPool, account, this.destination, this.amount, this.chain],
-        async ([prov, userAddress, destination, amount, chain]) => {
-          this.useERC20 &&
-            !this.useDiscretePaymentFlow &&
-            this.checkApproved(
-              prov,
-              userAddress,
-              destination,
-              amount,
-              this.usePolygonWETH,
-              chain,
-            )
-        },
-      )
-    })
-    this.subscriptions.push(sub)
-
-    const provider = new JsonRpcProvider(this.rpcUrl)
-    const chain = Number((await provider.getNetwork()).chainId)
-
-    whenDefinedAll(
-      [this.destination, this.amount],
-      async ([destination, amount]) => {
-        const feeDeposit = this.feePercentage
-          ? new BigNumber(this.feePercentage)
-          : 0
-
-        const exactFee = new BigNumber(amount).times(feeDeposit).toFixed()
-        this.feeAmount = new BigNumber(exactFee).dp(6).toNumber()
-
-        const [devAmount] = await Promise.all([
-          this.verifiedPropsCurrency === CurrencyOption.DEV
-            ? this.amount
-            : this.verifiedPropsCurrency === CurrencyOption.ETH
-            ? await fetchDevForEth({
-                provider,
-                tokenAddress: destination,
-                amount: new BigNumber(amount)
-                  .times(new BigNumber(1).minus(feeDeposit))
-                  .toNumber(),
-                chain,
-              }).then(formatUnits)
-            : this.verifiedPropsCurrency === CurrencyOption.USDC
-            ? await fetchDevForUsdc({
-                provider,
-                tokenAddress: destination,
-                amount: new BigNumber(amount)
-                  .times(new BigNumber(1).minus(feeDeposit))
-                  .toNumber(),
-                chain,
-              }).then(formatUnits)
-            : undefined,
-        ])
-
-        this.stakingAmount = !this.useDiscretePaymentFlow
-          ? new BigNumber(devAmount ?? 0).dp(6).toNumber()
-          : undefined
-
-        if (this.previewImageSrc || this.previewName) {
-          return
-        }
-
-        const sTokens = await fetchSTokens({
-          provider,
-          tokenAddress: destination,
-          amount: devAmount,
-          payload: this.payload,
-        }).catch((err) => {
-          console.log(err)
-          return undefined
-        })
-        this.previewImageSrc = sTokens?.image
-        this.previewName = sTokens?.name
-      },
-    )
-  },
-  destroyed() {
-    for (const sub of this.subscriptions) {
-      sub.unsubscribe()
-    }
-  },
-  methods: {
-    approve() {
-      whenDefinedAll(
-        [providerPool, this.account, this.destination, this.parsedAmount],
-        async ([prov, account, destination, amount]) => {
-          const res = this.usePolygonWETH
-            ? await stakeWithEthForPolygon({
-                provider: prov,
-                propertyAddress: destination,
-                ethAmount: amount.toString(),
-                from: account,
-              }).then((res) => res.create())
-            : await positionsCreate({
-                provider: prov,
-                destination,
-                amount: amount.toString(),
-                from: account,
-              })
-          whenDefined(res, async (results) => {
-            const { waitOrSkipApproval } = await results.approveIfNeeded({
-              amount: MaxUint256.toString(),
-            })
-            this.isApproving = true
-            await waitOrSkipApproval()
-            console.log('approve res is: ', res)
-            this.isApproving = false
-            this.approveNeeded = false
-          })
-        },
-      )
-    },
-    async checkApproved(
-      provider: ContractRunner,
-      userAddress: string,
-      destination: string,
-      amount: BigNumberish,
-      isPolygonWETH: boolean,
-      chain: number,
-    ) {
-      const res = isPolygonWETH
-        ? await stakeWithEthForPolygon({
-            provider,
-            propertyAddress: destination,
-            from: userAddress,
-            ethAmount: amount.toString(),
-          }).then((res) => res.create())
-        : this.verifiedPropsCurrency === CurrencyOption.USDC
-        ? await stakeWithAnyTokens({
-            provider,
-            propertyAddress: destination,
-            tokenAmount: amount.toString(),
-            tokenDecimals: 6,
-            currency: CurrencyOption.USDC,
-            from: userAddress,
-            chain,
-          }).then((res) => res?.create())
-        : await positionsCreate({
-            provider,
-            destination,
-            from: userAddress,
-            amount: amount.toString(),
-          })
-      this.approveNeeded = whenDefined(res, (x) => x.approvalNeeded)
-      console.log('this.approveNeeded', this.approveNeeded)
-    },
-    async submitStake() {
-      debugger
-      await whenDefinedAll(
-        [
-          providerPool,
-          this.account,
-          this.destination,
-          this.amount,
-          this.parsedAmount?.toString(),
-          this.chain,
-        ],
-        async ([prov, account, destination, amount, parsedAmount, chain]) => {
-          if (this.verifiedPropsCurrency === CurrencyOption.ETH) {
-            if (this.usePolygonWETH) {
-              const res = await stakeWithEthForPolygon({
-                provider: prov,
-                propertyAddress: destination,
-                ethAmount: amount.toString(),
-                gatewayAddress: this.feeBeneficiary ?? undefined,
-                gatewayBasisPoints:
-                  typeof this.feePercentage === 'number'
-                    ? this.feePercentage * 10_000
-                    : undefined,
-                payload: this.payload,
-                from: account,
-              })
-              await whenDefined(res, async (x) => {
-                this.isStaking = true
-                const create = await x.create()
-                const approveIfNeeded = await create?.approveIfNeeded({
-                  amount: parsedAmount,
-                })
-                const waitOrSkipApproval =
-                  await approveIfNeeded?.waitOrSkipApproval()
-                const run = await waitOrSkipApproval?.run()
-                const res = await run?.wait()
-                console.log('res is: ', res)
-                this.onCompleted()
-              })
-            } else {
-              // handle ETH stake
-              const res = await positionsCreateWithEth({
-                provider: prov,
-                destination,
-                ethAmount: parsedAmount,
-                gatewayAddress: this.feeBeneficiary ?? undefined,
-                gatewayBasisPoints:
-                  typeof this.feePercentage === 'number'
-                    ? this.feePercentage * 10_000
-                    : undefined,
-                payload: this.payload,
-              })
-              await whenDefined(res, async (x) => {
-                this.isStaking = true
-                const create = await x.create()
-                const res = await create.wait()
-                console.log('res is: ', res)
-                this.onCompleted()
-              })
-            }
-          } else if (this.verifiedPropsCurrency === CurrencyOption.USDC) {
-            const res = await stakeWithAnyTokens({
-              provider: prov,
-              propertyAddress: destination,
-              tokenAmount: amount.toString(),
-              tokenDecimals: 6,
-              currency: CurrencyOption.USDC,
-              gatewayAddress: this.feeBeneficiary ?? undefined,
-              gatewayBasisPoints:
-                typeof this.feePercentage === 'number'
-                  ? this.feePercentage * 10_000
-                  : undefined,
-              payload: this.payload,
-              from: account,
-              chain,
-            })
-            await whenDefined(res, async (x) => {
-              this.isStaking = true
-              const create = await x.create()
-              const approveIfNeeded = await create?.approveIfNeeded({
-                amount: parsedAmount,
-              })
-              const waitOrSkipApproval =
-                await approveIfNeeded?.waitOrSkipApproval()
-              const run = await waitOrSkipApproval?.run()
-              const res = await run?.wait()
-              console.log('res is: ', res)
-              this.onCompleted()
-            })
-          } else {
-            // handle DEV stake
-            const res = await positionsCreate({
-              provider: prov,
-              from: account,
-              destination,
-              amount: parsedAmount,
-              payload: this.payload,
-            })
-
-            await whenDefined(res, async (x) => {
-              this.isStaking = true
-              const approveIfNeeded = await x.approveIfNeeded()
-              const waitOrSkipApproval =
-                await approveIfNeeded.waitOrSkipApproval()
-              const run = await waitOrSkipApproval.run()
-              const res = await run.wait()
-              console.log('res is: ', res)
-              this.onCompleted()
-            })
-          }
-        },
-      )
-    },
-    onCompleted() {
-      this.isStaking = false
-      this.stakeSuccessful = true
-    },
-  },
-})
-</script>
