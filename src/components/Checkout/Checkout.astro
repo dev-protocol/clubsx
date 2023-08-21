@@ -18,6 +18,8 @@ const {
   fiatCurrency,
   itemImageSrc,
   itemName,
+  accessControlUrl,
+  accessControlDescription,
   clubs,
 } = Astro.props as ClubsPropsPages &
   CheckoutOptions & {
@@ -25,6 +27,8 @@ const {
     useInjectedTransactionForm?: boolean
     itemImageSrc?: string
     itemName?: string
+    accessControlUrl?: string
+    accessControlDescription?: string
   }
 
 const checkoutOptions: CheckoutOptions = {
@@ -62,6 +66,8 @@ const SlotsCheckoutMainTransactionForm = clubs.slots.filter(
   fiatCurrency={fiatCurrency}
   itemImageSrc={itemImageSrc}
   itemName={itemName}
+  accessControlUrl={accessControlUrl}
+  accessControlDescription={accessControlDescription}
 >
   <slot
     name="checkout:before:transaction-form"

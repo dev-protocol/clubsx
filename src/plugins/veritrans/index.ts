@@ -47,6 +47,8 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
             propertyAddress,
             rpcUrl,
             signals: [ClubsPluginSignal.DisplayFullPage],
+            accessControlUrl: undefined, //TODO: Pass the value
+            accessControlDescription: undefined, //TODO: Pass the value
           },
           component: Id,
         })),
