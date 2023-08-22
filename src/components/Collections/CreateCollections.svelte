@@ -52,7 +52,7 @@
 
   const originalId = membership.id
 
-  let endTimeValue: Date = new Date(membership.slots?.endTime || '');
+  let endTimeValue: Date = new Date(membership.slots?.endTime || '')
 
   let membershipExists = false
 
@@ -74,7 +74,7 @@
     setOptions(
       [
         {
-          key: 'memberships',
+          key: 'collections',
           value: [
             ...existingMemberships.filter(
               (m: Membership) => m.id !== selectedMembership.id
@@ -105,7 +105,7 @@
     }
   }
 
-  const onEndTimeChange =async () => {
+  const onEndTimeChange = async () => {
     const value = endTimeValue || 0
     const unixTimestamp = new Date(value).getTime() / 1000
     if (unixTimestamp < Date.now() / 1000) {
@@ -118,9 +118,9 @@
           endTime: currentTime + twoMinutes,
         },
       }
-      invalidTimeMsg = 'End time cannot be in the past setting to 2 minutes from now'
-    }
-    else{
+      invalidTimeMsg =
+        'End time cannot be in the past setting to 2 minutes from now'
+    } else {
       invalidTimeMsg = ''
       const currentTime = Date.now() / 1000
       membership = {
@@ -131,8 +131,7 @@
         },
       }
     }
-}
-
+  }
 
   const onChangeCustomFee = async () => {
     if (membership.currency === 'DEV') {
@@ -334,7 +333,12 @@
     isAdding = value
   }
   const update = () => {
-    if (membership.price < minPrice || membership.price > maxPrice || membershipPaymentType === '') return
+    if (
+      membership.price < minPrice ||
+      membership.price > maxPrice ||
+      membershipPaymentType === ''
+    )
+      return
 
     const search = mode === 'edit' ? originalId : membership.id
     const newMemberships = existingMemberships.some(({ id }) => id === search)
@@ -428,7 +432,7 @@
           max="2038-01-18T00:00"
         />
         {#if invalidTimeMsg !== ''}
-        <p class="text-danger-300">* {invalidTimeMsg}</p>
+          <p class="text-danger-300">* {invalidTimeMsg}</p>
         {/if}
       </div>
     {/if}
@@ -783,16 +787,16 @@
           </button>
 
           {#if mode === 'edit' && !membership.deprecated}
-          <button
-            class={`hs-button is-large is-filled w-fit rounded px-8 py-6 text-base font-bold text-white ${
-              updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
-            }`}
-            type="button"
-            on:click|preventDefault={() => deleteMembership(membership)}
-          >
-            <span class="hs-button__label"> Delete </span>
-          </button>
-        {/if}
+            <button
+              class={`hs-button is-large is-filled w-fit rounded px-8 py-6 text-base font-bold text-white ${
+                updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
+              }`}
+              type="button"
+              on:click|preventDefault={() => deleteMembership(membership)}
+            >
+              <span class="hs-button__label"> Delete </span>
+            </button>
+          {/if}
         </div>
       {/if}
     </div>

@@ -3,12 +3,11 @@ import CreateCollections from '@components/Collections/CreateCollections.svelte'
 import type { Membership } from '@plugins/memberships'
 import type { ClubsPropsAdminPages } from '@devprotocol/clubs-core'
 
-
 const {
   isTimeLimitedCollection = false,
   memberships = [],
   name,
-  clubs
+  clubs,
 } = Astro.props as ClubsPropsAdminPages & {
   isTimeLimitedCollection: boolean
   memberships: Membership[]
