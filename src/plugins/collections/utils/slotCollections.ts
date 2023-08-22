@@ -57,8 +57,8 @@ export const address: Address[] = [
   {
     chainId: 80001,
     addressList: {
-      timeSlot: '0x0000000000000000000000000000000000000000',
-      memberSlot: '0x0000000000000000000000000000000000000000',
+      timeSlot: '0xbE0AFf1B1AA447772e742CC23A96984399235427',
+      memberSlot: '0x955AAd5D0DEde7C651f6f35d8024340EB89cF5a6',
     },
   },
 ]

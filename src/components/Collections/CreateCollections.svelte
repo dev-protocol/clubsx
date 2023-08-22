@@ -1,5 +1,7 @@
 <script lang="ts">
-  import type { Membership } from '@plugins/memberships'
+  import { ClubsEvents, setOptions } from '@devprotocol/clubs-core'
+  import { buildConfig, controlModal } from '@devprotocol/clubs-core/events'
+  import type { Membership } from '@plugins/collections'
   import MembershipOption from '@components/AdminMembershipsForm/MembershipOption.svelte'
   import {
     DEV_TOKEN_PAYMENT_TYPE_FEE,
@@ -12,6 +14,7 @@
   export let isTimeLimitedCollection: boolean = false
   export let clubName: string | undefined = undefined
   export let isAdding: boolean = false
+  export let currentPluginIndex: number
 
   const ZeroAddress = '0x000000000'
 
@@ -27,7 +30,13 @@
       percentage: 20,
       beneficiary: ZeroAddress,
     },
+    slots: {
+      startTime: 0,
+      endTime: 0,
+    },
   }
+
+  export let mode: 'edit' | 'create' = 'edit'
 
   type MembershipPaymentType = 'instant' | 'stake' | 'custom' | ''
 
@@ -39,6 +48,11 @@
   let noOfPositions: number = 0
   let invalidPriceMsg: string = ''
   let invalidFeeMsg: string = ''
+  let invalidTimeMsg: string = ''
+
+  const originalId = membership.id
+
+  let endTimeValue: Date = new Date(membership.slots?.endTime || '');
 
   let membershipExists = false
 
@@ -46,6 +60,79 @@
   const maxPrice = 1e20
   const minCustomFee = 0
   const maxCustomFee = 95
+
+  const deleteMembership = (selectedMembership: Membership) => {
+    updatingMembershipsStatus = true
+
+    const membership = existingMemberships.find(
+      (m: Membership) =>
+        m.id === selectedMembership.id &&
+        m.name === selectedMembership.name &&
+        JSON.stringify(m.payload) === JSON.stringify(selectedMembership.payload)
+    )
+
+    setOptions(
+      [
+        {
+          key: 'memberships',
+          value: [
+            ...existingMemberships.filter(
+              (m: Membership) => m.id !== selectedMembership.id
+            ),
+            { ...membership, deprecated: true },
+          ],
+        },
+      ],
+      currentPluginIndex
+    )
+
+    setTimeout(buildConfig, 50)
+  }
+
+  const onStartTimeChange = (event: Event) => {
+    // need to prevent a change if there are already members
+    const value = (event.target as HTMLInputElement)?.value
+    const unixTimestamp = new Date(value).getTime() / 1000
+    if (unixTimestamp < Date.now() / 1000) {
+      const currentTime = Date.now() / 1000
+      membership = {
+        ...membership,
+        slots: {
+          startTime: currentTime,
+        },
+      }
+      invalidTimeMsg = 'Start time cannot be in the past'
+    }
+  }
+
+  const onEndTimeChange =async () => {
+    const value = endTimeValue || 0
+    const unixTimestamp = new Date(value).getTime() / 1000
+    if (unixTimestamp < Date.now() / 1000) {
+      const currentTime = Date.now() / 1000
+      const twoMinutes = 120
+      membership = {
+        ...membership,
+        slots: {
+          startTime: membership.slots?.startTime || currentTime,
+          endTime: currentTime + twoMinutes,
+        },
+      }
+      invalidTimeMsg = 'End time cannot be in the past setting to 2 minutes from now'
+    }
+    else{
+      invalidTimeMsg = ''
+      const currentTime = Date.now() / 1000
+      membership = {
+        ...membership,
+        slots: {
+          startTime: membership.slots?.startTime || currentTime,
+          endTime: currentTime,
+        },
+      }
+    }
+}
+
 
   const onChangeCustomFee = async () => {
     if (membership.currency === 'DEV') {
@@ -246,7 +333,23 @@
   const setIsAdding = (value: boolean) => {
     isAdding = value
   }
-  const update = (e?: any) => {}
+  const update = () => {
+    if (membership.price < minPrice || membership.price > maxPrice || membershipPaymentType === '') return
+
+    const search = mode === 'edit' ? originalId : membership.id
+    const newMemberships = existingMemberships.some(({ id }) => id === search)
+      ? // If the ID is already exists, override it. This is a safeguard to avoid duplicate data.
+        existingMemberships.map((_mem) =>
+          _mem.id === search ? membership : _mem
+        )
+      : // If not, add it.
+        [...existingMemberships, membership]
+
+    setOptions(
+      [{ key: 'memberships', value: newMemberships }],
+      currentPluginIndex
+    )
+  }
 </script>
 
 <form on:change|preventDefault={(e) => update(e)} class="w-full">
@@ -300,7 +403,7 @@
       </div>
       <input
         type="datetime-local"
-        class="w-[479px] rounded border-[3px] border-black bg-[#040B10] px-8 py-6"
+        class="cal w-[479px] rounded border-[3px] border-black bg-[#040B10] px-8 py-6"
         id="collectino-start-date"
         name="collection-start-date"
       />
@@ -315,11 +418,18 @@
           </span>
         </div>
         <input
+          bind:value={endTimeValue}
+          on:change={onEndTimeChange}
           type="datetime-local"
-          class="w-[479px] rounded border-[3px] border-black bg-[#040B10] px-8 py-6"
+          class="cal w-[479px] rounded border-[3px] border-black bg-[#040B10] px-8 py-6"
           id="collectino-start-date"
           name="collection-start-date"
+          min={Date.now()}
+          max="2038-01-18T00:00"
         />
+        {#if invalidTimeMsg !== ''}
+        <p class="text-danger-300">* {invalidTimeMsg}</p>
+        {/if}
       </div>
     {/if}
 
@@ -672,12 +782,17 @@
             Save
           </button>
 
+          {#if mode === 'edit' && !membership.deprecated}
           <button
+            class={`hs-button is-large is-filled w-fit rounded px-8 py-6 text-base font-bold text-white ${
+              updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
+            }`}
             type="button"
-            class={`hs-button is-large is-filled w-fit rounded px-8 py-6 text-base font-bold text-white`}
+            on:click|preventDefault={() => deleteMembership(membership)}
           >
-            Delete
+            <span class="hs-button__label"> Delete </span>
           </button>
+        {/if}
         </div>
       {/if}
     </div>
@@ -697,3 +812,9 @@
     </div>
   </div>
 </form>
+
+<style lang="scss">
+  .cal::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+  }
+</style>

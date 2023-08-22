@@ -12,8 +12,27 @@ import { default as Icon } from './assets/icon.svg'
 import { Content as Readme } from './README.md'
 import Preview1 from './assets/limited-number-of-items.svg'
 import Preview2 from './assets/time-limited-collection.svg'
-import type { Membership } from '@plugins/memberships'
 import type { UndefinedOr } from '@devprotocol/util-ts'
+
+export type Membership = {
+  id: string
+  name: string
+  description: string
+  price: number
+  currency: 'DEV' | 'ETH'
+  imageSrc: string
+  payload: Uint8Array
+  fee?: {
+    percentage: number
+    beneficiary: string
+  }
+  deprecated?: boolean
+  slots?: {
+    startTime: number
+    endTime?: number
+    memberCount?: number
+  }
+}
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async () => []
 
