@@ -472,9 +472,9 @@
     to-fast-properties "^2.0.0"
 
 "@crossmint/client-sdk-base@^1.0.1-alpha.1", "@crossmint/client-sdk-base@^1.0.1-alpha.5":
-  version "1.0.1-alpha.5"
-  resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-base/-/client-sdk-base-1.0.1-alpha.5.tgz#efe9385035484027385d2da19f30dc95f71c5a4e"
-  integrity sha512-Hoq9joYfvbQ2Nf78WebSnfti48MOZi6tFG0jvJ1ajdXnPlHKLE9WeUyzko0Cgl8IyzeYYseTwUxqUpAsTm0Cjg==
+  version "1.0.1-alpha.6"
+  resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-base/-/client-sdk-base-1.0.1-alpha.6.tgz#a88d4c0110c2faaf20e11b8d664fba482d398437"
+  integrity sha512-kZgY1kD79q6MH01ySBVoivPtx2gJDZ/Nla7+N5Qmwvs3gJWe5gkxRHFv863Q/KKlY4Rv6O/ZKYCKbwbG5iSRKA==
   dependencies:
     exponential-backoff "^3.1.1"
     uuid "^8.3.2"
