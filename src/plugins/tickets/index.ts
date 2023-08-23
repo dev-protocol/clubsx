@@ -10,6 +10,7 @@ import { keccak256 } from 'ethers'
 import type { ClubsFunctionGetApiPaths } from '@devprotocol/clubs-core/src'
 import { getItems } from './utils/get-items'
 import type { UndefinedOr } from '@devprotocol/util-ts'
+import { bytes32Hex } from '@fixtures/data/hexlify'
 
 export type Ticket = {
   payload: string | Uint8Array
@@ -25,13 +26,13 @@ export type Ticket = {
     dependsOn?: string
     refreshCycle?: string
   }[]
-  historyDbKey: string
 }
 export type Tickets = Ticket[]
 export type TicketHistory = {
   id: string
   datetime: Date
-}[]
+}
+export type TicketHistories = TicketHistory[]
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
@@ -76,17 +77,24 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
 
 export const getApiPaths: ClubsFunctionGetApiPaths = async (
   options,
-  { propertyAddress, chainId },
-  utils,
+  { propertyAddress, rpcUrl },
 ) => {
   const tickets = getItems(options)
-  const { get } = await import('./api/get')
+  const [{ get }, { post }] = await Promise.all([
+    import('./api/get'),
+    import('./api/post'),
+  ])
 
   return [
     ...tickets.map((ticket) => ({
-      paths: ['history', ticket.historyDbKey],
+      paths: ['history', bytes32Hex(ticket.payload)],
       method: 'GET' as 'GET',
-      handler: get({ ticket }),
+      handler: get({ ticket, propertyAddress }),
+    })),
+    ...tickets.map((ticket) => ({
+      paths: ['redeem', bytes32Hex(ticket.payload)],
+      method: 'POST' as 'POST',
+      handler: post({ ticket, propertyAddress, rpcUrl }),
     })),
   ]
 }

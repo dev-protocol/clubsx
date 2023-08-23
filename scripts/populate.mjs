@@ -1017,9 +1017,6 @@ const populate = async () => {
                         refreshCycle: '24 hours',
                       },
                     ],
-                    historyDbKey: `devprotocol:clubs:plugin:tickets:history:0xE59fEDaBB0F79b0EC605737805a9125cd8d87B1f:${toBytes32(
-                      '#1',
-                    )}`,
                   },
                 ],
               },

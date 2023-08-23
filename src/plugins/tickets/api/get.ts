@@ -1,12 +1,21 @@
 import type { APIRoute } from 'astro'
 import type { Ticket } from '..'
 import { createClient } from 'redis'
+import { genHistoryKey } from '../utils/gen-key'
 
-export const get: ({ ticket }: { ticket: Ticket }) => APIRoute =
-  ({ ticket }) =>
+export const get: (opts: {
+  ticket: Ticket
+  propertyAddress: string
+}) => APIRoute =
+  ({ ticket, propertyAddress }) =>
   async ({ url }) => {
     const id = url.searchParams.get('id')
-    const key = `${ticket.historyDbKey}#${id}`
+    if (!id) {
+      return new Response(JSON.stringify({ message: 'missing id' }), {
+        status: 400,
+      })
+    }
+    const dbKey = genHistoryKey(propertyAddress, ticket.payload, id)
 
     const client = createClient({
       url: process.env.REDIS_URL,
@@ -23,12 +32,11 @@ export const get: ({ ticket }: { ticket: Ticket }) => APIRoute =
       console.error('redis connection error: ', e)
     })
 
-    const history = await client.get(key)
+    const history = await client.get(dbKey)
 
     await client.quit()
 
-    return {
+    return new Response(history, {
       status: history ? 200 : 400,
-      body: history ?? '',
-    }
+    })
   }

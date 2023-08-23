@@ -1,10 +1,6 @@
 <script lang="ts">
-  import {
-    whenDefined,
-    type UndefinedOr,
-    whenDefinedAll,
-  } from '@devprotocol/util-ts'
-  import type { Ticket, TicketHistory } from '.'
+  import { whenDefined, type UndefinedOr } from '@devprotocol/util-ts'
+  import type { Ticket, TicketHistories } from '.'
   import type { Membership } from '@plugins/memberships'
   import { onMount } from 'svelte'
   import { meta } from './index'
@@ -12,27 +8,66 @@
   import { type TicketStatus, ticketStatus } from './utils/status'
   import Skeleton from '@components/Global/Skeleton.svelte'
   import Check from './Check.svelte'
+  import { type Signer, hashMessage } from 'ethers'
+  import { bytes32Hex } from '@fixtures/data/hexlify'
 
   export let ticket: Ticket
   export let membership: UndefinedOr<Membership>
 
   let sTokensId: UndefinedOr<number>
   let benefits: UndefinedOr<TicketStatus[]>
+  let signer: UndefinedOr<Signer>
+  let idIsLoading: UndefinedOr<string>
+  let idIsError: UndefinedOr<{ id: string; error: string }>
+
+  const onClickABenefit = (benefitId: string) => async () => {
+    whenDefined(signer, async (sigr) => {
+      idIsLoading = benefitId
+      const hash = hashMessage('')
+      const sig = await sigr.signMessage(hash).catch((err) => err)
+      const opts = { hash, sig, id: sTokensId, benefitId }
+      const res = await fetch(
+        `/api/${meta.id}/redeem/${bytes32Hex(ticket.payload)}`,
+        {
+          method: 'POST',
+          body: JSON.stringify(opts),
+        },
+      )
+      if (res.ok) {
+        fetchTicketStatus(sTokensId!!)
+      } else {
+        idIsError = {
+          id: benefitId,
+          error: ((await res.json()) as { message: string }).message,
+        }
+      }
+      idIsLoading = undefined
+    })
+  }
+
+  const fetchTicketStatus = async (id: string | number) => {
+    const res = await fetch(
+      `/api/${meta.id}/history/${bytes32Hex(ticket.payload)}?id=${id}`,
+    )
+    const text = res.ok ? await res.text() : undefined
+    const history: TicketHistories =
+      whenDefined(text, (txt) => decode<TicketHistories>(txt)) ?? []
+    benefits = ticketStatus(history, ticket.uses)
+  }
 
   onMount(async () => {
-    console.log({ ticket, membership })
     const id = Number(new URL(location.href).searchParams.get('id'))
     if (id) {
       sTokensId = id
-
-      const res = await fetch(
-        `/api/${meta.id}/history/${ticket.historyDbKey}?id=${id}`,
-      )
-      const text = res.ok ? await res.text() : undefined
-      const history: TicketHistory =
-        whenDefined(text, (txt) => decode<TicketHistory>(txt)) ?? []
-      benefits = ticketStatus(history, ticket.uses)
+      fetchTicketStatus(id)
     }
+  })
+
+  onMount(async () => {
+    const { connection } = await import('@devprotocol/clubs-core/connection')
+    connection().signer.subscribe((_signer) => {
+      signer = _signer
+    })
   })
 </script>
 
@@ -66,8 +101,13 @@
               data-is-expired={benefit.self.expired}
               data-is-waiting={!benefit.enablable &&
                 benefit.dependency?.available === false}
-              disabled={benefit.self.expired || !benefit.enablable}
-              class="group flex w-full items-center rounded-full border border-[3px] border-transparent px-8 py-4 text-center text-white data-[is-waiting=true]:border-[#5B8BF5] data-[is-waiting=true]:border-[#5B8BF5] data-[is-available=true]:bg-[#43C451] data-[is-enablable=true]:bg-[#5B8BF5] data-[is-expired=true]:bg-[#C4C4C4] data-[is-waiting=true]:text-[#5B8BF5]"
+              disabled={benefit.self.expired ||
+                !benefit.enablable ||
+                idIsLoading === benefit.self.use.id}
+              data-is-loading={idIsLoading === benefit.self.use.id}
+              data-is-error={idIsError?.id === benefit.self.use.id}
+              class="group flex w-full items-center rounded-full border border-[3px] border-transparent px-8 py-4 text-center text-white data-[is-loading=true]:animate-pulse data-[is-waiting=true]:border-[#5B8BF5] data-[is-waiting=true]:border-[#5B8BF5] data-[is-available=true]:bg-[#43C451] data-[is-enablable=true]:bg-[#5B8BF5] data-[is-error=true]:bg-red-500 data-[is-expired=true]:bg-[#C4C4C4] data-[is-error=true]:text-white data-[is-waiting=true]:text-[#5B8BF5]"
+              on:click={onClickABenefit(benefit.self.use.id)}
               ><span
                 class="rounded-full border border-[3px] border-transparent text-[#C4C4C4] group-data-[is-waiting=true]:border-[#5B8BF5] group-data-[is-available=true]:bg-[#67CF72] group-data-[is-enablable=true]:bg-white group-data-[is-expired=true]:bg-white group-data-[is-waiting=true]:bg-transparent group-data-[is-available=true]:text-white"
                 ><Check />
@@ -88,6 +128,11 @@
             {#if !benefit.enablable && benefit.dependency?.available === false}
               <span class="font-bold text-[#5B8BF5] md:text-xl"
                 >Will be available when {benefit.dependency.use.description} is used.</span
+              >
+            {/if}
+            {#if idIsError?.id === benefit.self.use.id}
+              <span class="font-bold text-red-400 md:text-xl"
+                >{idIsError.error}</span
               >
             {/if}
           </div>

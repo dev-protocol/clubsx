@@ -1,12 +1,12 @@
 import { whenDefined, whenDefinedAll } from '@devprotocol/util-ts'
-import type { Ticket, TicketHistory } from '..'
+import type { Ticket, TicketHistories, TicketHistory } from '..'
 import { formatDuration, isExpired, period } from './date'
 import type { Duration } from 'dayjs/plugin/duration'
 import type { Dayjs } from 'dayjs'
 
 export type StatusUnit = {
   use: Ticket['uses'][0]
-  history?: TicketHistory[0]
+  history?: TicketHistory
   unused: boolean
   available: boolean
   duration?: Duration
@@ -23,9 +23,9 @@ export type TicketStatus = {
 }
 
 export const factory =
-  (his: TicketHistory) =>
+  (_history: TicketHistories) =>
   (use: Ticket['uses'][0]): StatusUnit => {
-    const history = his.find((h) => h.id === use.id)
+    const history = _history.find((h) => h.id === use.id)
     const duration = whenDefined(use.duration, (duration) =>
       formatDuration(duration),
     )
@@ -72,10 +72,10 @@ export const factory =
   }
 
 export const ticketStatus = (
-  his: TicketHistory,
+  history: TicketHistories,
   uses: Ticket['uses'],
 ): TicketStatus[] => {
-  const getStatus = factory(his)
+  const getStatus = factory(history)
 
   return uses.map((use) => {
     const self = getStatus(use)
