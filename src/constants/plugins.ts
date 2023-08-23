@@ -22,6 +22,7 @@ import $13 from '@plugins/memberships'
 import $14 from '@kazu80/clubs-plugin-links'
 import $15 from '@plugins/join-legacy'
 import $16 from '@plugins/veritrans'
+import $17 from '@plugins/tickets'
 
 export type PluginTag =
   | 'New & Upcoming'
@@ -177,4 +178,5 @@ export const plugins = [
   $14,
   $15,
   $16,
+  $17,
 ]
