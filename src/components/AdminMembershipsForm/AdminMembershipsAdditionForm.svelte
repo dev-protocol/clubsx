@@ -9,7 +9,7 @@
   import { clientsSTokens } from '@devprotocol/dev-kit'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
   import { buildConfig, controlModal } from '@devprotocol/clubs-core/events'
-  import { callERC20SimpleCollections } from '@plugins/memberships/utils/simpleCollections'
+  import { address, callERC20SimpleCollections } from '@plugins/memberships/utils/simpleCollections'
   import type { ERC20Image } from '@plugins/memberships/utils/types/setImageArg'
   import { DEV_TOKEN_PAYMENT_TYPE_FEE, PAYMENT_TYPE_INSTANT_FEE, PAYMENT_TYPE_STAKE_FEE } from '@constants/memberships'
   import { tokenInfo } from '@constants/common'
@@ -441,6 +441,21 @@
       images,
       keys,
     ]).then((res) => res.wait())
+
+    const descriptiorAddress: string | undefined = address.find(
+      (address) => address.chainId === chainId,
+    )?.address
+    if (!descriptiorAddress) return; // TODO: add loading/processing state.
+
+    const [l1, l2] = await clientsSTokens(provider)
+    const l = l1 || l2;
+    if (!l) return; // TODO: add loading/processing state.
+
+    await l.setTokenURIDescriptor(
+      propAddress,
+      descriptiorAddress,
+      keys // ALL_PAYLOADS
+    )
 
     controlModal({ open: false })
   }
