@@ -1,9 +1,11 @@
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 import utc from 'dayjs/plugin/utc'
+import calendar from 'dayjs/plugin/calendar'
 
 dayjs.extend(duration)
 dayjs.extend(utc)
+dayjs.extend(calendar)
 
 const AVAILABLE_UNITS = [
   'seconds',

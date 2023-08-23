@@ -45,7 +45,7 @@ export const factory =
     )
     const available =
       typeof expired === 'boolean'
-        ? expired
+        ? !expired
         : typeof refreshed === 'boolean'
         ? !refreshed
         : false

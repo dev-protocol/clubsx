@@ -11,6 +11,7 @@
   import { decode } from '@devprotocol/clubs-core'
   import { type TicketStatus, ticketStatus } from './utils/status'
   import Skeleton from '@components/Global/Skeleton.svelte'
+  import Check from './Check.svelte'
 
   export let ticket: Ticket
   export let membership: UndefinedOr<Membership>
@@ -58,16 +59,38 @@
         </span>
       {:else}
         {#each benefits as benefit}
-          <button
-            data-is-enablable={benefit.enablable}
-            data-is-available={benefit.self.available}
-            data-is-expired={benefit.self.expired}
-            data-is-waiting={!benefit.enablable &&
-              benefit.dependency?.available === false}
-            disabled={benefit.self.expired || !benefit.enablable}
-            class="rounded-full border border-[3px] border-transparent px-8 py-4 text-center font-bold text-white data-[is-waiting=true]:border-[#5B8BF5] data-[is-waiting=true]:border-[#5B8BF5] data-[is-available=true]:bg-[#43C451] data-[is-enablable=true]:bg-[#5B8BF5] data-[is-expired=true]:bg-[#C4C4C4] data-[is-waiting=true]:text-[#5B8BF5]"
-            >{benefit.self.use.description}</button
-          >
+          <div class="grid justify-items-center gap-2">
+            <button
+              data-is-enablable={benefit.enablable}
+              data-is-available={benefit.self.available}
+              data-is-expired={benefit.self.expired}
+              data-is-waiting={!benefit.enablable &&
+                benefit.dependency?.available === false}
+              disabled={benefit.self.expired || !benefit.enablable}
+              class="group flex w-full items-center rounded-full border border-[3px] border-transparent px-8 py-4 text-center text-white data-[is-waiting=true]:border-[#5B8BF5] data-[is-waiting=true]:border-[#5B8BF5] data-[is-available=true]:bg-[#43C451] data-[is-enablable=true]:bg-[#5B8BF5] data-[is-expired=true]:bg-[#C4C4C4] data-[is-waiting=true]:text-[#5B8BF5]"
+              ><span
+                class="rounded-full border border-[3px] border-transparent text-[#C4C4C4] group-data-[is-waiting=true]:border-[#5B8BF5] group-data-[is-available=true]:bg-[#67CF72] group-data-[is-enablable=true]:bg-white group-data-[is-expired=true]:bg-white group-data-[is-waiting=true]:bg-transparent group-data-[is-available=true]:text-white"
+                ><Check />
+              </span><span class="flex-grow text-2xl font-bold"
+                >{benefit.self.use.description}</span
+              ></button
+            >
+            {#if benefit.enablable}
+              <span class="font-bold text-[#5B8BF5] md:text-xl"
+                >Sign to use this benefit</span
+              >
+            {/if}
+            {#if benefit.available && benefit.self.expiration}
+              <span class="font-bold text-[#43C451] md:text-xl"
+                >Available until {benefit.self.expiration.calendar()}</span
+              >
+            {/if}
+            {#if !benefit.enablable && benefit.dependency?.available === false}
+              <span class="font-bold text-[#5B8BF5] md:text-xl"
+                >Will be available when {benefit.dependency.use.description} is used.</span
+              >
+            {/if}
+          </div>
         {/each}
       {/if}
     {/if}
