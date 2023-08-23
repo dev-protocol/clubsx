@@ -1014,7 +1014,7 @@ const populate = async () => {
                         id: 'free-juice',
                         description: 'Free juice/day',
                         dependsOn: 'special-week',
-                        refreshCycle: '24 hours',
+                        refreshCycle: '1 days',
                       },
                     ],
                   },
@@ -1120,6 +1120,26 @@ const populate = async () => {
       )}#51`,
       encode({
         '1-month-pass': { datetime: new Date('2023-08-20T00:00:00Z') },
+      }),
+    )
+    await client.set(
+      `devprotocol:clubs:plugin:tickets:history:0xE59fEDaBB0F79b0EC605737805a9125cd8d87B1f:${toBytes32(
+        '#1',
+      )}#52`,
+      encode({
+        '1-month-pass': { datetime: new Date('2023-01-20T00:00:00Z') },
+        'special-week': { datetime: new Date('2023-01-20T00:00:00Z') },
+      }),
+    )
+    await client.set(
+      `devprotocol:clubs:plugin:tickets:history:0xE59fEDaBB0F79b0EC605737805a9125cd8d87B1f:${toBytes32(
+        '#1',
+      )}#53`,
+      encode({
+        'special-week': { datetime: new Date('2023-08-22T00:00:00Z') },
+        'free-juice': {
+          datetime: new Date('2023-08-23T00:00:00Z'),
+        },
       }),
     )
 
