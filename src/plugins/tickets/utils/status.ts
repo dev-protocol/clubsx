@@ -25,7 +25,7 @@ export type TicketStatus = {
 export const factory =
   (_history: TicketHistories) =>
   (use: Ticket['uses'][0]): StatusUnit => {
-    const history = _history.find((h) => h.id === use.id)
+    const history = use.id in _history ? _history[use.id] : undefined
     const duration = whenDefined(use.duration, (duration) =>
       formatDuration(duration),
     )
@@ -49,16 +49,7 @@ export const factory =
         : typeof refreshed === 'boolean'
         ? !refreshed
         : false
-    console.log({
-      use,
-      history,
-      unused,
-      duration,
-      expired,
-      expiration,
-      refreshed,
-      available,
-    })
+
     return {
       use,
       history,

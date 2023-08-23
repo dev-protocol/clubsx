@@ -13,8 +13,8 @@
 
   export let ticket: Ticket
   export let membership: UndefinedOr<Membership>
+  export let sTokensId: UndefinedOr<number>
 
-  let sTokensId: UndefinedOr<number>
   let benefits: UndefinedOr<TicketStatus[]>
   let signer: UndefinedOr<Signer>
   let idIsLoading: UndefinedOr<string>
@@ -34,7 +34,7 @@
         },
       )
       if (res.ok) {
-        fetchTicketStatus(sTokensId!!)
+        await fetchTicketStatus(sTokensId!!)
       } else {
         idIsError = {
           id: benefitId,
@@ -51,15 +51,13 @@
     )
     const text = res.ok ? await res.text() : undefined
     const history: TicketHistories =
-      whenDefined(text, (txt) => decode<TicketHistories>(txt)) ?? []
+      whenDefined(text, (txt) => decode<TicketHistories>(txt)) ?? {}
     benefits = ticketStatus(history, ticket.uses)
   }
 
   onMount(async () => {
-    const id = Number(new URL(location.href).searchParams.get('id'))
-    if (id) {
-      sTokensId = id
-      fetchTicketStatus(id)
+    if (sTokensId) {
+      fetchTicketStatus(sTokensId)
     }
   })
 
@@ -89,7 +87,13 @@
       <h2 class="text-2xl font-bold">{ticket.name}</h2>
 
       {#if benefits === undefined}
-        <span class="h-8">
+        <span class="h-16">
+          <Skeleton />
+        </span>
+        <span class="h-16">
+          <Skeleton />
+        </span>
+        <span class="h-16 w-1/2">
           <Skeleton />
         </span>
       {:else}
@@ -115,17 +119,17 @@
                 >{benefit.self.use.description}</span
               ></button
             >
-            {#if benefit.enablable}
+            {#if !idIsError && benefit.enablable}
               <span class="font-bold text-[#5B8BF5] md:text-xl"
                 >Sign to use this benefit</span
               >
             {/if}
-            {#if benefit.available && benefit.self.expiration}
+            {#if !idIsError && benefit.available && benefit.self.expiration}
               <span class="font-bold text-[#43C451] md:text-xl"
                 >Available until {benefit.self.expiration.calendar()}</span
               >
             {/if}
-            {#if !benefit.enablable && benefit.dependency?.available === false}
+            {#if !idIsError && !benefit.enablable && benefit.dependency?.available === false}
               <span class="font-bold text-[#5B8BF5] md:text-xl"
                 >Will be available when {benefit.dependency.use.description} is used.</span
               >

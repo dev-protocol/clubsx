@@ -1118,12 +1118,9 @@ const populate = async () => {
       `devprotocol:clubs:plugin:tickets:history:0xE59fEDaBB0F79b0EC605737805a9125cd8d87B1f:${toBytes32(
         '#1',
       )}#51`,
-      encode([
-        {
-          id: '1-month-pass',
-          datetime: new Date('2023-08-20T00:00:00Z'),
-        },
-      ]),
+      encode({
+        '1-month-pass': { datetime: new Date('2023-08-20T00:00:00Z') },
+      }),
     )
 
     console.log('Tenants set')

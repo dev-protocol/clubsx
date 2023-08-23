@@ -28,11 +28,8 @@ export type Ticket = {
   }[]
 }
 export type Tickets = Ticket[]
-export type TicketHistory = {
-  id: string
-  datetime: Date
-}
-export type TicketHistories = TicketHistory[]
+export type TicketHistory = { datetime: Date }
+export type TicketHistories = Record<string, TicketHistory>
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,

@@ -10,6 +10,8 @@ const { ticket, membership, propertyAddress, rpcUrl, ...other } =
     propertyAddress: string
     rpcUrl: string
   }
+
+const sTokensId = Number(Astro.url.searchParams.get('id'))
 ---
 
-<Id client:load ticket={ticket} membership={membership} />
+<Id client:load ticket={ticket} membership={membership} sTokensId={sTokensId} />

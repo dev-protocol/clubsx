@@ -37,9 +37,7 @@ export const post: (opts: {
     const account = recoverAddress(hashMessage(hash), sig)
     const [l1, l2] = await clientsSTokens(new JsonRpcProvider(rpcUrl))
     const owner = await (l1 ?? l2)?.ownerOf(Number(id))
-    const isOwner = true
-      ? false
-      : owner?.toLowerCase() === account.toLowerCase()
+    const isOwner = owner?.toLowerCase() === account.toLowerCase()
 
     if (!isOwner) {
       return new Response(JSON.stringify({ message: 'unauthorized' }), {
@@ -64,8 +62,8 @@ export const post: (opts: {
 
     const history = await client
       .get(dbKey)
-      .then((res) => whenDefined(res, decode<TicketHistories>) ?? [])
-      .catch(always([]))
+      .then((res) => whenDefined(res, decode<TicketHistories>) ?? {})
+      .catch(always({}))
 
     const statuses = ticketStatus(history, ticket.uses)
 
@@ -90,13 +88,12 @@ export const post: (opts: {
     }
 
     const newItem: TicketHistory = {
-      id: beneifit.self.use.id,
       datetime: new Date(),
     }
-    const nextHistory = encode<TicketHistories>([
-      ...history.filter((h) => h.id !== id),
-      newItem,
-    ])
+    const nextHistory = encode<TicketHistories>({
+      ...history,
+      [beneifit.self.use.id]: newItem,
+    })
 
     try {
       await client.set(dbKey, nextHistory)
