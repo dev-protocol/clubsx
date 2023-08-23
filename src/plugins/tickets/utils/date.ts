@@ -26,11 +26,13 @@ export const formatDuration = (str: string) => {
 }
 
 export const period = (start: Date, duration: duration.Duration) => {
-  return dayjs
-    .utc(start.toString())
-    .add(duration.asMilliseconds(), 'milliseconds')
+  return dayjs(start.toString()).add(duration.asMilliseconds(), 'milliseconds')
 }
 
 export const isExpired = (start: Date, duration: duration.Duration) => {
-  return period(start, duration).isBefore(dayjs.utc())
+  return period(start, duration).isBefore(dayjs())
+}
+
+export const now = () => {
+  return dayjs.utc()
 }

@@ -8,6 +8,7 @@ import { ticketStatus } from '../utils/status'
 import { JsonRpcProvider, hashMessage, recoverAddress } from 'ethers'
 import { clientsSTokens } from '@devprotocol/dev-kit'
 import { genHistoryKey } from '../utils/gen-key'
+import { now } from '../utils/date'
 
 export const post: (opts: {
   ticket: Ticket
@@ -88,7 +89,7 @@ export const post: (opts: {
     }
 
     const newItem: TicketHistory = {
-      datetime: new Date(),
+      datetime: now().toDate(),
     }
     const nextHistory = encode<TicketHistories>({
       ...history,

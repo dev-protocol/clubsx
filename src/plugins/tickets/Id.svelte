@@ -53,6 +53,7 @@
     const history: TicketHistories =
       whenDefined(text, (txt) => decode<TicketHistories>(txt)) ?? {}
     benefits = ticketStatus(history, ticket.uses)
+    console.log(history, benefits)
   }
 
   onMount(async () => {
@@ -101,11 +102,10 @@
           <div class="grid justify-items-center gap-2">
             <button
               data-is-enablable={benefit.enablable}
-              data-is-available={benefit.self.available}
-              data-is-expired={benefit.self.expired}
-              data-is-waiting={!benefit.enablable &&
-                benefit.dependency?.available === false}
-              disabled={benefit.self.expired ||
+              data-is-available={benefit.available}
+              data-is-expired={!benefit.enablable && benefit.self.expired}
+              data-is-waiting={!benefit.enablable && benefit.dependency?.unused}
+              disabled={(!benefit.enablable && benefit.self.expired) ||
                 !benefit.enablable ||
                 idIsLoading === benefit.self.use.id}
               data-is-loading={idIsLoading === benefit.self.use.id}
@@ -129,7 +129,7 @@
                 >Available until {benefit.self.expiration.calendar()}</span
               >
             {/if}
-            {#if !idIsError && !benefit.enablable && benefit.dependency?.available === false}
+            {#if !idIsError && !benefit.enablable && benefit.dependency?.unused}
               <span class="font-bold text-[#5B8BF5] md:text-xl"
                 >Will be available when {benefit.dependency.use.description} is used.</span
               >
