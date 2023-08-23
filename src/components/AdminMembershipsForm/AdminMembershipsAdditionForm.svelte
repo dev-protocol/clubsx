@@ -683,8 +683,8 @@
         <!-- Earning info -->
         <div class="hs-form-field">
           <div class="flex gap-0 w-full max-w-full p-0">
-            <div class="h-6 rounded-[99px] max-w-full w-[{membership.fee?.percentage || 0}%] bg-[#00D0FD]"></div>
-            <div class="h-6 rounded-[99px] max-w-full w-fit grow bg-[#43C451]"></div>
+            <div style="width: {membership.fee?.percentage || 0}% !important" class="h-6 rounded-[99px] max-w-full bg-[#00D0FD]"></div>
+            <div style="width: {100 - (membership.fee?.percentage || 0)}% !important" class="h-6 rounded-[99px] max-w-full bg-[#43C451]"></div>
           </div>
           <p class="mt-1">
             <span class="text-[#00D0FD]">{membership.price * (membership.fee?.percentage || 0)/ 100} {membership.currency} ({membership.fee?.percentage || 0}%)</span>  will earn at 1 time, <span class="text-[#43C451]">and {membership.price * (100 - (membership.fee?.percentage || 0))/ 100} ({(100 - (membership.fee?.percentage || 0))}%)
