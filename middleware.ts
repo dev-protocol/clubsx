@@ -71,6 +71,15 @@ export default function middleware(req: Request) {
     hosts.findIndex((h) => url.host.endsWith(h))
   const primaryHost = hosts[primaryHostIndex]
 
+  console.log({
+    bInApi,
+    pInApi,
+    html,
+    'url.pathname': url.pathname,
+    primaryHost,
+    'url.host': url.host,
+  })
+
   if (bInApi && primaryHost && url.host !== primaryHost) {
     const destination = new URL(url.href)
     destination.host = primaryHost
@@ -80,8 +89,9 @@ export default function middleware(req: Request) {
   }
 
   if ((html || pInApi) && primaryHost && url.host !== primaryHost) {
-    const pathname = `/sites_/${tenant}${url.pathname}`
-    const destination = new URL(pathname, url.origin)
+    const destination = new URL(url.href)
+    destination.pathname = `/sites_/${tenant}${url.pathname}`
+    destination.host = primaryHost
     return rewrite(destination, {
       headers: { 'x-rewritten-url': destination.href },
     })
