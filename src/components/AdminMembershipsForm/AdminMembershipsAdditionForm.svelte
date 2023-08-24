@@ -381,10 +381,10 @@
       const positionPayload = await contract?.payloadOf(position)
 
       if (
-        keccak256(
+        bytes32Hex(
           typeof membership.payload === typeof {} // If membership.payload is an object
             ? new Uint8Array(Object.values(membership.payload)) // then we use only values
-            : membership.payload // else we use the array directly
+            : membership.payload // else we use the array/string directly
         ) === positionPayload &&
         !membershipExists
       ) {
