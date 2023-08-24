@@ -1,4 +1,4 @@
-import { rewrite, next } from '@vercel/edge'
+import { rewrite } from '@vercel/edge'
 import builtInApiPaths from './built-in-api-paths'
 
 const hosts = (process.env.HOSTS ?? 'clubs.place')
@@ -77,5 +77,5 @@ export default function middleware(req: Request) {
     })
   }
 
-  return next()
+  // return next()
 }
