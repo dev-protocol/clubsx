@@ -26,7 +26,9 @@ export const formatDuration = (str: string) => {
 }
 
 export const period = (start: Date, duration: duration.Duration) => {
-  return dayjs(start.toString()).add(duration.asMilliseconds(), 'milliseconds')
+  return dayjs
+    .utc(start.toUTCString())
+    .add(duration.asMilliseconds(), 'milliseconds')
 }
 
 export const isExpired = (start: Date, duration: duration.Duration) => {
