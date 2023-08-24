@@ -1,4 +1,5 @@
 import { rewrite, next } from '@vercel/edge'
+import builtInApiPaths from 'built-in-api-paths'
 
 const hosts = (process.env.HOSTS ?? 'clubs.place')
   .split(',')
@@ -61,7 +62,9 @@ export default function middleware(req: Request) {
       .split('/')
       .slice(-1)
       .every((p) => !/\..+$/.test(p))
-  const api = url.pathname.startsWith('/api/')
+  const api =
+    url.pathname.startsWith('/api/') &&
+    builtInApiPaths.every((p) => !url.pathname.startsWith(p))
 
   const primaryHost =
     hosts.find((h) => url.host === h) ?? hosts.find((h) => url.host.endsWith(h))

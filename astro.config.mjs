@@ -7,6 +7,7 @@ import tailwind from '@astrojs/tailwind'
 import vue from '@astrojs/vue'
 import react from '@astrojs/react'
 import svelte from '@astrojs/svelte'
+import builtInApiPaths from 'built-in-api-paths'
 
 config()
 
@@ -27,7 +28,8 @@ export default defineConfig({
           server.middlewares.use((req, _, next) => {
             if (
               req.headers.accept?.includes('text/html') ||
-              req.url.startsWith('/api/')
+              (req.url.startsWith('/api/') &&
+                builtInApiPaths.every((p) => !req.url.startsWith(p)))
             ) {
               const host = req.headers.host.split('.')
 
