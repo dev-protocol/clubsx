@@ -61,11 +61,12 @@ export default function middleware(req: Request) {
       .split('/')
       .slice(-1)
       .every((p) => !/\..+$/.test(p))
+  const api = url.pathname.startsWith('/api/')
 
   const primaryHost =
     hosts.find((h) => url.host === h) ?? hosts.find((h) => url.host.endsWith(h))
 
-  if (html && primaryHost && url.host !== primaryHost) {
+  if ((html || api) && primaryHost && url.host !== primaryHost) {
     const pathname = `/sites_/${tenant}${url.pathname}`
     const destination = new URL(pathname, url.origin)
     return rewrite(destination, {
