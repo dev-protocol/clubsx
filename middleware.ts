@@ -69,16 +69,6 @@ export default function middleware(req: Request) {
   const primaryHost =
     hosts.find((h) => url.host === h) ?? hosts.find((h) => url.host.endsWith(h))
 
-  console.log({
-    bInApi,
-    pInApi,
-    html,
-    hosts: JSON.stringify(hosts),
-    'url.pathname': url.pathname,
-    primaryHost,
-    'url.host': url.host,
-  })
-
   if (bInApi && primaryHost && url.host !== primaryHost) {
     const destination = new URL(url.href)
     destination.host = primaryHost
