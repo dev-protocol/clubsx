@@ -27,7 +27,7 @@ import {
   fetchSTokens,
 } from '@fixtures/utility'
 import Skeleton from '@components/Global/Skeleton.vue'
-import { stakeWithEthForPolygon, stakeWithAnyTokens } from '@fixtures/dev-kit'
+import { stakeWithAnyTokens } from '@fixtures/dev-kit'
 import { marked } from 'marked'
 import DOMPurify from 'dompurify'
 
@@ -130,29 +130,23 @@ const approve = function () {
       chain.value,
     ],
     async ([_prov, _account, _destination, _amount, _chain]) => {
-      const res = usePolygonWETH.value
-        ? await stakeWithEthForPolygon({
-            provider: _prov,
-            propertyAddress: _destination,
-            ethAmount: _amount.toString(),
-            from: _account,
-          }).then((res) => res.create())
-        : verifiedPropsCurrency.value === CurrencyOption.USDC
-        ? await stakeWithAnyTokens({
-            provider: _prov,
-            propertyAddress: _destination,
-            tokenAmount: _amount.toString(),
-            tokenDecimals: 6,
-            currency: CurrencyOption.USDC,
-            from: _account,
-            chain: _chain,
-          }).then((res) => res?.create())
-        : await positionsCreate({
-            provider: _prov,
-            destination: _destination,
-            amount: _amount.toString(),
-            from: _account,
-          })
+      const res =
+        verifiedPropsCurrency.value === CurrencyOption.DEV
+          ? await positionsCreate({
+              provider: _prov,
+              destination: _destination,
+              from: _account,
+              amount: _amount.toString(),
+            })
+          : await stakeWithAnyTokens({
+              provider: _prov,
+              propertyAddress: _destination,
+              from: _account,
+              tokenAmount: _amount.toString(),
+              currency: verifiedPropsCurrency.value,
+              chain: _chain,
+            }).then((res) => res?.create())
+
       whenDefined(res, async (_res) => {
         const { waitOrSkipApproval } = await _res.approveIfNeeded({
           amount: MaxUint256.toString(),
@@ -171,32 +165,24 @@ const checkApproved = async function (
   userAddress: string,
   destination: string,
   amount: BigNumberish,
-  isPolygonWETH: boolean,
   chain: number,
 ) {
-  const res = isPolygonWETH
-    ? await stakeWithEthForPolygon({
-        provider,
-        propertyAddress: destination,
-        from: userAddress,
-        ethAmount: amount.toString(),
-      }).then((res) => res.create())
-    : verifiedPropsCurrency.value === CurrencyOption.USDC
-    ? await stakeWithAnyTokens({
-        provider,
-        propertyAddress: destination,
-        tokenAmount: amount.toString(),
-        tokenDecimals: 6,
-        currency: CurrencyOption.USDC,
-        from: userAddress,
-        chain,
-      }).then((res) => res?.create())
-    : await positionsCreate({
-        provider,
-        destination,
-        from: userAddress,
-        amount: amount.toString(),
-      })
+  const res =
+    verifiedPropsCurrency.value === CurrencyOption.DEV
+      ? await positionsCreate({
+          provider,
+          destination,
+          from: userAddress,
+          amount: amount.toString(),
+        })
+      : await stakeWithAnyTokens({
+          provider,
+          propertyAddress: destination,
+          from: userAddress,
+          tokenAmount: amount.toString(),
+          currency: verifiedPropsCurrency.value,
+          chain,
+        }).then((res) => res?.create())
   approveNeeded.value = whenDefined(res, (x) => x.approvalNeeded)
   console.log({ approveNeeded })
 }
@@ -212,61 +198,38 @@ const submitStake = async function () {
       chain.value,
     ],
     async ([_prov, _account, _destination, _amount, _parsedAmount, _chain]) => {
-      if (verifiedPropsCurrency.value === CurrencyOption.ETH) {
-        if (usePolygonWETH.value) {
-          const res = await stakeWithEthForPolygon({
-            provider: _prov,
-            propertyAddress: _destination,
-            ethAmount: _amount.toString(),
-            gatewayAddress: props.feeBeneficiary ?? undefined,
-            gatewayBasisPoints:
-              typeof props.feePercentage === 'number'
-                ? props.feePercentage * 10_000
-                : undefined,
-            payload: props.payload,
-            from: _account,
-          })
-          await whenDefined(res, async (_res) => {
-            isStaking.value = true
-            const create = await _res.create()
-            const approveIfNeeded = await create?.approveIfNeeded({
-              amount: _parsedAmount,
-            })
-            const waitOrSkipApproval =
-              await approveIfNeeded?.waitOrSkipApproval()
-            const run = await waitOrSkipApproval?.run()
-            const res = await run?.wait()
-            console.log('res is: ', res)
-            onCompleted()
-          })
-        } else {
-          // handle ETH stake
-          const res = await positionsCreateWithEth({
-            provider: _prov,
-            destination: _destination,
-            ethAmount: _parsedAmount,
-            gatewayAddress: props.feeBeneficiary ?? undefined,
-            gatewayBasisPoints:
-              typeof props.feePercentage === 'number'
-                ? props.feePercentage * 10_000
-                : undefined,
-            payload: props.payload,
-          })
-          await whenDefined(res, async (_res) => {
-            isStaking.value = true
-            const create = await _res.create()
-            const res = await create.wait()
-            console.log('res is: ', res)
-            onCompleted()
-          })
-        }
-      } else if (verifiedPropsCurrency.value === CurrencyOption.USDC) {
+      if (
+        verifiedPropsCurrency.value === CurrencyOption.ETH &&
+        !usePolygonWETH.value
+      ) {
+        // handle ETH stake
+        const res = await positionsCreateWithEth({
+          provider: _prov,
+          destination: _destination,
+          ethAmount: _parsedAmount,
+          gatewayAddress: props.feeBeneficiary ?? undefined,
+          gatewayBasisPoints:
+            typeof props.feePercentage === 'number'
+              ? props.feePercentage * 10_000
+              : undefined,
+          payload: props.payload,
+        })
+        await whenDefined(res, async (_res) => {
+          isStaking.value = true
+          const create = await _res.create()
+          const res = await create.wait()
+          console.log('res is: ', res)
+          onCompleted()
+        })
+      } else if (
+        verifiedPropsCurrency.value === CurrencyOption.ETH ||
+        verifiedPropsCurrency.value === CurrencyOption.USDC
+      ) {
         const res = await stakeWithAnyTokens({
           provider: _prov,
           propertyAddress: _destination,
           tokenAmount: _amount.toString(),
-          tokenDecimals: 6,
-          currency: CurrencyOption.USDC,
+          currency: verifiedPropsCurrency.value,
           gatewayAddress: props.feeBeneficiary ?? undefined,
           gatewayBasisPoints:
             typeof props.feePercentage === 'number'
@@ -330,14 +293,7 @@ onMounted(async () => {
       async ([_prov, _userAddress, _destination, _amount, _chain]) => {
         useERC20 &&
           !props.useDiscretePaymentFlow &&
-          checkApproved(
-            _prov,
-            _userAddress,
-            _destination,
-            _amount,
-            usePolygonWETH.value,
-            _chain,
-          )
+          checkApproved(_prov, _userAddress, _destination, _amount, _chain)
       },
     )
 
