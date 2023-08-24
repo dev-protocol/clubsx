@@ -13,6 +13,7 @@
   import type { ERC20Image } from '@plugins/memberships/utils/types/setImageArg'
   import { DEV_TOKEN_PAYMENT_TYPE_FEE, PAYMENT_TYPE_INSTANT_FEE, PAYMENT_TYPE_STAKE_FEE } from '@constants/memberships'
   import { tokenInfo } from '@constants/common'
+  import { bytes32Hex } from '@fixtures/data/hexlify'
 
   export let useOnFinishCallback: boolean = false
   export let currentPluginIndex: number
@@ -427,7 +428,7 @@
     }))
 
     const keys: string[] =
-      memOpts?.map((opt) => keccak256(new Uint8Array(opt.payload))) || []
+      memOpts?.map((opt) => bytes32Hex(opt.payload)) || []
 
     controlModal({
       open: true,
