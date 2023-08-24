@@ -116,7 +116,7 @@
           percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
         } : {
           percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
-          beneficiary: ZeroAddress // TODO: change this to default value
+          beneficiary: currentAddress ?? ZeroAddress,
         }
       }
 
@@ -133,7 +133,7 @@
           percentage: PAYMENT_TYPE_INSTANT_FEE,
         } :  {
           percentage: PAYMENT_TYPE_INSTANT_FEE,
-          beneficiary: ZeroAddress // TODO: change this to default value
+          beneficiary: currentAddress ?? ZeroAddress,
         }
       }
     }
@@ -147,7 +147,7 @@
           percentage: PAYMENT_TYPE_STAKE_FEE,
         } :  {
           percentage: PAYMENT_TYPE_STAKE_FEE,
-          beneficiary: ZeroAddress // TODO: change this to default value
+          beneficiary: currentAddress ?? ZeroAddress,
         }
       }
     }
@@ -160,7 +160,7 @@
           percentage: membershipCustomFee,
         } :  {
           percentage: membershipCustomFee,
-          beneficiary: ZeroAddress // TODO: change this to default value
+          beneficiary: currentAddress ?? ZeroAddress,
         }
       }
     }
@@ -300,7 +300,7 @@
           ...membership.fee,
           percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
         } :  {
-          beneficiary: ZeroAddress, // TODO: change this to default value
+          beneficiary: currentAddress ?? ZeroAddress,
           percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
         }
       }
@@ -330,7 +330,7 @@
         percentage: membershipCustomFee,
       } : {
           percentage: membershipCustomFee,
-          beneficiary: ZeroAddress // TODO: change this to default value
+          beneficiary: currentAddress ?? ZeroAddress,
         }
     }
 
@@ -474,7 +474,7 @@
         percentage: membershipCustomFee,
       } : {
           percentage: membershipCustomFee,
-          beneficiary: ZeroAddress // TODO: change this to default value
+          beneficiary: currentAddress ?? ZeroAddress,
         }
     }
   }
