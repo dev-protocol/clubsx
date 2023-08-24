@@ -66,15 +66,14 @@ export default function middleware(req: Request) {
   const bInApi = builtInApiPaths.some((p) => url.pathname.startsWith(p))
   const pInApi = url.pathname.startsWith('/api/') && !bInApi
 
-  const primaryHostIndex =
-    hosts.findIndex((h) => url.host === h) ??
-    hosts.findIndex((h) => url.host.endsWith(h))
-  const primaryHost = hosts[primaryHostIndex]
+  const primaryHost =
+    hosts.find((h) => url.host === h) ?? hosts.find((h) => url.host.endsWith(h))
 
   console.log({
     bInApi,
     pInApi,
     html,
+    hosts: JSON.stringify(hosts),
     'url.pathname': url.pathname,
     primaryHost,
     'url.host': url.host,
