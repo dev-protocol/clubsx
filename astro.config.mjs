@@ -7,7 +7,7 @@ import tailwind from '@astrojs/tailwind'
 import vue from '@astrojs/vue'
 import react from '@astrojs/react'
 import svelte from '@astrojs/svelte'
-import builtInApiPaths from 'built-in-api-paths'
+import builtInApiPaths from './built-in-api-paths'
 
 config()
 

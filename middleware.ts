@@ -1,5 +1,5 @@
 import { rewrite, next } from '@vercel/edge'
-import builtInApiPaths from 'built-in-api-paths'
+import builtInApiPaths from './built-in-api-paths'
 
 const hosts = (process.env.HOSTS ?? 'clubs.place')
   .split(',')
