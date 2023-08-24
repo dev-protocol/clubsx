@@ -1,4 +1,4 @@
-import { rewrite } from '@vercel/edge'
+import { rewrite, next } from '@vercel/edge'
 import builtInApiPaths from './built-in-api-paths'
 
 const hosts = (process.env.HOSTS ?? 'clubs.place')
@@ -6,7 +6,10 @@ const hosts = (process.env.HOSTS ?? 'clubs.place')
   .map((x) => x.trim())
 
 export const config = {
-  matcher: ['/((?!assets|chunks|_vercel|[\\w-]+\\.\\w+).*)'],
+  matcher: [
+    '/((?!assets|chunks|_vercel|[\\w-]+\\.\\w+).*)',
+    ...builtInApiPaths,
+  ],
 }
 
 const redirects = [
@@ -77,5 +80,5 @@ export default function middleware(req: Request) {
     })
   }
 
-  // return next()
+  return next()
 }
