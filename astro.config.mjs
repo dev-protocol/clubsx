@@ -29,7 +29,7 @@ export default defineConfig({
             if (
               req.headers.accept?.includes('text/html') ||
               (req.url.startsWith('/api/') &&
-                builtInApiPaths.every((p) => !req.url.startsWith(`/api/${p}`)))
+                builtInApiPaths.every((p) => !req.url.startsWith(p)))
             ) {
               const host = req.headers.host.split('.')
 

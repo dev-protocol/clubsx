@@ -6,11 +6,7 @@ const hosts = (process.env.HOSTS ?? 'clubs.place')
   .map((x) => x.trim())
 
 export const config = {
-  matcher: [
-    `/((?!${builtInApiPaths
-      .map((p) => 'api/' + p)
-      .join('|')}|assets|chunks|_vercel|[\\w-]+\\.\\w+).*)`,
-  ],
+  matcher: ['/((?!assets|chunks|_vercel|[\\w-]+\\.\\w+).*)'],
 }
 
 const redirects = [
@@ -66,7 +62,9 @@ export default function middleware(req: Request) {
       .split('/')
       .slice(-1)
       .every((p) => !/\..+$/.test(p))
-  const api = url.pathname.startsWith('/api/')
+  const api =
+    url.pathname.startsWith('/api/') &&
+    builtInApiPaths.every((p) => !url.pathname.startsWith(p))
 
   const primaryHost =
     hosts.find((h) => url.host === h) ?? hosts.find((h) => url.host.endsWith(h))
