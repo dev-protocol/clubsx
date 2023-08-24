@@ -2434,10 +2434,10 @@
   resolved "https://registry.yarnpkg.com/@vercel/analytics/-/analytics-0.1.11.tgz#727a0ac655a4a89104cdea3e6925476470299428"
   integrity sha512-mj5CPR02y0BRs1tN3oZcBNAX9a8NxsIUl9vElDPcqxnMfP0RbRc9fI9Ud7+QDg/1Izvt5uMumsr+6YsmVHcyuw==
 
-"@vercel/edge@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@vercel/edge/-/edge-1.0.0.tgz#c1927f49020d480f5a1ea9e41ec9a4c0595dd15f"
-  integrity sha512-eL6mACcJMVVcbDOJd8llBRPaB3FbClV4LS0K4e+IU2HmU44JjOTWQYT30pWLkJ0AdbcHYRpBMN9Ebynx5DmDfg==
+"@vercel/edge@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@vercel/edge/-/edge-1.0.1.tgz#94fc7be3c79834b0833dad9cfa23ed47b55309fa"
+  integrity sha512-0lE1J1QsKmet3NUlNjS1+4tw7VpOsd3wxG91A5ZAAcxxDl3RQh/ThnYVV5VYT6FoSK5ZZ3jYh5YZCd0pWPK3yQ==
 
 "@vercel/nft@^0.22.6":
   version "0.22.6"
