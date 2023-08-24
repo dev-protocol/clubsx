@@ -5,7 +5,7 @@ const hosts = (process.env.HOSTS ?? 'clubs.place')
   .map((x) => x.trim())
 
 export const config = {
-  matcher: ['/((?!api|assets|chunks|_vercel|[\\w-]+\\.\\w+).*)'],
+  matcher: ['/((?!assets|chunks|_vercel|[\\w-]+\\.\\w+).*)'],
 }
 
 const redirects = [
@@ -65,8 +65,6 @@ export default function middleware(req: Request) {
 
   const primaryHost =
     hosts.find((h) => url.host === h) ?? hosts.find((h) => url.host.endsWith(h))
-
-  console.log({ html, api, primaryHost }, url.pathname, url.href)
 
   if ((html || api) && primaryHost && url.host !== primaryHost) {
     const pathname = `/sites_/${tenant}${url.pathname}`
