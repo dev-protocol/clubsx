@@ -8,7 +8,6 @@ export type StatusUnit = {
   use: Ticket['uses'][0]
   history?: TicketHistory
   unused: boolean
-  available: boolean
   duration?: Duration
   expired?: boolean
   expiration?: Dayjs
@@ -37,19 +36,19 @@ export const factory =
       ([his, refresh]) => isExpired(his.datetime, refresh),
     )
     const unused = refreshed ?? history === undefined
-    const expired = whenDefinedAll([history, duration], ([h, d]) =>
-      isExpired(h.datetime, d),
-    )
-    const expiration = whenDefinedAll([history, duration], ([h, d]) =>
-      period(h.datetime, d),
-    )
-    const available =
-      typeof expired === 'boolean'
-        ? !expired
-        : typeof refreshed === 'boolean'
-        ? !refreshed
-        : false
-
+    const expired =
+      whenDefinedAll([history, duration], ([h, d]) =>
+        isExpired(h.datetime, d),
+      ) ??
+      whenDefinedAll([history, refreshDuration], ([h, d]) =>
+        isExpired(h.datetime, d),
+      )
+    console.log(use.id, history?.datetime, duration, refreshDuration)
+    const expiration =
+      whenDefinedAll([history, duration], ([h, d]) => period(h.datetime, d)) ??
+      whenDefinedAll([history, refreshDuration], ([h, d]) =>
+        period(h.datetime, d),
+      )
     return {
       use,
       history,
@@ -58,7 +57,6 @@ export const factory =
       expired,
       expiration,
       refreshed,
-      available,
     }
   }
 
@@ -69,20 +67,22 @@ export const ticketStatus = (
   const getStatus = factory(history)
 
   return uses.map((use) => {
-    const self = getStatus(use)
+    const _self = getStatus(use)
     const dependency = whenDefined(use.dependsOn, (dep) =>
       whenDefined(
         uses.find((u) => u.id === dep),
         getStatus,
       ),
     )
-    const available = self.available
+    const self =
+      whenDefined(dependency, ({ expired, expiration }) =>
+        expired === true ? { ..._self, expired, expiration } : _self,
+      ) ?? _self // If there is a dependency and its `expired` is true, it inherits the dependency's `expired`.
+    const available = self.expired === false || self.refreshed === false
 
     const enablable = dependency
-      ? dependency
-        ? dependency.expired === false && self.unused
-        : false // Dependency is not used yet, so this benefit is not enablable yet.
-      : !self.available
+      ? dependency.expired == false && self.unused
+      : self.expired === undefined
 
     return {
       available,

@@ -5,6 +5,7 @@ import type {
   ClubsPluginMeta,
 } from '@devprotocol/clubs-core'
 import { ClubsPluginCategory, ClubsPluginSignal } from '@devprotocol/clubs-core'
+import { default as Index } from './Index.astro'
 import { default as Id } from './Id.astro'
 import { keccak256 } from 'ethers'
 import type { ClubsFunctionGetApiPaths } from '@devprotocol/clubs-core/src'
@@ -52,6 +53,11 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
 
   return tickets
     ? [
+        {
+          paths: ['tickets'],
+          props: { tickets, memberships, propertyAddress, rpcUrl },
+          component: Index,
+        },
         ...tickets.map((ticket, index) => ({
           paths: [
             'tickets',

@@ -1,11 +1,13 @@
 import { rewrite, next } from '@vercel/edge'
+import builtInApiPaths from './built-in-api-paths'
 
 const hosts = (process.env.HOSTS ?? 'clubs.place')
   .split(',')
   .map((x) => x.trim())
+  .sort((a, b) => (a.split('.').length < b.split('.').length ? 0 : -1))
 
 export const config = {
-  matcher: ['/((?!api|assets|chunks|_vercel|[\\w-]+\\.\\w+).*)'],
+  matcher: ['/((?!assets|chunks|_vercel|[\\w-]+\\.\\w+).*)'],
 }
 
 const redirects = [
@@ -61,13 +63,24 @@ export default function middleware(req: Request) {
       .split('/')
       .slice(-1)
       .every((p) => !/\..+$/.test(p))
+  const bInApi = builtInApiPaths.some((p) => url.pathname.startsWith(p))
+  const pInApi = url.pathname.startsWith('/api/') && !bInApi
 
   const primaryHost =
     hosts.find((h) => url.host === h) ?? hosts.find((h) => url.host.endsWith(h))
 
-  if (html && primaryHost && url.host !== primaryHost) {
-    const pathname = `/sites_/${tenant}${url.pathname}`
-    const destination = new URL(pathname, url.origin)
+  if (bInApi && primaryHost && url.host !== primaryHost) {
+    const destination = new URL(url.href)
+    destination.host = primaryHost
+    return rewrite(destination, {
+      headers: { 'x-rewritten-url': destination.href },
+    })
+  }
+
+  if ((html || pInApi) && primaryHost && url.host !== primaryHost) {
+    const destination = new URL(url.href)
+    destination.pathname = `/sites_/${tenant}${url.pathname}`
+    destination.host = primaryHost
     return rewrite(destination, {
       headers: { 'x-rewritten-url': destination.href },
     })

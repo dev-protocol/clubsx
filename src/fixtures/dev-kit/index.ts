@@ -237,7 +237,6 @@ export const stakeWithAnyTokens = async (
     provider,
     propertyAddress,
     tokenAmount,
-    tokenDecimals,
     payload,
     from,
     gatewayAddress,
@@ -249,7 +248,6 @@ export const stakeWithAnyTokens = async (
     provider: ContractRunner
     propertyAddress: string
     tokenAmount?: string
-    tokenDecimals?: number
     payload?: string | Uint8Array
     from?: string
     gatewayAddress?: string
@@ -259,7 +257,9 @@ export const stakeWithAnyTokens = async (
     chain: number
   }, // For example 10000 is 100%
 ) => {
-  const path =
+  const path: UndefinedOr<
+    [string, bigint, string, bigint, string] | [string, bigint, string]
+  > =
     currency === CurrencyOption.USDC && chain === 137
       ? [
           '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174', // USDC
@@ -276,20 +276,33 @@ export const stakeWithAnyTokens = async (
           10000n,
           '0xcbc698ed514dF6e54932a22515d6D0C27E4DA091', // DEV
         ]
-      : []
-  const token =
-    currency === CurrencyOption.USDC && chain === 137
-      ? '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174'
-      : currency === CurrencyOption.USDC && chain === 80001
-      ? '0xFEca406dA9727A25E71e732F9961F680059eF1F9'
-      : ZeroAddress
+      : currency === CurrencyOption.ETH && chain === 137
+      ? [
+          '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619', // WETH
+          10000n,
+          '0xA5577D1cec2583058A6Bd6d5DEAC44797c205701', // DEV
+        ]
+      : currency === CurrencyOption.ETH && chain === 80001
+      ? [
+          '0x3c8d6A6420C922c88577352983aFFdf7b0F977cA', // devWETH
+          10000n,
+          '0xcbc698ed514dF6e54932a22515d6D0C27E4DA091', // DEV
+        ]
+      : undefined
+  const token = path?.[0] ?? ZeroAddress
+  if (!path || !token) {
+    console.log({ path, token })
+    return
+  }
+  const tokenDecimals = currency === CurrencyOption.USDC ? 6 : 18
+
   return positionsCreateWithAnyTokens({
     mintTo: mintTo ?? ZeroAddress,
     token,
     path,
     provider,
     tokenAmount: whenDefined(tokenAmount, (token) =>
-      parseUnits(token, tokenDecimals ?? 18).toString(),
+      parseUnits(token, tokenDecimals).toString(),
     ),
     destination: propertyAddress,
     payload,
@@ -297,15 +310,4 @@ export const stakeWithAnyTokens = async (
     gatewayBasisPoints,
     from,
   })
-}
-
-export const propertySymbol = async (
-  prov: ContractRunner,
-  propertyAddress: string,
-) => {
-  if (propertyAddress === ZeroAddress) {
-    return undefined
-  }
-  const [l1, l2] = await clientsProperty(prov, propertyAddress)
-  return (l1 || l2)?.symbol()
 }
