@@ -66,7 +66,7 @@ export default function middleware(req: Request) {
   const primaryHost =
     hosts.find((h) => url.host === h) ?? hosts.find((h) => url.host.endsWith(h))
 
-  console.log({ html, api, primaryHost, url })
+  console.log({ html, api, primaryHost }, url.pathname, url.href)
 
   if ((html || api) && primaryHost && url.host !== primaryHost) {
     const pathname = `/sites_/${tenant}${url.pathname}`
