@@ -4,12 +4,10 @@ import builtInApiPaths from './built-in-api-paths'
 const hosts = (process.env.HOSTS ?? 'clubs.place')
   .split(',')
   .map((x) => x.trim())
+  .sort((a, b) => (a.split('.').length < b.split('.').length ? 0 : -1))
 
 export const config = {
-  matcher: [
-    '/((?!assets|chunks|_vercel|[\\w-]+\\.\\w+).*)',
-    ...builtInApiPaths,
-  ],
+  matcher: ['/((?!assets|chunks|_vercel|[\\w-]+\\.\\w+).*)'],
 }
 
 const redirects = [
@@ -65,14 +63,23 @@ export default function middleware(req: Request) {
       .split('/')
       .slice(-1)
       .every((p) => !/\..+$/.test(p))
-  const api =
-    url.pathname.startsWith('/api/') &&
-    builtInApiPaths.every((p) => !url.pathname.startsWith(p))
+  const bInApi = builtInApiPaths.some((p) => url.pathname.startsWith(p))
+  const pInApi = url.pathname.startsWith('/api/') && !bInApi
 
-  const primaryHost =
-    hosts.find((h) => url.host === h) ?? hosts.find((h) => url.host.endsWith(h))
+  const primaryHostIndex =
+    hosts.findIndex((h) => url.host === h) ??
+    hosts.findIndex((h) => url.host.endsWith(h))
+  const primaryHost = hosts[primaryHostIndex]
 
-  if ((html || api) && primaryHost && url.host !== primaryHost) {
+  if (bInApi && primaryHost && url.host !== primaryHost) {
+    const destination = new URL(url.href)
+    destination.host = primaryHost
+    return rewrite(destination, {
+      headers: { 'x-rewritten-url': destination.href },
+    })
+  }
+
+  if ((html || pInApi) && primaryHost && url.host !== primaryHost) {
     const pathname = `/sites_/${tenant}${url.pathname}`
     const destination = new URL(pathname, url.origin)
     return rewrite(destination, {
