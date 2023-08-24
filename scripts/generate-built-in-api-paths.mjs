@@ -49,8 +49,8 @@ const builtInApiPaths = firstPaths.map((path) => `/api/${path}`)
 console.log({ builtInApiPaths })
 
 outputFileSync(
-  'built-in-api-paths.ts',
+  'built-in-api-paths.js',
   `export default ${JSON.stringify(builtInApiPaths)}`,
 )
 
-execSync('npx prettier -w built-in-api-paths.ts')
+execSync('npx prettier -w built-in-api-paths.js')
