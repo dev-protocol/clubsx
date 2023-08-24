@@ -702,7 +702,7 @@
             <div style="width: {100 - (membership.fee?.percentage || 0)}% !important" class="h-6 rounded-[99px] max-w-full bg-[#43C451]"></div>
           </div>
           <p class="mt-1">
-            <span class="text-[#00D0FD]">{membership.price * (membership.fee?.percentage || 0)/ 100} {membership.currency} ({membership.fee?.percentage || 0}%)</span>  will earn at 1 time, <span class="text-[#43C451]">and {membership.price * (100 - (membership.fee?.percentage || 0))/ 100} ({(100 - (membership.fee?.percentage || 0))}%)
+            <span class="text-[#00D0FD]">{BigNumber(membership.price * (membership.fee?.percentage || 0)/ 100).dp(5).toString()} {membership.currency} ({BigNumber(membership.fee?.percentage || 0).dp(3).toString()}%)</span>  will earn at 1 time, <span class="text-[#43C451]">and {BigNumber(membership.price * (100 - (membership.fee?.percentage || 0))/ 100).dp(5).toString()} ({BigNumber(100 - (membership.fee?.percentage || 0)).dp(3).toString()}%)
             </span> will be staked to earn dev continuously.
           </p>
           <p class="hs-form-field__helper mt-2">
