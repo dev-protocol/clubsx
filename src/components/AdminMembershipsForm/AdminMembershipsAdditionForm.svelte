@@ -114,10 +114,7 @@
       membershipCustomFee = 0
       membership = {
         ...membership,
-        fee: membership.fee ? {
-          ...membership.fee,
-          percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
-        } : {
+        fee: {
           percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
           beneficiary: currentAddress ?? ZeroAddress,
         }
@@ -131,10 +128,7 @@
       // Update the membership state directly
       membership = {
         ...membership,
-        fee: membership.fee ? {
-          ...membership.fee,
-          percentage: PAYMENT_TYPE_INSTANT_FEE,
-        } :  {
+        fee: {
           percentage: PAYMENT_TYPE_INSTANT_FEE,
           beneficiary: currentAddress ?? ZeroAddress,
         }
@@ -145,10 +139,7 @@
     if (type === 'stake'){
       membership = {
         ...membership,
-        fee: membership.fee ? {
-          ...membership.fee,
-          percentage: PAYMENT_TYPE_STAKE_FEE,
-        } :  {
+        fee: {
           percentage: PAYMENT_TYPE_STAKE_FEE,
           beneficiary: currentAddress ?? ZeroAddress,
         }
@@ -158,10 +149,7 @@
     if (type === 'custom') {
       membership = {
         ...membership,
-        fee: membership.fee ? {
-          ...membership.fee,
-          percentage: membershipCustomFee,
-        } :  {
+        fee: {
           percentage: membershipCustomFee,
           beneficiary: currentAddress ?? ZeroAddress,
         }
@@ -299,10 +287,7 @@
       invalidFeeMsg = ''
       membership = {
         ...membership,
-        fee: membership.fee ? {
-          ...membership.fee,
-          percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
-        } :  {
+        fee: {
           beneficiary: currentAddress ?? ZeroAddress,
           percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
         }
@@ -328,10 +313,7 @@
     // Update the membership state.
     membership = {
       ...membership,
-      fee: membership.fee ? {
-        ...membership.fee,
-        percentage: membershipCustomFee,
-      } : {
+      fee: {
           percentage: membershipCustomFee,
           beneficiary: currentAddress ?? ZeroAddress,
         }
@@ -472,10 +454,7 @@
     // Update the membership state.
     membership = {
       ...membership,
-      fee: membership.fee ? {
-        ...membership.fee,
-        percentage: membershipCustomFee,
-      } : {
+      fee: {
           percentage: membershipCustomFee,
           beneficiary: currentAddress ?? ZeroAddress,
         }
