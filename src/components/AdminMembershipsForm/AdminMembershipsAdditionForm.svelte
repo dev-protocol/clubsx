@@ -28,8 +28,10 @@
 
   type MembershipPaymentType = 'instant' | 'stake' | 'custom' | ''
 
-  let membershipPaymentType: MembershipPaymentType = membership.currency === 'DEV' ? 'custom' : ''
-  let membershipCustomFee: number = membership.currency === 'DEV' ? DEV_TOKEN_PAYMENT_TYPE_FEE : 0
+  let membershipPaymentType: MembershipPaymentType = membership.paymentType ?? (membership.currency === 'DEV' ? 'custom' : '')
+  let membershipCustomFee: number = membership.fee
+    ? membership.fee.percentage
+    : membership.currency === 'DEV' ? DEV_TOKEN_PAYMENT_TYPE_FEE : 0
   let updatingMembershipsStatus: boolean = false
   let noOfPositions: number = 0
   let invalidPriceMsg: string = ''
