@@ -615,9 +615,9 @@
               disabled={membershipExists}
               on:change={resetMembershipFee}
             >
-              <option value="USDC">USDC</option>
-              <option value="ETH">ETH</option>
-              <option value="DEV">DEV</option>
+              <option value="USDC" class="bg-primary-200 text-primary-ink">USDC</option>
+              <option value="ETH" class="bg-primary-200 text-primary-ink">ETH</option>
+              <option value="DEV" class="bg-primary-200 text-primary-ink">DEV</option>
             </select>
           </div>
           <p class="hs-form-field__helper mt-2">
