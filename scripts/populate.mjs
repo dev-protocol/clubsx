@@ -876,7 +876,7 @@ const populate = async () => {
         twitterHandle: '',
         description: '',
         url: 'https://debug-cc-payments.prerelease.clubs.place',
-        propertyAddress: '0x2950e762461B16d552BC4dafE32f70dE555f0Bd9',
+        propertyAddress: '0xE59fEDaBB0F79b0EC605737805a9125cd8d87B1f',
         chainId: 80001, // Polygon: 137 // Mumbai: 80001
         rpcUrl:
           'https://polygon-mumbai.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920', // Polygon: https://polygon-mainnet.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920 // Mumbai: https://polygon-mumbai.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920
@@ -979,6 +979,57 @@ const populate = async () => {
             ],
           },
           {
+            id: 'devprotocol:clubs:plugin:tickets',
+            options: [
+              {
+                key: 'tickets',
+                value: [
+                  {
+                    payload: toBytes32('#1'),
+                    importedFrom: {
+                      plugin: 'devprotocol:clubs:simple-memberships',
+                      key: 'memberships',
+                    },
+                    name: 'Cafe Ticket',
+                    uses: [
+                      {
+                        id: '1-month-pass',
+                        description: '1 month pass',
+                        duration: '30 days',
+                        refreshCycle: undefined,
+                      },
+                      {
+                        id: 'free-beer',
+                        description: 'Free beer/day',
+                        dependsOn: '1-month-pass',
+                        refreshCycle: '24 hours',
+                      },
+                      {
+                        id: 'special-week',
+                        description: 'Special Week',
+                        duration: '3 days',
+                        refreshCycle: undefined,
+                      },
+                      {
+                        id: 'free-juice',
+                        description: 'Free juice/day',
+                        dependsOn: 'special-week',
+                        refreshCycle: '1 days',
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                key: 'airtable',
+                value: {
+                  encryptedToken: 'xxx',
+                  base: 'xxx',
+                },
+              },
+            ],
+          },
+          {
             id: 'devprotocol:clubs:simple-memberships',
             name: 'memberships',
             enable: true,
@@ -1060,6 +1111,35 @@ const populate = async () => {
             options: [],
           },
         ],
+      }),
+    )
+
+    await client.set(
+      `devprotocol:clubs:plugin:tickets:history:0xE59fEDaBB0F79b0EC605737805a9125cd8d87B1f:${toBytes32(
+        '#1',
+      )}#51`,
+      encode({
+        '1-month-pass': { datetime: new Date('2023-08-20T00:00:00Z') },
+      }),
+    )
+    await client.set(
+      `devprotocol:clubs:plugin:tickets:history:0xE59fEDaBB0F79b0EC605737805a9125cd8d87B1f:${toBytes32(
+        '#1',
+      )}#52`,
+      encode({
+        '1-month-pass': { datetime: new Date('2023-01-20T00:00:00Z') },
+        'special-week': { datetime: new Date('2023-01-20T00:00:00Z') },
+      }),
+    )
+    await client.set(
+      `devprotocol:clubs:plugin:tickets:history:0xE59fEDaBB0F79b0EC605737805a9125cd8d87B1f:${toBytes32(
+        '#1',
+      )}#53`,
+      encode({
+        'special-week': { datetime: new Date('2023-08-22T00:00:00Z') },
+        'free-juice': {
+          datetime: new Date('2023-08-23T00:00:00Z'),
+        },
       }),
     )
 
