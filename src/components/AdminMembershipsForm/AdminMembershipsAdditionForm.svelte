@@ -117,7 +117,8 @@
         fee: {
           percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
           beneficiary: currentAddress ?? ZeroAddress,
-        }
+        },
+        paymentType: 'custom'
       }
 
       update() // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
@@ -131,7 +132,8 @@
         fee: {
           percentage: PAYMENT_TYPE_INSTANT_FEE,
           beneficiary: currentAddress ?? ZeroAddress,
-        }
+        },
+        paymentType: 'instant'
       }
     }
 
@@ -142,7 +144,8 @@
         fee: {
           percentage: PAYMENT_TYPE_STAKE_FEE,
           beneficiary: currentAddress ?? ZeroAddress,
-        }
+        },
+        paymentType: 'stake'
       }
     }
 
@@ -152,7 +155,8 @@
         fee: {
           percentage: membershipCustomFee,
           beneficiary: currentAddress ?? ZeroAddress,
-        }
+        },
+        paymentType: 'custom'
       }
     }
 
@@ -290,7 +294,8 @@
         fee: {
           beneficiary: currentAddress ?? ZeroAddress,
           percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
-        }
+        },
+        paymentType: 'custom'
       }
 
       // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
@@ -316,7 +321,8 @@
       fee: {
           percentage: membershipCustomFee,
           beneficiary: currentAddress ?? ZeroAddress,
-        }
+        },
+      paymentType: 'custom'
     }
 
     // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
@@ -457,7 +463,8 @@
       fee: {
           percentage: membershipCustomFee,
           beneficiary: currentAddress ?? ZeroAddress,
-        }
+        },
+      paymentType: 'custom'
     }
   }
 
