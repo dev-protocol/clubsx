@@ -563,12 +563,12 @@
     js-base64 "^3.7.2"
     ramda "^0.29.0"
 
-"@devprotocol/dev-kit@8.2.2":
-  version "8.2.2"
-  resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-8.2.2.tgz#c5e1b951cab6b51267d151224823518ceeb86c97"
-  integrity sha512-Mg8Y+MtcChlUbFIzfpr6c89qAL727aj6JycAzWmDccbU7K/WQkJ6cH481eBIcGg+1SsjfvgEKxGc/mKS3i29sA==
+"@devprotocol/dev-kit@8.2.5":
+  version "8.2.5"
+  resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-8.2.5.tgz#a1c3ac4f77b7704224949b3a6cb0a0371976cd54"
+  integrity sha512-qgU8s35uX4n6zdeKJiSd41LQ6Kr19jF+yTL2Z+0B1TLekX/BBKh2/3yu39sM3gPMnjm/rqr1EZ2ERZeAH715jA==
   dependencies:
-    "@devprotocol/util-ts" "3.0.0"
+    "@devprotocol/util-ts" "3.1.0"
     bignumber.js "9.1.1"
     js-base64 "^3.7.2"
     ramda "^0.29.0"
@@ -609,6 +609,14 @@
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@devprotocol/util-ts/-/util-ts-3.0.1.tgz#864b99de5bd77eca66a53cff0c859e4a5b0f00d0"
   integrity sha512-EHNNC7r327IhaEomq08GDcPLNflCH3GrUa2pzckWR7iHKjoT4UdbWluSFlC3n5qXrR12vT9AS/ck6OLrbgDn+A==
+  dependencies:
+    ethers "^5.7.2"
+    ramda "^0.29.0"
+
+"@devprotocol/util-ts@3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@devprotocol/util-ts/-/util-ts-3.1.0.tgz#8eaf8e394a80b3582e1609424cbe1b90b7e99c58"
+  integrity sha512-F2xPZ9X/Gbxior7QJjy9rb9m117C231NbuWctJ/LOBMfbqCvzyGvmKskx9G5vUTx6sOjmMNtYTJwRQ2+2WFTgw==
   dependencies:
     ethers "^5.7.2"
     ramda "^0.29.0"
