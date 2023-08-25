@@ -605,14 +605,6 @@
     ethers "^5.7.2"
     ramda "^0.28.0"
 
-"@devprotocol/util-ts@3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@devprotocol/util-ts/-/util-ts-3.0.1.tgz#864b99de5bd77eca66a53cff0c859e4a5b0f00d0"
-  integrity sha512-EHNNC7r327IhaEomq08GDcPLNflCH3GrUa2pzckWR7iHKjoT4UdbWluSFlC3n5qXrR12vT9AS/ck6OLrbgDn+A==
-  dependencies:
-    ethers "^5.7.2"
-    ramda "^0.29.0"
-
 "@devprotocol/util-ts@3.1.0":
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/@devprotocol/util-ts/-/util-ts-3.1.0.tgz#8eaf8e394a80b3582e1609424cbe1b90b7e99c58"

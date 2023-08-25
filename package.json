@@ -59,7 +59,7 @@
     "@devprotocol/dev-kit": "8.2.5",
     "@devprotocol/elements": "1.0.0",
     "@devprotocol/hashi": "2.2.0",
-    "@devprotocol/util-ts": "3.0.1",
+    "@devprotocol/util-ts": "3.1.0",
     "@kazu80/clubs-plugin-links": "1.0.1",
     "@metamask/detect-provider": "2.0.0",
     "@redis/json": "1.0.4",
