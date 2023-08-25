@@ -297,7 +297,7 @@ export const stakeWithAnyTokens = async (
   const tokenDecimals = currency === CurrencyOption.USDC ? 6 : 18
 
   return positionsCreateWithAnyTokens({
-    mintTo: mintTo ?? ZeroAddress,
+    mintTo: mintTo ?? from ?? ZeroAddress,
     token,
     path,
     provider,
