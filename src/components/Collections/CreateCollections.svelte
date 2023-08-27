@@ -1,8 +1,9 @@
 <script lang="ts">
   import { ClubsEvents, setOptions } from '@devprotocol/clubs-core'
   import { buildConfig, controlModal } from '@devprotocol/clubs-core/events'
-  import type { Membership } from '@plugins/collections'
+  import type { Collection, Membership } from '@plugins/collections'
   import MembershipOption from '@components/AdminMembershipsForm/MembershipOption.svelte'
+  import { uploadImageAndGetPath } from '@fixtures/imgur'
   import {
     DEV_TOKEN_PAYMENT_TYPE_FEE,
     PAYMENT_TYPE_INSTANT_FEE,
@@ -10,7 +11,8 @@
   } from '@constants/memberships'
 
   import { utils } from 'ethers'
-  export let existingMemberships: Membership[] = []
+  export let existingCollections: Collection[] = []
+  export let collection: Collection
   export let isTimeLimitedCollection: boolean = false
   export let clubName: string | undefined = undefined
   export let isAdding: boolean = false
@@ -30,20 +32,16 @@
       percentage: 20,
       beneficiary: ZeroAddress,
     },
-    slots: {
-      startTime: 0,
-      endTime: 0,
-    },
   }
 
-  export let mode: 'edit' | 'create' = 'edit'
+  export let mode: 'edit' | 'create' = 'create'
 
   type MembershipPaymentType = 'instant' | 'stake' | 'custom' | ''
 
-  let membershipPaymentType: MembershipPaymentType =
-    membership.currency === 'DEV' ? 'custom' : ''
-  let membershipCustomFee: number =
-    membership.currency === 'DEV' ? DEV_TOKEN_PAYMENT_TYPE_FEE : 0
+  let membershipPaymentType: MembershipPaymentType 
+    // membership.currency === 'DEV' ? 'custom' : ''
+  let membershipCustomFee: number
+    // membership.currency === 'DEV' ? DEV_TOKEN_PAYMENT_TYPE_FEE : 0
   let updatingMembershipsStatus: boolean = false
   let noOfPositions: number = 0
   let invalidPriceMsg: string = ''
@@ -52,7 +50,7 @@
 
   const originalId = membership.id
 
-  let endTimeValue: Date = new Date(membership.slots?.endTime || '')
+  let endTimeValue: Date = new Date(collection.endTime || '')
 
   let membershipExists = false
 
@@ -61,10 +59,43 @@
   const minCustomFee = 0
   const maxCustomFee = 95
 
+  const onCollectionChangeName = () => {
+    let id = collection.name.toLowerCase().replace(/\W/g, '-')
+    // Duplication detection
+    let count = 1
+    let _id = id
+    while (existingCollections.some((x) => x.id === id)) {
+      count = count + 1
+      id = `${_id}-${count}`
+    }
+
+    collection.id = id
+  }
+
+  const onFileSelected = async (
+    e: Event & {
+      currentTarget: EventTarget & HTMLInputElement
+    }
+  ) => {
+    if (!e.currentTarget.files || !collection) {
+      return
+    }
+
+    const file = e.currentTarget.files[0]
+
+    collection.imageSrc =
+      (await uploadImageAndGetPath(file)) || `https://i.ibb.co/RbxFzn8/img.jpg`
+
+    collection = collection
+
+    update()
+  }
+
+
   const deleteMembership = (selectedMembership: Membership) => {
     updatingMembershipsStatus = true
 
-    const membership = existingMemberships.find(
+    const membership = collection.memberships.find(
       (m: Membership) =>
         m.id === selectedMembership.id &&
         m.name === selectedMembership.name &&
@@ -76,10 +107,51 @@
         {
           key: 'collections',
           value: [
-            ...existingMemberships.filter(
-              (m: Membership) => m.id !== selectedMembership.id
+            {
+              ...collection,
+              memberships: [
+                ...collection.memberships.filter(
+                  (m: Membership) => m.id !== selectedMembership.id
+                ),
+                { ...membership, deprecated: true },
+              ],
+            }
+          ],
+        },
+      ],
+      currentPluginIndex
+    )
+
+    setTimeout(buildConfig, 50)
+  }
+
+  const activateMembership = (selectedCollection: Collection, selectedMembership: Membership) => {
+    updatingMembershipsStatus = true
+
+    const membership = selectedCollection.memberships.find(
+      (m: Membership) =>
+        m.id === selectedMembership.id &&
+        m.name === selectedMembership.name &&
+        JSON.stringify(m.payload) === JSON.stringify(selectedMembership.payload)
+    )
+
+    setOptions(
+      [
+        {
+          key: 'collections',
+          value: [
+            ...existingCollections.filter(
+              (c: Collection) => c.id !== selectedCollection.id
             ),
-            { ...membership, deprecated: true },
+            {
+              ...selectedCollection,
+              memberships: [
+                ...selectedCollection.memberships.filter(
+                  (m: Membership) => m.id !== selectedMembership.id
+                ),
+                { ...membership, deprecated: false },
+              ],
+            },
           ],
         },
       ],
@@ -95,11 +167,9 @@
     const unixTimestamp = new Date(value).getTime() / 1000
     if (unixTimestamp < Date.now() / 1000) {
       const currentTime = Date.now() / 1000
-      membership = {
-        ...membership,
-        slots: {
-          startTime: currentTime,
-        },
+      collection = {
+        ...collection,
+        startTime: currentTime,
       }
       invalidTimeMsg = 'Start time cannot be in the past'
     }
@@ -111,24 +181,20 @@
     if (unixTimestamp < Date.now() / 1000) {
       const currentTime = Date.now() / 1000
       const twoMinutes = 120
-      membership = {
-        ...membership,
-        slots: {
-          startTime: membership.slots?.startTime || currentTime,
+      collection = {
+        ...collection,
+          startTime: collection?.startTime || currentTime,
           endTime: currentTime + twoMinutes,
-        },
       }
       invalidTimeMsg =
         'End time cannot be in the past setting to 2 minutes from now'
     } else {
       invalidTimeMsg = ''
       const currentTime = Date.now() / 1000
-      membership = {
-        ...membership,
-        slots: {
-          startTime: membership.slots?.startTime || currentTime,
-          endTime: currentTime,
-        },
+      collection = {
+        ...collection,
+        startTime: collection.startTime || currentTime,
+        endTime: currentTime,
       }
     }
   }
@@ -333,30 +399,18 @@
     isAdding = value
   }
   const update = () => {
-    if (
-      membership.price < minPrice ||
-      membership.price > maxPrice ||
-      membershipPaymentType === ''
-    )
-      return
-
-    const search = mode === 'edit' ? originalId : membership.id
-    const newMemberships = existingMemberships.some(({ id }) => id === search)
-      ? // If the ID is already exists, override it. This is a safeguard to avoid duplicate data.
-        existingMemberships.map((_mem) =>
-          _mem.id === search ? membership : _mem
-        )
-      : // If not, add it.
-        [...existingMemberships, membership]
-
+    const newCollections = [
+      ...existingCollections.filter((c: Collection) => c.id !== collection.id),
+      collection,
+    ]
     setOptions(
-      [{ key: 'memberships', value: newMemberships }],
+      [{ key: 'collections', value: newCollections }],
       currentPluginIndex
     )
   }
 </script>
 
-<form on:change|preventDefault={(e) => update(e)} class="w-full">
+<form on:change|preventDefault={() => update()} class="w-full">
   <div class="w-full max-w-full">
     <!-- collection name -->
     <div
@@ -367,9 +421,11 @@
         <span class="font-body text-[#EB48F8]"> * </span>
       </div>
       <input
-        class="w-[479px] rounded border-[3px] border-black bg-[#040B10] px-8 py-6"
-        id="collection-name"
-        name="collection-name"
+          bind:value={collection.name}
+          on:change={onCollectionChangeName}
+          class="w-[479px] rounded border-[3px] border-black bg-[#040B10] px-8 py-6"
+          id="collection-name"
+          name="collection-name"
       />
     </div>
     <!-- collection cover image uploader-->
@@ -391,7 +447,9 @@
           name="collection-cover-image"
           style="display:none"
           type="file"
+          accept=".jpg, .jpeg, .png, .gif, .apng, .tiff"
           class="hs-button is-filled is-large cursor-pointer"
+          on:change={onFileSelected}
         />
       </label>
       <span class="text-base font-normal leading-6 text-white"
@@ -406,6 +464,8 @@
         <span class="text-base font-normal uppercase text-[#EB48F8]"> * </span>
       </div>
       <input
+        bind:value={collection.startTime}
+        on:change={onStartTimeChange}
         type="datetime-local"
         class="cal w-[479px] rounded border-[3px] border-black bg-[#040B10] px-8 py-6"
         id="collectino-start-date"
@@ -736,11 +796,13 @@
         <div class="hs-form-field">
           <div class="flex w-full max-w-full gap-0 p-0">
             <div
-              class="h-6 max-w-full rounded-[99px] w-[{membership.fee
-                ?.percentage || 0}%] bg-[#00D0FD]"
+              style="width: {membership.fee?.percentage || 0}% !important"
+              class="h-6 max-w-full rounded-[99px] bg-[#00D0FD]"
             />
             <div
-              class="h-6 w-fit max-w-full grow rounded-[99px] bg-[#43C451]"
+              style="width: {100 -
+                (membership.fee?.percentage || 0)}% !important"
+              class="h-6 max-w-full rounded-[99px] bg-[#43C451]"
             />
           </div>
           <p class="mt-1">
@@ -802,7 +864,7 @@
     </div>
     <!-- Previous Memberships -->
     <div class="flex items-start justify-between gap-4">
-      {#each existingMemberships as mem}
+      {#each collection.memberships as mem}
         <MembershipOption
           clubName={clubName ?? 'Your Club'}
           id={mem.id}

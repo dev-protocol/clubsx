@@ -7,12 +7,14 @@ import type {
 } from '@devprotocol/clubs-core'
 import { ClubsPluginCategory } from '@devprotocol/clubs-core'
 import { default as Admin } from './admin.astro'
+import { default as AdminEdit } from './admin-id.astro'
 import { default as AdminNew } from './admin-new.astro'
 import { default as Icon } from './assets/icon.svg'
 import { Content as Readme } from './README.md'
 import Preview1 from './assets/limited-number-of-items.svg'
 import Preview2 from './assets/time-limited-collection.svg'
 import type { UndefinedOr } from '@devprotocol/util-ts'
+import { utils } from 'ethers'
 
 export type Membership = {
   id: string
@@ -27,11 +29,18 @@ export type Membership = {
     beneficiary: string
   }
   deprecated?: boolean
-  slots?: {
-    startTime: number
-    endTime?: number
-    memberCount?: number
-  }
+  memberCount?: number
+}
+
+export type Collection = {
+  id: string
+  name: string
+  imageSrc: string
+  startTime?: number
+  isTimeLimitedCollection: boolean
+  endTime?: number
+  description: string
+  memberships: Membership[]
 }
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async () => []
@@ -41,30 +50,82 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
   { name },
   { getPluginConfigById }
 ) => {
-  const [membershipConfig] = getPluginConfigById(
-    'devprotocol:clubs:simple-memberships'
+  const [collectionsConfig] = getPluginConfigById(
+    'devprotocol:clubs:collections'
   )
 
-  const memberships =
-    (membershipConfig?.options.find(
-      (opt: ClubsPluginOption) => opt.key === 'memberships'
-    )?.value as UndefinedOr<Membership[]>) ?? []
+  const presetTimeCollection: Collection = {
+    id: 'preset-time-collection',
+    name: 'My First Collection',
+    imageSrc: 'https://i.ibb.co/RbxFzn8/img.jpg',
+    description: 'This is a time-limited collection.',
+    isTimeLimitedCollection: true,
+    startTime: 0,
+    endTime: 0,
+    memberships: [
+      {
+        id: 'preset-time-collection-membership',
+        name: 'Membership',
+        imageSrc: 'https://i.ibb.co/Kyjr50C/Image.png',
+        currency: 'USDC',
+        price: 10,
+        description: 'This is a time-limited collection.',
+        payload: utils.toUtf8Bytes('TimeLimitedCollection'),
+      },
+    ],
+  }
+
+  const presetMemberCollection: Collection = {
+    id: 'preset-member-collection',
+    name: 'My First Collection',
+    imageSrc: 'https://i.ibb.co/RbxFzn8/img.jpg',
+    description: 'This is a time-limited collection.',
+    isTimeLimitedCollection: true,
+    startTime: 0,
+    endTime: 0,
+    memberships: [
+      {
+        id: 'preset-member-collection-membership',
+        name: 'Membership',
+        imageSrc: 'https://i.ibb.co/Kyjr50C/Image.png',
+        currency: 'USDC',
+        price: 10,
+        description: 'This is a member-limited collection.',
+        payload: utils.toUtf8Bytes('TimeLimitedCollection'),
+        memberCount: 10,
+      },
+    ],
+  }
+
+  const collections =
+    (collectionsConfig?.options.find(
+      (opt: ClubsPluginOption) => opt.key === 'collections'
+    )?.value as UndefinedOr<Collection[]>) ?? []
+
+  const memberships = collections.flatMap(
+    (collection) => collection.memberships
+  ) as UndefinedOr<Membership[]>
 
   return [
     {
       paths: ['collections'],
       component: Admin,
-      props: { memberships },
+      props: {collections},
     },
+    ...(collections.map((collection) => ({
+      paths: ['collections', collection.id],
+      component: AdminEdit,
+      props: { collection, collections, name },
+    }))?? []),
     {
       paths: ['collections', 'new'],
       component: AdminNew,
-      props: { isTimeLimitedCollection: false, memberships, name },
+      props: { isTimeLimitedCollection: false, preset: presetMemberCollection, collections, name },
     },
     {
       paths: ['collections', 'new', 'time-limited-collection'],
       component: AdminNew,
-      props: { isTimeLimitedCollection: true, memberships, name },
+      props: { isTimeLimitedCollection: true, preset: presetTimeCollection, collections, name },
     },
   ]
 }
