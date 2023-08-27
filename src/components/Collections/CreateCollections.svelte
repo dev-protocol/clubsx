@@ -213,7 +213,7 @@
                   percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
                 },
           },
-        ]
+        ],
       }
       // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
       update()
@@ -234,7 +234,7 @@
 
     // Update the membership state.
     collection = {
-      ...collection, 
+      ...collection,
       memberships: [
         ...collection.memberships.filter(
           (m: Membership) => m.id !== selectedMembership.id
@@ -250,8 +250,8 @@
                 percentage: membershipCustomFee,
                 beneficiary: ZeroAddress, // TODO: change this to default value
               },
-        }
-      ]
+        },
+      ],
     }
 
     // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
@@ -274,12 +274,15 @@
     }
   }
 
-  const changeMembershipPaymentType = async (selectedMembership: Membership, type: MembershipPaymentType) => {
+  const changeMembershipPaymentType = async (
+    selectedMembership: Membership,
+    type: MembershipPaymentType
+  ) => {
     if (selectedMembership.currency === 'DEV') {
       // Update the membership fee in case of currency change to dev token.
       membershipPaymentType = 'custom'
       membershipCustomFee = 0
-      
+
       collection = {
         ...collection,
         memberships: [
@@ -297,8 +300,8 @@
                   percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
                   beneficiary: ZeroAddress, // TODO: change this to default value
                 },
-          }
-        ]
+          },
+        ],
       }
 
       update() // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
@@ -324,13 +327,13 @@
                   percentage: PAYMENT_TYPE_INSTANT_FEE,
                   beneficiary: ZeroAddress, // TODO: change this to default value
                 },
-          }
-        ]
+          },
+        ],
       }
     }
 
     if (type === 'stake') {
-    // Update the membership state directly
+      // Update the membership state directly
       collection = {
         ...collection,
         memberships: [
@@ -348,8 +351,8 @@
                   percentage: PAYMENT_TYPE_STAKE_FEE,
                   beneficiary: ZeroAddress, // TODO: change this to default value
                 },
-          }
-        ]
+          },
+        ],
       }
     }
 
@@ -371,8 +374,8 @@
                   percentage: membershipCustomFee,
                   beneficiary: ZeroAddress, // TODO: change this to default value
                 },
-          }
-        ]
+          },
+        ],
       }
     }
 
@@ -454,7 +457,6 @@
       return
     }
   }
-
 </script>
 
 <form on:change|preventDefault={() => update()} class="w-full">
