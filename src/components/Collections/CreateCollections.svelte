@@ -9,7 +9,7 @@
     PAYMENT_TYPE_INSTANT_FEE,
     PAYMENT_TYPE_STAKE_FEE,
   } from '@constants/memberships'
-  import {formatUnixTimestamp} from '@plugins/collections/fixtures'
+  import { formatUnixTimestamp } from '@plugins/collections/fixtures'
 
   import { utils } from 'ethers'
   export let existingCollections: Collection[] = []
