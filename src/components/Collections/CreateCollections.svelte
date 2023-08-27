@@ -20,21 +20,8 @@
 
   const ZeroAddress = '0x000000000'
 
-  let membership: Membership = {
-    id: 'preset-community',
-    name: `Alice's`,
-    description: `Always be with Alice! This membership gives you access to an exclusive Discord, where you can participate in monthly community hours and view hand-drawn illustrations and posts.`,
-    price: 1,
-    imageSrc: 'https://i.imgur.com/sznqcmL.png',
-    currency: 'ETH',
-    payload: utils.toUtf8Bytes('Community'),
-    fee: {
-      percentage: 20,
-      beneficiary: ZeroAddress,
-    },
-  }
-
   export let mode: 'edit' | 'create' = 'create'
+  export let propertyAddress: string | null | undefined = undefined
 
   type MembershipPaymentType = 'instant' | 'stake' | 'custom' | ''
 
@@ -48,7 +35,7 @@
   let invalidFeeMsg: string = ''
   let invalidTimeMsg: string = ''
 
-  const originalId = membership.id
+  const originalId = collection.id
 
   let endTimeValue: Date = new Date(collection.endTime || '')
 
@@ -173,15 +160,16 @@
         ...collection,
         startTime: currentTime,
       }
-      invalidTimeMsg = 'Start time cannot be in the past'
+      invalidTimeMsg = 'Start time cannot be in the past setting to now'
     }
+    collection = collection
   }
 
   const onEndTimeChange = async () => {
     const value = endTimeValue || 0
     const unixTimestamp = new Date(value).getTime() / 1000
-    if (unixTimestamp < Date.now() / 1000) {
-      const currentTime = Date.now() / 1000
+    const currentTime = Date.now() / 1000
+    if (unixTimestamp < currentTime) {
       const twoMinutes = 120
       collection = {
         ...collection,
@@ -201,25 +189,32 @@
     }
   }
 
-  const onChangeCustomFee = async () => {
-    if (membership.currency === 'DEV') {
+  const onChangeCustomFee = async (selectedMembership: Membership) => {
+    if (selectedMembership.currency === 'DEV') {
       // Update the membership fee in case of currency change to dev token.
       membershipPaymentType = 'custom'
       membershipCustomFee = 0
       invalidFeeMsg = ''
-      membership = {
-        ...membership,
-        fee: membership.fee
-          ? {
-              ...membership.fee,
-              percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
-            }
-          : {
-              beneficiary: ZeroAddress, // TODO: change this to default value
-              percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
-            },
+      collection = {
+        ...collection,
+        memberships: [
+          ...collection.memberships.filter(
+            (m: Membership) => m.id !== selectedMembership.id
+          ),
+          {
+            ...selectedMembership,
+            fee: selectedMembership.fee
+              ? {
+                  ...selectedMembership.fee,
+                  percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
+                }
+              : {
+                  beneficiary: ZeroAddress, // TODO: change this to default value
+                  percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
+                },
+          },
+        ]
       }
-
       // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
       update()
       return
@@ -238,17 +233,25 @@
     }
 
     // Update the membership state.
-    membership = {
-      ...membership,
-      fee: membership.fee
-        ? {
-            ...membership.fee,
-            percentage: membershipCustomFee,
-          }
-        : {
-            percentage: membershipCustomFee,
-            beneficiary: ZeroAddress, // TODO: change this to default value
-          },
+    collection = {
+      ...collection, 
+      memberships: [
+        ...collection.memberships.filter(
+          (m: Membership) => m.id !== selectedMembership.id
+        ),
+        {
+          ...selectedMembership,
+          fee: selectedMembership.fee
+            ? {
+                ...selectedMembership.fee,
+                percentage: membershipCustomFee,
+              }
+            : {
+                percentage: membershipCustomFee,
+                beneficiary: ZeroAddress, // TODO: change this to default value
+              },
+        }
+      ]
     }
 
     // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
@@ -271,22 +274,31 @@
     }
   }
 
-  const changeMembershipPaymentType = async (type: MembershipPaymentType) => {
-    if (membership.currency === 'DEV') {
+  const changeMembershipPaymentType = async (selectedMembership: Membership, type: MembershipPaymentType) => {
+    if (selectedMembership.currency === 'DEV') {
       // Update the membership fee in case of currency change to dev token.
       membershipPaymentType = 'custom'
       membershipCustomFee = 0
-      membership = {
-        ...membership,
-        fee: membership.fee
-          ? {
-              ...membership.fee,
-              percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
-            }
-          : {
-              percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
-              beneficiary: ZeroAddress, // TODO: change this to default value
-            },
+      
+      collection = {
+        ...collection,
+        memberships: [
+          ...collection.memberships.filter(
+            (m: Membership) => m.id !== selectedMembership.id
+          ),
+          {
+            ...selectedMembership,
+            fee: selectedMembership.fee
+              ? {
+                  ...selectedMembership.fee,
+                  percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
+                }
+              : {
+                  percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
+                  beneficiary: ZeroAddress, // TODO: change this to default value
+                },
+          }
+        ]
       }
 
       update() // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
@@ -295,48 +307,72 @@
 
     if (type === 'instant') {
       // Update the membership state directly
-      membership = {
-        ...membership,
-        fee: membership.fee
-          ? {
-              ...membership.fee,
-              percentage: PAYMENT_TYPE_INSTANT_FEE,
-            }
-          : {
-              percentage: PAYMENT_TYPE_INSTANT_FEE,
-              beneficiary: ZeroAddress, // TODO: change this to default value
-            },
+      collection = {
+        ...collection,
+        memberships: [
+          ...collection.memberships.filter(
+            (m: Membership) => m.id !== selectedMembership.id
+          ),
+          {
+            ...selectedMembership,
+            fee: selectedMembership.fee
+              ? {
+                  ...selectedMembership.fee,
+                  percentage: PAYMENT_TYPE_INSTANT_FEE,
+                }
+              : {
+                  percentage: PAYMENT_TYPE_INSTANT_FEE,
+                  beneficiary: ZeroAddress, // TODO: change this to default value
+                },
+          }
+        ]
       }
     }
 
-    // Update the membership state directly
     if (type === 'stake') {
-      membership = {
-        ...membership,
-        fee: membership.fee
-          ? {
-              ...membership.fee,
-              percentage: PAYMENT_TYPE_STAKE_FEE,
-            }
-          : {
-              percentage: PAYMENT_TYPE_STAKE_FEE,
-              beneficiary: ZeroAddress, // TODO: change this to default value
-            },
+    // Update the membership state directly
+      collection = {
+        ...collection,
+        memberships: [
+          ...collection.memberships.filter(
+            (m: Membership) => m.id !== selectedMembership.id
+          ),
+          {
+            ...selectedMembership,
+            fee: selectedMembership.fee
+              ? {
+                  ...selectedMembership.fee,
+                  percentage: PAYMENT_TYPE_STAKE_FEE,
+                }
+              : {
+                  percentage: PAYMENT_TYPE_STAKE_FEE,
+                  beneficiary: ZeroAddress, // TODO: change this to default value
+                },
+          }
+        ]
       }
     }
 
     if (type === 'custom') {
-      membership = {
-        ...membership,
-        fee: membership.fee
-          ? {
-              ...membership.fee,
-              percentage: membershipCustomFee,
-            }
-          : {
-              percentage: membershipCustomFee,
-              beneficiary: ZeroAddress, // TODO: change this to default value
-            },
+      collection = {
+        ...collection,
+        memberships: [
+          ...collection.memberships.filter(
+            (m: Membership) => m.id !== selectedMembership.id
+          ),
+          {
+            ...selectedMembership,
+            fee: selectedMembership.fee
+              ? {
+                  ...selectedMembership.fee,
+                  percentage: membershipCustomFee,
+                }
+              : {
+                  percentage: membershipCustomFee,
+                  beneficiary: ZeroAddress, // TODO: change this to default value
+                },
+          }
+        ]
       }
     }
 
@@ -410,6 +446,15 @@
       currentPluginIndex
     )
   }
+
+  const onFinishCallback = async (ev: any) => {
+    updatingMembershipsStatus = false
+
+    if (!ev.detail.success) {
+      return
+    }
+  }
+
 </script>
 
 <form on:change|preventDefault={() => update()} class="w-full">
