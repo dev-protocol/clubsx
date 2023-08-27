@@ -24,6 +24,19 @@
   export let propertyAddress: string | null | undefined = undefined
 
   type MembershipPaymentType = 'instant' | 'stake' | 'custom' | ''
+  export let membership: Membership = {
+    id: '',
+    name: '',
+    description: '',
+    price: 0,
+    currency: 'USDC',
+    imageSrc: '',
+    fee: {
+      percentage: 0,
+      beneficiary: ZeroAddress,
+    },
+    payload: utils.randomBytes(8),
+  }
 
   let membershipPaymentType: MembershipPaymentType
   // membership.currency === 'DEV' ? 'custom' : ''
@@ -33,11 +46,10 @@
   let noOfPositions: number = 0
   let invalidPriceMsg: string = ''
   let invalidFeeMsg: string = ''
-  let invalidTimeMsg: string = ''
+  let invalidStartTimeMsg: string = ''
+  let invalidEndTimeMsg: string = ''
 
   const originalId = collection.id
-
-  let endTimeValue: Date = new Date(collection.endTime || '')
 
   let membershipExists = false
 
@@ -146,47 +158,70 @@
       ],
       currentPluginIndex
     )
-
     setTimeout(buildConfig, 50)
+  }
+
+  let formattedStartTime = formatUnixTimestamp(collection.startTime || new Date().getTime() / 1000);
+  let formattedEndTime = formatUnixTimestamp(collection.endTime || new Date().getTime() / 1000 + 120);
+  function formatUnixTimestamp(unixTimestamp: number) {
+  const date = new Date(unixTimestamp * 1000); // Convert seconds to milliseconds
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  const hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
   }
 
   const onStartTimeChange = (event: Event) => {
     // need to prevent a change if there are already members
     const value = (event.target as HTMLInputElement)?.value
-    const unixTimestamp = new Date(value).getTime() / 1000
-    if (unixTimestamp < Date.now() / 1000) {
-      const currentTime = Date.now() / 1000
+    const passedUnixTime = new Date(value).getTime() / 1000
+    const currentTime = Date.now() / 1000
+    if (passedUnixTime < Date.now() / 1000) {
       collection = {
         ...collection,
         startTime: currentTime,
       }
-      invalidTimeMsg = 'Start time cannot be in the past setting to now'
+      formattedStartTime = formatUnixTimestamp(currentTime);
+      invalidStartTimeMsg = 'Invalid start time: Minimum allowed is now.'
+    }
+    else {
+      collection = {
+        ...collection,
+        startTime: passedUnixTime,
+      }
+      formattedStartTime = formatUnixTimestamp(passedUnixTime);
+      invalidStartTimeMsg = ''
     }
     collection = collection
+    console.log(collection)
   }
 
-  const onEndTimeChange = async () => {
-    const value = endTimeValue || 0
-    const unixTimestamp = new Date(value).getTime() / 1000
+  const onEndTimeChange = async (event: Event) => {
+    const value = (event.target as HTMLInputElement)?.value
+    const passedUnixTime = new Date(value).getTime() / 1000
     const currentTime = Date.now() / 1000
-    if (unixTimestamp < currentTime) {
+    if (passedUnixTime <= currentTime) {
       const twoMinutes = 120
       collection = {
         ...collection,
         startTime: collection?.startTime || currentTime,
         endTime: currentTime + twoMinutes,
       }
-      invalidTimeMsg =
-        'End time cannot be in the past setting to 2 minutes from now'
+      formattedEndTime = formatUnixTimestamp(currentTime + twoMinutes);
+      invalidEndTimeMsg =
+        'Invalid end time: Minimum allowed is 2 minutes from now.'
     } else {
-      invalidTimeMsg = ''
-      const currentTime = Date.now() / 1000
+      invalidEndTimeMsg = ''
       collection = {
         ...collection,
         startTime: collection.startTime || currentTime,
-        endTime: currentTime,
+        endTime: passedUnixTime,
       }
+      formattedEndTime = formatUnixTimestamp(passedUnixTime);
     }
+
   }
 
   const onChangeCustomFee = async (selectedMembership: Membership) => {
@@ -383,14 +418,14 @@
     update() // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
   }
 
-  const onChangePrice = async () => {
-    const value = membership.price
+  const onChangePrice = async (selectedMembership: Membership) => {
+    const value = selectedMembership.price
 
     if (value < minPrice) {
-      membership.price = minPrice
+      selectedMembership.price = minPrice
       invalidPriceMsg = `Price automatically set to minimum allowed value- ${minPrice}`
     } else if (value > maxPrice) {
-      membership.price = maxPrice
+      selectedMembership.price = maxPrice
       invalidPriceMsg = `Price automatically set to maximum allowed value- ${maxPrice.toExponential(
         3
       )}`
@@ -398,7 +433,7 @@
       invalidPriceMsg = ''
     }
 
-    if (membership.price === 0 || !membership.price) {
+    if (selectedMembership.price === 0 || !selectedMembership.price) {
       return
     }
   }
@@ -415,24 +450,32 @@
     }
   }
 
-  const resetMembershipFee = () => {
-    if (membership.currency !== 'DEV') return
+  const resetMembershipFee = (selectedMembership: Membership) => {
+    if (selectedMembership.currency !== 'DEV') return
 
     membershipCustomFee = 0
     membershipPaymentType = 'custom'
     invalidFeeMsg = ''
     // Update the membership state.
-    membership = {
-      ...membership,
-      fee: membership.fee
-        ? {
-            ...membership.fee,
-            percentage: membershipCustomFee,
-          }
-        : {
-            percentage: membershipCustomFee,
-            beneficiary: ZeroAddress, // TODO: change this to default value
-          },
+    collection = {
+      ...collection,
+      memberships: [
+        ...collection.memberships.filter(
+          (m: Membership) => m.id !== selectedMembership.id
+        ),
+        {
+          ...selectedMembership,
+          fee: selectedMembership.fee
+            ? {
+                ...selectedMembership.fee,
+                percentage: membershipCustomFee,
+              }
+            : {
+                percentage: membershipCustomFee,
+                beneficiary: ZeroAddress, // TODO: change this to default value
+              },
+        },
+      ],
     }
   }
 
@@ -513,13 +556,18 @@
         <span class="text-base font-normal uppercase text-[#EB48F8]"> * </span>
       </div>
       <input
-        bind:value={collection.startTime}
+        bind:value={formattedStartTime}
         on:change={onStartTimeChange}
         type="datetime-local"
         class="cal w-[479px] rounded border-[3px] border-black bg-[#040B10] px-8 py-6"
         id="collectino-start-date"
         name="collection-start-date"
+        min={formatUnixTimestamp(Date.now() / 1000)}
+        max="2038-01-18T00:00"
       />
+      {#if invalidStartTimeMsg !== ''}
+      <p class="text-danger-300">* {invalidStartTimeMsg}</p>
+      {/if}
     </div>
 
     {#if isTimeLimitedCollection}
@@ -531,17 +579,17 @@
           </span>
         </div>
         <input
-          bind:value={endTimeValue}
+          bind:value={formattedEndTime}
           on:change={onEndTimeChange}
           type="datetime-local"
           class="cal w-[479px] rounded border-[3px] border-black bg-[#040B10] px-8 py-6"
           id="collectino-start-date"
           name="collection-start-date"
-          min={Date.now()}
+          min={formatUnixTimestamp(Date.now() / 1000)}
           max="2038-01-18T00:00"
         />
-        {#if invalidTimeMsg !== ''}
-          <p class="text-danger-300">* {invalidTimeMsg}</p>
+        {#if invalidEndTimeMsg !== ''}
+          <p class="text-danger-300">* {invalidEndTimeMsg}</p>
         {/if}
       </div>
     {/if}
@@ -706,7 +754,7 @@
             <input
               class="hs-form-field__input grow"
               bind:value={membership.price}
-              on:change={onChangePrice}
+              on:change={()=> onChangePrice(membership)}
               on:keyup={validateMembershipPrice}
               id="membership-price"
               name="membership-price"
@@ -721,7 +769,7 @@
               class="hs-form-field__input w-fit"
               id="membership-currency"
               disabled={membershipExists}
-              on:change={resetMembershipFee}
+              on:change={() => resetMembershipFee(membership)}
             >
               <option value="USDC">USDC</option>
               <option value="ETH">ETH</option>
@@ -744,7 +792,7 @@
           <div class="flex w-full max-w-full items-center justify-start gap-2">
             <button
               on:click|preventDefault={() =>
-                changeMembershipPaymentType('instant')}
+                changeMembershipPaymentType(membership, 'instant')}
               class={`hs-form-field__input flex max-w-[33%] grow items-center justify-center gap-2 ${
                 membershipPaymentType === 'instant' ? '!border-[#e5e7eb]' : ''
               }`}
@@ -773,7 +821,7 @@
             </button>
             <button
               on:click|preventDefault={() =>
-                changeMembershipPaymentType('stake')}
+                changeMembershipPaymentType(membership, 'stake')}
               class={`hs-form-field__input flex max-w-[33%] grow items-center justify-center gap-2 ${
                 membershipPaymentType === 'stake' ? '!border-[#e5e7eb]' : ''
               }`}
@@ -804,7 +852,7 @@
               {#if membershipPaymentType !== 'custom'}
                 <button
                   on:click|preventDefault={() =>
-                    changeMembershipPaymentType('custom')}
+                    changeMembershipPaymentType(membership, 'custom')}
                   class="hs-form-field__input w-full max-w-full"
                   id="membership-fee-custom"
                   name="membership-fee-custom"
@@ -814,7 +862,7 @@
               {#if membershipPaymentType === 'custom'}
                 <input
                   bind:value={membershipCustomFee}
-                  on:change={onChangeCustomFee}
+                  on:change={() => onChangeCustomFee(membership)}
                   on:keyup={validateCustomMembershipFee}
                   class={`hs-form-field__input w-full max-w-full ${
                     membershipPaymentType === 'custom'
