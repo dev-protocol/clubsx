@@ -38,10 +38,10 @@
 
   type MembershipPaymentType = 'instant' | 'stake' | 'custom' | ''
 
-  let membershipPaymentType: MembershipPaymentType 
-    // membership.currency === 'DEV' ? 'custom' : ''
+  let membershipPaymentType: MembershipPaymentType
+  // membership.currency === 'DEV' ? 'custom' : ''
   let membershipCustomFee: number
-    // membership.currency === 'DEV' ? DEV_TOKEN_PAYMENT_TYPE_FEE : 0
+  // membership.currency === 'DEV' ? DEV_TOKEN_PAYMENT_TYPE_FEE : 0
   let updatingMembershipsStatus: boolean = false
   let noOfPositions: number = 0
   let invalidPriceMsg: string = ''
@@ -91,7 +91,6 @@
     update()
   }
 
-
   const deleteMembership = (selectedMembership: Membership) => {
     updatingMembershipsStatus = true
 
@@ -115,7 +114,7 @@
                 ),
                 { ...membership, deprecated: true },
               ],
-            }
+            },
           ],
         },
       ],
@@ -125,7 +124,10 @@
     setTimeout(buildConfig, 50)
   }
 
-  const activateMembership = (selectedCollection: Collection, selectedMembership: Membership) => {
+  const activateMembership = (
+    selectedCollection: Collection,
+    selectedMembership: Membership
+  ) => {
     updatingMembershipsStatus = true
 
     const membership = selectedCollection.memberships.find(
@@ -183,8 +185,8 @@
       const twoMinutes = 120
       collection = {
         ...collection,
-          startTime: collection?.startTime || currentTime,
-          endTime: currentTime + twoMinutes,
+        startTime: collection?.startTime || currentTime,
+        endTime: currentTime + twoMinutes,
       }
       invalidTimeMsg =
         'End time cannot be in the past setting to 2 minutes from now'
@@ -421,11 +423,11 @@
         <span class="font-body text-[#EB48F8]"> * </span>
       </div>
       <input
-          bind:value={collection.name}
-          on:change={onCollectionChangeName}
-          class="w-[479px] rounded border-[3px] border-black bg-[#040B10] px-8 py-6"
-          id="collection-name"
-          name="collection-name"
+        bind:value={collection.name}
+        on:change={onCollectionChangeName}
+        class="w-[479px] rounded border-[3px] border-black bg-[#040B10] px-8 py-6"
+        id="collection-name"
+        name="collection-name"
       />
     </div>
     <!-- collection cover image uploader-->

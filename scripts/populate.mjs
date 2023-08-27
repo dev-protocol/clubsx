@@ -956,7 +956,7 @@ const populate = async () => {
                           7: 197,
                         },
                       },
-                    ]
+                    ],
                   },
                   {
                     id: 'preset-collections-1',
@@ -1004,13 +1004,13 @@ const populate = async () => {
                         },
                         memberCount: 100,
                       },
-                    ]
-                  }
+                    ],
+                  },
                 ],
-              }
+              },
             ],
             id: 'devprotocol:clubs:collections',
-          }
+          },
         ],
       })
     )

@@ -110,22 +110,32 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
     {
       paths: ['collections'],
       component: Admin,
-      props: {collections},
+      props: { collections },
     },
     ...(collections.map((collection) => ({
       paths: ['collections', collection.id],
       component: AdminEdit,
       props: { collection, collections, name },
-    }))?? []),
+    })) ?? []),
     {
       paths: ['collections', 'new'],
       component: AdminNew,
-      props: { isTimeLimitedCollection: false, preset: presetMemberCollection, collections, name },
+      props: {
+        isTimeLimitedCollection: false,
+        preset: presetMemberCollection,
+        collections,
+        name,
+      },
     },
     {
       paths: ['collections', 'new', 'time-limited-collection'],
       component: AdminNew,
-      props: { isTimeLimitedCollection: true, preset: presetTimeCollection, collections, name },
+      props: {
+        isTimeLimitedCollection: true,
+        preset: presetTimeCollection,
+        collections,
+        name,
+      },
     },
   ]
 }

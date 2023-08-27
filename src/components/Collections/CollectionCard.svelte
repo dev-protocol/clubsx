@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Collection,Membership } from '@plugins/collections'
+  import type { Collection, Membership } from '@plugins/collections'
   export let collections: Collection[] = []
 </script>
 
@@ -19,17 +19,17 @@
         <p class="text-center text-3xl font-normal text-black">
           {collection.name}
         </p>
-        <div class={
-          `flex flex-col items-start gap-2.5 rounded px-2.5  
-          ${collection.isTimeLimitedCollection
-            ? 'bg-[#6D9BFF]'
-            : 'bg-[#FFC751]'}`
-        }>
-          <p class="text-center text-lg font-medium text-black">{
-            collection.isTimeLimitedCollection
+        <div
+          class={`flex flex-col items-start gap-2.5 rounded px-2.5  
+          ${
+            collection.isTimeLimitedCollection ? 'bg-[#6D9BFF]' : 'bg-[#FFC751]'
+          }`}
+        >
+          <p class="text-center text-lg font-medium text-black">
+            {collection.isTimeLimitedCollection
               ? 'Time Limited'
-              : 'Limited Amount'
-            }</p>
+              : 'Limited Amount'}
+          </p>
         </div>
         <p class="text-ellipsis text-base font-normal text-black">
           {collection.description}

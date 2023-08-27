@@ -55,10 +55,7 @@ const existingCollections = true
     existingCollections ? (
       <div class="mt-16 flex flex-col">
         <h2 class="mb-16 text-[32px] font-normal">Existing collections</h2>
-        <CollectionCard
-          collections={collections}
-          client:only="svelte"
-        />
+        <CollectionCard collections={collections} client:only="svelte" />
       </div>
     ) : null
   }
