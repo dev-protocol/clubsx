@@ -161,16 +161,20 @@
     setTimeout(buildConfig, 50)
   }
 
-  let formattedStartTime = formatUnixTimestamp(collection.startTime || new Date().getTime() / 1000);
-  let formattedEndTime = formatUnixTimestamp(collection.endTime || new Date().getTime() / 1000 + 120);
+  let formattedStartTime = formatUnixTimestamp(
+    collection.startTime || new Date().getTime() / 1000
+  )
+  let formattedEndTime = formatUnixTimestamp(
+    collection.endTime || new Date().getTime() / 1000 + 120
+  )
   function formatUnixTimestamp(unixTimestamp: number) {
-  const date = new Date(unixTimestamp * 1000); // Convert seconds to milliseconds
-  const year = date.getFullYear();
-  const month = (date.getMonth() + 1).toString().padStart(2, '0');
-  const day = date.getDate().toString().padStart(2, '0');
-  const hours = date.getHours().toString().padStart(2, '0');
-  const minutes = date.getMinutes().toString().padStart(2, '0');
-  return `${year}-${month}-${day}T${hours}:${minutes}`;
+    const date = new Date(unixTimestamp * 1000) // Convert seconds to milliseconds
+    const year = date.getFullYear()
+    const month = (date.getMonth() + 1).toString().padStart(2, '0')
+    const day = date.getDate().toString().padStart(2, '0')
+    const hours = date.getHours().toString().padStart(2, '0')
+    const minutes = date.getMinutes().toString().padStart(2, '0')
+    return `${year}-${month}-${day}T${hours}:${minutes}`
   }
 
   const onStartTimeChange = (event: Event) => {
@@ -183,15 +187,14 @@
         ...collection,
         startTime: currentTime,
       }
-      formattedStartTime = formatUnixTimestamp(currentTime);
+      formattedStartTime = formatUnixTimestamp(currentTime)
       invalidStartTimeMsg = 'Invalid start time: Minimum allowed is now.'
-    }
-    else {
+    } else {
       collection = {
         ...collection,
         startTime: passedUnixTime,
       }
-      formattedStartTime = formatUnixTimestamp(passedUnixTime);
+      formattedStartTime = formatUnixTimestamp(passedUnixTime)
       invalidStartTimeMsg = ''
     }
     collection = collection
@@ -209,7 +212,7 @@
         startTime: collection?.startTime || currentTime,
         endTime: currentTime + twoMinutes,
       }
-      formattedEndTime = formatUnixTimestamp(currentTime + twoMinutes);
+      formattedEndTime = formatUnixTimestamp(currentTime + twoMinutes)
       invalidEndTimeMsg =
         'Invalid end time: Minimum allowed is 2 minutes from now.'
     } else {
@@ -219,9 +222,8 @@
         startTime: collection.startTime || currentTime,
         endTime: passedUnixTime,
       }
-      formattedEndTime = formatUnixTimestamp(passedUnixTime);
+      formattedEndTime = formatUnixTimestamp(passedUnixTime)
     }
-
   }
 
   const onChangeCustomFee = async (selectedMembership: Membership) => {
@@ -566,7 +568,7 @@
         max="2038-01-18T00:00"
       />
       {#if invalidStartTimeMsg !== ''}
-      <p class="text-danger-300">* {invalidStartTimeMsg}</p>
+        <p class="text-danger-300">* {invalidStartTimeMsg}</p>
       {/if}
     </div>
 
@@ -754,7 +756,7 @@
             <input
               class="hs-form-field__input grow"
               bind:value={membership.price}
-              on:change={()=> onChangePrice(membership)}
+              on:change={() => onChangePrice(membership)}
               on:keyup={validateMembershipPrice}
               id="membership-price"
               name="membership-price"
