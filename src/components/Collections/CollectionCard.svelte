@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Collection, Membership } from '@plugins/collections'
+  import type { Collection} from '@plugins/collections'
   export let collections: Collection[] = []
 </script>
 

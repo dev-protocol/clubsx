@@ -1,18 +1,21 @@
 ---
 import CreateCollections from '@components/Collections/CreateCollections.svelte'
-import type { Collection, Membership } from '@plugins/collections'
+import type { Collection} from '@plugins/collections'
 import type { ClubsPropsAdminPages } from '@devprotocol/clubs-core'
 
 const {
   collection,
+  rpcUrl,
+  propertyAddress,
   collections = [],
-  memberships = [],
   name,
   clubs,
 } = Astro.props as ClubsPropsAdminPages & {
   collection: Collection
+  isTimeLimitedCollection: boolean
+  rpcUrl: string
+  propertyAddress: string
   collections: Collection[]
-  memberships: Membership[]
   name: string
 }
 ---
@@ -22,11 +25,13 @@ const {
 
   <CreateCollections
     client:only="svelte"
+    mode="edit"
     existingCollections={collections}
-    existingMemberships={[...memberships, ...memberships, ...memberships]}
+    collection={collection}
     isTimeLimitedCollection={collection.isTimeLimitedCollection}
     clubName={name}
-    mode="edit"
     currentPluginIndex={clubs.currentPluginIndex}
+    propertyAddress={propertyAddress}
+    rpcUrl={rpcUrl}
   />
 </div>
