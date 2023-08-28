@@ -1,0 +1,32 @@
+---
+import CreateCollections from '@components/Collections/CreateCollections.svelte'
+import type { Collection, Membership } from '@plugins/collections'
+import type { ClubsPropsAdminPages } from '@devprotocol/clubs-core'
+
+const {
+  collection,
+  collections = [],
+  memberships = [],
+  name,
+  clubs,
+} = Astro.props as ClubsPropsAdminPages & {
+  collection: Collection
+  collections: Collection[]
+  memberships: Membership[]
+  name: string
+}
+---
+
+<div>
+  <h1 class="mb-[62px] font-title text-2xl font-bold">Your Clubs Store</h1>
+
+  <CreateCollections
+    client:only="svelte"
+    existingCollections={collections}
+    existingMemberships={[...memberships, ...memberships, ...memberships]}
+    isTimeLimitedCollection={collection.isTimeLimitedCollection}
+    clubName={name}
+    mode="edit"
+    currentPluginIndex={clubs.currentPluginIndex}
+  />
+</div>

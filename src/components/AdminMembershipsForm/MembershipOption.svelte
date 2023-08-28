@@ -9,6 +9,7 @@
   export let id: string
   export let ethPrice: UndefinedOr<string> = undefined
   export let devPrice: UndefinedOr<string> = undefined
+  export let usdcPrice: UndefinedOr<string> = undefined
   export let description: string | undefined = undefined
   export let action: string | undefined = undefined
   export let actionLabel: string | undefined = undefined
@@ -79,6 +80,13 @@
           class="grid grid-cols-[auto_1fr] items-center gap-1 text-sm opacity-70"
         >
           <span class="truncate">{devPrice}</span> DEV
+        </p>
+      {/if}
+      {#if usdcPrice}
+        <p
+          class="grid grid-cols-[auto_1fr] items-center gap-1 text-sm opacity-70"
+        >
+          <span class="truncate">{usdcPrice}</span> USDC
         </p>
       {/if}
     </div>
@@ -156,6 +164,9 @@
         {/if}
         {#if devPrice}
           <p class="text-2xl font-bold">{devPrice} DEV</p>
+        {/if}
+        {#if usdcPrice}
+          <p class="text-2xl font-bold">{usdcPrice} USDC</p>
         {/if}
 
         {#if action && actionLabel}
