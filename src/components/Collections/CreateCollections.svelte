@@ -234,6 +234,14 @@
       membershipPaymentType = 'custom'
       membershipCustomFee = 0
       invalidFeeMsg = ''
+      selectedMembership = {
+        ...membership,
+        fee: {
+          beneficiary: currentAddress ?? ZeroAddress,
+          percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
+        },
+        paymentType: 'custom'
+      }
       collection = {
         ...collection,
         memberships: [
@@ -241,19 +249,11 @@
             (m: CollectionMembership) => m.id !== selectedMembership.id
           ),
           {
-            ...selectedMembership,
-            fee: selectedMembership.fee
-              ? {
-                  ...selectedMembership.fee,
-                  percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
-                }
-              : {
-                  beneficiary: ZeroAddress, // TODO: change this to default value
-                  percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
-                },
+            ...selectedMembership
           },
         ],
       }
+      membership = selectedMembership
       // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
       update()
       return
@@ -272,6 +272,14 @@
     }
 
     // Update the membership state.
+    selectedMembership = {
+      ...membership,
+      fee: {
+          percentage: membershipCustomFee,
+          beneficiary: currentAddress ?? ZeroAddress,
+        },
+      paymentType: 'custom'
+    }
     collection = {
       ...collection,
       memberships: [
@@ -279,19 +287,11 @@
           (m: CollectionMembership) => m.id !== selectedMembership.id
         ),
         {
-          ...selectedMembership,
-          fee: selectedMembership.fee
-            ? {
-                ...selectedMembership.fee,
-                percentage: membershipCustomFee,
-              }
-            : {
-                percentage: membershipCustomFee,
-                beneficiary: ZeroAddress, // TODO: change this to default value
-              },
+          ...selectedMembership
         },
       ],
     }
+    membership = selectedMembership
 
     // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
     update()
