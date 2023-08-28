@@ -17,7 +17,7 @@ import type { UndefinedOr } from '@devprotocol/util-ts'
 import { ZeroAddress, randomBytes, toUtf8Bytes } from 'ethers'
 import type { Membership } from '@plugins/memberships'
 
-export type CollectionMembership = Membership &{
+export type CollectionMembership = Membership & {
   memberCount?: number
 }
 
