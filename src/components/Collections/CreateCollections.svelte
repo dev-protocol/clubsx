@@ -1,7 +1,7 @@
 <script lang="ts">
   import { ClubsEvents, setOptions } from '@devprotocol/clubs-core'
   import { buildConfig, controlModal } from '@devprotocol/clubs-core/events'
-  import type { Collection, Membership } from '@plugins/collections'
+  import type { Collection, CollectionMembership } from '@plugins/collections'
   import MembershipOption from '@components/AdminMembershipsForm/MembershipOption.svelte'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import {
@@ -32,13 +32,15 @@
   let currentAddress: string | undefined
 
   type MembershipPaymentType = 'instant' | 'stake' | 'custom' | ''
-  export let membership: Membership = {
+  // note: treat this variable as state variable which stores the state for memberships edits and also for storing in DB
+  export let membership: CollectionMembership = {
     id: '',
     name: '',
     description: '',
     price: 0,
     currency: 'USDC',
     imageSrc: '',
+    paymentType: 'instant',
     fee: {
       percentage: 0,
       beneficiary: ZeroAddress,
@@ -99,11 +101,11 @@
     update()
   }
 
-  const deleteMembership = (selectedMembership: Membership) => {
+  const deleteMembership = (selectedMembership: CollectionMembership) => {
     updatingMembershipsStatus = true
 
     const membership = collection.memberships.find(
-      (m: Membership) =>
+      (m: CollectionMembership) =>
         m.id === selectedMembership.id &&
         m.name === selectedMembership.name &&
         JSON.stringify(m.payload) === JSON.stringify(selectedMembership.payload)
@@ -118,7 +120,7 @@
               ...collection,
               memberships: [
                 ...collection.memberships.filter(
-                  (m: Membership) => m.id !== selectedMembership.id
+                  (m: CollectionMembership) => m.id !== selectedMembership.id
                 ),
                 { ...membership, deprecated: true },
               ],
@@ -134,12 +136,12 @@
 
   const activateMembership = (
     selectedCollection: Collection,
-    selectedMembership: Membership
+    selectedMembership: CollectionMembership
   ) => {
     updatingMembershipsStatus = true
 
     const membership = selectedCollection.memberships.find(
-      (m: Membership) =>
+      (m: CollectionMembership) =>
         m.id === selectedMembership.id &&
         m.name === selectedMembership.name &&
         JSON.stringify(m.payload) === JSON.stringify(selectedMembership.payload)
@@ -157,7 +159,7 @@
               ...selectedCollection,
               memberships: [
                 ...selectedCollection.memberships.filter(
-                  (m: Membership) => m.id !== selectedMembership.id
+                  (m: CollectionMembership) => m.id !== selectedMembership.id
                 ),
                 { ...membership, deprecated: false },
               ],
@@ -198,7 +200,6 @@
       invalidStartTimeMsg = ''
     }
     collection = collection
-    console.log(collection)
   }
 
   const onEndTimeChange = async (event: Event) => {
@@ -226,7 +227,8 @@
     }
   }
 
-  const onChangeCustomFee = async (selectedMembership: Membership) => {
+  const onChangeCustomFee = async (selectedMembership: CollectionMembership) => {
+    console.log('Memberhsip fee before', membership.fee)
     if (selectedMembership.currency === 'DEV') {
       // Update the membership fee in case of currency change to dev token.
       membershipPaymentType = 'custom'
@@ -236,7 +238,7 @@
         ...collection,
         memberships: [
           ...collection.memberships.filter(
-            (m: Membership) => m.id !== selectedMembership.id
+            (m: CollectionMembership) => m.id !== selectedMembership.id
           ),
           {
             ...selectedMembership,
@@ -274,7 +276,7 @@
       ...collection,
       memberships: [
         ...collection.memberships.filter(
-          (m: Membership) => m.id !== selectedMembership.id
+          (m: CollectionMembership) => m.id !== selectedMembership.id
         ),
         {
           ...selectedMembership,
@@ -312,115 +314,114 @@
   }
 
   const changeMembershipPaymentType = async (
-    selectedMembership: Membership,
+    selectedMembership: CollectionMembership,
     type: MembershipPaymentType
   ) => {
     if (selectedMembership.currency === 'DEV') {
       // Update the membership fee in case of currency change to dev token.
       membershipPaymentType = 'custom'
       membershipCustomFee = 0
-
+      selectedMembership = {
+        ...membership,
+        fee: {
+          percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
+          beneficiary: currentAddress ?? ZeroAddress,
+        },
+        paymentType: 'custom'
+      }
       collection = {
         ...collection,
         memberships: [
           ...collection.memberships.filter(
-            (m: Membership) => m.id !== selectedMembership.id
+            (m: CollectionMembership) => m.id !== selectedMembership.id
           ),
           {
-            ...selectedMembership,
-            fee: selectedMembership.fee
-              ? {
-                  ...selectedMembership.fee,
-                  percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
-                }
-              : {
-                  percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
-                  beneficiary: ZeroAddress, // TODO: change this to default value
-                },
+            ...selectedMembership
           },
         ],
       }
 
+      membership = selectedMembership
       update() // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
       return
     }
 
     if (type === 'instant') {
       // Update the membership state directly
+      selectedMembership = {
+        ...membership,
+        fee: {
+          percentage: PAYMENT_TYPE_INSTANT_FEE,
+          beneficiary: currentAddress ?? ZeroAddress,
+        },
+        paymentType: 'instant'
+      }
       collection = {
         ...collection,
         memberships: [
           ...collection.memberships.filter(
-            (m: Membership) => m.id !== selectedMembership.id
+            (m: CollectionMembership) => m.id !== selectedMembership.id
           ),
           {
-            ...selectedMembership,
-            fee: selectedMembership.fee
-              ? {
-                  ...selectedMembership.fee,
-                  percentage: PAYMENT_TYPE_INSTANT_FEE,
-                }
-              : {
-                  percentage: PAYMENT_TYPE_INSTANT_FEE,
-                  beneficiary: ZeroAddress, // TODO: change this to default value
-                },
+            ...selectedMembership
           },
         ],
       }
+      membership = selectedMembership
     }
 
     if (type === 'stake') {
       // Update the membership state directly
+      selectedMembership = {
+        ...membership,
+        fee: {
+          percentage: PAYMENT_TYPE_STAKE_FEE,
+          beneficiary: currentAddress ?? ZeroAddress,
+        },
+        paymentType: 'stake'
+      }
       collection = {
         ...collection,
         memberships: [
           ...collection.memberships.filter(
-            (m: Membership) => m.id !== selectedMembership.id
+            (m: CollectionMembership) => m.id !== selectedMembership.id
           ),
           {
-            ...selectedMembership,
-            fee: selectedMembership.fee
-              ? {
-                  ...selectedMembership.fee,
-                  percentage: PAYMENT_TYPE_STAKE_FEE,
-                }
-              : {
-                  percentage: PAYMENT_TYPE_STAKE_FEE,
-                  beneficiary: ZeroAddress, // TODO: change this to default value
-                },
+            ...selectedMembership
           },
         ],
       }
+      membership = selectedMembership
     }
 
     if (type === 'custom') {
+      selectedMembership = {
+        ...membership,
+        fee: {
+          percentage: membershipCustomFee,
+          beneficiary: currentAddress ?? ZeroAddress,
+        },
+        paymentType: 'custom'
+      }
       collection = {
         ...collection,
         memberships: [
           ...collection.memberships.filter(
-            (m: Membership) => m.id !== selectedMembership.id
+            (m: CollectionMembership) => m.id !== selectedMembership.id
           ),
           {
-            ...selectedMembership,
-            fee: selectedMembership.fee
-              ? {
-                  ...selectedMembership.fee,
-                  percentage: membershipCustomFee,
-                }
-              : {
-                  percentage: membershipCustomFee,
-                  beneficiary: ZeroAddress, // TODO: change this to default value
-                },
+            ...selectedMembership
           },
         ],
       }
+      membership = selectedMembership
     }
 
     membershipPaymentType = type
     update() // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
   }
 
-  const onChangePrice = async (selectedMembership: Membership) => {
+  const onChangePrice = async (selectedMembership: CollectionMembership) => {
     const value = selectedMembership.price
 
     if (value < minPrice) {
@@ -452,33 +453,33 @@
     }
   }
 
-  const resetMembershipFee = (selectedMembership: Membership) => {
+  const resetMembershipFee = (selectedMembership: CollectionMembership) => {
     if (selectedMembership.currency !== 'DEV') return
 
     membershipCustomFee = 0
     membershipPaymentType = 'custom'
     invalidFeeMsg = ''
     // Update the membership state.
+    selectedMembership = {
+      ...membership,
+      fee: {
+          percentage: membershipCustomFee,
+          beneficiary: currentAddress ?? ZeroAddress,
+        },
+      paymentType: 'custom'
+    }
     collection = {
       ...collection,
       memberships: [
         ...collection.memberships.filter(
-          (m: Membership) => m.id !== selectedMembership.id
+          (m: CollectionMembership) => m.id !== selectedMembership.id
         ),
         {
-          ...selectedMembership,
-          fee: selectedMembership.fee
-            ? {
-                ...selectedMembership.fee,
-                percentage: membershipCustomFee,
-              }
-            : {
-                percentage: membershipCustomFee,
-                beneficiary: ZeroAddress, // TODO: change this to default value
-              },
+          ...selectedMembership
         },
       ],
     }
+    membership = selectedMembership
   }
 
   const setIsAdding = (value: boolean) => {
@@ -501,7 +502,7 @@
     if (!ev.detail.success) {
       return
     }
-    const memOpts = collection.memberships as Membership[]
+    const memOpts = collection.memberships as CollectionMembership[]
     const propAddress = propertyAddress
 
     if (!currentAddress || !signer || !propAddress) {

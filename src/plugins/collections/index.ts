@@ -15,20 +15,9 @@ import Preview1 from './assets/limited-number-of-items.svg'
 import Preview2 from './assets/time-limited-collection.svg'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import { ZeroAddress, randomBytes, toUtf8Bytes } from 'ethers'
+import type { Membership } from '@plugins/memberships'
 
-export type Membership = {
-  id: string
-  name: string
-  description: string
-  price: number
-  currency: 'DEV' | 'ETH' | 'USDC'
-  imageSrc: string
-  payload: Uint8Array
-  fee?: {
-    percentage: number
-    beneficiary: string
-  }
-  deprecated?: boolean
+export type CollectionMembership = Membership &{
   memberCount?: number
 }
 
@@ -40,7 +29,7 @@ export type Collection = {
   isTimeLimitedCollection: boolean
   endTime?: number
   description: string
-  memberships: Membership[]
+  memberships: CollectionMembership[]
 }
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async () => []
@@ -71,6 +60,7 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
         price: 10,
         description: 'This is a time-limited collection.',
         payload: toUtf8Bytes('TimeLimitedCollection'),
+        paymentType: 'instant',
       },
     ],
   }
@@ -92,6 +82,7 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
         price: 10,
         description: 'This is a member-limited collection.',
         payload: toUtf8Bytes('TimeLimitedCollection'),
+        paymentType: 'instant',
         memberCount: 10,
       },
     ],
