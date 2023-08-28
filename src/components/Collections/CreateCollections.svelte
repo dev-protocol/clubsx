@@ -12,10 +12,17 @@
   import { formatUnixTimestamp } from '@plugins/collections/fixtures'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
   import type { Image } from '@plugins/collections/utils/types/setImageArg'
-  import { randomBytes, parseUnits, keccak256, JsonRpcProvider, ZeroAddress, type Signer } from 'ethers'
+  import {
+    randomBytes,
+    parseUnits,
+    keccak256,
+    JsonRpcProvider,
+    ZeroAddress,
+    type Signer,
+  } from 'ethers'
   import BigNumber from 'bignumber.js'
   import { tokenInfo } from '@constants/common'
-  
+
   export let existingCollections: Collection[] = []
   export let collection: Collection
   export let isTimeLimitedCollection: boolean = false
@@ -515,16 +522,18 @@
       name: opt.name,
       description: opt.description,
       deadline: collection.endTime,
-      requiredTokenAmount: parseUnits(String(opt.price), tokenInfo[opt.currency][chainId].decimals).toString(),
+      requiredTokenAmount: parseUnits(
+        String(opt.price),
+        tokenInfo[opt.currency][chainId].decimals
+      ).toString(),
       requiredTokenFee: opt.fee?.percentage
         ? parseUnits(
-              new BigNumber(opt.price).times(opt.fee.percentage * 100).toFixed(),
-              tokenInfo[opt.currency][chainId].decimals
-            )
-            .toString()
+            new BigNumber(opt.price).times(opt.fee.percentage * 100).toFixed(),
+            tokenInfo[opt.currency][chainId].decimals
+          ).toString()
         : 0,
       gateway: opt.fee?.beneficiary ?? ZeroAddress,
-      token: tokenInfo[opt.currency][chainId].address
+      token: tokenInfo[opt.currency][chainId].address,
     }))
   }
 </script>

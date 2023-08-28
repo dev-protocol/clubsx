@@ -47,7 +47,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async () => []
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
   options,
-  { name, rpcUrl, propertyAddress},
+  { name, rpcUrl, propertyAddress },
   { getPluginConfigById }
 ) => {
   const [collectionsConfig] = getPluginConfigById(
