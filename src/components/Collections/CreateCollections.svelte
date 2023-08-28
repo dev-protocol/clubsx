@@ -9,9 +9,13 @@
     PAYMENT_TYPE_INSTANT_FEE,
     PAYMENT_TYPE_STAKE_FEE,
   } from '@constants/memberships'
-  import {formatUnixTimestamp} from '@plugins/collections/fixtures'
-
-  import { utils } from 'ethers'
+  import { formatUnixTimestamp } from '@plugins/collections/fixtures'
+  import type { connection as Connection } from '@devprotocol/clubs-core/connection'
+  import type { Image } from '@plugins/collections/utils/types/setImageArg'
+  import { randomBytes, parseUnits, keccak256, JsonRpcProvider, ZeroAddress, type Signer } from 'ethers'
+  import BigNumber from 'bignumber.js'
+  import { tokenInfo } from '@constants/common'
+  
   export let existingCollections: Collection[] = []
   export let collection: Collection
   export let isTimeLimitedCollection: boolean = false
@@ -22,7 +26,12 @@
   const ZeroAddress = '0x000000000'
 
   export let mode: 'edit' | 'create' = 'create'
+  export let rpcUrl: string
   export let propertyAddress: string | null | undefined = undefined
+
+  let connection: typeof Connection
+  let signer: Signer | undefined
+  let currentAddress: string | undefined
 
   type MembershipPaymentType = 'instant' | 'stake' | 'custom' | ''
   export let membership: Membership = {
@@ -36,7 +45,7 @@
       percentage: 0,
       beneficiary: ZeroAddress,
     },
-    payload: utils.randomBytes(8),
+    payload: randomBytes(8),
   }
 
   let membershipPaymentType: MembershipPaymentType
@@ -51,6 +60,7 @@
   let invalidEndTimeMsg: string = ''
 
   const originalId = collection.id
+  const provider = new JsonRpcProvider(rpcUrl)
 
   let membershipExists = false
 
@@ -493,6 +503,29 @@
     if (!ev.detail.success) {
       return
     }
+    const memOpts = collection.memberships as Membership[]
+    const propAddress = propertyAddress
+
+    if (!currentAddress || !signer || !propAddress) {
+      return
+    }
+    const chainId: number = Number((await provider.getNetwork()).chainId)
+    const TimeImages: Image[] = memOpts.map((opt) => ({
+      src: opt.imageSrc,
+      name: opt.name,
+      description: opt.description,
+      deadline: collection.endTime,
+      requiredTokenAmount: parseUnits(String(opt.price), tokenInfo[opt.currency][chainId].decimals).toString(),
+      requiredTokenFee: opt.fee?.percentage
+        ? parseUnits(
+              new BigNumber(opt.price).times(opt.fee.percentage * 100).toFixed(),
+              tokenInfo[opt.currency][chainId].decimals
+            )
+            .toString()
+        : 0,
+      gateway: opt.fee?.beneficiary ?? ZeroAddress,
+      token: tokenInfo[opt.currency][chainId].address
+    }))
   }
 </script>
 
@@ -614,10 +647,6 @@
         memberships from [here].</span
       >
       <div class="flex flex-col items-start self-stretch">
-        <span class="text-lg font-medium uppercase text-[#EB48F8]"
-          >When the allowlist is empty. Or, by clicking this, it makes the
-          allowlist empty.</span
-        >
         <div
           class="flex items-start gap-[12px] self-stretch rounded-[12px] bg-[#040B10] p-5"
         >

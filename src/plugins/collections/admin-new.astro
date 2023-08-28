@@ -6,6 +6,8 @@ import type { UndefinedOr } from '@devprotocol/util-ts'
 
 const {
   isTimeLimitedCollection = false,
+  rpcUrl,
+  propertyAddress,
   preset,
   collections = [],
   name,
@@ -13,6 +15,8 @@ const {
 } = Astro.props as ClubsPropsAdminPages & {
   preset: Collection
   isTimeLimitedCollection: boolean
+  rpcUrl: string
+  propertyAddress: string
   collections: Collection[]
   name: string
 }
@@ -28,5 +32,7 @@ const {
     isTimeLimitedCollection={isTimeLimitedCollection}
     clubName={name}
     currentPluginIndex={clubs.currentPluginIndex}
+    propertyAddress={propertyAddress}
+    rpcUrl={rpcUrl}
   />
 </div>
