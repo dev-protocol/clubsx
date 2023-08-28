@@ -75,28 +75,28 @@ export async function callSlotCollections(
   provider: BaseProvider | ethers.Signer,
   functionName: 'setImages',
   isTimeSlot: boolean,
-  args: [propertyAddress: string, images: Image[], keys: string[]]
+  args: [propertyAddress: string, images: Image[], keys: string[]],
 ): Promise<TransactionResponse>
 
 export async function callSlotCollections(
   provider: BaseProvider,
   functionName: 'removeImage',
   isTimeSlot: boolean,
-  args: [propertyAddress: string, key: string]
+  args: [propertyAddress: string, key: string],
 ): Promise<TransactionResponse>
 
 export async function callSlotCollections(
   provider: BaseProvider,
   functionName: 'propertyImages',
   isTimeSlot: boolean,
-  args: [propertyAddress: string, key: string]
+  args: [propertyAddress: string, key: string],
 ): Promise<Image>
 
 export async function callSlotCollections(
   provider: BaseProvider | ethers.Signer,
   functionName: string,
   isTimeSlot: boolean,
-  args: unknown[]
+  args: unknown[],
 ): Promise<unknown> {
   const chainId = await ('getChainId' in provider
     ? (provider as ethers.Signer).getChainId()
@@ -112,11 +112,11 @@ export async function callSlotCollections(
   const contract = new ethers.Contract(
     isTimeSlot ? addressList.timeSlot : addressList.memberSlot,
     isTimeSlot ? timeABI : memberABI,
-    provider
+    provider,
   )
 
   const result: TransactionReceipt = await contract.functions[functionName](
-    ...args
+    ...args,
   )
   return result
 }

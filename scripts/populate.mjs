@@ -1405,7 +1405,7 @@ const populate = async () => {
             id: 'devprotocol:clubs:collections',
           },
         ],
-      })
+      }),
     )
 
     console.log('Tenants set')
