@@ -17,7 +17,7 @@ const ogURL = ''
 const twitterHandle = 'poweredbyClubs'
 ---
 
-<html lang="en">
+<html lang="en" hashi-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -43,7 +43,7 @@ const twitterHandle = 'poweredbyClubs'
     <meta name="twitter:image" content={`${ogURL}`} />
   </head>
 
-  <body class="min-h-screen bg-dp-black-600 font-body text-white">
+  <body class="bg-dp-black-600 min-h-screen font-body text-white">
     <slot name="before-header" />
     <header class="relative flex items-center justify-between px-6 py-4">
       <a href="/">
@@ -73,7 +73,7 @@ const twitterHandle = 'poweredbyClubs'
 <script>
   import { onSubmitConfig } from '@devprotocol/clubs-core'
   import { GetModalProvider, ReConnectWallet } from '@fixtures/wallet'
-  import { utils } from 'ethers'
+  import { hashMessage } from 'ethers'
   import { onAuthStateChanged } from 'firebase/auth'
   import { instanceStore } from '../fixtures/firebase/clientInstance'
 
@@ -99,9 +99,9 @@ const twitterHandle = 'poweredbyClubs'
     if (!currentAddress || !provider) {
       return
     }
-    const signer = provider.getSigner()
+    const signer = await provider.getSigner()
 
-    const hash = utils.hashMessage(data)
+    const hash = hashMessage(data)
     const sig = await signer.signMessage(hash)
     if (!sig) {
       return

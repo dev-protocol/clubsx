@@ -7,10 +7,8 @@ const { tiers, propertyAddress, name, rpcUrl, preferedCurrency } = Astro.props
 <div class="p-4">
   <JoinClub
     client:load
-    propertyAddress={propertyAddress}
     tiers={tiers}
     tenantName={name}
     preferedCurrency={preferedCurrency}
-    rpcUrl={rpcUrl}
   />
 </div>

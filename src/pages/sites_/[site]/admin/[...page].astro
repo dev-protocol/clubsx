@@ -61,7 +61,7 @@ const siteBaseUrl = new URL(Astro.request.url).origin
         <Admin {...path.props}>
           <a
             slot="admin:sidebar:before-title"
-            class="flex items-center gap-2 transition-colors hover:text-native-blue-300"
+            class="hover:text-native-blue-300 flex items-center gap-2 transition-colors"
             href={`${baseUrl}/signin`}
           >
             <svg
@@ -82,7 +82,7 @@ const siteBaseUrl = new URL(Astro.request.url).origin
           </a>
           <a
             slot="admin:sidebar:before-title"
-            class="flex items-center gap-2 transition-colors hover:text-native-blue-300"
+            class="hover:text-native-blue-300 flex items-center gap-2 transition-colors"
             target="_blank"
             rel="noopener norefferer"
             href={siteBaseUrl}
@@ -108,8 +108,8 @@ const siteBaseUrl = new URL(Astro.request.url).origin
               class:list={[
                 '-mx-3 flex items-center gap-2 rounded p-3 font-bold transition-colors duration-500',
                 page?.startsWith('marketplace')
-                  ? 'bg-white text-black'
-                  : 'hover:bg-slate-800',
+                  ? 'bg-surface-200'
+                  : 'hover:bg-surface-200',
               ]}
               href="/admin/marketplace"
             >
@@ -141,7 +141,7 @@ const siteBaseUrl = new URL(Astro.request.url).origin
   import type { DraftOptions } from '@constants/draft'
   import { decode, onSubmitConfig } from '@devprotocol/clubs-core'
   import { onMountClient } from '@devprotocol/clubs-core/events'
-  import { utils } from 'ethers'
+  import { hashMessage } from 'ethers'
 
   let connection: typeof Connection
   let signer: ethers.Signer | undefined
@@ -169,7 +169,7 @@ const siteBaseUrl = new URL(Astro.request.url).origin
       })
     }
 
-    const hash = utils.hashMessage(data)
+    const hash = hashMessage(data)
     let sig: string
     try {
       sig = await signer.signMessage(hash)

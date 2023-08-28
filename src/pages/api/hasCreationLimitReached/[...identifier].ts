@@ -10,13 +10,12 @@ export const get = async ({
       JSON.stringify({ error: 'No user identifier passed' }),
       {
         status: 401,
-      }
+      },
     )
   }
 
-  const isCreationLimitReached: boolean = await hasCreationLimitReached(
-    identifier
-  )
+  const isCreationLimitReached: boolean =
+    await hasCreationLimitReached(identifier)
   return new Response(JSON.stringify({ isCreationLimitReached }), {
     status: 200,
   })

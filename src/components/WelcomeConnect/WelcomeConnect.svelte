@@ -4,7 +4,7 @@
 
   import type { ClubsConfiguration } from '@devprotocol/clubs-core'
   import { encode, setConfig } from '@devprotocol/clubs-core'
-  import { providers, utils } from 'ethers'
+  import { BrowserProvider, hashMessage } from 'ethers'
   import { defaultConfig } from '@constants/defaultConfig'
   import { onMount } from 'svelte'
   import EmailConnect from '../EmailConnect/EmailConnect.svelte'
@@ -26,7 +26,7 @@
   })
 
   const walletConnect = async () => {
-    let provider: UndefinedOr<providers.Web3Provider>
+    let provider: UndefinedOr<BrowserProvider>
     let currentAddress: string | undefined
 
     try {
@@ -90,9 +90,9 @@
     }
 
     // Get the signature ready.
-    const signer = provider.getSigner()
+    const signer = await provider.getSigner()
     const encodedConfig = encode(config)
-    const hash = utils.hashMessage(encodedConfig)
+    const hash = hashMessage(encodedConfig)
 
     let sig: string | undefined
     try {
@@ -174,7 +174,7 @@
       <span class="mb-4">Already have a wallet?</span>
 
       <button
-        class={`hs-button is-filled bg-native-blue-300 px-8 py-4 text-inherit ${
+        class={`hs-button is-filled is-native-blue px-8 py-4 text-inherit ${
           !GetModalProvider ||
           !EthersProviderFrom ||
           walletAwaitingUserConfirmation
@@ -194,3 +194,38 @@
     </div>
   </section>
 </div>
+
+<style lang="scss">
+  @use '@devprotocol/hashi/hs-button';
+
+  @include hs-button.extend('filled.native-blue') {
+    @include hs-button.color(
+      (
+        fill: 'native-blue.400',
+        ink: 'native-blue.ink',
+        border: 'native-blue.400'
+      )
+    );
+
+    &:hover,
+    &:focus {
+      @include hs-button.color(
+        (
+          fill: 'native-blue.300',
+          ink: 'native-blue.ink',
+          border: 'native-blue.300'
+        )
+      );
+    }
+
+    &:active {
+      @include hs-button.color(
+        (
+          fill: 'native-blue.200',
+          ink: 'native-blue.ink',
+          border: 'native-blue.200'
+        )
+      );
+    }
+  }
+</style>

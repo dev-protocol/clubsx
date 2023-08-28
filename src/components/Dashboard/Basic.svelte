@@ -78,7 +78,7 @@
     </div>
   {:else}
     <div
-      class="max-w-sm justify-start rounded-lg border border-[3px] border-native-blue-400 bg-white p-6 shadow dark:border-gray-700 dark:bg-gray-800"
+      class="border-native-blue-400 max-w-sm justify-start rounded-lg border border-[3px] bg-white p-6 shadow dark:border-gray-700 dark:bg-gray-800"
     >
       <h5
         class="mb-2 text-center text-3xl font-semibold tracking-tight text-gray-900 dark:text-white"

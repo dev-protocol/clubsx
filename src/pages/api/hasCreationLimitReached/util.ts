@@ -4,7 +4,7 @@ import { generateId } from '@fixtures/api/keys'
 import type { ClubsData } from '../fetchClubs'
 
 export const hasCreationLimitReached = async (
-  identifier: string
+  identifier: string,
 ): Promise<boolean> => {
   if (!identifier) return true
 
@@ -24,7 +24,7 @@ export const hasCreationLimitReached = async (
   })
 
   const userSites = JSON.parse(
-    (await client.get(generateId(identifier))) ?? '[]'
+    (await client.get(generateId(identifier))) ?? '[]',
   ) as ClubsData[] | null
 
   await client.disconnect()

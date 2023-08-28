@@ -32,15 +32,18 @@
   style={navInitialHeight && isStuck ? `height: ${navInitialHeight}px` : ''}
 >
   <ul
-    class={`flex items-start justify-start gap-4 overflow-x-auto bg-dp-white-300 px-2 pb-4 pt-5 ${
-      isStuck ? 'border-b border-b-black/20' : 'lg:flex-wrap'
+    class={`flex items-start justify-start gap-4 overflow-x-auto rounded-b-[0.5rem] rounded-t-[0.5rem] bg-surface-300 px-5 py-4 ${
+      isStuck ? 'rounded-t-none border-b border-b-black/20' : 'lg:flex-wrap'
     }`}
   >
     {#each navs.filter((x) => x.exists) as nav}
       <li>
         <a
           href={nav.anchor}
-          class="inline-block whitespace-nowrap break-keep rounded-full px-4 py-2 text-sm capitalize shadow-[0_0_0_1px_rgba(0,0,0,1)] transition hover:shadow-[0_0_0_3px_rgba(0,0,0,1)]"
+          class="inline-block whitespace-nowrap break-keep rounded-full border px-4 py-2 text-sm capitalize transition {nav.tag ===
+          'New & Upcoming'
+            ? 'border-[#fdad00] bg-[#fdad00] text-black hover:border-[#ffc751]'
+            : 'border-surface-200 bg-surface-200 text-surface-ink hover:border-accent-200'}"
         >
           {nav.tag}
         </a>
@@ -49,7 +52,7 @@
     {#each navs.filter((x) => !x.exists) as nav}
       <li>
         <span
-          class="inline-block flex items-center gap-2 whitespace-nowrap break-keep rounded-full px-4 py-2 text-sm capitalize text-black/50 shadow-[0_0_0_1px_rgba(0,0,0,0.5)]"
+          class="inline-flex items-center gap-2 whitespace-nowrap break-keep rounded-full border border-surface-200 bg-surface-400 px-4 py-2 text-sm capitalize text-surface-200"
         >
           {nav.tag}
           <svg

@@ -51,7 +51,7 @@ const upgrade = (key, config) => {
           console.error(
             key,
             plg.name,
-            'This plugin does not have a suitable upgrade script'
+            'This plugin does not have a suitable upgrade script',
           )
           return plg
         })()
@@ -59,7 +59,7 @@ const upgrade = (key, config) => {
 
   if (
     upgradedConfig.plugins.every(
-      (p) => p.id !== 'devprotocol:clubs:clubsx:marketplace'
+      (p) => p.id !== 'devprotocol:clubs:clubsx:marketplace',
     )
   ) {
     console.log(key, 'has not marketplace on `plugins`')
@@ -104,7 +104,6 @@ const app = async () => {
     console.log('DB Upgraded')
     await client.quit()
     console.log('Closed the DB connection')
-    return
   } catch (error) {
     console.error('error upgrading db: ', error)
   }

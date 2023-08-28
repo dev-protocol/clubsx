@@ -21,7 +21,8 @@ class AdminPlugins extends React.Component {
 
       // Find how many plugisn match the same name and are enabled.
       const matchingInjectedPlugins = injectedPlugins.filter(
-        (iP) => iP.name.toLowerCase() === plugin.name.toLowerCase() && iP.enable // TODO: use plugin.id in future.
+        (iP) =>
+          iP.name.toLowerCase() === plugin.name.toLowerCase() && iP.enable, // TODO: use plugin.id in future.
       )
       plugins.push({
         ...plugin,
@@ -95,7 +96,7 @@ class AdminPlugins extends React.Component {
                     ? () => {}
                     : () =>
                         this.toggleActivation(
-                          plugin.name // TODO: use plugin.id in future.
+                          plugin.name, // TODO: use plugin.id in future.
                         )
                 }
                 className={
@@ -115,7 +116,7 @@ class AdminPlugins extends React.Component {
                     ? () => {}
                     : () =>
                         this.toggleActivation(
-                          plugin.name // TODO: use plugin.id in future.
+                          plugin.name, // TODO: use plugin.id in future.
                         )
                 }
                 className={

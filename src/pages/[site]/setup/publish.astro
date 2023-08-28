@@ -16,6 +16,7 @@ import PageNotFound from '@pages/404.astro'
 const { site } = Astro.params
 
 const testnets = Astro.url.searchParams.get('testnets') === ''
+const allowAccess = Astro.url.searchParams.get('allowAccess') === 'true'
 
 const { getStaticPaths, getCurrentConfig } = adminFactory({
   config: async () => await _config(site),
@@ -66,6 +67,7 @@ const baseDomainUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
           category={draftOptionsValue?.category}
           membershipsPluginOptions={membershipsPluginOptions}
           showTestnets={testnets}
+          allowAccess={allowAccess}
           config={config}
           site={site}
         />
@@ -73,7 +75,7 @@ const baseDomainUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
           <div>
             <a
               href={new URL('/admin/overview', baseDomainUrl).toString()}
-              class="grid gap-4 overflow-hidden rounded-2xl bg-dp-blue-grey-600 p-4 transition-shadow hover:shadow-[0_0_0_8px_rgba(255,255,255,0.2)]"
+              class="bg-dp-blue-grey-600 grid gap-4 overflow-hidden rounded-2xl p-4 transition-shadow hover:shadow-[0_0_0_8px_rgba(255,255,255,0.2)]"
             >
               <p class="text-2xl font-bold">Skip</p>
               <p class="text-sm">

@@ -1,0 +1,22 @@
+---
+import type { Currency } from '@crossmint/client-sdk-base'
+import type { Product } from '@constants/products'
+import IdPage from './Id'
+import type {CMValues} from '.'
+
+const {
+  cm,
+  product,
+  rpcUrl,
+  propertyAddress
+} = Astro.props as {
+  cm: CMValues
+  product: Product
+  rpcUrl:string
+  propertyAddress: string
+}
+---
+
+
+<IdPage client:load cm={cm} rpcUrl={rpcUrl} propertyAddress={propertyAddress} product={product} />
+

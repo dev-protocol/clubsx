@@ -120,7 +120,7 @@
 
 <div
   bind:this={modalGroup}
-  class={`inset-0 z-[9999] grid animate-[fadeIn_2s_ease-in-out_forwards] items-center justify-center overflow-y-scroll bg-black/20 p-8 backdrop-blur-3xl ${
+  class={`inset-0 z-[9999] grid items-center justify-center overflow-y-scroll bg-black/20 p-8 backdrop-blur-3xl ${
     modal ? 'fixed' : 'hidden'
   }`}
 >
@@ -201,14 +201,6 @@
 </div>
 
 <style lang="scss">
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 100;
-    }
-  }
   .md {
     :global(h1) {
       @apply text-3xl font-bold;

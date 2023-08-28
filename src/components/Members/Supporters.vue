@@ -1,12 +1,12 @@
 <template>
   <div class="bg-cover bg-center">
     <h3 class="my-8 font-title text-2xl font-bold">Supporters</h3>
-    <div v-if="members.length > 0" class="rounded border border-dp-black-200">
+    <div v-if="members.length > 0" class="border-dp-black-200 rounded border">
       <ul role="list">
         <li
           v-for="member in members"
           :key="member.ownerAddress"
-          class="flex items-center border border-x-0 border-t-0 border-dp-black-200 outline-white first:border-solid last:border-none"
+          class="border-dp-black-200 flex items-center border border-x-0 border-t-0 outline-white first:border-solid last:border-none"
         >
           <Avator :accountAddress="member.ownerAddress" :displayName="true" />
           <STokenPositions
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { providers } from 'ethers'
+import { JsonRpcProvider } from 'ethers'
 import {
   detectStokensByPropertyAddress,
   getStokenOwnerOf,
@@ -41,10 +41,10 @@ export default {
   },
   async created() {
     const providerURL = this.rpcUrl
-    const provider = new providers.JsonRpcProvider(providerURL)
+    const provider = new JsonRpcProvider(providerURL)
     const stokenIDs = await detectStokensByPropertyAddress(
       provider,
-      this.propertyAddress
+      this.propertyAddress,
     )
     const ret = await Promise.all(
       stokenIDs.map(async (stokenID) => {
@@ -54,9 +54,9 @@ export default {
               id: stokenID,
               ownerAddress,
             }
-          }
+          },
         )
-      })
+      }),
     )
     this.members = ret
   },

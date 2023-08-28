@@ -1,0 +1,96 @@
+---
+import type { CurrencyOption } from '@constants/currencyOption'
+import Checkout from '@components/Checkout/Checkout.vue'
+import type { ClubsPropsPages } from '@devprotocol/clubs-core'
+import type { CheckoutOptions } from './types'
+
+const {
+  amount,
+  propertyAddress,
+  currency,
+  rpcUrl,
+  feeBeneficiary,
+  feePercentage,
+  payload,
+  description,
+  useDiscretePaymentFlow,
+  useInjectedTransactionForm,
+  fiatCurrency,
+  itemImageSrc,
+  itemName,
+  accessControlUrl,
+  accessControlDescription,
+  clubs,
+} = Astro.props as ClubsPropsPages &
+  CheckoutOptions & {
+    useDiscretePaymentFlow?: boolean
+    useInjectedTransactionForm?: boolean
+    itemImageSrc?: string
+    itemName?: string
+    accessControlUrl?: string
+    accessControlDescription?: string
+  }
+
+const checkoutOptions: CheckoutOptions = {
+  amount,
+  propertyAddress,
+  currency,
+  fiatCurrency,
+  rpcUrl,
+  feeBeneficiary,
+  feePercentage,
+  payload,
+  description,
+}
+
+const SlotsCheckoutBeforeTransactionForm = clubs.slots.filter(
+  (slot) => slot.slot === 'checkout:before:transaction-form',
+)
+const SlotsCheckoutMainTransactionForm = clubs.slots.filter(
+  (slot) => slot.slot === 'checkout:main:transaction-form',
+)
+---
+
+<Checkout
+  client:only="vue"
+  amount={amount}
+  destination={propertyAddress}
+  currency={currency}
+  feeBeneficiary={feeBeneficiary}
+  feePercentage={feePercentage}
+  rpcUrl={rpcUrl}
+  payload={payload}
+  description={description}
+  useDiscretePaymentFlow={useDiscretePaymentFlow}
+  useInjectedTransactionForm={useInjectedTransactionForm}
+  fiatCurrency={fiatCurrency}
+  itemImageSrc={itemImageSrc}
+  itemName={itemName}
+  accessControlUrl={accessControlUrl}
+  accessControlDescription={accessControlDescription}
+>
+  <slot
+    name="checkout:before:transaction-form"
+    slot="before:transaction-form"
+  />
+  <slot name="checkout:main:transaction-form" slot="main:transaction-form" />
+
+  {
+    SlotsCheckoutBeforeTransactionForm.map((Slot) => (
+      <Slot.component
+        {...Slot.props}
+        checkoutOptions={checkoutOptions}
+        slot="before:transaction-form"
+      />
+    ))
+  }
+  {
+    SlotsCheckoutMainTransactionForm.map((Slot) => (
+      <Slot.component
+        {...Slot.props}
+        checkoutOptions={checkoutOptions}
+        slot="main:transaction-form"
+      />
+    ))
+  }
+</Checkout>

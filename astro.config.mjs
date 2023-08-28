@@ -7,6 +7,7 @@ import tailwind from '@astrojs/tailwind'
 import vue from '@astrojs/vue'
 import react from '@astrojs/react'
 import svelte from '@astrojs/svelte'
+import builtInApiPaths from './built-in-api-paths'
 
 config()
 
@@ -25,7 +26,11 @@ export default defineConfig({
       hooks: {
         'astro:server:setup': ({ server }) => {
           server.middlewares.use((req, _, next) => {
-            if (req.headers.accept?.includes('text/html')) {
+            if (
+              req.headers.accept?.includes('text/html') ||
+              (req.url.startsWith('/api/') &&
+                builtInApiPaths.every((p) => !req.url.startsWith(p)))
+            ) {
               const host = req.headers.host.split('.')
 
               if (host.length > 1) {
@@ -59,6 +64,8 @@ export default defineConfig({
       alias: {
         'three/examples/jsm/controls/OrbitControls':
           '/node_modules/three/examples/jsm/controls/OrbitControls',
+        '@crossmint/client-sdk-react-ui/package.json':
+          '/node_modules/@crossmint/client-sdk-react-ui/package.json',
       },
     },
   },

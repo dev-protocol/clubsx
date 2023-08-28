@@ -12,7 +12,7 @@ import { default as Id } from './[id].astro'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
-  { propertyAddress, rpcUrl }
+  { propertyAddress, rpcUrl },
 ) => {
   const products = options.find((opt) => opt.key === 'products')
     ?.value as UndefinedOr<Products>

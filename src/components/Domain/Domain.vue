@@ -14,6 +14,7 @@ export default {
   name: 'AlmostThere',
   components: { HSButton },
   props: {
+    namePreset: String,
     containerId: {
       type: String,
       required: true,
@@ -24,7 +25,7 @@ export default {
       daoName: '',
       fetching: undefined,
       valid: undefined,
-    } as Data),
+    }) as Data,
   methods: {
     async verifySiteName() {
       clearTimeout(timer)
@@ -43,6 +44,10 @@ export default {
   },
   mounted() {
     renderSpotlight({ containerId: this.containerId })
+    if (this.namePreset) {
+      this.daoName = this.namePreset
+      this.verifySiteName()
+    }
   },
   computed: {
     network() {
@@ -69,7 +74,7 @@ export default {
     <div class="grid justify-center gap-16 md:gap-32">
       <section>
         <div
-          :class="`relative grid items-center gap-4 rounded-md bg-dp-blue-grey-200 p-4 shadow md:grid-flow-col ${
+          :class="`relative grid items-center gap-4 rounded-md bg-surface-200 p-4 shadow md:grid-flow-col ${
             fetching
               ? 'animate-pulse cursor-progress'
               : valid === true
@@ -99,10 +104,10 @@ export default {
             v-if="fetching === false && typeof valid === 'boolean'"
             class="absolute left-0 top-[100%] mt-2 rounded-md bg-white p-2 text-sm"
           >
-            <span v-if="valid === true" class="text-success-300"
+            <span v-if="valid === true" class="text-[#30a83d]"
               >Domain available</span
             >
-            <span v-if="valid === false" class="text-danger-300"
+            <span v-if="valid === false" class="text-error-400"
               >Domain unavailable</span
             >
           </p>
@@ -112,15 +117,13 @@ export default {
       <section>
         <HSButton
           v-if="fetching === false && valid"
-          type="outlined large"
-          class="w-full border-0 bg-native-blue-300 text-white shadow hover:bg-native-blue-400 hover:text-inherit"
+          type="filled large fullwidth"
           :link="`/connect/${daoName}`"
           >Continue</HSButton
         >
         <HSButton
           v-if="fetching || !valid"
-          type="outlined large"
-          class="w-full cursor-not-allowed border-0 bg-dp-blue-grey-200 text-white opacity-50 shadow hover:bg-dp-blue-grey-200 hover:text-inherit"
+          type="filled large fullwidth"
           isDisabled="true"
           >Continue</HSButton
         >

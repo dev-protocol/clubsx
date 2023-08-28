@@ -10,13 +10,16 @@
 
 <form>
   <div class="mb-10 flex flex-col">
-    <label class="mb-1" for="guild-url">Guild URL</label>
-    <input
-      bind:value={guildUrl}
-      on:input={updateCommunityOptions}
-      class="rounded bg-[#040B10] px-8 py-4"
-      id="guild-url"
-      name="guild-url"
-    />
+    <label class="hs-form-field">
+      <span class="hs-form-field__label">Guild URL</span>
+      <input
+        class="hs-form-field__input"
+        id="guild-url"
+        name="guild-url"
+        type="text"
+        bind:value={guildUrl}
+        on:input={updateCommunityOptions}
+      />
+    </label>
   </div>
 </form>

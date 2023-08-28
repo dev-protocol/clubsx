@@ -24,25 +24,25 @@ import { Content as Readme } from './README.md'
 import Preview1 from './assets/message-1.jpg'
 import Preview2 from './assets/message-2.jpg'
 import Preview3 from './assets/message-3.jpg'
-import { utils } from 'ethers'
+import { randomBytes } from 'ethers'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
   { propertyAddress },
-  { getPluginConfigById }
+  { getPluginConfigById },
 ) => {
   const forms =
     (options.find((opt) => opt.key === 'forms')?.value as UndefinedOr<
       GatedMessage[]
     >) ?? []
   const [membershipConfig, membershipPluginIndex] = getPluginConfigById(
-    'devprotocol:clubs:simple-memberships'
+    'devprotocol:clubs:simple-memberships',
   )
   const memberships =
     (membershipConfig?.options.find((opt) => opt.key === 'memberships')
       ?.value as UndefinedOr<Membership[]>) ?? []
   const [, pluginIndex] = getPluginConfigById(
-    'devprotocol:clubs:gated-contact-form'
+    'devprotocol:clubs:gated-contact-form',
   )
 
   return [
@@ -53,7 +53,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
     },
     ...forms.map((form) => {
       const requiredMemberships = memberships.filter((mem) =>
-        form.requiredMembershipIds.includes(mem.id)
+        form.requiredMembershipIds.includes(mem.id),
       )
       return {
         paths: ['message', String(form.id)],
@@ -73,21 +73,21 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
   options,
   { url },
-  { getPluginConfigById }
+  { getPluginConfigById },
 ) => {
   const forms =
     (options.find((opt) => opt.key === 'forms')?.value as UndefinedOr<
       GatedMessage[]
     >) ?? []
   const [membershipConfig] = getPluginConfigById(
-    'devprotocol:clubs:simple-memberships'
+    'devprotocol:clubs:simple-memberships',
   )
   const memberships =
     (membershipConfig?.options.find((opt) => opt.key === 'memberships')
       ?.value as UndefinedOr<Membership[]>) ?? []
 
   const namespace = uuidv5(url, uuidv5.URL)
-  const uuid = uuidv5(utils.randomBytes(32), namespace)
+  const uuid = uuidv5(randomBytes(32), namespace)
 
   return [
     {
@@ -118,7 +118,7 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
 export const getSlots: ClubsFunctionGetSlots = async (
   options,
   config,
-  { paths, factory }
+  { paths, factory },
 ) => {
   const forms =
     (options.find((opt) => opt.key === 'forms')?.value as UndefinedOr<

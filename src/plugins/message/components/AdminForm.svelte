@@ -1,7 +1,7 @@
 <script lang="ts">
   import { setOptions } from '@devprotocol/clubs-core'
   import type { Membership } from '@plugins/memberships'
-  import { ethers, utils } from 'ethers'
+  import { Signer, hashMessage } from 'ethers'
   import type { GatedMessage } from '../types'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
   import { onMount } from 'svelte'
@@ -34,7 +34,7 @@
   ]
 
   let connection: typeof Connection
-  let signer: ethers.Signer | undefined
+  let signer: Signer | undefined
   let currentAddress: string | undefined
 
   const connectOnMount = async () => {
@@ -95,7 +95,7 @@
       return
     }
 
-    const hash = utils.hashMessage(form.destinationEmail)
+    const hash = hashMessage(form.destinationEmail)
     const sig = await signer.signMessage(hash)
     if (!sig) {
       return
@@ -123,9 +123,9 @@
   class="flex flex-col justify-items-start gap-16"
 >
   <!-- Email -->
-  <div class="hs-form-field is-filled">
-    <label class="hs-form-field__label" for="email"> Destination email </label>
-    <div class="flex flex-row gap-1">
+  <div class="hs-form-field">
+    <label class="hs-form-field__label" for="email"> Destination email</label>
+    <div class="flex flex-row gap-4">
       {#if decryptedDestinationEmail !== undefined}
         <input
           class="hs-form-field__input grow"
@@ -158,20 +158,22 @@
 
   <!-- Form preset -->
   <div class="flex flex-col items-start gap-1">
-    <label for="form-preset"> Form preset </label>
-    <select
-      bind:value={form.presetName}
-      name="form-preset"
-      class="rounded bg-[#040B10] px-8 py-4"
-    >
-      {#each formPresets as cat}
-        <option value={cat.value}>{cat.label}</option>
-      {/each}
-    </select>
+    <label class="hs-select-field">
+      <span class="hs-select-field__label">Select</span>
+      <select
+        name="form-preset"
+        bind:value={form.presetName}
+        class="hs-select-field__input"
+      >
+        {#each formPresets as cat}
+          <option value={cat.value}>{cat.label}</option>
+        {/each}
+      </select>
+    </label>
   </div>
 
   <!-- Title -->
-  <label class="hs-form-field is-filled">
+  <label class="hs-form-field">
     <span class="hs-form-field__label"> Title </span>
     <input
       class="hs-form-field__input"
@@ -182,7 +184,7 @@
   </label>
 
   <!-- Description -->
-  <label class="hs-form-field is-filled">
+  <label class="hs-form-field">
     <span class="hs-form-field__label"> Description </span>
     <textarea
       class="hs-form-field__input"

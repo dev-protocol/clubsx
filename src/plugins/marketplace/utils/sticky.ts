@@ -1,6 +1,6 @@
 export default function sticky(
   node: Node,
-  { stickToTop }: { stickToTop: boolean }
+  { stickToTop }: { stickToTop: boolean },
 ) {
   const sentinelStyle = 'position: absolute; height: 1px;'
   const stickySentinelTop = document.createElement('div')
@@ -20,13 +20,13 @@ export default function sticky(
     node.dispatchEvent(
       new CustomEvent('stuck', {
         detail: { isStuck },
-      })
+      }),
     )
   }
 
   const intersectionObserver = new IntersectionObserver(
     intersectionCallback,
-    {}
+    {},
   )
 
   if (stickToTop) {

@@ -30,7 +30,7 @@
               ? ''
               : networkSelected === 'polygon'
               ? 'opacity-50'
-              : 'opacity-20'
+              : ''
           "
           :disabled="
             !connected ||
@@ -44,12 +44,8 @@
             clubPublished
           "
         >
-          <p class="font-DMSans text-center text-base font-bold text-[#FFFFFF]">
-            Polygon
-          </p>
-          <p class="font-DMSans text-center text-xs font-medium text-[#FFFFFF]">
-            Recommended
-          </p>
+          <span class="hs-button__label"> Polygon </span>
+          <span class="text-center text-xs"> Recommended </span>
         </button>
         <button
           @click="changeNetwork('arbitrum')"
@@ -61,7 +57,7 @@
               ? ''
               : networkSelected === 'arbitrum'
               ? 'opacity-50'
-              : 'opacity-20'
+              : ''
           "
           title="Currently, Clubs is not supporting this chain"
           :disabled="
@@ -77,7 +73,7 @@
             clubPublished
           "
         >
-          <p class="font-DMSans text-center text-xs text-[#FFFFFF]">Arbitrum</p>
+          <span class="hs-button__label">Arbitrum</span>
         </button>
         <button
           @click="changeNetwork('ethereum')"
@@ -89,7 +85,7 @@
               ? ''
               : networkSelected === 'ethereum'
               ? 'opacity-50'
-              : 'opacity-20'
+              : ''
           "
           title="Currently, Clubs is not supporting this chain"
           :disabled="
@@ -105,7 +101,7 @@
             clubPublished
           "
         >
-          <p class="font-DMSans text-center text-xs text-[#FFFFFF]">Ethereum</p>
+          <span class="hs-button__label">Ethereum</span>
         </button>
       </section>
       <div v-if="showTestnets" class="mt-4">
@@ -119,7 +115,7 @@
               ? ''
               : networkSelected === 'polygon-mumbai'
               ? 'opacity-50'
-              : 'opacity-20'
+              : ''
           "
           :disabled="
             !connected ||
@@ -133,9 +129,7 @@
             clubPublished
           "
         >
-          <p class="font-DMSans text-center text-xs text-[#FFFFFF]">
-            Polygon Mumbai
-          </p>
+          <span class="hs-button__label"> Polygon Mumbai </span>
         </button>
       </div>
     </div>
@@ -297,16 +291,16 @@
           clubPublished
         "
       >
-        <p class="font-DMSans text-center text-base font-bold text-[#FFFFFF]">
+        <span class="hs-button__label">
           {{ step3InterStepButtonText }}
-        </p>
+        </span>
       </button>
       <p class="font-DMSans text-base font-normal text-white">
         {{ step3InterStepSubInfo }}
       </p>
       <p
         v-if="!category || !membershipsPluginOptions?.length"
-        class="font-DMSans rounded bg-danger-300 px-4 py-2 text-base font-normal text-white"
+        class="font-DMSans bg-danger-300 rounded px-4 py-2 text-base font-normal text-white"
       >
         Complete Basic info, Design, Memberships before activation.
       </p>
@@ -315,13 +309,11 @@
 </template>
 
 <script lang="ts">
-import { ethers } from 'ethers'
-import { constants } from 'ethers'
+import { ContractRunner, Signer, ZeroAddress } from 'ethers'
 import type Web3Modal from 'web3modal'
 import { PropType, defineComponent } from '@vue/runtime-core'
 import { clientsSTokens } from '@devprotocol/dev-kit/agent'
 import type { connection as Connection } from '@devprotocol/clubs-core/connection'
-import type { BaseProvider } from '@ethersproject/providers'
 import {
   address,
   callSimpleCollections,
@@ -364,8 +356,8 @@ type Data = {
   clubPublished: boolean
 }
 
-let provider: BaseProvider | undefined
-let signer: ethers.Signer | undefined
+let provider: ContractRunner | undefined
+let signer: Signer | undefined
 
 export default defineComponent({
   name: 'PublishNetworkSelection',
@@ -379,6 +371,7 @@ export default defineComponent({
       required: true,
     },
     showTestnets: Boolean,
+    allowAccess: Boolean,
     site: {
       type: String,
       required: true,
@@ -390,14 +383,14 @@ export default defineComponent({
       connection: undefined,
       networkSelected:
         !this.config.propertyAddress ||
-        this.config.propertyAddress === ethers.constants.AddressZero
+        this.config.propertyAddress === ZeroAddress
           ? ''
           : this.getNetworkFromChainId(this.config.chainId),
       connected: false,
       popupWindow: null as Window | null,
       addressFromNiwa:
         !this.config.propertyAddress ||
-        this.config.propertyAddress === ethers.constants.AddressZero
+        this.config.propertyAddress === ZeroAddress
           ? ''
           : this.config.propertyAddress,
       membershipInitialized: false,
@@ -419,7 +412,7 @@ export default defineComponent({
       const address = Boolean(this.addressFromNiwa)
         ? this.addressFromNiwa
         : this.config.propertyAddress
-      return !!address && address !== constants.AddressZero
+      return !!address && address !== ZeroAddress
     },
     buttonClasses() {
       const classes =
@@ -454,6 +447,10 @@ export default defineComponent({
     link() {
       const url = new URL(this.baseTokenizationLink)
       url.host = `${this.networkSelected.toLowerCase()}.${url.host}`
+      const urlParams = new URLSearchParams(url.search)
+      urlParams.set('popup', 'true')
+      this.allowAccess && urlParams.set('allowAccess', 'true')
+      url.search = urlParams.toString()
       return url.toString()
     },
     linkOrigin() {
@@ -472,7 +469,7 @@ export default defineComponent({
     },
     addressFromNiwaOrConfig() {
       return this.config.propertyAddress &&
-        this.config.propertyAddress != ethers.constants.AddressZero
+        this.config.propertyAddress != ZeroAddress
         ? this.config.propertyAddress
         : this.addressFromNiwa
     },
@@ -538,13 +535,13 @@ export default defineComponent({
         }
       }
 
-      const [l1, l2] = await clientsSTokens(provider as BaseProvider)
+      const [l1, l2] = await clientsSTokens(provider)
       const propertyAddress = Boolean(this.addressFromNiwa)
         ? (this.addressFromNiwa as string)
         : (this.addressFromNiwaOrConfig as string)
 
       const descriptiorAddress: string | undefined = address.find(
-        (address) => address.chainId === currentChainId
+        (address) => address.chainId === currentChainId,
       )?.address
       if (!descriptiorAddress) {
         initMbmershipTxnProcessing = false
@@ -558,9 +555,8 @@ export default defineComponent({
       }
 
       const contract = (l1 || l2)?.contract()
-      const descriptorAddressInContract: string = await contract?.descriptorOf(
-        propertyAddress
-      )
+      const descriptorAddressInContract: string =
+        await contract?.descriptorOf(propertyAddress)
       initMbmershipTxnProcessing = false
       membershipInitialized =
         descriptorAddressInContract?.toLowerCase() ===
@@ -651,11 +647,11 @@ export default defineComponent({
     openNiwa(link: string) {
       if (this.isTokenizing) return
 
-      const popupLink = link + '?popup=true'
+      const popupLink = link
       this.popupWindow = window.open(
         popupLink,
         'Niwa',
-        'popup,width=500,height=700'
+        'popup,width=500,height=700',
       )
       if (this.popupWindow) {
         this.isTokenizing = true
@@ -706,7 +702,7 @@ export default defineComponent({
                 'Your Club is published, loading overview...'
               window.location.href = new URL(
                 '/admin/overview',
-                `${location.protocol}//${this.site}.${location.host}`
+                `${location.protocol}//${this.site}.${location.host}`,
               ).toString()
             } else {
               this.clubPublished = false
@@ -715,7 +711,7 @@ export default defineComponent({
           }
 
           this.isRemovingDraftStatus = false
-        }
+        },
       )
     },
 
@@ -778,7 +774,7 @@ export default defineComponent({
             }
           }
         },
-        { once: true }
+        { once: true },
       )
 
       if (disableDraft) {
@@ -808,7 +804,7 @@ export default defineComponent({
       }
 
       const descriptiorAddress: string | undefined = address.find(
-        (address) => address.chainId === currentChainId
+        (address) => address.chainId === currentChainId,
       )?.address
       if (!descriptiorAddress) {
         this.initMbmershipTxnProcessing = false
@@ -817,7 +813,7 @@ export default defineComponent({
       }
 
       try {
-        const [l1, l2] = await clientsSTokens(provider as BaseProvider)
+        const [l1, l2] = await clientsSTokens(provider)
         const propertyAddress = Boolean(this.addressFromNiwa)
           ? (this.addressFromNiwa as string)
           : (this.addressFromNiwaOrConfig as string)
@@ -832,13 +828,10 @@ export default defineComponent({
           return
         }
 
-        const tx = await l
-          .contract()
-          .connect(signer)
-          [`setTokenURIDescriptor(address,address)`](
-            propertyAddress,
-            descriptiorAddress
-          )
+        const tx = await l.setTokenURIDescriptor(
+          propertyAddress,
+          descriptiorAddress,
+        )
 
         this.initMembershipTxnStatusMsg =
           'Transaction processing on the blockchain...'
@@ -887,10 +880,10 @@ export default defineComponent({
             requiredETHAmount: parseUnits(String(opt.price)).toString(),
             requiredETHFee: opt.fee?.percentage
               ? parseUnits(
-                  new BigNumber(opt.price).times(opt.fee.percentage).toFixed()
+                  new BigNumber(opt.price).times(opt.fee.percentage).toFixed(),
                 ).toString()
               : 0,
-            gateway: opt.fee?.beneficiary ?? constants.AddressZero,
+            gateway: opt.fee?.beneficiary ?? ZeroAddress,
           })) || []
         const keys: string[] =
           this.membershipsPluginOptions?.map((opt) => keccak256(opt.payload)) ||

@@ -19,13 +19,13 @@ export default {
       this.popupWindow = window.open(
         popupLink,
         'Niwa',
-        'popup,width=500,height=700'
+        'popup,width=500,height=700',
       )
       if (this.popupWindow) {
         this.popupWindow.addEventListener(
           'message',
           this.listenForAddress,
-          false
+          false,
         )
       }
     },
@@ -61,11 +61,10 @@ export default {
     </section>
     <section class="mb-4">
       <HSButton
-        v-bind:type="
+        v-bind:type="`contained large ${
           socialMedia.toLowerCase() === 'youtube' ? 'filled' : 'outlined'
-        "
+        }`"
         @click.prevent="setSocialMedia('youtube')"
-        class="w-full gap-0.5 px-6 py-4"
       >
         Youtube
       </HSButton>
@@ -75,38 +74,38 @@ export default {
     >
       <HSButton
         @click.prevent="setSocialMedia('github')"
-        v-bind:type="
+        v-bind:type="`contained large ${
           socialMedia.toLowerCase() === 'github' ? 'filled' : 'outlined'
-        "
-        class="px-6 py-4"
+        }`"
         >Github</HSButton
       >
       <HSButton
         @click.prevent="setSocialMedia('discord')"
-        v-bind:type="
+        v-bind:type="`contained large ${
           socialMedia.toLowerCase() === 'discord' ? 'filled' : 'outlined'
-        "
-        class="px-6 py-4"
+        }`"
         >Discord</HSButton
       >
     </section>
     <section class="mb-16">
-      <select
-        name="network"
-        id="network"
-        class="hs-button is-outlined bg-transparent p-2 text-white"
-        v-model="network"
-      >
-        <option value="polygon" selected>Network: Polygon</option>
-        <option value="ethereum">Network: Ethereum</option>
-        <option value="bsc">Network: Binance Smart Chain</option>
-      </select>
+      <label class="hs-select-field">
+        <select
+          name="network"
+          id="network"
+          class="hs-select-field__input"
+          v-model="network"
+        >
+          <option value="polygon" selected>Network: Polygon</option>
+          <option value="ethereum">Network: Ethereum</option>
+          <option value="bsc">Network: Binance Smart Chain</option>
+        </select>
+      </label>
     </section>
     <section class="mb-4">
       <HSButton
         @click.prevent="openNiwa(link)"
-        type="outlined"
-        class="w-full gap-0.5 px-6 py-2"
+        type="filled fullwidth large"
+        class=""
         >Next</HSButton
       >
     </section>

@@ -146,7 +146,7 @@
     {#if avatarUploading}
       <div class="mb-4 h-64 w-64"><Skeleton /></div>
     {:else if avatarPath && avatarPath != ''}
-      <div class="mb-4 w-64 rounded bg-dp-blue-grey-600 p-3">
+      <div class="bg-dp-blue-grey-600 mb-4 w-64 rounded p-3">
         <img src={avatarPath.toString()} class="rounded" alt="" />
       </div>
     {/if}

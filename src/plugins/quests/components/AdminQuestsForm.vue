@@ -22,7 +22,7 @@ export default defineComponent({
             value: (event.target as HTMLInputElement)?.value || this.deworkUrl,
           },
         ],
-        this.currentPluginIndex
+        this.currentPluginIndex,
       )
     },
   },
@@ -32,14 +32,17 @@ export default defineComponent({
 <template>
   <form>
     <div class="mb-10 flex flex-col">
-      <label class="mb-1" for="dework-url">Dework URL</label>
-      <input
-        :value="deworkUrl"
-        @input="updateOptions"
-        class="rounded bg-[#040B10] px-8 py-4"
-        id="dework-url"
-        name="dework-url"
-      />
+      <label class="hs-form-field">
+        <span class="hs-form-field__label">Dework URL</span>
+        <input
+          class="hs-form-field__input"
+          type="text"
+          :value="deworkUrl"
+          @input="updateOptions"
+          id="dework-url"
+          name="dework-url"
+        />
+      </label>
     </div>
   </form>
 </template>
