@@ -14,7 +14,7 @@ import { Content as Readme } from './README.md'
 import Preview1 from './assets/limited-number-of-items.svg'
 import Preview2 from './assets/time-limited-collection.svg'
 import type { UndefinedOr } from '@devprotocol/util-ts'
-import { utils } from 'ethers'
+import { ZeroAddress, randomBytes, toUtf8Bytes } from 'ethers'
 
 export type Membership = {
   id: string
@@ -70,7 +70,7 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
         currency: 'USDC',
         price: 10,
         description: 'This is a time-limited collection.',
-        payload: utils.toUtf8Bytes('TimeLimitedCollection'),
+        payload: toUtf8Bytes('TimeLimitedCollection'),
       },
     ],
   }
@@ -91,7 +91,7 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
         currency: 'USDC',
         price: 10,
         description: 'This is a member-limited collection.',
-        payload: utils.toUtf8Bytes('TimeLimitedCollection'),
+        payload: toUtf8Bytes('TimeLimitedCollection'),
         memberCount: 10,
       },
     ],

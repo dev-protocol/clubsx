@@ -23,8 +23,6 @@
   export let isAdding: boolean = false
   export let currentPluginIndex: number
 
-  const ZeroAddress = '0x000000000'
-
   export let mode: 'edit' | 'create' = 'create'
   export let rpcUrl: string
   export let propertyAddress: string | null | undefined = undefined
@@ -49,9 +47,9 @@
   }
 
   let membershipPaymentType: MembershipPaymentType
-  // membership.currency === 'DEV' ? 'custom' : ''
+  membership.currency === 'DEV' ? 'custom' : ''
   let membershipCustomFee: number
-  // membership.currency === 'DEV' ? DEV_TOKEN_PAYMENT_TYPE_FEE : 0
+  membership.currency === 'DEV' ? DEV_TOKEN_PAYMENT_TYPE_FEE : 0
   let updatingMembershipsStatus: boolean = false
   let noOfPositions: number = 0
   let invalidPriceMsg: string = ''
