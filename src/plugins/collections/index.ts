@@ -47,11 +47,11 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async () => []
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
   options,
-  { name, rpcUrl, propertyAddress},
-  { getPluginConfigById }
+  { name, rpcUrl, propertyAddress },
+  { getPluginConfigById },
 ) => {
   const [collectionsConfig] = getPluginConfigById(
-    'devprotocol:clubs:collections'
+    'devprotocol:clubs:collections',
   )
 
   const presetTimeCollection: Collection = {
@@ -99,7 +99,7 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
 
   const collections =
     (collectionsConfig?.options.find(
-      (opt: ClubsPluginOption) => opt.key === 'collections'
+      (opt: ClubsPluginOption) => opt.key === 'collections',
     )?.value as UndefinedOr<Collection[]>) ?? []
 
   return [
