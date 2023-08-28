@@ -69,7 +69,7 @@
     "@vue/composition-api": "1.7.2",
     "astro": "2.10.14",
     "autoprefixer": "10.4.15",
-    "bignumber.js": "9.1.1",
+    "bignumber.js": "9.1.2",
     "cross-fetch": "^4.0.0",
     "dayjs": "^1.11.9",
     "dompurify": "^3.0.5",
