@@ -47,7 +47,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async () => []
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
   options,
-  { name },
+  { name, rpcUrl, propertyAddress},
   { getPluginConfigById }
 ) => {
   const [collectionsConfig] = getPluginConfigById(
@@ -102,10 +102,6 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
       (opt: ClubsPluginOption) => opt.key === 'collections'
     )?.value as UndefinedOr<Collection[]>) ?? []
 
-  const memberships = collections.flatMap(
-    (collection) => collection.memberships
-  ) as UndefinedOr<Membership[]>
-
   return [
     {
       paths: ['collections'],
@@ -115,7 +111,7 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
     ...(collections.map((collection) => ({
       paths: ['collections', collection.id],
       component: AdminEdit,
-      props: { collection, collections, name },
+      props: { collection, collections, name, rpcUrl, propertyAddress },
     })) ?? []),
     {
       paths: ['collections', 'new'],
@@ -124,6 +120,8 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
         isTimeLimitedCollection: false,
         preset: presetMemberCollection,
         collections,
+        rpcUrl,
+        propertyAddress,
         name,
       },
     },
@@ -134,6 +132,8 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
         isTimeLimitedCollection: true,
         preset: presetTimeCollection,
         collections,
+        rpcUrl,
+        propertyAddress,
         name,
       },
     },
