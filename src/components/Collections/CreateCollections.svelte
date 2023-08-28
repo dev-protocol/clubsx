@@ -9,6 +9,7 @@
     PAYMENT_TYPE_INSTANT_FEE,
     PAYMENT_TYPE_STAKE_FEE,
   } from '@constants/memberships'
+  import {formatUnixTimestamp} from '@plugins/collections/fixtures'
 
   import { utils } from 'ethers'
   export let existingCollections: Collection[] = []
@@ -167,15 +168,6 @@
   let formattedEndTime = formatUnixTimestamp(
     collection.endTime || new Date().getTime() / 1000 + 120
   )
-  function formatUnixTimestamp(unixTimestamp: number) {
-    const date = new Date(unixTimestamp * 1000) // Convert seconds to milliseconds
-    const year = date.getFullYear()
-    const month = (date.getMonth() + 1).toString().padStart(2, '0')
-    const day = date.getDate().toString().padStart(2, '0')
-    const hours = date.getHours().toString().padStart(2, '0')
-    const minutes = date.getMinutes().toString().padStart(2, '0')
-    return `${year}-${month}-${day}T${hours}:${minutes}`
-  }
 
   const onStartTimeChange = (event: Event) => {
     // need to prevent a change if there are already members
