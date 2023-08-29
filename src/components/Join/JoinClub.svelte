@@ -19,7 +19,9 @@
   }
 </script>
 
-<section class="bg-dp-blue-grey-300 flex flex-col rounded-xl p-4 shadow">
+<section
+  class="bg-dp-white-200 text-dp-white-ink flex flex-col rounded-xl p-4 shadow"
+>
   <h2 class="mb-4 text-4xl font-bold">Join</h2>
   <!-- DAOName from YAML config -->
   <div class="mb-8">Join {tenantName} in support of the project.</div>
@@ -97,9 +99,8 @@
             imagePath={tier.badgeImageSrc}
             id={`${tier.id}:${currency}`}
             description={tier.badgeImageDescription}
-            usdcPrice={currency === 'usdc' ? String(tier.amount) : undefined}
-            ethPrice={currency === 'eth' ? String(tier.amount) : undefined}
-            devPrice={currency === 'dev' ? String(tier.amount) : undefined}
+            price={String(tier.amount)}
+            currency={tier.currency}
           />
           <a
             class="mt-2 block w-full rounded bg-black py-4 text-center text-sm font-semibold text-white"
