@@ -510,15 +510,15 @@
     svelte "^3.49.0"
     vue "^3.2.0"
 
-"@devprotocol/clubs-core@1.0.8":
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-1.0.8.tgz#96d4a7cb88cf4a71e861d60d0533260bae03aeb3"
-  integrity sha512-UwxWWKUZMbe5Baptn05so8ze2R7hIOjSHJG3IaEoY+Y9NOyY3dREQSzS0y6ZkTMjyaE1o07sqxy1t7Xa1HQ9XQ==
+"@devprotocol/clubs-core@1.0.9":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-1.0.9.tgz#b2eb53b0e512e0acd62d168007e99f173f8a5577"
+  integrity sha512-JC/BDbv1wRVZ0tFYBJl03RjE0fQSp7KxRhsr/DUI8sqACIF6OuC7W7aVBps/ZK4kg5TCH7Gdww/jpdPbEyPxgw==
   dependencies:
-    "@devprotocol/dev-kit" "8.1.3"
+    "@devprotocol/dev-kit" "8.2.5"
     "@devprotocol/elements" "1.0.0"
     "@devprotocol/hashi" "2.2.0"
-    "@devprotocol/util-ts" "3.0.0"
+    "@devprotocol/util-ts" "4.0.0"
     "@metamask/detect-provider" "^2.0.0"
     ethers "6.7.1"
     js-base64 "^3.7.2"
@@ -526,7 +526,7 @@
     ramda "^0.29.0"
     rxjs "^7.8.1"
     web3modal "^1.9.9"
-    yaml "2.3.1"
+    yaml "2.3.2"
   optionalDependencies:
     react "^18.0.0"
     react-dom "^18.0.0"
@@ -552,16 +552,6 @@
     bignumber.js "9.1.1"
     js-base64 "^3.7.2"
     ramda "^0.28.0"
-
-"@devprotocol/dev-kit@8.1.3":
-  version "8.1.3"
-  resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-8.1.3.tgz#aaa036dde9969c5265beb211bf6884b99bd71fea"
-  integrity sha512-AiehJBlU+dPB0qpucUGA8pySL1wKwW2psyNN6ZyIUW40cDspf6pR0sNiPkrPQVc8M1tM3bdVS0VxyGRrbAg1iA==
-  dependencies:
-    "@devprotocol/util-ts" "3.0.0"
-    bignumber.js "9.1.1"
-    js-base64 "^3.7.2"
-    ramda "^0.29.0"
 
 "@devprotocol/dev-kit@8.2.5":
   version "8.2.5"
@@ -597,23 +587,7 @@
   dependencies:
     "@matteusan/sentro" "0.1.25"
 
-"@devprotocol/util-ts@3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/util-ts/-/util-ts-3.0.0.tgz#031b251d59dfd9199a4beee421d8b28c0d2ee7aa"
-  integrity sha512-oDg7IeJCeAajGGG79C+UXJE7pKrGsDui3yn9yxSx5SpGFejlAJ3E3af9CpF+uK71NNropglbf/W4KCs2unpGaA==
-  dependencies:
-    ethers "^5.7.2"
-    ramda "^0.28.0"
-
-"@devprotocol/util-ts@3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/util-ts/-/util-ts-3.1.0.tgz#8eaf8e394a80b3582e1609424cbe1b90b7e99c58"
-  integrity sha512-F2xPZ9X/Gbxior7QJjy9rb9m117C231NbuWctJ/LOBMfbqCvzyGvmKskx9G5vUTx6sOjmMNtYTJwRQ2+2WFTgw==
-  dependencies:
-    ethers "^5.7.2"
-    ramda "^0.29.0"
-
-"@devprotocol/util-ts@4.0.0":
+"@devprotocol/util-ts@3.0.0", "@devprotocol/util-ts@3.1.0", "@devprotocol/util-ts@4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@devprotocol/util-ts/-/util-ts-4.0.0.tgz#d96259c0e26eae0b98eedf2a2c6dbacc1301d9b0"
   integrity sha512-8YgP79u2C5q4T4j0IsPN0bSGqtSYBYXt8rHzqq+Ip1T/AeDJX9h/1zaHn63GOcwzTyUwHIKbYxO4hAWkO1fILw==
@@ -4243,7 +4217,7 @@ esutils@^2.0.2:
   resolved "https://registry.yarnpkg.com/esutils/-/esutils-2.0.3.tgz#74d2eb4de0b8da1293711910d50775b9b710ef64"
   integrity sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==
 
-ethers@5.7.2, ethers@^5.7.0, ethers@^5.7.2:
+ethers@5.7.2, ethers@^5.7.0:
   version "5.7.2"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.7.2.tgz#3a7deeabbb8c030d4126b24f84e525466145872e"
   integrity sha512-wswUsmWo1aOK8rR7DIKiWSw9DbLWe6x98Jrn8wcTflTVvaXhAMaB5zGAXy0GYQEQp9iO1iSHWVyARQm11zUtyg==
@@ -8743,7 +8717,12 @@ yaml@2.2.1:
   resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.2.1.tgz#3014bf0482dcd15147aa8e56109ce8632cd60ce4"
   integrity sha512-e0WHiYql7+9wr4cWMx3TVQrNwejKaEe7/rHNmQmqRjazfOP5W8PB6Jpebb5o6fIapbz9o9+2ipcaTM2ZwDI6lw==
 
-yaml@2.3.1, yaml@^2.1.1:
+yaml@2.3.2:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.3.2.tgz#f522db4313c671a0ca963a75670f1c12ea909144"
+  integrity sha512-N/lyzTPaJasoDmfV7YTrYCI0G/3ivm/9wdG0aHuheKowWQwGTsK0Eoiw6utmzAnI6pkJa0DUVygvp3spqqEKXg==
+
+yaml@^2.1.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.3.1.tgz#02fe0975d23cd441242aa7204e09fc28ac2ac33b"
   integrity sha512-2eHWfjaoXgTBC2jNM1LRef62VQa0umtvRiDSk6HSzW7RvS5YtkabJrwYLLEKWBc8a5U2PTSCs+dJjUTJdlHsWQ==
