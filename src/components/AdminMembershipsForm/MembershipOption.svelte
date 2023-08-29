@@ -7,8 +7,9 @@
   export let clubName: string
   export let imagePath: string
   export let id: string
-  export let ethPrice: UndefinedOr<string> = undefined
-  export let devPrice: UndefinedOr<string> = undefined
+  export let usdcPrice: UndefinedOr<string | false> = undefined
+  export let ethPrice: UndefinedOr<string | false> = undefined
+  export let devPrice: UndefinedOr<string | false> = undefined
   export let description: string | undefined = undefined
   export let action: string | undefined = undefined
   export let actionLabel: string | undefined = undefined
@@ -67,6 +68,13 @@
 
     <div class="relative col-start-1">
       <p>{name}</p>
+      {#if usdcPrice}
+        <p
+          class="grid grid-cols-[auto_1fr] items-center gap-1 text-sm opacity-70"
+        >
+          <span class="truncate">{usdcPrice}</span> USDC
+        </p>
+      {/if}
       {#if ethPrice}
         <p
           class="grid grid-cols-[auto_1fr] items-center gap-1 text-sm opacity-70"
