@@ -106,12 +106,12 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
       props: { collection, collections, name, rpcUrl, propertyAddress },
     })) ?? []),
     ...(collections.flatMap((collection) =>
-    collection.memberships.map((membership) => ({
-      paths: ['collections', collection.id, membership.id],
-      component: AdminEditMembership,
-      props: { collection, membership },
-    }))
-  ) ?? []),
+      collection.memberships.map((membership) => ({
+        paths: ['collections', collection.id, membership.id],
+        component: AdminEditMembership,
+        props: { collection, membership },
+      })),
+    ) ?? []),
     {
       paths: ['collections', 'new'],
       component: AdminNew,
