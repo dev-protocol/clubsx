@@ -563,6 +563,16 @@
     js-base64 "^3.7.2"
     ramda "^0.29.0"
 
+"@devprotocol/dev-kit@8.2.6":
+  version "8.2.6"
+  resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-8.2.6.tgz#1fbcab6fc33d08c1d8fe9d3804220868e5701f69"
+  integrity sha512-jo+BR2HDz+77HC0lXFeCNB/OBk+0I2iFmrFAn0eaA9N3C3UHBEdOTq1JNnw1k57kNJYspn7eRFWBtgnofpdhuw==
+  dependencies:
+    "@devprotocol/util-ts" "3.1.0"
+    bignumber.js "9.1.2"
+    js-base64 "^3.7.2"
+    ramda "^0.29.0"
+
 "@devprotocol/elements@0.2.2":
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/@devprotocol/elements/-/elements-0.2.2.tgz#7325fb3354f2fb77c08f91634656a9e87ce0fa80"
@@ -587,7 +597,23 @@
   dependencies:
     "@matteusan/sentro" "0.1.25"
 
-"@devprotocol/util-ts@3.0.0", "@devprotocol/util-ts@3.1.0", "@devprotocol/util-ts@4.0.0":
+"@devprotocol/util-ts@3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@devprotocol/util-ts/-/util-ts-3.0.0.tgz#031b251d59dfd9199a4beee421d8b28c0d2ee7aa"
+  integrity sha512-oDg7IeJCeAajGGG79C+UXJE7pKrGsDui3yn9yxSx5SpGFejlAJ3E3af9CpF+uK71NNropglbf/W4KCs2unpGaA==
+  dependencies:
+    ethers "^5.7.2"
+    ramda "^0.28.0"
+
+"@devprotocol/util-ts@3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@devprotocol/util-ts/-/util-ts-3.1.0.tgz#8eaf8e394a80b3582e1609424cbe1b90b7e99c58"
+  integrity sha512-F2xPZ9X/Gbxior7QJjy9rb9m117C231NbuWctJ/LOBMfbqCvzyGvmKskx9G5vUTx6sOjmMNtYTJwRQ2+2WFTgw==
+  dependencies:
+    ethers "^5.7.2"
+    ramda "^0.29.0"
+
+"@devprotocol/util-ts@4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@devprotocol/util-ts/-/util-ts-4.0.0.tgz#d96259c0e26eae0b98eedf2a2c6dbacc1301d9b0"
   integrity sha512-8YgP79u2C5q4T4j0IsPN0bSGqtSYBYXt8rHzqq+Ip1T/AeDJX9h/1zaHn63GOcwzTyUwHIKbYxO4hAWkO1fILw==
@@ -4217,7 +4243,7 @@ esutils@^2.0.2:
   resolved "https://registry.yarnpkg.com/esutils/-/esutils-2.0.3.tgz#74d2eb4de0b8da1293711910d50775b9b710ef64"
   integrity sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==
 
-ethers@5.7.2, ethers@^5.7.0:
+ethers@5.7.2, ethers@^5.7.0, ethers@^5.7.2:
   version "5.7.2"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.7.2.tgz#3a7deeabbb8c030d4126b24f84e525466145872e"
   integrity sha512-wswUsmWo1aOK8rR7DIKiWSw9DbLWe6x98Jrn8wcTflTVvaXhAMaB5zGAXy0GYQEQp9iO1iSHWVyARQm11zUtyg==

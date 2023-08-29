@@ -32,6 +32,7 @@
   export let currentPluginIndex: number
   export let membership: Membership
   export let existingMemberships: Membership[]
+  export let newMemberships: Membership[]
   export let base: string = '/admin'
   export let mode: 'edit' | 'create' = 'create'
   export let rpcUrl: string
@@ -240,7 +241,7 @@
       return
 
     const search = mode === 'edit' ? originalId : membership.id
-    const newMemberships = existingMemberships.some(({ id }) => id === search)
+    newMemberships = existingMemberships.some(({ id }) => id === search)
       ? // If the ID is already exists, override it. This is a safeguard to avoid duplicate data.
         existingMemberships.map((_mem) =>
           _mem.id === search ? membership : _mem,
@@ -416,7 +417,9 @@
       return
     }
 
-    const memOpts = existingMemberships as Membership[]
+    const memOpts = (newMemberships as Membership[]).filter(
+      (m) => !m.deprecated,
+    )
     const propAddress = propertyAddress
 
     if (!currentAddress || !signer || !propAddress) {
@@ -441,9 +444,9 @@
       gateway: opt.fee?.beneficiary ?? ZeroAddress,
       token: tokenInfo[opt.currency][chainId].address,
     }))
-    console.log('onFinishCallback', { images })
 
     const keys: string[] = memOpts?.map((opt) => bytes32Hex(opt.payload)) || []
+    console.log('onFinishCallback', { images, keys })
 
     controlModal({
       open: true,
@@ -463,7 +466,7 @@
     )?.address
     if (!descriptiorAddress) return // TODO: add loading/processing state.
 
-    const [l1, l2] = await clientsSTokens(provider)
+    const [l1, l2] = await clientsSTokens(signer)
     const l = l1 || l2
     if (!l) return // TODO: add loading/processing state.
 

@@ -1,0 +1,23 @@
+---
+import Result from '@components/Checkout/Result.vue'
+import type { ClubsPropsPages } from '@devprotocol/clubs-core'
+
+const { clubs, id, rpcUrl } = Astro.props as ClubsPropsPages & {
+  id?: string | number
+  rpcUrl: string
+}
+
+const SlotsCheckoutResultBeforePreview = clubs.slots.filter(
+  (slot) => slot.slot === 'checkout-result:before:preview',
+)
+---
+
+<Result client:only="vue" id={id} rpcUrl={rpcUrl}>
+  <slot name="checkout-result:before:preview" slot="before:preview" />
+
+  {
+    SlotsCheckoutResultBeforePreview.map((Slot) => (
+      <Slot.component {...Slot.props} slot="before:preview" />
+    ))
+  }
+</Result>

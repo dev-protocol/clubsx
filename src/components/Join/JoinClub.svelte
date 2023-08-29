@@ -1,4 +1,5 @@
 <script lang="ts">
+  import USDC from '@assets/USDC.svg'
   import ETH from '@assets/ETH.svg'
   import DEV from '@assets/devtoken.png'
   import type { Tiers } from '@constants/tier'
@@ -7,9 +8,9 @@
 
   export let tiers: Tiers
   export let tenantName: string
-  export let preferedCurrency: 'dev' | 'eth'
+  export let preferedCurrency: 'dev' | 'eth' | 'usdc' = 'usdc'
 
-  let currency: 'dev' | 'eth' = 'eth'
+  let currency: 'dev' | 'eth' | 'usdc' = preferedCurrency
   let currencies = new Set(tiers.map((t) => t.currency))
 
   const switchInputs = async (ev: Event) => {
@@ -29,6 +30,24 @@
       currencies.has(CurrencyOption.DEV) ? 'md:grid-cols-2' : ''
     }`}
   >
+    {#if currencies.has(CurrencyOption.USDC)}
+      <label
+        class={`flex items-center gap-2 rounded border p-8 py-4 ${
+          currency === 'usdc' ? 'border-native-blue-400' : 'border-white/20'
+        }`}
+      >
+        <input
+          class=""
+          type="radio"
+          name="input"
+          value="usdc"
+          on:change={switchInputs}
+          checked={preferedCurrency === 'usdc'}
+        />
+        <img src={USDC} alt="USDC" class="h-8 w-8" />
+        <span class="font-bold">USDC</span>
+      </label>
+    {/if}
     {#if currencies.has(CurrencyOption.DEV)}
       <label
         class={`flex items-center gap-2 rounded border p-8 py-4 ${
@@ -47,24 +66,24 @@
         <span class="font-bold">DEV</span>
       </label>
     {/if}
-    <label
-      class={`flex items-center gap-2 rounded border p-8 py-4 ${
-        currencies.has(CurrencyOption.ETH)
-          ? 'border-native-blue-400'
-          : 'border-white/20'
-      }`}
-    >
-      <input
-        class=""
-        type="radio"
-        name="input"
-        value="eth"
-        on:change={switchInputs}
-        checked={preferedCurrency === 'eth'}
-      />
-      <img src={ETH} alt="ETH" class="h-8 w-8" />
-      <span class="font-bold">ETH</span>
-    </label>
+    {#if currencies.has(CurrencyOption.ETH)}
+      <label
+        class={`flex items-center gap-2 rounded border p-8 py-4 ${
+          currency === 'eth' ? 'border-native-blue-400' : 'border-white/20'
+        }`}
+      >
+        <input
+          class=""
+          type="radio"
+          name="input"
+          value="eth"
+          on:change={switchInputs}
+          checked={preferedCurrency === 'eth'}
+        />
+        <img src={ETH} alt="ETH" class="h-8 w-8" />
+        <span class="font-bold">ETH</span>
+      </label>
+    {/if}
   </form>
 
   <h3 class="mb-4 text-2xl font-bold">Select a membership</h3>
@@ -78,6 +97,7 @@
             imagePath={tier.badgeImageSrc}
             id={`${tier.id}:${currency}`}
             description={tier.badgeImageDescription}
+            usdcPrice={currency === 'usdc' ? String(tier.amount) : undefined}
             ethPrice={currency === 'eth' ? String(tier.amount) : undefined}
             devPrice={currency === 'dev' ? String(tier.amount) : undefined}
           />

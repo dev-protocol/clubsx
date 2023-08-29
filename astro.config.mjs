@@ -32,8 +32,10 @@ export default defineConfig({
                 builtInApiPaths.every((p) => !req.url.startsWith(p)))
             ) {
               const host = req.headers.host.split('.')
+              const [, ...primaryHost] = host
 
               if (host.length > 1) {
+                req.headers.host = primaryHost
                 req.url = `/sites_/${host[0]}${req.url}`
               }
             }
