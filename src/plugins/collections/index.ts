@@ -9,6 +9,7 @@ import { ClubsPluginCategory } from '@devprotocol/clubs-core'
 import { default as Admin } from './admin.astro'
 import { default as AdminEdit } from './admin-id.astro'
 import { default as AdminNew } from './admin-new.astro'
+import { default as AdminEditMembership } from './admin-id-id.astro'
 import { default as Icon } from './assets/icon.svg'
 import { Content as Readme } from './README.md'
 import Preview1 from './assets/limited-number-of-items.svg'
@@ -104,6 +105,13 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
       component: AdminEdit,
       props: { collection, collections, name, rpcUrl, propertyAddress },
     })) ?? []),
+    ...(collections.flatMap((collection) =>
+    collection.memberships.map((membership) => ({
+      paths: ['collections', collection.id, membership.id],
+      component: AdminEditMembership,
+      props: { collection, membership },
+    }))
+  ) ?? []),
     {
       paths: ['collections', 'new'],
       component: AdminNew,

@@ -69,6 +69,19 @@
   const minCustomFee = 0
   const maxCustomFee = 95
 
+  const onChangeName = () => {
+    let id = membership.name.toLowerCase().replace(/\W/g, '-')
+    // Duplication detection
+    let count = 1
+    let _id = id
+    while (collection.memberships.some((x) => x.id === id)) {
+      count = count + 1
+      id = `${_id}-${count}`
+    }
+
+    membership.id = id
+  }
+
   const onCollectionChangeName = () => {
     let id = collection.name.toLowerCase().replace(/\W/g, '-')
     // Duplication detection
@@ -227,8 +240,35 @@
     }
   }
 
+  const onChangeMemberCount = async (selectedMembership :CollectionMembership) => {
+    const value = selectedMembership.memberCount ?? 0
+
+    if (value < 1) {
+      selectedMembership.memberCount = 1
+      // Safe range: Maximum permitted value is 4294967295
+    } else if (value > 999999999) {
+      selectedMembership.memberCount = 999999999
+    } else {
+      invalidPriceMsg = ''
+    }
+    if (selectedMembership.memberCount === 0 || !selectedMembership.memberCount) {
+      return
+    }
+    collection = {
+        ...collection,
+        memberships: [
+          ...collection.memberships.filter(
+            (m: CollectionMembership) => m.id !== selectedMembership.id
+          ),
+          {
+            ...selectedMembership
+          },
+        ],
+      }
+    membership = selectedMembership
+  }
+
   const onChangeCustomFee = async (selectedMembership: CollectionMembership) => {
-    console.log('Memberhsip fee before', membership.fee)
     if (selectedMembership.currency === 'DEV') {
       // Update the membership fee in case of currency change to dev token.
       membershipPaymentType = 'custom'
@@ -720,6 +760,8 @@
             <span class="font-body text-[#EB48F8]"> * </span>
           </div>
           <input
+            bind:value={membership.name}
+            on:change={onChangeName}
             class="w-[479px] rounded border-[3px] border-black bg-[#040B10] px-8 py-6"
             id="product-name"
             name="product-name"
@@ -761,10 +803,14 @@
               </span>
             </div>
             <input
+              bind:value={membership.memberCount}
+              on:change={() => onChangeMemberCount(membership)}
               class="w-[479px] rounded border-[3px] border-black bg-[#040B10] px-8 py-6"
               id="sales-number"
+              type="number"
               name="sales-number"
-              value="1"
+              min="1"
+              max="4294967294"
             />
           </div>
         {/if}
@@ -984,16 +1030,20 @@
     <!-- Previous Memberships -->
     <div class="flex items-start justify-between gap-4">
       {#each collection.memberships as mem}
-        <MembershipOption
-          clubName={clubName ?? 'Your Club'}
-          id={mem.id}
-          name={mem.name}
-          imagePath={mem.imageSrc}
-          usdcPrice={mem.price.toString()}
-          description={mem.description}
-          className={`w-[276px] h-[436px]`}
-        />
-      {/each}
+        {#if mem.id !== membership.id}
+          <a href={`${collection.id}/${mem.id}`}>
+            <MembershipOption
+              clubName={clubName ?? 'Your Club'}
+              id={mem.id}
+              name={mem.name}
+              imagePath={mem.imageSrc}
+              usdcPrice={mem.price.toString()}
+              description={mem.description}
+              className={`w-[276px] h-[436px]`}
+            />
+          </a>
+        {/if}
+    {/each}
     </div>
   </div>
 </form>
