@@ -99,9 +99,8 @@
             imagePath={tier.badgeImageSrc}
             id={`${tier.id}:${currency}`}
             description={tier.badgeImageDescription}
-            usdcPrice={currency === 'usdc' ? String(tier.amount) : undefined}
-            ethPrice={currency === 'eth' ? String(tier.amount) : undefined}
-            devPrice={currency === 'dev' ? String(tier.amount) : undefined}
+            price={String(tier.amount)}
+            currency={tier.currency}
           />
           <a
             class="mt-2 block w-full rounded bg-black py-4 text-center text-sm font-semibold text-white"

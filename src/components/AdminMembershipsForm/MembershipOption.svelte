@@ -2,14 +2,15 @@
   import { marked } from 'marked'
   import type { UndefinedOr } from '@devprotocol/util-ts'
   import { onMount } from 'svelte'
+  import { CurrencyOption } from '@constants/currencyOption'
 
   export let name: string
   export let clubName: string
   export let imagePath: string
   export let id: string
-  export let usdcPrice: UndefinedOr<string | false> = undefined
-  export let ethPrice: UndefinedOr<string | false> = undefined
-  export let devPrice: UndefinedOr<string | false> = undefined
+  export let price: string = '0'
+  export let currency: CurrencyOption | Uppercase<CurrencyOption> =
+    CurrencyOption.USDC
   export let description: string | undefined = undefined
   export let action: string | undefined = undefined
   export let actionLabel: string | undefined = undefined
@@ -68,27 +69,12 @@
 
     <div class="relative col-start-1">
       <p>{name}</p>
-      {#if usdcPrice}
-        <p
-          class="grid grid-cols-[auto_1fr] items-center gap-1 text-sm opacity-70"
-        >
-          <span class="truncate">{usdcPrice}</span> USDC
-        </p>
-      {/if}
-      {#if ethPrice}
-        <p
-          class="grid grid-cols-[auto_1fr] items-center gap-1 text-sm opacity-70"
-        >
-          <span class="truncate">{ethPrice}</span> ETH
-        </p>
-      {/if}
-      {#if devPrice}
-        <p
-          class="grid grid-cols-[auto_1fr] items-center gap-1 text-sm opacity-70"
-        >
-          <span class="truncate">{devPrice}</span> DEV
-        </p>
-      {/if}
+      <p
+        class="grid grid-cols-[auto_1fr] items-center gap-1 text-sm opacity-70"
+      >
+        <span class="truncate">{price}</span>
+        {currency.toUpperCase()}
+      </p>
     </div>
 
     <button
@@ -159,15 +145,7 @@
       <div
         class="grid grid-cols-[1fr_auto] content-baseline items-center gap-3 overflow-hidden px-2.5"
       >
-        {#if usdcPrice}
-          <p class="text-2xl font-bold">{usdcPrice} USDC</p>
-        {/if}
-        {#if ethPrice}
-          <p class="text-2xl font-bold">{ethPrice} ETH</p>
-        {/if}
-        {#if devPrice}
-          <p class="text-2xl font-bold">{devPrice} DEV</p>
-        {/if}
+        <p class="text-2xl font-bold">{price} {currency.toUpperCase()}</p>
 
         {#if action && actionLabel}
           <a

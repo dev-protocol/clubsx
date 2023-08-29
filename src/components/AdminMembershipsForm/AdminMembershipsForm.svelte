@@ -18,14 +18,15 @@
     updatingMembershipsStatus = new Set([
       ...updatingMembershipsStatus.values(),
       `${selectedMembership.id}:${selectedMembership.name}:${JSON.stringify(
-        selectedMembership.payload
+        selectedMembership.payload,
       )}`,
     ])
     const membership = memberships.find(
       (m: Membership) =>
         m.id === selectedMembership.id &&
         m.name === selectedMembership.name &&
-        JSON.stringify(m.payload) === JSON.stringify(selectedMembership.payload)
+        JSON.stringify(m.payload) ===
+          JSON.stringify(selectedMembership.payload),
     )
 
     setOptions(
@@ -34,13 +35,13 @@
           key: 'memberships',
           value: [
             ...memberships.filter(
-              (m: Membership) => m.id !== selectedMembership.id
+              (m: Membership) => m.id !== selectedMembership.id,
             ),
             { ...membership, deprecated: true },
           ],
         },
       ],
-      currentPluginIndex
+      currentPluginIndex,
     )
 
     setTimeout(buildConfig, 50)
@@ -50,7 +51,7 @@
     updatingMembershipsStatus = new Set([
       ...updatingMembershipsStatus.values(),
       `${selectedMembership.id}:${selectedMembership.name}:${JSON.stringify(
-        selectedMembership.payload
+        selectedMembership.payload,
       )}`,
     ])
 
@@ -58,7 +59,8 @@
       (m: Membership) =>
         m.id === selectedMembership.id &&
         m.name === selectedMembership.name &&
-        JSON.stringify(m.payload) === JSON.stringify(selectedMembership.payload)
+        JSON.stringify(m.payload) ===
+          JSON.stringify(selectedMembership.payload),
     )
 
     setOptions(
@@ -67,13 +69,13 @@
           key: 'memberships',
           value: [
             ...memberships.filter(
-              (m: Membership) => m.id !== selectedMembership.id
+              (m: Membership) => m.id !== selectedMembership.id,
             ),
             { ...membership, deprecated: false },
           ],
         },
       ],
-      currentPluginIndex
+      currentPluginIndex,
     )
 
     setTimeout(buildConfig, 50)
@@ -126,7 +128,7 @@
             // TODO: Add an error handling
           }
         }
-      }
+      },
     )
   })
 </script>
@@ -139,7 +141,7 @@
       {#each presets as opt, i}
         <h3
           class={`mt-8 text-center text-2xl font-bold first:mt-0 lg:row-start-1 lg:mt-0 ${getColStart(
-            i
+            i,
           )}`}
         >
           {presetExplanations[i].title}
@@ -152,13 +154,14 @@
           id={opt.id}
           name={opt.name}
           imagePath={opt.imageSrc}
-          ethPrice={opt.price.toString()}
+          price={opt.price.toString()}
+          currency={opt.currency}
           description={opt.description}
           className={`lg:row-start-3 ${getColStart(i)}`}
         />
         <a
           class={`hs-button is-filled is-fullwidth lg:row-start-4 ${getColStart(
-            i
+            i,
           )}`}
           id={`select-opt-${i}`}
           href={`${base}/memberships/new/${opt.id}`}
@@ -180,7 +183,8 @@
             id={membership.id}
             name={membership.name}
             imagePath={membership.imageSrc}
-            ethPrice={membership.price.toString()}
+            price={membership.price.toString()}
+            currency={membership.currency}
             description={membership.description}
           />
           <a
@@ -194,16 +198,16 @@
             <button
               disabled={updatingMembershipsStatus.has(
                 `${membership.id}:${membership.name}:${JSON.stringify(
-                  membership.payload
-                )}`
+                  membership.payload,
+                )}`,
               )}
               class={`hs-button is-filled is-fullwidth is-error mt-4 lg:row-start-4 ${getColStart(
-                i
+                i,
               )} ${
                 updatingMembershipsStatus.has(
                   `${membership.id}:${membership.name}:${JSON.stringify(
-                    membership.payload
-                  )}`
+                    membership.payload,
+                  )}`,
                 )
                   ? 'animate-pulse bg-gray-500/60'
                   : ''
@@ -218,16 +222,16 @@
             <button
               disabled={updatingMembershipsStatus.has(
                 `${membership.id}:${membership.name}:${JSON.stringify(
-                  membership.payload
-                )}`
+                  membership.payload,
+                )}`,
               )}
               class={`bg-dp-blue-grey-400 mt-2 block w-full rounded py-4 text-center text-sm font-semibold text-white lg:row-start-4 ${getColStart(
-                i
+                i,
               )} ${
                 updatingMembershipsStatus.has(
                   `${membership.id}:${membership.name}:${JSON.stringify(
-                    membership.payload
-                  )}`
+                    membership.payload,
+                  )}`,
                 )
                   ? 'animate-pulse bg-gray-500/60'
                   : ''

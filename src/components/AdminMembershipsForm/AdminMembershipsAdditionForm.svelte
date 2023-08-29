@@ -813,12 +813,8 @@
             id={membership.id}
             name={membership.name}
             imagePath={membership.imageSrc}
-            usdcPrice={membership.currency === 'USDC' &&
-              membership.price?.toString()}
-            ethPrice={membership.currency === 'ETH' &&
-              membership.price?.toString()}
-            devPrice={membership.currency === 'DEV' &&
-              membership.price?.toString()}
+            price={membership.price?.toString()}
+            currency={membership.currency}
             description={membership.description}
           />
         </div>
