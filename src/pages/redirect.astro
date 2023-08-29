@@ -1,0 +1,17 @@
+---
+const redirectParam = Astro.url.searchParams.get('redirect')
+if (!redirectParam) {
+  return new Response(null, { status: 404 })
+}
+const redirect = new URL(redirectParam)
+const queries = Astro.url.searchParams.entries()
+
+Array.from(queries).forEach(([key, value]) => {
+  if (key === 'redirect') {
+    return
+  }
+  redirect.searchParams.set(key, value)
+})
+
+return Astro.redirect(redirect)
+---

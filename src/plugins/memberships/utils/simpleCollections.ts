@@ -32,17 +32,17 @@ export const address: Address[] = [
   },
   {
     chainId: 137,
-    address: '0xF235ff0A6B33e074daFd98bB4BD2b300c1561339',
+    address: '0x1e9B63e80249Bb6FEc02A70A5a64aBefFBB30d6d',
   },
   {
     chainId: 80001,
-    address: '0x672bA772beD905Ad9Ecb924bD9c47eAb156153C0',
+    address: '0xCD773d78cB5a3CA8aC594B571d7744e641eaEcD2',
   },
 ]
 
 const defaultAddress: Address = {
   chainId: 137,
-  address: '0xF235ff0A6B33e074daFd98bB4BD2b300c1561339',
+  address: '0x1e9B63e80249Bb6FEc02A70A5a64aBefFBB30d6d',
 }
 
 const simpleCollectionsAbi = [

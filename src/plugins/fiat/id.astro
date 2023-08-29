@@ -2,21 +2,53 @@
 import type { Currency } from '@crossmint/client-sdk-base'
 import type { Product } from '@constants/products'
 import IdPage from './Id'
-import type {CMValues} from '.'
+import type { CMValues } from '.'
+import Checkout from '@components/Checkout/Checkout.astro'
 
-const {
-  cm,
-  product,
-  rpcUrl,
-  propertyAddress
-} = Astro.props as {
+const { cm, product, rpcUrl, propertyAddress, ...other } = Astro.props as {
   cm: CMValues
   product: Product
-  rpcUrl:string
+  rpcUrl: string
   propertyAddress: string
 }
+const url = new URL(Astro.url)
+const success = Boolean(url.searchParams.get('success'))
+const failure = Boolean(url.searchParams.get('failure'))
 ---
 
-
-<IdPage client:load cm={cm} rpcUrl={rpcUrl} propertyAddress={propertyAddress} product={product} />
-
+<Checkout
+  amount={product.price}
+  destination={propertyAddress}
+  fiatCurrency="USD"
+  rpcUrl={rpcUrl}
+  payload={product.payload}
+  description={product.description}
+  useInjectedTransactionForm={true}
+  itemImageSrc={product.imageSrc}
+  itemName={product.name}
+  {...other}
+>
+  {
+    success ? (
+      <div slot="checkout:main:transaction-form">
+        <h3 class="text-2xl font-bold text-green-500">
+          You're now our member!
+        </h3>
+      </div>
+    ) : failure ? (
+      <div slot="checkout:main:transaction-form">
+        <h3 class="mb-4 text-2xl font-bold">You're now our member!</h3>
+      </div>
+    ) : (
+      <IdPage
+        client:load
+        slot="checkout:main:transaction-form"
+        cm={cm}
+        rpcUrl={rpcUrl}
+        propertyAddress={propertyAddress}
+        product={product}
+        baseUrl={url.toString()}
+      />
+    )
+  }
+</Checkout>

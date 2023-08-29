@@ -40,9 +40,6 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
     badgeImageSrc: mem.imageSrc,
     badgeImageDescription: mem.description,
   }))
-  const preferedCurrency = tiers?.every((t) => t.currency === 'eth')
-    ? 'eth'
-    : 'dev'
 
   return tiers
     ? [
@@ -54,7 +51,6 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
             propertyAddress,
             name,
             rpcUrl,
-            preferedCurrency,
             signals: [ClubsPluginSignal.DisplayFullPage],
           },
         },

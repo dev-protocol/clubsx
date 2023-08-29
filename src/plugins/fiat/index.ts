@@ -14,6 +14,7 @@ import { ClubsPluginCategory, ClubsPluginSignal } from '@devprotocol/clubs-core'
 import { default as Index } from './index.astro'
 import { default as Id } from './id.astro'
 import { default as Slot } from './slot.astro'
+import { default as Result } from './result.astro'
 import { keccak256, solidityPacked } from 'ethers'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 
@@ -55,7 +56,7 @@ const CM: Record<string, CMValues> = {
   },
   Staging: {
     projectId: '50a70688-7796-4dd4-8381-7cba8e18afb2',
-    collectionId: '8c3350a1-d877-4357-ba75-4c7e7a91412b',
+    collectionId: '1c6eb836-59b9-4cb7-810d-8a844274dd83',
     environment: 'staging',
     args: {
       token: '0xFEca406dA9727A25E71e732F9961F680059eF1F9', // USDC on Mumbai
@@ -174,6 +175,11 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
             title,
           },
           component: Index,
+        },
+        {
+          paths: ['fiat', 'result'],
+          props: { rpcUrl },
+          component: Result,
         },
         ...products.map((product) => ({
           paths: ['fiat', keccak256(product.payload)],
