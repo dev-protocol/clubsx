@@ -19,6 +19,7 @@ const { memberships, name } = Astro.props as {
           clubName={name}
           id={mem.id}
           name={mem.name}
+          usdcPrice={mem.currency === 'USDC' ? String(mem.price) : undefined}
           ethPrice={mem.currency === 'ETH' ? String(mem.price) : undefined}
           devPrice={mem.currency === 'DEV' ? String(mem.price) : undefined}
           description={mem.description}

@@ -19,7 +19,9 @@
   }
 </script>
 
-<section class="bg-dp-blue-grey-300 flex flex-col rounded-xl p-4 shadow">
+<section
+  class="bg-dp-white-200 text-dp-white-ink flex flex-col rounded-xl p-4 shadow"
+>
   <h2 class="mb-4 text-4xl font-bold">Join</h2>
   <!-- DAOName from YAML config -->
   <div class="mb-8">Join {tenantName} in support of the project.</div>

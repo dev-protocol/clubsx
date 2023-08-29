@@ -58,7 +58,7 @@
   <img class="w-full bg-black/20" src={imagePath} alt={`${name} Membership`} />
 
   <div
-    class="relative grid grid-cols-[1fr_auto] content-baseline items-center gap-3 overflow-hidden p-2.5"
+    class="relative grid grid-cols-[1fr_auto] content-baseline items-center gap-3 overflow-hidden p-2.5 text-white"
   >
     <img
       class="pointer-events-none absolute -left-1/2 top-1/2 h-auto w-[200%] max-w-none -translate-y-1/2 blur-[120px]"
@@ -159,6 +159,9 @@
       <div
         class="grid grid-cols-[1fr_auto] content-baseline items-center gap-3 overflow-hidden px-2.5"
       >
+        {#if usdcPrice}
+          <p class="text-2xl font-bold">{usdcPrice} USDC</p>
+        {/if}
         {#if ethPrice}
           <p class="text-2xl font-bold">{ethPrice} ETH</p>
         {/if}
@@ -199,6 +202,7 @@
 
 <style lang="scss">
   .md {
+    @apply text-white;
     :global(h1) {
       @apply text-3xl font-bold;
     }

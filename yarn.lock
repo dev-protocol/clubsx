@@ -510,14 +510,14 @@
     svelte "^3.49.0"
     vue "^3.2.0"
 
-"@devprotocol/clubs-core@1.0.9":
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-1.0.9.tgz#b2eb53b0e512e0acd62d168007e99f173f8a5577"
-  integrity sha512-JC/BDbv1wRVZ0tFYBJl03RjE0fQSp7KxRhsr/DUI8sqACIF6OuC7W7aVBps/ZK4kg5TCH7Gdww/jpdPbEyPxgw==
+"@devprotocol/clubs-core@1.0.10":
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-1.0.10.tgz#feb99c3ccdba1430f9e36ef5ce1a780d1e88c7de"
+  integrity sha512-0vGnR/iXckwlro1oK5ul8V0BkUHBBshdiBMGFW6G901WfljElhY0nhCn2ew/1StvcMNRZtcUayDvPKDcb+JQHw==
   dependencies:
-    "@devprotocol/dev-kit" "8.2.5"
+    "@devprotocol/dev-kit" "8.2.6"
     "@devprotocol/elements" "1.0.0"
-    "@devprotocol/hashi" "2.2.0"
+    "@devprotocol/hashi" "2.2.1"
     "@devprotocol/util-ts" "4.0.0"
     "@metamask/detect-provider" "^2.0.0"
     ethers "6.7.1"
@@ -553,16 +553,6 @@
     js-base64 "^3.7.2"
     ramda "^0.28.0"
 
-"@devprotocol/dev-kit@8.2.5":
-  version "8.2.5"
-  resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-8.2.5.tgz#a1c3ac4f77b7704224949b3a6cb0a0371976cd54"
-  integrity sha512-qgU8s35uX4n6zdeKJiSd41LQ6Kr19jF+yTL2Z+0B1TLekX/BBKh2/3yu39sM3gPMnjm/rqr1EZ2ERZeAH715jA==
-  dependencies:
-    "@devprotocol/util-ts" "3.1.0"
-    bignumber.js "9.1.1"
-    js-base64 "^3.7.2"
-    ramda "^0.29.0"
-
 "@devprotocol/dev-kit@8.2.6":
   version "8.2.6"
   resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-8.2.6.tgz#1fbcab6fc33d08c1d8fe9d3804220868e5701f69"
@@ -590,10 +580,10 @@
   dependencies:
     "@matteusan/sentro" "0.1.25"
 
-"@devprotocol/hashi@2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/hashi/-/hashi-2.2.0.tgz#887af0dd26af24989c32901c2443f7ef12fef006"
-  integrity sha512-F20g3lD2MkOQOARrryURIIOtgvuQjLRKtzkCu/CRcd701cp9y9JVWNU3HaTRfeH9YSkabLHORE5ddDGVTqn4Vg==
+"@devprotocol/hashi@2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@devprotocol/hashi/-/hashi-2.2.1.tgz#975ba827fd5bb9af66c195d4dd1eba803cb11169"
+  integrity sha512-k4TqwnxWCTQCvFieZnlt4JyWHOWKLXEVaRk8zZDuqaE3sqGq0a793LRjzRXL+tAlmZTVyS8bl5JuYgkIEnB1Vw==
   dependencies:
     "@matteusan/sentro" "0.1.25"
 
