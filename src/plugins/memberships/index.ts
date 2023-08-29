@@ -11,13 +11,17 @@ import { default as AdminNew } from './admin-new.astro'
 import { default as AdminEdit } from './admin-id.astro'
 import { default as Modal } from './modal.astro'
 import type { UndefinedOr } from '@devprotocol/util-ts'
-import { randomBytes, toUtf8Bytes } from 'ethers'
+import { ZeroAddress, randomBytes, toUtf8Bytes } from 'ethers'
 import type { DraftOptions } from '@constants/draft'
 import { default as Icon } from './assets/icon.svg'
 import { Content as Readme } from './README.md'
 import Preview1 from './assets/memberships-1.jpg'
 import Preview2 from './assets/memberships-2.jpg'
 import Preview3 from './assets/memberships-3.jpg'
+import {
+  PAYMENT_TYPE_INSTANT_FEE,
+  PAYMENT_TYPE_STAKE_FEE,
+} from '@constants/memberships'
 
 export type Membership = {
   id: string
@@ -32,6 +36,7 @@ export type Membership = {
     beneficiary: string
   }
   deprecated?: boolean
+  paymentType: 'instant' | 'stake' | 'custom'
 }
 
 const presets: Membership[] = [
@@ -43,6 +48,11 @@ const presets: Membership[] = [
     price: 0.005,
     description: `Always be with Alice! This membership gives you access to an exclusive Discord, where you can participate in monthly community hours and view hand-drawn illustrations and posts.`,
     payload: toUtf8Bytes('Community'),
+    paymentType: 'instant',
+    fee: {
+      percentage: PAYMENT_TYPE_INSTANT_FEE,
+      beneficiary: ZeroAddress,
+    },
   },
   {
     id: 'preset-team',
@@ -52,6 +62,11 @@ const presets: Membership[] = [
     price: 0.005,
     description: `Want to be an Awesome-band contributor? This is it! Help organize events, manage co-creation projects with external collaborators, and see some of the special productions that only the band team can see.`,
     payload: toUtf8Bytes('Team'),
+    paymentType: 'instant',
+    fee: {
+      percentage: PAYMENT_TYPE_INSTANT_FEE,
+      beneficiary: ZeroAddress,
+    },
   },
   {
     id: 'preset-dao',
@@ -61,6 +76,11 @@ const presets: Membership[] = [
     price: 0.005,
     description: `As a core member of XYZ, a DAO pushing seismic waveform research, join the team that manages the measurement nodes, reporting data, and organization.`,
     payload: toUtf8Bytes('DAO'),
+    paymentType: 'stake',
+    fee: {
+      percentage: PAYMENT_TYPE_STAKE_FEE,
+      beneficiary: ZeroAddress,
+    },
   },
 ]
 
