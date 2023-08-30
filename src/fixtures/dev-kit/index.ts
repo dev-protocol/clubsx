@@ -311,3 +311,14 @@ export const stakeWithAnyTokens = async (
     from,
   })
 }
+
+export const propertySymbol = async (
+  prov: ContractRunner,
+  propertyAddress: string,
+) => {
+  if (propertyAddress === ZeroAddress) {
+    return undefined
+  }
+  const [l1, l2] = await clientsProperty(prov, propertyAddress)
+  return (l1 || l2)?.symbol()
+}

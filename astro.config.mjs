@@ -35,7 +35,7 @@ export default defineConfig({
               const [, ...primaryHost] = host
 
               if (host.length > 1) {
-                req.headers.host = primaryHost
+                req.headers.host = primaryHost.join('.')
                 req.url = `/sites_/${host[0]}${req.url}`
               }
             }
