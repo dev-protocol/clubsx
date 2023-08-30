@@ -56,8 +56,7 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
     isTimeLimitedCollection: true,
     startTime: 0,
     endTime: 0,
-    memberships: [
-    ],
+    memberships: [],
   }
 
   const presetMemberCollection: Collection = {
@@ -68,8 +67,7 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
     isTimeLimitedCollection: true,
     startTime: 0,
     endTime: 0,
-    memberships: [
-    ],
+    memberships: [],
   }
 
   const collections =
