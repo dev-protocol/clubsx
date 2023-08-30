@@ -3,7 +3,10 @@ import { ethers } from 'ethers'
 import type {
   TransactionResponse,
   TransactionReceipt,
-} from '@ethersproject/abstract-provider'
+  BrowserProvider,
+  Signer,
+  Provider,
+} from 'ethers'
 import { timeABI } from './timeABI'
 import { memberABI } from './memberABI'
 import type { Image } from './types/setImageArg'
@@ -72,37 +75,37 @@ const defaultAddress: Address = {
 }
 
 export async function callSlotCollections(
-  provider: BaseProvider | ethers.Signer,
+  provider: Signer,
   functionName: 'setImages',
   isTimeSlot: boolean,
   args: [propertyAddress: string, images: Image[], keys: string[]],
 ): Promise<TransactionResponse>
 
 export async function callSlotCollections(
-  provider: BaseProvider,
+  provider: Signer,
   functionName: 'removeImage',
   isTimeSlot: boolean,
   args: [propertyAddress: string, key: string],
 ): Promise<TransactionResponse>
 
 export async function callSlotCollections(
-  provider: BaseProvider,
+  provider: BrowserProvider,
   functionName: 'propertyImages',
   isTimeSlot: boolean,
   args: [propertyAddress: string, key: string],
 ): Promise<Image>
 
 export async function callSlotCollections(
-  provider: BaseProvider | ethers.Signer,
+  provider: BrowserProvider | Signer,
   functionName: string,
   isTimeSlot: boolean,
   args: unknown[],
 ): Promise<unknown> {
-  const chainId = await ('getChainId' in provider
-    ? (provider as ethers.Signer).getChainId()
-    : (provider as BaseProvider).getNetwork()
+  const chainId = await ('getNetwork' in provider
+    ? (provider as BrowserProvider).getNetwork()
+    : ((provider as Signer).provider as Provider).getNetwork()
   ).then((network) => {
-    return typeof network === 'number' ? network : network.chainId
+    return Number(network.chainId)
   })
 
   const addressList =
@@ -115,8 +118,6 @@ export async function callSlotCollections(
     provider,
   )
 
-  const result: TransactionReceipt = await contract.functions[functionName](
-    ...args,
-  )
+  const result: TransactionReceipt = await contract[functionName](...args)
   return result
 }
