@@ -11,8 +11,8 @@ import BigNumber from 'bignumber.js'
 import { abi } from './fulfillment'
 import type { ComposedItem } from '..'
 
-const { POP_SERVER_KEY, POP_CLIENT_KEY } = import.meta.env
-const AUTH_STRING = Buffer.from('Test-POP-Server-Key:').toString('base64')
+const { POP_SERVER_KEY, PUBLIC_POP_CLIENT_KEY } = import.meta.env
+const AUTH_STRING = Buffer.from(`${POP_SERVER_KEY}:`).toString('base64')
 
 export type Success = {
   payment_key: string // '28GTzdVOZNeImaHMDeQF1319'
@@ -168,28 +168,30 @@ export const get: ({
     /**
      * Create arguments required by the fulfillment flow as ABI-encoded values.
      */
-    const abiEncodedParamsForFulfilment = AbiCoder.defaultAbiCoder().encode(
-      abi,
-      [
-        eoa,
-        propertyAddress,
-        payloadHex,
-        sourcePaymentToken,
-        parseUnits(
-          membership.source.price.toString(),
-          membership.source.currency === 'USDC' ? 6 : 18,
-        ),
-        membership.source.fee?.beneficiary ?? ZeroAddress,
-        new BigNumber(membership.source.fee?.percentage ?? 0)
-          .times(10000)
-          .toFixed(0),
-      ],
-    )
+    const abiEncoder = AbiCoder.defaultAbiCoder()
+    const abiEncodedParamsForFulfilment = abiEncoder.encode(abi, [
+      eoa,
+      propertyAddress,
+      payloadHex,
+      sourcePaymentToken,
+      parseUnits(
+        membership.source.price.toString(),
+        membership.source.currency === 'USDC' ? 6 : 18,
+      ),
+      membership.source.fee?.beneficiary ?? ZeroAddress,
+      new BigNumber(membership.source.fee?.percentage ?? 0)
+        .times(10000)
+        .toFixed(0),
+    ])
 
     /**
      * Create other parameters.
      */
-    const order_id = `ORDER-${payloadHex}-${eoa}-${keccak256(randomBytes(8))}`
+    const orderUniqueKey = abiEncoder.encode(
+      ['address', 'bytes32', 'bytes32'],
+      [eoa, payloadHex, keccak256(randomBytes(8))],
+    )
+    const order_id = `ORDER-${keccak256(orderUniqueKey)}`
     const gross_amount = membership.price.yen
     const payment_key_expiry_duration = 1440 // = 1440 minutes
     const push_url = new URL(
@@ -222,7 +224,7 @@ export const get: ({
       order_id,
       gross_amount,
       payment_key_expiry_duration,
-      push_url,
+      // push_url,
       enabled_payment_types,
       email,
       items,

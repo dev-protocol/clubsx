@@ -15,8 +15,14 @@ export const abi = [
  * This endpoint is expected to be called with the following parameters:
  * ?params={ABI_ENCODED_PARAMS}
  */
-export const post: APIRoute = async ({ url }) => {
-  /**
+export const post: ({
+  webhookOnFulfillment,
+}: {
+  webhookOnFulfillment?: string
+}) => APIRoute =
+  ({ webhookOnFulfillment }) =>
+  async ({ request, url }) => {
+    /**
    * WE NEED TO CHECK THE CALLER IS THE VERITRANSE SERVER:
    * > POP Server adds a `signature` as the last parameter in both Transaction Status Through Redirection as well as Push Notifications. The `signature` is derived from the parameters and their values in the notification.
    * > The Merchant Server has to derive a signature using the same logic and compare with the `signature` received from POP Server. If both the signatures match then and only then should the Merchant Server process further.
@@ -48,26 +54,41 @@ export const post: APIRoute = async ({ url }) => {
     ```
    */
 
-  const params = url.searchParams.get('params')
+    const body = await request.json()
+    console.log(1, body)
 
-  if (!params) {
+    const params = url.searchParams.get('params')
+
+    console.log(2, params)
+
+    if (!params) {
+      return {
+        status: 200, // Always 200
+        body: JSON.stringify({ message: '`?params` is missing' }),
+      }
+    }
+
+    const [
+      mintFor,
+      propertyAddress,
+      payload,
+      paymentToken,
+      paymentAmount,
+      feeBeneficiary,
+      feePercentage,
+    ] = AbiCoder.defaultAbiCoder().decode(abi, params)
+
+    console.log(3, [
+      mintFor,
+      propertyAddress,
+      payload,
+      paymentToken,
+      paymentAmount,
+      feeBeneficiary,
+      feePercentage,
+    ])
+
     return {
-      status: 200, // Always 200
-      body: JSON.stringify({ message: '`?params` is missing' }),
+      body: '',
     }
   }
-
-  const [
-    mintFor,
-    propertyAddress,
-    payload,
-    paymentToken,
-    paymentAmount,
-    feeBeneficiary,
-    feePercentage,
-  ] = AbiCoder.defaultAbiCoder().decode(abi, params)
-
-  return {
-    body: '',
-  }
-}
