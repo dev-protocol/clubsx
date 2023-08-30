@@ -1,12 +1,12 @@
 <template>
   <div class="bg-cover bg-center">
     <h3 class="my-8 font-title text-2xl font-bold">Supporters</h3>
-    <div v-if="members.length > 0" class="border-dp-black-200 rounded border">
+    <div v-if="members.length > 0" class="rounded border border-dp-black-200">
       <ul role="list">
         <li
           v-for="member in members"
           :key="member.ownerAddress"
-          class="border-dp-black-200 flex items-center border border-x-0 border-t-0 outline-white first:border-solid last:border-none"
+          class="flex items-center border border-x-0 border-t-0 border-dp-black-200 outline-white first:border-solid last:border-none"
         >
           <Avator :accountAddress="member.ownerAddress" :displayName="true" />
           <STokenPositions
