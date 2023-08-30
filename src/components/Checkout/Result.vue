@@ -58,41 +58,46 @@ onMounted(async () => {
 
 <template>
   <section class="rounded-md bg-white p-8 text-black shadow">
-    <div class="mx-auto grid max-w-lg gap-8">
+    <div class="mx-auto grid gap-8 md:max-w-lg">
       <slot name="before:preview" />
+      <div
+        class="-mx-8 grid gap-8 bg-dp-white-300 p-6 md:mx-auto md:rounded-md"
+      >
+        <div class="flex flex-col gap-6">
+          <p class="font-mono font-bold">
+            Minted <span class="text-black/50">#{{ id }}</span>
+          </p>
 
-      <div class="flex flex-col gap-6">
-        <p class="font-mono font-bold">#{{ id }}</p>
-
-        <div class="rounded-lg border border-black/20 bg-black/10 p-4">
-          <img
-            v-if="tokenURI?.image"
-            :src="tokenURI?.image"
-            class="h-auto w-full rounded object-cover object-center sm:h-full sm:w-full"
-          />
+          <div class="rounded-lg border border-black/20 bg-black/10 p-4">
+            <img
+              v-if="tokenURI?.image"
+              :src="tokenURI?.image"
+              class="h-auto w-full rounded object-cover object-center sm:h-full sm:w-full"
+            />
+            <Skeleton
+              v-if="tokenURI?.image === undefined"
+              class="mx-auto aspect-square h-full w-full"
+            />
+          </div>
+          <span>
+            <h3 class="text-sm text-black/50">
+              <span v-if="tokenURI?.name">{{ tokenURI.name }}</span>
+              <Skeleton
+                v-if="tokenURI?.name === undefined"
+                class="mx-auto h-full w-full"
+              />
+            </h3>
+          </span>
+          <aside
+            v-if="htmlDescription"
+            v-html="htmlDescription"
+            class="mt-6 text-xl text-black/80"
+          ></aside>
           <Skeleton
-            v-if="tokenURI?.image === undefined"
-            class="mx-auto aspect-square h-full w-full"
+            v-if="htmlDescription === undefined"
+            class="mx-auto h-full w-full"
           />
         </div>
-        <span>
-          <h3 class="text-sm text-black/50">
-            <span v-if="tokenURI?.name">{{ tokenURI.name }}</span>
-            <Skeleton
-              v-if="tokenURI?.name === undefined"
-              class="mx-auto h-full w-full"
-            />
-          </h3>
-        </span>
-        <aside
-          v-if="htmlDescription"
-          v-html="htmlDescription"
-          class="mt-6 text-xl text-black/80"
-        ></aside>
-        <Skeleton
-          v-if="htmlDescription === undefined"
-          class="mx-auto h-full w-full"
-        />
       </div>
     </div>
   </section>

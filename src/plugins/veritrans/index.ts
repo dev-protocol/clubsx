@@ -12,6 +12,7 @@ import type { ClubsFunctionGetApiPaths } from '@devprotocol/clubs-core/src'
 import { composeItems } from './utils/compose-items'
 import { get } from './api/payment-key'
 import { post } from './api/fulfillment'
+import type { UndefinedOr } from '@devprotocol/util-ts'
 
 export type Override = {
   id: string
@@ -27,7 +28,7 @@ export type ComposedItem = Override & { source: Membership }
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
-  { propertyAddress, rpcUrl },
+  { propertyAddress, rpcUrl, chainId },
   utils,
 ) => {
   const items = composeItems(options, utils)
@@ -46,6 +47,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
             item,
             propertyAddress,
             rpcUrl,
+            chainId,
             signals: [ClubsPluginSignal.DisplayFullPage],
             accessControlUrl: undefined, //TODO: Pass the value
             accessControlDescription: undefined, //TODO: Pass the value
@@ -62,6 +64,10 @@ export const getApiPaths: ClubsFunctionGetApiPaths = async (
   utils,
 ) => {
   const items = composeItems(options, utils)
+  const webhooks =
+    (options.find((opt) => opt.key === 'webhooks')?.value as UndefinedOr<{
+      fulfillment?: string
+    }>) ?? {}
 
   return [
     {
@@ -72,7 +78,7 @@ export const getApiPaths: ClubsFunctionGetApiPaths = async (
     {
       paths: ['fulfillment'],
       method: 'POST',
-      handler: post,
+      handler: post({ webhookOnFulfillment: webhooks?.fulfillment }),
     },
   ]
 }
