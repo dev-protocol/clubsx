@@ -12,16 +12,25 @@
   
   import { formatUnixTimestamp } from '@plugins/collections/fixtures'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
+  import {
+    address,
+    callSlotCollections,
+  } from '@plugins/collections/utils/slotCollections'
   import type { Image } from '@plugins/collections/utils/types/setImageArg'
   import { randomBytes, parseUnits, keccak256, JsonRpcProvider, ZeroAddress, type Signer } from 'ethers'
+  import { onMount } from 'svelte'
   import BigNumber from 'bignumber.js'
+  import { clientsSTokens } from '@devprotocol/dev-kit'
   import { tokenInfo } from '@constants/common'
+  import { bytes32Hex } from '@fixtures/data/hexlify'
+
   
   export let existingCollections: Collection[] = []
   export let collection: Collection
   export let isTimeLimitedCollection: boolean = false
   export let clubName: string | undefined = undefined
   export let isAdding: boolean = false
+  export let useOnFinishCallback: boolean = false
   export let currentPluginIndex: number
 
   export let mode: 'edit' | 'create' = 'create'
@@ -35,8 +44,8 @@
   type MembershipPaymentType = 'instant' | 'stake' | 'custom' | ''
   // note: treat this variable as state variable which stores the state for memberships edits and also for storing in DB
   export let membership: CollectionMembership = {
-    id: 'preset-collection-membership',
-    name: '',
+    id: '',
+    name: 'My First Membership',
     description: '',
     price: 0,
     currency: 'USDC',
@@ -67,6 +76,7 @@
   const provider = new JsonRpcProvider(rpcUrl)
 
   let membershipExists = false
+  let loading = false
 
   const minPrice = 0.000001
   const maxPrice = 1e20
@@ -84,6 +94,7 @@
     }
 
     membership.id = id
+    updateState()
   }
 
   const onCollectionChangeName = () => {
@@ -99,7 +110,7 @@
     collection.id = id
   }
 
-  const onFileSelected = async (
+  const onCollectionFileSelected = async (
     e: Event & {
       currentTarget: EventTarget & HTMLInputElement
     }
@@ -117,6 +128,26 @@
 
     update()
   }
+
+  const onMembershipFileSelected = async (
+    e: Event & {
+      currentTarget: EventTarget & HTMLInputElement
+    }
+  ) => {
+    if (!e.currentTarget.files || !membership) {
+      return
+    }
+
+    const file = e.currentTarget.files[0]
+
+    membership.imageSrc =
+      (await uploadImageAndGetPath(file)) || `https://i.ibb.co/RbxFzn8/img.jpg`
+
+    membership = membership
+
+    updateState()
+  }
+
 
   const deleteMembership = (selectedMembership: CollectionMembership) => {
     updatingMembershipsStatus = true
@@ -198,7 +229,7 @@
 
   const onStartTimeChange = (event: Event) => {
     // need to prevent a change if there are already members
-    const value = (event.target as HTMLInputElement)?.value
+    const value = (event.target as HTMLInputElement)?.value || 0
     const passedUnixTime = new Date(value).getTime() / 1000
     const currentTime = Date.now() / 1000
     if (passedUnixTime < Date.now() / 1000) {
@@ -220,7 +251,7 @@
   }
 
   const onEndTimeChange = async (event: Event) => {
-    const value = (event.target as HTMLInputElement)?.value
+    const value = (event.target as HTMLInputElement)?.value || 0
     const passedUnixTime = new Date(value).getTime() / 1000
     const currentTime = Date.now() / 1000
     if (passedUnixTime <= currentTime) {
@@ -483,7 +514,34 @@
     if (selectedMembership.price === 0 || !selectedMembership.price) {
       return
     }
+    updateState()
   }
+  const connectOnMount = async () => {
+    const _connection = await import('@devprotocol/clubs-core/connection')
+    connection = _connection.connection
+    connection().signer.subscribe((s) => {
+      signer = s
+    })
+    connection().account.subscribe((a) => {
+      currentAddress = a
+    })
+  }
+
+  onMount(() => {
+    onChangePrice(membership)
+    fetchPositionsOfProperty()
+    update()
+    onStartTimeChange
+    onEndTimeChange
+    connectOnMount()
+
+    if (useOnFinishCallback) {
+      document.body.addEventListener(
+        ClubsEvents.FinishConfiguration,
+        onFinishCallback,
+      )
+    }
+  })
 
   const validateMembershipPrice = (event: Event) => {
     const value = Number((event.target as HTMLInputElement)?.value || 0)
@@ -529,6 +587,26 @@
   const setIsAdding = (value: boolean) => {
     isAdding = value
   }
+
+  const updateState = () => {
+    if (
+      membership.price < minPrice ||
+      membership.price > maxPrice ||
+      membershipPaymentType === ''
+    )
+      return
+
+    collection = {
+      ...collection,
+      memberships: [
+        ...collection.memberships.filter(
+          (m: CollectionMembership) => m.id !== membership.id
+        ),
+        membership,
+      ],
+    }
+  }
+
   const update = () => {
     const newCollections = [
       ...existingCollections.filter((c: Collection) => c.id !== collection.id),
@@ -538,6 +616,44 @@
       [{ key: 'collections', value: newCollections }],
       currentPluginIndex
     )
+  }
+
+  const fetchPositionsOfProperty = async () => {
+    loading = true
+
+    if (!provider || !propertyAddress) {
+      loading = false
+      return
+    }
+
+    const [l1, l2] = await clientsSTokens(provider)
+
+    const contract = l1 ?? l2
+    const positions = await contract?.positionsOfProperty(propertyAddress)
+    noOfPositions = positions?.length || 0
+
+    if (!positions || !positions?.length) {
+      loading = false
+      return
+    }
+
+    for (const position of positions) {
+      const positionPayload = await contract?.payloadOf(position)
+
+      if (
+        bytes32Hex(
+          typeof membership.payload === typeof {} // If membership.payload is an object
+            ? new Uint8Array(Object.values(membership.payload)) // then we use only values
+            : membership.payload, // else we use the array/string directly
+        ) === positionPayload &&
+        !membershipExists
+      ) {
+        membershipExists = true
+        break
+      }
+    }
+
+    loading = false
   }
 
   const onFinishCallback = async (ev: any) => {
@@ -553,8 +669,9 @@
       return
     }
     const chainId: number = Number((await provider.getNetwork()).chainId)
+    let images: Image[] = []
     if(isTimeLimitedCollection){
-      const TimeImages: Image[] = memOpts.map((opt) => ({
+      images = memOpts.map((opt) => ({
       src: opt.imageSrc,
       name: opt.name,
       description: opt.description,
@@ -571,6 +688,58 @@
       token: tokenInfo[opt.currency][chainId].address
     }))
     }
+    else{
+      images = memOpts.map((opt) => ({
+      src: opt.imageSrc,
+      name: opt.name,
+      description: opt.description,
+      slots: opt.memberCount,
+      requiredTokenAmount: parseUnits(String(opt.price), tokenInfo[opt.currency][chainId].decimals).toString(),
+      requiredTokenFee: opt.fee?.percentage
+        ? parseUnits(
+              new BigNumber(opt.price).times(opt.fee.percentage * 100).toFixed(),
+              tokenInfo[opt.currency][chainId].decimals
+            )
+            .toString()
+        : 0,
+      gateway: opt.fee?.beneficiary ?? ZeroAddress,
+      token: tokenInfo[opt.currency][chainId].address
+    }))
+    }
+    const keys: string[] = memOpts?.map((opt) => bytes32Hex(opt.payload)) || []
+    console.log('onFinishCallback', { images, keys })
+
+    controlModal({
+      open: true,
+      state: 'loading',
+      blocks: true,
+      closeButton: { label: 'Cancel' },
+    })
+    await callSlotCollections(signer, "setImages", isTimeLimitedCollection,[
+      propAddress,
+      images,
+      keys
+    ]).then((res) => res.wait())
+    
+    const descriptiorAddress : string | undefined = isTimeLimitedCollection ?
+    address.find(
+      (address) => address.chainId === chainId,
+    )?.addressList.timeSlot : address.find(
+      (address) => address.chainId === chainId,
+    )?.addressList.memberSlot
+    if (!descriptiorAddress) return // TODO: add loading/processing state.
+
+    const [l1, l2] = await clientsSTokens(signer)
+    const l = l1 || l2
+    if (!l) return // TODO: add loading/processing state.
+
+    await l.setTokenURIDescriptor(
+      propAddress,
+      descriptiorAddress,
+      keys, // ALL_PAYLOADS
+    )
+
+    controlModal({ open: false })
   }
 </script>
 
@@ -601,11 +770,16 @@
         <span class="text-base font-normal uppercase text-[#EB48F8]"> * </span>
       </div>
       <label>
-        <div
-          class="flex flex-col items-start self-stretch rounded-[19px] border border-[#ffffff1a] bg-[#ffffff1a] p-2"
-        >
-          <div class="h-[216px] w-[463px] rounded-[12px] bg-[#040B10]" />
-        </div>
+        <div class="flex flex-col items-start self-stretch rounded-[19px] border border-[#ffffff1a] bg-[#ffffff1a] p-2">
+        {#if collection.imageSrc !== ''}
+        <img
+          class="object-cover h-[216px] w-[463px] rounded-[12px]"
+          src={collection.imageSrc}
+        />
+        {:else}
+        <div class="h-[216px] w-[463px] rounded-[12px] bg-[#040B10]" />
+      {/if}
+    </div>
         <input
           id="collection-cover-image"
           name="collection-cover-image"
@@ -613,7 +787,7 @@
           type="file"
           accept=".jpg, .jpeg, .png, .gif, .apng, .tiff"
           class="hs-button is-filled is-large cursor-pointer"
-          on:change={onFileSelected}
+          on:change={onCollectionFileSelected}
         />
       </label>
       <span class="text-base font-normal leading-6 text-white"
@@ -678,6 +852,7 @@
         id="collection-description"
         name="collection-description"
         rows="3"
+        bind:value={collection.description}
       />
       <p class="text-xs">Markdown is available</p>
     </div>
@@ -790,14 +965,23 @@
             <div
               class="flex flex-col items-start self-stretch rounded-[19px] border border-[#ffffff1a] bg-[#ffffff1a] p-2"
             >
+            {#if membership.imageSrc !== ''}
+              <img
+                class="object-cover h-[160px] w-[170px] rounded-[12px]"
+                src={membership.imageSrc}
+              />
+              {:else}
               <div class="h-[160px] w-[170px] rounded-[12px] bg-[#040B10]" />
+            {/if}
             </div>
             <input
-              id="collection-cover-image"
-              name="collection-cover-image"
+              id="membership-image"
+              name="membership-image"
               style="display:none"
               type="file"
               class="hs-button is-filled is-large cursor-pointer"
+              disabled={membershipExists}
+              on:change={onMembershipFileSelected}
             />
           </label>
         </div>
@@ -1024,9 +1208,11 @@
           </div>
           <textarea
             class="w-full rounded border-[3px] border-black bg-[#040B10] px-8 py-6"
-            id="collection-item-description"
-            name="collection-item-description"
-            rows="3"
+            bind:value={membership.description}
+            on:change={updateState}
+            id="membership-description"
+            name="membership-description"
+            disabled={membershipExists}
           />
           <p class="text-xs">Markdown is available</p>
         </div>
@@ -1034,9 +1220,10 @@
         <!-- Save & Delete Buttons -->
         <div class="mb-16 flex items-start gap-16">
           <button
+            on:click={() => onFinishCallback({ detail: { success: true } })}
             type="button"
             class={`hs-button is-large is-filled w-fit rounded px-8 py-6 text-base font-bold text-white`}
-          >
+            >
             Save
           </button>
 
