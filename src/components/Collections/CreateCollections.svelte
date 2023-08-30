@@ -711,7 +711,8 @@
           id={'1'}
           name={'Membership Name'}
           imagePath={'https://i.ibb.co/hLD6byP/1.jpg'}
-          usdcPrice={'32'}
+          currency={'USDC'}
+          price={"100"}
           description={'Membership Description'}
           className={`w-[276px] h-[436px]`}
         />
@@ -720,7 +721,8 @@
           id={'2'}
           name={'Membership Name'}
           imagePath={'https://i.ibb.co/Kyjr50C/Image.png'}
-          usdcPrice={'32'}
+          currency={'ETH'}
+          price={"0.1"}
           description={'Membership Description'}
           className={`w-[276px] h-[436px]`}
         />
@@ -729,7 +731,8 @@
           id={'3'}
           name={'Membership Name'}
           imagePath={'https://i.ibb.co/nrdKDQy/Image-1.png'}
-          usdcPrice={'32'}
+          currency={'DEV'}
+          price={"0.1"}
           description={'Membership Description'}
           className={`w-[276px] h-[436px]`}
         />
@@ -1037,7 +1040,8 @@
               id={mem.id}
               name={mem.name}
               imagePath={mem.imageSrc}
-              usdcPrice={mem.price.toString()}
+              price={mem.price.toString()}
+              currency={mem.currency}
               description={mem.description}
               className={`w-[276px] h-[436px]`}
             />
