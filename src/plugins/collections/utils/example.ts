@@ -38,6 +38,6 @@ export const example = async (provider: ethers.Signer) => {
     provider,
     'setImages',
     false,
-    ['0x0000000000000000000000000000000000000000', TimeImages, keys],
+    ['0x0000000000000000000000000000000000000000', MemberImages, keys],
   )
 }

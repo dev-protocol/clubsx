@@ -17,6 +17,10 @@ import Preview2 from './assets/time-limited-collection.svg'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import { ZeroAddress, randomBytes, toUtf8Bytes } from 'ethers'
 import type { Membership } from '@plugins/memberships'
+import {
+  PAYMENT_TYPE_INSTANT_FEE,
+  PAYMENT_TYPE_STAKE_FEE,
+} from '@constants/memberships'
 
 export type CollectionMembership = Membership & {
   memberCount?: number
@@ -53,16 +57,6 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
     startTime: 0,
     endTime: 0,
     memberships: [
-      {
-        id: 'preset-time-collection-membership',
-        name: 'Membership',
-        imageSrc: 'https://i.ibb.co/Kyjr50C/Image.png',
-        currency: 'USDC',
-        price: 10,
-        description: 'This is a time-limited collection.',
-        payload: toUtf8Bytes('TimeLimitedCollection'),
-        paymentType: 'instant',
-      },
     ],
   }
 
@@ -75,17 +69,6 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
     startTime: 0,
     endTime: 0,
     memberships: [
-      {
-        id: 'preset-member-collection-membership',
-        name: 'Membership',
-        imageSrc: 'https://i.ibb.co/Kyjr50C/Image.png',
-        currency: 'USDC',
-        price: 10,
-        description: 'This is a member-limited collection.',
-        payload: toUtf8Bytes('TimeLimitedCollection'),
-        paymentType: 'instant',
-        memberCount: 10,
-      },
     ],
   }
 

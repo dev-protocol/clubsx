@@ -9,6 +9,7 @@
     PAYMENT_TYPE_INSTANT_FEE,
     PAYMENT_TYPE_STAKE_FEE,
   } from '@constants/memberships'
+  
   import { formatUnixTimestamp } from '@plugins/collections/fixtures'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
   import type { Image } from '@plugins/collections/utils/types/setImageArg'
@@ -34,7 +35,7 @@
   type MembershipPaymentType = 'instant' | 'stake' | 'custom' | ''
   // note: treat this variable as state variable which stores the state for memberships edits and also for storing in DB
   export let membership: CollectionMembership = {
-    id: '',
+    id: 'preset-collection-membership',
     name: '',
     description: '',
     price: 0,
@@ -42,16 +43,19 @@
     imageSrc: '',
     paymentType: 'instant',
     fee: {
-      percentage: 0,
+      percentage: PAYMENT_TYPE_INSTANT_FEE,
       beneficiary: ZeroAddress,
     },
     payload: randomBytes(8),
   }
 
-  let membershipPaymentType: MembershipPaymentType
-  membership.currency === 'DEV' ? 'custom' : ''
-  let membershipCustomFee: number
-  membership.currency === 'DEV' ? DEV_TOKEN_PAYMENT_TYPE_FEE : 0
+  let membershipPaymentType: MembershipPaymentType =
+    membership.paymentType ?? (membership.currency === 'DEV' ? 'custom' : '')
+  let membershipCustomFee100: number = membership.fee
+    ? membership.fee.percentage * 100
+    : membership.currency === 'DEV'
+    ? DEV_TOKEN_PAYMENT_TYPE_FEE * 100
+    : 0
   let updatingMembershipsStatus: boolean = false
   let noOfPositions: number = 0
   let invalidPriceMsg: string = ''
@@ -66,8 +70,8 @@
 
   const minPrice = 0.000001
   const maxPrice = 1e20
-  const minCustomFee = 0
-  const maxCustomFee = 95
+  const minCustomFee100 = 0
+  const maxCustomFee100 = 95
 
   const onChangeName = () => {
     let id = membership.name.toLowerCase().replace(/\W/g, '-')
@@ -272,7 +276,7 @@
     if (selectedMembership.currency === 'DEV') {
       // Update the membership fee in case of currency change to dev token.
       membershipPaymentType = 'custom'
-      membershipCustomFee = 0
+      membershipCustomFee100 = 0
       invalidFeeMsg = ''
       selectedMembership = {
         ...membership,
@@ -299,14 +303,14 @@
       return
     }
 
-    const value = membershipCustomFee
+    const value = membershipCustomFee100
 
-    if (value < minCustomFee) {
-      membershipCustomFee = minCustomFee
-      invalidFeeMsg = `Fee automatically set to minimum allowed value- ${minCustomFee}`
-    } else if (value > maxCustomFee) {
-      membershipCustomFee = maxCustomFee
-      invalidFeeMsg = `Fee automatically set to maximum allowed value- ${maxCustomFee}`
+    if (value < minCustomFee100) {
+      membershipCustomFee100 = minCustomFee100
+      invalidFeeMsg = `Fee automatically set to minimum allowed value- ${minCustomFee100}`
+    } else if (value > maxCustomFee100) {
+      membershipCustomFee100 = maxCustomFee100
+      invalidFeeMsg = `Fee automatically set to maximum allowed value- ${maxCustomFee100}`
     } else {
       invalidFeeMsg = ''
     }
@@ -315,7 +319,7 @@
     selectedMembership = {
       ...membership,
       fee: {
-          percentage: membershipCustomFee,
+          percentage: membershipCustomFee100 / 100,
           beneficiary: currentAddress ?? ZeroAddress,
         },
       paymentType: 'custom'
@@ -336,7 +340,7 @@
     // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
     update()
 
-    if (membershipCustomFee === 0 || !membershipCustomFee) {
+    if (membershipCustomFee100 === 0 || !membershipCustomFee100) {
       return
     }
   }
@@ -344,10 +348,10 @@
   const validateCustomMembershipFee = (event: Event) => {
     const value = Number((event.target as HTMLInputElement)?.value || 0)
 
-    if (value < minCustomFee) {
-      invalidFeeMsg = `Minimum payment type fee allowed is ${minCustomFee}`
-    } else if (value > maxCustomFee) {
-      invalidFeeMsg = `Maximum price allowed is ${maxCustomFee}`
+    if (value < minCustomFee100) {
+      invalidFeeMsg = `Minimum payment type fee allowed is ${minCustomFee100}`
+    } else if (value > maxCustomFee100) {
+      invalidFeeMsg = `Maximum price allowed is ${maxCustomFee100}`
     } else {
       invalidFeeMsg = ''
     }
@@ -360,7 +364,7 @@
     if (selectedMembership.currency === 'DEV') {
       // Update the membership fee in case of currency change to dev token.
       membershipPaymentType = 'custom'
-      membershipCustomFee = 0
+      membershipCustomFee100 = 0
       selectedMembership = {
         ...membership,
         fee: {
@@ -438,7 +442,7 @@
       selectedMembership = {
         ...membership,
         fee: {
-          percentage: membershipCustomFee,
+          percentage: membershipCustomFee100 / 100,
           beneficiary: currentAddress ?? ZeroAddress,
         },
         paymentType: 'custom'
@@ -496,14 +500,14 @@
   const resetMembershipFee = (selectedMembership: CollectionMembership) => {
     if (selectedMembership.currency !== 'DEV') return
 
-    membershipCustomFee = 0
+    membershipCustomFee100 = 0
     membershipPaymentType = 'custom'
     invalidFeeMsg = ''
     // Update the membership state.
     selectedMembership = {
       ...membership,
       fee: {
-          percentage: membershipCustomFee,
+        percentage: membershipCustomFee100,
           beneficiary: currentAddress ?? ZeroAddress,
         },
       paymentType: 'custom'
@@ -549,7 +553,8 @@
       return
     }
     const chainId: number = Number((await provider.getNetwork()).chainId)
-    const TimeImages: Image[] = memOpts.map((opt) => ({
+    if(isTimeLimitedCollection){
+      const TimeImages: Image[] = memOpts.map((opt) => ({
       src: opt.imageSrc,
       name: opt.name,
       description: opt.description,
@@ -565,6 +570,7 @@
       gateway: opt.fee?.beneficiary ?? ZeroAddress,
       token: tokenInfo[opt.currency][chainId].address
     }))
+    }
   }
 </script>
 
@@ -888,7 +894,10 @@
                   />
                 </svg>
               </span>
-              Instant
+              <span
+                class={membershipPaymentType === 'instant' ? 'text-white' : ''}
+                >Instant</span
+              >
             </button>
             <button
               on:click|preventDefault={() =>
@@ -917,7 +926,9 @@
                   />
                 </svg>
               </span>
-              Stake
+              <span class={membershipPaymentType === 'stake' ? 'text-white' : ''}>
+                Stake
+              </span>
             </button>
             <div class="max-w-[33%] grow">
               {#if membershipPaymentType !== 'custom'}
@@ -932,7 +943,7 @@
               {/if}
               {#if membershipPaymentType === 'custom'}
                 <input
-                  bind:value={membershipCustomFee}
+                  bind:value={membershipCustomFee100}
                   on:change={() => onChangeCustomFee(membership)}
                   on:keyup={validateCustomMembershipFee}
                   class={`hs-form-field__input w-full max-w-full ${
@@ -944,8 +955,8 @@
                   name="membership-fee-value"
                   type="number"
                   disabled={membership.currency === 'DEV'}
-                  min={minCustomFee}
-                  max={maxCustomFee}
+                  min={minCustomFee100}
+                  max={maxCustomFee100}
                 />
               {/if}
             </div>
@@ -964,25 +975,38 @@
         <div class="hs-form-field">
           <div class="flex w-full max-w-full gap-0 p-0">
             <div
-              style="width: {membership.fee?.percentage || 0}% !important"
+              style="width: {(membership.fee?.percentage || 0) *
+                100}% !important"
               class="h-6 max-w-full rounded-[99px] bg-[#00D0FD]"
-            />
+            ></div>
             <div
               style="width: {100 -
-                (membership.fee?.percentage || 0)}% !important"
+                (membership.fee?.percentage || 0) * 100}% !important"
               class="h-6 max-w-full rounded-[99px] bg-[#43C451]"
-            />
+            ></div>
           </div>
           <p class="mt-1">
             <span class="text-[#00D0FD]"
-              >{(membership.price * (membership.fee?.percentage || 0)) / 100}
-              {membership.currency} ({membership.fee?.percentage || 0}%)</span
+              >{BigNumber(membership.price * (membership.fee?.percentage || 0))
+                .dp(5)
+                .toString()}
+              {membership.currency} ({BigNumber(
+                (membership.fee?.percentage || 0) * 100,
+              )
+                .dp(3)
+                .toString()}%)</span
             >
             will earn at 1 time,
             <span class="text-[#43C451]"
-              >and {(membership.price *
-                (100 - (membership.fee?.percentage || 0))) /
-                100} ({100 - (membership.fee?.percentage || 0)}%)
+              >and {BigNumber(
+                membership.price * (1 - (membership.fee?.percentage || 0)),
+              )
+                .dp(5)
+                .toString()} ({BigNumber(
+                (1 - (membership.fee?.percentage || 0)) * 100,
+              )
+                .dp(3)
+                .toString()}%)
             </span> will be staked to earn dev continuously.
           </p>
           <p class="hs-form-field__helper mt-2">
