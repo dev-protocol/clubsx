@@ -1,11 +1,11 @@
 ---
-import type { Products } from '@constants/products'
+import type { Membership } from '@plugins/memberships'
 import Footer from '@components/Global/Footer.astro'
 import Hero from '@components/Hero/hero'
 import Hero2 from '@components/Hero/hero2'
 import Cards from '@components/list/cards'
 
-const { products } = Astro.props as { products: Products }
+const { products } = Astro.props as { products: Membership[] }
 ---
 
 <div>
