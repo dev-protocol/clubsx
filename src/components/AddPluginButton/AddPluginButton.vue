@@ -8,7 +8,7 @@
       isAddingPluginToClubs
         ? 'bg-success-300 cursor-progress'
         : isAdded || !connected
-        ? 'cursor-not-allowed bg-native-blue-200'
+        ? 'bg-native-blue-200 cursor-not-allowed'
         : 'bg-success-300 cursor-pointer'
     "
   >
