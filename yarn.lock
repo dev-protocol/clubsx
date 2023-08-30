@@ -4287,10 +4287,10 @@ event-target-shim@^5.0.0:
   resolved "https://registry.yarnpkg.com/event-target-shim/-/event-target-shim-5.0.1.tgz#5d4d3ebdf9583d63a5333ce2deb7480ab2b05789"
   integrity sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==
 
-eventemitter3@^4.0.7:
-  version "4.0.7"
-  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-4.0.7.tgz#2de9b68f6528d5644ef5c59526a1b4a07306169f"
-  integrity sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==
+eventemitter3@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-5.0.1.tgz#53f5ffd0a492ac800721bb42c66b841de96423c4"
+  integrity sha512-GWkBvjiSZK87ELrYOSESUYeVIc9mvLLf/nXalMOS5dYrgZq9o5OVkbZAVM06CVxYsCwH9BDZFPlQTlPA1j4ahA==
 
 events@^3.3.0:
   version "3.3.0"
@@ -6818,11 +6818,11 @@ p-locate@^5.0.0:
     p-limit "^3.0.2"
 
 p-queue@^7.3.4:
-  version "7.3.4"
-  resolved "https://registry.yarnpkg.com/p-queue/-/p-queue-7.3.4.tgz#7ef7d89b6c1a0563596d98adbc9dc404e9ed4a84"
-  integrity sha512-esox8CWt0j9EZECFvkFl2WNPat8LN4t7WWeXq73D9ha0V96qPRufApZi4ZhPwXAln1uVVal429HVVKPa2X0yQg==
+  version "7.4.0"
+  resolved "https://registry.yarnpkg.com/p-queue/-/p-queue-7.4.0.tgz#7849ed11525daf8ff861b83ae8813b976ad490af"
+  integrity sha512-1FYFpop2WjLUfhSpKb0pi01JL+Z+H0Z8F2XPn2g04WxGynU/X8mx8s/66fb7jZ39pS2ZliAWCX97EoTSIdMmtw==
   dependencies:
-    eventemitter3 "^4.0.7"
+    eventemitter3 "^5.0.1"
     p-timeout "^5.0.2"
 
 p-timeout@^5.0.2:
