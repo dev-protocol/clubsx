@@ -1,7 +1,6 @@
 /**
  * WARN: Don't publish as a npm because this package is only working on clubsx.
  */
-import type { Product, Products } from '@constants/products'
 import type { Membership } from '@plugins/memberships'
 import type {
   ClubsFunctionGetAdminPaths,
@@ -84,7 +83,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
   { chainId, rpcUrl, propertyAddress, options: configOptions = [] },
   { getPluginConfigById },
 ) => {
-  const products: Products = [
+  const products: Membership[] = [
     SupportedPlugins.DevprotocolClubsSimpleMemberships,
     SupportedPlugins.DevprotocolClubsPluginNft,
   ]
@@ -101,7 +100,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
             (x) => x.key === 'memberships',
           )?.value as UndefinedOr<Membership[]>
           return memberships?.filter(
-            (p) => !p.deprecated && (p.currency as string) === 'USDC',
+            (p) => !p.deprecated && p.currency === 'USDC',
           )
 
         case SupportedPlugins.DevprotocolClubsPluginNft:
@@ -112,15 +111,15 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
             SupportedPlugins.DevprotocolClubsPluginNft,
           )
           const products = nft?.options.find((x) => x.key === 'products')
-            ?.value as UndefinedOr<Products>
-          return products?.filter((p) => (p.currency as string) === 'USDC')
+            ?.value as UndefinedOr<Membership[]>
+          return products?.filter((p) => p.currency === 'USDC')
 
         default:
           return undefined
       }
     })
     .flat()
-    .filter((x) => typeof x !== 'undefined') as Product[]
+    .filter((x) => typeof x !== 'undefined') as Membership[]
 
   // const priceOverrides = options.find((opt) => opt.key === 'priceOverrides')
   //   ?.value as UndefinedOr<PriceOverrides>
@@ -141,24 +140,6 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
     ?.value as UndefinedOr<string>
 
   const cm = chainId === 137 ? CM.Production : CM.Staging
-
-  // const products = whenDefinedAll(
-  //   [_products, priceOverrides],
-  //   ([prods, overrides]) =>
-  //     prods
-  //       .map((prod) => {
-  //         const override = overrides.find((x) => x.id === prod.id)
-  //         return override
-  //           ? {
-  //               ...prod,
-  //               currency: override.currency as any,
-  //               price: override.price,
-  //               purchaseLink: override.purchaseLink,
-  //             }
-  //           : undefined
-  //       })
-  //       .filter((x) => x) as ExtendedProducts,
-  // )
 
   return products
     ? [

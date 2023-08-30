@@ -9,6 +9,7 @@ import {
   type UndefinedOr,
   whenDefined,
   whenDefinedAll,
+  whenNotError,
 } from '@devprotocol/util-ts'
 import {
   type BigNumberish,
@@ -120,6 +121,7 @@ const previewImageSrc = ref<UndefinedOr<string>>(props.itemImageSrc)
 const previewName = ref<UndefinedOr<string>>(props.itemName)
 const stakingAmount = ref<UndefinedOr<number>>(undefined)
 const isCheckingAccessControl = ref<boolean>(false)
+const accessControlError = ref<UndefinedOr<Error>>(undefined)
 const accessAllowed = ref<UndefinedOr<boolean>>(undefined)
 const mintedId = ref<UndefinedOr<bigint>>(undefined)
 
@@ -315,16 +317,23 @@ onMounted(async () => {
       },
     )
 
-    accessAllowed.value = await whenDefined(
+    const accessControlRes = await whenDefined(
       accessControlUrl.value,
       async (_accessControl) => {
         isCheckingAccessControl.value = true
-        const res = await fetch(_accessControl)
-        const body = res.ok ? await res.text() : ''
+        const res = await fetch(_accessControl).catch((err: Error) => err)
+        const result = await whenNotError(res, async (r) =>
+          r.ok ? r.text() : new Error('Bad request'),
+        )
         isCheckingAccessControl.value = false
-        return Number(body) === 1
+        return result instanceof Error ? result : Number(result) === 1
       },
     )
+    if (accessControlRes instanceof Error) {
+      accessControlError.value = accessControlRes
+    } else {
+      accessAllowed.value = accessControlRes
+    }
   })
   subscriptions.push(sub)
 
@@ -405,26 +414,33 @@ onUnmounted(() => {
       <div class="grid gap-16 p-5">
         <slot name="before:transaction-form"></slot>
 
-        <div v-if="props.accessControlUrl" class="grid gap-16">
+        <div v-if="props.accessControlUrl" class="grid gap-8">
           <!-- Access control section -->
-          <p
-            :data-is-loading="isCheckingAccessControl"
-            :data-is-valid="accessAllowed"
-            class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white data-[is-loading=true]:animate-pulse data-[is-valid=false]:border data-[is-valid=false]:border-neutral-300 data-[is-valid=false]:bg-white data-[is-valid=true]:bg-[#43C451] data-[is-valid=false]:text-black"
-          >
-            {{
-              !account
-                ? `Connect wallet to check you're verified`
-                : isCheckingAccessControl
-                ? `Now checking the verification status`
-                : accessAllowed
-                ? `Verified`
-                : `Unverified`
-            }}
-          </p>
+          <h2 class="text-xl">Permission required</h2>
+          <span>
+            <p class="font-bold text-dp-white-600">Status</p>
+            <p
+              :data-is-loading="isCheckingAccessControl"
+              :data-is-valid="accessAllowed"
+              :data-is-error="Boolean(accessControlError)"
+              class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white data-[is-loading=true]:animate-pulse data-[is-valid=false]:border data-[is-valid=false]:border-neutral-300 data-[is-error=true]:bg-red-600 data-[is-valid=false]:bg-white data-[is-valid=true]:bg-[#43C451] data-[is-valid=false]:text-black"
+            >
+              {{
+                !account
+                  ? `Connect wallet to check you're verified`
+                  : isCheckingAccessControl
+                  ? `Now checking the verification status`
+                  : accessAllowed
+                  ? `Verified`
+                  : accessControlError
+                  ? accessControlError.message
+                  : `Unverified`
+              }}
+            </p>
+          </span>
 
           <div
-            v-if="!accessAllowed && htmlVerificationFlow"
+            v-if="accessAllowed === false && htmlVerificationFlow"
             v-html="htmlVerificationFlow"
             class="md"
           ></div>
@@ -433,7 +449,12 @@ onUnmounted(() => {
         </div>
 
         <span
-          v-if="useInjectedTransactionForm"
+          v-if="
+            useInjectedTransactionForm &&
+            (props.accessControlUrl
+              ? props.accessControlUrl && accessAllowed
+              : true)
+          "
           @checkout:completed="onCompleted"
         >
           <slot name="main:transaction-form"></slot>

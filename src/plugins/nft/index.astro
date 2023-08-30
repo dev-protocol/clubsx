@@ -1,12 +1,12 @@
 ---
-import type { Products } from '@constants/products'
+import type { Membership } from '@plugins/memberships'
 import Hero from '@components/Hero/hero'
 import Hero2 from '@components/Hero/hero2'
 import Cards from '@components/list/cards'
 
 const { products, coverImgSrc, title, description, projectName, avatarImgSrc } =
   Astro.props as {
-    products: Products
+    products: Membership[]
     coverImgSrc: string
     title: string
     description: string

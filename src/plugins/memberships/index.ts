@@ -36,7 +36,11 @@ export type Membership = {
     beneficiary: string
   }
   deprecated?: boolean
-  paymentType: 'instant' | 'stake' | 'custom'
+  paymentType?: 'instant' | 'stake' | 'custom'
+  accessControl?: {
+    url: string
+    description: string
+  }
 }
 
 const presets: Membership[] = [

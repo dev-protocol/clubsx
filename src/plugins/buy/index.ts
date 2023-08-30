@@ -1,4 +1,4 @@
-import type { Products } from '@constants/products'
+import type { Membership } from '@plugins/memberships'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import {
   ClubsFunctionGetAdminPaths,
@@ -15,7 +15,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
   { propertyAddress, rpcUrl },
 ) => {
   const products = options.find((opt) => opt.key === 'products')
-    ?.value as UndefinedOr<Products>
+    ?.value as UndefinedOr<Membership[]>
   return products
     ? [
         { paths: ['buy'], component: Index, props: { products } },

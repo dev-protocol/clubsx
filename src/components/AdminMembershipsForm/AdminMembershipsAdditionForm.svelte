@@ -32,7 +32,6 @@
   export let currentPluginIndex: number
   export let membership: Membership
   export let existingMemberships: Membership[]
-  export let newMemberships: Membership[]
   export let base: string = '/admin'
   export let mode: 'edit' | 'create' = 'create'
   export let rpcUrl: string
@@ -42,6 +41,12 @@
 
   type MembershipPaymentType = 'instant' | 'stake' | 'custom' | ''
 
+  let newMemberships: Membership[]
+  let usingAccessControl = Boolean(
+    membership.accessControl &&
+      membership.accessControl.url &&
+      membership.accessControl.description,
+  )
   let membershipPaymentType: MembershipPaymentType =
     membership.paymentType ?? (membership.currency === 'DEV' ? 'custom' : '')
   let membershipCustomFee100: number = membership.fee
@@ -53,6 +58,7 @@
   let noOfPositions: number = 0
   let invalidPriceMsg: string = ''
   let invalidFeeMsg: string = ''
+  let accessControl = membership.accessControl ?? { url: '', description: '' }
 
   const originalId = membership.id
   const provider = new JsonRpcProvider(rpcUrl)
@@ -241,6 +247,7 @@
       return
 
     const search = mode === 'edit' ? originalId : membership.id
+    membership.accessControl = usingAccessControl ? accessControl : undefined
     newMemberships = existingMemberships.some(({ id }) => id === search)
       ? // If the ID is already exists, override it. This is a safeguard to avoid duplicate data.
         existingMemberships.map((_mem) =>
@@ -375,7 +382,7 @@
   const fetchPositionsOfProperty = async () => {
     loading = true
 
-    if (!provider || !propertyAddress) {
+    if (mode === 'create' || !provider || !propertyAddress) {
       loading = false
       return
     }
@@ -408,6 +415,11 @@
     }
 
     loading = false
+  }
+
+  const toggleAccessControl = (v: boolean) => () => {
+    usingAccessControl = v
+    update()
   }
 
   const onFinishCallback = async (ev: any) => {
@@ -510,7 +522,7 @@
         <br />
         {#if !membership.deprecated}
           <button
-            class={`bg-dp-blue-grey-400 mt-2 w-fit rounded p-4 text-center text-sm font-semibold text-white ${
+            class={`mt-2 w-fit rounded bg-dp-blue-grey-400 p-4 text-center text-sm font-semibold text-white ${
               updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
             }`}
             id={`delete-opt`}
@@ -521,7 +533,7 @@
         <br />
         {#if membership.deprecated}
           <button
-            class={`bg-dp-blue-grey-400 mt-2 w-fit rounded p-4 text-center text-sm font-semibold text-white ${
+            class={`mt-2 w-fit rounded bg-dp-blue-grey-400 p-4 text-center text-sm font-semibold text-white ${
               updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
             }`}
             id={`activate-opt`}
@@ -658,8 +670,8 @@
             <button
               on:click|preventDefault={() =>
                 changeMembershipPaymentType('instant')}
-              class={`hs-form-field__input flex max-w-[33%] grow items-center justify-center gap-2 ${
-                membershipPaymentType === 'instant' ? '!border-[#e5e7eb]' : ''
+              class={`hs-button is-large is-filled flex max-w-[33%] grow items-center justify-center gap-2 ${
+                membershipPaymentType !== 'instant' && 'opacity-50'
               }`}
               id="membership-fee-instant"
               name="membership-fee-instant"
@@ -682,16 +694,13 @@
                   />
                 </svg>
               </span>
-              <span
-                class={membershipPaymentType === 'instant' ? 'text-white' : ''}
-                >Instant</span
-              >
+              Instant
             </button>
             <button
               on:click|preventDefault={() =>
                 changeMembershipPaymentType('stake')}
-              class={`hs-form-field__input flex max-w-[33%] grow items-center justify-center gap-2 ${
-                membershipPaymentType === 'stake' ? '!border-[#e5e7eb]' : ''
+              class={`hs-button is-large is-filled flex max-w-[33%] grow items-center justify-center gap-2 ${
+                membershipPaymentType !== 'stake' && 'opacity-50'
               }`}
               id="membership-fee-stake"
               name="membership-fee-stake"
@@ -714,17 +723,14 @@
                   />
                 </svg>
               </span>
-              <span
-                class={membershipPaymentType === 'stake' ? 'text-white' : ''}
-                >Stake</span
-              >
+              Stake
             </button>
             <div class="max-w-[33%] grow">
               {#if membershipPaymentType !== 'custom'}
                 <button
                   on:click|preventDefault={() =>
                     changeMembershipPaymentType('custom')}
-                  class="hs-form-field__input w-full max-w-full"
+                  class="hs-button is-large is-filled w-full max-w-full opacity-50"
                   id="membership-fee-custom"
                   name="membership-fee-custom"
                   disabled={membership.currency === 'DEV'}>Custom</button
@@ -735,11 +741,7 @@
                   bind:value={membershipCustomFee100}
                   on:change={onChangeCustomFee}
                   on:keyup={validateCustomMembershipFee}
-                  class={`hs-form-field__input w-full max-w-full ${
-                    membershipPaymentType === 'custom'
-                      ? '!border-[#e5e7eb]'
-                      : ''
-                  }`}
+                  class="hs-form-field__input w-full max-w-full"
                   id="membership-fee-value"
                   name="membership-fee-value"
                   type="number"
@@ -854,6 +856,61 @@
       <span class="hs-form-field__label"> Payload </span>
       <input class="hs-form-field__input" value={metaOfPayload} readonly />
     </label>
+
+    <!-- Access control -->
+    <div class="hs-form-field is-filled">
+      <span class="hs-form-field__label"> Access control </span>
+      <div class="grid max-w-md grid-cols-2 items-center justify-start gap-2">
+        <button
+          on:click|preventDefault={toggleAccessControl(false)}
+          data-is-selected={usingAccessControl === false}
+          class="hs-button is-large is-filled data-[is-selected=false]:opacity-50"
+        >
+          Public
+        </button>
+        <button
+          on:click|preventDefault={toggleAccessControl(true)}
+          data-is-selected={usingAccessControl === true}
+          class="hs-button is-large is-filled data-[is-selected=false]:opacity-50"
+        >
+          Private
+        </button>
+      </div>
+    </div>
+
+    {#if usingAccessControl}
+      <label class="hs-form-field is-filled is-required">
+        <span class="hs-form-field__label"> Access control URL </span>
+        <input
+          class="hs-form-field__input"
+          bind:value={accessControl.url}
+          on:change={update}
+        />
+        <span class="hs-form-field__helper">
+          App requests <pre class="inline">[GET] /?account=0x...</pre>
+          and expected to be returned 1 if verified.
+        </span>
+      </label>
+
+      <label class="hs-form-field is-filled is-required">
+        <span class="hs-form-field__label">
+          Description of the verification process
+        </span>
+        <textarea
+          class="hs-form-field__input"
+          bind:value={accessControl.description}
+          on:change={update}
+        />
+        <span class="hs-form-field__helper">
+          Markdown is available <a
+            href="https://www.markdownguide.org/basic-syntax"
+            target="_blank"
+            class="underline [font-size:inherit]"
+            rel="noopener noreferrer">(What is Markdown? ↗)</a
+          >
+        </span>
+      </label>
+    {/if}
 
     <div class="flex w-full justify-end gap-[20px]">
       {#if mode === 'edit' && !membership.deprecated}

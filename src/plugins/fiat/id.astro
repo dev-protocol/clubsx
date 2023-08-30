@@ -1,13 +1,12 @@
 ---
-import type { Currency } from '@crossmint/client-sdk-base'
-import type { Product } from '@constants/products'
+import type { Membership } from '@plugins/memberships'
 import IdPage from './Id'
 import type { CMValues } from '.'
 import Checkout from '@components/Checkout/Checkout.astro'
 
 const { cm, product, rpcUrl, propertyAddress, ...other } = Astro.props as {
   cm: CMValues
-  product: Product
+  product: Membership
   rpcUrl: string
   propertyAddress: string
 }
@@ -26,6 +25,8 @@ const failure = Boolean(url.searchParams.get('failure'))
   useInjectedTransactionForm={true}
   itemImageSrc={product.imageSrc}
   itemName={product.name}
+  accessControlUrl={product.accessControl?.url}
+  accessControlDescription={product.accessControl?.description}
   {...other}
 >
   {
