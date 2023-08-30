@@ -1,0 +1,38 @@
+---
+import CreateCollections from '@components/Collections/CreateCollections.svelte'
+import type { Collection} from '@plugins/collections'
+import type { ClubsPropsAdminPages } from '@devprotocol/clubs-core'
+import type { UndefinedOr } from '@devprotocol/util-ts'
+
+const {
+  isTimeLimitedCollection = false,
+  rpcUrl,
+  propertyAddress,
+  preset,
+  collections = [],
+  name,
+  clubs,
+} = Astro.props as ClubsPropsAdminPages & {
+  preset: Collection
+  isTimeLimitedCollection: boolean
+  rpcUrl: string
+  propertyAddress: string
+  collections: Collection[]
+  name: string
+}
+---
+
+<div>
+  <h1 class="mb-[62px] font-title text-2xl font-bold">Your Clubs Store</h1>
+
+  <CreateCollections
+    client:only="svelte"
+    existingCollections={collections}
+    collection={preset}
+    isTimeLimitedCollection={isTimeLimitedCollection}
+    clubName={name}
+    currentPluginIndex={clubs.currentPluginIndex}
+    propertyAddress={propertyAddress}
+    rpcUrl={rpcUrl}
+  />
+</div>
