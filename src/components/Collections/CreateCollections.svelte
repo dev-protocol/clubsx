@@ -12,10 +12,7 @@
   
   import { formatUnixTimestamp } from '@plugins/collections/fixtures'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
-  import {
-    address,
-    callSlotCollections,
-  } from '@plugins/collections/utils/slotCollections'
+  import { address, callSlotCollections } from '@plugins/collections/utils/slotCollections'
   import type { Image } from '@plugins/collections/utils/types/setImageArg'
   import { randomBytes, parseUnits, keccak256, JsonRpcProvider, ZeroAddress, type Signer } from 'ethers'
   import { onMount } from 'svelte'
