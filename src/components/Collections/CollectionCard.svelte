@@ -13,8 +13,8 @@
     <div class="flex items-start gap-2.5">
       <img
         class="rounded-t-2xl"
-        src="https://i.ibb.co/RbxFzn8/img.jpg"
-        alt="collection card banner"
+        src={collection.imageSrc}
+        alt={`${collection.name}-image`}
       />
     </div>
     <div class="flex flex-col items-start gap-4 p-4">

@@ -1217,7 +1217,7 @@
         <!-- Save & Delete Buttons -->
         <div class="mb-16 flex items-start gap-16">
           <button
-            on:click={() => onFinishCallback({ detail: { success: true } })}
+            on:click={() => update()}
             type="button"
             class={`hs-button is-large is-filled w-fit rounded px-8 py-6 text-base font-bold text-white`}
             >
