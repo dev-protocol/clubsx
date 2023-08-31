@@ -922,7 +922,7 @@
       <h1 class="mb-16 font-title text-2xl font-bold">Collection Items</h1>
       <button
         type="button"
-        class={`hs-button is-large is-filled mb-16 w-fit rounded px-8 py-6 text-base font-bold text-white`}
+        class={`hs-button is-large is-filled mb-16 w-fit c px-8 py-6 text-base font-bold text-white`}
         on:click={() => setIsAdding(true)}
       >
         + Add
@@ -1240,20 +1240,26 @@
     </div>
     <!-- Previous Memberships -->
     <div class="flex items-start justify-between gap-4">
-      {#each collection.memberships as mem}
+      {#each collection.memberships as mem, i}
         {#if mem.id !== membership.id}
-          <a href={`${collection.id}/${mem.id}`}>
-            <MembershipOption
-              clubName={clubName ?? 'Your Club'}
-              id={mem.id}
-              name={mem.name}
-              imagePath={mem.imageSrc}
-              price={mem.price.toString()}
-              currency={mem.currency}
-              description={mem.description}
-              className={`w-[276px] h-[436px]`}
-            />
-          </a>
+        <div>
+          <MembershipOption
+          clubName={clubName ?? 'Your Club'}
+          id={mem.id}
+          name={mem.name}
+          imagePath={mem.imageSrc}
+          price={mem.price.toString()}
+          currency={mem.currency}
+          description={mem.description}
+          className={`w-[276px] h-[436px]`}
+        />
+        <a
+        class="hs-button is-filled is-fullwidth mt-4 rounded px-8 py-6 text-base font-bold text-white"
+        href={`${collection.id}/${mem.id}`}
+      >
+        <span class="hs-button__label">Edit</span>
+      </a>
+        </div>
         {/if}
     {/each}
     </div>

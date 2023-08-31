@@ -50,8 +50,8 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
 
   const presetTimeCollection: Collection = {
     id: 'preset-time-collection',
-    name: 'My First Collection',
-    imageSrc: 'https://i.ibb.co/RbxFzn8/img.jpg',
+    name: 'My First Time Limited Collection',
+    imageSrc: '',
     description: 'This is a time-limited collection.',
     isTimeLimitedCollection: true,
     startTime: 0,
@@ -61,12 +61,11 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
 
   const presetMemberCollection: Collection = {
     id: 'preset-member-collection',
-    name: 'My First Collection',
-    imageSrc: 'https://i.ibb.co/RbxFzn8/img.jpg',
-    description: 'This is a time-limited collection.',
-    isTimeLimitedCollection: true,
+    name: 'My First Quantity Limited Collection',
+    imageSrc: '',
+    description: 'This is a quantity-limited collection.',
+    isTimeLimitedCollection: false,
     startTime: 0,
-    endTime: 0,
     memberships: [],
   }
 
