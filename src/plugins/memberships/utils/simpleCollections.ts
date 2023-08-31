@@ -6,6 +6,7 @@ import type {
   BrowserProvider,
   Signer,
   Provider,
+  ContractRunner,
 } from 'ethers'
 import type { Image, ERC20Image } from './types/setImageArg'
 
@@ -1270,13 +1271,19 @@ export async function callSimpleCollections(
 }
 
 export async function callERC20SimpleCollections(
+  provider: BrowserProvider | ContractRunner,
+  functionName: 'propertyImages',
+  args: [propertyAddress: string, key: string],
+): Promise<ERC20Image>
+
+export async function callERC20SimpleCollections(
   provider: Signer,
   functionName: 'setImages',
   args: [propertyAddress: string, images: ERC20Image[], keys: string[]],
 ): Promise<TransactionResponse>
 
 export async function callERC20SimpleCollections(
-  provider: BrowserProvider | Signer,
+  provider: BrowserProvider | Signer | ContractRunner,
   functionName: string,
   args: unknown[],
 ): Promise<unknown> {

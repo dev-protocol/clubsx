@@ -429,66 +429,10 @@
       return
     }
 
-    const memOpts = (newMemberships as Membership[]).filter(
-      (m) => !m.deprecated,
-    )
-    const propAddress = propertyAddress
-
-    if (!currentAddress || !signer || !propAddress) {
-      return
-    }
-
-    const chainId: number = Number((await provider.getNetwork()).chainId)
-    const images: ERC20Image[] = memOpts.map((opt) => ({
-      src: opt.imageSrc,
-      name: opt.name,
-      description: opt.description,
-      requiredTokenAmount: parseUnits(
-        String(opt.price),
-        tokenInfo[opt.currency][chainId].decimals,
-      ).toString(),
-      requiredTokenFee: opt.fee?.percentage
-        ? parseUnits(
-            new BigNumber(opt.price).times(opt.fee.percentage).toFixed(),
-            tokenInfo[opt.currency][chainId].decimals,
-          ).toString()
-        : 0,
-      gateway: opt.fee?.beneficiary ?? ZeroAddress,
-      token: tokenInfo[opt.currency][chainId].address,
-    }))
-
-    const keys: string[] = memOpts?.map((opt) => bytes32Hex(opt.payload)) || []
-    console.log('onFinishCallback', { images, keys })
-
-    controlModal({
-      open: true,
-      state: 'loading',
-      blocks: true,
-      closeButton: { label: 'Cancel' },
-    })
-
-    await callERC20SimpleCollections(signer, 'setImages', [
-      propAddress,
-      images,
-      keys,
-    ]).then((res) => res.wait())
-
-    const descriptiorAddress: string | undefined = address.find(
-      (address) => address.chainId === chainId,
-    )?.address
-    if (!descriptiorAddress) return // TODO: add loading/processing state.
-
-    const [l1, l2] = await clientsSTokens(signer)
-    const l = l1 || l2
-    if (!l) return // TODO: add loading/processing state.
-
-    await l.setTokenURIDescriptor(
-      propAddress,
-      descriptiorAddress,
-      keys, // ALL_PAYLOADS
-    )
-
-    controlModal({ open: false })
+    location.href = new URL(
+      '/admin/memberships/?ping=publish',
+      location.origin,
+    ).toString()
   }
 
   const resetMembershipFee = () => {

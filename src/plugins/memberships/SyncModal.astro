@@ -1,0 +1,21 @@
+---
+import type { ClubsPropsAdminPages } from '@devprotocol/clubs-core'
+import type { Membership } from '.'
+import SyncModal from './SyncModal.svelte'
+
+const { memberships, chainId, rpcUrl, propertyAddress } =
+  Astro.props as ClubsPropsAdminPages & {
+    memberships: Membership[]
+    rpcUrl: string
+    chainId: number
+    propertyAddress: string
+  }
+---
+
+<SyncModal
+  client:only="svelte"
+  memberships={memberships}
+  chainId={chainId}
+  rpcUrl={rpcUrl}
+  propertyAddress={propertyAddress}
+/>
