@@ -110,7 +110,7 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
       collection.memberships.map((membership) => ({
         paths: ['collections', collection.id, membership.id],
         component: AdminEditMembership,
-        props: { collection, membership },
+        props: { collections, collection, membership },
       })),
     ) ?? []),
     {
