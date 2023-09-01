@@ -1,8 +1,42 @@
 <script lang="ts">
+import { onMount } from 'svelte';
+
+import MembershipOption from '@components/AdminMembershipsForm/MembershipOption.svelte'
 
 import type { Collection } from '@plugins/collections'
 
+
 export let collection: Collection
+
+
+    let difference;
+    let days = 0;
+    let hours = 0;
+    let minutes = 0;
+    let seconds = 0;
+
+  const calculateTimeLeft = () => {
+    difference = collection.endTime - Math.floor(new Date().getTime() / 1000);
+
+    if (difference > 0) {
+      days = Math.floor(difference / (60 * 60 * 24));
+      hours = Math.floor((difference % (60 * 60 * 24)) / (60 * 60));
+      minutes = Math.floor((difference % (60 * 60)) / 60);
+      seconds = difference % 60;
+    }
+    else {
+      days = 0;
+      hours = 0;
+      minutes = 0;
+      seconds = 0;
+    }
+  };
+
+  onMount(() => {
+    calculateTimeLeft();
+    const interval = setInterval(calculateTimeLeft, 1000);
+    return () => clearInterval(interval);
+  });
 </script>
 
 <div class="flex flex-col px-9">
@@ -31,6 +65,79 @@ export let collection: Collection
                 <p class="text-justify text-2xl font-normal">
                     {collection.description}
                 </p>
+            </div>
+            <!-- Allowlist -->
+            <div class="flex flex-col items-start self-stretch">
+                <div class="flex p-5 flex-col items-start self-stretch gap-[20px] bg-[#17171780] rounded-[10px]">
+                    <span class="text-justify text-3xl font-medium">
+                        Exclusive to the following members.
+                    </span>
+                    <div class="flex flex-col items-start self-stretch">
+                        <div class="flex p-5 flex-col items-start self-stretch gap-3 bg-[#27272780] rounded-[10px]">
+                            <span class="text-justify text-3xl font-medium">
+                                You don't seem to have it yet, but you can get it here.
+                            </span>
+                        </div>
+                    </div>
+                    <!-- Aceess -->
+                    <div class="flex flex-col items-start">
+                        <div class="flex p-5 items-center gap-3 bg-[#43C451] rounded-[10px]">
+                            <div class="h-16 w-16">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+                                    <path d="M13.334 34.6666L24.0007 45.3333L50.6673 18.6666" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                  </svg>
+                            </div>
+                            <p class="text-justify text-3xl font-medium">
+                                Welcome, you have the access
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Memberships -->
+                    <div class="flex flex-col items-start gap-[7px]">
+                        <div class="flex items-start gap-16">
+                            <MembershipOption
+                            clubName={'Your Club'}
+                            id={'2'}
+                            name={'Membership Name'}
+                            imagePath={'https://i.ibb.co/Kyjr50C/Image.png'}
+                            currency={'ETH'}
+                            price={"0.1"}
+                            description={'Membership Description'}
+                            className={`w-[276px] h-[436px]`}
+                          />
+                          <MembershipOption
+                            clubName={'Your Club'}
+                            id={'3'}
+                            name={'Membership Name'}
+                            imagePath={'https://i.ibb.co/nrdKDQy/Image-1.png'}
+                            currency={'DEV'}
+                            price={"0.1"}
+                            description={'Membership Description'}
+                            className={`w-[276px] h-[436px]`}
+                          />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Validation -->
+            <div class="flex flex-col items-start self-stretch">
+                <div class="flex p-5 flex-col items-start self-stretch gap-3 rounded-[10px] bg-[#27272780]">
+                    <span class="text-justify text-2xl font-medium">
+                        Waiting for the wallet connection to confirm access rights.
+                    </span>
+                </div>
+            </div>
+            <!-- Time left -->
+            <div class="flex p-5 flex-col justify-center items-center self-stretch rounded-[10px] bg-white gap-3">
+                <span class="text-justify text-2xl text-black font-medium leading-6">
+                    Time remaining
+                </span>
+                <span class="text-justify text-3xl text-black font-medium leading-6">
+                    {days} {days > 1 ? 'days' : 'day'}
+                    {hours} {hours > 1 ? 'hours' : 'hour'}
+                    {minutes} {minutes > 1 ? 'minutes' : 'minute'}
+                    {seconds} {seconds > 1 ? 'seconds' : 'second'}
+                </span>
             </div>
         </div>
     </div>     
