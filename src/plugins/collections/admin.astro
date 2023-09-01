@@ -1,0 +1,62 @@
+---
+import limitedNoOfItemsImg from './assets/limited-number-of-items.svg'
+import timeLimitedCollectionImg from './assets/time-limited-collection.svg'
+import CollectionCard from '@components/Collections/CollectionCard.svelte'
+import type { Collection } from '@plugins/collections'
+import type { UndefinedOr } from '@devprotocol/util-ts'
+
+const { collections } = Astro.props as {
+  collections: Collection[]
+}
+
+const baseRedirectionUrl = '/admin/collections/new'
+
+const existingCollections = true
+---
+
+<div>
+  <h1 class="mb-16 font-title text-2xl font-bold">Your Clubs Store</h1>
+  <h2 class="mb-16 text-[32px] font-normal">Create a new collection</h2>
+  <div class="mb-16 text-xl font-normal text-white">
+    Create a collection, register some digital items, and your web3 store go
+    live in minutes.<br />
+  </div>
+
+  <div class="flex min-h-[272px] max-w-full items-center gap-16 p-2.5">
+    <a href={baseRedirectionUrl} class="h-full w-[100%]">
+      <div
+        class="flex h-full w-full grow flex-col items-center justify-center gap-4 rounded-[5px] bg-white p-2.5"
+      >
+        <img src={limitedNoOfItemsImg} class="h-[212px] max-h-[212px]" />
+        <p
+          class="self-stretch text-center text-center text-lg font-medium text-black"
+        >
+          Limited Quantity Items
+        </p>
+      </div>
+    </a>
+    <a
+      href={`${baseRedirectionUrl}/time-limited-collection`}
+      class="h-full w-[100%]"
+    >
+      <div
+        class="flex h-full w-full grow flex-col items-center justify-center gap-4 rounded-[5px] bg-white p-2.5"
+      >
+        <img src={timeLimitedCollectionImg} class="h-[212px] max-h-[212px]" />
+        <p
+          class="self-stretch text-center text-center text-lg font-medium text-black"
+        >
+          Time-limited collection
+        </p>
+      </div>
+    </a>
+  </div>
+  {
+    existingCollections ? (
+      <div class="mt-16 flex flex-col">
+        <h2 class="mb-16 text-[32px] font-normal">Existing collections</h2>
+        <CollectionCard collections={collections} client:only="svelte" />
+      </div>
+    ) : null
+  }
+</div>
