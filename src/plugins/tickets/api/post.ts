@@ -2,13 +2,15 @@ import type { APIRoute } from 'astro'
 import type { Ticket, TicketHistories, TicketHistory } from '..'
 import { createClient } from 'redis'
 import { decode, encode } from '@devprotocol/clubs-core'
-import { UndefinedOr, whenDefined } from '@devprotocol/util-ts'
+import { UndefinedOr, whenDefined, whenDefinedAll } from '@devprotocol/util-ts'
 import { always } from 'ramda'
 import { ticketStatus } from '../utils/status'
 import { JsonRpcProvider, hashMessage, recoverAddress } from 'ethers'
 import { clientsSTokens } from '@devprotocol/dev-kit'
 import { genHistoryKey } from '../utils/gen-key'
 import { now } from '../utils/date'
+import { Status, fetchWebhook, createRequest } from '../utils/webhooks'
+import jsonwebtoken from 'jsonwebtoken'
 
 export const post: (opts: {
   ticket: Ticket
@@ -99,6 +101,26 @@ export const post: (opts: {
     try {
       await client.set(dbKey, nextHistory)
       await client.quit()
+
+      const webhook = whenDefinedAll(
+        [ticket.webhooks?.used, process.env.SALT],
+        ([encrypted, salt]) => jsonwebtoken.verify(encrypted, salt) as string,
+      )
+      await whenDefined(webhook, (base) =>
+        fetchWebhook(
+          createRequest({
+            status: Status.Used,
+            base,
+            id,
+            account,
+            benefit: {
+              id: benefitId,
+              description: beneifit.self.use.description,
+            },
+          }),
+        ),
+      )
+
       return new Response(null, {
         status: 200,
       })

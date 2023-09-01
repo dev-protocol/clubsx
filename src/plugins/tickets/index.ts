@@ -27,6 +27,9 @@ export type Ticket = {
     dependsOn?: string
     refreshCycle?: string
   }[]
+  webhooks?: {
+    used?: string // Encrypted URL string
+  }
 }
 export type Tickets = Ticket[]
 export type TicketHistory = { datetime: Date }
