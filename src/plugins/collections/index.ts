@@ -10,7 +10,7 @@ import { default as Admin } from './admin.astro'
 import { default as AdminEdit } from './admin-id.astro'
 import { default as AdminNew } from './admin-new.astro'
 import { default as AdminEditMembership } from './admin-id-id.astro'
-import { default as Id} from './[id].astro'
+import { default as Id } from './[id].astro'
 import { default as Icon } from './assets/icon.svg'
 import { Content as Readme } from './README.md'
 import Preview1 from './assets/limited-number-of-items.svg'
@@ -47,9 +47,9 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
     'devprotocol:clubs:collections',
   )
   const collections =
-  (collectionsConfig?.options.find(
-    (opt: ClubsPluginOption) => opt.key === 'collections',
-  )?.value as UndefinedOr<Collection[]>) ?? []
+    (collectionsConfig?.options.find(
+      (opt: ClubsPluginOption) => opt.key === 'collections',
+    )?.value as UndefinedOr<Collection[]>) ?? []
 
   return [
     ...(collections.map((collection) => ({
