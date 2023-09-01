@@ -746,17 +746,19 @@
     <div
       class="mb-16 flex w-[52.2%] flex-col items-start justify-start gap-[7px]"
     >
-      <div class="m-0 w-full items-center p-0">
-        <span class="mr-[13px] font-body">Collection name </span>
-        <span class="font-body text-[#EB48F8]"> * </span>
-      </div>
-      <input
-        bind:value={collection.name}
-        on:change={onCollectionChangeName}
-        class="w-[479px] rounded border-[3px] border-black bg-[#040B10] px-8 py-6"
-        id="collection-name"
-        name="collection-name"
-      />
+    <div class="m-0 w-full items-center p-0">
+      <span class="mr-[13px] font-body">Collection name </span>
+      <span class="font-body text-[#EB48F8]"> * </span>
+    </div>
+      <label class="hs-form-field is-filled">
+          <input
+          bind:value={collection.name}
+          on:change={onCollectionChangeName}
+          class="hs-form-field__input"
+          id="collection-name"
+          name="collection-name"
+        />
+      </label>
     </div>
     <!-- collection cover image uploader-->
     <div class="mb-16 flex h-[294px] w-[479px] flex-col items-start gap-[7px]">
@@ -766,12 +768,13 @@
         >
         <span class="text-base font-normal uppercase text-[#EB48F8]"> * </span>
       </div>
-      <label>
+      <label class="cursor-pointer">
         <div class="flex flex-col items-start self-stretch rounded-[19px] border border-[#ffffff1a] bg-[#ffffff1a] p-2">
         {#if collection.imageSrc !== ''}
         <img
           class="object-cover h-[216px] w-[463px] rounded-[12px]"
           src={collection.imageSrc}
+          alt={`${collection.name}-collection-cover-image`}
         />
         {:else}
         <div class="h-[216px] w-[463px] rounded-[12px] bg-[#040B10]" />
@@ -798,16 +801,19 @@
         <span class="text-base font-normal text-white">Start date</span>
         <span class="text-base font-normal uppercase text-[#EB48F8]"> * </span>
       </div>
-      <input
-        bind:value={formattedStartTime}
-        on:change={onStartTimeChange}
-        type="datetime-local"
-        class="cal w-[479px] rounded border-[3px] border-black bg-[#040B10] px-8 py-6"
-        id="collectino-start-date"
-        name="collection-start-date"
-        min={formatUnixTimestamp(Date.now() / 1000)}
-        max="2038-01-18T00:00"
-      />
+      <label class="hs-form-field is-filled">      
+          <input
+          bind:value={formattedStartTime}
+          on:change={onStartTimeChange}
+          type="datetime-local"
+          class="hs-form-field__input"
+          id="collectino-start-date"
+          name="collection-start-date"
+          min={formatUnixTimestamp(Date.now() / 1000)}
+          max="2038-01-18T00:00"
+        />
+      </label>
+
       {#if invalidStartTimeMsg !== ''}
         <p class="text-danger-300">* {invalidStartTimeMsg}</p>
       {/if}
@@ -821,16 +827,18 @@
             *
           </span>
         </div>
-        <input
-          bind:value={formattedEndTime}
-          on:change={onEndTimeChange}
-          type="datetime-local"
-          class="cal w-[479px] rounded border-[3px] border-black bg-[#040B10] px-8 py-6"
-          id="collectino-start-date"
-          name="collection-start-date"
-          min={formatUnixTimestamp(Date.now() / 1000)}
-          max="2038-01-18T00:00"
-        />
+        <label class="hs-form-field is-filled">
+          <input
+            bind:value={formattedEndTime}
+            on:change={onEndTimeChange}
+            type="datetime-local"
+            class="hs-form-field__input"
+            id="collectino-start-date"
+            name="collection-start-date"
+            min={formatUnixTimestamp(Date.now() / 1000)}
+            max="2038-01-18T00:00"
+          />
+        </label>
         {#if invalidEndTimeMsg !== ''}
           <p class="text-danger-300">* {invalidEndTimeMsg}</p>
         {/if}
@@ -840,18 +848,20 @@
     <div
       class="mb-16 flex w-[99.1%] flex-col items-start justify-start gap-[7px]"
     >
-      <div class="m-0 w-full items-center p-0">
+      <div class="items-center p-0">
         <span class="mr-[13px] font-body">Description</span>
         <span class="font-body text-[#EB48F8]"> * </span>
       </div>
-      <textarea
-        class="w-full rounded border-[3px] border-black bg-[#040B10] px-8 py-6"
+      <label class="hs-form-field is-filled">
+        <textarea
+        class="hs-form-field__input"
         id="collection-description"
         name="collection-description"
         rows="3"
         bind:value={collection.description}
-      />
-      <p class="text-xs">Markdown is available</p>
+        />
+      <p class="hs-form-field__helper">Markdown is available</p>
+      </label>
     </div>
 
     <!-- Allowlist -->
@@ -940,14 +950,16 @@
             <span class="mr-[13px] font-body">Name </span>
             <span class="font-body text-[#EB48F8]"> * </span>
           </div>
-          <input
+          <label class="hs-form-field is-filled">
+            <input
             bind:value={membership.name}
             on:change={onChangeName}
-            class="w-[479px] rounded border-[3px] border-black bg-[#040B10] px-8 py-6"
+            class="hs-form-field__input"
             id="product-name"
             name="product-name"
             placeholder="Name of product"
           />
+          </label>
         </div>
         <div
           class="mb-16 flex h-[207px] w-[186px] flex-col items-start gap-[7px]"
@@ -966,6 +978,7 @@
               <img
                 class="object-cover h-[160px] w-[170px] rounded-[12px]"
                 src={membership.imageSrc}
+                alt={`${membership.name}-membership-image`}
               />
               {:else}
               <div class="h-[160px] w-[170px] rounded-[12px] bg-[#040B10]" />
@@ -992,16 +1005,18 @@
                 *
               </span>
             </div>
-            <input
+            <label class="hs-form-field is-filled">
+              <input
               bind:value={membership.memberCount}
               on:change={() => onChangeMemberCount(membership)}
-              class="w-[479px] rounded border-[3px] border-black bg-[#040B10] px-8 py-6"
+              class="hs-form-field__input"
               id="sales-number"
               type="number"
               name="sales-number"
               min="1"
               max="4294967294"
-            />
+              />
+            </label>
           </div>
         {/if}
 
@@ -1203,15 +1218,17 @@
             <span class="mr-[13px] font-body">Description</span>
             <span class="font-body text-[#EB48F8]"> * </span>
           </div>
-          <textarea
-            class="w-full rounded border-[3px] border-black bg-[#040B10] px-8 py-6"
+          <label class="hs-form-field is-filled">
+            <textarea
+            class="hs-form-field__input"
             bind:value={membership.description}
             on:change={updateState}
             id="membership-description"
             name="membership-description"
             disabled={membershipExists}
-          />
-          <p class="text-xs">Markdown is available</p>
+            />
+          <p class="hs-form-field__helper">Markdown is available</p>
+          </label>
         </div>
 
         <!-- Save & Delete Buttons -->
@@ -1265,9 +1282,3 @@
     </div>
   </div>
 </form>
-
-<style lang="scss">
-  .cal::-webkit-calendar-picker-indicator {
-    filter: invert(1);
-  }
-</style>
