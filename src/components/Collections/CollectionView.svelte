@@ -5,7 +5,7 @@ import type { Collection } from '@plugins/collections'
 export let collection: Collection
 </script>
 
-<div class="flex flex-col items-center px-9">
+<div class="flex flex-col px-9">
     <!-- Header -->
     <div class="h-20 p-5 flex justify-between items-center gap-6">
         <div class="text-white text-lg font-medium uppercase">Demo</div>
