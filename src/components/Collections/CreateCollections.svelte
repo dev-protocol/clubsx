@@ -9,7 +9,7 @@
     PAYMENT_TYPE_INSTANT_FEE,
     PAYMENT_TYPE_STAKE_FEE,
   } from '@constants/memberships'
-  
+
   import { formatUnixTimestamp } from '@plugins/collections/fixtures'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
   import { address, callSlotCollections } from '@plugins/collections/utils/slotCollections'
@@ -21,7 +21,7 @@
   import { tokenInfo } from '@constants/common'
   import { bytes32Hex } from '@fixtures/data/hexlify'
 
-  
+
   export let existingCollections: Collection[] = []
   export let collection: Collection
   export let isTimeLimitedCollection: boolean = false
@@ -80,6 +80,7 @@
   const minCustomFee100 = 0
   const maxCustomFee100 = 95
 
+  // TODO: call this function on save btn trigger as well.
   const onChangeName = () => {
     let id = membership.name.toLowerCase().replace(/\W/g, '-')
     // Duplication detection
@@ -717,7 +718,7 @@
       images,
       keys
     ]).then((res) => res.wait())
-    
+
     const descriptiorAddress : string | undefined = isTimeLimitedCollection ?
     address.find(
       (address) => address.chainId === chainId,
@@ -801,7 +802,7 @@
         <span class="text-base font-normal text-white">Start date</span>
         <span class="text-base font-normal uppercase text-[#EB48F8]"> * </span>
       </div>
-      <label class="hs-form-field is-filled">      
+      <label class="hs-form-field is-filled">
           <input
           bind:value={formattedStartTime}
           on:change={onStartTimeChange}
