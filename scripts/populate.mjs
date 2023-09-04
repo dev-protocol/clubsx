@@ -984,37 +984,119 @@ const populate = async () => {
               {
                 key: 'tickets',
                 value: [
+                  // {
+                  //   payload: toBytes32('#1'),
+                  //   importedFrom: {
+                  //     plugin: 'devprotocol:clubs:simple-memberships',
+                  //     key: 'memberships',
+                  //   },
+                  //   name: 'Cafe Ticket',
+                  //   uses: [
+                  //     {
+                  //       id: '1-month-pass',
+                  //       description: '1 month pass',
+                  //       duration: '30 days',
+                  //       refreshCycle: undefined,
+                  //     },
+                  //     {
+                  //       id: 'free-beer',
+                  //       description: 'Free beer/day',
+                  //       dependsOn: '1-month-pass',
+                  //       refreshCycle: '24 hours',
+                  //     },
+                  //     {
+                  //       id: 'special-week',
+                  //       description: 'Special Week',
+                  //       duration: '3 days',
+                  //       refreshCycle: undefined,
+                  //     },
+                  //     {
+                  //       id: 'free-juice',
+                  //       description: 'Free juice/day',
+                  //       dependsOn: 'special-week',
+                  //       refreshCycle: '1 days',
+                  //     },
+                  //   ],
+                  // },
+                  // {
+                  //   payload: toBytes32('#1'),
+                  //   importedFrom: {
+                  //     plugin: 'devprotocol:clubs:simple-memberships',
+                  //     key: 'memberships',
+                  //   },
+                  //   name: '1 Seat',
+                  //   uses: [
+                  //     {
+                  //       id: '1',
+                  //       description: '1 day pass',
+                  //       duration: '1 days',
+                  //       refreshCycle: undefined,
+                  //     },
+                  //     {
+                  //       id: '2',
+                  //       description: 'Free coffee',
+                  //       dependsOn: '1',
+                  //       refreshCycle: '24 hours',
+                  //     },
+                  //   ],
+                  // },
+                  // {
+                  //   payload: toBytes32('#1'),
+                  //   importedFrom: {
+                  //     plugin: 'devprotocol:clubs:simple-memberships',
+                  //     key: 'memberships',
+                  //   },
+                  //   name: 'Entry',
+                  //   uses: [
+                  //     {
+                  //       id: '1',
+                  //       description: '1 day pass',
+                  //       duration: '1 days',
+                  //       refreshCycle: undefined,
+                  //     },
+                  //     {
+                  //       id: '2',
+                  //       description: 'Free coffee',
+                  //       dependsOn: '1',
+                  //       refreshCycle: '24 hours',
+                  //     },
+                  //   ],
+                  // },
+                  // {
+                  //   payload: toBytes32('#1'),
+                  //   importedFrom: {
+                  //     plugin: 'devprotocol:clubs:simple-memberships',
+                  //     key: 'memberships',
+                  //   },
+                  //   name: 'Tea Ceremony Class',
+                  //   uses: [
+                  //     {
+                  //       id: '1',
+                  //       description: '6 months',
+                  //       duration: '6 months',
+                  //       refreshCycle: undefined,
+                  //     },
+                  //     {
+                  //       id: '2',
+                  //       description: '2 lessons per week',
+                  //       dependsOn: '1',
+                  //       refreshCycle: '24 hours',
+                  //     },
+                  //   ],
+                  // },
                   {
                     payload: toBytes32('#1'),
                     importedFrom: {
                       plugin: 'devprotocol:clubs:simple-memberships',
                       key: 'memberships',
                     },
-                    name: 'Cafe Ticket',
+                    name: 'Stargazing',
                     uses: [
                       {
-                        id: '1-month-pass',
-                        description: '1 month pass',
-                        duration: '30 days',
+                        id: '1',
+                        description: 'Fall member',
+                        duration: '3 months',
                         refreshCycle: undefined,
-                      },
-                      {
-                        id: 'free-beer',
-                        description: 'Free beer/day',
-                        dependsOn: '1-month-pass',
-                        refreshCycle: '24 hours',
-                      },
-                      {
-                        id: 'special-week',
-                        description: 'Special Week',
-                        duration: '3 days',
-                        refreshCycle: undefined,
-                      },
-                      {
-                        id: 'free-juice',
-                        description: 'Free juice/day',
-                        dependsOn: 'special-week',
-                        refreshCycle: '1 days',
                       },
                     ],
                   },
