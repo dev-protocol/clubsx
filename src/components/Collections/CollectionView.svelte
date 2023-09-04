@@ -69,7 +69,7 @@ export let collection: Collection
     </div> -->
     <!-- Hero Image -->
     <div class="gap-12">
-        <img class="rounded-[32px]"
+        <img class="md:w-[896px] rounded-[32px]"
         src={collection.imageSrc}
         alt={`${collection.name}-cover-image`}
         />
@@ -151,17 +151,19 @@ export let collection: Collection
                 </div>
             </div>
             <!-- Time left -->
-            <div class="flex p-5 flex-col justify-center items-center self-stretch rounded-[10px] bg-white gap-3">
-                <span class="text-justify text-2xl text-black font-medium leading-6">
-                    Time remaining
-                </span>
-                <span class="text-justify text-3xl text-black font-medium leading-6">
-                    {days} {days > 1 ? 'days' : 'day'}
-                    {hours} {hours > 1 ? 'hours' : 'hour'}
-                    {minutes} {minutes > 1 ? 'minutes' : 'minute'}
-                    {seconds} {seconds > 1 ? 'seconds' : 'second'}
-                </span>
-            </div>
+            {#if collection.isTimeLimitedCollection }
+                <div class="flex p-5 flex-col justify-center items-center self-stretch rounded-[10px] bg-white gap-3">
+                    <span class="text-justify text-2xl text-black font-medium leading-6">
+                        Time remaining
+                    </span>
+                    <span class="text-justify text-3xl text-black font-medium leading-6">
+                        {days} {days > 1 ? 'days' : 'day'}
+                        {hours} {hours > 1 ? 'hours' : 'hour'}
+                        {minutes} {minutes > 1 ? 'minutes' : 'minute'}
+                        {seconds} {seconds > 1 ? 'seconds' : 'second'}
+                    </span>
+                </div>
+            {/if}
             <!-- Memberships -->
             <div class="grid grid-cols-3 justify-between gap-4">
                 {#each collection.memberships as mem, i}
