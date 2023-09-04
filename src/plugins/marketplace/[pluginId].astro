@@ -73,6 +73,23 @@ const READMEComponent = plugin.readme
         </Markdown>
       </p>
     </div>
+    {
+      plugin.require?.invitation && (
+        <section class="rounded-md bg-dp-yellow-300 p-4 text-dp-yellow-ink">
+          <p class="mb-4 text-xl font-bold">Limited Preview</p>
+          <p>
+            This plugin is currently available as a limited preview version.
+            Please wait a few moments until it is available for your Club. If
+            you have any questions about getting started, feel free to contact
+            us on{' '}
+            <a href="https://discord.gg/TFBZGM9jf3" class="underline">
+              Discord
+            </a>
+            .
+          </p>
+        </section>
+      )
+    }
     <div class="grid max-w-2xl gap-8">
       {
         plugin.developer && (
