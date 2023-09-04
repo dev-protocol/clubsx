@@ -587,6 +587,8 @@
   }
 
   const updateState = () => {
+    if (membership.id === '' || !membership.id) onChangeName()
+
     if (
       membership.price < minPrice ||
       membership.price > maxPrice ||
@@ -596,12 +598,14 @@
 
     collection = {
       ...collection,
-      memberships: [
-        ...collection.memberships.filter(
-          (m: CollectionMembership) => m.id !== membership.id
-        ),
-        membership,
-      ],
+      memberships: isAdding // If we are adding memberships only then append the membership state to db.
+        ? [
+          ...collection.memberships.filter(
+            (m: CollectionMembership) => m.id !== membership.id
+          ),
+          membership,
+        ]
+        : collection.memberships
     }
   }
 
