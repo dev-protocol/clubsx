@@ -1,5 +1,17 @@
+import {
+  whenNotError,
+  type ErrorOr,
+  whenNotErrorAll,
+  whenDefined,
+} from '@devprotocol/util-ts'
 import type { APIRoute } from 'astro'
+import fetch from 'cross-fetch'
+import { createHash } from 'crypto'
 import { AbiCoder } from 'ethers'
+import { toPairs, tryCatch } from 'ramda'
+import { Status, createRequest, fetchWebhook } from '../utils/webhooks'
+
+const { POP_SERVER_KEY, SEND_DEVPROTOCOL_API_KEY } = import.meta.env
 
 export const abi = [
   'address _mintFor',
@@ -11,84 +23,173 @@ export const abi = [
   'uint256 _feePercentage',
 ]
 
+export type RequestBody = {
+  merchant_id: string
+  order_id: string
+  status: 'success' | 'failure'
+  result_code: string
+  m_status?: 'success' | 'failure' | 'pending'
+  v_result_code?: string
+  transaction_datetime?: string
+  dummy: boolean
+  signature: string
+} & {
+  payment_type: 'card'
+  acquirer_code?: string
+  auth_code?: string
+  masked_card_number?: string
+}
+
+const headers = {
+  'content-type': 'application/json;charset=UTF-8',
+}
+
 /**
  * This endpoint is expected to be called with the following parameters:
  * ?params={ABI_ENCODED_PARAMS}
  */
 export const post: ({
+  chainId,
+  rpcUrl,
   webhookOnFulfillment,
 }: {
+  chainId: number
+  rpcUrl: string
   webhookOnFulfillment?: string
 }) => APIRoute =
-  ({ webhookOnFulfillment }) =>
+  ({ chainId, rpcUrl, webhookOnFulfillment }) =>
   async ({ request, url }) => {
-    /**
-   * WE NEED TO CHECK THE CALLER IS THE VERITRANSE SERVER:
-   * > POP Server adds a `signature` as the last parameter in both Transaction Status Through Redirection as well as Push Notifications. The `signature` is derived from the parameters and their values in the notification.
-   * > The Merchant Server has to derive a signature using the same logic and compare with the `signature` received from POP Server. If both the signatures match then and only then should the Merchant Server process further.
-   *
-    ```
     // Step 1 - Read all the parameters and their values
+    const verification$1: ErrorOr<RequestBody> = await request
+      .json()
+      .catch((err) => new Error(err))
+    console.log(1, verification$1)
 
     // Step 2a - Convert all string arrays into comma separated values
-    valueX = valueX[0] + ","
-            + valueX[1] + ","
-            + valueX[i]
+    const verification$2 = whenNotError(verification$1, (res) =>
+      toPairs(res).map(([key, value]) => {
+        const value_ = Array.isArray(value) ? value.join(',') : value
+        return [key, value_] as [keyof RequestBody, RequestBody[typeof key]]
+      }),
+    )
+    console.log(2, verification$2)
 
-    ...  //Do this for all parameters that receive values in arrays
-
-    // Step 2b - Sort all the parameters in alphabetical order,
-    // skip the signature parameter
+    // Step 2b - Sort all the parameters in alphabetical order, skip the signature parameter
+    const verification$3 = whenNotError(verification$2, (res) =>
+      res
+        .filter(([key]) => key !== 'signature')
+        .sort(([a], [b]) => (a > b ? 0 : -1)),
+    )
+    console.log(3, verification$3)
 
     // Step 3 - Construct an input string using <parameter name>=<value> format
     // and appending the POP_SERVER_KEY preceded by ':'.
     // Use "true" or "false" string as value for boolean parameter(s).
-    inputString = ( name1=value1&name2=value2&...&nameN=valueN )
-                  + ":" + POP_SERVER_KEY;
+    const verification$4 = whenNotError(
+      verification$3,
+      (res) =>
+        `${res.reduce(
+          (x, [k, v]) => `${x && `${x}&`}${k}=${v}`,
+          '',
+        )}:${POP_SERVER_KEY}`,
+    )
+    console.log(4, verification$4)
 
     // Step 4 - Derive the signature using SHA512 hash function
-    signature = SHA512( inputString );
+    const verification$5 = whenNotError(verification$4, (res) =>
+      createHash('sha512').update(res).digest('hex'),
+    )
+    console.log(5, verification$5)
 
-    // Step 5 - Compare the signature received in the notification
-    // with the signature derived from the received parameters
-    ```
-   */
+    const verify = whenNotErrorAll(
+      [verification$1, verification$5],
+      ([{ signature }, expected]) =>
+        signature === expected
+          ? true
+          : new Error('Signature verification failed.'),
+    )
+    console.log(6, verify)
 
-    const body = await request.json()
-    console.log(1, body)
+    const queryParams = whenNotError(verify, (res) =>
+      res === true
+        ? url.searchParams.get('params') ?? new Error('`params` missing.')
+        : (res as never),
+    )
 
-    const params = url.searchParams.get('params')
+    const params = whenNotError(queryParams, (p) =>
+      tryCatch(
+        (v) => AbiCoder.defaultAbiCoder().decode(abi, v),
+        (err: Error) => new Error(err.message ?? err),
+      )(p),
+    )
+    console.log(7, params)
 
-    console.log(2, params)
+    const result$1 = await whenNotError(
+      params,
+      ([to, property, payload, token, input, gatewayAddress, fee]) =>
+        fetch(
+          'https://send.devprotocol.xyz/api/send-transactions/SwapTokensAndStakeDev',
+          {
+            headers: {
+              Authorization: `Bearer ${SEND_DEVPROTOCOL_API_KEY}`,
+            },
+            body: JSON.stringify({
+              rpcUrl,
+              chainId,
+              args: {
+                to,
+                property,
+                payload,
+                gatewayAddress,
+                amounts: {
+                  token,
+                  input,
+                  fee,
+                },
+              },
+            }),
+          },
+        ).catch((err) => new Error(err)),
+    )
+    console.log(8, result$1)
 
-    if (!params) {
-      return {
-        status: 200, // Always 200
-        body: JSON.stringify({ message: '`?params` is missing' }),
-      }
-    }
+    const result$2 = whenNotError(result$1, (res) =>
+      res.ok ? true : new Error('Failed to send blockchain transaction.'),
+    )
 
-    const [
-      mintFor,
-      propertyAddress,
-      payload,
-      paymentToken,
-      paymentAmount,
-      feeBeneficiary,
-      feePercentage,
-    ] = AbiCoder.defaultAbiCoder().decode(abi, params)
+    const requestBodyWithoutSignature = whenNotError(verification$1, (res) => ({
+      ...res,
+      signature: undefined,
+    }))
 
-    console.log(3, [
-      mintFor,
-      propertyAddress,
-      payload,
-      paymentToken,
-      paymentAmount,
-      feeBeneficiary,
-      feePercentage,
-    ])
+    const final = await whenNotErrorAll(
+      [result$2, params, requestBodyWithoutSignature],
+      ([res, [account], paymentGateway]) =>
+        whenDefined(webhookOnFulfillment, (base) =>
+          res
+            ? fetchWebhook(
+                createRequest({
+                  base,
+                  status: Status.Success,
+                  account,
+                  paymentGateway,
+                }),
+              ).catch((err) => new Error(err))
+            : res,
+        ),
+    )
+    console.log(9, final)
 
-    return {
-      body: '',
-    }
+    return final instanceof Error
+      ? new Response(
+          JSON.stringify({ message: 'error', error: final.message }),
+          {
+            status: result$2 instanceof Error ? 400 : 200,
+            headers,
+          },
+        )
+      : new Response(JSON.stringify({ message: 'success' }), {
+          status: 200,
+          headers,
+        })
   }
