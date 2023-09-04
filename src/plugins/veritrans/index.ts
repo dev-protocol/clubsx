@@ -10,8 +10,6 @@ import { default as Id } from './Id.astro'
 import { keccak256 } from 'ethers'
 import type { ClubsFunctionGetApiPaths } from '@devprotocol/clubs-core/src'
 import { composeItems } from './utils/compose-items'
-import { get } from './api/payment-key'
-import { post } from './api/fulfillment'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 
 export type Override = {
@@ -68,6 +66,11 @@ export const getApiPaths: ClubsFunctionGetApiPaths = async (
     (options.find((opt) => opt.key === 'webhooks')?.value as UndefinedOr<{
       fulfillment?: string
     }>) ?? {}
+
+  const [{ get }, { post }] = await Promise.all([
+    import('./api/payment-key'),
+    import('./api/fulfillment'),
+  ])
 
   return [
     {
