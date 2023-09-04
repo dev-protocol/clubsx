@@ -60,7 +60,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
 
 export const getApiPaths: ClubsFunctionGetApiPaths = async (
   options,
-  { propertyAddress, chainId },
+  { propertyAddress, chainId, rpcUrl },
   utils,
 ) => {
   const items = composeItems(options, utils)
@@ -78,7 +78,11 @@ export const getApiPaths: ClubsFunctionGetApiPaths = async (
     {
       paths: ['fulfillment'],
       method: 'POST',
-      handler: post({ webhookOnFulfillment: webhooks?.fulfillment }),
+      handler: post({
+        webhookOnFulfillment: webhooks?.fulfillment,
+        chainId,
+        rpcUrl,
+      }),
     },
   ]
 }
