@@ -141,11 +141,9 @@
     membership.imageSrc =
       (await uploadImageAndGetPath(file)) || `https://i.ibb.co/RbxFzn8/img.jpg`
 
-    membership = membership
-
     updateState()
+    update()
   }
-
 
   const deleteMembership = (selectedMembership: CollectionMembership) => {
     updatingMembershipsStatus = true
