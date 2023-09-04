@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useMemo,
 } from 'react'
-import type { Product } from '@constants/products'
+import type { Membership } from '@plugins/memberships'
 import { version } from '@crossmint/client-sdk-react-ui/package.json'
 import {
   Currency,
@@ -19,11 +19,11 @@ import { onMountClient } from '@devprotocol/clubs-core/events'
 import type { CMValues } from '.'
 import BigNumber from 'bignumber.js'
 
-export type ExtendedProducts = (Product & { purchaseLink?: string })[]
+export type ExtendedProducts = (Membership & { purchaseLink?: string })[]
 
 type Params = {
   cm: CMValues
-  product: Product
+  product: Membership
   rpcUrl: string
   propertyAddress: string
   baseUrl: string

@@ -12,8 +12,8 @@ export type ERC20Image = {
   readonly src?: string
   readonly name?: string
   readonly description?: string
-  readonly requiredTokenAmount?: number | string
-  readonly requiredTokenFee?: number | string
+  readonly requiredTokenAmount?: number | string | bigint
+  readonly requiredTokenFee?: number | string | bigint
   readonly gateway?: string
   readonly token?: string
 }

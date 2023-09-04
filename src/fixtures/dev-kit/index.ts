@@ -1,9 +1,9 @@
 import {
+  AbiCoder,
   BrowserProvider,
   ContractRunner,
-  JsonRpcProvider,
+  Log,
   ZeroAddress,
-  keccak256,
   parseUnits,
 } from 'ethers'
 import {
@@ -14,9 +14,11 @@ import {
   clientsLockup,
   positionsCreateWithAnyTokens,
 } from '@devprotocol/dev-kit/agent'
-import { UndefinedOr, whenDefined } from '@devprotocol/util-ts'
-import { positionsCreate } from '@devprotocol/dev-kit'
+import { UndefinedOr, whenDefined, whenDefinedAll } from '@devprotocol/util-ts'
+import { STokensContract, positionsCreate } from '@devprotocol/dev-kit'
 import { CurrencyOption } from '@constants/currencyOption'
+import type { Log as Log_ } from '@ethersproject/abstract-provider'
+import { bytes32Hex } from '@fixtures/data/hexlify'
 
 export type ChainName = UndefinedOr<
   | 'ethereum'
@@ -321,4 +323,40 @@ export const propertySymbol = async (
   }
   const [l1, l2] = await clientsProperty(prov, propertyAddress)
   return (l1 || l2)?.symbol()
+}
+
+export const mintedIdByLogs = async function (
+  logs: Log[] | Log_[],
+  matcher?: {
+    sTokensManager: STokensContract
+    receipent: string
+    payload: string | Uint8Array
+  },
+): Promise<UndefinedOr<bigint>> {
+  const logMinted = logs.find((log) =>
+    log.topics.includes(
+      '0xd46616b47888bf162137201f2b51769d5891ea9b59978dc022f447f3335e4b36', // Minted,
+    ),
+  )
+  const [id] =
+    whenDefined(logMinted, ({ data }) =>
+      AbiCoder.defaultAbiCoder().decode(
+        ['uint256', 'address', 'address', 'uint256', 'uint256'],
+        data,
+      ),
+    ) ?? []
+  const matchFilter = await whenDefinedAll(
+    [id, matcher],
+    async ([_id, filt]) => {
+      const tokenId = Number(_id)
+      const [owner, payload] = await Promise.all([
+        filt.sTokensManager.ownerOf(tokenId),
+        filt.sTokensManager.payloadOf(tokenId),
+      ])
+      console.log({ owner, payload, filt })
+      return owner === filt.receipent && payload === bytes32Hex(filt.payload)
+    },
+  )
+
+  return matchFilter === true ? id : matchFilter === false ? undefined : id
 }

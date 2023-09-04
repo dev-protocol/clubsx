@@ -9,6 +9,7 @@ import {
   type UndefinedOr,
   whenDefined,
   whenDefinedAll,
+  whenNotError,
 } from '@devprotocol/util-ts'
 import {
   type BigNumberish,
@@ -27,9 +28,10 @@ import {
   fetchSTokens,
 } from '@fixtures/utility'
 import Skeleton from '@components/Global/Skeleton.vue'
-import { stakeWithAnyTokens } from '@fixtures/dev-kit'
+import { stakeWithAnyTokens, mintedIdByLogs } from '@fixtures/dev-kit'
 import { marked } from 'marked'
 import DOMPurify from 'dompurify'
+import Result from './Result.vue'
 
 let providerPool: UndefinedOr<ContractRunner>
 let subscriptions: Subscription[] = []
@@ -41,7 +43,7 @@ type Props = {
   feeBeneficiary?: string
   feePercentage?: number
   payload?: Uint8Array | string
-  rpcUrl?: string
+  rpcUrl: string
   description?: string
   useDiscretePaymentFlow?: boolean
   useInjectedTransactionForm?: boolean
@@ -112,13 +114,16 @@ const stakeSuccessful = ref<boolean>(false)
 const account = ref<UndefinedOr<string>>(undefined)
 const isApproving = ref<boolean>(false)
 const isStaking = ref<boolean>(false)
+const isWaitingForStaked = ref<boolean>(false)
 const feeAmount = ref<UndefinedOr<number>>(undefined)
 const chain = ref<UndefinedOr<number>>(undefined)
 const previewImageSrc = ref<UndefinedOr<string>>(props.itemImageSrc)
 const previewName = ref<UndefinedOr<string>>(props.itemName)
 const stakingAmount = ref<UndefinedOr<number>>(undefined)
 const isCheckingAccessControl = ref<boolean>(false)
+const accessControlError = ref<UndefinedOr<Error>>(undefined)
 const accessAllowed = ref<UndefinedOr<boolean>>(undefined)
+const mintedId = ref<UndefinedOr<bigint>>(undefined)
 
 const approve = function () {
   whenDefinedAll(
@@ -198,85 +203,100 @@ const submitStake = async function () {
       chain.value,
     ],
     async ([_prov, _account, _destination, _amount, _parsedAmount, _chain]) => {
-      if (
+      const id =
         verifiedPropsCurrency.value === CurrencyOption.ETH &&
         !usePolygonWETH.value
-      ) {
-        // handle ETH stake
-        const res = await positionsCreateWithEth({
-          provider: _prov,
-          destination: _destination,
-          ethAmount: _parsedAmount,
-          gatewayAddress: props.feeBeneficiary ?? undefined,
-          gatewayBasisPoints:
-            typeof props.feePercentage === 'number'
-              ? props.feePercentage * 10_000
-              : undefined,
-          payload: props.payload,
-        })
-        await whenDefined(res, async (_res) => {
-          isStaking.value = true
-          const create = await _res.create()
-          const res = await create.wait()
-          console.log('res is: ', res)
-          onCompleted()
-        })
-      } else if (
-        verifiedPropsCurrency.value === CurrencyOption.ETH ||
-        verifiedPropsCurrency.value === CurrencyOption.USDC
-      ) {
-        const res = await stakeWithAnyTokens({
-          provider: _prov,
-          propertyAddress: _destination,
-          tokenAmount: _amount.toString(),
-          currency: verifiedPropsCurrency.value,
-          gatewayAddress: props.feeBeneficiary ?? undefined,
-          gatewayBasisPoints:
-            typeof props.feePercentage === 'number'
-              ? props.feePercentage * 10_000
-              : undefined,
-          payload: props.payload,
-          from: _account,
-          chain: _chain,
-        })
-        await whenDefined(res, async (_res) => {
-          isStaking.value = true
-          const create = await _res.create()
-          const approveIfNeeded = await create?.approveIfNeeded({
-            amount: _parsedAmount,
-          })
-          const waitOrSkipApproval = await approveIfNeeded?.waitOrSkipApproval()
-          const run = await waitOrSkipApproval?.run()
-          const res = await run?.wait()
-          console.log('res is: ', res)
-          onCompleted()
-        })
-      } else {
-        // handle DEV stake
-        const res = await positionsCreate({
-          provider: _prov,
-          from: _account,
-          destination: _destination,
-          amount: _parsedAmount,
-          payload: props.payload,
-        })
+          ? await (async () => {
+              // handle ETH stake
+              const res = await positionsCreateWithEth({
+                provider: _prov,
+                destination: _destination,
+                ethAmount: _parsedAmount,
+                gatewayAddress: props.feeBeneficiary ?? undefined,
+                gatewayBasisPoints:
+                  typeof props.feePercentage === 'number'
+                    ? props.feePercentage * 10_000
+                    : undefined,
+                payload: props.payload,
+              })
+              return whenDefined(res, async (_res) => {
+                isStaking.value = true
+                const create = await _res.create()
+                isWaitingForStaked.value = true
+                const res = await create.wait()
+                const id_ = await mintedIdByLogs(res?.logs)
+                console.log('res is: ', res)
+                console.log({ id_ })
+                return id_
+              })
+            })()
+          : verifiedPropsCurrency.value === CurrencyOption.ETH ||
+            verifiedPropsCurrency.value === CurrencyOption.USDC
+          ? await (async () => {
+              const res = await stakeWithAnyTokens({
+                provider: _prov,
+                propertyAddress: _destination,
+                tokenAmount: _amount.toString(),
+                currency: verifiedPropsCurrency.value,
+                gatewayAddress: props.feeBeneficiary ?? undefined,
+                gatewayBasisPoints:
+                  typeof props.feePercentage === 'number'
+                    ? props.feePercentage * 10_000
+                    : undefined,
+                payload: props.payload,
+                from: _account,
+                chain: _chain,
+              })
+              return whenDefined(res, async (_res) => {
+                isStaking.value = true
+                const create = await _res.create()
+                const approveIfNeeded = await create?.approveIfNeeded({
+                  amount: _parsedAmount,
+                })
+                const waitOrSkipApproval =
+                  await approveIfNeeded?.waitOrSkipApproval()
+                const run = await waitOrSkipApproval?.run()
+                isWaitingForStaked.value = true
+                const res = await run?.wait()
+                const id_ = await mintedIdByLogs(res?.logs)
+                console.log('res is: ', res)
+                console.log({ id_ })
+                return id_
+              })
+            })()
+          : await (async () => {
+              // handle DEV stake
+              const res = await positionsCreate({
+                provider: _prov,
+                from: _account,
+                destination: _destination,
+                amount: _parsedAmount,
+                payload: props.payload,
+              })
 
-        await whenDefined(res, async (_x) => {
-          isStaking.value = true
-          const approveIfNeeded = await _x.approveIfNeeded()
-          const waitOrSkipApproval = await approveIfNeeded.waitOrSkipApproval()
-          const run = await waitOrSkipApproval.run()
-          const res = await run.wait()
-          console.log('res is: ', res)
-          onCompleted()
-        })
-      }
+              return whenDefined(res, async (_x) => {
+                isStaking.value = true
+                const approveIfNeeded = await _x.approveIfNeeded()
+                const waitOrSkipApproval =
+                  await approveIfNeeded.waitOrSkipApproval()
+                const run = await waitOrSkipApproval.run()
+                isWaitingForStaked.value = true
+                const res = await run.wait()
+                const id_ = await mintedIdByLogs(res?.logs)
+                console.log('res is: ', res)
+                console.log({ id_ })
+                return id_
+              })
+            })()
+      onCompleted({ detail: { id } })
     },
   )
 }
-const onCompleted = function () {
+const onCompleted = function (ev?: { detail?: { id?: bigint } }) {
   isStaking.value = false
+  isWaitingForStaked.value = false
   stakeSuccessful.value = true
+  mintedId.value = ev?.detail?.id
 }
 
 onMounted(async () => {
@@ -297,16 +317,23 @@ onMounted(async () => {
       },
     )
 
-    accessAllowed.value = await whenDefined(
+    const accessControlRes = await whenDefined(
       accessControlUrl.value,
       async (_accessControl) => {
         isCheckingAccessControl.value = true
-        const res = await fetch(_accessControl)
-        const body = res.ok ? await res.text() : ''
+        const res = await fetch(_accessControl).catch((err: Error) => err)
+        const result = await whenNotError(res, async (r) =>
+          r.ok ? r.text() : new Error('Bad request'),
+        )
         isCheckingAccessControl.value = false
-        return Number(body) === 1
+        return result instanceof Error ? result : Number(result) === 1
       },
     )
+    if (accessControlRes instanceof Error) {
+      accessControlError.value = accessControlRes
+    } else {
+      accessAllowed.value = accessControlRes
+    }
   })
   subscriptions.push(sub)
 
@@ -387,26 +414,33 @@ onUnmounted(() => {
       <div class="grid gap-16 p-5">
         <slot name="before:transaction-form"></slot>
 
-        <div v-if="props.accessControlUrl" class="grid gap-16">
+        <div v-if="props.accessControlUrl" class="grid gap-8">
           <!-- Access control section -->
-          <p
-            :data-is-loading="isCheckingAccessControl"
-            :data-is-valid="accessAllowed"
-            class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white data-[is-loading=true]:animate-pulse data-[is-valid=false]:border data-[is-valid=false]:border-neutral-300 data-[is-valid=false]:bg-white data-[is-valid=true]:bg-[#43C451] data-[is-valid=false]:text-black"
-          >
-            {{
-              !account
-                ? `Connect wallet to check you're verified`
-                : isCheckingAccessControl
-                ? `Now checking the verification status`
-                : accessAllowed
-                ? `Verified`
-                : `Unverified`
-            }}
-          </p>
+          <h2 class="text-xl">Permission required</h2>
+          <span>
+            <p class="font-bold text-dp-white-600">Status</p>
+            <p
+              :data-is-loading="isCheckingAccessControl"
+              :data-is-valid="accessAllowed"
+              :data-is-error="Boolean(accessControlError)"
+              class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white data-[is-loading=true]:animate-pulse data-[is-valid=false]:border data-[is-valid=false]:border-neutral-300 data-[is-error=true]:bg-red-600 data-[is-valid=false]:bg-white data-[is-valid=true]:bg-[#43C451] data-[is-valid=false]:text-black"
+            >
+              {{
+                !account
+                  ? `Connect wallet to check you're verified`
+                  : isCheckingAccessControl
+                  ? `Now checking the verification status`
+                  : accessAllowed
+                  ? `Verified`
+                  : accessControlError
+                  ? accessControlError.message
+                  : `Unverified`
+              }}
+            </p>
+          </span>
 
           <div
-            v-if="!accessAllowed && htmlVerificationFlow"
+            v-if="accessAllowed === false && htmlVerificationFlow"
             v-html="htmlVerificationFlow"
             class="md"
           ></div>
@@ -415,7 +449,12 @@ onUnmounted(() => {
         </div>
 
         <span
-          v-if="useInjectedTransactionForm"
+          v-if="
+            useInjectedTransactionForm &&
+            (props.accessControlUrl
+              ? props.accessControlUrl && accessAllowed
+              : true)
+          "
           @checkout:completed="onCompleted"
         >
           <slot name="main:transaction-form"></slot>
@@ -483,6 +522,23 @@ onUnmounted(() => {
               Pay with {{ verifiedPropsCurrency.toUpperCase() }}
             </button>
           </span>
+
+          <span
+            v-if="isApproving || isStaking || isWaitingForStaked"
+            class="grid justify-center gap-6"
+          >
+            <div
+              role="presentation"
+              class="mx-auto h-16 w-16 animate-spin rounded-full border-l border-r border-t border-native-blue-300"
+            />
+            <p v-if="isApproving">Waiting for approving to complete...</p>
+            <p v-if="isStaking && !isWaitingForStaked">
+              Awaiting transaction confirmation on wallet...
+            </p>
+            <p v-if="isWaitingForStaked">
+              Just a few minutes until your item is minted...
+            </p>
+          </span>
         </div>
       </div>
     </section>
@@ -523,14 +579,11 @@ onUnmounted(() => {
     </section>
   </div>
 
-  <section
-    style="height: calc(100vh - 74px)"
-    class="flex flex-col items-center justify-center"
-    v-if="stakeSuccessful"
-  >
-    <h2 class="mb-8 font-title text-4xl font-bold">Completed</h2>
-    <a href="/" class="text-blue-400">Back to top</a>
-  </section>
+  <Result :id="mintedId?.toString()" :rpc-url="rpcUrl" v-if="stakeSuccessful">
+    <template #before:preview>
+      <slot name="result:before:preview" />
+    </template>
+  </Result>
 </template>
 
 <style lang="scss">
