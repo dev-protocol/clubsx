@@ -526,6 +526,8 @@
   }
 
   onMount(() => {
+    onCollectionChangeName()
+    onChangeName()
     onChangePrice(membership)
     fetchPositionsOfProperty()
     update()
