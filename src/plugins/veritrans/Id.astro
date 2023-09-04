@@ -30,6 +30,8 @@ const { PUBLIC_POP_CLIENT_KEY } = import.meta.env
   useInjectedTransactionForm={true}
   itemImageSrc={item.source.imageSrc}
   itemName={item.source.name}
+  accessControlUrl={item.source.accessControl?.url}
+  accessControlDescription={item.source.accessControl?.description}
   {...other}
 >
   <TransactionForm

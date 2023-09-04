@@ -9,7 +9,8 @@ import { ClubsPluginCategory } from '@devprotocol/clubs-core'
 import { default as Admin } from './admin.astro'
 import { default as AdminNew } from './admin-new.astro'
 import { default as AdminEdit } from './admin-id.astro'
-import { default as Modal } from './modal.astro'
+import { default as SyncModal } from './SyncModal.astro'
+import { default as OpenModalButton } from './OpenModalButton.astro'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import { ZeroAddress, randomBytes, toUtf8Bytes } from 'ethers'
 import type { DraftOptions } from '@constants/draft'
@@ -36,7 +37,11 @@ export type Membership = {
     beneficiary: string
   }
   deprecated?: boolean
-  paymentType: 'instant' | 'stake' | 'custom'
+  paymentType?: 'instant' | 'stake' | 'custom'
+  accessControl?: {
+    url: string
+    description: string
+  }
 }
 
 const presets: Membership[] = [
@@ -135,16 +140,31 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
 }
 
 export const getSlots: ClubsFunctionGetSlots = async (
-  _,
-  __,
+  options,
+  { propertyAddress, rpcUrl, chainId },
   { paths, factory },
 ) => {
+  const memberships =
+    (options.find((opt) => opt.key === 'memberships')?.value as UndefinedOr<
+      Membership[]
+    >) ?? []
+
   const [path1, path2] = paths
-  return factory === 'admin' && path1 === 'memberships' && path2
+  return factory === 'admin' && path1 === 'memberships' && path2 === undefined
     ? [
         {
           slot: 'admin:modal:content',
-          component: Modal,
+          component: SyncModal,
+          props: {
+            memberships,
+            propertyAddress,
+            rpcUrl,
+            chainId,
+          },
+        },
+        {
+          slot: 'admin:aside:after-built-in-buttons',
+          component: OpenModalButton,
         },
       ]
     : []
