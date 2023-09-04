@@ -27,7 +27,7 @@ const plugin = await createGetPluginMeta(config)(installablePlugins)
 const READMEComponent = plugin.readme
 ---
 
-<section class="text-dp-blue-grey-600 my-16">
+<section class="my-16">
   <div class="grid gap-16">
     <div class="flex items-center justify-between">
       <p class="text-4xl font-bold">{plugin.displayName}</p>
@@ -40,12 +40,12 @@ const READMEComponent = plugin.readme
       <div>
         {
           false ? (
-            <span class="bg-native-blue-200 flex cursor-not-allowed items-center justify-center rounded-full px-8 py-4">
+            <span class="flex cursor-not-allowed items-center justify-center rounded-full bg-native-blue-200 px-8 py-4">
               <img src={checkImage} class="h-3 max-h-full w-3 font-bold" />
               <p class="font-bold text-black">Added</p>
             </span>
           ) : (
-            <AddPluginButton client:only="vue" plugin={plugin} site={site} />
+            <AddPluginButton client:only="vue" plugin={plugin} site={site!} />
           )
         }
       </div>
