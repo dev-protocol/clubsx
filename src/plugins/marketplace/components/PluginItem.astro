@@ -2,7 +2,6 @@
 import type { PluginMeta } from '@constants/plugins'
 import checkImage from '@assets/check.svg'
 import clockImage from '@assets/clock.svg'
-import transparent from '@assets/transparent.svg'
 import pluginDefaultIcon from '@assets/default-plugin-icon.jpg'
 import Wrapper from './Wrapper.astro'
 import At from '@components/Icons/at-symbol.astro'
@@ -12,13 +11,11 @@ const {
   preview,
   truncate = true,
   markAsUpcoming = false,
-  markAsLimitedPreview = false,
   size = 'medium',
   displayStatus = true,
 } = Astro.props as {
   plugin: PluginMeta
   markAsUpcoming?: boolean
-  markAsLimitedPreview?: boolean
   truncate?: boolean
   preview?: string
   size?: 'small' | 'medium'
@@ -28,8 +25,8 @@ const {
 const pluginUrl = ((url) =>
   plugin.planned
     ? undefined
-    : `${url.protocol}//${Astro.params.site}.${url.host}/admin/marketplace/${plugin.id}`)(
-  new URL(Astro.request.url),
+    : `${url.protocol}//${url.host}/admin/marketplace/${plugin.id}`)(
+  new URL(Astro.request.url)
 )
 ---
 
@@ -53,17 +50,6 @@ const pluginUrl = ((url) =>
           fill: 'dp-yellow.400',
           ink: 'dp-yellow.ink',
           border: 'dp-yellow.400',
-        )
-      );
-    }
-
-    &.is-limited-preview {
-      @include hashi.color-apply(
-        'plugin-tag',
-        (
-          fill: 'plox.400',
-          ink: 'plox.ink',
-          border: 'plox.400',
         )
       );
     }
@@ -104,14 +90,6 @@ const pluginUrl = ((url) =>
     />
     <div class="col-start-2 flex w-full items-center justify-between truncate">
       <p class="truncate text-2xl font-bold">{plugin.displayName}</p>
-      {
-        markAsLimitedPreview && (
-          <div class="clb-plugin__tag is-limited-preview flex h-fit w-fit items-center justify-around gap-0.5 rounded-full px-2">
-            <img src={transparent} class="h-3 max-h-full w-3" />
-            <p class="h-fit w-fit text-xs">Limited preview</p>
-          </div>
-        )
-      }
       {
         markAsUpcoming && (
           <div class="clb-plugin__tag is-upcoming bg-danger-200 flex h-fit w-fit items-center justify-around gap-0.5 rounded-full px-2">
