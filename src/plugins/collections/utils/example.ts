@@ -9,8 +9,8 @@ const TimeImages: Image[] = [
     name: 'example',
     description: 'example',
     deadline: 1692587652,
-    requiredETHAmount: 0,
-    requiredETHFee: 0,
+    requiredTokenAmount: 0,
+    requiredTokenFee: 0,
     gateway: '0x0000000000000000000000000000000000000000',
   },
 ]
@@ -21,8 +21,8 @@ const MemberImages: Image[] = [
     name: 'example',
     description: 'example',
     slots: 1,
-    requiredETHAmount: 0,
-    requiredETHFee: 0,
+    requiredTokenAmount: 0,
+    requiredTokenFee: 0,
     gateway: '0x0000000000000000000000000000000000000000',
   },
 ]

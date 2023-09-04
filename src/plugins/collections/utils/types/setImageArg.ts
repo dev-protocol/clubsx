@@ -5,7 +5,7 @@ export type Image = {
   readonly description?: string
   readonly deadline?: number | string
   readonly slots?: number | string
-  readonly requiredETHAmount?: number | string
-  readonly requiredETHFee?: number | string
+  readonly requiredTokenAmount?: number | string | bigint
+  readonly requiredTokenFee?: number | string | bigint
   readonly gateway?: string
 }
