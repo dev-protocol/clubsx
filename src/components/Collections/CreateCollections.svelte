@@ -526,8 +526,6 @@
   }
 
   onMount(() => {
-    onCollectionChangeName()
-    onChangeName()
     onChangePrice(membership)
     fetchPositionsOfProperty()
     update()
@@ -608,8 +606,9 @@
   }
 
   const update = () => {
+    const searchCollectionId = mode === 'edit' ? originalId : collection.id
     const newCollections = [
-      ...existingCollections.filter((c: Collection) => c.id !== collection.id),
+      ...existingCollections.filter((c: Collection) => c.id !== searchCollectionId),
       collection,
     ]
     setOptions(
