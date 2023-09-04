@@ -12,6 +12,11 @@ import type { ClubsFunctionGetApiPaths } from '@devprotocol/clubs-core/src'
 import { getItems } from './utils/get-items'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import { bytes32Hex } from '@fixtures/data/hexlify'
+import Icon from './assets/Tickets.svg'
+import tickets1 from './assets/tickets-1.jpg'
+import tickets2 from './assets/tickets-2.jpg'
+import tickets3 from './assets/tickets-3.jpg'
+import readme from './README.md'
 
 export type Ticket = {
   payload: string | Uint8Array
@@ -109,6 +114,10 @@ export const meta: ClubsPluginMeta = {
   id: 'devprotocol:clubs:plugin:tickets',
   displayName: 'Tickets',
   category: ClubsPluginCategory.Growth,
+  icon: Icon,
+  description: 'Ticketing with your membership.',
+  previewImages: [tickets1, tickets2, tickets3],
+  readme,
 }
 
 export default {
