@@ -11,7 +11,6 @@ const { collections } = Astro.props as {
 
 const baseRedirectionUrl = '/admin/collections/new'
 
-const existingCollections = true
 ---
 
 <div>
@@ -52,7 +51,7 @@ const existingCollections = true
     </a>
   </div>
   {
-    existingCollections ? (
+    collections.length > 0 ? (
       <div class="mt-16 flex flex-col">
         <h2 class="mb-16 text-[32px] font-normal">Existing collections</h2>
         <CollectionCard collections={collections} client:only="svelte" />
