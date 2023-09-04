@@ -8,7 +8,7 @@
   {#each collections as collection}
   <a href={`${base}/${collection.id}`}>
     <div
-    class="flex max-w-4xl flex-col items-start gap-4 mt-16 rounded-2xl rounded-2xl bg-white"
+    class="flex max-w-4xl flex-col items-start gap-4 mb-16 rounded-2xl rounded-2xl bg-white"
   >
     <div class="flex items-start gap-2.5">
       <img
