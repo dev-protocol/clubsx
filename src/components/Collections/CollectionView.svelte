@@ -3,7 +3,10 @@ import { onMount } from 'svelte';
 
 import MembershipOption from '@components/AdminMembershipsForm/MembershipOption.svelte'
 
-import type { Collection } from '@plugins/collections'
+import type { SlotLeft } from './types';
+import type { Collection } from '@plugins/collections';
+
+export let clubName: string | undefined = undefined
 
 
 export let collection: Collection
@@ -32,6 +35,25 @@ export let collection: Collection
     }
   };
 
+  const getColStart = (i: number) =>
+    i === 0
+      ? 'lg:col-start-1'
+      : i === 1
+      ? 'lg:col-start-2'
+      : i === 2
+      ? 'lg:col-start-3'
+      : i === 3
+      ? 'lg:col-start-4'
+      : i === 4
+      ? 'lg:col-start-5'
+      : i === 5
+      ? 'lg:col-start-6'
+      : i === 6
+      ? 'lg:col-start-7'
+      : i === 7
+      ? 'lg:col-start-8'
+      : 'lg:col-start-9'
+
   onMount(() => {
     calculateTimeLeft();
     const interval = setInterval(calculateTimeLeft, 1000);
@@ -40,15 +62,16 @@ export let collection: Collection
 </script>
 
 <div class="flex flex-col px-9">
-    <!-- Header -->
+    <!-- Header
     <div class="h-20 p-5 flex justify-between items-center gap-6">
         <div class="text-white text-lg font-medium uppercase">Demo</div>
         <button class="px-4 py-2 text-white text-lg font-medium uppercase border rounded-sm opacity-50">Sign in</button>
-    </div>
+    </div> -->
     <!-- Hero Image -->
     <div class="gap-12">
         <img class="rounded-[32px]"
         src={collection.imageSrc}
+        alt={`${collection.name}-cover-image`}
         />
     </div>
 
@@ -103,7 +126,7 @@ export let collection: Collection
                             currency={'ETH'}
                             price={"0.1"}
                             description={'Membership Description'}
-                            className={`w-[276px] h-[436px]`}
+                            className={`lg:row-start-3 ${getColStart(0)}`}
                           />
                           <MembershipOption
                             clubName={'Your Club'}
@@ -113,7 +136,7 @@ export let collection: Collection
                             currency={'DEV'}
                             price={"0.1"}
                             description={'Membership Description'}
-                            className={`w-[276px] h-[436px]`}
+                            className={`lg:row-start-3 ${getColStart(1)}`}
                           />
                         </div>
                     </div>
@@ -121,7 +144,7 @@ export let collection: Collection
             </div>
             <!-- Validation -->
             <div class="flex flex-col items-start self-stretch">
-                <div class="flex p-5 flex-col items-start self-stretch gap-3 rounded-[10px] bg-[#27272780]">
+                <div class="flex p-5 flex-col items-start self-stretch gap-3 rounded-[10px] bg-[#17171780]">
                     <span class="text-justify text-2xl font-medium">
                         Waiting for the wallet connection to confirm access rights.
                     </span>
@@ -138,6 +161,21 @@ export let collection: Collection
                     {minutes} {minutes > 1 ? 'minutes' : 'minute'}
                     {seconds} {seconds > 1 ? 'seconds' : 'second'}
                 </span>
+            </div>
+            <!-- Memberships -->
+            <div class="grid grid-cols-3 justify-between gap-4">
+                {#each collection.memberships as mem, i}
+                    <MembershipOption
+                        clubName={clubName ?? 'Your Club'}
+                        id={mem.id}
+                        name={mem.name}
+                        imagePath={mem.imageSrc}
+                        price={mem.price.toString()}
+                        currency={mem.currency}
+                        description={mem.description}
+                        className={`lg:row-start-3 ${getColStart(i)}`}
+                    />
+                {/each}
             </div>
         </div>
     </div>     

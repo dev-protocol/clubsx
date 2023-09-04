@@ -524,6 +524,25 @@
     })
   }
 
+  const getColStart = (i: number) =>
+    i === 0
+      ? 'lg:col-start-1'
+      : i === 1
+      ? 'lg:col-start-2'
+      : i === 2
+      ? 'lg:col-start-3'
+      : i === 3
+      ? 'lg:col-start-4'
+      : i === 4
+      ? 'lg:col-start-5'
+      : i === 5
+      ? 'lg:col-start-6'
+      : i === 6
+      ? 'lg:col-start-7'
+      : i === 7
+      ? 'lg:col-start-8'
+      : 'lg:col-start-9'
+
   onMount(() => {
     onChangePrice(membership)
     fetchPositionsOfProperty()
@@ -893,7 +912,7 @@
           </div>
         </div>
       </div>
-      <div class="flex items-start justify-between gap-4 pt-2.5">
+      <div class="grid grid-cols-3 justify-between gap-4 pt-2.5">
         <MembershipOption
           clubName={'Your Club'}
           id={'1'}
@@ -902,7 +921,7 @@
           currency={'USDC'}
           price={"100"}
           description={'Membership Description'}
-          className={`w-[276px] h-[436px]`}
+          className={`lg:row-start-3 ${getColStart(0)}`}
         />
         <MembershipOption
           clubName={'Your Club'}
@@ -912,7 +931,7 @@
           currency={'ETH'}
           price={"0.1"}
           description={'Membership Description'}
-          className={`w-[276px] h-[436px]`}
+          className={`lg:row-start-3 ${getColStart(1)}`}
         />
         <MembershipOption
           clubName={'Your Club'}
@@ -922,7 +941,7 @@
           currency={'DEV'}
           price={"0.1"}
           description={'Membership Description'}
-          className={`w-[276px] h-[436px]`}
+          className={`lg:row-start-3 ${getColStart(2)}`}
         />
       </div>
     </div>
@@ -1256,7 +1275,7 @@
       {/if}
     </div>
     <!-- Previous Memberships -->
-    <div class="flex items-start justify-between gap-4">
+    <div class="grid grid-cols-3 justify-between gap-4">
       {#each collection.memberships as mem, i}
         {#if mem.id !== membership.id}
         <div>
@@ -1268,7 +1287,7 @@
           price={mem.price.toString()}
           currency={mem.currency}
           description={mem.description}
-          className={`w-[276px] h-[436px]`}
+          className={`lg:row-start-3 ${getColStart(i)}`}
         />
         <a
         class="hs-button is-filled is-fullwidth mt-4 rounded px-8 py-6 text-base font-bold text-white"

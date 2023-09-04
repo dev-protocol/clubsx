@@ -10,6 +10,7 @@ import { default as Admin } from './admin.astro'
 import { default as AdminEdit } from './admin-id.astro'
 import { default as AdminNew } from './admin-new.astro'
 import { default as AdminEditMembership } from './admin-id-id.astro'
+import { default as Index } from './index.astro'
 import { default as Id } from './[id].astro'
 import { default as Icon } from './assets/icon.svg'
 import { Content as Readme } from './README.md'
@@ -57,6 +58,11 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
       component: Id,
       props: { collection, name, rpcUrl, propertyAddress },
     })) ?? []),
+    {
+      paths: ['collections'],
+      component: Index,
+      props: { collections },
+    },
   ]
 }
 
