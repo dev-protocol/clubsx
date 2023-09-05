@@ -1,5 +1,6 @@
 ---
-import { ClubsConfiguration, ClubsPluginSignal } from '@devprotocol/clubs-core'
+import { ViewTransitions } from 'astro:transitions'
+import { type ClubsConfiguration, ClubsPluginSignal } from '@devprotocol/clubs-core'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import '@devprotocol/clubs-core/styles'
 import Header from '../components/Header/Header.astro'
@@ -115,6 +116,7 @@ const truncatedDescription = ((desc) =>
         background-color: var(--backgroundColor);
       }
     </style>
+    <ViewTransitions />
   </head>
 
   <body class="grid min-h-screen gap-5 overflow-x-hidden font-body">
