@@ -5,3 +5,6 @@ export const generateClubPluginsId = (ientifier: string) =>
 
 export const generateProfileId = (identifier: string) =>
   `profile::${identifier}`
+
+export const generateShortifyId = (identifier: string) =>
+  `shortify::${identifier}`
