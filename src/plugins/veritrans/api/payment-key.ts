@@ -10,6 +10,7 @@ import {
 import BigNumber from 'bignumber.js'
 import { abi } from './fulfillment'
 import type { ComposedItem } from '..'
+import { whenNotError, whenNotErrorAll } from '@devprotocol/util-ts'
 
 const { POP_SERVER_KEY, PUBLIC_POP_CLIENT_KEY } = import.meta.env
 const AUTH_STRING = Buffer.from(`${POP_SERVER_KEY}:`).toString('base64')
@@ -137,52 +138,54 @@ export const get: ({
     /**
      * Get the expected overridden membership and its source.
      */
-    const membership = _items.find((mem) => mem.id === membershipId)
+    const membership =
+      _items.find((mem) => mem.id === membershipId) ??
+      new Error('Missing item ID')
 
-    if (membership === undefined) {
-      return {
-        body: JSON.stringify({
-          result_code: 'E1',
-          status: 'failure',
-          message: 'Missing item ID',
-        }),
-      }
-    }
+    // if (membership === undefined) {
+    //   return {
+    //     body: JSON.stringify({
+    //       result_code: 'E1',
+    //       status: 'failure',
+    //       message: 'Missing item ID',
+    //     }),
+    //   }
+    // }
 
-    const payloadHex =
-      typeof membership.payload === 'string'
-        ? membership.payload
-        : keccak256(membership.payload)
+    const payloadHex = whenNotError(membership, (mem) =>
+      typeof mem.payload === 'string' ? mem.payload : keccak256(mem.payload),
+    )
 
-    const sourcePaymentToken =
+    const sourcePaymentToken = whenNotError(membership, ({ source }) =>
       chainId === 137
-        ? membership.source.currency === 'ETH'
+        ? source.currency === 'ETH'
           ? '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619'
           : ZeroAddress
         : chainId === 80001
-        ? membership.source.currency === 'ETH'
+        ? source.currency === 'ETH'
           ? '0x3c8d6A6420C922c88577352983aFFdf7b0F977cA'
           : ZeroAddress
-        : ZeroAddress
+        : ZeroAddress,
+    )
 
     /**
      * Create arguments required by the fulfillment flow as ABI-encoded values.
      */
     const abiEncoder = AbiCoder.defaultAbiCoder()
-    const abiEncodedParamsForFulfilment = abiEncoder.encode(abi, [
-      eoa,
-      propertyAddress,
-      payloadHex,
-      sourcePaymentToken,
-      parseUnits(
-        membership.source.price.toString(),
-        membership.source.currency === 'USDC' ? 6 : 18,
-      ),
-      membership.source.fee?.beneficiary ?? ZeroAddress,
-      new BigNumber(membership.source.fee?.percentage ?? 0)
-        .times(10000)
-        .toFixed(0),
-    ])
+    const abiEncodedParamsForFulfilment = whenNotError(membership, (mem) =>
+      abiEncoder.encode(abi, [
+        eoa,
+        propertyAddress,
+        payloadHex,
+        sourcePaymentToken,
+        parseUnits(
+          mem.source.price.toString(),
+          mem.source.currency === 'USDC' ? 6 : 18,
+        ),
+        mem.source.fee?.beneficiary ?? ZeroAddress,
+        new BigNumber(mem.source.fee?.percentage ?? 0).times(10000).toFixed(0),
+      ]),
+    )
 
     /**
      * Create other parameters.
@@ -192,16 +195,32 @@ export const get: ({
       [eoa, payloadHex, keccak256(randomBytes(8))],
     )
     const order_id = `ORDER-${keccak256(orderUniqueKey)}`
-    const gross_amount = membership.price.yen
+    const gross_amount = whenNotError(membership, ({ price }) => price.yen)
     const payment_key_expiry_duration = 1440 // = 1440 minutes
     const origin = ((org) =>
-      org.includes('localhost') ? 'prerelease.clubs.place' : org)(
+      org.includes('localhost') ? 'https://veritrans.clubs.place' : org)(
       new URL(request.url).origin,
     )
-    const push_url = new URL(
+    const push_destination = new URL(
       `/api/devprotocol:clubs:plugin:veritrans/fulfillment/?params=${abiEncodedParamsForFulfilment}`,
       origin,
     ).toString()
+    const shortified = await (async () => {
+      const res$1 = await fetch('https://prerelease.clubs.place/api/shortify', {
+        body: JSON.stringify({ url: push_destination, exp: '3 days' }),
+      }).catch((err) => new Error(err))
+      const res$2 = await whenNotError(res$1, (res) =>
+        res.ok
+          ? res
+              .json()
+              .then((x) => x as { url: string })
+              .catch((err) => new Error(err))
+          : new Error('Faild to shortify'),
+      )
+      return res$2
+    })()
+
+    const push_url = whenNotError(shortified, ({ url }) => url)
     const enabled_payment_types = [PaymentTypes.Card]
     const card = {
       '3ds_version': 1,
@@ -213,31 +232,35 @@ export const get: ({
             customer_email_address,
           }
         : undefined
-    const items = [
+    const items = whenNotError(membership, (mem) => [
       {
-        id: `ITEM-${membership.id}`,
-        name: membership.source.name,
-        price: membership.price.yen,
+        id: `ITEM-${mem.id}`,
+        name: mem.source.name,
+        price: mem.price.yen,
         quantity: 1,
       },
-    ]
-    const custom_message = {
+    ])
+    const custom_message = whenNotError(membership, (mem) => ({
       show_items_additional_message: true,
-      items_additional_message: membership.source.description,
-    }
+      items_additional_message: mem.source.description,
+    }))
 
-    const options: PaymentKeyOptions = {
-      dummy,
-      order_id,
-      gross_amount,
-      payment_key_expiry_duration,
-      push_url,
-      enabled_payment_types,
-      card,
-      email,
-      items,
-      custom_message,
-    }
+    const options = whenNotErrorAll(
+      [gross_amount, push_url, items, custom_message],
+      ([_gross_amount, _push_url, _items, _custom_message]) =>
+        ({
+          dummy,
+          order_id,
+          gross_amount: _gross_amount,
+          payment_key_expiry_duration,
+          push_url: _push_url,
+          enabled_payment_types,
+          card,
+          email,
+          items: _items,
+          custom_message: _custom_message,
+        }) as PaymentKeyOptions,
+    )
 
     console.log({ options })
 
@@ -245,18 +268,32 @@ export const get: ({
      * Post them and return the content.
      *
      */
-    const res = await fetch('https://pay.veritrans.co.jp/pop/v1/payment-key', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        Authorization: `Basic ${AUTH_STRING}`,
-      },
-      body: JSON.stringify(options),
-    }).catch((err) => err)
+    const paymentKey = await whenNotError(options, (opts) =>
+      fetch('https://pay.veritrans.co.jp/pop/v1/payment-key', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          Authorization: `Basic ${AUTH_STRING}`,
+        },
+        body: JSON.stringify(opts),
+      }).catch((err) => new Error(err)),
+    )
 
-    const body = await res.text()
+    const result = await whenNotError(paymentKey, (res) =>
+      res
+        .text()
+        .then((x) => x as string)
+        .catch((err) => new Error(err)),
+    )
 
-    return {
-      body,
-    }
+    return result instanceof Error
+      ? new Response(
+          JSON.stringify({
+            result_code: 'E1',
+            status: 'failure',
+            message: result.message,
+          }),
+          { status: 400 },
+        )
+      : new Response(result, { status: 200 })
   }
