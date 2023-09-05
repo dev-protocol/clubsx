@@ -90,7 +90,7 @@ export const allClubs = async () => {
   }
 }
 
-export const post = async ({ request }: { request: Request }) => {
+export const POST = async ({ request }: { request: Request }) => {
   const route = request.url.split('?').pop()
 
   if (route === 'allClubs') {

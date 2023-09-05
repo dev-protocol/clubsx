@@ -3,7 +3,7 @@ import { getDefaultProvider } from 'ethers'
 import jsonwebtoken from 'jsonwebtoken'
 import { createClient } from 'redis'
 
-export const post = async ({ request }: { request: Request }) => {
+export const POST = async ({ request }: { request: Request }) => {
   const { encryptedText, hash, sig, site } = (await request.json()) as {
     site: string
     encryptedText: string

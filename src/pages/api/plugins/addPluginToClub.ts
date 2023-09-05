@@ -9,7 +9,7 @@ import {
 } from '@devprotocol/clubs-core'
 import { InstallablePlugins, installablePlugins } from '@constants/plugins'
 
-export const post = async ({ request }: { request: Request }) => {
+export const POST = async ({ request }: { request: Request }) => {
   const { site, pluginId, sig, hash } = (await request.json()) as {
     sig: string
     site: string

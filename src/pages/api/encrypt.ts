@@ -1,6 +1,6 @@
 import jsonwebtoken from 'jsonwebtoken'
 
-export const post = async ({ request }: { request: Request }) => {
+export const POST = async ({ request }: { request: Request }) => {
   const { text } = (await request.json()) as {
     text: string
   }
