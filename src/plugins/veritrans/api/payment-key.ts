@@ -207,6 +207,7 @@ export const get: ({
     ).toString()
     const shortified = await (async () => {
       const res$1 = await fetch('https://prerelease.clubs.place/api/shortify', {
+        method: 'POST',
         body: JSON.stringify({ url: push_destination, exp: '3 days' }),
       }).catch((err) => new Error(err))
       const res$2 = await whenNotError(res$1, (res) =>
