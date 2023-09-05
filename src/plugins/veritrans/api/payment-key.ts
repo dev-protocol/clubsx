@@ -68,7 +68,7 @@ export type PaymentKeyOptions = {
     paynow_account_id?: string
     save_card?: SaveCardTypes
     skip_card_selection?: boolean
-    '3ds_version'?: 1 | 2
+    '3ds_version'?: number // 1 or 2
   }
   cvs?: {
     payment_sub_type: CVSPaymentSubTypes
@@ -194,11 +194,18 @@ export const get: ({
     const order_id = `ORDER-${keccak256(orderUniqueKey)}`
     const gross_amount = membership.price.yen
     const payment_key_expiry_duration = 1440 // = 1440 minutes
+    const origin = ((org) =>
+      org.includes('localhost') ? 'prerelease.clubs.place' : org)(
+      new URL(request.url).origin,
+    )
     const push_url = new URL(
       `/api/devprotocol:clubs:plugin:veritrans/fulfillment/?params=${abiEncodedParamsForFulfilment}`,
-      new URL(request.url).origin,
+      origin,
     ).toString()
     const enabled_payment_types = [PaymentTypes.Card]
+    const card = {
+      '3ds_version': 1,
+    }
     const email =
       customer_name && customer_email_address
         ? {
@@ -224,8 +231,9 @@ export const get: ({
       order_id,
       gross_amount,
       payment_key_expiry_duration,
-      // push_url,
+      push_url,
       enabled_payment_types,
+      card,
       email,
       items,
       custom_message,
