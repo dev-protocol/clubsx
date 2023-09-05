@@ -690,7 +690,7 @@ const populate = async () => {
         ],
         plugins: [
           {
-            id: 'devprotocol:clubs:plugin:fiat',
+            id: 'devprotocol:clubs:plugin:pay-by-card',
             name: 'fiat',
             enable: false,
             options: [
@@ -911,7 +911,7 @@ const populate = async () => {
         ],
         plugins: [
           {
-            id: 'devprotocol:clubs:plugin:fiat',
+            id: 'devprotocol:clubs:plugin:pay-by-card',
             name: 'fiat',
             enable: true,
             options: [
