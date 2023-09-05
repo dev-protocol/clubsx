@@ -6,7 +6,7 @@ import {
 } from '@devprotocol/util-ts'
 import type { APIRoute } from 'astro'
 import fetch from 'cross-fetch'
-import { createHash } from 'crypto'
+import { sha512 } from 'crypto-hash'
 import { AbiCoder } from 'ethers'
 import { toPairs, tryCatch } from 'ramda'
 import { Status, createRequest, fetchWebhook } from '../utils/webhooks'
@@ -96,8 +96,8 @@ export const post: ({
     console.log(4, verification$4)
 
     // Step 4 - Derive the signature using SHA512 hash function
-    const verification$5 = whenNotError(verification$4, (res) =>
-      createHash('sha512').update(res).digest('hex'),
+    const verification$5 = await whenNotError(verification$4, (res) =>
+      sha512(res),
     )
     console.log(5, verification$5)
 

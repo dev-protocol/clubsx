@@ -7,6 +7,7 @@ import tailwind from '@astrojs/tailwind'
 import vue from '@astrojs/vue'
 import react from '@astrojs/react'
 import svelte from '@astrojs/svelte'
+import commonjs from '@rollup/plugin-commonjs'
 import builtInApiPaths from './built-in-api-paths'
 
 config()
@@ -57,6 +58,7 @@ export default defineConfig({
     svelte(),
   ],
   vite: {
+    plugins: [commonjs()],
     server: {
       hmr: {
         timeout: 360000,
