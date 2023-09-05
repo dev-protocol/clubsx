@@ -80,6 +80,13 @@ export type ExternalTool = {
 
 export const installablePlugins: InstallablePlugins[] = [
   {
+    id: $4.meta.id,
+    tag: 'New & Upcoming',
+    developer: 'Dev Protocol',
+    repositoryUrl: 'https://github.com/dev-protocol/clubsx',
+    pluginOptions: [],
+  },
+  {
     id: $17.meta.id,
     tag: 'New & Upcoming',
     developer: 'Dev Protocol',
