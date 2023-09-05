@@ -3,6 +3,7 @@ export default [
   '/api/updateDraftConfig',
   '/api/updateConfig',
   '/api/stats',
+  '/api/shortify',
   '/api/profile',
   '/api/plugins',
   '/api/mock',
