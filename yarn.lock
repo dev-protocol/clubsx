@@ -542,10 +542,10 @@
     js-base64 "^3.7.2"
     ramda "^0.29.0"
 
-"@devprotocol/dev-kit@8.4.0":
-  version "8.4.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-8.4.0.tgz#0de8ae6d0921db0d3a0d10b793f771e008e76d6b"
-  integrity sha512-THqOY6CD+qYalRVaTnsRGo1EO1g3/qSDQT4DAiN+v2sWYYMkaBCUv5OCqji3aWdQHq/Jg6GloCLHEpxPpkEUgw==
+"@devprotocol/dev-kit@8.4.1":
+  version "8.4.1"
+  resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-8.4.1.tgz#76db03c55973cf53d8dabd50818c2da7314bf700"
+  integrity sha512-hCuSIu1chSsKTGZrBtg8+UgRmi8lgqcPRfdK5isaEsKTT67SN/YB+IWcB6qg8Apcf0LYrsfCce3DjQOnXzVJ8w==
   dependencies:
     "@devprotocol/util-ts" "3.1.0"
     bignumber.js "9.1.2"
