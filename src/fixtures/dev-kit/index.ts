@@ -302,7 +302,7 @@ export const stakeWithAnyTokens = async (
         ]
       : currency === CurrencyOption.MATIC && chain === 80001
       ? [
-          '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889', // WMATIC
+          '0x9c3c9283d3e44854697cd22d3faa240cfb032889', // WMATIC
           500n,
           '0xFEca406dA9727A25E71e732F9961F680059eF1F9', // USDC
           10000n,
