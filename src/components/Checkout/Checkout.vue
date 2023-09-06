@@ -22,11 +22,7 @@ import {
 import BigNumber from 'bignumber.js'
 import { type Subscription, combineLatest } from 'rxjs'
 import { CurrencyOption } from '@constants/currencyOption'
-import {
-  fetchDevForEth,
-  fetchDevForUsdc,
-  fetchSTokens,
-} from '@fixtures/utility'
+import { fetchDevForEth, fetchSTokens } from '@fixtures/utility'
 import Skeleton from '@components/Global/Skeleton.vue'
 import { stakeWithAnyTokens, mintedIdByLogs } from '@fixtures/dev-kit'
 import { marked } from 'marked'
@@ -60,6 +56,8 @@ const verifiedPropsCurrency: ComputedRef<CurrencyOption> = computed(() => {
     ? CurrencyOption.ETH
     : props.currency?.toUpperCase() === 'USDC'
     ? CurrencyOption.USDC
+    : props.currency?.toUpperCase() === 'MATIC'
+    ? CurrencyOption.MATIC
     : CurrencyOption.DEV
 })
 const usePolygonWETH: ComputedRef<boolean> = computed(() => {
@@ -101,7 +99,8 @@ const parsedAmount = ref<UndefinedOr<bigint>>(
     ? parseUnits(
         props.amount.toString(),
         verifiedPropsCurrency.value === CurrencyOption.ETH ||
-          verifiedPropsCurrency.value === CurrencyOption.DEV
+          verifiedPropsCurrency.value === CurrencyOption.DEV ||
+          verifiedPropsCurrency.value === CurrencyOption.MATIC
           ? 18
           : verifiedPropsCurrency.value === CurrencyOption.USDC
           ? 6
@@ -231,7 +230,8 @@ const submitStake = async function () {
               })
             })()
           : verifiedPropsCurrency.value === CurrencyOption.ETH ||
-            verifiedPropsCurrency.value === CurrencyOption.USDC
+            verifiedPropsCurrency.value === CurrencyOption.USDC ||
+            verifiedPropsCurrency.value === CurrencyOption.MATIC
           ? await (async () => {
               const res = await stakeWithAnyTokens({
                 provider: _prov,
@@ -341,8 +341,8 @@ onMounted(async () => {
   const chainId = Number((await provider.getNetwork()).chainId)
 
   whenDefinedAll(
-    [props.destination, props.amount],
-    async ([_destination, _amount]) => {
+    [props.destination, props.amount, chainId],
+    async ([_destination, _amount, _chain]) => {
       const feeDeposit = props.feePercentage
         ? new BigNumber(props.feePercentage)
         : 0
@@ -354,7 +354,7 @@ onMounted(async () => {
         verifiedPropsCurrency.value === CurrencyOption.DEV
           ? props.amount
           : verifiedPropsCurrency.value === CurrencyOption.ETH
-          ? await fetchDevForEth({
+          ? fetchDevForEth({
               provider,
               tokenAddress: _destination,
               amount: new BigNumber(_amount)
@@ -362,16 +362,13 @@ onMounted(async () => {
                 .toNumber(),
               chain: chainId,
             }).then(formatUnits)
-          : verifiedPropsCurrency.value === CurrencyOption.USDC
-          ? await fetchDevForUsdc({
+          : stakeWithAnyTokens({
               provider,
-              tokenAddress: _destination,
-              amount: new BigNumber(_amount)
-                .times(new BigNumber(1).minus(feeDeposit))
-                .toNumber(),
-              chain: chainId,
-            }).then(formatUnits)
-          : undefined,
+              propertyAddress: _destination,
+              tokenAmount: _amount.toString(),
+              currency: verifiedPropsCurrency.value,
+              chain: _chain,
+            }).then((res) => formatUnits(res?.estimatedDev ?? 0)),
       ])
 
       stakingAmount.value = !props.useDiscretePaymentFlow

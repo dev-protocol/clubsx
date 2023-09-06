@@ -34,4 +34,16 @@ export const tokenInfo: TokenInfo = {
       address: '0x3c8d6A6420C922c88577352983aFFdf7b0F977cA', // NOTE: this is devWETH
     },
   },
+  MATIC: {
+    137: {
+      name: 'MATIC',
+      decimals: 18,
+      address: ZeroAddress,
+    },
+    80001: {
+      name: 'MATIC',
+      decimals: 18,
+      address: ZeroAddress,
+    },
+  },
 }

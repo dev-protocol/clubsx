@@ -1,6 +1,7 @@
 <script lang="ts">
   import USDC from '@assets/USDC.svg'
   import ETH from '@assets/ETH.svg'
+  import MATIC from '@assets/MATIC.svg'
   import DEV from '@assets/devtoken.png'
   import type { Tiers } from '@constants/tier'
   import { CurrencyOption } from '@constants/currencyOption'
@@ -8,9 +9,9 @@
 
   export let tiers: Tiers
   export let tenantName: string
-  export let preferedCurrency: 'dev' | 'eth' | 'usdc' = 'usdc'
+  export let preferedCurrency: 'dev' | 'eth' | 'usdc' | 'matic' = 'usdc'
 
-  let currency: 'dev' | 'eth' | 'usdc' = preferedCurrency
+  let currency: 'dev' | 'eth' | 'usdc' | 'matic' = preferedCurrency
   let currencies = new Set(tiers.map((t) => t.currency))
 
   const switchInputs = async (ev: Event) => {
@@ -20,7 +21,7 @@
 </script>
 
 <section
-  class="bg-dp-white-200 text-dp-white-ink flex flex-col rounded-xl p-4 shadow"
+  class="flex flex-col rounded-xl bg-dp-white-200 p-4 text-dp-white-ink shadow"
 >
   <h2 class="mb-4 text-4xl font-bold">Join</h2>
   <!-- DAOName from YAML config -->
@@ -84,6 +85,24 @@
         />
         <img src={ETH} alt="ETH" class="h-8 w-8" />
         <span class="font-bold">ETH</span>
+      </label>
+    {/if}
+    {#if currencies.has(CurrencyOption.MATIC)}
+      <label
+        class={`flex items-center gap-2 rounded border p-8 py-4 ${
+          currency === 'matic' ? 'border-native-blue-400' : 'border-white/20'
+        }`}
+      >
+        <input
+          class=""
+          type="radio"
+          name="input"
+          value="matic"
+          on:change={switchInputs}
+          checked={preferedCurrency === 'matic'}
+        />
+        <img src={MATIC} alt="MATIC" class="h-8 w-8" />
+        <span class="font-bold">MATIC</span>
       </label>
     {/if}
   </form>

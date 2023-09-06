@@ -84,24 +84,6 @@ export const fetchDevForEth = async (opts: {
   return estimatedDev
 }
 
-export const fetchDevForUsdc = async (opts: {
-  provider: ContractRunner
-  tokenAddress: string
-  amount: number | string
-  chain?: number
-}) => {
-  const params = {
-    provider: opts.provider,
-    propertyAddress: opts.tokenAddress,
-    tokenAmount: new BigNumber(opts.amount).toFixed(),
-    tokenDecimals: 6,
-    currency: CurrencyOption.USDC,
-    chain: opts.chain,
-  }
-  const res = await stakeWithAnyTokens(params)
-  return res?.estimatedDev ?? '0'
-}
-
 export const composeTiers = async ({
   sourceTiers,
   provider,
