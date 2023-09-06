@@ -93,7 +93,7 @@ export const post: ({
           '',
         )}:${POP_SERVER_KEY}`,
     )
-    console.log(4, verification$4)
+    console.log(4, '*** (SECRET)')
 
     // Step 4 - Derive the signature using SHA512 hash function
     const verification$5 = await whenNotError(verification$4, (res) =>

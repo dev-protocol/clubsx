@@ -12,6 +12,10 @@ import builtInApiPaths from './built-in-api-paths'
 
 config()
 
+const singleMode = ((i) => (i > -1 ? process.argv[i + 1] : undefined))(
+  process.argv.findIndex((a) => a === '--club'),
+)
+
 // https://astro.build/config
 export default defineConfig({
   site: process.env.PUBLIC_SITE_URL,
@@ -33,11 +37,9 @@ export default defineConfig({
                 builtInApiPaths.every((p) => !req.url.startsWith(p)))
             ) {
               const host = req.headers.host.split('.')
-              const [, ...primaryHost] = host
 
-              if (host.length > 1) {
-                req.headers.host = primaryHost.join('.')
-                req.url = `/sites_/${host[0]}${req.url}`
+              if (host.length > 1 || singleMode) {
+                req.url = `/sites_/${singleMode ?? host[0]}${req.url}`
               }
             }
 

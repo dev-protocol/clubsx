@@ -114,7 +114,7 @@ export const get: ({
   items: ComposedItem[]
 }) => APIRoute =
   ({ propertyAddress, chainId, items: _items }) =>
-  async ({ request, url }) => {
+  async ({ url }) => {
     console.log('********', url)
     /**
      * Get request parameters.
@@ -127,30 +127,12 @@ export const get: ({
       'email.customer_email_address',
     )
 
-    console.log({
-      membershipId,
-      eoa,
-      dummy,
-      customer_name,
-      customer_email_address,
-    })
-
     /**
      * Get the expected overridden membership and its source.
      */
     const membership =
       _items.find((mem) => mem.id === membershipId) ??
       new Error('Missing item ID')
-
-    // if (membership === undefined) {
-    //   return {
-    //     body: JSON.stringify({
-    //       result_code: 'E1',
-    //       status: 'failure',
-    //       message: 'Missing item ID',
-    //     }),
-    //   }
-    // }
 
     const payloadHex = whenNotError(membership, (mem) =>
       typeof mem.payload === 'string' ? mem.payload : keccak256(mem.payload),
@@ -197,14 +179,12 @@ export const get: ({
     const order_id = `ORDER-${keccak256(orderUniqueKey)}`
     const gross_amount = whenNotError(membership, ({ price }) => price.yen)
     const payment_key_expiry_duration = 1440 // = 1440 minutes
-    const origin = ((org) =>
-      org.includes('localhost') ? 'https://veritrans.clubs.place' : org)(
-      new URL(request.url).origin,
-    )
     const push_destination = new URL(
       `/api/devprotocol:clubs:plugin:veritrans/fulfillment/?params=${abiEncodedParamsForFulfilment}`,
-      origin,
+      url.origin,
     ).toString()
+    console.log({ push_destination })
+
     const shortified = await (async () => {
       const res$1 = await fetch('https://prerelease.clubs.place/api/shortify', {
         method: 'POST',
