@@ -10,6 +10,8 @@ import { sha512 } from 'crypto-hash'
 import { AbiCoder } from 'ethers'
 import { toPairs, tryCatch } from 'ramda'
 import { Status, createRequest, fetchWebhook } from '../utils/webhooks'
+import { createClient } from 'redis'
+import { generateFulFillmentParamsId } from '../utils/gen-key'
 
 const { POP_SERVER_KEY, SEND_DEVPROTOCOL_API_KEY } = import.meta.env
 
@@ -110,15 +112,33 @@ export const post: ({
     )
     console.log(6, verify)
 
-    const queryParams = whenNotError(verify, (res) =>
-      res === true
-        ? url.searchParams.get('params') ?? new Error('`params` missing.')
-        : (res as never),
+    const client = await whenNotError(
+      createClient({
+        url: process.env.REDIS_URL,
+        username: process.env.REDIS_USERNAME ?? '',
+        password: process.env.REDIS_PASSWORD ?? '',
+      }),
+      (db) =>
+        db
+          .connect()
+          .then(() => db)
+          .catch((err) => new Error(err)),
     )
 
-    const params = whenNotError(queryParams, (p) =>
+    const paramsFromDb = await whenNotErrorAll(
+      [client, verification$1],
+      ([db, { order_id }]) => db.get(generateFulFillmentParamsId(order_id)),
+    )
+
+    const paramsSaved = whenNotError(
+      paramsFromDb,
+      (p) =>
+        whenDefined(p, (x) => x) ?? new Error('Required params is not defined'),
+    )
+
+    const params = whenNotError(paramsSaved, (p) =>
       tryCatch(
-        (v) => AbiCoder.defaultAbiCoder().decode(abi, v),
+        (v) => AbiCoder.defaultAbiCoder().decode(abi, v).map(String),
         (err: Error) => new Error(err.message ?? err),
       )(p),
     )
@@ -130,6 +150,7 @@ export const post: ({
         fetch(
           'https://send.devprotocol.xyz/api/send-transactions/SwapTokensAndStakeDev',
           {
+            method: 'POST',
             headers: {
               Authorization: `Bearer ${SEND_DEVPROTOCOL_API_KEY}`,
             },

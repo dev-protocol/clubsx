@@ -11,8 +11,10 @@ import BigNumber from 'bignumber.js'
 import { abi } from './fulfillment'
 import type { ComposedItem } from '..'
 import { whenNotError, whenNotErrorAll } from '@devprotocol/util-ts'
+import { createClient } from 'redis'
+import { generateFulFillmentParamsId } from '../utils/gen-key'
 
-const { POP_SERVER_KEY, PUBLIC_POP_CLIENT_KEY } = import.meta.env
+const { POP_SERVER_KEY } = import.meta.env
 const AUTH_STRING = Buffer.from(`${POP_SERVER_KEY}:`).toString('base64')
 
 export type Success = {
@@ -180,28 +182,29 @@ export const get: ({
     const gross_amount = whenNotError(membership, ({ price }) => price.yen)
     const payment_key_expiry_duration = 1440 // = 1440 minutes
     const push_destination = new URL(
-      `/api/devprotocol:clubs:plugin:veritrans/fulfillment/?params=${abiEncodedParamsForFulfilment}`,
-      url.origin,
+      `/api/devprotocol:clubs:plugin:veritrans/fulfillment`,
+      url.origin.replace('http:', 'https:'),
     ).toString()
-    console.log({ push_destination })
 
-    const shortified = await (async () => {
-      const res$1 = await fetch('https://prerelease.clubs.place/api/shortify', {
-        method: 'POST',
-        body: JSON.stringify({ url: push_destination, exp: '3 days' }),
-      }).catch((err) => new Error(err))
-      const res$2 = await whenNotError(res$1, (res) =>
-        res.ok
-          ? res
-              .json()
-              .then((x) => x as { url: string })
-              .catch((err) => new Error(err))
-          : new Error('Faild to shortify'),
-      )
-      return res$2
-    })()
+    const client = await whenNotError(
+      createClient({
+        url: process.env.REDIS_URL,
+        username: process.env.REDIS_USERNAME ?? '',
+        password: process.env.REDIS_PASSWORD ?? '',
+      }),
+      (db) =>
+        db
+          .connect()
+          .then(() => db)
+          .catch((err) => new Error(err)),
+    )
 
-    const push_url = whenNotError(shortified, ({ url }) => url)
+    const paramsSaved = await whenNotErrorAll(
+      [client, abiEncodedParamsForFulfilment],
+      ([db, params]) => db.set(generateFulFillmentParamsId(order_id), params),
+    )
+
+    const push_url = whenNotError(paramsSaved, () => push_destination)
     const enabled_payment_types = [PaymentTypes.Card]
     const card = {
       '3ds_version': 1,
