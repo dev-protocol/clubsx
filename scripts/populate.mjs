@@ -984,7 +984,7 @@ const populate = async () => {
                 value: {
                   fulfillment: {
                     encrypted: jsonwebtoken.sign(
-                      'http://localhost:3000/api/mock/logger',
+                      'https://veritrans.clubs.place/api/mock/logger',
                       SALT,
                     ),
                   },
