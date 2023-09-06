@@ -260,7 +260,9 @@ export const stakeWithAnyTokens = async (
   }, // For example 10000 is 100%
 ) => {
   const path: UndefinedOr<
-    [string, bigint, string, bigint, string] | [string, bigint, string]
+    | [string, bigint, string, bigint, string, bigint, string]
+    | [string, bigint, string, bigint, string]
+    | [string, bigint, string]
   > =
     currency === CurrencyOption.USDC && chain === 137
       ? [
@@ -286,6 +288,24 @@ export const stakeWithAnyTokens = async (
         ]
       : currency === CurrencyOption.ETH && chain === 80001
       ? [
+          '0x3c8d6A6420C922c88577352983aFFdf7b0F977cA', // devWETH
+          10000n,
+          '0xcbc698ed514dF6e54932a22515d6D0C27E4DA091', // DEV
+        ]
+      : currency === CurrencyOption.MATIC && chain === 137
+      ? [
+          '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270', // WMATIC
+          500n,
+          '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619', // WETH
+          10000n,
+          '0xA5577D1cec2583058A6Bd6d5DEAC44797c205701', // DEV
+        ]
+      : currency === CurrencyOption.MATIC && chain === 80001
+      ? [
+          '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889', // WMATIC
+          500n,
+          '0xFEca406dA9727A25E71e732F9961F680059eF1F9', // USDC
+          10000n,
           '0x3c8d6A6420C922c88577352983aFFdf7b0F977cA', // devWETH
           10000n,
           '0xcbc698ed514dF6e54932a22515d6D0C27E4DA091', // DEV

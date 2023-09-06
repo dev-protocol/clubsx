@@ -60,6 +60,8 @@ const verifiedPropsCurrency: ComputedRef<CurrencyOption> = computed(() => {
     ? CurrencyOption.ETH
     : props.currency?.toUpperCase() === 'USDC'
     ? CurrencyOption.USDC
+    : props.currency?.toUpperCase() === 'MATIC'
+    ? CurrencyOption.MATIC
     : CurrencyOption.DEV
 })
 const usePolygonWETH: ComputedRef<boolean> = computed(() => {
@@ -101,7 +103,8 @@ const parsedAmount = ref<UndefinedOr<bigint>>(
     ? parseUnits(
         props.amount.toString(),
         verifiedPropsCurrency.value === CurrencyOption.ETH ||
-          verifiedPropsCurrency.value === CurrencyOption.DEV
+          verifiedPropsCurrency.value === CurrencyOption.DEV ||
+          verifiedPropsCurrency.value === CurrencyOption.MATIC
           ? 18
           : verifiedPropsCurrency.value === CurrencyOption.USDC
           ? 6
@@ -231,7 +234,8 @@ const submitStake = async function () {
               })
             })()
           : verifiedPropsCurrency.value === CurrencyOption.ETH ||
-            verifiedPropsCurrency.value === CurrencyOption.USDC
+            verifiedPropsCurrency.value === CurrencyOption.USDC ||
+            verifiedPropsCurrency.value === CurrencyOption.MATIC
           ? await (async () => {
               const res = await stakeWithAnyTokens({
                 provider: _prov,
