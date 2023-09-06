@@ -18,6 +18,7 @@
     "genApiPaths": "node ./scripts/generate-built-in-api-paths.mjs"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.4",
     "@types/dompurify": "^3.0.2",
     "@types/dotenv": "8.2.0",
     "@types/marked": "^5.0.0",
@@ -71,6 +72,7 @@
     "autoprefixer": "10.4.15",
     "bignumber.js": "9.1.2",
     "cross-fetch": "^4.0.0",
+    "crypto-hash": "^2.0.1",
     "dayjs": "^1.11.9",
     "dompurify": "^3.0.5",
     "ethers": "6.7.1",

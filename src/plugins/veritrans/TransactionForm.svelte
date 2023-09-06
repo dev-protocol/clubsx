@@ -177,7 +177,7 @@
       class="rounded-full bg-gray-500/60 px-8 py-4 text-xl font-bold text-black outline-0 transition-colors placeholder:text-white data-[is-filled=true]:bg-neutral-300"
       placeholder="Please connect a wallet"
       data-is-filled={Boolean(account)}
-      value={account}
+      value={account ?? ''}
       disabled
     />
   </label>
