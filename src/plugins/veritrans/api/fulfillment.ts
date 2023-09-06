@@ -9,11 +9,19 @@ import fetch from 'cross-fetch'
 import { sha512 } from 'crypto-hash'
 import { AbiCoder } from 'ethers'
 import { toPairs, tryCatch } from 'ramda'
-import { Status, createRequest, fetchWebhook } from '../utils/webhooks'
+import { Status, createRequestBody } from '../utils/webhooks'
 import { createClient } from 'redis'
 import { generateFulFillmentParamsId } from '../utils/gen-key'
+import jsonwebtoken from 'jsonwebtoken'
 
-const { POP_SERVER_KEY, SEND_DEVPROTOCOL_API_KEY } = import.meta.env
+const {
+  POP_SERVER_KEY,
+  SEND_DEVPROTOCOL_API_KEY,
+  SALT,
+  REDIS_URL,
+  REDIS_USERNAME,
+  REDIS_PASSWORD,
+} = import.meta.env
 
 export const abi = [
   'address _mintFor',
@@ -60,7 +68,7 @@ export const post: ({
   webhookOnFulfillment?: string
 }) => APIRoute =
   ({ chainId, rpcUrl, webhookOnFulfillment }) =>
-  async ({ request, url }) => {
+  async ({ request }) => {
     // Step 1 - Read all the parameters and their values
     const verification$1: ErrorOr<RequestBody> = await request
       .json()
@@ -114,9 +122,9 @@ export const post: ({
 
     const client = await whenNotError(
       createClient({
-        url: process.env.REDIS_URL,
-        username: process.env.REDIS_USERNAME ?? '',
-        password: process.env.REDIS_PASSWORD ?? '',
+        url: REDIS_URL,
+        username: REDIS_USERNAME ?? '',
+        password: REDIS_PASSWORD ?? '',
       }),
       (db) =>
         db
@@ -138,7 +146,7 @@ export const post: ({
 
     const params = whenNotError(paramsSaved, (p) =>
       tryCatch(
-        (v) => AbiCoder.defaultAbiCoder().decode(abi, v).map(String),
+        (v: string) => AbiCoder.defaultAbiCoder().decode(abi, v).map(String),
         (err: Error) => new Error(err.message ?? err),
       )(p),
     )
@@ -178,28 +186,40 @@ export const post: ({
       res.ok ? true : new Error('Failed to send blockchain transaction.'),
     )
 
-    const requestBodyWithoutSignature = whenNotError(verification$1, (res) => ({
+    const reqBody = whenNotError(verification$1, (res) => ({
       ...res,
       signature: undefined,
     }))
+    console.log(9, reqBody)
+
+    const decryptedWebhookUrl = whenDefined(
+      webhookOnFulfillment,
+      (encryptedText) =>
+        tryCatch(
+          (v: string) => jsonwebtoken.verify(v, SALT ?? '') as string,
+          (err: Error) => new Error(err.message ?? err),
+        )(encryptedText),
+    )
+    console.log(10, decryptedWebhookUrl)
 
     const final = await whenNotErrorAll(
-      [result$2, params, requestBodyWithoutSignature],
-      ([res, [account], paymentGateway]) =>
-        whenDefined(webhookOnFulfillment, (base) =>
+      [result$2, params, reqBody, decryptedWebhookUrl],
+      ([res, [account], paymentGateway, webhook]) =>
+        whenDefined(webhook, (base) =>
           res
-            ? fetchWebhook(
-                createRequest({
-                  base,
+            ? fetch(base, {
+                method: 'POST',
+                body: createRequestBody({
                   status: Status.Success,
                   account,
                   paymentGateway,
                 }),
-              ).catch((err) => new Error(err))
+                headers,
+              }).catch((err) => new Error(err))
             : res,
         ),
     )
-    console.log(9, final)
+    console.log(11, final)
 
     return final instanceof Error
       ? new Response(

@@ -64,7 +64,7 @@ export const getApiPaths: ClubsFunctionGetApiPaths = async (
   const items = composeItems(options, utils)
   const webhooks =
     (options.find((opt) => opt.key === 'webhooks')?.value as UndefinedOr<{
-      fulfillment?: string
+      fulfillment?: { encrypted: string }
     }>) ?? {}
 
   const [{ get }, { post }] = await Promise.all([
@@ -82,7 +82,7 @@ export const getApiPaths: ClubsFunctionGetApiPaths = async (
       paths: ['fulfillment'],
       method: 'POST',
       handler: post({
-        webhookOnFulfillment: webhooks?.fulfillment,
+        webhookOnFulfillment: webhooks?.fulfillment?.encrypted,
         chainId,
         rpcUrl,
       }),

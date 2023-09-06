@@ -14,7 +14,8 @@ import { whenNotError, whenNotErrorAll } from '@devprotocol/util-ts'
 import { createClient } from 'redis'
 import { generateFulFillmentParamsId } from '../utils/gen-key'
 
-const { POP_SERVER_KEY } = import.meta.env
+const { POP_SERVER_KEY, REDIS_URL, REDIS_USERNAME, REDIS_PASSWORD } =
+  import.meta.env
 const AUTH_STRING = Buffer.from(`${POP_SERVER_KEY}:`).toString('base64')
 
 export type Success = {
@@ -117,7 +118,6 @@ export const get: ({
 }) => APIRoute =
   ({ propertyAddress, chainId, items: _items }) =>
   async ({ url }) => {
-    console.log('********', url)
     /**
      * Get request parameters.
      */
@@ -188,9 +188,9 @@ export const get: ({
 
     const client = await whenNotError(
       createClient({
-        url: process.env.REDIS_URL,
-        username: process.env.REDIS_USERNAME ?? '',
-        password: process.env.REDIS_PASSWORD ?? '',
+        url: REDIS_URL,
+        username: REDIS_USERNAME ?? '',
+        password: REDIS_PASSWORD ?? '',
       }),
       (db) =>
         db
