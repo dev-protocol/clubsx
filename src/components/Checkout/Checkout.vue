@@ -22,11 +22,7 @@ import {
 import BigNumber from 'bignumber.js'
 import { type Subscription, combineLatest } from 'rxjs'
 import { CurrencyOption } from '@constants/currencyOption'
-import {
-  fetchDevForEth,
-  fetchDevForUsdc,
-  fetchSTokens,
-} from '@fixtures/utility'
+import { fetchDevForEth, fetchSTokens } from '@fixtures/utility'
 import Skeleton from '@components/Global/Skeleton.vue'
 import { stakeWithAnyTokens, mintedIdByLogs } from '@fixtures/dev-kit'
 import { marked } from 'marked'
@@ -60,6 +56,8 @@ const verifiedPropsCurrency: ComputedRef<CurrencyOption> = computed(() => {
     ? CurrencyOption.ETH
     : props.currency?.toUpperCase() === 'USDC'
     ? CurrencyOption.USDC
+    : props.currency?.toUpperCase() === 'MATIC'
+    ? CurrencyOption.MATIC
     : CurrencyOption.DEV
 })
 const usePolygonWETH: ComputedRef<boolean> = computed(() => {
@@ -101,7 +99,8 @@ const parsedAmount = ref<UndefinedOr<bigint>>(
     ? parseUnits(
         props.amount.toString(),
         verifiedPropsCurrency.value === CurrencyOption.ETH ||
-          verifiedPropsCurrency.value === CurrencyOption.DEV
+          verifiedPropsCurrency.value === CurrencyOption.DEV ||
+          verifiedPropsCurrency.value === CurrencyOption.MATIC
           ? 18
           : verifiedPropsCurrency.value === CurrencyOption.USDC
           ? 6
@@ -231,7 +230,8 @@ const submitStake = async function () {
               })
             })()
           : verifiedPropsCurrency.value === CurrencyOption.ETH ||
-            verifiedPropsCurrency.value === CurrencyOption.USDC
+            verifiedPropsCurrency.value === CurrencyOption.USDC ||
+            verifiedPropsCurrency.value === CurrencyOption.MATIC
           ? await (async () => {
               const res = await stakeWithAnyTokens({
                 provider: _prov,
@@ -341,8 +341,8 @@ onMounted(async () => {
   const chainId = Number((await provider.getNetwork()).chainId)
 
   whenDefinedAll(
-    [props.destination, props.amount],
-    async ([_destination, _amount]) => {
+    [props.destination, props.amount, chainId],
+    async ([_destination, _amount, _chain]) => {
       const feeDeposit = props.feePercentage
         ? new BigNumber(props.feePercentage)
         : 0
@@ -354,7 +354,7 @@ onMounted(async () => {
         verifiedPropsCurrency.value === CurrencyOption.DEV
           ? props.amount
           : verifiedPropsCurrency.value === CurrencyOption.ETH
-          ? await fetchDevForEth({
+          ? fetchDevForEth({
               provider,
               tokenAddress: _destination,
               amount: new BigNumber(_amount)
@@ -362,16 +362,13 @@ onMounted(async () => {
                 .toNumber(),
               chain: chainId,
             }).then(formatUnits)
-          : verifiedPropsCurrency.value === CurrencyOption.USDC
-          ? await fetchDevForUsdc({
+          : stakeWithAnyTokens({
               provider,
-              tokenAddress: _destination,
-              amount: new BigNumber(_amount)
-                .times(new BigNumber(1).minus(feeDeposit))
-                .toNumber(),
-              chain: chainId,
-            }).then(formatUnits)
-          : undefined,
+              propertyAddress: _destination,
+              tokenAmount: _amount.toString(),
+              currency: verifiedPropsCurrency.value,
+              chain: _chain,
+            }).then((res) => formatUnits(res?.estimatedDev ?? 0)),
       ])
 
       stakingAmount.value = !props.useDiscretePaymentFlow
@@ -423,7 +420,7 @@ onUnmounted(() => {
               :data-is-loading="isCheckingAccessControl"
               :data-is-valid="accessAllowed"
               :data-is-error="Boolean(accessControlError)"
-              class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white data-[is-loading=true]:animate-pulse data-[is-valid=false]:border data-[is-valid=false]:border-neutral-300 data-[is-error=true]:bg-red-600 data-[is-valid=false]:bg-white data-[is-valid=true]:bg-[#43C451] data-[is-valid=false]:text-black"
+              class="hs-button is-large is-fullwidth is-outlined pointer-events-none text-center data-[is-loading=true]:animate-pulse data-[is-valid=false]:border data-[is-error=true]:border-red-600 data-[is-valid=false]:border-neutral-300 data-[is-valid=true]:border-[#43C451] data-[is-valid=false]:bg-white"
             >
               {{
                 !account
@@ -461,63 +458,40 @@ onUnmounted(() => {
         </span>
 
         <div v-if="!useInjectedTransactionForm" class="grid gap-16">
-          <span
-            v-if="!account"
-            class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white"
-            >Please connect a wallet</span
-          >
-
           <span v-if="useERC20" class="flex flex-col justify-stretch">
             <!-- Approval -->
             <button
-              v-if="!account"
-              class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white"
-              disabled
-            >
-              Approve
-            </button>
-            <button
               @click="approve"
-              v-if="account && (approveNeeded || approveNeeded === undefined)"
               :disabled="
+                !account ||
                 isApproving ||
                 approveNeeded === undefined ||
+                approveNeeded === false ||
                 Boolean(props.accessControlUrl && !accessAllowed)
               "
               :data-is-approving="isApproving"
-              class="rounded-full bg-black px-8 py-4 text-center font-bold text-white disabled:bg-neutral-300 data-[is-approving=true]:animate-pulse"
+              class="hs-button is-large is-fullwidth is-filled data-[is-approving=true]:animate-pulse"
             >
-              Sign with wallet and approve
-            </button>
-            <button
-              v-if="account && approveNeeded === false"
-              class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white"
-              disabled
-            >
-              You've already approved
+              {{
+                approveNeeded === false
+                  ? "You've already approved"
+                  : 'Sign with wallet and approve'
+              }}
             </button>
           </span>
 
           <span class="flex flex-col justify-stretch">
             <!-- Pay -->
             <button
-              v-if="approveNeeded"
-              class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white"
-              disabled
-            >
-              Pay with {{ verifiedPropsCurrency.toUpperCase() }}
-            </button>
-            <button
-              v-if="!approveNeeded"
               @click="submitStake"
               :disabled="
                 !account ||
                 isStaking ||
-                approveNeeded ||
+                approveNeeded !== false ||
                 Boolean(props.accessControlUrl && !accessAllowed)
               "
               :data-is-staking="isStaking"
-              class="rounded-full bg-black px-8 py-4 text-center font-bold text-white disabled:bg-neutral-300 data-[is-staking=true]:animate-pulse"
+              class="hs-button is-large is-filled data-[is-staking=true]:animate-pulse"
             >
               Pay with {{ verifiedPropsCurrency.toUpperCase() }}
             </button>

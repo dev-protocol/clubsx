@@ -592,6 +592,9 @@
               <option value="ETH" class="bg-primary-200 text-primary-ink"
                 >ETH</option
               >
+              <option value="MATIC" class="bg-primary-200 text-primary-ink"
+                >MATIC</option
+              >
               <option value="DEV" class="bg-primary-200 text-primary-ink"
                 >DEV</option
               >

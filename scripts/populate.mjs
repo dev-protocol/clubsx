@@ -3,8 +3,11 @@ import { encode } from '@devprotocol/clubs-core/encode'
 import { createClient } from 'redis'
 import { keccak256, toUtf8Bytes } from 'ethers'
 import fs from 'fs-extra'
+import jsonwebtoken from 'jsonwebtoken'
 
 dotenv.config()
+
+const { SALT } = process.env
 
 const toBytes32 = (str) => keccak256(toUtf8Bytes(str))
 
@@ -975,6 +978,17 @@ const populate = async () => {
                     },
                   },
                 ],
+              },
+              {
+                key: 'webhooks',
+                value: {
+                  fulfillment: {
+                    encrypted: jsonwebtoken.sign(
+                      'https://veritrans.clubs.place/api/mock/logger',
+                      SALT,
+                    ),
+                  },
+                },
               },
             ],
           },
