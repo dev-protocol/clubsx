@@ -423,7 +423,7 @@ onUnmounted(() => {
               :data-is-loading="isCheckingAccessControl"
               :data-is-valid="accessAllowed"
               :data-is-error="Boolean(accessControlError)"
-              class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white data-[is-loading=true]:animate-pulse data-[is-valid=false]:border data-[is-valid=false]:border-neutral-300 data-[is-error=true]:bg-red-600 data-[is-valid=false]:bg-white data-[is-valid=true]:bg-[#43C451] data-[is-valid=false]:text-black"
+              class="hs-button is-large is-fullwidth is-outlined pointer-events-none text-center data-[is-loading=true]:animate-pulse data-[is-valid=false]:border data-[is-error=true]:border-red-600 data-[is-valid=false]:border-neutral-300 data-[is-valid=true]:border-[#43C451] data-[is-valid=false]:bg-white"
             >
               {{
                 !account
@@ -461,63 +461,40 @@ onUnmounted(() => {
         </span>
 
         <div v-if="!useInjectedTransactionForm" class="grid gap-16">
-          <span
-            v-if="!account"
-            class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white"
-            >Please connect a wallet</span
-          >
-
           <span v-if="useERC20" class="flex flex-col justify-stretch">
             <!-- Approval -->
             <button
-              v-if="!account"
-              class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white"
-              disabled
-            >
-              Approve
-            </button>
-            <button
               @click="approve"
-              v-if="account && (approveNeeded || approveNeeded === undefined)"
               :disabled="
+                !account ||
                 isApproving ||
                 approveNeeded === undefined ||
+                approveNeeded === false ||
                 Boolean(props.accessControlUrl && !accessAllowed)
               "
               :data-is-approving="isApproving"
-              class="rounded-full bg-black px-8 py-4 text-center font-bold text-white disabled:bg-neutral-300 data-[is-approving=true]:animate-pulse"
+              class="hs-button is-large is-fullwidth is-filled data-[is-approving=true]:animate-pulse"
             >
-              Sign with wallet and approve
-            </button>
-            <button
-              v-if="account && approveNeeded === false"
-              class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white"
-              disabled
-            >
-              You've already approved
+              {{
+                approveNeeded === false
+                  ? "You've already approved"
+                  : 'Sign with wallet and approve'
+              }}
             </button>
           </span>
 
           <span class="flex flex-col justify-stretch">
             <!-- Pay -->
             <button
-              v-if="approveNeeded"
-              class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white"
-              disabled
-            >
-              Pay with {{ verifiedPropsCurrency.toUpperCase() }}
-            </button>
-            <button
-              v-if="!approveNeeded"
               @click="submitStake"
               :disabled="
                 !account ||
                 isStaking ||
-                approveNeeded ||
+                approveNeeded !== false ||
                 Boolean(props.accessControlUrl && !accessAllowed)
               "
               :data-is-staking="isStaking"
-              class="rounded-full bg-black px-8 py-4 text-center font-bold text-white disabled:bg-neutral-300 data-[is-staking=true]:animate-pulse"
+              class="hs-button is-large is-filled data-[is-staking=true]:animate-pulse"
             >
               Pay with {{ verifiedPropsCurrency.toUpperCase() }}
             </button>
