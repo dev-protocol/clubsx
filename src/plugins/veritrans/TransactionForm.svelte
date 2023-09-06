@@ -168,13 +168,11 @@
   }
 </script>
 
-<span class="grid gap-16" bind:this={component}>
-  <label class="relative flex flex-col">
-    {#if account}
-      <span class="absolute top-0 ml-8 text-xs opacity-50">Account</span>
-    {/if}
+<span class="grid gap-12" bind:this={component}>
+  <label class="hs-form-field is-filled is-large">
+    <span class="hs-form-field__label">Account</span>
     <input
-      class="rounded-full bg-gray-500/60 px-8 py-4 text-xl font-bold text-black outline-0 transition-colors placeholder:text-white data-[is-filled=true]:bg-neutral-300"
+      class="hs-form-field__input"
       placeholder="Please connect a wallet"
       data-is-filled={Boolean(account)}
       value={account ?? ''}
@@ -182,12 +180,10 @@
     />
   </label>
 
-  <label class="relative flex flex-col">
-    {#if customerEmail}
-      <span class="absolute top-0 ml-8 text-xs opacity-50">Email</span>
-    {/if}
+  <label class="hs-form-field is-filled is-large">
+    <span class="hs-form-field__label">Email</span>
     <input
-      class="rounded-full bg-gray-500/60 px-8 py-4 text-xl font-bold text-black outline-0 transition-colors placeholder:text-white focus:bg-gray-300 disabled:bg-neutral-300 data-[is-filled=true]:bg-neutral-300"
+      class="hs-form-field__input"
       placeholder="Enter your email"
       data-is-filled={Boolean(customerEmail)}
       type="email"
@@ -196,12 +192,10 @@
     />
   </label>
 
-  <label class="relative flex flex-col">
-    {#if customerName}
-      <span class="absolute top-0 ml-8 text-xs opacity-50">Your name</span>
-    {/if}
+  <label class="hs-form-field is-filled is-large">
+    <span class="hs-form-field__label">Your name</span>
     <input
-      class="rounded-full bg-gray-500/60 px-8 py-4 text-xl font-bold text-black outline-0 transition-colors placeholder:text-white focus:bg-gray-300 disabled:bg-neutral-300 data-[is-filled=true]:bg-neutral-300"
+      class="hs-form-field__input"
       placeholder="Enter your name"
       data-is-filled={Boolean(customerName)}
       type="text"
@@ -221,7 +215,7 @@
         Boolean(error)}
       data-is-progress={loading}
       data-on-error={Boolean(error)}
-      class="rounded-full bg-black px-8 py-4 text-center text-xl font-bold text-white transition disabled:bg-neutral-300 data-[is-progress=true]:animate-pulse data-[on-error=true]:bg-red-600"
+      class="hs-button is-large is-filled data-[is-progress=true]:animate-pulse data-[on-error=true]:bg-red-600"
     >
       Pay with a credit card
     </button>
