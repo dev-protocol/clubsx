@@ -1212,7 +1212,7 @@ const populate = async () => {
     await client.set(
       'cryptocafe',
       encode({
-        name: 'cryptocafe',
+        name: 'Crypto Cafe & Bar',
         twitterHandle: '',
         description: `Tokyo's hub for blockchain enthusiasts & the crypto-curious.`,
         url: 'https://cryptocafe.prerelease.clubs.place',
@@ -1368,6 +1368,10 @@ const populate = async () => {
                     image: 'https://i.imgur.com/IqkJqwc.jpg',
                   },
                   description: `Tokyo's hub for blockchain enthusiasts & the crypto-curious.`,
+                  body: fs.readFileSync(
+                    './src/assets/homeConfig.cryptocafe.body.md',
+                    'utf-8',
+                  ),
                 },
               },
             ],
