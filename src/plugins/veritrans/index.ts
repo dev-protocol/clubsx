@@ -7,6 +7,7 @@ import type {
 } from '@devprotocol/clubs-core'
 import { ClubsPluginCategory, ClubsPluginSignal } from '@devprotocol/clubs-core'
 import { default as Id } from './Id.astro'
+import { default as Slot } from './slot.astro'
 import { keccak256 } from 'ethers'
 import type { ClubsFunctionGetApiPaths } from '@devprotocol/clubs-core/src'
 import { composeItems } from './utils/compose-items'
@@ -90,6 +91,22 @@ export const getApiPaths: ClubsFunctionGetApiPaths = async (
   ]
 }
 
+export const getSlots: ClubsFunctionGetSlots = async (options, __, utils) => {
+  const items = composeItems(options, utils)
+
+  return utils.factory === 'page'
+    ? [
+        {
+          slot: 'checkout:before:transaction-form',
+          component: Slot,
+          props: {
+            items,
+          },
+        },
+      ]
+    : []
+}
+
 export const meta: ClubsPluginMeta = {
   id: 'devprotocol:clubs:plugin:veritrans',
   displayName: 'Veritrans',
@@ -99,5 +116,6 @@ export const meta: ClubsPluginMeta = {
 export default {
   getPagePaths,
   getApiPaths,
+  getSlots,
   meta,
 } as ClubsFunctionPlugin

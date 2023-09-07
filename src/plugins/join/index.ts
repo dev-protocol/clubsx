@@ -63,6 +63,8 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
             payload,
             description,
             accessControl,
+            imageSrc,
+            name,
           }) => ({
             paths: ['join', id],
             component: Id,
@@ -76,6 +78,8 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
               feeBeneficiary: fee?.beneficiary,
               feePercentage: fee?.percentage,
               signals: [ClubsPluginSignal.DisplayFullPage],
+              itemImageSrc: imageSrc,
+              itemName: name,
               accessControlUrl: accessControl?.url,
               accessControlDescription: accessControl?.description,
             },
