@@ -197,11 +197,13 @@
     })
     connection().account.subscribe((a) => {
       currentAddress = a
+      update()
     })
   }
 
   onMount(() => {
     onChangePrice()
+    onChangeName()
     fetchPositionsOfProperty()
     update()
     connectOnMount()
@@ -248,6 +250,21 @@
 
     const search = mode === 'edit' ? originalId : membership.id
     membership.accessControl = usingAccessControl ? accessControl : undefined
+    if (
+      currentAddress &&
+      membership.fee &&
+      currentAddress !== membership.fee.beneficiary &&
+      membership.fee.percentage > 0
+    ) {
+      membership = {
+        ...membership,
+        fee: {
+          ...membership.fee,
+          beneficiary: currentAddress,
+        },
+      }
+    }
+
     newMemberships = existingMemberships.some(({ id }) => id === search)
       ? // If the ID is already exists, override it. This is a safeguard to avoid duplicate data.
         existingMemberships.map((_mem) =>

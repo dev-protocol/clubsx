@@ -450,6 +450,11 @@
     "@babel/helper-validator-identifier" "^7.22.5"
     to-fast-properties "^2.0.0"
 
+"@boringer-avatars/vue3@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@boringer-avatars/vue3/-/vue3-0.2.1.tgz#db9d4183540de0d0af9e4e160cfc009f6f405e87"
+  integrity sha512-KzAfh31SDXToTvFL0tBNG5Ur+VzfD1PP4jmY5/GS+eIuObGTIAiUu9eiht0LjuAGI+0xCgnaEgsTrOx8H3vLOQ==
+
 "@crossmint/client-sdk-base@^1.0.1-alpha.1", "@crossmint/client-sdk-base@^1.0.1-alpha.6":
   version "1.0.1-alpha.6"
   resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-base/-/client-sdk-base-1.0.1-alpha.6.tgz#a88d4c0110c2faaf20e11b8d664fba482d398437"
@@ -512,6 +517,27 @@
     svelte "^4.0.0"
     vue "^3.2.0"
 
+"@devprotocol/clubs-plugin-posts@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts/-/clubs-plugin-posts-0.0.2.tgz#4274fc8bd36e2a3bd89ec6e3af9bbef081febd04"
+  integrity sha512-lO6r9VoCJZ6s67qKJURmwZTNKx/siO3nRqwcsVfo4OScydOFt0SlYM1uYuYYpnwFEgYmGrAxoUAMTmDOe+oPKg==
+  dependencies:
+    "@boringer-avatars/vue3" "^0.2.1"
+    "@devprotocol/clubs-core" "1.0.10"
+    "@devprotocol/dev-kit" "8.4.3"
+    "@devprotocol/util-ts" "4.0.0"
+    bignumber.js "9.1.2"
+    dayjs "^1.11.8"
+    dompurify "^3.0.5"
+    ethers "^6.6.4"
+    marked "8.0.1"
+    photoswipe "5.3.9"
+    ramda "0.29.0"
+    redis "^4.6.7"
+    sass "1.66.1"
+    svelte "^4.0.0"
+    uuid "^9.0.0"
+
 "@devprotocol/dev-kit@7.3.0":
   version "7.3.0"
   resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-7.3.0.tgz#4a009892ae75b9e440fea3640c073b3fc9759d81"
@@ -546,6 +572,16 @@
   version "8.4.3"
   resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-8.4.3.tgz#7e30d0fa4817adca418209e425226ee0d8c54347"
   integrity sha512-URy85lQu5pE3p2Ql2k1GnDPJZnEEXAuzdYsMcl3bt8Zegx+BmTOSwhJk7nXLgIU0u0zNMoX7RwinB3NTyQiXKg==
+  dependencies:
+    "@devprotocol/util-ts" "3.1.0"
+    bignumber.js "9.1.2"
+    js-base64 "^3.7.2"
+    ramda "^0.29.0"
+
+"@devprotocol/dev-kit@8.5.0":
+  version "8.5.0"
+  resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-8.5.0.tgz#f2deac013a4250888237e9eea6d9f72b5b27e194"
+  integrity sha512-jyjtYrv9/PnngnI2v8rg76Dl15ax2UQwsCfJGQ4tDtCbucl92uB6wmEcL/dUFemICl9rj+kNKHa965SLR2Mlxg==
   dependencies:
     "@devprotocol/util-ts" "3.1.0"
     bignumber.js "9.1.2"
@@ -3491,7 +3527,7 @@ csstype@^3.0.2, csstype@^3.1.1:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.1.2.tgz#1d4bf9d572f11c14031f0436e1c10bc1f571f50b"
   integrity sha512-I7K1Uu0MBPzaFKg4nI5Q7Vs2t+3gWWW648spaF+Rg7pI9ds18Ugn+lvg4SHczUdKlHI5LWBXyqfS8+DufyBsgQ==
 
-dayjs@^1.11.9:
+dayjs@^1.11.8, dayjs@^1.11.9:
   version "1.11.9"
   resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.9.tgz#9ca491933fadd0a60a2c19f6c237c03517d71d1a"
   integrity sha512-QvzAURSbQ0pKdIye2txOzNaHmxtUBXerpY0FJsFXUMKbIZeFm5ht1LS/jFsrncjnmtv8HsG0W2g6c0zUjZWmpA==
@@ -4178,7 +4214,7 @@ ethers@5.7.2, ethers@^5.7.0, ethers@^5.7.2:
     "@ethersproject/web" "5.7.1"
     "@ethersproject/wordlists" "5.7.0"
 
-ethers@6.7.1:
+ethers@6.7.1, ethers@^6.6.4:
   version "6.7.1"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-6.7.1.tgz#9c65e8b5d8e9ad77b7e8cf1c46099892cfafad49"
   integrity sha512-qX5kxIFMfg1i+epfgb0xF4WM7IqapIIu50pOJ17aebkxxa4BacW5jFrQRmCJpDEg2ZK2oNtR5QjrQ1WDBF29dA==
@@ -5891,10 +5927,10 @@ markdown-table@^3.0.0:
   resolved "https://registry.yarnpkg.com/markdown-table/-/markdown-table-3.0.3.tgz#e6331d30e493127e031dd385488b5bd326e4a6bd"
   integrity sha512-Z1NL3Tb1M9wH4XESsCDEksWoKTdlUafKc4pt0GRwjUyXaCFZ+dc3g2erqB6zm3szA2IUSi7VnPI+o/9jnxh9hw==
 
-marked@8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-8.0.0.tgz#e808c02daf9d72485477d3ff9a4e193fec94a4db"
-  integrity sha512-RI/D5csFVreNrFchdKFSdV38GDHJdD7OdmbNWYzGvApPb0A9pyypgfHC/FBH4ugmRE8cr7yg/TH7tu8585eMhA==
+marked@8.0.1:
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/marked/-/marked-8.0.1.tgz#62005c60d88926ef4b4a45e51ac76c5076c6e63d"
+  integrity sha512-eEbeEb/mJwh+sNLEhHOWtxMgjN/NEwZUBs1nkiIH2sTQTq07KmPMQ48ihyvo5+Ya56spVOPhunfGr6406crCVA==
 
 marked@^4.0.10:
   version "4.3.0"
@@ -6819,6 +6855,11 @@ periscopic@^3.1.0:
     estree-walker "^3.0.0"
     is-reference "^3.0.0"
 
+photoswipe@5.3.9:
+  version "5.3.9"
+  resolved "https://registry.yarnpkg.com/photoswipe/-/photoswipe-5.3.9.tgz#abcaac4eaae10642b4fe08f01828debf86129481"
+  integrity sha512-z9ACLW9472gAawrIXXiliuz9xNZ3xEl7cIPHqY/lAeFQT9X+N9sgCwa86WK9wnK8cuk/F3QEO45n+QSiZnKd2A==
+
 picocolors@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/picocolors/-/picocolors-1.0.0.tgz#cb5bdc74ff3f51892236eaf79d68bc44564ab81c"
@@ -7165,7 +7206,7 @@ readdirp@~3.6.0:
   dependencies:
     picomatch "^2.2.1"
 
-redis@4.6.8:
+redis@4.6.8, redis@^4.6.7:
   version "4.6.8"
   resolved "https://registry.yarnpkg.com/redis/-/redis-4.6.8.tgz#54c5992e8a5ba512506fe9f53142cadc405547e7"
   integrity sha512-S7qNkPUYrsofQ0ztWlTHSaK0Qqfl1y+WMIxrzeAGNG+9iUZB4HGeBgkHxE6uJJ6iXrkvLd1RVJ2nvu6H1sAzfQ==
