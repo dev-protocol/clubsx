@@ -310,13 +310,9 @@ export const stakeWithAnyTokens = async (
           10000n,
           '0xcbc698ed514dF6e54932a22515d6D0C27E4DA091', // DEV
         ]
-      : undefined
+      : (undefined as never)
   const token =
-    currency === CurrencyOption.MATIC ? ZeroAddress : path?.[0] ?? ZeroAddress
-  if (!path || !token) {
-    console.log({ path, token })
-    return
-  }
+    currency === CurrencyOption.MATIC ? undefined : path?.[0] ?? ZeroAddress
   const tokenDecimals = currency === CurrencyOption.USDC ? 6 : 18
 
   return positionsCreateWithAnyTokens({
