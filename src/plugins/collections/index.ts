@@ -10,6 +10,8 @@ import { default as Admin } from './admin.astro'
 import { default as AdminEdit } from './admin-id.astro'
 import { default as AdminNew } from './admin-new.astro'
 import { default as AdminEditMembership } from './admin-id-id.astro'
+import { default as Index } from './index.astro'
+import { default as Id } from './[id].astro'
 import { default as Icon } from './assets/icon.svg'
 import { Content as Readme } from './README.md'
 import Preview1 from './assets/limited-number-of-items.svg'
@@ -37,7 +39,32 @@ export type Collection = {
   memberships: CollectionMembership[]
 }
 
-export const getPagePaths: ClubsFunctionGetPagePaths = async () => []
+export const getPagePaths: ClubsFunctionGetPagePaths = async (
+  options,
+  { name, rpcUrl, propertyAddress },
+  { getPluginConfigById },
+) => {
+  const [collectionsConfig] = getPluginConfigById(
+    'devprotocol:clubs:collections',
+  )
+  const collections =
+    (collectionsConfig?.options.find(
+      (opt: ClubsPluginOption) => opt.key === 'collections',
+    )?.value as UndefinedOr<Collection[]>) ?? []
+
+  return [
+    ...(collections.map((collection) => ({
+      paths: ['collections', collection.id],
+      component: Id,
+      props: { collection, name, rpcUrl, propertyAddress },
+    })) ?? []),
+    {
+      paths: ['collections'],
+      component: Index,
+      props: { collections },
+    },
+  ]
+}
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
   options,
@@ -89,7 +116,7 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
       collection.memberships.map((membership) => ({
         paths: ['collections', collection.id, membership.id],
         component: AdminEditMembership,
-        props: { collection, membership },
+        props: { collections, collection, membership },
       })),
     ) ?? []),
     {

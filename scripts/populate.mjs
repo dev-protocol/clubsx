@@ -1144,13 +1144,13 @@ const populate = async () => {
     )
 
     await client.set(
-      'shub',
+      'testing-for-dashboard-2',
       encode({
-        name: 'shub',
+        name: 'testing-for-dashboard-2',
         twitterHandle: '',
         description: '',
-        url: 'https://shub.clubs.place',
-        propertyAddress: '0x268C24Ca7bD1E29426a4BC8f7A6D07B26CEe4C78',
+        url: 'https://testing-for-dashboard-2.clubs.place',
+        propertyAddress: '0x39d16ecd8506AAe3935492334c14E3163D0d2658',
         adminRolePoints: 50,
         chainId: 80001,
         rpcUrl:
