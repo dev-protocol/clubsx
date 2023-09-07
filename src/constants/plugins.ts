@@ -24,6 +24,8 @@ import $15 from '@plugins/join-legacy'
 import $16 from '@plugins/veritrans'
 import $17 from '@plugins/tickets'
 
+import * as PostsPlugin from '@devprotocol/clubs-plugin-posts'
+
 export type PluginTag =
   | 'New & Upcoming'
   | 'Memberships'
@@ -88,20 +90,11 @@ export const installablePlugins: InstallablePlugins[] = [
     repositoryUrl: 'https://github.com/kazu80/clubs-links',
   },
   {
-    id: 'upcoming:feeds',
-    tag: 'New & Upcoming',
+    id: PostsPlugin.meta.id,
+    tag: 'Community',
     pluginOptions: [],
     developer: 'Dev Protocol',
-    planned: {
-      meta: {
-        id: '#',
-        category: '',
-        displayName: 'Posts',
-        icon: Feeds,
-        description:
-          'Extendable Post Timeline for DAO. Token-gated posts by membership, or public posts, and communication with comments and emoji reaction. And, it has an extendable nature for new features such as voting, bounty posts, video/music posts.',
-      },
-    },
+    repositoryUrl: 'https://github.com/dev-protocol/clubs-plugin-posts',
   },
   {
     id: 'devprotocol:clubs:simple-memberships',
@@ -179,4 +172,5 @@ export const plugins = [
   $15,
   $16,
   $17,
+  PostsPlugin,
 ]
