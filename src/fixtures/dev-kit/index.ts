@@ -312,7 +312,7 @@ export const stakeWithAnyTokens = async (
         ]
       : undefined
   const token =
-    currency === CurrencyOption.MATIC ? undefined : path?.[0] ?? ZeroAddress
+    currency === CurrencyOption.MATIC ? ZeroAddress : path?.[0] ?? ZeroAddress
   if (!path || !token) {
     console.log({ path, token })
     return
