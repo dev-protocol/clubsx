@@ -11,6 +11,10 @@ export type Tier = Readonly<{
 
 export type Tiers = ReadonlyArray<Tier>
 
+export type InjectedTier = Tier & { checkoutUrl?: string }
+
+export type InjectedTiers = ReadonlyArray<InjectedTier>
+
 export const tiers: Tiers = [
   {
     title: 'Tier 3',

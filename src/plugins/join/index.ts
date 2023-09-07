@@ -40,6 +40,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
     badgeImageSrc: mem.imageSrc,
     badgeImageDescription: mem.description,
   }))
+  console.log({ tiers })
 
   return tiers
     ? [

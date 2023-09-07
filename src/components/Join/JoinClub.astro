@@ -1,0 +1,34 @@
+---
+import JoinClub from '@components/Join/JoinClub.svelte'
+import type { Tiers } from '@constants/tier'
+import type { ClubsPropsPages } from '@devprotocol/clubs-core'
+import type { UndefinedOr } from '@devprotocol/util-ts'
+
+const { tiers, name, ...other } = Astro.props as ClubsPropsPages & {
+  tiers: Tiers
+  name: string
+}
+
+const SlotsJoinCurrencyOption = other.clubs.slots.filter(
+  (slot) => slot.slot === 'join:currency:option',
+)
+
+const injectedTiers = SlotsJoinCurrencyOption.map((slot) => {
+  const data = slot.props?.injectedTiers as UndefinedOr<Tiers>
+  return data ?? []
+}).flat()
+---
+
+<JoinClub
+  client:load
+  tiers={tiers}
+  injectedTiers={injectedTiers}
+  tenantName={name}
+>
+  <slot name="join:currency:option" slot="currency:option" />
+  {
+    SlotsJoinCurrencyOption.map((Slot) => (
+      <Slot.component {...Slot.props} slot="currency:option" />
+    ))
+  }
+</JoinClub>

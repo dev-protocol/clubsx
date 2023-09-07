@@ -8,10 +8,14 @@ import type {
 import { ClubsPluginCategory, ClubsPluginSignal } from '@devprotocol/clubs-core'
 import { default as Id } from './Id.astro'
 import { default as Slot } from './slot.astro'
+import { default as SlotCurrencyOption } from './slot-currency-option.astro'
 import { keccak256 } from 'ethers'
 import type { ClubsFunctionGetApiPaths } from '@devprotocol/clubs-core/src'
 import { composeItems } from './utils/compose-items'
 import type { UndefinedOr } from '@devprotocol/util-ts'
+import type { InjectedTiers } from '@constants/tier'
+import type { CurrencyOption } from '@constants/currencyOption'
+import { bytes32Hex } from '@fixtures/data/hexlify'
 
 export type Override = {
   id: string
@@ -35,21 +39,15 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
   return items
     ? [
         ...items.map((item) => ({
-          paths: [
-            'fiat',
-            'yen',
-            typeof item.payload === 'string'
-              ? item.payload
-              : keccak256(item.payload),
-          ],
+          paths: ['fiat', 'yen', bytes32Hex(item.payload)],
           props: {
             item,
             propertyAddress,
             rpcUrl,
             chainId,
             signals: [ClubsPluginSignal.DisplayFullPage],
-            accessControlUrl: undefined, //TODO: Pass the value
-            accessControlDescription: undefined, //TODO: Pass the value
+            accessControlUrl: item.source.accessControl?.url,
+            accessControlDescription: item.source.accessControl?.description,
           },
           component: Id,
         })),
@@ -93,6 +91,17 @@ export const getApiPaths: ClubsFunctionGetApiPaths = async (
 
 export const getSlots: ClubsFunctionGetSlots = async (options, __, utils) => {
   const items = composeItems(options, utils)
+  const tiers: InjectedTiers = items.map((item) => ({
+    ...item,
+    currency: item.price.yen
+      ? ('yen' as unknown as CurrencyOption)
+      : (undefined as never),
+    title: item.source.name,
+    amount: item.price.yen,
+    badgeImageSrc: item.source.imageSrc,
+    badgeImageDescription: item.source.description,
+    checkoutUrl: `/fiat/yen/${bytes32Hex(item.payload)}`,
+  }))
 
   return utils.factory === 'page'
     ? [
@@ -102,6 +111,11 @@ export const getSlots: ClubsFunctionGetSlots = async (options, __, utils) => {
           props: {
             items,
           },
+        },
+        {
+          slot: 'join:currency:option',
+          component: SlotCurrencyOption,
+          props: { injectedTiers: tiers },
         },
       ]
     : []

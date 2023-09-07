@@ -405,7 +405,7 @@ const cryptoCafeMemberships = [
       percentage: 0.95,
       beneficiary: '0x57E21bd98612DE0Bd1723F4bf81A944eF7BfF526',
     },
-    cryptocafeAccessControl$1,
+    accessControl: cryptocafeAccessControl$1,
   },
   {
     id: 'bar-visitor',
@@ -419,7 +419,7 @@ const cryptoCafeMemberships = [
       percentage: 0.95,
       beneficiary: '0x57E21bd98612DE0Bd1723F4bf81A944eF7BfF526',
     },
-    cryptocafeAccessControl$1,
+    accessControl: cryptocafeAccessControl$1,
   },
   {
     id: 'one-day',
@@ -433,7 +433,7 @@ const cryptoCafeMemberships = [
       percentage: 0.95,
       beneficiary: '0x57E21bd98612DE0Bd1723F4bf81A944eF7BfF526',
     },
-    cryptocafeAccessControl$1,
+    accessControl: cryptocafeAccessControl$1,
   },
   {
     id: 'friend-pass',
@@ -447,7 +447,7 @@ const cryptoCafeMemberships = [
       percentage: 0.95,
       beneficiary: '0x57E21bd98612DE0Bd1723F4bf81A944eF7BfF526',
     },
-    cryptocafeAccessControl$2,
+    accessControl: cryptocafeAccessControl$2,
   },
   {
     id: 'best-friend-pass',
@@ -461,7 +461,7 @@ const cryptoCafeMemberships = [
       percentage: 0.95,
       beneficiary: '0x57E21bd98612DE0Bd1723F4bf81A944eF7BfF526',
     },
-    cryptocafeAccessControl$2,
+    accessControl: cryptocafeAccessControl$2,
   },
 ]
 

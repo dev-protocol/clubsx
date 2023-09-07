@@ -3,13 +3,20 @@
   import ETH from '@assets/ETH.svg'
   import MATIC from '@assets/MATIC.svg'
   import DEV from '@assets/devtoken.png'
-  import type { Tiers } from '@constants/tier'
+  import type {
+    InjectedTier,
+    InjectedTiers,
+    Tier,
+    Tiers,
+  } from '@constants/tier'
   import { CurrencyOption } from '@constants/currencyOption'
   import MembershipOption from '@components/AdminMembershipsForm/MembershipOption.svelte'
+  import type { UndefinedOr } from '@devprotocol/util-ts'
 
   const counter = new Map<CurrencyOption, number>()
 
   export let tiers: Tiers
+  export let injectedTiers: UndefinedOr<InjectedTiers>
   export let tenantName: string
   export let preferedCurrency: CurrencyOption = tiers.reduce(
     (prev, current) => {
@@ -28,6 +35,10 @@
       CurrencyOption.DEV,
     ]),
   )
+  const compositeTiers: (Tier | InjectedTier)[] = [
+    ...tiers,
+    ...(injectedTiers ?? []),
+  ]
 
   let currency: CurrencyOption = preferedCurrency
   let currencies = new Set(tiers.map((t) => t.currency))
@@ -50,6 +61,7 @@
     class={`mb-8 grid gap-2 ${
       currencies.has(CurrencyOption.DEV) ? 'md:grid-cols-2' : ''
     }`}
+    on:change={switchInputs}
   >
     {#each currencyList as currencyOption}
       {#if currencies.has(currencyOption)}
@@ -65,7 +77,6 @@
             type="radio"
             name="input"
             value={currencyOption}
-            on:change={switchInputs}
             checked={preferedCurrency === currencyOption}
           />
           <img
@@ -83,11 +94,12 @@
         </label>
       {/if}
     {/each}
+    <slot name="currency:option" />
   </form>
 
   <h3 class="mb-4 text-2xl font-bold">Select a membership</h3>
   <div class="mb-8 grid gap-8 lg:grid-cols-2">
-    {#each tiers.filter((t) => t.currency === currency) as tier, i}
+    {#each compositeTiers.filter((t) => t.currency === currency) as tier, i}
       {#if tier.badgeImageSrc}
         <div>
           <MembershipOption
@@ -102,7 +114,8 @@
           <a
             class="mt-2 block w-full rounded bg-black py-4 text-center text-sm font-semibold text-white"
             id={`select-opt-${i}-${currency}`}
-            href={`/join/${tier.id}`}>Select</a
+            href={'checkoutUrl' in tier ? tier.checkoutUrl : `/join/${tier.id}`}
+            >Select</a
           >
         </div>
       {/if}
