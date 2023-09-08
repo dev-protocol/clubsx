@@ -396,8 +396,9 @@ const cryptoCafeMemberships = [
   {
     id: 'cafe-visitor',
     name: 'Cafe Visitor',
-    description: ``,
-    price: 5,
+    description: `CryptoCafe Bar 会員権（10時～18時、1日有効）\n\nCafé Visitor Pass\n\n無料Wifi、コーヒードリンク等
+    `,
+    price: 0.0001,
     currency: 'MATIC',
     imageSrc: 'https://i.imgur.com/4Qc8iDc.png',
     payload: toBytes32('cafe-visitor'),
@@ -410,8 +411,9 @@ const cryptoCafeMemberships = [
   {
     id: 'bar-visitor',
     name: 'Bar Visitor',
-    description: ``,
-    price: 5,
+    description: `CryptoCafe Bar 会員権（18時～22時、1日有効）\n\nBar Visitor Pass\n\n無料Wifi、コーヒードリンク、1日1杯のビール等
+    `,
+    price: 0.0001,
     currency: 'MATIC',
     imageSrc: 'https://i.imgur.com/PaxWOh8.png',
     payload: toBytes32('bar-visitor'),
@@ -424,8 +426,9 @@ const cryptoCafeMemberships = [
   {
     id: 'one-day',
     name: 'One Day',
-    description: ``,
-    price: 5,
+    description: `CryptoCafe Bar 会員権（10時~22時、1日有効）\n\nOne Day Pass\n\n無料Wifi、コーヒードリンク、1日1杯のビール等
+    `,
+    price: 0.0001,
     currency: 'MATIC',
     imageSrc: 'https://i.imgur.com/0IJMz2K.png',
     payload: toBytes32('one-day'),
@@ -438,8 +441,8 @@ const cryptoCafeMemberships = [
   {
     id: 'friend-pass',
     name: 'Friend Pass',
-    description: ``,
-    price: 5,
+    description: `CryptoCafe Bar 会員権（1ヶ月間有効）\n\nFriend Pass\n\n無料Wifi、コーヒードリンク、1日1杯のビール、ゲスト1人無料、スペシャルイベント参加等`,
+    price: 0.0001,
     currency: 'MATIC',
     imageSrc: 'https://i.imgur.com/KzMhSgw.png',
     payload: toBytes32('friend-pass'),
@@ -452,7 +455,8 @@ const cryptoCafeMemberships = [
   {
     id: 'best-friend-pass',
     name: 'Best Friend Pass',
-    description: ``,
+    description: `CryptoCafe Bar 会員権（3ヶ月間有効）\n\nBest Friend Pass\n\n無料Wifi、コーヒードリンク、1日1杯のビール、ゲスト1人無料、スペシャルイベント参加等
+    `,
     price: 5,
     currency: 'MATIC',
     imageSrc: 'https://i.imgur.com/v43yiqe.png',

@@ -224,14 +224,10 @@ export const get: ({
         quantity: 1,
       },
     ])
-    const custom_message = whenNotError(membership, (mem) => ({
-      show_items_additional_message: true,
-      items_additional_message: mem.source.description,
-    }))
 
     const options = whenNotErrorAll(
-      [gross_amount, push_url, items, custom_message],
-      ([_gross_amount, _push_url, _items, _custom_message]) =>
+      [gross_amount, push_url, items],
+      ([_gross_amount, _push_url, _items]) =>
         ({
           dummy,
           order_id,
@@ -242,7 +238,6 @@ export const get: ({
           card,
           email,
           items: _items,
-          custom_message: _custom_message,
         }) as PaymentKeyOptions,
     )
 
