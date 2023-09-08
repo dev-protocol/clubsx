@@ -552,25 +552,25 @@
     svelte "^4.0.0"
     vue "^3.2.0"
 
-"@devprotocol/clubs-core@1.3.0-alpha.3":
-  version "1.3.0-alpha.3"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-1.3.0-alpha.3.tgz#9e8357842f5debadb6431bf740d0c4a9f810905f"
-  integrity sha512-dWyhQn+lwrLquXOq35D7EJtKCluRUS9756r07Gx7SLd5Xi81AGuHs4hDrGQBkXmrRtaS+B8SskCHideJv4U6Uw==
+"@devprotocol/clubs-core@1.3.0-alpha.6":
+  version "1.3.0-alpha.6"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-1.3.0-alpha.6.tgz#92f6a3b1c6ee32acfab5d2a997dbfdc500aa1226"
+  integrity sha512-iEzMdVRSsSEXsfctaY8X1JVu9PbADfsO/h5mz72+bsTYXfeCwZTjcBeWvOSSWSleKv6v+YC8If1XpNvaRNrC4A==
   dependencies:
     "@devprotocol/dev-kit" "8.5.0"
     "@devprotocol/elements" "1.0.0"
     "@devprotocol/hashi" "2.2.1"
     "@devprotocol/util-ts" "4.0.0"
+    "@devprotocol/web3-esbundle" "0.0.8"
     "@metamask/detect-provider" "^2.0.0"
-    "@web3modal/ethereum" "^2.7.1"
-    "@web3modal/react" "^2.7.1"
+    "@wagmi/core" "1.4.1"
+    "@web3modal/wagmi" "3.0.0-alpha.5"
     ethers "6.7.1"
     js-base64 "^3.7.2"
     lit "^2.3.1"
     ramda "^0.29.0"
     rxjs "^7.8.1"
-    viem "^1.10.7"
-    wagmi "^1.4.1"
+    viem "^1.10.8"
     yaml "2.3.2"
   optionalDependencies:
     react "^18.0.0"
@@ -695,6 +695,14 @@
   integrity sha512-8YgP79u2C5q4T4j0IsPN0bSGqtSYBYXt8rHzqq+Ip1T/AeDJX9h/1zaHn63GOcwzTyUwHIKbYxO4hAWkO1fILw==
   dependencies:
     ramda "^0.29.0"
+
+"@devprotocol/web3-esbundle@0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@devprotocol/web3-esbundle/-/web3-esbundle-0.0.8.tgz#6694684e42358fa4d4ed276826684897d689c4d6"
+  integrity sha512-TaKGBVd5A9YsSdsGMtVBsyAXSVvuAkiYBfDG4PEOlga/Pfhm7f7eMq6ijNlQdVjW3XZgaApr6xph16YuBxAJzw==
+  dependencies:
+    "@web3modal/ethereum" "^2.7.1"
+    "@web3modal/react" "^2.7.1"
 
 "@emmetio/abbreviation@^2.3.3":
   version "2.3.3"
@@ -2601,40 +2609,6 @@
   resolved "https://registry.yarnpkg.com/@tailwindcss/aspect-ratio/-/aspect-ratio-0.4.2.tgz#9ffd52fee8e3c8b20623ff0dcb29e5c21fb0a9ba"
   integrity sha512-8QPrypskfBa7QIMuKHg2TA7BqES6vhBrDLOv8Unb6FcFyd3TjKbc6lcmb9UPQHxfl24sXoJ41ux/H7qQQvfaSQ==
 
-"@tanstack/query-core@4.35.0":
-  version "4.35.0"
-  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-4.35.0.tgz#61e5cf9363b423ed665740c422902e65619eb7da"
-  integrity sha512-4GMcKQuLZQi6RFBiBZNsLhl+hQGYScRZ5ZoVq8QAzfqz9M7vcGin/2YdSESwl7WaV+Qzsb5CZOAbMBes4lNTnA==
-
-"@tanstack/query-persist-client-core@4.35.0":
-  version "4.35.0"
-  resolved "https://registry.yarnpkg.com/@tanstack/query-persist-client-core/-/query-persist-client-core-4.35.0.tgz#95894da4ab70011462c673e370dbb59f1c7993e7"
-  integrity sha512-un1zoD6D80lrJ1x1jtPzhm1xrdPbhG9unf4y0Tl58/eCZz1VIjw+rR4hG+kn/hfzxX/kY4AMvtwMPxtt3HiAdg==
-  dependencies:
-    "@tanstack/query-core" "4.35.0"
-
-"@tanstack/query-sync-storage-persister@^4.27.1":
-  version "4.35.0"
-  resolved "https://registry.yarnpkg.com/@tanstack/query-sync-storage-persister/-/query-sync-storage-persister-4.35.0.tgz#42340674e34223ae8cd49e498335d51ecb70aa14"
-  integrity sha512-idNCZ7GF401X/NUHS0G0VQNhB36h1VTPobWBJYAEGkz6uvS8CpVuruGyvmVPuR61SE2k94g/Qc4jWQMcDeFM+g==
-  dependencies:
-    "@tanstack/query-persist-client-core" "4.35.0"
-
-"@tanstack/react-query-persist-client@^4.28.0":
-  version "4.35.0"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-query-persist-client/-/react-query-persist-client-4.35.0.tgz#45948bb5b807f53fd5b5373d29734c619e6e804e"
-  integrity sha512-hcFyWjDIKqaRH38MMPKOXqRzxqAHSRrWV9N2vqo6N1LbMaIdbwvL1sZQ9vfUuBXSoyq1kbhSLVdoz6Kpx/gA8A==
-  dependencies:
-    "@tanstack/query-persist-client-core" "4.35.0"
-
-"@tanstack/react-query@^4.28.0":
-  version "4.35.0"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-4.35.0.tgz#6286d2706e69384accc4d6b9ff8e4becd427db74"
-  integrity sha512-LLYDNnM9ewYHgjm2rzhk4KG/puN2rdoqCUD+N9+V7SwlsYwJk5ypX58rpkoZAhFyZ+KmFUJ7Iv2lIEOoUqydIg==
-  dependencies:
-    "@tanstack/query-core" "4.35.0"
-    use-sync-external-store "^1.2.0"
-
 "@tootallnate/once@2":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-2.0.0.tgz#f544a148d3ab35801c1f633a7441fd87c2e484bf"
@@ -3553,10 +3527,24 @@
   dependencies:
     valtio "1.11.0"
 
+"@web3modal/core@3.0.0-alpha.5":
+  version "3.0.0-alpha.5"
+  resolved "https://registry.yarnpkg.com/@web3modal/core/-/core-3.0.0-alpha.5.tgz#5ecea3434e75e376734f7d272327383a8eebe043"
+  integrity sha512-UJ1e0jA8v+X9vgq8fayK04hcbZZLVQelpf0LhLlE2Yc/lvYh4FHn89Ug1dYN/b04QzjMAFhLgmRpIAoxe5sG2A==
+  dependencies:
+    valtio "1.11.2"
+
 "@web3modal/ethereum@^2.7.1":
   version "2.7.1"
   resolved "https://registry.yarnpkg.com/@web3modal/ethereum/-/ethereum-2.7.1.tgz#464dbc1d00d075c16961b77e9a353b1966538653"
   integrity sha512-1x3qhYh9qgtvw1MDQD4VeDf2ZOsVANKRPtUty4lF+N4L8xnAIwvNKUAMA4j6T5xSsjqUfq5Tdy5mYsNxLmsWMA==
+
+"@web3modal/polyfills@3.0.0-alpha.5":
+  version "3.0.0-alpha.5"
+  resolved "https://registry.yarnpkg.com/@web3modal/polyfills/-/polyfills-3.0.0-alpha.5.tgz#642c79c2af69e5a89499c59fa4b17fa522aa1753"
+  integrity sha512-7AOYWakQN+BrPeMuZ8VMHW02ab1hlHiwVImDviKlCELl//LdRYjmeBq1yUQVkPiNXe5bVMUJnuE3AyMEkK8NQg==
+  dependencies:
+    buffer "6.0.3"
 
 "@web3modal/react@^2.7.1":
   version "2.7.1"
@@ -3565,6 +3553,16 @@
   dependencies:
     "@web3modal/core" "2.7.1"
     "@web3modal/ui" "2.7.1"
+
+"@web3modal/scaffold@3.0.0-alpha.5":
+  version "3.0.0-alpha.5"
+  resolved "https://registry.yarnpkg.com/@web3modal/scaffold/-/scaffold-3.0.0-alpha.5.tgz#1e3ae52c4740b6184863f7677e6273d05cf65998"
+  integrity sha512-fsaRW3NIqPdvZgsYqP2RQ+ORRMLMr8GdGhXWFhcOzlYxHbo+T8yYamCFH/wQ8eMsAnNGK0MLLjeyv0GEY3NoSQ==
+  dependencies:
+    "@web3modal/core" "3.0.0-alpha.5"
+    "@web3modal/ui" "3.0.0-alpha.5"
+    lit "2.8.0"
+    motion "10.16.2"
 
 "@web3modal/ui@2.7.1":
   version "2.7.1"
@@ -3575,6 +3573,22 @@
     lit "2.7.6"
     motion "10.16.2"
     qrcode "1.5.3"
+
+"@web3modal/ui@3.0.0-alpha.5":
+  version "3.0.0-alpha.5"
+  resolved "https://registry.yarnpkg.com/@web3modal/ui/-/ui-3.0.0-alpha.5.tgz#444d2509431ba439d71c271216538f025d8c8e85"
+  integrity sha512-C73A26yPWMJYWVpP0GFff3ZBRwjDcB3U/ouAopi9ZNNizuNjspLCuTSJQcHlu99d1Uxe2aN6xDfBmpQze2Ywqw==
+  dependencies:
+    lit "2.8.0"
+    qrcode "1.5.3"
+
+"@web3modal/wagmi@3.0.0-alpha.5":
+  version "3.0.0-alpha.5"
+  resolved "https://registry.yarnpkg.com/@web3modal/wagmi/-/wagmi-3.0.0-alpha.5.tgz#22c67c7f368025bc1a2b4f55fff98917d035a301"
+  integrity sha512-b7/ZNtGYagcm90rXqG3Ps35fXezvuzraWGbxv0Pv0SdbBryXNcogDxehRU2kpGW2+tps4zcgPzSs5OgbftYJow==
+  dependencies:
+    "@web3modal/polyfills" "3.0.0-alpha.5"
+    "@web3modal/scaffold" "3.0.0-alpha.5"
 
 JSONStream@^1.3.5:
   version "1.3.5"
@@ -6905,7 +6919,7 @@ lit@2.7.6:
     lit-element "^3.3.0"
     lit-html "^2.7.0"
 
-lit@^2.3.1:
+lit@2.8.0, lit@^2.3.1:
   version "2.8.0"
   resolved "https://registry.yarnpkg.com/lit/-/lit-2.8.0.tgz#4d838ae03059bf9cafa06e5c61d8acc0081e974e"
   integrity sha512-4Sc3OFX9QHOJaHbmTMk28SYgVxLN3ePDjg7hofEft2zWlehFL3LiAuapWc4U/kYwMYJSh2hTCPZ6/LIC7ii0MA==
@@ -9753,7 +9767,7 @@ urlpattern-polyfill@8.0.2:
   resolved "https://registry.yarnpkg.com/urlpattern-polyfill/-/urlpattern-polyfill-8.0.2.tgz#99f096e35eff8bf4b5a2aa7d58a1523d6ebc7ce5"
   integrity sha512-Qp95D4TPJl1kC9SKigDcqgyM2VDVO4RiJc2d4qe5GrYm+zbIQCWWKAFaJNQ4BhdFeDGwBmAxqJBwWSJDb9T3BQ==
 
-use-sync-external-store@1.2.0, use-sync-external-store@^1.2.0:
+use-sync-external-store@1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/use-sync-external-store/-/use-sync-external-store-1.2.0.tgz#7dbefd6ef3fe4e767a0cf5d7287aacfb5846928a"
   integrity sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==
@@ -9809,6 +9823,14 @@ valtio@1.11.0:
     proxy-compare "2.5.1"
     use-sync-external-store "1.2.0"
 
+valtio@1.11.2:
+  version "1.11.2"
+  resolved "https://registry.yarnpkg.com/valtio/-/valtio-1.11.2.tgz#b8049c02dfe65620635d23ebae9121a741bb6530"
+  integrity sha512-1XfIxnUXzyswPAPXo1P3Pdx2mq/pIqZICkWN60Hby0d9Iqb+MEIpqgYVlbflvHdrp2YR/q3jyKWRPJJ100yxaw==
+  dependencies:
+    proxy-compare "2.5.1"
+    use-sync-external-store "1.2.0"
+
 vfile-location@^4.0.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/vfile-location/-/vfile-location-4.1.0.tgz#69df82fb9ef0a38d0d02b90dd84620e120050dd0"
@@ -9835,10 +9857,25 @@ vfile@^5.0.0, vfile@^5.3.2, vfile@^5.3.7:
     unist-util-stringify-position "^3.0.0"
     vfile-message "^3.0.0"
 
-viem@^1.0.0, viem@^1.10.7:
+viem@^1.0.0:
   version "1.10.7"
   resolved "https://registry.yarnpkg.com/viem/-/viem-1.10.7.tgz#6ac6cae980237bbbc8f2a2b15b6fb15aa893fc79"
   integrity sha512-yuaYSHgV1g794nfxhn+V89qgK5ziFTLBSNqSDt4KW8YpjLu0Ah6LLZTtpOj3+MRWKKDwJ1YL2rENb8cuXstUzg==
+  dependencies:
+    "@adraffy/ens-normalize" "1.9.4"
+    "@noble/curves" "1.2.0"
+    "@noble/hashes" "1.3.2"
+    "@scure/bip32" "1.3.2"
+    "@scure/bip39" "1.2.1"
+    "@types/ws" "^8.5.5"
+    abitype "0.9.8"
+    isomorphic-ws "5.0.0"
+    ws "8.13.0"
+
+viem@^1.10.8:
+  version "1.10.8"
+  resolved "https://registry.yarnpkg.com/viem/-/viem-1.10.8.tgz#1c6aaaf25cb25484bbe69dc93870a70907b2bd2e"
+  integrity sha512-/kVDjc9j1OVoDsxV0E1iw1ehPuWPXv5x/9Yc1H0wKky6ACWRoKsURDeLi0Xwtli7vmFcJne+MMPhA96zVu5iIg==
   dependencies:
     "@adraffy/ens-normalize" "1.9.4"
     "@noble/curves" "1.2.0"
@@ -9966,18 +10003,6 @@ vue@3.3.4, vue@^3.2.0:
     "@vue/runtime-dom" "3.3.4"
     "@vue/server-renderer" "3.3.4"
     "@vue/shared" "3.3.4"
-
-wagmi@^1.4.1:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/wagmi/-/wagmi-1.4.1.tgz#32e5fda3e3a47559115118e7c8315fe25115ab11"
-  integrity sha512-v3xd+uYZfLCAs1I4fLU7U9hg/gCw+Ud005J7kNR0mi20BcFAEU1EDN1LxHxpjUV0qKhOzSlMlrLjJyBCmSYhFA==
-  dependencies:
-    "@tanstack/query-sync-storage-persister" "^4.27.1"
-    "@tanstack/react-query" "^4.28.0"
-    "@tanstack/react-query-persist-client" "^4.28.0"
-    "@wagmi/core" "1.4.1"
-    abitype "0.8.7"
-    use-sync-external-store "^1.2.0"
 
 wcwidth@^1.0.1:
   version "1.0.1"
