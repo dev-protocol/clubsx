@@ -4,11 +4,12 @@ import clubs from '@devprotocol/clubs-core'
 import vercel from '@astrojs/vercel/serverless'
 import netlify from '@astrojs/netlify/functions'
 import tailwind from '@astrojs/tailwind'
+import lit from '@astrojs/lit'
 import vue from '@astrojs/vue'
 import react from '@astrojs/react'
 import svelte from '@astrojs/svelte'
 // import commonjs from '@rollup/plugin-commonjs'
-// import commonjs from 'vite-plugin-commonjs'
+import commonjs from 'vite-plugin-commonjs'
 
 import builtInApiPaths from './built-in-api-paths'
 
@@ -50,37 +51,33 @@ export default defineConfig({
         },
       },
     },
-    vue({
-      template: {
-        compilerOptions: {
-          isCustomElement: (tag) => tag.includes('-'),
-        },
-      },
-    }),
+    lit(),
+    vue(),
     react(),
     tailwind(),
     svelte(),
   ],
   vite: {
     plugins: [
-      // commonjs({
-      //   filter(id) {
-      //     return id.includes('use-sync-external-store')
-      //   },
-      // }),
+      commonjs({
+        filter(id) {
+          return id.includes('use-sync-external-store')
+        },
+      }),
     ],
     optimizeDeps: {
       force: true,
       include: [
         'eventemitter3',
-        // '@stablelib/hkdf',
-        // '@stablelib/sha256',
-        // '@stablelib/random',
-        // '@stablelib/chacha20poly1305',
-        // '@walletconnect/window-metadata',
-        // '@walletconnect/time',
-        // '@walletconnect/window-getters',
-        'use-sync-external-store',
+        '@stablelib/hkdf',
+        '@stablelib/sha256',
+        '@stablelib/random',
+        '@stablelib/chacha20poly1305',
+        '@walletconnect/window-metadata',
+        '@walletconnect/time',
+        '@walletconnect/window-getters',
+        'qrcode',
+        'buffer',
       ],
     },
     server: {
@@ -89,6 +86,8 @@ export default defineConfig({
       },
     },
     resolve: {
+      preserveSymlinks: true,
+
       alias: {
         'three/examples/jsm/controls/OrbitControls':
           '/node_modules/three/examples/jsm/controls/OrbitControls',
