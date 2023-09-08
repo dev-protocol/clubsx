@@ -4,10 +4,12 @@ import clubs from '@devprotocol/clubs-core'
 import vercel from '@astrojs/vercel/serverless'
 import netlify from '@astrojs/netlify/functions'
 import tailwind from '@astrojs/tailwind'
+import lit from '@astrojs/lit'
 import vue from '@astrojs/vue'
 import react from '@astrojs/react'
 import svelte from '@astrojs/svelte'
 import commonjs from '@rollup/plugin-commonjs'
+
 import builtInApiPaths from './built-in-api-paths'
 
 config()
@@ -48,13 +50,8 @@ export default defineConfig({
         },
       },
     },
-    vue({
-      template: {
-        compilerOptions: {
-          isCustomElement: (tag) => tag.includes('-'),
-        },
-      },
-    }),
+    lit(),
+    vue(),
     react(),
     tailwind(),
     svelte(),
