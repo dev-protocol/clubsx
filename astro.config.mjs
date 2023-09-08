@@ -8,7 +8,7 @@ import vue from '@astrojs/vue'
 import react from '@astrojs/react'
 import svelte from '@astrojs/svelte'
 // import commonjs from '@rollup/plugin-commonjs'
-import commonjs from 'vite-plugin-commonjs'
+// import commonjs from 'vite-plugin-commonjs'
 
 import builtInApiPaths from './built-in-api-paths'
 
@@ -63,20 +63,26 @@ export default defineConfig({
   ],
   vite: {
     plugins: [
-      commonjs({
-        filter(id) {
-          console.log(id)
-          if (
-            id.includes('eventemitter3') ||
-            id.includes('@stablelib/hkdf/lib/hkdf') ||
-            id.includes('@walletconnect/time')
-          ) {
-            console.log('hit')
-            return true
-          }
-        },
-      }),
+      // commonjs({
+      //   filter(id) {
+      //     return id.includes('use-sync-external-store')
+      //   },
+      // }),
     ],
+    optimizeDeps: {
+      force: true,
+      include: [
+        'eventemitter3',
+        // '@stablelib/hkdf',
+        // '@stablelib/sha256',
+        // '@stablelib/random',
+        // '@stablelib/chacha20poly1305',
+        // '@walletconnect/window-metadata',
+        // '@walletconnect/time',
+        // '@walletconnect/window-getters',
+        'use-sync-external-store',
+      ],
+    },
     server: {
       hmr: {
         timeout: 360000,
