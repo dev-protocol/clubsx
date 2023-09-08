@@ -552,10 +552,10 @@
     svelte "^4.0.0"
     vue "^3.2.0"
 
-"@devprotocol/clubs-core@1.1.0-alpha.0":
-  version "1.1.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-1.1.0-alpha.0.tgz#3242c7ef33d292b11d1987993806d84f5ee8f785"
-  integrity sha512-nv9J6jUemMk4LdUovEvepiVChyfnnYb43e+6sUpKDH59oKHytWYK1JwT42K6MzYiWXAi89UTFgZDthg4Bieljw==
+"@devprotocol/clubs-core@1.3.0-alpha.3":
+  version "1.3.0-alpha.3"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-1.3.0-alpha.3.tgz#9e8357842f5debadb6431bf740d0c4a9f810905f"
+  integrity sha512-dWyhQn+lwrLquXOq35D7EJtKCluRUS9756r07Gx7SLd5Xi81AGuHs4hDrGQBkXmrRtaS+B8SskCHideJv4U6Uw==
   dependencies:
     "@devprotocol/dev-kit" "8.5.0"
     "@devprotocol/elements" "1.0.0"
@@ -571,7 +571,6 @@
     rxjs "^7.8.1"
     viem "^1.10.7"
     wagmi "^1.4.1"
-    web3modal "^1.9.9"
     yaml "2.3.2"
   optionalDependencies:
     react "^18.0.0"

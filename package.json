@@ -57,7 +57,7 @@
     "@astrojs/vue": "2.2.1",
     "@crossmint/client-sdk-base": "^1.0.1-alpha.1",
     "@crossmint/client-sdk-react-ui": "^1.0.1-alpha.1",
-    "@devprotocol/clubs-core": "1.1.0-alpha.0",
+    "@devprotocol/clubs-core": "1.3.0-alpha.3",
     "@devprotocol/clubs-plugin-posts": "^0.0.2",
     "@devprotocol/dev-kit": "8.5.0",
     "@devprotocol/elements": "1.0.0",
