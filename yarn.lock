@@ -662,10 +662,10 @@
     svelte "^4.0.0"
     vue "^3.2.0"
 
-"@devprotocol/clubs-core@1.1.0-alpha.0":
-  version "1.1.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-1.1.0-alpha.0.tgz#3242c7ef33d292b11d1987993806d84f5ee8f785"
-  integrity sha512-nv9J6jUemMk4LdUovEvepiVChyfnnYb43e+6sUpKDH59oKHytWYK1JwT42K6MzYiWXAi89UTFgZDthg4Bieljw==
+"@devprotocol/clubs-core@1.3.0-alpha.3":
+  version "1.3.0-alpha.3"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-1.3.0-alpha.3.tgz#9e8357842f5debadb6431bf740d0c4a9f810905f"
+  integrity sha512-dWyhQn+lwrLquXOq35D7EJtKCluRUS9756r07Gx7SLd5Xi81AGuHs4hDrGQBkXmrRtaS+B8SskCHideJv4U6Uw==
   dependencies:
     "@devprotocol/dev-kit" "8.5.0"
     "@devprotocol/elements" "1.0.0"
@@ -681,7 +681,6 @@
     rxjs "^7.8.1"
     viem "^1.10.7"
     wagmi "^1.4.1"
-    web3modal "^1.9.9"
     yaml "2.3.2"
   optionalDependencies:
     react "^18.0.0"
@@ -3784,10 +3783,10 @@ arrify@^2.0.0:
   resolved "https://registry.yarnpkg.com/arrify/-/arrify-2.0.1.tgz#c9655e9331e0abcd588d2a7cad7e9956f66701fa"
   integrity sha512-3duEwti880xqi4eAMN8AyR4a0ByT90zoYdLlevfrvU43vb0YZwZVfxOgxWrLXXXpyugL0hNZc9G6BiB5B3nUug==
 
-astro@^3.0.8:
-  version "3.0.8"
-  resolved "https://registry.yarnpkg.com/astro/-/astro-3.0.8.tgz#d7298d6570db009f98f9bed83b11081de690a2e9"
-  integrity sha512-behNlLMlT8yWLlVvKKB2ufbSwxiqYUKqw31LSQx+lNQ8/lBvxemyjSBDMlBbGVCWEfg67B2bqWIrCweHSWb01Q==
+astro@3.0.10:
+  version "3.0.10"
+  resolved "https://registry.yarnpkg.com/astro/-/astro-3.0.10.tgz#635872d10fc218bcb238b002ea6711828edb0172"
+  integrity sha512-LxLlFksTUn3B3Xi3KBirRBg1QI8t2lvOijfODor1OSpAnlEZUzToyLxbdzR2dBVLF5reAoi7LJNKsQouPnMXlg==
   dependencies:
     "@astrojs/compiler" "^2.0.1"
     "@astrojs/internal-helpers" "0.2.0"
@@ -3826,13 +3825,12 @@ astro@^3.0.8:
     ora "^7.0.1"
     p-limit "^4.0.0"
     path-to-regexp "^6.2.1"
-    preferred-pm "^3.0.3"
+    preferred-pm "^3.1.2"
     prompts "^2.4.2"
     rehype "^12.0.1"
     resolve "^1.22.4"
     semver "^7.5.4"
     server-destroy "^1.0.1"
-    sharp "^0.32.5"
     shiki "^0.14.3"
     string-width "^6.1.0"
     strip-ansi "^7.1.0"
@@ -3842,9 +3840,11 @@ astro@^3.0.8:
     vfile "^5.3.7"
     vite "^4.4.9"
     vitefu "^0.2.4"
-    which-pm "^2.0.0"
+    which-pm "^2.1.1"
     yargs-parser "^21.1.1"
     zod "3.21.1"
+  optionalDependencies:
+    sharp "^0.32.5"
 
 async-mutex@^0.2.6:
   version "0.2.6"
@@ -8260,10 +8260,10 @@ prebuild-install@^7.1.1:
     tar-fs "^2.0.0"
     tunnel-agent "^0.6.0"
 
-preferred-pm@^3.0.3:
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/preferred-pm/-/preferred-pm-3.1.1.tgz#c1ff7b16ef7241d0c9c348760055a8b391d8fd44"
-  integrity sha512-CsZgOVLKHifdoRu2y66P1s6oLb2WfT5Njkcgi80I/52FWTTVkWG6z0Z13vPkXC4hsT0nMrYXqX30buH8+D2eRQ==
+preferred-pm@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/preferred-pm/-/preferred-pm-3.1.2.tgz#aedb70550734a574dffcbf2ce82642bd1753bdd6"
+  integrity sha512-nk7dKrcW8hfCZ4H6klWcdRknBOXWzNQByJ0oJyX97BOupsYD+FzLS4hflgEu/uPUEHZCuRfMxzCBsuWd7OzT8Q==
   dependencies:
     find-up "^5.0.0"
     find-yarn-workspace-root2 "1.2.16"
@@ -10166,7 +10166,7 @@ which-pm@2.0.0:
     load-yaml-file "^0.2.0"
     path-exists "^4.0.0"
 
-which-pm@^2.0.0:
+which-pm@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/which-pm/-/which-pm-2.1.1.tgz#0be2b70c67e94a32e87b9768a94a7f0954f2dcfa"
   integrity sha512-xzzxNw2wMaoCWXiGE8IJ9wuPMU+EYhFksjHxrRT8kMT5SnocBPRg69YAMtyV4D12fP582RA+k3P8H9J5EMdIxQ==
