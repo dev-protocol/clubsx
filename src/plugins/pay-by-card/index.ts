@@ -191,8 +191,8 @@ export const getSlots: ClubsFunctionGetSlots = async (_, __, { factory }) => {
 }
 
 export const meta: ClubsPluginMeta = {
-  id: 'devprotocol:clubs:plugin:fiat',
-  displayName: 'FIAT',
+  id: 'devprotocol:clubs:plugin:pay-by-card',
+  displayName: 'Pay By Card',
   category: ClubsPluginCategory.Monetization,
 }
 

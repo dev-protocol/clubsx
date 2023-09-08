@@ -7,9 +7,16 @@ import tailwind from '@astrojs/tailwind'
 import vue from '@astrojs/vue'
 import react from '@astrojs/react'
 import svelte from '@astrojs/svelte'
+// import commonjs from '@rollup/plugin-commonjs'
+import commonjs from 'vite-plugin-commonjs'
+
 import builtInApiPaths from './built-in-api-paths'
 
 config()
+
+const singleMode = ((i) => (i > -1 ? process.argv[i + 1] : undefined))(
+  process.argv.findIndex((a) => a === '--club'),
+)
 
 // https://astro.build/config
 export default defineConfig({
@@ -32,11 +39,9 @@ export default defineConfig({
                 builtInApiPaths.every((p) => !req.url.startsWith(p)))
             ) {
               const host = req.headers.host.split('.')
-              const [, ...primaryHost] = host
 
-              if (host.length > 1) {
-                req.headers.host = primaryHost.join('.')
-                req.url = `/sites_/${host[0]}${req.url}`
+              if (host.length > 1 || singleMode) {
+                req.url = `/sites_/${singleMode ?? host[0]}${req.url}`
               }
             }
 
@@ -57,6 +62,21 @@ export default defineConfig({
     svelte(),
   ],
   vite: {
+    plugins: [
+      commonjs({
+        filter(id) {
+          console.log(id)
+          if (
+            id.includes('eventemitter3') ||
+            id.includes('@stablelib/hkdf/lib/hkdf') ||
+            id.includes('@walletconnect/time')
+          ) {
+            console.log('hit')
+            return true
+          }
+        },
+      }),
+    ],
     server: {
       hmr: {
         timeout: 360000,

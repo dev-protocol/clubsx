@@ -3,8 +3,11 @@ import { encode } from '@devprotocol/clubs-core/encode'
 import { createClient } from 'redis'
 import { keccak256, toUtf8Bytes } from 'ethers'
 import fs from 'fs-extra'
+import jsonwebtoken from 'jsonwebtoken'
 
 dotenv.config()
+
+const { SALT } = process.env
 
 const toBytes32 = (str) => keccak256(toUtf8Bytes(str))
 
@@ -381,6 +384,87 @@ const guild = {
   value: 'https://guild.xyz/temples-dao',
 }
 
+const cryptocafeAccessControl$1 = {
+  url: 'https://prerelease.clubs.place/api/mock/access-control?result=1',
+  description: `Please fill out this form first: https://example.com`,
+}
+const cryptocafeAccessControl$2 = {
+  url: 'https://prerelease.clubs.place/api/mock/access-control?result=0',
+  description: `1. Please fill out this form: https://example.com \n\n2. You will be notified by email when you are approved, so please wait for it.`,
+}
+const cryptoCafeMemberships = [
+  {
+    id: 'cafe-visitor',
+    name: 'Cafe Visitor',
+    description: ``,
+    price: 5,
+    currency: 'MATIC',
+    imageSrc: 'https://i.imgur.com/4Qc8iDc.png',
+    payload: toBytes32('cafe-visitor'),
+    fee: {
+      percentage: 0.95,
+      beneficiary: '0x57E21bd98612DE0Bd1723F4bf81A944eF7BfF526',
+    },
+    accessControl: cryptocafeAccessControl$1,
+  },
+  {
+    id: 'bar-visitor',
+    name: 'Bar Visitor',
+    description: ``,
+    price: 5,
+    currency: 'MATIC',
+    imageSrc: 'https://i.imgur.com/PaxWOh8.png',
+    payload: toBytes32('bar-visitor'),
+    fee: {
+      percentage: 0.95,
+      beneficiary: '0x57E21bd98612DE0Bd1723F4bf81A944eF7BfF526',
+    },
+    accessControl: cryptocafeAccessControl$1,
+  },
+  {
+    id: 'one-day',
+    name: 'One Day',
+    description: ``,
+    price: 5,
+    currency: 'MATIC',
+    imageSrc: 'https://i.imgur.com/0IJMz2K.png',
+    payload: toBytes32('one-day'),
+    fee: {
+      percentage: 0.95,
+      beneficiary: '0x57E21bd98612DE0Bd1723F4bf81A944eF7BfF526',
+    },
+    accessControl: cryptocafeAccessControl$1,
+  },
+  {
+    id: 'friend-pass',
+    name: 'Friend Pass',
+    description: ``,
+    price: 5,
+    currency: 'MATIC',
+    imageSrc: 'https://i.imgur.com/KzMhSgw.png',
+    payload: toBytes32('friend-pass'),
+    fee: {
+      percentage: 0.95,
+      beneficiary: '0x57E21bd98612DE0Bd1723F4bf81A944eF7BfF526',
+    },
+    accessControl: cryptocafeAccessControl$2,
+  },
+  {
+    id: 'best-friend-pass',
+    name: 'Best Friend Pass',
+    description: ``,
+    price: 5,
+    currency: 'MATIC',
+    imageSrc: 'https://i.imgur.com/v43yiqe.png',
+    payload: toBytes32('best-friend-pass'),
+    fee: {
+      percentage: 0.95,
+      beneficiary: '0x57E21bd98612DE0Bd1723F4bf81A944eF7BfF526',
+    },
+    accessControl: cryptocafeAccessControl$2,
+  },
+]
+
 const populate = async () => {
   try {
     const client = createClient({
@@ -690,7 +774,7 @@ const populate = async () => {
         ],
         plugins: [
           {
-            id: 'devprotocol:clubs:plugin:fiat',
+            id: 'devprotocol:clubs:plugin:pay-by-card',
             name: 'fiat',
             enable: false,
             options: [
@@ -911,7 +995,7 @@ const populate = async () => {
         ],
         plugins: [
           {
-            id: 'devprotocol:clubs:plugin:fiat',
+            id: 'devprotocol:clubs:plugin:pay-by-card',
             name: 'fiat',
             enable: true,
             options: [
@@ -975,6 +1059,17 @@ const populate = async () => {
                     },
                   },
                 ],
+              },
+              {
+                key: 'webhooks',
+                value: {
+                  fulfillment: {
+                    encrypted: jsonwebtoken.sign(
+                      'https://veritrans.clubs.place/api/mock/logger',
+                      SALT,
+                    ),
+                  },
+                },
               },
             ],
           },
@@ -1189,6 +1284,200 @@ const populate = async () => {
           {
             id: 'devprotocol:clubs:gated-contact-form',
             name: 'message',
+            enable: true,
+            options: [],
+          },
+        ],
+      }),
+    )
+
+    await client.set(
+      'cryptocafe',
+      encode({
+        name: 'Crypto Cafe & Bar',
+        twitterHandle: '',
+        description: `Tokyo's hub for blockchain enthusiasts & the crypto-curious.`,
+        url: 'https://cryptocafe.prerelease.clubs.place',
+        propertyAddress: '0xE59fEDaBB0F79b0EC605737805a9125cd8d87B1f',
+        chainId: 80001, // Polygon: 137 // Mumbai: 80001
+        rpcUrl:
+          'https://polygon-mumbai.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920', // Polygon: https://polygon-mainnet.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920 // Mumbai: https://polygon-mumbai.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920
+        adminRolePoints: 0,
+        options: [
+          {
+            key: 'ogp',
+            value: { image: 'https://i.imgur.com/IqkJqwc.jpg' },
+          },
+          {
+            key: 'avatarImgSrc',
+            value: 'https://i.imgur.com/8wc0qH5.png',
+          },
+        ],
+        plugins: [
+          {
+            id: 'devprotocol:clubs:plugin:veritrans',
+            name: 'fiat',
+            enable: true,
+            options: [
+              {
+                key: 'override',
+                value: [
+                  {
+                    id: cryptoCafeMemberships[0].id,
+                    importFrom: 'devprotocol:clubs:simple-memberships',
+                    key: 'memberships',
+                    payload: cryptoCafeMemberships[0].payload,
+                    price: {
+                      yen: 2000,
+                    },
+                  },
+                  {
+                    id: cryptoCafeMemberships[1].id,
+                    importFrom: 'devprotocol:clubs:simple-memberships',
+                    key: 'memberships',
+                    payload: cryptoCafeMemberships[1].payload,
+                    price: {
+                      yen: 2000,
+                    },
+                  },
+                  {
+                    id: cryptoCafeMemberships[2].id,
+                    importFrom: 'devprotocol:clubs:simple-memberships',
+                    key: 'memberships',
+                    payload: cryptoCafeMemberships[2].payload,
+                    price: {
+                      yen: 3000,
+                    },
+                  },
+                  {
+                    id: cryptoCafeMemberships[3].id,
+                    importFrom: 'devprotocol:clubs:simple-memberships',
+                    key: 'memberships',
+                    payload: cryptoCafeMemberships[3].payload,
+                    price: {
+                      yen: 45000,
+                    },
+                  },
+                  {
+                    id: cryptoCafeMemberships[4].id,
+                    importFrom: 'devprotocol:clubs:simple-memberships',
+                    key: 'memberships',
+                    payload: cryptoCafeMemberships[4].payload,
+                    price: {
+                      yen: 110000,
+                    },
+                  },
+                ],
+              },
+              {
+                key: 'webhooks',
+                value: {
+                  fulfillment: {
+                    encrypted: jsonwebtoken.sign(
+                      'https://veritrans.clubs.place/api/mock/logger',
+                      SALT,
+                    ),
+                  },
+                },
+              },
+            ],
+          },
+          {
+            id: 'devprotocol:clubs:plugin:tickets',
+            options: [
+              {
+                key: 'tickets',
+                value: [
+                  {
+                    payload: toBytes32('cafe-visitor'),
+                    importedFrom: {
+                      plugin: 'devprotocol:clubs:simple-memberships',
+                      key: 'memberships',
+                    },
+                    name: 'Cafe Ticket',
+                    uses: [
+                      {
+                        id: '1-month-pass',
+                        description: '1 month pass',
+                        duration: '30 days',
+                        refreshCycle: undefined,
+                      },
+                      {
+                        id: 'free-juice',
+                        description: 'Free juice/day',
+                        dependsOn: '1-month-pass',
+                        refreshCycle: '24 hours',
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                key: 'airtable',
+                value: {
+                  encryptedToken: 'xxx',
+                  base: 'xxx',
+                },
+              },
+            ],
+          },
+          {
+            id: 'devprotocol:clubs:simple-memberships',
+            name: 'memberships',
+            enable: true,
+            options: [
+              {
+                key: 'memberships',
+                value: cryptoCafeMemberships,
+              },
+            ],
+          },
+          {
+            id: 'devprotocol:clubs:theme-1',
+            name: 'defaultTheme',
+            enable: true,
+            options: [
+              {
+                key: 'globalConfig',
+                value: {
+                  bg: 'rgba(29, 36, 38, 1)',
+                },
+              },
+              {
+                key: 'homeConfig',
+                value: {
+                  hero: {
+                    image: 'https://i.imgur.com/IqkJqwc.jpg',
+                  },
+                  description: `Tokyo's hub for blockchain enthusiasts & the crypto-curious.`,
+                  body: fs.readFileSync(
+                    './src/assets/homeConfig.cryptocafe.body.md',
+                    'utf-8',
+                  ),
+                },
+              },
+            ],
+          },
+          {
+            id: 'devprotocol:clubs:plugin:me',
+            name: 'me',
+            enable: true,
+            options: [],
+          },
+          {
+            id: 'devprotocol:clubs:plugin:buy',
+            name: 'buy',
+            enable: true,
+            options: [
+              {
+                key: 'products',
+                value: debugProducts,
+              },
+            ],
+          },
+          {
+            id: 'devprotocol:clubs:plugin:join',
+            name: 'join',
             enable: true,
             options: [],
           },

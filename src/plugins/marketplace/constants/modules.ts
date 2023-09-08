@@ -9,4 +9,5 @@ export const modules = {
   'devprotocol:clubs:plugin:quests': () => import('@plugins/quests'),
   'clubs-plugin-links': () => import('@kazu80/clubs-plugin-links'),
   'devprotocol:clubs:plugin:tickets': () => import('@plugins/tickets'),
+  'clubs-plugin-posts': () => import('@devprotocol/clubs-plugin-posts'),
 }

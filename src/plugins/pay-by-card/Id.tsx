@@ -38,7 +38,10 @@ const genCallbackURLs = (
   if (!isSaaS) {
     return url
   }
-  const page = new URL(new URL(givenBaseUrl).origin)
+  const host = new URL(givenBaseUrl).host
+  const [, ...primaryHostname] = host.split('.')
+  const primaryHost = primaryHostname.join('.')
+  const page = new URL(new URL(givenBaseUrl).origin.replace(host, primaryHost))
   page.pathname = '/redirect/'
   const redirect = new URL(page)
   redirect.searchParams.set('redirect', url.toString())
@@ -61,7 +64,7 @@ export default ({
   const callbackURL =
     baseUrl && genCallbackURLs(baseUrl, givenBaseUrl, isClubsx)
 
-  console.log({ connecting, account, email })
+  console.log({ connecting, account, email, callbackURL })
 
   useEffect(() => {
     setBaseUrl(`${new URL(location.href).origin}/fiat/result`)
@@ -168,19 +171,18 @@ export default ({
         {usingWallet && (
           <>
             <h3 className="mb-4 text-xl">Destination wallet</h3>
-            {account && (
-              <p className="truncate rounded-md border-[3px] border-transparent bg-gray-500/60 p-2 text-xl">
-                {account}
-              </p>
-            )}
-            {!account && (
-              <p className="animate-pulse rounded-md border-[3px] border-transparent bg-gray-500/60 p-2 text-center text-xl	text-white">
-                Please connect a wallet
-              </p>
-            )}
+            <span className="hs-form-field is-large is-filled">
+              <input
+                className={`hs-form-field__input ${
+                  !account && 'animate-pulse'
+                }`}
+                disabled
+                value={account ? account : 'Please connect a wallet'}
+              />
+            </span>
             <button
               onClick={_toggleUsingWallet}
-              className="rounded-full bg-gray-800 p-1 text-white"
+              className="hs-button is-small is-fullwidth is-outlined"
             >
               Or use email instead
             </button>
@@ -189,16 +191,19 @@ export default ({
         {!usingWallet && (
           <>
             <h3 className="mb-4 text-xl">Destination email</h3>
-            <input
-              className="rounded-md border-[3px] border-gray-500/60 bg-gray-500/60 p-2 text-xl outline-0 transition-colors focus:border-gray-300"
-              placeholder="Enter your email"
-              type="email"
-              onChange={_handleChange}
-              value={email}
-            />
+
+            <span className="hs-form-field is-large is-filled">
+              <input
+                className="hs-form-field__input"
+                placeholder="Enter your email"
+                type="email"
+                onChange={_handleChange}
+                value={email}
+              />
+            </span>
             <button
               onClick={_toggleUsingWallet}
-              className="rounded-full bg-gray-800 p-1 text-white"
+              className="hs-button is-small is-fullwidth is-outlined"
             >
               Or use wallet
             </button>
@@ -210,7 +215,7 @@ export default ({
         )}
       </div>
       <button
-        className="my-8 w-full rounded-full border-[3px] border-blue-600 bg-blue-600/40 p-2 px-4 text-2xl transition-colors hover:bg-blue-600 disabled:border-gray-400 disabled:bg-gray-600 disabled:text-gray-400"
+        className="hs-button is-large is-fullwidth is-filled is-native-blue my-8"
         onClick={_handleClick}
         disabled={
           connecting || (usingWallet && !account) || (!usingWallet && !email)

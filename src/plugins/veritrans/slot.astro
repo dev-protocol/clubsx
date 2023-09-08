@@ -1,0 +1,36 @@
+---
+import { CurrencyOption } from '@constants/currencyOption'
+import type { CheckoutOptions } from '@components/Checkout/types'
+import { keccak256 } from 'ethers'
+import type { ComposedItem } from '.'
+import { bytes32Hex } from '@fixtures/data/hexlify'
+import { whenDefined } from '@devprotocol/util-ts'
+
+const { items, checkoutOptions } = Astro.props as {
+  items: ComposedItem[]
+  checkoutOptions: CheckoutOptions
+}
+
+const { payload } = checkoutOptions
+const fiatItem = whenDefined(payload, (p) =>
+  items.find((item) => bytes32Hex(item.payload) === bytes32Hex(p)),
+)
+const linkTo = whenDefined(
+  fiatItem,
+  (fiat) => `/fiat/yen/${bytes32Hex(fiat.payload)}`,
+)
+---
+
+{
+  linkTo && !Astro.url.pathname.includes(linkTo) && (
+    <>
+      <a
+        href={linkTo}
+        class="hs-button is-large is-fullwidth is-filled is-native-blue"
+      >
+        Pay with a credit card
+      </a>
+      <hr class="bg-[#DFDFDF]" />
+    </>
+  )
+}
