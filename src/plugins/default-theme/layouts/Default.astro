@@ -122,7 +122,9 @@ const truncatedDescription = ((desc) =>
       chainId={chainId}
       config={config}
       connection={!notDisplayConnection}
-    />
+    >
+      <slot name="clubs:connect-button" slot="header:connect-button"/>
+    </Header>
     <Hero
       image={homeConfig?.hero?.image}
       avatar={avatarImgSrc}

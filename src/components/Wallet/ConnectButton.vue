@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue'
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/vue'
 import { mainnet, polygon, polygonMumbai } from '@wagmi/core/chains'
 import { useWeb3Modal } from '@web3modal/wagmi/vue'
-import { getWalletClient } from '@wagmi/core'
+import { watchWalletClient } from '@wagmi/core'
 import { whenDefined } from '@devprotocol/util-ts'
 import { BrowserProvider } from 'ethers'
 
@@ -13,6 +13,7 @@ const props = defineProps<{
   class?: string
   overrideClass?: string
   chainId?: number
+  isDisabled?: boolean
 }>()
 
 const projectId =
@@ -46,9 +47,12 @@ const modal = useWeb3Modal()
 
 onMounted(async () => {
   const { connection } = await import('@devprotocol/clubs-core/connection')
-  whenDefined(await getWalletClient(), (wallet) =>
-    connection().setEip1193Provider(wallet.transport, BrowserProvider),
-  )
+  watchWalletClient({ chainId: chains[0].id }, (wallet) => {
+    console.log({ wallet })
+    whenDefined(wallet, (wal) =>
+      connection().setEip1193Provider(wal.transport, BrowserProvider),
+    )
+  })
   connection().account.subscribe((account) => {
     truncatedAddress.value = whenDefined(account, (a) => truncateAddress(a))
   })
@@ -63,6 +67,7 @@ onMounted(async () => {
         : 'hs-button is-filled is-large is-fullwidth data-[is-loading=true]:animate-pulse'
     "
     v-bind:class="props.class"
+    :disabled="props.isDisabled"
     @click="modal.open()"
   >
     <span className="hs-button__label">

@@ -1,18 +1,8 @@
 ---
 import ClubsColor from '@assets/clubs--color.svg'
-import ConnectButton from '@components/Wallet/ConnectButton.vue'
-import type {
-  ClubsPluginSignal,
-  ClubsPropsPages,
-} from '@devprotocol/clubs-core'
+import type { ClubsPropsPages } from '@devprotocol/clubs-core'
 
-const {
-  chainId,
-  isInDraft,
-  connection = true,
-} = Astro.props as ClubsPropsPages & {
-  chainId: number
-  isInDraft?: boolean
+const { connection = true } = Astro.props as ClubsPropsPages & {
   connection?: boolean
 }
 ---
@@ -33,6 +23,6 @@ const {
     class="container mx-auto flex max-w-7xl items-center justify-between px-6 xl:px-0"
   >
     <i class="h-20" role="presentation"></i>
-    {connection && <ConnectButton chainId={chainId} />}
+    {connection && <slot name="header:connect-button" />}
   </div>
 </header>
