@@ -38,6 +38,7 @@ const isInDraft = Boolean(draftOptions?.isInDraft)
       <Layout {...path.props}>
         <span slot="clubs:connect-button">
           <ConnectButton
+            client:load
             chainId={decodedConfig.chainId}
             isDisabled={isInDraft}
           />
