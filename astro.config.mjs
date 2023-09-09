@@ -58,6 +58,9 @@ export default defineConfig({
   ],
   vite: {
     plugins: [commonjs()],
+    build: {
+      commonjsOptions: { requireReturnsDefault: true },
+    },
     server: {
       hmr: {
         timeout: 360000,
