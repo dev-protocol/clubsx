@@ -57,9 +57,13 @@ export default defineConfig({
     svelte(),
   ],
   vite: {
-    plugins: [commonjs({ requireReturnsDefault: true })],
+    plugins: [commonjs()],
     build: {
-      commonjsOptions: { requireReturnsDefault: true },
+      commonjsOptions: {
+        requireReturnsDefault: (id) => {
+          return id.includes('qrcode')
+        },
+      },
     },
     server: {
       hmr: {
