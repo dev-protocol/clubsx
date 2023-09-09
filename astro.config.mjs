@@ -64,13 +64,6 @@ export default defineConfig({
         },
       }),
     ],
-    build: {
-      commonjsOptions: {
-        requireReturnsDefault: (id) => {
-          return id.includes('qrcode')
-        },
-      },
-    },
     server: {
       hmr: {
         timeout: 360000,
