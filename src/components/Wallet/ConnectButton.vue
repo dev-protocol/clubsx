@@ -18,7 +18,9 @@ const props = defineProps<{
 
 const projectId =
   props.projectId ?? import.meta.env.PUBLIC_WALLET_CONNECT_PROJECT_ID
+
 const truncatedAddress = ref<string>()
+const error = ref<Error>()
 const truncateAddress = (address: string) => {
   const match = address.match(
     /^(0x[a-zA-Z0-9]{4})[a-zA-Z0-9]+([a-zA-Z0-9]{4})$/,
@@ -57,26 +59,41 @@ onMounted(async () => {
   connection().account.subscribe((account) => {
     truncatedAddress.value = whenDefined(account, (a) => truncateAddress(a))
   })
+  connection().chain.subscribe((chain) => {
+    error.value = whenDefined(chain, (chainId) =>
+      chainId !== props.chainId
+        ? new Error(`Wrong chain: Please switch it to ${defaultChain.name}`)
+        : undefined,
+    )
+  })
 })
 </script>
 
 <template>
-  <button
-    :class="
-      props.overrideClass
-        ? props.overrideClass
-        : 'hs-button is-filled is-large is-fullwidth data-[is-loading=true]:animate-pulse'
-    "
-    v-bind:class="props.class"
-    :disabled="props.isDisabled"
-    @click="modal.open()"
-  >
-    {{
-      truncatedAddress
-        ? truncatedAddress
-        : props.label
-        ? props.label
-        : 'Connect'
-    }}
-  </button>
+  <span class="relative">
+    <div
+      v-if="error"
+      class="absolute top-[100%] -mt-1 w-full rounded-b-lg bg-dp-red-400 p-2 pt-3 text-center text-sm text-white opacity-50"
+    >
+      {{ error.message }}
+    </div>
+    <button
+      :class="`${
+        props.overrideClass
+          ? props.overrideClass
+          : 'hs-button is-filled is-large is-fullwidth relative data-[is-loading=true]:animate-pulse'
+      } ${error ? 'is-error' : ''}`"
+      v-bind:class="props.class"
+      :disabled="props.isDisabled"
+      @click="modal.open()"
+    >
+      {{
+        truncatedAddress
+          ? truncatedAddress
+          : props.label
+          ? props.label
+          : 'Connect'
+      }}
+    </button>
+  </span>
 </template>
