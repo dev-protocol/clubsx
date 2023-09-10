@@ -26,32 +26,33 @@ const truncateAddress = (address: string) => {
   return !match ? address : `${match[1]}\u2026${match[2]}`
 }
 
-const chains = [
+const chains = [polygon, polygonMumbai, mainnet]
+const defaultChain =
   props.chainId === 137
     ? polygon
     : props.chainId === 80001
     ? polygonMumbai
     : props.chainId === 1
     ? mainnet
-    : polygon,
-]
+    : polygon
+
 const wagmiConfig = defaultWagmiConfig({
-  chains,
+  chains: [polygon, polygonMumbai, mainnet],
   projectId,
   appName: 'Web3Modal',
 })
 
-createWeb3Modal({ wagmiConfig, projectId, chains })
+createWeb3Modal({ wagmiConfig, projectId, chains, defaultChain })
 
 const modal = useWeb3Modal()
 
 onMounted(async () => {
   const { connection } = await import('@devprotocol/clubs-core/connection')
-  watchWalletClient({ chainId: chains[0].id }, (wallet) => {
+  watchWalletClient({}, (wallet) => {
     console.log({ wallet })
     whenDefined(wallet, (wal) =>
       connection().setEip1193Provider(wal.transport, BrowserProvider),
-    )
+    ) ?? connection().signer.next(undefined)
   })
   connection().account.subscribe((account) => {
     truncatedAddress.value = whenDefined(account, (a) => truncateAddress(a))
