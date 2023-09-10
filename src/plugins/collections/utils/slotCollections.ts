@@ -1,6 +1,7 @@
 import type { BaseProvider } from '@ethersproject/providers'
 import { ethers } from 'ethers'
 import type {
+  ContractRunner,
   TransactionResponse,
   TransactionReceipt,
   BrowserProvider,
@@ -75,7 +76,15 @@ const defaultAddress: Address = {
 }
 
 export async function callSlotCollections(
-  provider: Signer,
+  provider: BrowserProvider | ContractRunner,
+  functionName: 'propertyImages',
+  isTimeSlot: boolean,
+  args: [propertyAddress: string, key: string],
+): Promise<Image>
+
+
+export async function callSlotCollections(
+  provider: Signer | ContractRunner | BrowserProvider,
   functionName: 'setImages',
   isTimeSlot: boolean,
   args: [propertyAddress: string, images: Image[], keys: string[]],
@@ -89,14 +98,7 @@ export async function callSlotCollections(
 ): Promise<TransactionResponse>
 
 export async function callSlotCollections(
-  provider: BrowserProvider,
-  functionName: 'propertyImages',
-  isTimeSlot: boolean,
-  args: [propertyAddress: string, key: string],
-): Promise<Image>
-
-export async function callSlotCollections(
-  provider: BrowserProvider | Signer,
+  provider: Signer | ContractRunner | BrowserProvider,
   functionName: string,
   isTimeSlot: boolean,
   args: unknown[],

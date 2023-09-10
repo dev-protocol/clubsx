@@ -1,6 +1,7 @@
 import type {
   ClubsFunctionGetAdminPaths,
   ClubsFunctionGetPagePaths,
+  ClubsFunctionGetSlots,
   ClubsFunctionPlugin,
   ClubsPluginMeta,
   ClubsPluginOption,
@@ -10,6 +11,8 @@ import { default as Admin } from './admin.astro'
 import { default as AdminEdit } from './admin-id.astro'
 import { default as AdminNew } from './admin-new.astro'
 import { default as AdminEditMembership } from './admin-id-id.astro'
+import { default as SyncModal } from './SyncModal.astro'
+import { default as OpenModalButton } from './OpenModalButton.astro'
 import { default as Index } from './index.astro'
 import { default as Id } from './[id].astro'
 import { default as Icon } from './assets/icon.svg'
@@ -38,6 +41,38 @@ export type Collection = {
   description: string
   memberships: CollectionMembership[]
 }
+
+export const getSlots: ClubsFunctionGetSlots = async (
+  options,
+  { propertyAddress, rpcUrl, chainId },
+  { paths, factory },
+) => {
+
+      const [path1, path2] = paths
+
+      const collections =
+      (options.find(
+        (opt: ClubsPluginOption) => opt.key === 'collections',
+      )?.value as UndefinedOr<Collection[]>) ?? []
+
+      return factory == 'admin' && path1 === 'collections' && path2 === undefined
+      ? [
+          {
+            slot: 'admin:modal:content',
+            component: SyncModal,
+            props: {
+              collections,
+              propertyAddress,
+              rpcUrl,
+              chainId,
+            },
+          },
+          {
+            slot: 'admin:aside:after-built-in-buttons',
+            component: OpenModalButton,
+          },
+        ] : []
+    }
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,

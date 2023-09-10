@@ -682,85 +682,11 @@
     if (!ev.detail.success) {
       return
     }
-    const memOpts = collection.memberships as CollectionMembership[]
-    const propAddress = propertyAddress
-
-    if (!currentAddress || !signer || !propAddress) {
-      return
-    }
-    const chainId: number = Number((await provider.getNetwork()).chainId)
-    let images: Image[] = []
-    if(isTimeLimitedCollection){
-      images = memOpts.map((opt) => ({
-      src: opt.imageSrc,
-      name: opt.name,
-      description: opt.description,
-      deadline: collection.endTime,
-      requiredTokenAmount: parseUnits(String(opt.price), tokenInfo[opt.currency][chainId].decimals).toString(),
-      requiredTokenFee: opt.fee?.percentage
-        ? parseUnits(
-              new BigNumber(opt.price).times(opt.fee.percentage * 100).toFixed(),
-              tokenInfo[opt.currency][chainId].decimals
-            )
-            .toString()
-        : 0,
-      gateway: opt.fee?.beneficiary ?? ZeroAddress,
-      token: tokenInfo[opt.currency][chainId].address
-    }))
-    }
-    else{
-      images = memOpts.map((opt) => ({
-      src: opt.imageSrc,
-      name: opt.name,
-      description: opt.description,
-      slots: opt.memberCount,
-      requiredTokenAmount: parseUnits(String(opt.price), tokenInfo[opt.currency][chainId].decimals).toString(),
-      requiredTokenFee: opt.fee?.percentage
-        ? parseUnits(
-              new BigNumber(opt.price).times(opt.fee.percentage * 100).toFixed(),
-              tokenInfo[opt.currency][chainId].decimals
-            )
-            .toString()
-        : 0,
-      gateway: opt.fee?.beneficiary ?? ZeroAddress,
-      token: tokenInfo[opt.currency][chainId].address
-    }))
-    }
-    const keys: string[] = memOpts?.map((opt) => bytes32Hex(opt.payload)) || []
-    console.log('onFinishCallback', { images, keys })
-
-    controlModal({
-      open: true,
-      state: 'loading',
-      blocks: true,
-      closeButton: { label: 'Cancel' },
-    })
-    await callSlotCollections(signer, "setImages", isTimeLimitedCollection,[
-      propAddress,
-      images,
-      keys
-    ]).then((res) => res.wait())
-
-    const descriptiorAddress : string | undefined = isTimeLimitedCollection ?
-    address.find(
-      (address) => address.chainId === chainId,
-    )?.addressList.timeSlot : address.find(
-      (address) => address.chainId === chainId,
-    )?.addressList.memberSlot
-    if (!descriptiorAddress) return // TODO: add loading/processing state.
-
-    const [l1, l2] = await clientsSTokens(signer)
-    const l = l1 || l2
-    if (!l) return // TODO: add loading/processing state.
-
-    await l.setTokenURIDescriptor(
-      propAddress,
-      descriptiorAddress,
-      keys, // ALL_PAYLOADS
-    )
-
-    controlModal({ open: false })
-  }
+    location.href = new URL(
+      '/admin/collections/?ping=publish',
+      location.origin,
+    ).toString()
+}
 </script>
 
 <form on:change|preventDefault={() => update()} class="w-full">
