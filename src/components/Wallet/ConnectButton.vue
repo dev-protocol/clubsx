@@ -71,14 +71,12 @@ onMounted(async () => {
     :disabled="props.isDisabled"
     @click="modal.open()"
   >
-    <span className="hs-button__label">
-      {{
-        truncatedAddress
-          ? truncatedAddress
-          : props.label
-          ? props.label
-          : 'Connect'
-      }}
-    </span>
+    {{
+      truncatedAddress
+        ? truncatedAddress
+        : props.label
+        ? props.label
+        : 'Connect'
+    }}
   </button>
 </template>
