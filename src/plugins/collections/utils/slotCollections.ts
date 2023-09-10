@@ -82,7 +82,6 @@ export async function callSlotCollections(
   args: [propertyAddress: string, key: string],
 ): Promise<Image>
 
-
 export async function callSlotCollections(
   provider: Signer | ContractRunner | BrowserProvider,
   functionName: 'setImages',

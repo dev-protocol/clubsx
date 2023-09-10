@@ -47,32 +47,31 @@ export const getSlots: ClubsFunctionGetSlots = async (
   { propertyAddress, rpcUrl, chainId },
   { paths, factory },
 ) => {
+  const [path1, path2] = paths
 
-      const [path1, path2] = paths
+  const collections =
+    (options.find((opt: ClubsPluginOption) => opt.key === 'collections')
+      ?.value as UndefinedOr<Collection[]>) ?? []
 
-      const collections =
-      (options.find(
-        (opt: ClubsPluginOption) => opt.key === 'collections',
-      )?.value as UndefinedOr<Collection[]>) ?? []
-
-      return factory == 'admin' && path1 === 'collections' && path2 === undefined
-      ? [
-          {
-            slot: 'admin:modal:content',
-            component: SyncModal,
-            props: {
-              collections,
-              propertyAddress,
-              rpcUrl,
-              chainId,
-            },
+  return factory == 'admin' && path1 === 'collections' && path2 === undefined
+    ? [
+        {
+          slot: 'admin:modal:content',
+          component: SyncModal,
+          props: {
+            collections,
+            propertyAddress,
+            rpcUrl,
+            chainId,
           },
-          {
-            slot: 'admin:aside:after-built-in-buttons',
-            component: OpenModalButton,
-          },
-        ] : []
-    }
+        },
+        {
+          slot: 'admin:aside:after-built-in-buttons',
+          component: OpenModalButton,
+        },
+      ]
+    : []
+}
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
