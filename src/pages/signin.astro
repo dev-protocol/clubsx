@@ -1,12 +1,76 @@
 ---
 import Layout from '@layouts/Landing.astro'
-import SignInForm from '@components/SignInForm/SignInForm.svelte'
 import ConnectButton from '@components/Wallet/ConnectButton.vue';
+import EmailConnect from '@components/EmailConnect/EmailConnect.svelte'
 ---
 
 <Layout>
-  <div class="pb-16">
-    <ConnectButton client:load redirectOnSignin={true} label='Sign with your wallet' overrideClass='hs-button is-filled is-native-blue is-large'/>
-    <SignInForm client:load />
+  <div class="relative grid justify-center p-4 md:p-0">
+    <section class="my-16 grid gap-8 text-center md:my-32">
+      <h1 class="text-2xl font-bold md:text-5xl">Sign in to Clubs</h1>
+    </section>
+
+    <section class="grid gap-12">
+      <div class="flex flex-col items-center">
+        <span class="mb-4">Signin with your wallet</span>
+        <ConnectButton client:load redirectOnSignin={true} label='Sign with your wallet' overrideClass='hs-button is-filled is-native-blue is-large'/>
+      </div>
+      <p
+        role="separator"
+        class="grid grid-cols-[1fr_auto_1fr] items-center gap-4 before:block before:border-b before:border-white/20 before:content-[''] after:block after:border-b after:border-white/20 after:content-['']"
+      >
+        or
+      </p>
+      <div class="flex flex-col items-center">
+        <span class="mb-4">Signin with email</span>
+        <EmailConnect client:load />
+      </div>
+      <p
+        role="separator"
+        class="grid grid-cols-[1fr_auto_1fr] items-center gap-4 before:block before:border-b before:border-white/20 before:content-[''] after:block after:border-b after:border-white/20 after:content-['']"
+      >
+        or maybe...
+      </p>
+      <p class="text-center">
+        <a class="hs-button is-outlined text-native-blue-300" href="/domain"
+          >Don't have an account?</a
+        >
+      </p>
+    </section>
   </div>
 </Layout>
+
+<style lang="scss">
+  @use '@devprotocol/hashi/hs-button';
+
+  @include hs-button.extend('filled.native-blue') {
+    @include hs-button.color(
+      (
+        fill: 'native-blue.400',
+        ink: 'native-blue.ink',
+        border: 'native-blue.400'
+      )
+    );
+
+    &:hover,
+    &:focus {
+      @include hs-button.color(
+        (
+          fill: 'native-blue.300',
+          ink: 'native-blue.ink',
+          border: 'native-blue.300'
+        )
+      );
+    }
+
+    &:active {
+      @include hs-button.color(
+        (
+          fill: 'native-blue.200',
+          ink: 'native-blue.ink',
+          border: 'native-blue.200'
+        )
+      );
+    }
+  }
+</style>
