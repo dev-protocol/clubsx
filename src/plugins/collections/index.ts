@@ -47,12 +47,11 @@ export const getSlots: ClubsFunctionGetSlots = async (
   { propertyAddress, rpcUrl, chainId },
   { paths, factory },
 ) => {
-  const [path1, path2] = paths
-
   const collections =
-    (options.find((opt: ClubsPluginOption) => opt.key === 'collections')
-      ?.value as UndefinedOr<Collection[]>) ?? []
+  (options.find((opt: ClubsPluginOption) => opt.key === 'collections')
+    ?.value as UndefinedOr<Collection[]>) ?? []
 
+  const [path1, path2] = paths
   return factory == 'admin' && path1 === 'collections' && path2 === undefined
     ? [
         {
