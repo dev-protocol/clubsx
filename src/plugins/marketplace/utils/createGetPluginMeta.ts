@@ -3,12 +3,13 @@ import type {
   ClubsFunctionPlugin,
 } from '@devprotocol/clubs-core'
 import { modules } from '../constants/modules'
-import type { InstallablePlugins } from '@constants/plugins'
+import type { InstallablePlugins, PluginMeta } from '@constants/plugins'
 
 const has = (id: string): id is keyof typeof modules => id in modules
 
 export const createGetPluginMeta =
-  (config: ClubsConfiguration) => async (plugin: InstallablePlugins) => {
+  (config: ClubsConfiguration) =>
+  async (plugin: InstallablePlugins): Promise<PluginMeta> => {
     const importedPlugin: ClubsFunctionPlugin = plugin.planned
       ? plugin.planned
       : has(plugin.id)
@@ -23,6 +24,8 @@ export const createGetPluginMeta =
       developer: plugin.developer,
       repositoryUrl: plugin.repositoryUrl,
       clubsUrl: plugin.clubsUrl,
-      planned: Boolean(plugin.planned),
+      planned: plugin.planned,
+      pluginOptions: plugin.pluginOptions,
+      require: plugin.require,
     }
   }

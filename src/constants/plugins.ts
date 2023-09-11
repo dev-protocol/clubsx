@@ -63,16 +63,15 @@ export type InstallablePlugins = {
   repositoryUrl?: string
   pluginOptions: ClubsPluginOptions
   planned?: ClubsFunctionPlugin
+  require?: {
+    invitation?: boolean
+  }
 }
 
-export type PluginMeta = (ClubsPluginMeta & Partial<ClubsThemePluginMeta>) & {
-  added: boolean
-  tag: PluginTag
-  developer?: string
-  repositoryUrl?: string
-  clubsUrl?: string
-  planned: boolean
-}
+export type PluginMeta = (ClubsPluginMeta & Partial<ClubsThemePluginMeta>) &
+  InstallablePlugins & {
+    added: boolean
+  }
 
 export type ExternalTool = {
   name: string
@@ -82,6 +81,23 @@ export type ExternalTool = {
 }
 
 export const installablePlugins: InstallablePlugins[] = [
+  {
+    id: $4.meta.id,
+    tag: 'New & Upcoming',
+    developer: 'Dev Protocol',
+    repositoryUrl: 'https://github.com/dev-protocol/clubsx',
+    pluginOptions: [],
+  },
+  {
+    id: $17.meta.id,
+    tag: 'New & Upcoming',
+    developer: 'Dev Protocol',
+    repositoryUrl: 'https://github.com/dev-protocol/clubsx',
+    pluginOptions: [],
+    require: {
+      invitation: true,
+    },
+  },
   {
     id: $14.meta.id,
     tag: 'New & Upcoming',
