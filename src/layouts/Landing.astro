@@ -4,6 +4,7 @@ import VercelAnalytics from '@components/Analytics/VercelAnalytics.astro'
 import ConnectButton from '@components/Wallet/ConnectButton.vue'
 
 import '@devprotocol/clubs-core/styles'
+import { ViewTransitions } from 'astro:transitions'
 
 const { connectButton = 'hidden' } = Astro.props as {
   connectButton?: 'show' | 'hidden'
@@ -41,6 +42,7 @@ const twitterHandle = 'poweredbyClubs'
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={`${ogURL}`} />
+    <ViewTransitions />
   </head>
 
   <body class="min-h-screen bg-dp-black-600 font-body text-white">
