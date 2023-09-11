@@ -1,11 +1,11 @@
 import type { Membership } from '@plugins/memberships'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import {
-  ClubsFunctionGetAdminPaths,
-  ClubsFunctionGetPagePaths,
-  ClubsFunctionPlugin,
+  type ClubsFunctionGetAdminPaths,
+  type ClubsFunctionGetPagePaths,
+  type ClubsFunctionPlugin,
   ClubsPluginCategory,
-  ClubsPluginMeta,
+  type ClubsPluginMeta,
 } from '@devprotocol/clubs-core'
 import { default as Index } from './index.astro'
 import { default as Id } from './[id].astro'

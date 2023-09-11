@@ -1,9 +1,9 @@
 import {
-  ClubsFunctionGetAdminPaths,
-  ClubsFunctionGetPagePaths,
-  ClubsFunctionPlugin,
+  type ClubsFunctionGetAdminPaths,
+  type ClubsFunctionGetPagePaths,
+  type ClubsFunctionPlugin,
   ClubsPluginCategory,
-  ClubsPluginMeta,
+  type ClubsPluginMeta,
 } from '@devprotocol/clubs-core'
 import { default as Index } from './index.astro'
 import { default as Plugins } from './plugins.astro'
