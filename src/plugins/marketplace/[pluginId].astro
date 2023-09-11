@@ -31,7 +31,7 @@ const READMEComponent = plugin.readme
   <div class="grid gap-16">
     <div class="flex items-center justify-between">
       <p class="text-4xl font-bold">{plugin.displayName}</p>
-      <ConnectButton client:load type="filled large" chainId={config.chainId} />
+      <ConnectButton client:load chainId={config.chainId} />
     </div>
     <div
       class="grid max-w-3xl items-start justify-between gap-8 lg:grid-cols-[3fr_1fr]"

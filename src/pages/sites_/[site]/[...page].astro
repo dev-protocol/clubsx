@@ -1,9 +1,15 @@
 ---
 import DefaultLayout from '@layouts/Default.astro'
-import { decode, pageFactory } from '@devprotocol/clubs-core'
+import {
+  ClubsConfiguration,
+  decode,
+  pageFactory,
+} from '@devprotocol/clubs-core'
 import { config as _config } from '@fixtures/config'
 import PageNotFound from '@pages/404.astro'
 import { plugins } from '@constants/plugins'
+import ConnectButton from '@components/Wallet/ConnectButton.vue'
+import type { DraftOptions } from '@constants/draft'
 
 const { site, page } = Astro.params
 const config = await _config(site)
@@ -18,12 +24,26 @@ const Layout = path?.props.layout
 const Content = path?.props.component
 
 const siteBaseUrl = new URL(Astro.request.url).origin
+
+const decodedConfig = decode<ClubsConfiguration>(config)
+const draftOptions = decodedConfig?.options?.find(
+  (option) => option.key === '__draft',
+)?.value as DraftOptions['value']
+const isInDraft = Boolean(draftOptions?.isInDraft)
 ---
 
 <DefaultLayout {...path?.props ?? {}} config={decode(config)}>
   {
     path && Layout && Content ? (
       <Layout {...path.props}>
+        <span slot="clubs:connect-button">
+          <ConnectButton
+            client:load
+            chainId={decodedConfig.chainId}
+            isDisabled={isInDraft}
+          />
+        </span>
+
         <Content {...path.props} />
       </Layout>
     ) : (
