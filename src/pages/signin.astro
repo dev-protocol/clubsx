@@ -1,10 +1,12 @@
 ---
 import Layout from '@layouts/Landing.astro'
 import SignInForm from '@components/SignInForm/SignInForm.svelte'
+import ConnectButton from '@components/Wallet/ConnectButton.vue';
 ---
 
 <Layout>
   <div class="pb-16">
+    <ConnectButton client:load redirectOnSignin={true}/>
     <SignInForm client:load />
   </div>
 </Layout>
