@@ -197,4 +197,5 @@ export default {
   getPagePaths,
   getAdminPaths,
   meta,
+  getSlots,
 } as ClubsFunctionPlugin
