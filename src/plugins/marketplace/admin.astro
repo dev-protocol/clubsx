@@ -18,14 +18,14 @@ const { allInstallablePlugins, clubs } = Astro.props as ClubsPropsAdminPages & {
 }
 
 const getPluginMeta = createGetPluginMeta(
-  decode(clubs.encodedClubsConfiguration)
+  decode(clubs.encodedClubsConfiguration),
 )
 const allPlugins = await Promise.all(allInstallablePlugins.map(getPluginMeta))
 
 const externalTools: ExternalTool[] = [
   {
     name: 'Superfluid',
-    imageSrc: SuperFluid,
+    imageSrc: SuperFluid.src,
     description: 'Protocol for streaming money on Ethereum.',
     url: 'https://superfluid.finance/',
   },
@@ -101,7 +101,7 @@ const externalTools: ExternalTool[] = [
       class="mt-10"
       baseColor="#2C18FF"
       textColor="#fff"
-      image={BgCode}
+      image={BgCode.src}
       body="Join our Club for developers"
       description="Get early access & inspirations from community."
       link="https://developers.clubs.place"

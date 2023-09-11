@@ -27,7 +27,7 @@ const { siteName } = Astro.params
 <script>
   import { instanceStore } from '../../fixtures/firebase/clientInstance'
   import {
-    ClubsConfiguration,
+    type ClubsConfiguration,
     encode,
     setConfig,
   } from '@devprotocol/clubs-core'
@@ -62,7 +62,7 @@ const { siteName } = Astro.params
         // If it is a new user, set the __draft user
         if (uid) {
           const isReachedCreationLimitsRes = await fetch(
-            `/api/hasCreationLimitReached/${uid}`
+            `/api/hasCreationLimitReached/${uid}`,
           )
           const isReachedCreationLimitsResJson =
             await isReachedCreationLimitsRes.json()
@@ -113,7 +113,7 @@ const { siteName } = Astro.params
             setConfig(config)
             window.location.href = new URL(
               `${siteName}/setup/basic`,
-              `${location.protocol}//${location.host}`
+              `${location.protocol}//${location.host}`,
             ).toString()
           } else {
             const jsonResponse = await res.json()

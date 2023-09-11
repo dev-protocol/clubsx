@@ -8,7 +8,6 @@ import {
 import { default as Index } from './index.astro'
 import { default as Plugins } from './plugins.astro'
 import { default as Overview } from './overview.astro'
-import { default as Marketplace } from '../../pages/coming-soon.astro'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async () => []
 

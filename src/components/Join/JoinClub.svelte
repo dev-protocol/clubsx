@@ -81,12 +81,12 @@
           />
           <img
             src={currencyOption === 'usdc'
-              ? USDC
+              ? USDC.src
               : currencyOption === 'matic'
-              ? MATIC
+              ? MATIC.src
               : currencyOption === 'eth'
-              ? ETH
-              : DEV}
+              ? ETH.src
+              : DEV.src}
             alt={currencyOption.toUpperCase()}
             class="h-8 w-8"
           />

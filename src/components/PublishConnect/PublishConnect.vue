@@ -24,7 +24,7 @@
 
 <script lang="ts">
 import type Web3Modal from 'web3modal'
-import { BrowserProvider, Eip1193Provider } from 'ethers'
+import { BrowserProvider, type Eip1193Provider } from 'ethers'
 import { whenDefined } from '@devprotocol/util-ts'
 import { defineComponent } from '@vue/runtime-core'
 import type { connection as Connection } from '@devprotocol/clubs-core/connection'

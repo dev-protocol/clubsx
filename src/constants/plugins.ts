@@ -4,7 +4,6 @@ import type {
   ClubsPluginOptions,
   ClubsThemePluginMeta,
 } from '@devprotocol/clubs-core'
-import Feeds from '@assets/Plugins/Feeds.svg'
 
 import $1 from '@plugins/default-theme'
 import $2 from '@plugins/buy'

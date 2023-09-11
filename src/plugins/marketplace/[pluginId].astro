@@ -1,5 +1,5 @@
 ---
-import type { InstallablePlugins, PluginMeta } from '@constants/plugins'
+import type { InstallablePlugins } from '@constants/plugins'
 import type { ClubsConfiguration } from '@devprotocol/clubs-core'
 
 import checkImage from '@assets/check.svg'
@@ -41,7 +41,7 @@ const READMEComponent = plugin.readme
         {
           false ? (
             <span class="flex cursor-not-allowed items-center justify-center rounded-full bg-native-blue-200 px-8 py-4">
-              <img src={checkImage} class="h-3 max-h-full w-3 font-bold" />
+              <img src={checkImage.src} class="h-3 max-h-full w-3 font-bold" />
               <p class="font-bold text-black">Added</p>
             </span>
           ) : (
@@ -56,7 +56,11 @@ const READMEComponent = plugin.readme
       {
         (plugin?.previewImages?.length
           ? plugin.previewImages
-          : [pluginDefaultIcon, pluginDefaultIcon, pluginDefaultIcon]
+          : [
+              pluginDefaultIcon.src,
+              pluginDefaultIcon.src,
+              pluginDefaultIcon.src,
+            ]
         ).map((image) => (
           <img
             class="h-[24rem] w-auto max-w-none rounded-lg lg:h-[30rem]"

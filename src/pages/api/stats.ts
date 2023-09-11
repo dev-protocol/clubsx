@@ -25,7 +25,7 @@ export const uniqueCreators = async () => {
   try {
     await client.connect()
     let uniqueCreators = 0
-    for await (const key of client.scanIterator({
+    for await (const _ of client.scanIterator({
       MATCH: 'id::*',
     })) {
       uniqueCreators++

@@ -309,9 +309,9 @@
 </template>
 
 <script lang="ts">
-import { ContractRunner, Signer, ZeroAddress } from 'ethers'
+import { type ContractRunner, type Signer, ZeroAddress } from 'ethers'
 import type Web3Modal from 'web3modal'
-import { PropType, defineComponent } from '@vue/runtime-core'
+import { type PropType, defineComponent } from '@vue/runtime-core'
 import { clientsSTokens } from '@devprotocol/dev-kit/agent'
 import type { connection as Connection } from '@devprotocol/clubs-core/connection'
 import {
@@ -324,7 +324,7 @@ import { parseUnits } from '@ethersproject/units'
 import type { Membership } from '@plugins/memberships'
 import BigNumber from 'bignumber.js'
 import {
-  ClubsConfiguration,
+  type ClubsConfiguration,
   ClubsEvents,
   setConfig,
 } from '@devprotocol/clubs-core'
