@@ -170,7 +170,11 @@ import {
   positionsCreateWithEth,
 } from '@devprotocol/dev-kit/agent'
 import { connection as getConnection } from '@devprotocol/clubs-core/connection'
-import { type UndefinedOr, whenDefined, whenDefinedAll } from '@devprotocol/util-ts'
+import {
+  type UndefinedOr,
+  whenDefined,
+  whenDefinedAll,
+} from '@devprotocol/util-ts'
 import { defineComponent } from '@vue/composition-api'
 import {
   type BigNumberish,

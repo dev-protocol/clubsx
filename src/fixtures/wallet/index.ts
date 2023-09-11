@@ -1,4 +1,4 @@
-import { BrowserProvider, Eip1193Provider } from 'ethers'
+import { BrowserProvider, type Eip1193Provider } from 'ethers'
 import Web3Modal from 'web3modal'
 import detectEthereumProvider from '@metamask/detect-provider'
 import { whenDefined } from '@devprotocol/util-ts'
