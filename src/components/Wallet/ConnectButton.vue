@@ -14,6 +14,7 @@ const props = defineProps<{
   overrideClass?: string
   chainId?: number
   isDisabled?: boolean
+  redirectOnSignin?: boolean
 }>()
 
 const projectId =
@@ -57,11 +58,17 @@ onMounted(async () => {
     ) ?? connection().signer.next(undefined)
   })
   connection().account.subscribe((account) => {
+    if (account && props.redirectOnSignin) {
+      window.location.href = new URL(
+        `/user/${account}`,
+        window.location.origin,
+      ).toString()
+    }
     truncatedAddress.value = whenDefined(account, (a) => truncateAddress(a))
   })
   connection().chain.subscribe((chain) => {
     error.value = whenDefined(chain, (chainId) =>
-      chainId !== props.chainId
+      props.chainId && chainId !== props.chainId // There might be a case where we don't have chainId in props (eg. signin, publish flow, etc)
         ? new Error(`Wrong chain: Please switch it to ${defaultChain.name}`)
         : undefined,
     )
