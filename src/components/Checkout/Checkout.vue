@@ -13,7 +13,7 @@ import {
 } from '@devprotocol/util-ts'
 import {
   type BigNumberish,
-  ContractRunner,
+  type ContractRunner,
   JsonRpcProvider,
   MaxUint256,
   formatUnits,
