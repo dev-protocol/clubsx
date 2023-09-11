@@ -31,6 +31,7 @@
       return collection.isTimeLimitedCollection ? {
         payload: bytes32Hex(mem.payload),
         source: mem,
+        isTimeLimitedCollection: true,
         state: {
           src: mem.imageSrc,
           name: mem.name,
@@ -49,6 +50,7 @@
       } : {
         payload: bytes32Hex(mem.payload),
         source: mem,
+        isTimeLimitedCollection: false,
         state: {
           src: mem.imageSrc,
           name: mem.name,
@@ -76,10 +78,16 @@
       propertyAddress: string
       payload: string
     }) => {
-      return callSlotCollections(provider, 'propertyImages', true,[
+      return [
+      callSlotCollections(provider, 'propertyImages', true,[
+        propertyAddress,
+        payload,
+      ]),
+      callSlotCollections(provider, 'propertyImages', false,[
         propertyAddress,
         payload,
       ])
+    ]
     }
     const stateSetter = async ({
       provider,
@@ -90,11 +98,20 @@
       propertyAddress: string
       states: ExpectedStatus[]
     }) => {
-      return callSlotCollections(provider, 'setImages', true,[
+      const timeStates = states.filter(({ isTimeLimitedCollection }) => isTimeLimitedCollection) 
+      const memberStates = states.filter(({ isTimeLimitedCollection }) => !isTimeLimitedCollection)
+      return( 
+        callSlotCollections(provider, 'setImages', true,[
         propertyAddress,
-        states.map(({ state }) => state),
-        states.map(({ payload }) => payload),
-      ])
+        timeStates.map(({ state }) => state),
+        timeStates.map(({ payload }) => payload),
+        ]),
+        callSlotCollections(provider, 'setImages', false,[
+        propertyAddress,
+        memberStates.map(({ state }) => state),
+        memberStates.map(({ payload }) => payload),
+        ])
+      )
     }
   </script>
   

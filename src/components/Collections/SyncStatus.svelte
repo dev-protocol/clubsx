@@ -23,6 +23,7 @@
       source: CollectionMembership
       state: State
       payload: string
+      isTimeLimitedCollection: boolean
       customDescriptor: {
         set: Promise<boolean>
       }
@@ -54,7 +55,7 @@
     let syncStatusDescriptor: boolean | Error = false
     let syncStatusImages: boolean | Error = false
   
-    const checkCustomTimeDescriptor = async (
+    const checkCustomDescriptor = async (
       data: ExpectedStatus,
     ): Promise<boolean> => {
       const [l1, l2] = await clientsSTokens(provider)
@@ -62,23 +63,10 @@
       const descriptor = await whenDefined(sTokensManager, (cont) =>
         cont.descriptorOfPropertyByPayload(propertyAddress, data.payload),
       )
+      const customDescriptorAddres = data.isTimeLimitedCollection ? customTimeDescriptorAddress : customMemberDescriptorAddress
       const test =
-        descriptor?.toLowerCase() === customTimeDescriptorAddress?.toLowerCase()
-      console.log({ test, descriptor, customTimeDescriptorAddress })
-      return test
-    }
-
-    const checkCustomMemberDescriptor = async (
-      data: ExpectedStatus,
-    ): Promise<boolean> => {
-      const [l1, l2] = await clientsSTokens(provider)
-      const sTokensManager = l1 ?? l2
-      const descriptor = await whenDefined(sTokensManager, (cont) =>
-        cont.descriptorOfPropertyByPayload(propertyAddress, data.payload),
-      )
-      const test =
-        descriptor?.toLowerCase() === customMemberDescriptorAddress?.toLowerCase()
-      console.log({ test, descriptor, customMemberDescriptorAddress })
+        descriptor?.toLowerCase() === customDescriptorAddres?.toLowerCase()
+      console.log({ test, descriptor, customDescriptorAddres })
       return test
     }
   
@@ -100,18 +88,19 @@
   
     const sourceStatuses: () => Status[] = () =>
       expected.map(
-          ({ payload, source, state }): Status => ({
+          ({ payload, source, state, isTimeLimitedCollection }): Status => ({
             source,
             state,
             payload,
+            isTimeLimitedCollection,
             customDescriptor: {
               set: queue.add(() =>
-              checkCustomTimeDescriptor({ payload, source, state }),
+              checkCustomDescriptor({ payload, source, state, isTimeLimitedCollection }),
               ) as Promise<boolean>,
             },
             image: {
               set: queue.add(() =>
-                checkImage({ payload, source, state }),
+                checkImage({ payload, source, state, isTimeLimitedCollection }),
               ) as Promise<boolean>,
             },
           }),
@@ -145,44 +134,46 @@
     }
   
     const onClickSyncDescriptor = async () => {
-      syncStatusDescriptor = true
-      const [l1, l2] = await clientsSTokens(provider)
-      const sTokensManager = l1 ?? l2
-      const items = await outOfSyncDescriptors()
-      const resFromTime =
-        (await whenDefinedAll(
-          [sTokensManager, customTimeDescriptorAddress],
-          ([cont, descriptor]) =>
-            cont
-              .setTokenURIDescriptor(
-                propertyAddress,
-                descriptor,
-                items.map(({ payload }) => payload),
-              )
-              .catch((err) => new Error(err)),
-        )) ?? new Error('Client error: try it again!')
-      const resultFromTime = await whenNotError(resFromTime, (res_) =>
-        res_.wait().catch((err) => new Error(err)),
-      )
-      const resFromMember =
-        (await whenDefinedAll(
-          [sTokensManager, customMemberDescriptorAddress],
-          ([cont, descriptor]) =>
-            cont
-              .setTokenURIDescriptor(
-                propertyAddress,
-                descriptor,
-                items.map(({ payload }) => payload),
-              )
-              .catch((err) => new Error(err)),
-        )) ?? new Error('Client error: try it again!')
-      const resultFromMember = await whenNotError(resFromMember, (res_) =>
-        res_.wait().catch((err) => new Error(err)),
-      )
-      syncStatusDescriptor = resultFromTime instanceof Error ? resultFromTime : false
-      syncStatusDescriptor = resultFromMember instanceof Error ? resultFromMember : false
-      initStatuses()
-    }
+    syncStatusDescriptor = true
+    const [l1, l2] = await clientsSTokens(provider)
+    const sTokensManager = l1 ?? l2
+    const items = await outOfSyncDescriptors()
+    const timeItems = items.filter(({ isTimeLimitedCollection }) => isTimeLimitedCollection)
+    const memberItems = items.filter(({ isTimeLimitedCollection }) => !isTimeLimitedCollection)
+    const resTime =
+      (await whenDefinedAll(
+        [sTokensManager, customTimeDescriptorAddress],
+        ([cont, descriptor]) =>
+          cont
+            .setTokenURIDescriptor(
+              propertyAddress,
+              descriptor,
+              timeItems.map(({ payload }) => payload),
+            )
+            .catch((err) => new Error(err)),
+      )) ?? new Error('Client error: try it again!')
+    const resultTime = await whenNotError(resTime, (res_) =>
+      res_.wait().catch((err) => new Error(err)),
+    )
+    const resMem = 
+      (await whenDefinedAll(
+        [sTokensManager, customMemberDescriptorAddress],
+        ([cont, descriptor]) =>
+          cont
+            .setTokenURIDescriptor(
+              propertyAddress,
+              descriptor,
+              memberItems.map(({ payload }) => payload),
+            )
+            .catch((err) => new Error(err)),
+      )) ?? new Error('Client error: try it again!')
+    const resultMem = await whenNotError(resMem, (res_) =>
+      res_.wait().catch((err) => new Error(err)),
+    )
+    syncStatusDescriptor = resultTime instanceof Error ? resultTime : false
+    syncStatusDescriptor = resultMem instanceof Error ? resultMem : false
+    initStatuses()
+  }
   
     const onClickSyncImages = async () => {
       syncStatusImages = true
@@ -191,6 +182,7 @@
         payload: image.payload,
         state: image.state,
         source: image.source,
+        isTimeLimitedCollection: image.isTimeLimitedCollection,
       }))
       const res =
         (await whenDefinedAll([items, signer], ([states, signer_]) =>

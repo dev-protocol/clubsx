@@ -11,5 +11,6 @@ export type State = {
 export type ExpectedStatus = {
   payload: string
   source: CollectionMembership
+  isTimeLimitedCollection: boolean
   state: State
 }
