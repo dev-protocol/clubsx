@@ -6,7 +6,7 @@ import ConnectButton from '@components/Wallet/ConnectButton.vue';
 
 <Layout>
   <div class="pb-16">
-    <ConnectButton client:load redirectOnSignin={true}/>
+    <ConnectButton client:load redirectOnSignin={true} label='Sign with your wallet' overrideClass='hs-button is-filled is-native-blue is-large'/>
     <SignInForm client:load />
   </div>
 </Layout>
