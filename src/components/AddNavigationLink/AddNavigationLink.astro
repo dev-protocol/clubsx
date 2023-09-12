@@ -3,7 +3,7 @@ import type {
   ClubsConfiguration,
   ClubsPropsAdminPages,
 } from '@devprotocol/clubs-core'
-import AddNavigationLink from './AddNavigationLink.svelte'
+import AddNavigationLink_ from './AddNavigationLink.svelte'
 import type { NavLink } from '@constants/navLink'
 
 const { forAddNavigationLink } = Astro.props as ClubsPropsAdminPages & {
@@ -15,7 +15,7 @@ const { forAddNavigationLink } = Astro.props as ClubsPropsAdminPages & {
 }
 ---
 
-<AddNavigationLink
+<AddNavigationLink_
   client:load
   config={forAddNavigationLink.config}
   label={forAddNavigationLink.label}

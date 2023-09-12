@@ -1,5 +1,5 @@
 ---
-import JoinClub from '@components/Join/JoinClub.svelte'
+import JoinClub_ from '@components/Join/JoinClub.svelte'
 import type { Tiers } from '@constants/tier'
 import type { ClubsPropsPages } from '@devprotocol/clubs-core'
 import type { UndefinedOr } from '@devprotocol/util-ts'
@@ -19,7 +19,7 @@ const injectedTiers = SlotsJoinCurrencyOption.map((slot) => {
 }).flat()
 ---
 
-<JoinClub
+<JoinClub_
   client:load
   tiers={tiers}
   injectedTiers={injectedTiers}
@@ -31,4 +31,4 @@ const injectedTiers = SlotsJoinCurrencyOption.map((slot) => {
       <Slot.component {...Slot.props} slot="currency:option" />
     ))
   }
-</JoinClub>
+</JoinClub_>

@@ -1,18 +1,17 @@
 ---
 import type { Membership } from '@plugins/memberships'
 import type { Tickets } from '.'
-import Index from './Index.svelte'
+import Index_ from './Index.svelte'
 
-const { tickets, memberships, propertyAddress, rpcUrl, ...other } =
-  Astro.props as {
-    tickets: Tickets
-    memberships: Membership[]
-    propertyAddress: string
-    rpcUrl: string
-  }
+const { tickets, memberships, propertyAddress, rpcUrl } = Astro.props as {
+  tickets: Tickets
+  memberships: Membership[]
+  propertyAddress: string
+  rpcUrl: string
+}
 ---
 
-<Index
+<Index_
   client:load
   tickets={tickets}
   memberships={memberships}

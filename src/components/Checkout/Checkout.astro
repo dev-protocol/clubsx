@@ -1,5 +1,5 @@
 ---
-import Checkout from '@components/Checkout/Checkout.vue'
+import Checkout_ from '@components/Checkout/Checkout.vue'
 import type { ClubsPropsPages } from '@devprotocol/clubs-core'
 import type { CheckoutOptions } from './types'
 
@@ -53,7 +53,7 @@ const SlotsCheckoutResultBeforePreview = clubs.slots.filter(
 )
 ---
 
-<Checkout
+<Checkout_
   client:only="vue"
   amount={amount}
   destination={propertyAddress}
@@ -101,4 +101,4 @@ const SlotsCheckoutResultBeforePreview = clubs.slots.filter(
       <Slot.component {...Slot.props} slot="result:before:preview" />
     ))
   }
-</Checkout>
+</Checkout_>

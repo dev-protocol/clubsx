@@ -12,14 +12,9 @@ import Markdown from '@components/Markdown/Markdown.astro'
 
 const { site } = Astro.params
 
-const {
-  config,
-  plugin: installablePlugins,
-  size = 'medium',
-} = Astro.props as {
+const { config, plugin: installablePlugins } = Astro.props as {
   config: ClubsConfiguration
   plugin: InstallablePlugins
-  size?: 'medium' | 'small'
 }
 
 const plugin = await createGetPluginMeta(config)(installablePlugins)

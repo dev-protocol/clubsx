@@ -1,4 +1,4 @@
-import { ClubsPluginOption, decode } from '@devprotocol/clubs-core'
+import { type ClubsPluginOption, decode } from '@devprotocol/clubs-core'
 import { instanceStore } from '@fixtures/firebase/instance'
 import { hashMessage, recoverAddress } from 'ethers'
 import { createClient } from 'redis'

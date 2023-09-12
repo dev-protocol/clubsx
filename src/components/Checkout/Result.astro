@@ -1,5 +1,5 @@
 ---
-import Result from '@components/Checkout/Result.vue'
+import Result_ from '@components/Checkout/Result.vue'
 import type { ClubsPropsPages } from '@devprotocol/clubs-core'
 
 const { clubs, id, rpcUrl } = Astro.props as ClubsPropsPages & {
@@ -12,7 +12,7 @@ const SlotsCheckoutResultBeforePreview = clubs.slots.filter(
 )
 ---
 
-<Result client:only="vue" id={id} rpcUrl={rpcUrl}>
+<Result_ client:only="vue" id={id} rpcUrl={rpcUrl}>
   <slot name="checkout-result:before:preview" slot="before:preview" />
 
   {
@@ -20,4 +20,4 @@ const SlotsCheckoutResultBeforePreview = clubs.slots.filter(
       <Slot.component {...Slot.props} slot="before:preview" />
     ))
   }
-</Result>
+</Result_>

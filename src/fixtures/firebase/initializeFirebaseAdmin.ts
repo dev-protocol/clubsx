@@ -1,6 +1,6 @@
 import {
   initializeApp as initializeAdminApp,
-  App,
+  type App,
   getApp,
   getApps,
 } from 'firebase-admin/app'
