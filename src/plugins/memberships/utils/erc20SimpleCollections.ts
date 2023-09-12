@@ -1,3 +1,4 @@
+import type { BigNumber } from '@ethersproject/bignumber'
 import { ethers } from 'ethers'
 import type {
   TransactionResponse,
