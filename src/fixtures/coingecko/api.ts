@@ -1,5 +1,3 @@
-import BigNumber from 'bignumber.js'
-
 export const usdByDev = async (dev: number) => {
   const res = await fetch(
     'https://api.coingecko.com/api/v3/simple/price?ids=dev-protocol&vs_currencies=usd',

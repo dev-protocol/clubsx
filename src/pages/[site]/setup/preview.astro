@@ -18,12 +18,12 @@ const config = await getCurrentConfig()
 const path = (await getStaticPaths()).find(({ props }) => props.clubs)
 
 const baseUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
-  new URL(Astro.request.url)
+  new URL(Astro.request.url),
 )
 
 const siteBaseUrl = ((url) =>
   `${url.protocol}//${url.host}/${site}/setup/memberships`)(
-  new URL(Astro.request.url)
+  new URL(Astro.request.url),
 )
 ---
 
@@ -43,7 +43,7 @@ const siteBaseUrl = ((url) =>
           height="800"
           style="transform: scale(0.7); transform-origin: 0 0"
           src={baseUrl}
-          class="bg-dp-black-600 -mb-[240px] rounded-lg shadow-lg"
+          class="-mb-[240px] rounded-lg bg-dp-black-600 shadow-lg"
         />
         <a class="hs-button is-filled is-large" href={baseUrl} target="_blank">
           Open external
@@ -51,7 +51,7 @@ const siteBaseUrl = ((url) =>
 
         <a
           href={`/${site}/setup/publish`}
-          class="bg-native-blue-400 grid w-full gap-14 overflow-hidden rounded-[32px] pt-14"
+          class="grid w-full gap-14 overflow-hidden rounded-[32px] bg-native-blue-400 pt-14"
         >
           <h3 class="text-center font-title text-4xl font-bold">
             Almost there!
@@ -65,12 +65,12 @@ const siteBaseUrl = ((url) =>
           <div class="relative ml-24 flex content-end justify-end">
             <img
               class="rounded-tl-[32px] object-cover object-center"
-              src={image}
+              src={image.src}
               width="750"
               height="755"
               alt="Post sales chart"
             />
-            <div class="to-native-blue-400 absolute inset-0 bg-gradient-to-r from-transparent" />
+            <div class="absolute inset-0 bg-gradient-to-r from-transparent to-native-blue-400" />
           </div>
         </a>
       </section>

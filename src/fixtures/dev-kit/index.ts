@@ -1,7 +1,7 @@
 import {
   AbiCoder,
   BrowserProvider,
-  ContractRunner,
+  type ContractRunner,
   Log,
   ZeroAddress,
   parseUnits,
@@ -14,8 +14,12 @@ import {
   clientsLockup,
   positionsCreateWithAnyTokens,
 } from '@devprotocol/dev-kit/agent'
-import { UndefinedOr, whenDefined, whenDefinedAll } from '@devprotocol/util-ts'
-import { STokensContract, positionsCreate } from '@devprotocol/dev-kit'
+import {
+  type UndefinedOr,
+  whenDefined,
+  whenDefinedAll,
+} from '@devprotocol/util-ts'
+import { type STokensContract, positionsCreate } from '@devprotocol/dev-kit'
 import { CurrencyOption } from '@constants/currencyOption'
 import type { Log as Log_ } from '@ethersproject/abstract-provider'
 import { bytes32Hex } from '@fixtures/data/hexlify'

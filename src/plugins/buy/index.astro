@@ -9,10 +9,8 @@ const { products } = Astro.props as { products: Membership[] }
 ---
 
 <div>
-  {/* @ts-ignore */}
-  <Hero />
-  {/* @ts-ignore */}
-  <Hero2 />
+  <Hero {...{} as any} />
+  <Hero2 {...{} as any} />
   <Cards products={[...products]} />
 </div>
 <Footer />

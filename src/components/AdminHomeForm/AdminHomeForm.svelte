@@ -41,7 +41,7 @@
   const onFileSelected = async (
     i: number,
     e: any,
-    isWhatWeDoSection: boolean
+    isWhatWeDoSection: boolean,
   ) => {
     // Fetch the image.
     let image = e.target.files[0]
@@ -54,7 +54,7 @@
   const updateImageUrlInConfig = (
     i: number,
     imageURl: string,
-    isWhatWeDoSection: boolean
+    isWhatWeDoSection: boolean,
   ) => {
     // Check if the section is what we do.
     if (isWhatWeDoSection) {
@@ -133,7 +133,6 @@
               />
             {:else}
               <button
-                for={`whatwedo-image-${i}`}
                 class="hs-button is-filled"
                 type="button"
                 on:click={() => onUploadClick(`whatwedo-image-${i}`)}
@@ -209,7 +208,6 @@
                 />
               {:else}
                 <button
-                  for={`perk-image-${i}`}
                   class="hs-button is-filled"
                   type="button"
                   on:click={() => onUploadClick(`perk-image-${i}`)}

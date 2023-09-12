@@ -7,7 +7,7 @@ export type ClubsData = {
   created: string
 }
 
-export const post = async ({ request }: { request: Request }) => {
+export const POST = async ({ request }: { request: Request }) => {
   const { identifier } = (await request.json()) as {
     identifier: string
   }

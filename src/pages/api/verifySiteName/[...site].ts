@@ -9,7 +9,7 @@ import { createClient } from 'redis'
 const validate = (site?: string): site is string =>
   site ? /^[a-z|0-9|-]{3,42}$/.test(site) : false
 
-export const get = async ({
+export const GET = async ({
   params: { site },
 }: {
   params: { site?: string }

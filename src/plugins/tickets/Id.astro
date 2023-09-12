@@ -1,17 +1,19 @@
 ---
 import type { Membership } from '@plugins/memberships'
 import type { Ticket } from '.'
-import Id from './Id.svelte'
+import Id_ from './Id.svelte'
 
-const { ticket, membership, propertyAddress, rpcUrl, ...other } =
-  Astro.props as {
-    ticket: Ticket
-    membership: Membership
-    propertyAddress: string
-    rpcUrl: string
-  }
+const { ticket, membership } = Astro.props as {
+  ticket: Ticket
+  membership: Membership
+}
 
 const sTokensId = Number(Astro.url.searchParams.get('id'))
 ---
 
-<Id client:load ticket={ticket} membership={membership} sTokensId={sTokensId} />
+<Id_
+  client:load
+  ticket={ticket}
+  membership={membership}
+  sTokensId={sTokensId}
+/>

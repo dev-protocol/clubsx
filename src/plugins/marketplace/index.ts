@@ -1,17 +1,10 @@
+import { type InstallablePlugins, installablePlugins } from '@constants/plugins'
 import {
-  InstallablePlugins,
-  PluginMeta,
-  installablePlugins,
-} from '@constants/plugins'
-import {
-  ClubsFunctionGetAdminPaths,
-  ClubsFunctionGetPagePaths,
-  ClubsFunctionGetSlots,
-  ClubsFunctionPlugin,
-  ClubsPlugin,
+  type ClubsFunctionGetAdminPaths,
+  type ClubsFunctionGetPagePaths,
+  type ClubsFunctionPlugin,
   ClubsPluginCategory,
-  ClubsPluginMeta,
-  ClubsSlotName,
+  type ClubsPluginMeta,
 } from '@devprotocol/clubs-core'
 import { default as Admin } from './admin.astro'
 import { default as Plugin } from './[pluginId].astro'

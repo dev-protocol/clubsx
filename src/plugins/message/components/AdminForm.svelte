@@ -1,7 +1,7 @@
 <script lang="ts">
   import { setOptions } from '@devprotocol/clubs-core'
   import type { Membership } from '@plugins/memberships'
-  import { Signer, hashMessage } from 'ethers'
+  import { type Signer, hashMessage } from 'ethers'
   import type { GatedMessage } from '../types'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
   import { onMount } from 'svelte'
@@ -70,7 +70,7 @@
   const remove = () => {
     setOptions(
       [{ key: 'forms', value: forms.filter((f) => f.id !== id) }],
-      currentPluginIndex
+      currentPluginIndex,
     )
   }
 

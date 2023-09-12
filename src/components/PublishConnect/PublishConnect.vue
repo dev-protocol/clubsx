@@ -49,7 +49,7 @@ export default defineComponent({
     }
   },
   computed: {
-    buttonClasses() {
+    buttonClasses(): string {
       const classes = 'hs-button is-large is-filled w-full'
 
       return this.connected

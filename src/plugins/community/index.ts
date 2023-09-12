@@ -1,10 +1,10 @@
 import {
-  ClubsFunctionGetAdminPaths,
-  ClubsFunctionGetPagePaths,
-  ClubsFunctionGetSlots,
-  ClubsFunctionPlugin,
+  type ClubsFunctionGetAdminPaths,
+  type ClubsFunctionGetPagePaths,
+  type ClubsFunctionGetSlots,
+  type ClubsFunctionPlugin,
   ClubsPluginCategory,
-  ClubsPluginMeta,
+  type ClubsPluginMeta,
 } from '@devprotocol/clubs-core'
 import { default as Index } from './index.astro'
 import { default as Admin } from './admin.astro'
@@ -56,13 +56,13 @@ export const meta: ClubsPluginMeta = {
   id: 'devprotocol:clubs:plugin:community',
   displayName: 'Discord',
   category: ClubsPluginCategory.Growth,
-  icon: Icon,
+  icon: Icon.src,
   offer: {
     price: 0,
     priceCurrency: 'DEV',
   },
   description: `Add guild.xyz link.`,
-  previewImages: [Preview1],
+  previewImages: [Preview1.src],
   readme: Readme,
 }
 

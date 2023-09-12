@@ -10,7 +10,7 @@ import Key from '@assets/key.png'
 const { name, options } = Astro.props
 const guildUrl =
   options.find(
-    (option: { key: string; value: string }) => option.key === 'guildUrl'
+    (option: { key: string; value: string }) => option.key === 'guildUrl',
   )?.value || 'https://guild.xyz/'
 ---
 
@@ -43,7 +43,7 @@ const guildUrl =
     <section class="my-6 h-[229px] overflow-hidden">
       <img
         class="h-full w-full rounded-2xl object-cover object-center"
-        src={Key}
+        src={Key.src}
         alt="A picture of a chrome plated key"
       />
     </section>
@@ -51,17 +51,17 @@ const guildUrl =
       <h1 class="mb-6 font-title text-2xl font-bold">
         Open the door to the community
       </h1>
-      <Step step="1" label="Connect your wallet to guild.xyz" media={Step1}>
+      <Step step="1" label="Connect your wallet to guild.xyz" media={Step1.src}>
         <HSButton type="filled plox contained" link={guildUrl}>
           guild.xyz
         </HSButton>
       </Step>
-      <Step step="2" label="Join our guild" media={Step2}>
+      <Step step="2" label="Join our guild" media={Step2.src}>
         <HSButton type="filled plox contained" link={guildUrl}>
           guild.xyz
         </HSButton>
       </Step>
-      <Step step="3" label="Open the invite link" media={Step3}>
+      <Step step="3" label="Open the invite link" media={Step3.src}>
         <HSButton type="filled plox contained" link={guildUrl}>
           guild.xyz
         </HSButton>

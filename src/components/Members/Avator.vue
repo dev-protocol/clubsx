@@ -19,11 +19,15 @@ export default {
       imgSrc: null,
       name: '',
       style: `width: ${this.width || 75}px; height: ${this.height || 75}px;`,
+    } as {
+      imgSrc: null | string
+      name: string
+      style: string
     }
   },
   async created() {
     const res = await getAccount(this.accountAddress)
-    this.imgSrc = res[0]?.portrait?.formats.thumbnail.url
+    this.imgSrc = res[0]?.portrait?.formats?.thumbnail.url ?? null
     this.name = res[0]?.name
   },
 }

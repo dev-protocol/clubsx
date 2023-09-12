@@ -1,7 +1,7 @@
 ---
 import type { NavLink } from '@constants/navLink'
 
-const { links, current } = Astro.props as {
+const { links } = Astro.props as {
   links: NavLink[]
   current?: NavLink
 }
@@ -21,7 +21,7 @@ const { links, current } = Astro.props as {
                 {link.display}
               </a>
             </li>
-          )
+          ),
       )
     }
   </ul>
