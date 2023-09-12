@@ -334,10 +334,7 @@ import {
   onUpdatedConfiguration,
 } from '@devprotocol/clubs-core/events'
 import type { DraftOptions } from '@constants/draft'
-import {
-  callERC20SimpleCollections,
-  type ERC20Image,
-} from '@plugins/memberships/utils/erc20SimpleCollections'
+import type { ERC20Image } from '@plugins/memberships/utils/types/setImageArg'
 import { tokenInfo } from '@constants/common'
 import { bytes32Hex } from '@fixtures/data/hexlify'
 
@@ -895,14 +892,17 @@ export default defineComponent({
               src: opt.imageSrc,
               name: opt.name,
               description: opt.description,
-              requiredTokenAmount: parseUnits(String(opt.price), decimals),
+              requiredTokenAmount: parseUnits(
+                String(opt.price),
+                decimals,
+              ).toString(),
               requiredTokenFee: opt.fee?.percentage
                 ? parseUnits(
                     new BigNumber(opt.price)
                       .times(opt.fee.percentage)
                       .toFixed(),
                     decimals,
-                  )
+                  ).toString()
                 : 0n,
               gateway: opt.fee?.beneficiary ?? ZeroAddress,
               token: token,
@@ -914,7 +914,7 @@ export default defineComponent({
 
         this.setupMbmershipTxnStatusMsg =
           'Awaiting transaction confirmation on wallet...'
-        const tx = await callERC20SimpleCollections(signer, 'setImages', [
+        const tx = await callSimpleCollections(signer, 'setImages', [
           propertyAddress,
           images,
           keys,
