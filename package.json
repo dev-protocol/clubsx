@@ -89,7 +89,7 @@
     "firebase": "^10.3.1",
     "firebase-admin": "^11.10.1",
     "jsonwebtoken": "^9.0.2",
-    "marked": "8.0.1",
+    "marked": "9.0.0",
     "p-queue": "^7.4.1",
     "postcss": "8.4.29",
     "ramda": "0.29.0",
