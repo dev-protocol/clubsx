@@ -3570,45 +3570,37 @@
     "@walletconnect/window-getters" "^1.0.1"
     tslib "1.14.1"
 
-"@web3modal/core@3.0.0-alpha.5":
-  version "3.0.0-alpha.5"
-  resolved "https://registry.yarnpkg.com/@web3modal/core/-/core-3.0.0-alpha.5.tgz#5ecea3434e75e376734f7d272327383a8eebe043"
-  integrity sha512-UJ1e0jA8v+X9vgq8fayK04hcbZZLVQelpf0LhLlE2Yc/lvYh4FHn89Ug1dYN/b04QzjMAFhLgmRpIAoxe5sG2A==
+"@web3modal/core@3.0.0-efbb62fa":
+  version "3.0.0-efbb62fa"
+  resolved "https://registry.yarnpkg.com/@web3modal/core/-/core-3.0.0-efbb62fa.tgz#90c73e333b5eef2d6b4a9a44799791ad0165671a"
+  integrity sha512-afPX/8dC1b5OljsHicTJEKG+Tf4QYmLTxPXpmgUm8BpQ+tZb1Egsfw9L49KTJASYo48klAvOCFFFM5o7D2CTOw==
   dependencies:
-    valtio "1.11.2"
+    valtio "1.11.1"
 
-"@web3modal/polyfills@3.0.0-alpha.5":
-  version "3.0.0-alpha.5"
-  resolved "https://registry.yarnpkg.com/@web3modal/polyfills/-/polyfills-3.0.0-alpha.5.tgz#642c79c2af69e5a89499c59fa4b17fa522aa1753"
-  integrity sha512-7AOYWakQN+BrPeMuZ8VMHW02ab1hlHiwVImDviKlCELl//LdRYjmeBq1yUQVkPiNXe5bVMUJnuE3AyMEkK8NQg==
+"@web3modal/scaffold@3.0.0-efbb62fa":
+  version "3.0.0-efbb62fa"
+  resolved "https://registry.yarnpkg.com/@web3modal/scaffold/-/scaffold-3.0.0-efbb62fa.tgz#7b7fc2ca2115e5c2209632e934a19b939061bce2"
+  integrity sha512-jXKFL0BUXguBRNxRT1U3lVDqLpcxJfFX0TvvtgDpZD5e/0rqUcjyAxPsbmKCGn9mNuGzxMLL1ulNQnH7dqhriQ==
   dependencies:
-    buffer "6.0.3"
-
-"@web3modal/scaffold@3.0.0-alpha.5":
-  version "3.0.0-alpha.5"
-  resolved "https://registry.yarnpkg.com/@web3modal/scaffold/-/scaffold-3.0.0-alpha.5.tgz#1e3ae52c4740b6184863f7677e6273d05cf65998"
-  integrity sha512-fsaRW3NIqPdvZgsYqP2RQ+ORRMLMr8GdGhXWFhcOzlYxHbo+T8yYamCFH/wQ8eMsAnNGK0MLLjeyv0GEY3NoSQ==
-  dependencies:
-    "@web3modal/core" "3.0.0-alpha.5"
-    "@web3modal/ui" "3.0.0-alpha.5"
-    lit "2.8.0"
+    "@web3modal/core" "3.0.0-efbb62fa"
+    "@web3modal/ui" "3.0.0-efbb62fa"
+    lit "2.7.6"
     motion "10.16.2"
 
-"@web3modal/ui@3.0.0-alpha.5":
-  version "3.0.0-alpha.5"
-  resolved "https://registry.yarnpkg.com/@web3modal/ui/-/ui-3.0.0-alpha.5.tgz#444d2509431ba439d71c271216538f025d8c8e85"
-  integrity sha512-C73A26yPWMJYWVpP0GFff3ZBRwjDcB3U/ouAopi9ZNNizuNjspLCuTSJQcHlu99d1Uxe2aN6xDfBmpQze2Ywqw==
+"@web3modal/ui@3.0.0-efbb62fa":
+  version "3.0.0-efbb62fa"
+  resolved "https://registry.yarnpkg.com/@web3modal/ui/-/ui-3.0.0-efbb62fa.tgz#4b2811741fcb5b39705128b5f333e776da99f7c3"
+  integrity sha512-98TnNCLW2OLa26aiEwENfhECrxOn9JAZ0ShHPbNHI3XE5XxtydlnJ4Ot4gofvX3UeCKvjjdFs0Cw2xZJN2CqjA==
   dependencies:
-    lit "2.8.0"
+    lit "2.7.6"
     qrcode "1.5.3"
 
-"@web3modal/wagmi@3.0.0-alpha.5":
-  version "3.0.0-alpha.5"
-  resolved "https://registry.yarnpkg.com/@web3modal/wagmi/-/wagmi-3.0.0-alpha.5.tgz#22c67c7f368025bc1a2b4f55fff98917d035a301"
-  integrity sha512-b7/ZNtGYagcm90rXqG3Ps35fXezvuzraWGbxv0Pv0SdbBryXNcogDxehRU2kpGW2+tps4zcgPzSs5OgbftYJow==
+"@web3modal/wagmi@3.0.0-efbb62fa":
+  version "3.0.0-efbb62fa"
+  resolved "https://registry.yarnpkg.com/@web3modal/wagmi/-/wagmi-3.0.0-efbb62fa.tgz#930480c901b27ac8d07e6b75ea44f8723817573d"
+  integrity sha512-PP8GwTEX+8h//92VbXUvpt98eHfnOHQNYoUGfHXmqTW5rkzcnCia04b8JcP79VLOzfMy7KXeDa/+vpVahR8Fgw==
   dependencies:
-    "@web3modal/polyfills" "3.0.0-alpha.5"
-    "@web3modal/scaffold" "3.0.0-alpha.5"
+    "@web3modal/scaffold" "3.0.0-efbb62fa"
 
 "@webcomponents/template-shadowroot@^0.2.1":
   version "0.2.1"
@@ -7067,7 +7059,7 @@ lit@2.7.6:
     lit-element "^3.3.0"
     lit-html "^2.7.0"
 
-lit@2.8.0, lit@^2.3.1, lit@^2.7.0, lit@^2.8.0:
+lit@^2.3.1, lit@^2.7.0, lit@^2.8.0:
   version "2.8.0"
   resolved "https://registry.yarnpkg.com/lit/-/lit-2.8.0.tgz#4d838ae03059bf9cafa06e5c61d8acc0081e974e"
   integrity sha512-4Sc3OFX9QHOJaHbmTMk28SYgVxLN3ePDjg7hofEft2zWlehFL3LiAuapWc4U/kYwMYJSh2hTCPZ6/LIC7ii0MA==
@@ -10256,10 +10248,10 @@ valtio@1.11.0:
     proxy-compare "2.5.1"
     use-sync-external-store "1.2.0"
 
-valtio@1.11.2:
-  version "1.11.2"
-  resolved "https://registry.yarnpkg.com/valtio/-/valtio-1.11.2.tgz#b8049c02dfe65620635d23ebae9121a741bb6530"
-  integrity sha512-1XfIxnUXzyswPAPXo1P3Pdx2mq/pIqZICkWN60Hby0d9Iqb+MEIpqgYVlbflvHdrp2YR/q3jyKWRPJJ100yxaw==
+valtio@1.11.1:
+  version "1.11.1"
+  resolved "https://registry.yarnpkg.com/valtio/-/valtio-1.11.1.tgz#90303a4d41f3528f17b44bfca7801d108cbd5f58"
+  integrity sha512-sTKWY1e1AVUu4sY9CimoSZpufAsAXO+fzZrw0X5xtijEmDDQaPPLHZxlpONUpTLtvxPjpQURCSdUuUyBszoEOg==
   dependencies:
     proxy-compare "2.5.1"
     use-sync-external-store "1.2.0"
