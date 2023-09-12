@@ -14,6 +14,7 @@ import type { DraftOptions } from '@constants/draft'
 import VercelAnalytics from '@components/Analytics/VercelAnalytics.astro'
 import Banner from '@components/Global/Banner.astro'
 import { ViewTransitions } from 'astro:transitions'
+import ConnectButton from '@components/Wallet/ConnectButton.vue'
 
 const { site } = Astro.params
 
@@ -116,6 +117,7 @@ const avatarImgSrc: string | undefined = config.options?.find(
         aside && (
           <div class="container mx-auto px-2 py-8 lg:px-0 lg:py-16">
             <Aside config={config} showConnectButton={!isInDraftWithFirebase}>
+              <ConnectButton client:load slot="aside:connect-button"/>
               <slot name="aside:after-built-in-buttons" />
             </Aside>
           </div>

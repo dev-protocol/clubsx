@@ -114,7 +114,7 @@
     unist-util-visit "^4.1.2"
     vfile "^5.3.7"
 
-"@astrojs/netlify@^3.0.1":
+"@astrojs/netlify@3.0.1":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@astrojs/netlify/-/netlify-3.0.1.tgz#a1fa0bfec55bb51937f33a710862309fa86a3420"
   integrity sha512-CFSF10+xyNXqb2oFYVJMRB6AdilwgKrB3Iyf0+sAXZZM7GqITc0H98hoWUQfawxgmzi6aXqv+DC8mvEvCoCRlg==
@@ -123,7 +123,7 @@
     "@netlify/functions" "^2.0.1"
     esbuild "^0.19.2"
 
-"@astrojs/prefetch@^0.4.0":
+"@astrojs/prefetch@0.4.0":
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/@astrojs/prefetch/-/prefetch-0.4.0.tgz#e7099d9fd4d846502468ee833aca7ced8b07a465"
   integrity sha512-TTlVJcBrVv2R10Owsbl4tizvcRV+MuQsh4ZwIn2hU3XvzvaacIw4/2bzQ3WcYwQhc3t72t6E1vLdvtnXo0xyEA==
@@ -137,7 +137,7 @@
   dependencies:
     prismjs "^1.29.0"
 
-"@astrojs/react@^3.0.2":
+"@astrojs/react@3.0.2":
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/@astrojs/react/-/react-3.0.2.tgz#f74026bbeacb324bae55473c3ccf93d822558fdb"
   integrity sha512-aooNIuQxTg+IWGMZPuIEwBeBi4/TCPCMsr3714zuLjAjukVd5ZrX/bCNxJqDWU4HNwUm4XFU1OhcEvYOHa5uMQ==
@@ -145,7 +145,7 @@
     "@vitejs/plugin-react" "^4.0.4"
     ultrahtml "^1.3.0"
 
-"@astrojs/svelte@^4.0.2":
+"@astrojs/svelte@4.0.2":
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/@astrojs/svelte/-/svelte-4.0.2.tgz#7e80681765fb7a44f3754985df446479a6b81376"
   integrity sha512-XB9Sexq+iW5aUpctDk6zuKHbWIAuPlAnZKbfgaS9VOaOUtx1t12crP9YoKEVcTifXYgoRuWWfeEAm2I8pYlLIQ==
@@ -153,7 +153,7 @@
     "@sveltejs/vite-plugin-svelte" "^2.4.5"
     svelte2tsx "^0.6.20"
 
-"@astrojs/tailwind@^5.0.0":
+"@astrojs/tailwind@5.0.0":
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/@astrojs/tailwind/-/tailwind-5.0.0.tgz#4efcbbbd1206eb15b3624d93f1930164ab193720"
   integrity sha512-bMZZNNm/SW+ijUKMQDhdiuNWDdR3CubEKUHb2Ran4Arx1ikWn/kKIkFDXUV+MUnsLa7s19x9VMRlARRyKbqMkQ==
@@ -181,7 +181,7 @@
   resolved "https://registry.yarnpkg.com/@astrojs/underscore-redirects/-/underscore-redirects-0.3.0.tgz#2a2a4f48f4643d95151fa585c5f4e5e28d0a02ac"
   integrity sha512-dWBOH6hlGeaERmbdi+jFV2rnTcjOJrNOFYTnTTf8G2x0Gs3Radsh1ObSNEL5Z+xUhXNZLymhLbnN9yQSmh+PQw==
 
-"@astrojs/vercel@^4.0.5":
+"@astrojs/vercel@4.0.5":
   version "4.0.5"
   resolved "https://registry.yarnpkg.com/@astrojs/vercel/-/vercel-4.0.5.tgz#2ea669e65d06ba924fa51b0715a02b35a4e7d1d3"
   integrity sha512-ANiJt+4ikI188CPqBbVnianBXfe9k0O5mohMMSYqxBuU9Sn9QWYFYz7JtBcirhxDvUhIfbdlRqFXNVcMpOlQrg==
@@ -194,7 +194,7 @@
     set-cookie-parser "^2.6.0"
     web-vitals "^3.4.0"
 
-"@astrojs/vue@^3.0.0":
+"@astrojs/vue@3.0.0":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@astrojs/vue/-/vue-3.0.0.tgz#ad27ffee39204557b6673b39fb095b813526ee59"
   integrity sha512-C3PSSznvgs9lZLz3e4VZOV3rRV+OekSELkA5wcrh2zgQiemYs8fnLo7S25ZMhM/xrqMbNxUKGjYZngH7NdIvsg==
@@ -2936,10 +2936,10 @@
   resolved "https://registry.yarnpkg.com/@vercel/analytics/-/analytics-1.0.2.tgz#7af719a1bf33734840aee6f04eb548d2cedab9ec"
   integrity sha512-BZFxVrv24VbNNl5xMxqUojQIegEeXMI6rX3rg1uVLYUEXsuKNBSAEQf4BWEcjQDp/8aYJOj6m8V4PUA3x/cxgg==
 
-"@vercel/edge@1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@vercel/edge/-/edge-1.0.1.tgz#94fc7be3c79834b0833dad9cfa23ed47b55309fa"
-  integrity sha512-0lE1J1QsKmet3NUlNjS1+4tw7VpOsd3wxG91A5ZAAcxxDl3RQh/ThnYVV5VYT6FoSK5ZZ3jYh5YZCd0pWPK3yQ==
+"@vercel/edge@1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@vercel/edge/-/edge-1.0.2.tgz#a3ab4d888e3fc89f19189990727fde34251b0ee6"
+  integrity sha512-KJXP8FuLY24q+qIjkyx+bjhg4VU5742gYv9uXu4Cwj67GNeHRMWURo9zvqvQw3zuYKitSYwKlSM3ceby8Wh86Q==
 
 "@vercel/nft@^0.23.1":
   version "0.23.1"

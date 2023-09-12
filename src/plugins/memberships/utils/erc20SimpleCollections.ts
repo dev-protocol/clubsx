@@ -664,8 +664,8 @@ export type ERC20Image = {
   src: string
   name: string
   description: string
-  requiredTokenAmount: string
-  requiredTokenFee: string
+  requiredTokenAmount: string | bigint | BigNumber
+  requiredTokenFee: string | bigint | BigNumber
   gateway: string
   token: string
 }

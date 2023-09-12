@@ -334,6 +334,12 @@ import {
   onUpdatedConfiguration,
 } from '@devprotocol/clubs-core/events'
 import type { DraftOptions } from '@constants/draft'
+import {
+  callERC20SimpleCollections,
+  type ERC20Image,
+} from '@plugins/memberships/utils/erc20SimpleCollections'
+import { tokenInfo } from '@constants/common'
+import { bytes32Hex } from '@fixtures/data/hexlify'
 
 type Data = {
   networkSelected: String
@@ -869,29 +875,46 @@ export default defineComponent({
       }
 
       try {
+        const currentChainId: number | null = this.getChainId()
+        if (!currentChainId) {
+          this.membershipSet = false
+          this.setupMbmershipTxnStatusMsg = 'Setup failed, try again!'
+          this.setupMemberhipTxnProcessing = false
+          return
+        }
+
         const propertyAddress = Boolean(this.addressFromNiwa)
           ? (this.addressFromNiwa as string)
           : (this.addressFromNiwaOrConfig as string)
-        const images: Image[] =
-          this.membershipsPluginOptions?.map((opt) => ({
-            src: opt.imageSrc,
-            name: opt.name,
-            description: opt.description,
-            requiredETHAmount: parseUnits(String(opt.price)).toString(),
-            requiredETHFee: opt.fee?.percentage
-              ? parseUnits(
-                  new BigNumber(opt.price).times(opt.fee.percentage).toFixed(),
-                ).toString()
-              : 0,
-            gateway: opt.fee?.beneficiary ?? ZeroAddress,
-          })) || []
+        const images: ERC20Image[] =
+          this.membershipsPluginOptions?.map((opt) => {
+            const { decimals, address: token } =
+              tokenInfo[opt.currency][currentChainId]
+
+            return {
+              src: opt.imageSrc,
+              name: opt.name,
+              description: opt.description,
+              requiredTokenAmount: parseUnits(String(opt.price), decimals),
+              requiredTokenFee: opt.fee?.percentage
+                ? parseUnits(
+                    new BigNumber(opt.price)
+                      .times(opt.fee.percentage)
+                      .toFixed(),
+                    decimals,
+                  )
+                : 0n,
+              gateway: opt.fee?.beneficiary ?? ZeroAddress,
+              token: token,
+            }
+          }) || []
         const keys: string[] =
           this.membershipsPluginOptions?.map((opt) => keccak256(opt.payload)) ||
           []
 
         this.setupMbmershipTxnStatusMsg =
           'Awaiting transaction confirmation on wallet...'
-        const tx = await callSimpleCollections(signer, 'setImages', [
+        const tx = await callERC20SimpleCollections(signer, 'setImages', [
           propertyAddress,
           images,
           keys,
