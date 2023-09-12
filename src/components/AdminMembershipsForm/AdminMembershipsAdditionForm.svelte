@@ -208,6 +208,14 @@
     update()
     connectOnMount()
 
+    const membershipDescriptionElement = document.getElementById('membership-description')
+    if (membershipDescriptionElement) {
+      membershipDescriptionElement!.style.height = membershipDescriptionElement!.scrollHeight + 'px'
+      membershipDescriptionElement!.oninput = async () => {
+        membershipDescriptionElement!.style.height = membershipDescriptionElement!.scrollHeight + 'px'
+      }
+    }
+
     if (useOnFinishCallback) {
       document.body.addEventListener(
         ClubsEvents.FinishConfiguration,
