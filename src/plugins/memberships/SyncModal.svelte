@@ -2,7 +2,7 @@
   import type { Membership } from '@plugins/memberships'
   import {
     address,
-    callERC20SimpleCollections,
+    callSimpleCollections,
   } from '@plugins/memberships/utils/simpleCollections'
   import {
     type ContractRunner,
@@ -54,7 +54,7 @@
     propertyAddress: string
     payload: string
   }) => {
-    return callERC20SimpleCollections(provider, 'propertyImages', [
+    return callSimpleCollections(provider, 'propertyImages', [
       propertyAddress,
       payload,
     ])
@@ -68,7 +68,7 @@
     propertyAddress: string
     states: ExpectedStatus[]
   }) => {
-    return callERC20SimpleCollections(provider, 'setImages', [
+    return callSimpleCollections(provider, 'setImages', [
       propertyAddress,
       states.map(({ state }) => state),
       states.map(({ payload }) => payload),
