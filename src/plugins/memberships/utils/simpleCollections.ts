@@ -1243,13 +1243,13 @@ export async function callSimpleCollections(
 ): Promise<TransactionResponse>
 
 export async function callSimpleCollections(
-  provider: BrowserProvider,
+  provider: ContractRunner,
   functionName: 'propertyImages',
   args: [propertyAddress: string, key: string],
 ): Promise<Image>
 
 export async function callSimpleCollections(
-  provider: BrowserProvider | Signer,
+  provider: BrowserProvider | ContractRunner | Signer,
   functionName: string,
   args: unknown[],
 ): Promise<unknown> {
