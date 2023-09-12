@@ -57,7 +57,7 @@ import CLBRadio from '@components/Primitives/CLBRadio.vue'
 type Data = {
   currency: 'dev' | 'eth'
   composedTiers: {
-    [key in CurrencyOption]: UndefinedOr<Tiers>
+    [key in CurrencyOption]?: UndefinedOr<Tiers>
   }
   images: {
     DEV: string

@@ -78,7 +78,7 @@
 <script lang="ts">
 import ConnectButton from '../Wallet/ConnectButton.vue'
 import HSButton from '../Primitives/Hashi/HSButton.vue'
-import { defineComponent, PropType } from '@vue/runtime-core'
+import { defineComponent, type PropType } from '@vue/runtime-core'
 import type { NavLink } from '@constants/navLink'
 
 export default defineComponent({
@@ -104,10 +104,10 @@ export default defineComponent({
     }
   },
   methods: {
-    toggle(e) {
+    toggle() {
       this.menuIsOpen = !this.menuIsOpen
     },
-    close(e) {
+    close(e: Event) {
       if (!this.$el.contains(e.target)) {
         this.menuIsOpen = false
       }

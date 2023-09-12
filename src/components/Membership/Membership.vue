@@ -68,7 +68,7 @@ export default {
             const ret = await whenDefined(membershipStokenIDs, (ids) =>
               Promise.all(
                 ids.map(async (stokenID) => {
-                  return await getStokenOwnerOf(provider, stokenID).then(
+                  return await getStokenOwnerOf(prov, stokenID).then(
                     (ownerAddress) => {
                       return {
                         id: stokenID,
