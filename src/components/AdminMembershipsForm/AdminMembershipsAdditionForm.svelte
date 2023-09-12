@@ -212,6 +212,7 @@
     if (membershipDescriptionElement) {
       membershipDescriptionElement!.style.height = membershipDescriptionElement!.scrollHeight + 'px'
       membershipDescriptionElement!.oninput = async () => {
+        membershipDescriptionElement!.style.height = 'auto'
         membershipDescriptionElement!.style.height = membershipDescriptionElement!.scrollHeight + 'px'
       }
     }
