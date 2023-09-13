@@ -97,10 +97,9 @@ const backgroundGradientColorTo = globalConfig?.backgroundGradient?.[1]
   <div class="grid max-w-2xl grid-cols-[1fr_auto] items-center gap-2">
     <a href="/">
       <h1 class="flex items-center gap-4 lg:gap-8">
-        <img
-          src={avatar}
+        <span
           class:list={[
-            'rounded-full border-4 border-surface-200 object-cover',
+            'overflow-hidden rounded-full border-4 border-surface-200 object-cover',
             {
               'h-12 w-12 lg:h-24 lg:w-24': !compact,
             },
@@ -108,7 +107,13 @@ const backgroundGradientColorTo = globalConfig?.backgroundGradient?.[1]
               'h-7 w-7 lg:h-14 lg:w-14': compact,
             },
           ]}
-        />
+        >
+          <img
+            src={avatar}
+            transition:persist="avatar"
+            class="h-full w-full object-cover"
+          />
+        </span>
         <span
           class:list={[
             'font-bold',
