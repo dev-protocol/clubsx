@@ -181,6 +181,3 @@ export const checkMemberships = async (
   // returns the result
   return testResult > 0
 }
-
-export const cleanImport = async <T>(module: string): Promise<T> =>
-  import(`${module}?${Date.now()}`)

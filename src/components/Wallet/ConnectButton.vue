@@ -4,7 +4,6 @@ import { mainnet, polygon, polygonMumbai } from '@wagmi/core/chains'
 import type { useWeb3Modal } from '@web3modal/wagmi/vue'
 import { whenDefined } from '@devprotocol/util-ts'
 import { BrowserProvider } from 'ethers'
-import { cleanImport } from '@fixtures/utility'
 
 const props = defineProps<{
   projectId?: string
@@ -46,7 +45,7 @@ const initWeb3Modal = async () => {
     { watchWalletClient },
     { connection },
   ] = await Promise.all([
-    cleanImport<typeof import('@web3modal/wagmi/vue')>('@web3modal/wagmi/vue'),
+    import('@web3modal/wagmi/vue'),
     import('@wagmi/core'),
     import('@devprotocol/clubs-core/connection'),
   ])
