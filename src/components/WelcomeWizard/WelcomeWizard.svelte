@@ -64,6 +64,7 @@
       label="Publish"
       isActive={step === 'PUBLISH'}
       link={`/${site}/setup/publish`}
+      dataAstroReload={true}
     >
       <IconGlobeEuropeAfrica />
     </WelcomeWizardStep>

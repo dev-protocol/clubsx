@@ -39,6 +39,7 @@ const defaultChain =
     : polygon
 
 const initWeb3Modal = async () => {
+  console.log('***', 1)
   const [
     { createWeb3Modal, defaultWagmiConfig, useWeb3Modal },
     { watchWalletClient },
@@ -48,6 +49,7 @@ const initWeb3Modal = async () => {
     import('@wagmi/core'),
     import('@devprotocol/clubs-core/connection'),
   ])
+  console.log('***', 2, createWeb3Modal)
   const wagmiConfig = defaultWagmiConfig({
     chains: [polygon, polygonMumbai, mainnet],
     projectId,
