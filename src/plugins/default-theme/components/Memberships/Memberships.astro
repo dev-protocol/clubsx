@@ -27,7 +27,6 @@ const { memberships, name } = Astro.props as {
           actionLabel={'Purchase'}
         >
           <img
-            transition:name={`membership-${mem.id}`}
             slot="image"
             src={mem.imageSrc}
             class="h-auto w-full"

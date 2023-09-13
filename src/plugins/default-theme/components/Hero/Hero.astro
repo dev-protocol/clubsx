@@ -98,6 +98,7 @@ const backgroundGradientColorTo = globalConfig?.backgroundGradient?.[1]
     <a href="/">
       <h1 class="flex items-center gap-4 lg:gap-8">
         <span
+          transition:name="avatar"
           class:list={[
             'overflow-hidden rounded-full border-4 border-surface-200 object-cover',
             {
@@ -108,11 +109,7 @@ const backgroundGradientColorTo = globalConfig?.backgroundGradient?.[1]
             },
           ]}
         >
-          <img
-            src={avatar}
-            transition:name="avatar"
-            class="h-full w-full object-cover"
-          />
+          <img src={avatar} class="h-full w-full object-cover" />
         </span>
         <span
           class:list={[

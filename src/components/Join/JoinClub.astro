@@ -37,7 +37,6 @@ const compositeTiers: (Tier | InjectedTier)[] = [
     compositeTiers.map((tier) => (
       <div
         slot="tier"
-        data-tier-currency={tier.currency}
         class:list={[
           'hidden',
           // For https://tailwindcss.com/docs/hover-focus-and-other-states#arbitrary-groups; they're must be a static string
@@ -59,7 +58,6 @@ const compositeTiers: (Tier | InjectedTier)[] = [
           currency={tier.currency}
         >
           <img
-            transition:name={`membership-${tier.id}`}
             slot="image"
             src={tier.badgeImageSrc}
             class="h-auto w-full"
