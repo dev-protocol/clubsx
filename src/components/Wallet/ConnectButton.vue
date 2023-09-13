@@ -21,6 +21,7 @@ const projectId =
   props.projectId ?? import.meta.env.PUBLIC_WALLET_CONNECT_PROJECT_ID
 
 const truncatedAddress = ref<string>()
+const modal = ref<ReturnType<typeof useWeb3Modal>>()
 const error = ref<Error>()
 const truncateAddress = (address: string) => {
   const match = address.match(
@@ -45,15 +46,15 @@ const wagmiConfig = defaultWagmiConfig({
   appName: 'Web3Modal',
 })
 
-const newWeb3Modal = () =>
+const initWeb3Modal = () => {
   createWeb3Modal({ wagmiConfig, projectId, chains, defaultChain })
+  modal.value = useWeb3Modal()
+}
 
-newWeb3Modal()
-
-const modal = useWeb3Modal()
+initWeb3Modal()
 
 onMounted(async () => {
-  document.addEventListener('astro:after-swap', newWeb3Modal)
+  document.addEventListener('astro:after-swap', initWeb3Modal)
 
   const { connection } = await import('@devprotocol/clubs-core/connection')
   watchWalletClient({}, (wallet) => {
@@ -97,7 +98,7 @@ onMounted(async () => {
       } ${error ? 'is-error' : ''}`"
       v-bind:class="props.class"
       :disabled="props.isDisabled"
-      @click="modal.open()"
+      @click="modal?.value.open()"
     >
       {{
         truncatedAddress
