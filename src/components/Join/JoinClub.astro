@@ -1,6 +1,10 @@
 ---
+import USDC from '@assets/USDC.svg'
+import ETH from '@assets/ETH.svg'
+import MATIC from '@assets/MATIC.svg'
+import DEV from '@assets/devtoken.png'
+import { CurrencyOption } from '@constants/currencyOption'
 import MembershipOption from '@components/AdminMembershipsForm/MembershipOption.svelte'
-import JoinClub_ from '@components/Join/JoinClub.svelte'
 import type { InjectedTier, InjectedTiers, Tier, Tiers } from '@constants/tier'
 import type { ClubsPropsPages } from '@devprotocol/clubs-core'
 import type { UndefinedOr } from '@devprotocol/util-ts'
@@ -23,54 +27,167 @@ const compositeTiers: (Tier | InjectedTier)[] = [
   ...tiers,
   ...(injectedTiers ?? []),
 ]
+
+const counter = new Map<CurrencyOption, number>()
+const preferedCurrency: CurrencyOption = tiers.reduce((prev, current) => {
+  const count = counter.get(current.currency) ?? 1
+  counter.set(current.currency, count)
+  return counter.get(prev.currency) ?? 0 < count ? current : prev
+}).currency
+
+const currencyList: CurrencyOption[] = Array.from(
+  new Set([
+    preferedCurrency,
+    CurrencyOption.USDC,
+    CurrencyOption.MATIC,
+    CurrencyOption.ETH,
+    CurrencyOption.DEV,
+  ]),
+)
+
+const currencies = new Set(tiers.map((t) => t.currency))
 ---
 
-<JoinClub_ client:load tiers={tiers} tenantName={name}>
-  <slot name="join:currency:option" slot="currency:option" />
-  {
-    SlotsJoinCurrencyOption.map((Slot) => (
-      <Slot.component {...Slot.props} slot="currency:option" />
-    ))
-  }
+<section
+  class="flex flex-col rounded-xl bg-dp-white-200 p-4 text-dp-white-ink shadow"
+>
+  <i class="block hidden"></i>
+  <h2 class="mb-4 text-4xl font-bold">Join</h2>
 
-  {
-    compositeTiers.map((tier) => (
-      <div
-        slot="tier"
-        class:list={[
-          'hidden',
-          // For https://tailwindcss.com/docs/hover-focus-and-other-states#arbitrary-groups; they're must be a static string
-          { 'group-[.matic-is-checked]:block': tier.currency === 'matic' },
-          { 'group-[.usdc-is-checked]:block': tier.currency === 'usdc' },
-          { 'group-[.eth-is-checked]:block': tier.currency === 'eth' },
-          { 'group-[.dev-is-checked]:block': tier.currency === 'dev' },
-          // For dynamic styling of JoinClub.svelte
-          `group-[.${tier.currency}-is-checked]:block`,
-        ]}
-      >
-        <MembershipOption
-          name={tier.title}
-          clubName={name}
-          imagePath={tier.badgeImageSrc ?? ''}
-          id={`${tier.id}:${tier.currency}`}
-          description={tier.badgeImageDescription}
-          price={String(tier.amount)}
-          currency={tier.currency}
-        >
-          <img
-            slot="image"
-            src={tier.badgeImageSrc}
-            class="h-auto w-full"
-            alt={tier.title}
-          />
-        </MembershipOption>
-        <a
-          class="mt-2 block w-full rounded bg-black py-4 text-center text-sm font-semibold text-white"
-          href={'checkoutUrl' in tier ? tier.checkoutUrl : `/join/${tier.id}`}
-        >
-          Select
-        </a>
-      </div>
-    ))
-  }
-</JoinClub_>
+  <h3 class="mb-4 text-2xl font-bold">Purchase with</h3>
+  <form
+    id="__join:currency:selector__"
+    class={`group grid gap-2 ${
+      currencies.has(CurrencyOption.DEV) ? 'md:grid-cols-2' : ''
+    } ${preferedCurrency}-is-checked`}
+  >
+    {
+      currencyList.map(
+        (currencyOption) =>
+          currencies.has(currencyOption) && (
+            <label
+              class:list={[
+                'flex items-center gap-2 rounded border border-white/20 p-8 py-4',
+                // For https://tailwindcss.com/docs/hover-focus-and-other-states#arbitrary-groups; they're must be a static string
+                {
+                  'group-[.matic-is-checked]:border-native-blue-400':
+                    currencyOption === 'matic',
+                },
+                {
+                  'group-[.usdc-is-checked]:border-native-blue-400':
+                    currencyOption === 'usdc',
+                },
+                {
+                  'group-[.eth-is-checked]:border-native-blue-400':
+                    currencyOption === 'eth',
+                },
+                {
+                  'group-[.dev-is-checked]:border-native-blue-400':
+                    currencyOption === 'dev',
+                },
+              ]}
+            >
+              <input
+                class=""
+                type="radio"
+                name="input"
+                value={currencyOption}
+                checked={preferedCurrency === currencyOption}
+              />
+              <img
+                src={
+                  currencyOption === 'usdc'
+                    ? USDC.src
+                    : currencyOption === 'matic'
+                    ? MATIC.src
+                    : currencyOption === 'eth'
+                    ? ETH.src
+                    : DEV.src
+                }
+                alt={currencyOption.toUpperCase()}
+                class="h-8 w-8"
+              />
+              <span class="font-bold">{currencyOption.toUpperCase()}</span>
+            </label>
+          ),
+      )
+    }
+
+    <slot name="join:currency:option" />
+    {SlotsJoinCurrencyOption.map((Slot) => <Slot.component {...Slot.props} />)}
+
+    <h3 class="mb-4 mt-4 text-2xl font-bold">Select a membership</h3>
+    <div id="__join:tier:selector__" class="mb-8 grid gap-8 lg:grid-cols-2">
+      {
+        compositeTiers.map((tier) => (
+          <div
+            data-tier-currency={tier.currency}
+            class:list={[
+              'hidden',
+              // For https://tailwindcss.com/docs/hover-focus-and-other-states#arbitrary-groups; they're must be a static string
+              { 'group-[.matic-is-checked]:block': tier.currency === 'matic' },
+              { 'group-[.usdc-is-checked]:block': tier.currency === 'usdc' },
+              { 'group-[.eth-is-checked]:block': tier.currency === 'eth' },
+              { 'group-[.dev-is-checked]:block': tier.currency === 'dev' },
+              // For dynamic styling by the scripting
+              {
+                'injected-tier': !currencies.has(tier.currency),
+              },
+            ]}
+          >
+            <MembershipOption
+              name={tier.title}
+              clubName={name}
+              imagePath={tier.badgeImageSrc ?? ''}
+              id={`${tier.id}:${tier.currency}`}
+              description={tier.badgeImageDescription}
+              price={String(tier.amount)}
+              currency={tier.currency}
+            >
+              <img
+                slot="image"
+                src={tier.badgeImageSrc}
+                class="h-auto w-full"
+                alt={tier.title}
+              />
+            </MembershipOption>
+            <a
+              class="mt-2 block w-full rounded bg-black py-4 text-center text-sm font-semibold text-white"
+              href={
+                'checkoutUrl' in tier ? tier.checkoutUrl : `/join/${tier.id}`
+              }
+            >
+              Select
+            </a>
+          </div>
+        ))
+      }
+    </div>
+  </form>
+</section>
+
+<script>
+  const currencySelector = document.getElementById('__join:currency:selector__')
+  const tierSelector = document.getElementById('__join:tier:selector__')
+
+  currencySelector?.addEventListener('change', (ev: Event) => {
+    const target = ev.target as HTMLFormElement
+    const currency = target.value
+
+    // Remove old `*-is-checked` class name
+    currencySelector.classList.forEach((cl) => {
+      cl.endsWith('-is-checked') && currencySelector.classList.remove(cl)
+    })
+    currencySelector.classList.add(`${currency}-is-checked`)
+
+    // Requires dynamic styling only for injected currencies.
+    tierSelector?.querySelectorAll(`.injected-tier`).forEach((el) => {
+      const tierCurrency = el.getAttribute('data-tier-currency')
+      if (tierCurrency === currency) {
+        el.classList.remove('hidden')
+      } else {
+        el.classList.add('hidden')
+      }
+    })
+  })
+</script>
