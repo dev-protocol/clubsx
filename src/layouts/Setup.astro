@@ -13,6 +13,7 @@ import type { UndefinedOr } from '@devprotocol/util-ts'
 import type { DraftOptions } from '@constants/draft'
 import VercelAnalytics from '@components/Analytics/VercelAnalytics.astro'
 import Banner from '@components/Global/Banner.astro'
+import { ViewTransitions } from 'astro:transitions'
 import ConnectButton from '@components/Wallet/ConnectButton.vue'
 
 const { site } = Astro.params
@@ -76,6 +77,7 @@ const avatarImgSrc: string | undefined = config.options?.find(
       rel="stylesheet"
     />
     <link rel="icon" type="image/svg" href={avatarImgSrc || '/favicon.svg'} />
+    <ViewTransitions />
   </head>
 
   <body class="bg-dp-blue-grey-300 font-body text-white">
@@ -115,11 +117,7 @@ const avatarImgSrc: string | undefined = config.options?.find(
         aside && (
           <div class="container mx-auto px-2 py-8 lg:px-0 lg:py-16">
             <Aside config={config} showConnectButton={!isInDraftWithFirebase}>
-<<<<<<< HEAD
-              <ConnectButton slot="aside:connect-button"/>
-=======
-              <ConnectButton client:load slot="aside:connect-button" />
->>>>>>> origin/main
+              <ConnectButton slot="aside:connect-button" />
               <slot name="aside:after-built-in-buttons" />
             </Aside>
           </div>
