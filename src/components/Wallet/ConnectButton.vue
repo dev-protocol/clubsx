@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
-import { createWeb3Modal } from '@web3modal/wagmi'
 // import { ModalController, type ModalControllerArguments } from '@web3modal/core'
 import { useWeb3Modal } from '@web3modal/wagmi/vue'
-import { defaultWagmiConfig } from '@web3modal/wagmi/vue'
+import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/vue'
 import { mainnet, polygon, polygonMumbai } from '@wagmi/core/chains'
 import { watchWalletClient } from '@wagmi/core'
 import { whenDefined } from '@devprotocol/util-ts'
@@ -46,8 +45,6 @@ const wagmiConfig = defaultWagmiConfig({
   appName: 'Web3Modal',
 })
 
-createWeb3Modal({ wagmiConfig, projectId, chains })
-
 const init = () => {
   if (document.querySelector('w3m-modal') === null) {
     document.body.insertAdjacentElement(
@@ -56,6 +53,8 @@ const init = () => {
     )
   }
 }
+
+createWeb3Modal({ wagmiConfig, projectId, chains })
 
 const modal = useWeb3Modal()
 
