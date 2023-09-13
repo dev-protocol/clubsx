@@ -12,7 +12,7 @@ const SlotsCheckoutResultBeforePreview = clubs.slots.filter(
 )
 ---
 
-<Result_ client:only="vue" id={id} rpcUrl={rpcUrl}>
+<Result_ client:load id={id} rpcUrl={rpcUrl}>
   <slot name="checkout-result:before:preview" slot="before:preview" />
 
   {
