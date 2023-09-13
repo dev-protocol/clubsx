@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
-import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/vue'
 import { mainnet, polygon, polygonMumbai } from '@wagmi/core/chains'
-import { useWeb3Modal } from '@web3modal/wagmi/vue'
+import type { useWeb3Modal } from '@web3modal/wagmi/vue'
 import { watchWalletClient } from '@wagmi/core'
 import { whenDefined } from '@devprotocol/util-ts'
 import { BrowserProvider } from 'ethers'
@@ -28,7 +27,7 @@ const truncateAddress = (address: string) => {
   )
   return !match ? address : `${match[1]}\u2026${match[2]}`
 }
-
+const modal = ref<ReturnType<typeof useWeb3Modal>>()
 const chains = [polygon, polygonMumbai, mainnet]
 const defaultChain =
   props.chainId === 137
@@ -39,17 +38,26 @@ const defaultChain =
     ? mainnet
     : polygon
 
-const wagmiConfig = defaultWagmiConfig({
-  chains: [polygon, polygonMumbai, mainnet],
-  projectId,
-  appName: 'Web3Modal',
-})
+const init = async () => {
+  console.log('***', 'init')
+  const { createWeb3Modal, defaultWagmiConfig, useWeb3Modal } = await import(
+    '@web3modal/wagmi/vue' /*@@@@*/
+  )
+  const wagmiConfig = defaultWagmiConfig({
+    chains: [polygon, polygonMumbai, mainnet],
+    projectId,
+    appName: 'Web3Modal',
+  })
+  createWeb3Modal({ wagmiConfig, projectId, chains, defaultChain })
 
-createWeb3Modal({ wagmiConfig, projectId, chains, defaultChain })
+  modal.value = useWeb3Modal()
+}
 
-const modal = useWeb3Modal()
+init()
 
 onMounted(async () => {
+  document.addEventListener('astro:after-swap', init)
+
   const { connection } = await import('@devprotocol/clubs-core/connection')
   watchWalletClient({}, (wallet) => {
     console.log({ wallet })
@@ -92,7 +100,7 @@ onMounted(async () => {
       } ${error ? 'is-error' : ''}`"
       v-bind:class="props.class"
       :disabled="props.isDisabled"
-      @click="modal.open()"
+      @click="modal?.value.open()"
     >
       {{
         truncatedAddress
