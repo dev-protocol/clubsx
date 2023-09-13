@@ -45,11 +45,16 @@ const wagmiConfig = defaultWagmiConfig({
   appName: 'Web3Modal',
 })
 
-createWeb3Modal({ wagmiConfig, projectId, chains, defaultChain })
+const newWeb3Modal = () =>
+  createWeb3Modal({ wagmiConfig, projectId, chains, defaultChain })
+
+newWeb3Modal()
 
 const modal = useWeb3Modal()
 
 onMounted(async () => {
+  document.addEventListener('astro:after-swap', newWeb3Modal)
+
   const { connection } = await import('@devprotocol/clubs-core/connection')
   watchWalletClient({}, (wallet) => {
     console.log({ wallet })
