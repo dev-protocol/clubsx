@@ -166,12 +166,12 @@ const currencies = new Set(tiers.map((t) => t.currency))
   </form>
 </section>
 
-<script>
+<script is:inline>
   const currencySelector = document.getElementById('__join:currency:selector__')
   const tierSelector = document.getElementById('__join:tier:selector__')
 
-  currencySelector?.addEventListener('change', (ev: Event) => {
-    const target = ev.target as HTMLFormElement
+  currencySelector?.addEventListener('change', (ev) => {
+    const target = ev.target
     const currency = target.value
 
     // Remove old `*-is-checked` class name
