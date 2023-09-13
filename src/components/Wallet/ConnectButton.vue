@@ -1,9 +1,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
-import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/vue'
 import { mainnet, polygon, polygonMumbai } from '@wagmi/core/chains'
-import { useWeb3Modal } from '@web3modal/wagmi/vue'
-import { watchWalletClient } from '@wagmi/core'
+import type { useWeb3Modal } from '@web3modal/wagmi/vue'
 import { whenDefined } from '@devprotocol/util-ts'
 import { BrowserProvider } from 'ethers'
 
@@ -40,23 +38,24 @@ const defaultChain =
     ? mainnet
     : polygon
 
-const wagmiConfig = defaultWagmiConfig({
-  chains: [polygon, polygonMumbai, mainnet],
-  projectId,
-  appName: 'Web3Modal',
-})
+const initWeb3Modal = async () => {
+  const [
+    { createWeb3Modal, defaultWagmiConfig, useWeb3Modal },
+    { watchWalletClient },
+    { connection },
+  ] = await Promise.all([
+    import('@web3modal/wagmi/vue'),
+    import('@wagmi/core'),
+    import('@devprotocol/clubs-core/connection'),
+  ])
+  const wagmiConfig = defaultWagmiConfig({
+    chains: [polygon, polygonMumbai, mainnet],
+    projectId,
+    appName: 'Web3Modal',
+  })
 
-const initWeb3Modal = () => {
   createWeb3Modal({ wagmiConfig, projectId, chains, defaultChain })
-  modal.value = useWeb3Modal()
-}
 
-initWeb3Modal()
-
-onMounted(async () => {
-  document.addEventListener('astro:after-swap', initWeb3Modal)
-
-  const { connection } = await import('@devprotocol/clubs-core/connection')
   watchWalletClient({}, (wallet) => {
     console.log({ wallet })
     whenDefined(wallet, (wal) =>
@@ -79,6 +78,13 @@ onMounted(async () => {
         : undefined,
     )
   })
+
+  modal.value = useWeb3Modal()
+}
+
+onMounted(async () => {
+  initWeb3Modal()
+  document.addEventListener('astro:after-swap', initWeb3Modal)
 })
 </script>
 
@@ -97,6 +103,7 @@ onMounted(async () => {
           : 'hs-button is-filled is-large is-fullwidth relative data-[is-loading=true]:animate-pulse'
       } ${error ? 'is-error' : ''}`"
       v-bind:class="props.class"
+      :data-is-loading="!modal"
       :disabled="props.isDisabled"
       @click="modal?.value.open()"
     >
