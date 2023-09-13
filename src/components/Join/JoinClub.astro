@@ -166,28 +166,35 @@ const currencies = new Set(tiers.map((t) => t.currency))
   </form>
 </section>
 
-<script is:inline>
-  const currencySelector = document.getElementById('__join:currency:selector__')
-  const tierSelector = document.getElementById('__join:tier:selector__')
+<script>
+  const handler = () => {
+    const currencySelector = document.getElementById(
+      '__join:currency:selector__',
+    )
+    const tierSelector = document.getElementById('__join:tier:selector__')
 
-  currencySelector?.addEventListener('change', (ev) => {
-    const target = ev.target
-    const currency = target.value
+    currencySelector?.addEventListener('change', (ev: Event) => {
+      const target = ev.target as HTMLFormElement
+      const currency = target.value
 
-    // Remove old `*-is-checked` class name
-    currencySelector.classList.forEach((cl) => {
-      cl.endsWith('-is-checked') && currencySelector.classList.remove(cl)
+      // Remove old `*-is-checked` class name
+      currencySelector.classList.forEach((cl) => {
+        cl.endsWith('-is-checked') && currencySelector.classList.remove(cl)
+      })
+      currencySelector.classList.add(`${currency}-is-checked`)
+
+      // Requires dynamic styling only for injected currencies.
+      tierSelector?.querySelectorAll(`.injected-tier`).forEach((el) => {
+        const tierCurrency = el.getAttribute('data-tier-currency')
+        if (tierCurrency === currency) {
+          el.classList.remove('hidden')
+        } else {
+          el.classList.add('hidden')
+        }
+      })
     })
-    currencySelector.classList.add(`${currency}-is-checked`)
+  }
 
-    // Requires dynamic styling only for injected currencies.
-    tierSelector?.querySelectorAll(`.injected-tier`).forEach((el) => {
-      const tierCurrency = el.getAttribute('data-tier-currency')
-      if (tierCurrency === currency) {
-        el.classList.remove('hidden')
-      } else {
-        el.classList.add('hidden')
-      }
-    })
-  })
+  handler()
+  document.addEventListener('astro:after-swap', handler)
 </script>
