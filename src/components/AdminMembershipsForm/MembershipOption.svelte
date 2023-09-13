@@ -56,11 +56,7 @@
 <div
   class={`grid grid-rows-[auto_1fr] overflow-hidden rounded-xl shadow-2xl ${className}`}
 >
-  <span class="w-full bg-black/20">
-    <slot name="image">
-      <img src={imagePath} alt={name} class="h-auto w-full" />
-    </slot>
-  </span>
+  <img class="w-full bg-black/20" src={imagePath} alt={`${name} Membership`} />
 
   <div
     class="relative grid grid-cols-[1fr_auto] content-baseline items-center gap-3 overflow-hidden p-2.5 text-white"

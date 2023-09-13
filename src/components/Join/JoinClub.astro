@@ -1,7 +1,6 @@
 ---
-import MembershipOption from '@components/AdminMembershipsForm/MembershipOption.svelte'
 import JoinClub_ from '@components/Join/JoinClub.svelte'
-import type { InjectedTier, InjectedTiers, Tier, Tiers } from '@constants/tier'
+import type { Tiers } from '@constants/tier'
 import type { ClubsPropsPages } from '@devprotocol/clubs-core'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 
@@ -15,62 +14,21 @@ const SlotsJoinCurrencyOption = other.clubs.slots.filter(
 )
 
 const injectedTiers = SlotsJoinCurrencyOption.map((slot) => {
-  const data = slot.props?.injectedTiers as UndefinedOr<InjectedTiers>
+  const data = slot.props?.injectedTiers as UndefinedOr<Tiers>
   return data ?? []
 }).flat()
-
-const compositeTiers: (Tier | InjectedTier)[] = [
-  ...tiers,
-  ...(injectedTiers ?? []),
-]
 ---
 
-<JoinClub_ client:load tiers={tiers} tenantName={name}>
+<JoinClub_
+  client:load
+  tiers={tiers}
+  injectedTiers={injectedTiers}
+  tenantName={name}
+>
   <slot name="join:currency:option" slot="currency:option" />
   {
     SlotsJoinCurrencyOption.map((Slot) => (
       <Slot.component {...Slot.props} slot="currency:option" />
-    ))
-  }
-
-  {
-    compositeTiers.map((tier) => (
-      <div
-        slot="tier"
-        class:list={[
-          'hidden',
-          // For https://tailwindcss.com/docs/hover-focus-and-other-states#arbitrary-groups; they're must be a static string
-          { 'group-[.matic-is-checked]:block': tier.currency === 'matic' },
-          { 'group-[.usdc-is-checked]:block': tier.currency === 'usdc' },
-          { 'group-[.eth-is-checked]:block': tier.currency === 'eth' },
-          { 'group-[.dev-is-checked]:block': tier.currency === 'dev' },
-          // For dynamic styling of JoinClub.svelte
-          `group-[.${tier.currency}-is-checked]:block`,
-        ]}
-      >
-        <MembershipOption
-          name={tier.title}
-          clubName={name}
-          imagePath={tier.badgeImageSrc ?? ''}
-          id={`${tier.id}:${tier.currency}`}
-          description={tier.badgeImageDescription}
-          price={String(tier.amount)}
-          currency={tier.currency}
-        >
-          <img
-            slot="image"
-            src={tier.badgeImageSrc}
-            class="h-auto w-full"
-            alt={tier.title}
-          />
-        </MembershipOption>
-        <a
-          class="mt-2 block w-full rounded bg-black py-4 text-center text-sm font-semibold text-white"
-          href={'checkoutUrl' in tier ? tier.checkoutUrl : `/join/${tier.id}`}
-        >
-          Select
-        </a>
-      </div>
     ))
   }
 </JoinClub_>

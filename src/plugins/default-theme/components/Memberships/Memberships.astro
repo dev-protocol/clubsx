@@ -25,14 +25,7 @@ const { memberships, name } = Astro.props as {
           imagePath={mem.imageSrc}
           action={`/join/${mem.id}`}
           actionLabel={'Purchase'}
-        >
-          <img
-            slot="image"
-            src={mem.imageSrc}
-            class="h-auto w-full"
-            alt={mem.name}
-          />
-        </MembershipOption>
+        />
       </li>
     ))
   }
