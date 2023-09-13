@@ -1,6 +1,8 @@
 ---
-import { ViewTransitions } from 'astro:transitions'
-import { type ClubsConfiguration, ClubsPluginSignal } from '@devprotocol/clubs-core'
+import {
+  type ClubsConfiguration,
+  ClubsPluginSignal,
+} from '@devprotocol/clubs-core'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import '@devprotocol/clubs-core/styles'
 import Header from '../components/Header/Header.astro'
@@ -49,7 +51,7 @@ const ogp = config.options?.find((option) => option.key === 'ogp')
   ?.value as UndefinedOr<{ image?: string }>
 
 const avatarImgSrc: UndefinedOr<string> = config.options?.find(
-  (option) => option.key === 'avatarImgSrc'
+  (option) => option.key === 'avatarImgSrc',
 )?.value as string
 
 const socialLinks =
@@ -67,10 +69,10 @@ const navigationLinks: NavLink[] = [
     ?.value as NavLink[]) ?? []),
 ]
 const currentLink = navigationLinks?.find((link) =>
-  ((pathname) => pathname === link.path)(`/${page ?? ''}`)
+  ((pathname) => pathname === link.path)(`/${page ?? ''}`),
 )
 const footerLinks = config.options?.find(
-  (option) => option.key === 'footerLinks'
+  (option) => option.key === 'footerLinks',
 )?.value as UndefinedOr<NavLink[]>
 
 const draftOptions = config?.options?.find((option) => option.key === '__draft')
@@ -116,7 +118,6 @@ const truncatedDescription = ((desc) =>
         background-color: var(--backgroundColor);
       }
     </style>
-    <ViewTransitions />
   </head>
 
   <body class="grid min-h-screen gap-5 overflow-x-hidden font-body">
@@ -125,7 +126,7 @@ const truncatedDescription = ((desc) =>
       config={config}
       connection={!notDisplayConnection}
     >
-      <slot name="clubs:connect-button" slot="header:connect-button"/>
+      <slot name="clubs:connect-button" slot="header:connect-button" />
     </Header>
     <Hero
       image={homeConfig?.hero?.image}
