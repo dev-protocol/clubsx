@@ -29,7 +29,7 @@ const success = params[0].status === 'success'
 const failure = params[0].status === 'failure'
 ---
 
-<Result_ rpcUrl={rpcUrl} id={params[0].tokenId} {...other}>
+<Result_ client:load rpcUrl={rpcUrl} id={params[0].tokenId} {...other}>
   {
     success ? (
       <div slot="checkout-result:before:preview">
