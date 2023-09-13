@@ -59,7 +59,7 @@ const compositeTiers: (Tier | InjectedTier)[] = [
           currency={tier.currency}
         >
           <img
-            transition:persist={`membership-${tier.id}`}
+            transition:name={`membership-${tier.id}`}
             slot="image"
             src={tier.badgeImageSrc}
             class="h-auto w-full"
