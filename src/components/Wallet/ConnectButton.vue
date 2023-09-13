@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
+import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/vue'
 import { mainnet, polygon, polygonMumbai } from '@wagmi/core/chains'
-import type { useWeb3Modal } from '@web3modal/wagmi/vue'
+import { useWeb3Modal } from '@web3modal/wagmi/vue'
+import { watchWalletClient } from '@wagmi/core'
 import { whenDefined } from '@devprotocol/util-ts'
 import { BrowserProvider } from 'ethers'
 
@@ -19,7 +21,6 @@ const projectId =
   props.projectId ?? import.meta.env.PUBLIC_WALLET_CONNECT_PROJECT_ID
 
 const truncatedAddress = ref<string>()
-const modal = ref<ReturnType<typeof useWeb3Modal>>()
 const error = ref<Error>()
 const truncateAddress = (address: string) => {
   const match = address.match(
@@ -38,24 +39,18 @@ const defaultChain =
     ? mainnet
     : polygon
 
-const initWeb3Modal = async () => {
-  const [
-    { createWeb3Modal, defaultWagmiConfig, useWeb3Modal },
-    { watchWalletClient },
-    { connection },
-  ] = await Promise.all([
-    import('@web3modal/wagmi/vue'),
-    import('@wagmi/core'),
-    import('@devprotocol/clubs-core/connection'),
-  ])
-  const wagmiConfig = defaultWagmiConfig({
-    chains: [polygon, polygonMumbai, mainnet],
-    projectId,
-    appName: 'Web3Modal',
-  })
+const wagmiConfig = defaultWagmiConfig({
+  chains: [polygon, polygonMumbai, mainnet],
+  projectId,
+  appName: 'Web3Modal',
+})
 
-  createWeb3Modal({ wagmiConfig, projectId, chains, defaultChain })
+createWeb3Modal({ wagmiConfig, projectId, chains, defaultChain })
 
+const modal = useWeb3Modal()
+
+onMounted(async () => {
+  const { connection } = await import('@devprotocol/clubs-core/connection')
   watchWalletClient({}, (wallet) => {
     console.log({ wallet })
     whenDefined(wallet, (wal) =>
@@ -78,13 +73,6 @@ const initWeb3Modal = async () => {
         : undefined,
     )
   })
-
-  modal.value = useWeb3Modal()
-}
-
-onMounted(async () => {
-  initWeb3Modal()
-  document.addEventListener('astro:after-swap', initWeb3Modal)
 })
 </script>
 
@@ -103,9 +91,8 @@ onMounted(async () => {
           : 'hs-button is-filled is-large is-fullwidth relative data-[is-loading=true]:animate-pulse'
       } ${error ? 'is-error' : ''}`"
       v-bind:class="props.class"
-      :data-is-loading="!modal"
       :disabled="props.isDisabled"
-      @click="modal?.value.open()"
+      @click="modal.open()"
     >
       {{
         truncatedAddress
