@@ -1,7 +1,7 @@
 ---
 import ClubsColor from '@assets/clubs--color.svg'
 import VercelAnalytics from '@components/Analytics/VercelAnalytics.astro'
-import ConnectButton from '@components/Wallet/ConnectButton.vue'
+import ConnectButton from '@components/Wallet/ConnectButton.astro'
 
 import '@devprotocol/clubs-core/styles'
 import { ViewTransitions } from 'astro:transitions'
@@ -59,7 +59,7 @@ const twitterHandle = 'poweredbyClubs'
       {
         connectButton === 'show' && (
           <nav class="flex justify-between gap-10">
-            <ConnectButton client:load />
+            <ConnectButton />
           </nav>
         )
       }
@@ -69,60 +69,60 @@ const twitterHandle = 'poweredbyClubs'
       <slot />
     </main>
     <VercelAnalytics />
+    <script>
+      import { onSubmitConfig } from '@devprotocol/clubs-core'
+      import { GetModalProvider, ReConnectWallet } from '@fixtures/wallet'
+      import { hashMessage } from 'ethers'
+      import { onAuthStateChanged } from 'firebase/auth'
+      import { instanceStore } from '../fixtures/firebase/clientInstance'
+
+      const auth = instanceStore.initializedApp
+      let jwtIdToken: string | undefined
+
+      onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          // User is signed in, see docs for a list of available properties
+          // https://firebase.google.com/docs/reference/js/firebase.User
+          jwtIdToken = await user.getIdToken()
+        } else {
+          jwtIdToken = undefined
+        }
+      })
+
+      onSubmitConfig(async (data, onFinish) => {
+        const splitHostname = window.location.hostname.split('.')
+        const site = splitHostname[0]
+
+        const modalProvider = GetModalProvider()
+        const { provider, currentAddress } =
+          await ReConnectWallet(modalProvider)
+        if (!currentAddress || !provider) {
+          return
+        }
+        const signer = await provider.getSigner()
+
+        const hash = hashMessage(data)
+        const sig = await signer.signMessage(hash)
+        if (!sig) {
+          return
+        }
+
+        const body = {
+          site,
+          config: data,
+          hash,
+          sig,
+          jwtIdToken,
+        }
+
+        const res = await fetch('/api/updateDraftConfig', {
+          method: 'POST',
+          body: JSON.stringify(body),
+        })
+
+        const success = res.ok
+        onFinish({ success })
+      })
+    </script>
   </body>
 </html>
-
-<script>
-  import { onSubmitConfig } from '@devprotocol/clubs-core'
-  import { GetModalProvider, ReConnectWallet } from '@fixtures/wallet'
-  import { hashMessage } from 'ethers'
-  import { onAuthStateChanged } from 'firebase/auth'
-  import { instanceStore } from '../fixtures/firebase/clientInstance'
-
-  const auth = instanceStore.initializedApp
-  let jwtIdToken: string | undefined
-
-  onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      // User is signed in, see docs for a list of available properties
-      // https://firebase.google.com/docs/reference/js/firebase.User
-      jwtIdToken = await user.getIdToken()
-    } else {
-      jwtIdToken = undefined
-    }
-  })
-
-  onSubmitConfig(async (data, onFinish) => {
-    const splitHostname = window.location.hostname.split('.')
-    const site = splitHostname[0]
-
-    const modalProvider = GetModalProvider()
-    const { provider, currentAddress } = await ReConnectWallet(modalProvider)
-    if (!currentAddress || !provider) {
-      return
-    }
-    const signer = await provider.getSigner()
-
-    const hash = hashMessage(data)
-    const sig = await signer.signMessage(hash)
-    if (!sig) {
-      return
-    }
-
-    const body = {
-      site,
-      config: data,
-      hash,
-      sig,
-      jwtIdToken,
-    }
-
-    const res = await fetch('/api/updateDraftConfig', {
-      method: 'POST',
-      body: JSON.stringify(body),
-    })
-
-    const success = res.ok
-    onFinish({ success })
-  })
-</script>

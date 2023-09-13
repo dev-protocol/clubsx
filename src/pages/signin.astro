@@ -1,6 +1,6 @@
 ---
 import Layout from '@layouts/Landing.astro'
-import ConnectButton from '@components/Wallet/ConnectButton.vue';
+import ConnectButton from '@components/Wallet/ConnectButton.astro'
 import EmailConnect from '@components/EmailConnect/EmailConnect.svelte'
 ---
 
@@ -13,7 +13,11 @@ import EmailConnect from '@components/EmailConnect/EmailConnect.svelte'
     <section class="grid gap-12">
       <div class="flex flex-col items-center">
         <span class="mb-4">Signin with your wallet</span>
-        <ConnectButton client:load redirectOnSignin={true} label='Sign with your wallet' overrideClass='hs-button is-filled is-native-blue is-large'/>
+        <ConnectButton
+          redirectOnSignin={true}
+          label="Sign with your wallet"
+          overrideClass="hs-button is-filled is-native-blue is-large"
+        />
       </div>
       <p
         role="separator"
@@ -48,7 +52,7 @@ import EmailConnect from '@components/EmailConnect/EmailConnect.svelte'
       (
         fill: 'native-blue.400',
         ink: 'native-blue.ink',
-        border: 'native-blue.400'
+        border: 'native-blue.400',
       )
     );
 
@@ -58,7 +62,7 @@ import EmailConnect from '@components/EmailConnect/EmailConnect.svelte'
         (
           fill: 'native-blue.300',
           ink: 'native-blue.ink',
-          border: 'native-blue.300'
+          border: 'native-blue.300',
         )
       );
     }
@@ -68,7 +72,7 @@ import EmailConnect from '@components/EmailConnect/EmailConnect.svelte'
         (
           fill: 'native-blue.200',
           ink: 'native-blue.ink',
-          border: 'native-blue.200'
+          border: 'native-blue.200',
         )
       );
     }

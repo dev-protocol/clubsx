@@ -8,7 +8,7 @@ import {
 import { config as _config } from '@fixtures/config'
 import PageNotFound from '@pages/404.astro'
 import { plugins } from '@constants/plugins'
-import ConnectButton from '@components/Wallet/ConnectButton.vue'
+import ConnectButton from '@components/Wallet/ConnectButton.astro'
 import type { DraftOptions } from '@constants/draft'
 
 const { site, page } = Astro.params
@@ -38,7 +38,6 @@ const isInDraft = Boolean(draftOptions?.isInDraft)
       <Layout {...path.props}>
         <span slot="clubs:connect-button">
           <ConnectButton
-            client:load
             chainId={decodedConfig.chainId}
             isDisabled={isInDraft}
           />

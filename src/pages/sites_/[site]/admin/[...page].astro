@@ -14,7 +14,7 @@ import marketplace from '@plugins/marketplace'
 import IconGlobe from '@components/Icons/globe-europe-africa.astro'
 import Banner from '@components/Global/Banner.astro'
 import { plugins } from '@constants/plugins'
-import ConnectButton from '@components/Wallet/ConnectButton.vue'
+import ConnectButton from '@components/Wallet/ConnectButton.astro'
 
 const { site, page } = Astro.params
 
@@ -63,7 +63,6 @@ const siteBaseUrl = new URL(Astro.request.url).origin
         <Banner />
         <Admin {...path.props}>
           <ConnectButton
-            client:load
             chainId={(config as ClubsConfiguration | undefined)?.chainId}
             slot="clubs:connect-button"
           />

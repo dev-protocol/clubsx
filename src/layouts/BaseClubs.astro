@@ -1,7 +1,7 @@
 ---
 import ClubsColor from '@assets/clubs--color.svg'
 import VercelAnalytics from '@components/Analytics/VercelAnalytics.astro'
-import ConnectButton from '@components/Wallet/ConnectButton.vue'
+import ConnectButton from '@components/Wallet/ConnectButton.astro'
 
 import '@devprotocol/clubs-core/styles'
 import { ViewTransitions } from 'astro:transitions'
@@ -59,7 +59,7 @@ const twitterHandle = 'poweredbyClubs'
       {
         connectButton === 'show' && (
           <nav class="flex justify-between gap-10">
-            <ConnectButton client:load />
+            <ConnectButton />
           </nav>
         )
       }
