@@ -225,7 +225,7 @@ export const post: ({
       ? new Response(
           JSON.stringify({ message: 'error', error: final.message }),
           {
-            status: result$2 instanceof Error ? 400 : 200,
+            status: 200,
             headers,
           },
         )
