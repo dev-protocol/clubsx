@@ -49,6 +49,39 @@ createWeb3Modal({ wagmiConfig, projectId, chains, defaultChain })
 
 const modal = useWeb3Modal()
 
+onMounted(() => {
+  const template: HTMLTemplateElement =
+    document.querySelector('template#w3m') ??
+    (() => {
+      const el = document.createElement('template')
+      el.id = 'w3m'
+      document.body.after(el)
+      return el
+    })()
+  const observer = new MutationObserver((mutationList, observer) => {
+    const w3mModal = mutationList.map((mutation) => {
+      const nodes = [...mutation.addedNodes]
+      const res = nodes.find((node) => node.nodeName === 'W3M-MODAL')
+      return res
+    })
+    w3mModal.forEach((node) => {
+      whenDefined(node, (el) => {
+        const clone = document.importNode(el, true)
+        template.appendChild(clone)
+        observer.disconnect()
+      })
+    })
+  })
+  observer.observe(document.body, { childList: true, subtree: true })
+
+  const reinit = () => {
+    const clone = document.importNode(template.content, true)
+    document.body.appendChild(clone)
+  }
+
+  document.addEventListener('astro:after-swap', reinit)
+})
+
 onMounted(async () => {
   const { connection } = await import('@devprotocol/clubs-core/connection')
   watchWalletClient({}, (wallet) => {
