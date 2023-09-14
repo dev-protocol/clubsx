@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import { mainnet, polygon, polygonMumbai } from '@wagmi/core/chains'
-import type { useWeb3Modal } from '@web3modal/wagmi/vue'
+import { defaultWagmiConfig, type useWeb3Modal } from '@web3modal/wagmi/vue'
 import { watchWalletClient } from '@wagmi/core'
 import { whenDefined } from '@devprotocol/util-ts'
 import { BrowserProvider } from 'ethers'
@@ -38,16 +38,18 @@ const defaultChain =
     ? mainnet
     : polygon
 
+const wagmiConfig = defaultWagmiConfig({
+  chains: [polygon, polygonMumbai, mainnet],
+  projectId,
+  appName: 'Web3Modal',
+})
+
 const init = async () => {
   console.log('***', 'init')
-  const { createWeb3Modal, defaultWagmiConfig, useWeb3Modal } = await import(
-    '@web3modal/wagmi/vue' /*@@@@*/
+  const { createWeb3Modal, useWeb3Modal, reinit } = await import(
+    '@web3modal/wagmi/vue'
   )
-  const wagmiConfig = defaultWagmiConfig({
-    chains: [polygon, polygonMumbai, mainnet],
-    projectId,
-    appName: 'Web3Modal',
-  })
+  reinit()
   createWeb3Modal({ wagmiConfig, projectId, chains, defaultChain })
 
   modal.value = useWeb3Modal()
