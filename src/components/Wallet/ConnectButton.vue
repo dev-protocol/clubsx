@@ -27,7 +27,7 @@ const truncateAddress = (address: string) => {
   )
   return !match ? address : `${match[1]}\u2026${match[2]}`
 }
-const modal = ref<ReturnType<typeof useWeb3Modal>>()
+let modal: ReturnType<typeof useWeb3Modal> | undefined
 const chains = [polygon, polygonMumbai, mainnet]
 const defaultChain =
   props.chainId === 137
@@ -52,7 +52,7 @@ const init = async () => {
   reinit()
   createWeb3Modal({ wagmiConfig, projectId, chains, defaultChain })
 
-  modal.value = useWeb3Modal()
+  modal = useWeb3Modal()
 }
 
 init()
@@ -102,7 +102,7 @@ onMounted(async () => {
       } ${error ? 'is-error' : ''}`"
       v-bind:class="props.class"
       :disabled="props.isDisabled"
-      @click="modal?.value.open()"
+      @click="modal?.open()"
     >
       {{
         truncatedAddress
