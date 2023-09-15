@@ -2,7 +2,7 @@
   import { marked } from 'marked'
   import { onMount } from 'svelte'
   import { CurrencyOption } from '@constants/currencyOption'
-  import sanitizeHtml from 'sanitize-html'
+  import DOMPurify from 'dompurify'
 
   export let name: string
   export let clubName: string
@@ -21,7 +21,7 @@
   let content: string
 
   $: {
-    content = sanitizeHtml(marked.parse(description ?? ''))
+    content = DOMPurify.sanitize(marked.parse(description ?? ''))
   }
 
   const hash = `#membership:${id}`

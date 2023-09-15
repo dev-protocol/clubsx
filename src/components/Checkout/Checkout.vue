@@ -26,10 +26,9 @@ import { fetchDevForEth, fetchSTokens } from '@fixtures/utility'
 import Skeleton from '@components/Global/Skeleton.vue'
 import { stakeWithAnyTokens, mintedIdByLogs } from '@fixtures/dev-kit'
 import { marked } from 'marked'
-import { defaults } from 'sanitize-html'
 import DOMPurify from 'dompurify'
-import { values } from 'ramda'
 import Result from './Result.vue'
+import { tags, attrs } from '@constants/dompurify'
 
 let providerPool: UndefinedOr<ContractRunner>
 let subscriptions: Subscription[] = []
@@ -83,9 +82,9 @@ const htmlVerificationFlow: ComputedRef<UndefinedOr<string>> = computed(() => {
   return (
     props.accessControlDescription &&
     DOMPurify.sanitize(marked.parse(props.accessControlDescription), {
-      ALLOWED_TAGS: [...defaults.allowedTags, 'iframe'],
+      ALLOWED_TAGS: [...tags, 'iframe'],
       ALLOWED_ATTR: [
-        ...(values(defaults.allowedAttributes).flat() as string[]),
+        ...attrs,
         'src',
         'frameborder',
         'onmousewheel',
