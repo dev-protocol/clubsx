@@ -17,8 +17,15 @@
   export let className: string = ''
   let modal = false
   let modalGroup: Element | undefined
+  let isMounted = false
 
-  const content = marked.parse(description ?? '')
+  const mdToHtml = (str?: string) => DOMPurify.sanitize(marked.parse(str ?? ''))
+
+  let content: string | undefined
+
+  $: {
+    content = isMounted ? mdToHtml(description) : undefined
+  }
 
   const hash = `#membership:${id}`
   const handleHashChange = (event: HashChangeEvent) => {
@@ -43,6 +50,7 @@
   }
 
   onMount(() => {
+    isMounted = true
     window.addEventListener('hashchange', handleHashChange)
 
     modalGroup && document.body.appendChild(modalGroup)
@@ -98,7 +106,18 @@
 
     {#if description}
       <div class="md md-mini relative col-span-2 grid gap-2 text-xs opacity-70">
-        {@html content}
+        {#if content === undefined}
+          <div
+            role="presentation"
+            class="mb-1 h-5 animate-pulse rounded bg-white/60"
+          ></div>
+          <div
+            role="presentation"
+            class="h-5 w-3/4 animate-pulse rounded bg-white/60"
+          ></div>
+        {:else}
+          {@html content}
+        {/if}
       </div>
     {/if}
   </div>
