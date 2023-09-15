@@ -18,7 +18,7 @@
   let modal = false
   let modalGroup: Element | undefined
 
-  const content: marked.parse(description ?? '')
+  const content = marked.parse(description ?? '')
 
   const hash = `#membership:${id}`
   const handleHashChange = (event: HashChangeEvent) => {
