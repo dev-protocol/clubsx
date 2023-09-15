@@ -18,11 +18,7 @@
   let modal = false
   let modalGroup: Element | undefined
 
-  let content: string
-
-  $: {
-    content = DOMPurify.sanitize(marked.parse(description ?? ''))
-  }
+  const content = marked.parse(description ?? '')
 
   const hash = `#membership:${id}`
   const handleHashChange = (event: HashChangeEvent) => {
