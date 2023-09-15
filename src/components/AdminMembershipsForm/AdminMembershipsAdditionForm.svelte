@@ -227,7 +227,7 @@
     const value = Number((event.target as HTMLInputElement)?.value || 0)
 
     if (value < minCustomFee100) {
-      invalidFeeMsg = `Minimum payment type fee allowed is ${minCustomFee100}`
+      invalidFeeMsg = `Minimum earning model fee allowed is ${minCustomFee100}`
     } else if (value > maxCustomFee100) {
       invalidFeeMsg = `Maximum price allowed is ${maxCustomFee100}`
     } else {
@@ -622,9 +622,9 @@
           {/if}
         </div>
 
-        <!-- Payment type -->
+        <!-- Earning model -->
         <div class="hs-form-field is-filled is-required">
-          <span class="hs-form-field__label"> Payment type </span>
+          <span class="hs-form-field__label"> Earning model </span>
           <div class="flex w-full max-w-full items-center justify-start gap-2">
             <button
               on:click|preventDefault={() =>
@@ -713,7 +713,7 @@
           </div>
           {#if membership.currency === 'DEV'}
             <p class="hs-form-field__helper mt-2">
-              * Payment type option is currently disabled for DEV
+              * Earning model option is currently disabled for DEV
             </p>
           {/if}
           {#if invalidFeeMsg !== ''}
