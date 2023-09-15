@@ -7,19 +7,22 @@ import badge2 from '@assets/badge2.png'
 <div class="bg-cover bg-center">
   <h2 class="mb-8 text-2xl">Badges</h2>
   <div
-    class="border-dp-black-200 grid items-center justify-center gap-8 rounded border p-4 text-black dark:text-white md:grid-cols-3 md:text-left"
+    class="grid items-center justify-center gap-8 rounded border border-dp-black-200 p-4 text-black dark:text-white md:grid-cols-3 md:text-left"
   >
     <div class="grid h-full justify-items-start">
       <a rel="prefetch" href="/quests/quest_starter">
         <div class="max-w-xl">
-          <Badge title="Awesomer" badgeImageSrc={badge1} />
+          <Badge title="Awesomer" badgeImageSrc={badge1.src} />
         </div>
       </a>
     </div>
     <div class="grid h-full justify-items-start">
       <a rel="prefetch" href="/quests/quest_stake_100">
         <div class="max-w-xl">
-          <Badge title="Become the first 30 starters" badgeImageSrc={badge2} />
+          <Badge
+            title="Become the first 30 starters"
+            badgeImageSrc={badge2.src}
+          />
         </div>
       </a>
     </div>

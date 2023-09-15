@@ -10,15 +10,19 @@
   >
     <div class="absolute inset-0 bg-black"></div>
     <swiper-slide
-      ><img :src="images.cover1" class="h-full w-full object-cover opacity-80"
+      ><img
+        :src="images.cover1.src"
+        class="h-full w-full object-cover opacity-80"
     /></swiper-slide>
     <swiper-slide
       ><img
-        :src="images.cover2"
+        :src="images.cover2.src"
         class="opacity-8 h-full w-full object-cover opacity-80"
     /></swiper-slide>
     <swiper-slide
-      ><img :src="images.cover3" class="h-full w-full object-cover opacity-80"
+      ><img
+        :src="images.cover3.src"
+        class="h-full w-full object-cover opacity-80"
     /></swiper-slide>
   </swiper>
 </template>

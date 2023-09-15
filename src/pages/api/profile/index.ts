@@ -7,7 +7,7 @@ export type Profile = {
   username?: string
 }
 
-export const post = async ({ request }: { request: Request }) => {
+export const POST = async ({ request }: { request: Request }) => {
   const { profile, sig, hash } = (await request.json()) as {
     profile?: Profile
     hash: string

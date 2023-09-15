@@ -1,10 +1,10 @@
 import {
-  ClubsFunctionGetAdminPaths,
-  ClubsFunctionGetPagePaths,
-  ClubsFunctionGetSlots,
-  ClubsFunctionPlugin,
+  type ClubsFunctionGetAdminPaths,
+  type ClubsFunctionGetPagePaths,
+  type ClubsFunctionGetSlots,
+  type ClubsFunctionPlugin,
   ClubsPluginCategory,
-  ClubsPluginMeta,
+  type ClubsPluginMeta,
 } from '@devprotocol/clubs-core'
 import { default as Index } from './index.astro'
 import { default as Admin } from './admin.astro'
@@ -17,10 +17,7 @@ import Preview1 from './assets/quests-1.jpg'
 
 const questParams = ['quest_starter', 'quest_stake_100', 'quest_stake_500']
 
-export const getPagePaths: ClubsFunctionGetPagePaths = async (
-  options,
-  config,
-) => [
+export const getPagePaths: ClubsFunctionGetPagePaths = async (options, _) => [
   { paths: ['quests'], component: Index, props: { options } },
   ...questParams.map((param) => ({
     paths: ['quests', param],
@@ -64,13 +61,13 @@ export const meta: ClubsPluginMeta = {
   id: 'devprotocol:clubs:plugin:quests',
   displayName: 'Quests',
   category: ClubsPluginCategory.Growth,
-  icon: Icon,
+  icon: Icon.src,
   offer: {
     price: 0,
     priceCurrency: 'DEV',
   },
   description: `Add Dework link.`,
-  previewImages: [Preview1],
+  previewImages: [Preview1.src],
   readme: Readme,
 }
 

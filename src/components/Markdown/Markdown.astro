@@ -17,7 +17,7 @@ const {
 }
 
 const renderer = {
-  link(href: string, title: string, text: string) {
+  link(href: string, _: string | null | undefined, text: string) {
     const url = new URL(href)
     const youtube = url.host === 'youtube.com' || url.host === 'www.youtube.com'
     const v = url.searchParams.get('v')

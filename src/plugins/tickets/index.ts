@@ -114,9 +114,9 @@ export const meta: ClubsPluginMeta = {
   id: 'devprotocol:clubs:plugin:tickets',
   displayName: 'Tickets',
   category: ClubsPluginCategory.Growth,
-  icon: Icon,
+  icon: Icon.src,
   description: 'Ticketing with your membership.',
-  previewImages: [tickets1, tickets2, tickets3],
+  previewImages: [tickets1.src, tickets2.src, tickets3.src],
   readme,
 }
 

@@ -1,6 +1,6 @@
-import React, {
-  MouseEvent,
-  ChangeEvent,
+import {
+  type MouseEvent,
+  type ChangeEvent,
   useState,
   useEffect,
   useMemo,
@@ -8,7 +8,6 @@ import React, {
 import type { Membership } from '@plugins/memberships'
 import { version } from '@crossmint/client-sdk-react-ui/package.json'
 import {
-  Currency,
   clientNames,
   crossmintModalService,
   crossmintPayButtonService,

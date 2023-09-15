@@ -309,9 +309,9 @@
 </template>
 
 <script lang="ts">
-import { ContractRunner, Signer, ZeroAddress } from 'ethers'
+import { type ContractRunner, type Signer, ZeroAddress } from 'ethers'
 import type Web3Modal from 'web3modal'
-import { PropType, defineComponent } from '@vue/runtime-core'
+import { type PropType, defineComponent } from '@vue/runtime-core'
 import { clientsSTokens } from '@devprotocol/dev-kit/agent'
 import type { connection as Connection } from '@devprotocol/clubs-core/connection'
 import {
@@ -324,7 +324,7 @@ import { parseUnits } from '@ethersproject/units'
 import type { Membership } from '@plugins/memberships'
 import BigNumber from 'bignumber.js'
 import {
-  ClubsConfiguration,
+  type ClubsConfiguration,
   ClubsEvents,
   setConfig,
 } from '@devprotocol/clubs-core'
@@ -334,6 +334,9 @@ import {
   onUpdatedConfiguration,
 } from '@devprotocol/clubs-core/events'
 import type { DraftOptions } from '@constants/draft'
+import type { ERC20Image } from '@plugins/memberships/utils/types/setImageArg'
+import { tokenInfo } from '@constants/common'
+import { bytes32Hex } from '@fixtures/data/hexlify'
 
 type Data = {
   networkSelected: String
@@ -869,22 +872,42 @@ export default defineComponent({
       }
 
       try {
+        const currentChainId: number | null = this.getChainId()
+        if (!currentChainId) {
+          this.membershipSet = false
+          this.setupMbmershipTxnStatusMsg = 'Setup failed, try again!'
+          this.setupMemberhipTxnProcessing = false
+          return
+        }
+
         const propertyAddress = Boolean(this.addressFromNiwa)
           ? (this.addressFromNiwa as string)
           : (this.addressFromNiwaOrConfig as string)
-        const images: Image[] =
-          this.membershipsPluginOptions?.map((opt) => ({
-            src: opt.imageSrc,
-            name: opt.name,
-            description: opt.description,
-            requiredETHAmount: parseUnits(String(opt.price)).toString(),
-            requiredETHFee: opt.fee?.percentage
-              ? parseUnits(
-                  new BigNumber(opt.price).times(opt.fee.percentage).toFixed(),
-                ).toString()
-              : 0,
-            gateway: opt.fee?.beneficiary ?? ZeroAddress,
-          })) || []
+        const images: ERC20Image[] =
+          this.membershipsPluginOptions?.map((opt) => {
+            const { decimals, address: token } =
+              tokenInfo[opt.currency][currentChainId]
+
+            return {
+              src: opt.imageSrc,
+              name: opt.name,
+              description: opt.description,
+              requiredTokenAmount: parseUnits(
+                String(opt.price),
+                decimals,
+              ).toString(),
+              requiredTokenFee: opt.fee?.percentage
+                ? parseUnits(
+                    new BigNumber(opt.price)
+                      .times(opt.fee.percentage)
+                      .toFixed(),
+                    decimals,
+                  ).toString()
+                : 0n,
+              gateway: opt.fee?.beneficiary ?? ZeroAddress,
+              token: token,
+            }
+          }) || []
         const keys: string[] =
           this.membershipsPluginOptions?.map((opt) => keccak256(opt.payload)) ||
           []

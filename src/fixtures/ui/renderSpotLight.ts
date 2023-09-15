@@ -70,7 +70,7 @@ export const renderSpotlight = ({ containerId }: { containerId: string }) => {
     scene.add(floorMesh)
 
     renderer = new WebGLRenderer()
-    renderer.physicallyCorrectLights = true
+    // renderer.physicallyCorrectLights = true
     renderer.outputEncoding = sRGBEncoding
     renderer.toneMapping = ReinhardToneMapping
     renderer.setPixelRatio(window.devicePixelRatio)

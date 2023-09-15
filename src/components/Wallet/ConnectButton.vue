@@ -77,7 +77,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <span class="relative">
+  <span class="relative block">
     <div
       v-if="error"
       class="absolute top-[100%] -mt-1 w-full rounded-b-lg bg-dp-red-400 p-2 pt-3 text-center text-sm text-white opacity-50"

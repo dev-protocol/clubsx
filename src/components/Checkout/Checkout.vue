@@ -13,7 +13,7 @@ import {
 } from '@devprotocol/util-ts'
 import {
   type BigNumberish,
-  ContractRunner,
+  type ContractRunner,
   JsonRpcProvider,
   MaxUint256,
   formatUnits,
@@ -35,7 +35,7 @@ let subscriptions: Subscription[] = []
 type Props = {
   amount?: number
   destination?: string
-  currency?: 'USDC' | 'ETH' | 'DEV'
+  currency?: 'USDC' | 'ETH' | 'DEV' | 'MATIC' | Lowercase<CurrencyOption>
   feeBeneficiary?: string
   feePercentage?: number
   payload?: Uint8Array | string

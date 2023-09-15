@@ -32,19 +32,19 @@ const draftOptionsValue = draftOptions?.value as UndefinedOr<
 >
 
 const membershipsPlugin = config.plugins.find(
-  (plgn) => plgn.id === 'devprotocol:clubs:simple-memberships'
+  (plgn) => plgn.id === 'devprotocol:clubs:simple-memberships',
 )
 const membershipsPluginOptions = membershipsPlugin?.options?.find(
-  (opt) => opt.key === 'memberships'
+  (opt) => opt.key === 'memberships',
 )?.value
 
 const siteBaseUrl = ((url) =>
   `${url.protocol}//${url.host}/${site}/setup/preview`)(
-  new URL(Astro.request.url)
+  new URL(Astro.request.url),
 )
 
 const baseDomainUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
-  new URL(Astro.request.url)
+  new URL(Astro.request.url),
 )
 ---
 
@@ -59,11 +59,11 @@ const baseDomainUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
     >
       <section class="grid gap-16">
         <h2 class="font-title text-2xl font-bold">Publish</h2>
-        <PublishConnect client:load checkImage={checkImage} />
+        <PublishConnect client:load checkImage={checkImage.src} />
         <PublishNetworkSelection
           client:load
-          checkImage={checkImage}
-          roundedSquareImage={roundedSquareImage}
+          checkImage={checkImage.src}
+          roundedSquareImage={roundedSquareImage.src}
           category={draftOptionsValue?.category}
           membershipsPluginOptions={membershipsPluginOptions}
           showTestnets={testnets}
@@ -75,7 +75,7 @@ const baseDomainUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
           <div>
             <a
               href={new URL('/admin/overview', baseDomainUrl).toString()}
-              class="bg-dp-blue-grey-600 grid gap-4 overflow-hidden rounded-2xl p-4 transition-shadow hover:shadow-[0_0_0_8px_rgba(255,255,255,0.2)]"
+              class="grid gap-4 overflow-hidden rounded-2xl bg-dp-blue-grey-600 p-4 transition-shadow hover:shadow-[0_0_0_8px_rgba(255,255,255,0.2)]"
             >
               <p class="text-2xl font-bold">Skip</p>
               <p class="text-sm">

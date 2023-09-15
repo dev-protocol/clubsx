@@ -1,14 +1,13 @@
 import {
-  ClubsFunctionGetAdminPaths,
-  ClubsFunctionGetPagePaths,
-  ClubsFunctionPlugin,
+  type ClubsFunctionGetAdminPaths,
+  type ClubsFunctionGetPagePaths,
+  type ClubsFunctionPlugin,
   ClubsPluginCategory,
-  ClubsPluginMeta,
+  type ClubsPluginMeta,
 } from '@devprotocol/clubs-core'
 import { default as Index } from './index.astro'
 import { default as Plugins } from './plugins.astro'
 import { default as Overview } from './overview.astro'
-import { default as Marketplace } from '../../pages/coming-soon.astro'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async () => []
 

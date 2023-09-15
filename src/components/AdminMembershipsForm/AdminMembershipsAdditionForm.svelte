@@ -16,11 +16,6 @@
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
   import { buildConfig, controlModal } from '@devprotocol/clubs-core/events'
   import {
-    address,
-    callERC20SimpleCollections,
-  } from '@plugins/memberships/utils/simpleCollections'
-  import type { ERC20Image } from '@plugins/memberships/utils/types/setImageArg'
-  import {
     DEV_TOKEN_PAYMENT_TYPE_FEE,
     PAYMENT_TYPE_INSTANT_FEE,
     PAYMENT_TYPE_STAKE_FEE,

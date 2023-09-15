@@ -35,7 +35,7 @@ const tokenURI = ref<
     ]
   }>
 >()
-
+const image = ref<HTMLImageElement>()
 const htmlDescription: ComputedRef<UndefinedOr<string>> = computed(() => {
   return (
     tokenURI.value?.description &&
@@ -52,6 +52,13 @@ onMounted(async () => {
     client.tokenURI(Number(id)),
   )
   tokenURI.value = metadata
+  whenDefined(metadata?.image, (src) => {
+    const img = new Image()
+    img.onload = () => {
+      image.value = img
+    }
+    img.src = src
+  })
   console.log({ metadata })
 })
 </script>
@@ -61,7 +68,7 @@ onMounted(async () => {
     <div class="mx-auto grid gap-8 md:max-w-lg">
       <slot name="before:preview" />
       <div
-        class="-mx-8 grid gap-8 bg-dp-white-300 p-6 md:mx-auto md:rounded-md"
+        class="-mx-8 grid w-full gap-8 bg-dp-white-300 p-6 md:mx-auto md:rounded-md"
       >
         <div class="flex flex-col gap-6">
           <p class="font-mono font-bold">
@@ -70,12 +77,14 @@ onMounted(async () => {
 
           <div class="rounded-lg border border-black/20 bg-black/10 p-4">
             <img
-              v-if="tokenURI?.image"
-              :src="tokenURI?.image"
+              v-if="image"
+              :src="image.src"
+              :width="image.width"
+              :height="image.height"
               class="h-auto w-full rounded object-cover object-center sm:h-full sm:w-full"
             />
             <Skeleton
-              v-if="tokenURI?.image === undefined"
+              v-if="image === undefined"
               class="mx-auto aspect-square h-full w-full"
             />
           </div>
