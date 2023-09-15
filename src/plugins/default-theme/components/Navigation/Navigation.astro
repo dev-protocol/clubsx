@@ -11,7 +11,7 @@ const { links, type = 'large-buttons' } = Astro.props as {
 <nav>
   <ul
     class:list={[
-      'mx-auto py-8',
+      'mx-auto',
       { 'grid gap-6': type === 'large-buttons' },
       { 'flex justify-start gap-3': type === 'tab' },
     ]}
