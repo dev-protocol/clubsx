@@ -11,6 +11,7 @@
   import { bytes32Hex } from '@fixtures/data/hexlify'
   import { client, clientsSTokens } from '@devprotocol/dev-kit'
   import PQueue from 'p-queue'
+  import { reverse } from 'ramda'
 
   export let tickets: Tickets
   export let memberships: UndefinedOr<Membership[]>
@@ -19,6 +20,7 @@
 
   let account: UndefinedOr<string>
   let ownedTickets: UndefinedOr<TicketWithStatus[]>
+  let fetchingOwnedTickets = false
 
   const queueTickets = new PQueue({ concurrency: 3 })
   const queueStatus = new PQueue({ concurrency: 1 })
@@ -29,9 +31,8 @@
     status?: TicketStatus[] | Promise<TicketStatus[]>
   }
 
-  const detectHavingTickets = async (
-    _account: string,
-  ): Promise<TicketWithStatus[]> => {
+  const detectHavingTickets = async (_account: string): Promise<void> => {
+    fetchingOwnedTickets = true
     const provider = new JsonRpcProvider(rpcUrl)
     const [s1, s2] = await clientsSTokens(provider)
     const detectSTokens = whenDefined(s1 ?? s2, client.createDetectSTokens)
@@ -41,36 +42,35 @@
 
     console.log({ idList })
 
-    const _tickets = await whenDefined(idList, async (li) => {
-      const ss = await Promise.all(
-        li
-          .toSorted((a, b) => b - a)
-          .map(async (id) =>
-            queueTickets.add(async () => {
-              const payload = await whenDefined(s1 ?? s2, (sTokens) =>
-                sTokens.payloadOf(id),
-              )
-              const match = tickets.find(
-                (ticket) => payload === bytes32Hex(ticket.payload),
-              )
-              const status = whenDefined(match, (x) =>
-                fetchTicketStatusThrottle(x, id),
-              )
-              const membership = whenDefined(match, (x) =>
-                memberships?.find(
-                  (m) => bytes32Hex(m.payload) === bytes32Hex(x.payload),
-                ),
-              )
-              const res = match
-                ? { ...match, id, membership, status }
-                : undefined
-              return res
-            }),
-          ),
+    await whenDefined(idList, async (li) => {
+      await Promise.all(
+        reverse(li).map(async (id) =>
+          queueTickets.add(async () => {
+            const payload = await whenDefined(s1 ?? s2, (sTokens) =>
+              sTokens.payloadOf(id),
+            )
+            const match = tickets.find(
+              (ticket) => payload === bytes32Hex(ticket.payload),
+            )
+            const status = whenDefined(match, (x) =>
+              fetchTicketStatusThrottle(x, id),
+            )
+            const membership = whenDefined(match, (x) =>
+              memberships?.find(
+                (m) => bytes32Hex(m.payload) === bytes32Hex(x.payload),
+              ),
+            )
+            const res = match ? { ...match, id, membership, status } : undefined
+            ownedTickets =
+              whenDefined(res, (x) => [...(ownedTickets ?? []), x]) ??
+              ownedTickets
+            return res
+          }),
+        ),
       )
-      return ss.filter(Boolean) as TicketWithStatus[]
+      fetchingOwnedTickets = false
+      return
     })
-    return _tickets ? _tickets : []
   }
 
   const fetchTicketStatusThrottle = async (
@@ -100,8 +100,7 @@
     connection().account.subscribe(async (acc) => {
       account = acc
       if (account) {
-        const _ownedTickets = await detectHavingTickets(account)
-        ownedTickets = _ownedTickets
+        detectHavingTickets(account)
       }
     })
   })
@@ -109,12 +108,25 @@
 
 <section class="grid gap-8 rounded-md bg-white p-2 text-black shadow">
   {#if !account}
-    <p>Please connect a wallet</p>
-  {/if}
-  {#if account && ownedTickets === undefined}
-    <span class="h-32">
-      <Skeleton />
-    </span>
+    <div class="grid justify-items-center gap-8 p-4">
+      <span class="animate-pulse text-dp-white-400"
+        ><svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="h-24 w-24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3"
+          />
+        </svg>
+      </span>
+      <p class="font-bold text-dp-white-600">Please connect a wallet</p>
+    </div>
   {/if}
   {#if ownedTickets !== undefined}
     {#each ownedTickets as ticket}
@@ -150,5 +162,10 @@
         </div>
       </a>
     {/each}
+  {/if}
+  {#if fetchingOwnedTickets}
+    <span class="h-32 p-8">
+      <Skeleton />
+    </span>
   {/if}
 </section>

@@ -53,8 +53,6 @@
   class="flex flex-col rounded-xl bg-dp-white-200 p-4 text-dp-white-ink shadow"
 >
   <h2 class="mb-4 text-4xl font-bold">Join</h2>
-  <!-- DAOName from YAML config -->
-  <div class="mb-8">Join {tenantName} in support of the project.</div>
 
   <h3 class="mb-4 text-2xl font-bold">Purchase with</h3>
   <form

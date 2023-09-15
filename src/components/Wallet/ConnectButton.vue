@@ -22,6 +22,7 @@ const projectId =
 
 const truncatedAddress = ref<string>()
 const error = ref<Error>()
+const loaded = ref<boolean>()
 const truncateAddress = (address: string) => {
   const match = address.match(
     /^(0x[a-zA-Z0-9]{4})[a-zA-Z0-9]+([a-zA-Z0-9]{4})$/,
@@ -50,13 +51,17 @@ createWeb3Modal({ wagmiConfig, projectId, chains, defaultChain })
 const modal = useWeb3Modal()
 
 onMounted(async () => {
-  const { connection } = await import('@devprotocol/clubs-core/connection')
-  watchWalletClient({}, (wallet) => {
+  loaded.value = true
+  const connectionPromise = import('@devprotocol/clubs-core/connection')
+  watchWalletClient({}, async (wallet) => {
     console.log({ wallet })
-    whenDefined(wallet, (wal) =>
+    const { connection } = await connectionPromise
+    whenDefined(wallet, async (wal) =>
       connection().setEip1193Provider(wal.transport, BrowserProvider),
     ) ?? connection().signer.next(undefined)
   })
+  const { connection } = await connectionPromise
+
   connection().account.subscribe((account) => {
     if (account && props.redirectOnSignin) {
       window.location.href = new URL(
@@ -92,6 +97,7 @@ onMounted(async () => {
       } ${error ? 'is-error' : ''}`"
       v-bind:class="props.class"
       :disabled="props.isDisabled"
+      :data-is-loading="!loaded"
       @click="modal.open()"
     >
       {{
