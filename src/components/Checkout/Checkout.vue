@@ -26,8 +26,9 @@ import { fetchDevForEth, fetchSTokens } from '@fixtures/utility'
 import Skeleton from '@components/Global/Skeleton.vue'
 import { stakeWithAnyTokens, mintedIdByLogs } from '@fixtures/dev-kit'
 import { marked } from 'marked'
-import sanitizeHtml from 'sanitize-html'
+import DOMPurify from 'dompurify'
 import Result from './Result.vue'
+import { tags, attrs } from '@constants/dompurify'
 
 let providerPool: UndefinedOr<ContractRunner>
 let subscriptions: Subscription[] = []
@@ -50,13 +51,6 @@ type Props = {
   accessControlDescription?: string
 }
 const props = defineProps<Props>()
-const sanitizeConfig = {
-  allowedTags: [...sanitizeHtml.defaults.allowedTags, 'iframe'],
-  allowedAttributes: {
-    ...sanitizeHtml.defaults.allowedAttributes,
-    iframe: ['src', 'frameborder', 'onmousewheel', 'width', 'height', 'style'],
-  },
-}
 
 const verifiedPropsCurrency: ComputedRef<CurrencyOption> = computed(() => {
   return props.currency?.toUpperCase() === 'ETH'
@@ -80,12 +74,25 @@ const useERC20: ComputedRef<boolean> = computed(() => {
   )
 })
 const htmlDescription: ComputedRef<UndefinedOr<string>> = computed(() => {
-  return props.description && sanitizeHtml(marked.parse(props.description))
+  return (
+    props.description && DOMPurify.sanitize(marked.parse(props.description))
+  )
 })
 const htmlVerificationFlow: ComputedRef<UndefinedOr<string>> = computed(() => {
   return (
     props.accessControlDescription &&
-    sanitizeHtml(marked.parse(props.accessControlDescription), sanitizeConfig)
+    DOMPurify.sanitize(marked.parse(props.accessControlDescription), {
+      ALLOWED_TAGS: [...tags, 'iframe'],
+      ALLOWED_ATTR: [
+        ...attrs,
+        'src',
+        'frameborder',
+        'onmousewheel',
+        'width',
+        'height',
+        'style',
+      ],
+    })
   )
 })
 const accessControlUrl: ComputedRef<UndefinedOr<URL>> = computed(() => {
