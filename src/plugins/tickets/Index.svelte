@@ -39,28 +39,34 @@
       detector(propertyAddress, _account),
     )
 
+    console.log({ idList })
+
     const _tickets = await whenDefined(idList, async (li) => {
       const ss = await Promise.all(
-        li.map(async (id) =>
-          queueTickets.add(async () => {
-            const payload = await whenDefined(s1 ?? s2, (sTokens) =>
-              sTokens.payloadOf(id),
-            )
-            const match = tickets.find(
-              (ticket) => payload === bytes32Hex(ticket.payload),
-            )
-            const status = whenDefined(match, (x) =>
-              fetchTicketStatusThrottle(x, id),
-            )
-            const membership = whenDefined(match, (x) =>
-              memberships?.find(
-                (m) => bytes32Hex(m.payload) === bytes32Hex(x.payload),
-              ),
-            )
-            const res = match ? { ...match, id, membership, status } : undefined
-            return res
-          }),
-        ),
+        li
+          .toSorted((a, b) => b - a)
+          .map(async (id) =>
+            queueTickets.add(async () => {
+              const payload = await whenDefined(s1 ?? s2, (sTokens) =>
+                sTokens.payloadOf(id),
+              )
+              const match = tickets.find(
+                (ticket) => payload === bytes32Hex(ticket.payload),
+              )
+              const status = whenDefined(match, (x) =>
+                fetchTicketStatusThrottle(x, id),
+              )
+              const membership = whenDefined(match, (x) =>
+                memberships?.find(
+                  (m) => bytes32Hex(m.payload) === bytes32Hex(x.payload),
+                ),
+              )
+              const res = match
+                ? { ...match, id, membership, status }
+                : undefined
+              return res
+            }),
+          ),
       )
       return ss.filter(Boolean) as TicketWithStatus[]
     })

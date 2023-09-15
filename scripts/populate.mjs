@@ -385,12 +385,20 @@ const guild = {
 }
 
 const cryptocafeAccessControl$1 = {
-  url: 'https://prerelease.clubs.place/api/mock/access-control?result=1',
-  description: `Please fill out this form first: https://example.com`,
+  url: 'https://clubs-userland-cryptocafe.vercel.app/api/access-control/airtable/tblJQKBASg0lawpk3/fldW3gZ4LhCXGg5nf',
+  description: fs.readFileSync(
+    './src/assets/accessControl.cryptocafe.description$1.md',
+    'utf-8',
+  ),
 }
 const cryptocafeAccessControl$2 = {
-  url: 'https://prerelease.clubs.place/api/mock/access-control?result=0',
-  description: `1. Please fill out this form: https://example.com \n\n2. You will be notified by email when you are approved, so please wait for it.`,
+  url: encodeURI(
+    'https://clubs-userland-cryptocafe.vercel.app/api/access-control/airtable/tbliLoymN2sNRSDkQ/flddMiDmClyRnxwhb?additional-conditions=["fldmOuSsUw8CG34sd","送信"]',
+  ),
+  description: fs.readFileSync(
+    './src/assets/accessControl.cryptocafe.description$2.md',
+    'utf-8',
+  ),
 }
 const cryptoCafeMemberships = [
   {

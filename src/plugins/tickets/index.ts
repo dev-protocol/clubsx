@@ -1,12 +1,14 @@
 import type { Membership } from '@plugins/memberships'
 import type {
   ClubsFunctionGetPagePaths,
+  ClubsFunctionGetSlots,
   ClubsFunctionPlugin,
   ClubsPluginMeta,
 } from '@devprotocol/clubs-core'
 import { ClubsPluginCategory, ClubsPluginSignal } from '@devprotocol/clubs-core'
 import { default as Index } from './Index.astro'
 import { default as Id } from './Id.astro'
+import Slot from './Slot.astro'
 import { keccak256 } from 'ethers'
 import type { ClubsFunctionGetApiPaths } from '@devprotocol/clubs-core/src'
 import { getItems } from './utils/get-items'
@@ -56,8 +58,6 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
     )
     return membership
   })
-
-  console.log({ tickets })
 
   return tickets
     ? [
@@ -110,6 +110,26 @@ export const getApiPaths: ClubsFunctionGetApiPaths = async (
   ]
 }
 
+export const getSlots: ClubsFunctionGetSlots = async (
+  options,
+  _,
+  { factory },
+) => {
+  const tickets = getItems(options)
+
+  return factory === 'page'
+    ? [
+        {
+          slot: 'checkout:result:before:preview',
+          component: Slot,
+          props: {
+            tickets,
+          },
+        },
+      ]
+    : []
+}
+
 export const meta: ClubsPluginMeta = {
   id: 'devprotocol:clubs:plugin:tickets',
   displayName: 'Tickets',
@@ -123,5 +143,6 @@ export const meta: ClubsPluginMeta = {
 export default {
   getPagePaths,
   getApiPaths,
+  getSlots,
   meta,
 } as ClubsFunctionPlugin

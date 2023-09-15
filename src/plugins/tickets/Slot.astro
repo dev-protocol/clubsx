@@ -1,0 +1,43 @@
+---
+import type { CheckoutOptions } from '@components/Checkout/types'
+import type { Tickets } from '.'
+import { bytes32Hex } from '@fixtures/data/hexlify'
+
+const { checkoutOptions, tickets } = Astro.props as {
+  checkoutOptions: CheckoutOptions
+  tickets: Tickets
+}
+
+const { payload } = checkoutOptions
+const isTicket = tickets.some(
+  (t) => bytes32Hex(t.payload) === bytes32Hex(payload ?? ''),
+)
+---
+
+{
+  isTicket && (
+    <>
+      <a
+        href={`/tickets`}
+        class="hs-button is-large is-fullwidth is-filled is-native-blue rounded-full text-2xl"
+      >
+        Tickets
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="h-6 w-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M8.25 4.5l7.5 7.5-7.5 7.5"
+          />
+        </svg>
+      </a>
+      <hr class="bg-dp-blue-grey-200" />
+    </>
+  )
+}
