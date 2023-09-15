@@ -1321,6 +1321,15 @@ const populate = async () => {
             value: { image: 'https://i.imgur.com/IqkJqwc.jpg' },
           },
           {
+            key: 'navigationLinks',
+            value: [
+              {
+                display: 'Tickets',
+                path: '/tickets',
+              },
+            ],
+          },
+          {
             key: 'avatarImgSrc',
             value: 'https://i.imgur.com/8wc0qH5.png',
           },

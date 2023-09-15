@@ -15,12 +15,8 @@ export const defaultConfig: ClubsConfiguration = {
       key: 'navigationLinks',
       value: [
         {
-          display: 'Join',
-          path: '/join',
-        },
-        {
-          display: 'Community',
-          path: '/community',
+          display: 'Home',
+          path: '/',
         },
       ],
     },

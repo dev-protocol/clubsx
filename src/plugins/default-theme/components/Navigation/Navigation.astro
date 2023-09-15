@@ -1,22 +1,39 @@
 ---
 import type { NavLink } from '@constants/navLink'
 
-const { links } = Astro.props as {
+const { links, type = 'large-buttons' } = Astro.props as {
   links: NavLink[]
   current?: NavLink
+  type?: 'large-buttons' | 'tab'
 }
 ---
 
 <nav>
-  <ul class="grid gap-6">
+  <ul
+    class:list={[
+      'mx-auto',
+      { 'grid gap-6': type === 'large-buttons' },
+      { 'flex justify-start gap-3': type === 'tab' },
+    ]}
+  >
     {
       links.map(
         (link) =>
           link.enable !== false && (
-            <li>
+            <li class:list={[{ 'last:pr-24': type === 'tab' }]}>
               <a
                 href={link.path}
-                class="hs-button is-filled rounded-full border-0 bg-white p-5 text-xl font-bold text-black transition hover:bg-white/80 lg:text-2xl"
+                class:list={[
+                  'hs-button rounded-full font-bold transition hover:bg-white/80',
+                  {
+                    'is-outlined border-[var(--bodyColor)] px-5 py-2 text-xl text-[var(--bodyColor)] hover:text-[var(--backgroundColor)]':
+                      type === 'tab',
+                  },
+                  {
+                    'is-filled w-full border-0 bg-white p-5 text-xl text-black lg:text-2xl':
+                      type === 'large-buttons',
+                  },
+                ]}
               >
                 {link.display}
               </a>

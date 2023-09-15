@@ -64,7 +64,6 @@ const socials =
   twitter || discord ? [twitter, discord].map((x) => x) : socialLinks
 
 const navigationLinks: NavLink[] = [
-  { path: '/', display: 'Club' },
   ...((config.options?.find((option) => option.key === 'navigationLinks')
     ?.value as NavLink[]) ?? []),
 ]
@@ -212,6 +211,18 @@ const truncatedDescription = ((desc) =>
               </svg>
             </Share>
           </span>
+        </section>
+      )
+    }
+
+    {
+      !displayFullPage && (
+        <section class="relative overflow-x-scroll px-[clamp(1.5rem,((100vw_-_42rem)/2+1.5rem),100%)] pb-8">
+          <Navigation
+            type="tab"
+            links={navigationLinks}
+            current={currentLink}
+          />
         </section>
       )
     }
