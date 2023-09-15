@@ -22,9 +22,9 @@
 
   let content = mdToHtml(description)
 
-  $: {
-    content = mdToHtml(description)
-  }
+  // $: {
+  //   content = mdToHtml(description)
+  // }
 
   const hash = `#membership:${id}`
   const handleHashChange = (event: HashChangeEvent) => {
