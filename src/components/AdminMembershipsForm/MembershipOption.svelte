@@ -1,8 +1,8 @@
 <script lang="ts">
   import { marked } from 'marked'
-  import type { UndefinedOr } from '@devprotocol/util-ts'
   import { onMount } from 'svelte'
   import { CurrencyOption } from '@constants/currencyOption'
+  import sanitizeHtml from 'sanitize-html'
 
   export let name: string
   export let clubName: string
@@ -18,7 +18,11 @@
   let modal = false
   let modalGroup: Element | undefined
 
-  const content = marked.parse(description ?? '')
+  let content: string
+
+  $: {
+    content = sanitizeHtml(marked.parse(description ?? ''))
+  }
 
   const hash = `#membership:${id}`
   const handleHashChange = (event: HashChangeEvent) => {
