@@ -53,6 +53,22 @@ type Props = {
 }
 const props = defineProps<Props>()
 
+const approveNeeded = ref<UndefinedOr<boolean>>(undefined)
+const stakeSuccessful = ref<boolean>(false)
+const account = ref<UndefinedOr<string>>(undefined)
+const isApproving = ref<boolean>(false)
+const isStaking = ref<boolean>(false)
+const isWaitingForStaked = ref<boolean>(false)
+const feeAmount = ref<UndefinedOr<number>>(undefined)
+const chain = ref<UndefinedOr<number>>(undefined)
+const previewImageSrc = ref<UndefinedOr<string>>(props.itemImageSrc)
+const previewName = ref<UndefinedOr<string>>(props.itemName)
+const stakingAmount = ref<UndefinedOr<number>>(undefined)
+const isCheckingAccessControl = ref<boolean>(false)
+const accessControlError = ref<UndefinedOr<Error>>(undefined)
+const accessAllowed = ref<UndefinedOr<boolean>>(undefined)
+const mintedId = ref<UndefinedOr<bigint>>(undefined)
+
 const verifiedPropsCurrency: ComputedRef<CurrencyOption> = computed(() => {
   return props.currency?.toUpperCase() === 'ETH'
     ? CurrencyOption.ETH
@@ -115,8 +131,7 @@ const accessControlUrl: ComputedRef<UndefinedOr<URL>> = computed(() => {
     },
   )
 })
-
-const parsedAmount = ref<UndefinedOr<bigint>>(
+const parsedAmount: ComputedRef<UndefinedOr<bigint>> = computed(() =>
   props.amount && !props.useDiscretePaymentFlow
     ? parseUnits(
         props.amount.toString(),
@@ -130,21 +145,6 @@ const parsedAmount = ref<UndefinedOr<bigint>>(
       )
     : undefined,
 )
-const approveNeeded = ref<UndefinedOr<boolean>>(undefined)
-const stakeSuccessful = ref<boolean>(false)
-const account = ref<UndefinedOr<string>>(undefined)
-const isApproving = ref<boolean>(false)
-const isStaking = ref<boolean>(false)
-const isWaitingForStaked = ref<boolean>(false)
-const feeAmount = ref<UndefinedOr<number>>(undefined)
-const chain = ref<UndefinedOr<number>>(undefined)
-const previewImageSrc = ref<UndefinedOr<string>>(props.itemImageSrc)
-const previewName = ref<UndefinedOr<string>>(props.itemName)
-const stakingAmount = ref<UndefinedOr<number>>(undefined)
-const isCheckingAccessControl = ref<boolean>(false)
-const accessControlError = ref<UndefinedOr<Error>>(undefined)
-const accessAllowed = ref<UndefinedOr<boolean>>(undefined)
-const mintedId = ref<UndefinedOr<bigint>>(undefined)
 
 const approve = function () {
   whenDefinedAll(
