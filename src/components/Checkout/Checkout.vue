@@ -32,6 +32,7 @@ import { tags, attrs } from '@constants/dompurify'
 
 let providerPool: UndefinedOr<ContractRunner>
 let subscriptions: Subscription[] = []
+const REGEX_DESC_ACCOUNT = /{ACCOUNT}/g
 
 type Props = {
   amount?: number
@@ -79,20 +80,29 @@ const htmlDescription: ComputedRef<UndefinedOr<string>> = computed(() => {
   )
 })
 const htmlVerificationFlow: ComputedRef<UndefinedOr<string>> = computed(() => {
+  const accountAddress = account.value ?? ''
   return (
     props.accessControlDescription &&
-    DOMPurify.sanitize(marked.parse(props.accessControlDescription), {
-      ALLOWED_TAGS: [...tags, 'iframe'],
-      ALLOWED_ATTR: [
-        ...attrs,
-        'src',
-        'frameborder',
-        'onmousewheel',
-        'width',
-        'height',
-        'style',
-      ],
-    })
+    DOMPurify.sanitize(
+      marked.parse(
+        props.accessControlDescription.replace(
+          REGEX_DESC_ACCOUNT,
+          accountAddress,
+        ),
+      ),
+      {
+        ALLOWED_TAGS: [...tags, 'iframe'],
+        ALLOWED_ATTR: [
+          ...attrs,
+          'src',
+          'frameborder',
+          'onmousewheel',
+          'width',
+          'height',
+          'style',
+        ],
+      },
+    )
   )
 })
 const accessControlUrl: ComputedRef<UndefinedOr<URL>> = computed(() => {
