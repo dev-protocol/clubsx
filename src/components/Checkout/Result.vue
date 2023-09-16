@@ -68,7 +68,7 @@ onMounted(async () => {
     <div class="mx-auto grid gap-8 md:max-w-lg">
       <slot name="before:preview" />
       <div
-        class="-mx-8 grid w-full gap-8 bg-dp-white-300 p-6 md:mx-auto md:rounded-md"
+        class="-mx-8 grid gap-8 bg-dp-white-300 p-6 md:mx-auto md:w-full md:rounded-md"
       >
         <div class="flex flex-col gap-6">
           <p class="font-mono font-bold">
@@ -89,7 +89,7 @@ onMounted(async () => {
             />
           </div>
           <span>
-            <h3 class="text-sm text-black/50">
+            <h3 class="break-all text-sm text-black/50">
               <span v-if="tokenURI?.name">{{ tokenURI.name }}</span>
               <Skeleton
                 v-if="tokenURI?.name === undefined"
@@ -100,7 +100,7 @@ onMounted(async () => {
           <aside
             v-if="htmlDescription"
             v-html="htmlDescription"
-            class="mt-6 text-xl text-black/80"
+            class="mt-6 break-all text-xl text-black/80"
           ></aside>
           <Skeleton
             v-if="htmlDescription === undefined"

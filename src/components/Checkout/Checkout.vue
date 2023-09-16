@@ -467,128 +467,9 @@ onUnmounted(() => {
 <template>
   <div
     v-if="!stakeSuccessful"
-    class="relative mx-auto mb-12 grid items-start rounded-xl bg-white p-6 text-black shadow lg:container lg:mt-12 lg:grid-cols-2 lg:gap-12"
+    class="relative mx-auto mb-12 grid rounded-xl bg-white text-black shadow lg:container lg:mt-12 lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:gap-12"
   >
-    <section class="flex flex-col">
-      <!-- Transaction form -->
-      <div class="grid gap-16 p-5">
-        <slot name="before:transaction-form"></slot>
-
-        <div v-if="props.accessControlUrl" class="grid gap-8">
-          <!-- Access control section -->
-          <h2 class="text-xl">Permission required</h2>
-          <span>
-            <p class="font-bold text-dp-white-600">Status</p>
-            <p
-              :data-is-loading="isCheckingAccessControl"
-              :data-is-valid="accessAllowed"
-              :data-is-error="Boolean(accessControlError)"
-              class="hs-button is-large is-fullwidth is-outlined pointer-events-none text-center data-[is-loading=true]:animate-pulse data-[is-valid=false]:border data-[is-error=true]:border-red-600 data-[is-valid=false]:border-neutral-300 data-[is-valid=true]:border-[#43C451] data-[is-valid=false]:bg-white"
-            >
-              {{
-                !account
-                  ? `Connect wallet to check you're verified`
-                  : isCheckingAccessControl
-                  ? `Now checking the verification status`
-                  : accessAllowed
-                  ? `Verified`
-                  : accessControlError
-                  ? accessControlError.message
-                  : `Not verified`
-              }}
-            </p>
-          </span>
-
-          <div
-            v-if="accessAllowed === false && htmlVerificationFlow"
-            v-html="htmlVerificationFlow"
-            class="md"
-          ></div>
-
-          <hr class="bg-[#DFDFDF]" />
-        </div>
-
-        <span
-          v-if="
-            useInjectedTransactionForm &&
-            (props.accessControlUrl
-              ? props.accessControlUrl && accessAllowed
-              : true)
-          "
-          @checkout:completed="onCompleted"
-        >
-          <slot name="main:transaction-form"></slot>
-        </span>
-
-        <div v-if="!useInjectedTransactionForm" class="grid gap-16">
-          <span v-if="useERC20" class="flex flex-col justify-stretch">
-            <!-- Approval -->
-            <button
-              @click="approve"
-              :disabled="
-                !account ||
-                isApproving ||
-                approveNeeded === undefined ||
-                approveNeeded === false ||
-                Boolean(props.accessControlUrl && !accessAllowed)
-              "
-              :data-is-approving="isApproving"
-              class="hs-button is-large is-fullwidth is-filled data-[is-approving=true]:animate-pulse"
-            >
-              {{
-                approveNeeded === false
-                  ? "You've already approved"
-                  : 'Sign with wallet and approve'
-              }}
-            </button>
-          </span>
-
-          <span class="flex flex-col justify-stretch">
-            <!-- Pay -->
-            <button
-              @click="submitStake"
-              :disabled="
-                !account ||
-                isStaking ||
-                approveNeeded !== false ||
-                Boolean(props.accessControlUrl && !accessAllowed) ||
-                Boolean(insufficientFunds)
-              "
-              :data-is-staking="isStaking"
-              class="hs-button is-large is-filled data-[is-staking=true]:animate-pulse"
-              v-bind:class="insufficientFunds ? 'bg-red-600' : ''"
-            >
-              Pay with {{ verifiedPropsCurrency.toUpperCase() }}
-            </button>
-
-            <p
-              v-if="insufficientFunds"
-              class="text-bold mt-2 rounded-md bg-red-600 p-2 text-white"
-            >
-              {{ insufficientFunds.message }}
-            </p>
-          </span>
-
-          <span
-            v-if="isApproving || isStaking || isWaitingForStaked"
-            class="grid justify-center gap-6"
-          >
-            <div
-              role="presentation"
-              class="mx-auto h-16 w-16 animate-spin rounded-full border-l border-r border-t border-native-blue-300"
-            />
-            <p v-if="isApproving">Waiting for approving to complete...</p>
-            <p v-if="isStaking && !isWaitingForStaked">
-              Awaiting transaction confirmation on wallet...
-            </p>
-            <p v-if="isWaitingForStaked">
-              Just a few minutes until your item is minted...
-            </p>
-          </span>
-        </div>
-      </div>
-    </section>
-    <section class="flex flex-col gap-6">
+    <section class="flex flex-col gap-6 p-6 lg:row-span-2">
       <div class="rounded-lg border border-black/20 bg-black/10 p-4">
         <img
           v-if="previewImageSrc"
@@ -620,8 +501,156 @@ onUnmounted(() => {
       <aside
         v-if="htmlDescription"
         v-html="htmlDescription"
-        class="mt-6 text-xl text-black/80"
+        class="rounded-md bg-dp-white-300 p-2 text-xl text-black/80 lg:mt-6"
       ></aside>
+    </section>
+
+    <section class="flex flex-col content-start gap-8 empty:hidden lg:gap-12">
+      <!-- Transaction form -->
+      <slot name="before:transaction-form"></slot>
+
+      <div v-if="props.accessControlUrl" class="grid gap-4 p-5 lg:gap-8">
+        <!-- Access control section -->
+        <span>
+          <p class="mb-2 flex items-center gap-2 font-bold text-dp-white-600">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="h-5 w-5"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z"
+              />
+            </svg>
+            Permission required
+          </p>
+          <p
+            :data-is-loading="isCheckingAccessControl"
+            :data-is-valid="accessAllowed"
+            :data-is-error="Boolean(accessControlError)"
+            class="hs-button is-large is-fullwidth is-outlined pointer-events-none border text-center data-[is-loading=true]:animate-pulse data-[is-valid=false]:border data-[is-error=true]:border-red-600 data-[is-valid=false]:border-neutral-300 data-[is-valid=true]:border-[#43C451] data-[is-valid=false]:bg-white"
+          >
+            {{
+              !account
+                ? `Connect wallet to check you're verified`
+                : isCheckingAccessControl
+                ? `Now checking the verification status`
+                : accessAllowed
+                ? `Verified`
+                : accessControlError
+                ? accessControlError.message
+                : `Not verified`
+            }}
+          </p>
+        </span>
+
+        <div
+          v-if="accessAllowed === false && htmlVerificationFlow"
+          v-html="htmlVerificationFlow"
+          class="md"
+        ></div>
+      </div>
+
+      <hr v-if="props.accessControlUrl" class="bg-dp-blue-grey-200" />
+
+      <span
+        v-if="
+          useInjectedTransactionForm &&
+          (props.accessControlUrl
+            ? props.accessControlUrl && accessAllowed
+            : true)
+        "
+        @checkout:completed="onCompleted"
+      >
+        <slot name="main:transaction-form"></slot>
+      </span>
+
+      <span
+        v-if="!useInjectedTransactionForm && useERC20"
+        class="flex flex-col justify-stretch p-5"
+      >
+        <!-- Approval -->
+        <button
+          @click="approve"
+          :disabled="
+            !account ||
+            isApproving ||
+            approveNeeded === undefined ||
+            approveNeeded === false ||
+            Boolean(props.accessControlUrl && !accessAllowed)
+          "
+          :data-is-approving="isApproving"
+          class="hs-button is-large is-fullwidth is-filled data-[is-approving=true]:animate-pulse"
+        >
+          {{
+            approveNeeded === false
+              ? "You've already approved"
+              : 'Sign with wallet and approve'
+          }}
+        </button>
+      </span>
+
+      <slot name="after:transaction-form"></slot>
+    </section>
+
+    <section
+      v-if="!useInjectedTransactionForm"
+      class="sticky bottom-0 flex grow flex-col gap-5 rounded-b-xl border-t border-dp-white-300 bg-white p-5"
+      v-bind:class="
+        !props.accessControlUrl || (props.accessControlUrl && accessAllowed)
+          ? 'lg:static lg:border-0 lg:bg-transparent'
+          : ''
+      "
+    >
+      <div class="grid gap-5">
+        <span class="flex flex-col justify-stretch">
+          <!-- Pay -->
+          <button
+            @click="submitStake"
+            :disabled="
+              !account ||
+              isStaking ||
+              approveNeeded !== false ||
+              Boolean(props.accessControlUrl && !accessAllowed) ||
+              Boolean(insufficientFunds)
+            "
+            :data-is-staking="isStaking"
+            class="hs-button is-large is-filled data-[is-staking=true]:animate-pulse"
+            v-bind:class="insufficientFunds ? 'bg-red-600' : ''"
+          >
+            Pay with {{ verifiedPropsCurrency.toUpperCase() }}
+          </button>
+
+          <p
+            v-if="insufficientFunds"
+            class="text-bold mt-2 rounded-md bg-red-600 p-2 text-white"
+          >
+            {{ insufficientFunds.message }}
+          </p>
+        </span>
+
+        <span
+          v-if="isApproving || isStaking || isWaitingForStaked"
+          class="grid justify-center gap-5"
+        >
+          <div
+            role="presentation"
+            class="mx-auto h-16 w-16 animate-spin rounded-full border-l border-r border-t border-native-blue-300"
+          />
+          <p v-if="isApproving">Waiting for approving to complete...</p>
+          <p v-if="isStaking && !isWaitingForStaked">
+            Awaiting transaction confirmation on wallet...
+          </p>
+          <p v-if="isWaitingForStaked">
+            Just a few minutes until your item is minted...
+          </p>
+        </span>
+      </div>
     </section>
   </div>
 
