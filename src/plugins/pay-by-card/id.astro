@@ -41,15 +41,16 @@ const failure = Boolean(url.searchParams.get('failure'))
         <h3 class="mb-4 text-2xl font-bold">You're now our member!</h3>
       </div>
     ) : (
-      <IdPage
-        client:load
-        slot="checkout:main:transaction-form"
-        cm={cm}
-        rpcUrl={rpcUrl}
-        propertyAddress={propertyAddress}
-        product={product}
-        baseUrl={url.toString()}
-      />
+      <div slot="checkout:main:transaction-form" class="p-5">
+        <IdPage
+          client:load
+          cm={cm}
+          rpcUrl={rpcUrl}
+          propertyAddress={propertyAddress}
+          product={product}
+          baseUrl={url.toString()}
+        />
+      </div>
     )
   }
 </Checkout>

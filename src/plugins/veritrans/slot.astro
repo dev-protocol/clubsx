@@ -21,7 +21,7 @@ const linkTo = whenDefined(
 
 {
   linkTo && !Astro.url.pathname.includes(linkTo) && (
-    <>
+    <div class="p-5">
       <a
         href={linkTo}
         class="hs-button is-large is-fullwidth is-filled is-native-blue"
@@ -29,6 +29,6 @@ const linkTo = whenDefined(
         Pay with a credit card
       </a>
       <hr class="bg-[#DFDFDF]" />
-    </>
+    </div>
   )
 }

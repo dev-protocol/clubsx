@@ -14,8 +14,9 @@ import { default as Index } from './index.astro'
 import { default as Id } from './id.astro'
 import { default as Slot } from './slot.astro'
 import { default as Result } from './result.astro'
-import { keccak256, solidityPacked } from 'ethers'
+import { solidityPacked } from 'ethers'
 import type { UndefinedOr } from '@devprotocol/util-ts'
+import { bytes32Hex } from '@fixtures/data/hexlify'
 
 export type PriceOverrides = {
   id: string
@@ -163,7 +164,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
           component: Result,
         },
         ...products.map((product) => ({
-          paths: ['fiat', keccak256(product.payload)],
+          paths: ['fiat', bytes32Hex(product.payload)],
           props: {
             cm,
             product,
@@ -183,7 +184,7 @@ export const getSlots: ClubsFunctionGetSlots = async (_, __, { factory }) => {
   return factory === 'page'
     ? [
         {
-          slot: 'checkout:before:transaction-form',
+          slot: 'checkout:after:transaction-form',
           component: Slot,
         },
       ]

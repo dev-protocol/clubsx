@@ -45,6 +45,9 @@ const checkoutOptions: CheckoutOptions = {
 const SlotsCheckoutBeforeTransactionForm = clubs.slots.filter(
   (slot) => slot.slot === 'checkout:before:transaction-form',
 )
+const SlotsCheckoutAfterTransactionForm = clubs.slots.filter(
+  (slot) => slot.slot === 'checkout:after:transaction-form',
+)
 const SlotsCheckoutMainTransactionForm = clubs.slots.filter(
   (slot) => slot.slot === 'checkout:main:transaction-form',
 )
@@ -75,6 +78,7 @@ const SlotsCheckoutResultBeforePreview = clubs.slots.filter(
     name="checkout:before:transaction-form"
     slot="before:transaction-form"
   />
+  <slot name="checkout:after:transaction-form" slot="after:transaction-form" />
   <slot name="checkout:main:transaction-form" slot="main:transaction-form" />
   <slot name="checkout:result:before:preview" slot="result:before:preview" />
 
@@ -84,6 +88,15 @@ const SlotsCheckoutResultBeforePreview = clubs.slots.filter(
         {...Slot.props}
         checkoutOptions={checkoutOptions}
         slot="before:transaction-form"
+      />
+    ))
+  }
+  {
+    SlotsCheckoutAfterTransactionForm.map((Slot) => (
+      <Slot.component
+        {...Slot.props}
+        checkoutOptions={checkoutOptions}
+        slot="after:transaction-form"
       />
     ))
   }

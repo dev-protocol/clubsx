@@ -1036,56 +1036,6 @@ const populate = async () => {
             ],
           },
           {
-            id: 'devprotocol:clubs:plugin:veritrans',
-            name: 'fiat',
-            enable: true,
-            options: [
-              {
-                key: 'override',
-                value: [
-                  {
-                    id: 'tier-1',
-                    importFrom: 'devprotocol:clubs:simple-memberships',
-                    key: 'memberships',
-                    payload: debugProducts[0].payload,
-                    price: {
-                      yen: 5000,
-                    },
-                  },
-                  {
-                    id: 'tier-2',
-                    importFrom: 'devprotocol:clubs:simple-memberships',
-                    key: 'memberships',
-                    payload: debugProducts[1].payload,
-                    price: {
-                      yen: 12000,
-                    },
-                  },
-                  {
-                    id: 'tier-3',
-                    importFrom: 'devprotocol:clubs:simple-memberships',
-                    key: 'memberships',
-                    payload: debugProducts[2].payload,
-                    price: {
-                      yen: 20000,
-                    },
-                  },
-                ],
-              },
-              {
-                key: 'webhooks',
-                value: {
-                  fulfillment: {
-                    encrypted: jsonwebtoken.sign(
-                      'https://veritrans.clubs.place/api/mock/logger',
-                      SALT,
-                    ),
-                  },
-                },
-              },
-            ],
-          },
-          {
             id: 'devprotocol:clubs:plugin:tickets',
             options: [
               {

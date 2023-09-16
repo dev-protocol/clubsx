@@ -105,7 +105,7 @@ export const getSlots: ClubsFunctionGetSlots = async (options, __, utils) => {
   return utils.factory === 'page'
     ? [
         {
-          slot: 'checkout:before:transaction-form',
+          slot: 'checkout:after:transaction-form',
           component: Slot,
           props: {
             items,
