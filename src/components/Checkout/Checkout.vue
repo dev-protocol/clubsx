@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref, type ComputedRef, computed } from 'vue'
+import { createErc20Contract } from '@devprotocol/dev-kit'
 import {
   positionsCreate,
   positionsCreateWithEth,
@@ -24,7 +25,11 @@ import { type Subscription, combineLatest } from 'rxjs'
 import { CurrencyOption } from '@constants/currencyOption'
 import { fetchDevForEth, fetchSTokens } from '@fixtures/utility'
 import Skeleton from '@components/Global/Skeleton.vue'
-import { stakeWithAnyTokens, mintedIdByLogs } from '@fixtures/dev-kit'
+import {
+  stakeWithAnyTokens,
+  mintedIdByLogs,
+  getTokenAddress,
+} from '@fixtures/dev-kit'
 import { marked } from 'marked'
 import DOMPurify from 'dompurify'
 import Result from './Result.vue'
@@ -68,6 +73,7 @@ const isCheckingAccessControl = ref<boolean>(false)
 const accessControlError = ref<UndefinedOr<Error>>(undefined)
 const accessAllowed = ref<UndefinedOr<boolean>>(undefined)
 const mintedId = ref<UndefinedOr<bigint>>(undefined)
+const insufficientFunds = ref<UndefinedOr<Error>>(undefined)
 
 const verifiedPropsCurrency: ComputedRef<CurrencyOption> = computed(() => {
   return props.currency?.toUpperCase() === 'ETH'
@@ -87,7 +93,9 @@ const usePolygonWETH: ComputedRef<boolean> = computed(() => {
 })
 const useERC20: ComputedRef<boolean> = computed(() => {
   return (
-    verifiedPropsCurrency.value !== CurrencyOption.ETH || usePolygonWETH.value
+    (verifiedPropsCurrency.value !== CurrencyOption.ETH &&
+      verifiedPropsCurrency.value !== CurrencyOption.MATIC) ||
+    usePolygonWETH.value
   )
 })
 const htmlDescription: ComputedRef<UndefinedOr<string>> = computed(() => {
@@ -211,6 +219,31 @@ const checkApproved = async function (
         }).then((res) => res?.create())
   approveNeeded.value = whenDefined(res, (x) => x.approvalNeeded)
   console.log({ approveNeeded })
+}
+const checkBalance = async function (
+  provider: JsonRpcProvider,
+  userAddress: string,
+  chain: number,
+) {
+  const token = getTokenAddress(verifiedPropsCurrency.value, chain)
+  const res = useERC20.value
+    ? await createErc20Contract(provider)(token).balanceOf(userAddress)
+    : await provider.getBalance(userAddress)
+  console.log({
+    useERC20: useERC20.value,
+    token,
+    res,
+    parsedAmount: parsedAmount.value,
+  })
+  const insufficient = whenDefined(
+    parsedAmount.value,
+    (amount) => BigInt(res) < BigInt(amount),
+  )
+  insufficientFunds.value = insufficient
+    ? new Error(
+        `Insufficient token balance. Please check you're using the correct wallet.`,
+      )
+    : undefined
 }
 const submitStake = async function () {
   debugger
@@ -338,7 +371,14 @@ onMounted(async () => {
           checkApproved(_prov, _userAddress, _destination, _amount, _chain)
       },
     )
-
+    whenDefinedAll(
+      [new JsonRpcProvider(props.rpcUrl), _account, chain.value],
+      async ([_prov, _userAddress, _chain]) => {
+        checkBalance(_prov, _userAddress, _chain)
+      },
+    )
+  })
+  const subAccessControl = getConnection().account.subscribe(async () => {
     const accessControlRes = await whenDefined(
       accessControlUrl.value,
       async (_accessControl) => {
@@ -358,6 +398,7 @@ onMounted(async () => {
     }
   })
   subscriptions.push(sub)
+  subscriptions.push(subAccessControl)
 
   const provider = new JsonRpcProvider(props.rpcUrl)
   const chainId = Number((await provider.getNetwork()).chainId)
@@ -510,13 +551,22 @@ onUnmounted(() => {
                 !account ||
                 isStaking ||
                 approveNeeded !== false ||
-                Boolean(props.accessControlUrl && !accessAllowed)
+                Boolean(props.accessControlUrl && !accessAllowed) ||
+                Boolean(insufficientFunds)
               "
               :data-is-staking="isStaking"
               class="hs-button is-large is-filled data-[is-staking=true]:animate-pulse"
+              v-bind:class="insufficientFunds ? 'bg-red-600' : ''"
             >
               Pay with {{ verifiedPropsCurrency.toUpperCase() }}
             </button>
+
+            <p
+              v-if="insufficientFunds"
+              class="text-bold mt-2 rounded-md bg-red-600 p-2 text-white"
+            >
+              {{ insufficientFunds.message }}
+            </p>
           </span>
 
           <span
