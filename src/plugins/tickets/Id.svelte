@@ -126,9 +126,9 @@
             {/if}
             {#if !idIsError && benefit.available && benefit.self.expiration}
               <span class="font-bold text-dp-green-300 md:text-xl"
-                >Available until {benefit.self.expiration
+                >Available until {benefit.self.expiration.local().calendar()} ({benefit.self.expiration
                   .local()
-                  .calendar()}</span
+                  .format('A h:mm')})</span
               >
             {/if}
             {#if !idIsError && !benefit.enablable && benefit.dependency?.unused}

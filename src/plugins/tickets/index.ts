@@ -30,9 +30,17 @@ export type Ticket = {
   uses: {
     id: string
     description: string
-    duration?: string
+    expiration?: {
+      duration: string
+      end: string
+      tz: string
+    }
     dependsOn?: string
-    refreshCycle?: string
+    refreshCycle?: {
+      duration: string
+      end: string
+      tz: string
+    }
   }[]
   webhooks?: {
     used?: { encrypted: string } // Encrypted URL string

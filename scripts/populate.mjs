@@ -1119,44 +1119,52 @@ const populate = async () => {
                   //     },
                   //   ],
                   // },
-                  // {
-                  //   payload: toBytes32('#1'),
-                  //   importedFrom: {
-                  //     plugin: 'devprotocol:clubs:simple-memberships',
-                  //     key: 'memberships',
-                  //   },
-                  //   name: 'Tea Ceremony Class',
-                  //   uses: [
-                  //     {
-                  //       id: '1',
-                  //       description: '6 months',
-                  //       duration: '6 months',
-                  //       refreshCycle: undefined,
-                  //     },
-                  //     {
-                  //       id: '2',
-                  //       description: '2 lessons per week',
-                  //       dependsOn: '1',
-                  //       refreshCycle: '24 hours',
-                  //     },
-                  //   ],
-                  // },
                   {
                     payload: toBytes32('#1'),
                     importedFrom: {
                       plugin: 'devprotocol:clubs:simple-memberships',
                       key: 'memberships',
                     },
-                    name: 'Stargazing',
+                    name: 'Tea Ceremony Class',
                     uses: [
                       {
                         id: '1',
-                        description: 'Fall member',
-                        duration: '3 months',
+                        description: '6 months',
+                        expiration: {
+                          duration: '6 months',
+                          end: '20 hour',
+                          tz: 'Asia/Tokyo',
+                        },
                         refreshCycle: undefined,
+                      },
+                      {
+                        id: '2',
+                        description: '2 lessons per week',
+                        dependsOn: '1',
+                        refreshCycle: {
+                          duration: '2 weeks',
+                          end: '20 hour',
+                          tz: 'Asia/Tokyo',
+                        },
                       },
                     ],
                   },
+                  // {
+                  //   payload: toBytes32('#1'),
+                  //   importedFrom: {
+                  //     plugin: 'devprotocol:clubs:simple-memberships',
+                  //     key: 'memberships',
+                  //   },
+                  //   name: 'Stargazing',
+                  //   uses: [
+                  //     {
+                  //       id: '1',
+                  //       description: 'Fall member',
+                  //       duration: '3 months',
+                  //       refreshCycle: undefined,
+                  //     },
+                  //   ],
+                  // },
                 ],
               },
             ],
