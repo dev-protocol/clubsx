@@ -9,8 +9,9 @@ import { JsonRpcProvider, hashMessage, recoverAddress } from 'ethers'
 import { clientsSTokens } from '@devprotocol/dev-kit'
 import { genHistoryKey } from '../utils/gen-key'
 import { now } from '../utils/date'
-import { Status, fetchWebhook, createRequest } from '../utils/webhooks'
+import { Status } from '../utils/webhooks'
 import jsonwebtoken from 'jsonwebtoken'
+import fetch from 'cross-fetch'
 
 export const post: (opts: {
   ticket: Ticket
@@ -103,14 +104,14 @@ export const post: (opts: {
       await client.quit()
 
       const webhook = whenDefinedAll(
-        [ticket.webhooks?.used, process.env.SALT],
+        [ticket.webhooks?.used?.encrypted, process.env.SALT],
         ([encrypted, salt]) => jsonwebtoken.verify(encrypted, salt) as string,
       )
       await whenDefined(webhook, (base) =>
-        fetchWebhook(
-          createRequest({
+        fetch(base, {
+          method: 'POST',
+          body: JSON.stringify({
             status: Status.Used,
-            base,
             id,
             account,
             benefit: {
@@ -118,7 +119,7 @@ export const post: (opts: {
               description: beneifit.self.use.description,
             },
           }),
-        ),
+        }),
       )
 
       return new Response(null, {

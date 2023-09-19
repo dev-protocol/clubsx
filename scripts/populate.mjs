@@ -1159,13 +1159,6 @@ const populate = async () => {
                   },
                 ],
               },
-              {
-                key: 'airtable',
-                value: {
-                  encryptedToken: 'xxx',
-                  base: 'xxx',
-                },
-              },
             ],
           },
           {
@@ -1380,15 +1373,16 @@ const populate = async () => {
                         refreshCycle: '24 hours',
                       },
                     ],
+                    webhooks: {
+                      used: {
+                        encrypted: jsonwebtoken.sign(
+                          'http://localhost:4321/api/webhooks/tickets/XYZ/dest/airtable/tblPinFQ8dUbrhzPn',
+                          SALT,
+                        ),
+                      },
+                    },
                   },
                 ],
-              },
-              {
-                key: 'airtable',
-                value: {
-                  encryptedToken: 'xxx',
-                  base: 'xxx',
-                },
               },
             ],
           },

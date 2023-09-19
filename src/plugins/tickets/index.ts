@@ -35,7 +35,7 @@ export type Ticket = {
     refreshCycle?: string
   }[]
   webhooks?: {
-    used?: string // Encrypted URL string
+    used?: { encrypted: string } // Encrypted URL string
   }
 }
 export type Tickets = Ticket[]
