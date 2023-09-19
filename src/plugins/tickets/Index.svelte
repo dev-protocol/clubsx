@@ -156,7 +156,7 @@
               data-is-available={isAvailable(status)}
               data-is-enablable={!isAvailable(status) && isEnablable(status)}
               data-is-expired={isExpired(status)}
-              class="rounded-full px-4 py-1.5 text-white data-[is-available=true]:bg-dp-green-300 data-[is-enablable=true]:bg-native-blue-400 data-[is-expired=true]:bg-dp-white-600 data-[is-available=true]:after:content-['Available'] data-[is-enablable=true]:after:content-['Use'] data-[is-expired=true]:after:content-['Expired']"
+              class="rounded-full px-4 py-1.5 text-white data-[is-available=true]:bg-dp-green-300 data-[is-enablable=true]:bg-native-blue-400 data-[is-expired=true]:bg-dp-white-600 data-[is-available=true]:after:content-['Available'] data-[is-enablable=true]:after:content-['Use this'] data-[is-expired=true]:after:content-['Expired']"
             >
             </span>
           {/await}
