@@ -1376,7 +1376,7 @@ const populate = async () => {
                     webhooks: {
                       used: {
                         encrypted: jsonwebtoken.sign(
-                          'http://localhost:4321/api/webhooks/tickets/XYZ/dest/airtable/tblPinFQ8dUbrhzPn',
+                          'https://clubs-userland-cryptocafe.vercel.app/api/webhooks/tickets/XYZ/dest/airtable/tblPinFQ8dUbrhzPn',
                           SALT,
                         ),
                       },
