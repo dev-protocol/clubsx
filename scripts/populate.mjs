@@ -1246,6 +1246,10 @@ const populate = async () => {
       }),
     )
 
+    const ticketWebhook = jsonwebtoken.sign(
+      'https://clubs-userland-cryptocafe.vercel.app/api/webhooks/tickets/XYZ/dest/airtable/tblPinFQ8dUbrhzPn',
+      SALT,
+    )
     await client.set(
       'cryptocafe',
       encode({
@@ -1353,7 +1357,7 @@ const populate = async () => {
                 key: 'tickets',
                 value: [
                   {
-                    payload: toBytes32('cafe-visitor'),
+                    payload: cryptoCafeMemberships[0].payload,
                     importedFrom: {
                       plugin: 'devprotocol:clubs:simple-memberships',
                       key: 'memberships',
@@ -1361,24 +1365,129 @@ const populate = async () => {
                     name: 'Cafe Ticket',
                     uses: [
                       {
-                        id: '1-month-pass',
-                        description: '1 month pass',
-                        duration: '30 days',
+                        id: '1-day-cafe-ticket',
+                        description: '1 day ticket for Cafe time',
+                        duration: '1 days',
                         refreshCycle: undefined,
                       },
                       {
-                        id: 'free-juice',
-                        description: 'Free juice/day',
-                        dependsOn: '1-month-pass',
+                        id: 'free-coffee',
+                        description: 'Free coffee',
+                        dependsOn: '1-day-cafe-ticket',
                         refreshCycle: '24 hours',
                       },
                     ],
                     webhooks: {
                       used: {
-                        encrypted: jsonwebtoken.sign(
-                          'https://clubs-userland-cryptocafe.vercel.app/api/webhooks/tickets/XYZ/dest/airtable/tblPinFQ8dUbrhzPn',
-                          SALT,
-                        ),
+                        encrypted: ticketWebhook,
+                      },
+                    },
+                  },
+                  {
+                    payload: cryptoCafeMemberships[1].payload,
+                    importedFrom: {
+                      plugin: 'devprotocol:clubs:simple-memberships',
+                      key: 'memberships',
+                    },
+                    name: 'Bar Ticket',
+                    uses: [
+                      {
+                        id: '1-day-bar-ticket',
+                        description: '1 day ticket for Bar time',
+                        duration: '1 days',
+                        refreshCycle: undefined,
+                      },
+                      {
+                        id: 'free-beer',
+                        description: 'Free beer',
+                        dependsOn: '1-day-bar-ticket',
+                        refreshCycle: '24 hours',
+                      },
+                    ],
+                    webhooks: {
+                      used: {
+                        encrypted: ticketWebhook,
+                      },
+                    },
+                  },
+                  {
+                    payload: cryptoCafeMemberships[2].payload,
+                    importedFrom: {
+                      plugin: 'devprotocol:clubs:simple-memberships',
+                      key: 'memberships',
+                    },
+                    name: 'One day Ticket',
+                    uses: [
+                      {
+                        id: '1-day-ticket',
+                        description: '1 day ticket',
+                        duration: '1 days',
+                        refreshCycle: undefined,
+                      },
+                      {
+                        id: 'free-drink',
+                        description: 'Free coffee/beer',
+                        dependsOn: '1-day-ticket',
+                        refreshCycle: '24 hours',
+                      },
+                    ],
+                    webhooks: {
+                      used: {
+                        encrypted: ticketWebhook,
+                      },
+                    },
+                  },
+                  {
+                    payload: cryptoCafeMemberships[3].payload,
+                    importedFrom: {
+                      plugin: 'devprotocol:clubs:simple-memberships',
+                      key: 'memberships',
+                    },
+                    name: '1 month Ticket',
+                    uses: [
+                      {
+                        id: '1-month-ticket',
+                        description: '1 month ticket',
+                        duration: '1 months',
+                        refreshCycle: undefined,
+                      },
+                      {
+                        id: 'free-drink',
+                        description: 'Free coffee or beer /day',
+                        dependsOn: '1-month-ticket',
+                        refreshCycle: '24 hours',
+                      },
+                    ],
+                    webhooks: {
+                      used: {
+                        encrypted: ticketWebhook,
+                      },
+                    },
+                  },
+                  {
+                    payload: cryptoCafeMemberships[4].payload,
+                    importedFrom: {
+                      plugin: 'devprotocol:clubs:simple-memberships',
+                      key: 'memberships',
+                    },
+                    name: '3 months Ticket',
+                    uses: [
+                      {
+                        id: '3-months-ticket',
+                        description: '3 months ticket',
+                        duration: '3 months',
+                        refreshCycle: undefined,
+                      },
+                      {
+                        id: 'free-drink',
+                        description: 'Free coffee or beer /day',
+                        dependsOn: '3-months-ticket',
+                        refreshCycle: '24 hours',
+                      },
+                    ],
+                    webhooks: {
+                      used: {
+                        encrypted: ticketWebhook,
                       },
                     },
                   },
