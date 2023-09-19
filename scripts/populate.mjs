@@ -1132,6 +1132,7 @@ const populate = async () => {
                         description: '6 months',
                         expiration: {
                           duration: '6 months',
+                          start: '12 hour',
                           end: '20 hour',
                           tz: 'Asia/Tokyo',
                         },
@@ -1141,11 +1142,7 @@ const populate = async () => {
                         id: '2',
                         description: '2 lessons per week',
                         dependsOn: '1',
-                        refreshCycle: {
-                          duration: '2 weeks',
-                          end: '20 hour',
-                          tz: 'Asia/Tokyo',
-                        },
+                        refreshCycle: '2 hours',
                       },
                     ],
                   },
@@ -1375,14 +1372,19 @@ const populate = async () => {
                       {
                         id: '1-day-cafe-ticket',
                         description: '1 day ticket for Cafe time',
-                        duration: '1 days',
+                        duration: {
+                          duration: '1 days',
+                          start: '10 hour',
+                          end: '18 hour',
+                          tz: 'Asia/Tokyo',
+                        },
                         refreshCycle: undefined,
                       },
                       {
                         id: 'free-coffee',
                         description: 'Free coffee',
                         dependsOn: '1-day-cafe-ticket',
-                        refreshCycle: '24 hours',
+                        refreshCycle: '1 days',
                       },
                     ],
                     webhooks: {
@@ -1402,14 +1404,19 @@ const populate = async () => {
                       {
                         id: '1-day-bar-ticket',
                         description: '1 day ticket for Bar time',
-                        duration: '1 days',
+                        duration: {
+                          duration: '1 days',
+                          start: '18 hour',
+                          end: '22 hour',
+                          tz: 'Asia/Tokyo',
+                        },
                         refreshCycle: undefined,
                       },
                       {
                         id: 'free-beer',
                         description: 'Free beer',
                         dependsOn: '1-day-bar-ticket',
-                        refreshCycle: '24 hours',
+                        refreshCycle: '1 days',
                       },
                     ],
                     webhooks: {
@@ -1429,14 +1436,19 @@ const populate = async () => {
                       {
                         id: '1-day-ticket',
                         description: '1 day ticket',
-                        duration: '1 days',
+                        duration: {
+                          duration: '1 days',
+                          start: '10 hour',
+                          end: '22 hour',
+                          tz: 'Asia/Tokyo',
+                        },
                         refreshCycle: undefined,
                       },
                       {
                         id: 'free-drink',
                         description: 'Free coffee/beer',
                         dependsOn: '1-day-ticket',
-                        refreshCycle: '24 hours',
+                        refreshCycle: '1 days',
                       },
                     ],
                     webhooks: {
@@ -1456,14 +1468,19 @@ const populate = async () => {
                       {
                         id: '1-month-ticket',
                         description: '1 month ticket',
-                        duration: '1 months',
+                        duration: {
+                          duration: '1 months',
+                          start: '10 hour',
+                          end: '22 hour',
+                          tz: 'Asia/Tokyo',
+                        },
                         refreshCycle: undefined,
                       },
                       {
                         id: 'free-drink',
                         description: 'Free coffee or beer /day',
                         dependsOn: '1-month-ticket',
-                        refreshCycle: '24 hours',
+                        refreshCycle: '1 days',
                       },
                     ],
                     webhooks: {
@@ -1483,14 +1500,19 @@ const populate = async () => {
                       {
                         id: '3-months-ticket',
                         description: '3 months ticket',
-                        duration: '3 months',
+                        duration: {
+                          duration: '3 months',
+                          start: '10 hour',
+                          end: '22 hour',
+                          tz: 'Asia/Tokyo',
+                        },
                         refreshCycle: undefined,
                       },
                       {
                         id: 'free-drink',
                         description: 'Free coffee or beer /day',
                         dependsOn: '3-months-ticket',
-                        refreshCycle: '24 hours',
+                        refreshCycle: '1 days',
                       },
                     ],
                     webhooks: {

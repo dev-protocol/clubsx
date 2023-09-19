@@ -103,6 +103,7 @@
             <button
               data-is-enablable={benefit.enablable}
               data-is-available={benefit.available}
+              data-is-temp-unavailable={benefit.inUnavailableTime}
               data-is-expired={!benefit.enablable && benefit.self.expired}
               data-is-waiting={!benefit.enablable && benefit.dependency?.unused}
               disabled={(!benefit.enablable && benefit.self.expired) ||
@@ -110,10 +111,10 @@
                 idIsLoading === benefit.self.use.id}
               data-is-loading={idIsLoading === benefit.self.use.id}
               data-is-error={idIsError?.id === benefit.self.use.id}
-              class="group flex w-full items-center rounded-full border border-[3px] border-transparent px-8 py-4 text-center text-white data-[is-loading=true]:animate-pulse data-[is-waiting=true]:border-native-blue-400 data-[is-waiting=true]:border-native-blue-400 data-[is-available=true]:bg-dp-green-300 data-[is-enablable=true]:bg-native-blue-400 data-[is-error=true]:bg-red-500 data-[is-expired=true]:bg-dp-white-600 data-[is-error=true]:text-white data-[is-waiting=true]:text-native-blue-400"
+              class="group flex w-full items-center rounded-full border border-[3px] border-transparent px-8 py-4 text-center text-white data-[is-loading=true]:animate-pulse data-[is-waiting=true]:border-native-blue-400 data-[is-waiting=true]:border-native-blue-400 data-[is-available=true]:bg-dp-green-300 data-[is-enablable=true]:bg-native-blue-400 data-[is-error=true]:bg-red-500 data-[is-expired=true]:bg-dp-white-600 data-[is-temp-unavailable=true]:bg-dp-black-200 data-[is-error=true]:text-white data-[is-waiting=true]:text-native-blue-400"
               on:click={onClickABenefit(benefit.self.use.id)}
               ><span
-                class="rounded-full border border-[3px] border-transparent text-dp-white-600 group-data-[is-waiting=true]:border-native-blue-400 group-data-[is-available=true]:bg-dp-green-200 group-data-[is-enablable=true]:bg-white group-data-[is-expired=true]:bg-white group-data-[is-waiting=true]:bg-transparent group-data-[is-available=true]:text-white"
+                class="rounded-full border border-[3px] border-transparent text-dp-white-600 group-data-[is-waiting=true]:border-native-blue-400 group-data-[is-available=true]:bg-dp-green-200 group-data-[is-enablable=true]:bg-white group-data-[is-expired=true]:bg-white group-data-[is-temp-unavailable=true]:bg-dp-white-200 group-data-[is-waiting=true]:bg-transparent group-data-[is-available=true]:text-white"
                 ><Check />
               </span><span class="flex-grow text-2xl font-bold"
                 >{benefit.self.use.description}</span
@@ -126,14 +127,21 @@
             {/if}
             {#if !idIsError && benefit.available && benefit.self.expiration}
               <span class="font-bold text-dp-green-300 md:text-xl"
-                >Available until {benefit.self.expiration.local().calendar()} ({benefit.self.expiration
+                >Available until {benefit.self.expiration
                   .local()
-                  .format('A h:mm')})</span
+                  .calendar()}</span
               >
             {/if}
             {#if !idIsError && !benefit.enablable && benefit.dependency?.unused}
               <span class="font-bold text-native-blue-400 md:text-xl"
                 >Will be available when {benefit.dependency.use.description} is used.</span
+              >
+            {/if}
+            {#if !idIsError && benefit.inUnavailableTime}
+              <span class="font-bold text-dp-black-200 md:text-xl"
+                >Will be available {benefit.availableBetween?.start
+                  ?.local()
+                  .calendar()}.</span
               >
             {/if}
             {#if idIsError?.id === benefit.self.use.id}
