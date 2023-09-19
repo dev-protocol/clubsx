@@ -1,9 +1,11 @@
 import type {
+  ClubsConfiguration,
   ClubsFunctionPlugin,
   ClubsPluginMeta,
   ClubsPluginOptions,
   ClubsThemePluginMeta,
 } from '@devprotocol/clubs-core'
+import { v5 as uuidv5 } from 'uuid'
 
 import $1 from '@plugins/default-theme'
 import $2 from '@plugins/buy'
@@ -60,7 +62,9 @@ export type InstallablePlugins = {
   developer?: string
   clubsUrl?: string
   repositoryUrl?: string
-  pluginOptions: ClubsPluginOptions
+  pluginOptions:
+    | ((config: ClubsConfiguration) => ClubsPluginOptions)
+    | ClubsPluginOptions
   planned?: ClubsFunctionPlugin
   require?: {
     invitation?: boolean
@@ -107,7 +111,23 @@ export const installablePlugins: InstallablePlugins[] = [
   {
     id: PostsPlugin.meta.id,
     tag: 'Community',
-    pluginOptions: [],
+    pluginOptions: (config) => [
+      {
+        key: 'feeds',
+        value: [
+          {
+            id: 'default',
+            database: {
+              type: 'encoded:redis',
+              key: `${PostsPlugin.meta.id}::${uuidv5(
+                'default',
+                uuidv5(config.url, uuidv5.URL),
+              )}`,
+            },
+          },
+        ],
+      },
+    ],
     developer: 'Dev Protocol',
     repositoryUrl: 'https://github.com/dev-protocol/clubs-plugin-posts',
   },
