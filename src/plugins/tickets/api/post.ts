@@ -119,6 +119,8 @@ export const post: (opts: {
               description: beneifit.self.use.description,
             },
           }),
+        }).catch((err: Error) => {
+          console.log('webhooks.used', { err })
         }),
       )
 
