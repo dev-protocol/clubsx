@@ -83,6 +83,11 @@ export const POST = async ({ request }: { request: Request }) => {
     return new Response(JSON.stringify({}), { status: 401 })
   }
 
+  const options =
+    typeof isPluginInstallable.pluginOptions === 'function'
+      ? isPluginInstallable.pluginOptions(decodedPreviousConfiguration)
+      : isPluginInstallable.pluginOptions
+
   const newConfiguration: ClubsConfiguration = {
     ...decodedPreviousConfiguration,
     plugins: [
@@ -92,7 +97,7 @@ export const POST = async ({ request }: { request: Request }) => {
       {
         id: isPluginInstallable.id,
         enable: true,
-        options: isPluginInstallable.pluginOptions,
+        options,
       },
     ],
   }
