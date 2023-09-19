@@ -30,7 +30,12 @@ export type Ticket = {
   uses: {
     id: string
     description: string
-    duration?: string
+    expiration?: {
+      duration: string
+      start: string
+      end: string
+      tz: string
+    }
     dependsOn?: string
     refreshCycle?: string
   }[]

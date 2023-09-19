@@ -1119,44 +1119,49 @@ const populate = async () => {
                   //     },
                   //   ],
                   // },
-                  // {
-                  //   payload: toBytes32('#1'),
-                  //   importedFrom: {
-                  //     plugin: 'devprotocol:clubs:simple-memberships',
-                  //     key: 'memberships',
-                  //   },
-                  //   name: 'Tea Ceremony Class',
-                  //   uses: [
-                  //     {
-                  //       id: '1',
-                  //       description: '6 months',
-                  //       duration: '6 months',
-                  //       refreshCycle: undefined,
-                  //     },
-                  //     {
-                  //       id: '2',
-                  //       description: '2 lessons per week',
-                  //       dependsOn: '1',
-                  //       refreshCycle: '24 hours',
-                  //     },
-                  //   ],
-                  // },
                   {
                     payload: toBytes32('#1'),
                     importedFrom: {
                       plugin: 'devprotocol:clubs:simple-memberships',
                       key: 'memberships',
                     },
-                    name: 'Stargazing',
+                    name: 'Tea Ceremony Class',
                     uses: [
                       {
                         id: '1',
-                        description: 'Fall member',
-                        duration: '3 months',
+                        description: '6 months',
+                        expiration: {
+                          duration: '6 months',
+                          start: '12 hour',
+                          end: '20 hour',
+                          tz: 'Asia/Tokyo',
+                        },
                         refreshCycle: undefined,
+                      },
+                      {
+                        id: '2',
+                        description: '2 lessons per week',
+                        dependsOn: '1',
+                        refreshCycle: '2 hours',
                       },
                     ],
                   },
+                  // {
+                  //   payload: toBytes32('#1'),
+                  //   importedFrom: {
+                  //     plugin: 'devprotocol:clubs:simple-memberships',
+                  //     key: 'memberships',
+                  //   },
+                  //   name: 'Stargazing',
+                  //   uses: [
+                  //     {
+                  //       id: '1',
+                  //       description: 'Fall member',
+                  //       duration: '3 months',
+                  //       refreshCycle: undefined,
+                  //     },
+                  //   ],
+                  // },
                 ],
               },
             ],
@@ -1367,14 +1372,19 @@ const populate = async () => {
                       {
                         id: '1-day-cafe-ticket',
                         description: '1 day ticket for Cafe time',
-                        duration: '1 days',
+                        duration: {
+                          duration: '1 days',
+                          start: '10 hour',
+                          end: '18 hour',
+                          tz: 'Asia/Tokyo',
+                        },
                         refreshCycle: undefined,
                       },
                       {
                         id: 'free-coffee',
                         description: 'Free coffee',
                         dependsOn: '1-day-cafe-ticket',
-                        refreshCycle: '24 hours',
+                        refreshCycle: '1 days',
                       },
                     ],
                     webhooks: {
@@ -1394,14 +1404,19 @@ const populate = async () => {
                       {
                         id: '1-day-bar-ticket',
                         description: '1 day ticket for Bar time',
-                        duration: '1 days',
+                        duration: {
+                          duration: '1 days',
+                          start: '18 hour',
+                          end: '22 hour',
+                          tz: 'Asia/Tokyo',
+                        },
                         refreshCycle: undefined,
                       },
                       {
                         id: 'free-beer',
                         description: 'Free beer',
                         dependsOn: '1-day-bar-ticket',
-                        refreshCycle: '24 hours',
+                        refreshCycle: '1 days',
                       },
                     ],
                     webhooks: {
@@ -1421,14 +1436,19 @@ const populate = async () => {
                       {
                         id: '1-day-ticket',
                         description: '1 day ticket',
-                        duration: '1 days',
+                        duration: {
+                          duration: '1 days',
+                          start: '10 hour',
+                          end: '22 hour',
+                          tz: 'Asia/Tokyo',
+                        },
                         refreshCycle: undefined,
                       },
                       {
                         id: 'free-drink',
                         description: 'Free coffee/beer',
                         dependsOn: '1-day-ticket',
-                        refreshCycle: '24 hours',
+                        refreshCycle: '1 days',
                       },
                     ],
                     webhooks: {
@@ -1448,14 +1468,19 @@ const populate = async () => {
                       {
                         id: '1-month-ticket',
                         description: '1 month ticket',
-                        duration: '1 months',
+                        duration: {
+                          duration: '1 months',
+                          start: '10 hour',
+                          end: '22 hour',
+                          tz: 'Asia/Tokyo',
+                        },
                         refreshCycle: undefined,
                       },
                       {
                         id: 'free-drink',
                         description: 'Free coffee or beer /day',
                         dependsOn: '1-month-ticket',
-                        refreshCycle: '24 hours',
+                        refreshCycle: '1 days',
                       },
                     ],
                     webhooks: {
@@ -1475,14 +1500,19 @@ const populate = async () => {
                       {
                         id: '3-months-ticket',
                         description: '3 months ticket',
-                        duration: '3 months',
+                        duration: {
+                          duration: '3 months',
+                          start: '10 hour',
+                          end: '22 hour',
+                          tz: 'Asia/Tokyo',
+                        },
                         refreshCycle: undefined,
                       },
                       {
                         id: 'free-drink',
                         description: 'Free coffee or beer /day',
                         dependsOn: '3-months-ticket',
-                        refreshCycle: '24 hours',
+                        refreshCycle: '1 days',
                       },
                     ],
                     webhooks: {
