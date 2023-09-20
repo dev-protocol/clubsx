@@ -47,10 +47,9 @@ export const factory =
       ],
       ([h, ex]) => period(h.datetime, ex),
     )
-    const expiration =
-      whenDefinedAll([history, use.expiration], ([h, ex]) =>
-        expirationDatetime(h.datetime, ex.end, ex.duration, ex.tz),
-      ) ?? refreshingExpiration
+    const expiration = whenDefinedAll([history, use.expiration], ([h, ex]) =>
+      expirationDatetime(h.datetime, ex.end, ex.duration, ex.tz),
+    )
     const refreshed = whenDefined(refreshingExpiration, isExpiredNow)
     const unused = refreshed ?? history === undefined
     const expired = whenDefined(expiration, isExpiredNow)
