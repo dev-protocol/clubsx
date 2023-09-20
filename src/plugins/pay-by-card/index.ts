@@ -14,9 +14,13 @@ import { default as Index } from './index.astro'
 import { default as Id } from './id.astro'
 import { default as Slot } from './slot.astro'
 import { default as Result } from './result.astro'
+import { default as SlotCurrencyOption } from './slot-currency-option.astro'
 import { solidityPacked } from 'ethers'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import { bytes32Hex } from '@fixtures/data/hexlify'
+import type { InjectedTiers } from '@constants/tier'
+import { getItems } from './utils/getItems'
+import type { CurrencyOption } from '@constants/currencyOption'
 
 export type PriceOverrides = {
   id: string
@@ -82,45 +86,9 @@ export enum SupportedPlugins {
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
   { chainId, rpcUrl, propertyAddress, options: configOptions = [] },
-  { getPluginConfigById },
+  utils,
 ) => {
-  const products: Membership[] = [
-    SupportedPlugins.DevprotocolClubsSimpleMemberships,
-    SupportedPlugins.DevprotocolClubsPluginNft,
-  ]
-    .map((plugin) => {
-      switch (plugin) {
-        case SupportedPlugins.DevprotocolClubsSimpleMemberships:
-          /**
-           * Import from devprotocol:clubs:simple-memberships
-           */
-          const [simpleMemberships] = getPluginConfigById(
-            SupportedPlugins.DevprotocolClubsSimpleMemberships,
-          )
-          const memberships = simpleMemberships?.options.find(
-            (x) => x.key === 'memberships',
-          )?.value as UndefinedOr<Membership[]>
-          return memberships?.filter(
-            (p) => !p.deprecated && p.currency === 'USDC',
-          )
-
-        case SupportedPlugins.DevprotocolClubsPluginNft:
-          /**
-           * Import from devprotocol:clubs:plugin:nft
-           */
-          const [nft] = getPluginConfigById(
-            SupportedPlugins.DevprotocolClubsPluginNft,
-          )
-          const products = nft?.options.find((x) => x.key === 'products')
-            ?.value as UndefinedOr<Membership[]>
-          return products?.filter((p) => p.currency === 'USDC')
-
-        default:
-          return undefined
-      }
-    })
-    .flat()
-    .filter((x) => typeof x !== 'undefined') as Membership[]
+  const products = getItems(utils)
 
   // const priceOverrides = options.find((opt) => opt.key === 'priceOverrides')
   //   ?.value as UndefinedOr<PriceOverrides>
@@ -180,12 +148,32 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
 
 export const getAdminPaths: ClubsFunctionGetAdminPaths = async () => []
 
-export const getSlots: ClubsFunctionGetSlots = async (_, __, { factory }) => {
+export const getSlots: ClubsFunctionGetSlots = async (
+  _,
+  __,
+  { factory, ...utils },
+) => {
+  const products = getItems(utils)
+  const tiers: InjectedTiers = products.map((item) => ({
+    ...item,
+    currency: 'USD + fee' as unknown as CurrencyOption,
+    title: item.name,
+    amount: item.price,
+    badgeImageSrc: item.imageSrc,
+    badgeImageDescription: item.description,
+    checkoutUrl: `/fiat/${bytes32Hex(item.payload)}`,
+  }))
+
   return factory === 'page'
     ? [
         {
           slot: 'checkout:after:transaction-form',
           component: Slot,
+        },
+        {
+          slot: 'join:currency:option',
+          component: SlotCurrencyOption,
+          props: { injectedTiers: tiers },
         },
       ]
     : []

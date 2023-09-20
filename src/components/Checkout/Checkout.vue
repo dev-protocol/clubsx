@@ -485,12 +485,13 @@ onUnmounted(() => {
         <h3 class="text-sm text-black/50">
           <span>{{ previewName }}</span>
         </h3>
-        <p class="text-2xl font-bold">
+        <p class="flex items-center gap-3 text-2xl font-bold">
           {{
             `${
               Number(amount) > 1 ? Number(amount).toLocaleString() : amount
             } ${(fiatCurrency ?? verifiedPropsCurrency).toUpperCase()}`
           }}
+          <slot name="after:price"></slot>
         </p>
         <p v-if="stakingAmount" class="text-sm text-black/90">
           {{
