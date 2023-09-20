@@ -13,6 +13,7 @@ import type { ComposedItem } from '..'
 import { whenNotError, whenNotErrorAll } from '@devprotocol/util-ts'
 import { createClient } from 'redis'
 import { generateFulFillmentParamsId } from '../utils/gen-key'
+import { bytes32Hex } from '@fixtures/data/hexlify'
 
 const { POP_SERVER_KEY, REDIS_URL, REDIS_USERNAME, REDIS_PASSWORD } =
   import.meta.env
@@ -218,7 +219,10 @@ export const get: ({
         : undefined
     const items = whenNotError(membership, (mem) => [
       {
-        id: `ITEM-${mem.id}`,
+        id: `ITEM-${bytes32Hex(mem.payload).replace(
+          /0x(.{4}).*(.{4}$)/,
+          '$1-$2',
+        )}`,
         name: mem.source.name,
         price: mem.price.yen,
         quantity: 1,
