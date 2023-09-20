@@ -103,12 +103,12 @@
             <button
               data-is-enablable={benefit.enablable}
               data-is-available={benefit.available}
-              data-is-temp-unavailable={benefit.inUnavailableTime &&
-                !benefit.enablable}
+              data-is-temp-unavailable={benefit.inUnavailableTime}
               data-is-expired={!benefit.enablable && benefit.self.expired}
               data-is-waiting={!benefit.enablable && benefit.dependency?.unused}
               disabled={(!benefit.enablable && benefit.self.expired) ||
                 !benefit.enablable ||
+                benefit.inUnavailableTime ||
                 idIsLoading === benefit.self.use.id}
               data-is-loading={idIsLoading === benefit.self.use.id}
               data-is-error={idIsError?.id === benefit.self.use.id}
@@ -138,14 +138,7 @@
                 >Will be available when {benefit.dependency.use.description} is used.</span
               >
             {/if}
-            {#if !idIsError && benefit.inUnavailableTime && benefit.enablable}
-              <span class="font-bold text-native-blue-300 md:text-xl"
-                >After signing, this will be available {benefit.availableBetween?.start
-                  ?.local()
-                  .calendar()}.
-              </span>
-            {/if}
-            {#if !idIsError && benefit.inUnavailableTime && !benefit.enablable}
+            {#if !idIsError && benefit.inUnavailableTime}
               <span class="font-bold text-dp-black-200 md:text-xl"
                 >Will be available {benefit.availableBetween?.start
                   ?.local()

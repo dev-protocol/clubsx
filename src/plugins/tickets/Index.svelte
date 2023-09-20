@@ -94,6 +94,8 @@
     status?.some((t) => t.enablable) ?? false
   const isExpired = (status?: TicketStatus[]) =>
     status?.every((t) => t.self.expired) ?? false
+  const isTempUnavailable = (status?: TicketStatus[]) =>
+    status?.some((t) => t.inUnavailableTime) ?? false
 
   onMount(async () => {
     const { connection } = await import('@devprotocol/clubs-core/connection')
@@ -156,7 +158,9 @@
               data-is-available={isAvailable(status)}
               data-is-enablable={!isAvailable(status) && isEnablable(status)}
               data-is-expired={isExpired(status)}
-              class="rounded-full px-4 py-1.5 text-white data-[is-available=true]:bg-dp-green-300 data-[is-enablable=true]:bg-native-blue-400 data-[is-expired=true]:bg-dp-white-600 data-[is-available=true]:after:content-['Available'] data-[is-enablable=true]:after:content-['Use_this'] data-[is-expired=true]:after:content-['Expired']"
+              data-is-temp-unavailable={isTempUnavailable(status) &&
+                !isEnablable(status)}
+              class="rounded-full px-4 py-1.5 text-white data-[is-available=true]:bg-dp-green-300 data-[is-enablable=true]:bg-native-blue-400 data-[is-expired=true]:bg-dp-white-600 data-[is-temp-unavailable=true]:bg-dp-black-200 data-[is-available=true]:after:content-['Available'] data-[is-enablable=true]:after:content-['Use_this'] data-[is-expired=true]:after:content-['Expired'] data-[is-temp-unavailable=true]:after:content-['Now_unavailable']"
             >
             </span>
           {/await}

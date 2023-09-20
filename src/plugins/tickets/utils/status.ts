@@ -106,7 +106,9 @@ export const ticketStatus = (
       ? false
       : self.expired === false || self.refreshed === false
 
-    const enablable = dependency
+    const enablable = inUnavailableTime
+      ? false
+      : dependency
       ? dependency.expired === false && self.unused
       : self.expired === undefined
     const availableBetween = self.availableBetween
