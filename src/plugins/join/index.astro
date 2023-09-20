@@ -9,4 +9,4 @@ const { tiers, name, ...other } = Astro.props as ClubsPropsPages & {
 }
 ---
 
-<JoinClub tiers={tiers} tenantName={name} {...other} />
+<JoinClub tiers={tiers} name={name} {...other} />
