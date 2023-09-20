@@ -44,8 +44,8 @@
                 decimals,
               )
             : 0n,
-          gateway: mem.fee?.beneficiary ?? ZeroAddress,
           token: token,
+          gateway: mem.fee?.beneficiary ?? ZeroAddress,
         },
       } : {
         payload: bytes32Hex(mem.payload),
@@ -63,8 +63,8 @@
                 decimals,
               )
             : 0n,
-          gateway: mem.fee?.beneficiary ?? ZeroAddress,
           token: token,
+          gateway: mem.fee?.beneficiary ?? ZeroAddress,
         },
       }
     })
@@ -73,21 +73,17 @@
       provider,
       propertyAddress,
       payload,
+      isTimeLimitedCollection,
     }: {
       provider: ContractRunner
       propertyAddress: string
       payload: string
+      isTimeLimitedCollection: boolean
     }) => {
-      return [
-      callSlotCollections(provider, 'propertyImages', true,[
-        propertyAddress,
-        payload,
-      ]),
-      callSlotCollections(provider, 'propertyImages', false,[
+      return callSlotCollections(provider, 'propertyImages', isTimeLimitedCollection,[
         propertyAddress,
         payload,
       ])
-    ]
     }
     const stateSetter = async ({
       provider,

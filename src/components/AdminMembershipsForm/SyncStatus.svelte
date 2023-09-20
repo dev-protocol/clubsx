@@ -101,39 +101,44 @@
         },
       }),
     )
+  const outOfSyncDescriptors = async (source: Status[]): Promise<Status[]> => {
+    const allData = await Promise.all(
+      source.map(async ({ customDescriptor }) => customDescriptor.set),
+    )
+    const set = new Set<Status | undefined>(
+      allData.map((res, i) => (res ? undefined : source[i])),
+    )
+    set.delete(undefined)
+    return Array.from(set as Set<Status>)
+  }
+
+  const outOfSyncImages = async (source: Status[]): Promise<Status[]> => {
+    const allData = await Promise.all(
+      source.map(async ({ image }) => image.set),
+    )
+    const set = new Set<Status | undefined>(
+      allData.map((res, i) => (res ? undefined : source[i])),
+    )
+    set.delete(undefined)
+    return Array.from(set as Set<Status>)
+  }
+
   let statuses: Status[] = sourceStatuses()
+  let listOfoutOfSyncDescriptors: Promise<Status[]> =
+    outOfSyncDescriptors(statuses)
+  let listOfoutOfSyncImages: Promise<Status[]> = outOfSyncImages(statuses)
 
   const initStatuses = () => {
     statuses = sourceStatuses()
-  }
-
-  const outOfSyncDescriptors = async (): Promise<Status[]> => {
-    const allData = await Promise.all(
-      statuses.map(async ({ customDescriptor }) => customDescriptor.set),
-    )
-    const set = new Set<Status | undefined>(
-      allData.map((res, i) => (res ? undefined : statuses[i])),
-    )
-    set.delete(undefined)
-    return Array.from(set as Set<Status>)
-  }
-
-  const outOfSyncImages = async (): Promise<Status[]> => {
-    const allData = await Promise.all(
-      statuses.map(async ({ image }) => image.set),
-    )
-    const set = new Set<Status | undefined>(
-      allData.map((res, i) => (res ? undefined : statuses[i])),
-    )
-    set.delete(undefined)
-    return Array.from(set as Set<Status>)
+    listOfoutOfSyncDescriptors = outOfSyncDescriptors(statuses)
+    listOfoutOfSyncImages = outOfSyncImages(statuses)
   }
 
   const onClickSyncDescriptor = async () => {
     syncStatusDescriptor = true
     const [l1, l2] = await clientsSTokens(provider)
     const sTokensManager = l1 ?? l2
-    const items = await outOfSyncDescriptors()
+    const items = await listOfoutOfSyncDescriptors
     const res =
       (await whenDefinedAll(
         [sTokensManager, customDescriptorAddress],
@@ -155,7 +160,7 @@
 
   const onClickSyncImages = async () => {
     syncStatusImages = true
-    const images = await outOfSyncImages()
+    const images = await listOfoutOfSyncImages
     const items: ExpectedStatus[] = images.map((image) => ({
       payload: image.payload,
       state: image.state,
@@ -200,7 +205,7 @@
         <th></th>
         <th
           class="grid grid-flow-row content-start justify-center justify-center justify-items-center gap-2 p-2"
-          ><span>Initialization</span>{#await outOfSyncDescriptors()}
+          ><span>Initialization</span>{#await listOfoutOfSyncDescriptors}
             <span class="block h-6">
               <Skeleton />
             </span>
@@ -238,7 +243,7 @@
         >
         <th
           class="grid grid-flow-row content-start justify-center justify-items-center gap-2 p-2"
-          ><span>Registration</span>{#await outOfSyncImages()}
+          ><span>Registration</span>{#await listOfoutOfSyncImages}
             <span class="block h-6">
               <Skeleton />
             </span>
