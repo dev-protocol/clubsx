@@ -319,7 +319,6 @@ import {
   callSimpleCollections,
 } from '@plugins/memberships/utils/simpleCollections'
 import type { Image } from '@plugins/memberships/utils/types/setImageArg'
-import { keccak256 } from '@ethersproject/keccak256'
 import { parseUnits } from '@ethersproject/units'
 import type { Membership } from '@plugins/memberships'
 import BigNumber from 'bignumber.js'
@@ -831,9 +830,15 @@ export default defineComponent({
           return
         }
 
+        const keys: string[] =
+          this.membershipsPluginOptions?.map(({ payload }) =>
+            bytes32Hex(payload),
+          ) || []
+
         const tx = await l.setTokenURIDescriptor(
           propertyAddress,
           descriptiorAddress,
+          keys,
         )
 
         this.initMembershipTxnStatusMsg =
@@ -909,8 +914,9 @@ export default defineComponent({
             }
           }) || []
         const keys: string[] =
-          this.membershipsPluginOptions?.map((opt) => keccak256(opt.payload)) ||
-          []
+          this.membershipsPluginOptions?.map((opt) =>
+            bytes32Hex(opt.payload),
+          ) || []
 
         this.setupMbmershipTxnStatusMsg =
           'Awaiting transaction confirmation on wallet...'
