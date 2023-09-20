@@ -3,7 +3,6 @@ import limitedNoOfItemsImg from './assets/limited-number-of-items.svg'
 import timeLimitedCollectionImg from './assets/time-limited-collection.svg'
 import CollectionCard from '@components/Collections/CollectionCard.svelte'
 import type { Collection } from '@plugins/collections'
-import type { UndefinedOr } from '@devprotocol/util-ts'
 
 const { collections } = Astro.props as {
   collections: Collection[]
@@ -26,7 +25,7 @@ const baseRedirectionUrl = '/admin/collections/new'
       <div
         class="flex h-full w-full grow flex-col items-center justify-center gap-4 rounded-[5px] bg-white p-2.5"
       >
-        <img src={limitedNoOfItemsImg} class="h-[212px] max-h-[212px]" />
+        <img src={limitedNoOfItemsImg.src} class="h-[212px] max-h-[212px]" />
         <p
           class="self-stretch text-center text-center text-lg font-medium text-black"
         >
@@ -41,7 +40,7 @@ const baseRedirectionUrl = '/admin/collections/new'
       <div
         class="flex h-full w-full grow flex-col items-center justify-center gap-4 rounded-[5px] bg-white p-2.5"
       >
-        <img src={timeLimitedCollectionImg} class="h-[212px] max-h-[212px]" />
+        <img src={timeLimitedCollectionImg.src} class="h-[212px] max-h-[212px]" />
         <p
           class="self-stretch text-center text-center text-lg font-medium text-black"
         >

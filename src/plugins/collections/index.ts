@@ -183,13 +183,13 @@ export const meta: ClubsPluginMeta = {
   id: 'devprotocol:clubs:collections',
   displayName: 'Collections',
   category: ClubsPluginCategory.Monetization,
-  icon: Icon,
+  icon: Icon.src,
   offer: {
     price: 0,
     priceCurrency: 'DEV',
   },
   description: `Dummy is a content generation toolkit designed to make the development.`,
-  previewImages: [Preview1, Preview2],
+  previewImages: [Preview1.src, Preview2.src],
   readme: Readme,
 }
 
