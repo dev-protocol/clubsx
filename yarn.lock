@@ -2220,6 +2220,11 @@
   resolved "https://registry.yarnpkg.com/@redis/json/-/json-1.0.4.tgz#f372b5f93324e6ffb7f16aadcbcb4e5c3d39bda1"
   integrity sha512-LUZE2Gdrhg0Rx7AN+cZkb1e6HjoSKaeeW8rYnt89Tly13GBI5eP4CwDVr+MY8BAYfCg4/N15OUrtLoona9uSgw==
 
+"@redis/json@1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@redis/json/-/json-1.0.5.tgz#cd3f0881f9a370000c7a5f1042d98f12b7968217"
+  integrity sha512-/YIpOkrPYOHlJch396KLZs1R7gXMzQGi1mJ6rfFYLwb0aGU/Ygn4M+m7urrEfvgrE2zUJX/puxZlNojYjsoV6A==
+
 "@redis/search@1.1.3":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@redis/search/-/search-1.1.3.tgz#b5a6837522ce9028267fe6f50762a8bcfd2e998b"

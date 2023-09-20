@@ -70,7 +70,7 @@
     "@devprotocol/util-ts": "4.0.0",
     "@kazu80/clubs-plugin-links": "1.0.1",
     "@metamask/detect-provider": "2.0.0",
-    "@redis/json": "1.0.4",
+    "@redis/json": "1.0.5",
     "@sendgrid/mail": "7.7.0",
     "@tailwindcss/aspect-ratio": "0.4.2",
     "@vercel/edge": "1.0.2",
