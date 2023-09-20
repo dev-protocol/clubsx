@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref, type ComputedRef, computed } from 'vue'
+import { createErc20Contract } from '@devprotocol/dev-kit'
 import {
   positionsCreate,
   positionsCreateWithEth,
@@ -13,7 +14,7 @@ import {
 } from '@devprotocol/util-ts'
 import {
   type BigNumberish,
-  ContractRunner,
+  type ContractRunner,
   JsonRpcProvider,
   MaxUint256,
   formatUnits,
@@ -22,24 +23,26 @@ import {
 import BigNumber from 'bignumber.js'
 import { type Subscription, combineLatest } from 'rxjs'
 import { CurrencyOption } from '@constants/currencyOption'
-import {
-  fetchDevForEth,
-  fetchDevForUsdc,
-  fetchSTokens,
-} from '@fixtures/utility'
+import { fetchDevForEth, fetchSTokens } from '@fixtures/utility'
 import Skeleton from '@components/Global/Skeleton.vue'
-import { stakeWithAnyTokens, mintedIdByLogs } from '@fixtures/dev-kit'
+import {
+  stakeWithAnyTokens,
+  mintedIdByLogs,
+  getTokenAddress,
+} from '@fixtures/dev-kit'
 import { marked } from 'marked'
 import DOMPurify from 'dompurify'
 import Result from './Result.vue'
+import { tags, attrs } from '@constants/dompurify'
 
 let providerPool: UndefinedOr<ContractRunner>
 let subscriptions: Subscription[] = []
+const REGEX_DESC_ACCOUNT = /{ACCOUNT}/g
 
 type Props = {
   amount?: number
   destination?: string
-  currency?: 'USDC' | 'ETH' | 'DEV'
+  currency?: 'USDC' | 'ETH' | 'DEV' | 'MATIC' | Lowercase<CurrencyOption>
   feeBeneficiary?: string
   feePercentage?: number
   payload?: Uint8Array | string
@@ -55,60 +58,6 @@ type Props = {
 }
 const props = defineProps<Props>()
 
-const verifiedPropsCurrency: ComputedRef<CurrencyOption> = computed(() => {
-  return props.currency?.toUpperCase() === 'ETH'
-    ? CurrencyOption.ETH
-    : props.currency?.toUpperCase() === 'USDC'
-    ? CurrencyOption.USDC
-    : CurrencyOption.DEV
-})
-const usePolygonWETH: ComputedRef<boolean> = computed(() => {
-  return (
-    verifiedPropsCurrency.value === CurrencyOption.ETH &&
-    typeof chain.value === 'number' &&
-    (chain.value === 137 || chain.value === 80001)
-  )
-})
-const useERC20: ComputedRef<boolean> = computed(() => {
-  return (
-    verifiedPropsCurrency.value !== CurrencyOption.ETH || usePolygonWETH.value
-  )
-})
-const htmlDescription: ComputedRef<UndefinedOr<string>> = computed(() => {
-  return (
-    props.description && DOMPurify.sanitize(marked.parse(props.description))
-  )
-})
-const htmlVerificationFlow: ComputedRef<UndefinedOr<string>> = computed(() => {
-  return (
-    props.accessControlDescription &&
-    DOMPurify.sanitize(marked.parse(props.accessControlDescription))
-  )
-})
-const accessControlUrl: ComputedRef<UndefinedOr<URL>> = computed(() => {
-  return whenDefinedAll(
-    [props.accessControlUrl, account.value],
-    ([_accessControl, _account]) => {
-      const url = new URL(_accessControl)
-      url.searchParams.set('account', _account)
-      return url
-    },
-  )
-})
-
-const parsedAmount = ref<UndefinedOr<bigint>>(
-  props.amount && !props.useDiscretePaymentFlow
-    ? parseUnits(
-        props.amount.toString(),
-        verifiedPropsCurrency.value === CurrencyOption.ETH ||
-          verifiedPropsCurrency.value === CurrencyOption.DEV
-          ? 18
-          : verifiedPropsCurrency.value === CurrencyOption.USDC
-          ? 6
-          : (18 as never),
-      )
-    : undefined,
-)
 const approveNeeded = ref<UndefinedOr<boolean>>(undefined)
 const stakeSuccessful = ref<boolean>(false)
 const account = ref<UndefinedOr<string>>(undefined)
@@ -124,6 +73,86 @@ const isCheckingAccessControl = ref<boolean>(false)
 const accessControlError = ref<UndefinedOr<Error>>(undefined)
 const accessAllowed = ref<UndefinedOr<boolean>>(undefined)
 const mintedId = ref<UndefinedOr<bigint>>(undefined)
+const insufficientFunds = ref<UndefinedOr<Error>>(undefined)
+
+const verifiedPropsCurrency: ComputedRef<CurrencyOption> = computed(() => {
+  return props.currency?.toUpperCase() === 'ETH'
+    ? CurrencyOption.ETH
+    : props.currency?.toUpperCase() === 'USDC'
+    ? CurrencyOption.USDC
+    : props.currency?.toUpperCase() === 'MATIC'
+    ? CurrencyOption.MATIC
+    : CurrencyOption.DEV
+})
+const usePolygonWETH: ComputedRef<boolean> = computed(() => {
+  return (
+    verifiedPropsCurrency.value === CurrencyOption.ETH &&
+    typeof chain.value === 'number' &&
+    (chain.value === 137 || chain.value === 80001)
+  )
+})
+const useERC20: ComputedRef<boolean> = computed(() => {
+  return (
+    (verifiedPropsCurrency.value !== CurrencyOption.ETH &&
+      verifiedPropsCurrency.value !== CurrencyOption.MATIC) ||
+    usePolygonWETH.value
+  )
+})
+const htmlDescription: ComputedRef<UndefinedOr<string>> = computed(() => {
+  return (
+    props.description && DOMPurify.sanitize(marked.parse(props.description))
+  )
+})
+const htmlVerificationFlow: ComputedRef<UndefinedOr<string>> = computed(() => {
+  const accountAddress = account.value ?? ''
+  return (
+    props.accessControlDescription &&
+    DOMPurify.sanitize(
+      marked.parse(
+        props.accessControlDescription.replace(
+          REGEX_DESC_ACCOUNT,
+          accountAddress,
+        ),
+      ),
+      {
+        ALLOWED_TAGS: [...tags, 'iframe'],
+        ALLOWED_ATTR: [
+          ...attrs,
+          'src',
+          'frameborder',
+          'onmousewheel',
+          'width',
+          'height',
+          'style',
+        ],
+      },
+    )
+  )
+})
+const accessControlUrl: ComputedRef<UndefinedOr<URL>> = computed(() => {
+  return whenDefinedAll(
+    [props.accessControlUrl, account.value],
+    ([_accessControl, _account]) => {
+      const url = new URL(_accessControl)
+      url.searchParams.set('account', _account)
+      return url
+    },
+  )
+})
+const parsedAmount: ComputedRef<UndefinedOr<bigint>> = computed(() =>
+  props.amount && !props.useDiscretePaymentFlow
+    ? parseUnits(
+        props.amount.toString(),
+        verifiedPropsCurrency.value === CurrencyOption.ETH ||
+          verifiedPropsCurrency.value === CurrencyOption.DEV ||
+          verifiedPropsCurrency.value === CurrencyOption.MATIC
+          ? 18
+          : verifiedPropsCurrency.value === CurrencyOption.USDC
+          ? 6
+          : (18 as never),
+      )
+    : undefined,
+)
 
 const approve = function () {
   whenDefinedAll(
@@ -191,6 +220,31 @@ const checkApproved = async function (
   approveNeeded.value = whenDefined(res, (x) => x.approvalNeeded)
   console.log({ approveNeeded })
 }
+const checkBalance = async function (
+  provider: JsonRpcProvider,
+  userAddress: string,
+  chain: number,
+) {
+  const token = getTokenAddress(verifiedPropsCurrency.value, chain)
+  const res = useERC20.value
+    ? await createErc20Contract(provider)(token).balanceOf(userAddress)
+    : await provider.getBalance(userAddress)
+  console.log({
+    useERC20: useERC20.value,
+    token,
+    res,
+    parsedAmount: parsedAmount.value,
+  })
+  const insufficient = whenDefined(
+    parsedAmount.value,
+    (amount) => BigInt(res) < BigInt(amount),
+  )
+  insufficientFunds.value = insufficient
+    ? new Error(
+        `Insufficient token balance. Please check you're using the correct wallet.`,
+      )
+    : undefined
+}
 const submitStake = async function () {
   debugger
   await whenDefinedAll(
@@ -231,7 +285,8 @@ const submitStake = async function () {
               })
             })()
           : verifiedPropsCurrency.value === CurrencyOption.ETH ||
-            verifiedPropsCurrency.value === CurrencyOption.USDC
+            verifiedPropsCurrency.value === CurrencyOption.USDC ||
+            verifiedPropsCurrency.value === CurrencyOption.MATIC
           ? await (async () => {
               const res = await stakeWithAnyTokens({
                 provider: _prov,
@@ -316,7 +371,14 @@ onMounted(async () => {
           checkApproved(_prov, _userAddress, _destination, _amount, _chain)
       },
     )
-
+    whenDefinedAll(
+      [new JsonRpcProvider(props.rpcUrl), _account, chain.value],
+      async ([_prov, _userAddress, _chain]) => {
+        checkBalance(_prov, _userAddress, _chain)
+      },
+    )
+  })
+  const subAccessControl = getConnection().account.subscribe(async () => {
     const accessControlRes = await whenDefined(
       accessControlUrl.value,
       async (_accessControl) => {
@@ -336,13 +398,14 @@ onMounted(async () => {
     }
   })
   subscriptions.push(sub)
+  subscriptions.push(subAccessControl)
 
   const provider = new JsonRpcProvider(props.rpcUrl)
   const chainId = Number((await provider.getNetwork()).chainId)
 
   whenDefinedAll(
-    [props.destination, props.amount],
-    async ([_destination, _amount]) => {
+    [props.destination, props.amount, chainId],
+    async ([_destination, _amount, _chain]) => {
       const feeDeposit = props.feePercentage
         ? new BigNumber(props.feePercentage)
         : 0
@@ -354,7 +417,7 @@ onMounted(async () => {
         verifiedPropsCurrency.value === CurrencyOption.DEV
           ? props.amount
           : verifiedPropsCurrency.value === CurrencyOption.ETH
-          ? await fetchDevForEth({
+          ? fetchDevForEth({
               provider,
               tokenAddress: _destination,
               amount: new BigNumber(_amount)
@@ -362,16 +425,13 @@ onMounted(async () => {
                 .toNumber(),
               chain: chainId,
             }).then(formatUnits)
-          : verifiedPropsCurrency.value === CurrencyOption.USDC
-          ? await fetchDevForUsdc({
+          : stakeWithAnyTokens({
               provider,
-              tokenAddress: _destination,
-              amount: new BigNumber(_amount)
-                .times(new BigNumber(1).minus(feeDeposit))
-                .toNumber(),
-              chain: chainId,
-            }).then(formatUnits)
-          : undefined,
+              propertyAddress: _destination,
+              tokenAmount: _amount.toString(),
+              currency: verifiedPropsCurrency.value,
+              chain: _chain,
+            }).then((res) => formatUnits(res?.estimatedDev ?? 0)),
       ])
 
       stakingAmount.value = !props.useDiscretePaymentFlow
@@ -407,142 +467,9 @@ onUnmounted(() => {
 <template>
   <div
     v-if="!stakeSuccessful"
-    class="relative mx-auto mb-12 grid items-start rounded-xl bg-white p-6 text-black shadow lg:container lg:mt-12 lg:grid-cols-2 lg:gap-12"
+    class="relative mx-auto mb-12 grid rounded-xl bg-white text-black shadow lg:container lg:mt-12 lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:gap-12"
   >
-    <section class="flex flex-col">
-      <!-- Transaction form -->
-      <div class="grid gap-16 p-5">
-        <slot name="before:transaction-form"></slot>
-
-        <div v-if="props.accessControlUrl" class="grid gap-8">
-          <!-- Access control section -->
-          <h2 class="text-xl">Permission required</h2>
-          <span>
-            <p class="font-bold text-dp-white-600">Status</p>
-            <p
-              :data-is-loading="isCheckingAccessControl"
-              :data-is-valid="accessAllowed"
-              :data-is-error="Boolean(accessControlError)"
-              class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white data-[is-loading=true]:animate-pulse data-[is-valid=false]:border data-[is-valid=false]:border-neutral-300 data-[is-error=true]:bg-red-600 data-[is-valid=false]:bg-white data-[is-valid=true]:bg-[#43C451] data-[is-valid=false]:text-black"
-            >
-              {{
-                !account
-                  ? `Connect wallet to check you're verified`
-                  : isCheckingAccessControl
-                  ? `Now checking the verification status`
-                  : accessAllowed
-                  ? `Verified`
-                  : accessControlError
-                  ? accessControlError.message
-                  : `Unverified`
-              }}
-            </p>
-          </span>
-
-          <div
-            v-if="accessAllowed === false && htmlVerificationFlow"
-            v-html="htmlVerificationFlow"
-            class="md"
-          ></div>
-
-          <hr class="bg-[#DFDFDF]" />
-        </div>
-
-        <span
-          v-if="
-            useInjectedTransactionForm &&
-            (props.accessControlUrl
-              ? props.accessControlUrl && accessAllowed
-              : true)
-          "
-          @checkout:completed="onCompleted"
-        >
-          <slot name="main:transaction-form"></slot>
-        </span>
-
-        <div v-if="!useInjectedTransactionForm" class="grid gap-16">
-          <span
-            v-if="!account"
-            class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white"
-            >Please connect a wallet</span
-          >
-
-          <span v-if="useERC20" class="flex flex-col justify-stretch">
-            <!-- Approval -->
-            <button
-              v-if="!account"
-              class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white"
-              disabled
-            >
-              Approve
-            </button>
-            <button
-              @click="approve"
-              v-if="account && (approveNeeded || approveNeeded === undefined)"
-              :disabled="
-                isApproving ||
-                approveNeeded === undefined ||
-                Boolean(props.accessControlUrl && !accessAllowed)
-              "
-              :data-is-approving="isApproving"
-              class="rounded-full bg-black px-8 py-4 text-center font-bold text-white disabled:bg-neutral-300 data-[is-approving=true]:animate-pulse"
-            >
-              Sign with wallet and approve
-            </button>
-            <button
-              v-if="account && approveNeeded === false"
-              class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white"
-              disabled
-            >
-              You've already approved
-            </button>
-          </span>
-
-          <span class="flex flex-col justify-stretch">
-            <!-- Pay -->
-            <button
-              v-if="approveNeeded"
-              class="rounded-full bg-neutral-300 px-8 py-4 text-center font-bold text-white"
-              disabled
-            >
-              Pay with {{ verifiedPropsCurrency.toUpperCase() }}
-            </button>
-            <button
-              v-if="!approveNeeded"
-              @click="submitStake"
-              :disabled="
-                !account ||
-                isStaking ||
-                approveNeeded ||
-                Boolean(props.accessControlUrl && !accessAllowed)
-              "
-              :data-is-staking="isStaking"
-              class="rounded-full bg-black px-8 py-4 text-center font-bold text-white disabled:bg-neutral-300 data-[is-staking=true]:animate-pulse"
-            >
-              Pay with {{ verifiedPropsCurrency.toUpperCase() }}
-            </button>
-          </span>
-
-          <span
-            v-if="isApproving || isStaking || isWaitingForStaked"
-            class="grid justify-center gap-6"
-          >
-            <div
-              role="presentation"
-              class="mx-auto h-16 w-16 animate-spin rounded-full border-l border-r border-t border-native-blue-300"
-            />
-            <p v-if="isApproving">Waiting for approving to complete...</p>
-            <p v-if="isStaking && !isWaitingForStaked">
-              Awaiting transaction confirmation on wallet...
-            </p>
-            <p v-if="isWaitingForStaked">
-              Just a few minutes until your item is minted...
-            </p>
-          </span>
-        </div>
-      </div>
-    </section>
-    <section class="flex flex-col gap-6">
+    <section class="flex flex-col gap-6 p-6 lg:row-span-2">
       <div class="rounded-lg border border-black/20 bg-black/10 p-4">
         <img
           v-if="previewImageSrc"
@@ -558,12 +485,13 @@ onUnmounted(() => {
         <h3 class="text-sm text-black/50">
           <span>{{ previewName }}</span>
         </h3>
-        <p class="text-2xl font-bold">
+        <p class="flex items-center gap-3 text-2xl font-bold">
           {{
             `${
               Number(amount) > 1 ? Number(amount).toLocaleString() : amount
             } ${(fiatCurrency ?? verifiedPropsCurrency).toUpperCase()}`
           }}
+          <slot name="after:price"></slot>
         </p>
         <p v-if="stakingAmount" class="text-sm text-black/90">
           {{
@@ -574,8 +502,156 @@ onUnmounted(() => {
       <aside
         v-if="htmlDescription"
         v-html="htmlDescription"
-        class="mt-6 text-xl text-black/80"
+        class="rounded-md bg-dp-white-300 p-2 text-xl text-black/80 lg:mt-6"
       ></aside>
+    </section>
+
+    <section class="flex flex-col content-start gap-8 empty:hidden lg:gap-12">
+      <!-- Transaction form -->
+      <slot name="before:transaction-form"></slot>
+
+      <div v-if="props.accessControlUrl" class="grid gap-4 p-5 lg:gap-8">
+        <!-- Access control section -->
+        <span>
+          <p class="mb-2 flex items-center gap-2 font-bold text-dp-white-600">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="h-5 w-5"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z"
+              />
+            </svg>
+            Permission required
+          </p>
+          <p
+            :data-is-loading="isCheckingAccessControl"
+            :data-is-valid="accessAllowed"
+            :data-is-error="Boolean(accessControlError)"
+            class="hs-button is-large is-fullwidth is-outlined pointer-events-none border text-center data-[is-loading=true]:animate-pulse data-[is-valid=false]:border data-[is-error=true]:border-red-600 data-[is-valid=false]:border-neutral-300 data-[is-valid=true]:border-[#43C451] data-[is-valid=false]:bg-white"
+          >
+            {{
+              !account
+                ? `Connect wallet to check you're verified`
+                : isCheckingAccessControl
+                ? `Now checking the verification status`
+                : accessAllowed
+                ? `Verified`
+                : accessControlError
+                ? accessControlError.message
+                : `Not verified`
+            }}
+          </p>
+        </span>
+
+        <div
+          v-if="accessAllowed === false && htmlVerificationFlow"
+          v-html="htmlVerificationFlow"
+          class="md"
+        ></div>
+      </div>
+
+      <hr v-if="props.accessControlUrl" class="bg-dp-blue-grey-200" />
+
+      <span
+        v-if="
+          useInjectedTransactionForm &&
+          (props.accessControlUrl
+            ? props.accessControlUrl && accessAllowed
+            : true)
+        "
+        @checkout:completed="onCompleted"
+      >
+        <slot name="main:transaction-form"></slot>
+      </span>
+
+      <span
+        v-if="!useInjectedTransactionForm && useERC20"
+        class="flex flex-col justify-stretch p-5"
+      >
+        <!-- Approval -->
+        <button
+          @click="approve"
+          :disabled="
+            !account ||
+            isApproving ||
+            approveNeeded === undefined ||
+            approveNeeded === false ||
+            Boolean(props.accessControlUrl && !accessAllowed)
+          "
+          :data-is-approving="isApproving"
+          class="hs-button is-large is-fullwidth is-filled data-[is-approving=true]:animate-pulse"
+        >
+          {{
+            approveNeeded === false
+              ? "You've already approved"
+              : 'Sign with wallet and approve'
+          }}
+        </button>
+      </span>
+
+      <slot name="after:transaction-form"></slot>
+    </section>
+
+    <section
+      v-if="!useInjectedTransactionForm"
+      class="sticky bottom-0 flex grow flex-col gap-5 rounded-b-xl border-t border-dp-white-300 bg-white p-5"
+      v-bind:class="
+        !props.accessControlUrl || (props.accessControlUrl && accessAllowed)
+          ? 'lg:static lg:border-0 lg:bg-transparent'
+          : ''
+      "
+    >
+      <div class="grid gap-5">
+        <span class="flex flex-col justify-stretch">
+          <!-- Pay -->
+          <button
+            @click="submitStake"
+            :disabled="
+              !account ||
+              isStaking ||
+              approveNeeded !== false ||
+              Boolean(props.accessControlUrl && !accessAllowed) ||
+              Boolean(insufficientFunds)
+            "
+            :data-is-staking="isStaking"
+            class="hs-button is-large is-filled data-[is-staking=true]:animate-pulse"
+            v-bind:class="insufficientFunds ? 'bg-red-600' : ''"
+          >
+            Pay with {{ verifiedPropsCurrency.toUpperCase() }}
+          </button>
+
+          <p
+            v-if="insufficientFunds"
+            class="text-bold mt-2 rounded-md bg-red-600 p-2 text-white"
+          >
+            {{ insufficientFunds.message }}
+          </p>
+        </span>
+
+        <span
+          v-if="isApproving || isStaking || isWaitingForStaked"
+          class="grid justify-center gap-5"
+        >
+          <div
+            role="presentation"
+            class="mx-auto h-16 w-16 animate-spin rounded-full border-l border-r border-t border-native-blue-300"
+          />
+          <p v-if="isApproving">Waiting for approving to complete...</p>
+          <p v-if="isStaking && !isWaitingForStaked">
+            Awaiting transaction confirmation on wallet...
+          </p>
+          <p v-if="isWaitingForStaked">
+            Just a few minutes until your item is minted...
+          </p>
+        </span>
+      </div>
     </section>
   </div>
 

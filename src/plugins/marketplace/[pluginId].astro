@@ -1,5 +1,5 @@
 ---
-import type { InstallablePlugins, PluginMeta } from '@constants/plugins'
+import type { InstallablePlugins } from '@constants/plugins'
 import type { ClubsConfiguration } from '@devprotocol/clubs-core'
 
 import checkImage from '@assets/check.svg'
@@ -12,14 +12,9 @@ import Markdown from '@components/Markdown/Markdown.astro'
 
 const { site } = Astro.params
 
-const {
-  config,
-  plugin: installablePlugins,
-  size = 'medium',
-} = Astro.props as {
+const { config, plugin: installablePlugins } = Astro.props as {
   config: ClubsConfiguration
   plugin: InstallablePlugins
-  size?: 'medium' | 'small'
 }
 
 const plugin = await createGetPluginMeta(config)(installablePlugins)
@@ -27,11 +22,11 @@ const plugin = await createGetPluginMeta(config)(installablePlugins)
 const READMEComponent = plugin.readme
 ---
 
-<section class="text-dp-blue-grey-600 my-16">
+<section class="my-16">
   <div class="grid gap-16">
     <div class="flex items-center justify-between">
       <p class="text-4xl font-bold">{plugin.displayName}</p>
-      <ConnectButton client:load type="filled large" chainId={config.chainId} />
+      <ConnectButton client:load chainId={config.chainId} />
     </div>
     <div
       class="grid max-w-3xl items-start justify-between gap-8 lg:grid-cols-[3fr_1fr]"
@@ -40,12 +35,12 @@ const READMEComponent = plugin.readme
       <div>
         {
           false ? (
-            <span class="bg-native-blue-200 flex cursor-not-allowed items-center justify-center rounded-full px-8 py-4">
-              <img src={checkImage} class="h-3 max-h-full w-3 font-bold" />
+            <span class="flex cursor-not-allowed items-center justify-center rounded-full bg-native-blue-200 px-8 py-4">
+              <img src={checkImage.src} class="h-3 max-h-full w-3 font-bold" />
               <p class="font-bold text-black">Added</p>
             </span>
           ) : (
-            <AddPluginButton client:only="vue" plugin={plugin} site={site} />
+            <AddPluginButton client:only="vue" plugin={plugin} site={site!} />
           )
         }
       </div>
@@ -56,7 +51,11 @@ const READMEComponent = plugin.readme
       {
         (plugin?.previewImages?.length
           ? plugin.previewImages
-          : [pluginDefaultIcon, pluginDefaultIcon, pluginDefaultIcon]
+          : [
+              pluginDefaultIcon.src,
+              pluginDefaultIcon.src,
+              pluginDefaultIcon.src,
+            ]
         ).map((image) => (
           <img
             class="h-[24rem] w-auto max-w-none rounded-lg lg:h-[30rem]"
@@ -73,6 +72,23 @@ const READMEComponent = plugin.readme
         </Markdown>
       </p>
     </div>
+    {
+      plugin.require?.invitation && (
+        <section class="rounded-md bg-dp-yellow-300 p-4 text-dp-yellow-ink">
+          <p class="mb-4 text-xl font-bold">Limited Preview</p>
+          <p>
+            This plugin is currently available as a limited preview version.
+            Please wait a few moments until it is available for your Club. If
+            you have any questions about getting started, feel free to contact
+            us on{' '}
+            <a href="https://discord.gg/TFBZGM9jf3" class="underline">
+              Discord
+            </a>
+            .
+          </p>
+        </section>
+      )
+    }
     <div class="grid max-w-2xl gap-8">
       {
         plugin.developer && (

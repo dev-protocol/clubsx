@@ -1,11 +1,10 @@
 import {
-  ClubsConfiguration,
-  ClubsFunctionGetAdminPaths,
-  ClubsFunctionGetPagePaths,
-  ClubsFunctionGetSlots,
-  ClubsFunctionPlugin,
+  type ClubsFunctionGetAdminPaths,
+  type ClubsFunctionGetPagePaths,
+  type ClubsFunctionGetSlots,
+  type ClubsFunctionPlugin,
   ClubsPluginCategory,
-  ClubsPluginMeta,
+  type ClubsPluginMeta,
 } from '@devprotocol/clubs-core'
 import { default as Index } from './index.astro'
 import { default as ID } from './[id].astro'
@@ -160,13 +159,13 @@ export const meta: ClubsPluginMeta = {
   id: 'devprotocol:clubs:gated-contact-form',
   displayName: 'Contact form',
   category: ClubsPluginCategory.Growth,
-  icon: Icon,
+  icon: Icon.src,
   offer: {
     price: 0,
     priceCurrency: 'DEV',
   },
   description: `Token-gated contact form.`,
-  previewImages: [Preview1, Preview2, Preview3],
+  previewImages: [Preview1.src, Preview2.src, Preview3.src],
   readme: Readme,
 }
 

@@ -1,62 +1,78 @@
 import { whenDefined, whenDefinedAll } from '@devprotocol/util-ts'
 import type { Ticket, TicketHistories, TicketHistory } from '..'
-import { formatDuration, isExpired, period } from './date'
-import type { Duration } from 'dayjs/plugin/duration'
+import {
+  expirationDatetime,
+  formatDuration,
+  isExpiredNow,
+  isInUnavalableNow,
+  period,
+  time,
+} from './date'
 import type { Dayjs } from 'dayjs'
 
 export type StatusUnit = {
   use: Ticket['uses'][0]
   history?: TicketHistory
   unused: boolean
-  duration?: Duration
   expired?: boolean
   expiration?: Dayjs
   refreshed?: boolean
+  availableBetween?: {
+    start?: Dayjs
+    end?: Dayjs
+  }
+  inUnavailable?: boolean
 }
 
 export type TicketStatus = {
   available: boolean
+  inUnavailableTime: boolean
   enablable: boolean
   self: StatusUnit
   dependency?: StatusUnit
+  availableBetween?: {
+    start?: Dayjs
+    end?: Dayjs
+  }
 }
 
 export const factory =
   (_history: TicketHistories) =>
   (use: Ticket['uses'][0]): StatusUnit => {
     const history = use.id in _history ? _history[use.id] : undefined
-    const duration = whenDefined(use.duration, (duration) =>
-      formatDuration(duration),
+    const refreshingExpiration = whenDefinedAll(
+      [
+        history,
+        use.refreshCycle ? formatDuration(use.refreshCycle) : undefined,
+      ],
+      ([h, ex]) => period(h.datetime, ex),
     )
-    const refreshDuration = whenDefined(use.refreshCycle, (refreshCycle) =>
-      formatDuration(refreshCycle),
+    const expiration = whenDefinedAll([history, use.expiration], ([h, ex]) =>
+      expirationDatetime(h.datetime, ex.end, ex.duration, ex.tz),
     )
-    const refreshed = whenDefinedAll(
-      [history, refreshDuration],
-      ([his, refresh]) => isExpired(his.datetime, refresh),
-    )
+    const refreshed = whenDefined(refreshingExpiration, isExpiredNow)
     const unused = refreshed ?? history === undefined
-    const expired =
-      whenDefinedAll([history, duration], ([h, d]) =>
-        isExpired(h.datetime, d),
-      ) ??
-      whenDefinedAll([history, refreshDuration], ([h, d]) =>
-        isExpired(h.datetime, d),
-      )
-    console.log(use.id, history?.datetime, duration, refreshDuration)
-    const expiration =
-      whenDefinedAll([history, duration], ([h, d]) => period(h.datetime, d)) ??
-      whenDefinedAll([history, refreshDuration], ([h, d]) =>
-        period(h.datetime, d),
-      )
+    const expired = whenDefined(expiration, isExpiredNow)
+    const availableBetween = whenDefined(use.expiration, (exp) => ({
+      start: time(exp.start, exp.tz),
+      end: time(exp.end, exp.tz),
+    }))
+    const inUnavailable = expired
+      ? false
+      : whenDefinedAll(
+          [use.expiration?.start, use.expiration?.end, use.expiration?.tz],
+          ([startTime, endTime, tz]) =>
+            isInUnavalableNow(startTime, endTime, tz),
+        )
     return {
       use,
       history,
       unused,
-      duration,
       expired,
       expiration,
       refreshed,
+      availableBetween,
+      inUnavailable,
     }
   }
 
@@ -68,27 +84,41 @@ export const ticketStatus = (
 
   return uses.map((use) => {
     const _self = getStatus(use)
+    console.log({ _self })
     const dependency = whenDefined(use.dependsOn, (dep) =>
       whenDefined(
         uses.find((u) => u.id === dep),
         getStatus,
       ),
     )
+    console.log({ dependency })
     const self =
-      whenDefined(dependency, ({ expired, expiration }) =>
-        expired === true ? { ..._self, expired, expiration } : _self,
+      whenDefined(
+        dependency,
+        ({ expired, expiration, inUnavailable, availableBetween }) =>
+          expired === true || (expired === false && inUnavailable === true)
+            ? { ..._self, expired, expiration, inUnavailable, availableBetween }
+            : _self,
       ) ?? _self // If there is a dependency and its `expired` is true, it inherits the dependency's `expired`.
-    const available = self.expired === false || self.refreshed === false
+    const inUnavailableTime = self.inUnavailable === true
+    const available = inUnavailableTime
+      ? false
+      : self.expired === false || self.refreshed === false
 
-    const enablable = dependency
-      ? dependency.expired == false && self.unused
+    const enablable = inUnavailableTime
+      ? false
+      : dependency
+      ? dependency.expired === false && self.unused
       : self.expired === undefined
+    const availableBetween = self.availableBetween
 
     return {
       available,
       enablable,
+      inUnavailableTime,
       self,
       dependency,
+      availableBetween,
     }
   })
 }

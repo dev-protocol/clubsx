@@ -7,7 +7,7 @@ import { createClient } from 'redis'
 import type { ClubsData } from './fetchClubs'
 import { hasCreationLimitReached } from './hasCreationLimitReached/util'
 
-export const post = async ({ request }: { request: Request }) => {
+export const POST = async ({ request }: { request: Request }) => {
   const { site, config, sig, hash, expectedAddress, uid } =
     (await request.json()) as {
       site: string

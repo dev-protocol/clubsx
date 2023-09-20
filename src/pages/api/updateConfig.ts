@@ -2,7 +2,7 @@ import { authenticate, decode } from '@devprotocol/clubs-core'
 import { getDefaultProvider } from 'ethers'
 import { createClient } from 'redis'
 
-export const post = async ({ request }: { request: Request }) => {
+export const POST = async ({ request }: { request: Request }) => {
   const { site, config, sig, hash } = (await request.json()) as {
     site: string
     config: string

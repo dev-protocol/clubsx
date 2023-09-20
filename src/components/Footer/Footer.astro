@@ -16,7 +16,7 @@ import TwitterBlackLogo from '@assets/brands/twitter--black.svg'
     >
       <a href="/">
         <h1 class="flex items-center gap-2.5 text-5xl font-bold text-black">
-          <img src={ClubsColor} class="h-[1em] w-[1em]" />Clubs
+          <img src={ClubsColor.src} class="h-[1em] w-[1em]" />Clubs
         </h1>
       </a>
       <div class="wrap-none flex flex-row items-center">
@@ -81,8 +81,8 @@ import TwitterBlackLogo from '@assets/brands/twitter--black.svg'
           staking at anytime.
         </p>
         <p class="flex gap-2">
-          <img src={ETHLogo} alt="$ETH" class="h-16 w-16" /><img
-            src={DEVLogo}
+          <img src={ETHLogo.src} alt="$ETH" class="h-16 w-16" /><img
+            src={DEVLogo.src}
             alt="$DEV"
             class="h-16 w-16"
           />
@@ -130,7 +130,11 @@ import TwitterBlackLogo from '@assets/brands/twitter--black.svg'
           <li class="text-sm">© FRAME00</li>
         </ul>
         <div class="grid gap-4">
-          <img src={DevProtocolLogo} alt="Dev Protocol" class="h-auto w-36" />
+          <img
+            src={DevProtocolLogo.src}
+            alt="Dev Protocol"
+            class="h-auto w-36"
+          />
           <p class="text-sm">
             Clubs is built by Dev Protocol, a decentralized middleware designed
             for sustainable development on Ethereum.
@@ -141,19 +145,27 @@ import TwitterBlackLogo from '@assets/brands/twitter--black.svg'
               target="_blank"
               rel="noopener"
               class="hs-link no-underline"
-              ><img src={DiscordBlackLogo} alt="Discord" class="h-12 w-12" /></a
+              ><img
+                src={DiscordBlackLogo.src}
+                alt="Discord"
+                class="h-12 w-12"
+              /></a
             ><a
               href="https://medium.com/devprtcl"
               target="_blank"
               rel="noopener"
               class="hs-link no-underline"
-              ><img src={MediumBlackLogo} alt="Medium" class="h-12 w-12" /></a
+              ><img
+                src={MediumBlackLogo.src}
+                alt="Medium"
+                class="h-12 w-12"
+              /></a
             ><a
               href="https://twitter.com/poweredbyClubs"
               target="_blank"
               rel="noopener"
               class="hs-link no-underline"
-              ><img src={TwitterBlackLogo} alt="Twitter" class="h-12 w-12" /></a
+              ><img src={TwitterBlackLogo.src} alt="Twitter" class="h-12 w-12" /></a
             >
           </p>
         </div>

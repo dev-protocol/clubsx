@@ -21,7 +21,7 @@
 
 <script lang="ts">
 import Tier from '@components/Join/Tier.vue'
-import { defineComponent, PropType } from '@vue/runtime-core'
+import { defineComponent, type PropType } from '@vue/runtime-core'
 import type { Membership } from '@plugins/memberships'
 
 export default defineComponent({

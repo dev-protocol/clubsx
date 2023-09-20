@@ -25,7 +25,7 @@ export const uniqueCreators = async () => {
   try {
     await client.connect()
     let uniqueCreators = 0
-    for await (const key of client.scanIterator({
+    for await (const _ of client.scanIterator({
       MATCH: 'id::*',
     })) {
       uniqueCreators++
@@ -90,7 +90,7 @@ export const allClubs = async () => {
   }
 }
 
-export const post = async ({ request }: { request: Request }) => {
+export const POST = async ({ request }: { request: Request }) => {
   const route = request.url.split('?').pop()
 
   if (route === 'allClubs') {

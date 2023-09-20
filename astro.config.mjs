@@ -4,12 +4,19 @@ import clubs from '@devprotocol/clubs-core'
 import vercel from '@astrojs/vercel/serverless'
 import netlify from '@astrojs/netlify/functions'
 import tailwind from '@astrojs/tailwind'
+import lit from '@astrojs/lit'
 import vue from '@astrojs/vue'
 import react from '@astrojs/react'
 import svelte from '@astrojs/svelte'
+import commonjs from '@rollup/plugin-commonjs'
+
 import builtInApiPaths from './built-in-api-paths'
 
 config()
+
+const singleMode = ((i) => (i > -1 ? process.argv[i + 1] : undefined))(
+  process.argv.findIndex((a) => a === '--club'),
+)
 
 // https://astro.build/config
 export default defineConfig({
@@ -32,11 +39,9 @@ export default defineConfig({
                 builtInApiPaths.every((p) => !req.url.startsWith(p)))
             ) {
               const host = req.headers.host.split('.')
-              const [, ...primaryHost] = host
 
-              if (host.length > 1) {
-                req.headers.host = primaryHost.join('.')
-                req.url = `/sites_/${host[0]}${req.url}`
+              if (host.length > 1 || singleMode) {
+                req.url = `/sites_/${singleMode ?? host[0]}${req.url}`
               }
             }
 
@@ -45,18 +50,20 @@ export default defineConfig({
         },
       },
     },
-    vue({
-      template: {
-        compilerOptions: {
-          isCustomElement: (tag) => tag.includes('-'),
-        },
-      },
-    }),
+    lit(),
+    vue(),
     react(),
     tailwind(),
     svelte(),
   ],
   vite: {
+    plugins: [
+      commonjs({
+        requireReturnsDefault: (id) => {
+          return id.includes('qrcode')
+        },
+      }),
+    ],
     server: {
       hmr: {
         timeout: 360000,

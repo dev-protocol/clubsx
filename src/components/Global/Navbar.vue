@@ -14,7 +14,7 @@
       </li>
     </ul>
     <div class="flex items-center gap-4 place-self-end">
-      <ConnectButton client:only="vue" :chainId="chainId" type="filled" />
+      <ConnectButton client:only="vue" :chainId="chainId" />
       <div class="relative" ref="menu">
         <HSButton type="outlined" @click.prevent="toggle">
           <slot name="icon">
@@ -78,7 +78,7 @@
 <script lang="ts">
 import ConnectButton from '../Wallet/ConnectButton.vue'
 import HSButton from '../Primitives/Hashi/HSButton.vue'
-import { defineComponent, PropType } from '@vue/runtime-core'
+import { defineComponent, type PropType } from '@vue/runtime-core'
 import type { NavLink } from '@constants/navLink'
 
 export default defineComponent({
@@ -104,10 +104,10 @@ export default defineComponent({
     }
   },
   methods: {
-    toggle(e) {
+    toggle() {
       this.menuIsOpen = !this.menuIsOpen
     },
-    close(e) {
+    close(e: Event) {
       if (!this.$el.contains(e.target)) {
         this.menuIsOpen = false
       }

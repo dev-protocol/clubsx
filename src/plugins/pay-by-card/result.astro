@@ -1,5 +1,5 @@
 ---
-import Result from '@components/Checkout/Result.astro'
+import Result_ from '@components/Checkout/Result.astro'
 import type { ClubsPropsPages } from '@devprotocol/clubs-core'
 
 const { rpcUrl, ...other } = Astro.props as ClubsPropsPages & {
@@ -29,7 +29,7 @@ const success = params[0].status === 'success'
 const failure = params[0].status === 'failure'
 ---
 
-<Result rpcUrl={rpcUrl} id={params[0].tokenId} {...other}>
+<Result_ rpcUrl={rpcUrl} id={params[0].tokenId} {...other}>
   {
     success ? (
       <div slot="checkout-result:before:preview">
@@ -43,4 +43,4 @@ const failure = params[0].status === 'failure'
       ''
     )
   }
-</Result>
+</Result_>

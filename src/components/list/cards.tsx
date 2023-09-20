@@ -15,7 +15,6 @@
   ```
 */
 
-import React from 'react'
 import type { Membership } from '@plugins/memberships'
 
 export type ExtendedProducts = (Membership & { purchaseLink?: string })[]

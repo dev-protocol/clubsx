@@ -1,9 +1,12 @@
 ---
-import JoinClub from '@components/Join/JoinClub.svelte'
+import JoinClub from '@components/Join/JoinClub.astro'
+import type { Tiers } from '@constants/tier'
+import type { ClubsPropsPages } from '@devprotocol/clubs-core'
 
-const { tiers, propertyAddress, name, rpcUrl } = Astro.props
+const { tiers, name, ...other } = Astro.props as ClubsPropsPages & {
+  tiers: Tiers
+  name: string
+}
 ---
 
-<div class="p-4">
-  <JoinClub client:load tiers={tiers} tenantName={name} />
-</div>
+<JoinClub tiers={tiers} name={name} {...other} />

@@ -9,7 +9,7 @@ class PublishGrants extends React.Component {
       <div
         className="grants-bg-cover grid gap-8 px-7 py-7 xl:px-28 xl:py-14"
         style={{
-          backgroundImage: `url(${image})`,
+          backgroundImage: `url(${image.src})`,
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
           backgroundPosition: 'center center',
@@ -22,7 +22,10 @@ class PublishGrants extends React.Component {
           <span className="col-span-1 font-title text-2xl font-bold text-black xl:text-3xl">
             The first $MATIC
           </span>
-          <img src={MaticLogo} className="row-span-2 h-auto xl:col-span-1" />
+          <img
+            src={MaticLogo.src}
+            className="row-span-2 h-auto xl:col-span-1"
+          />
           <span className="col-span-1 font-title text-2xl font-bold text-black xl:row-span-2 xl:self-end xl:text-3xl">
             is covered
           </span>

@@ -34,13 +34,14 @@ const { PUBLIC_POP_CLIENT_KEY } = import.meta.env
   accessControlDescription={item.source.accessControl?.description}
   {...other}
 >
-  <TransactionForm
-    client:load
-    slot="checkout:main:transaction-form"
-    item={item}
-    chainId={chainId}
-    rpcUrl={rpcUrl}
-  />
+  <div slot="checkout:main:transaction-form" class="p-5">
+    <TransactionForm
+      client:load
+      item={item}
+      chainId={chainId}
+      rpcUrl={rpcUrl}
+    />
+  </div>
   <div slot="checkout:result:before:preview">
     <h3 class="text-2xl font-bold">Welcome 🎉</h3>
   </div>

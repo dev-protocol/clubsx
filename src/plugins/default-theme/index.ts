@@ -175,15 +175,15 @@ export const meta: ClubsThemePluginMeta = {
   displayName: 'Minimalist',
   category: ClubsPluginCategory.Theme,
   theme: {
-    previewImage: PreviewImage,
+    previewImage: PreviewImage.src,
   },
-  icon: Icon,
+  icon: Icon.src,
   offer: {
     price: 0,
     priceCurrency: 'DEV',
   },
   description: `Basic theme with multiple color schemes.`,
-  previewImages: [Preview1, Preview2, Preview3],
+  previewImages: [Preview1.src, Preview2.src, Preview3.src],
   readme: Readme,
 }
 

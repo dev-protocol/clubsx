@@ -1,7 +1,11 @@
 ---
 import DefaultLayout from '@layouts/Default.astro'
 import { Admin } from '@devprotocol/clubs-core/layouts'
-import { adminFactory, decode } from '@devprotocol/clubs-core'
+import {
+  type ClubsConfiguration,
+  adminFactory,
+  decode,
+} from '@devprotocol/clubs-core'
 import { config as _config } from '@fixtures/config'
 import VercelAnalytics from '@components/Analytics/VercelAnalytics.astro'
 import PageNotFound from '@pages/404.astro'
@@ -10,6 +14,7 @@ import marketplace from '@plugins/marketplace'
 import IconGlobe from '@components/Icons/globe-europe-africa.astro'
 import Banner from '@components/Global/Banner.astro'
 import { plugins } from '@constants/plugins'
+import ConnectButton from '@components/Wallet/ConnectButton.vue'
 
 const { site, page } = Astro.params
 
@@ -18,7 +23,7 @@ const { getStaticPaths } = adminFactory({
   plugins: [admin, marketplace, ...plugins],
 })
 const _path = (await getStaticPaths()).find(
-  ({ params }) => params.page === page
+  ({ params }) => params.page === page,
 )
 const path = {
   ..._path,
@@ -27,7 +32,7 @@ const path = {
     clubs: {
       ..._path?.props.clubs,
       plugins: _path?.props.clubs.plugins.filter(
-        (p) => p.id !== 'devprotocol:clubs:clubsx:marketplace'
+        (p) => p.id !== 'devprotocol:clubs:clubsx:marketplace',
       ),
     },
   },
@@ -41,9 +46,7 @@ const Content = path?.props.component
 const baseUrl = ((host) =>
   host.includes('localhost')
     ? host.replace(/^.*\.(localhost.*)$/, 'http://$1')
-    : `https://${host.split('.').slice(1, Infinity).join('.')}`)(
-  new URL(Astro.request.url).host
-)
+    : `https://${host}`)(new URL(Astro.request.url).host)
 
 const siteBaseUrl = new URL(Astro.request.url).origin
 ---
@@ -59,9 +62,14 @@ const siteBaseUrl = new URL(Astro.request.url).origin
       <>
         <Banner />
         <Admin {...path.props}>
+          <ConnectButton
+            client:load
+            chainId={(config as ClubsConfiguration | undefined)?.chainId}
+            slot="clubs:connect-button"
+          />
           <a
             slot="admin:sidebar:before-title"
-            class="hover:text-native-blue-300 flex items-center gap-2 transition-colors"
+            class="flex items-center gap-2 transition-colors hover:text-native-blue-300"
             href={`${baseUrl}/signin`}
           >
             <svg
@@ -82,7 +90,7 @@ const siteBaseUrl = new URL(Astro.request.url).origin
           </a>
           <a
             slot="admin:sidebar:before-title"
-            class="hover:text-native-blue-300 flex items-center gap-2 transition-colors"
+            class="flex items-center gap-2 transition-colors hover:text-native-blue-300"
             target="_blank"
             rel="noopener norefferer"
             href={siteBaseUrl}
@@ -179,7 +187,7 @@ const siteBaseUrl = new URL(Astro.request.url).origin
         error: new Error(
           error?.message?.includes('user rejected signing')
             ? 'Wallet confirmation denied'
-            : 'Transaction failed'
+            : 'Transaction failed',
         ),
       })
     }
@@ -203,7 +211,7 @@ const siteBaseUrl = new URL(Astro.request.url).origin
       (
         decode(data).options?.find((option) => option.key === '__draft')
           ?.value as DraftOptions['value']
-      )?.isInDraft
+      )?.isInDraft,
     )
 
     const res = await fetch(
@@ -211,7 +219,7 @@ const siteBaseUrl = new URL(Astro.request.url).origin
       {
         method: 'POST',
         body: JSON.stringify(body),
-      }
+      },
     )
 
     const success = Boolean(res?.ok)

@@ -188,7 +188,7 @@ export default defineComponent({
           ? 'animate-pulse'
           : ''
       }`"
-      :disabled="!isMember || messageSentStatus === 'sending'"
+      :disabled="!isMember"
     >
       Sign and Submit
     </button>

@@ -10,8 +10,13 @@ import {
 import BigNumber from 'bignumber.js'
 import { abi } from './fulfillment'
 import type { ComposedItem } from '..'
+import { whenNotError, whenNotErrorAll } from '@devprotocol/util-ts'
+import { createClient } from 'redis'
+import { generateFulFillmentParamsId } from '../utils/gen-key'
+import { bytes32Hex } from '@fixtures/data/hexlify'
 
-const { POP_SERVER_KEY, PUBLIC_POP_CLIENT_KEY } = import.meta.env
+const { POP_SERVER_KEY, REDIS_URL, REDIS_USERNAME, REDIS_PASSWORD } =
+  import.meta.env
 const AUTH_STRING = Buffer.from(`${POP_SERVER_KEY}:`).toString('base64')
 
 export type Success = {
@@ -68,7 +73,7 @@ export type PaymentKeyOptions = {
     paynow_account_id?: string
     save_card?: SaveCardTypes
     skip_card_selection?: boolean
-    '3ds_version'?: 1 | 2
+    '3ds_version'?: number // 1 or 2
   }
   cvs?: {
     payment_sub_type: CVSPaymentSubTypes
@@ -113,8 +118,7 @@ export const get: ({
   items: ComposedItem[]
 }) => APIRoute =
   ({ propertyAddress, chainId, items: _items }) =>
-  async ({ request, url }) => {
-    console.log('********', url)
+  async ({ url }) => {
     /**
      * Get request parameters.
      */
@@ -126,63 +130,47 @@ export const get: ({
       'email.customer_email_address',
     )
 
-    console.log({
-      membershipId,
-      eoa,
-      dummy,
-      customer_name,
-      customer_email_address,
-    })
-
     /**
      * Get the expected overridden membership and its source.
      */
-    const membership = _items.find((mem) => mem.id === membershipId)
+    const membership =
+      _items.find((mem) => mem.id === membershipId) ??
+      new Error('Missing item ID')
 
-    if (membership === undefined) {
-      return {
-        body: JSON.stringify({
-          result_code: 'E1',
-          status: 'failure',
-          message: 'Missing item ID',
-        }),
-      }
-    }
+    const payloadHex = whenNotError(membership, (mem) =>
+      typeof mem.payload === 'string' ? mem.payload : keccak256(mem.payload),
+    )
 
-    const payloadHex =
-      typeof membership.payload === 'string'
-        ? membership.payload
-        : keccak256(membership.payload)
-
-    const sourcePaymentToken =
+    const sourcePaymentToken = whenNotError(membership, ({ source }) =>
       chainId === 137
-        ? membership.source.currency === 'ETH'
+        ? source.currency === 'ETH'
           ? '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619'
           : ZeroAddress
         : chainId === 80001
-        ? membership.source.currency === 'ETH'
+        ? source.currency === 'ETH'
           ? '0x3c8d6A6420C922c88577352983aFFdf7b0F977cA'
           : ZeroAddress
-        : ZeroAddress
+        : ZeroAddress,
+    )
 
     /**
      * Create arguments required by the fulfillment flow as ABI-encoded values.
      */
     const abiEncoder = AbiCoder.defaultAbiCoder()
-    const abiEncodedParamsForFulfilment = abiEncoder.encode(abi, [
-      eoa,
-      propertyAddress,
-      payloadHex,
-      sourcePaymentToken,
-      parseUnits(
-        membership.source.price.toString(),
-        membership.source.currency === 'USDC' ? 6 : 18,
-      ),
-      membership.source.fee?.beneficiary ?? ZeroAddress,
-      new BigNumber(membership.source.fee?.percentage ?? 0)
-        .times(10000)
-        .toFixed(0),
-    ])
+    const abiEncodedParamsForFulfilment = whenNotError(membership, (mem) =>
+      abiEncoder.encode(abi, [
+        eoa,
+        propertyAddress,
+        payloadHex,
+        sourcePaymentToken,
+        parseUnits(
+          mem.source.price.toString(),
+          mem.source.currency === 'USDC' ? 6 : 18,
+        ),
+        mem.source.fee?.beneficiary ?? ZeroAddress,
+        new BigNumber(mem.source.fee?.percentage ?? 0).times(10000).toFixed(0),
+      ]),
+    )
 
     /**
      * Create other parameters.
@@ -192,13 +180,36 @@ export const get: ({
       [eoa, payloadHex, keccak256(randomBytes(8))],
     )
     const order_id = `ORDER-${keccak256(orderUniqueKey)}`
-    const gross_amount = membership.price.yen
+    const gross_amount = whenNotError(membership, ({ price }) => price.yen)
     const payment_key_expiry_duration = 1440 // = 1440 minutes
-    const push_url = new URL(
-      `/api/devprotocol:clubs:plugin:veritrans/fulfillment/?params=${abiEncodedParamsForFulfilment}`,
-      new URL(request.url).origin,
+    const push_destination = new URL(
+      `/api/devprotocol:clubs:plugin:veritrans/fulfillment`,
+      url.origin.replace('http:', 'https:'),
     ).toString()
+
+    const client = await whenNotError(
+      createClient({
+        url: REDIS_URL,
+        username: REDIS_USERNAME ?? '',
+        password: REDIS_PASSWORD ?? '',
+      }),
+      (db) =>
+        db
+          .connect()
+          .then(() => db)
+          .catch((err) => new Error(err)),
+    )
+
+    const paramsSaved = await whenNotErrorAll(
+      [client, abiEncodedParamsForFulfilment],
+      ([db, params]) => db.set(generateFulFillmentParamsId(order_id), params),
+    )
+
+    const push_url = whenNotError(paramsSaved, () => push_destination)
     const enabled_payment_types = [PaymentTypes.Card]
+    const card = {
+      '3ds_version': 1,
+    }
     const email =
       customer_name && customer_email_address
         ? {
@@ -206,30 +217,33 @@ export const get: ({
             customer_email_address,
           }
         : undefined
-    const items = [
+    const items = whenNotError(membership, (mem) => [
       {
-        id: `ITEM-${membership.id}`,
-        name: membership.source.name,
-        price: membership.price.yen,
+        id: `ITEM-${bytes32Hex(mem.payload).replace(
+          /0x(.{4}).*(.{4}$)/,
+          '$1-$2',
+        )}`,
+        name: mem.source.name,
+        price: mem.price.yen,
         quantity: 1,
       },
-    ]
-    const custom_message = {
-      show_items_additional_message: true,
-      items_additional_message: membership.source.description,
-    }
+    ])
 
-    const options: PaymentKeyOptions = {
-      dummy,
-      order_id,
-      gross_amount,
-      payment_key_expiry_duration,
-      // push_url,
-      enabled_payment_types,
-      email,
-      items,
-      custom_message,
-    }
+    const options = whenNotErrorAll(
+      [gross_amount, push_url, items],
+      ([_gross_amount, _push_url, _items]) =>
+        ({
+          dummy,
+          order_id,
+          gross_amount: _gross_amount,
+          payment_key_expiry_duration,
+          push_url: _push_url,
+          enabled_payment_types,
+          card,
+          email,
+          items: _items,
+        }) as PaymentKeyOptions,
+    )
 
     console.log({ options })
 
@@ -237,18 +251,32 @@ export const get: ({
      * Post them and return the content.
      *
      */
-    const res = await fetch('https://pay.veritrans.co.jp/pop/v1/payment-key', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        Authorization: `Basic ${AUTH_STRING}`,
-      },
-      body: JSON.stringify(options),
-    }).catch((err) => err)
+    const paymentKey = await whenNotError(options, (opts) =>
+      fetch('https://pay.veritrans.co.jp/pop/v1/payment-key', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          Authorization: `Basic ${AUTH_STRING}`,
+        },
+        body: JSON.stringify(opts),
+      }).catch((err) => new Error(err)),
+    )
 
-    const body = await res.text()
+    const result = await whenNotError(paymentKey, (res) =>
+      res
+        .text()
+        .then((x) => x as string)
+        .catch((err) => new Error(err)),
+    )
 
-    return {
-      body,
-    }
+    return result instanceof Error
+      ? new Response(
+          JSON.stringify({
+            result_code: 'E1',
+            status: 'failure',
+            message: result.message,
+          }),
+          { status: 400 },
+        )
+      : new Response(result, { status: 200 })
   }

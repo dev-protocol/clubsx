@@ -1,4 +1,3 @@
-import type { BaseProvider } from '@ethersproject/providers'
 import { ethers } from 'ethers'
 import type {
   TransactionResponse,
@@ -1230,7 +1229,11 @@ const erc20SimpleCollectionsAbi = [
 export async function callSimpleCollections(
   provider: Signer,
   functionName: 'setImages',
-  args: [propertyAddress: string, images: Image[], keys: string[]],
+  args: [
+    propertyAddress: string,
+    images: Image[] | ERC20Image[],
+    keys: string[],
+  ],
 ): Promise<TransactionResponse>
 
 export async function callSimpleCollections(
@@ -1240,50 +1243,13 @@ export async function callSimpleCollections(
 ): Promise<TransactionResponse>
 
 export async function callSimpleCollections(
-  provider: BrowserProvider,
+  provider: ContractRunner,
   functionName: 'propertyImages',
   args: [propertyAddress: string, key: string],
 ): Promise<Image>
 
 export async function callSimpleCollections(
-  provider: BrowserProvider | Signer,
-  functionName: string,
-  args: unknown[],
-): Promise<unknown> {
-  const chainId = await ('getNetwork' in provider
-    ? (provider as BrowserProvider).getNetwork()
-    : ((provider as Signer).provider as Provider).getNetwork()
-  ).then((network) => {
-    return Number(network.chainId)
-  })
-
-  const simpleCollectionaddress =
-    address.find((a) => a.chainId === chainId)?.address ||
-    defaultAddress.address
-  const contract = new ethers.Contract(
-    simpleCollectionaddress,
-    simpleCollectionsAbi,
-    provider,
-  )
-
-  const result: TransactionReceipt = await contract[functionName](...args)
-  return result
-}
-
-export async function callERC20SimpleCollections(
-  provider: BrowserProvider | ContractRunner,
-  functionName: 'propertyImages',
-  args: [propertyAddress: string, key: string],
-): Promise<ERC20Image>
-
-export async function callERC20SimpleCollections(
-  provider: Signer,
-  functionName: 'setImages',
-  args: [propertyAddress: string, images: ERC20Image[], keys: string[]],
-): Promise<TransactionResponse>
-
-export async function callERC20SimpleCollections(
-  provider: BrowserProvider | Signer | ContractRunner,
+  provider: BrowserProvider | ContractRunner | Signer,
   functionName: string,
   args: unknown[],
 ): Promise<unknown> {

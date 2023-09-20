@@ -43,21 +43,21 @@ const twitterHandle = 'poweredbyClubs'
     <meta name="twitter:image" content={`${ogURL}`} />
   </head>
 
-  <body class="bg-dp-black-600 min-h-screen font-body text-white">
+  <body class="min-h-screen bg-dp-black-600 font-body text-white">
     <slot name="before-header" />
     <header class="relative flex items-center justify-between px-6 py-4">
       <a href="/">
         <h1
           class="flex items-center gap-2.5 font-['Poppins'] text-xl font-bold"
         >
-          <img src={ClubsColor} />Clubs
+          <img src={ClubsColor.src} />Clubs
         </h1>
       </a>
       <slot name="right" />
       {
         connectButton === 'show' && (
           <nav class="flex justify-between gap-10">
-            <ConnectButton type="white" client:load />
+            <ConnectButton client:load />
           </nav>
         )
       }

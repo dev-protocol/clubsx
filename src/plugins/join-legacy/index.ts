@@ -1,10 +1,10 @@
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import {
-  ClubsFunctionGetAdminPaths,
-  ClubsFunctionGetPagePaths,
-  ClubsFunctionPlugin,
+  type ClubsFunctionGetAdminPaths,
+  type ClubsFunctionGetPagePaths,
+  type ClubsFunctionPlugin,
   ClubsPluginCategory,
-  ClubsPluginMeta,
+  type ClubsPluginMeta,
   ClubsPluginSignal,
 } from '@devprotocol/clubs-core'
 import { default as Index } from './index.astro'
@@ -16,7 +16,7 @@ import Preview1 from './assets/join-1.jpg'
 import Preview2 from './assets/join-2.jpg'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
-  options,
+  _,
   { propertyAddress, name, rpcUrl },
   { getPluginConfigById },
 ) => {
@@ -82,13 +82,13 @@ export const meta: ClubsPluginMeta = {
   id: 'devprotocol:clubs:plugin:join-legacy',
   displayName: 'Join',
   category: ClubsPluginCategory.Uncategorized,
-  icon: Icon,
+  icon: Icon.src,
   offer: {
     price: 0,
     priceCurrency: 'DEV',
   },
   description: `Add checkout pages for each tier.`,
-  previewImages: [Preview1, Preview2],
+  previewImages: [Preview1.src, Preview2.src],
   readme: Readme,
 }
 

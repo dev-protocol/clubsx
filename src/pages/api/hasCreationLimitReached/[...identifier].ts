@@ -1,6 +1,6 @@
 import { hasCreationLimitReached } from './util'
 
-export const get = async ({
+export const GET = async ({
   params: { identifier },
 }: {
   params: { identifier: string | undefined }

@@ -29,7 +29,7 @@ export type Membership = {
   name: string
   description: string
   price: number
-  currency: 'USDC' | 'DEV' | 'ETH'
+  currency: 'USDC' | 'DEV' | 'ETH' | 'MATIC'
   imageSrc: string
   payload: Uint8Array | string
   fee?: {
@@ -174,13 +174,13 @@ export const meta: ClubsPluginMeta = {
   id: 'devprotocol:clubs:simple-memberships',
   displayName: 'Memberships',
   category: ClubsPluginCategory.Monetization,
-  icon: Icon,
+  icon: Icon.src,
   offer: {
     price: 0,
     priceCurrency: 'DEV',
   },
   description: `Simplest tool for creating membership NFT.`,
-  previewImages: [Preview1, Preview2, Preview3],
+  previewImages: [Preview1.src, Preview2.src, Preview3.src],
   readme: Readme,
 }
 

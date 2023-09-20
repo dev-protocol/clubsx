@@ -3,13 +3,13 @@ import { createClient } from 'redis'
 
 import {
   authenticate,
-  ClubsConfiguration,
+  type ClubsConfiguration,
   decode,
   encode,
 } from '@devprotocol/clubs-core'
-import { InstallablePlugins, installablePlugins } from '@constants/plugins'
+import { type InstallablePlugins, installablePlugins } from '@constants/plugins'
 
-export const post = async ({ request }: { request: Request }) => {
+export const POST = async ({ request }: { request: Request }) => {
   const { site, pluginId, sig, hash } = (await request.json()) as {
     sig: string
     site: string
@@ -83,6 +83,11 @@ export const post = async ({ request }: { request: Request }) => {
     return new Response(JSON.stringify({}), { status: 401 })
   }
 
+  const options =
+    typeof isPluginInstallable.pluginOptions === 'function'
+      ? isPluginInstallable.pluginOptions(decodedPreviousConfiguration)
+      : isPluginInstallable.pluginOptions
+
   const newConfiguration: ClubsConfiguration = {
     ...decodedPreviousConfiguration,
     plugins: [
@@ -92,7 +97,7 @@ export const post = async ({ request }: { request: Request }) => {
       {
         id: isPluginInstallable.id,
         enable: true,
-        options: isPluginInstallable.pluginOptions,
+        options,
       },
     ],
   }

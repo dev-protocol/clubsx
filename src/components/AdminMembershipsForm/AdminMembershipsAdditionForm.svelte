@@ -16,11 +16,6 @@
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
   import { buildConfig, controlModal } from '@devprotocol/clubs-core/events'
   import {
-    address,
-    callERC20SimpleCollections,
-  } from '@plugins/memberships/utils/simpleCollections'
-  import type { ERC20Image } from '@plugins/memberships/utils/types/setImageArg'
-  import {
     DEV_TOKEN_PAYMENT_TYPE_FEE,
     PAYMENT_TYPE_INSTANT_FEE,
     PAYMENT_TYPE_STAKE_FEE,
@@ -197,14 +192,25 @@
     })
     connection().account.subscribe((a) => {
       currentAddress = a
+      update()
     })
   }
 
   onMount(() => {
     onChangePrice()
+    onChangeName()
     fetchPositionsOfProperty()
     update()
     connectOnMount()
+
+    const membershipDescriptionElement = document.getElementById('membership-description')
+    if (membershipDescriptionElement) {
+      membershipDescriptionElement!.style.height = membershipDescriptionElement!.scrollHeight + 'px'
+      membershipDescriptionElement!.oninput = async () => {
+        membershipDescriptionElement!.style.height = 'auto'
+        membershipDescriptionElement!.style.height = membershipDescriptionElement!.scrollHeight + 'px'
+      }
+    }
 
     if (useOnFinishCallback) {
       document.body.addEventListener(
@@ -230,7 +236,7 @@
     const value = Number((event.target as HTMLInputElement)?.value || 0)
 
     if (value < minCustomFee100) {
-      invalidFeeMsg = `Minimum payment type fee allowed is ${minCustomFee100}`
+      invalidFeeMsg = `Minimum earning model fee allowed is ${minCustomFee100}`
     } else if (value > maxCustomFee100) {
       invalidFeeMsg = `Maximum price allowed is ${maxCustomFee100}`
     } else {
@@ -248,6 +254,21 @@
 
     const search = mode === 'edit' ? originalId : membership.id
     membership.accessControl = usingAccessControl ? accessControl : undefined
+    if (
+      currentAddress &&
+      membership.fee &&
+      currentAddress !== membership.fee.beneficiary &&
+      membership.fee.percentage > 0
+    ) {
+      membership = {
+        ...membership,
+        fee: {
+          ...membership.fee,
+          beneficiary: currentAddress,
+        },
+      }
+    }
+
     newMemberships = existingMemberships.some(({ id }) => id === search)
       ? // If the ID is already exists, override it. This is a safeguard to avoid duplicate data.
         existingMemberships.map((_mem) =>
@@ -592,6 +613,9 @@
               <option value="ETH" class="bg-primary-200 text-primary-ink"
                 >ETH</option
               >
+              <option value="MATIC" class="bg-primary-200 text-primary-ink"
+                >MATIC</option
+              >
               <option value="DEV" class="bg-primary-200 text-primary-ink"
                 >DEV</option
               >
@@ -607,9 +631,9 @@
           {/if}
         </div>
 
-        <!-- Payment type -->
+        <!-- Earning model -->
         <div class="hs-form-field is-filled is-required">
-          <span class="hs-form-field__label"> Payment type </span>
+          <span class="hs-form-field__label"> Earning model </span>
           <div class="flex w-full max-w-full items-center justify-start gap-2">
             <button
               on:click|preventDefault={() =>
@@ -698,7 +722,7 @@
           </div>
           {#if membership.currency === 'DEV'}
             <p class="hs-form-field__helper mt-2">
-              * Payment type option is currently disabled for DEV
+              * Earning model option is currently disabled for DEV
             </p>
           {/if}
           {#if invalidFeeMsg !== ''}
