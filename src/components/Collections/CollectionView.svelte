@@ -19,7 +19,7 @@ export let collection: Collection
     let seconds = 0;
 
   const calculateTimeLeft = () => {
-    difference = collection.endTime - Math.floor(new Date().getTime() / 1000);
+    difference = collection.endTime ? collection.endTime - Math.floor(new Date().getTime() / 1000) : 0;
 
     if (difference > 0) {
       days = Math.floor(difference / (60 * 60 * 24));
