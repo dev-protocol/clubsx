@@ -36,7 +36,7 @@
           src: mem.imageSrc,
           name: mem.name,
           description: mem.description,
-          deadline: collection.endTime,
+          deadline: collection.endTime ? BigInt(collection.endTime) : 0n,
           requiredTokenAmount: parseUnits(String(mem.price), decimals),
           requiredTokenFee: mem.fee?.percentage
             ? parseUnits(
@@ -55,7 +55,7 @@
           src: mem.imageSrc,
           name: mem.name,
           description: mem.description,
-          slots: mem.memberCount,
+          slots: mem.memberCount ? BigInt(mem.memberCount) : 0n,
           requiredTokenAmount: parseUnits(String(mem.price), decimals),
           requiredTokenFee: mem.fee?.percentage
             ? parseUnits(

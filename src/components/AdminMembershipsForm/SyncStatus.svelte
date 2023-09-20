@@ -79,7 +79,7 @@
     const resultValues = arrayify(res ?? {})
     const test = expectedValues.every((v, i) => resultValues[i] === v)
 
-    console.log('checkImage', test, propertyAddress, data)
+    console.log('checkImage', test, propertyAddress, data, 'res',resultValues)
     return test
   }
 
