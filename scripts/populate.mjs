@@ -1372,7 +1372,7 @@ const populate = async () => {
                       {
                         id: '1-day-cafe-ticket',
                         description: '1 day ticket for Cafe time',
-                        duration: {
+                        expiration: {
                           duration: '1 days',
                           start: '10 hour',
                           end: '18 hour',
@@ -1404,7 +1404,7 @@ const populate = async () => {
                       {
                         id: '1-day-bar-ticket',
                         description: '1 day ticket for Bar time',
-                        duration: {
+                        expiration: {
                           duration: '1 days',
                           start: '18 hour',
                           end: '22 hour',
@@ -1436,7 +1436,7 @@ const populate = async () => {
                       {
                         id: '1-day-ticket',
                         description: '1 day ticket',
-                        duration: {
+                        expiration: {
                           duration: '1 days',
                           start: '10 hour',
                           end: '22 hour',
@@ -1468,7 +1468,7 @@ const populate = async () => {
                       {
                         id: '1-month-ticket',
                         description: '1 month ticket',
-                        duration: {
+                        expiration: {
                           duration: '1 months',
                           start: '10 hour',
                           end: '22 hour',
@@ -1500,7 +1500,7 @@ const populate = async () => {
                       {
                         id: '3-months-ticket',
                         description: '3 months ticket',
-                        duration: {
+                        expiration: {
                           duration: '3 months',
                           start: '10 hour',
                           end: '22 hour',
