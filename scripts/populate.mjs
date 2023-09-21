@@ -1288,7 +1288,7 @@ const populate = async () => {
         ],
         plugins: [
           {
-            id: 'devprotocol:clubs:plugin:veritrans',
+            id: 'devprotocol:clubs:plugin:clubs-payments',
             name: 'fiat',
             enable: true,
             options: [

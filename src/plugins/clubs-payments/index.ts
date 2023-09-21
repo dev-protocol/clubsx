@@ -121,8 +121,8 @@ export const getSlots: ClubsFunctionGetSlots = async (options, __, utils) => {
 }
 
 export const meta: ClubsPluginMeta = {
-  id: 'devprotocol:clubs:plugin:veritrans',
-  displayName: 'Veritrans',
+  id: 'devprotocol:clubs:plugin:clubs-payments',
+  displayName: 'Clubs Payments',
   category: ClubsPluginCategory.Monetization,
 }
 

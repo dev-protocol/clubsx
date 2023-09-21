@@ -96,7 +96,7 @@
       params,
       ({ id, account, customerName, customerEmail, dummy }) => {
         const url = new URL(
-          '/api/devprotocol:clubs:plugin:veritrans/payment-key',
+          '/api/devprotocol:clubs:plugin:clubs-payments/payment-key',
           location.origin,
         )
         url.searchParams.set('id', id)
