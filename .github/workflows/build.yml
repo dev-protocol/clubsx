@@ -26,5 +26,6 @@ jobs:
       - name: astro check
         run: yarn typecheck
 
-      - name: build
-        run: yarn build
+      # Commented out because it can detect build failures on Vercel integration.
+      # - name: build
+      #   run: yarn build
