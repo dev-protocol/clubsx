@@ -6,7 +6,7 @@ export type SlotLeft = {
 }
 
 export type State = {
-  [key: string]: string | bigint | number | undefined;
+  [key: string]: string | bigint | number | undefined
 }
 export type ExpectedStatus = {
   payload: string

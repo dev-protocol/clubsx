@@ -92,12 +92,12 @@ export let collection: Collection
             <!-- Allowlist -->
             <div class="flex flex-col items-start self-stretch">
                 <div class="flex p-5 flex-col items-start self-stretch gap-[20px] bg-[#17171780] rounded-[10px]">
-                    <span class="text-justify text-3xl font-medium">
+                    <span class="text-justify text-3xl text-white font-medium">
                         Exclusive to the following members.
                     </span>
                     <div class="flex flex-col items-start self-stretch">
                         <div class="flex p-5 flex-col items-start self-stretch gap-3 bg-[#27272780] rounded-[10px]">
-                            <span class="text-justify text-3xl font-medium">
+                            <span class="text-white text-justify text-3xl font-medium">
                                 You don't seem to have it yet, but you can get it here.
                             </span>
                         </div>
@@ -110,7 +110,7 @@ export let collection: Collection
                                     <path d="M13.334 34.6666L24.0007 45.3333L50.6673 18.6666" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                   </svg>
                             </div>
-                            <p class="text-justify text-3xl font-medium">
+                            <p class="text-white text-justify text-3xl font-medium">
                                 Welcome, you have the access
                             </p>
                         </div>
@@ -145,7 +145,7 @@ export let collection: Collection
             <!-- Validation -->
             <div class="flex flex-col items-start self-stretch">
                 <div class="flex p-5 flex-col items-start self-stretch gap-3 rounded-[10px] bg-[#17171780]">
-                    <span class="text-justify text-2xl font-medium">
+                    <span class="text-white text-justify text-2xl font-medium">
                         Waiting for the wallet connection to confirm access rights.
                     </span>
                 </div>
