@@ -83,7 +83,7 @@ const app = async () => {
     await client.connect()
 
     for await (const key of client.scanIterator()) {
-      if (key.startsWith('id::')) {
+      if (key.includes(':')) {
         // This is not a ClubsConfiguration
         console.log('Skipped:', key)
         continue
