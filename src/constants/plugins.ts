@@ -85,6 +85,16 @@ export type ExternalTool = {
 
 export const installablePlugins: InstallablePlugins[] = [
   {
+    id: $16.meta.id,
+    tag: 'New & Upcoming',
+    developer: 'Dev Protocol',
+    repositoryUrl: 'https://github.com/dev-protocol/clubsx',
+    pluginOptions: [],
+    require: {
+      invitation: true,
+    },
+  },
+  {
     id: $4.meta.id,
     tag: 'New & Upcoming',
     developer: 'Dev Protocol',
@@ -103,14 +113,14 @@ export const installablePlugins: InstallablePlugins[] = [
   },
   {
     id: $14.meta.id,
-    tag: 'New & Upcoming',
+    tag: 'Widgets',
     pluginOptions: [],
     developer: 'kazu80',
     repositoryUrl: 'https://github.com/kazu80/clubs-links',
   },
   {
     id: PostsPlugin.meta.id,
-    tag: 'Community',
+    tag: 'New & Upcoming',
     pluginOptions: (config) => [
       {
         key: 'feeds',
