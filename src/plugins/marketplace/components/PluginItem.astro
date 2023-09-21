@@ -25,12 +25,7 @@ const {
   displayStatus?: boolean
 }
 
-const pluginUrl = ((url) =>
-  plugin.planned
-    ? undefined
-    : `${url.protocol}//${Astro.params.site}.${url.host}/admin/marketplace/${plugin.id}`)(
-  new URL(Astro.request.url),
-)
+const pluginUrl = plugin.planned ? undefined : `/admin/marketplace/${plugin.id}`
 ---
 
 <style lang="scss">

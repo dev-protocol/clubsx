@@ -43,10 +43,10 @@ const config =
 
 const Content = path?.props.component
 
-const baseUrl = ((host) =>
-  host.includes('localhost')
-    ? host.replace(/^.*\.(localhost.*)$/, 'http://$1')
-    : `https://${host}`)(new URL(Astro.request.url).host)
+const baseUrl = ((origin) =>
+  Astro.params.site && origin.includes(Astro.params.site)
+    ? origin.replace(`${Astro.params.site}.`, '')
+    : origin)(new URL(Astro.request.url).origin)
 
 const siteBaseUrl = new URL(Astro.request.url).origin
 ---
