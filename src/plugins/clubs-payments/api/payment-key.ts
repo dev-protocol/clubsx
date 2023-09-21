@@ -183,7 +183,7 @@ export const get: ({
     const gross_amount = whenNotError(membership, ({ price }) => price.yen)
     const payment_key_expiry_duration = 1440 // = 1440 minutes
     const push_destination = new URL(
-      `/api/devprotocol:clubs:plugin:veritrans/fulfillment`,
+      `/api/devprotocol:clubs:plugin:clubs-payments/fulfillment`,
       url.origin.replace('http:', 'https:'),
     ).toString()
 
