@@ -216,96 +216,97 @@
     })
   </script>
   
-  <section>
+  <section class="max-h-[80vh] overflow-y-auto">
     <h2 class="mb-6 text-2xl">Publish memberships on the blockchain</h2>
     <p class="mb-8">
       Memberships just created are not yet published on the blockchain. Submit all
       transactions to start offering memberships.
     </p>
-    <table
+    <div class="max-h-96 overflow-y-auto rounded-md">   
+      <table
       class="w-full max-w-5xl border-separate overflow-x-auto rounded-md border border-dp-blue-grey-200"
-    >
-      <thead>
-        <tr class="grid grid-cols-[2fr,1fr,1fr]">
-          <th></th>
-          <th
-            class="grid grid-flow-row content-start justify-center justify-center justify-items-center gap-2 p-2"
-            ><span>Initialization</span>{#await listOfoutOfSyncDescriptors}
-              <span class="block h-6">
-                <Skeleton />
-              </span>
-            {:then value}
-              <button
-                class="hs-button is-outlined is-small"
-                disabled={value.length < 1}
-                on:click={onClickSyncDescriptor}
-                >{value.length > 0 ? 'Send' : 'Completed'}</button
-              >
-              {#if syncStatusDescriptor === true}
-                <div
-                  role="presentation"
-                  class="mx-auto h-10 w-10 animate-spin rounded-full border-l border-r border-t border-native-blue-300"
-                />
-              {/if}
-              {#if syncStatusDescriptor instanceof Error}
-                <p class="text-dp-red-300" title={syncStatusDescriptor.message}>
-                  <svg
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="h-6 w-6"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
-                    />
-                  </svg>
-                </p>
-              {/if}
-            {/await}</th
-          >
-          <th
-            class="grid grid-flow-row content-start justify-center justify-items-center gap-2 p-2"
-            ><span>Registration</span>{#await listOfoutOfSyncImages}
-              <span class="block h-6">
-                <Skeleton />
-              </span>
-            {:then value}
-              <button
-                class="hs-button is-outlined is-small"
-                disabled={value.length < 1}
-                on:click={onClickSyncImages}
-                >{value.length > 0 ? 'Send' : 'Completed'}</button
-              >
-              {#if syncStatusImages === true}
-                <div
-                  role="presentation"
-                  class="mx-auto h-10 w-10 animate-spin rounded-full border-l border-r border-t border-native-blue-300"
-                />
-              {/if}
-              {#if syncStatusImages instanceof Error}
-                <p class="text-dp-red-300" title={syncStatusImages.message}>
-                  <svg
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="h-6 w-6"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
-                    />
-                  </svg>
-                </p>
-              {/if}
-            {/await}</th
-          >
-        </tr>
-      </thead>
+      >
+        <thead>
+          <tr class="grid grid-cols-[2fr,1fr,1fr]">
+            <th></th>
+            <th
+              class="grid grid-flow-row content-start justify-center justify-center justify-items-center gap-2 p-2"
+              ><span>Initialization</span>{#await listOfoutOfSyncDescriptors}
+                <span class="block h-6">
+                  <Skeleton />
+                </span>
+              {:then value}
+                <button
+                  class="hs-button is-outlined is-small"
+                  disabled={value.length < 1}
+                  on:click={onClickSyncDescriptor}
+                  >{value.length > 0 ? 'Send' : 'Completed'}</button
+                >
+                {#if syncStatusDescriptor === true}
+                  <div
+                    role="presentation"
+                    class="mx-auto h-10 w-10 animate-spin rounded-full border-l border-r border-t border-native-blue-300"
+                  />
+                {/if}
+                {#if syncStatusDescriptor instanceof Error}
+                  <p class="text-dp-red-300" title={syncStatusDescriptor.message}>
+                    <svg
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="h-6 w-6"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+                      />
+                    </svg>
+                  </p>
+                {/if}
+              {/await}</th
+            >
+            <th
+              class="grid grid-flow-row content-start justify-center justify-items-center gap-2 p-2"
+              ><span>Registration</span>{#await listOfoutOfSyncImages}
+                <span class="block h-6">
+                  <Skeleton />
+                </span>
+              {:then value}
+                <button
+                  class="hs-button is-outlined is-small"
+                  disabled={value.length < 1}
+                  on:click={onClickSyncImages}
+                  >{value.length > 0 ? 'Send' : 'Completed'}</button
+                >
+                {#if syncStatusImages === true}
+                  <div
+                    role="presentation"
+                    class="mx-auto h-10 w-10 animate-spin rounded-full border-l border-r border-t border-native-blue-300"
+                  />
+                {/if}
+                {#if syncStatusImages instanceof Error}
+                  <p class="text-dp-red-300" title={syncStatusImages.message}>
+                    <svg
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="h-6 w-6"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+                      />
+                    </svg>
+                  </p>
+                {/if}
+              {/await}</th
+            >
+          </tr>
+        </thead>
       <tbody>
         {#each statuses as status}
           <tr
@@ -364,5 +365,6 @@
         {/each}
       </tbody>
     </table>
+  </div>
   </section>
   
