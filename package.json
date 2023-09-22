@@ -73,7 +73,7 @@
     "@redis/json": "1.0.5",
     "@sendgrid/mail": "7.7.0",
     "@tailwindcss/aspect-ratio": "0.4.2",
-    "@vercel/edge": "1.0.2",
+    "@vercel/edge": "1.1.0",
     "@vue/composition-api": "1.7.2",
     "@wagmi/core": "^1.4.1",
     "@web3modal/wagmi": "3.0.0-f1fdfdc9",
