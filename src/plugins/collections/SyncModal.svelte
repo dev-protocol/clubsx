@@ -4,6 +4,7 @@
     import {
       type ContractRunner,
       type Signer,
+      type TransactionResponse,
       ZeroAddress,
       parseUnits,
     } from 'ethers'
@@ -96,18 +97,33 @@
     }) => {
       const timeStates = states.filter(({ isTimeLimitedCollection }) => isTimeLimitedCollection) 
       const memberStates = states.filter(({ isTimeLimitedCollection }) => !isTimeLimitedCollection)
-      return( 
-        callSlotCollections(provider, 'setImages', true,[
+
+      // Filter out states with empty payload
+      const validTimeStates = timeStates.filter(({ payload }) => payload.trim() !== '');
+      const validMemberStates = memberStates.filter(({ payload }) => payload.trim() !== '');
+
+      console.log("Valid Time States: ", validTimeStates);
+      console.log("Valid Member States: ", validMemberStates);
+
+      const results: TransactionResponse[] = [];
+      if (validTimeStates.length) {
+        const res = await callSlotCollections(provider, 'setImages', true,[
+          propertyAddress,
+          validTimeStates.map(({ state }) => state),
+          validTimeStates.map(({ payload }) => payload),
+        ]);
+        results.push(res);
+      }
+      
+      if (validMemberStates.length) {
+      const res = await callSlotCollections(provider, 'setImages', false,[
         propertyAddress,
-        timeStates.map(({ state }) => state),
-        timeStates.map(({ payload }) => payload),
-        ]),
-        callSlotCollections(provider, 'setImages', false,[
-        propertyAddress,
-        memberStates.map(({ state }) => state),
-        memberStates.map(({ payload }) => payload),
-        ])
-      )
+        validMemberStates.map(({ state }) => state),
+        validMemberStates.map(({ payload }) => payload),
+      ]);
+      results.push(res);
+      }
+      return results;
     }
   </script>
   

@@ -47,7 +47,7 @@
     provider: Signer
     propertyAddress: string
     states: typeof expected
-    }) => Promise<TransactionResponse>
+    }) => Promise<TransactionResponse[]>
   
     const queue = new PQueue({ concurrency: 1 })
   
@@ -84,7 +84,7 @@
       const resultValues = arrayify(res ?? {})
       const test = expectedValues.every((v, i) => resultValues[i] === v)
   
-      console.log('checkImage', test, propertyAddress, 'data=>',data.state, 'resultValue=>',resultValues)
+      console.log('checkImage', test, propertyAddress, data)
       return test
     }
   
@@ -198,7 +198,7 @@
           ),
         )) ?? new Error('Client error: try it again!')
       const result = await whenNotError(res, (res_) =>
-        res_.wait().catch((err) => new Error(err)),
+        Promise.all(res_.map((res__) => res__.wait().catch((err) => new Error(err)))).catch((err) => new Error(err)),
       )
       syncStatusImages = result instanceof Error ? result : false
       initStatuses()
