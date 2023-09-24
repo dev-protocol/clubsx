@@ -102,9 +102,6 @@
       const validTimeStates = timeStates.filter(({ payload }) => payload.trim() !== '');
       const validMemberStates = memberStates.filter(({ payload }) => payload.trim() !== '');
 
-      console.log("Valid Time States: ", validTimeStates);
-      console.log("Valid Member States: ", validMemberStates);
-
       const results: TransactionResponse[] = [];
       if (validTimeStates.length) {
         const res = await callSlotCollections(provider, 'setImages', true,[

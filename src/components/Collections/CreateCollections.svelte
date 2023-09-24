@@ -30,7 +30,7 @@
   export let useOnFinishCallback: boolean = false
   export let currentPluginIndex: number
 
-  export let mode: 'edit' | 'create' = 'create'
+  export let mode: 'edit'| 'editMem' | 'create' = 'create'
   export let rpcUrl: string
   export let propertyAddress: string | null | undefined = undefined
 
@@ -69,7 +69,8 @@
   let invalidStartTimeMsg: string = ''
   let invalidEndTimeMsg: string = ''
 
-  const originalId = collection.id
+  const originaCollectionlId = collection.id
+  const originalMembershipId = membership.id
   const provider = new JsonRpcProvider(rpcUrl)
 
   let membershipExists = false
@@ -612,22 +613,34 @@
       membershipPaymentType === ''
     )
       return
+    const searchMembershipId = mode === 'editMem' ? originalMembershipId : membership.id
 
     collection = {
       ...collection,
-      memberships: isAdding // If we are adding memberships only then append the membership state to db.
-        ? [
-          ...collection.memberships.filter(
-            (m: CollectionMembership) => m.id !== membership.id
-          ),
-          membership,
-        ]
+      memberships: isAdding // If we are adding/editing memberships only then append the membership state to db.
+        ? 
+        (collection.memberships.some(({ id }) => id === searchMembershipId) 
+          ?
+            [
+              ...collection.memberships.map((_mem) =>
+              _mem.id === searchMembershipId ? membership : _mem,
+              )
+            ]
+          :
+            [
+              ...collection.memberships.filter(
+                (m: CollectionMembership) => m.id !== membership.id
+              ),
+              membership,
+            ]
+        )
         : collection.memberships
     }
   }
 
   const update = () => {
-    const searchCollectionId = mode === 'edit' ? originalId : collection.id
+    // OR condition with editMem is that, if the membership exists then it implies the collections exist first
+    const searchCollectionId = mode === 'edit' || 'editMem' ? originaCollectionlId : collection.id
     const newCollections = [
       ...existingCollections.filter((c: Collection) => c.id !== searchCollectionId),
       collection,
@@ -1190,7 +1203,7 @@
             Save
           </button>
 
-          {#if mode === 'edit' && !membership.deprecated}
+          {#if mode === 'editMem' && !membership.deprecated}
             <button
               class={`hs-button is-large is-filled w-fit rounded px-8 py-6 text-base font-bold text-white ${
                 updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''

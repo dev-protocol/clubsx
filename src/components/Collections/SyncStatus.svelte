@@ -148,37 +148,48 @@
     const items = await listOfoutOfSyncDescriptors
     const timeItems = items.filter(({ isTimeLimitedCollection }) => isTimeLimitedCollection)
     const memberItems = items.filter(({ isTimeLimitedCollection }) => !isTimeLimitedCollection)
-    const resTime =
-      (await whenDefinedAll(
-        [sTokensManager, customTimeDescriptorAddress],
-        ([cont, descriptor]) =>
-          cont
-            .setTokenURIDescriptor(
-              propertyAddress,
-              descriptor,
-              timeItems.map(({ payload }) => payload),
-            )
-            .catch((err) => new Error(err)),
-      )) ?? new Error('Client error: try it again!')
-    const resultTime = await whenNotError(resTime, (res_) =>
-      res_.wait().catch((err) => new Error(err)),
-    )
-    const resMem = 
-      (await whenDefinedAll(
-        [sTokensManager, customMemberDescriptorAddress],
-        ([cont, descriptor]) =>
-          cont
-            .setTokenURIDescriptor(
-              propertyAddress,
-              descriptor,
-              memberItems.map(({ payload }) => payload),
-            )
-            .catch((err) => new Error(err)),
-      )) ?? new Error('Client error: try it again!')
-    const resultMem = await whenNotError(resMem, (res_) =>
-      res_.wait().catch((err) => new Error(err)),
-    )
-    syncStatusDescriptor = (resultTime instanceof Error) ? resultTime : ((resultMem instanceof Error) ? resultMem : false);
+
+    // Filter out states with empty payload
+    const validTimeStates = timeItems.filter(({ payload }) => payload.trim() !== '');
+    const validMemberStates = memberItems.filter(({ payload }) => payload.trim() !== '');
+    let resTime
+    let resMem
+    if(validTimeStates.length > 0){
+      resTime = 
+        (await whenDefinedAll(
+          [sTokensManager, customTimeDescriptorAddress],
+          ([cont, descriptor]) =>
+            cont
+              .setTokenURIDescriptor(
+                propertyAddress,
+                descriptor,
+                timeItems.map(({ payload }) => payload),
+              )
+              .catch((err) => new Error(err)),
+        )) ?? new Error('Client error: try it again!')
+      const resultTime = await whenNotError(resTime, (res_) =>
+        res_.wait().catch((err) => new Error(err)),
+      )
+      syncStatusDescriptor = (resultTime instanceof Error) ? resultTime : false;
+    }
+    if(validMemberStates.length > 0){
+      resMem = 
+        (await whenDefinedAll(
+          [sTokensManager, customMemberDescriptorAddress],
+          ([cont, descriptor]) =>
+            cont
+              .setTokenURIDescriptor(
+                propertyAddress,
+                descriptor,
+                memberItems.map(({ payload }) => payload),
+              )
+              .catch((err) => new Error(err)),
+        )) ?? new Error('Client error: try it again!')
+      const resultMem = await whenNotError(resMem, (res_) =>
+        res_.wait().catch((err) => new Error(err)),
+      )
+      syncStatusDescriptor = (resultMem instanceof Error) ? resultMem : false;
+    }
     initStatuses()
   }
   
