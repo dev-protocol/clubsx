@@ -13,14 +13,28 @@ import { allTags } from '@constants/plugins'
 import BannerPresetFeaturing from './components/BannerPresetFeaturing.astro'
 import ExternalToolWrapper from './components/ExternalToolWrapper.astro'
 
+import {
+  getFlagsByParams,
+  FeatureFlags,
+  FeatureFlagValues,
+} from '@fixtures/flags'
+import collections from '@plugins/collections'
+
 const { allInstallablePlugins, clubs } = Astro.props as ClubsPropsAdminPages & {
   allInstallablePlugins: InstallablePlugins[]
 }
 
+const flags = getFlagsByParams({ url: new URL(Astro.url) })
+
+const installablePlugins =
+  flags.get(FeatureFlags.StoresOnMarketplace) === FeatureFlagValues.Enable
+    ? allInstallablePlugins
+    : allInstallablePlugins.filter((plg) => plg.id !== collections.meta.id)
+
 const getPluginMeta = createGetPluginMeta(
   decode(clubs.encodedClubsConfiguration),
 )
-const allPlugins = await Promise.all(allInstallablePlugins.map(getPluginMeta))
+const allPlugins = await Promise.all(installablePlugins.map(getPluginMeta))
 
 const externalTools: ExternalTool[] = [
   {
