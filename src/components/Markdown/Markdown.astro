@@ -89,5 +89,14 @@ const content = body ? marked.parse(body) : undefined
       font-size: var(--fontSizeP);
       line-height: var(--lineHeightP);
     }
+    :global(th) {
+      @apply mb-2 border-b border-white/20 py-2;
+    }
+    :global(td) {
+      @apply p-2 align-baseline;
+    }
+    :global(iframe) {
+      @apply max-w-full;
+    }
   }
 </style>
