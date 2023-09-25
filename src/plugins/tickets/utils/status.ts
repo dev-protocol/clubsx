@@ -34,6 +34,7 @@ export type TicketStatus = {
     start?: Dayjs
     end?: Dayjs
   }
+  ticket: Ticket
 }
 
 export const factory =
@@ -78,16 +79,16 @@ export const factory =
 
 export const ticketStatus = (
   history: TicketHistories,
-  uses: Ticket['uses'],
+  ticket: Ticket,
 ): TicketStatus[] => {
   const getStatus = factory(history)
 
-  return uses.map((use) => {
+  return ticket.uses.map((use) => {
     const _self = getStatus(use)
     console.log({ _self })
     const dependency = whenDefined(use.dependsOn, (dep) =>
       whenDefined(
-        uses.find((u) => u.id === dep),
+        ticket.uses.find((u) => u.id === dep),
         getStatus,
       ),
     )
@@ -119,6 +120,7 @@ export const ticketStatus = (
       self,
       dependency,
       availableBetween,
+      ticket,
     }
   })
 }

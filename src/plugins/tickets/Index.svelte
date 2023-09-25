@@ -84,7 +84,7 @@
       const text = res.ok ? await res.text() : undefined
       const history: TicketHistories =
         whenDefined(text, (txt) => decode<TicketHistories>(txt)) ?? {}
-      return ticketStatus(history, ticket.uses)
+      return ticketStatus(history, ticket)
     }) as Promise<TicketStatus[]>
   }
 

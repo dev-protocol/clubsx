@@ -404,8 +404,7 @@ const cryptoCafeMemberships = [
   {
     id: 'cafe-visitor',
     name: 'Cafe Visitor',
-    description: `CryptoCafe Bar 会員権（10時～18時、1日有効）\n\nCafé Visitor Pass\n\n無料Wifi、コーヒードリンク等
-    `,
+    description: `Get one-time access to our cafe (Any weekday.)\n\nWi-Fi, coffee\n\n---\n\n月〜金のカフェタイム利用。\n\nWi-Fi、コーヒー飲み放題`,
     price: 0.0001,
     currency: 'MATIC',
     imageSrc: 'https://i.imgur.com/4Qc8iDc.png',
@@ -419,8 +418,7 @@ const cryptoCafeMemberships = [
   {
     id: 'bar-visitor',
     name: 'Bar Visitor',
-    description: `CryptoCafe Bar 会員権（18時～22時、1日有効）\n\nBar Visitor Pass\n\n無料Wifi、コーヒードリンク、1日1杯のビール等
-    `,
+    description: `One-time access to our bar (Tuesday or Friday.)\n\nWi-Fi, complimentary drink\n\n---\n\n火・金のバータイム利用\n\nWi-Fi、コーヒー飲み放題、ドリンク1杯無料`,
     price: 0.0001,
     currency: 'MATIC',
     imageSrc: 'https://i.imgur.com/PaxWOh8.png',
@@ -434,8 +432,7 @@ const cryptoCafeMemberships = [
   {
     id: 'one-day',
     name: 'One Day',
-    description: `CryptoCafe Bar 会員権（10時~22時、1日有効）\n\nOne Day Pass\n\n無料Wifi、コーヒードリンク、1日1杯のビール等
-    `,
+    description: `A full day access to our cafe & bar (Tuesday or Friday)\n\nWi-Fi, coffee, complimentary drink\n\n---\n\n火・金のみ利用可能な1日券。\n\nWi-Fi、コーヒー飲み放題、ドリンク1杯無料`,
     price: 0.0001,
     currency: 'MATIC',
     imageSrc: 'https://i.imgur.com/0IJMz2K.png',
@@ -449,7 +446,7 @@ const cryptoCafeMemberships = [
   {
     id: 'friend-pass',
     name: 'Friend Pass',
-    description: `CryptoCafe Bar 会員権（1ヶ月間有効）\n\nFriend Pass\n\n無料Wifi、コーヒードリンク、1日1杯のビール、ゲスト1人無料、スペシャルイベント参加等`,
+    description: `Enjoy a month of unlimited cafe and bar visits for you and a friend.\n\nWi-Fi, coffee, complimentary drink, 1 free guest, special event\n\n---\n\n1ヶ月間の1日利用（バーは火・金）\n\nWi-Fi、コーヒー飲み放題、ゲスト1人無料、ドリンク1杯無料、スペシャルイベント招待`,
     price: 0.0001,
     currency: 'MATIC',
     imageSrc: 'https://i.imgur.com/KzMhSgw.png',
@@ -463,8 +460,7 @@ const cryptoCafeMemberships = [
   {
     id: 'best-friend-pass',
     name: 'Best Friend Pass',
-    description: `CryptoCafe Bar 会員権（3ヶ月間有効）\n\nBest Friend Pass\n\n無料Wifi、コーヒードリンク、1日1杯のビール、ゲスト1人無料、スペシャルイベント参加等
-    `,
+    description: `Enjoy three month of unlimited cafe and bar visits for you and a friend.\n\nWi-Fi, coffee, a complimentary drink,1 bottle corkage free,1 free guest, gifts, special event\n\n---\n\n3ヶ月間のフリーパス（バーは火・金）\n\nWi-Fi、コーヒー飲み放題、ゲスト1人無料、特別ギフト、ドリンク1杯無料、持ち込み1本無料、スペシャルイベント招待`,
     price: 5,
     currency: 'MATIC',
     imageSrc: 'https://i.imgur.com/v43yiqe.png',
@@ -1260,7 +1256,359 @@ const populate = async () => {
       encode({
         name: 'Crypto Cafe & Bar',
         twitterHandle: '',
-        description: `Tokyo's hub for blockchain enthusiasts & the crypto-curious.`,
+        description: `Daytime co-working, nighttime vibing.`,
+        url: 'https://cryptocafe.prerelease.clubs.place',
+        propertyAddress: '0xE59fEDaBB0F79b0EC605737805a9125cd8d87B1f',
+        chainId: 80001, // Polygon: 137 // Mumbai: 80001
+        rpcUrl:
+          'https://polygon-mumbai.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920', // Polygon: https://polygon-mainnet.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920 // Mumbai: https://polygon-mumbai.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920
+        adminRolePoints: 50,
+        options: [
+          {
+            key: 'ogp',
+            value: { image: 'https://i.imgur.com/IqkJqwc.jpg' },
+          },
+          {
+            key: 'navigationLinks',
+            value: [
+              {
+                display: 'Tickets',
+                path: '/tickets',
+              },
+            ],
+          },
+          {
+            key: 'avatarImgSrc',
+            value: 'https://i.imgur.com/8wc0qH5.png',
+          },
+        ],
+        plugins: [
+          {
+            id: 'devprotocol:clubs:plugin:clubs-payments',
+            name: 'fiat',
+            enable: true,
+            options: [
+              {
+                key: 'override',
+                value: [
+                  {
+                    id: cryptoCafeMemberships[0].id,
+                    importFrom: 'devprotocol:clubs:simple-memberships',
+                    key: 'memberships',
+                    payload: cryptoCafeMemberships[0].payload,
+                    price: {
+                      yen: 2000,
+                    },
+                  },
+                  {
+                    id: cryptoCafeMemberships[1].id,
+                    importFrom: 'devprotocol:clubs:simple-memberships',
+                    key: 'memberships',
+                    payload: cryptoCafeMemberships[1].payload,
+                    price: {
+                      yen: 2000,
+                    },
+                  },
+                  {
+                    id: cryptoCafeMemberships[2].id,
+                    importFrom: 'devprotocol:clubs:simple-memberships',
+                    key: 'memberships',
+                    payload: cryptoCafeMemberships[2].payload,
+                    price: {
+                      yen: 3000,
+                    },
+                  },
+                  {
+                    id: cryptoCafeMemberships[3].id,
+                    importFrom: 'devprotocol:clubs:simple-memberships',
+                    key: 'memberships',
+                    payload: cryptoCafeMemberships[3].payload,
+                    price: {
+                      yen: 45000,
+                    },
+                  },
+                  {
+                    id: cryptoCafeMemberships[4].id,
+                    importFrom: 'devprotocol:clubs:simple-memberships',
+                    key: 'memberships',
+                    payload: cryptoCafeMemberships[4].payload,
+                    price: {
+                      yen: 110000,
+                    },
+                  },
+                ],
+              },
+              {
+                key: 'webhooks',
+                value: {
+                  fulfillment: {
+                    encrypted: jsonwebtoken.sign(
+                      'https://veritrans.clubs.place/api/mock/logger',
+                      SALT,
+                    ),
+                  },
+                },
+              },
+            ],
+          },
+          {
+            id: 'devprotocol:clubs:plugin:tickets',
+            options: [
+              {
+                key: 'tickets',
+                value: [
+                  {
+                    // Cafe Visitor
+                    payload: cryptoCafeMemberships[0].payload,
+                    importedFrom: {
+                      plugin: 'devprotocol:clubs:simple-memberships',
+                      key: 'memberships',
+                    },
+                    name: cryptoCafeMemberships[0].name,
+                    uses: [
+                      {
+                        id: 'one-time-cafe-access',
+                        name: 'One-time access (Any weekday)',
+                        description: cryptoCafeMemberships[0].description,
+                        expiration: {
+                          duration: '1 days',
+                          start: '10 hour',
+                          end: '18 hour',
+                          tz: 'Asia/Tokyo',
+                        },
+                        refreshCycle: undefined,
+                      },
+                    ],
+                    webhooks: {
+                      used: {
+                        encrypted: ticketWebhook,
+                      },
+                    },
+                  },
+                  {
+                    // Bar Visitor
+                    payload: cryptoCafeMemberships[1].payload,
+                    importedFrom: {
+                      plugin: 'devprotocol:clubs:simple-memberships',
+                      key: 'memberships',
+                    },
+                    name: cryptoCafeMemberships[1].name,
+                    uses: [
+                      {
+                        id: 'one-time-bar-access',
+                        name: 'One-time access (Tuesday or Friday)',
+                        description: cryptoCafeMemberships[1].description,
+                        expiration: {
+                          duration: '1 days',
+                          start: '18 hour',
+                          end: '22 hour',
+                          tz: 'Asia/Tokyo',
+                        },
+                        refreshCycle: undefined,
+                      },
+                      {
+                        id: 'complimentary-drink',
+                        name: 'Complimentary drink',
+                        description: 'ドリンク 1 杯無料',
+                        dependsOn: 'one-time-bar-access',
+                        refreshCycle: '1 days',
+                      },
+                    ],
+                    webhooks: {
+                      used: {
+                        encrypted: ticketWebhook,
+                      },
+                    },
+                  },
+                  {
+                    // One Day
+                    payload: cryptoCafeMemberships[2].payload,
+                    importedFrom: {
+                      plugin: 'devprotocol:clubs:simple-memberships',
+                      key: 'memberships',
+                    },
+                    name: cryptoCafeMemberships[2].name,
+                    uses: [
+                      {
+                        id: 'one-day-access',
+                        name: 'Full day access to our cafe & bar (Tuesday or Friday)',
+                        description: cryptoCafeMemberships[2].description,
+                        expiration: {
+                          duration: '1 days',
+                          start: '10 hour',
+                          end: '22 hour',
+                          tz: 'Asia/Tokyo',
+                        },
+                        refreshCycle: undefined,
+                      },
+                      {
+                        id: 'complimentary-drink',
+                        name: 'Complimentary drink',
+                        description: 'ドリンク 1 杯無料',
+                        dependsOn: 'one-day-access',
+                        refreshCycle: '1 days',
+                      },
+                    ],
+                    webhooks: {
+                      used: {
+                        encrypted: ticketWebhook,
+                      },
+                    },
+                  },
+                  {
+                    // Friend Pass
+                    payload: cryptoCafeMemberships[3].payload,
+                    importedFrom: {
+                      plugin: 'devprotocol:clubs:simple-memberships',
+                      key: 'memberships',
+                    },
+                    name: cryptoCafeMemberships[3].name,
+                    uses: [
+                      {
+                        id: 'one-month-access',
+                        name: 'One month access',
+                        description: cryptoCafeMemberships[3].description,
+                        expiration: {
+                          duration: '1 months',
+                          start: '10 hour',
+                          end: '22 hour',
+                          tz: 'Asia/Tokyo',
+                        },
+                        refreshCycle: undefined,
+                      },
+                      {
+                        id: 'invite-guest',
+                        name: 'Invite 1 guest',
+                        description: 'ゲスト 1 人無料',
+                        dependsOn: 'one-month-access',
+                        refreshCycle: '1 days',
+                      },
+                      {
+                        id: 'complimentary-drink',
+                        name: 'Complimentary drink',
+                        description: 'ドリンク 1 杯無料',
+                        dependsOn: 'one-month-access',
+                        refreshCycle: '1 days',
+                      },
+                    ],
+                    webhooks: {
+                      used: {
+                        encrypted: ticketWebhook,
+                      },
+                    },
+                  },
+                  {
+                    // Best Friend Pass
+                    payload: cryptoCafeMemberships[4].payload,
+                    importedFrom: {
+                      plugin: 'devprotocol:clubs:simple-memberships',
+                      key: 'memberships',
+                    },
+                    name: cryptoCafeMemberships[4].name,
+                    uses: [
+                      {
+                        id: '3-months-access',
+                        name: '3 months access',
+                        description: cryptoCafeMemberships[4].description,
+                        expiration: {
+                          duration: '1 months',
+                          start: '10 hour',
+                          end: '22 hour',
+                          tz: 'Asia/Tokyo',
+                        },
+                        refreshCycle: undefined,
+                      },
+                      {
+                        id: 'invite-guest',
+                        name: 'Invite 1 guest',
+                        description: 'ゲスト 1 人無料',
+                        dependsOn: '3-months-access',
+                        refreshCycle: '1 days',
+                      },
+                      {
+                        id: 'complimentary-drink',
+                        name: 'Complimentary drink',
+                        description: 'ドリンク 1 杯無料',
+                        dependsOn: '3-months-access',
+                        refreshCycle: '1 days',
+                      },
+                      {
+                        id: '',
+                        name: 'One bottle corkage',
+                        description: 'ボトル持ち込み 1 本無料',
+                        dependsOn: '3-months-access',
+                        refreshCycle: '1 days',
+                      },
+                    ],
+                    webhooks: {
+                      used: {
+                        encrypted: ticketWebhook,
+                      },
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            id: 'devprotocol:clubs:simple-memberships',
+            name: 'memberships',
+            enable: true,
+            options: [
+              {
+                key: 'memberships',
+                value: cryptoCafeMemberships,
+              },
+            ],
+          },
+          {
+            id: 'devprotocol:clubs:theme-1',
+            name: 'defaultTheme',
+            enable: true,
+            options: [
+              {
+                key: 'globalConfig',
+                value: {
+                  bg: 'rgba(29, 36, 38, 1)',
+                },
+              },
+              {
+                key: 'homeConfig',
+                value: {
+                  hero: {
+                    image: 'https://i.imgur.com/IqkJqwc.jpg',
+                  },
+                  description: `Tokyo's hub for blockchain enthusiasts & the crypto-curious.`,
+                  body: fs.readFileSync(
+                    './src/assets/homeConfig.cryptocafe.body.md',
+                    'utf-8',
+                  ),
+                },
+              },
+            ],
+          },
+          {
+            id: 'devprotocol:clubs:plugin:me',
+            name: 'me',
+            enable: true,
+            options: [],
+          },
+          {
+            id: 'devprotocol:clubs:plugin:join',
+            name: 'join',
+            enable: true,
+            options: [],
+          },
+        ],
+      }),
+    )
+
+    await client.set(
+      'cryptocafe-debug',
+      encode({
+        name: 'Crypto Cafe & Bar',
+        twitterHandle: '',
+        description: `Daytime co-working, nighttime vibing.`,
         url: 'https://cryptocafe.prerelease.clubs.place',
         propertyAddress: '0xE59fEDaBB0F79b0EC605737805a9125cd8d87B1f',
         chainId: 80001, // Polygon: 137 // Mumbai: 80001
@@ -1362,16 +1710,18 @@ const populate = async () => {
                 key: 'tickets',
                 value: [
                   {
+                    // Cafe Visitor
                     payload: cryptoCafeMemberships[0].payload,
                     importedFrom: {
                       plugin: 'devprotocol:clubs:simple-memberships',
                       key: 'memberships',
                     },
-                    name: 'Cafe Ticket',
+                    name: cryptoCafeMemberships[0].name,
                     uses: [
                       {
-                        id: '1-day-cafe-ticket',
-                        description: '1 day ticket for Cafe time',
+                        id: 'one-time-cafe-access',
+                        name: 'One-time access (Any weekday)',
+                        description: cryptoCafeMemberships[0].description,
                         expiration: {
                           duration: '1 days',
                           start: '10 hour',
@@ -1379,12 +1729,6 @@ const populate = async () => {
                           tz: 'Asia/Tokyo',
                         },
                         refreshCycle: undefined,
-                      },
-                      {
-                        id: 'free-coffee',
-                        description: 'Free coffee',
-                        dependsOn: '1-day-cafe-ticket',
-                        refreshCycle: '1 days',
                       },
                     ],
                     webhooks: {
@@ -1394,16 +1738,18 @@ const populate = async () => {
                     },
                   },
                   {
+                    // Bar Visitor
                     payload: cryptoCafeMemberships[1].payload,
                     importedFrom: {
                       plugin: 'devprotocol:clubs:simple-memberships',
                       key: 'memberships',
                     },
-                    name: 'Bar Ticket',
+                    name: cryptoCafeMemberships[1].name,
                     uses: [
                       {
-                        id: '1-day-bar-ticket',
-                        description: '1 day ticket for Bar time',
+                        id: 'one-time-bar-access',
+                        name: 'One-time access (Tuesday or Friday)',
+                        description: cryptoCafeMemberships[1].description,
                         expiration: {
                           duration: '1 days',
                           start: '18 hour',
@@ -1413,9 +1759,10 @@ const populate = async () => {
                         refreshCycle: undefined,
                       },
                       {
-                        id: 'free-beer',
-                        description: 'Free beer',
-                        dependsOn: '1-day-bar-ticket',
+                        id: 'complimentary-drink',
+                        name: 'Complimentary drink',
+                        description: 'ドリンク 1 杯無料',
+                        dependsOn: 'one-time-bar-access',
                         refreshCycle: '1 days',
                       },
                     ],
@@ -1426,16 +1773,18 @@ const populate = async () => {
                     },
                   },
                   {
+                    // One Day
                     payload: cryptoCafeMemberships[2].payload,
                     importedFrom: {
                       plugin: 'devprotocol:clubs:simple-memberships',
                       key: 'memberships',
                     },
-                    name: 'One day Ticket',
+                    name: cryptoCafeMemberships[2].name,
                     uses: [
                       {
-                        id: '1-day-ticket',
-                        description: '1 day ticket',
+                        id: 'one-day-access',
+                        name: 'Full day access to our cafe & bar (Tuesday or Friday)',
+                        description: cryptoCafeMemberships[2].description,
                         expiration: {
                           duration: '1 days',
                           start: '10 hour',
@@ -1445,9 +1794,10 @@ const populate = async () => {
                         refreshCycle: undefined,
                       },
                       {
-                        id: 'free-drink',
-                        description: 'Free coffee/beer',
-                        dependsOn: '1-day-ticket',
+                        id: 'complimentary-drink',
+                        name: 'Complimentary drink',
+                        description: 'ドリンク 1 杯無料',
+                        dependsOn: 'one-day-access',
                         refreshCycle: '1 days',
                       },
                     ],
@@ -1458,16 +1808,18 @@ const populate = async () => {
                     },
                   },
                   {
+                    // Friend Pass
                     payload: cryptoCafeMemberships[3].payload,
                     importedFrom: {
                       plugin: 'devprotocol:clubs:simple-memberships',
                       key: 'memberships',
                     },
-                    name: '1 month Ticket',
+                    name: cryptoCafeMemberships[3].name,
                     uses: [
                       {
-                        id: '1-month-ticket',
-                        description: '1 month ticket',
+                        id: 'one-month-access',
+                        name: 'One month access',
+                        description: cryptoCafeMemberships[3].description,
                         expiration: {
                           duration: '1 months',
                           start: '10 hour',
@@ -1477,9 +1829,17 @@ const populate = async () => {
                         refreshCycle: undefined,
                       },
                       {
-                        id: 'free-drink',
-                        description: 'Free coffee or beer /day',
-                        dependsOn: '1-month-ticket',
+                        id: 'invite-guest',
+                        name: 'Invite 1 guest',
+                        description: 'ゲスト 1 人無料',
+                        dependsOn: 'one-month-access',
+                        refreshCycle: '1 days',
+                      },
+                      {
+                        id: 'complimentary-drink',
+                        name: 'Complimentary drink',
+                        description: 'ドリンク 1 杯無料',
+                        dependsOn: 'one-month-access',
                         refreshCycle: '1 days',
                       },
                     ],
@@ -1490,18 +1850,20 @@ const populate = async () => {
                     },
                   },
                   {
+                    // Best Friend Pass
                     payload: cryptoCafeMemberships[4].payload,
                     importedFrom: {
                       plugin: 'devprotocol:clubs:simple-memberships',
                       key: 'memberships',
                     },
-                    name: '3 months Ticket',
+                    name: cryptoCafeMemberships[4].name,
                     uses: [
                       {
-                        id: '3-months-ticket',
-                        description: '3 months ticket',
+                        id: '3-months-access',
+                        name: '3 months access',
+                        description: cryptoCafeMemberships[4].description,
                         expiration: {
-                          duration: '3 months',
+                          duration: '1 months',
                           start: '10 hour',
                           end: '22 hour',
                           tz: 'Asia/Tokyo',
@@ -1509,9 +1871,24 @@ const populate = async () => {
                         refreshCycle: undefined,
                       },
                       {
-                        id: 'free-drink',
-                        description: 'Free coffee or beer /day',
-                        dependsOn: '3-months-ticket',
+                        id: 'invite-guest',
+                        name: 'Invite 1 guest',
+                        description: 'ゲスト 1 人無料',
+                        dependsOn: '3-months-access',
+                        refreshCycle: '1 days',
+                      },
+                      {
+                        id: 'complimentary-drink',
+                        name: 'Complimentary drink',
+                        description: 'ドリンク 1 杯無料',
+                        dependsOn: '3-months-access',
+                        refreshCycle: '1 days',
+                      },
+                      {
+                        id: '',
+                        name: 'One bottle corkage',
+                        description: 'ボトル持ち込み 1 本無料',
+                        dependsOn: '3-months-access',
                         refreshCycle: '1 days',
                       },
                     ],
@@ -1569,52 +1946,12 @@ const populate = async () => {
             options: [],
           },
           {
-            id: 'devprotocol:clubs:plugin:buy',
-            name: 'buy',
-            enable: true,
-            options: [
-              {
-                key: 'products',
-                value: debugProducts,
-              },
-            ],
-          },
-          {
             id: 'devprotocol:clubs:plugin:join',
             name: 'join',
             enable: true,
             options: [],
           },
         ],
-      }),
-    )
-
-    await client.set(
-      `devprotocol:clubs:plugin:tickets:history:0xE59fEDaBB0F79b0EC605737805a9125cd8d87B1f:${toBytes32(
-        '#1',
-      )}#51`,
-      encode({
-        '1-month-pass': { datetime: new Date('2023-08-20T00:00:00Z') },
-      }),
-    )
-    await client.set(
-      `devprotocol:clubs:plugin:tickets:history:0xE59fEDaBB0F79b0EC605737805a9125cd8d87B1f:${toBytes32(
-        '#1',
-      )}#52`,
-      encode({
-        '1-month-pass': { datetime: new Date('2023-01-20T00:00:00Z') },
-        'special-week': { datetime: new Date('2023-01-20T00:00:00Z') },
-      }),
-    )
-    await client.set(
-      `devprotocol:clubs:plugin:tickets:history:0xE59fEDaBB0F79b0EC605737805a9125cd8d87B1f:${toBytes32(
-        '#1',
-      )}#53`,
-      encode({
-        'special-week': { datetime: new Date('2023-08-22T00:00:00Z') },
-        'free-juice': {
-          datetime: new Date('2023-08-23T00:00:00Z'),
-        },
       }),
     )
 

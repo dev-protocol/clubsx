@@ -29,7 +29,8 @@ export type Ticket = {
   name: string
   uses: {
     id: string
-    description: string
+    name: string
+    description?: string
     expiration?: {
       duration: string
       start: string
