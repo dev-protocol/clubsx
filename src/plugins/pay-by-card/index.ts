@@ -10,17 +10,21 @@ import type {
   ClubsPluginMeta,
 } from '@devprotocol/clubs-core'
 import { ClubsPluginCategory, ClubsPluginSignal } from '@devprotocol/clubs-core'
-import { default as Index } from './index.astro'
-import { default as Id } from './id.astro'
-import { default as Slot } from './slot.astro'
-import { default as Result } from './result.astro'
-import { default as SlotCurrencyOption } from './slot-currency-option.astro'
+import Index from './index.astro'
+import Id from './id.astro'
+import Slot from './slot.astro'
+import Result from './result.astro'
+import SlotCurrencyOption from './slot-currency-option.astro'
 import { solidityPacked } from 'ethers'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import { bytes32Hex } from '@fixtures/data/hexlify'
 import type { InjectedTiers } from '@constants/tier'
 import { getItems } from './utils/getItems'
 import type { CurrencyOption } from '@constants/currencyOption'
+import Icon from './images/Icon.png'
+import Screenshot1 from './images/pay-by-card-1.jpg'
+import Screenshot2 from './images/pay-by-card-2.jpg'
+import Readme from './readme/index.astro'
 
 export type PriceOverrides = {
   id: string
@@ -181,8 +185,12 @@ export const getSlots: ClubsFunctionGetSlots = async (
 
 export const meta: ClubsPluginMeta = {
   id: 'devprotocol:clubs:plugin:pay-by-card',
-  displayName: 'Pay By Card',
+  displayName: 'Pay By Card - Crossmint',
   category: ClubsPluginCategory.Monetization,
+  icon: Icon.src,
+  description: 'Add USD payments by Crossmint.',
+  previewImages: [Screenshot1.src, Screenshot2.src],
+  readme: Readme,
 }
 
 export default {

@@ -13,4 +13,6 @@ export const modules = {
   'devprotocol:clubs:plugin:posts': () =>
     import('@devprotocol/clubs-plugin-posts'),
   'devprotocol:clubs:plugin:pay-by-card': () => import('@plugins/pay-by-card'),
+  'devprotocol:clubs:plugin:clubs-payments': () =>
+    import('@plugins/clubs-payments'),
 }

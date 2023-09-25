@@ -69,7 +69,7 @@ export const post: (opts: {
       .then((res) => whenDefined(res, decode<TicketHistories>) ?? {})
       .catch(always({}))
 
-    const statuses = ticketStatus(history, ticket.uses)
+    const statuses = ticketStatus(history, ticket)
 
     const beneifit = statuses.find((status) => status.self.use.id === benefitId)
     if (!beneifit) {
@@ -114,8 +114,12 @@ export const post: (opts: {
             status: Status.Used,
             id,
             account,
+            ticket: {
+              name: beneifit.ticket.name,
+            },
             benefit: {
               id: benefitId,
+              name: beneifit.self.use.name,
               description: beneifit.self.use.description,
             },
           }),

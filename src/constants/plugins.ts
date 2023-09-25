@@ -22,7 +22,7 @@ import $12 from '@plugins/message'
 import $13 from '@plugins/memberships'
 import $14 from '@kazu80/clubs-plugin-links'
 import $15 from '@plugins/join-legacy'
-import $16 from '@plugins/veritrans'
+import $16 from '@plugins/clubs-payments'
 import $17 from '@plugins/tickets'
 import $18 from '@plugins/collections'
 
@@ -86,6 +86,16 @@ export type ExternalTool = {
 
 export const installablePlugins: InstallablePlugins[] = [
   {
+    id: $16.meta.id,
+    tag: 'New & Upcoming',
+    developer: 'Dev Protocol',
+    repositoryUrl: 'https://github.com/dev-protocol/clubsx',
+    pluginOptions: [],
+    require: {
+      invitation: true,
+    },
+  },
+  {
     id: $4.meta.id,
     tag: 'New & Upcoming',
     developer: 'Dev Protocol',
@@ -104,14 +114,14 @@ export const installablePlugins: InstallablePlugins[] = [
   },
   {
     id: $14.meta.id,
-    tag: 'New & Upcoming',
+    tag: 'Widgets',
     pluginOptions: [],
     developer: 'kazu80',
     repositoryUrl: 'https://github.com/kazu80/clubs-links',
   },
   {
     id: PostsPlugin.meta.id,
-    tag: 'Community',
+    tag: 'New & Upcoming',
     pluginOptions: (config) => [
       {
         key: 'feeds',

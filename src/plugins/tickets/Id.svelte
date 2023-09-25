@@ -10,6 +10,8 @@
   import Check from './Check.svelte'
   import { type Signer, hashMessage } from 'ethers'
   import { bytes32Hex } from '@fixtures/data/hexlify'
+  import { marked } from 'marked'
+  import DOMPurify from 'dompurify'
 
   export let ticket: Ticket
   export let membership: UndefinedOr<Membership>
@@ -19,6 +21,8 @@
   let signer: UndefinedOr<Signer>
   let idIsLoading: UndefinedOr<string>
   let idIsError: UndefinedOr<{ id: string; error: string }>
+
+  const mdToHtml = (str?: string) => DOMPurify.sanitize(marked.parse(str ?? ''))
 
   const onClickABenefit = (benefitId: string) => async () => {
     whenDefined(signer, async (sigr) => {
@@ -52,7 +56,7 @@
     const text = res.ok ? await res.text() : undefined
     const history: TicketHistories =
       whenDefined(text, (txt) => decode<TicketHistories>(txt)) ?? {}
-    benefits = ticketStatus(history, ticket.uses)
+    benefits = ticketStatus(history, ticket)
     console.log(history, benefits)
   }
 
@@ -118,9 +122,16 @@
                 class="rounded-full border border-[3px] border-transparent text-dp-white-600 group-data-[is-waiting=true]:border-native-blue-400 group-data-[is-available=true]:bg-dp-green-200 group-data-[is-enablable=true]:bg-white group-data-[is-expired=true]:bg-white group-data-[is-temp-unavailable=true]:bg-dp-white-200 group-data-[is-waiting=true]:bg-transparent group-data-[is-available=true]:text-white"
                 ><Check />
               </span><span class="flex-grow text-2xl font-bold"
-                >{benefit.self.use.description}</span
+                >{benefit.self.use.name}</span
               ></button
             >
+            {#if benefit.self.use.description}
+              <div
+                class="md grid gap-2 rounded-md bg-dp-white-300 p-2 text-black/80"
+              >
+                {@html mdToHtml(benefit.self.use.description)}
+              </div>
+            {/if}
             {#if !idIsError && benefit.enablable}
               <span class="font-bold text-native-blue-400 md:text-xl"
                 >Sign to use this benefit</span
@@ -135,7 +146,7 @@
             {/if}
             {#if !idIsError && !benefit.enablable && benefit.dependency?.unused}
               <span class="font-bold text-native-blue-400 md:text-xl"
-                >Will be available when {benefit.dependency.use.description} is used.</span
+                >Will be available when {benefit.dependency.use.name} is used.</span
               >
             {/if}
             {#if !idIsError && benefit.inUnavailableTime}
@@ -156,3 +167,39 @@
     {/if}
   </div>
 </section>
+
+<style lang="scss">
+  .md {
+    :global(h1) {
+      @apply text-xl font-bold;
+    }
+    :global(h2) {
+      @apply text-lg font-bold;
+    }
+    :global(h3) {
+      @apply text-base;
+    }
+    :global(h4) {
+      @apply text-sm font-bold;
+    }
+    :global(h5) {
+      @apply text-xs font-bold;
+    }
+    :global(p) {
+      @apply text-xs;
+    }
+    :global(a) {
+      @apply inline-block rounded p-1 underline transition hover:bg-white/20;
+    }
+    :global(ul) {
+      @apply list-none;
+      :global(li::before) {
+        content: '\2022';
+        @apply mr-2 text-zinc-300;
+      }
+    }
+    :global(pre) {
+      @apply rounded p-3;
+    }
+  }
+</style>

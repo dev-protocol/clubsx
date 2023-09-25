@@ -15,6 +15,11 @@ import type { UndefinedOr } from '@devprotocol/util-ts'
 import type { InjectedTiers } from '@constants/tier'
 import type { CurrencyOption } from '@constants/currencyOption'
 import { bytes32Hex } from '@fixtures/data/hexlify'
+import Icon from './images/Icon.png'
+import Readme from './readme/index.astro'
+import screenshot1 from './images/clubs-payments-1.jpg'
+import screenshot2 from './images/clubs-payments-2.jpg'
+import screenshot3 from './images/clubs-payments-3.jpg'
 
 export type Override = {
   id: string
@@ -121,9 +126,13 @@ export const getSlots: ClubsFunctionGetSlots = async (options, __, utils) => {
 }
 
 export const meta: ClubsPluginMeta = {
-  id: 'devprotocol:clubs:plugin:veritrans',
-  displayName: 'Veritrans',
+  id: 'devprotocol:clubs:plugin:clubs-payments',
+  displayName: 'Clubs Payments',
   category: ClubsPluginCategory.Monetization,
+  icon: Icon.src,
+  description: 'Enables fastest & most secure user onboarding with fiat.',
+  readme: Readme,
+  previewImages: [screenshot1.src, screenshot2.src, screenshot3.src],
 }
 
 export default {
