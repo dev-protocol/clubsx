@@ -1576,9 +1576,9 @@ const populate = async () => {
                 key: 'homeConfig',
                 value: {
                   hero: {
-                    image: 'https://i.imgur.com/IqkJqwc.jpg',
+                    image: 'https://i.imgur.com/xp2uJYe.jpg',
                   },
-                  description: `Tokyo's hub for blockchain enthusiasts & the crypto-curious.`,
+                  description: `Daytime co-working, nighttime vibing.`,
                   body: fs.readFileSync(
                     './src/assets/homeConfig.cryptocafe.body.md',
                     'utf-8',
