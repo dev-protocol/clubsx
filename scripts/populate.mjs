@@ -1636,6 +1636,12 @@ const populate = async () => {
         ],
         plugins: [
           {
+            id: 'clubs-core:admin',
+            name: 'admin',
+            enable: true,
+            options: [],
+          },
+          {
             id: 'devprotocol:clubs:plugin:clubs-payments',
             name: 'fiat',
             enable: true,
