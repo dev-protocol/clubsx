@@ -2,7 +2,7 @@
 import type { InstallablePlugins } from '@constants/plugins'
 import type { ClubsConfiguration } from '@devprotocol/clubs-core'
 
-import checkImage from '@assets/check.svg'
+import CheckImage from './assets/Check.astro'
 import pluginDefaultIcon from '@assets/default-plugin-icon.jpg'
 import ConnectButton from '@components/Wallet/ConnectButton.vue'
 import { createGetPluginMeta } from './utils/createGetPluginMeta'
@@ -36,7 +36,7 @@ const READMEComponent = plugin.readme
         {
           false ? (
             <span class="flex cursor-not-allowed items-center justify-center rounded-full bg-native-blue-200 px-8 py-4">
-              <img src={checkImage.src} class="h-3 max-h-full w-3 font-bold" />
+              <CheckImage class="h-3 max-h-full w-3 font-bold" />
               <p class="font-bold text-black">Added</p>
             </span>
           ) : (
@@ -45,6 +45,24 @@ const READMEComponent = plugin.readme
         }
       </div>
     </div>
+
+    {
+      plugin.require?.invitation && (
+        <section class="rounded bg-dp-yellow-300 p-2 text-dp-yellow-ink">
+          <p class="mr-1 inline text-xs font-bold">Preview:</p>
+          <p class="inline text-xs">
+            This plugin is currently published as a preview version. Please wait
+            a few moments until it is available for your Club. If you have any
+            questions about getting started, feel free to contact us on{' '}
+            <a href="https://discord.gg/TFBZGM9jf3" class="text-xs underline">
+              Discord
+            </a>
+            .
+          </p>
+        </section>
+      )
+    }
+
     <div
       class="mx-[calc((100vw-100%)/-2)] flex items-start justify-start gap-8 overflow-x-auto px-4 pb-4 lg:mx-0 lg:px-0"
     >
@@ -72,23 +90,6 @@ const READMEComponent = plugin.readme
         </Markdown>
       </p>
     </div>
-    {
-      plugin.require?.invitation && (
-        <section class="rounded-md bg-dp-yellow-300 p-4 text-dp-yellow-ink">
-          <p class="mb-4 text-xl font-bold">Limited Preview</p>
-          <p>
-            This plugin is currently available as a limited preview version.
-            Please wait a few moments until it is available for your Club. If
-            you have any questions about getting started, feel free to contact
-            us on{' '}
-            <a href="https://discord.gg/TFBZGM9jf3" class="underline">
-              Discord
-            </a>
-            .
-          </p>
-        </section>
-      )
-    }
     <div class="grid max-w-2xl gap-8">
       {
         plugin.developer && (

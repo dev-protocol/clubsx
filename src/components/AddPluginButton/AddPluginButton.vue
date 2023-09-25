@@ -100,18 +100,17 @@ onMounted(() => {
 
 <template>
   <button
+    v-if="!isLimitedPreview"
     class="hs-button is-large flex justify-center gap-2 rounded-full py-3 text-white"
-    :disabled="
-      isAdded || isLimitedPreview || !connected || isAddingPluginToClubs
-    "
+    :disabled="isAdded || !connected || isAddingPluginToClubs"
     :title="addingPluginToClubsStatusMsg"
     @click="addPluginToClub"
     v-bind:class="
       isAddingPluginToClubs
-        ? 'bg-success-300 cursor-progress'
-        : isAdded || isLimitedPreview || !connected
+        ? 'cursor-progress bg-dp-green-300'
+        : isAdded || !connected
         ? 'cursor-not-allowed bg-native-blue-200'
-        : 'bg-success-300 cursor-pointer'
+        : 'cursor-pointer bg-dp-green-300'
     "
   >
     <span
@@ -119,6 +118,16 @@ onMounted(() => {
       role="presentation"
       class="h-3 w-3 animate-spin rounded-full border-l border-r border-t border-white"
     />
-    {{ isAdded ? 'Added' : isLimitedPreview ? 'Limited Preview' : 'Add' }}
+    {{ isAdded ? 'Added' : 'Add' }}
   </button>
+
+  <a
+    v-if="isLimitedPreview"
+    class="hs-button is-large flex justify-center gap-2 rounded-full bg-dp-green-300 py-3 text-white"
+    href="https://discord.gg/TFBZGM9jf3"
+    target="_blank"
+    rel="noreferrer noopen"
+  >
+    Contact
+  </a>
 </template>

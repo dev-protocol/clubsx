@@ -1,29 +1,29 @@
 ---
 import type { PluginMeta } from '@constants/plugins'
-import checkImage from '@assets/check.svg'
-import clockImage from '@assets/clock.svg'
-import transparent from '@assets/transparent.svg'
+import CheckImage from '../assets/Check.astro'
+import ClockImage from '../assets/Clock.astro'
+import Transparent from '../assets/Transparent.astro'
 import pluginDefaultIcon from '@assets/default-plugin-icon.jpg'
 import Wrapper from './Wrapper.astro'
 import At from '@components/Icons/at-symbol.astro'
+
+interface Props {
+  plugin: PluginMeta
+  markAsUpcoming?: boolean
+  truncate?: boolean
+  preview?: string
+  size?: 'small' | 'medium'
+  displayStatus?: boolean
+}
 
 const {
   plugin,
   preview,
   truncate = true,
   markAsUpcoming = false,
-  markAsLimitedPreview = false,
   size = 'medium',
   displayStatus = true,
-} = Astro.props as {
-  plugin: PluginMeta
-  markAsUpcoming?: boolean
-  markAsLimitedPreview?: boolean
-  truncate?: boolean
-  preview?: string
-  size?: 'small' | 'medium'
-  displayStatus?: boolean
-}
+} = Astro.props
 
 const pluginUrl = plugin.planned ? undefined : `/admin/marketplace/${plugin.id}`
 ---
@@ -52,7 +52,7 @@ const pluginUrl = plugin.planned ? undefined : `/admin/marketplace/${plugin.id}`
       );
     }
 
-    &.is-limited-preview {
+    &.is-preview {
       @include hashi.color-apply(
         'plugin-tag',
         (
@@ -71,6 +71,17 @@ const pluginUrl = plugin.planned ? undefined : `/admin/marketplace/${plugin.id}`
           fill: 'dp-green.400',
           ink: 'dp-green.ink',
           border: 'dp-green.400',
+        )
+      );
+    }
+
+    &.is-pro {
+      @include hashi.color-apply(
+        'plugin-tag',
+        (
+          fill: 'dp-blue-grey.400',
+          ink: 'dp-green.ink',
+          border: 'dp-blue-grey.400',
         )
       );
     }
@@ -100,17 +111,9 @@ const pluginUrl = plugin.planned ? undefined : `/admin/marketplace/${plugin.id}`
     <div class="col-start-2 flex w-full items-center justify-between truncate">
       <p class="truncate text-2xl font-bold">{plugin.displayName}</p>
       {
-        markAsLimitedPreview && (
-          <div class="clb-plugin__tag is-limited-preview flex h-fit w-fit items-center justify-around gap-0.5 rounded-full px-2">
-            <img src={transparent.src} class="h-3 max-h-full w-3" />
-            <p class="h-fit w-fit text-xs">Limited preview</p>
-          </div>
-        )
-      }
-      {
         markAsUpcoming && (
           <div class="clb-plugin__tag is-upcoming bg-danger-200 flex h-fit w-fit items-center justify-around gap-0.5 rounded-full px-2">
-            <img src={clockImage.src} class="h-3 max-h-full w-3" />
+            <ClockImage class="h-3 max-h-full w-3" />
             <p class="h-fit w-fit text-xs">Upcoming</p>
           </div>
         )
@@ -118,7 +121,7 @@ const pluginUrl = plugin.planned ? undefined : `/admin/marketplace/${plugin.id}`
       {
         !markAsUpcoming && displayStatus && plugin.added && (
           <div class="clb-plugin__tag is-added flex h-fit w-fit items-center justify-around gap-0.5 rounded-full px-2">
-            <img src={checkImage.src} class="h-3 max-h-full w-3" />
+            <CheckImage class="h-3 max-h-full w-3" />
             <p class="h-fit w-fit text-xs">Added</p>
           </div>
         )
@@ -135,16 +138,32 @@ const pluginUrl = plugin.planned ? undefined : `/admin/marketplace/${plugin.id}`
         </p>
       )
     }
-    <p
-      class="clb-plugin__tag is-free col-start-2 rounded-full px-2 text-xs text-black"
-    >
+    <p class="flex-start justify-wrap col-start-2 flex gap-2">
+      <span
+        class:list={[
+          'clb-plugin__tag rounded-full px-2 text-xs text-black',
+          { 'is-pro': plugin.subscriptionNeeded === true },
+          { 'is-free': !plugin.subscriptionNeeded && !plugin?.offer?.price },
+        ]}
+      >
+        {
+          plugin?.subscriptionNeeded
+            ? 'Pro'
+            : plugin?.offer?.price
+            ? `${Number(plugin?.offer?.price).toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 3,
+              })} ${plugin?.offer?.priceCurrency}`
+            : 'Free'
+        }
+      </span>
       {
-        plugin?.offer?.price
-          ? `${Number(plugin?.offer?.price).toLocaleString('en-US', {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 3,
-            })} ${plugin?.offer?.priceCurrency}`
-          : 'Free'
+        plugin.require?.invitation && (
+          <span class="clb-plugin__tag is-preview flex h-fit w-fit items-center justify-around gap-0.5 rounded-full px-2">
+            <Transparent class="h-3 max-h-full w-3" />
+            <span class="h-fit w-fit text-xs">Preview</span>
+          </span>
+        )
       }
     </p>
   </div>
