@@ -1897,7 +1897,6 @@ const populate = async () => {
       }),
     )
 
-
     console.log('Tenants set')
     await client.quit()
     console.log('Closed the DB connection')
