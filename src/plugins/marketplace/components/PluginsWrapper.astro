@@ -35,7 +35,6 @@ const filteredPlugins = plugins.filter((plg) => plg.tag === tag)
             preview={preview ? nAu.theme?.previewImage : undefined}
             size={preview ? 'small' : undefined}
             markAsUpcoming={Boolean(nAu.planned)}
-            markAsLimitedPreview={nAu.require?.invitation}
             truncate={!featuring}
           />
         ))}

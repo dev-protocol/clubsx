@@ -4,6 +4,7 @@ import type {
 } from '@devprotocol/clubs-core'
 import { modules } from '../constants/modules'
 import type { InstallablePlugins, PluginMeta } from '@constants/plugins'
+import { paidBundledItems } from '@constants/plugins'
 
 const has = (id: string): id is keyof typeof modules => id in modules
 
@@ -27,5 +28,6 @@ export const createGetPluginMeta =
       planned: plugin.planned,
       pluginOptions: plugin.pluginOptions,
       require: plugin.require,
+      subscriptionNeeded: paidBundledItems.some((i) => i.id === plugin.id),
     }
   }

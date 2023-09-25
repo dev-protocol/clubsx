@@ -71,9 +71,14 @@ export type InstallablePlugins = {
   }
 }
 
+export type PaidBundledItem = {
+  id: string
+}
+
 export type PluginMeta = (ClubsPluginMeta & Partial<ClubsThemePluginMeta>) &
   InstallablePlugins & {
     added: boolean
+    subscriptionNeeded: boolean
   }
 
 export type ExternalTool = {
@@ -218,4 +223,13 @@ export const plugins = [
   $16,
   $17,
   PostsPlugin,
+]
+
+export const paidBundledItems: PaidBundledItem[] = [
+  {
+    id: $16.meta.id,
+  },
+  {
+    id: $17.meta.id,
+  },
 ]
