@@ -411,7 +411,7 @@ const cryptoCafeMemberships = [
     payload: toBytes32('cafe-visitor'),
     fee: {
       percentage: 0.95,
-      beneficiary: '0x57E21bd98612DE0Bd1723F4bf81A944eF7BfF526',
+      beneficiary: '0x76119972c0C0F3183378423DCa039e55D9824050',
     },
     accessControl: cryptocafeAccessControl$1,
   },
@@ -425,7 +425,7 @@ const cryptoCafeMemberships = [
     payload: toBytes32('bar-visitor'),
     fee: {
       percentage: 0.95,
-      beneficiary: '0x57E21bd98612DE0Bd1723F4bf81A944eF7BfF526',
+      beneficiary: '0x76119972c0C0F3183378423DCa039e55D9824050',
     },
     accessControl: cryptocafeAccessControl$1,
   },
@@ -439,7 +439,7 @@ const cryptoCafeMemberships = [
     payload: toBytes32('one-day'),
     fee: {
       percentage: 0.95,
-      beneficiary: '0x57E21bd98612DE0Bd1723F4bf81A944eF7BfF526',
+      beneficiary: '0x76119972c0C0F3183378423DCa039e55D9824050',
     },
     accessControl: cryptocafeAccessControl$1,
   },
@@ -453,7 +453,7 @@ const cryptoCafeMemberships = [
     payload: toBytes32('friend-pass'),
     fee: {
       percentage: 0.95,
-      beneficiary: '0x57E21bd98612DE0Bd1723F4bf81A944eF7BfF526',
+      beneficiary: '0x76119972c0C0F3183378423DCa039e55D9824050',
     },
     accessControl: cryptocafeAccessControl$2,
   },
@@ -467,7 +467,7 @@ const cryptoCafeMemberships = [
     payload: toBytes32('best-friend-pass'),
     fee: {
       percentage: 0.95,
-      beneficiary: '0x57E21bd98612DE0Bd1723F4bf81A944eF7BfF526',
+      beneficiary: '0x76119972c0C0F3183378423DCa039e55D9824050',
     },
     accessControl: cryptocafeAccessControl$2,
   },
