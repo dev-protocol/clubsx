@@ -13,7 +13,7 @@
     <div class="flex items-start gap-2.5">
       <img
         class="md:w-[896px] rounded-t-2xl"
-        src={collection.imageSrc}
+        src={collection.imageSrc?.trim().length > 0 ? collection.imageSrc : 'https://dummyimage.com/2400x1200/ebebeb/000003.png&text=Empty+Image'}
         alt={`${collection.name}-image`}
       />
     </div>

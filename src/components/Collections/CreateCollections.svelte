@@ -121,7 +121,7 @@
     const file = e.currentTarget.files[0]
 
     collection.imageSrc =
-      (await uploadImageAndGetPath(file)) || `https://i.ibb.co/RbxFzn8/img.jpg`
+    (await uploadImageAndGetPath(file)) || `https://dummyimage.com/2400x1200/ebebeb/000003.png&text=Empty+Image`
 
     collection = collection
 
