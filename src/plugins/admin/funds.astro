@@ -1,0 +1,11 @@
+---
+import type { ClubsConfiguration } from '@devprotocol/clubs-core'
+import FundsInfo from './Funds.svelte'
+
+const config = Astro.props as ClubsConfiguration
+---
+
+<section class="flex flex-col">
+  <h1 class="mb-16 font-title text-lg font-bold">Funds</h1>
+  <FundsInfo client:only="svelte" config={config} />
+</section>
