@@ -13,6 +13,7 @@
   import { marked } from 'marked'
   import DOMPurify from 'dompurify'
   import { now } from './utils/date'
+  import { Parts, i18nFactory, type I18nFunction } from './i18n'
 
   export let ticket: Ticket
   export let membership: UndefinedOr<Membership>
@@ -22,6 +23,7 @@
   let signer: UndefinedOr<Signer>
   let idIsLoading: UndefinedOr<string>
   let idIsError: UndefinedOr<{ id: string; error: string }>
+  let i18n: I18nFunction = i18nFactory(['en'])
 
   const mdToHtml = (str?: string) => DOMPurify.sanitize(marked.parse(str ?? ''))
 
@@ -62,6 +64,7 @@
   }
 
   onMount(async () => {
+    i18n = i18nFactory(navigator.languages)
     if (sTokensId) {
       fetchTicketStatus(sTokensId)
     }
@@ -134,23 +137,23 @@
               </div>
             {/if}
             {#if !idIsError && benefit.enablable}
-              <span class="font-bold text-native-blue-400 md:text-xl"
-                >Sign to use this benefit</span
+              <span class="font-bold text-native-blue-400"
+                >{i18n(Parts.SignToUseThisBenefit)}</span
               >
               {#if benefit.availableAtIfenabled?.isAfter(now())}
                 <span class="font-bold text-native-blue-300"
-                  >After signing, this will be available {benefit.availableAtIfenabled
-                    .local()
-                    .calendar()}</span
+                  >{i18n(Parts.AfterSigningThisWillBeAvailable, [
+                    benefit.availableAtIfenabled.local().calendar(),
+                  ])}</span
                 >
               {/if}
             {/if}
             {#if !idIsError && benefit.available && benefit.self.expiration}
               {#if benefit.self.availableUntil}
-                <span class="font-bold text-dp-green-300 md:text-xl"
-                  >Available until {benefit.self.availableUntil
-                    .local()
-                    .calendar()}</span
+                <span class="font-bold text-dp-green-300"
+                  >{i18n(Parts.AvailableUntil, [
+                    benefit.self.availableUntil.local().calendar(),
+                  ])}</span
                 >
               {/if}
               {#if benefit.self.availableUntil?.isSame(benefit.self.expiration)}
@@ -165,21 +168,21 @@
               {/if}
             {/if}
             {#if !idIsError && !benefit.enablable && benefit.dependency?.unused}
-              <span class="font-bold text-native-blue-400 md:text-xl"
-                >Will be available when {benefit.dependency.use.name} is used.</span
+              <span class="font-bold text-native-blue-400"
+                >{i18n(Parts.WillBeAvailableWhenXIsUsed, [
+                  benefit.dependency.use.name,
+                ])}</span
               >
             {/if}
             {#if !idIsError && benefit.isTempUnavailable}
-              <span class="font-bold text-dp-black-200 md:text-xl"
-                >Will be available {benefit.availableAt
-                  ?.local()
-                  .calendar()}.</span
+              <span class="font-bold text-dp-black-200"
+                >{i18n(Parts.WillBeAvailable, [
+                  benefit.availableAt?.local().calendar(),
+                ])}</span
               >
             {/if}
             {#if idIsError?.id === benefit.self.use.id}
-              <span class="font-bold text-red-400 md:text-xl"
-                >{idIsError.error}</span
-              >
+              <span class="font-bold text-red-400">{idIsError.error}</span>
             {/if}
           </div>
         {/each}

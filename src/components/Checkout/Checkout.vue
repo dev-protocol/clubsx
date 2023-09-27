@@ -511,7 +511,7 @@ onUnmounted(() => {
       <aside
         v-if="htmlDescription"
         v-html="htmlDescription"
-        class="rounded-md bg-dp-white-300 p-2 text-xl text-black/80 lg:mt-6"
+        class="text-xl text-black/80 lg:mt-6"
       ></aside>
     </section>
 
