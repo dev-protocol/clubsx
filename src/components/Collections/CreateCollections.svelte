@@ -10,7 +10,7 @@
     PAYMENT_TYPE_STAKE_FEE,
   } from '@constants/memberships'
 
-  import { formatUnixTimestamp } from '@plugins/collections/fixtures'
+  import { emptyDummyImage, formatUnixTimestamp } from '@plugins/collections/fixtures'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
   import { address, callSlotCollections } from '@plugins/collections/utils/slotCollections'
   import type { Image } from '@plugins/collections/utils/types/setImageArg'
@@ -124,7 +124,7 @@
     const file = e.currentTarget.files[0]
 
     collection.imageSrc =
-    (await uploadImageAndGetPath(file)) || `https://dummyimage.com/2400x1200/ebebeb/000003.png&text=Empty+Image`
+    (await uploadImageAndGetPath(file)) || emptyDummyImage(2400, 1200)
 
     collection = collection
 
@@ -143,7 +143,7 @@
     const file = e.currentTarget.files[0]
 
     membership.imageSrc =
-      (await uploadImageAndGetPath(file)) || `https://i.ibb.co/RbxFzn8/img.jpg`
+      (await uploadImageAndGetPath(file)) || emptyDummyImage(400, 400)
 
     updateState()
     update()
@@ -1239,7 +1239,7 @@
           clubName={clubName ?? 'Your Club'}
           id={mem.id}
           name={mem.name}
-          imagePath={mem.imageSrc}
+          imagePath={mem.imageSrc.trim().length > 0 ? mem.imageSrc : emptyDummyImage(400, 400)}
           price={mem.price.toString()}
           currency={mem.currency}
           description={mem.description}
