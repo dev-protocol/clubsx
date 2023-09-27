@@ -1,5 +1,5 @@
 ---
-import { encode, type ClubsPropsAdminPages } from '@devprotocol/clubs-core'
+import { type ClubsPropsAdminPages } from '@devprotocol/clubs-core'
 import type { Membership } from '.'
 import SyncModal_ from './SyncModal.svelte'
 
@@ -14,7 +14,7 @@ const { memberships, chainId, rpcUrl, propertyAddress } =
 
 <SyncModal_
   client:only="svelte"
-  encodedMemberships={encode(memberships)}
+  memberships={memberships}
   chainId={chainId}
   rpcUrl={rpcUrl}
   propertyAddress={propertyAddress}
