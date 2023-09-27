@@ -404,8 +404,8 @@ const cryptoCafeMemberships = [
   {
     id: 'cafe-visitor',
     name: 'Cafe Visitor',
-    description: `Get one-time access to our cafe (Any weekday.)\n\nWi-Fi, coffee\n\n---\n\n月〜金のカフェタイム利用。\n\nWi-Fi、コーヒー飲み放題`,
-    price: 0.0001,
+    description: `Get one-time access to our cafe (Any weekday.)\n\nWi-Fi, coffee\n\n---\n\n月〜金のカフェタイム利用\n\nWi-Fi、コーヒー飲み放題`,
+    price: 25,
     currency: 'MATIC',
     imageSrc: 'https://i.imgur.com/4Qc8iDc.png',
     payload: toBytes32('cafe-visitor'),
@@ -419,7 +419,7 @@ const cryptoCafeMemberships = [
     id: 'bar-visitor',
     name: 'Bar Visitor',
     description: `One-time access to our bar (Tuesday or Friday.)\n\nWi-Fi, complimentary drink\n\n---\n\n火・金のバータイム利用\n\nWi-Fi、コーヒー飲み放題、ドリンク1杯無料`,
-    price: 0.0001,
+    price: 25,
     currency: 'MATIC',
     imageSrc: 'https://i.imgur.com/PaxWOh8.png',
     payload: toBytes32('bar-visitor'),
@@ -432,8 +432,8 @@ const cryptoCafeMemberships = [
   {
     id: 'one-day',
     name: 'One Day',
-    description: `A full day access to our cafe & bar (Tuesday or Friday)\n\nWi-Fi, coffee, complimentary drink\n\n---\n\n火・金のみ利用可能な1日券。\n\nWi-Fi、コーヒー飲み放題、ドリンク1杯無料`,
-    price: 0.0001,
+    description: `A full day access to our cafe & bar (Tuesday or Friday)\n\nWi-Fi, coffee, complimentary drink\n\n---\n\n火・金のみ利用可能な1日券\n\nWi-Fi、コーヒー飲み放題、ドリンク1杯無料`,
+    price: 38,
     currency: 'MATIC',
     imageSrc: 'https://i.imgur.com/0IJMz2K.png',
     payload: toBytes32('one-day'),
@@ -447,7 +447,7 @@ const cryptoCafeMemberships = [
     id: 'friend-pass',
     name: 'Friend Pass',
     description: `Enjoy a month of unlimited cafe and bar visits for you and a friend.\n\nWi-Fi, coffee, complimentary drink, 1 free guest, special event\n\n---\n\n1ヶ月間の1日利用（バーは火・金）\n\nWi-Fi、コーヒー飲み放題、ゲスト1人無料、ドリンク1杯無料、スペシャルイベント招待`,
-    price: 0.0001,
+    price: 593,
     currency: 'MATIC',
     imageSrc: 'https://i.imgur.com/KzMhSgw.png',
     payload: toBytes32('friend-pass'),
@@ -461,7 +461,7 @@ const cryptoCafeMemberships = [
     id: 'best-friend-pass',
     name: 'Best Friend Pass',
     description: `Enjoy three month of unlimited cafe and bar visits for you and a friend.\n\nWi-Fi, coffee, a complimentary drink,1 bottle corkage free,1 free guest, gifts, special event\n\n---\n\n3ヶ月間のフリーパス（バーは火・金）\n\nWi-Fi、コーヒー飲み放題、ゲスト1人無料、特別ギフト、ドリンク1杯無料、持ち込み1本無料、スペシャルイベント招待`,
-    price: 5,
+    price: 1450,
     currency: 'MATIC',
     imageSrc: 'https://i.imgur.com/v43yiqe.png',
     payload: toBytes32('best-friend-pass'),
@@ -1248,7 +1248,9 @@ const populate = async () => {
     )
 
     const ticketWebhook = jsonwebtoken.sign(
-      'https://clubs-userland-cryptocafe.vercel.app/api/webhooks/tickets/XYZ/dest/airtable/tblPinFQ8dUbrhzPn',
+      `https://clubs-userland-cryptocafe.vercel.app/api/webhooks/tickets/${
+        process.env.CRYPTOCAFE_TICKET_WEBHOOK_KEY ?? 'XYZ'
+      }/dest/airtable/tblPinFQ8dUbrhzPn`,
       SALT,
     )
     await client.set(
@@ -1257,11 +1259,11 @@ const populate = async () => {
         name: 'Crypto Cafe & Bar',
         twitterHandle: '',
         description: `Daytime co-working, nighttime vibing.`,
-        url: 'https://cryptocafe.prerelease.clubs.place',
-        propertyAddress: '0xE59fEDaBB0F79b0EC605737805a9125cd8d87B1f',
-        chainId: 80001, // Polygon: 137 // Mumbai: 80001
+        url: 'https://cryptocafe.clubs.place',
+        propertyAddress: '0xF1AA1fC5a248bDCF531E45447916d49d54212AdE',
+        chainId: 137, // Polygon: 137 // Mumbai: 80001
         rpcUrl:
-          'https://polygon-mumbai.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920', // Polygon: https://polygon-mainnet.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920 // Mumbai: https://polygon-mumbai.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920
+          'https://polygon-mainnet.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920', // Polygon: https://polygon-mainnet.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920 // Mumbai: https://polygon-mumbai.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920
         adminRolePoints: 50,
         options: [
           {
@@ -1283,6 +1285,11 @@ const populate = async () => {
           },
         ],
         plugins: [
+          {
+            name: 'admin',
+            options: [],
+            id: 'clubs-core:admin',
+          },
           {
             id: 'devprotocol:clubs:plugin:clubs-payments',
             name: 'fiat',

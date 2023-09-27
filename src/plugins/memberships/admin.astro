@@ -1,6 +1,6 @@
 ---
 import AdminMembershipsForm from '@components/AdminMembershipsForm/AdminMembershipsForm.svelte'
-import type { ClubsPropsAdminPages } from '@devprotocol/clubs-core'
+import { encode, type ClubsPropsAdminPages } from '@devprotocol/clubs-core'
 import type { Membership } from '.'
 
 const { memberships, presets, name, clubs } =
@@ -18,10 +18,10 @@ const { memberships, presets, name, clubs } =
   <h2 class="mb-8 text-2xl">Create a new Membership by selecting a template</h2>
 
   <AdminMembershipsForm
-    client:only="svelte"
+    client:load
     clubName={name}
     currentPluginIndex={clubs.currentPluginIndex}
-    memberships={memberships}
+    encodedMemberships={encode(memberships)}
     presets={presets}
   />
 </div>
