@@ -1,15 +1,17 @@
 ---
-import DefaultLayout from '@layouts/Default.astro'
 import {
   type ClubsConfiguration,
   decode,
   pageFactory,
+  ClubsPluginSignal,
 } from '@devprotocol/clubs-core'
 import { config as _config } from '@fixtures/config'
 import PageNotFound from '@pages/404.astro'
 import { plugins } from '@constants/plugins'
 import ConnectButton from '@components/Wallet/ConnectButton.vue'
 import type { DraftOptions } from '@constants/draft'
+import PreviewBanner from '@components/PreviewBanner/PreviewBanner.astro'
+import Footer from '@components/Footer/Footer.astro'
 
 const { site, page } = Astro.params
 const config = await _config(site)
@@ -30,11 +32,14 @@ const draftOptions = decodedConfig?.options?.find(
   (option) => option.key === '__draft',
 )?.value as DraftOptions['value']
 const isInDraft = Boolean(draftOptions?.isInDraft)
+const fullPage = (path?.props.signals as undefined | string[])?.includes(
+  ClubsPluginSignal.DisplayFullPage,
+)
 ---
 
-<DefaultLayout {...path?.props ?? {}} config={decode(config)}>
-  {
-    path && Layout && Content ? (
+{
+  path && Layout && Content ? (
+    <>
       <Layout {...path.props}>
         <span slot="clubs:connect-button">
           <ConnectButton
@@ -45,12 +50,15 @@ const isInDraft = Boolean(draftOptions?.isInDraft)
         </span>
 
         <Content {...path.props} />
+
+        <PreviewBanner config={decode<ClubsConfiguration>(config)} />
       </Layout>
-    ) : (
-      <PageNotFound
-        redirectionCtaText={`Take me back ${site} homepage`}
-        redirectionCtaUrl={siteBaseUrl}
-      />
-    )
-  }
-</DefaultLayout>
+      {!fullPage && <Footer />}
+    </>
+  ) : (
+    <PageNotFound
+      redirectionCtaText={`Take me back ${site} homepage`}
+      redirectionCtaUrl={siteBaseUrl}
+    />
+  )
+}
