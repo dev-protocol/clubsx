@@ -51,4 +51,42 @@
     </div>
     <p class="mt-[18px] font-body text-xl text-center">Clubs applies eKYC to fund withdrawals to help you build a secure and robust community. Once the process is successfully completed, you will be able to withdraw funds and the Clubs team is committed to building the eKYC process.</p>
   </div>
+
+  <!-- Memberships/NFT section -->
+  <div>
+    <p class="font-bold text-[32px]">Memberships/NFTs</p>
+
+    <!-- Your withdrawable funds -->
+    <div class="mt-8 w-full max-w-full border-[1px] rounded-[18px] p-8 border-[#3A4158] bg-[#3A4158]">
+      <p class="w-fit font-bold text-base opacity-50">Your withdrawable funds</p>
+      <section class="mt-[18px] flex items-center gap-[18px]">
+        <p class="text-4xl">$32.200</p>
+        <p class="w-fit font-bold text-base opacity-50">Your withdrawable funds</p>
+      </section>
+
+      {#each Array(3) as _, index (index)}
+        <section class="mt-[18px] flex items-center gap-[18px] justify-between">
+          <p class="w-[23%] font-bold text-base">32.200 USDC</p>
+          <p class="grow font-bold text-base opacity-50">≈ $32.000</p>
+          <button class="hs-button is-filled w-fit py-3.5 px-[22px] ">Withdraw USDC</button>
+        </section>
+      {/each}
+    </div>
+
+    <!-- Total withdrawable funds -->
+    <div class="mt-8 w-full max-w-full border-[1px] rounded-[18px] p-8 border-[#3A4158] bg-[#3A4158]">
+      <p class="w-fit font-bold text-base opacity-50">Your withdrawable funds</p>
+      <section class="mt-[18px] flex items-center gap-[18px]">
+        <p class="text-4xl">$32.200</p>
+        <p class="w-fit font-bold text-base opacity-50">Your withdrawable funds</p>
+      </section>
+
+      {#each Array(3) as _, index (index)}
+        <section class="mt-[18px] flex items-center gap-[18px] justify-between">
+          <p class="w-[23%] font-bold text-base">32.200 USDC</p>
+          <p class="grow font-bold text-base opacity-50">≈ $32.000</p>
+        </section>
+      {/each}
+    </div>
+  </div>
 </div>
