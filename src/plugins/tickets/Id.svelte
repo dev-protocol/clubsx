@@ -12,6 +12,7 @@
   import { bytes32Hex } from '@fixtures/data/hexlify'
   import { marked } from 'marked'
   import DOMPurify from 'dompurify'
+  import { now } from './utils/date'
 
   export let ticket: Ticket
   export let membership: UndefinedOr<Membership>
@@ -107,12 +108,12 @@
             <button
               data-is-enablable={benefit.enablable}
               data-is-available={benefit.available}
-              data-is-temp-unavailable={benefit.inUnavailableTime}
+              data-is-temp-unavailable={benefit.isTempUnavailable}
               data-is-expired={!benefit.enablable && benefit.self.expired}
               data-is-waiting={!benefit.enablable && benefit.dependency?.unused}
               disabled={(!benefit.enablable && benefit.self.expired) ||
                 !benefit.enablable ||
-                benefit.inUnavailableTime ||
+                benefit.isTempUnavailable ||
                 idIsLoading === benefit.self.use.id}
               data-is-loading={idIsLoading === benefit.self.use.id}
               data-is-error={idIsError?.id === benefit.self.use.id}
@@ -136,22 +137,41 @@
               <span class="font-bold text-native-blue-400 md:text-xl"
                 >Sign to use this benefit</span
               >
+              {#if benefit.availableAtIfenabled?.isAfter(now())}
+                <span class="font-bold text-native-blue-300"
+                  >After signing, this will be available {benefit.availableAtIfenabled
+                    .local()
+                    .calendar()}</span
+                >
+              {/if}
             {/if}
             {#if !idIsError && benefit.available && benefit.self.expiration}
-              <span class="font-bold text-dp-green-300 md:text-xl"
-                >Available until {benefit.self.expiration
-                  .local()
-                  .calendar()}</span
-              >
+              {#if benefit.self.availableUntil}
+                <span class="font-bold text-dp-green-300 md:text-xl"
+                  >Available until {benefit.self.availableUntil
+                    .local()
+                    .calendar()}</span
+                >
+              {/if}
+              {#if benefit.self.availableUntil?.isSame(benefit.self.expiration)}
+                <span class="text-sm text-black/30"
+                  >Then, this will expire.</span
+                >
+              {:else}
+                <span class="text-sm text-black/30"
+                  ><span class="font-bold">Expiration date:</span>
+                  {benefit.self.expiration.local().calendar()}</span
+                >
+              {/if}
             {/if}
             {#if !idIsError && !benefit.enablable && benefit.dependency?.unused}
               <span class="font-bold text-native-blue-400 md:text-xl"
                 >Will be available when {benefit.dependency.use.name} is used.</span
               >
             {/if}
-            {#if !idIsError && benefit.inUnavailableTime}
+            {#if !idIsError && benefit.isTempUnavailable}
               <span class="font-bold text-dp-black-200 md:text-xl"
-                >Will be available {benefit.availableBetween?.start
+                >Will be available {benefit.availableAt
                   ?.local()
                   .calendar()}.</span
               >

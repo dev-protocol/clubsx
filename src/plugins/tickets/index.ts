@@ -20,6 +20,18 @@ import tickets2 from './assets/tickets-2.jpg'
 import tickets3 from './assets/tickets-3.jpg'
 import readme from './README.md'
 
+export enum SlotType {
+  WeekdayTime = 'weekday-time',
+}
+
+export type Slot = {
+  type: SlotType.WeekdayTime
+  weekday: number // 0-6
+  start: string
+  end: string
+  tz: string
+}
+
 export type Ticket = {
   payload: string | Uint8Array
   importedFrom: {
@@ -31,12 +43,8 @@ export type Ticket = {
     id: string
     name: string
     description?: string
-    expiration?: {
-      duration: string
-      start: string
-      end: string
-      tz: string
-    }
+    duration: string
+    availability?: Slot[]
     dependsOn?: string
     refreshCycle?: string
   }[]

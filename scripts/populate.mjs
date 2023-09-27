@@ -1370,12 +1370,44 @@ const populate = async () => {
                         id: 'one-time-cafe-access',
                         name: 'One-time access (Any weekday)',
                         description: cryptoCafeMemberships[0].description,
-                        expiration: {
-                          duration: '1 days',
-                          start: '10 hour',
-                          end: '18 hour',
-                          tz: 'Asia/Tokyo',
-                        },
+                        duration: '1 days',
+                        availability: [
+                          {
+                            type: 'weekday-time',
+                            weekday: 1,
+                            start: '10 hour',
+                            end: '18 hour',
+                            tz: 'Asia/Tokyo',
+                          },
+                          {
+                            type: 'weekday-time',
+                            weekday: 2,
+                            start: '10 hour',
+                            end: '18 hour',
+                            tz: 'Asia/Tokyo',
+                          },
+                          {
+                            type: 'weekday-time',
+                            weekday: 3,
+                            start: '10 hour',
+                            end: '18 hour',
+                            tz: 'Asia/Tokyo',
+                          },
+                          {
+                            type: 'weekday-time',
+                            weekday: 4,
+                            start: '10 hour',
+                            end: '18 hour',
+                            tz: 'Asia/Tokyo',
+                          },
+                          {
+                            type: 'weekday-time',
+                            weekday: 5,
+                            start: '10 hour',
+                            end: '18 hour',
+                            tz: 'Asia/Tokyo',
+                          },
+                        ],
                         refreshCycle: undefined,
                       },
                     ],
@@ -1398,12 +1430,23 @@ const populate = async () => {
                         id: 'one-time-bar-access',
                         name: 'One-time access (Tuesday or Friday)',
                         description: cryptoCafeMemberships[1].description,
-                        expiration: {
-                          duration: '1 days',
-                          start: '18 hour',
-                          end: '22 hour',
-                          tz: 'Asia/Tokyo',
-                        },
+                        duration: '1 days',
+                        availability: [
+                          {
+                            type: 'weekday-time',
+                            weekday: 2,
+                            start: '18 hour',
+                            end: '22 hour',
+                            tz: 'Asia/Tokyo',
+                          },
+                          {
+                            type: 'weekday-time',
+                            weekday: 5,
+                            start: '18 hour',
+                            end: '22 hour',
+                            tz: 'Asia/Tokyo',
+                          },
+                        ],
                         refreshCycle: undefined,
                       },
                       {
@@ -1433,12 +1476,23 @@ const populate = async () => {
                         id: 'one-day-access',
                         name: 'Full day access to our cafe & bar (Tuesday or Friday)',
                         description: cryptoCafeMemberships[2].description,
-                        expiration: {
-                          duration: '1 days',
-                          start: '10 hour',
-                          end: '22 hour',
-                          tz: 'Asia/Tokyo',
-                        },
+                        duration: '1 days',
+                        availability: [
+                          {
+                            type: 'weekday-time',
+                            weekday: 2,
+                            start: '10 hour',
+                            end: '22 hour',
+                            tz: 'Asia/Tokyo',
+                          },
+                          {
+                            type: 'weekday-time',
+                            weekday: 5,
+                            start: '10 hour',
+                            end: '22 hour',
+                            tz: 'Asia/Tokyo',
+                          },
+                        ],
                         refreshCycle: undefined,
                       },
                       {
@@ -1468,12 +1522,44 @@ const populate = async () => {
                         id: 'one-month-access',
                         name: 'One month access',
                         description: cryptoCafeMemberships[3].description,
-                        expiration: {
-                          duration: '1 months',
-                          start: '10 hour',
-                          end: '22 hour',
-                          tz: 'Asia/Tokyo',
-                        },
+                        duration: '1 months',
+                        availability: [
+                          {
+                            type: 'weekday-time',
+                            weekday: 1,
+                            start: '10 hour',
+                            end: '18 hour',
+                            tz: 'Asia/Tokyo',
+                          },
+                          {
+                            type: 'weekday-time',
+                            weekday: 2,
+                            start: '10 hour',
+                            end: '22 hour',
+                            tz: 'Asia/Tokyo',
+                          },
+                          {
+                            type: 'weekday-time',
+                            weekday: 3,
+                            start: '10 hour',
+                            end: '18 hour',
+                            tz: 'Asia/Tokyo',
+                          },
+                          {
+                            type: 'weekday-time',
+                            weekday: 4,
+                            start: '10 hour',
+                            end: '18 hour',
+                            tz: 'Asia/Tokyo',
+                          },
+                          {
+                            type: 'weekday-time',
+                            weekday: 5,
+                            start: '10 hour',
+                            end: '22 hour',
+                            tz: 'Asia/Tokyo',
+                          },
+                        ],
                         refreshCycle: undefined,
                       },
                       {
@@ -1510,12 +1596,44 @@ const populate = async () => {
                         id: '3-months-access',
                         name: '3 months access',
                         description: cryptoCafeMemberships[4].description,
-                        expiration: {
-                          duration: '1 months',
-                          start: '10 hour',
-                          end: '22 hour',
-                          tz: 'Asia/Tokyo',
-                        },
+                        duration: '3 months',
+                        availability: [
+                          {
+                            type: 'weekday-time',
+                            weekday: 1,
+                            start: '10 hour',
+                            end: '18 hour',
+                            tz: 'Asia/Tokyo',
+                          },
+                          {
+                            type: 'weekday-time',
+                            weekday: 2,
+                            start: '10 hour',
+                            end: '22 hour',
+                            tz: 'Asia/Tokyo',
+                          },
+                          {
+                            type: 'weekday-time',
+                            weekday: 3,
+                            start: '10 hour',
+                            end: '18 hour',
+                            tz: 'Asia/Tokyo',
+                          },
+                          {
+                            type: 'weekday-time',
+                            weekday: 4,
+                            start: '10 hour',
+                            end: '18 hour',
+                            tz: 'Asia/Tokyo',
+                          },
+                          {
+                            type: 'weekday-time',
+                            weekday: 5,
+                            start: '10 hour',
+                            end: '22 hour',
+                            tz: 'Asia/Tokyo',
+                          },
+                        ],
                         refreshCycle: undefined,
                       },
                       {
@@ -1603,13 +1721,17 @@ const populate = async () => {
       }),
     )
 
-    await client.set(
-      `devprotocol:clubs:plugin:tickets:history:0xE59fEDaBB0F79b0EC605737805a9125cd8d87B1f:${toBytes32(
-        '#1',
-      )}#51`,
-      encode({
-        '1-month-pass': { datetime: new Date('2023-08-20T00:00:00Z') },
-      }),
+    await client.del(
+      `devprotocol:clubs:plugin:tickets:history:0xE59fEDaBB0F79b0EC605737805a9125cd8d87B1f:0x396997483c76a2c9a30d9800f563c27dc0faeb0c69195989c866806bde5637bd#172`,
+    )
+    await client.del(
+      `devprotocol:clubs:plugin:tickets:history:0xE59fEDaBB0F79b0EC605737805a9125cd8d87B1f:0x31588320a7edd5f747f27e04eacf428d565386fa8507ca157f8c6ee24e52685e#170`,
+    )
+    await client.del(
+      `devprotocol:clubs:plugin:tickets:history:0xE59fEDaBB0F79b0EC605737805a9125cd8d87B1f:0x0c0c6d27ddd3d486dbe3221d2c44872737af7a010d0270d9eccc0c22a79a8ae6#166`,
+    )
+    await client.del(
+      `devprotocol:clubs:plugin:tickets:history:0xE59fEDaBB0F79b0EC605737805a9125cd8d87B1f:0xc6fb7a2178530d1b664b4dc2109bc2201963fa259db24ccb98f274e589261401#165`,
     )
     await client.set(
       `devprotocol:clubs:plugin:tickets:history:0xE59fEDaBB0F79b0EC605737805a9125cd8d87B1f:${toBytes32(
