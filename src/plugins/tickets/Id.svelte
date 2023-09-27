@@ -23,7 +23,6 @@
   let signer: UndefinedOr<Signer>
   let idIsLoading: UndefinedOr<string>
   let idIsError: UndefinedOr<{ id: string; error: string }>
-  let locale: Navigator['language'] = 'en'
   let i18n: I18nFunction = i18nFactory(['en'])
 
   const mdToHtml = (str?: string) => DOMPurify.sanitize(marked.parse(str ?? ''))
@@ -65,7 +64,6 @@
   }
 
   onMount(async () => {
-    locale = navigator.language
     i18n = i18nFactory(navigator.languages)
     if (sTokensId) {
       fetchTicketStatus(sTokensId)
@@ -145,10 +143,7 @@
               {#if benefit.availableAtIfenabled?.isAfter(now())}
                 <span class="font-bold text-native-blue-300"
                   >{i18n(Parts.AfterSigningThisWillBeAvailable, [
-                    benefit.availableAtIfenabled
-                      .locale(locale)
-                      .local()
-                      .calendar(),
+                    benefit.availableAtIfenabled.local().calendar(),
                   ])}</span
                 >
               {/if}
@@ -157,10 +152,7 @@
               {#if benefit.self.availableUntil}
                 <span class="font-bold text-dp-green-300"
                   >{i18n(Parts.AvailableUntil, [
-                    benefit.self.availableUntil
-                      .locale(locale)
-                      .local()
-                      .calendar(),
+                    benefit.self.availableUntil.local().calendar(),
                   ])}</span
                 >
               {/if}
@@ -171,10 +163,7 @@
               {:else}
                 <span class="text-sm text-black/30"
                   ><span class="font-bold">Expiration date:</span>
-                  {benefit.self.expiration
-                    .locale(locale)
-                    .local()
-                    .calendar()}</span
+                  {benefit.self.expiration.local().calendar()}</span
                 >
               {/if}
             {/if}
@@ -188,7 +177,7 @@
             {#if !idIsError && benefit.isTempUnavailable}
               <span class="font-bold text-dp-black-200"
                 >{i18n(Parts.WillBeAvailable, [
-                  benefit.availableAt?.locale(locale).local().calendar(),
+                  benefit.availableAt?.local().calendar(),
                 ])}</span
               >
             {/if}
