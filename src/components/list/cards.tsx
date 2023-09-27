@@ -15,10 +15,9 @@
   ```
 */
 
-import React from 'react'
-import type { Product } from '@constants/products'
+import type { Membership } from '@plugins/memberships'
 
-export type ExtendedProducts = (Product & { purchaseLink?: string })[]
+export type ExtendedProducts = (Membership & { purchaseLink?: string })[]
 
 type Params = {
   products: ExtendedProducts
@@ -37,7 +36,7 @@ export default function Cards({ products }: Params) {
               <div className="bg-gray-200 group-hover:opacity-75">
                 <img
                   src={product.imageSrc}
-                  alt={product.imageAlt}
+                  alt={product.name}
                   className="h-auto w-full object-cover object-center sm:h-full sm:w-full"
                 />
               </div>

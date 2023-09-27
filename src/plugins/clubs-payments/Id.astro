@@ -1,0 +1,48 @@
+---
+import type { ComposedItem } from '.'
+import TransactionForm from './TransactionForm.svelte'
+import Checkout from '@components/Checkout/Checkout.astro'
+
+const { item, propertyAddress, rpcUrl, chainId, ...other } = Astro.props as {
+  item: ComposedItem
+  propertyAddress: string
+  rpcUrl: string
+  chainId: number
+}
+
+const { PUBLIC_POP_CLIENT_KEY } = import.meta.env
+---
+
+<!-- Load Veritrans SDK: This will be exposed as `window.pop` -->
+<script
+  type="text/javascript"
+  src="https://pay.veritrans.co.jp/pop/v1/javascripts/pop.js"
+  data-client-key={PUBLIC_POP_CLIENT_KEY}></script>
+
+<Checkout
+  amount={item.price.yen}
+  destination={propertyAddress}
+  fiatCurrency="YEN"
+  rpcUrl={rpcUrl}
+  payload={item.source.payload}
+  description={item.source.description}
+  useDiscretePaymentFlow={true}
+  useInjectedTransactionForm={true}
+  itemImageSrc={item.source.imageSrc}
+  itemName={item.source.name}
+  accessControlUrl={item.source.accessControl?.url}
+  accessControlDescription={item.source.accessControl?.description}
+  {...other}
+>
+  <div slot="checkout:main:transaction-form" class="p-5">
+    <TransactionForm
+      client:load
+      item={item}
+      chainId={chainId}
+      rpcUrl={rpcUrl}
+    />
+  </div>
+  <div slot="checkout:result:before:preview">
+    <h3 class="text-2xl font-bold">Welcome 🎉</h3>
+  </div>
+</Checkout>

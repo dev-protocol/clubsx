@@ -1,25 +1,19 @@
 import BigNumber from 'bignumber.js'
 import {
   BrowserProvider,
-  ContractRunner,
+  type ContractRunner,
   JsonRpcProvider,
   formatEther,
   keccak256,
   parseEther,
 } from 'ethers'
 import type { Tiers } from '@constants/tier'
-import {
-  stakeWithAnyTokens,
-  stakeWithEth,
-  stakeWithEthForPolygon,
-  tokenURISim,
-} from './dev-kit'
+import { stakeWithEth, stakeWithEthForPolygon, tokenURISim } from './dev-kit'
 import { clientsSTokens, client } from '@devprotocol/dev-kit'
 import { whenDefined } from '@devprotocol/util-ts'
 import { xprod } from 'ramda'
 
 import type { Membership } from '@plugins/memberships'
-import { CurrencyOption } from '@constants/currencyOption'
 
 const falsyOrZero = <T>(num?: T): T | 0 => (num ? num : 0)
 
@@ -82,24 +76,6 @@ export const fetchDevForEth = async (opts: {
       ? await stakeWithEthForPolygon(params)
       : await stakeWithEth(params)
   return estimatedDev
-}
-
-export const fetchDevForUsdc = async (opts: {
-  provider: ContractRunner
-  tokenAddress: string
-  amount: number | string
-  chain?: number
-}) => {
-  const params = {
-    provider: opts.provider,
-    propertyAddress: opts.tokenAddress,
-    tokenAmount: new BigNumber(opts.amount).toFixed(),
-    tokenDecimals: 6,
-    currency: CurrencyOption.USDC,
-    chain: opts.chain,
-  }
-  const res = await stakeWithAnyTokens(params)
-  return res?.estimatedDev ?? '0'
 }
 
 export const composeTiers = async ({

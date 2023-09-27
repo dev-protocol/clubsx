@@ -10,6 +10,9 @@
   import Check from './Check.svelte'
   import { type Signer, hashMessage } from 'ethers'
   import { bytes32Hex } from '@fixtures/data/hexlify'
+  import { marked } from 'marked'
+  import DOMPurify from 'dompurify'
+  import { now } from './utils/date'
 
   export let ticket: Ticket
   export let membership: UndefinedOr<Membership>
@@ -19,6 +22,8 @@
   let signer: UndefinedOr<Signer>
   let idIsLoading: UndefinedOr<string>
   let idIsError: UndefinedOr<{ id: string; error: string }>
+
+  const mdToHtml = (str?: string) => DOMPurify.sanitize(marked.parse(str ?? ''))
 
   const onClickABenefit = (benefitId: string) => async () => {
     whenDefined(signer, async (sigr) => {
@@ -52,7 +57,7 @@
     const text = res.ok ? await res.text() : undefined
     const history: TicketHistories =
       whenDefined(text, (txt) => decode<TicketHistories>(txt)) ?? {}
-    benefits = ticketStatus(history, ticket.uses)
+    benefits = ticketStatus(history, ticket)
     console.log(history, benefits)
   }
 
@@ -103,37 +108,72 @@
             <button
               data-is-enablable={benefit.enablable}
               data-is-available={benefit.available}
+              data-is-temp-unavailable={benefit.isTempUnavailable}
               data-is-expired={!benefit.enablable && benefit.self.expired}
               data-is-waiting={!benefit.enablable && benefit.dependency?.unused}
               disabled={(!benefit.enablable && benefit.self.expired) ||
                 !benefit.enablable ||
+                benefit.isTempUnavailable ||
                 idIsLoading === benefit.self.use.id}
               data-is-loading={idIsLoading === benefit.self.use.id}
               data-is-error={idIsError?.id === benefit.self.use.id}
-              class="group flex w-full items-center rounded-full border border-[3px] border-transparent px-8 py-4 text-center text-white data-[is-loading=true]:animate-pulse data-[is-waiting=true]:border-[#5B8BF5] data-[is-waiting=true]:border-[#5B8BF5] data-[is-available=true]:bg-[#43C451] data-[is-enablable=true]:bg-[#5B8BF5] data-[is-error=true]:bg-red-500 data-[is-expired=true]:bg-[#C4C4C4] data-[is-error=true]:text-white data-[is-waiting=true]:text-[#5B8BF5]"
+              class="group flex w-full items-center rounded-full border border-[3px] border-transparent px-8 py-4 text-center text-white data-[is-loading=true]:animate-pulse data-[is-waiting=true]:border-native-blue-400 data-[is-waiting=true]:border-native-blue-400 data-[is-available=true]:bg-dp-green-300 data-[is-enablable=true]:bg-native-blue-400 data-[is-error=true]:bg-red-500 data-[is-expired=true]:bg-dp-white-600 data-[is-temp-unavailable=true]:bg-dp-black-200 data-[is-error=true]:text-white data-[is-waiting=true]:text-native-blue-400"
               on:click={onClickABenefit(benefit.self.use.id)}
               ><span
-                class="rounded-full border border-[3px] border-transparent text-[#C4C4C4] group-data-[is-waiting=true]:border-[#5B8BF5] group-data-[is-available=true]:bg-[#67CF72] group-data-[is-enablable=true]:bg-white group-data-[is-expired=true]:bg-white group-data-[is-waiting=true]:bg-transparent group-data-[is-available=true]:text-white"
+                class="rounded-full border border-[3px] border-transparent text-dp-white-600 group-data-[is-waiting=true]:border-native-blue-400 group-data-[is-available=true]:bg-dp-green-200 group-data-[is-enablable=true]:bg-white group-data-[is-expired=true]:bg-white group-data-[is-temp-unavailable=true]:bg-dp-white-200 group-data-[is-waiting=true]:bg-transparent group-data-[is-available=true]:text-white"
                 ><Check />
               </span><span class="flex-grow text-2xl font-bold"
-                >{benefit.self.use.description}</span
+                >{benefit.self.use.name}</span
               ></button
             >
+            {#if benefit.self.use.description}
+              <div
+                class="md grid gap-2 rounded-md bg-dp-white-300 p-2 text-black/80"
+              >
+                {@html mdToHtml(benefit.self.use.description)}
+              </div>
+            {/if}
             {#if !idIsError && benefit.enablable}
-              <span class="font-bold text-[#5B8BF5] md:text-xl"
+              <span class="font-bold text-native-blue-400 md:text-xl"
                 >Sign to use this benefit</span
               >
+              {#if benefit.availableAtIfenabled?.isAfter(now())}
+                <span class="font-bold text-native-blue-300"
+                  >After signing, this will be available {benefit.availableAtIfenabled
+                    .local()
+                    .calendar()}</span
+                >
+              {/if}
             {/if}
             {#if !idIsError && benefit.available && benefit.self.expiration}
-              <span class="font-bold text-[#43C451] md:text-xl"
-                >Available until {benefit.self.expiration
-                  .local()
-                  .calendar()}</span
-              >
+              {#if benefit.self.availableUntil}
+                <span class="font-bold text-dp-green-300 md:text-xl"
+                  >Available until {benefit.self.availableUntil
+                    .local()
+                    .calendar()}</span
+                >
+              {/if}
+              {#if benefit.self.availableUntil?.isSame(benefit.self.expiration)}
+                <span class="text-sm text-black/30"
+                  >Then, this will expire.</span
+                >
+              {:else}
+                <span class="text-sm text-black/30"
+                  ><span class="font-bold">Expiration date:</span>
+                  {benefit.self.expiration.local().calendar()}</span
+                >
+              {/if}
             {/if}
             {#if !idIsError && !benefit.enablable && benefit.dependency?.unused}
-              <span class="font-bold text-[#5B8BF5] md:text-xl"
-                >Will be available when {benefit.dependency.use.description} is used.</span
+              <span class="font-bold text-native-blue-400 md:text-xl"
+                >Will be available when {benefit.dependency.use.name} is used.</span
+              >
+            {/if}
+            {#if !idIsError && benefit.isTempUnavailable}
+              <span class="font-bold text-dp-black-200 md:text-xl"
+                >Will be available {benefit.availableAt
+                  ?.local()
+                  .calendar()}.</span
               >
             {/if}
             {#if idIsError?.id === benefit.self.use.id}
@@ -147,3 +187,39 @@
     {/if}
   </div>
 </section>
+
+<style lang="scss">
+  .md {
+    :global(h1) {
+      @apply text-xl font-bold;
+    }
+    :global(h2) {
+      @apply text-lg font-bold;
+    }
+    :global(h3) {
+      @apply text-base;
+    }
+    :global(h4) {
+      @apply text-sm font-bold;
+    }
+    :global(h5) {
+      @apply text-xs font-bold;
+    }
+    :global(p) {
+      @apply text-xs;
+    }
+    :global(a) {
+      @apply inline-block rounded p-1 underline transition hover:bg-white/20;
+    }
+    :global(ul) {
+      @apply list-none;
+      :global(li::before) {
+        content: '\2022';
+        @apply mr-2 text-zinc-300;
+      }
+    }
+    :global(pre) {
+      @apply rounded p-3;
+    }
+  }
+</style>

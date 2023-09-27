@@ -1,0 +1,59 @@
+---
+import type { Membership } from '@plugins/memberships'
+import IdPage from './Id'
+import type { CMValues } from '.'
+import Checkout from '@components/Checkout/Checkout.astro'
+
+const { cm, product, rpcUrl, propertyAddress, ...other } = Astro.props as {
+  cm: CMValues
+  product: Membership
+  rpcUrl: string
+  propertyAddress: string
+}
+const url = new URL(Astro.url)
+const success = Boolean(url.searchParams.get('success'))
+const failure = Boolean(url.searchParams.get('failure'))
+---
+
+<Checkout
+  amount={product.price}
+  destination={propertyAddress}
+  fiatCurrency="USD"
+  rpcUrl={rpcUrl}
+  payload={product.payload}
+  description={product.description}
+  useInjectedTransactionForm={true}
+  itemImageSrc={product.imageSrc}
+  itemName={product.name}
+  accessControlUrl={product.accessControl?.url}
+  accessControlDescription={product.accessControl?.description}
+  {...other}
+>
+  {
+    success ? (
+      <div slot="checkout:main:transaction-form">
+        <h3 class="text-2xl font-bold text-green-500">
+          You're now our member!
+        </h3>
+      </div>
+    ) : failure ? (
+      <div slot="checkout:main:transaction-form">
+        <h3 class="mb-4 text-2xl font-bold">You're now our member!</h3>
+      </div>
+    ) : (
+      <div slot="checkout:main:transaction-form" class="p-5">
+        <IdPage
+          client:load
+          cm={cm}
+          rpcUrl={rpcUrl}
+          propertyAddress={propertyAddress}
+          product={product}
+          baseUrl={url.toString()}
+        />
+      </div>
+    )
+  }
+  <span slot="checkout:after:price" class="text-sm font-bold text-black/80"
+    >+ credit card fees</span
+  >
+</Checkout>

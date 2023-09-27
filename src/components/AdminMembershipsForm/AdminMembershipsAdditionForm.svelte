@@ -3,14 +3,25 @@
   import MembershipOptionCard from './MembershipOption.svelte'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import type { Membership } from '@plugins/memberships/index'
-  import { parseUnits, keccak256, JsonRpcProvider, ZeroAddress, Signer } from 'ethers'
+  import {
+    parseUnits,
+    keccak256,
+    JsonRpcProvider,
+    ZeroAddress,
+    type Signer,
+  } from 'ethers'
   import { onMount } from 'svelte'
   import BigNumber from 'bignumber.js'
   import { clientsSTokens } from '@devprotocol/dev-kit'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
   import { buildConfig, controlModal } from '@devprotocol/clubs-core/events'
-  import { callSimpleCollections } from '@plugins/memberships/utils/simpleCollections'
-  import type { Image } from '@plugins/memberships/utils/types/setImageArg'
+  import {
+    DEV_TOKEN_PAYMENT_TYPE_FEE,
+    PAYMENT_TYPE_INSTANT_FEE,
+    PAYMENT_TYPE_STAKE_FEE,
+  } from '@constants/memberships'
+  import { tokenInfo } from '@constants/common'
+  import { bytes32Hex } from '@fixtures/data/hexlify'
 
   export let useOnFinishCallback: boolean = false
   export let currentPluginIndex: number
@@ -23,11 +34,26 @@
   export let clubName: string | undefined = undefined
   const metaOfPayload = keccak256(membership.payload)
 
+  type MembershipPaymentType = 'instant' | 'stake' | 'custom' | ''
+
+  let newMemberships: Membership[]
+  let usingAccessControl = Boolean(
+    membership.accessControl &&
+      membership.accessControl.url &&
+      membership.accessControl.description,
+  )
+  let membershipPaymentType: MembershipPaymentType =
+    membership.paymentType ?? (membership.currency === 'DEV' ? 'custom' : '')
+  let membershipCustomFee100: number = membership.fee
+    ? membership.fee.percentage * 100
+    : membership.currency === 'DEV'
+    ? DEV_TOKEN_PAYMENT_TYPE_FEE * 100
+    : 0
   let updatingMembershipsStatus: boolean = false
-
   let noOfPositions: number = 0
-
   let invalidPriceMsg: string = ''
+  let invalidFeeMsg: string = ''
+  let accessControl = membership.accessControl ?? { url: '', description: '' }
 
   const originalId = membership.id
   const provider = new JsonRpcProvider(rpcUrl)
@@ -40,6 +66,8 @@
 
   const minPrice = 0.000001
   const maxPrice = 1e20
+  const minCustomFee100 = 0
+  const maxCustomFee100 = 95
 
   const deleteMembership = (selectedMembership: Membership) => {
     updatingMembershipsStatus = true
@@ -48,7 +76,8 @@
       (m: Membership) =>
         m.id === selectedMembership.id &&
         m.name === selectedMembership.name &&
-        JSON.stringify(m.payload) === JSON.stringify(selectedMembership.payload)
+        JSON.stringify(m.payload) ===
+          JSON.stringify(selectedMembership.payload),
     )
 
     setOptions(
@@ -57,13 +86,13 @@
           key: 'memberships',
           value: [
             ...existingMemberships.filter(
-              (m: Membership) => m.id !== selectedMembership.id
+              (m: Membership) => m.id !== selectedMembership.id,
             ),
             { ...membership, deprecated: true },
           ],
         },
       ],
-      currentPluginIndex
+      currentPluginIndex,
     )
 
     setTimeout(buildConfig, 50)
@@ -76,7 +105,8 @@
       (m: Membership) =>
         m.id === selectedMembership.id &&
         m.name === selectedMembership.name &&
-        JSON.stringify(m.payload) === JSON.stringify(selectedMembership.payload)
+        JSON.stringify(m.payload) ===
+          JSON.stringify(selectedMembership.payload),
     )
 
     setOptions(
@@ -85,16 +115,73 @@
           key: 'memberships',
           value: [
             ...existingMemberships.filter(
-              (m: Membership) => m.id !== selectedMembership.id
+              (m: Membership) => m.id !== selectedMembership.id,
             ),
             { ...membership, deprecated: false },
           ],
         },
       ],
-      currentPluginIndex
+      currentPluginIndex,
     )
 
     setTimeout(buildConfig, 50)
+  }
+
+  const changeMembershipPaymentType = async (type: MembershipPaymentType) => {
+    if (membership.currency === 'DEV') {
+      // Update the membership fee in case of currency change to dev token.
+      membershipPaymentType = 'custom'
+      membershipCustomFee100 = 0
+      membership = {
+        ...membership,
+        fee: {
+          percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
+          beneficiary: currentAddress ?? ZeroAddress,
+        },
+        paymentType: 'custom',
+      }
+
+      update() // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
+      return
+    }
+
+    if (type === 'instant') {
+      // Update the membership state directly
+      membership = {
+        ...membership,
+        fee: {
+          percentage: PAYMENT_TYPE_INSTANT_FEE,
+          beneficiary: currentAddress ?? ZeroAddress,
+        },
+        paymentType: 'instant',
+      }
+    }
+
+    // Update the membership state directly
+    if (type === 'stake') {
+      membership = {
+        ...membership,
+        fee: {
+          percentage: PAYMENT_TYPE_STAKE_FEE,
+          beneficiary: currentAddress ?? ZeroAddress,
+        },
+        paymentType: 'stake',
+      }
+    }
+
+    if (type === 'custom') {
+      membership = {
+        ...membership,
+        fee: {
+          percentage: membershipCustomFee100 / 100,
+          beneficiary: currentAddress ?? ZeroAddress,
+        },
+        paymentType: 'custom',
+      }
+    }
+
+    membershipPaymentType = type
+    update() // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
   }
 
   const connectOnMount = async () => {
@@ -105,19 +192,30 @@
     })
     connection().account.subscribe((a) => {
       currentAddress = a
+      update()
     })
   }
 
   onMount(() => {
     onChangePrice()
+    onChangeName()
     fetchPositionsOfProperty()
     update()
     connectOnMount()
 
+    const membershipDescriptionElement = document.getElementById('membership-description')
+    if (membershipDescriptionElement) {
+      membershipDescriptionElement!.style.height = membershipDescriptionElement!.scrollHeight + 'px'
+      membershipDescriptionElement!.oninput = async () => {
+        membershipDescriptionElement!.style.height = 'auto'
+        membershipDescriptionElement!.style.height = membershipDescriptionElement!.scrollHeight + 'px'
+      }
+    }
+
     if (useOnFinishCallback) {
       document.body.addEventListener(
         ClubsEvents.FinishConfiguration,
-        onFinishCallback
+        onFinishCallback,
       )
     }
   })
@@ -134,28 +232,61 @@
     }
   }
 
+  const validateCustomMembershipFee = (event: Event) => {
+    const value = Number((event.target as HTMLInputElement)?.value || 0)
+
+    if (value < minCustomFee100) {
+      invalidFeeMsg = `Minimum earning model fee allowed is ${minCustomFee100}`
+    } else if (value > maxCustomFee100) {
+      invalidFeeMsg = `Maximum price allowed is ${maxCustomFee100}`
+    } else {
+      invalidFeeMsg = ''
+    }
+  }
+
   const update = () => {
-    if (membership.price < minPrice || membership.price > maxPrice) return
+    if (
+      membership.price < minPrice ||
+      membership.price > maxPrice ||
+      membershipPaymentType === ''
+    )
+      return
 
     const search = mode === 'edit' ? originalId : membership.id
-    const newMemberships = existingMemberships.some(({ id }) => id === search)
+    membership.accessControl = usingAccessControl ? accessControl : undefined
+    if (
+      currentAddress &&
+      membership.fee &&
+      currentAddress !== membership.fee.beneficiary &&
+      membership.fee.percentage > 0
+    ) {
+      membership = {
+        ...membership,
+        fee: {
+          ...membership.fee,
+          beneficiary: currentAddress,
+        },
+      }
+    }
+
+    newMemberships = existingMemberships.some(({ id }) => id === search)
       ? // If the ID is already exists, override it. This is a safeguard to avoid duplicate data.
         existingMemberships.map((_mem) =>
-          _mem.id === search ? membership : _mem
+          _mem.id === search ? membership : _mem,
         )
       : // If not, add it.
         [...existingMemberships, membership]
 
     setOptions(
       [{ key: 'memberships', value: newMemberships }],
-      currentPluginIndex
+      currentPluginIndex,
     )
   }
 
   const onFileSelected = async (
     e: Event & {
       currentTarget: EventTarget & HTMLInputElement
-    }
+    },
   ) => {
     if (!e.currentTarget.files || !membership) {
       return
@@ -193,7 +324,7 @@
     } else if (value > maxPrice) {
       membership.price = maxPrice
       invalidPriceMsg = `Price automatically set to maximum allowed value- ${maxPrice.toExponential(
-        3
+        3,
       )}`
     } else {
       invalidPriceMsg = ''
@@ -204,9 +335,59 @@
     }
   }
 
+  const onChangeCustomFee = async () => {
+    if (membership.currency === 'DEV') {
+      // Update the membership fee in case of currency change to dev token.
+      membershipPaymentType = 'custom'
+      membershipCustomFee100 = 0
+      invalidFeeMsg = ''
+      membership = {
+        ...membership,
+        fee: {
+          beneficiary: currentAddress ?? ZeroAddress,
+          percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
+        },
+        paymentType: 'custom',
+      }
+
+      // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
+      update()
+      return
+    }
+
+    const value = membershipCustomFee100
+
+    if (value < minCustomFee100) {
+      membershipCustomFee100 = minCustomFee100
+      invalidFeeMsg = `Fee automatically set to minimum allowed value- ${minCustomFee100}`
+    } else if (value > maxCustomFee100) {
+      membershipCustomFee100 = maxCustomFee100
+      invalidFeeMsg = `Fee automatically set to maximum allowed value- ${maxCustomFee100}`
+    } else {
+      invalidFeeMsg = ''
+    }
+
+    // Update the membership state.
+    membership = {
+      ...membership,
+      fee: {
+        percentage: membershipCustomFee100 / 100,
+        beneficiary: currentAddress ?? ZeroAddress,
+      },
+      paymentType: 'custom',
+    }
+
+    // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
+    update()
+
+    if (membershipCustomFee100 === 0 || !membershipCustomFee100) {
+      return
+    }
+  }
+
   const cancel = () => {
     const preset = existingMemberships.find(
-      (preset) => preset.id === membership.id
+      (preset) => preset.id === membership.id,
     )
 
     if (!preset) {
@@ -222,7 +403,7 @@
   const fetchPositionsOfProperty = async () => {
     loading = true
 
-    if (!provider || !propertyAddress) {
+    if (mode === 'create' || !provider || !propertyAddress) {
       loading = false
       return
     }
@@ -242,10 +423,10 @@
       const positionPayload = await contract?.payloadOf(position)
 
       if (
-        keccak256(
+        bytes32Hex(
           typeof membership.payload === typeof {} // If membership.payload is an object
             ? new Uint8Array(Object.values(membership.payload)) // then we use only values
-            : membership.payload // else we use the array directly
+            : membership.payload, // else we use the array/string directly
         ) === positionPayload &&
         !membershipExists
       ) {
@@ -257,6 +438,11 @@
     loading = false
   }
 
+  const toggleAccessControl = (v: boolean) => () => {
+    usingAccessControl = v
+    update()
+  }
+
   const onFinishCallback = async (ev: any) => {
     updatingMembershipsStatus = false
 
@@ -264,46 +450,27 @@
       return
     }
 
-    const memOpts = existingMemberships as Membership[]
-    const propAddress = propertyAddress
+    location.href = new URL(
+      '/admin/memberships/?ping=publish',
+      location.origin,
+    ).toString()
+  }
 
-    if (!currentAddress || !signer || !propAddress) {
-      return
+  const resetMembershipFee = () => {
+    if (membership.currency !== 'DEV') return
+
+    membershipCustomFee100 = 0
+    membershipPaymentType = 'custom'
+    invalidFeeMsg = ''
+    // Update the membership state.
+    membership = {
+      ...membership,
+      fee: {
+        percentage: membershipCustomFee100,
+        beneficiary: currentAddress ?? ZeroAddress,
+      },
+      paymentType: 'custom',
     }
-
-    const images: Image[] = memOpts.map((opt) => ({
-      src: opt.imageSrc,
-      name: opt.name,
-      description: opt.description,
-      requiredETHAmount: parseUnits(String(opt.price)).toString(),
-      requiredETHFee: opt.fee?.percentage
-        ? parseUnits(
-              new BigNumber(opt.price).times(opt.fee.percentage).toFixed()
-            )
-            .toString()
-        : 0,
-      gateway: opt.fee?.beneficiary ?? ZeroAddress,
-    }))
-
-    const keys: string[] =
-      memOpts?.map((opt) => keccak256(new Uint8Array(opt.payload))) || []
-
-    console.log({ keys, images, propAddress })
-
-    controlModal({
-      open: true,
-      state: 'loading',
-      blocks: true,
-      closeButton: { label: 'Cancel' },
-    })
-
-    await callSimpleCollections(signer, 'setImages', [
-      propAddress,
-      images,
-      keys,
-    ]).then((res) => res.wait())
-
-    controlModal({ open: false })
   }
 </script>
 
@@ -320,7 +487,7 @@
         <br />
         {#if !membership.deprecated}
           <button
-            class={`bg-dp-blue-grey-400 mt-2 w-fit rounded p-4 text-center text-sm font-semibold text-white ${
+            class={`mt-2 w-fit rounded bg-dp-blue-grey-400 p-4 text-center text-sm font-semibold text-white ${
               updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
             }`}
             id={`delete-opt`}
@@ -331,7 +498,7 @@
         <br />
         {#if membership.deprecated}
           <button
-            class={`bg-dp-blue-grey-400 mt-2 w-fit rounded p-4 text-center text-sm font-semibold text-white ${
+            class={`mt-2 w-fit rounded bg-dp-blue-grey-400 p-4 text-center text-sm font-semibold text-white ${
               updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
             }`}
             id={`activate-opt`}
@@ -417,24 +584,194 @@
         </div>
 
         <!-- Price -->
-        <label class="hs-form-field is-filled is-required">
+        <div class="hs-form-field is-filled is-required">
           <span class="hs-form-field__label"> Price </span>
-          <input
-            class="hs-form-field__input"
-            bind:value={membership.price}
-            on:change={onChangePrice}
-            on:keyup={validateMembershipPrice}
-            id="membership-price"
-            name="membership-price"
-            type="number"
-            disabled={membershipExists}
-            min={minPrice}
-            max={maxPrice}
-          />
+          <div class="flex w-full max-w-full items-center justify-start gap-1">
+            <input
+              class="hs-form-field__input grow"
+              bind:value={membership.price}
+              on:change={onChangePrice}
+              on:keyup={validateMembershipPrice}
+              id="membership-price"
+              name="membership-price"
+              type="number"
+              disabled={membershipExists}
+              min={minPrice}
+              max={maxPrice}
+            />
+            <select
+              bind:value={membership.currency}
+              name="membership-currency"
+              class="hs-form-field__input w-fit"
+              id="membership-currency"
+              disabled={membershipExists}
+              on:change={resetMembershipFee}
+            >
+              <option value="USDC" class="bg-primary-200 text-primary-ink"
+                >USDC</option
+              >
+              <option value="ETH" class="bg-primary-200 text-primary-ink"
+                >ETH</option
+              >
+              <option value="MATIC" class="bg-primary-200 text-primary-ink"
+                >MATIC</option
+              >
+              <option value="DEV" class="bg-primary-200 text-primary-ink"
+                >DEV</option
+              >
+            </select>
+          </div>
+          <p class="hs-form-field__helper mt-2">
+            * If you choose USDC, you can active <u
+              >the credit card payment plugin.</u
+            >
+          </p>
           {#if invalidPriceMsg !== ''}
             <p class="text-danger-300">* {invalidPriceMsg}</p>
           {/if}
-        </label>
+        </div>
+
+        <!-- Earning model -->
+        <div class="hs-form-field is-filled is-required">
+          <span class="hs-form-field__label"> Earning model </span>
+          <div class="flex w-full max-w-full items-center justify-start gap-2">
+            <button
+              on:click|preventDefault={() =>
+                changeMembershipPaymentType('instant')}
+              class={`hs-button is-large is-filled flex max-w-[33%] grow items-center justify-center gap-2 ${
+                membershipPaymentType !== 'instant' && 'opacity-50'
+              }`}
+              id="membership-fee-instant"
+              name="membership-fee-instant"
+              disabled={membership.currency === 'DEV'}
+            >
+              <span class="h-auto w-auto max-w-[48%]">
+                <svg
+                  width="22"
+                  height="19"
+                  viewBox="0 0 22 19"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7.69141 1.75H5.60341C5.12236 1.75009 4.654 1.90435 4.26705 2.19015C3.8801 2.47595 3.59494 2.87824 3.45341 3.338L1.04141 11.177C0.975343 11.3911 0.941638 11.6139 0.941406 11.838V16C0.941406 16.5967 1.17846 17.169 1.60042 17.591C2.02237 18.0129 2.59467 18.25 3.19141 18.25H18.1914C18.7881 18.25 19.3604 18.0129 19.7824 17.591C20.2044 17.169 20.4414 16.5967 20.4414 16V11.838C20.4414 11.614 20.4074 11.391 20.3414 11.177L17.9314 3.338C17.7899 2.87824 17.5047 2.47595 17.1178 2.19015C16.7308 1.90435 16.2625 1.75009 15.7814 1.75H13.6914M0.941406 11.5H4.80141C5.2192 11.5001 5.62872 11.6165 5.98408 11.8363C6.33944 12.056 6.6266 12.3703 6.81341 12.744L7.06941 13.256C7.25628 13.6299 7.54361 13.9443 7.89916 14.164C8.25471 14.3837 8.66444 14.5001 9.08241 14.5H12.3004C12.7184 14.5001 13.1281 14.3837 13.4837 14.164C13.8392 13.9443 14.1265 13.6299 14.3134 13.256L14.5694 12.744C14.7563 12.3701 15.0436 12.0557 15.3992 11.836C15.7547 11.6163 16.1644 11.4999 16.5824 11.5H20.4414M10.6914 1V9.25M10.6914 9.25L7.69141 6.25M10.6914 9.25L13.6914 6.25"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+              Instant
+            </button>
+            <button
+              on:click|preventDefault={() =>
+                changeMembershipPaymentType('stake')}
+              class={`hs-button is-large is-filled flex max-w-[33%] grow items-center justify-center gap-2 ${
+                membershipPaymentType !== 'stake' && 'opacity-50'
+              }`}
+              id="membership-fee-stake"
+              name="membership-fee-stake"
+              disabled={membership.currency === 'DEV'}
+            >
+              <span class="h-auto w-auto max-w-[48%]">
+                <svg
+                  width="22"
+                  height="20"
+                  viewBox="0 0 22 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M2.32422 1V12.25C2.32422 12.8467 2.56127 13.419 2.98323 13.841C3.40519 14.2629 3.97748 14.5 4.57422 14.5H6.82422M2.32422 1H0.824219M2.32422 1H18.8242M6.82422 14.5H14.3242M6.82422 14.5L5.82422 17.5M18.8242 1H20.3242M18.8242 1V12.25C18.8242 12.8467 18.5872 13.419 18.1652 13.841C17.7433 14.2629 17.171 14.5 16.5742 14.5H14.3242M14.3242 14.5L15.3242 17.5M5.82422 17.5H15.3242M5.82422 17.5L5.32422 19M15.3242 17.5L15.8242 19M6.07422 10L9.07422 7L11.2222 9.148C12.2314 7.69929 13.5464 6.48982 15.0742 5.605"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+              Stake
+            </button>
+            <div class="max-w-[33%] grow">
+              {#if membershipPaymentType !== 'custom'}
+                <button
+                  on:click|preventDefault={() =>
+                    changeMembershipPaymentType('custom')}
+                  class="hs-button is-large is-filled w-full max-w-full opacity-50"
+                  id="membership-fee-custom"
+                  name="membership-fee-custom"
+                  disabled={membership.currency === 'DEV'}>Custom</button
+                >
+              {/if}
+              {#if membershipPaymentType === 'custom'}
+                <input
+                  bind:value={membershipCustomFee100}
+                  on:change={onChangeCustomFee}
+                  on:keyup={validateCustomMembershipFee}
+                  class="hs-form-field__input w-full max-w-full"
+                  id="membership-fee-value"
+                  name="membership-fee-value"
+                  type="number"
+                  disabled={membership.currency === 'DEV'}
+                  min={minCustomFee100}
+                  max={maxCustomFee100}
+                />
+              {/if}
+            </div>
+          </div>
+          {#if membership.currency === 'DEV'}
+            <p class="hs-form-field__helper mt-2">
+              * Earning model option is currently disabled for DEV
+            </p>
+          {/if}
+          {#if invalidFeeMsg !== ''}
+            <p class="text-danger-300">* {invalidFeeMsg}</p>
+          {/if}
+        </div>
+
+        <!-- Earning info -->
+        <div class="hs-form-field">
+          <div class="flex w-full max-w-full gap-0 p-0">
+            <div
+              style="width: {(membership.fee?.percentage || 0) *
+                100}% !important"
+              class="h-6 max-w-full rounded-[99px] bg-[#00D0FD]"
+            ></div>
+            <div
+              style="width: {100 -
+                (membership.fee?.percentage || 0) * 100}% !important"
+              class="h-6 max-w-full rounded-[99px] bg-[#43C451]"
+            ></div>
+          </div>
+          <p class="mt-1">
+            <span class="text-[#00D0FD]"
+              >{BigNumber(membership.price * (membership.fee?.percentage || 0))
+                .dp(5)
+                .toString()}
+              {membership.currency} ({BigNumber(
+                (membership.fee?.percentage || 0) * 100,
+              )
+                .dp(3)
+                .toString()}%)</span
+            >
+            will earn at 1 time,
+            <span class="text-[#43C451]"
+              >and {BigNumber(
+                membership.price * (1 - (membership.fee?.percentage || 0)),
+              )
+                .dp(5)
+                .toString()} ({BigNumber(
+                (1 - (membership.fee?.percentage || 0)) * 100,
+              )
+                .dp(3)
+                .toString()}%)
+            </span> will be staked to earn dev continuously.
+          </p>
+          <p class="hs-form-field__helper mt-2">
+            * <u>What is staking?</u>
+          </p>
+        </div>
       </div>
 
       <!-- Preview -->
@@ -446,7 +783,8 @@
             id={membership.id}
             name={membership.name}
             imagePath={membership.imageSrc}
-            ethPrice={membership.price?.toString() || '0'}
+            price={membership.price?.toString()}
+            currency={membership.currency}
             description={membership.description}
           />
         </div>
@@ -486,6 +824,61 @@
       <span class="hs-form-field__label"> Payload </span>
       <input class="hs-form-field__input" value={metaOfPayload} readonly />
     </label>
+
+    <!-- Access control -->
+    <div class="hs-form-field is-filled">
+      <span class="hs-form-field__label"> Access control </span>
+      <div class="grid max-w-md grid-cols-2 items-center justify-start gap-2">
+        <button
+          on:click|preventDefault={toggleAccessControl(false)}
+          data-is-selected={usingAccessControl === false}
+          class="hs-button is-large is-filled data-[is-selected=false]:opacity-50"
+        >
+          Public
+        </button>
+        <button
+          on:click|preventDefault={toggleAccessControl(true)}
+          data-is-selected={usingAccessControl === true}
+          class="hs-button is-large is-filled data-[is-selected=false]:opacity-50"
+        >
+          Private
+        </button>
+      </div>
+    </div>
+
+    {#if usingAccessControl}
+      <label class="hs-form-field is-filled is-required">
+        <span class="hs-form-field__label"> Access control URL </span>
+        <input
+          class="hs-form-field__input"
+          bind:value={accessControl.url}
+          on:change={update}
+        />
+        <span class="hs-form-field__helper">
+          App requests <pre class="inline">[GET] /?account=0x...</pre>
+          and expected to be returned 1 if verified.
+        </span>
+      </label>
+
+      <label class="hs-form-field is-filled is-required">
+        <span class="hs-form-field__label">
+          Description of the verification process
+        </span>
+        <textarea
+          class="hs-form-field__input"
+          bind:value={accessControl.description}
+          on:change={update}
+        />
+        <span class="hs-form-field__helper">
+          Markdown is available <a
+            href="https://www.markdownguide.org/basic-syntax"
+            target="_blank"
+            class="underline [font-size:inherit]"
+            rel="noopener noreferrer">(What is Markdown? ↗)</a
+          >
+        </span>
+      </label>
+    {/if}
 
     <div class="flex w-full justify-end gap-[20px]">
       {#if mode === 'edit' && !membership.deprecated}

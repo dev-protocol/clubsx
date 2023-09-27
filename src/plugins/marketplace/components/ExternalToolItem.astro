@@ -16,10 +16,10 @@ const {
 
 <Wrapper href={tool.url}>
   <div
-    class="grid grid-cols-[auto,1fr] items-start justify-start justify-items-start gap-x-4 gap-y-1"
+    class="grid grid-cols-[auto,1fr] items-start justify-start justify-items-start gap-x-4 gap-y-1 p-4"
   >
     <img
-      src={tool.imageSrc || pluginDefaultIcon}
+      src={tool.imageSrc || pluginDefaultIcon.src}
       class:list={[
         'row-span-3 aspect-square rounded-[20%]',
         { 'h-16 lg:h-20': size === 'medium' },
@@ -30,7 +30,7 @@ const {
     <div class="col-start-2 flex w-full items-center justify-between truncate">
       <p class="truncate text-2xl font-bold">{tool.name}</p>
     </div>
-    <p class:list={['col-start-2', { truncate: truncate }]}>
+    <p class:list={['col-start-2', { 'max-w-full truncate': truncate }]}>
       {tool.description}
     </p>
   </div>

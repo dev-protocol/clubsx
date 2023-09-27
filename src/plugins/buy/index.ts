@@ -1,11 +1,11 @@
-import type { Products } from '@constants/products'
+import type { Membership } from '@plugins/memberships'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import {
-  ClubsFunctionGetAdminPaths,
-  ClubsFunctionGetPagePaths,
-  ClubsFunctionPlugin,
+  type ClubsFunctionGetAdminPaths,
+  type ClubsFunctionGetPagePaths,
+  type ClubsFunctionPlugin,
   ClubsPluginCategory,
-  ClubsPluginMeta,
+  type ClubsPluginMeta,
 } from '@devprotocol/clubs-core'
 import { default as Index } from './index.astro'
 import { default as Id } from './[id].astro'
@@ -15,7 +15,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
   { propertyAddress, rpcUrl },
 ) => {
   const products = options.find((opt) => opt.key === 'products')
-    ?.value as UndefinedOr<Products>
+    ?.value as UndefinedOr<Membership[]>
   return products
     ? [
         { paths: ['buy'], component: Index, props: { products } },

@@ -9,7 +9,6 @@ import type {
   ClubsPropsAdminPages,
 } from '@devprotocol/clubs-core'
 import type { colorPresets as ColorPresets } from '.'
-import type { UndefinedOr } from '@devprotocol/util-ts'
 import { encode } from '@devprotocol/clubs-core/encode'
 
 const { options, config, colorPresets, clubs } =
@@ -35,7 +34,7 @@ const encodedOptions = encode(options as unknown as ClubsConfiguration)
 <div>
   <AdminThemeForm
     client:only="svelte"
-    whiteRightArrowImgSrc={whiteRightArrowImgSrc}
+    whiteRightArrowImgSrc={whiteRightArrowImgSrc.src}
     navigationLinks={navigationLinks}
     socialLinks={socialLinks}
     encodedOptions={encodedOptions}

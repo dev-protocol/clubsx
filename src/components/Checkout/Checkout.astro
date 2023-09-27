@@ -1,6 +1,5 @@
 ---
-import type { CurrencyOption } from '@constants/currencyOption'
-import Checkout from '@components/Checkout/Checkout.vue'
+import Checkout_ from '@components/Checkout/Checkout.vue'
 import type { ClubsPropsPages } from '@devprotocol/clubs-core'
 import type { CheckoutOptions } from './types'
 
@@ -46,12 +45,21 @@ const checkoutOptions: CheckoutOptions = {
 const SlotsCheckoutBeforeTransactionForm = clubs.slots.filter(
   (slot) => slot.slot === 'checkout:before:transaction-form',
 )
+const SlotsCheckoutAfterTransactionForm = clubs.slots.filter(
+  (slot) => slot.slot === 'checkout:after:transaction-form',
+)
 const SlotsCheckoutMainTransactionForm = clubs.slots.filter(
   (slot) => slot.slot === 'checkout:main:transaction-form',
 )
+const SlotsCheckoutAfterPrice = clubs.slots.filter(
+  (slot) => slot.slot === 'checkout:after:price',
+)
+const SlotsCheckoutResultBeforePreview = clubs.slots.filter(
+  (slot) => slot.slot === 'checkout:result:before:preview',
+)
 ---
 
-<Checkout
+<Checkout_
   client:only="vue"
   amount={amount}
   destination={propertyAddress}
@@ -73,7 +81,10 @@ const SlotsCheckoutMainTransactionForm = clubs.slots.filter(
     name="checkout:before:transaction-form"
     slot="before:transaction-form"
   />
+  <slot name="checkout:after:transaction-form" slot="after:transaction-form" />
   <slot name="checkout:main:transaction-form" slot="main:transaction-form" />
+  <slot name="checkout:after:price" slot="after:price" />
+  <slot name="checkout:result:before:preview" slot="result:before:preview" />
 
   {
     SlotsCheckoutBeforeTransactionForm.map((Slot) => (
@@ -81,6 +92,15 @@ const SlotsCheckoutMainTransactionForm = clubs.slots.filter(
         {...Slot.props}
         checkoutOptions={checkoutOptions}
         slot="before:transaction-form"
+      />
+    ))
+  }
+  {
+    SlotsCheckoutAfterTransactionForm.map((Slot) => (
+      <Slot.component
+        {...Slot.props}
+        checkoutOptions={checkoutOptions}
+        slot="after:transaction-form"
       />
     ))
   }
@@ -93,4 +113,22 @@ const SlotsCheckoutMainTransactionForm = clubs.slots.filter(
       />
     ))
   }
-</Checkout>
+  {
+    SlotsCheckoutAfterPrice.map((Slot) => (
+      <Slot.component
+        {...Slot.props}
+        checkoutOptions={checkoutOptions}
+        slot="after:price"
+      />
+    ))
+  }
+  {
+    SlotsCheckoutResultBeforePreview.map((Slot) => (
+      <Slot.component
+        {...Slot.props}
+        checkoutOptions={checkoutOptions}
+        slot="result:before:preview"
+      />
+    ))
+  }
+</Checkout_>

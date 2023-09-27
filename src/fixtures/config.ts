@@ -1,5 +1,4 @@
 import { createClient } from 'redis'
-import { ClubsConfiguration, encode } from '@devprotocol/clubs-core'
 
 export const config = async (
   site: string | number | undefined,

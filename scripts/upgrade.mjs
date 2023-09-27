@@ -42,7 +42,7 @@ const upgrade = (key, config) => {
       : plg.name === 'perks'
       ? { ...plg, id: 'devprotocol:clubs:plugin:perks' }
       : plg.name === 'fiat'
-      ? { ...plg, id: 'devprotocol:clubs:plugin:fiat' }
+      ? { ...plg, id: 'devprotocol:clubs:plugin:pay-by-card' }
       : plg.name === 'buy'
       ? { ...plg, id: 'devprotocol:clubs:plugin:buy' }
       : plg.name === 'nft'
@@ -83,7 +83,7 @@ const app = async () => {
     await client.connect()
 
     for await (const key of client.scanIterator()) {
-      if (key.startsWith('id::')) {
+      if (key.includes(':')) {
         // This is not a ClubsConfiguration
         console.log('Skipped:', key)
         continue

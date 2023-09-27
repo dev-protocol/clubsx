@@ -1,7 +1,11 @@
 ---
 import DefaultLayout from '@layouts/Default.astro'
 import { Admin } from '@devprotocol/clubs-core/layouts'
-import { adminFactory, decode } from '@devprotocol/clubs-core'
+import {
+  type ClubsConfiguration,
+  adminFactory,
+  decode,
+} from '@devprotocol/clubs-core'
 import { config as _config } from '@fixtures/config'
 import VercelAnalytics from '@components/Analytics/VercelAnalytics.astro'
 import PageNotFound from '@pages/404.astro'
@@ -10,6 +14,7 @@ import marketplace from '@plugins/marketplace'
 import IconGlobe from '@components/Icons/globe-europe-africa.astro'
 import Banner from '@components/Global/Banner.astro'
 import { plugins } from '@constants/plugins'
+import ConnectButton from '@components/Wallet/ConnectButton.vue'
 
 const { site, page } = Astro.params
 
@@ -38,10 +43,10 @@ const config =
 
 const Content = path?.props.component
 
-const baseUrl = ((host) =>
-  host.includes('localhost')
-    ? host.replace(/^.*\.(localhost.*)$/, 'http://$1')
-    : `https://${host}`)(new URL(Astro.request.url).host)
+const baseUrl = ((origin) =>
+  Astro.params.site && origin.includes(Astro.params.site)
+    ? origin.replace(`${Astro.params.site}.`, '')
+    : origin)(new URL(Astro.request.url).origin)
 
 const siteBaseUrl = new URL(Astro.request.url).origin
 ---
@@ -57,6 +62,11 @@ const siteBaseUrl = new URL(Astro.request.url).origin
       <>
         <Banner />
         <Admin {...path.props}>
+          <ConnectButton
+            client:load
+            chainId={(config as ClubsConfiguration | undefined)?.chainId}
+            slot="clubs:connect-button"
+          />
           <a
             slot="admin:sidebar:before-title"
             class="flex items-center gap-2 transition-colors hover:text-native-blue-300"

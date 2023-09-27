@@ -1,6 +1,6 @@
 ---
 import type { ClubsPropsAdminPages } from '@devprotocol/clubs-core'
-import RemoveButton from './RemoveButton.svelte'
+import RemoveButton_ from './RemoveButton.svelte'
 import type { GatedMessage } from '../types'
 
 const { forms, id, clubs } = Astro.props as ClubsPropsAdminPages & {
@@ -9,7 +9,7 @@ const { forms, id, clubs } = Astro.props as ClubsPropsAdminPages & {
 }
 ---
 
-<RemoveButton
+<RemoveButton_
   client:load
   currentPluginIndex={clubs.currentPluginIndex}
   forms={forms}

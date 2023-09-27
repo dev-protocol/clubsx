@@ -111,7 +111,7 @@ export const post = async ({ request }: { request: Request }) => {
       // @ts-ignore
       requiredMemberships,
       userAddress,
-    ).catch((err) => {
+    ).catch(() => {
       throw Error('Not a member')
     })
 

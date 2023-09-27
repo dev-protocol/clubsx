@@ -10,29 +10,25 @@
       </section>
       <p class="text-base">How do I create a wallet?</p>
     </section>
-    <button
-      class="hs-button is-large is-filled"
-      @click="connect"
-      :disabled="connected || !connection"
-    >
-      <span class="hs-button__label">
-        {{ buttonText }}
-      </span>
-    </button>
+    <ConnectButton
+      lable="buttonText"
+      :overrideClass="buttonClasses"
+      :isDisabled="connected || !connection"
+    />
   </section>
 </template>
 
 <script lang="ts">
-import type Web3Modal from 'web3modal'
-import { BrowserProvider, Eip1193Provider } from 'ethers'
-import { whenDefined } from '@devprotocol/util-ts'
 import { defineComponent } from '@vue/runtime-core'
 import type { connection as Connection } from '@devprotocol/clubs-core/connection'
+import ConnectButton from '@components/Wallet/ConnectButton.vue'
 import { onMountClient } from '@devprotocol/clubs-core/events'
+import { watchWalletClient } from '@wagmi/core'
+import { whenDefined } from '@devprotocol/util-ts'
+import { BrowserProvider } from 'ethers'
 
 type Data = {
   connected: boolean
-  modalProvider?: Web3Modal
   connection?: typeof Connection
   isAwaitingWalletConfirmation: boolean
   connectButtonTextMsg: string
@@ -40,12 +36,12 @@ type Data = {
 
 export default defineComponent({
   name: 'PublishConnect',
+  components: { ConnectButton },
   props: {
     checkImage: String,
   },
   data(): Data {
     return {
-      modalProvider: undefined,
       connection: undefined,
       connected: false,
       isAwaitingWalletConfirmation: false,
@@ -53,8 +49,8 @@ export default defineComponent({
     }
   },
   computed: {
-    buttonClasses() {
-      const classes = 'hs-button is-large is-filled'
+    buttonClasses(): string {
+      const classes = 'hs-button is-large is-filled w-full'
 
       return this.connected
         ? classes + ' opacity-50'
@@ -76,78 +72,30 @@ export default defineComponent({
   },
   async mounted() {
     onMountClient(async () => {
-      const [{ connection }, { GetModalProvider, ReConnectWallet }] =
-        await Promise.all([
-          import('@devprotocol/clubs-core/connection'),
-          import('@fixtures/wallet'),
-        ])
+      this.connected = false
+      this.connectButtonTextMsg = 'Fetching wallet details...'
 
-      try {
-        this.connection = connection
-        this.modalProvider = GetModalProvider()
-        this.isAwaitingWalletConfirmation = true
-        this.connectButtonTextMsg = 'Fetching wallet details...'
-        const { currentAddress, connectedProvider, provider } =
-          await ReConnectWallet(this.modalProvider)
-        if (currentAddress) {
+      const { connection } = await import('@devprotocol/clubs-core/connection')
+      this.connection = connection
+
+      watchWalletClient({}, (wallet) => {
+        whenDefined(wallet, (wal) =>
+          connection().setEip1193Provider(wal.transport, BrowserProvider),
+        ) ?? connection().signer.next(undefined)
+      })
+
+      connection().account.subscribe((account) => {
+        if (account) {
           this.connected = true
           this.connectButtonTextMsg = 'Connected'
         } else {
           this.connected = false
           this.connectButtonTextMsg = 'Connect'
         }
-        if (connectedProvider) {
-          this.setSigner(connectedProvider)
-        }
-      } catch (error) {
-        this.connected = false
-        this.connectButtonTextMsg = 'Connect'
-      } finally {
+
         this.isAwaitingWalletConfirmation = false
-      }
+      })
     })
-  },
-  methods: {
-    setSigner(provider: Eip1193Provider) {
-      this.connection!().setEip1193Provider(provider)
-    },
-
-    async connect() {
-      if (this.connected) {
-        this.connectButtonTextMsg = 'Connected'
-        this.isAwaitingWalletConfirmation = false
-        return
-      }
-
-      try {
-        this.isAwaitingWalletConfirmation = true
-        this.connectButtonTextMsg =
-          'Awaiting connection confirmation on wallet...'
-        const connectedProvider: Eip1193Provider =
-          await this.modalProvider!.connect()
-        const newProvider = whenDefined(connectedProvider, (p) => {
-          const provider = new BrowserProvider(p)
-          this.setSigner(connectedProvider)
-          return provider
-        })
-
-        const currentAddress = await (
-          await newProvider?.getSigner()
-        )?.getAddress()
-        if (currentAddress) {
-          this.connected = true
-          this.connectButtonTextMsg = 'Connected'
-        } else {
-          this.connected = false
-          this.connectButtonTextMsg = 'Connect'
-        }
-      } catch (error) {
-        this.connected = false
-        this.connectButtonTextMsg = 'Wallet connection failed, try again!'
-      } finally {
-        this.isAwaitingWalletConfirmation = false
-      }
-    },
   },
 })
 </script>

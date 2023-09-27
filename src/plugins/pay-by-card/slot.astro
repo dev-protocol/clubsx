@@ -1,0 +1,30 @@
+---
+import { CurrencyOption } from '@constants/currencyOption'
+import type { CheckoutOptions } from '@components/Checkout/types'
+import { keccak256 } from 'ethers'
+
+const { checkoutOptions } = Astro.props as { checkoutOptions: CheckoutOptions }
+
+const { currency, payload } = checkoutOptions
+const isUSDC = currency?.toLowerCase() === CurrencyOption.USDC
+const hex =
+  isUSDC && payload
+    ? typeof payload === 'string'
+      ? payload
+      : keccak256(payload)
+    : undefined
+---
+
+{
+  hex && (
+    <div class="p-5">
+      <a
+        href={`/fiat/${hex}`}
+        class="hs-button is-large is-fullwidth is-filled is-native-blue"
+      >
+        Pay with a credit card
+      </a>
+      <hr class="bg-[#DFDFDF]" />
+    </div>
+  )
+}

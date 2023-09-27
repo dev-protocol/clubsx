@@ -2,7 +2,7 @@
 import AdminMembershipsForm from '@components/AdminMembershipsForm/AdminMembershipsForm.svelte'
 import { config as _config } from '@fixtures/config'
 import { adminFactory } from '@devprotocol/clubs-core'
-import memberships, { Membership } from '@plugins/memberships'
+import memberships, { type Membership } from '@plugins/memberships'
 import SetupLayout from '@layouts/Setup.astro'
 import NextButton from '@components/Setup/NextButton.astro'
 import PageNotFound from '@pages/404.astro'
@@ -18,12 +18,12 @@ const { getStaticPaths, getCurrentConfig } = adminFactory({
 
 const config = await getCurrentConfig()
 const path = (await getStaticPaths()).find(
-  ({ params }) => params.page === 'memberships'
+  ({ params }) => params.page === 'memberships',
 )
 
 const siteBaseUrl = ((url) =>
   `${url.protocol}//${url.host}/${site}/setup/design`)(
-  new URL(Astro.request.url)
+  new URL(Astro.request.url),
 )
 
 const clubs = path?.props.clubs

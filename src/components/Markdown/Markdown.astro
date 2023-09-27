@@ -17,7 +17,7 @@ const {
 }
 
 const renderer = {
-  link(href: string, title: string, text: string) {
+  link(href: string, _: string | null | undefined, text: string) {
     const url = new URL(href)
     const youtube = url.host === 'youtube.com' || url.host === 'www.youtube.com'
     const v = url.searchParams.get('v')
@@ -88,6 +88,15 @@ const content = body ? marked.parse(body) : undefined
     :global(p) {
       font-size: var(--fontSizeP);
       line-height: var(--lineHeightP);
+    }
+    :global(th) {
+      @apply mb-2 border-b border-white/20 py-2;
+    }
+    :global(td) {
+      @apply p-2 align-baseline;
+    }
+    :global(iframe) {
+      @apply max-w-full;
     }
   }
 </style>

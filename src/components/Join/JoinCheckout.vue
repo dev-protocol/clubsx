@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="!stakeSuccessful"
-    class="bg-dp-blue-grey-300 relative mx-auto mb-12 grid items-start rounded-xl p-4 shadow lg:container lg:mt-12 lg:grid-cols-[auto,_480px] lg:gap-12"
+    class="relative mx-auto mb-12 grid items-start rounded-xl bg-dp-blue-grey-300 p-4 shadow lg:container lg:mt-12 lg:grid-cols-[auto,_480px] lg:gap-12"
   >
     <section class="flex flex-col">
       <h2 class="mb-8 font-title text-4xl font-bold">
@@ -170,11 +170,15 @@ import {
   positionsCreateWithEth,
 } from '@devprotocol/dev-kit/agent'
 import { connection as getConnection } from '@devprotocol/clubs-core/connection'
-import { UndefinedOr, whenDefined, whenDefinedAll } from '@devprotocol/util-ts'
+import {
+  type UndefinedOr,
+  whenDefined,
+  whenDefinedAll,
+} from '@devprotocol/util-ts'
 import { defineComponent } from '@vue/composition-api'
 import {
-  BigNumberish,
-  ContractRunner,
+  type BigNumberish,
+  type ContractRunner,
   JsonRpcProvider,
   MaxUint256,
   formatUnits,

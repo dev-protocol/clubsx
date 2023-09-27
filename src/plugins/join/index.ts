@@ -1,10 +1,10 @@
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import {
-  ClubsFunctionGetAdminPaths,
-  ClubsFunctionGetPagePaths,
-  ClubsFunctionPlugin,
+  type ClubsFunctionGetAdminPaths,
+  type ClubsFunctionGetPagePaths,
+  type ClubsFunctionPlugin,
   ClubsPluginCategory,
-  ClubsPluginMeta,
+  type ClubsPluginMeta,
   ClubsPluginSignal,
 } from '@devprotocol/clubs-core'
 import { default as Index } from './index.astro'
@@ -16,7 +16,7 @@ import Preview1 from './assets/join-1.jpg'
 import Preview2 from './assets/join-2.jpg'
 
 export const getPagePaths: ClubsFunctionGetPagePaths = async (
-  options,
+  _,
   { propertyAddress, name, rpcUrl },
   { getPluginConfigById },
 ) => {
@@ -40,9 +40,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
     badgeImageSrc: mem.imageSrc,
     badgeImageDescription: mem.description,
   }))
-  const preferedCurrency = tiers?.every((t) => t.currency === 'eth')
-    ? 'eth'
-    : 'dev'
+  console.log({ tiers })
 
   return tiers
     ? [
@@ -54,27 +52,40 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
             propertyAddress,
             name,
             rpcUrl,
-            preferedCurrency,
             signals: [ClubsPluginSignal.DisplayFullPage],
           },
         },
-        ...tiers.map(({ id, amount, currency, fee, payload, description }) => ({
-          paths: ['join', id],
-          component: Id,
-          props: {
+        ...tiers.map(
+          ({
+            id,
             amount,
             currency,
-            propertyAddress,
-            rpcUrl,
+            fee,
             payload,
             description,
-            feeBeneficiary: fee?.beneficiary,
-            feePercentage: fee?.percentage,
-            signals: [ClubsPluginSignal.DisplayFullPage],
-            accessControlUrl: undefined, //TODO: Pass the value
-            accessControlDescription: undefined, //TODO: Pass the value
-          },
-        })),
+            accessControl,
+            imageSrc,
+            name,
+          }) => ({
+            paths: ['join', id],
+            component: Id,
+            props: {
+              amount,
+              currency,
+              propertyAddress,
+              rpcUrl,
+              payload,
+              description,
+              feeBeneficiary: fee?.beneficiary,
+              feePercentage: fee?.percentage,
+              signals: [ClubsPluginSignal.DisplayFullPage],
+              itemImageSrc: imageSrc,
+              itemName: name,
+              accessControlUrl: accessControl?.url,
+              accessControlDescription: accessControl?.description,
+            },
+          }),
+        ),
       ]
     : []
 }
@@ -85,13 +96,13 @@ export const meta: ClubsPluginMeta = {
   id: 'devprotocol:clubs:plugin:join',
   displayName: 'Join',
   category: ClubsPluginCategory.Uncategorized,
-  icon: Icon,
+  icon: Icon.src,
   offer: {
     price: 0,
     priceCurrency: 'DEV',
   },
   description: `Add checkout pages for each tier.`,
-  previewImages: [Preview1, Preview2],
+  previewImages: [Preview1.src, Preview2.src],
   readme: Readme,
 }
 

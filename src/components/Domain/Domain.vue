@@ -88,7 +88,13 @@ export default {
             <input
               class="hs-form-field__input"
               :value="daoName"
-              @input="(evt) => (daoName = evt.target?.value.toLowerCase())"
+              @input="
+                (evt) =>
+                  (daoName =
+                    (
+                      evt.target as undefined | HTMLInputElement
+                    )?.value.toLowerCase() ?? '')
+              "
               id="daoname"
               name="daoname"
               placeholder="Enter your DAO name"

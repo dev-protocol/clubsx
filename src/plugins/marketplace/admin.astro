@@ -13,19 +13,33 @@ import { allTags } from '@constants/plugins'
 import BannerPresetFeaturing from './components/BannerPresetFeaturing.astro'
 import ExternalToolWrapper from './components/ExternalToolWrapper.astro'
 
+import {
+  getFlagsByParams,
+  FeatureFlags,
+  FeatureFlagValues,
+} from '@fixtures/flags'
+import collections from '@plugins/collections'
+
 const { allInstallablePlugins, clubs } = Astro.props as ClubsPropsAdminPages & {
   allInstallablePlugins: InstallablePlugins[]
 }
 
+const flags = getFlagsByParams({ url: new URL(Astro.url) })
+
+const installablePlugins =
+  flags.get(FeatureFlags.StoresOnMarketplace) === FeatureFlagValues.Enable
+    ? allInstallablePlugins
+    : allInstallablePlugins.filter((plg) => plg.id !== collections.meta.id)
+
 const getPluginMeta = createGetPluginMeta(
-  decode(clubs.encodedClubsConfiguration)
+  decode(clubs.encodedClubsConfiguration),
 )
-const allPlugins = await Promise.all(allInstallablePlugins.map(getPluginMeta))
+const allPlugins = await Promise.all(installablePlugins.map(getPluginMeta))
 
 const externalTools: ExternalTool[] = [
   {
     name: 'Superfluid',
-    imageSrc: SuperFluid,
+    imageSrc: SuperFluid.src,
     description: 'Protocol for streaming money on Ethereum.',
     url: 'https://superfluid.finance/',
   },
@@ -69,7 +83,7 @@ const externalTools: ExternalTool[] = [
       class="mt-10"
       baseColor="#8370da"
       textColor="#fff"
-      image={BgPeople}
+      image={BgPeople.src}
       body="What's plugin?"
       description="Publish your own products to the world!"
       link="https://clubs-help.notion.site/Marketplace-cb5407922b8b42a4a233b0329e316c0f"
@@ -101,7 +115,7 @@ const externalTools: ExternalTool[] = [
       class="mt-10"
       baseColor="#2C18FF"
       textColor="#fff"
-      image={BgCode}
+      image={BgCode.src}
       body="Join our Club for developers"
       description="Get early access & inspirations from community."
       link="https://developers.clubs.place"

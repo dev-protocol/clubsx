@@ -1,22 +1,31 @@
 <script lang="ts">
   import { marked } from 'marked'
-  import type { UndefinedOr } from '@devprotocol/util-ts'
   import { onMount } from 'svelte'
+  import { CurrencyOption } from '@constants/currencyOption'
+  import DOMPurify from 'dompurify'
 
   export let name: string
   export let clubName: string
   export let imagePath: string
   export let id: string
-  export let ethPrice: UndefinedOr<string> = undefined
-  export let devPrice: UndefinedOr<string> = undefined
+  export let price: string = '0'
+  export let currency: CurrencyOption | Uppercase<CurrencyOption> =
+    CurrencyOption.USDC
   export let description: string | undefined = undefined
   export let action: string | undefined = undefined
   export let actionLabel: string | undefined = undefined
   export let className: string = ''
   let modal = false
   let modalGroup: Element | undefined
+  let isMounted = false
 
-  const content = marked.parse(description ?? '')
+  const mdToHtml = (str?: string) => DOMPurify.sanitize(marked.parse(str ?? ''))
+
+  let content: string | undefined
+
+  $: {
+    content = isMounted ? mdToHtml(description) : undefined
+  }
 
   const hash = `#membership:${id}`
   const handleHashChange = (event: HashChangeEvent) => {
@@ -41,6 +50,7 @@
   }
 
   onMount(() => {
+    isMounted = true
     window.addEventListener('hashchange', handleHashChange)
 
     modalGroup && document.body.appendChild(modalGroup)
@@ -57,7 +67,7 @@
   <img class="w-full bg-black/20" src={imagePath} alt={`${name} Membership`} />
 
   <div
-    class="relative grid grid-cols-[1fr_auto] content-baseline items-center gap-3 overflow-hidden p-2.5"
+    class="relative grid grid-cols-[1fr_auto] content-baseline items-center gap-3 overflow-hidden p-2.5 text-white"
   >
     <img
       class="pointer-events-none absolute -left-1/2 top-1/2 h-auto w-[200%] max-w-none -translate-y-1/2 blur-[120px]"
@@ -67,20 +77,12 @@
 
     <div class="relative col-start-1">
       <p>{name}</p>
-      {#if ethPrice}
-        <p
-          class="grid grid-cols-[auto_1fr] items-center gap-1 text-sm opacity-70"
-        >
-          <span class="truncate">{ethPrice}</span> ETH
-        </p>
-      {/if}
-      {#if devPrice}
-        <p
-          class="grid grid-cols-[auto_1fr] items-center gap-1 text-sm opacity-70"
-        >
-          <span class="truncate">{devPrice}</span> DEV
-        </p>
-      {/if}
+      <p
+        class="grid grid-cols-[auto_1fr] items-center gap-1 text-sm opacity-70"
+      >
+        <span class="truncate">{price}</span>
+        {currency.toUpperCase()}
+      </p>
     </div>
 
     <button
@@ -104,7 +106,18 @@
 
     {#if description}
       <div class="md md-mini relative col-span-2 grid gap-2 text-xs opacity-70">
-        {@html content}
+        {#if content === undefined}
+          <div
+            role="presentation"
+            class="mb-1 h-5 animate-pulse rounded bg-white/60"
+          ></div>
+          <div
+            role="presentation"
+            class="h-5 w-3/4 animate-pulse rounded bg-white/60"
+          ></div>
+        {:else}
+          {@html content}
+        {/if}
       </div>
     {/if}
   </div>
@@ -151,12 +164,7 @@
       <div
         class="grid grid-cols-[1fr_auto] content-baseline items-center gap-3 overflow-hidden px-2.5"
       >
-        {#if ethPrice}
-          <p class="text-2xl font-bold">{ethPrice} ETH</p>
-        {/if}
-        {#if devPrice}
-          <p class="text-2xl font-bold">{devPrice} DEV</p>
-        {/if}
+        <p class="text-2xl font-bold">{price} {currency.toUpperCase()}</p>
 
         {#if action && actionLabel}
           <a
@@ -191,6 +199,7 @@
 
 <style lang="scss">
   .md {
+    @apply text-white;
     :global(h1) {
       @apply text-3xl font-bold;
     }
@@ -221,11 +230,7 @@
     }
   }
   .md.md-mini {
-    display: box;
     overflow: hidden;
-    box-orient: vertical;
-    line-clamp: 2;
-
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;

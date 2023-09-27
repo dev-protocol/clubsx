@@ -1,5 +1,7 @@
 <script lang="ts">
+  import type { DraftOptions } from '@constants/draft'
   import type { ClubsConfiguration } from '@devprotocol/clubs-core'
+  import type { UndefinedOr } from '@devprotocol/util-ts'
   import { detectStokensByPropertyAddress } from '@fixtures/dev-kit'
   import { JsonRpcProvider } from 'ethers'
   type TotalClubs = {
@@ -8,6 +10,21 @@
   }
 
   export let config: TotalClubs[]
+
+  const statusOf = (club: TotalClubs) =>
+    (
+      club.config.options?.find(
+        (option) => option.key === '__draft',
+      ) as UndefinedOr<DraftOptions>
+    )?.value.isInDraft
+      ? 'ℹ️'
+      : '✅'
+  const categoryOf = (club: TotalClubs) =>
+    (
+      club.config.options?.find(
+        (option) => option.key === '__draft',
+      ) as UndefinedOr<DraftOptions>
+    )?.value.category
 </script>
 
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -48,10 +65,7 @@
               : 'Unknown'}
           </td>
           <td class="px-6 py-4">
-            {club.config.options?.find((option) => option.key === '__draft')
-              ?.value.isInDraft
-              ? 'ℹ️'
-              : '✅'}
+            {statusOf(club)}
           </td>
           <td class="px-6 py-4">
             {club.date?.toLocaleDateString('en-US', {
@@ -62,8 +76,7 @@
             }) ?? 'Unknown'}
           </td>
           <td class="px-6 py-4">
-            {club.config.options?.find((option) => option.key === '__draft')
-              ?.value.category}
+            {categoryOf(club)}
           </td>
           <td class="px-6 py-4">
             {#await detectStokensByPropertyAddress(new JsonRpcProvider(club.config.rpcUrl), club.config.propertyAddress)}

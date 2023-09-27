@@ -1,10 +1,10 @@
 ---
 import Checkout from '@components/Checkout/Checkout.astro'
-import type { Product } from '@constants/products'
+import type { Membership } from '@plugins/memberships'
 
 const { propertyAddress, product, rpcUrl, ...others } = Astro.props as {
   propertyAddress: string
-  product: Product
+  product: Membership
   rpcUrl: string
 }
 ---
@@ -18,5 +18,7 @@ const { propertyAddress, product, rpcUrl, ...others } = Astro.props as {
   payload={product.payload}
   rpcUrl={rpcUrl}
   description={product.description}
+  accessControlUrl={product.accessControl?.url}
+  accessControlDescription={product.accessControl?.description}
   {...others}
 />

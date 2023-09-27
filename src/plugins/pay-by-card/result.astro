@@ -1,0 +1,46 @@
+---
+import Result_ from '@components/Checkout/Result.astro'
+import type { ClubsPropsPages } from '@devprotocol/clubs-core'
+
+const { rpcUrl, ...other } = Astro.props as ClubsPropsPages & {
+  rpcUrl: string
+}
+
+type CrossmintParams = [
+  {
+    type: 'purchase.succeeded'
+    status: 'success' | 'failure'
+    walletAddress: string
+    clientId: string
+    collectionId: string
+    txId: string
+    projectId: string
+    contractAddress: string
+    tokenId: string
+    tokenIds: string[]
+  },
+]
+
+const url = new URL(Astro.url)
+const p = url.searchParams.get('p') ?? '[]'
+const params: CrossmintParams = JSON.parse(p)
+
+const success = params[0].status === 'success'
+const failure = params[0].status === 'failure'
+---
+
+<Result_ rpcUrl={rpcUrl} id={params[0].tokenId} {...other}>
+  {
+    success ? (
+      <div slot="checkout-result:before:preview">
+        <h3 class="text-2xl font-bold">You're now our member!</h3>
+      </div>
+    ) : failure ? (
+      <div slot="checkout-result:before:preview">
+        <h3 class="text-2xl font-bold">Something failed :-/</h3>
+      </div>
+    ) : (
+      ''
+    )
+  }
+</Result_>

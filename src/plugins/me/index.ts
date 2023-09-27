@@ -1,9 +1,9 @@
 import {
-  ClubsFunctionGetAdminPaths,
-  ClubsFunctionGetPagePaths,
-  ClubsFunctionPlugin,
+  type ClubsFunctionGetAdminPaths,
+  type ClubsFunctionGetPagePaths,
+  type ClubsFunctionPlugin,
   ClubsPluginCategory,
-  ClubsPluginMeta,
+  type ClubsPluginMeta,
 } from '@devprotocol/clubs-core'
 import { default as Index } from './index.astro'
 import { default as Icon } from './assets/icon.svg'
@@ -21,13 +21,13 @@ export const meta: ClubsPluginMeta = {
   id: 'devprotocol:clubs:plugin:me',
   displayName: 'Me',
   category: ClubsPluginCategory.Uncategorized,
-  icon: Icon,
+  icon: Icon.src,
   offer: {
     price: 0,
     priceCurrency: 'DEV',
   },
   description: `User's personal page.`,
-  previewImages: [Preview1],
+  previewImages: [Preview1.src],
   readme: Readme,
 }
 

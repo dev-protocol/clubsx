@@ -38,7 +38,7 @@
   }
 </script>
 
-<section class="bg-dp-blue-grey-300 flex flex-col rounded-xl p-4 shadow">
+<section class="flex flex-col rounded-xl bg-dp-blue-grey-300 p-4 shadow">
   <h2 class="mb-4 text-4xl font-bold">Join</h2>
   <!-- DAOName from YAML config -->
   <div class="mb-8">Join {tenantName} in support of the project.</div>
@@ -63,7 +63,7 @@
           on:change={switchInputs}
           checked={preferedCurrency === 'dev'}
         />
-        <img src={DEV} alt="DEV" class="h-8 w-8" />
+        <img src={DEV.src} alt="DEV" class="h-8 w-8" />
         <span class="font-bold">DEV</span>
       </label>
     {/if}
@@ -80,7 +80,7 @@
         on:change={switchInputs}
         checked={preferedCurrency === 'eth'}
       />
-      <img src={ETH} alt="ETH" class="h-8 w-8" />
+      <img src={ETH.src} alt="ETH" class="h-8 w-8" />
       <span class="font-bold">ETH</span>
     </label>
   </form>
@@ -96,8 +96,8 @@
             imagePath={tier.badgeImageSrc}
             id={`${tier.id}:${currency}`}
             description={tier.badgeImageDescription}
-            ethPrice={currency === 'eth' ? String(tier.amount) : undefined}
-            devPrice={currency === 'dev' ? String(tier.amount) : undefined}
+            price={String(tier.amount)}
+            currency={tier.currency}
           />
           <a
             class="mt-2 block w-full rounded bg-black py-4 text-center text-sm font-semibold text-white"

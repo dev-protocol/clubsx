@@ -9,7 +9,7 @@ const { memberships, name } = Astro.props as {
 ---
 
 <ul
-  class="-mx-6 grid grid-cols-[repeat(auto-fit,_minmax(120px,_1fr))] justify-center gap-4 p-6 xl:gap-9"
+  class="-mx-6 grid grid-cols-[repeat(auto-fit,_minmax(120px,_1fr))] justify-center gap-4 p-6 md:grid-cols-[repeat(auto-fit,_minmax(200px,_1fr))] xl:gap-9"
 >
   {
     memberships.map((mem) => (
@@ -19,8 +19,8 @@ const { memberships, name } = Astro.props as {
           clubName={name}
           id={mem.id}
           name={mem.name}
-          ethPrice={mem.currency === 'ETH' ? String(mem.price) : undefined}
-          devPrice={mem.currency === 'DEV' ? String(mem.price) : undefined}
+          price={String(mem.price)}
+          currency={mem.currency}
           description={mem.description}
           imagePath={mem.imageSrc}
           action={`/join/${mem.id}`}

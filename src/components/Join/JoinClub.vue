@@ -1,5 +1,5 @@
 <template>
-  <section class="bg-dp-blue-grey-300 flex flex-col rounded-xl p-4 shadow">
+  <section class="flex flex-col rounded-xl bg-dp-blue-grey-300 p-4 shadow">
     <h2 class="mb-4 text-4xl font-bold">Join</h2>
     <!-- DAOName from YAML config -->
     <div class="mb-8">Join {{ tenantName }} in support of the project.</div>
@@ -50,14 +50,14 @@ import Tier from '@components/Join/Tier.vue'
 import { JsonRpcProvider } from 'ethers'
 import { composeTiers } from '@fixtures/utility'
 import type { UndefinedOr } from '@devprotocol/util-ts'
-import { defineComponent, PropType } from '@vue/runtime-core'
+import { defineComponent, type PropType } from '@vue/runtime-core'
 import type { CurrencyOption } from '@constants/currencyOption'
 import CLBRadio from '@components/Primitives/CLBRadio.vue'
 
 type Data = {
   currency: 'dev' | 'eth'
   composedTiers: {
-    [key in CurrencyOption]: UndefinedOr<Tiers>
+    [key in CurrencyOption]?: UndefinedOr<Tiers>
   }
   images: {
     DEV: string
@@ -88,8 +88,8 @@ export default defineComponent({
         eth: this.preferedCurrency === 'eth' ? [...this.tiers] : undefined,
       },
       images: {
-        DEV,
-        ETH,
+        DEV: DEV.src,
+        ETH: ETH.src,
       },
     }
   },

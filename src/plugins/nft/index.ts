@@ -1,11 +1,11 @@
-import type { Products } from '@constants/products'
+import type { Membership } from '@plugins/memberships'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import {
-  ClubsFunctionGetAdminPaths,
-  ClubsFunctionGetPagePaths,
-  ClubsFunctionPlugin,
+  type ClubsFunctionGetAdminPaths,
+  type ClubsFunctionGetPagePaths,
+  type ClubsFunctionPlugin,
   ClubsPluginCategory,
-  ClubsPluginMeta,
+  type ClubsPluginMeta,
 } from '@devprotocol/clubs-core'
 import { default as Index } from './index.astro'
 
@@ -13,7 +13,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
   options,
   config,
 ) => {
-  let products: Products | undefined = []
+  let products: Membership[] | undefined = []
 
   // TODO: add default values like placeholder here.
   let coverImgSrc: string = ''
@@ -31,7 +31,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
 
   for (const option of options) {
     if (option.key === 'products') {
-      products = option?.value as UndefinedOr<Products>
+      products = option?.value as UndefinedOr<Membership[]>
       continue
     }
 

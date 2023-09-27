@@ -1,0 +1,13 @@
+---
+import CollectionCard from '@components/Collections/CollectionCard.svelte'
+import type { Collection } from '@plugins/collections'
+
+
+const { collections } = Astro.props as {
+  collections: Collection[]
+}
+---
+
+<div>
+    <CollectionCard collections={collections} base='/collections' client:only="svelte" />
+</div>
