@@ -15,11 +15,17 @@
   import { bytes32Hex } from '@fixtures/data/hexlify'
   import type { ExpectedStatus } from '@components/AdminMembershipsForm/types'
   import SyncStatus from '@components/AdminMembershipsForm/SyncStatus.svelte'
+  import { decode } from '@devprotocol/clubs-core'
 
-  export let memberships: Membership[]
+  export let memberships: Membership[] = []
+  export let encodedMemberships: string | undefined
   export let propertyAddress: string
   export let chainId: number
   export let rpcUrl: string
+
+  memberships = encodedMemberships
+    ? decode<Membership[]>(encodedMemberships)
+    : memberships
 
   const customDescriptorAddress = address.find(
     ({ chainId: chainId_ }) => chainId_ === chainId,
@@ -45,6 +51,7 @@
       },
     }
   })
+  console.log({ expectedMemberships })
   const stateFetcher = async ({
     provider,
     propertyAddress,
