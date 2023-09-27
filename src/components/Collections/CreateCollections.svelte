@@ -40,7 +40,7 @@
 
   type MembershipPaymentType = 'instant' | 'stake' | 'custom' | ''
   // note: treat this variable as state variable which stores the state for memberships edits and also for storing in DB
-  export let membership: CollectionMembership = {
+  const defaultMembership: CollectionMembership =  {
     id: '',
     name: 'My First Membership',
     description: '',
@@ -53,6 +53,9 @@
       beneficiary: ZeroAddress,
     },
     payload: randomBytes(8),
+  }
+  export let membership: CollectionMembership = {
+    ...defaultMembership,
   }
 
   let membershipPaymentType: MembershipPaymentType =
@@ -651,6 +654,16 @@
     )
   }
 
+  const handleSaveClick = () => {
+    updateState()
+    update()
+    setIsAdding(false)
+    membership = {
+      ...defaultMembership,
+    }
+  
+  }
+
   const fetchPositionsOfProperty = async () => {
     loading = true
 
@@ -1196,7 +1209,7 @@
         <!-- Save & Delete Buttons -->
         <div class="mb-16 flex items-start gap-16">
           <button
-            on:click={() => update()}
+            on:click={() => handleSaveClick()}
             type="button"
             class={`hs-button is-large is-filled w-fit rounded px-8 py-6 text-base font-bold text-white`}
             >
