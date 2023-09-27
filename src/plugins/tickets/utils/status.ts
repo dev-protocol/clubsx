@@ -2,10 +2,13 @@ import { whenDefined, whenDefinedAll } from '@devprotocol/util-ts'
 import type { Ticket, TicketHistories, TicketHistory } from '..'
 import {
   expirationDatetime,
+  exploreSlots,
   formatDuration,
   isExpiredNow,
   isInUnavalableNow,
+  now,
   period,
+  setTime,
   time,
 } from './date'
 import type { Dayjs } from 'dayjs'
@@ -17,29 +20,75 @@ export type StatusUnit = {
   expired?: boolean
   expiration?: Dayjs
   refreshed?: boolean
-  availableBetween?: {
-    start?: Dayjs
-    end?: Dayjs
-  }
-  inUnavailable?: boolean
+  inUse: boolean
+  availableAt?: Dayjs
+  availableAtIfenabled?: Dayjs
+  availableUntil?: Dayjs
 }
 
 export type TicketStatus = {
   available: boolean
-  inUnavailableTime: boolean
+  isTempUnavailable: boolean
   enablable: boolean
   self: StatusUnit
   dependency?: StatusUnit
-  availableBetween?: {
-    start?: Dayjs
-    end?: Dayjs
-  }
+  inUse: boolean
+  availableAt?: Dayjs
+  availableAtIfenabled?: Dayjs
+  availableUntil?: Dayjs
   ticket: Ticket
 }
 
 export const factory =
   (_history: TicketHistories) =>
   (use: Ticket['uses'][0]): StatusUnit => {
+    const base = now()
+    const base0 = setTime(base, 'hour', 0)
+    const base24 = setTime(base, 'hour', 24)
+    const slots = {
+      find: {
+        start: {
+          direction: {
+            past: whenDefined(use.availability, (availability) =>
+              exploreSlots({
+                availability,
+                base,
+                find: 'start',
+                direction: 'past',
+              }),
+            ),
+            future: whenDefined(use.availability, (availability) =>
+              exploreSlots({
+                availability,
+                base,
+                find: 'start',
+                direction: 'future',
+              }),
+            ),
+          },
+        },
+        end: {
+          direction: {
+            past: whenDefined(use.availability, (availability) =>
+              exploreSlots({
+                availability,
+                base,
+                find: 'end',
+                direction: 'past',
+              }),
+            ),
+            future: whenDefined(use.availability, (availability) =>
+              exploreSlots({
+                availability,
+                base,
+                find: 'end',
+                direction: 'future',
+              }),
+            ),
+          },
+        },
+      },
+    }
     const history = use.id in _history ? _history[use.id] : undefined
     const refreshingExpiration = whenDefinedAll(
       [
@@ -48,23 +97,65 @@ export const factory =
       ],
       ([h, ex]) => period(h.datetime, ex),
     )
-    const expiration = whenDefinedAll([history, use.expiration], ([h, ex]) =>
-      expirationDatetime(h.datetime, ex.end, ex.duration, ex.tz),
+    const expiration = whenDefinedAll(
+      [history, use.availability, use.duration],
+      ([h, ava, dur]) => expirationDatetime(h.datetime, ava, dur),
     )
     const refreshed = whenDefined(refreshingExpiration, isExpiredNow)
     const unused = refreshed ?? history === undefined
     const expired = whenDefined(expiration, isExpiredNow)
-    const availableBetween = whenDefined(use.expiration, (exp) => ({
-      start: time(exp.start, exp.tz),
-      end: time(exp.end, exp.tz),
-    }))
-    const inUnavailable = expired
+
+    /**
+     * will be true when history exists & current time is in between an available slot
+     */
+    const inUse = expired
       ? false
-      : whenDefinedAll(
-          [use.expiration?.start, use.expiration?.end, use.expiration?.tz],
-          ([startTime, endTime, tz]) =>
-            isInUnavalableNow(startTime, endTime, tz),
+      : history
+      ? whenDefinedAll(
+          [slots.find.start.direction.past, slots.find.end.direction.future],
+          ([start, end]) =>
+            base.isBetween(start, end) &&
+            start.isBetween(base0, base24) &&
+            end.isBetween(base0, base24),
+        ) ?? refreshed === false
+      : false
+
+    /**
+     * will be a Dayjs object when not expired & now inUse
+     */
+    const availableUntil =
+      expired || !inUse ? undefined : slots.find.end.direction.future
+
+    /**
+     * will be a Dayjs object when not expired or it has history
+     */
+    const availableAt =
+      expired || !history ? undefined : slots.find.start.direction.future
+
+    /**
+     * will be a Dayjs object when not expired and it has not history and not inUse
+     */
+    const availableAtIfenabled = expired
+      ? undefined
+      : !history && !inUse
+      ? whenDefinedAll(
+          [
+            slots.find.start.direction.past,
+            slots.find.end.direction.future,
+            slots.find.start.direction.future,
+          ],
+          ([prevStart, nearEnd, futureSlot]) => {
+            console.log({ prevStart, nearEnd, futureSlot })
+            return prevStart.isBetween(base0, base24) &&
+              nearEnd.isBetween(base0, base24) &&
+              prevStart.isBefore(base) &&
+              nearEnd.isAfter(base)
+              ? prevStart
+              : futureSlot
+          },
         )
+      : undefined
+
     return {
       use,
       history,
@@ -72,8 +163,10 @@ export const factory =
       expired,
       expiration,
       refreshed,
-      availableBetween,
-      inUnavailable,
+      inUse,
+      availableAt,
+      availableAtIfenabled,
+      availableUntil,
     }
   }
 
@@ -96,31 +189,35 @@ export const ticketStatus = (
     const self =
       whenDefined(
         dependency,
-        ({ expired, expiration, inUnavailable, availableBetween }) =>
-          expired === true || (expired === false && inUnavailable === true)
-            ? { ..._self, expired, expiration, inUnavailable, availableBetween }
+        ({ expired, expiration, availableAt, availableAtIfenabled, inUse }) =>
+          expired === true || (expired === false && availableAt !== undefined)
+            ? {
+                ..._self,
+                expired,
+                expiration,
+                availableAt,
+                availableAtIfenabled,
+                inUse,
+              }
             : _self,
       ) ?? _self // If there is a dependency and its `expired` is true, it inherits the dependency's `expired`.
-    const inUnavailableTime = self.inUnavailable === true
-    const available = inUnavailableTime
-      ? false
-      : self.expired === false || self.refreshed === false
-
-    const enablable = inUnavailableTime
-      ? false
-      : dependency
-      ? dependency.expired === false && self.unused
-      : self.expired === undefined
-    const availableBetween = self.availableBetween
+    const { inUse, availableAt, availableUntil, availableAtIfenabled } = self
+    const isTempUnavailable =
+      self.expired === false && !inUse && availableAt !== undefined
+    const available = dependency ? dependency.inUse && inUse : inUse
+    const enablable = inUse ? false : Boolean(availableAtIfenabled)
 
     return {
       available,
       enablable,
-      inUnavailableTime,
       self,
       dependency,
-      availableBetween,
       ticket,
+      inUse,
+      availableAt,
+      availableAtIfenabled,
+      availableUntil,
+      isTempUnavailable,
     }
   })
 }
