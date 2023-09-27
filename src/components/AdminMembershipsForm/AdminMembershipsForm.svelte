@@ -1,21 +1,16 @@
 <script lang="ts">
   import { onMount } from 'svelte'
 
-  import { ClubsEvents, setOptions, decode } from '@devprotocol/clubs-core'
+  import { ClubsEvents, setOptions } from '@devprotocol/clubs-core'
   import MembershipOptionCard from './MembershipOption.svelte'
   import type { Membership } from '@plugins/memberships'
   import { buildConfig } from '@devprotocol/clubs-core/events'
 
   export let currentPluginIndex: number
   export let memberships: Membership[] = []
-  export let encodedMemberships: string | undefined
   export let presets: Membership[]
   export let base: string = '/admin'
   export let clubName: string | undefined = undefined
-
-  memberships = encodedMemberships
-    ? decode<Membership[]>(encodedMemberships)
-    : memberships
 
   let updatingMembershipsStatus: Set<string> = new Set()
 
