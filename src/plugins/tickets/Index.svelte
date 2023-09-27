@@ -95,7 +95,7 @@
   const isExpired = (status?: TicketStatus[]) =>
     status?.every((t) => t.self.expired) ?? false
   const isTempUnavailable = (status?: TicketStatus[]) =>
-    status?.some((t) => t.inUnavailableTime) ?? false
+    status?.some((t) => t.isTempUnavailable) ?? false
 
   onMount(async () => {
     const { connection } = await import('@devprotocol/clubs-core/connection')
