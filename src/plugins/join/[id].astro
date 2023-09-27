@@ -2,4 +2,8 @@
 import Checkout from '@components/Checkout/Checkout.astro'
 ---
 
-<Checkout {...Astro.props} />
+<Checkout {...Astro.props}>
+  <div slot="checkout:result:before:preview">
+    <h3 class="text-2xl font-bold">Your membership is now ready</h3>
+  </div>
+</Checkout>

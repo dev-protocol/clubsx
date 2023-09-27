@@ -4,6 +4,7 @@ import { createClient } from 'redis'
 import { keccak256, toUtf8Bytes } from 'ethers'
 import fs from 'fs-extra'
 import jsonwebtoken from 'jsonwebtoken'
+import { decode } from '@devprotocol/clubs-core'
 
 dotenv.config()
 
@@ -1728,36 +1729,32 @@ const populate = async () => {
       }),
     )
 
-    await client.del(
-      `devprotocol:clubs:plugin:tickets:history:0xE59fEDaBB0F79b0EC605737805a9125cd8d87B1f:0x396997483c76a2c9a30d9800f563c27dc0faeb0c69195989c866806bde5637bd#172`,
-    )
-    await client.del(
-      `devprotocol:clubs:plugin:tickets:history:0xE59fEDaBB0F79b0EC605737805a9125cd8d87B1f:0x31588320a7edd5f747f27e04eacf428d565386fa8507ca157f8c6ee24e52685e#170`,
-    )
-    await client.del(
-      `devprotocol:clubs:plugin:tickets:history:0xE59fEDaBB0F79b0EC605737805a9125cd8d87B1f:0x0c0c6d27ddd3d486dbe3221d2c44872737af7a010d0270d9eccc0c22a79a8ae6#166`,
-    )
-    await client.del(
-      `devprotocol:clubs:plugin:tickets:history:0xE59fEDaBB0F79b0EC605737805a9125cd8d87B1f:0xc6fb7a2178530d1b664b4dc2109bc2201963fa259db24ccb98f274e589261401#165`,
-    )
+    const cryptocafeConfig = decode(await client.get('cryptocafe'))
     await client.set(
-      `devprotocol:clubs:plugin:tickets:history:0xE59fEDaBB0F79b0EC605737805a9125cd8d87B1f:${toBytes32(
-        '#1',
-      )}#52`,
+      'cryptocafe-debug',
       encode({
-        '1-month-pass': { datetime: new Date('2023-01-20T00:00:00Z') },
-        'special-week': { datetime: new Date('2023-01-20T00:00:00Z') },
-      }),
-    )
-    await client.set(
-      `devprotocol:clubs:plugin:tickets:history:0xE59fEDaBB0F79b0EC605737805a9125cd8d87B1f:${toBytes32(
-        '#1',
-      )}#53`,
-      encode({
-        'special-week': { datetime: new Date('2023-08-22T00:00:00Z') },
-        'free-juice': {
-          datetime: new Date('2023-08-23T00:00:00Z'),
-        },
+        ...cryptocafeConfig,
+        url: 'https://cryptocafe.prerelease.clubs.place',
+        propertyAddress: '0xE59fEDaBB0F79b0EC605737805a9125cd8d87B1f',
+        chainId: 80001, // Polygon: 137 // Mumbai: 80001
+        rpcUrl:
+          'https://polygon-mumbai.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920', // Polygon: https://polygon-mainnet.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920 // Mumbai: https://polygon-mumbai.infura.io/v3/fa1acbd68f5c4484b1082e1cf876b920
+        plugins: cryptocafeConfig.plugins.map((plugin) =>
+          plugin.id === 'devprotocol:clubs:simple-memberships'
+            ? {
+                ...plugin,
+                options: [
+                  {
+                    key: 'memberships',
+                    value: cryptoCafeMemberships.map((membership) => ({
+                      ...membership,
+                      price: membership.price / 100_000,
+                    })),
+                  },
+                ],
+              }
+            : plugin,
+        ),
       }),
     )
 
