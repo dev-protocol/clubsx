@@ -117,11 +117,13 @@ export const exploreSlots = ({
   base,
   find,
   direction,
+  strict = false,
 }: {
   availability: Slot[]
   base: dayjs.Dayjs
   find: 'start' | 'end'
   direction: 'past' | 'future'
+  strict?: boolean
 }): UndefinedOr<dayjs.Dayjs> => {
   let diff: number = 0
   const baseTimestamp = base.clone().utc().toDate().getTime()
@@ -135,12 +137,16 @@ export const exploreSlots = ({
         ? d.isAfter(_base) || d.isSame(_base)
           ? d
           : MAX // When it's expecting a starting time in the future but the date is in the past than the present
-        : d
+        : strict && (d.isBefore(_base) || d.isSame(_base))
+        ? d
+        : MIN
       : direction === 'past'
       ? d.isBefore(_base) || d.isSame(_base)
         ? d
         : MIN // When it's expecting a ending time in the past but the date is in the future than the present
-      : d
+      : strict && (d.isAfter(_base) || d.isSame(_base))
+      ? d
+      : MAX
   }
 
   const hit = extendeddata.reduce((_prev, _current) => {
