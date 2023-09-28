@@ -45,7 +45,7 @@ export const Strings: Record<Parts, I18nPart> = {
   },
   [Parts.ModalMessageTicketConfirm]: {
     en: ([start, end, exp]) =>
-      `If enabled now, it can be used up to ${end} from ${start} initially, and will expire ${exp}. Do you really want to enable it?`,
+      `If you activate the benefit now, you will initially be able to use it from ${start} until ${end}. The expiry date is ${exp}. Are you sure you want to activate this?`,
     ja: ([start, end, exp]) =>
       `有効にすると初回は ${start} から ${end} まで利用できます。有効期限は ${exp} です。本当に有効にしますか?`,
   },
