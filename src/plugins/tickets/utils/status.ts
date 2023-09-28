@@ -68,6 +68,24 @@ export const factory =
                 direction: 'future',
               }),
             ),
+            strictPast: whenDefined(use.availability, (availability) =>
+              exploreSlots({
+                availability,
+                base,
+                find: 'start',
+                direction: 'past',
+                strict: true,
+              }),
+            ),
+            strictFuture: whenDefined(use.availability, (availability) =>
+              exploreSlots({
+                availability,
+                base,
+                find: 'start',
+                direction: 'future',
+                strict: true,
+              }),
+            ),
           },
         },
         end: {
@@ -86,6 +104,24 @@ export const factory =
                 base,
                 find: 'end',
                 direction: 'future',
+              }),
+            ),
+            strictPast: whenDefined(use.availability, (availability) =>
+              exploreSlots({
+                availability,
+                base,
+                find: 'end',
+                direction: 'past',
+                strict: true,
+              }),
+            ),
+            strictFuture: whenDefined(use.availability, (availability) =>
+              exploreSlots({
+                availability,
+                base,
+                find: 'end',
+                direction: 'future',
+                strict: true,
               }),
             ),
           },
@@ -140,7 +176,10 @@ export const factory =
       ? false
       : history
       ? whenDefinedAll(
-          [slots.find.start.direction.past, slots.find.end.direction.future],
+          [
+            slots.find.start.direction.strictPast,
+            slots.find.end.direction.strictFuture,
+          ],
           ([start, end]) =>
             base.isBetween(start, end) &&
             start.isBetween(base0, base24) &&
