@@ -100,6 +100,7 @@ export const expirationDatetime = (
       base,
       find: 'end',
       direction: 'future',
+      acceptOppositeDirection: true,
     }),
   )
   console.log({ exp, slot })
@@ -117,11 +118,13 @@ export const exploreSlots = ({
   base,
   find,
   direction,
+  acceptOppositeDirection: opp,
 }: {
   availability: Slot[]
   base: dayjs.Dayjs
   find: 'start' | 'end'
   direction: 'past' | 'future'
+  acceptOppositeDirection?: boolean
 }): UndefinedOr<dayjs.Dayjs> => {
   let diff: number = 0
   const baseTimestamp = base.clone().utc().toDate().getTime()
@@ -144,8 +147,8 @@ export const exploreSlots = ({
   }
 
   const hit = extendeddata.reduce((_prev, _current) => {
-    const prevD = findNearDayBySlot(_prev, base, find, direction)
-    const currentD = findNearDayBySlot(_current, base, find, direction)
+    const prevD = findNearDayBySlot(_prev, base, find, direction, opp)
+    const currentD = findNearDayBySlot(_current, base, find, direction, opp)
 
     const prev = whenDefined(prevD, (p) => expectedDateOrBigDiff(p, _prev.tz))
     const current = whenDefined(currentD, (c) =>
@@ -206,6 +209,7 @@ export const findNearDayBySlot = (
   base: dayjs.Dayjs,
   use: 'start' | 'end',
   direction: 'past' | 'future',
+  opp: boolean = false,
 ) =>
   slot.type === SlotType.WeekdayTime
     ? whenDefined(
@@ -216,7 +220,7 @@ export const findNearDayBySlot = (
           },
         ),
         (basetime) => {
-          return findNearDayByWeekday(slot.weekday, basetime, direction)
+          return findNearDayByWeekday(slot.weekday, basetime, direction, opp)
         },
       )
     : (undefined as never)
@@ -225,6 +229,7 @@ export const findNearDayByWeekday = (
   weekday: number,
   base: dayjs.Dayjs,
   direction: 'past' | 'future',
+  acceptOppositeDirection: boolean = false,
 ) => {
   const current = base.weekday()
   const baseTimestamp = base.unix()
@@ -235,7 +240,9 @@ export const findNearDayByWeekday = (
   const candidates$2 = arr.map((_, i) =>
     base.weekday(direction === 'past' ? current + i : current - i),
   )
-  const candidates = [...candidates$1, ...candidates$2]
+  const candidates = acceptOppositeDirection
+    ? [...candidates$1, ...candidates$2]
+    : candidates$1
   const list = candidates.filter((cand) => cand.weekday() === weekday)
   const hit = list.reduce((prev, curt) =>
     Math.abs(baseTimestamp - prev.unix()) <
