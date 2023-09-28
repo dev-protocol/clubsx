@@ -1,4 +1,4 @@
-import dayjs, { type UnitTypeLong } from 'dayjs'
+import dayjs, { type UnitTypeLong, type UnitTypeLongPlural } from 'dayjs'
 import duration, {
   type Duration,
   type DurationUnitType,
@@ -57,10 +57,8 @@ export const formatDuration = (
     : [undefined, undefined]
 }
 
-export const period = (start: Date, duration: duration.Duration) => {
-  return dayjs
-    .utc(start.toUTCString())
-    .add(duration.asMilliseconds(), 'milliseconds')
+export const period = (start: dayjs.Dayjs, duration: duration.Duration) => {
+  return start.add(duration)
 }
 
 export const setTime = (date: dayjs.Dayjs, unit: UnitTypeLong, time: number) =>
@@ -71,25 +69,42 @@ export const setTime = (date: dayjs.Dayjs, unit: UnitTypeLong, time: number) =>
     .set(unit === 'minute' || unit === 'hour' ? 'second' : 'millisecond', 0)
     .set('millisecond', 0)
 
+export const oneUnitUpToDay = (dur: Duration): Duration => {
+  return dayjs.duration(
+    1,
+    dur.asDays() >= 1
+      ? 'day'
+      : dur.asHours() >= 1
+      ? 'hour'
+      : dur.asMinutes() >= 1
+      ? 'minute'
+      : dur.asSeconds() >= 1
+      ? 'second'
+      : 'millisecond',
+  )
+}
 export const expirationDatetime = (
-  start: Date,
+  start: dayjs.Dayjs,
+  min: dayjs.Dayjs,
   availability: Slot[],
   durationStr: string,
 ) => {
-  const [duration, unit] = formatDuration(durationStr)
-  const expUtc = whenDefinedAll(
-    [duration, unit],
-    ([dur, uni]) => period(start, dur).subtract(1, uni), // Subtract usage datetime
+  const [duration] = formatDuration(durationStr)
+  const one = whenDefined(duration, (dur) => oneUnitUpToDay(dur))
+  const exp = whenDefinedAll([duration, one], ([dur, one]) =>
+    period(start.subtract(one), dur),
   )
+  const slot = whenDefined(exp, (base) =>
+    exploreSlots({
+      availability,
+      base,
+      find: 'end',
+      direction: 'future',
+    }),
+  )
+  console.log({ exp, slot })
 
-  return expUtc
-    ? exploreSlots({
-        availability,
-        base: expUtc,
-        find: 'end',
-        direction: 'future',
-      })
-    : undefined
+  return slot ? (slot.isSame(min) || slot.isAfter(min) ? slot : min) : undefined
 }
 
 export const slotToDayjs = (slot: Slot, use: 'start' | 'end') =>
@@ -197,7 +212,7 @@ export const findNearDayBySlot = (
         whenDefined(
           formatTime(use === 'start' ? slot.start : slot.end),
           ([unit, time]) => {
-            return setTime(base.tz(slot.tz), unit, time)
+            return setTime(base.clone().tz(slot.tz), unit, time)
           },
         ),
         (basetime) => {
@@ -212,15 +227,29 @@ export const findNearDayByWeekday = (
   direction: 'past' | 'future',
 ) => {
   const current = base.weekday()
-  const candidates = new Array(7)
-    .fill('')
-    .map((_, i) =>
-      base.weekday(direction === 'past' ? current - i : current + i),
-    )
-  const hit = candidates.find((cand) => cand.weekday() === weekday)
+  const baseTimestamp = base.unix()
+  const arr = new Array(7).fill('')
+  const candidates$1 = arr.map((_, i) =>
+    base.weekday(direction === 'past' ? current - i : current + i),
+  )
+  const candidates$2 = arr.map((_, i) =>
+    base.weekday(direction === 'past' ? current + i : current - i),
+  )
+  const candidates = [...candidates$1, ...candidates$2]
+  const list = candidates.filter((cand) => cand.weekday() === weekday)
+  const hit = list.reduce((prev, curt) =>
+    Math.abs(baseTimestamp - prev.unix()) <
+    Math.abs(baseTimestamp - curt.unix())
+      ? prev
+      : curt,
+  )
   return hit
 }
 
 export const now = () => {
   return dayjs.utc()
+}
+
+export const create = (dt: Date) => {
+  return dayjs(dt)
 }
