@@ -6,6 +6,11 @@ export enum Parts {
   AvailableUntil = ';3',
   WillBeAvailableWhenXIsUsed = ';4',
   WillBeAvailable = ';5',
+  ModalMessageTicketConfirm = ';6',
+  ModalCloseTicketConfirm = ';7',
+  ModalActionTicketConfirm = ';8',
+  ModalMessageNotConnected = ';9',
+  ModalCloseNotConnected = ';10',
 }
 
 export type I18nContent = ((vars: UndefinedOr<string>[]) => string) | string
@@ -37,6 +42,28 @@ export const Strings: Record<Parts, I18nPart> = {
   [Parts.WillBeAvailable]: {
     en: ([time]) => `Will be available ${time}.`,
     ja: ([time]) => `${time} に有効になります`,
+  },
+  [Parts.ModalMessageTicketConfirm]: {
+    en: ([start, end, exp]) =>
+      `If enabled now, it can be used up to ${end} from ${start} initially, and will expire ${exp}. Do you really want to enable it?`,
+    ja: ([start, end, exp]) =>
+      `有効にすると初回は ${start} から ${end} まで利用できます。有効期限は ${exp} です。本当に有効にしますか?`,
+  },
+  [Parts.ModalCloseTicketConfirm]: {
+    en: 'Close',
+    ja: '閉じる',
+  },
+  [Parts.ModalActionTicketConfirm]: {
+    en: 'Yes',
+    ja: 'はい',
+  },
+  [Parts.ModalMessageNotConnected]: {
+    en: 'Please connect a wallet first',
+    ja: 'ウォレットに接続してください',
+  },
+  [Parts.ModalCloseNotConnected]: {
+    en: 'OK',
+    ja: 'わかりました',
   },
 }
 

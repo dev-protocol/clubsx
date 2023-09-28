@@ -24,6 +24,8 @@ export type StatusUnit = {
   availableAt?: Dayjs
   availableAtIfenabled?: Dayjs
   availableUntil?: Dayjs
+  availableUntilIfenabled?: Dayjs
+  expirationIfenabled?: Dayjs
 }
 
 export type TicketStatus = {
@@ -36,6 +38,8 @@ export type TicketStatus = {
   availableAt?: Dayjs
   availableAtIfenabled?: Dayjs
   availableUntil?: Dayjs
+  availableUntilIfenabled?: Dayjs
+  expirationIfenabled?: Dayjs
   ticket: Ticket
 }
 
@@ -93,7 +97,7 @@ export const factory =
     const refreshingExpiration = whenDefinedAll(
       [
         history,
-        use.refreshCycle ? formatDuration(use.refreshCycle) : undefined,
+        use.refreshCycle ? formatDuration(use.refreshCycle)[0] : undefined,
       ],
       ([h, ex]) => period(h.datetime, ex),
     )
@@ -156,6 +160,22 @@ export const factory =
         )
       : undefined
 
+    /**
+     * will be a Dayjs object when availableAtIfenabled exists
+     */
+    const availableUntilIfenabled = availableAtIfenabled
+      ? slots.find.end.direction.future
+      : undefined
+
+    /**
+     * will be a Dayjs object when availableUntilIfenabled exists
+     */
+    const expirationIfenabled =
+      availableUntilIfenabled &&
+      whenDefinedAll([use.availability, use.duration], ([ava, dur]) =>
+        expirationDatetime(base.toDate(), ava, dur),
+      )
+
     return {
       use,
       history,
@@ -167,6 +187,8 @@ export const factory =
       availableAt,
       availableAtIfenabled,
       availableUntil,
+      availableUntilIfenabled,
+      expirationIfenabled,
     }
   }
 
@@ -189,7 +211,16 @@ export const ticketStatus = (
     const self =
       whenDefined(
         dependency,
-        ({ expired, expiration, availableAt, availableAtIfenabled, inUse }) =>
+        ({
+          expired,
+          expiration,
+          availableAt,
+          availableAtIfenabled,
+          availableUntil,
+          availableUntilIfenabled,
+          expirationIfenabled,
+          inUse,
+        }) =>
           expired === true || (expired === false && availableAt !== undefined)
             ? {
                 ..._self,
@@ -197,11 +228,21 @@ export const ticketStatus = (
                 expiration,
                 availableAt,
                 availableAtIfenabled,
+                availableUntil,
+                availableUntilIfenabled,
+                expirationIfenabled,
                 inUse,
               }
             : _self,
       ) ?? _self // If there is a dependency and its `expired` is true, it inherits the dependency's `expired`.
-    const { inUse, availableAt, availableUntil, availableAtIfenabled } = self
+    const {
+      inUse,
+      availableAt,
+      availableUntil,
+      availableAtIfenabled,
+      availableUntilIfenabled,
+      expirationIfenabled,
+    } = self
     const isTempUnavailable =
       self.expired === false && !inUse && availableAt !== undefined
     const available = dependency ? dependency.inUse && inUse : inUse
@@ -217,6 +258,8 @@ export const ticketStatus = (
       availableAt,
       availableAtIfenabled,
       availableUntil,
+      availableUntilIfenabled,
+      expirationIfenabled,
       isTempUnavailable,
     }
   })
