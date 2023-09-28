@@ -1,5 +1,8 @@
 import dayjs, { type UnitTypeLong } from 'dayjs'
-import duration, { type DurationUnitType } from 'dayjs/plugin/duration'
+import duration, {
+  type Duration,
+  type DurationUnitType,
+} from 'dayjs/plugin/duration'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
 import calendar from 'dayjs/plugin/calendar'
@@ -43,13 +46,15 @@ const isAvailableUnitsDuration = (unit: string): unit is DurationUnitType =>
 const isAvailableUnitsTime = (unit: string): unit is UnitTypeLong =>
   AVAILABLE_UNITS_TIME.includes(unit as UnitTypeLong)
 
-export const formatDuration = (str: string) => {
+export const formatDuration = (
+  str: string,
+): [UndefinedOr<Duration>, UndefinedOr<DurationUnitType>] => {
   const [t, unit] = str.split(' ')
   const time = Number(t)
 
   return time && isAvailableUnitsDuration(unit)
-    ? dayjs.duration(time, unit)
-    : undefined
+    ? [dayjs.duration(time, unit), unit]
+    : [undefined, undefined]
 }
 
 export const period = (start: Date, duration: duration.Duration) => {
@@ -71,8 +76,11 @@ export const expirationDatetime = (
   availability: Slot[],
   durationStr: string,
 ) => {
-  const duration = formatDuration(durationStr)
-  const expUtc = whenDefined(duration, (dur) => period(start, dur))
+  const [duration, unit] = formatDuration(durationStr)
+  const expUtc = whenDefinedAll(
+    [duration, unit],
+    ([dur, uni]) => period(start, dur).subtract(1, uni), // Subtract usage datetime
+  )
 
   return expUtc
     ? exploreSlots({

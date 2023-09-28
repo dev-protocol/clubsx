@@ -13,6 +13,9 @@
   import { marked } from 'marked'
   import DOMPurify from 'dompurify'
   import { now } from './utils/date'
+  import { Modals, closeModal, openModal } from 'svelte-modals'
+  import { fade } from 'svelte/transition'
+  import Modal from './Modal.svelte'
   import { Parts, i18nFactory, type I18nFunction } from './i18n'
 
   export let ticket: Ticket
@@ -29,27 +32,43 @@
 
   const onClickABenefit = (benefitId: string) => async () => {
     whenDefined(signer, async (sigr) => {
-      idIsLoading = benefitId
-      const hash = hashMessage('')
-      const sig = await sigr.signMessage(hash).catch((err) => err)
-      const opts = { hash, sig, id: sTokensId, benefitId }
-      const res = await fetch(
-        `/api/${meta.id}/redeem/${bytes32Hex(ticket.payload)}`,
-        {
-          method: 'POST',
-          body: JSON.stringify(opts),
+      const benefit = benefits?.find((item) => item.self.use.id === benefitId)
+      openModal(Modal, {
+        message: i18n(Parts.ModalMessageTicketConfirm, [
+          benefit?.availableAtIfenabled?.local().calendar(),
+          benefit?.availableUntilIfenabled?.local().calendar(),
+          benefit?.expirationIfenabled?.local().calendar(),
+        ]),
+        action: async () => {
+          idIsLoading = benefitId
+          const hash = hashMessage('')
+          const sig = await sigr.signMessage(hash).catch((err) => err)
+          const opts = { hash, sig, id: sTokensId, benefitId }
+          const res = await fetch(
+            `/api/${meta.id}/redeem/${bytes32Hex(ticket.payload)}`,
+            {
+              method: 'POST',
+              body: JSON.stringify(opts),
+            },
+          )
+          if (res.ok) {
+            await fetchTicketStatus(sTokensId!!)
+          } else {
+            idIsError = {
+              id: benefitId,
+              error: ((await res.json()) as { message: string }).message,
+            }
+          }
+          idIsLoading = undefined
         },
-      )
-      if (res.ok) {
-        await fetchTicketStatus(sTokensId!!)
-      } else {
-        idIsError = {
-          id: benefitId,
-          error: ((await res.json()) as { message: string }).message,
-        }
-      }
-      idIsLoading = undefined
-    })
+        actionButton: i18n(Parts.ModalActionTicketConfirm),
+        closeButton: i18n(Parts.ModalCloseTicketConfirm),
+      })
+    }) ??
+      openModal(Modal, {
+        message: i18n(Parts.ModalMessageNotConnected),
+        closeButton: i18n(Parts.ModalCloseNotConnected),
+      })
   }
 
   const fetchTicketStatus = async (id: string | number) => {
@@ -190,6 +209,15 @@
     {/if}
   </div>
 </section>
+
+<Modals>
+  <div
+    slot="backdrop"
+    class="fixed inset-0 bg-black/50"
+    transition:fade={{ duration: 100 }}
+    on:click={closeModal}
+  />
+</Modals>
 
 <style lang="scss">
   .md {
