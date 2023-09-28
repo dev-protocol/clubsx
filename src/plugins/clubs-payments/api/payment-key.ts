@@ -211,7 +211,7 @@ export const get: ({
     const push_url = whenNotError(paramsSaved, () => push_destination)
     const enabled_payment_types = [PaymentTypes.Card]
     const card = {
-      '3ds_version': 1,
+      '3ds_version': 2,
     }
     const email =
       customer_name && customer_email_address
