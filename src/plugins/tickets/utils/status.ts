@@ -1,15 +1,14 @@
 import { whenDefined, whenDefinedAll } from '@devprotocol/util-ts'
 import type { Ticket, TicketHistories, TicketHistory } from '..'
 import {
+  create,
   expirationDatetime,
   exploreSlots,
   formatDuration,
   isExpiredNow,
-  isInUnavalableNow,
   now,
   period,
   setTime,
-  time,
 } from './date'
 import type { Dayjs } from 'dayjs'
 
@@ -94,16 +93,41 @@ export const factory =
       },
     }
     const history = use.id in _history ? _history[use.id] : undefined
+    const firstAvailableTimeStart = whenDefinedAll(
+      [use.availability, history],
+      ([availability, his]) =>
+        exploreSlots({
+          availability,
+          base: create(his.datetime),
+          find: 'start',
+          direction: 'future',
+        }),
+    )
+    const firstAvailableTimeEnd = whenDefinedAll(
+      [use.availability, firstAvailableTimeStart],
+      ([availability, base]) =>
+        exploreSlots({
+          availability,
+          base,
+          find: 'end',
+          direction: 'future',
+        }),
+    )
     const refreshingExpiration = whenDefinedAll(
       [
-        history,
+        firstAvailableTimeStart,
         use.refreshCycle ? formatDuration(use.refreshCycle)[0] : undefined,
       ],
-      ([h, ex]) => period(h.datetime, ex),
+      ([h, ex]) => period(h, ex),
     )
     const expiration = whenDefinedAll(
-      [history, use.availability, use.duration],
-      ([h, ava, dur]) => expirationDatetime(h.datetime, ava, dur),
+      [
+        firstAvailableTimeStart,
+        firstAvailableTimeEnd,
+        use.availability,
+        use.duration,
+      ],
+      ([start, min, ava, dur]) => expirationDatetime(start, min, ava, dur),
     )
     const refreshed = whenDefined(refreshingExpiration, isExpiredNow)
     const unused = refreshed ?? history === undefined
@@ -163,18 +187,29 @@ export const factory =
     /**
      * will be a Dayjs object when availableAtIfenabled exists
      */
-    const availableUntilIfenabled = availableAtIfenabled
-      ? slots.find.end.direction.future
-      : undefined
+    const availableUntilIfenabled = whenDefinedAll(
+      [use.availability, availableAtIfenabled],
+      ([availability, base]) =>
+        exploreSlots({
+          availability,
+          base: base,
+          find: 'end',
+          direction: 'future',
+        }),
+    )
 
     /**
-     * will be a Dayjs object when availableUntilIfenabled exists
+     * will be a Dayjs object when availableUntilIfenabled/availableUntilIfenabled exists
      */
-    const expirationIfenabled =
-      availableUntilIfenabled &&
-      whenDefinedAll([use.availability, use.duration], ([ava, dur]) =>
-        expirationDatetime(base.toDate(), ava, dur),
-      )
+    const expirationIfenabled = whenDefinedAll(
+      [
+        availableAtIfenabled,
+        availableUntilIfenabled,
+        use.availability,
+        use.duration,
+      ],
+      ([start, min, ava, dur]) => expirationDatetime(start, min, ava, dur),
+    )
 
     return {
       use,
