@@ -242,22 +242,26 @@ export const calculateRewardAmount = async (
   return (l1 || l2)?.calculateRewardAmount(propertyAddress)
 }
 
-export const getTokenAddress = (currency: CurrencyOption, chain: number) => {
-  return currency === CurrencyOption.USDC && chain === 137
+export const getTokenAddress = (
+  currency: CurrencyOption | Uppercase<CurrencyOption>,
+  chain: number,
+) => {
+  const CURRENCY = currency.toUpperCase()
+  return CURRENCY === CurrencyOption.USDC.toUpperCase() && chain === 137
     ? '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174'
-    : currency === CurrencyOption.USDC && chain === 80001
+    : CURRENCY === CurrencyOption.USDC.toUpperCase() && chain === 80001
     ? '0xFEca406dA9727A25E71e732F9961F680059eF1F9'
-    : currency === CurrencyOption.ETH && chain === 137
+    : CURRENCY === CurrencyOption.ETH.toUpperCase() && chain === 137
     ? '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619'
-    : currency === CurrencyOption.ETH && chain === 80001
+    : CURRENCY === CurrencyOption.ETH.toUpperCase() && chain === 80001
     ? '0x3c8d6A6420C922c88577352983aFFdf7b0F977cA'
-    : currency === CurrencyOption.MATIC && chain === 137
+    : CURRENCY === CurrencyOption.MATIC.toUpperCase() && chain === 137
     ? '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270'
-    : currency === CurrencyOption.MATIC && chain === 80001
+    : CURRENCY === CurrencyOption.MATIC.toUpperCase() && chain === 80001
     ? '0x9c3c9283d3e44854697cd22d3faa240cfb032889'
-    : currency === CurrencyOption.DEV && chain === 137
+    : CURRENCY === CurrencyOption.DEV.toUpperCase() && chain === 137
     ? addresses.polygon.mainnet.token
-    : currency === CurrencyOption.DEV && chain === 80001
+    : CURRENCY === CurrencyOption.DEV.toUpperCase() && chain === 80001
     ? addresses.polygon.mumbai.token
     : (undefined as never)
 }

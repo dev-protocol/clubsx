@@ -14,6 +14,7 @@ import { whenNotError, whenNotErrorAll } from '@devprotocol/util-ts'
 import { createClient } from 'redis'
 import { generateFulFillmentParamsId } from '../utils/gen-key'
 import { bytes32Hex } from '@fixtures/data/hexlify'
+import { getTokenAddress } from '@fixtures/dev-kit'
 
 const { POP_SERVER_KEY, REDIS_URL, REDIS_USERNAME, REDIS_PASSWORD } =
   import.meta.env
@@ -124,7 +125,7 @@ export const get: ({
      */
     const membershipId = url.searchParams.get('id')
     const eoa = url.searchParams.get('eoa')
-    const dummy = Boolean(url.searchParams.get('dummy'))
+    const dummy = url.searchParams.get('dummy') === 'true'
     const customer_name = url.searchParams.get('email.customer_name')
     const customer_email_address = url.searchParams.get(
       'email.customer_email_address',
@@ -142,35 +143,37 @@ export const get: ({
     )
 
     const sourcePaymentToken = whenNotError(membership, ({ source }) =>
-      chainId === 137
-        ? source.currency === 'ETH'
-          ? '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619'
-          : ZeroAddress
-        : chainId === 80001
-        ? source.currency === 'ETH'
-          ? '0x3c8d6A6420C922c88577352983aFFdf7b0F977cA'
-          : ZeroAddress
-        : ZeroAddress,
+      source.currency === 'MATIC' && (chainId === 137 || chainId === 80001)
+        ? ZeroAddress
+        : getTokenAddress(source.currency, chainId),
     )
 
     /**
      * Create arguments required by the fulfillment flow as ABI-encoded values.
      */
     const abiEncoder = AbiCoder.defaultAbiCoder()
-    const abiEncodedParamsForFulfilment = whenNotError(membership, (mem) =>
-      abiEncoder.encode(abi, [
+    const abiParams = whenNotError(membership, (mem) => {
+      const amount = parseUnits(
+        mem.source.price.toString(),
+        mem.source.currency === 'USDC' ? 6 : 18,
+      )
+      return [
         eoa,
         propertyAddress,
         payloadHex,
         sourcePaymentToken,
-        parseUnits(
-          mem.source.price.toString(),
-          mem.source.currency === 'USDC' ? 6 : 18,
-        ),
+        amount,
         mem.source.fee?.beneficiary ?? ZeroAddress,
-        new BigNumber(mem.source.fee?.percentage ?? 0).times(10000).toFixed(0),
-      ]),
+        new BigNumber(amount.toString())
+          .times(mem.source.fee?.percentage ?? 0)
+          .dp(0, 1)
+          .toFixed(),
+      ]
+    })
+    const abiEncodedParamsForFulfilment = whenNotError(abiParams, (_params) =>
+      abiEncoder.encode(abi, _params),
     )
+    console.log({ abiParams })
 
     /**
      * Create other parameters.
@@ -208,7 +211,7 @@ export const get: ({
     const push_url = whenNotError(paramsSaved, () => push_destination)
     const enabled_payment_types = [PaymentTypes.Card]
     const card = {
-      '3ds_version': 1,
+      '3ds_version': 2,
     }
     const email =
       customer_name && customer_email_address

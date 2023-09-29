@@ -16,7 +16,7 @@
   import type { ExpectedStatus } from '@components/AdminMembershipsForm/types'
   import SyncStatus from '@components/AdminMembershipsForm/SyncStatus.svelte'
 
-  export let memberships: Membership[]
+  export let memberships: Membership[] = []
   export let propertyAddress: string
   export let chainId: number
   export let rpcUrl: string
@@ -45,6 +45,7 @@
       },
     }
   })
+  console.log({ expectedMemberships })
   const stateFetcher = async ({
     provider,
     propertyAddress,

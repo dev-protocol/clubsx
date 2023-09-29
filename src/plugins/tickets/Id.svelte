@@ -12,6 +12,11 @@
   import { bytes32Hex } from '@fixtures/data/hexlify'
   import { marked } from 'marked'
   import DOMPurify from 'dompurify'
+  import { now } from './utils/date'
+  import { Modals, closeModal, openModal } from 'svelte-modals'
+  import { fade } from 'svelte/transition'
+  import Modal from './Modal.svelte'
+  import { Parts, i18nFactory, type I18nFunction } from './i18n'
 
   export let ticket: Ticket
   export let membership: UndefinedOr<Membership>
@@ -21,32 +26,49 @@
   let signer: UndefinedOr<Signer>
   let idIsLoading: UndefinedOr<string>
   let idIsError: UndefinedOr<{ id: string; error: string }>
+  let i18n: I18nFunction = i18nFactory(['en'])
 
   const mdToHtml = (str?: string) => DOMPurify.sanitize(marked.parse(str ?? ''))
 
   const onClickABenefit = (benefitId: string) => async () => {
     whenDefined(signer, async (sigr) => {
-      idIsLoading = benefitId
-      const hash = hashMessage('')
-      const sig = await sigr.signMessage(hash).catch((err) => err)
-      const opts = { hash, sig, id: sTokensId, benefitId }
-      const res = await fetch(
-        `/api/${meta.id}/redeem/${bytes32Hex(ticket.payload)}`,
-        {
-          method: 'POST',
-          body: JSON.stringify(opts),
+      const benefit = benefits?.find((item) => item.self.use.id === benefitId)
+      openModal(Modal, {
+        message: i18n(Parts.ModalMessageTicketConfirm, [
+          benefit?.availableAtIfenabled?.local().calendar(),
+          benefit?.availableUntilIfenabled?.local().calendar(),
+          benefit?.expirationIfenabled?.local().calendar(),
+        ]),
+        action: async () => {
+          idIsLoading = benefitId
+          const hash = hashMessage('')
+          const sig = await sigr.signMessage(hash).catch((err) => err)
+          const opts = { hash, sig, id: sTokensId, benefitId }
+          const res = await fetch(
+            `/api/${meta.id}/redeem/${bytes32Hex(ticket.payload)}`,
+            {
+              method: 'POST',
+              body: JSON.stringify(opts),
+            },
+          )
+          if (res.ok) {
+            await fetchTicketStatus(sTokensId!!)
+          } else {
+            idIsError = {
+              id: benefitId,
+              error: ((await res.json()) as { message: string }).message,
+            }
+          }
+          idIsLoading = undefined
         },
-      )
-      if (res.ok) {
-        await fetchTicketStatus(sTokensId!!)
-      } else {
-        idIsError = {
-          id: benefitId,
-          error: ((await res.json()) as { message: string }).message,
-        }
-      }
-      idIsLoading = undefined
-    })
+        actionButton: i18n(Parts.ModalActionTicketConfirm),
+        closeButton: i18n(Parts.ModalCloseTicketConfirm),
+      })
+    }) ??
+      openModal(Modal, {
+        message: i18n(Parts.ModalMessageNotConnected),
+        closeButton: i18n(Parts.ModalCloseNotConnected),
+      })
   }
 
   const fetchTicketStatus = async (id: string | number) => {
@@ -61,6 +83,7 @@
   }
 
   onMount(async () => {
+    i18n = i18nFactory(navigator.languages)
     if (sTokensId) {
       fetchTicketStatus(sTokensId)
     }
@@ -107,12 +130,12 @@
             <button
               data-is-enablable={benefit.enablable}
               data-is-available={benefit.available}
-              data-is-temp-unavailable={benefit.inUnavailableTime}
+              data-is-temp-unavailable={benefit.isTempUnavailable}
               data-is-expired={!benefit.enablable && benefit.self.expired}
               data-is-waiting={!benefit.enablable && benefit.dependency?.unused}
               disabled={(!benefit.enablable && benefit.self.expired) ||
                 !benefit.enablable ||
-                benefit.inUnavailableTime ||
+                benefit.isTempUnavailable ||
                 idIsLoading === benefit.self.use.id}
               data-is-loading={idIsLoading === benefit.self.use.id}
               data-is-error={idIsError?.id === benefit.self.use.id}
@@ -133,33 +156,52 @@
               </div>
             {/if}
             {#if !idIsError && benefit.enablable}
-              <span class="font-bold text-native-blue-400 md:text-xl"
-                >Sign to use this benefit</span
+              <span class="font-bold text-native-blue-400"
+                >{i18n(Parts.SignToUseThisBenefit)}</span
               >
+              {#if benefit.availableAtIfenabled?.isAfter(now())}
+                <span class="font-bold text-native-blue-300"
+                  >{i18n(Parts.AfterSigningThisWillBeAvailable, [
+                    benefit.availableAtIfenabled.local().calendar(),
+                  ])}</span
+                >
+              {/if}
             {/if}
             {#if !idIsError && benefit.available && benefit.self.expiration}
-              <span class="font-bold text-dp-green-300 md:text-xl"
-                >Available until {benefit.self.expiration
-                  .local()
-                  .calendar()}</span
-              >
+              {#if benefit.self.availableUntil}
+                <span class="font-bold text-dp-green-300"
+                  >{i18n(Parts.AvailableUntil, [
+                    benefit.self.availableUntil.local().calendar(),
+                  ])}</span
+                >
+              {/if}
+              {#if benefit.self.availableUntil?.isSame(benefit.self.expiration)}
+                <span class="text-sm text-black/30"
+                  >Then, this will expire.</span
+                >
+              {:else}
+                <span class="text-sm text-black/30"
+                  ><span class="font-bold">Expiration date:</span>
+                  {benefit.self.expiration.local().calendar()}</span
+                >
+              {/if}
             {/if}
             {#if !idIsError && !benefit.enablable && benefit.dependency?.unused}
-              <span class="font-bold text-native-blue-400 md:text-xl"
-                >Will be available when {benefit.dependency.use.name} is used.</span
+              <span class="font-bold text-native-blue-400"
+                >{i18n(Parts.WillBeAvailableWhenXIsUsed, [
+                  benefit.dependency.use.name,
+                ])}</span
               >
             {/if}
-            {#if !idIsError && benefit.inUnavailableTime}
-              <span class="font-bold text-dp-black-200 md:text-xl"
-                >Will be available {benefit.availableBetween?.start
-                  ?.local()
-                  .calendar()}.</span
+            {#if !idIsError && benefit.isTempUnavailable}
+              <span class="font-bold text-dp-black-200"
+                >{i18n(Parts.WillBeAvailable, [
+                  benefit.availableAt?.local().calendar(),
+                ])}</span
               >
             {/if}
             {#if idIsError?.id === benefit.self.use.id}
-              <span class="font-bold text-red-400 md:text-xl"
-                >{idIsError.error}</span
-              >
+              <span class="font-bold text-red-400">{idIsError.error}</span>
             {/if}
           </div>
         {/each}
@@ -167,6 +209,15 @@
     {/if}
   </div>
 </section>
+
+<Modals>
+  <div
+    slot="backdrop"
+    class="fixed inset-0 bg-black/50"
+    transition:fade={{ duration: 100 }}
+    on:click={closeModal}
+  />
+</Modals>
 
 <style lang="scss">
   .md {

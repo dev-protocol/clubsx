@@ -373,7 +373,6 @@ export default defineComponent({
       required: true,
     },
     showTestnets: Boolean,
-    allowAccess: Boolean,
     site: {
       type: String,
       required: true,
@@ -451,7 +450,6 @@ export default defineComponent({
       url.host = `${this.networkSelected.toLowerCase()}.${url.host}`
       const urlParams = new URLSearchParams(url.search)
       urlParams.set('popup', 'true')
-      this.allowAccess && urlParams.set('allowAccess', 'true')
       url.search = urlParams.toString()
       return url.toString()
     },

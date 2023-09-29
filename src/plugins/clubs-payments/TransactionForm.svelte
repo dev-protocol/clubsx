@@ -39,14 +39,15 @@
 
   const waitForMinted = async () => {
     const provider = new JsonRpcProvider(rpcUrl)
+    const blockNumber = await provider.getBlockNumber()
     const [l1, l2] = await clientsSTokens(provider)
     const client = l1 ?? l2
     const sTokens = client?.contract()
-    return new Promise<bigint>((res, rej) => {
+    return new Promise<bigint>(async (res, rej) => {
       const polling = setInterval(async () => {
         const event = await whenDefined(sTokens, (c) =>
           c
-            .queryFilter(c.filters.Minted, 'latest')
+            .queryFilter(c.filters.Minted, blockNumber)
             .catch((err) => new Error(err)),
         )
         const result = await whenNotError(event, (eve) =>
@@ -60,7 +61,7 @@
               }).catch((err) => new Error(err)),
           ),
         )
-        console.log({ event, id: result })
+        console.log({ blockNumber, event, id: result })
         if (result instanceof Error) {
           clearInterval(polling)
           return rej(result)

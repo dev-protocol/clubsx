@@ -245,6 +245,18 @@ const checkBalance = async function (
       )
     : undefined
 }
+const fetchAccessControl = async (_accessControl: URL) => {
+  const res = await fetch(_accessControl).catch((err: Error) => err)
+  const result = await whenNotError(res, async (r) =>
+    r.ok
+      ? r
+          .text()
+          .then((txt: string) => txt)
+          .catch((err: Error) => err)
+      : new Error('Bad request'),
+  )
+  return result instanceof Error ? result : Number(result) === 1
+}
 const submitStake = async function () {
   debugger
   await whenDefinedAll(
@@ -379,23 +391,20 @@ onMounted(async () => {
     )
   })
   const subAccessControl = getConnection().account.subscribe(async () => {
-    const accessControlRes = await whenDefined(
-      accessControlUrl.value,
-      async (_accessControl) => {
-        isCheckingAccessControl.value = true
-        const res = await fetch(_accessControl).catch((err: Error) => err)
-        const result = await whenNotError(res, async (r) =>
-          r.ok ? r.text() : new Error('Bad request'),
+    whenDefined(accessControlUrl.value, async (_accessControl) => {
+      isCheckingAccessControl.value = true
+      const polling = setInterval(async () => {
+        const res = await fetchAccessControl(_accessControl).catch(
+          (err: Error) => err,
         )
+        accessControlError.value = res instanceof Error ? res : undefined
+        accessAllowed.value = typeof res === 'boolean' ? res : undefined
         isCheckingAccessControl.value = false
-        return result instanceof Error ? result : Number(result) === 1
-      },
-    )
-    if (accessControlRes instanceof Error) {
-      accessControlError.value = accessControlRes
-    } else {
-      accessAllowed.value = accessControlRes
-    }
+        if (accessAllowed.value) {
+          clearInterval(polling)
+        }
+      }, 3000)
+    })
   })
   subscriptions.push(sub)
   subscriptions.push(subAccessControl)
@@ -502,7 +511,7 @@ onUnmounted(() => {
       <aside
         v-if="htmlDescription"
         v-html="htmlDescription"
-        class="rounded-md bg-dp-white-300 p-2 text-xl text-black/80 lg:mt-6"
+        class="text-xl text-black/80 lg:mt-6"
       ></aside>
     </section>
 

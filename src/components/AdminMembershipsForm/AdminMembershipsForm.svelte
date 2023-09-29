@@ -7,7 +7,7 @@
   import { buildConfig } from '@devprotocol/clubs-core/events'
 
   export let currentPluginIndex: number
-  export let memberships: Membership[]
+  export let memberships: Membership[] = []
   export let presets: Membership[]
   export let base: string = '/admin'
   export let clubName: string | undefined = undefined
@@ -225,7 +225,7 @@
                   membership.payload,
                 )}`,
               )}
-              class={`bg-dp-blue-grey-400 mt-2 block w-full rounded py-4 text-center text-sm font-semibold text-white lg:row-start-4 ${getColStart(
+              class={`mt-2 block w-full rounded bg-dp-blue-grey-400 py-4 text-center text-sm font-semibold text-white lg:row-start-4 ${getColStart(
                 i,
               )} ${
                 updatingMembershipsStatus.has(
