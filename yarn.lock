@@ -462,9 +462,9 @@
     "@babel/plugin-syntax-typescript" "^7.22.5"
 
 "@babel/runtime@^7.17.2", "@babel/runtime@^7.22.6", "@babel/runtime@^7.3.1", "@babel/runtime@^7.8.3":
-  version "7.22.15"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.22.15.tgz#38f46494ccf6cf020bd4eed7124b425e83e523b8"
-  integrity sha512-T0O+aa+4w0u06iNmapipJXMV4HoUir03hpx3/YqXXhu9xim3w+dVphjFWl1OH8NbZHw5Lbm9k45drDkgq2VNNA==
+  version "7.23.1"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.23.1.tgz#72741dc4d413338a91dcb044a86f3c0bc402646d"
+  integrity sha512-hC2v6p8ZSI/W0HUzh3V8C5g+NwSKzKPtJwSpTjwl0o297GP9+ZLQSkdvHz46CM3LqyoXxq+5G9komY+eSqSO0g==
   dependencies:
     regenerator-runtime "^0.14.0"
 
@@ -530,15 +530,7 @@
     stream-browserify "^3.0.0"
     util "^0.12.4"
 
-"@crossmint/client-sdk-base@1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-base/-/client-sdk-base-1.1.0.tgz#5174f0f75285b57d43ec936bf4bb45516e9c2541"
-  integrity sha512-jsWlMB2D37N9vfoPQ8KRHixJornX5NFvBnKdLypjwXKq6f1uF3Um9XZVdjKsqUSaomeMB56rRYUQqG1T2KAm2Q==
-  dependencies:
-    exponential-backoff "3.1.1"
-    uuid "9.0.1"
-
-"@crossmint/client-sdk-base@^1.0.1-alpha.6":
+"@crossmint/client-sdk-base@1.1.1", "@crossmint/client-sdk-base@^1.0.1-alpha.6":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-base/-/client-sdk-base-1.1.1.tgz#10f4bf6560b36202af62c4718895317daff07bcc"
   integrity sha512-Hv1N4v9x8+3HyKpg7IeFmzv1YbHXYo/xZUxjYyMWwTn3441WiajwqUZpBptCCiW8h+478p7EhIGe56jVcDspgA==
@@ -547,11 +539,11 @@
     uuid "9.0.1"
 
 "@crossmint/client-sdk-react-ui@^1.0.1-alpha.6":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-react-ui/-/client-sdk-react-ui-1.1.0.tgz#3682727fb3964caa481c470847e17d2bec1a6845"
-  integrity sha512-dlzagRy8AxrnPpQvnpHGYJzCWXNEIrxOTJsGMWiR+dSDBk+4wF87OJHwq8gBbY1TYeQt3ez8Dfk5O1/qj0LSHA==
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-react-ui/-/client-sdk-react-ui-1.1.1.tgz#198ef3ec2d4729623dafc47d43206880035c87f0"
+  integrity sha512-BynBehMkF+zs+HRsTl+exAEszIt4Vu92TRe6UnSLrTcyNw6NQlUYS0gYoLEf01HffBkijXP7e4QJ/ohX52opuA==
   dependencies:
-    "@crossmint/client-sdk-base" "1.1.0"
+    "@crossmint/client-sdk-base" "1.1.1"
     "@ethersproject/transactions" "5.7.0"
     "@solana/web3.js" "1.78.5"
     bs58 "5.0.0"
