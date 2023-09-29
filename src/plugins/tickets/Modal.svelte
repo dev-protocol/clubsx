@@ -22,7 +22,7 @@
   <!-- on:introstart and on:outroend are required to transition 1 at a time between modals -->
   <div
     role="dialog"
-    class="fixed bottom-0 left-[50%] flex w-full max-w-2xl -translate-x-[50%] items-center justify-center rounded-t-3xl bg-dp-blue-grey-400 p-12 text-white subpixel-antialiased shadow-xl lg:pb-32"
+    class="fixed bottom-0 left-[50%] flex w-full max-w-2xl -translate-x-[50%] items-center justify-center rounded-t-3xl border-x border-t border-dp-blue-grey-300 bg-dp-blue-grey-400 p-12 text-white subpixel-antialiased shadow-xl lg:pb-32"
     transition:fly={{ y: 500 }}
     on:introstart
     on:outroend
