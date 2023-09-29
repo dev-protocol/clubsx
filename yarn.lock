@@ -530,10 +530,18 @@
     stream-browserify "^3.0.0"
     util "^0.12.4"
 
-"@crossmint/client-sdk-base@1.1.0", "@crossmint/client-sdk-base@^1.0.1-alpha.6":
+"@crossmint/client-sdk-base@1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-base/-/client-sdk-base-1.1.0.tgz#5174f0f75285b57d43ec936bf4bb45516e9c2541"
   integrity sha512-jsWlMB2D37N9vfoPQ8KRHixJornX5NFvBnKdLypjwXKq6f1uF3Um9XZVdjKsqUSaomeMB56rRYUQqG1T2KAm2Q==
+  dependencies:
+    exponential-backoff "3.1.1"
+    uuid "9.0.1"
+
+"@crossmint/client-sdk-base@^1.0.1-alpha.6":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-base/-/client-sdk-base-1.1.1.tgz#10f4bf6560b36202af62c4718895317daff07bcc"
+  integrity sha512-Hv1N4v9x8+3HyKpg7IeFmzv1YbHXYo/xZUxjYyMWwTn3441WiajwqUZpBptCCiW8h+478p7EhIGe56jVcDspgA==
   dependencies:
     exponential-backoff "3.1.1"
     uuid "9.0.1"
