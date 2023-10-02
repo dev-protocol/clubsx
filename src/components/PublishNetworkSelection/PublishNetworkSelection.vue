@@ -153,7 +153,14 @@
     </section>
     <section class="grid gap-4">
       <section class="flex items-center justify-between">
-        <section
+
+        <StepperItem
+          :itemCompleted="addressFromNiwaOrConfigIsValid ? true : false"
+          :isProcessing="isTokenizing ? true : false"
+          :isDisabled="networkSelected === '' || !networkSelected || !connected ? true : false"
+        />
+
+        <!-- <section
           class="align-items-center flex items-center justify-items-center gap-2"
         >
           <img
@@ -176,7 +183,7 @@
           >
             1
           </p>
-        </section>
+        </section> -->
         <div
           class="ml-4 mr-7 h-0 flex-1 border-[1px]"
           v-bind:class="
@@ -261,6 +268,31 @@
           </p>
         </section>
       </section>
+
+      <!-- Include manual property address entry input if propertyMode === 'CONNECT' -->
+      <div v-if="propertyMode === 'CONNECT'">
+        <label class="hs-input-field">
+          <input
+            type="text"
+            class="hs-input-field__input w-full"
+            placeholder="Enter your property address"
+            v-model="addressFromNiwa"
+            v-bind:class="
+              !addressFromNiwaOrConfigIsValid
+                ? 'border-[3px] border-[#000000] bg-[#040B10] py-6 px-8'
+                : 'border-[3px] border-[#000000] bg-[#040B10] py-6 px-8 opacity-50'
+            "
+            :disabled="
+              isTokenizing ||
+              initMbmershipTxnProcessing ||
+              setupMemberhipTxnProcessing ||
+              isRemovingDraftStatus ||
+              clubPublished
+            "
+          />
+        </label>
+      </div>
+
       <button
         @click="
           !addressFromNiwaOrConfigIsValid
@@ -295,9 +327,22 @@
           {{ step3InterStepButtonText }}
         </span>
       </button>
-      <p class="font-DMSans text-base font-normal text-white">
-        {{ step3InterStepSubInfo }}
-      </p>
+
+      <div>
+        <p class="font-DMSans text-base font-normal text-white">
+          {{ step3InterStepSubInfo }}
+        </p>
+
+        <div v-if="!addressFromNiwaOrConfigIsValid">
+          <div v-if="propertyMode === 'CREATE'">
+            <button @click="() => propertyMode = 'CONNECT'" class="text-gray-200 text-sm font-bold text-left">Already have a property on Niwa? Click to enter your property address.</button>
+          </div>
+          <div v-if="propertyMode === 'CONNECT'">
+            <button @click="() => propertyMode = 'CREATE'" class="text-gray-200 text-sm font-bold text-left">Don't have a token for your Club yet? Click here to activate.</button>
+          </div>
+        </div>
+      </div>
+
       <p
         v-if="!category || !membershipsPluginOptions?.length"
         class="font-DMSans bg-danger-300 rounded px-4 py-2 text-base font-normal text-white"
@@ -318,7 +363,6 @@ import {
   address,
   callSimpleCollections,
 } from '@plugins/memberships/utils/simpleCollections'
-import type { Image } from '@plugins/memberships/utils/types/setImageArg'
 import { parseUnits } from '@ethersproject/units'
 import type { Membership } from '@plugins/memberships'
 import BigNumber from 'bignumber.js'
@@ -336,6 +380,7 @@ import type { DraftOptions } from '@constants/draft'
 import type { ERC20Image } from '@plugins/memberships/utils/types/setImageArg'
 import { tokenInfo } from '@constants/common'
 import { bytes32Hex } from '@fixtures/data/hexlify'
+import StepperItem from './StepperItem.vue'
 
 type Data = {
   networkSelected: String
@@ -355,7 +400,8 @@ type Data = {
   setupMbmershipTxnStatusMsg: string
   removingDraftStatusMsg: string
   isRemovingDraftStatus: boolean
-  clubPublished: boolean
+  clubPublished: boolean,
+  propertyMode: 'CREATE' | 'CONNECT'
 }
 
 let provider: ContractRunner | undefined
@@ -406,6 +452,7 @@ export default defineComponent({
       removingDraftStatusMsg: 'Publish your club',
       isRemovingDraftStatus: false,
       clubPublished: false,
+      propertyMode: 'CREATE'
     }
   },
   computed: {
@@ -484,7 +531,7 @@ export default defineComponent({
     },
     step3InterStepSubInfo() {
       return !this.addressFromNiwaOrConfigIsValid
-        ? 'What is activating?'
+        ? 'Activate your Club token.'
         : !this.membershipInitialized
         ? 'Enable a memberships contract to use memberships.'
         : 'Store your memberships to a contract.'
