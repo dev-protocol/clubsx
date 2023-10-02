@@ -3556,44 +3556,48 @@
     "@walletconnect/window-getters" "^1.0.1"
     tslib "1.14.1"
 
-"@web3modal/core@3.0.0-f1fdfdc9":
-  version "3.0.0-f1fdfdc9"
-  resolved "https://registry.yarnpkg.com/@web3modal/core/-/core-3.0.0-f1fdfdc9.tgz#8b59cc27a7b8e1fc20065889f9ef30e47876876c"
-  integrity sha512-Tp1u3qK2Gqu6rPNyk4U/HsBzQu81IXEKt1jUoKKKwIFRnHggsISDt0HBDCSWCpkcA2a7xfhUe+NAc621VgYCIg==
+"@web3modal/core@3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@web3modal/core/-/core-3.0.2.tgz#b40daa7af023c287e8ce51fa11dd96a5e51f07d4"
+  integrity sha512-Dr7ikLOgUPz3W66mCqu48Ca/GIn26Dj1CaRxIbKJzcHfMiumGGYgZRIElxAkGh9qaEMW+EylC3fIE8sPHFA1cg==
   dependencies:
     valtio "1.11.2"
 
-"@web3modal/polyfills@3.0.0-f1fdfdc9":
-  version "3.0.0-f1fdfdc9"
-  resolved "https://registry.yarnpkg.com/@web3modal/polyfills/-/polyfills-3.0.0-f1fdfdc9.tgz#9786372b1a4200618155c769956649cee4ef848e"
-  integrity sha512-jABlf7S+uJVp7vzaS0Kxr9E64JvYz8Mh3S9eMVq6vYweRi6w+CqsAoDDlMqsFGidIKZdr3jwlaaEvzneLJw79Q==
+"@web3modal/polyfills@3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@web3modal/polyfills/-/polyfills-3.0.2.tgz#b5ab13c0a8106bba6fc951fdde3fafe66d11be7b"
+  integrity sha512-Br1TfkqYPLdscwJx8ZBQUMZPJ1twdNygtJrdGwU5pcrjExxN80fIrBtfMuAu0yBB/4nlNVG8tw91FZJXUKK8ew==
   dependencies:
     buffer "6.0.3"
 
-"@web3modal/scaffold@3.0.0-f1fdfdc9":
-  version "3.0.0-f1fdfdc9"
-  resolved "https://registry.yarnpkg.com/@web3modal/scaffold/-/scaffold-3.0.0-f1fdfdc9.tgz#894d2b518b7931373bed32dd201af83c797845fc"
-  integrity sha512-kl/FFU3YnZGfjv+BUz9b/6D8J1dRhBSrea8oM85Za7Rjc3uVcM5BTNtK9+ml/JmJeYnEpKxgpdnXWDhlfAvqtQ==
+"@web3modal/scaffold@3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@web3modal/scaffold/-/scaffold-3.0.2.tgz#2fd1db804dfb2aa2756a43de3a9958ad8e34e9e4"
+  integrity sha512-pJwm5aooVGf5CEEgypuveTicbs+a7FNwm0ru98KiJ7XUivprr2Ufu0ZXVX/n3/NQcu7SDx9UnuPUTK1HeQQnrw==
   dependencies:
-    "@web3modal/core" "3.0.0-f1fdfdc9"
-    "@web3modal/ui" "3.0.0-f1fdfdc9"
+    "@web3modal/core" "3.0.2"
+    "@web3modal/ui" "3.0.2"
     lit "2.8.0"
 
-"@web3modal/ui@3.0.0-f1fdfdc9":
-  version "3.0.0-f1fdfdc9"
-  resolved "https://registry.yarnpkg.com/@web3modal/ui/-/ui-3.0.0-f1fdfdc9.tgz#e06d2f9b75bf1f4fcfa0a2a204eb1a4ff91dd0bb"
-  integrity sha512-mpyJwMrDg7bgrjzz5IfF3E3FxGgZ1Z6zoopWnE8Cqql021IiJYU61FWw1FIDXoHFeEw5FSgS33MB4xUbKP7AJA==
+"@web3modal/ui@3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@web3modal/ui/-/ui-3.0.2.tgz#b479dda13cb0a68a389bb75be838933a37801174"
+  integrity sha512-xGzbYdmzy6az6FmiJ507Hh1nBjD1llaudPlpA6Gipm/4XikSCNe3wOdH0+gQaKRqvGTFaoVrtej1Vgnoil64Og==
   dependencies:
     lit "2.8.0"
     qrcode "1.5.3"
 
-"@web3modal/wagmi@3.0.0-f1fdfdc9":
-  version "3.0.0-f1fdfdc9"
-  resolved "https://registry.yarnpkg.com/@web3modal/wagmi/-/wagmi-3.0.0-f1fdfdc9.tgz#c46acad3d6f62d1b12c9ab1eb30bbf6600429056"
-  integrity sha512-H9xrwvDCMPbU5SFX3x7Z/6+vKHuOEX4q4oWNzWBDG470Pq6F212lM3Ofzw8cKWQYWJMXTdVXbhQcBFjBIALMeA==
+"@web3modal/wagmi@3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@web3modal/wagmi/-/wagmi-3.0.2.tgz#c925da238b702791b7325e12ecef8912169ad5d8"
+  integrity sha512-hYpfbAbnt/dZkjOyJLBMyk0NKip3qW8Yj8suSDm6mf01+GBYWVw2BDYBtx5C0biQxSoxR7kWu4BGzA0qAQNPJQ==
   dependencies:
-    "@web3modal/polyfills" "3.0.0-f1fdfdc9"
-    "@web3modal/scaffold" "3.0.0-f1fdfdc9"
+    "@web3modal/polyfills" "3.0.2"
+    "@web3modal/scaffold" "3.0.2"
+  optionalDependencies:
+    react ">=17"
+    react-dom ">=17"
+    vue ">=3"
 
 "@webcomponents/template-shadowroot@^0.2.1":
   version "0.2.1"
@@ -8767,7 +8771,7 @@ react-display-name@^0.2.4:
   resolved "https://registry.yarnpkg.com/react-display-name/-/react-display-name-0.2.5.tgz#304c7cbfb59ee40389d436e1a822c17fe27936c6"
   integrity sha512-I+vcaK9t4+kypiSgaiVWAipqHRXYmZIuAiS8vzFvXHHXVigg/sMKwlRgLy6LH2i3rmP+0Vzfl5lFsFRwF1r3pg==
 
-react-dom@18.2.0, react-dom@^18.0.0:
+react-dom@18.2.0, react-dom@>=17, react-dom@^18.0.0:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.2.0.tgz#22aaf38708db2674ed9ada224ca4aa708d821e3d"
   integrity sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==
@@ -8812,7 +8816,7 @@ react-refresh@^0.14.0:
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.14.0.tgz#4e02825378a5f227079554d4284889354e5f553e"
   integrity sha512-wViHqhAd8OHeLS/IRMJjTSDHF3U9eWi62F/MledQGPdJGDhodXJ9PBLNGr6WWL7qlH12Mt3TyTpbS+hGXMjCzQ==
 
-react@18.2.0, react@^18.0.0:
+react@18.2.0, react@>=17, react@^18.0.0:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react/-/react-18.2.0.tgz#555bd98592883255fa00de14f1151a917b5d77d5"
   integrity sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==
@@ -10602,7 +10606,7 @@ vue-tsc@^1.8.10:
     "@vue/typescript" "1.8.15"
     semver "^7.3.8"
 
-vue@3.3.4, vue@^3.2.0:
+vue@3.3.4, vue@>=3, vue@^3.2.0:
   version "3.3.4"
   resolved "https://registry.yarnpkg.com/vue/-/vue-3.3.4.tgz#8ed945d3873667df1d0fcf3b2463ada028f88bd6"
   integrity sha512-VTyEYn3yvIeY1Py0WaYGZsXnz3y5UnGi62GjVEqvEGPl6nxbOrCXbVOTQWBEJUqAyTUk2uJ5JLVnYJ6ZzGbrSw==
