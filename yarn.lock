@@ -572,12 +572,12 @@
     svelte "^3.49.0"
     vue "^3.2.0"
 
-"@devprotocol/clubs-core@1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-1.4.0.tgz#147ee2dcd82ce681e5a87fedd100ed414c157e36"
-  integrity sha512-CHx+XwWOc394xy/2IhUMnDXXxPy3QiD6oowhKMMVH0W9/swmiPt9UUg/WiKPV9XlPDWVSOq4nVMl2qVEdNlo1A==
+"@devprotocol/clubs-core@1.5.2":
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-1.5.2.tgz#8613537f252146fb1cfb04012923884339f0818d"
+  integrity sha512-5nfnBv6hIvuvm6wcGEngcPhriI18FhOgbUJXNvHWs/qwJRcsBqypIgvMX0Lqb/HGtHgUDf5z8W+Jn1HluLZ4Vw==
   dependencies:
-    "@devprotocol/dev-kit" "8.5.0"
+    "@devprotocol/dev-kit" "8.5.1"
     "@devprotocol/elements" "1.0.0"
     "@devprotocol/hashi" "2.2.1"
     "@devprotocol/util-ts" "4.0.0"
@@ -595,20 +595,20 @@
     svelte "^4.0.0"
     vue "^3.2.0"
 
-"@devprotocol/clubs-plugin-posts@0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts/-/clubs-plugin-posts-0.3.0.tgz#e33115b51872ee070cee713912f353be10602a58"
-  integrity sha512-tDqLzn9GjmsmAndTPfVEaXriXssHQt7K0TSq9m1qCWRrS6v6QeBXb31+owYAAPlvycCVZL3RCI2vWC+ciflH7g==
+"@devprotocol/clubs-plugin-posts@0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts/-/clubs-plugin-posts-0.4.0.tgz#1246d5e57b66b27a6ca9533cb6d4d38c3f09a1bd"
+  integrity sha512-kW9DtH4sSG1LSvkQVowM/f40Yc6pxs4idxKGocV9J+pqs97MEmMw4DWd33oAGmO8MIbPJqxRPvT5/IYfipWUwA==
   dependencies:
     "@boringer-avatars/vue3" "^0.2.1"
-    "@devprotocol/dev-kit" "8.5.0"
+    "@devprotocol/dev-kit" "8.5.1"
     "@devprotocol/util-ts" "4.0.0"
     bignumber.js "9.1.2"
     dayjs "^1.11.8"
     dompurify "^3.0.5"
     ethers "^6.6.4"
     marked "9.0.3"
-    photoswipe "5.4.1"
+    photoswipe "5.4.2"
     ramda "0.29.0"
     redis "^4.6.7"
     sass "1.68.0"
@@ -634,16 +634,6 @@
     bignumber.js "9.1.1"
     js-base64 "^3.7.2"
     ramda "^0.28.0"
-
-"@devprotocol/dev-kit@8.5.0":
-  version "8.5.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-8.5.0.tgz#f2deac013a4250888237e9eea6d9f72b5b27e194"
-  integrity sha512-jyjtYrv9/PnngnI2v8rg76Dl15ax2UQwsCfJGQ4tDtCbucl92uB6wmEcL/dUFemICl9rj+kNKHa965SLR2Mlxg==
-  dependencies:
-    "@devprotocol/util-ts" "3.1.0"
-    bignumber.js "9.1.2"
-    js-base64 "^3.7.2"
-    ramda "^0.29.0"
 
 "@devprotocol/dev-kit@8.5.1":
   version "8.5.1"
@@ -8356,10 +8346,10 @@ periscopic@^3.1.0:
     estree-walker "^3.0.0"
     is-reference "^3.0.0"
 
-photoswipe@5.4.1:
-  version "5.4.1"
-  resolved "https://registry.yarnpkg.com/photoswipe/-/photoswipe-5.4.1.tgz#df06a9c0774da784bad1147706619c08f97fe31c"
-  integrity sha512-iauO0fP4oMdZvjlXzeIe8um1fZatkGE0bqdoIwpb65jlo/KK1KhfD7Z51+0YhS2tC4FOoOtE1p0c4o/HbY1s2Q==
+photoswipe@5.4.2:
+  version "5.4.2"
+  resolved "https://registry.yarnpkg.com/photoswipe/-/photoswipe-5.4.2.tgz#bed976c27f876bd9c86085a022701a8cea484f7e"
+  integrity sha512-z5hr36nAIPOZbHJPbCJ/mQ3+ZlizttF9za5gKXKH/us1k4KNHaRbC63K1Px5sVVKUtGb/2+ixHpKqtwl0WAwvA==
 
 picocolors@^1.0.0:
   version "1.0.0"
