@@ -7,3 +7,7 @@ export const formatUnixTimestamp = (timestamp: number) => {
   const minutes = date.getMinutes().toString().padStart(2, '0')
   return `${year}-${month}-${day}T${hours}:${minutes}`
 }
+
+export const emptyDummyImage = (width: number, height: number) => {
+  return `https://dummyimage.com/${width}x${height}/c7c7c7/000000&text=Empty+Image`
+}

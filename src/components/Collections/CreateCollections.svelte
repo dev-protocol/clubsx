@@ -10,7 +10,7 @@
     PAYMENT_TYPE_STAKE_FEE,
   } from '@constants/memberships'
 
-  import { formatUnixTimestamp } from '@plugins/collections/fixtures'
+  import { emptyDummyImage, formatUnixTimestamp } from '@plugins/collections/fixtures'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
   import { address, callSlotCollections } from '@plugins/collections/utils/slotCollections'
   import type { Image } from '@plugins/collections/utils/types/setImageArg'
@@ -40,7 +40,7 @@
 
   type MembershipPaymentType = 'instant' | 'stake' | 'custom' | ''
   // note: treat this variable as state variable which stores the state for memberships edits and also for storing in DB
-  export let membership: CollectionMembership = {
+  const defaultMembership: CollectionMembership =  {
     id: '',
     name: 'My First Membership',
     description: '',
@@ -53,6 +53,9 @@
       beneficiary: ZeroAddress,
     },
     payload: randomBytes(8),
+  }
+  export let membership: CollectionMembership = {
+    ...defaultMembership,
   }
 
   let membershipPaymentType: MembershipPaymentType =
@@ -121,7 +124,7 @@
     const file = e.currentTarget.files[0]
 
     collection.imageSrc =
-      (await uploadImageAndGetPath(file)) || `https://i.ibb.co/RbxFzn8/img.jpg`
+    (await uploadImageAndGetPath(file)) || emptyDummyImage(2400, 1200)
 
     collection = collection
 
@@ -140,7 +143,7 @@
     const file = e.currentTarget.files[0]
 
     membership.imageSrc =
-      (await uploadImageAndGetPath(file)) || `https://i.ibb.co/RbxFzn8/img.jpg`
+      (await uploadImageAndGetPath(file)) || emptyDummyImage(400, 400)
 
     updateState()
     update()
@@ -649,6 +652,16 @@
       [{ key: 'collections', value: newCollections }],
       currentPluginIndex
     )
+  }
+
+  const handleSaveClick = () => {
+    updateState()
+    update()
+    setIsAdding(false)
+    membership = {
+      ...defaultMembership,
+    }
+  
   }
 
   const fetchPositionsOfProperty = async () => {
@@ -1196,7 +1209,7 @@
         <!-- Save & Delete Buttons -->
         <div class="mb-16 flex items-start gap-16">
           <button
-            on:click={() => update()}
+            on:click={() => handleSaveClick()}
             type="button"
             class={`hs-button is-large is-filled w-fit rounded px-8 py-6 text-base font-bold text-white`}
             >
@@ -1226,7 +1239,7 @@
           clubName={clubName ?? 'Your Club'}
           id={mem.id}
           name={mem.name}
-          imagePath={mem.imageSrc}
+          imagePath={mem.imageSrc.trim().length > 0 ? mem.imageSrc : emptyDummyImage(400, 400)}
           price={mem.price.toString()}
           currency={mem.currency}
           description={mem.description}

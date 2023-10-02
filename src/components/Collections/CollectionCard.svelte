@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Collection} from '@plugins/collections'
+  import { emptyDummyImage } from '@plugins/collections/fixtures'
   export let collections: Collection[] = []
   export let base: string = '/admin/collections'
 </script>
@@ -13,7 +14,7 @@
     <div class="flex items-start gap-2.5">
       <img
         class="md:w-[896px] rounded-t-2xl"
-        src={collection.imageSrc}
+        src={collection.imageSrc?.trim().length > 0 ? collection.imageSrc : emptyDummyImage(2400, 1200)}
         alt={`${collection.name}-image`}
       />
     </div>
