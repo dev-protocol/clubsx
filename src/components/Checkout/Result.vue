@@ -32,6 +32,10 @@ const tokenURI = ref<
         readonly display_type: 'number'
         readonly value: number
       },
+      {
+        readonly trait_type: 'Payload'
+        readonly value: string
+      },
     ]
   }>
 >()

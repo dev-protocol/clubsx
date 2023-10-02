@@ -1,6 +1,7 @@
 import type {
   ClubsConfiguration,
   ClubsFunctionPlugin,
+  ClubsNavigationLink,
   ClubsPluginMeta,
   ClubsPluginOptions,
   ClubsThemePluginMeta,
@@ -66,6 +67,7 @@ export type InstallablePlugins = {
   pluginOptions:
     | ((config: ClubsConfiguration) => ClubsPluginOptions)
     | ClubsPluginOptions
+  navigationLinks?: ClubsNavigationLink[]
   planned?: ClubsFunctionPlugin
   require?: {
     invitation?: boolean
@@ -144,6 +146,7 @@ export const installablePlugins: InstallablePlugins[] = [
         ],
       },
     ],
+    navigationLinks: [{ display: 'Posts', path: '/posts' }],
     developer: 'Dev Protocol',
     repositoryUrl: 'https://github.com/dev-protocol/clubs-plugin-posts',
   },
@@ -209,6 +212,7 @@ export const installablePlugins: InstallablePlugins[] = [
     developer: 'Dev Protocol',
     repositoryUrl: 'https://github.com/dev-protocol/clubsx',
     pluginOptions: [],
+    navigationLinks: [{ display: 'Collections', path: '/collections' }],
   },
 ]
 
