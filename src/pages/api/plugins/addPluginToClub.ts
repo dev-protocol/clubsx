@@ -6,8 +6,12 @@ import {
   type ClubsConfiguration,
   decode,
   encode,
+  type ClubsNavigationLink,
 } from '@devprotocol/clubs-core'
 import { type InstallablePlugins, installablePlugins } from '@constants/plugins'
+import type { UndefinedOr } from '@devprotocol/util-ts'
+
+const KEY_NAV_LINKS = 'navigationLinks'
 
 export const POST = async ({ request }: { request: Request }) => {
   const { site, pluginId, sig, hash } = (await request.json()) as {
@@ -88,8 +92,26 @@ export const POST = async ({ request }: { request: Request }) => {
       ? isPluginInstallable.pluginOptions(decodedPreviousConfiguration)
       : isPluginInstallable.pluginOptions
 
+  const existingNavLinks =
+    (decodedPreviousConfiguration.options?.find(
+      (opt) => opt.key === KEY_NAV_LINKS,
+    )?.value as UndefinedOr<ClubsNavigationLink[]>) ?? []
+  const links = isPluginInstallable.navigationLinks ?? []
+  const newNavLinks = [
+    ...existingNavLinks.filter(({ path }) =>
+      links.every((l) => l.path !== path),
+    ),
+    ...links,
+  ]
+
   const newConfiguration: ClubsConfiguration = {
     ...decodedPreviousConfiguration,
+    options: [
+      ...(decodedPreviousConfiguration.options?.filter(
+        (x) => x.key !== KEY_NAV_LINKS,
+      ) ?? []),
+      { key: KEY_NAV_LINKS, value: newNavLinks },
+    ],
     plugins: [
       ...decodedPreviousConfiguration.plugins.filter(
         (plugin) => plugin.id !== pluginId,
