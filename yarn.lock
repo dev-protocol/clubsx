@@ -3847,10 +3847,10 @@ arrify@^2.0.0:
   resolved "https://registry.yarnpkg.com/arrify/-/arrify-2.0.1.tgz#c9655e9331e0abcd588d2a7cad7e9956f66701fa"
   integrity sha512-3duEwti880xqi4eAMN8AyR4a0ByT90zoYdLlevfrvU43vb0YZwZVfxOgxWrLXXXpyugL0hNZc9G6BiB5B3nUug==
 
-astro@3.2.1:
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/astro/-/astro-3.2.1.tgz#c37ce0a96589919e06dd00728e7a8513076f636b"
-  integrity sha512-idPwpMSdFg8wuS9HVkefDcbRdKpCkQzZGeKw3XO6enLcCv6ZvACRdWgl9xhM/N3RO4AOzrnJPAk1cbYcP3FdNQ==
+astro@3.2.2:
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/astro/-/astro-3.2.2.tgz#2630cae4d4bcfb0de36fa3f27d3a6c1ff6bedfc7"
+  integrity sha512-vLOOGyD2g1HRkCQAFHmHUrVAbMI5sgUqKignBMtXNantgEq1P17sL2cvH0Yy2ibNN9DHZ/4TknXmwHAig8PJNg==
   dependencies:
     "@astrojs/compiler" "^2.1.0"
     "@astrojs/internal-helpers" "0.2.0"
