@@ -4,7 +4,7 @@
   import type { Membership } from '@plugins/memberships'
   import { onMount } from 'svelte'
   import { meta } from './index'
-  import { decode } from '@devprotocol/clubs-core'
+  import { decode, i18nFactory } from '@devprotocol/clubs-core'
   import { type TicketStatus, ticketStatus } from './utils/status'
   import Skeleton from '@components/Global/Skeleton.svelte'
   import Check from './Check.svelte'
@@ -16,7 +16,7 @@
   import { Modals, closeModal, openModal } from 'svelte-modals'
   import { fade } from 'svelte/transition'
   import Modal from './Modal.svelte'
-  import { Parts, i18nFactory, type I18nFunction } from './i18n'
+  import { Parts, Strings } from './i18n'
 
   export let ticket: Ticket
   export let membership: UndefinedOr<Membership>
@@ -26,7 +26,8 @@
   let signer: UndefinedOr<Signer>
   let idIsLoading: UndefinedOr<string>
   let idIsError: UndefinedOr<{ id: string; error: string }>
-  let i18n: I18nFunction = i18nFactory(['en'])
+  const i18nBase = i18nFactory(Strings)
+  let i18n = i18nBase(['en'])
 
   const mdToHtml = (str?: string) => DOMPurify.sanitize(marked.parse(str ?? ''))
 
@@ -83,7 +84,7 @@
   }
 
   onMount(async () => {
-    i18n = i18nFactory(navigator.languages)
+    i18n = i18nBase(navigator.languages)
     if (sTokensId) {
       fetchTicketStatus(sTokensId)
     }

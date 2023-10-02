@@ -10,6 +10,8 @@
   import { JsonRpcProvider, type Contract, type ContractRunner } from 'ethers'
   import { clientsSTokens } from '@devprotocol/dev-kit'
   import { mintedIdByLogs } from '@fixtures/dev-kit'
+  import { i18nFactory } from '@devprotocol/clubs-core'
+  import { Strings } from './i18n'
 
   export let item: ComposedItem
   export let chainId: number
@@ -21,8 +23,11 @@
   let error: string | undefined
   let component: Element | undefined
   let waitingForMinted = false
+  const i18nBase = i18nFactory(Strings)
+  let i18n = i18nBase(['en'])
 
   onMount(async () => {
+    i18n = i18nBase(navigator.languages)
     const { connection } = await import('@devprotocol/clubs-core/connection')
 
     connection().account.subscribe(async (acc) => {
@@ -171,7 +176,7 @@
 
 <span class="grid gap-12" bind:this={component}>
   <label class="hs-form-field is-filled is-large">
-    <span class="hs-form-field__label">Account</span>
+    <span class="hs-form-field__label">{i18n('Account')}</span>
     <input
       class="hs-form-field__input"
       placeholder="Please connect a wallet"
@@ -182,10 +187,10 @@
   </label>
 
   <label class="hs-form-field is-filled is-large">
-    <span class="hs-form-field__label">Email</span>
+    <span class="hs-form-field__label">{i18n('Email')}</span>
     <input
       class="hs-form-field__input"
-      placeholder="Enter your email"
+      placeholder={i18n('EmailPlaceholder')}
       data-is-filled={Boolean(customerEmail)}
       type="email"
       bind:value={customerEmail}
@@ -194,10 +199,10 @@
   </label>
 
   <label class="hs-form-field is-filled is-large">
-    <span class="hs-form-field__label">Your name</span>
+    <span class="hs-form-field__label">{i18n('FullName')}</span>
     <input
       class="hs-form-field__input"
-      placeholder="Enter your name"
+      placeholder={i18n('FullNamePlaceholder')}
       data-is-filled={Boolean(customerName)}
       type="text"
       bind:value={customerName}
@@ -218,7 +223,7 @@
       data-on-error={Boolean(error)}
       class="hs-button is-large is-filled data-[is-progress=true]:animate-pulse data-[on-error=true]:bg-red-600"
     >
-      Pay with a credit card
+      {i18n('PayWithACreditCard')}
     </button>
 
     {#if error}
