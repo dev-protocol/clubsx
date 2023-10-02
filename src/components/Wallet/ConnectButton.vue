@@ -43,7 +43,6 @@ const defaultChain =
 const wagmiConfig = defaultWagmiConfig({
   chains: [polygon, polygonMumbai, mainnet],
   projectId,
-  appName: 'Web3Modal',
 })
 
 createWeb3Modal({ wagmiConfig, projectId, chains, defaultChain })
