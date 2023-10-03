@@ -77,7 +77,7 @@
     class="relative grid grid-cols-[1fr_auto] content-baseline items-center gap-3 overflow-hidden p-2.5 text-white"
   >
     <img
-      class="pointer-events-none absolute -left-1/2 top-1/2 h-auto w-[200%] max-w-none -translate-y-1/2 blur-[120px]"
+      class="pointer-events-none absolute -left-1/2 top-1/2 h-auto w-[200%] max-w-none -translate-y-1/2 blur-[120px] will-change-transform"
       src={imagePath}
       role="presentation"
     />
