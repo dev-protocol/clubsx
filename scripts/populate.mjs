@@ -1379,6 +1379,7 @@ const populate = async () => {
                         name: 'One-time access (Any weekday)',
                         description: cryptoCafeMemberships[0].description,
                         duration: '1 days',
+                        within: '1 months',
                         availability: [
                           {
                             type: 'weekday-time',
@@ -1439,6 +1440,7 @@ const populate = async () => {
                         name: 'One-time access (Tuesday or Friday)',
                         description: cryptoCafeMemberships[1].description,
                         duration: '1 days',
+                        within: '1 months',
                         availability: [
                           {
                             type: 'weekday-time',
@@ -1485,6 +1487,7 @@ const populate = async () => {
                         name: 'Full day access to our cafe & bar (Tuesday or Friday)',
                         description: cryptoCafeMemberships[2].description,
                         duration: '1 days',
+                        within: '1 months',
                         availability: [
                           {
                             type: 'weekday-time',
@@ -1531,6 +1534,7 @@ const populate = async () => {
                         name: 'One month access',
                         description: cryptoCafeMemberships[3].description,
                         duration: '1 months',
+                        within: '1 months',
                         availability: [
                           {
                             type: 'weekday-time',
@@ -1605,6 +1609,7 @@ const populate = async () => {
                         name: '3 months access',
                         description: cryptoCafeMemberships[4].description,
                         duration: '3 months',
+                        within: '1 months',
                         availability: [
                           {
                             type: 'weekday-time',
@@ -1655,13 +1660,6 @@ const populate = async () => {
                         id: 'complimentary-drink',
                         name: 'Complimentary drink',
                         description: 'ドリンク 1 杯無料',
-                        dependsOn: '3-months-access',
-                        refreshCycle: '1 days',
-                      },
-                      {
-                        id: '',
-                        name: 'One bottle corkage',
-                        description: 'ボトル持ち込み 1 本無料',
                         dependsOn: '3-months-access',
                         refreshCycle: '1 days',
                       },

@@ -126,7 +126,7 @@ export const exploreSlots = ({
   direction: 'past' | 'future'
   acceptOppositeDirection?: boolean
 }): UndefinedOr<dayjs.Dayjs> => {
-  let diff: number = 0
+  let diff: number = Infinity
   const baseTimestamp = base.clone().utc().toDate().getTime()
   const extendeddata: (Slot & { dayjs?: dayjs.Dayjs })[] = [...availability]
   const MAX = base.clone().add(100, 'years')
@@ -168,7 +168,7 @@ export const exploreSlots = ({
     })
 
     return res ?? _prev
-  })
+  }, extendeddata[0])
   return hit.dayjs
 }
 
@@ -260,3 +260,6 @@ export const now = () => {
 export const create = (dt: Date) => {
   return dayjs(dt)
 }
+
+export const ymd = (base?: dayjs.Dayjs): UndefinedOr<string> =>
+  base && `${base.year()}/${base.month()}/${base.date()}`
