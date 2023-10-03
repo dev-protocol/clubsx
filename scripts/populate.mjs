@@ -1663,13 +1663,6 @@ const populate = async () => {
                         dependsOn: '3-months-access',
                         refreshCycle: '1 days',
                       },
-                      {
-                        id: '',
-                        name: 'One bottle corkage',
-                        description: 'ボトル持ち込み 1 本無料',
-                        dependsOn: '3-months-access',
-                        refreshCycle: '1 days',
-                      },
                     ],
                     webhooks: {
                       used: {
