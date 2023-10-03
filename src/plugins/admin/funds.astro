@@ -1,12 +1,15 @@
 ---
-import type { ClubsConfiguration } from '@devprotocol/clubs-core'
-
-import FundsInfo from './Funds.svelte'
+import FundsInfo from './Funds.tsx'
+import { ZeroAddress } from 'ethers'
+import type { Membership } from '@plugins/memberships'
 
 const { memberships, chainId } = Astro.props
+
+let beneficiaries: string[] = memberships.map((membership: Membership) => membership.fee?.beneficiary ?? ZeroAddress)
+const uniqueBeneficiaries = new Array(...new Set(beneficiaries))
 ---
 
 <section class="flex flex-col">
   <h1 class="mb-16 font-title text-lg font-bold">Funds</h1>
-  <FundsInfo client:only="svelte" memberships={memberships} chainId={chainId}/>
+  <FundsInfo client:only="react" chainId={chainId} uniqueBeneficiaries={uniqueBeneficiaries} />
 </section>
