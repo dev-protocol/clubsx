@@ -44,6 +44,7 @@ export type Ticket = {
     name: string
     description?: string
     duration: string
+    within?: string
     availability?: Slot[]
     dependsOn?: string
     refreshCycle?: string

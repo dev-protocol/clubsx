@@ -24,6 +24,7 @@
 
   const queueTickets = new PQueue({ concurrency: 3 })
   const queueStatus = new PQueue({ concurrency: 1 })
+  const provider = new JsonRpcProvider(rpcUrl)
 
   type TicketWithStatus = Ticket & {
     id: number
@@ -33,7 +34,6 @@
 
   const detectHavingTickets = async (_account: string): Promise<void> => {
     fetchingOwnedTickets = true
-    const provider = new JsonRpcProvider(rpcUrl)
     const [s1, s2] = await clientsSTokens(provider)
     const detectSTokens = whenDefined(s1 ?? s2, client.createDetectSTokens)
     const idList = await whenDefined(detectSTokens, (detector) =>
@@ -84,7 +84,7 @@
       const text = res.ok ? await res.text() : undefined
       const history: TicketHistories =
         whenDefined(text, (txt) => decode<TicketHistories>(txt)) ?? {}
-      return ticketStatus(history, ticket)
+      return ticketStatus(history, ticket, { tokenId: id, provider })
     }) as Promise<TicketStatus[]>
   }
 

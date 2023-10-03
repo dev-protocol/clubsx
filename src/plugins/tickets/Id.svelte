@@ -8,19 +8,20 @@
   import { type TicketStatus, ticketStatus } from './utils/status'
   import Skeleton from '@components/Global/Skeleton.svelte'
   import Check from './Check.svelte'
-  import { type Signer, hashMessage } from 'ethers'
+  import { type Signer, hashMessage, JsonRpcProvider } from 'ethers'
   import { bytes32Hex } from '@fixtures/data/hexlify'
   import { marked } from 'marked'
   import DOMPurify from 'dompurify'
-  import { now } from './utils/date'
   import { Modals, closeModal, openModal } from 'svelte-modals'
   import { fade } from 'svelte/transition'
   import Modal from './Modal.svelte'
   import { Parts, Strings } from './i18n'
+  import { expirationDatetime } from './utils/date'
 
   export let ticket: Ticket
   export let membership: UndefinedOr<Membership>
   export let sTokensId: UndefinedOr<number>
+  export let rpcUrl: string
 
   let benefits: UndefinedOr<TicketStatus[]>
   let signer: UndefinedOr<Signer>
@@ -30,6 +31,7 @@
   let i18n = i18nBase(['en'])
 
   const mdToHtml = (str?: string) => DOMPurify.sanitize(marked.parse(str ?? ''))
+  const provider = new JsonRpcProvider(rpcUrl)
 
   const onClickABenefit = (benefitId: string) => async () => {
     whenDefined(signer, async (sigr) => {
@@ -79,7 +81,7 @@
     const text = res.ok ? await res.text() : undefined
     const history: TicketHistories =
       whenDefined(text, (txt) => decode<TicketHistories>(txt)) ?? {}
-    benefits = ticketStatus(history, ticket)
+    benefits = await ticketStatus(history, ticket, { tokenId: id, provider })
     console.log(history, benefits)
   }
 
@@ -116,10 +118,10 @@
       <h2 class="text-2xl font-bold">{ticket.name}</h2>
 
       {#if benefits === undefined}
-        <span class="h-16">
+        <span class="h-40">
           <Skeleton />
         </span>
-        <span class="h-16">
+        <span class="h-32">
           <Skeleton />
         </span>
         <span class="h-16 w-1/2">
@@ -127,7 +129,7 @@
         </span>
       {:else}
         {#each benefits as benefit}
-          <div class="grid justify-items-center gap-2">
+          <div>
             <button
               data-is-enablable={benefit.enablable}
               data-is-available={benefit.available}
@@ -140,70 +142,68 @@
                 idIsLoading === benefit.self.use.id}
               data-is-loading={idIsLoading === benefit.self.use.id}
               data-is-error={idIsError?.id === benefit.self.use.id}
-              class="group flex w-full items-center rounded-full border border-[3px] border-transparent px-8 py-4 text-center text-white data-[is-loading=true]:animate-pulse data-[is-waiting=true]:border-native-blue-400 data-[is-waiting=true]:border-native-blue-400 data-[is-available=true]:bg-dp-green-300 data-[is-enablable=true]:bg-native-blue-400 data-[is-error=true]:bg-red-500 data-[is-expired=true]:bg-dp-white-600 data-[is-temp-unavailable=true]:bg-dp-black-200 data-[is-error=true]:text-white data-[is-waiting=true]:text-native-blue-400"
+              class="group flex grid w-full items-center justify-stretch gap-2 rounded-md border border-[3px] border-transparent px-6 py-4 text-left text-white shadow-xl data-[is-loading=true]:animate-pulse data-[is-waiting=true]:border-native-blue-400 data-[is-waiting=true]:border-native-blue-400 data-[is-available=true]:bg-dp-green-300 data-[is-enablable=true]:bg-native-blue-400 data-[is-error=true]:bg-red-500 data-[is-expired=true]:bg-dp-white-600 data-[is-temp-unavailable=true]:bg-dp-black-200 data-[is-error=true]:text-white data-[is-waiting=true]:text-native-blue-400"
               on:click={onClickABenefit(benefit.self.use.id)}
-              ><span
-                class="rounded-full border border-[3px] border-transparent text-dp-white-600 group-data-[is-waiting=true]:border-native-blue-400 group-data-[is-available=true]:bg-dp-green-200 group-data-[is-enablable=true]:bg-white group-data-[is-expired=true]:bg-white group-data-[is-temp-unavailable=true]:bg-dp-white-200 group-data-[is-waiting=true]:bg-transparent group-data-[is-available=true]:text-white"
-                ><Check />
-              </span><span class="flex-grow text-2xl font-bold"
-                >{benefit.self.use.name}</span
-              ></button
-            >
-            {#if benefit.self.use.description}
+              ><p class="flex w-full items-center gap-2 justify-self-center">
+                <span
+                  class="aspect-square h-full rounded-full border border-[3px] border-transparent text-dp-white-600 group-data-[is-waiting=true]:border-native-blue-400 group-data-[is-available=true]:bg-dp-green-200 group-data-[is-enablable=true]:bg-white group-data-[is-expired=true]:bg-white group-data-[is-temp-unavailable=true]:bg-dp-white-200 group-data-[is-waiting=true]:bg-transparent group-data-[is-available=true]:text-white"
+                  ><Check />
+                </span><span class="flex-grow text-xl font-bold"
+                  >{benefit.self.use.name}</span
+                >
+              </p>
+              {#if !idIsError && benefit.enablable}
+                <span class="text-center font-bold"
+                  >{i18n(Parts.SignToUseThisBenefit)}</span
+                >
+              {/if}
+              {#if !idIsError && benefit.available && benefit.self.expiration}
+                {#if benefit.self.availableUntil}
+                  <span class="text-center font-bold"
+                    >{i18n(Parts.AvailableUntil, [
+                      benefit.self.availableUntil.local().calendar(),
+                    ])}</span
+                  >
+                {/if}
+              {/if}
+              {#if !idIsError && !benefit.enablable && benefit.dependency?.unused}
+                <span class="text-center font-bold"
+                  >{i18n(Parts.WillBeAvailableWhenXIsUsed, [
+                    benefit.dependency.use.name,
+                  ])}</span
+                >
+              {/if}
+              {#if !idIsError && benefit.isTempUnavailable}
+                <span class="text-center font-bold"
+                  >{i18n(Parts.WillBeAvailable, [
+                    benefit.availableAt?.local().calendar(),
+                  ])}</span
+                >
+              {/if}
+              {#if idIsError?.id === benefit.self.use.id}
+                <span class="text-center font-bold">{idIsError.error}</span>
+              {/if}
+              {#if benefit.self.use.description}
+                <div
+                  class="md grid w-full gap-2 rounded-md bg-white/10 p-2 text-black/80"
+                >
+                  {@html mdToHtml(benefit.self.use.description)}
+                </div>
+              {/if}
               <div
-                class="md grid gap-2 rounded-md bg-dp-white-300 p-2 text-black/80"
+                class="-mb-2 -ml-2 mt-2 justify-self-start text-xs font-bold opacity-50"
               >
-                {@html mdToHtml(benefit.self.use.description)}
+                {#if benefit.self.expiration}
+                  {i18n(Parts.Expiration, [
+                    benefit.self.expiration.local().calendar(),
+                  ])}
+                {:else if benefit.self.usageStartExpiration}
+                  {i18n(Parts.UsageStart, [
+                    benefit.self.usageStartExpiration.local().calendar(),
+                  ])}
+                {/if}
               </div>
-            {/if}
-            {#if !idIsError && benefit.enablable}
-              <span class="font-bold text-native-blue-400"
-                >{i18n(Parts.SignToUseThisBenefit)}</span
-              >
-              {#if benefit.availableAtIfenabled?.isAfter(now())}
-                <span class="font-bold text-native-blue-300"
-                  >{i18n(Parts.AfterSigningThisWillBeAvailable, [
-                    benefit.availableAtIfenabled.local().calendar(),
-                  ])}</span
-                >
-              {/if}
-            {/if}
-            {#if !idIsError && benefit.available && benefit.self.expiration}
-              {#if benefit.self.availableUntil}
-                <span class="font-bold text-dp-green-300"
-                  >{i18n(Parts.AvailableUntil, [
-                    benefit.self.availableUntil.local().calendar(),
-                  ])}</span
-                >
-              {/if}
-              {#if benefit.self.availableUntil?.isSame(benefit.self.expiration)}
-                <span class="text-sm text-black/30"
-                  >Then, this will expire.</span
-                >
-              {:else}
-                <span class="text-sm text-black/30"
-                  ><span class="font-bold">Expiration date:</span>
-                  {benefit.self.expiration.local().calendar()}</span
-                >
-              {/if}
-            {/if}
-            {#if !idIsError && !benefit.enablable && benefit.dependency?.unused}
-              <span class="font-bold text-native-blue-400"
-                >{i18n(Parts.WillBeAvailableWhenXIsUsed, [
-                  benefit.dependency.use.name,
-                ])}</span
-              >
-            {/if}
-            {#if !idIsError && benefit.isTempUnavailable}
-              <span class="font-bold text-dp-black-200"
-                >{i18n(Parts.WillBeAvailable, [
-                  benefit.availableAt?.local().calendar(),
-                ])}</span
-              >
-            {/if}
-            {#if idIsError?.id === benefit.self.use.id}
-              <span class="font-bold text-red-400">{idIsError.error}</span>
-            {/if}
+            </button>
           </div>
         {/each}
       {/if}
@@ -222,6 +222,7 @@
 
 <style lang="scss">
   .md {
+    color: inherit;
     :global(h1) {
       @apply text-xl font-bold;
     }

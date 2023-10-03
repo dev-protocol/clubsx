@@ -9,8 +9,11 @@ import {
   now,
   period,
   setTime,
+  ymd,
 } from './date'
 import type { Dayjs } from 'dayjs'
+import type { ContractRunner } from 'ethers'
+import { getMintedAt } from './get-minted-at'
 
 export type StatusUnit = {
   use: Ticket['uses'][0]
@@ -25,6 +28,8 @@ export type StatusUnit = {
   availableUntil?: Dayjs
   availableUntilIfenabled?: Dayjs
   expirationIfenabled?: Dayjs
+  usageStartExpired?: boolean
+  usageStartExpiration?: Dayjs
 }
 
 export type TicketStatus = {
@@ -40,10 +45,12 @@ export type TicketStatus = {
   availableUntilIfenabled?: Dayjs
   expirationIfenabled?: Dayjs
   ticket: Ticket
+  usageStartExpired?: boolean
+  usageStartExpiration?: Dayjs
 }
 
 export const factory =
-  (_history: TicketHistories) =>
+  (_history: TicketHistories, mintedAt?: Dayjs) =>
   (use: Ticket['uses'][0]): StatusUnit => {
     const base = now()
     const base0 = setTime(base, 'hour', 0)
@@ -93,15 +100,38 @@ export const factory =
       },
     }
     const history = use.id in _history ? _history[use.id] : undefined
+    const within =
+      whenDefined(use.within, (_within) => formatDuration(_within)) ?? []
+    const usageStartExpiration = whenDefinedAll(
+      [mintedAt, within[0]],
+      ([_mintedAt, _within]) => period(_mintedAt, _within),
+    )
+    const usageStartExpired =
+      history === undefined && whenDefined(usageStartExpiration, isExpiredNow)
     const firstAvailableTimeStart = whenDefinedAll(
       [use.availability, history],
-      ([availability, his]) =>
-        exploreSlots({
+      ([availability, his]) => {
+        const historyBase = create(his.datetime)
+        const $1 = exploreSlots({
           availability,
-          base: create(his.datetime),
+          base: historyBase,
           find: 'start',
           direction: 'future',
-        }),
+        })
+        const $2 = exploreSlots({
+          availability,
+          base: historyBase,
+          find: 'start',
+          direction: 'past',
+        })
+        const baseCal = ymd(historyBase)
+        /**
+         * If this is used on the day of availability,
+         * $1 may unjustifiably be a future date, in which case $2 is used.
+         */
+        const res = baseCal === ymd($1) ? $1 : baseCal === ymd($2) ? $2 : $1
+        return res
+      },
     )
     const firstAvailableTimeEnd = whenDefinedAll(
       [use.availability, firstAvailableTimeStart],
@@ -131,7 +161,9 @@ export const factory =
     )
     const refreshed = whenDefined(refreshingExpiration, isExpiredNow)
     const unused = refreshed ?? history === undefined
-    const expired = whenDefined(expiration, isExpiredNow)
+    const expired = usageStartExpired
+      ? usageStartExpired
+      : whenDefined(expiration, isExpiredNow)
 
     /**
      * will be true when history exists & current time is in between an available slot
@@ -151,8 +183,7 @@ export const factory =
     /**
      * will be a Dayjs object when not expired & now inUse
      */
-    const availableUntil =
-      expired || !inUse ? undefined : slots.find.end.direction.future
+    const availableUntil = expired ? undefined : slots.find.end.direction.future
 
     /**
      * will be a Dayjs object when not expired or it has history
@@ -228,14 +259,21 @@ export const factory =
       availableUntil,
       availableUntilIfenabled,
       expirationIfenabled,
+      usageStartExpired,
+      usageStartExpiration,
     }
   }
 
-export const ticketStatus = (
+export const ticketStatus = async (
   history: TicketHistories,
   ticket: Ticket,
-): TicketStatus[] => {
-  const getStatus = factory(history)
+  opts: {
+    tokenId: number | string
+    provider: ContractRunner
+  },
+): Promise<TicketStatus[]> => {
+  const mintedAt = await getMintedAt(opts)
+  const getStatus = factory(history, mintedAt)
 
   return ticket.uses.map((use) => {
     const _self = getStatus(use)
@@ -290,6 +328,8 @@ export const ticketStatus = (
       availableAtIfenabled,
       availableUntilIfenabled,
       expirationIfenabled,
+      usageStartExpired,
+      usageStartExpiration,
     } = self
     const inUse = self.expired ? false : self.inUse
     const isTempUnavailable =
@@ -310,6 +350,8 @@ export const ticketStatus = (
       availableUntilIfenabled,
       expirationIfenabled,
       isTempUnavailable,
+      usageStartExpired,
+      usageStartExpiration,
     }
   })
 }
