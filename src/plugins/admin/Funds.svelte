@@ -1,47 +1,36 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import { ZeroAddress, type Signer, ethers, type Provider, type ContractRunner, formatUnits } from 'ethers'
-  import { tokenInfo } from '@constants/common'
   import type { Membership } from '@plugins/memberships'
   import { ALL_CURRENCIES } from '@constants/memberships'
+  import { ZeroAddress, type Signer, type ContractRunner } from 'ethers'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
 
-  import { BigNumber } from 'bignumber.js'
+  import CurrencyMembershipInfo from './CurrencyMembershipInfo.svelte'
   import NotVerifiedBannerImg from './assets/NotVerifiedBannerImg.svg'
-  import { address, defaultAddress, swapAndStakeAddressAbi } from './utils/swapAndStake'
 
   let signer: Signer | undefined
-  let provider: ContractRunner | undefined
   let connection: typeof Connection
   let currentAddress: string | undefined
-  let allBeneficiaries: Set<string | undefined> = new Set([])
-  let currencyState: {
-    [x: string]: {
-      isUserClaiming: boolean
-      isFetchingUserData: boolean
-      yourClaimable: string
-      totalClaimable: string
-    }
-  } = { }
+  let provider: ContractRunner | undefined
+  let allBeneficiaries: string[] = []
 
   export let chainId: number
   export let memberships: Membership[] = []
 
   onMount(async () => {
     await connectOnMount()
-    await fetchYourWithdrawable()
     setAllBeneficiaries()
   })
 
   const setAllBeneficiaries = () => {
     if (!memberships || !memberships.length) return
 
-    let beneficiaries: Array<string | undefined> = []
+    let beneficiaries: string[] = []
     for (const membership of memberships) {
       beneficiaries.push(membership.fee?.beneficiary ?? ZeroAddress)
     }
 
-    allBeneficiaries = new Set([...beneficiaries])
+    allBeneficiaries = new Array(...new Set(beneficiaries))
   }
 
   const connectOnMount = async () => {
@@ -62,62 +51,6 @@
       currentAddress = a
     })
   }
-
-  const fetchYourWithdrawable = async () => {
-    if (!chainId || !currentAddress || !provider) return;
-
-    for (const currency of ALL_CURRENCIES) {
-      currencyState[currency] = {
-        ...currencyState[currency],
-        isFetchingUserData: true
-      }
-
-      const tokenAddress = tokenInfo[currency][chainId].address
-      const swapAndStakeAddress =
-        address.find((a) => a.chainId === chainId)?.address ||
-        defaultAddress.address
-      const contract = new ethers.Contract(
-        swapAndStakeAddress,
-        swapAndStakeAddressAbi,
-        provider,
-      )
-      const fee = await contract.gatewayFees(currentAddress, tokenAddress)
-
-      currencyState[currency] = {
-        ...currencyState[currency],
-        isFetchingUserData: false,
-        yourClaimable: formatUnits(fee, tokenInfo[currency][chainId].decimals)
-      }
-    }
-  }
-
-  const claimYourWithdrawable = async (tokenSymbol: string) => {
-    if (!chainId || !signer) return;
-
-    const tokenAddress = tokenInfo[tokenSymbol][chainId].address
-
-    currencyState[tokenSymbol] = {
-      ...currencyState[tokenSymbol],
-      isUserClaiming: true
-    }
-
-    const swapAndStakeAddress =
-      address.find((a) => a.chainId === chainId)?.address ||
-      defaultAddress.address
-    const contract = new ethers.Contract(
-      swapAndStakeAddress,
-      swapAndStakeAddressAbi,
-      signer,
-    )
-    const txReceipt = await contract.claim(tokenAddress)
-    await txReceipt.wait(1) // TODO: detect success failure
-
-    currencyState[tokenSymbol] = {
-      ...currencyState[tokenSymbol],
-      isUserClaiming: true
-    }
-  }
-
 </script>
 
 <div class="grid gap-16">
@@ -160,17 +93,7 @@
       </section>
 
       {#each ALL_CURRENCIES as currency}
-        <section class="mt-[18px] flex items-center gap-[18px] justify-between">
-          <p class="w-[23%] font-bold text-base">{
-            new Intl.NumberFormat(undefined,{ minimumFractionDigits: 2, maximumFractionDigits: 3 })
-              .format(Number(currencyState[currency]?.yourClaimable) || 0)
-          } { currency }</p>
-          <p class="grow font-bold text-base opacity-50">≈ $32.000</p>
-          <button
-            on:click|preventDefault={() => claimYourWithdrawable(currency)}
-            disabled={!Number(currencyState[currency]?.yourClaimable)}
-            class="hs-button is-filled w-fit py-3.5 px-[22px] ">Withdraw {currency}</button>
-        </section>
+        <CurrencyMembershipInfo chainId={chainId} currency={currency} signer={signer} isYourWithdrawable={true} />
       {/each}
     </div>
 
@@ -182,11 +105,8 @@
         <p class="w-fit font-bold text-base opacity-50">equivalent tokens</p>
       </section>
 
-      {#each Array(3) as _, index (index)}
-        <section class="mt-[18px] flex items-center gap-[18px] justify-between">
-          <p class="w-[23%] font-bold text-base">32.200 USDC</p>
-          <p class="grow font-bold text-base opacity-50">≈ $32.000</p>
-        </section>
+      {#each ALL_CURRENCIES as currency}
+        <CurrencyMembershipInfo chainId={chainId} currency={currency} signer={signer} isYourWithdrawable={false} allBeneficiaries={allBeneficiaries ?? []} />
       {/each}
     </div>
   </div>
