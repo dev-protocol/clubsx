@@ -19,11 +19,11 @@
 
   onMount(async () => {
     await connectOnMount()
-    setAllBeneficiaries()
+    await setAllBeneficiaries()
   })
 
-  const setAllBeneficiaries = () => {
-    if (!memberships || !memberships.length) return
+  const setAllBeneficiaries = async () => {
+    if (!memberships || !memberships?.length) return
 
     let beneficiaries: string[] = []
     for (const membership of memberships) {
