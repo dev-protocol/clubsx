@@ -168,7 +168,7 @@ export const exploreSlots = ({
     })
 
     return res ?? _prev
-  })
+  }, extendeddata[0])
   return hit.dayjs
 }
 
