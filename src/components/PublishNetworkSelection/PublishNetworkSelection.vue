@@ -342,7 +342,10 @@ import {
 } from 'ethers'
 import type Web3Modal from 'web3modal'
 import { type PropType, defineComponent } from '@vue/runtime-core'
-import { clientsSTokens } from '@devprotocol/dev-kit/agent'
+import {
+  clientsPropertyFactory,
+  clientsSTokens,
+} from '@devprotocol/dev-kit/agent'
 import type { connection as Connection } from '@devprotocol/clubs-core/connection'
 import {
   address,
@@ -899,7 +902,18 @@ export default defineComponent({
     },
 
     async validateManuallyAddedProperty() {
-      if (isAddress(this.manualAddressFromNiwa)) {
+      if (!provider) {
+        this.tokenizingStatusMsg = 'No provider provided, try again!'
+        return
+      }
+
+      const [l1, l2] = await clientsPropertyFactory(provider)
+      const pF = l1 ?? l2
+      const isProperty = await pF
+        ?.contract()
+        .isProperty(this.manualAddressFromNiwa)
+
+      if (isProperty) {
         this.addressFromNiwa = this.manualAddressFromNiwa
       } else {
         this.addressFromNiwa = ''
