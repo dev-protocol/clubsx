@@ -37,9 +37,10 @@ export const post: (opts: {
     }
 
     const dbKey = genHistoryKey(propertyAddress, ticket.payload, id)
+    const provider = new JsonRpcProvider(rpcUrl)
 
     const account = recoverAddress(hashMessage(hash), sig)
-    const [l1, l2] = await clientsSTokens(new JsonRpcProvider(rpcUrl))
+    const [l1, l2] = await clientsSTokens(provider)
     const owner = await (l1 ?? l2)?.ownerOf(Number(id))
     const isOwner = owner?.toLowerCase() === account.toLowerCase()
 
@@ -69,7 +70,10 @@ export const post: (opts: {
       .then((res) => whenDefined(res, decode<TicketHistories>) ?? {})
       .catch(always({}))
 
-    const statuses = ticketStatus(history, ticket)
+    const statuses = await ticketStatus(history, ticket, {
+      tokenId: id,
+      provider,
+    })
 
     const beneifit = statuses.find((status) => status.self.use.id === benefitId)
     if (!beneifit) {
