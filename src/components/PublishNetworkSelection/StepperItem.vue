@@ -1,13 +1,15 @@
 <script setup lang="ts">
-  import checkImage from '@assets/step-check.svg';
-  import roundedSquareImage from '@assets/step-rounded-square.svg';
+import checkImage from '@assets/step-check.svg'
+import roundedSquareImage from '@assets/step-rounded-square.svg'
 
-  defineProps({
-    itemCompleted: Boolean,
-    isProcessing: Boolean,
-    isDisabled: Boolean,
-    step: Number,
-  })
+const props = defineProps<{
+  itemCompleted: Boolean
+  isProcessing: Boolean
+  isDisabled: Boolean
+  step: String
+}>()
+
+const { itemCompleted, isProcessing, isDisabled, step } = props
 </script>
 
 <template>
@@ -15,10 +17,8 @@
     class="align-items-center flex items-center justify-items-center gap-2"
   >
     <img
-      alt="Status"
-      :src="
-        itemCompleted ? checkImage.src : roundedSquareImage.src
-      "
+      :alt="'Publish Step ' + step + ' Status'"
+      :src="itemCompleted ? checkImage.src : roundedSquareImage.src"
       class="h-3 w-3"
       v-bind:class="isProcessing ? 'animate-pulse' : ''"
     />
