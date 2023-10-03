@@ -1379,6 +1379,7 @@ const populate = async () => {
                         name: 'One-time access (Any weekday)',
                         description: cryptoCafeMemberships[0].description,
                         duration: '1 days',
+                        within: '1 months',
                         availability: [
                           {
                             type: 'weekday-time',
@@ -1439,6 +1440,7 @@ const populate = async () => {
                         name: 'One-time access (Tuesday or Friday)',
                         description: cryptoCafeMemberships[1].description,
                         duration: '1 days',
+                        within: '1 months',
                         availability: [
                           {
                             type: 'weekday-time',
@@ -1485,6 +1487,7 @@ const populate = async () => {
                         name: 'Full day access to our cafe & bar (Tuesday or Friday)',
                         description: cryptoCafeMemberships[2].description,
                         duration: '1 days',
+                        within: '1 months',
                         availability: [
                           {
                             type: 'weekday-time',
@@ -1531,6 +1534,7 @@ const populate = async () => {
                         name: 'One month access',
                         description: cryptoCafeMemberships[3].description,
                         duration: '1 months',
+                        within: '1 months',
                         availability: [
                           {
                             type: 'weekday-time',
@@ -1605,6 +1609,7 @@ const populate = async () => {
                         name: '3 months access',
                         description: cryptoCafeMemberships[4].description,
                         duration: '3 months',
+                        within: '1 months',
                         availability: [
                           {
                             type: 'weekday-time',

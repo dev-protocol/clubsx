@@ -2,7 +2,7 @@ import type { ClubsI18nLocale } from '@devprotocol/clubs-core'
 
 export enum Parts {
   SignToUseThisBenefit = ';1',
-  AfterSigningThisWillBeAvailable = ';2',
+  UsageStart = ';2',
   AvailableUntil = ';3',
   WillBeAvailableWhenXIsUsed = ';4',
   WillBeAvailable = ';5',
@@ -11,6 +11,7 @@ export enum Parts {
   ModalActionTicketConfirm = ';8',
   ModalMessageNotConnected = ';9',
   ModalCloseNotConnected = ';10',
+  Expiration = ';11',
 }
 
 export const Strings: Record<Parts, ClubsI18nLocale> = {
@@ -18,9 +19,9 @@ export const Strings: Record<Parts, ClubsI18nLocale> = {
     en: 'Sign to use this benefit',
     ja: 'サインして使う',
   },
-  [Parts.AfterSigningThisWillBeAvailable]: {
-    en: ([time]) => `After signing, this will be available ${time}`,
-    ja: ([time]) => `サインすると ${time} から使用できます`,
+  [Parts.UsageStart]: {
+    en: ([time]) => `This benefit will no longer be activated after ${time}.`,
+    ja: ([time]) => `この特典は、${time} 以降は有効化できなくなります。`,
   },
   [Parts.AvailableUntil]: {
     en: ([time]) => `Available until ${time}`,
@@ -55,5 +56,9 @@ export const Strings: Record<Parts, ClubsI18nLocale> = {
   [Parts.ModalCloseNotConnected]: {
     en: 'OK',
     ja: 'わかりました',
+  },
+  [Parts.Expiration]: {
+    en: ([time]) => `Expiration date is ${time}.`,
+    ja: ([time]) => `有効期限: ${time}`,
   },
 }
