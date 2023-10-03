@@ -3,6 +3,7 @@
   import { onMount } from 'svelte'
   import { CurrencyOption } from '@constants/currencyOption'
   import DOMPurify from 'dompurify'
+  import { fade } from 'svelte/transition'
 
   export let name: string
   export let clubName: string
@@ -28,17 +29,19 @@
   }
 
   const hash = `#membership:${id}`
+  const showModal = (open: boolean) => {
+    modal = open
+    document.body.classList[open ? 'add' : 'remove']('overflow-y-hidden')
+  }
   const handleHashChange = (event: HashChangeEvent) => {
     console.log({ event })
     const newUrl = new URL(event.newURL)
     const oldUrl = new URL(event.oldURL)
     if (newUrl.hash === hash) {
-      modal = true
-      document.body.classList.add('overflow-y-hidden')
+      showModal(true)
     }
     if (oldUrl.hash === hash) {
-      modal = false
-      document.body.classList.remove('overflow-y-hidden')
+      showModal(false)
     }
   }
 
@@ -46,7 +49,7 @@
     window.location.hash = hash
   }
   const handleClickClose = () => {
-    window.history.back()
+    window.location.hash = ''
   }
 
   onMount(() => {
@@ -54,6 +57,10 @@
     window.addEventListener('hashchange', handleHashChange)
 
     modalGroup && document.body.appendChild(modalGroup)
+
+    if (location.hash === hash) {
+      showModal(true)
+    }
   })
 </script>
 
@@ -128,6 +135,7 @@
   class={`inset-0 z-[9999] grid items-center justify-center overflow-y-scroll bg-black/20 p-8 backdrop-blur-3xl ${
     modal ? 'fixed' : 'hidden'
   }`}
+  transition:fade={{ duration: 100 }}
 >
   {#if modal === true}
     <div class="grid max-w-lg gap-4 p-2">

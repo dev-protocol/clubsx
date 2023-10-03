@@ -1,4 +1,4 @@
-import type { UndefinedOr } from '@devprotocol/util-ts'
+import type { ClubsI18nLocale } from '@devprotocol/clubs-core'
 
 export enum Parts {
   SignToUseThisBenefit = ';1',
@@ -13,16 +13,7 @@ export enum Parts {
   ModalCloseNotConnected = ';10',
 }
 
-export type I18nContent = ((vars: UndefinedOr<string>[]) => string) | string
-
-export type I18nPart = Record<'en' | 'ja', I18nContent>
-
-export type I18nFunction = (
-  key: keyof typeof Strings,
-  vars?: UndefinedOr<string>[],
-) => string
-
-export const Strings: Record<Parts, I18nPart> = {
+export const Strings: Record<Parts, ClubsI18nLocale> = {
   [Parts.SignToUseThisBenefit]: {
     en: 'Sign to use this benefit',
     ja: 'サインして使う',
@@ -66,20 +57,3 @@ export const Strings: Record<Parts, I18nPart> = {
     ja: 'わかりました',
   },
 }
-
-const has = <T extends I18nPart>(
-  base: T,
-  lang: string | number | symbol,
-): lang is keyof T => Object.hasOwn(base, lang)
-
-export const i18nFactory =
-  (langs: Navigator['languages']): I18nFunction =>
-  (key, vars) => {
-    const base = Strings[key]
-    type Key = keyof typeof base
-    const cand = langs.find((lang) =>
-      has<typeof base>(base, lang),
-    ) as UndefinedOr<Key>
-    const content = cand ? base[cand] : base[Object.keys(base)[0] as Key]
-    return typeof content === 'function' ? content(vars ?? []) : content
-  }
