@@ -2,6 +2,7 @@ import { config } from 'dotenv'
 import { defineConfig } from 'astro/config'
 import clubs from '@devprotocol/clubs-core'
 import vercel from '@astrojs/vercel/serverless'
+import netlify from '@astrojs/netlify/functions'
 import tailwind from '@astrojs/tailwind'
 import lit from '@astrojs/lit'
 import vue from '@astrojs/vue'
@@ -24,7 +25,7 @@ export default defineConfig({
     port: 3000,
   },
   output: 'server',
-  adapter: vercel(),
+  adapter: (process.env.NETLIFY ? netlify : vercel)(),
   integrations: [
     clubs(),
     {

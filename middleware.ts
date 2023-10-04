@@ -7,7 +7,7 @@ const hosts = (process.env.HOSTS ?? 'clubs.place')
   .sort((a, b) => (a.split('.').length < b.split('.').length ? 0 : -1))
 
 export const config = {
-  matcher: ['/((?!assets|chunks|_astro|_vercel|[\\w-]+\\.\\w+).*)'],
+  matcher: ['/((?!assets|chunks|_vercel|[\\w-]+\\.\\w+).*)'],
 }
 
 const redirects = [
