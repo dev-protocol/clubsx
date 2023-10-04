@@ -1,8 +1,9 @@
 ---
 import Layout from '@layouts/Landing.astro'
 import Domain_ from '@components/Domain/Domain.vue'
+import { replaceWithFwdHost } from '@fixtures/url'
 
-const name = new URL(Astro.request.url).searchParams.get('name')
+const name = new URL(replaceWithFwdHost(Astro.request)).searchParams.get('name')
 const namePreset = name
   ?.toLowerCase()
   .replace(/[^a-z|0-9|-]/g, '-')

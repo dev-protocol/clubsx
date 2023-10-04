@@ -6,6 +6,7 @@ import memberships, { type Membership } from '@plugins/memberships'
 import SetupLayout from '@layouts/Setup.astro'
 import NextButton from '@components/Setup/NextButton.astro'
 import PageNotFound from '@pages/404.astro'
+import { replaceWithFwdHost } from '@fixtures/url'
 
 const { site } = Astro.params
 
@@ -23,7 +24,7 @@ const path = (await getStaticPaths()).find(
 
 const siteBaseUrl = ((url) =>
   `${url.protocol}//${url.host}/${site}/setup/design`)(
-  new URL(Astro.request.url),
+  new URL(replaceWithFwdHost(Astro.request)),
 )
 
 const clubs = path?.props.clubs

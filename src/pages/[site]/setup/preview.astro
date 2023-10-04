@@ -6,6 +6,7 @@ import SetupLayout from '@layouts/Setup.astro'
 import image from '@assets/preview-overview-chart.png'
 import NextButton from '@components/Setup/NextButton.astro'
 import PageNotFound from '@pages/404.astro'
+import { replaceWithFwdHost } from '@fixtures/url'
 
 const { site } = Astro.params
 
@@ -18,12 +19,12 @@ const config = await getCurrentConfig()
 const path = (await getStaticPaths()).find(({ props }) => props.clubs)
 
 const baseUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
-  new URL(Astro.request.url),
+  new URL(replaceWithFwdHost(Astro.request)),
 )
 
 const siteBaseUrl = ((url) =>
   `${url.protocol}//${url.host}/${site}/setup/memberships`)(
-  new URL(Astro.request.url),
+  new URL(replaceWithFwdHost(Astro.request)),
 )
 ---
 

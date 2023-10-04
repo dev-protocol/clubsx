@@ -12,6 +12,7 @@ import type { UndefinedOr } from '@devprotocol/util-ts'
 import type { DraftOptions } from '@constants/draft'
 import NextButton from '@components/Setup/NextButton.astro'
 import PageNotFound from '@pages/404.astro'
+import { replaceWithFwdHost } from '@fixtures/url'
 
 const { site } = Astro.params
 
@@ -39,11 +40,11 @@ const membershipsPluginOptions = membershipsPlugin?.options?.find(
 
 const siteBaseUrl = ((url) =>
   `${url.protocol}//${url.host}/${site}/setup/preview`)(
-  new URL(Astro.request.url),
+  new URL(replaceWithFwdHost(Astro.request)),
 )
 
 const baseDomainUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
-  new URL(Astro.request.url),
+  new URL(replaceWithFwdHost(Astro.request)),
 )
 ---
 

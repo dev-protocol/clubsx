@@ -6,6 +6,7 @@ import { adminFactory } from '@devprotocol/clubs-core'
 import admin from '@plugins/admin'
 import SetupLayout from '@layouts/Setup.astro'
 import PageNotFound from '@pages/404.astro'
+import { replaceWithFwdHost } from '@fixtures/url'
 
 const { site } = Astro.params
 
@@ -18,7 +19,7 @@ const config = await getCurrentConfig()
 const path = (await getStaticPaths()).find(({ props }) => props.clubs)
 
 const siteBaseUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
-  new URL(Astro.request.url)
+  new URL(replaceWithFwdHost(Astro.request)),
 )
 ---
 

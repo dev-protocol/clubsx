@@ -3,6 +3,7 @@ import type { Membership } from '@plugins/memberships'
 import IdPage from './Id'
 import type { CMValues } from '.'
 import Checkout from '@components/Checkout/Checkout.astro'
+import { replaceWithFwdHost } from '@fixtures/url'
 
 const { cm, product, rpcUrl, propertyAddress, ...other } = Astro.props as {
   cm: CMValues
@@ -10,7 +11,7 @@ const { cm, product, rpcUrl, propertyAddress, ...other } = Astro.props as {
   rpcUrl: string
   propertyAddress: string
 }
-const url = new URL(Astro.url)
+const url = new URL(replaceWithFwdHost(Astro.request))
 const success = Boolean(url.searchParams.get('success'))
 const failure = Boolean(url.searchParams.get('failure'))
 ---
