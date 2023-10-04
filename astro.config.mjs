@@ -25,7 +25,7 @@ export default defineConfig({
     port: 3000,
   },
   output: 'server',
-  adapter: (process.env.NETLIFY ? netlify : vercel)(),
+  adapter: process.env.NETLIFY ? netlify() : vercel({ functionPerRoute: true }),
   integrations: [
     clubs(),
     {
