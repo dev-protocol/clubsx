@@ -1,18 +1,18 @@
 {
   "headers": [
     {
-      "source": "/",
+      "source": "/(.*)",
       "has": [
         {
           "type": "header",
-          "key": "Host",
-          "value": "clubs.place"
+          "key": "Content-Type",
+          "value": "text/html"
         }
       ],
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, must-revalidate"
+          "value": "public, max-age=86400, must-revalidate"
         }
       ]
     },
