@@ -284,7 +284,6 @@ export const ticketStatus = async (
         getStatus,
       ),
     )
-    console.log({ dependency })
     const self: StatusUnit =
       whenDefined(
         dependency,
@@ -296,6 +295,7 @@ export const ticketStatus = async (
           availableUntil,
           availableUntilIfenabled,
           expirationIfenabled,
+          inUse,
         }) => {
           return expired === true
             ? // Dependency has expired
@@ -312,12 +312,25 @@ export const ticketStatus = async (
             : expired === false &&
               availableAt !== undefined &&
               _self.inUse === false
-            ? // Dependency temporarily unavailable
+            ? // This is not used, so inherits dependency's *Ifenabled values
               {
                 ..._self,
                 availableAtIfenabled: availableAt,
                 availableUntilIfenabled: availableUntil,
                 expirationIfenabled: expiration,
+              }
+            : expired === false &&
+              availableAt !== undefined &&
+              inUse === false &&
+              _self.inUse
+            ? // Dependency temporarily unavailable
+              {
+                ..._self,
+                expired,
+                inUse,
+                availableAt,
+                availableUntil,
+                expiration,
               }
             : _self
         },
