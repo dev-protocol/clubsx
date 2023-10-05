@@ -12,8 +12,10 @@ import {
 type Props = {
   chainId: number
   currency: string
+  allCurrencyIndex: number
   isYourWithdrawable: boolean
   uniqueBeneficiaries: string[]
+  updateWithdrawableInDollars: (allCurrencyIndex: number, value: string) => void
 }
 
 const CurrencyMembershipInfo = (props: Props) => {
@@ -66,21 +68,22 @@ const CurrencyMembershipInfo = (props: Props) => {
     const tokenAddress = tokenInfo[props.currency][props.chainId].address
     const coinGeckoCurrencyId =
       tokenInfo[props.currency][props.chainId].coingeckoCurrencyId
+
+    let withdrawableAmt: string = '0'
+    let withdrawableAmtInDollars: string = '0'
     if (props.isYourWithdrawable) {
       const currentAddress = await signer.getAddress()
       const fee: bigint = BigInt(
         await swapAndStakeContract.gatewayFees(currentAddress, tokenAddress),
       )
-      const withdrawableAmt = formatUnits(
+
+      withdrawableAmt = formatUnits(
         fee,
         tokenInfo[props.currency][props.chainId].decimals,
       )
-      setWithdrawable(withdrawableAmt)
-      setWithdrawableInDollars(
-        (
-          await usdByCurrency(Number(withdrawableAmt), coinGeckoCurrencyId)
-        ).toString(),
-      )
+      withdrawableAmtInDollars = (
+        await usdByCurrency(Number(withdrawableAmt), coinGeckoCurrencyId)
+      ).toString()
     } else {
       let totalWithdrawable: bigint = BigInt('0')
       for (const beneficiary of props.uniqueBeneficiaries) {
@@ -89,17 +92,22 @@ const CurrencyMembershipInfo = (props: Props) => {
         )
         totalWithdrawable = totalWithdrawable + fee
       }
-      const withdrawableAmt = formatUnits(
+
+      withdrawableAmt = formatUnits(
         totalWithdrawable,
         tokenInfo[props.currency][props.chainId].decimals,
       )
-      setWithdrawable(withdrawableAmt)
-      setWithdrawableInDollars(
-        (
-          await usdByCurrency(Number(withdrawableAmt), coinGeckoCurrencyId)
-        ).toString(),
-      )
+      withdrawableAmtInDollars = (
+        await usdByCurrency(Number(withdrawableAmt), coinGeckoCurrencyId)
+      ).toString()
     }
+
+    setWithdrawable(withdrawableAmt)
+    setWithdrawableInDollars(withdrawableAmtInDollars)
+    props.updateWithdrawableInDollars(
+      props.allCurrencyIndex,
+      withdrawableAmtInDollars,
+    )
     setIsFetchingData(false)
   }
 

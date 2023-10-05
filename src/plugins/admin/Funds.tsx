@@ -12,6 +12,11 @@ const FundsInfo = (props: {
 }) => {
   const [connection, setConnection] = useState<any>(undefined)
   const [currentAddress, setCurrentAddress] = useState<string>()
+  const [totalWithrawableInDollars, setTotalWithdrawableInDollars] = useState<
+    string[]
+  >(Array(ALL_CURRENCIES.length).fill(0))
+  const [yourTotalWithdrawableInDollars, setYourTotalWithdrawableInDollars] =
+    useState<string[]>(Array(ALL_CURRENCIES.length).fill(0))
 
   useEffect(() => {
     const checkConnection = async () => {
@@ -32,6 +37,28 @@ const FundsInfo = (props: {
       setCurrentAddress(a)
     })
   }, [connection])
+
+  const updateYourTotalWithdrawable = (
+    allCurrencyIndex: number,
+    nonFormattedNumberString: string,
+  ) => {
+    setYourTotalWithdrawableInDollars((yourTotalWithdrawableInDollars) => [
+      ...yourTotalWithdrawableInDollars.slice(0, allCurrencyIndex),
+      nonFormattedNumberString,
+      ...yourTotalWithdrawableInDollars.slice(allCurrencyIndex + 1),
+    ])
+  }
+
+  const updateTotalWithdrawable = (
+    allCurrencyIndex: number,
+    nonFormattedNumberString: string,
+  ) => {
+    setTotalWithdrawableInDollars((totalWithrawableInDollars) => [
+      ...totalWithrawableInDollars.slice(0, allCurrencyIndex),
+      nonFormattedNumberString,
+      ...totalWithrawableInDollars.slice(allCurrencyIndex + 1),
+    ])
+  }
 
   return (
     <div className="grid gap-16">
@@ -88,7 +115,20 @@ const FundsInfo = (props: {
             Your withdrawable funds
           </p>
           <section className="mt-[18px] flex items-center gap-[18px]">
-            <p className="text-4xl">$32.200</p>
+            <p className="text-4xl">
+              $
+              {new Intl.NumberFormat(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 3,
+              }).format(
+                Number(
+                  yourTotalWithdrawableInDollars.reduce(
+                    (prev: string, curr: string) =>
+                      String(Number(prev) + Number(curr)),
+                  ),
+                ) || 0,
+              )}
+            </p>
             <p className="w-fit text-base font-bold opacity-50">
               equivalent tokens
             </p>
@@ -98,8 +138,10 @@ const FundsInfo = (props: {
               key={`${curr}:=:${id}`}
               chainId={props.chainId}
               currency={curr}
+              allCurrencyIndex={id}
               isYourWithdrawable={true}
               uniqueBeneficiaries={[]}
+              updateWithdrawableInDollars={updateYourTotalWithdrawable}
             />
           ))}
         </div>
@@ -110,7 +152,20 @@ const FundsInfo = (props: {
             Total withdrawable funds
           </p>
           <section className="mt-[18px] flex items-center gap-[18px]">
-            <p className="text-2xl">$32.200</p>
+            <p className="text-2xl">
+              $
+              {new Intl.NumberFormat(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 3,
+              }).format(
+                Number(
+                  totalWithrawableInDollars.reduce(
+                    (prev: string, curr: string) =>
+                      String(Number(prev) + Number(curr)),
+                  ),
+                ) || 0,
+              )}
+            </p>
             <p className="w-fit text-base font-bold opacity-50">
               equivalent tokens
             </p>
@@ -120,8 +175,10 @@ const FundsInfo = (props: {
               key={`${curr}:=:${id}`}
               chainId={props.chainId}
               currency={curr}
+              allCurrencyIndex={id}
               isYourWithdrawable={false}
               uniqueBeneficiaries={props.uniqueBeneficiaries}
+              updateWithdrawableInDollars={updateTotalWithdrawable}
             />
           ))}
         </div>
