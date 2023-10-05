@@ -55,7 +55,7 @@
     "@astrojs/lit": "^3.0.0",
     "@astrojs/netlify": "3.0.2",
     "@astrojs/prefetch": "0.4.1",
-    "@astrojs/react": "3.0.2",
+    "@astrojs/react": "3.0.3",
     "@astrojs/svelte": "4.0.2",
     "@astrojs/tailwind": "5.0.0",
     "@astrojs/vercel": "5.0.1",
