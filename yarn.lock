@@ -86,9 +86,9 @@
     vscode-uri "^3.0.7"
 
 "@astrojs/lit@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@astrojs/lit/-/lit-3.0.0.tgz#2d7280e5f05cf582304574c195e98f6fb4264796"
-  integrity sha512-XBRwGq1ImYKS5O+nAVQvsaOHn31S3IIhiOwXs7W6aV+pB9YEFukfenSdGoGwkQdcXSzD+Pkqrn2YwsKgOb/wDw==
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@astrojs/lit/-/lit-3.0.1.tgz#5f651a5bf444b4b0ce1947a90312a3b7ce65a323"
+  integrity sha512-+FBtzMb+Aj7lur2LIptZkJRAs6PVQnhgXBDpsH1GJPC6L/mT+5oHoAvvCBs8ybGyo4J0f6/w+9s3H7zZKlCD9Q==
   dependencies:
     "@lit-labs/ssr" "^3.1.5"
     "@lit-labs/ssr-client" "^1.1.3"
@@ -1941,9 +1941,9 @@
   integrity sha512-kXOeFbfCm4fFf2A3WwVEeQj55tMZa8c8/f9AKHMobQMkzNUfUj+antR3fRPaZJawsa1aZiP/Da3ndpZrwEe4rQ==
 
 "@lit-labs/ssr@^3.1.5":
-  version "3.1.6"
-  resolved "https://registry.yarnpkg.com/@lit-labs/ssr/-/ssr-3.1.6.tgz#605f0592e28ec114177dd419c2273a3f9f16434c"
-  integrity sha512-mBULGxNZ4u5PT0im6M46Zu3meg7jRuoLbX/mOuIuVoXlWs1bF7jxQGwYORLdd87zm9M+PGhnXMPGf71IBaAn1w==
+  version "3.1.7"
+  resolved "https://registry.yarnpkg.com/@lit-labs/ssr/-/ssr-3.1.7.tgz#0bb9a28aec6d2ab0052f4f73e18c9eeb203cde32"
+  integrity sha512-eoH2Ech9lvk3VCMbG6d0yRqCJOD1Zs+ZKBRuGIxOG2OQoNYtQg8JV5JPeRhlx9OKy/wVAGPtIaWDL25n4mVjYQ==
   dependencies:
     "@lit-labs/ssr-client" "^1.1.0"
     "@lit-labs/ssr-dom-shim" "^1.1.0"
