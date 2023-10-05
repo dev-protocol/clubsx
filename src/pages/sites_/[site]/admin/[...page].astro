@@ -16,6 +16,7 @@ import Banner from '@components/Global/Banner.astro'
 import { plugins } from '@constants/plugins'
 import ConnectButton from '@components/Wallet/ConnectButton.vue'
 import PreviewBanner from '@components/PreviewBanner/PreviewBanner.astro'
+import { replaceWithFwdHost } from '@fixtures/url'
 
 const { site, page } = Astro.params
 
@@ -47,9 +48,9 @@ const Content = path?.props.component
 const baseUrl = ((origin) =>
   Astro.params.site && origin.includes(Astro.params.site)
     ? origin.replace(`${Astro.params.site}.`, '')
-    : origin)(new URL(Astro.request.url).origin)
+    : origin)(new URL(replaceWithFwdHost(Astro.request)).origin)
 
-const siteBaseUrl = new URL(Astro.request.url).origin
+const siteBaseUrl = new URL(replaceWithFwdHost(Astro.request)).origin
 ---
 
 {
@@ -135,7 +136,9 @@ const siteBaseUrl = new URL(Astro.request.url).origin
   ) : (
     <PageNotFound
       redirectionCtaText={`Take me back ${site} homepage`}
-      redirectionCtaUrl={`${new URL(Astro.request.url).origin}/admin/overview`}
+      redirectionCtaUrl={`${
+        new URL(replaceWithFwdHost(Astro.request)).origin
+      }/admin/overview`}
     />
   )
 }

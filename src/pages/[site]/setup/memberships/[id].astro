@@ -6,6 +6,7 @@ import type { Membership } from '@plugins/memberships'
 import memberships from '@plugins/memberships'
 import SetupLayout from '@layouts/Setup.astro'
 import PageNotFound from '@pages/404.astro'
+import { replaceWithFwdHost } from '@fixtures/url'
 
 const { site, id } = Astro.params
 
@@ -16,12 +17,12 @@ const { getStaticPaths, getCurrentConfig } = adminFactory({
 
 const config = await getCurrentConfig()
 const path = (await getStaticPaths()).find(
-  ({ params }) => params.page === `memberships/${id}`
+  ({ params }) => params.page === `memberships/${id}`,
 )
 
 const siteBaseUrl = ((url) =>
   `${url.protocol}//${url.host}/${site}/setup/memberships`)(
-  new URL(Astro.request.url)
+  new URL(replaceWithFwdHost(Astro.request)),
 )
 
 const { props } = path || { props: null }

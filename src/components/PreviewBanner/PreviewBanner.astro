@@ -2,6 +2,7 @@
 import { type ClubsConfiguration } from '@devprotocol/clubs-core'
 import PreviewBanner_ from '@components/PreviewBanner/PreviewBanner.svelte'
 import type { DraftOptions } from '@constants/draft'
+import { replaceWithFwdHost } from '@fixtures/url'
 
 interface Props {
   config?: ClubsConfiguration
@@ -16,7 +17,10 @@ const draftOptions = config?.options?.find((option) => option.key === '__draft')
   ?.value as DraftOptions['value']
 const isInDraft = Boolean(draftOptions?.isInDraft)
 
-const baseUrl = new URL(Astro.request.url).origin.replace(`${site}.`, '')
+const baseUrl = new URL(replaceWithFwdHost(Astro.request)).origin.replace(
+  `${site}.`,
+  '',
+)
 ---
 
 {

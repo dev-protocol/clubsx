@@ -1,6 +1,7 @@
 ---
 import Result_ from '@components/Checkout/Result.astro'
 import type { ClubsPropsPages } from '@devprotocol/clubs-core'
+import { replaceWithFwdHost } from '@fixtures/url'
 
 const { rpcUrl, ...other } = Astro.props as ClubsPropsPages & {
   rpcUrl: string
@@ -21,7 +22,7 @@ type CrossmintParams = [
   },
 ]
 
-const url = new URL(Astro.url)
+const url = new URL(replaceWithFwdHost(Astro.request))
 const p = url.searchParams.get('p') ?? '[]'
 const params: CrossmintParams = JSON.parse(p)
 

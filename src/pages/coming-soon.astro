@@ -1,10 +1,11 @@
 ---
+import { replaceWithFwdHost } from '@fixtures/url'
 import Layout from '@layouts/BaseClubs.astro'
 
 const { redirectionCtaText, redirectionCtaUrl } = Astro.props
 
 const homePageUrl: string = ((url) => `${url.protocol}//${url.host}/`)(
-  new URL(Astro.request.url)
+  new URL(replaceWithFwdHost(Astro.request)),
 )
 ---
 

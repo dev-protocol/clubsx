@@ -15,6 +15,8 @@ import { createClient } from 'redis'
 import { generateFulFillmentParamsId } from '../utils/gen-key'
 import { bytes32Hex } from '@fixtures/data/hexlify'
 import { getTokenAddress } from '@fixtures/dev-kit'
+import { replaceWithFwdHost } from '@fixtures/url'
+import { request } from 'http'
 
 const { POP_SERVER_KEY, REDIS_URL, REDIS_USERNAME, REDIS_PASSWORD } =
   import.meta.env
@@ -119,7 +121,7 @@ export const get: ({
   items: ComposedItem[]
 }) => APIRoute =
   ({ propertyAddress, chainId, items: _items }) =>
-  async ({ url }) => {
+  async ({ url, request }) => {
     /**
      * Get request parameters.
      */
@@ -185,9 +187,10 @@ export const get: ({
     const order_id = `ORDER-${keccak256(orderUniqueKey)}`
     const gross_amount = whenNotError(membership, ({ price }) => price.yen)
     const payment_key_expiry_duration = 1440 // = 1440 minutes
+    const currentUrl = replaceWithFwdHost(request)
     const push_destination = new URL(
       `/api/devprotocol:clubs:plugin:clubs-payments/fulfillment`,
-      url.origin.replace('http:', 'https:'),
+      new URL(currentUrl).origin.replace('http:', 'https:'),
     ).toString()
 
     const client = await whenNotError(

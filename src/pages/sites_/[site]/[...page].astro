@@ -12,6 +12,7 @@ import ConnectButton from '@components/Wallet/ConnectButton.vue'
 import type { DraftOptions } from '@constants/draft'
 import PreviewBanner from '@components/PreviewBanner/PreviewBanner.astro'
 import Footer from '@components/Footer/Footer.astro'
+import { replaceWithFwdHost } from '@fixtures/url'
 
 const { site, page } = Astro.params
 const config = await _config(site)
@@ -25,7 +26,7 @@ const path = (await getStaticPaths()).find(({ params }) => params.page === page)
 const Layout = path?.props.layout
 const Content = path?.props.component
 
-const siteBaseUrl = new URL(Astro.request.url).origin
+const siteBaseUrl = new URL(replaceWithFwdHost(Astro.request)).origin
 
 const decodedConfig = decode<ClubsConfiguration>(config)
 const draftOptions = decodedConfig?.options?.find(

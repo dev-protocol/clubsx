@@ -6,6 +6,7 @@ import type { Membership } from '@plugins/memberships'
 import memberships from '@plugins/memberships'
 import SetupLayout from '@layouts/Setup.astro'
 import PageNotFound from '@pages/404.astro'
+import { replaceWithFwdHost } from '@fixtures/url'
 
 const { site, preset } = Astro.params
 
@@ -16,7 +17,7 @@ const { getStaticPaths, getCurrentConfig } = adminFactory({
 
 const config = await getCurrentConfig()
 const path = (await getStaticPaths()).find(
-  ({ params }) => params.page === `memberships/new/${preset}`
+  ({ params }) => params.page === `memberships/new/${preset}`,
 )
 
 const { props } = path || { props: undefined }
@@ -24,7 +25,7 @@ const { props } = path || { props: undefined }
 const presets = (props?.presets ?? []) as Membership[]
 
 const membership = presets.find(
-  (_membership: Membership) => _membership.id === preset
+  (_membership: Membership) => _membership.id === preset,
 )
 
 if (!membership) {
@@ -32,12 +33,12 @@ if (!membership) {
 }
 
 const baseUrl = ((url) => `${url.protocol}//${url.host}/${site}/setup`)(
-  new URL(Astro.request.url)
+  new URL(replaceWithFwdHost(Astro.request)),
 )
 
 const siteBaseUrl = ((url) =>
   `${url.protocol}//${url.host}/${site}/setup/memberships`)(
-  new URL(Astro.request.url)
+  new URL(replaceWithFwdHost(Astro.request)),
 )
 ---
 
@@ -107,7 +108,7 @@ const siteBaseUrl = ((url) =>
     console.log('Save button clicked and updated the data remotely!!')
     window.location.href = new URL(
       `${site}/setup/memberships?created`,
-      `${location.protocol}//${location.host}`
+      `${location.protocol}//${location.host}`,
     ).toString()
   })
 </script>

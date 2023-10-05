@@ -11,6 +11,7 @@ import SetupLayout from '@layouts/Setup.astro'
 import NextButton from '@components/Setup/NextButton.astro'
 import PageNotFound from '@pages/404.astro'
 import type { colorPresets as ColorPresets } from '@plugins/default-theme'
+import { replaceWithFwdHost } from '@fixtures/url'
 
 const { site } = Astro.params
 
@@ -21,12 +22,12 @@ const { getStaticPaths, getCurrentConfig } = adminFactory({
 
 const config = await getCurrentConfig()
 const path = (await getStaticPaths()).find(
-  ({ params }) => params.page === 'theme'
+  ({ params }) => params.page === 'theme',
 )
 
 const siteBaseUrl = ((url) =>
   `${url.protocol}//${url.host}/${site}/setup/basic`)(
-  new URL(Astro.request.url)
+  new URL(replaceWithFwdHost(Astro.request)),
 )
 ---
 
@@ -43,7 +44,7 @@ const siteBaseUrl = ((url) =>
       <SetupDesign
         client:only="svelte"
         encodedOptions={encode(
-          path?.props.options as unknown as ClubsConfiguration
+          path?.props.options as unknown as ClubsConfiguration,
         )}
         colorPresets={path?.props.colorPresets as typeof ColorPresets}
         currentPluginIndex={path?.props.clubs.currentPluginIndex}
