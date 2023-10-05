@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react'
 
+import StakeInfo from './StakeInfo'
 import { ALL_CURRENCIES } from '@constants/memberships'
 import CurrencyMembershipInfo from './CurrencyMembershipInfo'
 import NotVerifiedBannerImg from './assets/NotVerifiedBannerImg.svg'
 
 const FundsInfo = (props: {
+  propertyAddress: string
   chainId: number
   uniqueBeneficiaries: string[]
 }) => {
-  const [currentAddress, setCurrentAddress] = useState<string>()
   const [connection, setConnection] = useState<any>(undefined)
+  const [currentAddress, setCurrentAddress] = useState<string>()
 
   useEffect(() => {
     const checkConnection = async () => {
@@ -126,26 +128,24 @@ const FundsInfo = (props: {
       </div>
 
       {/* <!-- Staking --> */}
-      {/* <div>
-        <p className="font-bold text-[32px]">Staking</p>
+      <div>
+        <p className="text-[32px] font-bold">Staking</p>
 
-        <!-- Your withdrawable funds -->
-        <div className="mt-8 w-full max-w-full border-[1px] rounded-[18px] p-8 border-[#3A4158] bg-[#3A4158]">
-          <p className="w-fit font-bold text-base opacity-50">Your withdrawable funds</p>
+        {/* <!-- Your withdrawable funds --> */}
+        <div className="mt-8 w-full max-w-full rounded-[18px] border-[1px] border-[#3A4158] bg-[#3A4158] p-8">
+          <p className="w-fit text-base font-bold opacity-50">
+            Your withdrawable funds
+          </p>
+          <StakeInfo
+            fetcherType={'your'}
+            chainId={props.chainId}
+            isYourWithdrawable={true}
+            propertyAddress={props.propertyAddress}
+          />
+        </div>
 
-          {#each Array(1) as _, index (index)}
-            <section className="mt-[18px] flex items-center gap-[18px] justify-between">
-              <p className="w-[23%] font-bold text-4xl">32.200</p>
-              <p className="grow font-bold text-base opacity-50">DEV</p>
-              <button
-                disabled={true}
-                className="hs-button is-filled w-fit py-3.5 px-[22px] ">Withdraw DEV</button>
-            </section>
-          {/each}
-        </div> */}
-
-      {/* <!-- Total withdrawable funds -->
-        <div className="mt-8 w-full max-w-full border-[1px] rounded-[18px] p-8 border-[#3A4158] bg-[#3A4158]">
+        {/* <!-- Total withdrawable funds --> */}
+        {/* <div className="mt-8 w-full max-w-full border-[1px] rounded-[18px] p-8 border-[#3A4158] bg-[#3A4158]">
           <p className="w-fit font-bold text-base opacity-50">Total withdrawable funds</p>
 
           {#each Array(1) as _, index (index)}
@@ -156,18 +156,20 @@ const FundsInfo = (props: {
           {/each}
         </div> */}
 
-      {/* <!-- Cumulative funds -->
-        <div className="mt-8 w-full max-w-full border-[1px] rounded-[18px] p-8 border-[#3A4158] bg-[#3A4158]">
-          <p className="w-fit font-bold text-base opacity-50">Cumulative funds</p>
+        {/* <!-- Cumulative funds --> */}
+        <div className="mt-8 w-full max-w-full rounded-[18px] border-[1px] border-[#3A4158] bg-[#3A4158] p-8">
+          <p className="w-fit text-base font-bold opacity-50">
+            Cumulative funds
+          </p>
 
-          {#each Array(1) as _, index (index)}
-            <section className="mt-[18px] flex items-center gap-[18px] justify-between">
-              <p className="w-[23%] font-bold text-2xl">32.200</p>
-              <p className="grow font-bold text-base opacity-50">DEV</p>
-            </section>
-          {/each}
+          <StakeInfo
+            chainId={props.chainId}
+            fetcherType={'cumulative'}
+            isYourWithdrawable={false}
+            propertyAddress={props.propertyAddress}
+          />
         </div>
-      </div> */}
+      </div>
     </div>
   )
 }
