@@ -78,7 +78,7 @@
     "@wagmi/core": "^1.4.1",
     "@web3modal/wagmi": "3.0.2",
     "@webcomponents/template-shadowroot": "^0.2.1",
-    "astro": "3.2.2",
+    "astro": "3.2.3",
     "autoprefixer": "10.4.16",
     "bignumber.js": "9.1.2",
     "cross-fetch": "^4.0.0",
