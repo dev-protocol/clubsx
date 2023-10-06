@@ -9,6 +9,11 @@ import {
   ZeroAddress,
   ethers,
 } from 'ethers'
+import {
+  address as lockupAddress,
+  defaultAddress as defaultLockupAddress,
+  lockupContractAbi,
+} from './utils/lockup'
 
 type Props = {
   chainId: number
@@ -48,14 +53,29 @@ const CurrencyMembershipInfo = (props: Props) => {
       return
     }
 
-    const withdrawContractAddress =
-      address.find((a) => a.chainId === props.chainId)?.address ||
-      defaultAddress.address
+    if (props.fetcherType === 'your' || props.fetcherType === 'total') {
+      // TODO: remove total from here and add in else.
+      const withdrawContractAddress =
+        address.find((a) => a.chainId === props.chainId)?.address ||
+        defaultAddress.address
 
-    setWithdrawContract(
-      new ethers.Contract(withdrawContractAddress, withdrawContractAbi, signer),
-    )
-  }, [signer])
+      setWithdrawContract(
+        new ethers.Contract(
+          withdrawContractAddress,
+          withdrawContractAbi,
+          signer,
+        ),
+      )
+    } else if (props.fetcherType === 'cumulative') {
+      const lockupContractAddress =
+        lockupAddress.find((a) => a.chainId === props.chainId)?.address ||
+        defaultLockupAddress.address
+
+      setWithdrawContract(
+        new ethers.Contract(lockupContractAddress, lockupContractAbi, signer),
+      )
+    }
+  }, [signer, props])
 
   useEffect(() => {
     fetchWithdrawable()
@@ -66,30 +86,31 @@ const CurrencyMembershipInfo = (props: Props) => {
       return
     }
 
+    let withdrawableAmt: string = '0'
     if (props.fetcherType === 'your') {
-      const response = await await withdrawContract.calculateRewardAmount(
+      const response = await withdrawContract.calculateRewardAmount(
         props.propertyAddress,
         await signer.getAddress(),
       )
       const fee: bigint = BigInt(response._amount || response[0])
-      const withdrawableAmt = formatUnits(
+      withdrawableAmt = formatUnits(
         fee,
         tokenInfo['DEV'][props.chainId].decimals,
       )
-      setWithdrawable(withdrawableAmt)
     } else if (props.fetcherType === 'cumulative') {
       const response = await await withdrawContract.calculateRewardAmount(
         props.propertyAddress,
       )
       const fee: bigint = BigInt(response._amount || response[0])
-      const withdrawableAmt = formatUnits(
+      withdrawableAmt = formatUnits(
         fee,
         tokenInfo['DEV'][props.chainId].decimals,
       )
-      setWithdrawable(withdrawableAmt)
     } else {
-      setWithdrawable('0')
+      withdrawableAmt = '0'
     }
+
+    setWithdrawable(withdrawableAmt)
   }
 
   const claimWithdrawable = async () => {
