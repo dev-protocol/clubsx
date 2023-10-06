@@ -57,7 +57,7 @@
     "@astrojs/prefetch": "0.4.1",
     "@astrojs/react": "3.0.3",
     "@astrojs/svelte": "4.0.3",
-    "@astrojs/tailwind": "5.0.0",
+    "@astrojs/tailwind": "5.0.1",
     "@astrojs/vercel": "5.0.1",
     "@astrojs/vue": "3.0.0",
     "@crossmint/client-sdk-base": "^1.0.1-alpha.6",
