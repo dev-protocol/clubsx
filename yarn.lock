@@ -146,10 +146,10 @@
     "@vitejs/plugin-react" "^4.0.4"
     ultrahtml "^1.3.0"
 
-"@astrojs/svelte@4.0.2":
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/@astrojs/svelte/-/svelte-4.0.2.tgz#7e80681765fb7a44f3754985df446479a6b81376"
-  integrity sha512-XB9Sexq+iW5aUpctDk6zuKHbWIAuPlAnZKbfgaS9VOaOUtx1t12crP9YoKEVcTifXYgoRuWWfeEAm2I8pYlLIQ==
+"@astrojs/svelte@4.0.3":
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/@astrojs/svelte/-/svelte-4.0.3.tgz#77d5bc8c7d915aec1cfc31808194b986694ff3a7"
+  integrity sha512-3toH/mkNFqMdmnMXh4XcksZfuOAwWVXdRrISyoRgNn1HalG6WBACFT+RwxAwpH7eXW/zUfrpfyZdcxYnVucHTg==
   dependencies:
     "@sveltejs/vite-plugin-svelte" "^2.4.5"
     svelte2tsx "^0.6.20"
