@@ -915,6 +915,7 @@ export default defineComponent({
 
       if (isProperty) {
         this.addressFromNiwa = this.manualAddressFromNiwa
+        this.updateConfig(false)
       } else {
         this.addressFromNiwa = ''
         this.manualAddressFromNiwa = ''
