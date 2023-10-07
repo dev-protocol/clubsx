@@ -44,11 +44,10 @@ export default ({
   const [connecting, setConnecting] = useState(false)
   const [usingWallet, setUsingWallet] = useState(true)
   const [account, setAccount] = useState<string>()
-  const [email, setEmail] = useState<string>('')
   const [baseUrl, setBaseUrl] = useState<string>()
   const callbackURL = baseUrl && genCallbackURLs(baseUrl)
 
-  console.log({ connecting, account, email, callbackURL })
+  console.log({ connecting, account, callbackURL })
   useEffect(() => {
     setBaseUrl(new URL('/fiat/result', new URL(givenBaseUrl).origin).toString())
   }, [givenBaseUrl])
@@ -113,27 +112,19 @@ export default ({
             .dp(0)
             .toFixed(),
         }
-        console.log({ props, email, account })
+        console.log({ props, account })
         return connect(
           props,
           usingWallet ? account : undefined, // Destination EOA
-          !usingWallet ? email : undefined, // Destination Email
         )
       }),
-    [account, email],
-  )
-
-  const _handleChange = useMemo(
-    () => (event: ChangeEvent<HTMLInputElement>) =>
-      setEmail(event.currentTarget.value),
-    [],
+    [account],
   )
 
   const _toggleUsingWallet = useMemo(
     () => () => {
       const next = !usingWallet
       setUsingWallet(next)
-      next && setEmail('')
     },
     [usingWallet],
   )
@@ -150,9 +141,9 @@ export default ({
   return (
     <>
       <div className="grid gap-4">
+        <h3 className="mb-4 text-xl">Destination</h3>
         {usingWallet && (
           <>
-            <h3 className="mb-4 text-xl">Destination wallet</h3>
             <span className="hs-form-field is-large is-filled">
               <input
                 className={`hs-form-field__input ${
@@ -172,17 +163,6 @@ export default ({
         )}
         {!usingWallet && (
           <>
-            <h3 className="mb-4 text-xl">Destination email</h3>
-
-            <span className="hs-form-field is-large is-filled">
-              <input
-                className="hs-form-field__input"
-                placeholder="Enter your email"
-                type="email"
-                onChange={_handleChange}
-                value={email}
-              />
-            </span>
             <button
               onClick={_toggleUsingWallet}
               className="hs-button is-small is-fullwidth is-outlined"
@@ -190,8 +170,9 @@ export default ({
               Or use wallet
             </button>
             <p>
-              NFT as a membership will be emailed to you and will be activated
-              once you withdraw it in your wallet.
+              NFT as a membership will be emailed to your address that input on
+              the next page and will be activated once you withdraw it for your
+              wallet.
             </p>
           </>
         )}
@@ -199,9 +180,7 @@ export default ({
       <button
         className="hs-button is-large is-fullwidth is-filled is-native-blue my-8"
         onClick={_handleClick}
-        disabled={
-          connecting || (usingWallet && !account) || (!usingWallet && !email)
-        }
+        disabled={connecting || (usingWallet && !account)}
       >
         Checkout
       </button>
