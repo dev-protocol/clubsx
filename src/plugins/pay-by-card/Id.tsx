@@ -28,22 +28,9 @@ type Params = {
   baseUrl: string
 }
 
-const genCallbackURLs = (
-  viewerUrl: string,
-  givenBaseUrl: string,
-  isSaaS: boolean,
-): URL => {
-  const url = new URL(viewerUrl)
-  if (!isSaaS) {
-    return url
-  }
-  const host = new URL(givenBaseUrl).host
-  const [, ...primaryHostname] = host.split('.')
-  const primaryHost = primaryHostname.join('.')
-  const page = new URL(new URL(givenBaseUrl).origin.replace(host, primaryHost))
-  page.pathname = '/redirect/'
-  const redirect = new URL(page)
-  redirect.searchParams.set('redirect', url.toString())
+const genCallbackURLs = (viewerUrl: string): URL => {
+  const redirect = new URL('https://clubs.place/redirect/')
+  redirect.searchParams.set('redirect', viewerUrl)
   return redirect
 }
 
@@ -59,16 +46,12 @@ export default ({
   const [account, setAccount] = useState<string>()
   const [email, setEmail] = useState<string>('')
   const [baseUrl, setBaseUrl] = useState<string>()
-  const [isClubsx, setIsClubsx] = useState<boolean>(false)
-  const callbackURL =
-    baseUrl && genCallbackURLs(baseUrl, givenBaseUrl, isClubsx)
+  const callbackURL = baseUrl && genCallbackURLs(baseUrl)
 
   console.log({ connecting, account, email, callbackURL })
-
   useEffect(() => {
-    setBaseUrl(`${new URL(location.href).origin}/fiat/result`)
-    setIsClubsx(givenBaseUrl !== location.href)
-  })
+    setBaseUrl(new URL('/fiat/result', new URL(givenBaseUrl).origin).toString())
+  }, [givenBaseUrl])
 
   const { connect } = useMemo(
     () =>
