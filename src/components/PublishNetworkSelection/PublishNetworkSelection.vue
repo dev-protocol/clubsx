@@ -152,120 +152,117 @@
       </section>
     </section>
     <section class="grid gap-4">
+      <!-- Stepper -->
       <section class="flex items-center justify-between">
-        <section
-          class="align-items-center flex items-center justify-items-center gap-2"
-        >
-          <img
-            alt="Status"
-            :src="
-              addressFromNiwaOrConfigIsValid ? checkImage : roundedSquareImage
-            "
-            class="h-3 w-3"
-            v-bind:class="isTokenizing ? 'animate-pulse' : ''"
-          />
-          <p
-            class="font-DMSans text-base font-bold"
-            v-bind:class="
-              networkSelected === '' || !networkSelected || !connected
-                ? 'text-[#3A4158]'
-                : isTokenizing
-                ? 'animate-pulse text-white'
-                : 'text-white'
-            "
-          >
-            1
-          </p>
-        </section>
-        <div
-          class="ml-4 mr-7 h-0 flex-1 border-[1px]"
-          v-bind:class="
-            !step3Enabled ||
-            networkSelected === '' ||
-            !networkSelected ||
-            !connected ||
-            !!addressFromNiwaOrConfigIsValid
-              ? 'border-[#3A4158]'
-              : 'border-white'
+        <!-- Stepper Item 1 -->
+        <StepperItem
+          :itemCompleted="addressFromNiwaOrConfigIsValid ? true : false"
+          :isProcessing="isTokenizing ? true : false"
+          :isDisabled="
+            networkSelected === '' || !networkSelected || !connected
+              ? true
+              : false
           "
-        ></div>
-        <section
-          class="align-items-center flex items-center justify-items-center gap-2"
-        >
-          <img
-            alt="Status"
-            :src="
-              addressFromNiwaOrConfigIsValid && membershipInitialized
-                ? checkImage
-                : roundedSquareImage
-            "
-            class="h-3 w-3"
-            v-bind:class="initMbmershipTxnProcessing ? ' animate-pulse' : ''"
-          />
-          <p
-            class="font-DMSans text-base font-bold"
-            v-bind:class="
+          step="1"
+        />
+
+        <!-- Stepper Separator -->
+        <StepperSeparator
+          :isHighlighted="
+            !(
+              !step3Enabled ||
               networkSelected === '' ||
               !networkSelected ||
               !connected ||
-              !addressFromNiwaOrConfigIsValid
-                ? 'text-[#3A4158]'
-                : initMbmershipTxnProcessing
-                ? ' animate-pulse text-white'
-                : ' text-white'
-            "
-          >
-            2
-          </p>
-        </section>
-        <div
-          class="ml-4 mr-7 h-0 flex-1 border-[1px]"
-          v-bind:class="
+              !!addressFromNiwaOrConfigIsValid
+            )
+          "
+        />
+
+        <!-- Stepper Item 2 -->
+        <StepperItem
+          :itemCompleted="
+            addressFromNiwaOrConfigIsValid && membershipInitialized
+              ? true
+              : false
+          "
+          :isProcessing="initMbmershipTxnProcessing ? true : false"
+          :isDisabled="
             networkSelected === '' ||
             !networkSelected ||
             !connected ||
-            !addressFromNiwaOrConfigIsValid ||
-            !membershipInitialized
-              ? 'border-[#3A4158]'
-              : 'border-white'
+            !addressFromNiwaOrConfigIsValid
           "
-        ></div>
-        <section
-          class="align-items-center flex items-center justify-items-center gap-2"
-        >
-          <img
-            alt="Status"
-            :src="
-              addressFromNiwaOrConfigIsValid &&
-              membershipInitialized &&
-              membershipSet
-                ? checkImage
-                : roundedSquareImage
-            "
-            class="h-3 w-3"
-          />
-          <p
-            class="font-DMSans text-base font-bold"
-            v-bind:class="
+          step="2"
+        />
+
+        <!-- Stepper Separator -->
+        <StepperSeparator
+          :isHighlighted="
+            !(
               networkSelected === '' ||
               !networkSelected ||
               !connected ||
+              !addressFromNiwaOrConfigIsValid ||
               !membershipInitialized
-                ? 'text-[#3A4158]'
-                : setupMemberhipTxnProcessing
-                ? ' animate-pulse text-white'
-                : ' text-white'
-            "
-          >
-            3
-          </p>
-        </section>
+            )
+          "
+        />
+
+        <!-- Stepper Item 3 -->
+        <StepperItem
+          :itemCompleted="
+            addressFromNiwaOrConfigIsValid &&
+            membershipInitialized &&
+            membershipSet
+              ? true
+              : false
+          "
+          :isProcessing="setupMemberhipTxnProcessing ? true : false"
+          :isDisabled="
+            networkSelected === '' ||
+            !networkSelected ||
+            !connected ||
+            !membershipInitialized
+          "
+          step="3"
+        />
       </section>
+
+      <!-- Include manual property address entry input if propertyMode === 'CONNECT' -->
+      <div v-if="propertyMode === 'CONNECT' && !addressFromNiwaOrConfigIsValid">
+        <label class="hs-input-field">
+          <input
+            type="text"
+            class="hs-input-field__input w-full"
+            placeholder="Enter your property address"
+            v-model="manualAddressFromNiwa"
+            v-bind:class="
+              !addressFromNiwaOrConfigIsValid
+                ? 'border-[3px] border-[#000000] bg-[#040B10] px-8 py-6'
+                : 'border-[3px] border-[#000000] bg-[#040B10] px-8 py-6 opacity-50'
+            "
+            :disabled="
+              isTokenizing ||
+              initMbmershipTxnProcessing ||
+              setupMemberhipTxnProcessing ||
+              isRemovingDraftStatus ||
+              clubPublished
+            "
+          />
+        </label>
+      </div>
+
       <button
         @click="
+          // no address from niwa or config
           !addressFromNiwaOrConfigIsValid
-            ? openNiwa(link)
-            : !membershipInitialized
+            ? // check property mode. if CREATE, open niwa, else validate manually added property
+              propertyMode === 'CREATE'
+              ? openNiwa(link)
+              : validateManuallyAddedProperty()
+            : // check if memberships are initialized
+            !membershipInitialized
             ? initializeMemberships()
             : !membershipSet
             ? setMemberships()
@@ -283,6 +280,10 @@
             : ''
         "
         :disabled="
+          // Manually entering property address provided with invalid address
+          (!addressFromNiwaOrConfigIsValid &&
+            propertyMode === 'CONNECT' &&
+            !manuallyEnteredPropertyAddressIsValid) ||
           !step3Enabled ||
           isTokenizing ||
           initMbmershipTxnProcessing ||
@@ -295,9 +296,33 @@
           {{ step3InterStepButtonText }}
         </span>
       </button>
-      <p class="font-DMSans text-base font-normal text-white">
-        {{ step3InterStepSubInfo }}
-      </p>
+
+      <div>
+        <p class="font-DMSans text-base font-normal text-white">
+          {{ step3InterStepSubInfo }}
+        </p>
+
+        <div v-if="!addressFromNiwaOrConfigIsValid">
+          <div v-if="propertyMode === 'CREATE'">
+            <button
+              @click="() => (propertyMode = 'CONNECT')"
+              class="text-left text-sm font-bold text-gray-200"
+            >
+              Already have a property on Niwa? Click to enter your property
+              address.
+            </button>
+          </div>
+          <div v-if="propertyMode === 'CONNECT'">
+            <button
+              @click="() => (propertyMode = 'CREATE')"
+              class="text-left text-sm font-bold text-gray-200"
+            >
+              Don't have a token for your Club yet? Click here to activate.
+            </button>
+          </div>
+        </div>
+      </div>
+
       <p
         v-if="!category || !membershipsPluginOptions?.length"
         class="font-DMSans bg-danger-300 rounded px-4 py-2 text-base font-normal text-white"
@@ -309,16 +334,23 @@
 </template>
 
 <script lang="ts">
-import { type ContractRunner, type Signer, ZeroAddress } from 'ethers'
+import {
+  type ContractRunner,
+  type Signer,
+  ZeroAddress,
+  isAddress,
+} from 'ethers'
 import type Web3Modal from 'web3modal'
 import { type PropType, defineComponent } from '@vue/runtime-core'
-import { clientsSTokens } from '@devprotocol/dev-kit/agent'
+import {
+  clientsPropertyFactory,
+  clientsSTokens,
+} from '@devprotocol/dev-kit/agent'
 import type { connection as Connection } from '@devprotocol/clubs-core/connection'
 import {
   address,
   callSimpleCollections,
 } from '@plugins/memberships/utils/simpleCollections'
-import type { Image } from '@plugins/memberships/utils/types/setImageArg'
 import { parseUnits } from '@ethersproject/units'
 import type { Membership } from '@plugins/memberships'
 import BigNumber from 'bignumber.js'
@@ -336,6 +368,8 @@ import type { DraftOptions } from '@constants/draft'
 import type { ERC20Image } from '@plugins/memberships/utils/types/setImageArg'
 import { tokenInfo } from '@constants/common'
 import { bytes32Hex } from '@fixtures/data/hexlify'
+import StepperItem from './StepperItem.vue'
+import StepperSeparator from './StepperSeparator.vue'
 
 type Data = {
   networkSelected: String
@@ -344,6 +378,7 @@ type Data = {
   connection?: typeof Connection
   popupWindow: Window | null
   addressFromNiwa: String
+  manualAddressFromNiwa: String
   membershipInitialized: boolean
   membershipSet: boolean
   currentWalletAddress: string
@@ -356,6 +391,7 @@ type Data = {
   removingDraftStatusMsg: string
   isRemovingDraftStatus: boolean
   clubPublished: boolean
+  propertyMode: 'CREATE' | 'CONNECT'
 }
 
 let provider: ContractRunner | undefined
@@ -394,6 +430,7 @@ export default defineComponent({
         this.config.propertyAddress === ZeroAddress
           ? ''
           : this.config.propertyAddress,
+      manualAddressFromNiwa: '',
       membershipInitialized: false,
       membershipSet: false,
       currentWalletAddress: '',
@@ -406,6 +443,7 @@ export default defineComponent({
       removingDraftStatusMsg: 'Publish your club',
       isRemovingDraftStatus: false,
       clubPublished: false,
+      propertyMode: 'CREATE',
     }
   },
   computed: {
@@ -475,7 +513,9 @@ export default defineComponent({
     },
     step3InterStepButtonText() {
       return !this.addressFromNiwaOrConfigIsValid
-        ? this.tokenizingStatusMsg
+        ? this.propertyMode === 'CREATE'
+          ? this.tokenizingStatusMsg
+          : 'Next'
         : !this.membershipInitialized
         ? this.initMembershipTxnStatusMsg
         : !this.membershipSet
@@ -484,7 +524,7 @@ export default defineComponent({
     },
     step3InterStepSubInfo() {
       return !this.addressFromNiwaOrConfigIsValid
-        ? 'What is activating?'
+        ? 'Activate your Club token.'
         : !this.membershipInitialized
         ? 'Enable a memberships contract to use memberships.'
         : 'Store your memberships to a contract.'
@@ -492,6 +532,9 @@ export default defineComponent({
     async initMembershipStatus() {
       return (await this.getStep2CompletionStatusAndMessages())
         .membershipInitialized
+    },
+    manuallyEnteredPropertyAddressIsValid() {
+      return isAddress(this.manualAddressFromNiwa)
     },
   },
   async mounted() {
@@ -858,6 +901,28 @@ export default defineComponent({
       }
     },
 
+    async validateManuallyAddedProperty() {
+      if (!provider) {
+        this.tokenizingStatusMsg = 'No provider provided, try again!'
+        return
+      }
+
+      const [l1, l2] = await clientsPropertyFactory(provider)
+      const pF = l1 ?? l2
+      const isProperty = await pF
+        ?.contract()
+        .isProperty(this.manualAddressFromNiwa)
+
+      if (isProperty) {
+        this.addressFromNiwa = this.manualAddressFromNiwa
+        this.updateConfig(false)
+      } else {
+        this.addressFromNiwa = ''
+        this.manualAddressFromNiwa = ''
+        this.tokenizingStatusMsg = 'Entered address failed, try again!'
+      }
+    },
+
     async setMemberships() {
       if (this.setupMemberhipTxnProcessing) return
 
@@ -944,6 +1009,10 @@ export default defineComponent({
         this.setupMemberhipTxnProcessing = false
       }
     },
+  },
+  components: {
+    StepperItem,
+    StepperSeparator,
   },
 })
 </script>
