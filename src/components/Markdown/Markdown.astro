@@ -1,20 +1,14 @@
 ---
+import { ProseTextInherit } from '@devprotocol/clubs-core'
 import { marked } from 'marked'
 
-const {
-  body,
-  class: className,
-  vars,
-} = Astro.props as {
+interface Props {
   body?: string
   class?: string
-  vars?: {
-    p?: {
-      fontSize?: string
-      lineHeight?: string
-    }
-  }
+  size?: 'sm' | 'base' | 'lg' | 'xl' | '2xl'
 }
+
+const { body, class: className, size } = Astro.props
 
 const renderer = {
   link(href: string, _: string | null | undefined, text: string) {
@@ -31,72 +25,34 @@ const renderer = {
 marked.use({ renderer })
 
 const content = body ? marked.parse(body) : undefined
+
+const classList = [
+  className,
+  'markdown',
+  ...ProseTextInherit,
+  'prose-a:inline-block prose-a:rounded prose-a:p-1 prose-a:underline prose-a:transition hover:prose-a:bg-white/20',
+  { 'prose-sm': size === 'sm' },
+  { 'prose-base': size === 'base' },
+  { 'prose-lg': size === 'lg' },
+  { 'prose-xl': size === 'xl' },
+  { 'prose-2xl': size === '2xl' },
+]
 ---
 
 {
   content ? (
-    <div
-      class:list={[className, 'md', 'grid', 'grid-flow-row', 'gap-12']}
-      set:html={content}
-    >
+    <div class:list={classList} set:html={content}>
       <slot />
     </div>
   ) : (
-    <div class:list={[className, 'md', 'grid', 'grid-flow-row', 'gap-12']}>
+    <div class:list={classList}>
       <slot />
     </div>
   )
 }
 
-<style
-  lang="scss"
-  define:vars={{
-    fontSizeP: vars?.p?.fontSize,
-    lineHeightP: vars?.p?.lineHeight,
-  }}
->
-  .md {
-    :global(h1) {
-      @apply text-5xl font-bold;
-    }
-    :global(h2) {
-      @apply text-4xl font-bold;
-    }
-    :global(h3) {
-      @apply text-3xl;
-    }
-    :global(h4) {
-      @apply text-2xl;
-    }
-    :global(h5) {
-      @apply text-xl;
-    }
-    :global(a) {
-      @apply inline-block rounded p-1 underline transition hover:bg-white/20;
-      font-size: var(--fontSizeP);
-      line-height: var(--lineHeightP);
-    }
-    :global(ul) {
-      @apply grid list-disc gap-2;
-      :global(li) {
-        list-style: revert;
-      }
-    }
-    :global(pre) {
-      @apply rounded p-3;
-    }
-    :global(p) {
-      font-size: var(--fontSizeP);
-      line-height: var(--lineHeightP);
-    }
-    :global(th) {
-      @apply mb-2 border-b border-white/20 py-2;
-    }
-    :global(td) {
-      @apply p-2 align-baseline;
-    }
-    :global(iframe) {
-      @apply max-w-full;
-    }
+<style lang="scss" scoped>
+  :global(.markdown iframe) {
+    @apply max-w-full;
   }
 </style>

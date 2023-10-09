@@ -4,7 +4,11 @@
   import type { Membership } from '@plugins/memberships'
   import { onMount } from 'svelte'
   import { meta } from './index'
-  import { decode, i18nFactory } from '@devprotocol/clubs-core'
+  import {
+    ProseTextInheritString,
+    decode,
+    i18nFactory,
+  } from '@devprotocol/clubs-core'
   import { type TicketStatus, ticketStatus } from './utils/status'
   import Skeleton from '@components/Global/Skeleton.svelte'
   import Check from './Check.svelte'
@@ -185,7 +189,7 @@
               {/if}
               {#if benefit.self.use.description}
                 <div
-                  class="md grid w-full gap-2 rounded-md bg-white/10 p-2 text-black/80"
+                  class={`w-full rounded-md bg-white/10 p-2 text-black/80 prose-hr:my-5 ${ProseTextInheritString}`}
                 >
                   {@html mdToHtml(benefit.self.use.description)}
                 </div>
@@ -219,40 +223,3 @@
     on:click={closeModal}
   />
 </Modals>
-
-<style lang="scss">
-  .md {
-    color: inherit;
-    :global(h1) {
-      @apply text-xl font-bold;
-    }
-    :global(h2) {
-      @apply text-lg font-bold;
-    }
-    :global(h3) {
-      @apply text-base;
-    }
-    :global(h4) {
-      @apply text-sm font-bold;
-    }
-    :global(h5) {
-      @apply text-xs font-bold;
-    }
-    :global(p) {
-      @apply text-xs;
-    }
-    :global(a) {
-      @apply inline-block rounded p-1 underline transition hover:bg-white/20;
-    }
-    :global(ul) {
-      @apply list-none;
-      :global(li::before) {
-        content: '\2022';
-        @apply mr-2 text-zinc-300;
-      }
-    }
-    :global(pre) {
-      @apply rounded p-3;
-    }
-  }
-</style>

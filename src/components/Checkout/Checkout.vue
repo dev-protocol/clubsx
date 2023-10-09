@@ -34,6 +34,7 @@ import { marked } from 'marked'
 import DOMPurify from 'dompurify'
 import Result from './Result.vue'
 import { tags, attrs } from '@constants/dompurify'
+import { ProseTextInheritString } from '@devprotocol/clubs-core'
 
 let providerPool: UndefinedOr<ContractRunner>
 let subscriptions: Subscription[] = []
@@ -511,7 +512,8 @@ onUnmounted(() => {
       <aside
         v-if="htmlDescription"
         v-html="htmlDescription"
-        class="text-xl text-black/80 lg:mt-6"
+        class="opacity-80 prose-hr:my-5 lg:mt-6"
+        :class="ProseTextInheritString"
       ></aside>
     </section>
 
@@ -562,7 +564,8 @@ onUnmounted(() => {
         <div
           v-if="accessAllowed === false && htmlVerificationFlow"
           v-html="htmlVerificationFlow"
-          class="md"
+          class="prose-hr:my-5"
+          :class="ProseTextInheritString"
         ></div>
       </div>
 
@@ -670,35 +673,3 @@ onUnmounted(() => {
     </template>
   </Result>
 </template>
-
-<style lang="scss">
-.md {
-  h1 {
-    @apply text-3xl font-bold;
-  }
-  h2 {
-    @apply text-2xl font-bold;
-  }
-  h3 {
-    @apply text-xl;
-  }
-  h4 {
-    @apply font-bold;
-  }
-  h5 {
-    @apply font-bold;
-  }
-  a {
-    @apply inline-block rounded p-1 underline transition hover:bg-white/20;
-  }
-  ul li {
-    @apply list-disc;
-  }
-  ol li {
-    @apply list-decimal;
-  }
-  pre {
-    @apply rounded p-3;
-  }
-}
-</style>
