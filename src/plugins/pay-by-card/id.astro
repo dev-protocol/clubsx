@@ -12,8 +12,6 @@ const { cm, product, rpcUrl, propertyAddress, ...other } = Astro.props as {
   propertyAddress: string
 }
 const url = new URL(replaceWithFwdHost(Astro.request))
-const success = Boolean(url.searchParams.get('success'))
-const failure = Boolean(url.searchParams.get('failure'))
 ---
 
 <Checkout
@@ -30,30 +28,16 @@ const failure = Boolean(url.searchParams.get('failure'))
   accessControlDescription={product.accessControl?.description}
   {...other}
 >
-  {
-    success ? (
-      <div slot="checkout:main:transaction-form">
-        <h3 class="text-2xl font-bold text-green-500">
-          You're now our member!
-        </h3>
-      </div>
-    ) : failure ? (
-      <div slot="checkout:main:transaction-form">
-        <h3 class="mb-4 text-2xl font-bold">You're now our member!</h3>
-      </div>
-    ) : (
-      <div slot="checkout:main:transaction-form" class="p-5">
-        <IdPage
-          client:load
-          cm={cm}
-          rpcUrl={rpcUrl}
-          propertyAddress={propertyAddress}
-          product={product}
-          baseUrl={url.toString()}
-        />
-      </div>
-    )
-  }
+  <div slot="checkout:main:transaction-form" class="p-5">
+    <IdPage
+      client:load
+      cm={cm}
+      rpcUrl={rpcUrl}
+      propertyAddress={propertyAddress}
+      product={product}
+      baseUrl={url.toString()}
+    />
+  </div>
   <span slot="checkout:after:price" class="text-sm font-bold text-black/80"
     >+ credit card fees</span
   >

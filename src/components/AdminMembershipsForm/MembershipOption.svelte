@@ -4,6 +4,7 @@
   import { CurrencyOption } from '@constants/currencyOption'
   import DOMPurify from 'dompurify'
   import { fade } from 'svelte/transition'
+  import { ProseTextInherit } from '@devprotocol/clubs-core'
 
   export let name: string
   export let clubName: string
@@ -112,7 +113,9 @@
     </button>
 
     {#if description}
-      <div class="md md-mini relative col-span-2 grid gap-2 text-xs opacity-70">
+      <div
+        class={`markdown-small relative col-span-2 opacity-70 ${ProseTextInherit}`}
+      >
         {#if content === undefined}
           <div
             role="presentation"
@@ -197,7 +200,7 @@
       </div>
 
       {#if description}
-        <div class="md grid gap-2">
+        <div class={`prose-hr:my-5 ${ProseTextInherit}`}>
           {@html content}
         </div>
       {/if}
@@ -206,38 +209,7 @@
 </div>
 
 <style lang="scss">
-  .md {
-    @apply text-white;
-    :global(h1) {
-      @apply text-3xl font-bold;
-    }
-    :global(h2) {
-      @apply text-2xl font-bold;
-    }
-    :global(h3) {
-      @apply text-xl;
-    }
-    :global(h4) {
-      @apply font-bold;
-    }
-    :global(h5) {
-      @apply font-bold;
-    }
-    :global(a) {
-      @apply inline-block rounded p-1 underline transition hover:bg-white/20;
-    }
-    :global(ul) {
-      @apply list-none;
-      :global(li::before) {
-        content: '\2022';
-        @apply mr-2 text-zinc-300;
-      }
-    }
-    :global(pre) {
-      @apply rounded p-3;
-    }
-  }
-  .md.md-mini {
+  .markdown-small {
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;

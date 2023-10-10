@@ -1,3 +1,4 @@
+import { addresses } from '@devprotocol/dev-kit'
 import { ZeroAddress } from 'ethers'
 
 export type TokenInfoByChainId = {
@@ -15,22 +16,40 @@ export type TokenInfo = {
 
 export const tokenInfo: TokenInfo = {
   USDC: {
+    137: {
+      name: 'USDC',
+      decimals: 6,
+      address: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
+      coingeckoCurrencyId: 'usd-coin',
+    },
     80001: {
       name: 'USDC',
       decimals: 6,
-      address: '0xFEca406dA9727A25E71e732F9961F680059eF1F9', // TODO: change this.
+      address: '0xFEca406dA9727A25E71e732F9961F680059eF1F9',
       coingeckoCurrencyId: 'usd-coin',
     },
   },
   DEV: {
+    137: {
+      name: 'DEV',
+      decimals: 18,
+      address: addresses.polygon.mainnet.token,
+      coingeckoCurrencyId: 'dev-protocol',
+    },
     80001: {
       name: 'DEV',
       decimals: 18,
-      address: '0xcbc698ed514dF6e54932a22515d6D0C27E4DA091', // TODO: change this.
+      address: addresses.polygon.mumbai.token,
       coingeckoCurrencyId: 'dev-protocol',
     },
   },
   ETH: {
+    137: {
+      name: 'ETH',
+      decimals: 18,
+      address: '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619',
+      coingeckoCurrencyId: 'ethereum',
+    },
     80001: {
       name: 'ETH',
       decimals: 18,

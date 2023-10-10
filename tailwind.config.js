@@ -1,8 +1,11 @@
 const { clubs } = require('@devprotocol/clubs-core/tailwind')
+const typography = require('@tailwindcss/typography')
 
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   mode: 'jit',
   presets: [clubs],
+  plugins: [typography],
   theme: {
     extend: {
       animation: {
