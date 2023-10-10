@@ -35,8 +35,8 @@
         isTimeLimitedCollection: true,
         state: {
           src: mem.imageSrc,
-          name: mem.name,
-          description: mem.description,
+          name: JSON.stringify(mem.name).slice(1, -1),
+          description: JSON.stringify(mem.description).slice(1, -1),
           deadline: collection.endTime ? BigInt(collection.endTime) : 0n,
           requiredTokenAmount: parseUnits(String(mem.price), decimals),
           requiredTokenFee: mem.fee?.percentage
@@ -54,8 +54,8 @@
         isTimeLimitedCollection: false,
         state: {
           src: mem.imageSrc,
-          name: mem.name,
-          description: mem.description,
+          name: JSON.stringify(mem.name).slice(1, -1),
+          description: JSON.stringify(mem.description).slice(1, -1),
           slots: mem.memberCount ? BigInt(mem.memberCount) : 0n,
           requiredTokenAmount: parseUnits(String(mem.price), decimals),
           requiredTokenFee: mem.fee?.percentage
