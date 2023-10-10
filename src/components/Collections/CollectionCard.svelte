@@ -42,7 +42,7 @@
           {#each collection.memberships as membership, i}
             <img
               class="h-16 w-16 rounded-md"
-              src={membership.imageSrc}
+              src={membership.imageSrc ? membership.imageSrc : emptyDummyImage(400, 400)}
               alt={`membership-image ${i}`}
             />
           {/each}
