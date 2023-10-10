@@ -10,6 +10,7 @@ import Skeleton from '@components/Global/Skeleton.vue'
 import { marked } from 'marked'
 import DOMPurify from 'dompurify'
 import { clientsSTokens } from '@devprotocol/dev-kit'
+import { ProseTextInherit } from '@devprotocol/clubs-core'
 
 type Props = {
   id?: number | string
@@ -104,7 +105,8 @@ onMounted(async () => {
           <aside
             v-if="htmlDescription"
             v-html="htmlDescription"
-            class="mt-6 break-all text-xl text-black/80"
+            class="mt-6 break-all opacity-80"
+            :class="ProseTextInherit"
           ></aside>
           <Skeleton
             v-if="htmlDescription === undefined"
@@ -115,35 +117,3 @@ onMounted(async () => {
     </div>
   </section>
 </template>
-
-<style lang="scss">
-.md {
-  h1 {
-    @apply text-3xl font-bold;
-  }
-  h2 {
-    @apply text-2xl font-bold;
-  }
-  h3 {
-    @apply text-xl;
-  }
-  h4 {
-    @apply font-bold;
-  }
-  h5 {
-    @apply font-bold;
-  }
-  a {
-    @apply inline-block rounded p-1 underline transition hover:bg-white/20;
-  }
-  ul li {
-    @apply list-disc;
-  }
-  ol li {
-    @apply list-decimal;
-  }
-  pre {
-    @apply rounded p-3;
-  }
-}
-</style>
