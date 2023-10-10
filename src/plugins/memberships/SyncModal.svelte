@@ -36,7 +36,7 @@
         requiredTokenAmount: parseUnits(String(mem.price), decimals),
         requiredTokenFee: mem.fee?.percentage
           ? parseUnits(
-              new BigNumber(mem.price).times(mem.fee.percentage).toFixed(),
+              new BigNumber(mem.price).times(mem.fee.percentage).dp(decimals, 1).toFixed(),
               decimals,
             )
           : 0n,
