@@ -31,8 +31,8 @@
       source: mem,
       state: {
         src: mem.imageSrc,
-        name: mem.name,
-        description: mem.description,
+        name: JSON.stringify(mem.name).slice(1, -1),
+        description: JSON.stringify(mem.description).slice(1, -1),
         requiredTokenAmount: parseUnits(String(mem.price), decimals),
         requiredTokenFee: mem.fee?.percentage
           ? parseUnits(
