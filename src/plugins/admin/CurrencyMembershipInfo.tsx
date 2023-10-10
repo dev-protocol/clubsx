@@ -146,7 +146,7 @@ const CurrencyMembershipInfo = (props: Props) => {
       </p>
       <button
         onClick={() => claimWithdrawable(props.currency)}
-        disabled={!Number(withdrawable)}
+        disabled={true || !Number(withdrawable)} // TODO: temporary disabled until kyc is in place.
         className={`hs-button is-filled w-[27%] px-[22px] py-3.5 ${
           props.isYourWithdrawable ? '' : 'invisible'
         }`}
