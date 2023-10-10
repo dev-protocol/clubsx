@@ -231,17 +231,13 @@
 
       <!-- Include manual property address entry input if propertyMode === 'CONNECT' -->
       <div v-if="propertyMode === 'CONNECT' && !addressFromNiwaOrConfigIsValid">
-        <label class="hs-input-field">
+        <label class="hs-form-field is-filled">
           <input
             type="text"
-            class="hs-input-field__input w-full"
+            class="hs-form-field__input w-full"
             placeholder="Enter your property address"
             v-model="manualAddressFromNiwa"
-            v-bind:class="
-              !addressFromNiwaOrConfigIsValid
-                ? 'border-[3px] border-[#000000] bg-[#040B10] px-8 py-6'
-                : 'border-[3px] border-[#000000] bg-[#040B10] px-8 py-6 opacity-50'
-            "
+            v-bind:class="!addressFromNiwaOrConfigIsValid ? '' : 'opacity-50'"
             :disabled="
               isTokenizing ||
               initMbmershipTxnProcessing ||
@@ -305,7 +301,10 @@
         <div v-if="!addressFromNiwaOrConfigIsValid">
           <div v-if="propertyMode === 'CREATE'">
             <button
-              @click="() => (propertyMode = 'CONNECT')"
+              @click="
+                () =>
+                  (propertyMode = 'CONNECT') && (tokenizingStatusMsg = 'Next')
+              "
               class="text-left text-sm font-bold text-gray-200"
             >
               Already have a property on Niwa? Click to enter your property
@@ -314,7 +313,11 @@
           </div>
           <div v-if="propertyMode === 'CONNECT'">
             <button
-              @click="() => (propertyMode = 'CREATE')"
+              @click="
+                () =>
+                  (propertyMode = 'CREATE') &&
+                  (tokenizingStatusMsg = 'Activate')
+              "
               class="text-left text-sm font-bold text-gray-200"
             >
               Don't have a token for your Club yet? Click here to activate.
@@ -513,9 +516,7 @@ export default defineComponent({
     },
     step3InterStepButtonText() {
       return !this.addressFromNiwaOrConfigIsValid
-        ? this.propertyMode === 'CREATE'
-          ? this.tokenizingStatusMsg
-          : 'Next'
+        ? this.tokenizingStatusMsg
         : !this.membershipInitialized
         ? this.initMembershipTxnStatusMsg
         : !this.membershipSet
@@ -920,6 +921,9 @@ export default defineComponent({
         this.addressFromNiwa = ''
         this.manualAddressFromNiwa = ''
         this.tokenizingStatusMsg = 'Entered address failed, try again!'
+        setTimeout(() => {
+          this.tokenizingStatusMsg = 'Next'
+        }, 3000)
       }
     },
 
