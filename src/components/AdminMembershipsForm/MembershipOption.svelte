@@ -4,7 +4,7 @@
   import { CurrencyOption } from '@constants/currencyOption'
   import DOMPurify from 'dompurify'
   import { fade } from 'svelte/transition'
-  import { ProseTextInheritString } from '@devprotocol/clubs-core'
+  import { ProseTextInherit } from '@devprotocol/clubs-core'
 
   export let name: string
   export let clubName: string
@@ -114,7 +114,7 @@
 
     {#if description}
       <div
-        class={`markdown-small relative col-span-2 opacity-70 ${ProseTextInheritString}`}
+        class={`markdown-small relative col-span-2 opacity-70 ${ProseTextInherit}`}
       >
         {#if content === undefined}
           <div
@@ -200,7 +200,7 @@
       </div>
 
       {#if description}
-        <div class={`prose-hr:my-5 ${ProseTextInheritString}`}>
+        <div class={`prose-hr:my-5 ${ProseTextInherit}`}>
           {@html content}
         </div>
       {/if}

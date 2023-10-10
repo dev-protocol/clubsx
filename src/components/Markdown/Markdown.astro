@@ -1,5 +1,5 @@
 ---
-import { ProseTextInherit } from '@devprotocol/clubs-core'
+import { ProseTextInheritClassNames } from '@devprotocol/clubs-core'
 import { marked } from 'marked'
 
 interface Props {
@@ -29,7 +29,7 @@ const content = body ? marked.parse(body) : undefined
 const classList = [
   className,
   'markdown',
-  ...ProseTextInherit,
+  ...ProseTextInheritClassNames,
   'prose-a:inline-block prose-a:rounded prose-a:p-1 prose-a:underline prose-a:transition hover:prose-a:bg-white/20',
   { 'prose-sm': size === 'sm' },
   { 'prose-base': size === 'base' },

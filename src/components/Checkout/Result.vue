@@ -10,7 +10,7 @@ import Skeleton from '@components/Global/Skeleton.vue'
 import { marked } from 'marked'
 import DOMPurify from 'dompurify'
 import { clientsSTokens } from '@devprotocol/dev-kit'
-import { ProseTextInheritString } from '@devprotocol/clubs-core'
+import { ProseTextInherit } from '@devprotocol/clubs-core'
 
 type Props = {
   id?: number | string
@@ -106,7 +106,7 @@ onMounted(async () => {
             v-if="htmlDescription"
             v-html="htmlDescription"
             class="mt-6 break-all opacity-80"
-            :class="ProseTextInheritString"
+            :class="ProseTextInherit"
           ></aside>
           <Skeleton
             v-if="htmlDescription === undefined"

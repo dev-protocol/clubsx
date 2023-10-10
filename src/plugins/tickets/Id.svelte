@@ -5,7 +5,7 @@
   import { onMount } from 'svelte'
   import { meta } from './index'
   import {
-    ProseTextInheritString,
+    ProseTextInherit,
     decode,
     i18nFactory,
   } from '@devprotocol/clubs-core'
@@ -189,7 +189,7 @@
               {/if}
               {#if benefit.self.use.description}
                 <div
-                  class={`w-full rounded-md bg-white/10 p-2 text-black/80 prose-hr:my-5 ${ProseTextInheritString}`}
+                  class={`w-full rounded-md bg-white/10 p-2 text-black/80 prose-hr:my-5 ${ProseTextInherit}`}
                 >
                   {@html mdToHtml(benefit.self.use.description)}
                 </div>
