@@ -93,19 +93,13 @@ const CurrencyMembershipInfo = (props: Props) => {
         await signer.getAddress(),
       )
       const fee: bigint = BigInt(response._amount || response[0])
-      withdrawableAmt = formatUnits(
-        fee,
-        tokenInfo['DEV'][props.chainId].decimals,
-      )
+      withdrawableAmt = formatUnits(fee, 36)
     } else if (props.fetcherType === 'cumulative') {
       const response = await await withdrawContract.calculateRewardAmount(
         props.propertyAddress,
       )
       const fee: bigint = BigInt(response._amount || response[0])
-      withdrawableAmt = formatUnits(
-        fee,
-        tokenInfo['DEV'][props.chainId].decimals,
-      )
+      withdrawableAmt = formatUnits(fee, 36)
     } else {
       withdrawableAmt = '0'
     }
