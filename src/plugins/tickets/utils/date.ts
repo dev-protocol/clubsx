@@ -127,7 +127,7 @@ export const exploreSlots = ({
   acceptOppositeDirection?: boolean
 }): UndefinedOr<dayjs.Dayjs> => {
   let diff: number = Infinity
-  const baseTimestamp = base.clone().utc().toDate().getTime()
+  const baseTimestamp = base.clone().utc().unix()
   const extendeddata: (Slot & { dayjs?: dayjs.Dayjs })[] = [...availability]
   const MAX = base.clone().add(100, 'years')
   const MIN = base.clone().subtract(100, 'years')
@@ -156,8 +156,8 @@ export const exploreSlots = ({
     )
 
     const res = whenDefinedAll([prev, current], ([p, c]) => {
-      const diffPrev = Math.abs(baseTimestamp - p.utc().toDate().getTime())
-      const diffCurrent = Math.abs(baseTimestamp - c.utc().toDate().getTime())
+      const diffPrev = Math.abs(baseTimestamp - p.utc().unix())
+      const diffCurrent = Math.abs(baseTimestamp - c.utc().unix())
       const [_diff, slot] =
         diffPrev < diffCurrent
           ? [diffPrev, { ..._prev, dayjs: p }]
@@ -262,4 +262,4 @@ export const create = (dt: Date) => {
 }
 
 export const ymd = (base?: dayjs.Dayjs): UndefinedOr<string> =>
-  base && `${base.year()}/${base.month()}/${base.date()}`
+  base && base.format('YYYY-MM-DD')
