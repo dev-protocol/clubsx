@@ -1,5 +1,9 @@
 <script lang="ts">
-  import { whenDefined, type UndefinedOr } from '@devprotocol/util-ts'
+  import {
+    whenDefined,
+    type UndefinedOr,
+    whenNotError,
+  } from '@devprotocol/util-ts'
   import type { Ticket, TicketHistories } from '.'
   import type { Membership } from '@plugins/memberships'
   import { onMount } from 'svelte'
@@ -49,21 +53,31 @@
         action: async () => {
           idIsLoading = benefitId
           const hash = hashMessage('')
-          const sig = await sigr.signMessage(hash).catch((err) => err)
-          const opts = { hash, sig, id: sTokensId, benefitId }
-          const res = await fetch(
-            `/api/${meta.id}/redeem/${bytes32Hex(ticket.payload)}`,
-            {
+          const sig = await sigr.signMessage(hash).catch((err: Error) => {
+            console.log({ err })
+            return new Error('Wallet threw something')
+          })
+          const opts = whenNotError(sig, (_sig) => ({
+            hash,
+            sig: _sig,
+            id: sTokensId,
+            benefitId,
+          }))
+          const res = await whenNotError(opts, (_opts) =>
+            fetch(`/api/${meta.id}/redeem/${bytes32Hex(ticket.payload)}`, {
               method: 'POST',
-              body: JSON.stringify(opts),
-            },
+              body: JSON.stringify(_opts),
+            }),
           )
-          if (res.ok) {
-            await fetchTicketStatus(sTokensId!!)
-          } else {
+          const result = await whenNotError(res, async (_res) =>
+            _res.ok
+              ? fetchTicketStatus(sTokensId!!)
+              : new Error(((await _res.json()) as { message: string }).message),
+          )
+          if (result instanceof Error) {
             idIsError = {
               id: benefitId,
-              error: ((await res.json()) as { message: string }).message,
+              error: result.message,
             }
           }
           idIsLoading = undefined
