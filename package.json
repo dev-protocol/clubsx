@@ -65,7 +65,7 @@
     "@devprotocol/clubs-core": "1.8.1",
     "@devprotocol/clubs-plugin-posts": "0.6.3",
     "@devprotocol/dev-kit": "8.5.1",
-    "@devprotocol/elements": "1.0.0",
+    "@devprotocol/elements": "1.1.0",
     "@devprotocol/hashi": "2.2.1",
     "@devprotocol/util-ts": "4.0.0",
     "@kazu80/clubs-plugin-links": "1.0.1",
