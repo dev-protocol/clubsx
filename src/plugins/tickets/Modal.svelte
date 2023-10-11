@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { UndefinedOr } from '@devprotocol/util-ts'
-  import { closeModal } from 'svelte-modals'
+  import { closeModal, closeAllModals } from 'svelte-modals'
   import { fly } from 'svelte/transition'
 
   export let isOpen: boolean
@@ -8,12 +8,19 @@
   export let closeButton: string
   export let action: UndefinedOr<() => Promise<void>> = undefined
   export let actionButton: UndefinedOr<string> = undefined
+  export let closeAllOnFinished: boolean = false
+  export let spinner: boolean = false
+  export let onClose: UndefinedOr<() => Promise<void>> = undefined
 
   let loading = false
   const onClickAction = async () => {
     loading = true
     action && (await action())
     loading = false
+    closeAllOnFinished ? closeAllModals() : closeModal()
+  }
+  const onClickClose = async () => {
+    onClose && (await onClose())
     closeModal()
   }
 </script>
@@ -26,9 +33,16 @@
     transition:fly={{ y: 500 }}
     on:introstart
     on:outroend
+    on:close={onClose}
   >
     <div class="grid gap-5">
       <p class="text-xl font-bold">{message}</p>
+      {#if spinner}
+        <div
+          role="presentation"
+          class="mx-auto h-14 w-14 animate-spin rounded-full border-l border-r border-t border-native-blue-300"
+        />
+      {/if}
       {#if action && actionButton}
         <button
           on:click={onClickAction}
@@ -37,7 +51,7 @@
           >{actionButton}</button
         >
       {/if}
-      <button on:click={closeModal} class="hs-button is-filled is-fullwidth"
+      <button on:click={onClickClose} class="hs-button is-filled is-fullwidth"
         >{closeButton}</button
       >
     </div>
