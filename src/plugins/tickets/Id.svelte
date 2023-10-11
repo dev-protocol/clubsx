@@ -20,7 +20,7 @@
   import { bytes32Hex } from '@fixtures/data/hexlify'
   import { marked } from 'marked'
   import DOMPurify from 'dompurify'
-  import { Modals, closeModal, openModal } from 'svelte-modals'
+  import { Modals, closeAllModals, closeModal, openModal } from 'svelte-modals'
   import { fade } from 'svelte/transition'
   import Modal from './Modal.svelte'
   import { Parts, Strings } from './i18n'
@@ -35,6 +35,9 @@
   let signer: UndefinedOr<Signer>
   let idIsLoading: UndefinedOr<string>
   let idIsError: UndefinedOr<{ id: string; error: string }>
+  let timeoutToHint: UndefinedOr<NodeJS.Timeout> = undefined
+  let isDisplayingHint: boolean = false
+  let isWaitingForAPIResult: boolean = false
   const i18nBase = i18nFactory(Strings)
   let i18n = i18nBase(['en'])
 
@@ -50,25 +53,45 @@
           benefit?.availableUntilIfenabled?.local().calendar(),
           benefit?.expirationIfenabled?.local().calendar(),
         ]),
+        onClose: async () => {
+          idIsLoading = undefined
+          closeAllModals()
+        },
         action: async () => {
           idIsLoading = benefitId
           const hash = hashMessage('')
+          timeoutToHint = setTimeout(() => {
+            openModal(Modal, {
+              spinner: true,
+              message: i18n(Parts.ModalMessageNotSigned),
+              closeButton: i18n(Parts.ModalCloseTicketConfirm),
+              onClose: async () => {
+                isDisplayingHint = false
+              },
+            })
+            isDisplayingHint = true
+          }, 8000)
           const sig = await sigr.signMessage(hash).catch((err: Error) => {
             console.log({ err })
             return new Error('Wallet threw something')
           })
+          clearTimeout(timeoutToHint)
           const opts = whenNotError(sig, (_sig) => ({
             hash,
             sig: _sig,
             id: sTokensId,
             benefitId,
           }))
-          const res = await whenNotError(opts, (_opts) =>
-            fetch(`/api/${meta.id}/redeem/${bytes32Hex(ticket.payload)}`, {
-              method: 'POST',
-              body: JSON.stringify(_opts),
-            }),
-          )
+          const res = await whenNotError(opts, (_opts) => {
+            isWaitingForAPIResult = true
+            return fetch(
+              `/api/${meta.id}/redeem/${bytes32Hex(ticket.payload)}`,
+              {
+                method: 'POST',
+                body: JSON.stringify(_opts),
+              },
+            )
+          })
           const result = await whenNotError(res, async (_res) =>
             _res.ok
               ? fetchTicketStatus(sTokensId!!)
@@ -79,17 +102,34 @@
               id: benefitId,
               error: result.message,
             }
+          } else {
+            idIsError = undefined
           }
           idIsLoading = undefined
+          isWaitingForAPIResult = false
         },
         actionButton: i18n(Parts.ModalActionTicketConfirm),
         closeButton: i18n(Parts.ModalCloseTicketConfirm),
+        closeAllOnFinished: true,
       })
     }) ??
       openModal(Modal, {
         message: i18n(Parts.ModalMessageNotConnected),
         closeButton: i18n(Parts.ModalCloseNotConnected),
       })
+  }
+  const onClickBackdrop = () => {
+    if (timeoutToHint !== undefined) {
+      clearTimeout(timeoutToHint)
+      timeoutToHint = undefined
+    }
+    if (isDisplayingHint) {
+      closeModal()
+      isDisplayingHint = false
+      return
+    }
+    idIsLoading = undefined
+    closeAllModals()
   }
 
   const fetchTicketStatus = async (id: string | number) => {
@@ -157,8 +197,10 @@
               disabled={(!benefit.enablable && benefit.self.expired) ||
                 !benefit.enablable ||
                 benefit.isTempUnavailable ||
-                idIsLoading === benefit.self.use.id}
-              data-is-loading={idIsLoading === benefit.self.use.id}
+                idIsLoading === benefit.self.use.id ||
+                isWaitingForAPIResult}
+              data-is-loading={idIsLoading === benefit.self.use.id ||
+                isWaitingForAPIResult}
               data-is-error={idIsError?.id === benefit.self.use.id}
               class="group flex grid w-full items-center justify-stretch gap-2 rounded-md border border-[3px] border-transparent px-6 py-4 text-left text-white shadow-xl data-[is-loading=true]:animate-pulse data-[is-waiting=true]:border-native-blue-400 data-[is-waiting=true]:border-native-blue-400 data-[is-available=true]:bg-dp-green-300 data-[is-enablable=true]:bg-native-blue-400 data-[is-error=true]:bg-red-500 data-[is-expired=true]:bg-dp-white-600 data-[is-temp-unavailable=true]:bg-dp-black-200 data-[is-error=true]:text-white data-[is-waiting=true]:text-native-blue-400"
               on:click={onClickABenefit(benefit.self.use.id)}
@@ -234,6 +276,6 @@
     slot="backdrop"
     class="fixed inset-0 bg-black/50"
     transition:fade={{ duration: 100 }}
-    on:click={closeModal}
+    on:click={onClickBackdrop}
   />
 </Modals>
