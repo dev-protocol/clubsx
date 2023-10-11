@@ -263,3 +263,18 @@ export const create = (dt: Date) => {
 
 export const ymd = (base?: dayjs.Dayjs): UndefinedOr<string> =>
   base && base.format('YYYY-MM-DD')
+
+export const isInAvailableSlot = (
+  base: dayjs.Dayjs,
+  start: dayjs.Dayjs,
+  end: dayjs.Dayjs,
+): boolean => {
+  const startOffset = start.utcOffset()
+  const endOffset = end.utcOffset()
+  return (
+    base.utcOffset(startOffset).isBetween(start, end) &&
+    base.utcOffset(endOffset).isBetween(start, end) &&
+    ymd(base.utcOffset(startOffset)) === ymd(start) &&
+    ymd(base.utcOffset(endOffset)) === ymd(end)
+  )
+}

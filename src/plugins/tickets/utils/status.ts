@@ -6,10 +6,10 @@ import {
   exploreSlots,
   formatDuration,
   isExpiredNow,
+  isInAvailableSlot,
   now,
   period,
   setTime,
-  ymd,
 } from './date'
 import type { Dayjs } from 'dayjs'
 import type { ContractRunner } from 'ethers'
@@ -130,11 +130,15 @@ export const factory =
           find: 'start',
           direction: 'past',
         })
-        const isHistoryBaseBeforeFutureEnd = historyBase.isBefore(futureEnd)
-        const res = isHistoryBaseBeforeFutureEnd ? pastStart : futureStart
+        const res = whenDefinedAll([pastStart, futureEnd], ([start, end]) =>
+          isInAvailableSlot(historyBase, start, end),
+        )
+          ? pastStart
+          : futureStart
         return res
       },
     )
+    console.log({ firstAvailableTimeStart })
     const firstAvailableTimeEnd = whenDefinedAll(
       [use.availability, firstAvailableTimeStart],
       ([availability, base]) =>
@@ -167,25 +171,19 @@ export const factory =
       ? usageStartExpired
       : whenDefined(expiration, isExpiredNow)
 
+    const isNowInAvailableSlot = whenDefinedAll(
+      [slots.find.start.direction.past, slots.find.end.direction.future],
+      ([start, end]) => isInAvailableSlot(base, start, end),
+    )
+    console.log({ isNowInAvailableSlot })
+
     /**
      * will be true when history exists & current time is in between an available slot
      */
     const inUse = expired
       ? false
       : history
-      ? whenDefinedAll(
-          [slots.find.start.direction.past, slots.find.end.direction.future],
-          ([start, end]) => {
-            const startOffset = start.utcOffset()
-            const endOffset = end.utcOffset()
-            return (
-              base.utcOffset(startOffset).isBetween(start, end) &&
-              base.utcOffset(endOffset).isBetween(start, end) &&
-              ymd(base.utcOffset(startOffset)) === ymd(start) &&
-              ymd(base.utcOffset(endOffset)) === ymd(end)
-            )
-          },
-        ) ?? refreshed === false
+      ? isNowInAvailableSlot ?? refreshed === false
       : false
 
     /**
@@ -194,7 +192,7 @@ export const factory =
     const availableAt =
       expired || !history
         ? undefined
-        : base.isBefore(slots.find.end.direction.future)
+        : isNowInAvailableSlot
         ? slots.find.start.direction.past
         : slots.find.start.direction.future
 
@@ -220,22 +218,9 @@ export const factory =
     const availableAtIfenabled = expired
       ? undefined
       : !history && !inUse
-      ? whenDefinedAll(
-          [
-            slots.find.start.direction.past,
-            slots.find.end.direction.future,
-            slots.find.start.direction.future,
-          ],
-          ([prevStart, nearEnd, futureSlot]) => {
-            console.log({ prevStart, nearEnd, futureSlot })
-            return prevStart.isBetween(base0, base24) &&
-              nearEnd.isBetween(base0, base24) &&
-              prevStart.isBefore(base) &&
-              nearEnd.isAfter(base)
-              ? prevStart
-              : futureSlot
-          },
-        )
+      ? isNowInAvailableSlot
+        ? slots.find.start.direction.past
+        : slots.find.start.direction.future
       : undefined
 
     /**
