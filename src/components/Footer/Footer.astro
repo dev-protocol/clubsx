@@ -7,6 +7,17 @@ import DevProtocolLogo from '@assets/DevProtocol_b_Brandmark_rgb_01.svg'
 import DiscordBlackLogo from '@assets/brands/discord--black.svg'
 import MediumBlackLogo from '@assets/brands/medium--black.svg'
 import TwitterBlackLogo from '@assets/brands/twitter--black.svg'
+import type { ClubsPropsPages } from '@devprotocol/clubs-core'
+
+const {
+  clubs,
+} = Astro.props as ClubsPropsPages
+
+
+// const VeritransTerms = clubs.slots.find(
+//   (slot) => slot.slot === 'page:footer:legal-link',
+// )
+
 ---
 
 <footer class="bg-white px-4 pb-28 pt-20 lg:pb-40">
@@ -118,6 +129,7 @@ import TwitterBlackLogo from '@assets/brands/twitter--black.svg'
               >T&amp;C</a
             >
           </li>
+          <slot name="page:footer:legal-link" slot="page:footer:legal-link" />
           <li>
             <a
               href="https://community.devprotocol.xyz/"
