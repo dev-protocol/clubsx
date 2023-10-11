@@ -30,7 +30,6 @@ const truncateAddress = (address: string) => {
   return !match ? address : `${match[1]}\u2026${match[2]}`
 }
 
-const chains = [polygon, polygonMumbai, mainnet]
 const defaultChain =
   props.chainId === 137
     ? polygon
@@ -39,9 +38,10 @@ const defaultChain =
     : props.chainId === 1
     ? mainnet
     : polygon
+const chains = [defaultChain]
 
 const wagmiConfig = defaultWagmiConfig({
-  chains: [polygon, polygonMumbai, mainnet],
+  chains,
   projectId,
 })
 
