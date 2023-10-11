@@ -12,6 +12,7 @@ export enum Parts {
   ModalMessageNotConnected = ';9',
   ModalCloseNotConnected = ';10',
   Expiration = ';11',
+  ModalMessageNotSigned = ';12',
 }
 
 export const Strings: Record<Parts, ClubsI18nLocale> = {
@@ -60,5 +61,9 @@ export const Strings: Record<Parts, ClubsI18nLocale> = {
   [Parts.Expiration]: {
     en: ([time]) => `Expiration date is ${time}.`,
     ja: ([time]) => `有効期限: ${time}`,
+  },
+  [Parts.ModalMessageNotSigned]: {
+    en: `Can't sign with your wallet? Close this confirmation, and disconnect/reconnect your wallet and try again.`,
+    ja: 'ウォレットで署名ができませんか? この確認を閉じてからウォレットを再接続してもう一度試してください。',
   },
 }
