@@ -112,24 +112,26 @@ export const factory =
       [use.availability, history],
       ([availability, his]) => {
         const historyBase = create(his.datetime)
-        const $1 = exploreSlots({
+        const futureStart = exploreSlots({
           availability,
           base: historyBase,
           find: 'start',
           direction: 'future',
         })
-        const $2 = exploreSlots({
+        const futureEnd = exploreSlots({
+          availability,
+          base: historyBase,
+          find: 'end',
+          direction: 'future',
+        })
+        const pastStart = exploreSlots({
           availability,
           base: historyBase,
           find: 'start',
           direction: 'past',
         })
-        const baseCal = ymd(historyBase)
-        /**
-         * If this is used on the day of availability,
-         * $1 may unjustifiably be a future date, in which case $2 is used.
-         */
-        const res = baseCal === ymd($1) ? $1 : baseCal === ymd($2) ? $2 : $1
+        const isHistoryBaseBeforeFutureEnd = historyBase.isBefore(futureEnd)
+        const res = isHistoryBaseBeforeFutureEnd ? pastStart : futureStart
         return res
       },
     )
@@ -173,17 +175,18 @@ export const factory =
       : history
       ? whenDefinedAll(
           [slots.find.start.direction.past, slots.find.end.direction.future],
-          ([start, end]) =>
-            base.isBetween(start, end) &&
-            start.isBetween(base0, base24) &&
-            end.isBetween(base0, base24),
+          ([start, end]) => {
+            const startOffset = start.utcOffset()
+            const endOffset = end.utcOffset()
+            return (
+              base.utcOffset(startOffset).isBetween(start, end) &&
+              base.utcOffset(endOffset).isBetween(start, end) &&
+              ymd(base.utcOffset(startOffset)) === ymd(start) &&
+              ymd(base.utcOffset(endOffset)) === ymd(end)
+            )
+          },
         ) ?? refreshed === false
       : false
-
-    /**
-     * will be a Dayjs object when not expired & now inUse
-     */
-    const availableUntil = expired ? undefined : slots.find.end.direction.future
 
     /**
      * will be a Dayjs object when not expired or it has history
@@ -191,9 +194,25 @@ export const factory =
     const availableAt =
       expired || !history
         ? undefined
-        : slots.find.start.direction.future?.isBefore(availableUntil)
-        ? slots.find.start.direction.future
-        : slots.find.start.direction.past
+        : base.isBefore(slots.find.end.direction.future)
+        ? slots.find.start.direction.past
+        : slots.find.start.direction.future
+
+    /**
+     * will be a Dayjs object when not expired & now inUse
+     */
+    const availableUntil = expired
+      ? undefined
+      : whenDefinedAll(
+          [use.availability, availableAt],
+          ([availability, _base]) =>
+            exploreSlots({
+              availability,
+              base: _base,
+              find: 'end',
+              direction: 'future',
+            }),
+        )
 
     /**
      * will be a Dayjs object when not expired and it has not history and not inUse
@@ -224,10 +243,10 @@ export const factory =
      */
     const availableUntilIfenabled = whenDefinedAll(
       [use.availability, availableAtIfenabled],
-      ([availability, base]) =>
+      ([availability, _base]) =>
         exploreSlots({
           availability,
-          base: base,
+          base: _base,
           find: 'end',
           direction: 'future',
         }),
