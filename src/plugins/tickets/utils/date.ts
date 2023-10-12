@@ -269,12 +269,17 @@ export const isInAvailableSlot = (
   start: dayjs.Dayjs,
   end: dayjs.Dayjs,
 ): boolean => {
+  const baseOffset = base.utcOffset()
   const startOffset = start.utcOffset()
   const endOffset = end.utcOffset()
+  const baseUtc = base.utc()
+  const startBase =
+    baseOffset === startOffset ? base : baseUtc.utcOffset(startOffset)
+  const endBase = baseOffset === endOffset ? base : baseUtc.utcOffset(endOffset)
   return (
-    base.utcOffset(startOffset).isBetween(start, end) &&
-    base.utcOffset(endOffset).isBetween(start, end) &&
-    ymd(base.utcOffset(startOffset)) === ymd(start) &&
-    ymd(base.utcOffset(endOffset)) === ymd(end)
+    startBase.isBetween(start, end) &&
+    endBase.isBetween(start, end) &&
+    ymd(startBase) === ymd(start) &&
+    ymd(endBase) === ymd(end)
   )
 }
