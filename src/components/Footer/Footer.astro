@@ -9,15 +9,11 @@ import MediumBlackLogo from '@assets/brands/medium--black.svg'
 import TwitterBlackLogo from '@assets/brands/twitter--black.svg'
 import type { ClubsPropsPages } from '@devprotocol/clubs-core'
 
-const {
-  clubs,
-} = Astro.props as ClubsPropsPages
+const { clubs } = Astro.props as ClubsPropsPages
 
-
-const VeritransTerms = clubs.slots.find(
+const VeritransTerms = clubs.slots.filter(
   (slot) => slot.slot === 'page:footer:legal-link',
 )
-
 ---
 
 <footer class="bg-white px-4 pb-28 pt-20 lg:pb-40">
@@ -129,7 +125,7 @@ const VeritransTerms = clubs.slots.find(
               >T&amp;C</a
             >
           </li>
-          {VeritransTerms && <VeritransTerms.slot />}
+          {VeritransTerms && VeritransTerms.map((Link) => <Link.component />)}
           <li>
             <a
               href="https://community.devprotocol.xyz/"
@@ -177,7 +173,11 @@ const VeritransTerms = clubs.slots.find(
               target="_blank"
               rel="noopener"
               class="hs-link no-underline"
-              ><img src={TwitterBlackLogo.src} alt="Twitter" class="h-12 w-12" /></a
+              ><img
+                src={TwitterBlackLogo.src}
+                alt="Twitter"
+                class="h-12 w-12"
+              /></a
             >
           </p>
         </div>

@@ -54,7 +54,7 @@ const fullPage = (path?.props.signals as undefined | string[])?.includes(
 
         <PreviewBanner config={decode<ClubsConfiguration>(config)} />
       </Layout>
-      {!fullPage && <Footer />}
+      {!fullPage && <Footer {...path.props} />}
     </>
   ) : (
     <PageNotFound
