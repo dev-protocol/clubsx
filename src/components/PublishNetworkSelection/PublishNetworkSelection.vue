@@ -395,6 +395,7 @@ type Data = {
   isRemovingDraftStatus: boolean
   clubPublished: boolean
   propertyMode: 'CREATE' | 'CONNECT'
+  showTestnets: boolean
 }
 
 let provider: ContractRunner | undefined
@@ -411,7 +412,6 @@ export default defineComponent({
       type: Object as PropType<ClubsConfiguration>,
       required: true,
     },
-    showTestnets: Boolean,
     site: {
       type: String,
       required: true,
@@ -447,6 +447,7 @@ export default defineComponent({
       isRemovingDraftStatus: false,
       clubPublished: false,
       propertyMode: 'CREATE',
+      showTestnets: false,
     }
   },
   computed: {
@@ -539,6 +540,8 @@ export default defineComponent({
     },
   },
   async mounted() {
+    this.showTestnets = new URL(location.href).searchParams.has('testnets')
+
     onMountClient(async () => {
       const [{ connection }] = await Promise.all([
         import('@devprotocol/clubs-core/connection'),
