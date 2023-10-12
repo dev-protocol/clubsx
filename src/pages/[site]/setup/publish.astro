@@ -16,10 +16,6 @@ import { replaceWithFwdHost } from '@fixtures/url'
 
 const { site } = Astro.params
 
-const testnets = Astro.url.searchParams.get('testnets') === ''
-console.log('Astro.url', Astro.url)
-console.log('Astro.request.url', Astro.request.url)
-
 const { getStaticPaths, getCurrentConfig } = adminFactory({
   config: async () => await _config(site),
   plugins: [admin],
@@ -68,7 +64,6 @@ const baseDomainUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
           roundedSquareImage={roundedSquareImage.src}
           category={draftOptionsValue?.category}
           membershipsPluginOptions={membershipsPluginOptions}
-          showTestnets={testnets}
           config={config}
           site={site}
         />
