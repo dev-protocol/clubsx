@@ -14,6 +14,7 @@ import {
   defaultAddress as defaultLockupAddress,
   lockupContractAbi,
 } from './utils/lockup'
+import './assets/animation.css'
 
 type Props = {
   chainId: number
@@ -125,18 +126,18 @@ const CurrencyMembershipInfo = (props: Props) => {
   }
 
   return (
-    <section className="mt-[18px] flex items-center justify-between gap-[18px]">
-      <p className="w-[23%] text-4xl font-bold">
+    <section className="mt-5 grid grid-cols-2 grid-rows-2 items-center justify-between gap-5 lg:grid-cols-[2fr_3fr_2fr] lg:grid-rows-1">
+      <p className="text-4xl font-bold">
         {new Intl.NumberFormat(undefined, {
           minimumFractionDigits: 2,
           maximumFractionDigits: 3,
         }).format(Number(withdrawable) || 0)}
       </p>
-      <p className="grow text-base font-bold opacity-50">DEV</p>
+      <p className="text-base font-bold opacity-50">DEV</p>
       <button
         disabled={true || !Number(withdrawable)} // TODO: temporary disabled until kyc is in place.
         onClick={claimWithdrawable}
-        className={`hs-button is-filled w-[27%] px-[22px] py-3.5 ${
+        className={`hs-button is-filled col-span-2 disabled:cursor-not-allowed disabled:hover:animate-[horizontal-shaking_.06s_5] lg:col-span-1 ${
           props.isYourWithdrawable ? '' : 'invisible'
         }`}
       >

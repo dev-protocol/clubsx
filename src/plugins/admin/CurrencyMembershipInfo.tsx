@@ -8,6 +8,7 @@ import {
   defaultAddress,
   swapAndStakeAddressAbi,
 } from './utils/swapAndStake'
+import './assets/animation.css'
 
 type Props = {
   chainId: number
@@ -129,15 +130,15 @@ const CurrencyMembershipInfo = (props: Props) => {
   }
 
   return (
-    <section className="mt-[18px] flex items-center justify-between gap-[18px]">
-      <p className="w-[23%] text-base font-bold">
+    <section className="mt-5 grid grid-cols-2 grid-rows-2 items-center justify-between gap-5 lg:grid-cols-[2fr_3fr_2fr] lg:grid-rows-1">
+      <p className="text-base font-bold">
         {new Intl.NumberFormat(undefined, {
           minimumFractionDigits: 2,
           maximumFractionDigits: 3,
         }).format(Number(withdrawable) || 0)}{' '}
         {props.currency}
       </p>
-      <p className="grow text-base font-bold opacity-50">
+      <p className="text-base font-bold opacity-50">
         ≈ $
         {new Intl.NumberFormat(undefined, {
           minimumFractionDigits: 2,
@@ -147,7 +148,7 @@ const CurrencyMembershipInfo = (props: Props) => {
       <button
         onClick={() => claimWithdrawable(props.currency)}
         disabled={true || !Number(withdrawable)} // TODO: temporary disabled until kyc is in place.
-        className={`hs-button is-filled w-[27%] px-[22px] py-3.5 ${
+        className={`hs-button is-filled col-span-2 disabled:cursor-not-allowed disabled:hover:animate-[horizontal-shaking_.06s_5] lg:col-span-1 ${
           props.isYourWithdrawable ? '' : 'invisible'
         }`}
       >

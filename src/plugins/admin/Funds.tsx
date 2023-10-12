@@ -64,7 +64,7 @@ const FundsInfo = (props: {
     <div className="grid gap-16">
       {/* <!------ Loggin/Connection status --------------> */}
       {!currentAddress && (
-        <div className="mb-16 flex w-fit max-w-full items-center justify-center gap-[18px] rounded-md bg-[#FDAD00] px-8 py-4">
+        <div className="mb-16 flex w-fit max-w-full items-center justify-center gap-5 rounded-md bg-[#FDAD00] px-8 py-4">
           <svg
             width="20"
             height="20"
@@ -85,19 +85,19 @@ const FundsInfo = (props: {
       )}
 
       {/* <!-- Banner --> */}
-      <div className="w-full max-w-full gap-[18px] rounded-[18px] border-[1px] border-[#3A4158] bg-[#3A4158] px-8 py-[82px]">
-        <p className="text-center font-body text-[32px]">
+      <div className="w-full max-w-full gap-5 rounded-2xl bg-dp-blue-grey-300 px-8 py-20 dark:bg-dp-blue-grey-200">
+        <p className="text-center font-body text-3xl">
           Clubs KYC will be available soon...
         </p>
-        <div className="mx-auto mt-[18px] flex w-fit max-w-full items-center justify-center gap-[18px]">
-          <div className="w-fit max-w-[52.2%] rounded-lg bg-[#6D9BFF] p-[19px]">
+        <div className="mx-auto mt-5 flex w-fit max-w-full items-center justify-center gap-5">
+          <div className="w-fit max-w-[52.2%] rounded-lg bg-[#6D9BFF] p-5">
             <img src={NotVerifiedBannerImg.src} alt="Not verified" />
           </div>
           <p className="font-body text-base font-bold opacity-50">
             Not verified
           </p>
         </div>
-        <p className="mt-[18px] text-center font-body text-xl">
+        <p className="mt-5 text-center font-body text-xl">
           Clubs applies eKYC to fund withdrawals to help you build a secure and
           robust community. Once the process is successfully completed, you will
           be able to withdraw funds and the Clubs team is committed to building
@@ -107,14 +107,14 @@ const FundsInfo = (props: {
 
       {/* <!-- Memberships/NFT section --> */}
       <div>
-        <p className="text-[32px] font-bold">Memberships/NFTs</p>
+        <p className="text-3xl font-bold">Memberships/NFTs</p>
 
         {/* <!-- Your withdrawable funds --> */}
-        <div className="mt-8 w-full max-w-full rounded-[18px] border-[1px] border-[#3A4158] bg-[#3A4158] p-8">
+        <div className="mt-8 w-full max-w-full rounded-2xl border border-dp-blue-grey-300 p-4 dark:border-dp-blue-grey-200 lg:p-8">
           <p className="w-fit text-base font-bold opacity-50">
             Your withdrawable funds
           </p>
-          <section className="mt-[18px] flex items-center gap-[18px]">
+          <section className="mt-5 flex items-center gap-5">
             <p className="text-4xl">
               $
               {new Intl.NumberFormat(undefined, {
@@ -147,11 +147,11 @@ const FundsInfo = (props: {
         </div>
 
         {/* <!-- Total withdrawable funds --> */}
-        <div className="mt-8 w-full max-w-full rounded-[18px] border-[1px] border-[#3A4158] bg-[#3A4158] p-8">
+        <div className="mt-8 w-full max-w-full rounded-2xl border border-dp-blue-grey-300 p-4 dark:border-dp-blue-grey-200 lg:p-8">
           <p className="w-fit text-base font-bold opacity-50">
             Total withdrawable funds
           </p>
-          <section className="mt-[18px] flex items-center gap-[18px]">
+          <section className="mt-5 flex items-center gap-5">
             <p className="text-2xl">
               $
               {new Intl.NumberFormat(undefined, {
@@ -186,10 +186,10 @@ const FundsInfo = (props: {
 
       {/* <!-- Staking --> */}
       <div>
-        <p className="text-[32px] font-bold">Staking</p>
+        <p className="text-3xl font-bold">Staking</p>
 
         {/* <!-- Your withdrawable funds --> */}
-        <div className="mt-8 w-full max-w-full rounded-[18px] border-[1px] border-[#3A4158] bg-[#3A4158] p-8">
+        <div className="mt-8 w-full max-w-full rounded-2xl border border-dp-blue-grey-300 p-4 dark:border-dp-blue-grey-200 lg:p-8">
           <p className="w-fit text-base font-bold opacity-50">
             Your withdrawable funds
           </p>
@@ -202,11 +202,11 @@ const FundsInfo = (props: {
         </div>
 
         {/* <!-- Total withdrawable funds --> */}
-        {/* <div className="mt-8 w-full max-w-full border-[1px] rounded-[18px] p-8 border-[#3A4158] bg-[#3A4158]">
+        {/* <div className="mt-8 w-full max-w-full border-[1px] rounded-2xl p-8 border-[#3A4158] bg-[#3A4158]">
           <p className="w-fit font-bold text-base opacity-50">Total withdrawable funds</p>
 
           {#each Array(1) as _, index (index)}
-            <section className="mt-[18px] flex items-center gap-[18px] justify-between">
+            <section className="mt-5 flex items-center gap-5 justify-between">
               <p className="w-[23%] font-bold text-2xl">32.200</p>
               <p className="grow font-bold text-base opacity-50">DEV</p>
             </section>
@@ -214,7 +214,7 @@ const FundsInfo = (props: {
         </div> */}
 
         {/* <!-- Cumulative funds --> */}
-        <div className="mt-8 w-full max-w-full rounded-[18px] border-[1px] border-[#3A4158] bg-[#3A4158] p-8">
+        <div className="mt-8 w-full max-w-full rounded-2xl border border-dp-blue-grey-300 p-4 dark:border-dp-blue-grey-200 lg:p-8">
           <p className="w-fit text-base font-bold opacity-50">
             Cumulative funds
           </p>
