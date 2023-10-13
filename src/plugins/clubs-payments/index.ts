@@ -8,6 +8,7 @@ import type {
 import { ClubsPluginCategory, ClubsPluginSignal } from '@devprotocol/clubs-core'
 import { default as Id } from './Id.astro'
 import { default as Slot } from './slot.astro'
+import { default as SlotTerms } from './slot-terms.astro'
 import { default as SlotCurrencyOption } from './slot-currency-option.astro'
 import type { ClubsFunctionGetApiPaths } from '@devprotocol/clubs-core/src'
 import { composeItems } from './utils/compose-items'
@@ -120,6 +121,10 @@ export const getSlots: ClubsFunctionGetSlots = async (options, __, utils) => {
           slot: 'join:currency:option',
           component: SlotCurrencyOption,
           props: { injectedTiers: tiers },
+        },
+        {
+          slot: 'page:footer:legal-link',
+          component: SlotTerms,
         },
       ]
     : []

@@ -2,6 +2,7 @@
 import {
   type ClubsConfiguration,
   ClubsPluginSignal,
+  type ClubsPropsPages,
 } from '@devprotocol/clubs-core'
 import VercelAnalytics from '@components/Analytics/VercelAnalytics.astro'
 import PreviewBanner from '@components/PreviewBanner/PreviewBanner.svelte'
@@ -37,5 +38,9 @@ const baseUrl = new URL(replaceWithFwdHost(Astro.request)).origin.replace(
 
 <slot />
 {isInDraft && <PreviewBanner baseUrl={baseUrl} site={site} inAdmin={inAdmin} />}
-{footer && !fullPage && <Footer />}
+{
+  footer && (
+    <Footer {...(Astro.props as unknown as ClubsPropsPages)} {fullPage} />
+  )
+}
 <VercelAnalytics />
