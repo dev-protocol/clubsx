@@ -22,9 +22,9 @@ const LegalLinks = clubs.slots.filter(
 
 <footer
   class:list={[
-    'px-4 pb-28 pt-20 lg:pb-40',
+    'grid gap-16 px-4',
     { 'text-inherit': fullPage },
-    { 'bg-white': !fullPage },
+    { 'bg-white pb-28 pt-20 lg:pb-40': !fullPage },
   ]}
 >
   {
@@ -196,7 +196,7 @@ const LegalLinks = clubs.slots.filter(
   }
   <ul
     class:list={[
-      'mt-16 flex flex-wrap gap-4',
+      'flex flex-wrap gap-4',
       { 'text-inherit': fullPage },
       { 'text-[#757575]': !fullPage },
     ]}
