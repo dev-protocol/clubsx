@@ -194,7 +194,7 @@ const LegalLinks = clubs.slots.filter(
       </div>
     )
   }
-  <ul
+  <p
     class:list={[
       'flex flex-wrap gap-4',
       { 'text-inherit': fullPage },
@@ -202,13 +202,6 @@ const LegalLinks = clubs.slots.filter(
     ]}
   >
     <slot name="page:footer:legal-link" />
-    {
-      LegalLinks &&
-        LegalLinks.map((Link) => (
-          <li>
-            <Link.component />
-          </li>
-        ))
-    }
-  </ul>
+    {LegalLinks && LegalLinks.map((Link) => <Link.component />)}
+  </p>
 </footer>
