@@ -12,15 +12,24 @@
 
   import { formatUnixTimestamp } from '@plugins/collections/fixtures'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
-  import { address, callSlotCollections } from '@plugins/collections/utils/slotCollections'
+  import {
+    address,
+    callSlotCollections,
+  } from '@plugins/collections/utils/slotCollections'
   import type { Image } from '@plugins/collections/utils/types/setImageArg'
-  import { randomBytes, parseUnits, keccak256, JsonRpcProvider, ZeroAddress, type Signer } from 'ethers'
+  import {
+    randomBytes,
+    parseUnits,
+    keccak256,
+    JsonRpcProvider,
+    ZeroAddress,
+    type Signer,
+  } from 'ethers'
   import { onMount } from 'svelte'
   import BigNumber from 'bignumber.js'
   import { clientsSTokens } from '@devprotocol/dev-kit'
   import { tokenInfo } from '@constants/common'
   import { bytes32Hex } from '@fixtures/data/hexlify'
-
 
   export let existingCollections: Collection[] = []
   export let collection: Collection
@@ -111,7 +120,7 @@
   const onCollectionFileSelected = async (
     e: Event & {
       currentTarget: EventTarget & HTMLInputElement
-    }
+    },
   ) => {
     if (!e.currentTarget.files || !collection) {
       return
@@ -130,7 +139,7 @@
   const onMembershipFileSelected = async (
     e: Event & {
       currentTarget: EventTarget & HTMLInputElement
-    }
+    },
   ) => {
     if (!e.currentTarget.files || !membership) {
       return
@@ -152,7 +161,8 @@
       (m: CollectionMembership) =>
         m.id === selectedMembership.id &&
         m.name === selectedMembership.name &&
-        JSON.stringify(m.payload) === JSON.stringify(selectedMembership.payload)
+        JSON.stringify(m.payload) ===
+          JSON.stringify(selectedMembership.payload),
     )
 
     setOptions(
@@ -164,7 +174,7 @@
               ...collection,
               memberships: [
                 ...collection.memberships.filter(
-                  (m: CollectionMembership) => m.id !== selectedMembership.id
+                  (m: CollectionMembership) => m.id !== selectedMembership.id,
                 ),
                 { ...membership, deprecated: true },
               ],
@@ -172,7 +182,7 @@
           ],
         },
       ],
-      currentPluginIndex
+      currentPluginIndex,
     )
 
     setTimeout(buildConfig, 50)
@@ -180,7 +190,7 @@
 
   const activateMembership = (
     selectedCollection: Collection,
-    selectedMembership: CollectionMembership
+    selectedMembership: CollectionMembership,
   ) => {
     updatingMembershipsStatus = true
 
@@ -188,7 +198,8 @@
       (m: CollectionMembership) =>
         m.id === selectedMembership.id &&
         m.name === selectedMembership.name &&
-        JSON.stringify(m.payload) === JSON.stringify(selectedMembership.payload)
+        JSON.stringify(m.payload) ===
+          JSON.stringify(selectedMembership.payload),
     )
 
     setOptions(
@@ -197,13 +208,13 @@
           key: 'collections',
           value: [
             ...existingCollections.filter(
-              (c: Collection) => c.id !== selectedCollection.id
+              (c: Collection) => c.id !== selectedCollection.id,
             ),
             {
               ...selectedCollection,
               memberships: [
                 ...selectedCollection.memberships.filter(
-                  (m: CollectionMembership) => m.id !== selectedMembership.id
+                  (m: CollectionMembership) => m.id !== selectedMembership.id,
                 ),
                 { ...membership, deprecated: false },
               ],
@@ -211,16 +222,16 @@
           ],
         },
       ],
-      currentPluginIndex
+      currentPluginIndex,
     )
     setTimeout(buildConfig, 50)
   }
 
   let formattedStartTime = formatUnixTimestamp(
-    collection.startTime || new Date().getTime() / 1000
+    collection.startTime || new Date().getTime() / 1000,
   )
   let formattedEndTime = formatUnixTimestamp(
-    collection.endTime || new Date().getTime() / 1000 + 120
+    collection.endTime || new Date().getTime() / 1000 + 120,
   )
 
   const onStartTimeChange = (event: Event) => {
@@ -271,7 +282,9 @@
     }
   }
 
-  const onChangeMemberCount = async (selectedMembership :CollectionMembership) => {
+  const onChangeMemberCount = async (
+    selectedMembership: CollectionMembership,
+  ) => {
     const value = selectedMembership.memberCount ?? 0
 
     if (value < 1) {
@@ -282,24 +295,29 @@
     } else {
       invalidPriceMsg = ''
     }
-    if (selectedMembership.memberCount === 0 || !selectedMembership.memberCount) {
+    if (
+      selectedMembership.memberCount === 0 ||
+      !selectedMembership.memberCount
+    ) {
       return
     }
     collection = {
-        ...collection,
-        memberships: [
-          ...collection.memberships.filter(
-            (m: CollectionMembership) => m.id !== selectedMembership.id
-          ),
-          {
-            ...selectedMembership
-          },
-        ],
-      }
+      ...collection,
+      memberships: [
+        ...collection.memberships.filter(
+          (m: CollectionMembership) => m.id !== selectedMembership.id,
+        ),
+        {
+          ...selectedMembership,
+        },
+      ],
+    }
     membership = selectedMembership
   }
 
-  const onChangeCustomFee = async (selectedMembership: CollectionMembership) => {
+  const onChangeCustomFee = async (
+    selectedMembership: CollectionMembership,
+  ) => {
     if (selectedMembership.currency === 'DEV') {
       // Update the membership fee in case of currency change to dev token.
       membershipPaymentType = 'custom'
@@ -311,16 +329,16 @@
           beneficiary: currentAddress ?? ZeroAddress,
           percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
         },
-        paymentType: 'custom'
+        paymentType: 'custom',
       }
       collection = {
         ...collection,
         memberships: [
           ...collection.memberships.filter(
-            (m: CollectionMembership) => m.id !== selectedMembership.id
+            (m: CollectionMembership) => m.id !== selectedMembership.id,
           ),
           {
-            ...selectedMembership
+            ...selectedMembership,
           },
         ],
       }
@@ -346,19 +364,19 @@
     selectedMembership = {
       ...membership,
       fee: {
-          percentage: membershipCustomFee100 / 100,
-          beneficiary: currentAddress ?? ZeroAddress,
-        },
-      paymentType: 'custom'
+        percentage: membershipCustomFee100 / 100,
+        beneficiary: currentAddress ?? ZeroAddress,
+      },
+      paymentType: 'custom',
     }
     collection = {
       ...collection,
       memberships: [
         ...collection.memberships.filter(
-          (m: CollectionMembership) => m.id !== selectedMembership.id
+          (m: CollectionMembership) => m.id !== selectedMembership.id,
         ),
         {
-          ...selectedMembership
+          ...selectedMembership,
         },
       ],
     }
@@ -386,7 +404,7 @@
 
   const changeMembershipPaymentType = async (
     selectedMembership: CollectionMembership,
-    type: MembershipPaymentType
+    type: MembershipPaymentType,
   ) => {
     if (selectedMembership.currency === 'DEV') {
       // Update the membership fee in case of currency change to dev token.
@@ -398,16 +416,16 @@
           percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
           beneficiary: currentAddress ?? ZeroAddress,
         },
-        paymentType: 'custom'
+        paymentType: 'custom',
       }
       collection = {
         ...collection,
         memberships: [
           ...collection.memberships.filter(
-            (m: CollectionMembership) => m.id !== selectedMembership.id
+            (m: CollectionMembership) => m.id !== selectedMembership.id,
           ),
           {
-            ...selectedMembership
+            ...selectedMembership,
           },
         ],
       }
@@ -425,16 +443,16 @@
           percentage: PAYMENT_TYPE_INSTANT_FEE,
           beneficiary: currentAddress ?? ZeroAddress,
         },
-        paymentType: 'instant'
+        paymentType: 'instant',
       }
       collection = {
         ...collection,
         memberships: [
           ...collection.memberships.filter(
-            (m: CollectionMembership) => m.id !== selectedMembership.id
+            (m: CollectionMembership) => m.id !== selectedMembership.id,
           ),
           {
-            ...selectedMembership
+            ...selectedMembership,
           },
         ],
       }
@@ -449,16 +467,16 @@
           percentage: PAYMENT_TYPE_STAKE_FEE,
           beneficiary: currentAddress ?? ZeroAddress,
         },
-        paymentType: 'stake'
+        paymentType: 'stake',
       }
       collection = {
         ...collection,
         memberships: [
           ...collection.memberships.filter(
-            (m: CollectionMembership) => m.id !== selectedMembership.id
+            (m: CollectionMembership) => m.id !== selectedMembership.id,
           ),
           {
-            ...selectedMembership
+            ...selectedMembership,
           },
         ],
       }
@@ -472,16 +490,16 @@
           percentage: membershipCustomFee100 / 100,
           beneficiary: currentAddress ?? ZeroAddress,
         },
-        paymentType: 'custom'
+        paymentType: 'custom',
       }
       collection = {
         ...collection,
         memberships: [
           ...collection.memberships.filter(
-            (m: CollectionMembership) => m.id !== selectedMembership.id
+            (m: CollectionMembership) => m.id !== selectedMembership.id,
           ),
           {
-            ...selectedMembership
+            ...selectedMembership,
           },
         ],
       }
@@ -501,7 +519,7 @@
     } else if (value > maxPrice) {
       selectedMembership.price = maxPrice
       invalidPriceMsg = `Price automatically set to maximum allowed value- ${maxPrice.toExponential(
-        3
+        3,
       )}`
     } else {
       invalidPriceMsg = ''
@@ -581,18 +599,18 @@
       ...membership,
       fee: {
         percentage: membershipCustomFee100,
-          beneficiary: currentAddress ?? ZeroAddress,
-        },
-      paymentType: 'custom'
+        beneficiary: currentAddress ?? ZeroAddress,
+      },
+      paymentType: 'custom',
     }
     collection = {
       ...collection,
       memberships: [
         ...collection.memberships.filter(
-          (m: CollectionMembership) => m.id !== selectedMembership.id
+          (m: CollectionMembership) => m.id !== selectedMembership.id,
         ),
         {
-          ...selectedMembership
+          ...selectedMembership,
         },
       ],
     }
@@ -617,24 +635,26 @@
       ...collection,
       memberships: isAdding // If we are adding memberships only then append the membership state to db.
         ? [
-          ...collection.memberships.filter(
-            (m: CollectionMembership) => m.id !== membership.id
-          ),
-          membership,
-        ]
-        : collection.memberships
+            ...collection.memberships.filter(
+              (m: CollectionMembership) => m.id !== membership.id,
+            ),
+            membership,
+          ]
+        : collection.memberships,
     }
   }
 
   const update = () => {
     const searchCollectionId = mode === 'edit' ? originalId : collection.id
     const newCollections = [
-      ...existingCollections.filter((c: Collection) => c.id !== searchCollectionId),
+      ...existingCollections.filter(
+        (c: Collection) => c.id !== searchCollectionId,
+      ),
       collection,
     ]
     setOptions(
       [{ key: 'collections', value: newCollections }],
-      currentPluginIndex
+      currentPluginIndex,
     )
   }
 
@@ -686,172 +706,135 @@
       '/admin/collections/?ping=publish',
       location.origin,
     ).toString()
-}
+  }
 </script>
 
 <form on:change|preventDefault={() => update()} class="w-full">
-  <div class="w-full max-w-full">
+  <div class="grid gap-16">
     <!-- collection name -->
-    <div
-      class="mb-16 flex w-[52.2%] flex-col items-start justify-start gap-[7px]"
-    >
-    <div class="m-0 w-full items-center p-0">
-      <span class="mr-[13px] font-body">Collection name </span>
-      <span class="font-body text-[#EB48F8]"> * </span>
-    </div>
-      <label class="hs-form-field is-filled">
-          <input
-          bind:value={collection.name}
-          on:change={onCollectionChangeName}
-          class="hs-form-field__input"
-          id="collection-name"
-          name="collection-name"
-        />
-      </label>
-    </div>
+    <label class="hs-form-field is-filled is-required">
+      <span class="hs-form-field__label">Collection name </span>
+      <input
+        bind:value={collection.name}
+        on:change={onCollectionChangeName}
+        class="hs-form-field__input w-full max-w-md"
+        id="collection-name"
+        name="collection-name"
+      />
+    </label>
     <!-- collection cover image uploader-->
-    <div class="mb-16 flex h-[294px] w-[479px] flex-col items-start gap-[7px]">
-      <div class="flex items-start gap-[13px]">
-        <span class="text-base font-normal text-white"
-          >Collection cover image</span
-        >
-        <span class="text-base font-normal uppercase text-[#EB48F8]"> * </span>
-      </div>
-      <label class="cursor-pointer">
-        <div class="flex flex-col items-start self-stretch rounded-[19px] border border-[#ffffff1a] bg-[#ffffff1a] p-2">
+    <label class="hs-form-field is-filled is-required">
+      <span class="hs-form-field__label">Collection cover image</span>
+      <div
+        class="aspect-[2/1] w-full max-w-xl cursor-pointer rounded-xl border border-[#ffffff1a] bg-[#ffffff1a] p-2"
+      >
         {#if collection.imageSrc !== ''}
-        <img
-          class="object-cover h-[216px] w-[463px] rounded-[12px]"
-          src={collection.imageSrc}
-          alt={`${collection.name}-collection-cover-image`}
-        />
+          <img
+            class="h-full w-full rounded-xl object-cover"
+            src={collection.imageSrc}
+            alt={`${collection.name}-collection-cover-image`}
+          />
         {:else}
-        <div class="h-[216px] w-[463px] rounded-[12px] bg-[#040B10]" />
-      {/if}
-    </div>
-        <input
-          id="collection-cover-image"
-          name="collection-cover-image"
-          style="display:none"
-          type="file"
-          accept=".jpg, .jpeg, .png, .gif, .apng, .tiff"
-          class="hs-button is-filled is-large cursor-pointer"
-          on:change={onCollectionFileSelected}
-        />
-      </label>
-      <span class="text-base font-normal leading-6 text-white"
+          <div class="h-full w-full rounded-xl bg-dp-blue-grey-600" />
+        {/if}
+      </div>
+      <input
+        id="collection-cover-image"
+        name="collection-cover-image"
+        style="display:none"
+        type="file"
+        accept=".jpg, .jpeg, .png, .gif, .apng, .tiff"
+        class="hs-button is-filled is-large cursor-pointer"
+        on:change={onCollectionFileSelected}
+      />
+      <span class="hs-form-field__helper"
         >Recommended image size is 2400 x 1200px</span
       >
-    </div>
+    </label>
 
     <!-- start date -->
-    <div class="mb-16 flex w-[479px] flex-col items-start gap-[7px]">
-      <div class="flex items-start gap-[13px]">
-        <span class="text-base font-normal text-white">Start date</span>
-        <span class="text-base font-normal uppercase text-[#EB48F8]"> * </span>
-      </div>
-      <label class="hs-form-field is-filled">
-          <input
-          bind:value={formattedStartTime}
-          on:change={onStartTimeChange}
+    <label class="hs-form-field is-filled is-required">
+      <span class="hs-form-field__label">Start date</span>
+      <input
+        bind:value={formattedStartTime}
+        on:change={onStartTimeChange}
+        type="datetime-local"
+        class="hs-form-field__input w-full max-w-md"
+        id="collectino-start-date"
+        name="collection-start-date"
+        min={formatUnixTimestamp(Date.now() / 1000)}
+        max="2038-01-18T00:00"
+      />
+
+      {#if invalidStartTimeMsg !== ''}
+        <p class="text-danger-300">* {invalidStartTimeMsg}</p>
+      {/if}
+    </label>
+
+    {#if isTimeLimitedCollection}
+      <label class="hs-form-field is-filled is-required">
+        <span class="hs-form-field__label">End date</span>
+        <input
+          bind:value={formattedEndTime}
+          on:change={onEndTimeChange}
           type="datetime-local"
-          class="hs-form-field__input"
+          class="hs-form-field__input w-full max-w-md"
           id="collectino-start-date"
           name="collection-start-date"
           min={formatUnixTimestamp(Date.now() / 1000)}
           max="2038-01-18T00:00"
         />
-      </label>
-
-      {#if invalidStartTimeMsg !== ''}
-        <p class="text-danger-300">* {invalidStartTimeMsg}</p>
-      {/if}
-    </div>
-
-    {#if isTimeLimitedCollection}
-      <div class="mb-16 flex w-[479px] flex-col items-start gap-[7px]">
-        <div class="flex items-start gap-[13px]">
-          <span class="text-base font-normal text-white">End date</span>
-          <span class="text-base font-normal uppercase text-[#EB48F8]">
-            *
-          </span>
-        </div>
-        <label class="hs-form-field is-filled">
-          <input
-            bind:value={formattedEndTime}
-            on:change={onEndTimeChange}
-            type="datetime-local"
-            class="hs-form-field__input"
-            id="collectino-start-date"
-            name="collection-start-date"
-            min={formatUnixTimestamp(Date.now() / 1000)}
-            max="2038-01-18T00:00"
-          />
-        </label>
         {#if invalidEndTimeMsg !== ''}
           <p class="text-danger-300">* {invalidEndTimeMsg}</p>
         {/if}
-      </div>
+      </label>
     {/if}
 
-    <div
-      class="mb-16 flex w-[99.1%] flex-col items-start justify-start gap-[7px]"
-    >
-      <div class="items-center p-0">
-        <span class="mr-[13px] font-body">Description</span>
-        <span class="font-body text-[#EB48F8]"> * </span>
-      </div>
-      <label class="hs-form-field is-filled">
-        <textarea
+    <label class="hs-form-field is-filled is-required">
+      <span class="hs-form-field__label">Description</span>
+      <textarea
         class="hs-form-field__input"
         id="collection-description"
         name="collection-description"
         rows="3"
         bind:value={collection.description}
-        />
+      />
       <p class="hs-form-field__helper">Markdown is available</p>
-      </label>
-    </div>
+    </label>
 
     <!-- Allowlist -->
-    <div
-      class="flex h-[682px] max-w-4xl flex-shrink-0 flex-col items-start gap-[7px]"
-    >
-      <span class="text-base font-normal">Allowlist</span>
-      <span class="text-base font-normal"
+    <div class="hs-form-field grid gap-2">
+      <span class="hs-form-field__label">Allowlist</span>
+      <span
         >Please set the people who can access this collection. Add new
         memberships from [here].</span
       >
-      <div class="flex flex-col items-start self-stretch">
-        <div
-          class="flex items-start gap-[12px] self-stretch rounded-[12px] bg-[#040B10] p-5"
+      <label
+        class="flex items-center rounded-md bg-dp-blue-grey-600 p-5"
+        for="access"
+      >
+        <input
+          id="access"
+          name="notification-method"
+          type="radio"
+          checked
+          class="h-4 w-4 border-gray-300 text-[#3043EB] focus:ring-[#3043EB] dark:focus:ring-[#3043EB]"
+        />
+        <span class="ml-3 block text-justify text-base font-normal text-white"
+          >Pubic access (Open to everyone)</span
         >
-          <div class="flex items-center">
-            <input
-              id="access"
-              name="notification-method"
-              type="radio"
-              checked
-              class="h-4 w-4 border-gray-300 text-[#3043EB] focus:ring-[#3043EB] dark:focus:ring-[#3043EB]"
-            />
-            <label
-              for="access"
-              class="ml-3 block text-justify text-base font-normal text-white"
-              >Pubic access (Open to everyone)</label
-            >
-          </div>
-        </div>
-      </div>
-      <div class="grid grid-cols-3 justify-between gap-4 pt-2.5">
+      </label>
+      <div
+        class="grid grid-cols-[repeat(auto-fit,_minmax(120px,_1fr))] justify-between gap-4 pt-2.5"
+      >
         <MembershipOption
           clubName={'Your Club'}
           id={'1'}
           name={'Membership Name'}
           imagePath={'https://i.ibb.co/hLD6byP/1.jpg'}
           currency={'USDC'}
-          price={"100"}
+          price={'100'}
           description={'Membership Description'}
-          className={`lg:row-start-3 ${getColStart(0)}`}
         />
         <MembershipOption
           clubName={'Your Club'}
@@ -859,9 +842,8 @@
           name={'Membership Name'}
           imagePath={'https://i.ibb.co/Kyjr50C/Image.png'}
           currency={'ETH'}
-          price={"0.1"}
+          price={'0.1'}
           description={'Membership Description'}
-          className={`lg:row-start-3 ${getColStart(1)}`}
         />
         <MembershipOption
           clubName={'Your Club'}
@@ -869,9 +851,8 @@
           name={'Membership Name'}
           imagePath={'https://i.ibb.co/nrdKDQy/Image-1.png'}
           currency={'DEV'}
-          price={"0.1"}
+          price={'0.1'}
           description={'Membership Description'}
-          className={`lg:row-start-3 ${getColStart(2)}`}
         />
       </div>
     </div>
@@ -880,8 +861,7 @@
     {#if !isAdding}
       <h1 class="mb-16 font-title text-2xl font-bold">Collection Items</h1>
       <button
-        type="button"
-        class={`hs-button is-large is-filled mb-16 w-fit c px-8 py-6 text-base font-bold text-white`}
+        class={`hs-button is-filled is-large`}
         on:click={() => setIsAdding(true)}
       >
         + Add
@@ -889,73 +869,49 @@
     {/if}
 
     <!-- Register New Item -->
-    <div class="w-full">
+    <div class="grid w-full gap-8">
       {#if isAdding}
         <h1 class="mb-16 font-title text-2xl font-bold">Register New Item</h1>
-        <div
-          class="mb-16 flex w-[52.2%] flex-col items-start justify-start gap-[7px]"
-        >
-          <div class="m-0 w-full items-center p-0">
-            <span class="mr-[13px] font-body">Name </span>
-            <span class="font-body text-[#EB48F8]"> * </span>
-          </div>
-          <label class="hs-form-field is-filled">
-            <input
+        <label class="hs-form-field is-filled is-required">
+          <span class="hs-form-field__label">Name</span>
+          <input
             bind:value={membership.name}
             on:change={onChangeName}
-            class="hs-form-field__input"
+            class="hs-form-field__input w-full max-w-md"
             id="product-name"
             name="product-name"
             placeholder="Name of product"
           />
-          </label>
-        </div>
-        <div
-          class="mb-16 flex h-[207px] w-[186px] flex-col items-start gap-[7px]"
-        >
-          <div class="flex items-start gap-[13px]">
-            <span class="text-base font-normal text-white">Image</span>
-            <span class="text-base font-normal uppercase text-[#EB48F8]">
-              *
-            </span>
-          </div>
-          <label>
-            <div
-              class="flex flex-col items-start self-stretch rounded-[19px] border border-[#ffffff1a] bg-[#ffffff1a] p-2"
-            >
+        </label>
+        <div class="hs-form-field is-filled is-required">
+          <span class="hs-form-field__label">Image</span>
+          <div
+            class="aspect-square w-full max-w-sm cursor-pointer rounded-xl border border-[#ffffff1a] bg-[#ffffff1a] p-2"
+          >
             {#if membership.imageSrc !== ''}
               <img
-                class="object-cover h-[160px] w-[170px] rounded-[12px]"
+                class="h-full w-full rounded-xl object-cover"
                 src={membership.imageSrc}
                 alt={`${membership.name}-membership-image`}
               />
-              {:else}
-              <div class="h-[160px] w-[170px] rounded-[12px] bg-[#040B10]" />
+            {:else}
+              <div class="h-full w-full rounded-xl bg-dp-blue-grey-600" />
             {/if}
-            </div>
-            <input
-              id="membership-image"
-              name="membership-image"
-              style="display:none"
-              type="file"
-              class="hs-button is-filled is-large cursor-pointer"
-              disabled={membershipExists}
-              on:change={onMembershipFileSelected}
-            />
-          </label>
+          </div>
+          <input
+            id="membership-image"
+            name="membership-image"
+            style="display:none"
+            type="file"
+            class="hs-button is-filled is-large cursor-pointer"
+            disabled={membershipExists}
+            on:change={onMembershipFileSelected}
+          />
         </div>
         {#if !isTimeLimitedCollection}
-          <div class="mb-16 flex w-[479px] flex-col items-start gap-[7px]">
-            <div class="flex items-start gap-[13px]">
-              <span class="text-base font-normal text-white"
-                >Maximum number of sales</span
-              >
-              <span class="text-base font-normal uppercase text-[#EB48F8]">
-                *
-              </span>
-            </div>
-            <label class="hs-form-field is-filled">
-              <input
+          <label class="hs-form-field is-filled is-required">
+            <span class="hs-form-field__label">Maximum number of sales</span>
+            <input
               bind:value={membership.memberCount}
               on:change={() => onChangeMemberCount(membership)}
               class="hs-form-field__input"
@@ -964,9 +920,8 @@
               name="sales-number"
               min="1"
               max="4294967294"
-              />
-            </label>
-          </div>
+            />
+          </label>
         {/if}
 
         <!-- Price -->
@@ -1071,7 +1026,9 @@
                   />
                 </svg>
               </span>
-              <span class={membershipPaymentType === 'stake' ? 'text-white' : ''}>
+              <span
+                class={membershipPaymentType === 'stake' ? 'text-white' : ''}
+              >
                 Stake
               </span>
             </button>
@@ -1160,42 +1117,33 @@
         </div>
 
         <!-- Description -->
-        <div
-          class="mb-16 flex w-[99.1%] flex-col items-start justify-start gap-[7px]"
-        >
-          <div class="m-0 w-full items-center p-0">
-            <span class="mr-[13px] font-body">Description</span>
-            <span class="font-body text-[#EB48F8]"> * </span>
-          </div>
-          <label class="hs-form-field is-filled">
-            <textarea
+        <label class="hs-form-field is-filled is-required">
+          <span class="hs-form-field__label">Description</span>
+          <textarea
             class="hs-form-field__input"
             bind:value={membership.description}
             on:change={updateState}
             id="membership-description"
             name="membership-description"
             disabled={membershipExists}
-            />
+          />
           <p class="hs-form-field__helper">Markdown is available</p>
-          </label>
-        </div>
+        </label>
 
         <!-- Save & Delete Buttons -->
-        <div class="mb-16 flex items-start gap-16">
+        <div class="mb-8 flex items-start gap-16">
           <button
             on:click={() => update()}
-            type="button"
-            class={`hs-button is-large is-filled w-fit rounded px-8 py-6 text-base font-bold text-white`}
-            >
+            class={`hs-button is-filled is-large`}
+          >
             Save
           </button>
 
           {#if mode === 'edit' && !membership.deprecated}
             <button
-              class={`hs-button is-large is-filled w-fit rounded px-8 py-6 text-base font-bold text-white ${
+              class={`hs-button is-filled is-large ${
                 updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
               }`}
-              type="button"
               on:click|preventDefault={() => deleteMembership(membership)}
             >
               <span class="hs-button__label"> Delete </span>
@@ -1205,29 +1153,30 @@
       {/if}
     </div>
     <!-- Previous Memberships -->
-    <div class="grid grid-cols-3 justify-between gap-4">
+    <div
+      class="grid grid-cols-[repeat(auto-fit,_minmax(120px,_1fr))] justify-between gap-4"
+    >
       {#each collection.memberships as mem, i}
         {#if mem.id !== membership.id}
-        <div>
-          <MembershipOption
-          clubName={clubName ?? 'Your Club'}
-          id={mem.id}
-          name={mem.name}
-          imagePath={mem.imageSrc}
-          price={mem.price.toString()}
-          currency={mem.currency}
-          description={mem.description}
-          className={`lg:row-start-3 ${getColStart(i)}`}
-        />
-        <a
-        class="hs-button is-filled is-fullwidth mt-4 rounded px-8 py-6 text-base font-bold text-white"
-        href={`${collection.id}/${mem.id}`}
-      >
-        <span class="hs-button__label">Edit</span>
-      </a>
-        </div>
+          <div>
+            <MembershipOption
+              clubName={clubName ?? 'Your Club'}
+              id={mem.id}
+              name={mem.name}
+              imagePath={mem.imageSrc}
+              price={mem.price.toString()}
+              currency={mem.currency}
+              description={mem.description}
+            />
+            <a
+              class="hs-button is-filled is-fullwidth mt-4"
+              href={`${collection.id}/${mem.id}`}
+            >
+              <span class="hs-button__label">Edit</span>
+            </a>
+          </div>
         {/if}
-    {/each}
+      {/each}
     </div>
   </div>
 </form>
