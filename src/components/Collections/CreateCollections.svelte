@@ -661,7 +661,7 @@
     membership = {
       ...defaultMembership,
     }
-  
+    onChangePrice(membership)
   }
 
   const fetchPositionsOfProperty = async () => {
