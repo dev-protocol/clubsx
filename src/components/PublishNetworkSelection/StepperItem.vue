@@ -2,14 +2,12 @@
 import checkImage from '@assets/step-check.svg'
 import roundedSquareImage from '@assets/step-rounded-square.svg'
 
-const props = defineProps<{
+const { itemCompleted, isProcessing, isDisabled, step } = defineProps<{
   itemCompleted: Boolean
   isProcessing: Boolean
   isDisabled: Boolean
   step: String
 }>()
-
-const { itemCompleted, isProcessing, isDisabled, step } = props
 </script>
 
 <template>
