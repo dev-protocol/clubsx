@@ -4,6 +4,7 @@ import {
   decode,
   pageFactory,
   ClubsPluginSignal,
+  type ClubsPropsPages,
 } from '@devprotocol/clubs-core'
 import { config as _config } from '@fixtures/config'
 import PageNotFound from '@pages/404.astro'
@@ -54,7 +55,47 @@ const fullPage = (path?.props.signals as undefined | string[])?.includes(
 
         <PreviewBanner config={decode<ClubsConfiguration>(config)} />
       </Layout>
-      {!fullPage && <Footer />}
+
+      <Footer {...(path.props as unknown as ClubsPropsPages)} {fullPage}>
+        <span slot="page:footer:legal-link">
+          Terms and Conditions (
+          <a
+            href="https://github.com/dev-protocol/legal/blob/main/TERMS-OF-USE-MEMBERS.md"
+            target="_blank"
+            rel="noopener"
+          >
+            English
+          </a>
+          ,
+          <a
+            href="https://github.com/dev-protocol/legal/blob/main/TERMS-OF-USE-MEMBERS-JA.md"
+            target="_blank"
+            rel="noopener"
+          >
+            日本語
+          </a>
+          )
+        </span>
+        <span slot="page:footer:legal-link">
+          Privacy policy (
+          <a
+            href="https://github.com/dev-protocol/legal/blob/main/PRIVACY-POLICY.md"
+            target="_blank"
+            rel="noopener"
+          >
+            English
+          </a>
+          ,
+          <a
+            href="https://github.com/dev-protocol/legal/blob/main/PRIVACY-POLICY-JA.md"
+            target="_blank"
+            rel="noopener"
+          >
+            日本語
+          </a>
+          )
+        </span>
+      </Footer>
     </>
   ) : (
     <PageNotFound

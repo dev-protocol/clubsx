@@ -12,6 +12,7 @@ import PageNotFound from '@pages/404.astro'
 import admin from '@plugins/admin'
 import marketplace from '@plugins/marketplace'
 import IconGlobe from '@components/Icons/globe-europe-africa.astro'
+import IconBanknotes from '@components/Icons/banknotes.astro'
 import Banner from '@components/Global/Banner.astro'
 import { plugins } from '@constants/plugins'
 import ConnectButton from '@components/Wallet/ConnectButton.vue'
@@ -121,6 +122,22 @@ const siteBaseUrl = new URL(replaceWithFwdHost(Astro.request)).origin
               <IconGlobe />
             </span>
             Marketplace
+          </a>
+        </li>
+        <li slot="admin:sidebar:after-built-in-primary-links">
+          <a
+            class:list={[
+              '-mx-3 flex items-center gap-2 rounded p-3 font-bold transition-colors duration-500',
+              page?.startsWith('funds')
+                ? 'bg-surface-200'
+                : 'hover:bg-surface-200',
+            ]}
+            href="/admin/funds"
+          >
+            <span class="text-[#FF3815]">
+              <IconBanknotes />
+            </span>
+            Funds
           </a>
         </li>
 
