@@ -1,7 +1,7 @@
 ---
 import { CurrencyOption } from '@constants/currencyOption'
 import type { CheckoutOptions } from '@components/Checkout/types'
-import { keccak256 } from 'ethers'
+import { bytes32Hex } from '@fixtures/data/hexlify'
 
 const { checkoutOptions } = Astro.props as { checkoutOptions: CheckoutOptions }
 
@@ -11,7 +11,7 @@ const hex =
   isUSDC && payload
     ? typeof payload === 'string'
       ? payload
-      : keccak256(payload)
+      : bytes32Hex(payload)
     : undefined
 ---
 
