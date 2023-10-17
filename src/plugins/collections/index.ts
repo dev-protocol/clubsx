@@ -40,7 +40,7 @@ export type Collection = {
   endTime?: number
   description: string
   memberships: CollectionMembership[]
-  requiredMemberships?: (Uint8Array | string)[] 
+  requiredMemberships?: (Uint8Array | string)[]
 }
 
 export const getSlots: ClubsFunctionGetSlots = async (
