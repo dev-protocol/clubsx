@@ -10,5 +10,6 @@ export default [
   '/api/fetchClubs',
   '/api/encrypt',
   '/api/decrypt',
+  '/api/config',
   '/api/addDaoToDraft',
 ]
