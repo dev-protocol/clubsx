@@ -20,9 +20,12 @@
   import { clientsSTokens } from '@devprotocol/dev-kit'
   import { tokenInfo } from '@constants/common'
   import { bytes32Hex } from '@fixtures/data/hexlify'
+  import type { Membership } from '@plugins/memberships'
+  import { concatAll } from 'rxjs'
 
 
   export let existingCollections: Collection[] = []
+  export let existingMemberships: Membership[] = []
   export let collection: Collection
   export let isTimeLimitedCollection: boolean = false
   export let clubName: string | undefined = undefined
@@ -663,6 +666,20 @@
     }
   
   }
+  const selectAllowlist = (mem: Membership) => {
+    // if mem.payload already exists in collection.requiredMemberships then remove it otherwise add it to collection.requiredMemberships
+    collection.requiredMemberships = collection.requiredMemberships 
+    ?
+      collection.requiredMemberships.includes(mem.payload)
+        ? 
+          collection.requiredMemberships.filter(
+            (m: Uint8Array | string) => m !== mem.payload
+          )
+        : [...collection.requiredMemberships, mem.payload] 
+    : [mem.payload]
+    update()
+    console.log("collection.requiredMemberships", collection)
+  }
 
   const fetchPositionsOfProperty = async () => {
     loading = true
@@ -869,36 +886,20 @@
         </div>
       </div>
       <div class="grid grid-cols-3 justify-between gap-4 pt-2.5">
-        <MembershipOption
-          clubName={'Your Club'}
-          id={'1'}
-          name={'Membership Name'}
-          imagePath={'https://i.ibb.co/hLD6byP/1.jpg'}
-          currency={'USDC'}
-          price={"100"}
-          description={'Membership Description'}
-          className={`lg:row-start-3 ${getColStart(0)}`}
-        />
-        <MembershipOption
-          clubName={'Your Club'}
-          id={'2'}
-          name={'Membership Name'}
-          imagePath={'https://i.ibb.co/Kyjr50C/Image.png'}
-          currency={'ETH'}
-          price={"0.1"}
-          description={'Membership Description'}
-          className={`lg:row-start-3 ${getColStart(1)}`}
-        />
-        <MembershipOption
-          clubName={'Your Club'}
-          id={'3'}
-          name={'Membership Name'}
-          imagePath={'https://i.ibb.co/nrdKDQy/Image-1.png'}
-          currency={'DEV'}
-          price={"0.1"}
-          description={'Membership Description'}
-          className={`lg:row-start-3 ${getColStart(2)}`}
-        />
+        {#each existingMemberships as mem, i}
+        <div on:click={selectAllowlist(mem)} on:keydown={(e) => {if (e.key === 'Enter') selectAllowlist(mem)}} role="button" tabindex="0">
+            <MembershipOption
+            clubName={clubName ?? 'Your Club'}
+            id={mem.id}
+            name={mem.name}
+            imagePath={mem.imageSrc.trim().length > 0 ? mem.imageSrc : emptyDummyImage(400, 400)}
+            price={mem.price.toString()}
+            currency={mem.currency}
+            description={mem.description}
+            className={`${collection.requiredMemberships?.includes(mem.payload) ? 'border-4 border-[#5B8BF5]' : ''} lg:row-start-3 ${getColStart(i)}`}
+            />
+        </div>
+        {/each}
       </div>
     </div>
 
