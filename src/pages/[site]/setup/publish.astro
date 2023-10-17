@@ -3,7 +3,6 @@ import { config as _config } from '@fixtures/config'
 import { adminFactory } from '@devprotocol/clubs-core'
 import admin from '@plugins/admin'
 import SetupLayout from '@layouts/Setup.astro'
-import PublishGrants from '@components/PublishGrants/PublishGrants'
 import checkImage from '@assets/step-check.svg'
 import roundedSquareImage from '@assets/step-rounded-square.svg'
 import PublishConnect from '@components/PublishConnect/PublishConnect.vue'
@@ -81,14 +80,6 @@ const baseDomainUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
             </a>
           </div>
         )}
-        <a
-          href="https://clubs-starter-grant.webflow.io/"
-          target="_blank"
-          rel="noopener"
-          class="overflow-hidden rounded-2xl transition-shadow hover:shadow-[0_0_0_8px_rgba(255,255,255,0.2)]"
-        >
-          <PublishGrants />
-        </a>
       </section>
 
       <NextButton
