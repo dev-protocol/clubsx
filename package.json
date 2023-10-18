@@ -27,7 +27,7 @@
     "@types/node": "^20.5.9",
     "@types/ramda": "0.29.5",
     "@types/react": "18.2.29",
-    "@types/three": "0.157.0",
+    "@types/three": "0.157.2",
     "@types/uuid": "^9.0.3",
     "dotenv": "16.3.1",
     "eslint": "8.51.0",
