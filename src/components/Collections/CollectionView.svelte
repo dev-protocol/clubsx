@@ -35,25 +35,6 @@
     }
   }
 
-  const getColStart = (i: number) =>
-    i === 0
-      ? 'lg:col-start-1'
-      : i === 1
-      ? 'lg:col-start-2'
-      : i === 2
-      ? 'lg:col-start-3'
-      : i === 3
-      ? 'lg:col-start-4'
-      : i === 4
-      ? 'lg:col-start-5'
-      : i === 5
-      ? 'lg:col-start-6'
-      : i === 6
-      ? 'lg:col-start-7'
-      : i === 7
-      ? 'lg:col-start-8'
-      : 'lg:col-start-9'
-
   onMount(() => {
     calculateTimeLeft()
     const interval = setInterval(calculateTimeLeft, 1000)
@@ -61,22 +42,20 @@
   })
 </script>
 
-<div class="flex flex-col px-9">
+<div class="flex flex-col gap-8">
   <!-- Header
     <div class="h-20 p-5 flex justify-between items-center gap-6">
         <div class="text-white text-lg font-medium uppercase">Demo</div>
         <button class="px-4 py-2 text-white text-lg font-medium uppercase border rounded-sm opacity-50">Sign in</button>
     </div> -->
   <!-- Hero Image -->
-  <div class="gap-12">
-    <img
-      class="rounded-[32px] md:w-[896px]"
-      src={collection.imageSrc}
-      alt={`${collection.name}-cover-image`}
-    />
-  </div>
+  <img
+    class="rounded-xl"
+    src={collection.imageSrc}
+    alt={`${collection.name}-cover-image`}
+  />
 
-  <div class="flex flex-col items-start gap-12">
+  <div class="flex flex-col items-start gap-20 lg:px-9">
     <div class="flex flex-col items-start gap-[76px]">
       <!-- Collection Name -->
       <div class="flex items-center gap-2.5">
@@ -93,25 +72,23 @@
       <!-- Allowlist -->
       <div class="flex flex-col items-start self-stretch">
         <div
-          class="flex flex-col items-start gap-[20px] self-stretch rounded-[10px] bg-[#17171780] p-5"
+          class="flex flex-col items-start gap-5 self-stretch rounded-md bg-[#17171780] p-5"
         >
-          <span class="text-justify text-3xl font-medium text-white">
+          <span class="text-justify text-2xl font-medium text-white">
             Exclusive to the following members.
           </span>
           <div class="flex flex-col items-start self-stretch">
             <div
               class="flex flex-col items-start gap-3 self-stretch rounded-[10px] bg-[#27272780] p-5"
             >
-              <span class="text-justify text-3xl font-medium text-white">
+              <span class="text-justify text-2xl font-medium text-white">
                 You don't seem to have it yet, but you can get it here.
               </span>
             </div>
           </div>
           <!-- Aceess -->
           <div class="flex flex-col items-start">
-            <div
-              class="flex items-center gap-3 rounded-[10px] bg-[#43C451] p-5"
-            >
+            <div class="flex items-center gap-3 rounded-md bg-dp-green-300 p-5">
               <div class="h-16 w-16">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -129,35 +106,29 @@
                   />
                 </svg>
               </div>
-              <p class="text-justify text-3xl font-medium text-white">
+              <p class="text-justify text-2xl font-medium text-white">
                 Welcome, you have the access
               </p>
             </div>
           </div>
           <!-- Memberships -->
-          <div class="flex flex-col items-start gap-[7px]">
-            <div class="flex items-start gap-16">
+          <div
+            class="grid w-full grid-cols-[repeat(auto-fit,_minmax(120px,_1fr))] justify-between gap-4"
+          >
+            <!-- TODO: Collection should be having a list of required memberships as an access control -->
+            {#each collection.memberships as mem}
               <MembershipOption
-                clubName={'Your Club'}
-                id={'2'}
-                name={'Membership Name'}
-                imagePath={'https://i.ibb.co/Kyjr50C/Image.png'}
-                currency={'ETH'}
-                price={'0.1'}
-                description={'Membership Description'}
-                className={`lg:row-start-3 ${getColStart(0)}`}
+                clubName={clubName ?? ''}
+                id={mem.id}
+                name={mem.name}
+                imagePath={mem.imageSrc}
+                currency={mem.currency}
+                price={mem.price.toString()}
+                description={mem.description}
+                action={`/join/${mem.id}`}
+                actionLabel={'Purchase'}
               />
-              <MembershipOption
-                clubName={'Your Club'}
-                id={'3'}
-                name={'Membership Name'}
-                imagePath={'https://i.ibb.co/nrdKDQy/Image-1.png'}
-                currency={'DEV'}
-                price={'0.1'}
-                description={'Membership Description'}
-                className={`lg:row-start-3 ${getColStart(1)}`}
-              />
-            </div>
+            {/each}
           </div>
         </div>
       </div>
@@ -192,7 +163,9 @@
         </div>
       {/if}
       <!-- Memberships -->
-      <div class="grid grid-cols-3 justify-between gap-4">
+      <div
+        class="grid grid-cols-[repeat(auto-fit,_minmax(120px,_1fr))] justify-between gap-4"
+      >
         {#each collection.memberships as mem, i}
           <MembershipOption
             clubName={clubName ?? 'Your Club'}
@@ -202,7 +175,6 @@
             price={mem.price.toString()}
             currency={mem.currency}
             description={mem.description}
-            className={`lg:row-start-3 ${getColStart(i)}`}
             action={`/collections/checkout/${bytes32Hex(mem.payload)}`}
             actionLabel="Purchase"
           />
