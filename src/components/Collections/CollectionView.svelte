@@ -115,6 +115,7 @@
           <div
             class="grid w-full grid-cols-[repeat(auto-fit,_minmax(120px,_1fr))] justify-between gap-4"
           >
+            <!-- TODO: Collection should be having a list of required memberships as an access control -->
             {#each collection.memberships as mem}
               <MembershipOption
                 clubName={clubName ?? ''}
