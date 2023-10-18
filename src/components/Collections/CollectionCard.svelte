@@ -7,13 +7,13 @@
 
 {#if collections.length > 0}
   {#each collections as collection}
-    <a href={`${base}/${collection.id}`}>
+    <a href={`${base}/${collection.id}`} class="group">
       <div
-        class="mb-16 grid max-w-4xl items-start gap-4 rounded-2xl rounded-2xl bg-white"
+        class="mb-16 grid max-w-4xl items-start gap-4 overflow-hidden rounded-2xl rounded-2xl bg-white shadow transition-shadow group-hover:shadow-xl"
       >
-        <div class="flex items-start gap-2.5">
+        <div class="flex items-start gap-2.5 overflow-hidden">
           <img
-            class="w-full max-w-4xl rounded-t-2xl object-cover"
+            class="w-full max-w-4xl rounded-t-2xl object-cover transition-transform duration-300 group-hover:scale-110"
             src={collection.imageSrc?.trim().length > 0
               ? collection.imageSrc
               : emptyDummyImage(2400, 1200)}

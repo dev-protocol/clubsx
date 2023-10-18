@@ -2,14 +2,11 @@
 import type { Collection } from '@plugins/collections'
 import CollectionView from '@components/Collections/CollectionView.svelte'
 
-const { collection} = Astro.props as { 
-    collection: Collection
+const { collection } = Astro.props as {
+  collection: Collection
 }
 ---
 
 <div>
-    <CollectionView
-    client:only="svelte"
-    collection={collection}
-    />
+  <CollectionView client:load collection={collection} />
 </div>
