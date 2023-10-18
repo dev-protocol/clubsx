@@ -1190,7 +1190,9 @@
               clubName={clubName ?? 'Your Club'}
               id={mem.id}
               name={mem.name}
-              imagePath={mem.imageSrc}
+              imagePath={mem.imageSrc.trim().length > 0
+                ? mem.imageSrc
+                : emptyDummyImage(400, 400)}
               price={mem.price.toString()}
               currency={mem.currency}
               description={mem.description}
