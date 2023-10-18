@@ -910,7 +910,7 @@
             placeholder="Name of product"
           />
         </label>
-        <div class="hs-form-field is-filled is-required">
+        <label class="hs-form-field is-filled is-required">
           <span class="hs-form-field__label">Image</span>
           <div
             class="aspect-square w-full max-w-sm cursor-pointer rounded-xl border border-[#ffffff1a] bg-[#ffffff1a] p-2"
@@ -934,7 +934,7 @@
             disabled={membershipExists}
             on:change={onMembershipFileSelected}
           />
-        </div>
+        </label>
         {#if !isTimeLimitedCollection}
           <label class="hs-form-field is-filled is-required">
             <span class="hs-form-field__label">Maximum number of sales</span>
