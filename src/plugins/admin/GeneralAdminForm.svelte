@@ -124,7 +124,7 @@
         >
           <img
             src={avatarPath.toString()}
-            class="rounded object-cover"
+            class="h-full w-full rounded object-cover"
             alt=""
           />
           <input
