@@ -5,6 +5,7 @@ import MembershipOption from '@components/AdminMembershipsForm/MembershipOption.
 
 import type { SlotLeft } from './types';
 import type { Collection } from '@plugins/collections';
+  import { bytes32Hex } from '@fixtures/data/hexlify'
 
 export let clubName: string | undefined = undefined
 
@@ -82,7 +83,7 @@ export let collection: Collection
                 <div class="text-justify">
                 <span class="text-2xl font-bold leading-9">{collection.name}</span>
                 </div>
-            </div>  
+            </div>
             <!-- Collection Description -->
             <div class="flex flex-col items-start self-stretch gap-2.5">
                 <p class="text-justify text-2xl font-normal">
@@ -176,9 +177,11 @@ export let collection: Collection
                         currency={mem.currency}
                         description={mem.description}
                         className={`lg:row-start-3 ${getColStart(i)}`}
+                        action={`/collections/checkout/${bytes32Hex(mem.payload)}`}
+                        actionLabel='Buy'
                     />
                 {/each}
             </div>
         </div>
-    </div>     
+    </div>
 </div>
