@@ -1160,7 +1160,7 @@
         <!-- Save & Delete Buttons -->
         <div class="mb-8 flex items-start gap-16">
           <button
-            on:click={() => update()}
+            on:click={() => handleSaveClick()}
             class={`hs-button is-filled is-large`}
           >
             Save
