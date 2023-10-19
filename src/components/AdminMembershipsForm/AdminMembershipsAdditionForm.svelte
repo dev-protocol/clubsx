@@ -14,14 +14,13 @@
   import BigNumber from 'bignumber.js'
   import { clientsSTokens } from '@devprotocol/dev-kit'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
-  import { buildConfig, controlModal } from '@devprotocol/clubs-core/events'
+  import { buildConfig } from '@devprotocol/clubs-core/events'
   import {
     DEV_TOKEN_PAYMENT_TYPE_FEE,
     PAYMENT_TYPE_INSTANT_FEE,
     PAYMENT_TYPE_STAKE_FEE,
   } from '@constants/memberships'
-  import { tokenInfo } from '@constants/common'
-  import { bytes32Hex } from '@fixtures/data/hexlify'
+  import { bytes32Hex } from '@devprotocol/clubs-core'
 
   export let useOnFinishCallback: boolean = false
   export let currentPluginIndex: number
@@ -203,12 +202,16 @@
     update()
     connectOnMount()
 
-    const membershipDescriptionElement = document.getElementById('membership-description')
+    const membershipDescriptionElement = document.getElementById(
+      'membership-description',
+    )
     if (membershipDescriptionElement) {
-      membershipDescriptionElement!.style.height = membershipDescriptionElement!.scrollHeight + 'px'
+      membershipDescriptionElement!.style.height =
+        membershipDescriptionElement!.scrollHeight + 'px'
       membershipDescriptionElement!.oninput = async () => {
         membershipDescriptionElement!.style.height = 'auto'
-        membershipDescriptionElement!.style.height = membershipDescriptionElement!.scrollHeight + 'px'
+        membershipDescriptionElement!.style.height =
+          membershipDescriptionElement!.scrollHeight + 'px'
       }
     }
 

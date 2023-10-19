@@ -17,7 +17,7 @@
   import Skeleton from '@components/Global/Skeleton.svelte'
   import Check from './Check.svelte'
   import { type Signer, hashMessage, JsonRpcProvider } from 'ethers'
-  import { bytes32Hex } from '@fixtures/data/hexlify'
+  import { bytes32Hex } from '@devprotocol/clubs-core'
   import { marked } from 'marked'
   import DOMPurify from 'dompurify'
   import { Modals, closeAllModals, closeModal, openModal } from 'svelte-modals'

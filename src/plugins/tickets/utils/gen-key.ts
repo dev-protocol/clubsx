@@ -1,4 +1,4 @@
-import { bytes32Hex } from '@fixtures/data/hexlify'
+import { bytes32Hex } from '@devprotocol/clubs-core'
 import { meta } from '..'
 
 export const genHistoryKey = (

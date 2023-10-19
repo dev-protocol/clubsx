@@ -12,7 +12,7 @@
   } from 'ethers'
   import { tokenInfo } from '@constants/common'
   import BigNumber from 'bignumber.js'
-  import { bytes32Hex } from '@fixtures/data/hexlify'
+  import { bytes32Hex } from '@devprotocol/clubs-core'
   import type { ExpectedStatus } from '@components/AdminMembershipsForm/types'
   import SyncStatus from '@components/AdminMembershipsForm/SyncStatus.svelte'
 
@@ -36,7 +36,10 @@
         requiredTokenAmount: parseUnits(String(mem.price), decimals),
         requiredTokenFee: mem.fee?.percentage
           ? parseUnits(
-              new BigNumber(mem.price).times(mem.fee.percentage).dp(decimals, 1).toFixed(),
+              new BigNumber(mem.price)
+                .times(mem.fee.percentage)
+                .dp(decimals, 1)
+                .toFixed(),
               decimals,
             )
           : 0n,
