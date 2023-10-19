@@ -27,15 +27,19 @@
           JSON.stringify(selectedMembership.payload),
     )
 
+    if (!membership) {
+      return;
+    }
+
     setOptions(
       [
         {
           key: 'memberships',
           value: [
             ...memberships.filter(
-              (m: Membership) => m.id !== selectedMembership.id,
+              (m: Membership) => m.id !== membership.id,
             ),
-            { ...membership, deprecated: true },
+            { ...selectedMembership, deprecated: true },
           ],
         },
       ],
@@ -59,15 +63,19 @@
           JSON.stringify(selectedMembership.payload),
     )
 
+    if (!membership) {
+      return;
+    }
+
     setOptions(
       [
         {
           key: 'memberships',
           value: [
             ...memberships.filter(
-              (m: Membership) => m.id !== selectedMembership.id,
+              (m: Membership) => m.id !== membership.id,
             ),
-            { ...membership, deprecated: false },
+            { ...selectedMembership, deprecated: false },
           ],
         },
       ],
