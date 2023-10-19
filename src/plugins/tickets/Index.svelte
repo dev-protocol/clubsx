@@ -8,7 +8,7 @@
   import { type TicketStatus, ticketStatus } from './utils/status'
   import Skeleton from '@components/Global/Skeleton.svelte'
   import { JsonRpcProvider } from 'ethers'
-  import { bytes32Hex } from '@fixtures/data/hexlify'
+  import { bytes32Hex } from '@devprotocol/clubs-core'
   import { client, clientsSTokens } from '@devprotocol/dev-kit'
   import PQueue from 'p-queue'
   import { reverse } from 'ramda'

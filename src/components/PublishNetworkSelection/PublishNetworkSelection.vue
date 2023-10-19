@@ -370,7 +370,7 @@ import {
 import type { DraftOptions } from '@constants/draft'
 import type { ERC20Image } from '@plugins/memberships/utils/types/setImageArg'
 import { tokenInfo } from '@constants/common'
-import { bytes32Hex } from '@fixtures/data/hexlify'
+import { bytes32Hex } from '@devprotocol/clubs-core'
 import StepperItem from './StepperItem.vue'
 import StepperSeparator from './StepperSeparator.vue'
 
