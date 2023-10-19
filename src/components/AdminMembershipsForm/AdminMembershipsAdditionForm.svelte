@@ -4,7 +4,6 @@
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import type { Membership } from '@plugins/memberships/index'
   import {
-    parseUnits,
     keccak256,
     JsonRpcProvider,
     ZeroAddress,
@@ -74,8 +73,12 @@
     const membership = existingMemberships.find(
       (m: Membership) =>
         JSON.stringify(m.payload) ===
-          JSON.stringify(selectedMembership.payload),
+          JSON.stringify(selectedMembership.payload)
     )
+
+    if (!membership) {
+      return;
+    }
 
     setOptions(
       [
@@ -83,9 +86,9 @@
           key: 'memberships',
           value: [
             ...existingMemberships.filter(
-              (m: Membership) => m.id !== selectedMembership.id,
+              (m: Membership) => m.id !== membership.id,
             ),
-            { ...membership, deprecated: true },
+            { ...selectedMembership, deprecated: true },
           ],
         },
       ],
@@ -101,8 +104,12 @@
     const membership = existingMemberships.find(
       (m: Membership) =>
         JSON.stringify(m.payload) ===
-          JSON.stringify(selectedMembership.payload),
+          JSON.stringify(selectedMembership.payload)
     )
+
+    if (!membership) {
+      return;
+    }
 
     setOptions(
       [
@@ -110,9 +117,9 @@
           key: 'memberships',
           value: [
             ...existingMemberships.filter(
-              (m: Membership) => m.id !== selectedMembership.id,
+              (m: Membership) => m.id !== membership.id,
             ),
-            { ...membership, deprecated: false },
+            { ...selectedMembership, deprecated: false },
           ],
         },
       ],
