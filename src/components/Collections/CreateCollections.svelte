@@ -166,8 +166,6 @@
 
     const membership = collection.memberships.find(
       (m: CollectionMembership) =>
-        m.id === selectedMembership.id &&
-        m.name === selectedMembership.name &&
         JSON.stringify(m.payload) ===
           JSON.stringify(selectedMembership.payload),
     )
@@ -203,8 +201,6 @@
 
     const membership = selectedCollection.memberships.find(
       (m: CollectionMembership) =>
-        m.id === selectedMembership.id &&
-        m.name === selectedMembership.name &&
         JSON.stringify(m.payload) ===
           JSON.stringify(selectedMembership.payload),
     )

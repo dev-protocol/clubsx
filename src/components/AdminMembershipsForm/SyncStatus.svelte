@@ -78,7 +78,7 @@
     const expectedValues = values(data.state)
     const resultValues = arrayify(res ?? {})
     const test = expectedValues.every((v, i) => resultValues[i] === v)
-    console.log('checkImage', test, propertyAddress, data)    
+    console.log('checkImage', test, propertyAddress, data)
     return test
   }
 
@@ -196,7 +196,7 @@
     Memberships just created are not yet published on the blockchain. Submit all
     transactions to start offering memberships.
   </p>
-  <div class="max-h-96 overflow-y-auto rounded-md">   
+  <div class="max-h-96 overflow-y-auto rounded-md">
     <table
     class="w-full max-w-5xl border-separate overflow-x-auto rounded-md border border-dp-blue-grey-200"
     >

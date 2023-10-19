@@ -73,8 +73,6 @@
 
     const membership = existingMemberships.find(
       (m: Membership) =>
-        m.id === selectedMembership.id &&
-        m.name === selectedMembership.name &&
         JSON.stringify(m.payload) ===
           JSON.stringify(selectedMembership.payload),
     )
@@ -102,8 +100,6 @@
 
     const membership = existingMemberships.find(
       (m: Membership) =>
-        m.id === selectedMembership.id &&
-        m.name === selectedMembership.name &&
         JSON.stringify(m.payload) ===
           JSON.stringify(selectedMembership.payload),
     )
