@@ -5,6 +5,8 @@ import {
   adminFactory,
   decode,
   ClubsSlotName,
+  type ClubsFunctionFactoryOptions,
+  type ClubsFunctionAdminFactoryResult,
 } from '@devprotocol/clubs-core'
 import { config as _config } from '@fixtures/config'
 import VercelAnalytics from '@components/Analytics/VercelAnalytics.astro'
@@ -21,10 +23,14 @@ import { replaceWithFwdHost } from '@fixtures/url'
 
 const { site, page } = Astro.params
 
-const { getStaticPaths } = adminFactory({
+const options = {
   config: async () => await _config(site),
   plugins: [admin, marketplace, ...plugins],
-})
+} satisfies ClubsFunctionFactoryOptions
+
+const { getStaticPaths } = adminFactory(
+  options,
+) as ClubsFunctionAdminFactoryResult<typeof options>
 const _path = (await getStaticPaths()).find(
   ({ params }) => params.page === page,
 )
