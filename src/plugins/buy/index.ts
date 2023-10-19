@@ -10,10 +10,7 @@ import {
 import { default as Index } from './index.astro'
 import { default as Id } from './[id].astro'
 
-export const getPagePaths: ClubsFunctionGetPagePaths = async (
-  options,
-  { propertyAddress, rpcUrl },
-) => {
+export const getPagePaths = (async (options, { propertyAddress, rpcUrl }) => {
   const products = options.find((opt) => opt.key === 'products')
     ?.value as UndefinedOr<Membership[]>
   return products
@@ -26,18 +23,19 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
         })),
       ]
     : []
-}
+}) satisfies ClubsFunctionGetPagePaths
 
-export const getAdminPaths: ClubsFunctionGetAdminPaths = async () => []
+export const getAdminPaths =
+  (async () => []) satisfies ClubsFunctionGetAdminPaths
 
-export const meta: ClubsPluginMeta = {
+export const meta = {
   id: 'devprotocol:clubs:plugin:buy',
   displayName: 'Buy',
   category: ClubsPluginCategory.Monetization,
-}
+} satisfies ClubsPluginMeta
 
 export default {
   getPagePaths,
   getAdminPaths,
   meta,
-} as ClubsFunctionPlugin
+} satisfies ClubsFunctionPlugin

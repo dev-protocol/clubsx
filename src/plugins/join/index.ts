@@ -15,7 +15,7 @@ import { Content as Readme } from './README.md'
 import Preview1 from './assets/join-1.jpg'
 import Preview2 from './assets/join-2.jpg'
 
-export const getPagePaths: ClubsFunctionGetPagePaths = async (
+export const getPagePaths = (async (
   _,
   { propertyAddress, name, rpcUrl },
   { getPluginConfigById },
@@ -87,11 +87,12 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
         ),
       ]
     : []
-}
+}) satisfies ClubsFunctionGetPagePaths
 
-export const getAdminPaths: ClubsFunctionGetAdminPaths = async () => []
+export const getAdminPaths =
+  (async () => []) satisfies ClubsFunctionGetAdminPaths
 
-export const meta: ClubsPluginMeta = {
+export const meta = {
   id: 'devprotocol:clubs:plugin:join',
   displayName: 'Join',
   category: ClubsPluginCategory.Uncategorized,
@@ -103,10 +104,10 @@ export const meta: ClubsPluginMeta = {
   description: `Add checkout pages for each tier.`,
   previewImages: [Preview1.src, Preview2.src],
   readme: Readme,
-}
+} satisfies ClubsPluginMeta
 
 export default {
   getPagePaths,
   getAdminPaths,
   meta,
-} as ClubsFunctionPlugin
+} satisfies ClubsFunctionPlugin
