@@ -73,7 +73,7 @@
     const membership = existingMemberships.find(
       (m: Membership) =>
         JSON.stringify(m.payload) ===
-          JSON.stringify(selectedMembership.payload)
+          JSON.stringify(selectedMembership.payload) // Using only payload for check handles membership name, id edits as well.
     )
 
     if (!membership) {
@@ -86,9 +86,9 @@
           key: 'memberships',
           value: [
             ...existingMemberships.filter(
-              (m: Membership) => m.id !== membership.id,
+              (m: Membership) => m.id !== membership.id, // We use m.id and membership.id because selectedMembership.id might have changed (if edited)
             ),
-            { ...selectedMembership, deprecated: true },
+            { ...selectedMembership, deprecated: true }, // Using `selectedMembership` handles edit membership while activating/deleting
           ],
         },
       ],
