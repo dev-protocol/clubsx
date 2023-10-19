@@ -13,9 +13,9 @@ import { default as Funds } from './funds.astro'
 import { default as Plugins } from './plugins.astro'
 import { default as Overview } from './overview.astro'
 
-export const getPagePaths: ClubsFunctionGetPagePaths = async () => []
+export const getPagePaths = (async () => []) satisfies ClubsFunctionGetPagePaths
 
-export const getAdminPaths: ClubsFunctionGetAdminPaths = async (_, config) => {
+export const getAdminPaths = (async (_, config) => {
   const membersihpPlugin = config.plugins.find(
     (plg) => plg.id === 'devprotocol:clubs:simple-memberships',
   )
@@ -55,16 +55,16 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (_, config) => {
       },
     },
   ]
-}
+}) satisfies ClubsFunctionGetAdminPaths
 
-export const meta: ClubsPluginMeta = {
+export const meta = {
   id: 'clubs-core:admin',
   displayName: 'Example',
   category: ClubsPluginCategory.Uncategorized,
-}
+} satisfies ClubsPluginMeta
 
 export default {
   getPagePaths,
   getAdminPaths,
   meta,
-} as ClubsFunctionPlugin
+} satisfies ClubsFunctionPlugin

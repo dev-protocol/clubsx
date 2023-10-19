@@ -89,9 +89,9 @@ const presets: Membership[] = [
   },
 ]
 
-export const getPagePaths: ClubsFunctionGetPagePaths = async () => []
+export const getPagePaths = (async () => []) satisfies ClubsFunctionGetPagePaths
 
-export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
+export const getAdminPaths = (async (
   options,
   { name, rpcUrl, propertyAddress },
 ) => {
@@ -137,9 +137,9 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
       },
     })) ?? []),
   ]
-}
+}) satisfies ClubsFunctionGetAdminPaths
 
-export const getSlots: ClubsFunctionGetSlots = async (
+export const getSlots = (async (
   options,
   { propertyAddress, rpcUrl, chainId },
   { paths, factory },
@@ -168,9 +168,9 @@ export const getSlots: ClubsFunctionGetSlots = async (
         },
       ]
     : []
-}
+}) satisfies ClubsFunctionGetSlots
 
-export const meta: ClubsPluginMeta = {
+export const meta = {
   id: 'devprotocol:clubs:simple-memberships',
   displayName: 'Memberships',
   category: ClubsPluginCategory.Monetization,
@@ -182,11 +182,11 @@ export const meta: ClubsPluginMeta = {
   description: `Simplest tool for creating membership NFT.`,
   previewImages: [Preview1.src, Preview2.src, Preview3.src],
   readme: Readme,
-}
+} satisfies ClubsPluginMeta
 
 export default {
   getPagePaths,
   getAdminPaths,
   getSlots,
   meta,
-} as ClubsFunctionPlugin
+} satisfies ClubsFunctionPlugin

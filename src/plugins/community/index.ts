@@ -14,12 +14,11 @@ import { default as Icon } from './assets/icon.svg'
 import { Content as Readme } from './README.md'
 import Preview1 from './assets/community-1.jpg'
 
-export const getPagePaths: ClubsFunctionGetPagePaths = async (
-  options,
-  { name },
-) => [{ paths: ['community'], component: Index, props: { name, options } }]
+export const getPagePaths = (async (options, { name }) => [
+  { paths: ['community'], component: Index, props: { name, options } },
+]) satisfies ClubsFunctionGetPagePaths
 
-export const getAdminPaths: ClubsFunctionGetAdminPaths = async (options) => [
+export const getAdminPaths = (async (options) => [
   {
     paths: ['community'],
     component: Admin,
@@ -27,13 +26,9 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (options) => [
       options,
     },
   },
-]
+]) satisfies ClubsFunctionGetAdminPaths
 
-export const getSlots: ClubsFunctionGetSlots = async (
-  _,
-  config,
-  { paths, factory },
-) => {
+export const getSlots = (async (_, config, { paths, factory }) => {
   const [path] = paths
   return factory === 'admin' && path === 'community'
     ? [
@@ -50,9 +45,9 @@ export const getSlots: ClubsFunctionGetSlots = async (
         },
       ]
     : []
-}
+}) satisfies ClubsFunctionGetSlots
 
-export const meta: ClubsPluginMeta = {
+export const meta = {
   id: 'devprotocol:clubs:plugin:community',
   displayName: 'Discord',
   category: ClubsPluginCategory.Growth,
@@ -64,11 +59,11 @@ export const meta: ClubsPluginMeta = {
   description: `Add guild.xyz link.`,
   previewImages: [Preview1.src],
   readme: Readme,
-}
+} satisfies ClubsPluginMeta
 
 export default {
   getPagePaths,
   getAdminPaths,
   getSlots,
   meta,
-} as ClubsFunctionPlugin
+} satisfies ClubsFunctionPlugin

@@ -57,7 +57,7 @@ export type Tickets = Ticket[]
 export type TicketHistory = { datetime: Date }
 export type TicketHistories = Record<string, TicketHistory>
 
-export const getPagePaths: ClubsFunctionGetPagePaths = async (
+export const getPagePaths = (async (
   options,
   { propertyAddress, rpcUrl },
   { getPluginConfigById },
@@ -99,12 +99,9 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
         })),
       ]
     : []
-}
+}) satisfies ClubsFunctionGetPagePaths
 
-export const getApiPaths: ClubsFunctionGetApiPaths = async (
-  options,
-  { propertyAddress, rpcUrl },
-) => {
+export const getApiPaths = (async (options, { propertyAddress, rpcUrl }) => {
   const tickets = getItems(options)
   const [{ get }, { post }] = await Promise.all([
     import('./api/get'),
@@ -123,13 +120,9 @@ export const getApiPaths: ClubsFunctionGetApiPaths = async (
       handler: post({ ticket, propertyAddress, rpcUrl }),
     })),
   ]
-}
+}) satisfies ClubsFunctionGetApiPaths
 
-export const getSlots: ClubsFunctionGetSlots = async (
-  options,
-  _,
-  { factory },
-) => {
+export const getSlots = (async (options, _, { factory }) => {
   const tickets = getItems(options)
 
   return factory === 'page'
@@ -143,9 +136,9 @@ export const getSlots: ClubsFunctionGetSlots = async (
         },
       ]
     : []
-}
+}) satisfies ClubsFunctionGetSlots
 
-export const meta: ClubsPluginMeta = {
+export const meta = {
   id: 'devprotocol:clubs:plugin:tickets',
   displayName: 'Tickets',
   category: ClubsPluginCategory.Growth,
@@ -153,11 +146,11 @@ export const meta: ClubsPluginMeta = {
   description: 'Ticketing with your membership.',
   previewImages: [tickets1.src, tickets2.src, tickets3.src],
   readme,
-}
+} satisfies ClubsPluginMeta
 
 export default {
   getPagePaths,
   getApiPaths,
   getSlots,
   meta,
-} as ClubsFunctionPlugin
+} satisfies ClubsFunctionPlugin

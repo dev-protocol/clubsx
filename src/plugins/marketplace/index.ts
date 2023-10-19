@@ -9,9 +9,9 @@ import {
 import { default as Admin } from './admin.astro'
 import { default as Plugin } from './[pluginId].astro'
 
-export const getPagePaths: ClubsFunctionGetPagePaths = async () => []
+export const getPagePaths = (async () => []) satisfies ClubsFunctionGetPagePaths
 
-export const getAdminPaths: ClubsFunctionGetAdminPaths = async (_, config) => {
+export const getAdminPaths = (async (_, config) => {
   const allInstallablePlugins: InstallablePlugins[] = installablePlugins
 
   return [
@@ -26,16 +26,16 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (_, config) => {
       props: { config, showAside: false, plugin },
     })),
   ]
-}
+}) satisfies ClubsFunctionGetAdminPaths
 
-export const meta: ClubsPluginMeta = {
+export const meta = {
   id: 'devprotocol:clubs:clubsx:marketplace',
   displayName: 'Marketplace',
   category: ClubsPluginCategory.Uncategorized,
-}
+} satisfies ClubsPluginMeta
 
 export default {
   getPagePaths,
   getAdminPaths,
   meta,
-} as ClubsFunctionPlugin
+} satisfies ClubsFunctionPlugin

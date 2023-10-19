@@ -25,7 +25,7 @@ import Preview2 from './assets/message-2.jpg'
 import Preview3 from './assets/message-3.jpg'
 import { randomBytes } from 'ethers'
 
-export const getPagePaths: ClubsFunctionGetPagePaths = async (
+export const getPagePaths = (async (
   options,
   { propertyAddress },
   { getPluginConfigById },
@@ -67,9 +67,9 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
       }
     }),
   ]
-}
+}) satisfies ClubsFunctionGetPagePaths
 
-export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
+export const getAdminPaths = (async (
   options,
   { url },
   { getPluginConfigById },
@@ -112,13 +112,9 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
       },
     })) ?? []),
   ]
-}
+}) satisfies ClubsFunctionGetAdminPaths
 
-export const getSlots: ClubsFunctionGetSlots = async (
-  options,
-  config,
-  { paths, factory },
-) => {
+export const getSlots = (async (options, config, { paths, factory }) => {
   const forms =
     (options.find((opt) => opt.key === 'forms')?.value as UndefinedOr<
       GatedMessage[]
@@ -153,9 +149,9 @@ export const getSlots: ClubsFunctionGetSlots = async (
         },
       ]
     : []
-}
+}) satisfies ClubsFunctionGetSlots
 
-export const meta: ClubsPluginMeta = {
+export const meta = {
   id: 'devprotocol:clubs:gated-contact-form',
   displayName: 'Contact form',
   category: ClubsPluginCategory.Growth,
@@ -167,11 +163,11 @@ export const meta: ClubsPluginMeta = {
   description: `Token-gated contact form.`,
   previewImages: [Preview1.src, Preview2.src, Preview3.src],
   readme: Readme,
-}
+} satisfies ClubsPluginMeta
 
 export default {
   getPagePaths,
   getAdminPaths,
   getSlots,
   meta,
-} as ClubsFunctionPlugin
+} satisfies ClubsFunctionPlugin
