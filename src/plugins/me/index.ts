@@ -10,14 +10,14 @@ import { default as Icon } from './assets/icon.svg'
 import { Content as Readme } from './README.md'
 import Preview1 from './assets/me-1.jpg'
 
-export const getPagePaths: ClubsFunctionGetPagePaths = async (
-  _,
-  { propertyAddress, rpcUrl },
-) => [{ paths: ['me'], component: Index, props: { propertyAddress, rpcUrl } }]
+export const getPagePaths = (async (_, { propertyAddress, rpcUrl }) => [
+  { paths: ['me'], component: Index, props: { propertyAddress, rpcUrl } },
+]) satisfies ClubsFunctionGetPagePaths
 
-export const getAdminPaths: ClubsFunctionGetAdminPaths = async () => []
+export const getAdminPaths =
+  (async () => []) satisfies ClubsFunctionGetAdminPaths
 
-export const meta: ClubsPluginMeta = {
+export const meta = {
   id: 'devprotocol:clubs:plugin:me',
   displayName: 'Me',
   category: ClubsPluginCategory.Uncategorized,
@@ -29,10 +29,10 @@ export const meta: ClubsPluginMeta = {
   description: `User's personal page.`,
   previewImages: [Preview1.src],
   readme: Readme,
-}
+} satisfies ClubsPluginMeta
 
 export default {
   getPagePaths,
   getAdminPaths,
   meta,
-} as ClubsFunctionPlugin
+} satisfies ClubsFunctionPlugin

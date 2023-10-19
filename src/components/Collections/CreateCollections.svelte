@@ -1,6 +1,6 @@
 <script lang="ts">
   import { ClubsEvents, setOptions } from '@devprotocol/clubs-core'
-  import { buildConfig, controlModal } from '@devprotocol/clubs-core/events'
+  import { buildConfig, controlModal } from '@devprotocol/clubs-core'
   import type { Collection, CollectionMembership } from '@plugins/collections'
   import MembershipOption from '@components/AdminMembershipsForm/MembershipOption.svelte'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
@@ -10,17 +10,29 @@
     PAYMENT_TYPE_STAKE_FEE,
   } from '@constants/memberships'
 
-  import { emptyDummyImage, formatUnixTimestamp } from '@plugins/collections/fixtures'
+  import {
+    emptyDummyImage,
+    formatUnixTimestamp,
+  } from '@plugins/collections/fixtures'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
-  import { address, callSlotCollections } from '@plugins/collections/utils/slotCollections'
+  import {
+    address,
+    callSlotCollections,
+  } from '@plugins/collections/utils/slotCollections'
   import type { Image } from '@plugins/collections/utils/types/setImageArg'
-  import { randomBytes, parseUnits, keccak256, JsonRpcProvider, ZeroAddress, type Signer } from 'ethers'
+  import {
+    randomBytes,
+    parseUnits,
+    keccak256,
+    JsonRpcProvider,
+    ZeroAddress,
+    type Signer,
+  } from 'ethers'
   import { onMount } from 'svelte'
   import BigNumber from 'bignumber.js'
   import { clientsSTokens } from '@devprotocol/dev-kit'
   import { tokenInfo } from '@constants/common'
-  import { bytes32Hex } from '@fixtures/data/hexlify'
-
+  import { bytes32Hex } from '@devprotocol/clubs-core'
 
   export let existingCollections: Collection[] = []
   export let collection: Collection
@@ -30,7 +42,7 @@
   export let useOnFinishCallback: boolean = false
   export let currentPluginIndex: number
 
-  export let mode: 'edit'| 'editMem' | 'create' = 'create'
+  export let mode: 'edit' | 'editMem' | 'create' = 'create'
   export let rpcUrl: string
   export let propertyAddress: string | null | undefined = undefined
 
@@ -40,7 +52,7 @@
 
   type MembershipPaymentType = 'instant' | 'stake' | 'custom' | ''
   // note: treat this variable as state variable which stores the state for memberships edits and also for storing in DB
-  const defaultMembership: CollectionMembership =  {
+  const defaultMembership: CollectionMembership = {
     id: '',
     name: 'My First Membership',
     description: '',
@@ -115,7 +127,7 @@
   const onCollectionFileSelected = async (
     e: Event & {
       currentTarget: EventTarget & HTMLInputElement
-    }
+    },
   ) => {
     if (!e.currentTarget.files || !collection) {
       return
@@ -124,7 +136,7 @@
     const file = e.currentTarget.files[0]
 
     collection.imageSrc =
-    (await uploadImageAndGetPath(file)) || emptyDummyImage(2400, 1200)
+      (await uploadImageAndGetPath(file)) || emptyDummyImage(2400, 1200)
 
     collection = collection
 
@@ -134,7 +146,7 @@
   const onMembershipFileSelected = async (
     e: Event & {
       currentTarget: EventTarget & HTMLInputElement
-    }
+    },
   ) => {
     if (!e.currentTarget.files || !membership) {
       return
@@ -156,7 +168,8 @@
       (m: CollectionMembership) =>
         m.id === selectedMembership.id &&
         m.name === selectedMembership.name &&
-        JSON.stringify(m.payload) === JSON.stringify(selectedMembership.payload)
+        JSON.stringify(m.payload) ===
+          JSON.stringify(selectedMembership.payload),
     )
 
     setOptions(
@@ -168,7 +181,7 @@
               ...collection,
               memberships: [
                 ...collection.memberships.filter(
-                  (m: CollectionMembership) => m.id !== selectedMembership.id
+                  (m: CollectionMembership) => m.id !== selectedMembership.id,
                 ),
                 { ...membership, deprecated: true },
               ],
@@ -176,7 +189,7 @@
           ],
         },
       ],
-      currentPluginIndex
+      currentPluginIndex,
     )
 
     setTimeout(buildConfig, 50)
@@ -184,7 +197,7 @@
 
   const activateMembership = (
     selectedCollection: Collection,
-    selectedMembership: CollectionMembership
+    selectedMembership: CollectionMembership,
   ) => {
     updatingMembershipsStatus = true
 
@@ -192,7 +205,8 @@
       (m: CollectionMembership) =>
         m.id === selectedMembership.id &&
         m.name === selectedMembership.name &&
-        JSON.stringify(m.payload) === JSON.stringify(selectedMembership.payload)
+        JSON.stringify(m.payload) ===
+          JSON.stringify(selectedMembership.payload),
     )
 
     setOptions(
@@ -201,13 +215,13 @@
           key: 'collections',
           value: [
             ...existingCollections.filter(
-              (c: Collection) => c.id !== selectedCollection.id
+              (c: Collection) => c.id !== selectedCollection.id,
             ),
             {
               ...selectedCollection,
               memberships: [
                 ...selectedCollection.memberships.filter(
-                  (m: CollectionMembership) => m.id !== selectedMembership.id
+                  (m: CollectionMembership) => m.id !== selectedMembership.id,
                 ),
                 { ...membership, deprecated: false },
               ],
@@ -215,16 +229,16 @@
           ],
         },
       ],
-      currentPluginIndex
+      currentPluginIndex,
     )
     setTimeout(buildConfig, 50)
   }
 
   let formattedStartTime = formatUnixTimestamp(
-    collection.startTime || new Date().getTime() / 1000
+    collection.startTime || new Date().getTime() / 1000,
   )
   let formattedEndTime = formatUnixTimestamp(
-    collection.endTime || new Date().getTime() / 1000 + 120
+    collection.endTime || new Date().getTime() / 1000 + 120,
   )
 
   const onStartTimeChange = (event: Event) => {
@@ -275,7 +289,9 @@
     }
   }
 
-  const onChangeMemberCount = async (selectedMembership :CollectionMembership) => {
+  const onChangeMemberCount = async (
+    selectedMembership: CollectionMembership,
+  ) => {
     const value = selectedMembership.memberCount ?? 0
 
     if (value < 1) {
@@ -286,24 +302,29 @@
     } else {
       invalidPriceMsg = ''
     }
-    if (selectedMembership.memberCount === 0 || !selectedMembership.memberCount) {
+    if (
+      selectedMembership.memberCount === 0 ||
+      !selectedMembership.memberCount
+    ) {
       return
     }
     collection = {
-        ...collection,
-        memberships: [
-          ...collection.memberships.filter(
-            (m: CollectionMembership) => m.id !== selectedMembership.id
-          ),
-          {
-            ...selectedMembership
-          },
-        ],
-      }
+      ...collection,
+      memberships: [
+        ...collection.memberships.filter(
+          (m: CollectionMembership) => m.id !== selectedMembership.id,
+        ),
+        {
+          ...selectedMembership,
+        },
+      ],
+    }
     membership = selectedMembership
   }
 
-  const onChangeCustomFee = async (selectedMembership: CollectionMembership) => {
+  const onChangeCustomFee = async (
+    selectedMembership: CollectionMembership,
+  ) => {
     if (selectedMembership.currency === 'DEV') {
       // Update the membership fee in case of currency change to dev token.
       membershipPaymentType = 'custom'
@@ -315,16 +336,16 @@
           beneficiary: currentAddress ?? ZeroAddress,
           percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
         },
-        paymentType: 'custom'
+        paymentType: 'custom',
       }
       collection = {
         ...collection,
         memberships: [
           ...collection.memberships.filter(
-            (m: CollectionMembership) => m.id !== selectedMembership.id
+            (m: CollectionMembership) => m.id !== selectedMembership.id,
           ),
           {
-            ...selectedMembership
+            ...selectedMembership,
           },
         ],
       }
@@ -350,19 +371,19 @@
     selectedMembership = {
       ...membership,
       fee: {
-          percentage: membershipCustomFee100 / 100,
-          beneficiary: currentAddress ?? ZeroAddress,
-        },
-      paymentType: 'custom'
+        percentage: membershipCustomFee100 / 100,
+        beneficiary: currentAddress ?? ZeroAddress,
+      },
+      paymentType: 'custom',
     }
     collection = {
       ...collection,
       memberships: [
         ...collection.memberships.filter(
-          (m: CollectionMembership) => m.id !== selectedMembership.id
+          (m: CollectionMembership) => m.id !== selectedMembership.id,
         ),
         {
-          ...selectedMembership
+          ...selectedMembership,
         },
       ],
     }
@@ -390,7 +411,7 @@
 
   const changeMembershipPaymentType = async (
     selectedMembership: CollectionMembership,
-    type: MembershipPaymentType
+    type: MembershipPaymentType,
   ) => {
     if (selectedMembership.currency === 'DEV') {
       // Update the membership fee in case of currency change to dev token.
@@ -402,16 +423,16 @@
           percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
           beneficiary: currentAddress ?? ZeroAddress,
         },
-        paymentType: 'custom'
+        paymentType: 'custom',
       }
       collection = {
         ...collection,
         memberships: [
           ...collection.memberships.filter(
-            (m: CollectionMembership) => m.id !== selectedMembership.id
+            (m: CollectionMembership) => m.id !== selectedMembership.id,
           ),
           {
-            ...selectedMembership
+            ...selectedMembership,
           },
         ],
       }
@@ -429,16 +450,16 @@
           percentage: PAYMENT_TYPE_INSTANT_FEE,
           beneficiary: currentAddress ?? ZeroAddress,
         },
-        paymentType: 'instant'
+        paymentType: 'instant',
       }
       collection = {
         ...collection,
         memberships: [
           ...collection.memberships.filter(
-            (m: CollectionMembership) => m.id !== selectedMembership.id
+            (m: CollectionMembership) => m.id !== selectedMembership.id,
           ),
           {
-            ...selectedMembership
+            ...selectedMembership,
           },
         ],
       }
@@ -453,16 +474,16 @@
           percentage: PAYMENT_TYPE_STAKE_FEE,
           beneficiary: currentAddress ?? ZeroAddress,
         },
-        paymentType: 'stake'
+        paymentType: 'stake',
       }
       collection = {
         ...collection,
         memberships: [
           ...collection.memberships.filter(
-            (m: CollectionMembership) => m.id !== selectedMembership.id
+            (m: CollectionMembership) => m.id !== selectedMembership.id,
           ),
           {
-            ...selectedMembership
+            ...selectedMembership,
           },
         ],
       }
@@ -476,16 +497,16 @@
           percentage: membershipCustomFee100 / 100,
           beneficiary: currentAddress ?? ZeroAddress,
         },
-        paymentType: 'custom'
+        paymentType: 'custom',
       }
       collection = {
         ...collection,
         memberships: [
           ...collection.memberships.filter(
-            (m: CollectionMembership) => m.id !== selectedMembership.id
+            (m: CollectionMembership) => m.id !== selectedMembership.id,
           ),
           {
-            ...selectedMembership
+            ...selectedMembership,
           },
         ],
       }
@@ -505,7 +526,7 @@
     } else if (value > maxPrice) {
       selectedMembership.price = maxPrice
       invalidPriceMsg = `Price automatically set to maximum allowed value- ${maxPrice.toExponential(
-        3
+        3,
       )}`
     } else {
       invalidPriceMsg = ''
@@ -585,18 +606,18 @@
       ...membership,
       fee: {
         percentage: membershipCustomFee100,
-          beneficiary: currentAddress ?? ZeroAddress,
-        },
-      paymentType: 'custom'
+        beneficiary: currentAddress ?? ZeroAddress,
+      },
+      paymentType: 'custom',
     }
     collection = {
       ...collection,
       memberships: [
         ...collection.memberships.filter(
-          (m: CollectionMembership) => m.id !== selectedMembership.id
+          (m: CollectionMembership) => m.id !== selectedMembership.id,
         ),
         {
-          ...selectedMembership
+          ...selectedMembership,
         },
       ],
     }
@@ -616,41 +637,41 @@
       membershipPaymentType === ''
     )
       return
-    const searchMembershipId = mode === 'editMem' ? originalMembershipId : membership.id
+    const searchMembershipId =
+      mode === 'editMem' ? originalMembershipId : membership.id
 
     collection = {
       ...collection,
       memberships: isAdding // If we are adding/editing memberships only then append the membership state to db.
-        ? 
-        (collection.memberships.some(({ id }) => id === searchMembershipId) 
-          ?
-            [
+        ? collection.memberships.some(({ id }) => id === searchMembershipId)
+          ? [
               ...collection.memberships.map((_mem) =>
-              _mem.id === searchMembershipId ? membership : _mem,
-              )
+                _mem.id === searchMembershipId ? membership : _mem,
+              ),
             ]
-          :
-            [
+          : [
               ...collection.memberships.filter(
-                (m: CollectionMembership) => m.id !== membership.id
+                (m: CollectionMembership) => m.id !== membership.id,
               ),
               membership,
             ]
-        )
-        : collection.memberships
+        : collection.memberships,
     }
   }
 
   const update = () => {
     // OR condition with editMem is that, if the membership exists then it implies the collections exist first
-    const searchCollectionId = mode === 'edit' || 'editMem' ? originaCollectionlId : collection.id
+    const searchCollectionId =
+      mode === 'edit' || 'editMem' ? originaCollectionlId : collection.id
     const newCollections = [
-      ...existingCollections.filter((c: Collection) => c.id !== searchCollectionId),
+      ...existingCollections.filter(
+        (c: Collection) => c.id !== searchCollectionId,
+      ),
       collection,
     ]
     setOptions(
       [{ key: 'collections', value: newCollections }],
-      currentPluginIndex
+      currentPluginIndex,
     )
   }
 
@@ -712,7 +733,7 @@
       '/admin/collections/?ping=publish',
       location.origin,
     ).toString()
-}
+  }
 </script>
 
 <form on:change|preventDefault={() => update()} class="w-full">
@@ -721,12 +742,12 @@
     <div
       class="mb-16 flex w-[52.2%] flex-col items-start justify-start gap-[7px]"
     >
-    <div class="m-0 w-full items-center p-0">
-      <span class="mr-[13px] font-body">Collection name </span>
-      <span class="font-body text-[#EB48F8]"> * </span>
-    </div>
+      <div class="m-0 w-full items-center p-0">
+        <span class="mr-[13px] font-body">Collection name </span>
+        <span class="font-body text-[#EB48F8]"> * </span>
+      </div>
       <label class="hs-form-field is-filled">
-          <input
+        <input
           bind:value={collection.name}
           on:change={onCollectionChangeName}
           class="hs-form-field__input"
@@ -744,17 +765,19 @@
         <span class="text-base font-normal uppercase text-[#EB48F8]"> * </span>
       </div>
       <label class="cursor-pointer">
-        <div class="flex flex-col items-start self-stretch rounded-[19px] border border-[#ffffff1a] bg-[#ffffff1a] p-2">
-        {#if collection.imageSrc !== ''}
-        <img
-          class="object-cover h-[216px] w-[463px] rounded-[12px]"
-          src={collection.imageSrc}
-          alt={`${collection.name}-collection-cover-image`}
-        />
-        {:else}
-        <div class="h-[216px] w-[463px] rounded-[12px] bg-[#040B10]" />
-      {/if}
-    </div>
+        <div
+          class="flex flex-col items-start self-stretch rounded-[19px] border border-[#ffffff1a] bg-[#ffffff1a] p-2"
+        >
+          {#if collection.imageSrc !== ''}
+            <img
+              class="h-[216px] w-[463px] rounded-[12px] object-cover"
+              src={collection.imageSrc}
+              alt={`${collection.name}-collection-cover-image`}
+            />
+          {:else}
+            <div class="h-[216px] w-[463px] rounded-[12px] bg-[#040B10]" />
+          {/if}
+        </div>
         <input
           id="collection-cover-image"
           name="collection-cover-image"
@@ -777,7 +800,7 @@
         <span class="text-base font-normal uppercase text-[#EB48F8]"> * </span>
       </div>
       <label class="hs-form-field is-filled">
-          <input
+        <input
           bind:value={formattedStartTime}
           on:change={onStartTimeChange}
           type="datetime-local"
@@ -829,13 +852,13 @@
       </div>
       <label class="hs-form-field is-filled">
         <textarea
-        class="hs-form-field__input"
-        id="collection-description"
-        name="collection-description"
-        rows="3"
-        bind:value={collection.description}
+          class="hs-form-field__input"
+          id="collection-description"
+          name="collection-description"
+          rows="3"
+          bind:value={collection.description}
         />
-      <p class="hs-form-field__helper">Markdown is available</p>
+        <p class="hs-form-field__helper">Markdown is available</p>
       </label>
     </div>
 
@@ -875,7 +898,7 @@
           name={'Membership Name'}
           imagePath={'https://i.ibb.co/hLD6byP/1.jpg'}
           currency={'USDC'}
-          price={"100"}
+          price={'100'}
           description={'Membership Description'}
           className={`lg:row-start-3 ${getColStart(0)}`}
         />
@@ -885,7 +908,7 @@
           name={'Membership Name'}
           imagePath={'https://i.ibb.co/Kyjr50C/Image.png'}
           currency={'ETH'}
-          price={"0.1"}
+          price={'0.1'}
           description={'Membership Description'}
           className={`lg:row-start-3 ${getColStart(1)}`}
         />
@@ -895,7 +918,7 @@
           name={'Membership Name'}
           imagePath={'https://i.ibb.co/nrdKDQy/Image-1.png'}
           currency={'DEV'}
-          price={"0.1"}
+          price={'0.1'}
           description={'Membership Description'}
           className={`lg:row-start-3 ${getColStart(2)}`}
         />
@@ -907,7 +930,7 @@
       <h1 class="mb-16 font-title text-2xl font-bold">Collection Items</h1>
       <button
         type="button"
-        class={`hs-button is-large is-filled mb-16 w-fit c px-8 py-6 text-base font-bold text-white`}
+        class={`hs-button is-large is-filled c mb-16 w-fit px-8 py-6 text-base font-bold text-white`}
         on:click={() => setIsAdding(true)}
       >
         + Add
@@ -927,13 +950,13 @@
           </div>
           <label class="hs-form-field is-filled">
             <input
-            bind:value={membership.name}
-            on:change={onChangeName}
-            class="hs-form-field__input"
-            id="product-name"
-            name="product-name"
-            placeholder="Name of product"
-          />
+              bind:value={membership.name}
+              on:change={onChangeName}
+              class="hs-form-field__input"
+              id="product-name"
+              name="product-name"
+              placeholder="Name of product"
+            />
           </label>
         </div>
         <div
@@ -949,15 +972,15 @@
             <div
               class="flex flex-col items-start self-stretch rounded-[19px] border border-[#ffffff1a] bg-[#ffffff1a] p-2"
             >
-            {#if membership.imageSrc !== ''}
-              <img
-                class="object-cover h-[160px] w-[170px] rounded-[12px]"
-                src={membership.imageSrc}
-                alt={`${membership.name}-membership-image`}
-              />
+              {#if membership.imageSrc !== ''}
+                <img
+                  class="h-[160px] w-[170px] rounded-[12px] object-cover"
+                  src={membership.imageSrc}
+                  alt={`${membership.name}-membership-image`}
+                />
               {:else}
-              <div class="h-[160px] w-[170px] rounded-[12px] bg-[#040B10]" />
-            {/if}
+                <div class="h-[160px] w-[170px] rounded-[12px] bg-[#040B10]" />
+              {/if}
             </div>
             <input
               id="membership-image"
@@ -982,14 +1005,14 @@
             </div>
             <label class="hs-form-field is-filled">
               <input
-              bind:value={membership.memberCount}
-              on:change={() => onChangeMemberCount(membership)}
-              class="hs-form-field__input"
-              id="sales-number"
-              type="number"
-              name="sales-number"
-              min="1"
-              max="4294967294"
+                bind:value={membership.memberCount}
+                on:change={() => onChangeMemberCount(membership)}
+                class="hs-form-field__input"
+                id="sales-number"
+                type="number"
+                name="sales-number"
+                min="1"
+                max="4294967294"
               />
             </label>
           </div>
@@ -1097,7 +1120,9 @@
                   />
                 </svg>
               </span>
-              <span class={membershipPaymentType === 'stake' ? 'text-white' : ''}>
+              <span
+                class={membershipPaymentType === 'stake' ? 'text-white' : ''}
+              >
                 Stake
               </span>
             </button>
@@ -1195,14 +1220,14 @@
           </div>
           <label class="hs-form-field is-filled">
             <textarea
-            class="hs-form-field__input"
-            bind:value={membership.description}
-            on:change={updateState}
-            id="membership-description"
-            name="membership-description"
-            disabled={membershipExists}
+              class="hs-form-field__input"
+              bind:value={membership.description}
+              on:change={updateState}
+              id="membership-description"
+              name="membership-description"
+              disabled={membershipExists}
             />
-          <p class="hs-form-field__helper">Markdown is available</p>
+            <p class="hs-form-field__helper">Markdown is available</p>
           </label>
         </div>
 
@@ -1212,7 +1237,7 @@
             on:click={() => handleSaveClick()}
             type="button"
             class={`hs-button is-large is-filled w-fit rounded px-8 py-6 text-base font-bold text-white`}
-            >
+          >
             Save
           </button>
 
@@ -1234,26 +1259,28 @@
     <div class="grid grid-cols-3 justify-between gap-4">
       {#each collection.memberships as mem, i}
         {#if mem.id !== membership.id}
-        <div>
-          <MembershipOption
-          clubName={clubName ?? 'Your Club'}
-          id={mem.id}
-          name={mem.name}
-          imagePath={mem.imageSrc.trim().length > 0 ? mem.imageSrc : emptyDummyImage(400, 400)}
-          price={mem.price.toString()}
-          currency={mem.currency}
-          description={mem.description}
-          className={`lg:row-start-3 ${getColStart(i)}`}
-        />
-        <a
-        class="hs-button is-filled is-fullwidth mt-4 rounded px-8 py-6 text-base font-bold text-white"
-        href={`${collection.id}/${mem.id}`}
-      >
-        <span class="hs-button__label">Edit</span>
-      </a>
-        </div>
+          <div>
+            <MembershipOption
+              clubName={clubName ?? 'Your Club'}
+              id={mem.id}
+              name={mem.name}
+              imagePath={mem.imageSrc.trim().length > 0
+                ? mem.imageSrc
+                : emptyDummyImage(400, 400)}
+              price={mem.price.toString()}
+              currency={mem.currency}
+              description={mem.description}
+              className={`lg:row-start-3 ${getColStart(i)}`}
+            />
+            <a
+              class="hs-button is-filled is-fullwidth mt-4 rounded px-8 py-6 text-base font-bold text-white"
+              href={`${collection.id}/${mem.id}`}
+            >
+              <span class="hs-button__label">Edit</span>
+            </a>
+          </div>
         {/if}
-    {/each}
+      {/each}
     </div>
   </div>
 </form>

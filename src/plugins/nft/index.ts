@@ -9,10 +9,7 @@ import {
 } from '@devprotocol/clubs-core'
 import { default as Index } from './index.astro'
 
-export const getPagePaths: ClubsFunctionGetPagePaths = async (
-  options,
-  config,
-) => {
+export const getPagePaths = (async (options, config) => {
   let products: Membership[] | undefined = []
 
   // TODO: add default values like placeholder here.
@@ -72,18 +69,19 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
         },
       ]
     : []
-}
+}) satisfies ClubsFunctionGetPagePaths
 
-export const getAdminPaths: ClubsFunctionGetAdminPaths = async () => []
+export const getAdminPaths =
+  (async () => []) satisfies ClubsFunctionGetAdminPaths
 
-export const meta: ClubsPluginMeta = {
+export const meta = {
   id: 'devprotocol:clubs:plugin:nft',
   displayName: 'NFT',
   category: ClubsPluginCategory.Monetization,
-}
+} satisfies ClubsPluginMeta
 
 export default {
   getPagePaths,
   getAdminPaths,
   meta,
-} as ClubsFunctionPlugin
+} satisfies ClubsFunctionPlugin

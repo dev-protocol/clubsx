@@ -78,7 +78,7 @@ export type HomeConfigValue = {
   body?: string
 }
 
-export const getPagePaths: ClubsFunctionGetPagePaths = async (
+export const getPagePaths = (async (
   options,
   config,
   { getPluginConfigById },
@@ -132,24 +132,17 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
         },
       ]
     : []
-}
+}) satisfies ClubsFunctionGetPagePaths
 
-export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
-  options,
-  config,
-) => [
+export const getAdminPaths = (async (options, config) => [
   {
     paths: ['theme'],
     component: Admin,
     props: { options, config, colorPresets },
   },
-]
+]) satisfies ClubsFunctionGetAdminPaths
 
-export const getLayout: ClubsFunctionGetLayout = async (
-  options,
-  config,
-  { getPluginConfigById },
-) => {
+export const getLayout = (async (options, config, { getPluginConfigById }) => {
   const [membershipConfig] = getPluginConfigById(
     'devprotocol:clubs:simple-memberships',
   )
@@ -168,9 +161,9 @@ export const getLayout: ClubsFunctionGetLayout = async (
       theme1: { config, homeConfig, globalConfig, memberships, description },
     },
   }
-}
+}) satisfies ClubsFunctionGetLayout
 
-export const meta: ClubsThemePluginMeta = {
+export const meta = {
   id: 'devprotocol:clubs:theme-1',
   displayName: 'Minimalist',
   category: ClubsPluginCategory.Theme,
@@ -185,11 +178,11 @@ export const meta: ClubsThemePluginMeta = {
   description: `Basic theme with multiple color schemes.`,
   previewImages: [Preview1.src, Preview2.src, Preview3.src],
   readme: Readme,
-}
+} satisfies ClubsThemePluginMeta
 
 export default {
   getPagePaths,
   getAdminPaths,
   getLayout,
   meta,
-} as ClubsFunctionThemePlugin
+} satisfies ClubsFunctionThemePlugin

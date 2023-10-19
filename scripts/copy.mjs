@@ -4,8 +4,15 @@ import fetch from 'cross-fetch'
 
 dotenv.config()
 
-const KEY = 'xxx'
+const KEY = ((i) => (i > -1 ? process.argv[i + 1] : undefined))(
+  process.argv.findIndex((a) => a === '--club'),
+)
 
+console.log({ KEY })
+
+/**
+ * With running `yarn copy --club CLUB_TENANT_ID`, this script copies the ClubsConfiguration from the production environment.
+ */
 const app = async () => {
   try {
     const client = createClient({

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { controlModal } from '@devprotocol/clubs-core/events'
+  import { controlModal } from '@devprotocol/clubs-core'
 
   export let ping: boolean = false
 

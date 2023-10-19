@@ -10,12 +10,12 @@ import { default as Id } from './Id.astro'
 import { default as Slot } from './slot.astro'
 import { default as SlotTerms } from './slot-terms.astro'
 import { default as SlotCurrencyOption } from './slot-currency-option.astro'
-import type { ClubsFunctionGetApiPaths } from '@devprotocol/clubs-core/src'
+import type { ClubsFunctionGetApiPaths } from '@devprotocol/clubs-core'
 import { composeItems } from './utils/compose-items'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import type { InjectedTiers } from '@constants/tier'
 import type { CurrencyOption } from '@constants/currencyOption'
-import { bytes32Hex } from '@fixtures/data/hexlify'
+import { bytes32Hex } from '@devprotocol/clubs-core'
 import Icon from './images/Icon.png'
 import Readme from './readme/index.astro'
 import screenshot1 from './images/clubs-payments-1.jpg'
@@ -34,7 +34,7 @@ export type Override = {
 
 export type ComposedItem = Override & { source: Membership }
 
-export const getPagePaths: ClubsFunctionGetPagePaths = async (
+export const getPagePaths = (async (
   options,
   { propertyAddress, rpcUrl, chainId },
   utils,
@@ -58,9 +58,9 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
         })),
       ]
     : []
-}
+}) satisfies ClubsFunctionGetPagePaths
 
-export const getApiPaths: ClubsFunctionGetApiPaths = async (
+export const getApiPaths = (async (
   options,
   { propertyAddress, chainId, rpcUrl },
   utils,
@@ -92,9 +92,9 @@ export const getApiPaths: ClubsFunctionGetApiPaths = async (
       }),
     },
   ]
-}
+}) satisfies ClubsFunctionGetApiPaths
 
-export const getSlots: ClubsFunctionGetSlots = async (options, __, utils) => {
+export const getSlots = (async (options, __, utils) => {
   const items = composeItems(options, utils)
   const tiers: InjectedTiers = items.map((item) => ({
     ...item,
@@ -128,9 +128,9 @@ export const getSlots: ClubsFunctionGetSlots = async (options, __, utils) => {
         },
       ]
     : []
-}
+}) satisfies ClubsFunctionGetSlots
 
-export const meta: ClubsPluginMeta = {
+export const meta = {
   id: 'devprotocol:clubs:plugin:clubs-payments',
   displayName: 'Clubs Payments',
   category: ClubsPluginCategory.Monetization,
@@ -138,11 +138,11 @@ export const meta: ClubsPluginMeta = {
   description: 'Enables fastest & most secure user onboarding with fiat.',
   readme: Readme,
   previewImages: [screenshot1.src, screenshot2.src, screenshot3.src],
-}
+} satisfies ClubsPluginMeta
 
 export default {
   getPagePaths,
   getApiPaths,
   getSlots,
   meta,
-} as ClubsFunctionPlugin
+} satisfies ClubsFunctionPlugin

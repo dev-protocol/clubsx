@@ -1,10 +1,9 @@
 import dotenv from 'dotenv'
-import { encode } from '@devprotocol/clubs-core/encode'
+import { encode, decode } from '@devprotocol/clubs-core'
 import { createClient } from 'redis'
 import { keccak256, toUtf8Bytes } from 'ethers'
 import fs from 'fs-extra'
 import jsonwebtoken from 'jsonwebtoken'
-import { decode } from '@devprotocol/clubs-core'
 
 dotenv.config()
 
