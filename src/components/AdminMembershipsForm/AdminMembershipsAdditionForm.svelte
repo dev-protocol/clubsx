@@ -14,7 +14,7 @@
   import BigNumber from 'bignumber.js'
   import { clientsSTokens } from '@devprotocol/dev-kit'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
-  import { buildConfig } from '@devprotocol/clubs-core/events'
+  import { buildConfig } from '@devprotocol/clubs-core'
   import {
     DEV_TOKEN_PAYMENT_TYPE_FEE,
     PAYMENT_TYPE_INSTANT_FEE,

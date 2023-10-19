@@ -1,14 +1,14 @@
 <script lang="ts">
-    import { controlModal } from '@devprotocol/clubs-core/events'
-  
+    import { controlModal } from '@devprotocol/clubs-core'
+
     export let ping: boolean = false
-  
+
     const open = () => {
       controlModal({ open: true, closeButton: { label: 'Close' } })
       ping = false
     }
   </script>
-  
+
   <div class="flex w-full justify-end">
     <button
       type="button"
@@ -29,4 +29,3 @@
       {/if}
     </button>
   </div>
-  

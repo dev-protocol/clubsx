@@ -14,7 +14,7 @@ import {
   type MintConfigs,
 } from '@crossmint/client-sdk-base'
 import { JsonRpcProvider, ZeroAddress, keccak256, parseUnits } from 'ethers'
-import { onMountClient } from '@devprotocol/clubs-core/events'
+import { onMountClient } from '@devprotocol/clubs-core'
 import type { CMValues } from '.'
 import BigNumber from 'bignumber.js'
 

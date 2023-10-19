@@ -1,6 +1,6 @@
 <script lang="ts">
   import { ClubsEvents, setOptions } from '@devprotocol/clubs-core'
-  import { buildConfig, controlModal } from '@devprotocol/clubs-core/events'
+  import { buildConfig, controlModal } from '@devprotocol/clubs-core'
   import type { Collection, CollectionMembership } from '@plugins/collections'
   import MembershipOption from '@components/AdminMembershipsForm/MembershipOption.svelte'
   import { uploadImageAndGetPath } from '@fixtures/imgur'

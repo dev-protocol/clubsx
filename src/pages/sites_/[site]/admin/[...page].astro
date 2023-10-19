@@ -165,7 +165,7 @@ const siteBaseUrl = new URL(replaceWithFwdHost(Astro.request)).origin
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
   import type { DraftOptions } from '@constants/draft'
   import { decode, onSubmitConfig } from '@devprotocol/clubs-core'
-  import { onMountClient } from '@devprotocol/clubs-core/events'
+  import { onMountClient } from '@devprotocol/clubs-core'
   import { hashMessage } from 'ethers'
 
   let connection: typeof Connection

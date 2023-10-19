@@ -366,7 +366,7 @@ import {
   buildConfig,
   onMountClient,
   onUpdatedConfiguration,
-} from '@devprotocol/clubs-core/events'
+} from '@devprotocol/clubs-core'
 import type { DraftOptions } from '@constants/draft'
 import type { ERC20Image } from '@plugins/memberships/utils/types/setImageArg'
 import { tokenInfo } from '@constants/common'

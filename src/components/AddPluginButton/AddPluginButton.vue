@@ -3,7 +3,7 @@ import { hashMessage } from 'ethers'
 import { computed, onMounted, ref } from 'vue'
 import type { PluginMeta } from '@constants/plugins'
 import type { connection as Connection } from '@devprotocol/clubs-core/connection'
-import { onMountClient } from '@devprotocol/clubs-core/events'
+import { onMountClient } from '@devprotocol/clubs-core'
 import { EthersProviderFrom, GetModalProvider } from '@fixtures/wallet'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 
