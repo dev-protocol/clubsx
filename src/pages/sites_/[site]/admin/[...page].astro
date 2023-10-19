@@ -7,6 +7,7 @@ import {
   ClubsSlotName,
   type ClubsFunctionFactoryOptions,
   type ClubsFunctionAdminFactoryResult,
+  type ClubsGetStaticPathsItem,
 } from '@devprotocol/clubs-core'
 import { config as _config } from '@fixtures/config'
 import VercelAnalytics from '@components/Analytics/VercelAnalytics.astro'
@@ -20,6 +21,7 @@ import { plugins } from '@constants/plugins'
 import ConnectButton from '@components/Wallet/ConnectButton.vue'
 import PreviewBanner from '@components/PreviewBanner/PreviewBanner.astro'
 import { replaceWithFwdHost } from '@fixtures/url'
+import type { InferGetStaticPropsType } from 'astro'
 
 const { site, page } = Astro.params
 
@@ -31,6 +33,7 @@ const options = {
 const { getStaticPaths } = adminFactory(
   options,
 ) as ClubsFunctionAdminFactoryResult<typeof options>
+
 const _path = (await getStaticPaths()).find(
   ({ params }) => params.page === page,
 )
@@ -45,7 +48,8 @@ const path = {
       ),
     },
   },
-}
+} as ClubsGetStaticPathsItem<InferGetStaticPropsType<typeof getStaticPaths>>
+
 const config =
   path.props.clubs.encodedClubsConfiguration &&
   decode(path.props.clubs.encodedClubsConfiguration)
