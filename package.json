@@ -17,7 +17,8 @@
     "populate": "node ./scripts/populate.mjs",
     "flushDb": "node ./scripts/flushDb.mjs",
     "upgradeDb": "node ./scripts/upgrade.mjs",
-    "genApiPaths": "node ./scripts/generate-built-in-api-paths.mjs"
+    "genApiPaths": "node ./scripts/generate-built-in-api-paths.mjs",
+    "copy": "node ./scripts/copy.mjs"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.4",
