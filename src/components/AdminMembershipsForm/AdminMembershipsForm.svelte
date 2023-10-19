@@ -4,7 +4,7 @@
   import { ClubsEvents, setOptions } from '@devprotocol/clubs-core'
   import MembershipOptionCard from './MembershipOption.svelte'
   import type { Membership } from '@plugins/memberships'
-  import { buildConfig } from '@devprotocol/clubs-core/events'
+  import { buildConfig } from '@devprotocol/clubs-core'
 
   export let currentPluginIndex: number
   export let memberships: Membership[] = []

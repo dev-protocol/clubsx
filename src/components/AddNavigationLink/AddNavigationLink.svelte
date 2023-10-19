@@ -5,7 +5,7 @@
     ClubsEvents,
     setConfig,
   } from '@devprotocol/clubs-core'
-  import { buildConfig } from '@devprotocol/clubs-core/events'
+  import { buildConfig } from '@devprotocol/clubs-core'
   import type { UndefinedOr } from '@devprotocol/util-ts'
   import { onMount } from 'svelte'
 

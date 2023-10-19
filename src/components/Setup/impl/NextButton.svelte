@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onFinishConfig } from '@devprotocol/clubs-core/events'
+  import { onFinishConfig } from '@devprotocol/clubs-core'
   import { onMount } from 'svelte'
 
   export let next: string

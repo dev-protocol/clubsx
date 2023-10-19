@@ -1,6 +1,6 @@
 <script lang="ts">
   import { ClubsEvents, setOptions } from '@devprotocol/clubs-core'
-  import { buildConfig } from '@devprotocol/clubs-core/events'
+  import { buildConfig } from '@devprotocol/clubs-core'
   import { onMount } from 'svelte'
   import type { GatedMessage } from '../types'
 

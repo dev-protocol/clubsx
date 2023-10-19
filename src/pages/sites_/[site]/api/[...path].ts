@@ -1,4 +1,4 @@
-import { apiFactory } from '@devprotocol/clubs-core/factory'
+import { apiFactory } from '@devprotocol/clubs-core'
 import { config as _config } from '@fixtures/config'
 import { plugins } from '@constants/plugins'
 import type { APIRoute } from 'astro'

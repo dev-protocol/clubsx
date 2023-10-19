@@ -583,10 +583,10 @@
     svelte "^3.49.0"
     vue "^3.2.0"
 
-"@devprotocol/clubs-core@1.9.1":
-  version "1.9.1"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-1.9.1.tgz#b0c7bed7c45ff3c45737bc1d829eede1a0220f66"
-  integrity sha512-uY73SWMH3UIIBLmEaiXZeKEuwmQZfNO7qO7J0eOstAYjxNj67W0AkwVgckRwm5jKdtiqjwBvocjNSOyfPoYwCA==
+"@devprotocol/clubs-core@2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-2.0.1.tgz#4e13bac8e4ae6f5bac9dbbaf2b3f5c2898038e14"
+  integrity sha512-udw3vyK6Ymad4CF2eOkqa/nMkIIxHM33gSG2jqVD3kOOjGugZmS2vnlXi3zLXeOKjJpL2zRyeltoo00ijFeltA==
   dependencies:
     "@devprotocol/dev-kit" "8.5.1"
     "@devprotocol/elements" "1.1.0"
