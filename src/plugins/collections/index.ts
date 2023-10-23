@@ -16,6 +16,7 @@ import { default as OpenModalButton } from './OpenModalButton.astro'
 import { default as Index } from './index.astro'
 import { default as Id } from './[id].astro'
 import { default as Icon } from './assets/icon.svg'
+import Checkout from './checkout.astro'
 import { Content as Readme } from './README.md'
 import Preview1 from './assets/limited-number-of-items.svg'
 import Preview2 from './assets/time-limited-collection.svg'
@@ -26,6 +27,7 @@ import {
   PAYMENT_TYPE_INSTANT_FEE,
   PAYMENT_TYPE_STAKE_FEE,
 } from '@constants/memberships'
+import { bytes32Hex } from '@fixtures/data/hexlify'
 
 export type CollectionMembership = Membership & {
   memberCount?: number
@@ -85,11 +87,20 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
       (opt: ClubsPluginOption) => opt.key === 'collections',
     )?.value as UndefinedOr<Collection[]>) ?? []
 
+  const allMemberships = collections
+    .map(({ memberships }) => memberships ?? [])
+    .flat()
+
   return [
     ...(collections.map((collection) => ({
       paths: ['collections', collection.id],
       component: Id,
       props: { collection, name, rpcUrl, propertyAddress },
+    })) ?? []),
+    ...(allMemberships.map((membership) => ({
+      paths: ['collections', 'checkout', bytes32Hex(membership.payload)],
+      component: Checkout,
+      props: { membership, rpcUrl, propertyAddress },
     })) ?? []),
     {
       paths: ['collections'],

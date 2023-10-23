@@ -5,7 +5,7 @@
 
   import type { SlotLeft } from './types'
   import type { Collection } from '@plugins/collections'
-  import memberships from '@plugins/memberships'
+  import { bytes32Hex } from '@fixtures/data/hexlify'
 
   export let clubName: string | undefined = undefined
 
@@ -175,6 +175,8 @@
             price={mem.price.toString()}
             currency={mem.currency}
             description={mem.description}
+            action={`/collections/checkout/${bytes32Hex(mem.payload)}`}
+            actionLabel="Purchase"
           />
         {/each}
       </div>
