@@ -670,15 +670,15 @@
     // if mem.payload already exists in collection.requiredMemberships then remove it otherwise add it to collection.requiredMemberships
     collection.requiredMemberships = collection.requiredMemberships 
     ?
-      collection.requiredMemberships.includes(mem.payload)
+      collection.requiredMemberships.includes(bytes32Hex(mem.payload))
         ? 
           collection.requiredMemberships.filter(
-            (m: Uint8Array | string) => m !== mem.payload
+            (m: Uint8Array | string) => m !== bytes32Hex(mem.payload)
           )
-        : [...collection.requiredMemberships, mem.payload] 
-    : [mem.payload]
+        : [...collection.requiredMemberships, bytes32Hex(mem.payload)] 
+    : [bytes32Hex(mem.payload)]
     update()
-    console.log("collection.requiredMemberships", collection)
+    console.log("collection.requiredMemberships", collection.requiredMemberships)
   }
 
   const fetchPositionsOfProperty = async () => {
@@ -874,8 +874,12 @@
               id="access"
               name="notification-method"
               type="radio"
-              checked
+              checked={collection.requiredMemberships?.length === 0}
               class="h-4 w-4 border-gray-300 text-[#3043EB] focus:ring-[#3043EB] dark:focus:ring-[#3043EB]"
+              on:change={() => {
+                collection.requiredMemberships = []
+                update()
+              }}
             />
             <label
               for="access"
@@ -896,7 +900,7 @@
             price={mem.price.toString()}
             currency={mem.currency}
             description={mem.description}
-            className={`${collection.requiredMemberships?.includes(mem.payload) ? 'border-4 border-[#5B8BF5]' : ''} lg:row-start-3 ${getColStart(i)}`}
+            className={`${collection.requiredMemberships?.includes(bytes32Hex(mem.payload)) ? 'border-4 border-[#5B8BF5]' : ''} lg:row-start-3 ${getColStart(i)}`}
             />
         </div>
         {/each}

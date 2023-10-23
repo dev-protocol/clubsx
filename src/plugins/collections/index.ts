@@ -40,7 +40,7 @@ export type Collection = {
   endTime?: number
   description: string
   memberships: CollectionMembership[]
-  requiredMemberships?: (Uint8Array | string)[]
+  requiredMemberships?: string[]
 }
 
 export const getSlots: ClubsFunctionGetSlots = async (
@@ -78,9 +78,19 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
   { name, rpcUrl, propertyAddress },
   { getPluginConfigById },
 ) => {
+  const [existingMembershipsConfig] = getPluginConfigById(
+    'devprotocol:clubs:simple-memberships',
+  )
+
   const [collectionsConfig] = getPluginConfigById(
     'devprotocol:clubs:collections',
   )
+
+  const existingMemberships =
+  (existingMembershipsConfig?.options.find(
+    (opt: ClubsPluginOption) => opt.key === 'memberships',
+  )?.value as UndefinedOr<Membership[]>) ?? []
+
   const collections =
     (collectionsConfig?.options.find(
       (opt: ClubsPluginOption) => opt.key === 'collections',
@@ -90,7 +100,7 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
     ...(collections.map((collection) => ({
       paths: ['collections', collection.id],
       component: Id,
-      props: { collection, name, rpcUrl, propertyAddress },
+      props: { collection, name, rpcUrl, propertyAddress, existingMemberships },
     })) ?? []),
     {
       paths: ['collections'],

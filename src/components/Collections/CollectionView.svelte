@@ -1,15 +1,31 @@
 <script lang="ts">
-import { onMount } from 'svelte';
+import { onMount, beforeUpdate } from 'svelte';
+
+import {
+  JsonRpcProvider,
+  type Signer,
+} from 'ethers'
 
 import MembershipOption from '@components/AdminMembershipsForm/MembershipOption.svelte'
+import { checkMemberships } from '@fixtures/utility.ts'
 
 import type { SlotLeft } from './types';
+import { emptyDummyImage } from '@plugins/collections/fixtures'
+import { bytes32Hex } from '@fixtures/data/hexlify'
 import type { Collection } from '@plugins/collections';
+import type { Membership } from '@plugins/memberships'
+import type { connection as Connection } from '@devprotocol/clubs-core/connection'
+  import { async } from 'rxjs'
 
 export let clubName: string | undefined = undefined
-
-
+export let existingMemberships: Membership[] = []
 export let collection: Collection
+export let propertyAddress: string
+export let rpcUrl: string
+
+let connection: typeof Connection
+let signer: Signer | undefined
+let currentAddress: string | undefined
 
 
     let difference;
@@ -17,6 +33,39 @@ export let collection: Collection
     let hours = 0;
     let minutes = 0;
     let seconds = 0;
+
+    let validatingMembership:Boolean = true;
+    let validationResult:Boolean | "processing" = "processing";
+
+    const requiredPayload = new Set(collection.requiredMemberships?.map(reqMem => bytes32Hex(reqMem)) || []);
+    const requiredMemberships = existingMemberships.filter(mem => requiredPayload.has(bytes32Hex(mem.payload)));
+    const web3Provider = new JsonRpcProvider(rpcUrl);
+
+    const requiredMembershipValidation = async () => {
+        validationResult = "processing";
+        validatingMembership = true;
+        const _connection = await import('@devprotocol/clubs-core/connection')
+        connection = _connection.connection
+        connection().signer.subscribe((s) => {
+        signer = s
+        })
+        connection().account.subscribe((a) => {
+        currentAddress = a
+        })
+        try {
+            validationResult = await checkMemberships(
+                web3Provider,
+                propertyAddress,
+                requiredMemberships,
+                currentAddress,
+            )
+        } catch (e) {
+            console.error(e)
+            validationResult = false
+        }
+        console.log("validation result",validationResult)
+        validatingMembership = false;
+    }
 
   const calculateTimeLeft = () => {
     difference = collection.endTime ? collection.endTime - Math.floor(new Date().getTime() / 1000) : 0;
@@ -56,8 +105,12 @@ export let collection: Collection
 
   onMount(() => {
     calculateTimeLeft();
-    const interval = setInterval(calculateTimeLeft, 1000);
-    return () => clearInterval(interval);
+    const timeLeftInterval = setInterval(calculateTimeLeft, 1000);
+    // this approach is followed, since there is slight delay in the connection
+    setTimeout(requiredMembershipValidation, 5000);
+    return () => {
+        clearInterval(timeLeftInterval);
+    }
   });
 </script>
 
@@ -95,6 +148,7 @@ export let collection: Collection
                     <span class="text-justify text-3xl text-white font-medium">
                         Exclusive to the following members.
                     </span>
+                    {#if !validationResult}
                     <div class="flex flex-col items-start self-stretch">
                         <div class="flex p-5 flex-col items-start self-stretch gap-3 bg-[#27272780] rounded-[10px]">
                             <span class="text-white text-justify text-3xl font-medium">
@@ -102,7 +156,7 @@ export let collection: Collection
                             </span>
                         </div>
                     </div>
-                    <!-- Aceess -->
+                    {:else if validationResult === true}
                     <div class="flex flex-col items-start">
                         <div class="flex p-5 items-center gap-3 bg-[#43C451] rounded-[10px]">
                             <div class="h-16 w-16">
@@ -115,41 +169,40 @@ export let collection: Collection
                             </p>
                         </div>
                     </div>
+                    {:else if validationResult === "processing"}
+                    <div class="flex items-center justify-center space-x-2">
+                        <div class="w-4 h-4 rounded-full animate-pulse dark:bg-orange-200"></div>
+                        <div class="w-4 h-4 rounded-full animate-pulse dark:bg-orange-300"></div>
+                        <div class="w-4 h-4 rounded-full animate-pulse dark:bg-orange-400"></div>
+                    </div>
+                    {/if}
                     <!-- Memberships -->
-                    <div class="flex flex-col items-start gap-[7px]">
-                        <div class="flex items-start gap-16">
+                    <div class="grid w-full grid-cols-[repeat(auto-fit,_minmax(120px,_1fr))] justify-between gap-4">
+                        {#each requiredMemberships as mem, i}
                             <MembershipOption
-                            clubName={'Your Club'}
-                            id={'2'}
-                            name={'Membership Name'}
-                            imagePath={'https://i.ibb.co/Kyjr50C/Image.png'}
-                            currency={'ETH'}
-                            price={"0.1"}
-                            description={'Membership Description'}
-                            className={`lg:row-start-3 ${getColStart(0)}`}
-                          />
-                          <MembershipOption
-                            clubName={'Your Club'}
-                            id={'3'}
-                            name={'Membership Name'}
-                            imagePath={'https://i.ibb.co/nrdKDQy/Image-1.png'}
-                            currency={'DEV'}
-                            price={"0.1"}
-                            description={'Membership Description'}
-                            className={`lg:row-start-3 ${getColStart(1)}`}
-                          />
-                        </div>
+                                clubName={clubName ?? 'Your Club'}
+                                id={mem.id}
+                                name={mem.name}
+                                imagePath={mem.imageSrc.trim().length > 0 ? mem.imageSrc : emptyDummyImage(400, 400)}
+                                price={mem.price.toString()}
+                                currency={mem.currency}
+                                description={mem.description}
+                                className={`lg:row-start-3 ${getColStart(i)} w-64`}
+                            />
+                        {/each}
                     </div>
                 </div>
             </div>
             <!-- Validation -->
-            <div class="flex flex-col items-start self-stretch">
-                <div class="flex p-5 flex-col items-start self-stretch gap-3 rounded-[10px] bg-[#17171780]">
-                    <span class="text-white text-justify text-2xl font-medium">
-                        Waiting for the wallet connection to confirm access rights.
-                    </span>
+            {#if validatingMembership}
+                <div class="flex flex-col items-start self-stretch">
+                    <div class="flex p-5 flex-col items-start self-stretch gap-3 rounded-[10px] bg-[#17171780]">
+                        <span class="text-white text-justify text-2xl font-medium">
+                            Waiting for the wallet connection to confirm access rights.
+                        </span>
+                    </div>
                 </div>
-            </div>
+            {/if}
             <!-- Time left -->
             {#if collection.isTimeLimitedCollection }
                 <div class="flex p-5 flex-col justify-center items-center self-stretch rounded-[10px] bg-white gap-3">
@@ -167,16 +220,18 @@ export let collection: Collection
             <!-- Memberships -->
             <div class="grid grid-cols-3 justify-between gap-4">
                 {#each collection.memberships as mem, i}
-                    <MembershipOption
-                        clubName={clubName ?? 'Your Club'}
-                        id={mem.id}
-                        name={mem.name}
-                        imagePath={mem.imageSrc}
-                        price={mem.price.toString()}
-                        currency={mem.currency}
-                        description={mem.description}
-                        className={`lg:row-start-3 ${getColStart(i)}`}
-                    />
+                    {#if validationResult === true}
+                        <MembershipOption
+                            clubName={clubName ?? 'Your Club'}
+                            id={mem.id}
+                            name={mem.name}
+                            imagePath={mem.imageSrc.trim().length > 0 ? mem.imageSrc : emptyDummyImage(400, 400)}
+                            price={mem.price.toString()}
+                            currency={mem.currency}
+                            description={mem.description}
+                            className={`lg:row-start-3 ${getColStart(i)}`}
+                        />
+                    {/if}
                 {/each}
             </div>
         </div>
