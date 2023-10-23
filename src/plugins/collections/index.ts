@@ -87,9 +87,9 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
   )
 
   const existingMemberships =
-  (existingMembershipsConfig?.options.find(
-    (opt: ClubsPluginOption) => opt.key === 'memberships',
-  )?.value as UndefinedOr<Membership[]>) ?? []
+    (existingMembershipsConfig?.options.find(
+      (opt: ClubsPluginOption) => opt.key === 'memberships',
+    )?.value as UndefinedOr<Membership[]>) ?? []
 
   const collections =
     (collectionsConfig?.options.find(
