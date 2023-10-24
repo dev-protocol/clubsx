@@ -43,14 +43,6 @@ let currentAddress: string | undefined
     const requiredMembershipValidation = async () => {
         validationResult = "processing";
         validatingMembership = true;
-        const _connection = await import('@devprotocol/clubs-core/connection')
-        connection = _connection.connection
-        connection().signer.subscribe((s) => {
-        signer = s
-        })
-        connection().account.subscribe((a) => {
-        currentAddress = a
-        })
         try {
             validationResult = await checkMemberships(
                 web3Provider,
@@ -84,14 +76,14 @@ let currentAddress: string | undefined
     }
   }
 
-  onMount(() => {
+  onMount(async () => {
     calculateTimeLeft();
-    const timeLeftInterval = setInterval(calculateTimeLeft, 1000);
-    // this approach is followed, since there is slight delay in the connection
-    setTimeout(requiredMembershipValidation, 5000);
-    return () => {
-        clearInterval(timeLeftInterval);
-    }
+    setInterval(calculateTimeLeft, 1000);
+    const { connection } = await import('@devprotocol/clubs-core/connection')
+    connection().account.subscribe((a) => {
+      currentAddress = a
+      requiredMembershipValidation()
+    })
   });
 </script>
 
