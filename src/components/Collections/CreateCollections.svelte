@@ -875,7 +875,7 @@
       class="grid grid-cols-[repeat(auto-fit,_minmax(120px,_1fr))] justify-between gap-4 pt-2.5"
     >
     {#each existingMemberships as mem, i}
-    <div on:click={selectAllowlist(mem)} on:keydown={(e) => {if (e.key === 'Enter') selectAllowlist(mem)}} role="button" tabindex="0">
+    <div on:click={() => selectAllowlist(mem)} on:keydown={(e) => {if (e.key === 'Enter') selectAllowlist(mem)}} role="button" tabindex="0">
         <MembershipOption
         clubName={clubName ?? 'Your Club'}
         id={mem.id}
