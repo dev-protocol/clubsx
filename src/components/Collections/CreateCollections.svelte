@@ -33,8 +33,10 @@
   import { clientsSTokens } from '@devprotocol/dev-kit'
   import { tokenInfo } from '@constants/common'
   import { bytes32Hex } from '@fixtures/data/hexlify'
+  import type { Membership } from '@plugins/memberships'
 
   export let existingCollections: Collection[] = []
+  export let existingMemberships: Membership[] = []
   export let collection: Collection
   export let isTimeLimitedCollection: boolean = false
   export let clubName: string | undefined = undefined
@@ -684,6 +686,20 @@
     }
     onChangePrice(membership)
   }
+  const selectAllowlist = (mem: Membership) => {
+    // if mem.payload already exists in collection.requiredMemberships then remove it otherwise add it to collection.requiredMemberships
+    collection.requiredMemberships = collection.requiredMemberships 
+    ?
+      collection.requiredMemberships.includes(bytes32Hex(mem.payload))
+        ? 
+          collection.requiredMemberships.filter(
+            (m: Uint8Array | string) => m !== bytes32Hex(mem.payload)
+          )
+        : [...collection.requiredMemberships, bytes32Hex(mem.payload)] 
+    : [bytes32Hex(mem.payload)]
+    update()
+    console.log("collection.requiredMemberships", collection.requiredMemberships)
+  }
 
   const fetchPositionsOfProperty = async () => {
     loading = true
@@ -837,51 +853,42 @@
         memberships from [here].</span
       >
       <label
-        class="flex items-center rounded-md bg-dp-blue-grey-600 p-5"
-        for="access"
+      class="flex items-center rounded-md bg-dp-blue-grey-600 p-5"
+      for="access"
+    >
+      <input
+        id="access"
+        name="notification-method"
+        type="radio"
+        checked={collection.requiredMemberships?.length === 0}
+        class="h-4 w-4 border-gray-300 text-[#3043EB] focus:ring-[#3043EB] dark:focus:ring-[#3043EB]"
+        on:change={() => {
+          collection.requiredMemberships = []
+          update()
+        }}
+      />
+      <span class="ml-3 block text-justify text-base font-normal text-white"
+        >Pubic access (Open to everyone)</span
       >
-        <input
-          id="access"
-          name="notification-method"
-          type="radio"
-          checked
-          class="h-4 w-4 border-gray-300 text-[#3043EB] focus:ring-[#3043EB] dark:focus:ring-[#3043EB]"
-        />
-        <span class="ml-3 block text-justify text-base font-normal text-white"
-          >Pubic access (Open to everyone)</span
-        >
-      </label>
-      <div
-        class="grid grid-cols-[repeat(auto-fit,_minmax(120px,_1fr))] justify-between gap-4 pt-2.5"
-      >
+    </label>
+    <div
+      class="grid grid-cols-[repeat(auto-fit,_minmax(120px,_1fr))] justify-between gap-4 pt-2.5"
+    >
+    {#each existingMemberships as mem, i}
+    <div on:click={selectAllowlist(mem)} on:keydown={(e) => {if (e.key === 'Enter') selectAllowlist(mem)}} role="button" tabindex="0">
         <MembershipOption
-          clubName={'Your Club'}
-          id={'1'}
-          name={'Membership Name'}
-          imagePath={'https://i.ibb.co/hLD6byP/1.jpg'}
-          currency={'USDC'}
-          price={'100'}
-          description={'Membership Description'}
+        clubName={clubName ?? 'Your Club'}
+        id={mem.id}
+        name={mem.name}
+        imagePath={mem.imageSrc.trim().length > 0 ? mem.imageSrc : emptyDummyImage(400, 400)}
+        price={mem.price.toString()}
+        currency={mem.currency}
+        description={mem.description}
+        className={`${collection.requiredMemberships?.includes(bytes32Hex(mem.payload)) ? 'border-4 border-[#5B8BF5]' : ''} lg:row-start-3 ${getColStart(i)}`}
         />
-        <MembershipOption
-          clubName={'Your Club'}
-          id={'2'}
-          name={'Membership Name'}
-          imagePath={'https://i.ibb.co/Kyjr50C/Image.png'}
-          currency={'ETH'}
-          price={'0.1'}
-          description={'Membership Description'}
-        />
-        <MembershipOption
-          clubName={'Your Club'}
-          id={'3'}
-          name={'Membership Name'}
-          imagePath={'https://i.ibb.co/nrdKDQy/Image-1.png'}
-          currency={'DEV'}
-          price={'0.1'}
-          description={'Membership Description'}
-        />
-      </div>
+    </div>
+    {/each}
+  </div>
     </div>
 
     <!-- collection items -->
