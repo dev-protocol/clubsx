@@ -1,0 +1,27 @@
+---
+import Checkout_ from '@components/Checkout/Checkout.astro'
+import type { ClubsPropsPages } from '@devprotocol/clubs-core'
+import type { CollectionMembership } from '@plugins/collections'
+
+interface Props extends ClubsPropsPages {
+  membership: CollectionMembership
+  propertyAddress: string
+  rpcUrl: string
+}
+
+const { membership, propertyAddress, rpcUrl, ...other } = Astro.props
+---
+
+<Checkout_
+  amount={membership.price}
+  destination={propertyAddress}
+  currency={membership.currency}
+  rpcUrl={rpcUrl}
+  payload={membership.payload}
+  description={membership.description}
+  itemImageSrc={membership.imageSrc}
+  itemName={membership.name}
+  accessControlUrl={membership.accessControl?.url}
+  accessControlDescription={membership.accessControl?.description}
+  {...other}
+/>

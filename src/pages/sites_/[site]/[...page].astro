@@ -57,22 +57,44 @@ const fullPage = (path?.props.signals as undefined | string[])?.includes(
       </Layout>
 
       <Footer {...(path.props as unknown as ClubsPropsPages)} {fullPage}>
-        <a
-          slot="page:footer:legal-link"
-          href="https://clubs-help.notion.site/Clubs-TERMS-AND-CONDITIONS-804ecd1a5eed4b18a63e67e1a262889c"
-          target="_blank"
-          rel="noopener"
-        >
-          Terms and Conditions
-        </a>
-        <a
-          slot="page:footer:legal-link"
-          href="https://clubs-help.notion.site/Clubs-Privacy-Policy-9ba96d2a8e0a4a2895cc5ad23b6038da"
-          target="_blank"
-          rel="noopener"
-        >
-          Privacy policy
-        </a>
+        <span slot="page:footer:legal-link">
+          Terms and Conditions (
+          <a
+            href="https://github.com/dev-protocol/legal/blob/main/TERMS-OF-USE-MEMBERS.md"
+            target="_blank"
+            rel="noopener"
+          >
+            English
+          </a>
+          ,
+          <a
+            href="https://github.com/dev-protocol/legal/blob/main/TERMS-OF-USE-MEMBERS-JA.md"
+            target="_blank"
+            rel="noopener"
+          >
+            日本語
+          </a>
+          )
+        </span>
+        <span slot="page:footer:legal-link">
+          Privacy policy (
+          <a
+            href="https://github.com/dev-protocol/legal/blob/main/PRIVACY-POLICY.md"
+            target="_blank"
+            rel="noopener"
+          >
+            English
+          </a>
+          ,
+          <a
+            href="https://github.com/dev-protocol/legal/blob/main/PRIVACY-POLICY-JA.md"
+            target="_blank"
+            rel="noopener"
+          >
+            日本語
+          </a>
+          )
+        </span>
       </Footer>
     </>
   ) : (
