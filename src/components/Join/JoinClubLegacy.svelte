@@ -5,7 +5,7 @@
   import { JsonRpcProvider } from 'ethers'
   import { composeTiers } from '@fixtures/utility'
   import type { UndefinedOr } from '@devprotocol/util-ts'
-  import type { CurrencyOption } from '@constants/currencyOption'
+  import { CurrencyOption } from '@devprotocol/clubs-core'
   import MembershipOption from '@components/AdminMembershipsForm/MembershipOption.svelte'
   import { onMount } from 'svelte'
 

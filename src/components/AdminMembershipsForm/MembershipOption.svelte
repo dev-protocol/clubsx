@@ -1,7 +1,7 @@
 <script lang="ts">
   import { marked } from 'marked'
   import { onMount } from 'svelte'
-  import { CurrencyOption } from '@constants/currencyOption'
+  import { CurrencyOption } from '@devprotocol/clubs-core'
   import DOMPurify from 'dompurify'
   import { fade } from 'svelte/transition'
   import { ProseTextInherit } from '@devprotocol/clubs-core'
