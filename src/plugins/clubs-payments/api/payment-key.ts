@@ -13,10 +13,8 @@ import type { ComposedItem } from '..'
 import { whenNotError, whenNotErrorAll } from '@devprotocol/util-ts'
 import { createClient } from 'redis'
 import { generateFulFillmentParamsId } from '../utils/gen-key'
-import { bytes32Hex } from '@devprotocol/clubs-core'
-import { getTokenAddress } from '@fixtures/dev-kit'
+import { bytes32Hex, getTokenAddress } from '@devprotocol/clubs-core'
 import { replaceWithFwdHost } from '@fixtures/url'
-import { request } from 'http'
 
 const { POP_SERVER_KEY, REDIS_URL, REDIS_USERNAME, REDIS_PASSWORD } =
   import.meta.env

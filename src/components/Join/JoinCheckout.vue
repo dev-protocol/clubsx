@@ -186,10 +186,11 @@ import {
 } from 'ethers'
 import BigNumber from 'bignumber.js'
 import { Subscription, zip } from 'rxjs'
-import { CurrencyOption } from '@constants/currencyOption'
-import { fetchDevForEth, fetchEthForDev, fetchSTokens } from '@fixtures/utility'
-import Skeleton from '@components/Global/Skeleton.vue'
-import { stakeWithEthForPolygon } from '@fixtures/dev-kit'
+import { CurrencyOption } from '@devprotocol/clubs-core'
+import { fetchEthForDev } from '@fixtures/utility'
+import { fetchDevForEth, fetchSTokens } from '@devprotocol/clubs-core'
+import Skeleton from '@devprotocol/clubs-core/ui/components'
+import { stakeWithEthForPolygon } from '@devprotocol/clubs-core'
 
 type Data = {
   parsedAmount: BigNumberish

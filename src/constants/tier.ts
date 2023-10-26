@@ -1,19 +1,5 @@
-import { CurrencyOption } from './currencyOption'
-
-export type Tier = Readonly<{
-  title: string
-  id: string
-  amount: number | string
-  currency: CurrencyOption
-  badgeImageDescription?: string
-  badgeImageSrc?: string
-}>
-
-export type Tiers = ReadonlyArray<Tier>
-
-export type InjectedTier = Tier & { checkoutUrl?: string }
-
-export type InjectedTiers = ReadonlyArray<InjectedTier>
+import { CurrencyOption } from '@devprotocol/clubs-core'
+import type { Tiers } from '@devprotocol/clubs-core'
 
 export const tiers: Tiers = [
   {

@@ -7,10 +7,9 @@
     whenDefinedAll,
     whenNotError,
   } from '@devprotocol/util-ts'
-  import { JsonRpcProvider, type Contract, type ContractRunner } from 'ethers'
+  import { JsonRpcProvider } from 'ethers'
   import { clientsSTokens } from '@devprotocol/dev-kit'
-  import { mintedIdByLogs } from '@fixtures/dev-kit'
-  import { i18nFactory } from '@devprotocol/clubs-core'
+  import { i18nFactory, mintedIdByLogs } from '@devprotocol/clubs-core'
   import { Strings } from './i18n'
 
   export let item: ComposedItem
