@@ -189,7 +189,7 @@ import { Subscription, zip } from 'rxjs'
 import { CurrencyOption } from '@devprotocol/clubs-core'
 import { fetchEthForDev } from '@fixtures/utility'
 import { fetchDevForEth, fetchSTokens } from '@devprotocol/clubs-core'
-import Skeleton from '@devprotocol/clubs-core/ui/components'
+import Skeleton from '@components/Global/Skeleton.vue'
 import { stakeWithEthForPolygon } from '@devprotocol/clubs-core'
 
 type Data = {
