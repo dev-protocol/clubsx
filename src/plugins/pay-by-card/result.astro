@@ -1,5 +1,5 @@
 ---
-import { Result } from '@devprotocol/clubs-core/ui/components'
+import { Result as CheckoutResult } from '@devprotocol/clubs-core/ui/components'
 import type { ClubsPropsPages } from '@devprotocol/clubs-core'
 import { replaceWithFwdHost } from '@fixtures/url'
 
@@ -30,7 +30,7 @@ const success = params[0]?.status === 'success'
 const failure = params[0]?.status === 'failure'
 ---
 
-<Result_ rpcUrl={rpcUrl} id={params[0]?.tokenId} {...other}>
+<CheckoutResult rpcUrl={rpcUrl} id={params[0]?.tokenId} {...other}>
   {
     success ? (
       <div slot="checkout-result:before:preview">
@@ -44,4 +44,4 @@ const failure = params[0]?.status === 'failure'
       ''
     )
   }
-</Result_>
+</CheckoutResult>
