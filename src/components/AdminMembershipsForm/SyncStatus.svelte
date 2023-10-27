@@ -78,7 +78,7 @@
     const expectedValues = values(data.state)
     const resultValues = arrayify(res ?? {})
     const test = expectedValues.every((v, i) => resultValues[i] === v)
-    console.log('checkImage', test, propertyAddress, data)    
+    console.log('checkImage', test, propertyAddress, data)
     return test
   }
 
@@ -196,9 +196,9 @@
     Memberships just created are not yet published on the blockchain. Submit all
     transactions to start offering memberships.
   </p>
-  <div class="max-h-96 overflow-y-auto rounded-md">   
+  <div class="max-h-96 overflow-y-auto rounded-md">
     <table
-    class="w-full max-w-5xl border-separate overflow-x-auto rounded-md border border-dp-blue-grey-200"
+      class="w-full max-w-5xl border-separate overflow-x-auto rounded-md border border-dp-blue-grey-200"
     >
       <thead>
         <tr class="grid grid-cols-[2fr,1fr,1fr]">
@@ -281,63 +281,63 @@
           >
         </tr>
       </thead>
-    <tbody>
-      {#each statuses as status}
-        <tr
-          class="grid grid-cols-[2fr,1fr,1fr] border-b border-dp-blue-grey-200 last:border-0"
-        >
-          <td class="flex items-center gap-2 p-2"
-            ><img
-              class="h-10 w-10 rounded object-cover"
-              src={status.source.imageSrc}
-              alt={status.source.name}
-            /><span class="text-sm opacity-50">{status.source.name}</span></td
+      <tbody>
+        {#each statuses as status}
+          <tr
+            class="grid grid-cols-[2fr,1fr,1fr] border-b border-dp-blue-grey-200 last:border-0"
           >
-          <td class="flex items-center justify-center p-2"
-            >{#await status.customDescriptor.set}
-              <span class="block h-6">
-                <Skeleton />
-              </span>
-            {:then value}{#if value}<svg
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="h-4 w-4 opacity-50"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M4.5 12.75l6 6 9-13.5"
-                  />
-                </svg>
-              {:else}<span class="text-sm text-dp-red-300">●</span
-                >{/if}{/await}</td
-          >
-          <td class="flex items-center justify-center p-2"
-            >{#await status.image.set}
-              <span class="block h-6">
-                <Skeleton />
-              </span>
-            {:then value}{#if value}<svg
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="h-4 w-4 opacity-50"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M4.5 12.75l6 6 9-13.5"
-                  />
-                </svg>
-              {:else}<span class="text-sm text-dp-red-300">●</span
-                >{/if}{/await}</td
-          >
-        </tr>
-      {/each}
-    </tbody>
-  </table>
-</div>
+            <td class="flex items-center gap-2 p-2"
+              ><img
+                class="h-10 w-10 rounded object-cover"
+                src={status.source.imageSrc}
+                alt={status.source.name}
+              /><span class="text-sm opacity-50">{status.source.name}</span></td
+            >
+            <td class="flex items-center justify-center p-2"
+              >{#await status.customDescriptor.set}
+                <span class="block h-6">
+                  <Skeleton />
+                </span>
+              {:then value}{#if value}<svg
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="h-4 w-4 opacity-50"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M4.5 12.75l6 6 9-13.5"
+                    />
+                  </svg>
+                {:else}<span class="text-sm text-dp-red-300">●</span
+                  >{/if}{/await}</td
+            >
+            <td class="flex items-center justify-center p-2"
+              >{#await status.image.set}
+                <span class="block h-6">
+                  <Skeleton />
+                </span>
+              {:then value}{#if value}<svg
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="h-4 w-4 opacity-50"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M4.5 12.75l6 6 9-13.5"
+                    />
+                  </svg>
+                {:else}<span class="text-sm text-dp-red-300">●</span
+                  >{/if}{/await}</td
+            >
+          </tr>
+        {/each}
+      </tbody>
+    </table>
+  </div>
 </section>

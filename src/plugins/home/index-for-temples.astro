@@ -3,7 +3,7 @@ import CLBWrapper from '@components/Primitives/CLBWrapper.astro'
 import Sidebar from '@components/Sidebar/Sidebar.vue'
 import Footer from '@components/Global/Footer.astro'
 import JoinClub from '@components/Join/JoinClub.vue'
-import type { Tiers } from '@constants/tier'
+import type { Tiers } from '@devprotocol/clubs-core'
 import type { HomeConfig } from '../../constants/homeConfig'
 import type { NavLink } from '@constants/navLink'
 
@@ -277,3 +277,5 @@ const {
   </div>
   <Footer />
 </div>
+@constants/_tier
+@constants/tier

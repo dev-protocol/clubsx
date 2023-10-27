@@ -8,8 +8,8 @@
     InjectedTiers,
     Tier,
     Tiers,
-  } from '@constants/tier'
-  import { CurrencyOption } from '@constants/currencyOption'
+  } from '@devprotocol/clubs-core'
+  import { CurrencyOption } from '@devprotocol/clubs-core'
   import MembershipOption from '@components/AdminMembershipsForm/MembershipOption.svelte'
   import type { UndefinedOr } from '@devprotocol/util-ts'
 
