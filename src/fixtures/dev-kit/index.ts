@@ -26,7 +26,7 @@ import {
 } from '@devprotocol/dev-kit'
 import { CurrencyOption } from '@constants/currencyOption'
 import type { Log as Log_ } from '@ethersproject/abstract-provider'
-import { bytes32Hex } from '@fixtures/data/hexlify'
+import { bytes32Hex } from '@devprotocol/clubs-core'
 
 export type ChainName = UndefinedOr<
   | 'ethereum'

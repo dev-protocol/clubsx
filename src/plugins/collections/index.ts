@@ -27,7 +27,7 @@ import {
   PAYMENT_TYPE_INSTANT_FEE,
   PAYMENT_TYPE_STAKE_FEE,
 } from '@constants/memberships'
-import { bytes32Hex } from '@fixtures/data/hexlify'
+import { bytes32Hex } from '@devprotocol/clubs-core'
 
 export type CollectionMembership = Membership & {
   memberCount?: number
@@ -45,7 +45,7 @@ export type Collection = {
   requiredMemberships?: string[]
 }
 
-export const getSlots: ClubsFunctionGetSlots = async (
+export const getSlots = (async (
   options,
   { propertyAddress, rpcUrl, chainId },
   { paths, factory },
@@ -73,9 +73,9 @@ export const getSlots: ClubsFunctionGetSlots = async (
         },
       ]
     : []
-}
+}) satisfies ClubsFunctionGetSlots
 
-export const getPagePaths: ClubsFunctionGetPagePaths = async (
+export const getPagePaths = (async (
   options,
   { name, rpcUrl, propertyAddress },
   { getPluginConfigById },
@@ -119,9 +119,9 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
       props: { collections },
     },
   ]
-}
+}) satisfies ClubsFunctionGetPagePaths
 
-export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
+export const getAdminPaths = (async (
   options,
   { name, rpcUrl, propertyAddress },
   { getPluginConfigById },
@@ -219,9 +219,9 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
       },
     },
   ]
-}
+}) satisfies ClubsFunctionGetAdminPaths
 
-export const meta: ClubsPluginMeta = {
+export const meta = {
   id: 'devprotocol:clubs:collections',
   displayName: 'Collections',
   category: ClubsPluginCategory.Monetization,
@@ -233,11 +233,11 @@ export const meta: ClubsPluginMeta = {
   description: `Dummy is a content generation toolkit designed to make the development.`,
   previewImages: [Preview1.src, Preview2.src],
   readme: Readme,
-}
+} satisfies ClubsPluginMeta
 
 export default {
   getPagePaths,
   getAdminPaths,
   meta,
   getSlots,
-} as ClubsFunctionPlugin
+} satisfies ClubsFunctionPlugin

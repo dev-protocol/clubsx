@@ -17,7 +17,7 @@ import Result from './result.astro'
 import SlotCurrencyOption from './slot-currency-option.astro'
 import { solidityPacked } from 'ethers'
 import type { UndefinedOr } from '@devprotocol/util-ts'
-import { bytes32Hex } from '@fixtures/data/hexlify'
+import { bytes32Hex } from '@devprotocol/clubs-core'
 import type { InjectedTiers } from '@constants/tier'
 import { getItems } from './utils/getItems'
 import type { CurrencyOption } from '@constants/currencyOption'
@@ -87,7 +87,7 @@ export enum SupportedPlugins {
   DevprotocolClubsPluginNft = 'devprotocol:clubs:plugin:nft',
 }
 
-export const getPagePaths: ClubsFunctionGetPagePaths = async (
+export const getPagePaths = (async (
   options,
   { chainId, rpcUrl, propertyAddress, options: configOptions = [] },
   utils,
@@ -148,15 +148,12 @@ export const getPagePaths: ClubsFunctionGetPagePaths = async (
         })),
       ]
     : []
-}
+}) satisfies ClubsFunctionGetPagePaths
 
-export const getAdminPaths: ClubsFunctionGetAdminPaths = async () => []
+export const getAdminPaths =
+  (async () => []) satisfies ClubsFunctionGetAdminPaths
 
-export const getSlots: ClubsFunctionGetSlots = async (
-  _,
-  __,
-  { factory, ...utils },
-) => {
+export const getSlots = (async (_, __, { factory, ...utils }) => {
   const products = getItems(utils)
   const tiers: InjectedTiers = products.map((item) => ({
     ...item,
@@ -181,9 +178,9 @@ export const getSlots: ClubsFunctionGetSlots = async (
         },
       ]
     : []
-}
+}) satisfies ClubsFunctionGetSlots
 
-export const meta: ClubsPluginMeta = {
+export const meta = {
   id: 'devprotocol:clubs:plugin:pay-by-card',
   displayName: 'Pay By Card - Crossmint',
   category: ClubsPluginCategory.Monetization,
@@ -191,11 +188,11 @@ export const meta: ClubsPluginMeta = {
   description: 'Add USD payments by Crossmint.',
   previewImages: [Screenshot1.src, Screenshot2.src],
   readme: Readme,
-}
+} satisfies ClubsPluginMeta
 
 export default {
   getPagePaths,
   getAdminPaths,
   getSlots,
   meta,
-} as ClubsFunctionPlugin
+} satisfies ClubsFunctionPlugin

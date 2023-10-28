@@ -11,7 +11,7 @@ import { checkMemberships } from '@fixtures/utility.ts'
 
 import type { SlotLeft } from './types';
 import { emptyDummyImage } from '@plugins/collections/fixtures'
-import { bytes32Hex } from '@fixtures/data/hexlify'
+import { bytes32Hex } from '@devprotocol/clubs-core'
 import type { Collection } from '@plugins/collections';
 import type { Membership } from '@plugins/memberships'
 import type { connection as Connection } from '@devprotocol/clubs-core/connection'

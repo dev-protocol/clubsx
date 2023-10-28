@@ -22,7 +22,7 @@
 import { defineComponent } from '@vue/runtime-core'
 import type { connection as Connection } from '@devprotocol/clubs-core/connection'
 import ConnectButton from '@components/Wallet/ConnectButton.vue'
-import { onMountClient } from '@devprotocol/clubs-core/events'
+import { onMountClient } from '@devprotocol/clubs-core'
 import { watchWalletClient } from '@wagmi/core'
 import { whenDefined } from '@devprotocol/util-ts'
 import { BrowserProvider } from 'ethers'

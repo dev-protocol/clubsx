@@ -1,6 +1,6 @@
 <script lang="ts">
   import { ClubsEvents, setOptions } from '@devprotocol/clubs-core'
-  import { buildConfig, controlModal } from '@devprotocol/clubs-core/events'
+  import { buildConfig, controlModal } from '@devprotocol/clubs-core'
   import type { Collection, CollectionMembership } from '@plugins/collections'
   import MembershipOption from '@components/AdminMembershipsForm/MembershipOption.svelte'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
@@ -16,11 +16,6 @@
   } from '@plugins/collections/fixtures'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
   import {
-    address,
-    callSlotCollections,
-  } from '@plugins/collections/utils/slotCollections'
-  import type { Image } from '@plugins/collections/utils/types/setImageArg'
-  import {
     randomBytes,
     parseUnits,
     keccak256,
@@ -32,7 +27,7 @@
   import BigNumber from 'bignumber.js'
   import { clientsSTokens } from '@devprotocol/dev-kit'
   import { tokenInfo } from '@constants/common'
-  import { bytes32Hex } from '@fixtures/data/hexlify'
+  import { bytes32Hex } from '@devprotocol/clubs-core'
   import type { Membership } from '@plugins/memberships'
 
   export let existingCollections: Collection[] = []
