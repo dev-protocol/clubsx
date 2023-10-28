@@ -16,6 +16,7 @@ import { default as OpenModalButton } from './OpenModalButton.astro'
 import { default as Index } from './index.astro'
 import { default as Id } from './[id].astro'
 import { default as Icon } from './assets/icon.svg'
+import Checkout from './checkout.astro'
 import { Content as Readme } from './README.md'
 import Preview1 from './assets/limited-number-of-items.svg'
 import Preview2 from './assets/time-limited-collection.svg'
@@ -26,6 +27,7 @@ import {
   PAYMENT_TYPE_INSTANT_FEE,
   PAYMENT_TYPE_STAKE_FEE,
 } from '@constants/memberships'
+import { bytes32Hex } from '@devprotocol/clubs-core'
 
 export type CollectionMembership = Membership & {
   memberCount?: number
@@ -40,6 +42,7 @@ export type Collection = {
   endTime?: number
   description: string
   memberships: CollectionMembership[]
+  requiredMemberships?: string[]
 }
 
 export const getSlots = (async (
@@ -77,19 +80,38 @@ export const getPagePaths = (async (
   { name, rpcUrl, propertyAddress },
   { getPluginConfigById },
 ) => {
+  const [existingMembershipsConfig] = getPluginConfigById(
+    'devprotocol:clubs:simple-memberships',
+  )
+
   const [collectionsConfig] = getPluginConfigById(
     'devprotocol:clubs:collections',
   )
+
+  const existingMemberships =
+    (existingMembershipsConfig?.options.find(
+      (opt: ClubsPluginOption) => opt.key === 'memberships',
+    )?.value as UndefinedOr<Membership[]>) ?? []
+
   const collections =
     (collectionsConfig?.options.find(
       (opt: ClubsPluginOption) => opt.key === 'collections',
     )?.value as UndefinedOr<Collection[]>) ?? []
 
+  const allMemberships = collections
+    .map(({ memberships }) => memberships ?? [])
+    .flat()
+
   return [
     ...(collections.map((collection) => ({
       paths: ['collections', collection.id],
       component: Id,
-      props: { collection, name, rpcUrl, propertyAddress },
+      props: { collection, name, rpcUrl, propertyAddress, existingMemberships },
+    })) ?? []),
+    ...(allMemberships.map((membership) => ({
+      paths: ['collections', 'checkout', bytes32Hex(membership.payload)],
+      component: Checkout,
+      props: { membership, rpcUrl, propertyAddress },
     })) ?? []),
     {
       paths: ['collections'],
@@ -104,6 +126,10 @@ export const getAdminPaths = (async (
   { name, rpcUrl, propertyAddress },
   { getPluginConfigById },
 ) => {
+  const [existingMembershipsConfig] = getPluginConfigById(
+    'devprotocol:clubs:simple-memberships',
+  )
+
   const [collectionsConfig] = getPluginConfigById(
     'devprotocol:clubs:collections',
   )
@@ -129,6 +155,13 @@ export const getAdminPaths = (async (
     memberships: [],
   }
 
+  const existingMemberships =
+    (existingMembershipsConfig?.options.find(
+      (opt: ClubsPluginOption) => opt.key === 'memberships',
+    )?.value as UndefinedOr<Membership[]>) ?? []
+
+  console.log('existingMemberships', existingMemberships)
+
   const collections =
     (collectionsConfig?.options.find(
       (opt: ClubsPluginOption) => opt.key === 'collections',
@@ -143,13 +176,20 @@ export const getAdminPaths = (async (
     ...(collections.map((collection) => ({
       paths: ['collections', collection.id],
       component: AdminEdit,
-      props: { collection, collections, name, rpcUrl, propertyAddress },
+      props: {
+        collection,
+        collections,
+        existingMemberships,
+        name,
+        rpcUrl,
+        propertyAddress,
+      },
     })) ?? []),
     ...(collections.flatMap((collection) =>
       collection.memberships.map((membership) => ({
         paths: ['collections', collection.id, membership.id],
         component: AdminEditMembership,
-        props: { collections, collection, membership },
+        props: { collections, collection, existingMemberships, membership },
       })),
     ) ?? []),
     {
@@ -159,6 +199,7 @@ export const getAdminPaths = (async (
         isTimeLimitedCollection: false,
         preset: presetMemberCollection,
         collections,
+        existingMemberships,
         rpcUrl,
         propertyAddress,
         name,
@@ -171,6 +212,7 @@ export const getAdminPaths = (async (
         isTimeLimitedCollection: true,
         preset: presetTimeCollection,
         collections,
+        existingMemberships,
         rpcUrl,
         propertyAddress,
         name,
