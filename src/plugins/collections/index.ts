@@ -37,7 +37,7 @@ export type Collection = {
   id: string
   name: string
   imageSrc: string
-  startTime?: number
+  status: 'Draft' | 'Published'
   isTimeLimitedCollection: boolean
   endTime?: number
   description: string
@@ -140,7 +140,7 @@ export const getAdminPaths = (async (
     imageSrc: '',
     description: 'This is a time-limited collection.',
     isTimeLimitedCollection: true,
-    startTime: 0,
+    status: 'Draft',
     endTime: 0,
     memberships: [],
   }
@@ -151,7 +151,7 @@ export const getAdminPaths = (async (
     imageSrc: '',
     description: 'This is a quantity-limited collection.',
     isTimeLimitedCollection: false,
-    startTime: 0,
+    status: 'Draft',
     memberships: [],
   }
 

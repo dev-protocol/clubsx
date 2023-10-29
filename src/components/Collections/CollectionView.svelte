@@ -22,8 +22,6 @@ export let collection: Collection
 export let propertyAddress: string
 export let rpcUrl: string
 
-let connection: typeof Connection
-let signer: Signer | undefined
 let currentAddress: string | undefined
 
 
@@ -52,6 +50,8 @@ let currentAddress: string | undefined
             )
         } catch (e) {
             console.error(e)
+            if(requiredMemberships.length === 0) validationResult = true
+            else
             validationResult = false
         }
         console.log("validation result",validationResult)
@@ -131,7 +131,7 @@ let currentAddress: string | undefined
                         </div>
                     </div>
                     <!-- Aceess -->
-                    {:else if validationResult === true}
+          {:else if validationResult === true}
                     <div class="flex flex-col items-start">
                       <div class="flex items-center gap-3 rounded-md bg-dp-green-300 p-5">
                         <div class="h-16 w-16">
@@ -156,13 +156,13 @@ let currentAddress: string | undefined
                         </p>
                       </div>
                     </div>
-                    {:else if validationResult === "processing"}
+            {:else if validationResult === "processing"}
                     <div class="flex items-center justify-center space-x-2">
                         <div class="w-4 h-4 rounded-full animate-pulse dark:bg-orange-200"></div>
                         <div class="w-4 h-4 rounded-full animate-pulse dark:bg-orange-300"></div>
                         <div class="w-4 h-4 rounded-full animate-pulse dark:bg-orange-400"></div>
                     </div>
-                    {/if}
+            {/if}
                     <!-- Memberships -->
 
          <div
