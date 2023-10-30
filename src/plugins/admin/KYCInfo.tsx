@@ -15,7 +15,9 @@ const FundsInfo = (props: {
 }) => {
   const [connection, setConnection] = useState<any>(undefined)
   const [currentAddress, setCurrentAddress] = useState<string>()
-  const [KYCStatus, setKYCStatus] = useState<KYCStatuses>(KYCStatuses.VERIFIED)
+  const [KYCStatus, setKYCStatus] = useState<KYCStatuses>(
+    KYCStatuses.NOT_VERIFIED,
+  )
 
   useEffect(() => {
     const checkConnection = async () => {
@@ -61,15 +63,32 @@ const FundsInfo = (props: {
         </div>
       )}
 
-      {KYCStatus == KYCStatuses.VERIFIED && (
+      {KYCStatus === KYCStatuses.VERIFIED && (
         <div className="w-full max-w-full flex gap-5 py-5 px-8 rounded-2xl  bg-dp-blue-grey-300 dark:bg-dp-blue-grey-200 justify-center items-center">
-          <p className="font-DMSans font-bold text-xl w-[49%] max-w-[49%] text-center">
+          <p className="font-body font-bold text-xl w-[49%] max-w-[49%] text-center">
             Identity Verification
           </p>
-          <div className="w-[49%] max-w-[49%] flex justify-center items-cente">
+          <div className="w-[49%] max-w-[49%] flex justify-center items-center">
             <p className="w-fit rounded-lg p-[5px] bg-[#30A83D] text-center text-base">
               Verified
             </p>
+          </div>
+        </div>
+      )}
+
+      {KYCStatus !== KYCStatuses.VERIFIED && (
+        <div className="w-full max-w-full flex gap-5 rounded-2xl bg-dp-blue-grey-300 p-8 border-[1px] dark:bg-dp-blue-grey-200 justify-center items-center">
+          <p className="font-body w-[49%] max-w-[49%] font-bold text-2xl text-center">
+            Identity Verification
+          </p>
+          <div className="w-[49%] max-w-[49%] flex flex-col justify-center items-center gap-5">
+            <div className="w-fit rounded-lg bg-[#5B8BF5] p-5">
+              <img src={NotVerifiedBannerImg.src} alt="Not verified" />
+            </div>
+            <p className="w-fit font-body text-base font-bold">Not verified</p>
+            <button className="w-fit rounded py-6 px-8 bg-[#040B10] font-bold text-base font-body">
+              {KYCStatus === KYCStatuses.NOT_VERIFIED ? 'Verified' : 'Resume'}
+            </button>
           </div>
         </div>
       )}
