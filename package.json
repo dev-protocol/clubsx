@@ -78,7 +78,7 @@
     "@vercel/edge": "1.1.0",
     "@vue/composition-api": "1.7.2",
     "@wagmi/core": "^1.4.1",
-    "@web3modal/wagmi": "3.1.0",
+    "@web3modal/wagmi": "3.2.0",
     "@webcomponents/template-shadowroot": "^0.2.1",
     "astro": "3.4.0",
     "autoprefixer": "10.4.16",
