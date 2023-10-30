@@ -2,6 +2,12 @@ import React, { useEffect, useState } from 'react'
 
 import NotVerifiedBannerImg from './assets/NotVerifiedBannerImg.svg'
 
+enum KYCStatuses {
+  VERIFIED,
+  NOT_VERIFIED,
+  PENDING,
+}
+
 const FundsInfo = (props: {
   propertyAddress: string
   chainId: number
@@ -9,6 +15,7 @@ const FundsInfo = (props: {
 }) => {
   const [connection, setConnection] = useState<any>(undefined)
   const [currentAddress, setCurrentAddress] = useState<string>()
+  const [KYCStatus, setKYCStatus] = useState<KYCStatuses>(KYCStatuses.VERIFIED)
 
   useEffect(() => {
     const checkConnection = async () => {
@@ -54,26 +61,18 @@ const FundsInfo = (props: {
         </div>
       )}
 
-      {/* <!-- Banner --> */}
-      <div className="w-full max-w-full gap-5 rounded-2xl bg-dp-blue-grey-300 px-8 py-20 dark:bg-dp-blue-grey-200">
-        <p className="text-center font-body text-3xl">
-          Clubs KYC will be available soon...
-        </p>
-        <div className="mx-auto mt-5 flex w-fit max-w-full items-center justify-center gap-5">
-          <div className="w-fit max-w-[52.2%] rounded-lg bg-[#6D9BFF] p-5">
-            <img src={NotVerifiedBannerImg.src} alt="Not verified" />
-          </div>
-          <p className="font-body text-base font-bold opacity-50">
-            Not verified
+      {KYCStatus == KYCStatuses.VERIFIED && (
+        <div className="w-full max-w-full flex gap-5 py-5 px-8 rounded-2xl  bg-dp-blue-grey-300 dark:bg-dp-blue-grey-200 justify-center items-center">
+          <p className="font-DMSans font-bold text-xl w-[49%] max-w-[49%] text-center">
+            Identity Verification
           </p>
+          <div className="w-[49%] max-w-[49%] flex justify-center items-cente">
+            <p className="w-fit rounded-lg p-[5px] bg-[#30A83D] text-center text-base">
+              Verified
+            </p>
+          </div>
         </div>
-        <p className="mt-5 text-center font-body text-xl">
-          Clubs applies eKYC to fund withdrawals to help you build a secure and
-          robust community. Once the process is successfully completed, you will
-          be able to withdraw funds and the Clubs team is committed to building
-          the eKYC process.
-        </p>
-      </div>
+      )}
     </>
   )
 }
