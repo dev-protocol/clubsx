@@ -4,10 +4,12 @@
     detectStokensByPropertyAddress,
     calculateRewardAmount,
   } from '@fixtures/dev-kit'
-  import { whenDefined } from '@devprotocol/util-ts'
-  import { onMount } from 'svelte'
-  import { JsonRpcProvider } from 'ethers'
+  import { whenDefined, type UndefinedOr } from '@devprotocol/util-ts'
+  import { onDestroy, onMount } from 'svelte'
+  import { JsonRpcProvider, type Signer } from 'ethers'
   import { usdByDev } from '@fixtures/coingecko/api'
+  import { clientsProperty } from '@devprotocol/dev-kit'
+  import type { Subscription } from 'rxjs'
   export let config: ClubsConfiguration
 
   let { propertyAddress, rpcUrl } = config
@@ -15,11 +17,13 @@
   let members: number | undefined = 0
   let earningsInDev: number | undefined
   let earnings: number | undefined
+  let userBalance: BigInt | undefined
+  let connectionSub: Subscription
   async function getData() {
     await detectStokensByPropertyAddress(provider, propertyAddress).then(
       (res) => {
         members = res?.length
-      }
+      },
     )
     await calculateRewardAmount(provider, propertyAddress).then((res) => {
       whenDefined(res, async (value) => {
@@ -28,13 +32,51 @@
       })
     })
   }
+
+  const fetchUserSupply = async (signer: UndefinedOr<Signer>) => {
+    if (!signer) {
+      userBalance = undefined
+      return
+    }
+
+    const propertyClient = await clientsProperty(
+      provider,
+      config.propertyAddress,
+    )
+
+    if (!propertyClient || propertyClient.length <= 0) {
+      return false
+    }
+
+    const property = propertyClient[0] ?? propertyClient[1]
+
+    if (!property) {
+      console.log('no property!')
+    }
+
+    userBalance = BigInt(
+      (await property?.balanceOf(await signer.getAddress())) ?? 0,
+    )
+  }
+
   onMount(async () => {
     await getData()
+
+    const { connection } = await import('@devprotocol/clubs-core/connection')
+
+    connectionSub = connection().signer.subscribe((signer) => {
+      fetchUserSupply(signer)
+    })
+  })
+
+  onDestroy(() => {
+    connectionSub.unsubscribe()
   })
 </script>
 
 <div class="grid gap-16">
   <section class="grid grid-cols-2 items-stretch justify-between gap-16">
+    <!-- Number of Members -->
     <div
       class="border-native-blue-400 grid gap-16 rounded-lg border border-[3px] p-8"
     >
@@ -51,6 +93,7 @@
       {/if}
     </div>
 
+    <!-- Total Earnings -->
     <div
       class="border-native-blue-400 grid gap-16 rounded-lg border border-[3px] p-8"
     >
@@ -74,6 +117,31 @@
           >
         {/if}
       </div>
+    </div>
+
+    <div
+      class="border-native-blue-400 grid gap-16 rounded-lg border border-[3px] p-8"
+    >
+      <span class="font-title text-lg font-bold">Your Token Share</span>
+
+      <div class="grid gap-2">
+        {#if userBalance}
+          <span class="truncate text-5xl"
+            >${userBalance.toLocaleString('en', { useGrouping: true })}</span
+          >
+          <span class="text-sm"
+            >({userBalance.toLocaleString('en', { useGrouping: true })} DEV)</span
+          >
+        {:else}
+          <span>Connect wallet</span>
+        {/if}
+      </div>
+    </div>
+
+    <div
+      class="border-native-blue-400 grid gap-16 rounded-lg border border-[3px] p-8"
+    >
+      <span class="font-title text-lg font-bold">Treasury Token Share</span>
     </div>
   </section>
 
