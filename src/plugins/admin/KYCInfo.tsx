@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react'
 
-import StakeInfo from './StakeInfo'
-import { ALL_CURRENCIES } from '@constants/memberships'
-import CurrencyMembershipInfo from './CurrencyMembershipInfo'
 import NotVerifiedBannerImg from './assets/NotVerifiedBannerImg.svg'
 
 const FundsInfo = (props: {
@@ -12,11 +9,6 @@ const FundsInfo = (props: {
 }) => {
   const [connection, setConnection] = useState<any>(undefined)
   const [currentAddress, setCurrentAddress] = useState<string>()
-  const [totalWithrawableInDollars, setTotalWithdrawableInDollars] = useState<
-    string[]
-  >(Array(ALL_CURRENCIES.length).fill(0))
-  const [yourTotalWithdrawableInDollars, setYourTotalWithdrawableInDollars] =
-    useState<string[]>(Array(ALL_CURRENCIES.length).fill(0))
 
   useEffect(() => {
     const checkConnection = async () => {
@@ -37,28 +29,6 @@ const FundsInfo = (props: {
       setCurrentAddress(a)
     })
   }, [connection])
-
-  const updateYourTotalWithdrawable = (
-    allCurrencyIndex: number,
-    nonFormattedNumberString: string,
-  ) => {
-    setYourTotalWithdrawableInDollars((yourTotalWithdrawableInDollars) => [
-      ...yourTotalWithdrawableInDollars.slice(0, allCurrencyIndex),
-      nonFormattedNumberString,
-      ...yourTotalWithdrawableInDollars.slice(allCurrencyIndex + 1),
-    ])
-  }
-
-  const updateTotalWithdrawable = (
-    allCurrencyIndex: number,
-    nonFormattedNumberString: string,
-  ) => {
-    setTotalWithdrawableInDollars((totalWithrawableInDollars) => [
-      ...totalWithrawableInDollars.slice(0, allCurrencyIndex),
-      nonFormattedNumberString,
-      ...totalWithrawableInDollars.slice(allCurrencyIndex + 1),
-    ])
-  }
 
   return (
     <>
