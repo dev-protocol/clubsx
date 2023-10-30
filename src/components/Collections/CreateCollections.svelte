@@ -78,7 +78,6 @@
   let noOfPositions: number = 0
   let invalidPriceMsg: string = ''
   let invalidFeeMsg: string = ''
-  let invalidStartTimeMsg: string = ''
   let invalidEndTimeMsg: string = ''
 
   const originaCollectionlId = collection.id
@@ -230,36 +229,17 @@
     )
     setTimeout(buildConfig, 50)
   }
+  const handleStatusChange = async (event:Event) => {
+    const value = (event.target as HTMLInputElement)?.value as "Draft" | "Published" || "Draft"
+    collection = {
+      ...collection,
+      status: value,
+    }
+  }
 
-  let formattedStartTime = formatUnixTimestamp(
-    collection.startTime || new Date().getTime() / 1000,
-  )
   let formattedEndTime = formatUnixTimestamp(
     collection.endTime || new Date().getTime() / 1000 + 120,
   )
-
-  const onStartTimeChange = (event: Event) => {
-    // need to prevent a change if there are already members
-    const value = (event.target as HTMLInputElement)?.value || 0
-    const passedUnixTime = new Date(value).getTime() / 1000
-    const currentTime = Date.now() / 1000
-    if (passedUnixTime < Date.now() / 1000) {
-      collection = {
-        ...collection,
-        startTime: currentTime,
-      }
-      formattedStartTime = formatUnixTimestamp(currentTime)
-      invalidStartTimeMsg = 'Invalid start time: Minimum allowed is now.'
-    } else {
-      collection = {
-        ...collection,
-        startTime: passedUnixTime,
-      }
-      formattedStartTime = formatUnixTimestamp(passedUnixTime)
-      invalidStartTimeMsg = ''
-    }
-    collection = collection
-  }
 
   const onEndTimeChange = async (event: Event) => {
     const value = (event.target as HTMLInputElement)?.value || 0
@@ -269,7 +249,6 @@
       const twoMinutes = 120
       collection = {
         ...collection,
-        startTime: collection?.startTime || currentTime,
         endTime: currentTime + twoMinutes,
       }
       formattedEndTime = formatUnixTimestamp(currentTime + twoMinutes)
@@ -279,7 +258,6 @@
       invalidEndTimeMsg = ''
       collection = {
         ...collection,
-        startTime: collection.startTime || currentTime,
         endTime: passedUnixTime,
       }
       formattedEndTime = formatUnixTimestamp(passedUnixTime)
@@ -568,7 +546,6 @@
     onChangePrice(membership)
     fetchPositionsOfProperty()
     update()
-    onStartTimeChange
     onEndTimeChange
     connectOnMount()
 
@@ -760,6 +737,20 @@
         name="collection-name"
       />
     </label>
+        <!-- Status -->
+        <label class="hs-form-field is-filled is-required">
+          <span class="hs-form-field__label">Status</span>
+          <select
+            class="hs-form-field__input w-full max-w-md"
+            id="collection-status"
+            name="collection-status"
+            bind:value={collection.status}
+            on:change={handleStatusChange}
+          >
+            <option value="Draft">Draft</option>
+            <option value="Published">Published</option>
+          </select>
+        </label>
     <!-- collection cover image uploader-->
     <label class="hs-form-field is-filled is-required">
       <span class="hs-form-field__label">Collection cover image</span>
@@ -788,25 +779,6 @@
       <span class="hs-form-field__helper"
         >Recommended image size is 2400 x 1200px</span
       >
-    </label>
-
-    <!-- start date -->
-    <label class="hs-form-field is-filled is-required">
-      <span class="hs-form-field__label">Start date</span>
-      <input
-        bind:value={formattedStartTime}
-        on:change={onStartTimeChange}
-        type="datetime-local"
-        class="hs-form-field__input w-full max-w-md"
-        id="collectino-start-date"
-        name="collection-start-date"
-        min={formatUnixTimestamp(Date.now() / 1000)}
-        max="2038-01-18T00:00"
-      />
-
-      {#if invalidStartTimeMsg !== ''}
-        <p class="text-danger-300">* {invalidStartTimeMsg}</p>
-      {/if}
     </label>
 
     {#if isTimeLimitedCollection}
