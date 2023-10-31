@@ -10,6 +10,7 @@
   import { usdByDev } from '@fixtures/coingecko/api'
   import { clientsProperty } from '@devprotocol/dev-kit'
   import type { Subscription } from 'rxjs'
+  import BigNumber from 'bignumber.js'
   export let config: ClubsConfiguration
 
   let { propertyAddress, rpcUrl } = config
@@ -17,7 +18,8 @@
   let members: number | undefined = 0
   let earningsInDev: number | undefined
   let earnings: number | undefined
-  let userBalance: BigInt | undefined
+  let totalSupply: BigNumber | undefined
+  let userBalance: BigNumber | undefined
   let connectionSub: Subscription
   async function getData() {
     await detectStokensByPropertyAddress(provider, propertyAddress).then(
@@ -54,9 +56,15 @@
       console.log('no property!')
     }
 
-    userBalance = BigInt(
-      (await property?.balanceOf(await signer.getAddress())) ?? 0,
-    )
+    const [_userBalance, _totalSupply] = await Promise.all([
+      whenDefined(
+        await property?.balanceOf(await signer.getAddress()),
+        BigNumber,
+      ),
+      whenDefined(await property?.totalSupply(), BigNumber),
+    ])
+    userBalance = _userBalance
+    totalSupply = _totalSupply
   }
 
   onMount(async () => {
@@ -125,12 +133,16 @@
       <span class="font-title text-lg font-bold">Your Token Share</span>
 
       <div class="grid gap-2">
-        {#if userBalance}
+        {#if userBalance && totalSupply}
           <span class="truncate text-5xl"
-            >${userBalance.toLocaleString('en', { useGrouping: true })}</span
+            >{userBalance.div(totalSupply).times(100).dp(6)} %</span
           >
           <span class="text-sm"
-            >({userBalance.toLocaleString('en', { useGrouping: true })} DEV)</span
+            >({userBalance
+              .div(1e18)
+              .dp(6)
+              .toNumber()
+              .toLocaleString('en', { useGrouping: true })})</span
           >
         {:else}
           <span>Connect wallet</span>
