@@ -85,20 +85,19 @@ export const getApiPaths = (async (
           const url = new URL(request.url)
           const account = url.searchParams.get('account')
           let test = false
-          try{
+          try {
             test = await checkMemberships(
               provider,
               propertyAddress,
               requiredMemberships,
               account ?? ZeroAddress,
             )
-          } catch(e) {
+          } catch (e) {
             console.log(e)
-            if(requiredMemberships.length === 0) {
+            if (requiredMemberships.length === 0) {
               test = true
-            }
-            else {
-            return new Response('0')
+            } else {
+              return new Response('0')
             }
           }
           const responseText = test ? '1' : '0'
