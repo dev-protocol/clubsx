@@ -1,3 +1,5 @@
+import type { ClubsI18nParts } from '@devprotocol/clubs-core'
+
 export const Strings = {
   Email: { en: 'Email', ja: 'メールアドレス' },
   EmailPlaceholder: { en: 'Enter your email', ja: 'あなたのメールアドレス' },
@@ -8,4 +10,4 @@ export const Strings = {
     en: 'Pay with a credit card',
     ja: 'クレジットカードで支払う',
   },
-}
+} satisfies ClubsI18nParts
