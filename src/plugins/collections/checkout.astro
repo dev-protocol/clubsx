@@ -23,6 +23,6 @@ const { membership, propertyAddress, rpcUrl, collection, ...other } = Astro.prop
   itemImageSrc={membership.imageSrc}
   itemName={membership.name}
   accessControlUrl={`/api/devprotocol:clubs:collections/verification/${collection.id}`}
-  accessControlDescription={membership.accessControl?.description}
+  accessControlDescription={`**Membership Purchase Required**\n\nThis transaction requires primary memberships.\n\nVisit [here](/collections/${collection.id}) for more details.`}
   {...other}
 />

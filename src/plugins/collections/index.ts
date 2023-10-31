@@ -82,14 +82,25 @@ export const getApiPaths = (async (
             requiredPayload.has(bytes32Hex(mem.payload)),
           )
 
-          const urlSearchParams = new URLSearchParams(request.url)
-          const account = urlSearchParams.get('account')
-          const test = await checkMemberships(
-            provider,
-            propertyAddress,
-            requiredMemberships,
-            account ?? ZeroAddress,
-          )
+          const url = new URL(request.url)
+          const account = url.searchParams.get('account')
+          let test = false
+          try{
+            test = await checkMemberships(
+              provider,
+              propertyAddress,
+              requiredMemberships,
+              account ?? ZeroAddress,
+            )
+          } catch(e) {
+            console.log(e)
+            if(requiredMemberships.length === 0) {
+              test = true
+            }
+            else {
+            return new Response('0')
+            }
+          }
           const responseText = test ? '1' : '0'
           return new Response(responseText)
         },
