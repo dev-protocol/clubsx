@@ -77,6 +77,13 @@ const defaultAddress: Address = {
 
 export async function callSlotCollections(
   provider: BrowserProvider | ContractRunner,
+  functionName: 'getSlotsLeft',
+  isTimeSlot: boolean,
+  args: [propertyAddress: string, key: string],
+): Promise<number>
+
+export async function callSlotCollections(
+  provider: BrowserProvider | ContractRunner,
   functionName: 'propertyImages',
   isTimeSlot: boolean,
   args: [propertyAddress: string, key: string],
