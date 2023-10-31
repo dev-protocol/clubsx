@@ -61,7 +61,6 @@ export const getApiPaths = (async (
   const [existingMembershipsConfig] = getPluginConfigById(
     'devprotocol:clubs:simple-memberships',
   )
-  console.log(existingMembershipsConfig)
   const existingMemberships =
     (existingMembershipsConfig?.options.find(
       (opt: ClubsPluginOption) => opt.key === 'memberships',

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { onMount, beforeUpdate } from 'svelte';
+import { onMount } from 'svelte';
 
 import {
   JsonRpcProvider,
@@ -12,8 +12,13 @@ import { checkMemberships } from '@fixtures/utility.ts'
 import type { SlotLeft } from './types';
 import { emptyDummyImage } from '@plugins/collections/fixtures'
 import { bytes32Hex } from '@devprotocol/clubs-core'
-import type { Collection } from '@plugins/collections';
+import type { Collection, CollectionMembership } from '@plugins/collections';
 import type { Membership } from '@plugins/memberships'
+
+import {
+    address,
+    callSlotCollections,
+  } from '@plugins/collections/utils/slotCollections'
 import type { connection as Connection } from '@devprotocol/clubs-core/connection'
 
 export let clubName: string | undefined = undefined
@@ -21,6 +26,11 @@ export let existingMemberships: Membership[] = []
 export let collection: Collection
 export let propertyAddress: string
 export let rpcUrl: string
+
+const slots: SlotLeft = {
+  left: 20,
+  total: 50,
+}
 
 let currentAddress: string | undefined
 
@@ -54,7 +64,6 @@ let currentAddress: string | undefined
             else
             validationResult = false
         }
-        console.log("validation result",validationResult)
         validatingMembership = false;
     }
 
@@ -75,6 +84,19 @@ let currentAddress: string | undefined
       seconds = 0
     }
   }
+
+  // const getSlotsForMembership = async (membership: CollectionMembership) => {
+  //   const provider = new JsonRpcProvider(rpcUrl)
+  //   const left = await callSlotCollections(
+  //     provider,
+  //     'getSlotsLeft',
+  //     false,
+  //     [propertyAddress, bytes32Hex(membership.payload)],
+  //   )
+  //   const total = membership.memberCount
+  //   console.log({ left, total })
+  //   return {left, total} as SlotLeft
+  // }
 
   onMount(async () => {
     calculateTimeLeft();
@@ -180,6 +202,7 @@ let currentAddress: string | undefined
              description={mem.description}
              action={`/join/${mem.id}`}
              actionLabel={'Purchase'}
+            slotOutTotal={undefined}
            />
          {/each}
        </div>
@@ -222,6 +245,7 @@ let currentAddress: string | undefined
             class="grid grid-cols-[repeat(auto-fit,_minmax(120px,_1fr))] justify-between gap-4"
           >
             {#each collection.memberships as mem, i}
+            
             {#if validationResult === true}
               <MembershipOption
                 clubName={clubName ?? 'Your Club'}
@@ -233,6 +257,7 @@ let currentAddress: string | undefined
                 description={mem.description}
                 action={`/collections/checkout/${bytes32Hex(mem.payload)}`}
                 actionLabel="Purchase"
+                slotOutTotal={slots}
               />
               {/if}
             {/each}
