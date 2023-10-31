@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 
 import NotVerifiedBannerImg from './assets/NotVerifiedBannerImg.svg'
+import IdentityVerificationBg from './assets/Identity-Verification.mp4'
 
 enum KYCStatuses {
   VERIFIED,
   NOT_VERIFIED,
-  PENDING,
 }
 
 const FundsInfo = (props: {
@@ -77,18 +77,30 @@ const FundsInfo = (props: {
       )}
 
       {KYCStatus !== KYCStatuses.VERIFIED && (
-        <div className="w-full max-w-full flex gap-5 rounded-2xl bg-dp-blue-grey-300 p-8 border-[1px] dark:bg-dp-blue-grey-200 justify-center items-center">
-          <p className="font-body w-[49%] max-w-[49%] font-bold text-2xl text-center">
-            Identity Verification
-          </p>
-          <div className="w-[49%] max-w-[49%] flex flex-col justify-center items-center gap-5">
-            <div className="w-fit rounded-lg bg-[#5B8BF5] p-5">
-              <img src={NotVerifiedBannerImg.src} alt="Not verified" />
+        <div className="relative w-full max-w-full min-h-[292px] rounded-2xl p-8">
+          <video
+            autoPlay={true}
+            loop
+            muted
+            className="absolute inset-0 w-full h-full max-w-full max-h-full object-cover rounded-2xl"
+          >
+            <source src={IdentityVerificationBg} type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 w-full max-w-full h-full max-h-full flex gap-5 justify-center items-center z-1 rounded-2xl">
+            <p className="font-body w-[49%] max-w-[49%] font-bold text-2xl text-center text-[#040B10]">
+              Identity Verification
+            </p>
+            <div className="w-[49%] max-w-[49%] flex flex-col justify-center items-center gap-5">
+              <div className="w-fit rounded-lg bg-[#5B8BF5] p-5">
+                <img src={NotVerifiedBannerImg.src} alt="Not verified" />
+              </div>
+              <p className="w-fit font-body text-base font-bold text-[#040B10]">
+                Not verified
+              </p>
+              <button className="w-fit rounded py-6 px-8 bg-[#040B10] font-bold text-base font-body">
+                Verify
+              </button>
             </div>
-            <p className="w-fit font-body text-base font-bold">Not verified</p>
-            <button className="w-fit rounded py-6 px-8 bg-[#040B10] font-bold text-base font-body">
-              {KYCStatus === KYCStatuses.NOT_VERIFIED ? 'Verified' : 'Resume'}
-            </button>
           </div>
         </div>
       )}
