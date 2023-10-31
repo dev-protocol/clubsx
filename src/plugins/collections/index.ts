@@ -1,6 +1,7 @@
 import type {
   ClubsFunctionGetAdminPaths,
   ClubsFunctionGetPagePaths,
+  ClubsFunctionGetApiPaths,
   ClubsFunctionGetSlots,
   ClubsFunctionPlugin,
   ClubsPluginMeta,
@@ -27,7 +28,12 @@ import {
   PAYMENT_TYPE_INSTANT_FEE,
   PAYMENT_TYPE_STAKE_FEE,
 } from '@constants/memberships'
+import {
+  JsonRpcProvider,
+} from 'ethers'
 import { bytes32Hex } from '@devprotocol/clubs-core'
+import { checkMemberships } from '@fixtures/utility.ts'
+
 
 export type CollectionMembership = Membership & {
   memberCount?: number
@@ -44,6 +50,43 @@ export type Collection = {
   memberships: CollectionMembership[]
   requiredMemberships?: string[]
 }
+export const getApiPaths = (async (options, config, { getPluginConfigById },) => {
+
+  const {propertyAddress,rpcUrl} = config
+  const provider = new JsonRpcProvider(rpcUrl)
+  const collections =
+    (options.find((opt: ClubsPluginOption) => opt.key === 'collections')
+      ?.value as UndefinedOr<Collection[]>) ?? []
+
+  const [existingMembershipsConfig] = getPluginConfigById(
+        'devprotocol:clubs:simple-memberships',
+  )
+  console.log(existingMembershipsConfig)
+  const existingMemberships =
+  (existingMembershipsConfig?.options.find(
+    (opt: ClubsPluginOption) => opt.key === 'memberships',
+  )?.value as UndefinedOr<Membership[]>) ?? []
+
+  return collections.map(collection => ({
+    paths: ['verification', collection.id],
+    method: 'GET',
+    handler: async ({request}) => {
+      const requiredPayload = new Set(collection.requiredMemberships?.map(reqMem => bytes32Hex(reqMem)) || []);
+      const requiredMemberships = existingMemberships.filter(mem => requiredPayload.has(bytes32Hex(mem.payload)));
+
+      const urlSearchParams = new URLSearchParams(request.url);
+      const account = urlSearchParams.get('account');
+      const test = await checkMemberships(
+        provider,
+        propertyAddress,
+        requiredMemberships,
+        account ?? ZeroAddress,
+        )
+        const responseText = test ? '1' : '0';
+        return new Response(responseText);
+    }
+  }) ?? [])
+}) satisfies ClubsFunctionGetApiPaths
 
 export const getSlots = (async (
   options,
@@ -98,21 +141,19 @@ export const getPagePaths = (async (
       (opt: ClubsPluginOption) => opt.key === 'collections',
     )?.value as UndefinedOr<Collection[]>) ?? []
 
-  const allMemberships = collections
-    .map(({ memberships }) => memberships ?? [])
-    .flat()
-
   return [
     ...(collections.map((collection) => ({
       paths: ['collections', collection.id],
       component: Id,
       props: { collection, name, rpcUrl, propertyAddress, existingMemberships },
     })) ?? []),
-    ...(allMemberships.map((membership) => ({
+    ...(collections.flatMap((collection) =>
+    collection.memberships.map((membership) => ({
       paths: ['collections', 'checkout', bytes32Hex(membership.payload)],
       component: Checkout,
-      props: { membership, rpcUrl, propertyAddress },
-    })) ?? []),
+      props: { collections, rpcUrl, collection, membership },
+    })),
+    ) ?? []),
     {
       paths: ['collections'],
       component: Index,
@@ -160,7 +201,6 @@ export const getAdminPaths = (async (
       (opt: ClubsPluginOption) => opt.key === 'memberships',
     )?.value as UndefinedOr<Membership[]>) ?? []
 
-  console.log('existingMemberships', existingMemberships)
 
   const collections =
     (collectionsConfig?.options.find(
@@ -238,6 +278,7 @@ export const meta = {
 export default {
   getPagePaths,
   getAdminPaths,
+  getApiPaths,
   meta,
   getSlots,
 } satisfies ClubsFunctionPlugin

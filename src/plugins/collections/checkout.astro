@@ -1,15 +1,16 @@
 ---
 import {Checkout as Checkout_} from '@devprotocol/clubs-core/ui/components'
 import type { ClubsPropsPages } from '@devprotocol/clubs-core'
-import type { CollectionMembership } from '@plugins/collections'
+import type { CollectionMembership, Collection } from '@plugins/collections'
 
 interface Props extends ClubsPropsPages {
   membership: CollectionMembership
   propertyAddress: string
   rpcUrl: string
+  collection: Collection
 }
 
-const { membership, propertyAddress, rpcUrl, ...other } = Astro.props
+const { membership, propertyAddress, rpcUrl, collection, ...other } = Astro.props
 ---
 
 <Checkout_
@@ -21,7 +22,7 @@ const { membership, propertyAddress, rpcUrl, ...other } = Astro.props
   description={membership.description}
   itemImageSrc={membership.imageSrc}
   itemName={membership.name}
-  accessControlUrl={membership.accessControl?.url}
+  accessControlUrl={`/api/devprotocol:clubs:collections/verification/${collection.id}`}
   accessControlDescription={membership.accessControl?.description}
   {...other}
 />
