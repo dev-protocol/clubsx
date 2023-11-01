@@ -3,7 +3,7 @@ import AdminQuestsForm from './components/AdminQuestsForm.vue'
 
 const { options, clubs } = Astro.props
 const deworkUrl = options.find(
-  (option: { key: string; value: string }) => option.key === 'deworkUrl'
+  (option: { key: string; value: string }) => option.key === 'deworkUrl',
 )
 ---
 

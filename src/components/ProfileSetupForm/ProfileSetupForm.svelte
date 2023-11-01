@@ -29,7 +29,7 @@
   let projectCategory =
     (
       config?.options?.find(
-        (option) => option.key === '__draft'
+        (option) => option.key === '__draft',
       ) as UndefinedOr<DraftOptions>
     )?.value?.category?.toUpperCase() || 'DISCORD'
 
@@ -40,7 +40,7 @@
   const onFileSelected = async (
     e: Event & {
       currentTarget: EventTarget & HTMLInputElement
-    }
+    },
   ) => {
     if (!e.currentTarget.files) {
       return
@@ -62,7 +62,7 @@
     }
 
     const sourceDraft = (config.options?.find(
-      (opt) => opt.key === '__draft'
+      (opt) => opt.key === '__draft',
     ) as UndefinedOr<DraftOptions>) ?? { key: '__draft', value: {} }
 
     const avatarImgSrc = {
@@ -78,7 +78,7 @@
     }
     const options = [
       ...(config.options?.filter(
-        ({ key }) => key !== 'avatarImgSrc' && key !== '__draft'
+        ({ key }) => key !== 'avatarImgSrc' && key !== '__draft',
       ) ?? []),
       avatarImgSrc,
       __draft,

@@ -3,7 +3,7 @@ import AdminCommunityForm from './components/AdminCommunityForm.svelte'
 
 const { options, clubs } = Astro.props
 const guildUrl = options.find(
-  (option: { key: string; value: string }) => option.key === 'guildUrl'
+  (option: { key: string; value: string }) => option.key === 'guildUrl',
 )
 ---
 

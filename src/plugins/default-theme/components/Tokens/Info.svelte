@@ -73,7 +73,7 @@
   onMount(async () => {
     const [l1, l2] = await clientsSTokens(provider)
     const positions = await whenDefined(l1 ?? l2, (x) =>
-      x.positionsOfProperty(propertyAddress)
+      x.positionsOfProperty(propertyAddress),
     )
     stakers = positions?.length
   })

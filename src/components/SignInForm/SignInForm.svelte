@@ -22,7 +22,7 @@
 
     window.location.href = new URL(
       `/user/${currentAddress}`,
-      window.location.origin
+      window.location.origin,
     ).toString()
   }
 </script>
@@ -80,7 +80,7 @@
       (
         fill: 'native-blue.400',
         ink: 'native-blue.ink',
-        border: 'native-blue.400'
+        border: 'native-blue.400',
       )
     );
 
@@ -90,7 +90,7 @@
         (
           fill: 'native-blue.300',
           ink: 'native-blue.ink',
-          border: 'native-blue.300'
+          border: 'native-blue.300',
         )
       );
     }
@@ -100,7 +100,7 @@
         (
           fill: 'native-blue.200',
           ink: 'native-blue.ink',
-          border: 'native-blue.200'
+          border: 'native-blue.200',
         )
       );
     }
