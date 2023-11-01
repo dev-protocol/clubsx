@@ -43,7 +43,7 @@ const FundsInfo = (props: {
     <>
       {/* <!------ Loggin/Connection status --------------> */}
       {!currentAddress && (
-        <div className="mb-16 flex w-fit max-w-full items-center justify-center gap-5 rounded-md bg-[#FDAD00] px-8 py-4">
+        <div className="mb-16 flex w-fit max-w-full items-center justify-center gap-5 rounded-md bg-dp-yellow-400 px-8 py-4">
           <svg
             width="20"
             height="20"
@@ -64,12 +64,10 @@ const FundsInfo = (props: {
       )}
 
       {KYCStatus === KYCStatuses.VERIFIED && (
-        <div className="w-full max-w-full flex gap-5 py-5 px-8 rounded-2xl  bg-dp-blue-grey-300 dark:bg-dp-blue-grey-200 justify-center items-center">
-          <p className="font-body font-bold text-xl w-[49%] max-w-[49%] text-center">
-            Identity Verification
-          </p>
-          <div className="w-[49%] max-w-[49%] flex justify-center items-center">
-            <p className="w-fit rounded-lg p-[5px] bg-[#30A83D] text-center text-base">
+        <div className="w-full grid lg:grid-cols-2 gap-5 py-5 px-8 rounded-2xl bg-dp-blue-grey-300 dark:bg-dp-blue-grey-200 justify-center items-center">
+          <p className="font-bold text-xl text-center">Identity Verification</p>
+          <div className="flex justify-center items-center">
+            <p className="w-fit rounded-lg p-1.5 bg-dp-green-400 text-center">
               Verified
             </p>
           </div>
@@ -86,18 +84,18 @@ const FundsInfo = (props: {
           >
             <source src={IdentityVerificationBg} type="video/mp4" />
           </video>
-          <div className="absolute inset-0 w-full max-w-full h-full max-h-full flex gap-5 justify-center items-center z-1 rounded-2xl">
-            <p className="font-body w-[49%] max-w-[49%] font-bold text-2xl text-center text-[#040B10]">
+          <div className="relative w-full h-full grid lg:grid-cols-2 gap-5 justify-center items-center z-1 rounded-2xl">
+            <p className="font-bold text-2xl text-center text-dp-white-ink">
               Identity Verification
             </p>
-            <div className="w-[49%] max-w-[49%] flex flex-col justify-center items-center gap-5">
-              <div className="w-fit rounded-lg bg-[#5B8BF5] p-5">
+            <div className="flex flex-col justify-center items-center gap-5">
+              <div className="w-fit rounded-lg bg-native-blue-400 p-5">
                 <img src={NotVerifiedBannerImg.src} alt="Not verified" />
               </div>
-              <p className="w-fit font-body text-base font-bold text-[#040B10]">
+              <p className="w-fit font-body text-base font-bold text-dp-white-ink">
                 Not verified
               </p>
-              <button className="w-fit rounded py-6 px-8 bg-[#040B10] font-bold text-base font-body">
+              <button className="hs-button is-filled py-6 px-8 bg-dp-blue-grey-600 text-dp-blue-grey-ink">
                 Verify
               </button>
             </div>
