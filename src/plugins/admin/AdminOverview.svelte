@@ -1,25 +1,47 @@
 <script lang="ts">
+  /**
+   * Imports
+   */
   import type { ClubsConfiguration } from '@devprotocol/clubs-core'
   import {
     detectStokensByPropertyAddress,
     calculateRewardAmount,
   } from '@fixtures/dev-kit'
-  import { whenDefined } from '@devprotocol/util-ts'
-  import { onMount } from 'svelte'
-  import { JsonRpcProvider } from 'ethers'
+  import { whenDefined, type UndefinedOr } from '@devprotocol/util-ts'
+  import { onDestroy, onMount } from 'svelte'
+  import { JsonRpcProvider, type Signer } from 'ethers'
   import { usdByDev } from '@fixtures/coingecko/api'
+  import { clientsProperty } from '@devprotocol/dev-kit'
+  import type { Subscription } from 'rxjs'
+  import BigNumber from 'bignumber.js'
+  import { clientsRegistry } from '@devprotocol/dev-kit'
+
+  /**
+   * Export Params
+   */
   export let config: ClubsConfiguration
 
+  /**
+   * Component variables
+   */
   let { propertyAddress, rpcUrl } = config
   const provider = new JsonRpcProvider(rpcUrl)
   let members: number | undefined = 0
   let earningsInDev: number | undefined
   let earnings: number | undefined
+  let totalSupply: BigNumber | undefined
+  let userBalance: BigNumber | undefined
+  let treasuryBalance: BigNumber | undefined
+  let connectionSub: Subscription
+
+  /**
+   * Component functions
+   */
   async function getData() {
     await detectStokensByPropertyAddress(provider, propertyAddress).then(
       (res) => {
         members = res?.length
-      }
+      },
     )
     await calculateRewardAmount(provider, propertyAddress).then((res) => {
       whenDefined(res, async (value) => {
@@ -28,13 +50,97 @@
       })
     })
   }
+
+  const fetchTreasuryAddress = async () => {
+    const registries = await clientsRegistry(provider)
+
+    if (!registries || registries.length <= 0) {
+      return
+    }
+
+    const registery = registries[1]
+
+    if (!registery) {
+      return
+    }
+
+    const treasuryAddress = await registery.registries('Treasury')
+
+    return treasuryAddress
+  }
+
+  const getProperty = async () => {
+    const propertyClient = await clientsProperty(
+      provider,
+      config.propertyAddress,
+    )
+
+    if (!propertyClient || propertyClient.length <= 0) {
+      return false
+    }
+
+    return propertyClient[0] ?? propertyClient[1]
+  }
+
+  const fetchUserSupply = async (signer: UndefinedOr<Signer>) => {
+    if (!signer) {
+      userBalance = undefined
+      return
+    }
+
+    const property = await getProperty()
+
+    if (!property) {
+      return
+    }
+
+    const [_userBalance, _totalSupply] = await Promise.all([
+      whenDefined(
+        await property?.balanceOf(await signer.getAddress()),
+        BigNumber,
+      ),
+      whenDefined(await property?.totalSupply(), BigNumber),
+    ])
+    userBalance = _userBalance
+    totalSupply = _totalSupply
+  }
+
+  const fetchTreasuryBalance = async () => {
+    const property = await getProperty()
+
+    if (!property) {
+      return
+    }
+
+    const treasuryAddress = await fetchTreasuryAddress()
+
+    treasuryBalance = await whenDefined(
+      treasuryAddress,
+      async (_treasuryAddress) =>
+        new BigNumber(await property?.balanceOf(_treasuryAddress)),
+    )
+  }
+
   onMount(async () => {
-    await getData()
+    getData()
+
+    fetchTreasuryBalance()
+
+    const { connection } = await import('@devprotocol/clubs-core/connection')
+
+    connectionSub = connection().signer.subscribe((signer) => {
+      fetchUserSupply(signer)
+    })
+  })
+
+  onDestroy(() => {
+    connectionSub.unsubscribe()
   })
 </script>
 
 <div class="grid gap-16">
   <section class="grid grid-cols-2 items-stretch justify-between gap-16">
+    <!-- Number of Members -->
     <div
       class="border-native-blue-400 grid gap-16 rounded-lg border border-[3px] p-8"
     >
@@ -51,6 +157,7 @@
       {/if}
     </div>
 
+    <!-- Total Earnings -->
     <div
       class="border-native-blue-400 grid gap-16 rounded-lg border border-[3px] p-8"
     >
@@ -72,6 +179,53 @@
             class="block w-2/4 animate-pulse rounded bg-gray-500/60 text-sm text-transparent"
             >0</span
           >
+        {/if}
+      </div>
+    </div>
+
+    <div
+      class="border-native-blue-400 grid gap-16 rounded-lg border border-[3px] p-8"
+    >
+      <span class="font-title text-lg font-bold">Your Token Share</span>
+
+      <div class="grid gap-2">
+        {#if userBalance && totalSupply}
+          <span class="truncate text-5xl"
+            >{userBalance.div(totalSupply).times(100).dp(6)} %</span
+          >
+          <span class="text-sm"
+            >({userBalance
+              .div(1e18)
+              .dp(6)
+              .toNumber()
+              .toLocaleString('en', { useGrouping: true })})</span
+          >
+        {:else}
+          <span>Connect wallet</span>
+        {/if}
+      </div>
+    </div>
+
+    <div
+      class="border-native-blue-400 grid gap-16 rounded-lg border border-[3px] p-8"
+    >
+      <span class="font-title text-lg font-bold">Treasury Token Share</span>
+
+      <div class="grid gap-2">
+        {#if treasuryBalance && totalSupply}
+          <span class="truncate text-5xl"
+            >{treasuryBalance.div(totalSupply).times(100).dp(6)} %</span
+          >
+          <span class="text-sm"
+            >({treasuryBalance
+              .div(1e18)
+              .dp(6)
+              .toNumber()
+              .toLocaleString('en', { useGrouping: true })})</span
+          >
+        {:else}
+          <span class="truncate text-5xl">- %</span>
+          <span class="text-sm">(-)</span>
         {/if}
       </div>
     </div>

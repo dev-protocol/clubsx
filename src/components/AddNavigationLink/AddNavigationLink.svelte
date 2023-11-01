@@ -47,7 +47,7 @@
             // TODO: Add an error handling
           }
         }
-      }
+      },
     )
   })
 </script>

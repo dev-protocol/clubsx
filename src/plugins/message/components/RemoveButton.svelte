@@ -13,7 +13,7 @@
     removing = true
     setOptions(
       [{ key: 'forms', value: forms.filter((f) => f.id !== id) }],
-      currentPluginIndex
+      currentPluginIndex,
     )
     setTimeout(buildConfig, 50)
   }
@@ -29,7 +29,7 @@
             // TODO: Add an error handling
           }
         }
-      }
+      },
     )
   })
 </script>
