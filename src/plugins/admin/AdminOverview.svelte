@@ -102,12 +102,14 @@
       whenDefined(await property?.totalSupply(), BigNumber),
       whenDefined(
         treasuryAddress,
-        async (_treasuryAddress) => await property?.balanceOf(_treasuryAddress),
+        async (_treasuryAddress) =>
+          new BigNumber(await property?.balanceOf(_treasuryAddress)),
       ),
     ])
     userBalance = _userBalance
     totalSupply = _totalSupply
-    console.log('_treasuryBalance', _treasuryBalance)
+    treasuryBalance = _treasuryBalance
+    console.log('treasuryBalance', treasuryBalance)
   }
 
   onMount(async () => {
