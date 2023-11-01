@@ -3,7 +3,7 @@ import AdminHomeForm from '../../components/AdminHomeForm/AdminHomeForm.svelte'
 
 const { options, clubs } = Astro.props
 const homeConfig = options.find(
-  (option: { key: string; value: string }) => option.key === 'homeConfig'
+  (option: { key: string; value: string }) => option.key === 'homeConfig',
 )
 ---
 

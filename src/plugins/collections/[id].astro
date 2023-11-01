@@ -3,20 +3,25 @@ import type { Collection } from '@plugins/collections'
 import CollectionView from '@components/Collections/CollectionView.svelte'
 import type { Membership } from '@plugins/memberships'
 
-const { collection, rpcUrl, propertyAddress, existingMemberships = [],} = Astro.props as { 
-    collection: Collection
-    rpcUrl: string
-    propertyAddress: string
-    existingMemberships: Membership[]
+const {
+  collection,
+  rpcUrl,
+  propertyAddress,
+  existingMemberships = [],
+} = Astro.props as {
+  collection: Collection
+  rpcUrl: string
+  propertyAddress: string
+  existingMemberships: Membership[]
 }
 ---
 
 <div>
-    <CollectionView
-    client:only="svelte"
+  <CollectionView
+    client:load
     collection={collection}
     rpcUrl={rpcUrl}
     propertyAddress={propertyAddress}
     existingMemberships={existingMemberships}
-    />
+  />
 </div>

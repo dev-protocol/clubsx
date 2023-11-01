@@ -55,7 +55,7 @@
     }
 
     const isReachedCreationLimitsRes = await fetch(
-      `/api/hasCreationLimitReached/${currentAddress}`
+      `/api/hasCreationLimitReached/${currentAddress}`,
     )
     const isReachedCreationLimitsResJson =
       await isReachedCreationLimitsRes.json()
@@ -130,7 +130,7 @@
       walletConnectStatusMsg = 'Clubs creation confirmed, loading setup...'
       window.location.href = new URL(
         `${siteName}/setup/basic`,
-        `${location.protocol}//${location.host}`
+        `${location.protocol}//${location.host}`,
       ).toString()
     } else {
       const jsonResponse = await res.json()
@@ -203,7 +203,7 @@
       (
         fill: 'native-blue.400',
         ink: 'native-blue.ink',
-        border: 'native-blue.400'
+        border: 'native-blue.400',
       )
     );
 
@@ -213,7 +213,7 @@
         (
           fill: 'native-blue.300',
           ink: 'native-blue.ink',
-          border: 'native-blue.300'
+          border: 'native-blue.300',
         )
       );
     }
@@ -223,7 +223,7 @@
         (
           fill: 'native-blue.200',
           ink: 'native-blue.ink',
-          border: 'native-blue.200'
+          border: 'native-blue.200',
         )
       );
     }

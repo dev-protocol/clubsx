@@ -19,7 +19,7 @@
     await detectStokensByPropertyAddress(provider, propertyAddress).then(
       (res) => {
         members = res?.length
-      }
+      },
     )
     await calculateRewardAmount(provider, propertyAddress).then((res) => {
       whenDefined(res, async (value) => {

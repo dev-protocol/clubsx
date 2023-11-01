@@ -5,7 +5,7 @@ import questImg from '@assets/quests.png'
 const { options } = Astro.props
 const deWorkUrl =
   options.find(
-    (option: { key: string; value: string }) => option.key === 'deworkUrl'
+    (option: { key: string; value: string }) => option.key === 'deworkUrl',
   )?.value || '#'
 ---
 

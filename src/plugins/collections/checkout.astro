@@ -1,5 +1,5 @@
 ---
-import {Checkout as Checkout_} from '@devprotocol/clubs-core/ui/components'
+import { Checkout as Checkout_ } from '@devprotocol/clubs-core/ui/components'
 import type { ClubsPropsPages } from '@devprotocol/clubs-core'
 import type { CollectionMembership, Collection } from '@plugins/collections'
 
@@ -10,7 +10,8 @@ interface Props extends ClubsPropsPages {
   collection: Collection
 }
 
-const { membership, propertyAddress, rpcUrl, collection, ...other } = Astro.props
+const { membership, propertyAddress, rpcUrl, collection, ...other } =
+  Astro.props
 ---
 
 <Checkout_

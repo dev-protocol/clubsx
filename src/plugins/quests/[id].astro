@@ -11,7 +11,7 @@ export function getStaticPaths() {
 }
 const { id } = Astro.params
 const targetQuest = quests.filter(
-  (quest: any) => quest && quest.id === id && quest.listed
+  (quest: any) => quest && quest.id === id && quest.listed,
 )[0] as {
   id: string
   title: string

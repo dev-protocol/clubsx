@@ -229,8 +229,10 @@
     )
     setTimeout(buildConfig, 50)
   }
-  const handleStatusChange = async (event:Event) => {
-    const value = (event.target as HTMLInputElement)?.value as "Draft" | "Published" || "Draft"
+  const handleStatusChange = async (event: Event) => {
+    const value =
+      ((event.target as HTMLInputElement)?.value as 'Draft' | 'Published') ||
+      'Draft'
     collection = {
       ...collection,
       status: value,
@@ -660,17 +662,18 @@
   }
   const selectAllowlist = (mem: Membership) => {
     // if mem.payload already exists in collection.requiredMemberships then remove it otherwise add it to collection.requiredMemberships
-    collection.requiredMemberships = collection.requiredMemberships 
-    ?
-      collection.requiredMemberships.includes(bytes32Hex(mem.payload))
-        ? 
-          collection.requiredMemberships.filter(
-            (m: Uint8Array | string) => m !== bytes32Hex(mem.payload)
+    collection.requiredMemberships = collection.requiredMemberships
+      ? collection.requiredMemberships.includes(bytes32Hex(mem.payload))
+        ? collection.requiredMemberships.filter(
+            (m: Uint8Array | string) => m !== bytes32Hex(mem.payload),
           )
-        : [...collection.requiredMemberships, bytes32Hex(mem.payload)] 
-    : [bytes32Hex(mem.payload)]
+        : [...collection.requiredMemberships, bytes32Hex(mem.payload)]
+      : [bytes32Hex(mem.payload)]
     update()
-    console.log("collection.requiredMemberships", collection.requiredMemberships)
+    console.log(
+      'collection.requiredMemberships',
+      collection.requiredMemberships,
+    )
   }
 
   const fetchPositionsOfProperty = async () => {
@@ -737,20 +740,20 @@
         name="collection-name"
       />
     </label>
-        <!-- Status -->
-        <label class="hs-form-field is-filled is-required">
-          <span class="hs-form-field__label">Status</span>
-          <select
-            class="hs-form-field__input w-full max-w-md"
-            id="collection-status"
-            name="collection-status"
-            bind:value={collection.status}
-            on:change={handleStatusChange}
-          >
-            <option value="Draft">Draft</option>
-            <option value="Published">Published</option>
-          </select>
-        </label>
+    <!-- Status -->
+    <label class="hs-form-field is-filled is-required">
+      <span class="hs-form-field__label">Status</span>
+      <select
+        class="hs-form-field__input w-full max-w-md"
+        id="collection-status"
+        name="collection-status"
+        bind:value={collection.status}
+        on:change={handleStatusChange}
+      >
+        <option value="Draft">Draft</option>
+        <option value="Published">Published</option>
+      </select>
+    </label>
     <!-- collection cover image uploader-->
     <label class="hs-form-field is-filled is-required">
       <span class="hs-form-field__label">Collection cover image</span>
@@ -817,45 +820,62 @@
       <span class="hs-form-field__label">Allowlist</span>
       <span
         >Please set the people who can access this collection. Add new
-        memberships from [here].</span
+        memberships from [<a href="/admin/memberships" class="hs-link">here</a
+        >].</span
       >
       <label
-      class="flex items-center rounded-md bg-dp-blue-grey-600 p-5"
-      for="access"
-    >
-      <input
-        id="access"
-        name="notification-method"
-        type="radio"
-        checked={collection.requiredMemberships?.length === 0}
-        class="h-4 w-4 border-gray-300 text-[#3043EB] focus:ring-[#3043EB] dark:focus:ring-[#3043EB]"
-        on:change={() => {
-          collection.requiredMemberships = []
-          update()
-        }}
-      />
-      <span class="ml-3 block text-justify text-base font-normal text-white"
-        >Pubic access (Open to everyone)</span
+        class="flex items-center rounded-md bg-dp-blue-grey-600 p-5"
+        for="access"
       >
-    </label>
-    <div
-      class="grid grid-cols-[repeat(auto-fit,_minmax(120px,_1fr))] justify-between gap-4 pt-2.5"
-    >
-    {#each existingMemberships as mem, i}
-    <div on:click={() => selectAllowlist(mem)} on:keydown={(e) => {if (e.key === 'Enter') selectAllowlist(mem)}} role="button" tabindex="0">
-        <MembershipOption
-        clubName={clubName ?? 'Your Club'}
-        id={mem.id}
-        name={mem.name}
-        imagePath={mem.imageSrc.trim().length > 0 ? mem.imageSrc : emptyDummyImage(400, 400)}
-        price={mem.price.toString()}
-        currency={mem.currency}
-        description={mem.description}
-        className={`${collection.requiredMemberships?.includes(bytes32Hex(mem.payload)) ? 'border-4 border-[#5B8BF5]' : ''} lg:row-start-3 ${getColStart(i)}`}
+        <input
+          id="access"
+          name="notification-method"
+          type="radio"
+          checked={collection.requiredMemberships?.length === 0}
+          class="h-4 w-4 border-gray-300 text-[#3043EB] focus:ring-[#3043EB] dark:focus:ring-[#3043EB]"
+          on:change={() => {
+            collection.requiredMemberships = []
+            update()
+          }}
         />
-    </div>
-    {/each}
-  </div>
+        <span class="ml-3 block text-justify text-base font-normal text-white"
+          >Pubic access (Open to everyone)</span
+        >
+      </label>
+      <div
+        class="grid grid-cols-[repeat(auto-fit,_minmax(160px,_1fr))] justify-between gap-4 pt-2.5"
+      >
+        {#each existingMemberships as mem, i}
+          <div
+            on:click={() => selectAllowlist(mem)}
+            on:keydown={(e) => {
+              if (e.key === 'Enter') selectAllowlist(mem)
+            }}
+            role="button"
+            tabindex="0"
+          >
+            <MembershipOption
+              clubName={clubName ?? 'Your Club'}
+              id={mem.id}
+              name={mem.name}
+              imagePath={mem.imageSrc.trim().length > 0
+                ? mem.imageSrc
+                : emptyDummyImage(400, 400)}
+              price={mem.price.toString()}
+              currency={mem.currency}
+              description={mem.description}
+              extendable={false}
+              className={`${
+                collection.requiredMemberships?.includes(
+                  bytes32Hex(mem.payload),
+                )
+                  ? 'outline outline-4 outline-native-blue-300'
+                  : 'opacity-70'
+              } transition h-full lg:row-start-3 hover:opacity-100`}
+            />
+          </div>
+        {/each}
+      </div>
     </div>
 
     <!-- collection items -->
