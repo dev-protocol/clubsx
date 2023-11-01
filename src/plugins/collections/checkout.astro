@@ -1,0 +1,28 @@
+---
+import {Checkout as Checkout_} from '@devprotocol/clubs-core/ui/components'
+import type { ClubsPropsPages } from '@devprotocol/clubs-core'
+import type { CollectionMembership, Collection } from '@plugins/collections'
+
+interface Props extends ClubsPropsPages {
+  membership: CollectionMembership
+  propertyAddress: string
+  rpcUrl: string
+  collection: Collection
+}
+
+const { membership, propertyAddress, rpcUrl, collection, ...other } = Astro.props
+---
+
+<Checkout_
+  amount={membership.price}
+  destination={propertyAddress}
+  currency={membership.currency}
+  rpcUrl={rpcUrl}
+  payload={membership.payload}
+  description={membership.description}
+  itemImageSrc={membership.imageSrc}
+  itemName={membership.name}
+  accessControlUrl={`/api/devprotocol:clubs:collections/verification/${collection.id}`}
+  accessControlDescription={`**Membership Purchase Required**\n\nThis transaction requires primary memberships.\n\nVisit [here](/collections/${collection.id}) for more details.`}
+  {...other}
+/>
