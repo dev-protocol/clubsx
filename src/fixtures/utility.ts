@@ -4,11 +4,10 @@ import {
   type ContractRunner,
   JsonRpcProvider,
   formatEther,
-  keccak256,
   parseEther,
 } from 'ethers'
 import type { Tiers } from '@devprotocol/clubs-core'
-import { stakeWithEth, tokenURISim } from '@devprotocol/clubs-core'
+import { bytes32Hex, stakeWithEth, tokenURISim } from '@devprotocol/clubs-core'
 import { clientsSTokens, client } from '@devprotocol/dev-kit'
 import { whenDefined } from '@devprotocol/util-ts'
 import { xprod } from 'ramda'
@@ -135,7 +134,7 @@ export const checkMemberships = async (
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/any
   const testResult = await Promise.any(
     pairs.map(async ([membership, tokenId]) => {
-      const payload = whenDefined(membership.payload, keccak256)
+      const payload = whenDefined(membership.payload, bytes32Hex)
 
       const sTokenContract = contract.contract()
       // if it has payload, test the payload

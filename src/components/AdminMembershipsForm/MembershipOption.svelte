@@ -6,9 +6,9 @@
   import { fade } from 'svelte/transition'
   import { ProseTextInherit } from '@devprotocol/clubs-core'
   type SlotLeft = {
-  left: number
-  total: number
-}
+    left: number
+    total: number
+  }
 
   export let name: string
   export let clubName: string
@@ -20,6 +20,7 @@
   export let description: string | undefined = undefined
   export let action: string | undefined = undefined
   export let actionLabel: string | undefined = undefined
+  export let extendable: boolean = true
   export let className: string = ''
   export let slotOutTotal: SlotLeft | undefined = undefined
   let modal = false
@@ -98,35 +99,37 @@
       </p>
     </div>
 
-    <button
-      class="relative col-start-2 rounded-full bg-white/50 p-2"
-      on:click={handleClickOpen}
-      ><svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-        class="h-6 w-6"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
-        />
-      </svg>
-    </button> 
+    {#if extendable}
+      <button
+        class="relative col-start-2 rounded-full bg-white/50 p-2"
+        on:click={handleClickOpen}
+        ><svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="h-6 w-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
+          />
+        </svg>
+      </button>
+    {/if}
     {#if slotOutTotal !== undefined}
       <div class="relative col-span-2">
         <div class="flex w-full max-w-full gap-0 p-0">
           <div
-            style="width: {( slotOutTotal.left/slotOutTotal.total || 0) *
+            style="width: {(slotOutTotal.left / slotOutTotal.total || 0) *
               100}%"
             class="h-2 max-w-full rounded-[99px] bg-[#00D0FD]"
           ></div>
           <div
             style="width:{100 -
-              ( slotOutTotal.left/slotOutTotal.total || 0) * 100}%"
+              (slotOutTotal.left / slotOutTotal.total || 0) * 100}%"
             class="h-2 max-w-full rounded-[99px] bg-[#FFFFFF4D]"
           ></div>
         </div>
@@ -223,16 +226,16 @@
         {/if}
       </div>
       {#if slotOutTotal !== undefined}
-        <div class="relative col-span-2">
+        <div class="relative">
           <div class="flex w-full max-w-full gap-0 p-0">
             <div
-              style="width: {( slotOutTotal.left/slotOutTotal.total || 0) *
+              style="width: {(slotOutTotal.left / slotOutTotal.total || 0) *
                 100}%"
               class="h-2 max-w-full rounded-[99px] bg-[#00D0FD]"
             ></div>
             <div
               style="width:{100 -
-                ( slotOutTotal.left/slotOutTotal.total || 0) * 100}%"
+                (slotOutTotal.left / slotOutTotal.total || 0) * 100}%"
               class="h-2 max-w-full rounded-[99px] bg-[#FFFFFF4D]"
             ></div>
           </div>
