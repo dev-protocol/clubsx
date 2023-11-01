@@ -1,4 +1,7 @@
 <script lang="ts">
+  /**
+   * Imports
+   */
   import type { ClubsConfiguration } from '@devprotocol/clubs-core'
   import {
     detectStokensByPropertyAddress,
@@ -11,8 +14,16 @@
   import { clientsProperty } from '@devprotocol/dev-kit'
   import type { Subscription } from 'rxjs'
   import BigNumber from 'bignumber.js'
+  import { clientsRegistry } from '@devprotocol/dev-kit'
+
+  /**
+   * Export Params
+   */
   export let config: ClubsConfiguration
 
+  /**
+   * Component variables
+   */
   let { propertyAddress, rpcUrl } = config
   const provider = new JsonRpcProvider(rpcUrl)
   let members: number | undefined = 0
@@ -20,7 +31,12 @@
   let earnings: number | undefined
   let totalSupply: BigNumber | undefined
   let userBalance: BigNumber | undefined
+  let treasuryBalance: BigNumber | undefined
   let connectionSub: Subscription
+
+  /**
+   * Component functions
+   */
   async function getData() {
     await detectStokensByPropertyAddress(provider, propertyAddress).then(
       (res) => {
@@ -33,6 +49,25 @@
         earnings = await usdByDev(earningsInDev)
       })
     })
+  }
+
+  const fetchTreasuryAddress = async () => {
+    const registries = await clientsRegistry(provider)
+
+    if (!registries || registries.length <= 0) {
+      return
+    }
+
+    const registery = registries[1]
+
+    if (!registery) {
+      return
+    }
+
+    const treasuryAddress = await registery.registries('Treasury')
+    console.log('treasury', treasuryAddress)
+
+    return treasuryAddress
   }
 
   const fetchUserSupply = async (signer: UndefinedOr<Signer>) => {
@@ -54,21 +89,29 @@
 
     if (!property) {
       console.log('no property!')
+      return
     }
 
-    const [_userBalance, _totalSupply] = await Promise.all([
+    const treasuryAddress = await fetchTreasuryAddress()
+
+    const [_userBalance, _totalSupply, _treasuryBalance] = await Promise.all([
       whenDefined(
         await property?.balanceOf(await signer.getAddress()),
         BigNumber,
       ),
       whenDefined(await property?.totalSupply(), BigNumber),
+      whenDefined(
+        treasuryAddress,
+        async (_treasuryAddress) => await property?.balanceOf(_treasuryAddress),
+      ),
     ])
     userBalance = _userBalance
     totalSupply = _totalSupply
+    console.log('_treasuryBalance', _treasuryBalance)
   }
 
   onMount(async () => {
-    await getData()
+    getData()
 
     const { connection } = await import('@devprotocol/clubs-core/connection')
 
