@@ -65,17 +65,11 @@
     }
 
     const treasuryAddress = await registery.registries('Treasury')
-    console.log('treasury', treasuryAddress)
 
     return treasuryAddress
   }
 
-  const fetchUserSupply = async (signer: UndefinedOr<Signer>) => {
-    if (!signer) {
-      userBalance = undefined
-      return
-    }
-
+  const getProperty = async () => {
     const propertyClient = await clientsProperty(
       provider,
       config.propertyAddress,
@@ -85,35 +79,52 @@
       return false
     }
 
-    const property = propertyClient[0] ?? propertyClient[1]
+    return propertyClient[0] ?? propertyClient[1]
+  }
 
-    if (!property) {
-      console.log('no property!')
+  const fetchUserSupply = async (signer: UndefinedOr<Signer>) => {
+    if (!signer) {
+      userBalance = undefined
       return
     }
 
-    const treasuryAddress = await fetchTreasuryAddress()
+    const property = await getProperty()
 
-    const [_userBalance, _totalSupply, _treasuryBalance] = await Promise.all([
+    if (!property) {
+      return
+    }
+
+    const [_userBalance, _totalSupply] = await Promise.all([
       whenDefined(
         await property?.balanceOf(await signer.getAddress()),
         BigNumber,
       ),
       whenDefined(await property?.totalSupply(), BigNumber),
-      whenDefined(
-        treasuryAddress,
-        async (_treasuryAddress) =>
-          new BigNumber(await property?.balanceOf(_treasuryAddress)),
-      ),
     ])
     userBalance = _userBalance
     totalSupply = _totalSupply
-    treasuryBalance = _treasuryBalance
-    console.log('treasuryBalance', treasuryBalance)
+  }
+
+  const fetchTreasuryBalance = async () => {
+    const property = await getProperty()
+
+    if (!property) {
+      return
+    }
+
+    const treasuryAddress = await fetchTreasuryAddress()
+
+    treasuryBalance = await whenDefined(
+      treasuryAddress,
+      async (_treasuryAddress) =>
+        new BigNumber(await property?.balanceOf(_treasuryAddress)),
+    )
   }
 
   onMount(async () => {
     getData()
+
+    fetchTreasuryBalance()
 
     const { connection } = await import('@devprotocol/clubs-core/connection')
 
@@ -199,6 +210,24 @@
       class="border-native-blue-400 grid gap-16 rounded-lg border border-[3px] p-8"
     >
       <span class="font-title text-lg font-bold">Treasury Token Share</span>
+
+      <div class="grid gap-2">
+        {#if treasuryBalance && totalSupply}
+          <span class="truncate text-5xl"
+            >{treasuryBalance.div(totalSupply).times(100).dp(6)} %</span
+          >
+          <span class="text-sm"
+            >({treasuryBalance
+              .div(1e18)
+              .dp(6)
+              .toNumber()
+              .toLocaleString('en', { useGrouping: true })})</span
+          >
+        {:else}
+          <span class="truncate text-5xl">- %</span>
+          <span class="text-sm">(-)</span>
+        {/if}
+      </div>
     </div>
   </section>
 
