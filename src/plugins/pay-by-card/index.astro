@@ -4,11 +4,7 @@ import Cards from '@components/list/cards'
 import Hero from '@components/Hero/hero'
 import Hero2 from '@components/Hero/hero2'
 
-const {
-  products,
-  title,
-  hero,
-} = Astro.props as {
+const { products, title, hero } = Astro.props as {
   products: ExtendedProducts
   title?: string
   hero?: {
@@ -38,6 +34,4 @@ const {
   }
 
   <Cards client:load products={[...products]} />
-
 </div>
-

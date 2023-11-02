@@ -15,7 +15,7 @@
 
   export let encodedOptions: string
   let options: ClubsPluginOptions = decode(
-    encodedOptions
+    encodedOptions,
   ) as unknown as ClubsPluginOptions
   export let colorPresets: typeof ColorPresets
   let homeConfig: HomeConfigValue =
@@ -43,7 +43,7 @@
         if (preset.bg && globalConfig.bg && preset.bg === globalConfig.bg) {
           return cp
         }
-      }
+      },
     ) || 'Purple' // else defaults to Purple
 
   const update = (e?: any) => {
@@ -65,7 +65,7 @@
   const onFileSelected = async (
     e: Event & {
       currentTarget: EventTarget & HTMLInputElement
-    }
+    },
   ) => {
     if (!e.currentTarget.files) {
       return
@@ -87,7 +87,7 @@
   }
 
   const getColor = (
-    key: string
+    key: string,
   ): {
     bg: string
     backgroundGradient?: [string, string]
@@ -121,7 +121,7 @@
           `background: radial-gradient(50% 50% at 50% 50%, ${
             gradient ? gradient[0] : 'rgba(0,0,0,0)'
           } 0%, ${gradient ? gradient[1] : 'rgba(0,0,0,0)'} 100%)`)(
-          globalConfig.backgroundGradient
+          globalConfig.backgroundGradient,
         )}
       />
       {#if homeConfig.hero?.image && homeConfig.hero.image != '' && uploading === false}
@@ -196,7 +196,7 @@
                   `background: linear-gradient(135deg, ${
                     gradient && gradient[0]
                   } 0%, ${gradient && gradient[1]} 100%);`)(
-                  getColor(presetKey).backgroundGradient
+                  getColor(presetKey).backgroundGradient,
                 )}
               />
             {/if}

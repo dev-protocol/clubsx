@@ -45,13 +45,13 @@
 <script lang="ts">
 import ETH from '@assets/ETH.svg'
 import DEV from '@assets/devtoken.png'
-import type { Tiers } from '@constants/tier'
+import type { Tiers } from '@devprotocol/clubs-core'
 import Tier from '@components/Join/Tier.vue'
 import { JsonRpcProvider } from 'ethers'
 import { composeTiers } from '@fixtures/utility'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import { defineComponent, type PropType } from '@vue/runtime-core'
-import type { CurrencyOption } from '@constants/currencyOption'
+import { CurrencyOption } from '@devprotocol/clubs-core'
 import CLBRadio from '@components/Primitives/CLBRadio.vue'
 
 type Data = {

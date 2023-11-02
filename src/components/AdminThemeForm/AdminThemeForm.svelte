@@ -19,7 +19,7 @@
   ]
   export let encodedOptions: string
   let options: ClubsPluginOptions = decode(
-    encodedOptions
+    encodedOptions,
   ) as unknown as ClubsPluginOptions
   export let colorPresets: typeof ColorPresets
   export let config: ClubsConfiguration
@@ -32,7 +32,7 @@
 
   if (socialLinks.length < 2) {
     socialLinks = Array.from(
-      new Set([...socialLinks, ...defaultSocialLinks])
+      new Set([...socialLinks, ...defaultSocialLinks]),
     ).filter(isNotNil)
   }
 
@@ -60,7 +60,7 @@
               ({ key }) =>
                 key !== 'navigationLinks' &&
                 key !== 'socialLinks' &&
-                key !== 'ogp'
+                key !== 'ogp',
             ),
             _navigationLinks,
             _socialLinks,
@@ -99,7 +99,7 @@
   const onFileSelected = async (
     e: Event & {
       currentTarget: EventTarget & HTMLInputElement
-    }
+    },
   ) => {
     if (!e.currentTarget.files) {
       return

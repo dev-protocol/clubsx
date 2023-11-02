@@ -1,4 +1,4 @@
-import type { Tier } from './tier'
+import type { Tier } from '@devprotocol/clubs-core'
 
 export type Perk = Readonly<{
   tier: Tier['id']

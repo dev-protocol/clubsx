@@ -22,7 +22,7 @@ export const defaultConfig: ClubsConfiguration = {
     },
     {
       key: 'avatarImgSrc',
-      value: '',
+      value: 'https://i.imgur.com/lSpDjrr.jpg',
     },
   ],
   plugins: [
@@ -49,7 +49,7 @@ export const defaultConfig: ClubsConfiguration = {
           key: 'homeConfig',
           value: {
             hero: {
-              image: 'https://i.imgur.com/hyqFcB6.png',
+              image: 'https://i.imgur.com/ldH4ZIo.jpg',
             },
             description: `I create art in Canada using flowers and light refraction. Recently, I have focused on creating online artworks that allow user interaction through JavaScript.`,
             body: Body(),

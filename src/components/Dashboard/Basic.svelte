@@ -38,7 +38,7 @@
         const { date, config } = club
         const decoded = decode(config)
         const isDraft = decoded.options?.find(
-          (option: { key: string }) => option.key === '__draft'
+          (option: { key: string }) => option.key === '__draft',
         ) as DraftOptions | undefined
         if (!isDraft?.value.isInDraft) {
           publishedClubs++
