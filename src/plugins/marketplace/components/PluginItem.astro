@@ -80,7 +80,7 @@ const pluginUrl = plugin.planned ? undefined : `/admin/marketplace/${plugin.id}`
         'plugin-tag',
         (
           fill: 'dp-blue-grey.400',
-          ink: 'dp-green.ink',
+          ink: 'dp-blue-grey.ink',
           border: 'dp-blue-grey.400',
         )
       );
@@ -90,7 +90,7 @@ const pluginUrl = plugin.planned ? undefined : `/admin/marketplace/${plugin.id}`
 
 <Wrapper href={pluginUrl}>
   <div
-    class="grid grid-cols-[auto,1fr] items-start justify-start justify-items-start gap-x-4 gap-y-1 rounded-[0.5rem] p-4 transition-[all_0.2s_ease] hover:bg-[rgba(255,255,255,0.20)]"
+    class="grid grid-cols-[auto,1fr] items-start justify-start justify-items-start gap-x-4 gap-y-1 rounded-[0.5rem] p-4 transition-[all_0.2s_ease] hover:bg-[var(--hs-theme-disabled)]"
   >
     {
       preview && (

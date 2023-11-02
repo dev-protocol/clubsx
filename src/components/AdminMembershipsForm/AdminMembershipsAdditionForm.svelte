@@ -889,7 +889,6 @@
           class={`hs-button is-filled is-error w-fit ${
             updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
           }`}
-          type="button"
           on:click|preventDefault={() => deleteMembership(membership)}
         >
           <span class="hs-button__label"> Delete </span>
@@ -900,7 +899,6 @@
           class={`hs-button is-filled w-fit ${
             updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
           }`}
-          type="button"
           on:click|preventDefault={() => activateMembership(membership)}
         >
           <span class="hs-button__label"> Activate </span>
@@ -908,7 +906,6 @@
       {/if}
       <button
         class="hs-button is-outlined is-error"
-        type="button"
         on:click|preventDefault={() => cancel()}
       >
         <span class="hs-button__label">Cancel</span>
