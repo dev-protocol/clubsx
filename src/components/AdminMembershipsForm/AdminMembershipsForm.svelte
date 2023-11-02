@@ -188,7 +188,6 @@
         </a>
         {#if presetExplanations[i].example}
           <div class={`flex flex-col gap-4 lg:row-start-5 ${getColStart(i)}`}>
-            <p class="text-center text-sm">How about a Club like this?</p>
             <a
               class="flex gap-2 rounded-md shadow overflow-hidden items-center bg-dp-blue-grey-400 scale-90 hover:scale-100 transition duration-300 brightness-100 hover:brightness-110"
               href={presetExplanations[i].example?.clubs}
