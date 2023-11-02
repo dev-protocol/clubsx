@@ -105,6 +105,12 @@
     {
       title: 'Public',
       desc: 'Start a co-creation project and invite members.',
+      example: {
+        clubs: 'https://public.clubs.place/',
+        name: 'Public Project',
+        avatar: 'https://i.imgur.com/j4TDkTr.png',
+        cover: 'https://i.imgur.com/iKw1D0X.jpg',
+      },
     },
   ]
 
