@@ -88,6 +88,7 @@
     "dayjs": "^1.11.9",
     "dompurify": "^3.0.5",
     "ethers": "6.8.0",
+    "fast-average-color": "^9.4.0",
     "firebase": "^10.3.1",
     "firebase-admin": "^11.10.1",
     "jsonwebtoken": "^9.0.2",
