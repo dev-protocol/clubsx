@@ -31,7 +31,7 @@
     "@types/three": "0.158.1",
     "@types/uuid": "^9.0.3",
     "dotenv": "16.3.1",
-    "eslint": "8.52.0",
+    "eslint": "8.53.0",
     "eslint-config-prettier": "9.0.0",
     "eslint-config-standard": "17.1.0",
     "eslint-plugin-import": "2.29.0",
