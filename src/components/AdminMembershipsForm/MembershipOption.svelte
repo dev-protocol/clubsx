@@ -5,6 +5,7 @@
   import DOMPurify from 'dompurify'
   import { fade } from 'svelte/transition'
   import { ProseTextInherit } from '@devprotocol/clubs-core'
+  import { FastAverageColor } from 'fast-average-color'
   type SlotLeft = {
     left: number
     total: number
@@ -26,6 +27,9 @@
   let modal = false
   let modalGroup: Element | undefined
   let isMounted = false
+  let img: HTMLImageElement | undefined
+  let isImgDark: boolean | undefined
+  let imgColor: string | undefined
 
   const mdToHtml = (str?: string) => DOMPurify.sanitize(marked.parse(str ?? ''))
 
@@ -59,7 +63,15 @@
     window.location.hash = ''
   }
 
-  onMount(() => {
+  const RGBToLightness = (r: number, g: number, b: number) => {
+    r /= 255
+    g /= 255
+    b /= 255
+    const l = Math.max(r, g, b)
+    return l
+  }
+
+  onMount(async () => {
     isMounted = true
     window.addEventListener('hashchange', handleHashChange)
 
@@ -67,6 +79,20 @@
 
     if (location.hash === hash) {
       showModal(true)
+    }
+
+    if (img) {
+      const fac = new FastAverageColor()
+      const color = await fac.getColorAsync(img).catch((e) => new Error(e))
+      isImgDark =
+        color instanceof Error
+          ? undefined
+          : (([r, g, b]) => {
+              const l = RGBToLightness(r, g, b)
+              console.log({ l, img })
+              return l < 0.75
+            })(color.value)
+      imgColor = color instanceof Error ? imgColor : color.hex
     }
   })
 </script>
@@ -81,13 +107,28 @@
   <img class="w-full bg-black/20" src={imagePath} alt={`${name} Membership`} />
 
   <div
-    class="relative grid grid-cols-[1fr_auto] content-baseline items-center gap-3 overflow-hidden p-2.5 text-white"
+    class={`relative grid grid-cols-[1fr_auto] content-baseline items-center gap-3 overflow-hidden p-2.5 ${
+      isImgDark === undefined
+        ? 'animate-pulse'
+        : isImgDark
+        ? 'text-white'
+        : 'text-black'
+    }`}
   >
     <img
+      bind:this={img}
       class="pointer-events-none absolute -left-1/2 top-1/2 h-auto w-[200%] max-w-none -translate-y-1/2 blur-[120px] will-change-transform"
       src={imagePath}
       role="presentation"
+      alt={name}
+      crossorigin="anonymous"
     />
+
+    <div
+      role="presentation"
+      style={`background-color: ${imgColor ? `${imgColor}80` : 'transparent'}`}
+      class="pointer-events-none absolute inset-0"
+    ></div>
 
     <div class="relative col-start-1">
       <p>{name}</p>

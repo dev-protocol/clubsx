@@ -83,16 +83,34 @@
 
   const presetExplanations = [
     {
-      title: 'Community',
-      desc: 'Influencers, YouTubers, photographers, musicians, and fans.',
+      title: 'Creator',
+      desc: 'Start a subscription for your lessons, contents, experiences, and more.',
+      example: {
+        clubs: 'https://my-vlog.clubs.place/',
+        name: 'My Vlog',
+        avatar: 'https://i.imgur.com/195I7Ch.png',
+        cover: 'https://i.imgur.com/WihEmii.jpg',
+      },
     },
     {
-      title: 'Team',
-      desc: 'Creative groups of sound, movie, film, software, etc.',
+      title: 'Business',
+      desc: 'Provide special offers to members/non-members.',
+      example: {
+        clubs: 'https://hotel.clubs.place/',
+        name: 'Clubs Hotel',
+        avatar: 'https://i.imgur.com/lWwQnRl.jpg',
+        cover: 'https://i.imgur.com/hDBx7VD.jpg',
+      },
     },
     {
-      title: 'DAO',
-      desc: 'Blockchains, social, public goods, etc.',
+      title: 'Public',
+      desc: 'Start a co-creation project and invite members.',
+      example: {
+        clubs: 'https://public.clubs.place/',
+        name: 'Public Project',
+        avatar: 'https://i.imgur.com/j4TDkTr.png',
+        cover: 'https://i.imgur.com/iKw1D0X.jpg',
+      },
     },
   ]
 
@@ -168,6 +186,40 @@
         >
           <span class="hs-button__label">Select</span>
         </a>
+        {#if presetExplanations[i].example}
+          <div class={`flex flex-col gap-4 lg:row-start-5 ${getColStart(i)}`}>
+            <a
+              class="flex gap-2 rounded-md shadow overflow-hidden items-center bg-dp-blue-grey-400 scale-90 hover:scale-100 transition duration-300 brightness-100 hover:brightness-110"
+              href={presetExplanations[i].example?.clubs}
+              target="_blank"
+              rel="noopener"
+            >
+              <div class="relative flex items-center justify-end w-28 h-28">
+                <img
+                  src={presetExplanations[i].example?.cover}
+                  role="presentation"
+                  class="absolute w-full h-full object-cover"
+                  alt={`Cover of ${presetExplanations[i].example?.name}`}
+                />
+                <img
+                  src={presetExplanations[i].example?.avatar}
+                  role="presentation"
+                  class="relative -mr-8 w-16 h-16 object-cover rounded-full"
+                  alt={`Avatar of ${presetExplanations[i].example?.name}`}
+                />
+              </div>
+              <div class="p-2 pl-10">
+                <span
+                  class="px-2 rounded bg-dp-white-600 text-dp-black-200 text-xs"
+                  >Example</span
+                >
+                <p class="font-bold">
+                  {presetExplanations[i].example?.name}
+                </p>
+              </div>
+            </a>
+          </div>
+        {/if}
       {/each}
     </div>
   {/if}
