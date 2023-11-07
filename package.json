@@ -14,7 +14,7 @@
     "typecheck": "astro check && tsc --noEmit && svelte-check && vue-tsc --noEmit --p tsconfig.vue.json",
     "prepare": "husky install",
     "install": "node ./ugly.mjs",
-    "populate": "node ./scripts/populate.mjs",
+    "populate": "node ./scripts/populate/index.mjs",
     "flushDb": "node ./scripts/flushDb.mjs",
     "upgradeDb": "node ./scripts/upgrade.mjs",
     "genApiPaths": "node ./scripts/generate-built-in-api-paths.mjs",
