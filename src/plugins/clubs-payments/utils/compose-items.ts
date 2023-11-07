@@ -1,6 +1,7 @@
-import type {
-  ClubsFactoryUtils,
-  ClubsPluginOptions,
+import {
+  bytes32Hex,
+  type ClubsFactoryUtils,
+  type ClubsPluginOptions,
 } from '@devprotocol/clubs-core'
 import type { ComposedItem, Override } from '..'
 import { whenDefined, type UndefinedOr } from '@devprotocol/util-ts'
@@ -22,9 +23,7 @@ export const composeItems = (
         sourceConfig?.options?.find((op) => op.key === ov.key)?.value as
           | undefined
           | Membership[]
-      )?.find(
-        (mem) => JSON.stringify(mem.payload) === JSON.stringify(ov.payload),
-      )
+      )?.find((mem) => bytes32Hex(mem.payload) === bytes32Hex(ov.payload))
       const composed = whenDefined(source, (so) => ({ ...ov, source: so }))
       return composed
     })

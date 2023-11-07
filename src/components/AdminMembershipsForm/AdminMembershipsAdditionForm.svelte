@@ -3,13 +3,7 @@
   import MembershipOptionCard from './MembershipOption.svelte'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import type { Membership } from '@plugins/memberships/index'
-  import {
-    parseUnits,
-    keccak256,
-    JsonRpcProvider,
-    ZeroAddress,
-    type Signer,
-  } from 'ethers'
+  import { JsonRpcProvider, ZeroAddress, type Signer } from 'ethers'
   import { onMount } from 'svelte'
   import BigNumber from 'bignumber.js'
   import { clientsSTokens } from '@devprotocol/dev-kit'
@@ -31,7 +25,7 @@
   export let rpcUrl: string
   export let propertyAddress: string | null | undefined = undefined
   export let clubName: string | undefined = undefined
-  const metaOfPayload = keccak256(membership.payload)
+  const metaOfPayload = bytes32Hex(membership.payload)
 
   type MembershipPaymentType = 'instant' | 'stake' | 'custom' | ''
 
