@@ -16,11 +16,6 @@
   } from '@plugins/collections/fixtures'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
   import {
-    address,
-    callSlotCollections,
-  } from '@plugins/collections/utils/slotCollections'
-  import type { Image } from '@plugins/collections/utils/types/setImageArg'
-  import {
     randomBytes,
     parseUnits,
     keccak256,
@@ -33,8 +28,10 @@
   import { clientsSTokens } from '@devprotocol/dev-kit'
   import { tokenInfo } from '@constants/common'
   import { bytes32Hex } from '@devprotocol/clubs-core'
+  import type { Membership } from '@plugins/memberships'
 
   export let existingCollections: Collection[] = []
+  export let existingMemberships: Membership[] = []
   export let collection: Collection
   export let isTimeLimitedCollection: boolean = false
   export let clubName: string | undefined = undefined
@@ -81,7 +78,6 @@
   let noOfPositions: number = 0
   let invalidPriceMsg: string = ''
   let invalidFeeMsg: string = ''
-  let invalidStartTimeMsg: string = ''
   let invalidEndTimeMsg: string = ''
 
   const originaCollectionlId = collection.id
@@ -237,36 +233,19 @@
     )
     setTimeout(buildConfig, 50)
   }
+  const handleStatusChange = async (event: Event) => {
+    const value =
+      ((event.target as HTMLInputElement)?.value as 'Draft' | 'Published') ||
+      'Draft'
+    collection = {
+      ...collection,
+      status: value,
+    }
+  }
 
-  let formattedStartTime = formatUnixTimestamp(
-    collection.startTime || new Date().getTime() / 1000,
-  )
   let formattedEndTime = formatUnixTimestamp(
     collection.endTime || new Date().getTime() / 1000 + 120,
   )
-
-  const onStartTimeChange = (event: Event) => {
-    // need to prevent a change if there are already members
-    const value = (event.target as HTMLInputElement)?.value || 0
-    const passedUnixTime = new Date(value).getTime() / 1000
-    const currentTime = Date.now() / 1000
-    if (passedUnixTime < Date.now() / 1000) {
-      collection = {
-        ...collection,
-        startTime: currentTime,
-      }
-      formattedStartTime = formatUnixTimestamp(currentTime)
-      invalidStartTimeMsg = 'Invalid start time: Minimum allowed is now.'
-    } else {
-      collection = {
-        ...collection,
-        startTime: passedUnixTime,
-      }
-      formattedStartTime = formatUnixTimestamp(passedUnixTime)
-      invalidStartTimeMsg = ''
-    }
-    collection = collection
-  }
 
   const onEndTimeChange = async (event: Event) => {
     const value = (event.target as HTMLInputElement)?.value || 0
@@ -276,7 +255,6 @@
       const twoMinutes = 120
       collection = {
         ...collection,
-        startTime: collection?.startTime || currentTime,
         endTime: currentTime + twoMinutes,
       }
       formattedEndTime = formatUnixTimestamp(currentTime + twoMinutes)
@@ -286,7 +264,6 @@
       invalidEndTimeMsg = ''
       collection = {
         ...collection,
-        startTime: collection.startTime || currentTime,
         endTime: passedUnixTime,
       }
       formattedEndTime = formatUnixTimestamp(passedUnixTime)
@@ -575,7 +552,6 @@
     onChangePrice(membership)
     fetchPositionsOfProperty()
     update()
-    onStartTimeChange
     onEndTimeChange
     connectOnMount()
 
@@ -688,6 +664,21 @@
     }
     onChangePrice(membership)
   }
+  const selectAllowlist = (mem: Membership) => {
+    // if mem.payload already exists in collection.requiredMemberships then remove it otherwise add it to collection.requiredMemberships
+    collection.requiredMemberships = collection.requiredMemberships
+      ? collection.requiredMemberships.includes(bytes32Hex(mem.payload))
+        ? collection.requiredMemberships.filter(
+            (m: Uint8Array | string) => m !== bytes32Hex(mem.payload),
+          )
+        : [...collection.requiredMemberships, bytes32Hex(mem.payload)]
+      : [bytes32Hex(mem.payload)]
+    update()
+    console.log(
+      'collection.requiredMemberships',
+      collection.requiredMemberships,
+    )
+  }
 
   const fetchPositionsOfProperty = async () => {
     loading = true
@@ -741,191 +732,153 @@
 </script>
 
 <form on:change|preventDefault={() => update()} class="w-full">
-  <div class="w-full max-w-full">
+  <div class="grid gap-16">
     <!-- collection name -->
-    <div
-      class="mb-16 flex w-[52.2%] flex-col items-start justify-start gap-[7px]"
-    >
-      <div class="m-0 w-full items-center p-0">
-        <span class="mr-[13px] font-body">Collection name </span>
-        <span class="font-body text-[#EB48F8]"> * </span>
-      </div>
-      <label class="hs-form-field is-filled">
-        <input
-          bind:value={collection.name}
-          on:change={onCollectionChangeName}
-          class="hs-form-field__input"
-          id="collection-name"
-          name="collection-name"
-        />
-      </label>
-    </div>
+    <label class="hs-form-field is-filled is-required">
+      <span class="hs-form-field__label">Collection name </span>
+      <input
+        bind:value={collection.name}
+        on:change={onCollectionChangeName}
+        class="hs-form-field__input w-full max-w-md"
+        id="collection-name"
+        name="collection-name"
+      />
+    </label>
+    <!-- Status -->
+    <label class="hs-form-field is-filled is-required">
+      <span class="hs-form-field__label">Status</span>
+      <select
+        class="hs-form-field__input w-full max-w-md"
+        id="collection-status"
+        name="collection-status"
+        bind:value={collection.status}
+        on:change={handleStatusChange}
+      >
+        <option value="Draft">Draft</option>
+        <option value="Published">Published</option>
+      </select>
+    </label>
     <!-- collection cover image uploader-->
-    <div class="mb-16 flex h-[294px] w-[479px] flex-col items-start gap-[7px]">
-      <div class="flex items-start gap-[13px]">
-        <span class="text-base font-normal text-white"
-          >Collection cover image</span
-        >
-        <span class="text-base font-normal uppercase text-[#EB48F8]"> * </span>
+    <label class="hs-form-field is-filled is-required">
+      <span class="hs-form-field__label">Collection cover image</span>
+      <div
+        class="aspect-[2/1] w-full max-w-xl cursor-pointer rounded-xl border border-[#ffffff1a] bg-[#ffffff1a] p-2"
+      >
+        {#if collection.imageSrc !== ''}
+          <img
+            class="h-full w-full rounded-xl object-cover"
+            src={collection.imageSrc}
+            alt={`${collection.name}-collection-cover-image`}
+          />
+        {:else}
+          <div class="h-full w-full rounded-xl bg-dp-blue-grey-600" />
+        {/if}
       </div>
-      <label class="cursor-pointer">
-        <div
-          class="flex flex-col items-start self-stretch rounded-[19px] border border-[#ffffff1a] bg-[#ffffff1a] p-2"
-        >
-          {#if collection.imageSrc !== ''}
-            <img
-              class="h-[216px] w-[463px] rounded-[12px] object-cover"
-              src={collection.imageSrc}
-              alt={`${collection.name}-collection-cover-image`}
-            />
-          {:else}
-            <div class="h-[216px] w-[463px] rounded-[12px] bg-[#040B10]" />
-          {/if}
-        </div>
-        <input
-          id="collection-cover-image"
-          name="collection-cover-image"
-          style="display:none"
-          type="file"
-          accept=".jpg, .jpeg, .png, .gif, .apng, .tiff"
-          class="hs-button is-filled is-large cursor-pointer"
-          on:change={onCollectionFileSelected}
-        />
-      </label>
-      <span class="text-base font-normal leading-6 text-white"
+      <input
+        id="collection-cover-image"
+        name="collection-cover-image"
+        style="display:none"
+        type="file"
+        accept=".jpg, .jpeg, .png, .gif, .apng, .tiff"
+        class="hs-button is-filled is-large cursor-pointer"
+        on:change={onCollectionFileSelected}
+      />
+      <span class="hs-form-field__helper"
         >Recommended image size is 2400 x 1200px</span
       >
-    </div>
+    </label>
 
-    <!-- start date -->
-    <div class="mb-16 flex w-[479px] flex-col items-start gap-[7px]">
-      <div class="flex items-start gap-[13px]">
-        <span class="text-base font-normal text-white">Start date</span>
-        <span class="text-base font-normal uppercase text-[#EB48F8]"> * </span>
-      </div>
-      <label class="hs-form-field is-filled">
+    {#if isTimeLimitedCollection}
+      <label class="hs-form-field is-filled is-required">
+        <span class="hs-form-field__label">End date</span>
         <input
-          bind:value={formattedStartTime}
-          on:change={onStartTimeChange}
+          bind:value={formattedEndTime}
+          on:change={onEndTimeChange}
           type="datetime-local"
-          class="hs-form-field__input"
+          class="hs-form-field__input w-full max-w-md"
           id="collectino-start-date"
           name="collection-start-date"
           min={formatUnixTimestamp(Date.now() / 1000)}
           max="2038-01-18T00:00"
         />
-      </label>
-
-      {#if invalidStartTimeMsg !== ''}
-        <p class="text-danger-300">* {invalidStartTimeMsg}</p>
-      {/if}
-    </div>
-
-    {#if isTimeLimitedCollection}
-      <div class="mb-16 flex w-[479px] flex-col items-start gap-[7px]">
-        <div class="flex items-start gap-[13px]">
-          <span class="text-base font-normal text-white">End date</span>
-          <span class="text-base font-normal uppercase text-[#EB48F8]">
-            *
-          </span>
-        </div>
-        <label class="hs-form-field is-filled">
-          <input
-            bind:value={formattedEndTime}
-            on:change={onEndTimeChange}
-            type="datetime-local"
-            class="hs-form-field__input"
-            id="collectino-start-date"
-            name="collection-start-date"
-            min={formatUnixTimestamp(Date.now() / 1000)}
-            max="2038-01-18T00:00"
-          />
-        </label>
         {#if invalidEndTimeMsg !== ''}
           <p class="text-danger-300">* {invalidEndTimeMsg}</p>
         {/if}
-      </div>
+      </label>
     {/if}
 
-    <div
-      class="mb-16 flex w-[99.1%] flex-col items-start justify-start gap-[7px]"
-    >
-      <div class="items-center p-0">
-        <span class="mr-[13px] font-body">Description</span>
-        <span class="font-body text-[#EB48F8]"> * </span>
-      </div>
-      <label class="hs-form-field is-filled">
-        <textarea
-          class="hs-form-field__input"
-          id="collection-description"
-          name="collection-description"
-          rows="3"
-          bind:value={collection.description}
-        />
-        <p class="hs-form-field__helper">Markdown is available</p>
-      </label>
-    </div>
+    <label class="hs-form-field is-filled is-required">
+      <span class="hs-form-field__label">Description</span>
+      <textarea
+        class="hs-form-field__input"
+        id="collection-description"
+        name="collection-description"
+        rows="3"
+        bind:value={collection.description}
+      />
+      <p class="hs-form-field__helper">Markdown is available</p>
+    </label>
 
     <!-- Allowlist -->
-    <div
-      class="flex h-[682px] max-w-4xl flex-shrink-0 flex-col items-start gap-[7px]"
-    >
-      <span class="text-base font-normal">Allowlist</span>
-      <span class="text-base font-normal"
+    <div class="hs-form-field grid gap-2">
+      <span class="hs-form-field__label">Allowlist</span>
+      <span
         >Please set the people who can access this collection. Add new
-        memberships from [here].</span
+        memberships from [<a href="/admin/memberships" class="hs-link">here</a
+        >].</span
       >
-      <div class="flex flex-col items-start self-stretch">
-        <div
-          class="flex items-start gap-[12px] self-stretch rounded-[12px] bg-[#040B10] p-5"
+      <label
+        class="flex items-center rounded-md bg-dp-blue-grey-600 p-5"
+        for="access"
+      >
+        <input
+          id="access"
+          name="notification-method"
+          type="radio"
+          checked={collection.requiredMemberships?.length === 0}
+          class="h-4 w-4 border-gray-300 text-[#3043EB] focus:ring-[#3043EB] dark:focus:ring-[#3043EB]"
+          on:change={() => {
+            collection.requiredMemberships = []
+            update()
+          }}
+        />
+        <span class="ml-3 block text-justify text-base font-normal text-white"
+          >Pubic access (Open to everyone)</span
         >
-          <div class="flex items-center">
-            <input
-              id="access"
-              name="notification-method"
-              type="radio"
-              checked
-              class="h-4 w-4 border-gray-300 text-[#3043EB] focus:ring-[#3043EB] dark:focus:ring-[#3043EB]"
+      </label>
+      <div
+        class="grid grid-cols-[repeat(auto-fit,_minmax(160px,_1fr))] justify-between gap-4 pt-2.5"
+      >
+        {#each existingMemberships as mem, i}
+          <div
+            on:click={() => selectAllowlist(mem)}
+            on:keydown={(e) => {
+              if (e.key === 'Enter') selectAllowlist(mem)
+            }}
+            role="button"
+            tabindex="0"
+          >
+            <MembershipOption
+              clubName={clubName ?? 'Your Club'}
+              id={mem.id}
+              name={mem.name}
+              imagePath={mem.imageSrc.trim().length > 0
+                ? mem.imageSrc
+                : emptyDummyImage(400, 400)}
+              price={mem.price.toString()}
+              currency={mem.currency}
+              description={mem.description}
+              extendable={false}
+              className={`${
+                collection.requiredMemberships?.includes(
+                  bytes32Hex(mem.payload),
+                )
+                  ? 'outline outline-4 outline-native-blue-300'
+                  : 'opacity-70'
+              } transition h-full lg:row-start-3 hover:opacity-100`}
             />
-            <label
-              for="access"
-              class="ml-3 block text-justify text-base font-normal text-white"
-              >Pubic access (Open to everyone)</label
-            >
           </div>
-        </div>
-      </div>
-      <div class="grid grid-cols-3 justify-between gap-4 pt-2.5">
-        <MembershipOption
-          clubName={'Your Club'}
-          id={'1'}
-          name={'Membership Name'}
-          imagePath={'https://i.ibb.co/hLD6byP/1.jpg'}
-          currency={'USDC'}
-          price={'100'}
-          description={'Membership Description'}
-          className={`lg:row-start-3 ${getColStart(0)}`}
-        />
-        <MembershipOption
-          clubName={'Your Club'}
-          id={'2'}
-          name={'Membership Name'}
-          imagePath={'https://i.ibb.co/Kyjr50C/Image.png'}
-          currency={'ETH'}
-          price={'0.1'}
-          description={'Membership Description'}
-          className={`lg:row-start-3 ${getColStart(1)}`}
-        />
-        <MembershipOption
-          clubName={'Your Club'}
-          id={'3'}
-          name={'Membership Name'}
-          imagePath={'https://i.ibb.co/nrdKDQy/Image-1.png'}
-          currency={'DEV'}
-          price={'0.1'}
-          description={'Membership Description'}
-          className={`lg:row-start-3 ${getColStart(2)}`}
-        />
+        {/each}
       </div>
     </div>
 
@@ -933,8 +886,7 @@
     {#if !isAdding}
       <h1 class="mb-16 font-title text-2xl font-bold">Collection Items</h1>
       <button
-        type="button"
-        class={`hs-button is-large is-filled c mb-16 w-fit px-8 py-6 text-base font-bold text-white`}
+        class={`hs-button is-filled is-large`}
         on:click={() => setIsAdding(true)}
       >
         + Add
@@ -942,84 +894,59 @@
     {/if}
 
     <!-- Register New Item -->
-    <div class="w-full">
+    <div class="grid w-full gap-8">
       {#if isAdding}
         <h1 class="mb-16 font-title text-2xl font-bold">Register New Item</h1>
-        <div
-          class="mb-16 flex w-[52.2%] flex-col items-start justify-start gap-[7px]"
-        >
-          <div class="m-0 w-full items-center p-0">
-            <span class="mr-[13px] font-body">Name </span>
-            <span class="font-body text-[#EB48F8]"> * </span>
-          </div>
-          <label class="hs-form-field is-filled">
-            <input
-              bind:value={membership.name}
-              on:change={onChangeName}
-              class="hs-form-field__input"
-              id="product-name"
-              name="product-name"
-              placeholder="Name of product"
-            />
-          </label>
-        </div>
-        <div
-          class="mb-16 flex h-[207px] w-[186px] flex-col items-start gap-[7px]"
-        >
-          <div class="flex items-start gap-[13px]">
-            <span class="text-base font-normal text-white">Image</span>
-            <span class="text-base font-normal uppercase text-[#EB48F8]">
-              *
-            </span>
-          </div>
-          <label>
-            <div
-              class="flex flex-col items-start self-stretch rounded-[19px] border border-[#ffffff1a] bg-[#ffffff1a] p-2"
-            >
-              {#if membership.imageSrc !== ''}
-                <img
-                  class="h-[160px] w-[170px] rounded-[12px] object-cover"
-                  src={membership.imageSrc}
-                  alt={`${membership.name}-membership-image`}
-                />
-              {:else}
-                <div class="h-[160px] w-[170px] rounded-[12px] bg-[#040B10]" />
-              {/if}
-            </div>
-            <input
-              id="membership-image"
-              name="membership-image"
-              style="display:none"
-              type="file"
-              class="hs-button is-filled is-large cursor-pointer"
-              disabled={membershipExists}
-              on:change={onMembershipFileSelected}
-            />
-          </label>
-        </div>
-        {#if !isTimeLimitedCollection}
-          <div class="mb-16 flex w-[479px] flex-col items-start gap-[7px]">
-            <div class="flex items-start gap-[13px]">
-              <span class="text-base font-normal text-white"
-                >Maximum number of sales</span
-              >
-              <span class="text-base font-normal uppercase text-[#EB48F8]">
-                *
-              </span>
-            </div>
-            <label class="hs-form-field is-filled">
-              <input
-                bind:value={membership.memberCount}
-                on:change={() => onChangeMemberCount(membership)}
-                class="hs-form-field__input"
-                id="sales-number"
-                type="number"
-                name="sales-number"
-                min="1"
-                max="4294967294"
+        <label class="hs-form-field is-filled is-required">
+          <span class="hs-form-field__label">Name</span>
+          <input
+            bind:value={membership.name}
+            on:change={onChangeName}
+            class="hs-form-field__input w-full max-w-md"
+            id="product-name"
+            name="product-name"
+            placeholder="Name of product"
+          />
+        </label>
+        <label class="hs-form-field is-filled is-required">
+          <span class="hs-form-field__label">Image</span>
+          <div
+            class="aspect-square w-full max-w-sm cursor-pointer rounded-xl border border-[#ffffff1a] bg-[#ffffff1a] p-2"
+          >
+            {#if membership.imageSrc !== ''}
+              <img
+                class="h-full w-full rounded-xl object-cover"
+                src={membership.imageSrc}
+                alt={`${membership.name}-membership-image`}
               />
-            </label>
+            {:else}
+              <div class="h-full w-full rounded-xl bg-dp-blue-grey-600" />
+            {/if}
           </div>
+          <input
+            id="membership-image"
+            name="membership-image"
+            style="display:none"
+            type="file"
+            class="hs-button is-filled is-large cursor-pointer"
+            disabled={membershipExists}
+            on:change={onMembershipFileSelected}
+          />
+        </label>
+        {#if !isTimeLimitedCollection}
+          <label class="hs-form-field is-filled is-required">
+            <span class="hs-form-field__label">Maximum number of sales</span>
+            <input
+              bind:value={membership.memberCount}
+              on:change={() => onChangeMemberCount(membership)}
+              class="hs-form-field__input"
+              id="sales-number"
+              type="number"
+              name="sales-number"
+              min="1"
+              max="4294967294"
+            />
+          </label>
         {/if}
 
         <!-- Price -->
@@ -1215,42 +1142,33 @@
         </div>
 
         <!-- Description -->
-        <div
-          class="mb-16 flex w-[99.1%] flex-col items-start justify-start gap-[7px]"
-        >
-          <div class="m-0 w-full items-center p-0">
-            <span class="mr-[13px] font-body">Description</span>
-            <span class="font-body text-[#EB48F8]"> * </span>
-          </div>
-          <label class="hs-form-field is-filled">
-            <textarea
-              class="hs-form-field__input"
-              bind:value={membership.description}
-              on:change={updateState}
-              id="membership-description"
-              name="membership-description"
-              disabled={membershipExists}
-            />
-            <p class="hs-form-field__helper">Markdown is available</p>
-          </label>
-        </div>
+        <label class="hs-form-field is-filled is-required">
+          <span class="hs-form-field__label">Description</span>
+          <textarea
+            class="hs-form-field__input"
+            bind:value={membership.description}
+            on:change={updateState}
+            id="membership-description"
+            name="membership-description"
+            disabled={membershipExists}
+          />
+          <p class="hs-form-field__helper">Markdown is available</p>
+        </label>
 
         <!-- Save & Delete Buttons -->
-        <div class="mb-16 flex items-start gap-16">
+        <div class="mb-8 flex items-start gap-16">
           <button
             on:click={() => handleSaveClick()}
-            type="button"
-            class={`hs-button is-large is-filled w-fit rounded px-8 py-6 text-base font-bold text-white`}
+            class={`hs-button is-filled is-large`}
           >
             Save
           </button>
 
           {#if mode === 'editMem' && !membership.deprecated}
             <button
-              class={`hs-button is-large is-filled w-fit rounded px-8 py-6 text-base font-bold text-white ${
+              class={`hs-button is-filled is-large ${
                 updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
               }`}
-              type="button"
               on:click|preventDefault={() => deleteMembership(membership)}
             >
               <span class="hs-button__label"> Delete </span>
@@ -1260,7 +1178,9 @@
       {/if}
     </div>
     <!-- Previous Memberships -->
-    <div class="grid grid-cols-3 justify-between gap-4">
+    <div
+      class="grid grid-cols-[repeat(auto-fit,_minmax(120px,_1fr))] justify-between gap-4"
+    >
       {#each collection.memberships as mem, i}
         {#if mem.id !== membership.id}
           <div>
@@ -1274,10 +1194,9 @@
               price={mem.price.toString()}
               currency={mem.currency}
               description={mem.description}
-              className={`lg:row-start-3 ${getColStart(i)}`}
             />
             <a
-              class="hs-button is-filled is-fullwidth mt-4 rounded px-8 py-6 text-base font-bold text-white"
+              class="hs-button is-filled is-fullwidth mt-4"
               href={`${collection.id}/${mem.id}`}
             >
               <span class="hs-button__label">Edit</span>

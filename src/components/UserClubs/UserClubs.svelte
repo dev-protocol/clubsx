@@ -27,7 +27,7 @@
 
     for (const club of clubs) {
       const isDraft = club.options?.find(
-        (option) => option.key === '__draft'
+        (option) => option.key === '__draft',
       ) as DraftOptions | undefined
 
       if (isDraft?.value.isInDraft) {

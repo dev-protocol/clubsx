@@ -46,13 +46,13 @@ export type Membership = {
 
 const presets: Membership[] = [
   {
-    id: 'preset-community',
-    name: `Alice's`,
-    imageSrc: 'https://i.imgur.com/sznqcmL.png',
+    id: 'preset-creator',
+    name: `My Club`,
+    imageSrc: 'https://i.imgur.com/UrRTtfG.jpg',
     currency: 'USDC',
-    price: 5,
-    description: `Always be with Alice! This membership gives you access to an exclusive Discord, where you can participate in monthly community hours and view hand-drawn illustrations and posts.`,
-    payload: toUtf8Bytes('Community'),
+    price: 50,
+    description: `Lorem insum.`,
+    payload: toUtf8Bytes('Creator'),
     paymentType: 'instant',
     fee: {
       percentage: PAYMENT_TYPE_INSTANT_FEE,
@@ -60,13 +60,13 @@ const presets: Membership[] = [
     },
   },
   {
-    id: 'preset-team',
-    name: `Awesome-band Contributor`,
-    imageSrc: 'https://i.imgur.com/YaNNZ2F.png',
+    id: 'preset-business',
+    name: `Visitor Pass`,
+    imageSrc: 'https://i.imgur.com/C5ot1Sg.jpg',
     currency: 'USDC',
-    price: 5,
-    description: `Want to be an Awesome-band contributor? This is it! Help organize events, manage co-creation projects with external collaborators, and see some of the special productions that only the band team can see.`,
-    payload: toUtf8Bytes('Team'),
+    price: 120,
+    description: `Lorem insum.`,
+    payload: toUtf8Bytes('Business'),
     paymentType: 'instant',
     fee: {
       percentage: PAYMENT_TYPE_INSTANT_FEE,
@@ -74,13 +74,13 @@ const presets: Membership[] = [
     },
   },
   {
-    id: 'preset-dao',
-    name: `XYZ DAO Member`,
-    imageSrc: 'https://i.imgur.com/wwJ2rBf.png',
+    id: 'preset-public',
+    name: `Project Member`,
+    imageSrc: 'https://i.imgur.com/gZ8z2vN.jpg',
     currency: 'USDC',
-    price: 5,
-    description: `As a core member of XYZ, a DAO pushing seismic waveform research, join the team that manages the measurement nodes, reporting data, and organization.`,
-    payload: toUtf8Bytes('DAO'),
+    price: 10,
+    description: `Lorem insum.`,
+    payload: toUtf8Bytes('Public'),
     paymentType: 'stake',
     fee: {
       percentage: PAYMENT_TYPE_STAKE_FEE,
@@ -89,9 +89,9 @@ const presets: Membership[] = [
   },
 ]
 
-export const getPagePaths: ClubsFunctionGetPagePaths = async () => []
+export const getPagePaths = (async () => []) satisfies ClubsFunctionGetPagePaths
 
-export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
+export const getAdminPaths = (async (
   options,
   { name, rpcUrl, propertyAddress },
 ) => {
@@ -137,9 +137,9 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (
       },
     })) ?? []),
   ]
-}
+}) satisfies ClubsFunctionGetAdminPaths
 
-export const getSlots: ClubsFunctionGetSlots = async (
+export const getSlots = (async (
   options,
   { propertyAddress, rpcUrl, chainId },
   { paths, factory },
@@ -168,9 +168,9 @@ export const getSlots: ClubsFunctionGetSlots = async (
         },
       ]
     : []
-}
+}) satisfies ClubsFunctionGetSlots
 
-export const meta: ClubsPluginMeta = {
+export const meta = {
   id: 'devprotocol:clubs:simple-memberships',
   displayName: 'Memberships',
   category: ClubsPluginCategory.Monetization,
@@ -182,11 +182,11 @@ export const meta: ClubsPluginMeta = {
   description: `Simplest tool for creating membership NFT.`,
   previewImages: [Preview1.src, Preview2.src, Preview3.src],
   readme: Readme,
-}
+} satisfies ClubsPluginMeta
 
 export default {
   getPagePaths,
   getAdminPaths,
   getSlots,
   meta,
-} as ClubsFunctionPlugin
+} satisfies ClubsFunctionPlugin

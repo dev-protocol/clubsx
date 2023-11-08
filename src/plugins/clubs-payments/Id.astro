@@ -1,7 +1,7 @@
 ---
 import type { ComposedItem } from '.'
 import TransactionForm from './TransactionForm.svelte'
-import Checkout from '@components/Checkout/Checkout.astro'
+import { Checkout } from '@devprotocol/clubs-core/ui/components'
 
 const { item, propertyAddress, rpcUrl, chainId, ...other } = Astro.props as {
   item: ComposedItem

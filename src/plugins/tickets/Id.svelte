@@ -23,7 +23,7 @@
   import { Modals, closeAllModals, closeModal, openModal } from 'svelte-modals'
   import { fade } from 'svelte/transition'
   import Modal from './Modal.svelte'
-  import { Parts, Strings } from './i18n'
+  import { Strings } from './i18n'
   import { expirationDatetime } from './utils/date'
 
   export let ticket: Ticket
@@ -48,7 +48,7 @@
     whenDefined(signer, async (sigr) => {
       const benefit = benefits?.find((item) => item.self.use.id === benefitId)
       openModal(Modal, {
-        message: i18n(Parts.ModalMessageTicketConfirm, [
+        message: i18n('ModalMessageTicketConfirm', [
           benefit?.availableAtIfenabled?.local().calendar(),
           benefit?.availableUntilIfenabled?.local().calendar(),
           benefit?.expirationIfenabled?.local().calendar(),
@@ -63,8 +63,8 @@
           timeoutToHint = setTimeout(() => {
             openModal(Modal, {
               spinner: true,
-              message: i18n(Parts.ModalMessageNotSigned),
-              closeButton: i18n(Parts.ModalCloseTicketConfirm),
+              message: i18n('ModalMessageNotSigned'),
+              closeButton: i18n('ModalCloseTicketConfirm'),
               onClose: async () => {
                 isDisplayingHint = false
               },
@@ -108,14 +108,14 @@
           idIsLoading = undefined
           isWaitingForAPIResult = false
         },
-        actionButton: i18n(Parts.ModalActionTicketConfirm),
-        closeButton: i18n(Parts.ModalCloseTicketConfirm),
+        actionButton: i18n('ModalActionTicketConfirm'),
+        closeButton: i18n('ModalCloseTicketConfirm'),
         closeAllOnFinished: true,
       })
     }) ??
       openModal(Modal, {
-        message: i18n(Parts.ModalMessageNotConnected),
-        closeButton: i18n(Parts.ModalCloseNotConnected),
+        message: i18n('ModalMessageNotConnected'),
+        closeButton: i18n('ModalCloseNotConnected'),
       })
   }
   const onClickBackdrop = () => {
@@ -214,13 +214,13 @@
               </p>
               {#if !idIsError && benefit.enablable}
                 <span class="text-center font-bold"
-                  >{i18n(Parts.SignToUseThisBenefit)}</span
+                  >{i18n('SignToUseThisBenefit')}</span
                 >
               {/if}
               {#if !idIsError && benefit.available && benefit.self.expiration}
                 {#if benefit.self.availableUntil}
                   <span class="text-center font-bold"
-                    >{i18n(Parts.AvailableUntil, [
+                    >{i18n('AvailableUntil', [
                       benefit.self.availableUntil.local().calendar(),
                     ])}</span
                   >
@@ -228,14 +228,14 @@
               {/if}
               {#if !idIsError && !benefit.enablable && benefit.dependency?.unused}
                 <span class="text-center font-bold"
-                  >{i18n(Parts.WillBeAvailableWhenXIsUsed, [
+                  >{i18n('WillBeAvailableWhenXIsUsed', [
                     benefit.dependency.use.name,
                   ])}</span
                 >
               {/if}
               {#if !idIsError && benefit.isTempUnavailable}
                 <span class="text-center font-bold"
-                  >{i18n(Parts.WillBeAvailable, [
+                  >{i18n('WillBeAvailable', [
                     benefit.availableAt?.local().calendar(),
                   ])}</span
                 >
@@ -254,11 +254,11 @@
                 class="-mb-2 -ml-2 mt-2 justify-self-start text-xs font-bold opacity-50"
               >
                 {#if benefit.self.expiration}
-                  {i18n(Parts.Expiration, [
+                  {i18n('Expiration', [
                     benefit.self.expiration.local().calendar(),
                   ])}
                 {:else if benefit.self.usageStartExpiration}
-                  {i18n(Parts.UsageStart, [
+                  {i18n('UsageStart', [
                     benefit.self.usageStartExpiration.local().calendar(),
                   ])}
                 {/if}

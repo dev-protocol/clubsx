@@ -1,11 +1,9 @@
 <script lang="ts">
   import ETH from '@assets/ETH.svg'
   import DEV from '@assets/devtoken.png'
-  import type { Tiers } from '@constants/tier'
+  import type { Tiers } from '@devprotocol/clubs-core'
   import { JsonRpcProvider } from 'ethers'
   import { composeTiers } from '@fixtures/utility'
-  import type { UndefinedOr } from '@devprotocol/util-ts'
-  import type { CurrencyOption } from '@constants/currencyOption'
   import MembershipOption from '@components/AdminMembershipsForm/MembershipOption.svelte'
   import { onMount } from 'svelte'
 

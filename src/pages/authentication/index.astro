@@ -43,7 +43,7 @@ import Layout from '@layouts/Landing.astro'
 
         window.location.href = new URL(
           `/user/${uid}`,
-          `${location.protocol}//${location.host}`
+          `${location.protocol}//${location.host}`,
         ).toString()
       })
       .catch((err) => {

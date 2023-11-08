@@ -4,11 +4,10 @@ import {
   type ContractRunner,
   JsonRpcProvider,
   formatEther,
-  keccak256,
   parseEther,
 } from 'ethers'
-import type { Tiers } from '@constants/tier'
-import { stakeWithEth, stakeWithEthForPolygon, tokenURISim } from './dev-kit'
+import type { Tiers } from '@devprotocol/clubs-core'
+import { bytes32Hex, stakeWithEth, tokenURISim } from '@devprotocol/clubs-core'
 import { clientsSTokens, client } from '@devprotocol/dev-kit'
 import { whenDefined } from '@devprotocol/util-ts'
 import { xprod } from 'ramda'
@@ -58,24 +57,6 @@ export const fetchEthForDev = async (opts: {
     devAmount: new BigNumber(opts.amount).toFixed(),
   })
   return estimatedEth
-}
-
-export const fetchDevForEth = async (opts: {
-  provider: ContractRunner
-  tokenAddress: string
-  amount: number | string
-  chain?: number
-}) => {
-  const params = {
-    provider: opts.provider,
-    propertyAddress: opts.tokenAddress,
-    ethAmount: new BigNumber(opts.amount).toFixed(),
-  }
-  const { estimatedDev } =
-    opts.chain === 137 || opts.chain === 80001
-      ? await stakeWithEthForPolygon(params)
-      : await stakeWithEth(params)
-  return estimatedDev
 }
 
 export const composeTiers = async ({
@@ -153,7 +134,7 @@ export const checkMemberships = async (
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/any
   const testResult = await Promise.any(
     pairs.map(async ([membership, tokenId]) => {
-      const payload = whenDefined(membership.payload, keccak256)
+      const payload = whenDefined(membership.payload, bytes32Hex)
 
       const sTokenContract = contract.contract()
       // if it has payload, test the payload

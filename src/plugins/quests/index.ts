@@ -17,15 +17,15 @@ import Preview1 from './assets/quests-1.jpg'
 
 const questParams = ['quest_starter', 'quest_stake_100', 'quest_stake_500']
 
-export const getPagePaths: ClubsFunctionGetPagePaths = async (options, _) => [
+export const getPagePaths = (async (options, _) => [
   { paths: ['quests'], component: Index, props: { options } },
   ...questParams.map((param) => ({
     paths: ['quests', param],
     component: Id,
   })),
-]
+]) satisfies ClubsFunctionGetPagePaths
 
-export const getAdminPaths: ClubsFunctionGetAdminPaths = async (options) => [
+export const getAdminPaths = (async (options) => [
   {
     paths: ['quests'],
     component: Admin,
@@ -33,13 +33,9 @@ export const getAdminPaths: ClubsFunctionGetAdminPaths = async (options) => [
       options,
     },
   },
-]
+]) satisfies ClubsFunctionGetAdminPaths
 
-export const getSlots: ClubsFunctionGetSlots = async (
-  _,
-  config,
-  { paths, factory },
-) => {
+export const getSlots = (async (_, config, { paths, factory }) => {
   const [path] = paths
   return factory === 'admin' && path === 'quests'
     ? [
@@ -56,8 +52,8 @@ export const getSlots: ClubsFunctionGetSlots = async (
         },
       ]
     : []
-}
-export const meta: ClubsPluginMeta = {
+}) satisfies ClubsFunctionGetSlots
+export const meta = {
   id: 'devprotocol:clubs:plugin:quests',
   displayName: 'Quests',
   category: ClubsPluginCategory.Growth,
@@ -69,11 +65,11 @@ export const meta: ClubsPluginMeta = {
   description: `Add Dework link.`,
   previewImages: [Preview1.src],
   readme: Readme,
-}
+} satisfies ClubsPluginMeta
 
 export default {
   getPagePaths,
   getAdminPaths,
   getSlots,
   meta,
-} as ClubsFunctionPlugin
+} satisfies ClubsFunctionPlugin

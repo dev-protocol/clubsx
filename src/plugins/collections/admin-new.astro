@@ -1,7 +1,8 @@
 ---
 import CreateCollections from '@components/Collections/CreateCollections.svelte'
-import type { Collection} from '@plugins/collections'
+import type { Collection } from '@plugins/collections'
 import type { ClubsPropsAdminPages } from '@devprotocol/clubs-core'
+import type { Membership } from '@plugins/memberships'
 
 const {
   isTimeLimitedCollection = false,
@@ -9,10 +10,12 @@ const {
   propertyAddress,
   preset,
   collections = [],
+  existingMemberships = [],
   name,
   clubs,
 } = Astro.props as ClubsPropsAdminPages & {
   preset: Collection
+  existingMemberships: Membership[]
   isTimeLimitedCollection: boolean
   rpcUrl: string
   propertyAddress: string
@@ -28,6 +31,7 @@ const {
     client:only="svelte"
     existingCollections={collections}
     collection={preset}
+    existingMemberships={existingMemberships}
     isTimeLimitedCollection={isTimeLimitedCollection}
     clubName={name}
     currentPluginIndex={clubs.currentPluginIndex}
