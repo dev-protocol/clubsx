@@ -67,11 +67,13 @@
 
     const membership = existingMemberships.find(
       (m: Membership) =>
-        m.id === selectedMembership.id &&
-        m.name === selectedMembership.name &&
         JSON.stringify(m.payload) ===
-          JSON.stringify(selectedMembership.payload),
+        JSON.stringify(selectedMembership.payload), // Using only payload for check handles membership name, id edits as well.
     )
+
+    if (!membership) {
+      return
+    }
 
     setOptions(
       [
@@ -79,9 +81,9 @@
           key: 'memberships',
           value: [
             ...existingMemberships.filter(
-              (m: Membership) => m.id !== selectedMembership.id,
+              (m: Membership) => m.id !== membership.id, // We use m.id and membership.id because selectedMembership.id might have changed (if edited)
             ),
-            { ...membership, deprecated: true },
+            { ...selectedMembership, deprecated: true }, // Using `selectedMembership` handles edit membership while activating/deleting
           ],
         },
       ],
@@ -96,11 +98,13 @@
 
     const membership = existingMemberships.find(
       (m: Membership) =>
-        m.id === selectedMembership.id &&
-        m.name === selectedMembership.name &&
         JSON.stringify(m.payload) ===
-          JSON.stringify(selectedMembership.payload),
+        JSON.stringify(selectedMembership.payload),
     )
+
+    if (!membership) {
+      return
+    }
 
     setOptions(
       [
@@ -108,9 +112,9 @@
           key: 'memberships',
           value: [
             ...existingMemberships.filter(
-              (m: Membership) => m.id !== selectedMembership.id,
+              (m: Membership) => m.id !== membership.id,
             ),
-            { ...membership, deprecated: false },
+            { ...selectedMembership, deprecated: false },
           ],
         },
       ],

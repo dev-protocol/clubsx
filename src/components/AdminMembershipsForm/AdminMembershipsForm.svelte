@@ -17,17 +17,19 @@
   const deleteMembership = (selectedMembership: Membership) => {
     updatingMembershipsStatus = new Set([
       ...updatingMembershipsStatus.values(),
-      `${selectedMembership.id}:${selectedMembership.name}:${JSON.stringify(
+      `${JSON.stringify(
         selectedMembership.payload,
       )}`,
     ])
     const membership = memberships.find(
       (m: Membership) =>
-        m.id === selectedMembership.id &&
-        m.name === selectedMembership.name &&
         JSON.stringify(m.payload) ===
           JSON.stringify(selectedMembership.payload),
     )
+
+    if (!membership) {
+      return;
+    }
 
     setOptions(
       [
@@ -35,9 +37,9 @@
           key: 'memberships',
           value: [
             ...memberships.filter(
-              (m: Membership) => m.id !== selectedMembership.id,
+              (m: Membership) => m.id !== membership.id,
             ),
-            { ...membership, deprecated: true },
+            { ...selectedMembership, deprecated: true },
           ],
         },
       ],
@@ -50,18 +52,20 @@
   const activateMembership = (selectedMembership: Membership) => {
     updatingMembershipsStatus = new Set([
       ...updatingMembershipsStatus.values(),
-      `${selectedMembership.id}:${selectedMembership.name}:${JSON.stringify(
+      `${JSON.stringify(
         selectedMembership.payload,
       )}`,
     ])
 
     const membership = memberships.find(
       (m: Membership) =>
-        m.id === selectedMembership.id &&
-        m.name === selectedMembership.name &&
         JSON.stringify(m.payload) ===
           JSON.stringify(selectedMembership.payload),
     )
+
+    if (!membership) {
+      return;
+    }
 
     setOptions(
       [
@@ -69,9 +73,9 @@
           key: 'memberships',
           value: [
             ...memberships.filter(
-              (m: Membership) => m.id !== selectedMembership.id,
+              (m: Membership) => m.id !== membership.id,
             ),
-            { ...membership, deprecated: false },
+            { ...selectedMembership, deprecated: false },
           ],
         },
       ],
@@ -249,7 +253,7 @@
           {#if !membership.deprecated}
             <button
               disabled={updatingMembershipsStatus.has(
-                `${membership.id}:${membership.name}:${JSON.stringify(
+                `${JSON.stringify(
                   membership.payload,
                 )}`,
               )}
@@ -257,7 +261,7 @@
                 i,
               )} ${
                 updatingMembershipsStatus.has(
-                  `${membership.id}:${membership.name}:${JSON.stringify(
+                  `${JSON.stringify(
                     membership.payload,
                   )}`,
                 )
@@ -273,7 +277,7 @@
           {#if membership.deprecated}
             <button
               disabled={updatingMembershipsStatus.has(
-                `${membership.id}:${membership.name}:${JSON.stringify(
+                `${JSON.stringify(
                   membership.payload,
                 )}`,
               )}
@@ -281,7 +285,7 @@
                 i,
               )} ${
                 updatingMembershipsStatus.has(
-                  `${membership.id}:${membership.name}:${JSON.stringify(
+                  `${JSON.stringify(
                     membership.payload,
                   )}`,
                 )
