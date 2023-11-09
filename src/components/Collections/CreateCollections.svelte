@@ -163,11 +163,11 @@
     const membership = collection.memberships.find(
       (m: CollectionMembership) =>
         JSON.stringify(m.payload) ===
-          JSON.stringify(selectedMembership.payload),
+        JSON.stringify(selectedMembership.payload),
     )
 
     if (!membership) {
-      return;
+      return
     }
 
     setOptions(
@@ -202,11 +202,11 @@
     const membership = selectedCollection.memberships.find(
       (m: CollectionMembership) =>
         JSON.stringify(m.payload) ===
-          JSON.stringify(selectedMembership.payload),
+        JSON.stringify(selectedMembership.payload),
     )
 
     if (!membership) {
-      return;
+      return
     }
 
     setOptions(

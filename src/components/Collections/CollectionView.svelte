@@ -127,11 +127,11 @@
         <div
           class="flex flex-col items-start gap-5 self-stretch rounded-md bg-[#17171780] p-5"
         >
-        {#if validationResult !== true}
-          <span class="text-xl lg:text-2xl text-white">
-            Exclusive to the following members.
-          </span>
-        {/if}
+          {#if validationResult !== true}
+            <span class="text-xl lg:text-2xl text-white">
+              Exclusive to the following members.
+            </span>
+          {/if}
           <!-- Validation -->
           {#if !validationResult}
             <div class="flex flex-col items-start self-stretch">
