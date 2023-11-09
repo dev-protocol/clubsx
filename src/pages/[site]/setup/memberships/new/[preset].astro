@@ -26,10 +26,9 @@ const { props } = path || { props: undefined }
 const presets = (props?.presets ?? []) as Membership[]
 
 const membership: Membership = {
-  ...presets.find(
-    (_membership: Membership) => _membership.id === preset,
-  ) ?? presets[0], // Use default first preset if not found.
-  payload: ethers.randomBytes(8) // Generates random payload, rather than using predefined one in presets.
+  ...(presets.find((_membership: Membership) => _membership.id === preset) ??
+    presets[0]), // Use default first preset if not found.
+  payload: ethers.randomBytes(8), // Generates random payload, rather than using predefined one in presets.
 }
 
 if (!membership) {

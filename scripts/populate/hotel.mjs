@@ -10,7 +10,7 @@ const { SALT } = process.env
 const populate = async (client) => {
   const base = decode(await client.get(KEY))
   const ticketWebhook = jsonwebtoken.sign(
-    `https://clubs-userland-template.vercel.app/api/webhooks/tickets/template/dest/airtable/tbley5joim77xMPaR`,
+    `https://clubs-userland-clubs-hotel.vercel.app/api/webhooks/tickets/template/dest/airtable/tblZ5FcVPljelkViF`,
     SALT,
   )
 

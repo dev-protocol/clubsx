@@ -169,7 +169,7 @@ export const getPagePaths = (async (
       collection.memberships.map((membership) => ({
         paths: ['collections', 'checkout', bytes32Hex(membership.payload)],
         component: Checkout,
-        props: { collections, rpcUrl, collection, membership },
+        props: { collections, rpcUrl, propertyAddress, collection, membership },
       })),
     ) ?? []),
     {

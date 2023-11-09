@@ -17,18 +17,16 @@
   const deleteMembership = (selectedMembership: Membership) => {
     updatingMembershipsStatus = new Set([
       ...updatingMembershipsStatus.values(),
-      `${JSON.stringify(
-        selectedMembership.payload,
-      )}`,
+      `${JSON.stringify(selectedMembership.payload)}`,
     ])
     const membership = memberships.find(
       (m: Membership) =>
         JSON.stringify(m.payload) ===
-          JSON.stringify(selectedMembership.payload),
+        JSON.stringify(selectedMembership.payload),
     )
 
     if (!membership) {
-      return;
+      return
     }
 
     setOptions(
@@ -36,9 +34,7 @@
         {
           key: 'memberships',
           value: [
-            ...memberships.filter(
-              (m: Membership) => m.id !== membership.id,
-            ),
+            ...memberships.filter((m: Membership) => m.id !== membership.id),
             { ...selectedMembership, deprecated: true },
           ],
         },
@@ -52,19 +48,17 @@
   const activateMembership = (selectedMembership: Membership) => {
     updatingMembershipsStatus = new Set([
       ...updatingMembershipsStatus.values(),
-      `${JSON.stringify(
-        selectedMembership.payload,
-      )}`,
+      `${JSON.stringify(selectedMembership.payload)}`,
     ])
 
     const membership = memberships.find(
       (m: Membership) =>
         JSON.stringify(m.payload) ===
-          JSON.stringify(selectedMembership.payload),
+        JSON.stringify(selectedMembership.payload),
     )
 
     if (!membership) {
-      return;
+      return
     }
 
     setOptions(
@@ -72,9 +66,7 @@
         {
           key: 'memberships',
           value: [
-            ...memberships.filter(
-              (m: Membership) => m.id !== membership.id,
-            ),
+            ...memberships.filter((m: Membership) => m.id !== membership.id),
             { ...selectedMembership, deprecated: false },
           ],
         },
@@ -253,17 +245,13 @@
           {#if !membership.deprecated}
             <button
               disabled={updatingMembershipsStatus.has(
-                `${JSON.stringify(
-                  membership.payload,
-                )}`,
+                `${JSON.stringify(membership.payload)}`,
               )}
               class={`hs-button is-filled is-fullwidth is-error mt-4 lg:row-start-4 ${getColStart(
                 i,
               )} ${
                 updatingMembershipsStatus.has(
-                  `${JSON.stringify(
-                    membership.payload,
-                  )}`,
+                  `${JSON.stringify(membership.payload)}`,
                 )
                   ? 'animate-pulse bg-gray-500/60'
                   : ''
@@ -277,17 +265,13 @@
           {#if membership.deprecated}
             <button
               disabled={updatingMembershipsStatus.has(
-                `${JSON.stringify(
-                  membership.payload,
-                )}`,
+                `${JSON.stringify(membership.payload)}`,
               )}
               class={`mt-2 block w-full rounded bg-dp-blue-grey-400 py-4 text-center text-sm font-semibold text-white lg:row-start-4 ${getColStart(
                 i,
               )} ${
                 updatingMembershipsStatus.has(
-                  `${JSON.stringify(
-                    membership.payload,
-                  )}`,
+                  `${JSON.stringify(membership.payload)}`,
                 )
                   ? 'animate-pulse bg-gray-500/60'
                   : ''
