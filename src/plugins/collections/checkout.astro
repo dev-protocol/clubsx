@@ -23,6 +23,8 @@ const { membership, propertyAddress, rpcUrl, collection, ...other } =
   description={membership.description}
   itemImageSrc={membership.imageSrc}
   itemName={membership.name}
+  feePercentage={membership.fee?.percentage}
+  feeBeneficiary={membership.fee?.beneficiary}
   accessControlUrl={`/api/devprotocol:clubs:collections/verification/${collection.id}`}
   accessControlDescription={`**Membership Purchase Required**\n\nThis transaction requires primary memberships.\n\nVisit [here](/collections/${collection.id}) for more details.`}
   {...other}
