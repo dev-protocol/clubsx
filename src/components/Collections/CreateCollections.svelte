@@ -166,11 +166,13 @@
 
     const membership = collection.memberships.find(
       (m: CollectionMembership) =>
-        m.id === selectedMembership.id &&
-        m.name === selectedMembership.name &&
         JSON.stringify(m.payload) ===
-          JSON.stringify(selectedMembership.payload),
+        JSON.stringify(selectedMembership.payload),
     )
+
+    if (!membership) {
+      return
+    }
 
     setOptions(
       [
@@ -181,9 +183,9 @@
               ...collection,
               memberships: [
                 ...collection.memberships.filter(
-                  (m: CollectionMembership) => m.id !== selectedMembership.id,
+                  (m: CollectionMembership) => m.id !== membership.id,
                 ),
-                { ...membership, deprecated: true },
+                { ...selectedMembership, deprecated: true },
               ],
             },
           ],
@@ -203,11 +205,13 @@
 
     const membership = selectedCollection.memberships.find(
       (m: CollectionMembership) =>
-        m.id === selectedMembership.id &&
-        m.name === selectedMembership.name &&
         JSON.stringify(m.payload) ===
-          JSON.stringify(selectedMembership.payload),
+        JSON.stringify(selectedMembership.payload),
     )
+
+    if (!membership) {
+      return
+    }
 
     setOptions(
       [
@@ -221,9 +225,9 @@
               ...selectedCollection,
               memberships: [
                 ...selectedCollection.memberships.filter(
-                  (m: CollectionMembership) => m.id !== selectedMembership.id,
+                  (m: CollectionMembership) => m.id !== membership.id,
                 ),
-                { ...membership, deprecated: false },
+                { ...selectedMembership, deprecated: false },
               ],
             },
           ],

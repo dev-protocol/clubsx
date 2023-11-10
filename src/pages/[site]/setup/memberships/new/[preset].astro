@@ -1,4 +1,5 @@
 ---
+import { ethers } from 'ethers'
 import AdminMembershipsAdditionForm from '@components/AdminMembershipsForm/AdminMembershipsAdditionForm.svelte'
 import { config as _config } from '@fixtures/config'
 import { adminFactory } from '@devprotocol/clubs-core'
@@ -24,9 +25,11 @@ const { props } = path || { props: undefined }
 
 const presets = (props?.presets ?? []) as Membership[]
 
-const membership = presets.find(
-  (_membership: Membership) => _membership.id === preset,
-)
+const membership: Membership = {
+  ...(presets.find((_membership: Membership) => _membership.id === preset) ??
+    presets[0]), // Use default first preset if not found.
+  payload: ethers.randomBytes(8), // Generates random payload, rather than using predefined one in presets.
+}
 
 if (!membership) {
   throw new Error(`Membership not found: ${preset}`)

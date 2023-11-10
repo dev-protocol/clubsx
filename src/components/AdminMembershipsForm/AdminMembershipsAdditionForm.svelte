@@ -3,13 +3,7 @@
   import MembershipOptionCard from './MembershipOption.svelte'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import type { Membership } from '@plugins/memberships/index'
-  import {
-    parseUnits,
-    keccak256,
-    JsonRpcProvider,
-    ZeroAddress,
-    type Signer,
-  } from 'ethers'
+  import { JsonRpcProvider, ZeroAddress, type Signer } from 'ethers'
   import { onMount } from 'svelte'
   import BigNumber from 'bignumber.js'
   import { clientsSTokens } from '@devprotocol/dev-kit'
@@ -31,7 +25,7 @@
   export let rpcUrl: string
   export let propertyAddress: string | null | undefined = undefined
   export let clubName: string | undefined = undefined
-  const metaOfPayload = keccak256(membership.payload)
+  const metaOfPayload = bytes32Hex(membership.payload)
 
   type MembershipPaymentType = 'instant' | 'stake' | 'custom' | ''
 
@@ -73,11 +67,13 @@
 
     const membership = existingMemberships.find(
       (m: Membership) =>
-        m.id === selectedMembership.id &&
-        m.name === selectedMembership.name &&
         JSON.stringify(m.payload) ===
-          JSON.stringify(selectedMembership.payload),
+        JSON.stringify(selectedMembership.payload), // Using only payload for check handles membership name, id edits as well.
     )
+
+    if (!membership) {
+      return
+    }
 
     setOptions(
       [
@@ -85,9 +81,9 @@
           key: 'memberships',
           value: [
             ...existingMemberships.filter(
-              (m: Membership) => m.id !== selectedMembership.id,
+              (m: Membership) => m.id !== membership.id, // We use m.id and membership.id because selectedMembership.id might have changed (if edited)
             ),
-            { ...membership, deprecated: true },
+            { ...selectedMembership, deprecated: true }, // Using `selectedMembership` handles edit membership while activating/deleting
           ],
         },
       ],
@@ -102,11 +98,13 @@
 
     const membership = existingMemberships.find(
       (m: Membership) =>
-        m.id === selectedMembership.id &&
-        m.name === selectedMembership.name &&
         JSON.stringify(m.payload) ===
-          JSON.stringify(selectedMembership.payload),
+        JSON.stringify(selectedMembership.payload),
     )
+
+    if (!membership) {
+      return
+    }
 
     setOptions(
       [
@@ -114,9 +112,9 @@
           key: 'memberships',
           value: [
             ...existingMemberships.filter(
-              (m: Membership) => m.id !== selectedMembership.id,
+              (m: Membership) => m.id !== membership.id,
             ),
-            { ...membership, deprecated: false },
+            { ...selectedMembership, deprecated: false },
           ],
         },
       ],
