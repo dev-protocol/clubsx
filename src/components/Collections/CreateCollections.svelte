@@ -662,6 +662,7 @@
     membership = {
       ...defaultMembership,
     }
+    membership.payload = randomBytes(8)
     onChangePrice(membership)
   }
   const selectAllowlist = (mem: Membership) => {
