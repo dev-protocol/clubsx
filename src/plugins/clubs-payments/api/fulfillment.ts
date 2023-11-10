@@ -77,7 +77,8 @@ export const post: ({
 
     // Step 2a - Convert all string arrays into comma separated values
     const verification$2 = whenNotError(verification$1, (res) =>
-      toPairs(res).map(([key, value]) => {
+      toPairs(res).map((kv) => {
+        const [key, value] = kv as NonNullable<typeof kv>
         const value_ = Array.isArray(value) ? value.join(',') : value
         return [key, value_] as [keyof RequestBody, RequestBody[typeof key]]
       }),
