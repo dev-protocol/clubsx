@@ -1,5 +1,5 @@
 import dotenv from 'dotenv'
-import { encode } from '@devprotocol/clubs-core'
+import { encodeIfValid } from './validators/cryptocafe.mjs'
 import fs from 'fs-extra'
 import jsonwebtoken from 'jsonwebtoken'
 import { cryptoCafeMemberships } from './constants/cryptocafe.mjs'
@@ -21,7 +21,7 @@ const populate = async (client) => {
   )
   await client.set(
     KEY,
-    encode({
+    encodeIfValid({
       name: 'Crypto Cafe & Bar',
       twitterHandle: '',
       description: `Daytime co-working, nighttime vibing.`,
