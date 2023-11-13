@@ -4,11 +4,12 @@ const pathRequestTransform =
   './node_modules/@astrojs/vercel/dist/serverless/request-transform.js'
 
 // Rewrite the requested URL
+// Note: Requests rewritten by middleware (./middleware.ts) have `x-rewritten-url` header
 fs.outputFileSync(
   pathRequestTransform,
   ((file) =>
     file.replace(
       `base + req.url,`,
-      `((reg)=>req.headers['forwarded'] ? req.headers['forwarded'].split(';').find((x)=>reg.test(x))?.replace(reg, '$1') : base + req.url)(/^host=(.*)/i),`,
+      `(()=>req.headers['x-rewritten-url'] ? req.headers['x-rewritten-url'] : base + req.url)(),`,
     ))(fs.readFileSync(pathRequestTransform, 'utf8')),
 )
