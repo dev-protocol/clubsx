@@ -14,6 +14,7 @@
     "lint:prettier": "prettier --cache -w \"**/*.{js,mjs,cjs,ts,tsx,tsm,astro,vue,svelte}\"",
     "typecheck": "astro check && tsc --noEmit && svelte-check && vue-tsc --noEmit --p tsconfig.vue.json",
     "prepare": "husky install",
+    "install": "node ./ugly.mjs",
     "populate": "node ./scripts/populate/index.mjs",
     "flushDb": "node ./scripts/flushDb.mjs",
     "upgradeDb": "node ./scripts/upgrade.mjs",
