@@ -75,7 +75,11 @@ export default function middleware(req: Request) {
     const destination = new URL(url.href)
     destination.pathname = `/sites_/${tenant}${url.pathname}`
     console.log({ destination: destination.toString() })
-    return rewrite(destination)
+    return rewrite(destination, {
+      headers: {
+        'x-clubs-href': url.href,
+      },
+    })
   }
 
   return next()
