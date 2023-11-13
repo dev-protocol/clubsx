@@ -28,7 +28,3 @@ jobs:
 
       - name: test
         run: yarn test
-
-      # Commented out because it can detect build failures on Vercel integration.
-      # - name: build
-      #   run: yarn build

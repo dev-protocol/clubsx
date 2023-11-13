@@ -11,7 +11,6 @@ import {
 } from '@devprotocol/clubs-core/layouts'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import type { DraftOptions } from '@constants/draft'
-import VercelAnalytics from '@components/Analytics/VercelAnalytics.astro'
 import Banner from '@components/Global/Banner.astro'
 import ConnectButton from '@components/Wallet/ConnectButton.vue'
 
@@ -152,7 +151,6 @@ const avatarImgSrc: string | undefined = config.options?.find(
         </svg>
       </button>
     </div>
-    <VercelAnalytics />
     <input id="setupStep" hidden value={setupStep} />
     <input id="encodedConfig" hidden value={clubs.encodedClubsConfiguration} />
     <input id="siteName" hidden value={site} disabled />
