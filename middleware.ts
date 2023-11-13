@@ -71,14 +71,19 @@ export default function middleware(req: Request) {
   const primaryHost =
     hosts.find((h) => url.host === h) ?? hosts.find((h) => url.host.endsWith(h))
 
+  if (bInApi && primaryHost && url.host !== primaryHost) {
+    const destination = new URL(url.href)
+    destination.host = primaryHost
+    return rewrite(destination, {
+      headers: { 'x-clubs-rewrite': destination.href },
+    })
+  }
+
   if ((html || pInApi) && primaryHost && url.host !== primaryHost) {
     const destination = new URL(url.href)
     destination.pathname = `/sites_/${tenant}${url.pathname}`
-    console.log({ destination: destination.toString() })
     return rewrite(destination, {
-      headers: {
-        'x-clubs-href': url.href,
-      },
+      headers: { 'x-clubs-rewrite': destination.href },
     })
   }
 
