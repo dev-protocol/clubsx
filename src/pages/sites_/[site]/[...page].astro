@@ -49,6 +49,8 @@ const isInDraft = Boolean(draftOptions?.isInDraft)
 const fullPage = (path?.props.signals as undefined | string[])?.includes(
   ClubsPluginSignal.DisplayFullPage,
 )
+
+console.log('headers:', Object.fromEntries(Astro.request.headers))
 ---
 
 {
