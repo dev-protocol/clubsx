@@ -107,10 +107,12 @@ export const post: (opts: {
       await client.set(dbKey, nextHistory)
       await client.quit()
 
+      console.log('webhooks.used', 'start', ticket.webhooks?.used)
       const webhook = whenDefinedAll(
         [ticket.webhooks?.used?.encrypted, process.env.SALT],
         ([encrypted, salt]) => jsonwebtoken.verify(encrypted, salt) as string,
       )
+      console.log('webhooks.used', 'decrypt', typeof webhook)
       await whenDefined(webhook, (base) =>
         fetch(base, {
           method: 'POST',
@@ -127,9 +129,16 @@ export const post: (opts: {
               description: beneifit.self.use.description,
             },
           }),
-        }).catch((err: Error) => {
-          console.log('webhooks.used', { err })
-        }),
+        })
+          .then(async (res) => {
+            console.log('webhooks.used', 'called', {
+              res,
+              body: await res.text().catch((err) => err),
+            })
+          })
+          .catch((err: Error) => {
+            console.log('webhooks.used', 'error', { err })
+          }),
       )
 
       return new Response(null, {
