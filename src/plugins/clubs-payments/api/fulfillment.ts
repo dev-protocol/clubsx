@@ -73,52 +73,62 @@ export const post: ({
     const verification$1: ErrorOr<RequestBody> = await request
       .json()
       .catch((err) => new Error(err))
-    console.log(1, verification$1)
+    console.log(1, { verification$1 })
+
+    // Check the status
+    const verification$2 = whenNotError(
+      verification$1,
+      ({ status, m_status }): ErrorOr<true> =>
+        status === 'success' && m_status === 'success'
+          ? true
+          : new Error('Transaction must be success'),
+    )
+    console.log(2, { verification$2 })
 
     // Step 2a - Convert all string arrays into comma separated values
-    const verification$2 = whenNotError(verification$1, (res) =>
+    const verification$3 = whenNotError(verification$1, (res) =>
       toPairs(res).map(([key, value]) => {
         const value_ = Array.isArray(value) ? value.join(',') : value
         return [key, value_] as [keyof RequestBody, RequestBody[typeof key]]
       }),
     )
-    console.log(2, verification$2)
+    console.log(3, { verification$3 })
 
     // Step 2b - Sort all the parameters in alphabetical order, skip the signature parameter
-    const verification$3 = whenNotError(verification$2, (res) =>
+    const verification$4 = whenNotError(verification$3, (res) =>
       res
         .filter(([key]) => key !== 'signature')
         .sort(([a], [b]) => (a > b ? 0 : -1)),
     )
-    console.log(3, verification$3)
+    console.log(4, { verification$4 })
 
     // Step 3 - Construct an input string using <parameter name>=<value> format
     // and appending the POP_SERVER_KEY preceded by ':'.
     // Use "true" or "false" string as value for boolean parameter(s).
-    const verification$4 = whenNotError(
-      verification$3,
+    const verification$5 = whenNotError(
+      verification$4,
       (res) =>
         `${res.reduce(
           (x, [k, v]) => `${x && `${x}&`}${k}=${v}`,
           '',
         )}:${POP_SERVER_KEY}`,
     )
-    console.log(4, '*** (SECRET)')
+    console.log(5, '*** (SECRET)')
 
     // Step 4 - Derive the signature using SHA512 hash function
-    const verification$5 = await whenNotError(verification$4, (res) =>
+    const verification$6 = await whenNotError(verification$5, (res) =>
       sha512(res),
     )
-    console.log(5, verification$5)
+    console.log(6, { verification$6 })
 
     const verify = whenNotErrorAll(
-      [verification$1, verification$5],
-      ([{ signature }, expected]) =>
-        signature === expected
+      [verification$1, verification$6, verification$2],
+      ([{ signature }, expected, veryfied]) =>
+        signature === expected && veryfied === true
           ? true
-          : new Error('Signature verification failed.'),
+          : new Error('Verification failed.'),
     )
-    console.log(6, verify)
+    console.log(7, { verify })
 
     const client = await whenNotError(
       createClient({
@@ -150,7 +160,7 @@ export const post: ({
         (err: Error) => new Error(err.message ?? err),
       )(p),
     )
-    console.log(7, params)
+    console.log(8, { params })
 
     const result$1 = await whenNotError(
       params,
@@ -180,7 +190,7 @@ export const post: ({
           },
         ).catch((err) => new Error(err)),
     )
-    console.log(8, result$1)
+    console.log(9, { result$1 })
 
     const result$2 = whenNotError(result$1, (res) =>
       res.ok ? true : new Error('Failed to send blockchain transaction.'),
@@ -200,7 +210,7 @@ export const post: ({
           (err: Error) => new Error(err.message ?? err),
         )(encryptedText),
     )
-    console.log(10, decryptedWebhookUrl)
+    console.log(10, { decryptedWebhookUrl })
 
     const final = await whenNotErrorAll(
       [result$2, params, reqBody, decryptedWebhookUrl],
@@ -219,7 +229,7 @@ export const post: ({
             : res,
         ),
     )
-    console.log(11, final)
+    console.log(11, { final })
 
     return final instanceof Error
       ? new Response(
