@@ -68,17 +68,34 @@ const FundsInfo = (props: {
 
     const url = `http://localhost:4321/api/user-status?address=${accountAddress}`
     const res = await fetch(url)
-      .then((res) => res.json())
-      .catch((err) => new Error(err))
-    console.log('Response', res)
 
-    // TODO: handle res and setKYCProcessingText accordingly.
+    if (res.ok) {
+      const jsonResponse = (await res.json()) as {
+        address?: string
+        status?: string
+      }[]
 
-    setKYCProcessingText('Verify')
+      // TODO: somehow figure out a way to use current item from the array.
+      // Currently for testing, I'm just fetching if kyc is approved.
+      const kycVerifiedResponse = jsonResponse?.filter(
+        (res) => res.status === 'Approved',
+      )
+      if (kycVerifiedResponse && kycVerifiedResponse.length > 0) {
+        setKYCProcessingText('Verified')
+        setKYCStatus(KYCStatuses.VERIFIED)
+      } else {
+        setKYCProcessingText('Verify')
+      }
+    } else {
+      setKYCProcessingText('Verify')
+    }
+
     setIsFetchingKYCStatus(false)
   }
 
   const initiateKYC = async () => {
+    if (KYCStatus === KYCStatuses.VERIFIED) return
+
     setIsFetchingIDVId(true)
     setKYCProcessingText('Initiating KYC process...')
 
