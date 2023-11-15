@@ -65,7 +65,7 @@ const fullPage = (path?.props.signals as undefined | string[])?.includes(
         </span>
         <span slot="clubs:connect-button">
           <Web3AuthButton
-            client:load
+            client:only="vue"
             chainId={decodedConfig.chainId}
             isDisabled={isInDraft}
           />
