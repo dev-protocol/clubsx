@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import { whenDefined } from '@devprotocol/util-ts'
+import { whenDefined, type UndefinedOr, isNotError } from '@devprotocol/util-ts'
 import { Web3Auth } from '@web3auth/modal'
-import type { Web3AuthOptions } from '@web3auth/modal'
+import type { Web3Auth as IWeb3Auth, Web3AuthOptions } from '@web3auth/modal'
+import type { IProvider, UserInfo } from '@web3auth/base'
 import { mainnet, polygon, polygonMumbai } from '@wagmi/core/chains'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
+import type { connection as Connection } from '@devprotocol/clubs-core/connection'
+import { BrowserProvider } from 'ethers'
+import Modal from '@components/Modal/Modal.vue'
 
 const {
   PUBLIC_WEB3AUTH_CLIENT_ID,
@@ -20,15 +24,21 @@ const props = defineProps<{
   redirectOnSignin?: boolean
 }>()
 
-const truncatedAddress = ref<string>()
+const account = ref<string>()
 const error = ref<Error>()
 const loaded = ref<boolean>()
-const truncateAddress = (address: string) => {
-  const match = address.match(
+const provider = ref<IProvider | null | undefined>()
+const showModal = ref(false)
+const userInfo = ref<Partial<UserInfo>>()
+let web3auth: UndefinedOr<IWeb3Auth>
+let connection: UndefinedOr<typeof Connection>
+
+const truncatedAddress = computed(() => {
+  const match = account.value?.match(
     /^(0x[a-zA-Z0-9]{4})[a-zA-Z0-9]+([a-zA-Z0-9]{4})$/,
   )
-  return !match ? address : `${match[1]}\u2026${match[2]}`
-}
+  return !match ? account.value : `${match[1]}\u2026${match[2]}`
+})
 const defaultChain =
   props.chainId === 137
     ? polygon
@@ -48,27 +58,41 @@ const chainConfig = {
   tickerName: defaultChain.name,
 } satisfies Web3AuthOptions['chainConfig']
 
-const web3auth = new Web3Auth({
-  clientId: PUBLIC_WEB3AUTH_CLIENT_ID,
-  web3AuthNetwork: PUBLIC_WEB3AUTH_NETWORK,
-  chainConfig,
-})
+const login = async () => {
+  provider.value = await web3auth?.connect()
+}
 
-await web3auth.initModal()
+const modal = async () => {
+  showModal.value = true
+  userInfo.value = await web3auth?.getUserInfo()
+}
+
+const logout = async () => {
+  await web3auth?.logout()
+  provider.value = null
+}
 
 onMounted(async () => {
+  web3auth = new Web3Auth({
+    clientId: PUBLIC_WEB3AUTH_CLIENT_ID,
+    web3AuthNetwork: PUBLIC_WEB3AUTH_NETWORK,
+    chainConfig,
+  })
+  await web3auth.initModal()
   loaded.value = true
-  const connectionPromise = import('@devprotocol/clubs-core/connection')
-  const { connection } = await connectionPromise
 
-  connection().account.subscribe((account) => {
-    if (account && props.redirectOnSignin) {
+  const connectionPromise = import('@devprotocol/clubs-core/connection')
+  const { connection: conn } = await connectionPromise
+  connection = conn
+
+  connection().account.subscribe((_account) => {
+    account.value = _account
+    if (_account && props.redirectOnSignin) {
       window.location.href = new URL(
-        `/user/${account}`,
+        `/user/${_account}`,
         window.location.origin,
       ).toString()
     }
-    truncatedAddress.value = whenDefined(account, (a) => truncateAddress(a))
   })
   connection().chain.subscribe((chain) => {
     error.value = whenDefined(chain, (chainId) =>
@@ -77,6 +101,22 @@ onMounted(async () => {
         : undefined,
     )
   })
+})
+
+watch(provider, async (prov) => {
+  console.log(prov)
+
+  const res =
+    (prov
+      ? await whenDefined(connection, (conn) =>
+          conn()
+            .setEip1193Provider(prov, BrowserProvider)
+            .then(() => true),
+        )
+      : whenDefined(connection, (conn) => conn().signer.next(undefined))) ??
+    new Error('clubs-core/connection not initialized yet')
+
+  error.value = isNotError(res) ? undefined : res
 })
 </script>
 
@@ -97,7 +137,7 @@ onMounted(async () => {
       v-bind:class="props.class"
       :disabled="props.isDisabled"
       :data-is-loading="!loaded"
-      @click="web3auth.connect()"
+      @click="provider ? modal() : login()"
     >
       {{
         truncatedAddress
@@ -108,4 +148,26 @@ onMounted(async () => {
       }}
     </button>
   </span>
+
+  <Teleport to="body">
+    <!-- use the modal component, pass in the prop -->
+    <modal :show="showModal" @close="showModal = false">
+      <template #body>
+        <div class="flex flex-col gap-5">
+          <p>
+            Address: <span>{{ account }}</span>
+          </p>
+          <p>
+            Verifier: <span>{{ userInfo?.verifier }}</span>
+          </p>
+          <button
+            class="hs-button is-filled is-large is-fullwidth"
+            @click="logout"
+          >
+            Disconnect
+          </button>
+        </div>
+      </template>
+    </modal>
+  </Teleport>
 </template>
