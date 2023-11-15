@@ -13,6 +13,7 @@ import { config as _config } from '@fixtures/config'
 import PageNotFound from '@pages/404.astro'
 import { plugins } from '@constants/plugins'
 import ConnectButton from '@components/Wallet/ConnectButton.vue'
+import Web3AuthButton from '@components/Wallet/Web3AuthButton.vue'
 import type { DraftOptions } from '@constants/draft'
 import PreviewBanner from '@components/PreviewBanner/PreviewBanner.astro'
 import Footer from '@components/Footer/Footer.astro'
@@ -57,6 +58,13 @@ const fullPage = (path?.props.signals as undefined | string[])?.includes(
       <Layout {...path.props}>
         <span slot="clubs:connect-button">
           <ConnectButton
+            client:load
+            chainId={decodedConfig.chainId}
+            isDisabled={isInDraft}
+          />
+        </span>
+        <span slot="clubs:connect-button">
+          <Web3AuthButton
             client:load
             chainId={decodedConfig.chainId}
             isDisabled={isInDraft}

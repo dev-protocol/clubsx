@@ -2,9 +2,14 @@
 import { whenDefined } from '@devprotocol/util-ts'
 import { Web3Auth } from '@web3auth/modal'
 import type { Web3AuthOptions } from '@web3auth/modal'
+import { mainnet, polygon, polygonMumbai } from '@wagmi/core/chains'
 import { onMounted, ref } from 'vue'
 
-const { PUBLIC_WEB3AUTH_CLIENT_ID, PUBLIC_WEB3AUTH_NETWORK } = import.meta.env
+const {
+  PUBLIC_WEB3AUTH_CLIENT_ID,
+  PUBLIC_WEB3AUTH_NETWORK,
+  PUBLIC_INFURA_KEY,
+} = import.meta.env
 
 const props = defineProps<{
   label?: string
@@ -24,14 +29,23 @@ const truncateAddress = (address: string) => {
   )
   return !match ? address : `${match[1]}\u2026${match[2]}`
 }
+const defaultChain =
+  props.chainId === 137
+    ? polygon
+    : props.chainId === 80001
+      ? polygonMumbai
+      : props.chainId === 1
+        ? mainnet
+        : polygon
+
 const chainConfig = {
   chainNamespace: 'eip155',
-  chainId: '0x89',
-  rpcTarget: 'https://rpc.ankr.com/polygon',
-  displayName: 'Polygon Mainnet',
-  blockExplorer: 'https://polygon.etherscan.io',
-  ticker: 'MATIC',
-  tickerName: 'Polygon',
+  chainId: `0x${defaultChain.id.toString(16)}`,
+  rpcTarget: `${defaultChain.rpcUrls.infura.http}/${PUBLIC_INFURA_KEY}`,
+  displayName: defaultChain.name,
+  blockExplorer: defaultChain.blockExplorers.default.url,
+  ticker: defaultChain.nativeCurrency.name,
+  tickerName: defaultChain.name,
 } satisfies Web3AuthOptions['chainConfig']
 
 const web3auth = new Web3Auth({
@@ -59,9 +73,7 @@ onMounted(async () => {
   connection().chain.subscribe((chain) => {
     error.value = whenDefined(chain, (chainId) =>
       props.chainId && chainId !== props.chainId // There might be a case where we don't have chainId in props (eg. signin, publish flow, etc)
-        ? new Error(
-            `Wrong chain: Please switch it to ${chainConfig.tickerName}`,
-          )
+        ? new Error(`Wrong chain: Please switch it to ${defaultChain.name}`)
         : undefined,
     )
   })
@@ -85,6 +97,7 @@ onMounted(async () => {
       v-bind:class="props.class"
       :disabled="props.isDisabled"
       :data-is-loading="!loaded"
+      @click="web3auth.connect()"
     >
       {{
         truncatedAddress
