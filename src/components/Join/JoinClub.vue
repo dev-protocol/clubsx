@@ -70,12 +70,12 @@ const { propertyAddress, tiers, tenantName, rpcUrl, preferedCurrency } =
   defineProps<{
     propertyAddress: string
     tiers: Tiers
-    tenantName: string
-    rpcUrl: string
-    preferedCurrency: 'dev' | 'eth'
+    tenantName?: string
+    rpcUrl?: string
+    preferedCurrency?: 'dev' | 'eth'
   }>()
 
-let currency: Data['currency'] = preferedCurrency
+let currency: Data['currency'] = preferedCurrency ?? 'dev'
 let composedTiers: Data['composedTiers'] = {
   dev: preferedCurrency === 'dev' ? [...tiers] : undefined,
   eth: preferedCurrency === 'eth' ? [...tiers] : undefined,
