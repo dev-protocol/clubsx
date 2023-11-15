@@ -40,8 +40,8 @@
   let membershipCustomFee100: number = membership.fee
     ? membership.fee.percentage * 100
     : membership.currency === 'DEV'
-    ? DEV_TOKEN_PAYMENT_TYPE_FEE * 100
-    : 0
+      ? DEV_TOKEN_PAYMENT_TYPE_FEE * 100
+      : 0
   let updatingMembershipsStatus: boolean = false
   let noOfPositions: number = 0
   let invalidPriceMsg: string = ''
