@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
+import { hashMessage, type Signer } from 'ethers'
+
 import NotVerifiedBannerImg from './assets/NotVerifiedBannerImg.svg'
 import IdentityVerificationBg from './assets/Identity-Verification.mp4'
 
@@ -13,8 +15,11 @@ const FundsInfo = (props: {
   chainId: number
   uniqueBeneficiaries: string[]
 }) => {
+  const [signer, setSigner] = useState<Signer>()
   const [connection, setConnection] = useState<any>(undefined)
-  const [currentAddress, setCurrentAddress] = useState<string>()
+  const [isFetchingIDVId, setIsFetchingIDVId] = useState<boolean>(false)
+  const [kycProcessingTxt, setKYCProcessingText] = useState<string>('Verify')
+  const [isFetchingKYCStatus, setIsFetchingKYCStatus] = useState<boolean>(true)
   const [KYCStatus, setKYCStatus] = useState<KYCStatuses>(
     KYCStatuses.NOT_VERIFIED,
   )
@@ -30,19 +35,105 @@ const FundsInfo = (props: {
 
   useEffect(() => {
     if (!connection) {
+      setSigner(undefined)
       return
     }
 
-    setCurrentAddress(connection.connection().account.getValue())
-    connection.connection().account.subscribe((a: string) => {
-      setCurrentAddress(a)
-    })
+    setSigner(connection.connection().signer.getValue())
+    const connectionSub = connection
+      .connection()
+      .signer.subscribe((s: Signer) => setSigner(s))
+    return () => connectionSub.unsubscribe() // Cleanup to remove pervious subscribers.
   }, [connection])
+
+  useEffect(() => {
+    if (!signer) {
+      setKYCStatus(KYCStatuses.NOT_VERIFIED)
+      return
+    }
+
+    fetchKYCStatus()
+  }, [signer])
+
+  const fetchKYCStatus = async () => {
+    setIsFetchingKYCStatus(true)
+    setKYCProcessingText('Fetching KYC status...')
+
+    const accountAddress = await signer?.getAddress()
+    if (!accountAddress) {
+      setIsFetchingKYCStatus(false)
+      setKYCProcessingText('Verify')
+      return
+    }
+
+    const url = `http://localhost:4321/api/user-status?address=${accountAddress}`
+    const res = await fetch(url)
+      .then((res) => res.json())
+      .catch((err) => new Error(err))
+    console.log('Response', res)
+
+    // TODO: handle res and setKYCProcessingText accordingly.
+
+    setKYCProcessingText('Verify')
+    setIsFetchingKYCStatus(false)
+  }
+
+  const initiateKYC = async () => {
+    setIsFetchingIDVId(true)
+    setKYCProcessingText('Initiating KYC process...')
+
+    if (!signer) {
+      setIsFetchingIDVId(false)
+      setKYCProcessingText('Failed, try again.')
+      return
+    }
+
+    const hash = hashMessage(`Verifying Clubs KYC`)
+    const signature = await signer
+      .signMessage(hash)
+      .catch((err: any) => new Error(err))
+    if (!signature || !hash || signature instanceof Error) {
+      setIsFetchingIDVId(false)
+      setKYCProcessingText('Failed, try again.')
+      return
+    }
+
+    const url = 'http://localhost:4321/api/createIDVId'
+    const headers = {
+      'Content-Type': 'application/json',
+    }
+    const body = JSON.stringify({
+      hash,
+      signature,
+    })
+
+    const res = await fetch(url, {
+      method: 'POST',
+      headers,
+      body: body,
+    })
+
+    if (res.ok) {
+      const jsonResponse = (await res.json()) as {
+        data: { id: string }
+        message: string
+      }
+      const idvId = jsonResponse?.data?.id
+
+      if (idvId) {
+        setKYCProcessingText('Complete KYC and return to this tab.')
+        window.open(
+          `${import.meta.env.PUBLIC_ONDATO_VERIFICATION_URL}/?id=${idvId}`,
+          '_blank',
+        )
+      }
+    }
+  }
 
   return (
     <>
       {/* <!------ Loggin/Connection status --------------> */}
-      {!currentAddress && (
+      {!signer && (
         <div className="mb-16 flex w-fit max-w-full items-center justify-center gap-5 rounded-md bg-dp-yellow-400 px-8 py-4">
           <svg
             width="20"
@@ -53,7 +144,7 @@ const FundsInfo = (props: {
           >
             <path
               d="M15.9825 16.725C15.2838 15.7999 14.3798 15.0496 13.3417 14.5334C12.3036 14.0171 11.1599 13.7489 10.0005 13.75C8.84115 13.7489 7.69739 14.0171 6.65932 14.5334C5.62125 15.0496 4.71724 15.7999 4.0185 16.725M15.9825 16.725C17.346 15.5122 18.3076 13.9136 18.7417 12.1411C19.1758 10.3686 19.0608 8.50609 18.412 6.80048C17.7632 5.09487 16.6112 3.62678 15.1089 2.5909C13.6066 1.55502 11.8248 1.00029 10 1.00029C8.17516 1.00029 6.39343 1.55502 4.89111 2.5909C3.38878 3.62678 2.23683 5.09487 1.58804 6.80048C0.939242 8.50609 0.824253 10.3686 1.25832 12.1411C1.69239 13.9136 2.655 15.5122 4.0185 16.725M15.9825 16.725C14.3365 18.1932 12.2061 19.0031 10.0005 19C7.79453 19.0034 5.66474 18.1934 4.0185 16.725M13.0005 7.75C13.0005 8.54565 12.6844 9.30871 12.1218 9.87132C11.5592 10.4339 10.7962 10.75 10.0005 10.75C9.20485 10.75 8.44179 10.4339 7.87918 9.87132C7.31657 9.30871 7.0005 8.54565 7.0005 7.75C7.0005 6.95435 7.31657 6.19129 7.87918 5.62868C8.44179 5.06607 9.20485 4.75 10.0005 4.75C10.7962 4.75 11.5592 5.06607 12.1218 5.62868C12.6844 6.19129 13.0005 6.95435 13.0005 7.75Z"
-              stroke={currentAddress ? 'white' : 'black'}
+              stroke={signer ? 'white' : 'black'}
               strokeWidth="1.5"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -95,8 +186,16 @@ const FundsInfo = (props: {
               <p className="w-fit font-body text-base font-bold text-dp-white-ink">
                 Not verified
               </p>
-              <button className="hs-button is-filled py-6 px-8 bg-dp-blue-grey-600 text-dp-blue-grey-ink">
-                Verify
+              <button
+                disabled={isFetchingKYCStatus || isFetchingIDVId}
+                onClick={initiateKYC}
+                className={`hs-button is-filled py-6 px-8 bg-dp-blue-grey-600 text-dp-blue-grey-ink ${
+                  isFetchingKYCStatus || isFetchingIDVId
+                    ? 'animate-pulse bg-dp-blue-grey-600'
+                    : ''
+                }`}
+              >
+                {kycProcessingTxt}
               </button>
             </div>
           </div>
