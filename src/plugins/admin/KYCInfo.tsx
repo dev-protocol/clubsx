@@ -126,7 +126,13 @@ const FundsInfo = (props: {
           `${import.meta.env.PUBLIC_ONDATO_VERIFICATION_URL}/?id=${idvId}`,
           '_blank',
         )
+      } else {
+        setKYCProcessingText('Failed, try again.')
+        setIsFetchingIDVId(false)
       }
+    } else {
+      setKYCProcessingText('Failed, try again.')
+      setIsFetchingIDVId(false)
     }
   }
 
