@@ -66,7 +66,7 @@ const FundsInfo = (props: {
       return
     }
 
-    const url = `http://localhost:4321/api/user-status?address=${accountAddress}`
+    const url = `https://kyc.clubs.place/api/user-status?address=${accountAddress}`
     const res = await fetch(url)
 
     if (res.ok) {
@@ -115,7 +115,7 @@ const FundsInfo = (props: {
       return
     }
 
-    const url = 'http://localhost:4321/api/createIDVId'
+    const url = 'https://kyc.clubs.place/api/createIDVId'
     const headers = {
       'Content-Type': 'application/json',
     }
