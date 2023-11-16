@@ -8,12 +8,12 @@ import {
   type ClubsFunctionFactoryOptions,
   type ClubsFunctionPageFactoryResult,
   type ClubsGetStaticPathsItem,
+  ClubsSlotName,
 } from '@devprotocol/clubs-core'
 import { config as _config } from '@fixtures/config'
 import PageNotFound from '@pages/404.astro'
 import { plugins } from '@constants/plugins'
 import ConnectButton from '@components/Wallet/ConnectButton.vue'
-import Web3AuthButton from '@components/Wallet/Web3AuthButton.vue'
 import type { DraftOptions } from '@constants/draft'
 import PreviewBanner from '@components/PreviewBanner/PreviewBanner.astro'
 import Footer from '@components/Footer/Footer.astro'
@@ -50,26 +50,29 @@ const isInDraft = Boolean(draftOptions?.isInDraft)
 const fullPage = (path?.props.signals as undefined | string[])?.includes(
   ClubsPluginSignal.DisplayFullPage,
 )
+
+const SlotsClubsConnectButton =
+  path?.props.clubs.slots.filter(
+    (slot) => slot.slot === ClubsSlotName.ConnectButton,
+  ) ?? []
 ---
 
 {
   path && Layout && Content ? (
     <>
       <Layout {...path.props}>
-        <span slot="clubs:connect-button">
-          <ConnectButton
-            client:load
-            chainId={decodedConfig.chainId}
-            isDisabled={isInDraft}
-          />
-        </span>
-        <span slot="clubs:connect-button">
-          <Web3AuthButton
-            client:only="vue"
-            chainId={decodedConfig.chainId}
-            isDisabled={isInDraft}
-          />
-        </span>
+        {SlotsClubsConnectButton.map((Slot) => (
+          <Slot.component {...Slot.props} slot="clubs:connect-button" />
+        ))}
+        {SlotsClubsConnectButton.length === 0 && (
+          <span slot="clubs:connect-button">
+            <ConnectButton
+              client:load
+              chainId={decodedConfig.chainId}
+              isDisabled={isInDraft}
+            />
+          </span>
+        )}
 
         <Content {...path.props} />
 

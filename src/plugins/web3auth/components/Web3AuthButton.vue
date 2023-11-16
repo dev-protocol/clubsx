@@ -7,22 +7,10 @@ import { mainnet, polygon, polygonMumbai } from '@wagmi/core/chains'
 import { computed, onMounted, ref, watch } from 'vue'
 import type { connection as Connection } from '@devprotocol/clubs-core/connection'
 import { BrowserProvider } from 'ethers'
-import Modal from '@components/Modal/Modal.vue'
+import Modal from './Modal.vue'
+import type { Web3AuthButtonOptions, Web3AuthButtonEnvs } from '../types'
 
-const {
-  PUBLIC_WEB3AUTH_CLIENT_ID,
-  PUBLIC_WEB3AUTH_NETWORK,
-  PUBLIC_INFURA_KEY,
-} = import.meta.env
-
-const props = defineProps<{
-  label?: string
-  class?: string
-  overrideClass?: string
-  chainId?: number
-  isDisabled?: boolean
-  redirectOnSignin?: boolean
-}>()
+const props = defineProps<Web3AuthButtonOptions & Web3AuthButtonEnvs>()
 
 const account = ref<string>()
 const error = ref<Error>()
@@ -51,7 +39,9 @@ const defaultChain =
 const chainConfig = {
   chainNamespace: 'eip155',
   chainId: `0x${defaultChain.id.toString(16)}`,
-  rpcTarget: `${defaultChain.rpcUrls.infura.http}/${PUBLIC_INFURA_KEY}`,
+  rpcTarget:
+    props.rpcUrl ??
+    `${defaultChain.rpcUrls.infura.http}/${props.web3authInfuraKey}`,
   displayName: defaultChain.name,
   blockExplorer: defaultChain.blockExplorers.default.url,
   ticker: defaultChain.nativeCurrency.name,
@@ -74,8 +64,8 @@ const logout = async () => {
 
 onMounted(async () => {
   web3auth = new Web3Auth({
-    clientId: PUBLIC_WEB3AUTH_CLIENT_ID,
-    web3AuthNetwork: PUBLIC_WEB3AUTH_NETWORK,
+    clientId: props.web3authClientId,
+    web3AuthNetwork: props.web3authNetwork,
     chainConfig,
   })
   await web3auth.initModal()
