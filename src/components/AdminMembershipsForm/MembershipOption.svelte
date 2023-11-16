@@ -111,8 +111,8 @@
       isImgDark === undefined
         ? 'animate-pulse'
         : isImgDark
-        ? 'text-white'
-        : 'text-black'
+          ? 'text-white'
+          : 'text-black'
     }`}
   >
     <img

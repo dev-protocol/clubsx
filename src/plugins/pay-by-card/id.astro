@@ -4,19 +4,21 @@ import IdPage from './Id'
 import type { CMValues } from '.'
 import { Checkout } from '@devprotocol/clubs-core/ui/components'
 import { replaceWithFwdHost } from '@fixtures/url'
+import type { ClubsPropsPages } from '@devprotocol/clubs-core'
 
-const { cm, product, rpcUrl, propertyAddress, ...other } = Astro.props as {
+type Props = ClubsPropsPages & {
   cm: CMValues
   product: Membership
   rpcUrl: string
   propertyAddress: string
 }
+const { cm, product, rpcUrl, propertyAddress, ...other } = Astro.props
 const url = new URL(replaceWithFwdHost(Astro.request))
 ---
 
 <Checkout
   amount={product.price}
-  destination={propertyAddress}
+  propertyAddress={propertyAddress}
   fiatCurrency="USD"
   rpcUrl={rpcUrl}
   payload={product.payload}

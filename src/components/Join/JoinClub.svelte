@@ -81,10 +81,10 @@
             src={currencyOption === 'usdc'
               ? USDC.src
               : currencyOption === 'matic'
-              ? MATIC.src
-              : currencyOption === 'eth'
-              ? ETH.src
-              : DEV.src}
+                ? MATIC.src
+                : currencyOption === 'eth'
+                  ? ETH.src
+                  : DEV.src}
             alt={currencyOption.toUpperCase()}
             class="h-8 w-8"
           />

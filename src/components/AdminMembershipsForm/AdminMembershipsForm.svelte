@@ -114,20 +114,20 @@
     i === 0
       ? 'lg:col-start-1'
       : i === 1
-      ? 'lg:col-start-2'
-      : i === 2
-      ? 'lg:col-start-3'
-      : i === 3
-      ? 'lg:col-start-4'
-      : i === 4
-      ? 'lg:col-start-5'
-      : i === 5
-      ? 'lg:col-start-6'
-      : i === 6
-      ? 'lg:col-start-7'
-      : i === 7
-      ? 'lg:col-start-8'
-      : 'lg:col-start-9'
+        ? 'lg:col-start-2'
+        : i === 2
+          ? 'lg:col-start-3'
+          : i === 3
+            ? 'lg:col-start-4'
+            : i === 4
+              ? 'lg:col-start-5'
+              : i === 5
+                ? 'lg:col-start-6'
+                : i === 6
+                  ? 'lg:col-start-7'
+                  : i === 7
+                    ? 'lg:col-start-8'
+                    : 'lg:col-start-9'
 
   onMount(() => {
     document.body.addEventListener(
@@ -185,7 +185,7 @@
         {#if presetExplanations[i].example}
           <div class={`flex flex-col gap-4 lg:row-start-5 ${getColStart(i)}`}>
             <a
-              class="flex gap-2 rounded-md shadow overflow-hidden items-center bg-dp-blue-grey-400 scale-90 hover:scale-100 transition duration-300 brightness-100 hover:brightness-110"
+              class="flex gap-2 rounded-md shadow overflow-hidden items-center bg-primary-400 scale-90 hover:scale-100 transition duration-300 brightness-100 hover:brightness-110"
               href={presetExplanations[i].example?.clubs}
               target="_blank"
               rel="noopener"
@@ -206,7 +206,7 @@
               </div>
               <div class="p-2 pl-10">
                 <span
-                  class="px-2 rounded bg-dp-white-600 text-dp-black-200 text-xs"
+                  class="px-2 rounded bg-dp-blue-grey-300 text-dp-blue-grey-ink dark:bg-dp-white-600 dark:text-dp-white-ink text-xs"
                   >Example</span
                 >
                 <p class="font-bold">

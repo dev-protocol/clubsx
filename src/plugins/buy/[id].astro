@@ -1,17 +1,19 @@
 ---
+import type { ClubsPropsPages } from '@devprotocol/clubs-core'
 import { Checkout } from '@devprotocol/clubs-core/ui/components'
 import type { Membership } from '@plugins/memberships'
 
-const { propertyAddress, product, rpcUrl, ...others } = Astro.props as {
+type Props = ClubsPropsPages & {
   propertyAddress: string
   product: Membership
   rpcUrl: string
 }
+const { propertyAddress, product, rpcUrl, ...others } = Astro.props
 ---
 
 <Checkout
   amount={product.price}
-  destination={propertyAddress}
+  propertyAddress={propertyAddress}
   currency={product.currency}
   feeBeneficiary={product.fee?.beneficiary}
   feePercentage={product.fee?.percentage}
