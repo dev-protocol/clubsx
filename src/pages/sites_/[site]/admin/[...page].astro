@@ -10,7 +10,6 @@ import {
   type ClubsGetStaticPathsItem,
 } from '@devprotocol/clubs-core'
 import { config as _config } from '@fixtures/config'
-import VercelAnalytics from '@components/Analytics/VercelAnalytics.astro'
 import PageNotFound from '@pages/404.astro'
 import admin from '@plugins/admin'
 import marketplace from '@plugins/marketplace'
@@ -152,7 +151,6 @@ const siteBaseUrl = new URL(replaceWithFwdHost(Astro.request)).origin
         </li>
 
         <Content {...path.props} />
-        <VercelAnalytics />
         <PreviewBanner
           inAdmin={true}
           config={config as ClubsConfiguration}
