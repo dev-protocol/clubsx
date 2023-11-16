@@ -11,7 +11,6 @@
 
 <div class="flex w-full justify-end">
   <button
-    type="button"
     on:click|preventDefault={() => open()}
     class={`hs-button is-large is-filled relative w-full ${
       ping && 'border-bright-cyan-600 bg-bright-cyan-400'

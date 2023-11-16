@@ -36,9 +36,8 @@
 
 <div class="flex w-full justify-end">
   <button
-    type="button"
     on:click|preventDefault={() => remove()}
-    class={`hs-button is-large is-filled is-error ${
+    class={`hs-button is-large is-filled is-error is-fullwidth ${
       removing ? 'animate-pulse bg-gray-500/60' : ''
     }`}
     disabled={removing}>Remove</button

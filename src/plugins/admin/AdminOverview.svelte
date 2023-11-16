@@ -242,7 +242,7 @@
       <div
         class="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100"
       >
-        <p class="bg-dp-blue-grey-600 rounded-md px-6 py-4">
+        <p class="bg-primary-400 rounded-md px-6 py-4">
           Charts will be available in future updates.
         </p>
       </div>

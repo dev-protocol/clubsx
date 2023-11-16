@@ -4,6 +4,7 @@ import type {
   ClubsNavigationLink,
   ClubsPluginMeta,
   ClubsPluginOptions,
+  ClubsPlugins,
   ClubsThemePluginMeta,
 } from '@devprotocol/clubs-core'
 import { v5 as uuidv5 } from 'uuid'
@@ -236,7 +237,7 @@ export const plugins = [
   $17,
   $18,
   PostsPlugin,
-]
+] satisfies ClubsPlugins
 
 export const paidBundledItems: PaidBundledItem[] = [
   {
