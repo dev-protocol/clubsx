@@ -58,7 +58,7 @@
     "@astrojs/netlify": "3.0.4",
     "@astrojs/prefetch": "0.4.1",
     "@astrojs/react": "3.0.5",
-    "@astrojs/svelte": "4.0.3",
+    "@astrojs/svelte": "4.0.4",
     "@astrojs/tailwind": "5.0.2",
     "@astrojs/vue": "3.0.4",
     "@crossmint/client-sdk-base": "^1.0.1-alpha.6",

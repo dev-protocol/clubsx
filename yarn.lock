@@ -136,12 +136,12 @@
     "@vitejs/plugin-react" "^4.0.4"
     ultrahtml "^1.3.0"
 
-"@astrojs/svelte@4.0.3":
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/@astrojs/svelte/-/svelte-4.0.3.tgz#77d5bc8c7d915aec1cfc31808194b986694ff3a7"
-  integrity sha512-3toH/mkNFqMdmnMXh4XcksZfuOAwWVXdRrISyoRgNn1HalG6WBACFT+RwxAwpH7eXW/zUfrpfyZdcxYnVucHTg==
+"@astrojs/svelte@4.0.4":
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/@astrojs/svelte/-/svelte-4.0.4.tgz#154f12c4305a2750acbdf26130e18555a3b6657b"
+  integrity sha512-7OIq3YWSq270TrJZhVNzGXB5+eCp1vyNS0+WcGixxtUSz8ciwO+PqZ6GIhvmEjbBPR0x0QS8t0p0B2qlKJu/EA==
   dependencies:
-    "@sveltejs/vite-plugin-svelte" "^2.4.5"
+    "@sveltejs/vite-plugin-svelte" "^2.5.2"
     svelte2tsx "^0.6.20"
 
 "@astrojs/tailwind@5.0.2":
@@ -2600,7 +2600,7 @@
   dependencies:
     debug "^4.3.4"
 
-"@sveltejs/vite-plugin-svelte@^2.4.5":
+"@sveltejs/vite-plugin-svelte@^2.5.2":
   version "2.5.2"
   resolved "https://registry.yarnpkg.com/@sveltejs/vite-plugin-svelte/-/vite-plugin-svelte-2.5.2.tgz#de9e9cab3d9614407788702514bc57258a3cac77"
   integrity sha512-Dfy0Rbl+IctOVfJvWGxrX/3m6vxPLH8o0x+8FA5QEyMUQMo4kGOVIojjryU7YomBAexOTAuYf1RT7809yDziaA==
