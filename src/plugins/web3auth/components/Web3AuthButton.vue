@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { whenDefined, type UndefinedOr, isNotError } from '@devprotocol/util-ts'
-import { Web3Auth } from '@web3auth/modal'
 import type { Web3Auth as IWeb3Auth, Web3AuthOptions } from '@web3auth/modal'
+import { Web3Auth } from '@web3auth/modal'
 import type { IProvider, UserInfo } from '@web3auth/base'
 import { mainnet, polygon, polygonMumbai } from '@wagmi/core/chains'
 import { computed, onMounted, ref, watch } from 'vue'
@@ -9,6 +9,7 @@ import type { connection as Connection } from '@devprotocol/clubs-core/connectio
 import { BrowserProvider } from 'ethers'
 import Modal from './Modal.vue'
 import type { Web3AuthButtonOptions, Web3AuthButtonEnvs } from '../types'
+import ClubsLogo from '../assets/clubs--color.svg'
 
 const props = defineProps<Web3AuthButtonOptions & Web3AuthButtonEnvs>()
 
@@ -54,12 +55,15 @@ const login = async () => {
 
 const modal = async () => {
   showModal.value = true
-  userInfo.value = await web3auth?.getUserInfo()
+  const info = await web3auth?.getUserInfo()
+  console.log({ info })
+  userInfo.value = info
 }
 
 const logout = async () => {
   await web3auth?.logout()
   provider.value = null
+  showModal.value = false
 }
 
 onMounted(async () => {
@@ -67,12 +71,18 @@ onMounted(async () => {
     clientId: props.web3authClientId,
     web3AuthNetwork: props.web3authNetwork,
     chainConfig,
+    uiConfig: {
+      appName: 'Clubs',
+      logoDark: ClubsLogo.src,
+      logoLight: ClubsLogo.src,
+    },
   })
   await web3auth.initModal()
   loaded.value = true
 
-  const connectionPromise = import('@devprotocol/clubs-core/connection')
-  const { connection: conn } = await connectionPromise
+  const [{ connection: conn }] = await Promise.all([
+    import('@devprotocol/clubs-core/connection'),
+  ])
   connection = conn
 
   connection().account.subscribe((_account) => {
@@ -94,18 +104,13 @@ onMounted(async () => {
 })
 
 watch(provider, async (prov) => {
-  console.log(prov)
-
-  const res =
-    (prov
-      ? await whenDefined(connection, (conn) =>
-          conn()
-            .setEip1193Provider(prov, BrowserProvider)
-            .then(() => true),
-        )
-      : whenDefined(connection, (conn) => conn().signer.next(undefined))) ??
-    new Error('clubs-core/connection not initialized yet')
-
+  const res = !connection
+    ? new Error('clubs-core/connection not initialized yet')
+    : prov
+      ? await connection()
+          .setEip1193Provider(prov, BrowserProvider)
+          .then(() => true)
+      : connection().signer.next(undefined)
   error.value = isNotError(res) ? undefined : res
 })
 </script>
@@ -139,25 +144,24 @@ watch(provider, async (prov) => {
     </button>
   </span>
 
-  <Teleport to="body">
-    <!-- use the modal component, pass in the prop -->
-    <modal :show="showModal" @close="showModal = false">
+  <Teleport to="body" :disabled="!loaded">
+    <Modal :show="showModal" @close="showModal = false">
       <template #body>
         <div class="flex flex-col gap-5">
-          <p>
-            Address: <span>{{ account }}</span>
-          </p>
-          <p>
-            Verifier: <span>{{ userInfo?.verifier }}</span>
-          </p>
-          <button
-            class="hs-button is-filled is-large is-fullwidth"
-            @click="logout"
-          >
+          <dl class="grid grid-cols-[auto,1fr] gap-2 gap-x-4">
+            <dt class="font-bold text-white">Address:</dt>
+            <dd class="break-all text-white/70">{{ account }}</dd>
+            <dt class="font-bold text-white">Verifier:</dt>
+            <dd class="text-white/70">{{ userInfo?.typeOfLogin }}</dd>
+            <dt class="font-bold text-white">ID:</dt>
+            <dd class="text-white/70">{{ userInfo?.verifierId }}</dd>
+          </dl>
+
+          <button class="hs-button is-filled is-fullwidth" @click="logout">
             Disconnect
           </button>
         </div>
       </template>
-    </modal>
+    </Modal>
   </Teleport>
 </template>

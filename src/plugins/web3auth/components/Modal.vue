@@ -7,17 +7,24 @@ const props = defineProps({
 <template>
   <Transition name="modal">
     <div
-      v-if="show"
-      class="modal-mask fixed top-0 left-0 w-full h-full flex bg-black/50"
+      v-if="props.show"
+      class="modal-mask fixed items-center top-0 left-0 w-full h-full flex bg-black/50"
+      @click="$emit('close')"
     >
-      <div class="modal-container mx-auto p-8 bg-black rounded-md w-80 shadow">
-        <div class="mx-5">
-          <slot name="body"></slot>
-        </div>
+      <div
+        class="modal-container mx-auto h-fit p-8 lg:px-14 bg-black rounded-2xl w-fit max-w-md shadow grid gap-6 border-x border-t border-dp-blue-grey-300"
+        @click.stop=""
+      >
+        <slot name="body"></slot>
 
         <div class="modal-footer">
           <slot name="footer">
-            <button class="float-right" @click="$emit('close')">Close</button>
+            <button
+              class="float-right hs-button is-outlined"
+              @click="$emit('close')"
+            >
+              Close
+            </button>
           </slot>
         </div>
       </div>
@@ -25,7 +32,7 @@ const props = defineProps({
   </Transition>
 </template>
 
-<style>
+<style scoped>
 .modal-mask {
   z-index: 9998;
   transition: opacity 0.3s ease;
@@ -54,7 +61,7 @@ const props = defineProps({
 
 .modal-enter-from .modal-container,
 .modal-leave-to .modal-container {
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
+  -webkit-transform: translateY(30px);
+  transform: translateY(30px);
 }
 </style>
