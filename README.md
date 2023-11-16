@@ -10,6 +10,14 @@ Start the app:
 
 ```bash
 yarn dev
+# http://[tenant.]localhost:3000
+```
+
+Start the app with a specific tenant name:
+
+```bash
+yarn dev --club my-club
+# http://localhost:3000 is hosted as same as http://my-club.localhost:3000
 ```
 
 ## setup env file
