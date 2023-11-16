@@ -587,6 +587,18 @@
     sass "1.69.4"
     uuid "^9.0.0"
 
+"@devprotocol/clubs-plugin-web3auth@0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-web3auth/-/clubs-plugin-web3auth-0.1.1.tgz#6d1c4cbaa3d82fbd7b71a885bbadc3709fb3e049"
+  integrity sha512-do3HWXpCqQoE0Z/a9DVxnfU7fQU4hEbAeVaL9U2bu9P03ET3QvpjGn7/wsWQMWAClaAB19oMGJko9zxSAGIdyA==
+  dependencies:
+    "@devprotocol/dev-kit" "8.6.0"
+    "@devprotocol/util-ts" "4.0.0"
+    "@wagmi/core" "^1.4.7"
+    "@web3auth/modal" "^7.1.1"
+    bignumber.js "9.1.2"
+    ramda "0.29.1"
+
 "@devprotocol/dev-kit@7.3.0":
   version "7.3.0"
   resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-7.3.0.tgz#4a009892ae75b9e440fea3640c073b3fc9759d81"
@@ -3554,7 +3566,7 @@
     abitype "0.8.7"
     eventemitter3 "^4.0.7"
 
-"@wagmi/core@^1.4.1":
+"@wagmi/core@^1.4.1", "@wagmi/core@^1.4.7":
   version "1.4.7"
   resolved "https://registry.yarnpkg.com/@wagmi/core/-/core-1.4.7.tgz#ac6b2a69929654a5e09480884c9fb6150968e866"
   integrity sha512-PiOIGni8ArQoPmuDylHX38zMt2nPnTYRIluIqiduKyGCM61X/tf10a0rafUMOOphDPudZu1TacNDhCSeoh/LEA==
