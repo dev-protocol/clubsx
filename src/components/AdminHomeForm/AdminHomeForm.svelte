@@ -134,7 +134,6 @@
             {:else}
               <button
                 class="hs-button is-filled"
-                type="button"
                 on:click={() => onUploadClick(`whatwedo-image-${i}`)}
                 >Choose Image</button
               >
@@ -161,10 +160,8 @@
           </div>
 
           {#if i === homeConfig.whatWeDo.images.length - 1}
-            <button
-              class="hs-button is-filled"
-              type="button"
-              on:click={addWhatWeDo}>Add image</button
+            <button class="hs-button is-filled" on:click={addWhatWeDo}
+              >Add image</button
             >
           {/if}
         </div>
@@ -209,7 +206,6 @@
               {:else}
                 <button
                   class="hs-button is-filled"
-                  type="button"
                   on:click={() => onUploadClick(`perk-image-${i}`)}
                   >Choose Image</button
                 >
@@ -237,10 +233,8 @@
           </div>
 
           {#if i === homeConfig.perks.images.length - 1}
-            <button
-              class="hs-button is-filled"
-              type="button"
-              on:click={addPerks}>Add image</button
+            <button class="hs-button is-filled" on:click={addPerks}
+              >Add image</button
             >
           {/if}
         {/each}
