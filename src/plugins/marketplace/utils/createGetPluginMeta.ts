@@ -14,9 +14,9 @@ export const createGetPluginMeta =
     const importedPlugin: ClubsFunctionPlugin = plugin.planned
       ? plugin.planned
       : has(plugin.id)
-      ? await modules[plugin.id]()
-      : // TODO: supports unexpected situation
-        (undefined as never)
+        ? await modules[plugin.id]()
+        : // TODO: supports unexpected situation
+          (undefined as never)
 
     return {
       ...importedPlugin.meta,

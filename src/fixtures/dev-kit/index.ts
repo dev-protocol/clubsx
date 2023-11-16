@@ -28,16 +28,16 @@ export const detectChain = async (ethersProvider?: BrowserProvider) => {
     chainId === 1
       ? 'ethereum'
       : chainId === 3
-      ? 'ropsten'
-      : chainId === 42161
-      ? 'arbitrum-one'
-      : chainId === 421611
-      ? 'arbitrum-rinkeby'
-      : chainId === 137
-      ? 'polygon'
-      : chainId === 80001
-      ? 'polygon-mumbai'
-      : undefined
+        ? 'ropsten'
+        : chainId === 42161
+          ? 'arbitrum-one'
+          : chainId === 421611
+            ? 'arbitrum-rinkeby'
+            : chainId === 137
+              ? 'polygon'
+              : chainId === 80001
+                ? 'polygon-mumbai'
+                : undefined
 
   return { chainId, name }
 }
