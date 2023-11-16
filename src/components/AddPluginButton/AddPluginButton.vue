@@ -109,8 +109,8 @@ onMounted(() => {
       isAddingPluginToClubs
         ? 'cursor-progress bg-dp-green-300'
         : isAdded || !connected
-          ? 'cursor-not-allowed bg-native-blue-200'
-          : 'cursor-pointer bg-dp-green-300'
+        ? 'cursor-not-allowed bg-native-blue-200'
+        : 'cursor-pointer bg-dp-green-300'
     "
   >
     <span

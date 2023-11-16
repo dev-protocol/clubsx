@@ -28,23 +28,23 @@
     chainId === 1
       ? 'Ethereum'
       : chainId === 137
-        ? 'Polygon'
-        : chainId === 80001
-          ? 'Polygon Mumbai'
-          : chainId === 42161
-            ? 'Arbitrum'
-            : '(Unsupported chain)'
+      ? 'Polygon'
+      : chainId === 80001
+      ? 'Polygon Mumbai'
+      : chainId === 42161
+      ? 'Arbitrum'
+      : '(Unsupported chain)'
 
   const explorerBase =
     chainId === 1
       ? 'https://etherscan.io'
       : chainId === 137
-        ? 'https://polygonscan.com'
-        : chainId === 80001
-          ? 'https://mumbai.polygonscan.com'
-          : chainId === 42161
-            ? 'https://arbiscan.io'
-            : undefined
+      ? 'https://polygonscan.com'
+      : chainId === 80001
+      ? 'https://mumbai.polygonscan.com'
+      : chainId === 42161
+      ? 'https://arbiscan.io'
+      : undefined
 
   const provider = new JsonRpcProvider(rpcUrl)
 
@@ -52,10 +52,10 @@
     slug === 'discord'
       ? 'https://discord.com/channels/'
       : slug === 'youtube'
-        ? 'https://www.youtube.com/channel/'
-        : slug === 'github'
-          ? 'https://github.com/'
-          : undefined
+      ? 'https://www.youtube.com/channel/'
+      : slug === 'github'
+      ? 'https://github.com/'
+      : undefined
 
   onMount(async () => {
     const [l1, l2] = await clientsProperty(provider, propertyAddress)
@@ -83,8 +83,8 @@
     const tl = await (l1
       ? l1.getPropertyValue(propertyAddress)
       : l2
-        ? l2.totalLockedForProperty(propertyAddress)
-        : undefined)
+      ? l2.totalLockedForProperty(propertyAddress)
+      : undefined)
     totalStaked = whenDefined(tl, (v) => formatEther(v).toString())
   })
 </script>

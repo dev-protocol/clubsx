@@ -75,12 +75,12 @@ export const oneUnitUpToDay = (dur: Duration): Duration => {
     dur.asDays() >= 1
       ? 'day'
       : dur.asHours() >= 1
-        ? 'hour'
-        : dur.asMinutes() >= 1
-          ? 'minute'
-          : dur.asSeconds() >= 1
-            ? 'second'
-            : 'millisecond',
+      ? 'hour'
+      : dur.asMinutes() >= 1
+      ? 'minute'
+      : dur.asSeconds() >= 1
+      ? 'second'
+      : 'millisecond',
   )
 }
 export const expirationDatetime = (
@@ -140,10 +140,10 @@ export const exploreSlots = ({
           : MAX // When it's expecting a starting time in the future but the date is in the past than the present
         : d
       : direction === 'past'
-        ? d.isBefore(_base) || d.isSame(_base)
-          ? d
-          : MIN // When it's expecting a ending time in the past but the date is in the future than the present
-        : d
+      ? d.isBefore(_base) || d.isSame(_base)
+        ? d
+        : MIN // When it's expecting a ending time in the past but the date is in the future than the present
+      : d
   }
 
   const hit = extendeddata.reduce((_prev, _current) => {

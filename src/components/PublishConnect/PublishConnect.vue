@@ -58,8 +58,8 @@ export default defineComponent({
             (!this.connection
               ? ' animate-pulse cursor-progress rounded bg-gray-500/60'
               : this.isAwaitingWalletConfirmation
-                ? ' animate-pulse'
-                : '')
+              ? ' animate-pulse'
+              : '')
     },
     buttonText() {
       return this.connectButtonTextMsg

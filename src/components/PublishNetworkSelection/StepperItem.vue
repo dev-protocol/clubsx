@@ -26,8 +26,8 @@ const { itemCompleted, isProcessing, isDisabled, step } = defineProps<{
         isDisabled
           ? 'text-[#3A4158]'
           : isProcessing
-            ? 'animate-pulse text-white'
-            : 'text-white'
+          ? 'animate-pulse text-white'
+          : 'text-white'
       "
     >
       {{ step }}

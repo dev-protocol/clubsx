@@ -72,8 +72,8 @@
   let membershipCustomFee100: number = membership.fee
     ? membership.fee.percentage * 100
     : membership.currency === 'DEV'
-      ? DEV_TOKEN_PAYMENT_TYPE_FEE * 100
-      : 0
+    ? DEV_TOKEN_PAYMENT_TYPE_FEE * 100
+    : 0
   let updatingMembershipsStatus: boolean = false
   let noOfPositions: number = 0
   let invalidPriceMsg: string = ''
@@ -533,20 +533,20 @@
     i === 0
       ? 'lg:col-start-1'
       : i === 1
-        ? 'lg:col-start-2'
-        : i === 2
-          ? 'lg:col-start-3'
-          : i === 3
-            ? 'lg:col-start-4'
-            : i === 4
-              ? 'lg:col-start-5'
-              : i === 5
-                ? 'lg:col-start-6'
-                : i === 6
-                  ? 'lg:col-start-7'
-                  : i === 7
-                    ? 'lg:col-start-8'
-                    : 'lg:col-start-9'
+      ? 'lg:col-start-2'
+      : i === 2
+      ? 'lg:col-start-3'
+      : i === 3
+      ? 'lg:col-start-4'
+      : i === 4
+      ? 'lg:col-start-5'
+      : i === 5
+      ? 'lg:col-start-6'
+      : i === 6
+      ? 'lg:col-start-7'
+      : i === 7
+      ? 'lg:col-start-8'
+      : 'lg:col-start-9'
 
   onMount(() => {
     onChangePrice(membership)

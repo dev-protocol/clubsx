@@ -114,20 +114,20 @@
     i === 0
       ? 'lg:col-start-1'
       : i === 1
-        ? 'lg:col-start-2'
-        : i === 2
-          ? 'lg:col-start-3'
-          : i === 3
-            ? 'lg:col-start-4'
-            : i === 4
-              ? 'lg:col-start-5'
-              : i === 5
-                ? 'lg:col-start-6'
-                : i === 6
-                  ? 'lg:col-start-7'
-                  : i === 7
-                    ? 'lg:col-start-8'
-                    : 'lg:col-start-9'
+      ? 'lg:col-start-2'
+      : i === 2
+      ? 'lg:col-start-3'
+      : i === 3
+      ? 'lg:col-start-4'
+      : i === 4
+      ? 'lg:col-start-5'
+      : i === 5
+      ? 'lg:col-start-6'
+      : i === 6
+      ? 'lg:col-start-7'
+      : i === 7
+      ? 'lg:col-start-8'
+      : 'lg:col-start-9'
 
   onMount(() => {
     document.body.addEventListener(

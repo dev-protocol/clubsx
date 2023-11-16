@@ -31,18 +31,18 @@ const populate = async (client) => {
               ],
             }
           : plugin.id === 'devprotocol:clubs:plugin:tickets'
-            ? {
-                ...plugin,
-                options: [
-                  {
-                    key: 'tickets',
-                    value: plugin.options
-                      .find((p) => p.key === 'tickets')
-                      .value.map((v) => ({ ...v, webhooks: undefined })),
-                  },
-                ],
-              }
-            : plugin,
+          ? {
+              ...plugin,
+              options: [
+                {
+                  key: 'tickets',
+                  value: plugin.options
+                    .find((p) => p.key === 'tickets')
+                    .value.map((v) => ({ ...v, webhooks: undefined })),
+                },
+              ],
+            }
+          : plugin,
       ),
     }),
   )

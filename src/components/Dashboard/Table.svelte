@@ -57,12 +57,12 @@
             {club.config.chainId === 1
               ? 'Ethereum'
               : club.config.chainId === 137
-                ? 'Polygon'
-                : club.config.chainId === 4
-                  ? 'Rinkeby'
-                  : club.config.chainId === 80001
-                    ? 'Mumbai'
-                    : 'Unknown'}
+              ? 'Polygon'
+              : club.config.chainId === 4
+              ? 'Rinkeby'
+              : club.config.chainId === 80001
+              ? 'Mumbai'
+              : 'Unknown'}
           </td>
           <td class="px-6 py-4">
             {statusOf(club)}

@@ -132,23 +132,23 @@ export const getSlots = (async (options, config, { paths, factory }) => {
         },
       ]
     : factory === 'admin' && path1 === 'gated-form'
-      ? [
-          {
-            slot: 'admin:aside:after-built-in-buttons',
-            component: AddNavigationLink,
-            props: {
-              forAddNavigationLink: {
-                config,
-                label: `Add 'Contact form' to the menu`,
-                link: {
-                  display: 'Contact form',
-                  path: '/message',
-                } as NavLink,
-              },
+    ? [
+        {
+          slot: 'admin:aside:after-built-in-buttons',
+          component: AddNavigationLink,
+          props: {
+            forAddNavigationLink: {
+              config,
+              label: `Add 'Contact form' to the menu`,
+              link: {
+                display: 'Contact form',
+                path: '/message',
+              } as NavLink,
             },
           },
-        ]
-      : []
+        },
+      ]
+    : []
 }) satisfies ClubsFunctionGetSlots
 
 export const meta = {

@@ -27,10 +27,10 @@
             !connected
               ? 'opacity-50'
               : networkSelected === ''
-                ? ''
-                : networkSelected === 'polygon'
-                  ? 'opacity-50'
-                  : ''
+              ? ''
+              : networkSelected === 'polygon'
+              ? 'opacity-50'
+              : ''
           "
           :disabled="
             !connected ||
@@ -54,10 +54,10 @@
             !connected
               ? 'opacity-50'
               : networkSelected === ''
-                ? ''
-                : networkSelected === 'arbitrum'
-                  ? 'opacity-50'
-                  : ''
+              ? ''
+              : networkSelected === 'arbitrum'
+              ? 'opacity-50'
+              : ''
           "
           title="Currently, Clubs is not supporting this chain"
           :disabled="
@@ -82,10 +82,10 @@
             !connected
               ? 'opacity-50'
               : networkSelected === ''
-                ? ''
-                : networkSelected === 'ethereum'
-                  ? 'opacity-50'
-                  : ''
+              ? ''
+              : networkSelected === 'ethereum'
+              ? 'opacity-50'
+              : ''
           "
           title="Currently, Clubs is not supporting this chain"
           :disabled="
@@ -112,10 +112,10 @@
             !connected
               ? 'opacity-50'
               : networkSelected === ''
-                ? ''
-                : networkSelected === 'polygon-mumbai'
-                  ? 'opacity-50'
-                  : ''
+              ? ''
+              : networkSelected === 'polygon-mumbai'
+              ? 'opacity-50'
+              : ''
           "
           :disabled="
             !connected ||
@@ -258,22 +258,22 @@
               ? openNiwa(link)
               : validateManuallyAddedProperty()
             : // check if memberships are initialized
-              !membershipInitialized
-              ? initializeMemberships()
-              : !membershipSet
-                ? setMemberships()
-                : updateConfig(true)
+            !membershipInitialized
+            ? initializeMemberships()
+            : !membershipSet
+            ? setMemberships()
+            : updateConfig(true)
         "
         class="hs-button is-filled is-large"
         v-bind:class="
           !step3Enabled
             ? 'opacity-50'
             : isTokenizing ||
-                initMbmershipTxnProcessing ||
-                setupMemberhipTxnProcessing ||
-                isRemovingDraftStatus
-              ? ' animate-pulse'
-              : ''
+              initMbmershipTxnProcessing ||
+              setupMemberhipTxnProcessing ||
+              isRemovingDraftStatus
+            ? ' animate-pulse'
+            : ''
         "
         :disabled="
           // Manually entering property address provided with invalid address
@@ -479,10 +479,10 @@ export default defineComponent({
         !this.networkSelected
         ? classes + ' opacity-50'
         : this.addressFromNiwaOrConfigIsValid &&
-            this.membershipInitialized &&
-            this.membershipSet
-          ? classes + ' line-through opacity-50'
-          : classes
+          this.membershipInitialized &&
+          this.membershipSet
+        ? classes + ' line-through opacity-50'
+        : classes
     },
     baseTokenizationLink() {
       return `https://niwa.xyz/tokenize/${this.category?.toLowerCase()}`
@@ -519,17 +519,17 @@ export default defineComponent({
       return !this.addressFromNiwaOrConfigIsValid
         ? this.tokenizingStatusMsg
         : !this.membershipInitialized
-          ? this.initMembershipTxnStatusMsg
-          : !this.membershipSet
-            ? this.setupMbmershipTxnStatusMsg
-            : this.removingDraftStatusMsg
+        ? this.initMembershipTxnStatusMsg
+        : !this.membershipSet
+        ? this.setupMbmershipTxnStatusMsg
+        : this.removingDraftStatusMsg
     },
     step3InterStepSubInfo() {
       return !this.addressFromNiwaOrConfigIsValid
         ? 'Activate your Club token.'
         : !this.membershipInitialized
-          ? 'Enable a memberships contract to use memberships.'
-          : 'Store your memberships to a contract.'
+        ? 'Enable a memberships contract to use memberships.'
+        : 'Store your memberships to a contract.'
     },
     async initMembershipStatus() {
       return (await this.getStep2CompletionStatusAndMessages())
@@ -638,28 +638,28 @@ export default defineComponent({
       return chainId === 1
         ? 'ethereum'
         : chainId === 137
-          ? 'polygon'
-          : chainId === 80001
-            ? 'polygon-mumbai'
-            : chainId === 42161
-              ? 'arbitrum'
-              : chainId === 80001
-                ? 'polygon-mumbai'
-                : ''
+        ? 'polygon'
+        : chainId === 80001
+        ? 'polygon-mumbai'
+        : chainId === 42161
+        ? 'arbitrum'
+        : chainId === 80001
+        ? 'polygon-mumbai'
+        : ''
     },
 
     getChainId() {
       return this.networkSelected === 'ethereum'
         ? 1
         : this.networkSelected === 'polygon'
-          ? 137
-          : this.networkSelected === 'polygon-mumbai'
-            ? 80001
-            : this.networkSelected === 'arbitrum'
-              ? 42161
-              : this.networkSelected === 'polygon-mumbai'
-                ? 80001
-                : null
+        ? 137
+        : this.networkSelected === 'polygon-mumbai'
+        ? 80001
+        : this.networkSelected === 'arbitrum'
+        ? 42161
+        : this.networkSelected === 'polygon-mumbai'
+        ? 80001
+        : null
     },
 
     getRpcUrl() {
@@ -667,12 +667,12 @@ export default defineComponent({
         this.networkSelected === 'ethereum'
           ? 'mainnet.infura.io'
           : this.networkSelected === 'polygon'
-            ? 'polygon-mainnet.infura.io'
-            : this.networkSelected === 'polygon-mumbai'
-              ? 'polygon-mumbai.infura.io'
-              : this.networkSelected === 'arbitrum'
-                ? 'arbitrum-mainnet.infura.io'
-                : 'mainnet.infura.io'
+          ? 'polygon-mainnet.infura.io'
+          : this.networkSelected === 'polygon-mumbai'
+          ? 'polygon-mumbai.infura.io'
+          : this.networkSelected === 'arbitrum'
+          ? 'arbitrum-mainnet.infura.io'
+          : 'mainnet.infura.io'
       }/v3/${import.meta.env.PUBLIC_INFURA_KEY}`
     },
 
