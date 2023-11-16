@@ -117,14 +117,14 @@
         updatingStatus === 'success'
           ? 'is-success'
           : updatingStatus === 'error'
-          ? 'is-error'
-          : ''
+            ? 'is-error'
+            : ''
       }`}
       >{updatingStatus === 'success'
         ? 'Saved'
         : updatingStatus === 'error'
-        ? 'Error'
-        : 'Save'}</button
+          ? 'Error'
+          : 'Save'}</button
     >
   {/if}
 </div>

@@ -31,8 +31,8 @@ export const validator = (config) => {
     return isRequiredEnvsAreSet && allTicketsHaveWebhook
       ? true
       : isRequiredEnvsAreSet
-      ? new Error('Tickets must be having webhook URL')
-      : new Error('CRYPTOCAFE_TICKET_WEBHOOK_KEY and SALT must be set')
+        ? new Error('Tickets must be having webhook URL')
+        : new Error('CRYPTOCAFE_TICKET_WEBHOOK_KEY and SALT must be set')
   })()
 
   return testForTicketsWebhook

@@ -34,10 +34,10 @@ const defaultChain =
   props.chainId === 137
     ? polygon
     : props.chainId === 80001
-    ? polygonMumbai
-    : props.chainId === 1
-    ? mainnet
-    : polygon
+      ? polygonMumbai
+      : props.chainId === 1
+        ? mainnet
+        : polygon
 const chains = [defaultChain]
 
 const wagmiConfig = defaultWagmiConfig({
@@ -103,8 +103,8 @@ onMounted(async () => {
         truncatedAddress
           ? truncatedAddress
           : props.label
-          ? props.label
-          : 'Connect'
+            ? props.label
+            : 'Connect'
       }}
     </button>
   </span>

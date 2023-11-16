@@ -183,8 +183,8 @@ export const factory =
     const inUse = expired
       ? false
       : history
-      ? isNowInAvailableSlot ?? refreshed === false
-      : false
+        ? isNowInAvailableSlot ?? refreshed === false
+        : false
 
     /**
      * will be a Dayjs object when not expired or it has history
@@ -193,8 +193,8 @@ export const factory =
       expired || !history
         ? undefined
         : isNowInAvailableSlot
-        ? slots.find.start.direction.past
-        : slots.find.start.direction.future
+          ? slots.find.start.direction.past
+          : slots.find.start.direction.future
 
     /**
      * will be a Dayjs object when not expired & now inUse
@@ -218,10 +218,10 @@ export const factory =
     const availableAtIfenabled = expired
       ? undefined
       : !history && !inUse
-      ? isNowInAvailableSlot
-        ? slots.find.start.direction.past
-        : slots.find.start.direction.future
-      : undefined
+        ? isNowInAvailableSlot
+          ? slots.find.start.direction.past
+          : slots.find.start.direction.future
+        : undefined
 
     /**
      * will be a Dayjs object when availableAtIfenabled exists
@@ -314,29 +314,29 @@ export const ticketStatus = async (
                 expirationIfenabled,
               }
             : expired === false &&
-              availableAt !== undefined &&
-              _self.inUse === false
-            ? // This is not used, so inherits dependency's *Ifenabled values
-              {
-                ..._self,
-                availableAtIfenabled: availableAt,
-                availableUntilIfenabled: availableUntil,
-                expirationIfenabled: expiration,
-              }
-            : expired === false &&
-              availableAt !== undefined &&
-              inUse === false &&
-              _self.inUse
-            ? // Dependency temporarily unavailable
-              {
-                ..._self,
-                expired,
-                inUse,
-                availableAt,
-                availableUntil,
-                expiration,
-              }
-            : _self
+                availableAt !== undefined &&
+                _self.inUse === false
+              ? // This is not used, so inherits dependency's *Ifenabled values
+                {
+                  ..._self,
+                  availableAtIfenabled: availableAt,
+                  availableUntilIfenabled: availableUntil,
+                  expirationIfenabled: expiration,
+                }
+              : expired === false &&
+                  availableAt !== undefined &&
+                  inUse === false &&
+                  _self.inUse
+                ? // Dependency temporarily unavailable
+                  {
+                    ..._self,
+                    expired,
+                    inUse,
+                    availableAt,
+                    availableUntil,
+                    expiration,
+                  }
+                : _self
         },
       ) ?? _self // If there is a dependency and its `expired` is true, it inherits the dependency's `expired`.
     const {
