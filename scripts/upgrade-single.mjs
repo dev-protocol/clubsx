@@ -4,7 +4,7 @@ import { decode, encode } from '@devprotocol/clubs-core'
 
 dotenv.config()
 
-const KEY = 'aggre-demo-std-2'
+const KEY = 'xxx'
 
 const upgrade = (config) => {
   const deocdedConfig = decode(config)
@@ -13,10 +13,6 @@ const upgrade = (config) => {
   /**
    * Write upgrading script here
    */
-  upgradedConfig.plugins = [
-    ...upgradedConfig.plugins,
-    { id: 'devprotocol:clubs:plugin:web3auth', options: [] },
-  ]
 
   return encode(upgradedConfig)
 }
