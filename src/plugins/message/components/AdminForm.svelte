@@ -135,7 +135,6 @@
         />
         <button
           on:click|preventDefault={(_) => encryptEmail()}
-          type="button"
           class="hs-button is-filled h-[initial] w-fit"
           >Encrypt this email</button
         >
@@ -148,7 +147,6 @@
         />
         <button
           class="hs-button is-filled h-[initial] w-fit"
-          type="button"
           on:click|preventDefault={(_) => decryptEmail()}
           >Decrypt this email</button
         >

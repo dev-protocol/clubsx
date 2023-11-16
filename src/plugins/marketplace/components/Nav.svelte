@@ -52,7 +52,7 @@
     {#each navs.filter((x) => !x.exists) as nav}
       <li>
         <span
-          class="inline-flex items-center gap-2 whitespace-nowrap break-keep rounded-full border border-surface-200 bg-surface-400 px-4 py-2 text-sm capitalize text-surface-200"
+          class="inline-flex items-center gap-2 whitespace-nowrap break-keep rounded-full border border-[var(--hs-theme-disabled)] bg-[var(--hs-theme-disabled)] px-4 py-2 text-sm capitalize text-[var(--hs-theme-disabled-ink)]"
         >
           {nav.tag}
           <svg

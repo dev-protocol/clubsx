@@ -122,8 +122,8 @@ const siteBaseUrl = new URL(replaceWithFwdHost(Astro.request)).origin
             class:list={[
               '-mx-3 flex items-center gap-2 rounded p-3 font-bold transition-colors duration-500',
               page?.startsWith('marketplace')
-                ? 'bg-surface-200'
-                : 'hover:bg-surface-200',
+                ? 'bg-[var(--hs-theme-disabled)]'
+                : 'hover:bg-[var(--hs-theme-disabled)]',
             ]}
             href="/admin/marketplace"
           >
@@ -138,8 +138,8 @@ const siteBaseUrl = new URL(replaceWithFwdHost(Astro.request)).origin
             class:list={[
               '-mx-3 flex items-center gap-2 rounded p-3 font-bold transition-colors duration-500',
               page?.startsWith('funds')
-                ? 'bg-surface-200'
-                : 'hover:bg-surface-200',
+                ? 'bg-[var(--hs-theme-disabled)]'
+                : 'hover:bg-[var(--hs-theme-disabled)]',
             ]}
             href="/admin/funds"
           >

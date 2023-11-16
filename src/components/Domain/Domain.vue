@@ -78,10 +78,10 @@ export default {
             fetching
               ? 'animate-pulse cursor-progress'
               : valid === true
-              ? 'bg-success-300'
-              : valid === false
-              ? 'bg-danger-300'
-              : ''
+                ? 'bg-success-300'
+                : valid === false
+                  ? 'bg-danger-300'
+                  : ''
           }`"
         >
           <label class="hs-form-field is-filled mb-0">

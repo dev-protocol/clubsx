@@ -1,8 +1,13 @@
 ---
+import type { CheckoutProps } from '@devprotocol/clubs-core/ui/components'
 import { Checkout } from '@devprotocol/clubs-core/ui/components'
+
+type Props = CheckoutProps
+
+const props = Astro.props
 ---
 
-<Checkout {...Astro.props}>
+<Checkout {...props}>
   <div slot="checkout:result:before:preview">
     <h3 class="text-2xl font-bold">Your membership is now ready</h3>
   </div>
