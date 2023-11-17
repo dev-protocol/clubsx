@@ -10,6 +10,8 @@ enum KYCStatuses {
   NOT_VERIFIED,
 }
 
+const kycClubsPlaceApi = 'http://localhost:4321'
+
 const FundsInfo = (props: {
   propertyAddress: string
   chainId: number
@@ -66,18 +68,35 @@ const FundsInfo = (props: {
       return
     }
 
-    const url = `https://kyc.clubs.place/api/user-status?address=${accountAddress}`
+    const url = `${kycClubsPlaceApi}/api/user-status?address=${accountAddress}`
     const res = await fetch(url)
+      .then(
+        (res) => {
+          if (res.ok) {
+            return res
+          }
+          throw new Error('Error ' + res.status + ': ' + res.statusText)
+        },
+        (err) => {
+          throw new Error(err.message)
+        },
+      )
+      .then((res) => res.json())
+      .then(
+        (res) =>
+          res as {
+            address?: string
+            status?: string
+          }[],
+      )
+      .catch((err) => {
+        setKYCProcessingText('Verify')
+      })
 
-    if (res.ok) {
-      const jsonResponse = (await res.json()) as {
-        address?: string
-        status?: string
-      }[]
-
+    if (!(res instanceof Error)) {
       // TODO: somehow figure out a way to use current item from the array.
       // Currently for testing, I'm just fetching if kyc is approved.
-      const kycVerifiedResponse = jsonResponse?.filter(
+      const kycVerifiedResponse = res?.filter(
         (res) => res.status === 'Approved',
       )
       if (kycVerifiedResponse && kycVerifiedResponse.length > 0) {
@@ -86,22 +105,26 @@ const FundsInfo = (props: {
       } else {
         setKYCProcessingText('Verify')
       }
-    } else {
-      setKYCProcessingText('Verify')
     }
 
     setIsFetchingKYCStatus(false)
   }
 
-  const initiateKYC = async () => {
-    if (KYCStatus === KYCStatuses.VERIFIED) return
+  const setKYCInitiationFailed = (text?: string) => {
+    setIsFetchingIDVId(false)
+    setKYCProcessingText(text || 'Failed, try again.') // TODO: replace with a user friendly feedback text.
+  }
 
+  const initiateKYC = async () => {
     setIsFetchingIDVId(true)
     setKYCProcessingText('Initiating KYC process...')
 
+    if (KYCStatus === KYCStatuses.VERIFIED) {
+      setKYCInitiationFailed('KYC already verified')
+      return
+    }
     if (!signer) {
-      setIsFetchingIDVId(false)
-      setKYCProcessingText('Failed, try again.')
+      setKYCInitiationFailed()
       return
     }
 
@@ -110,46 +133,57 @@ const FundsInfo = (props: {
       .signMessage(hash)
       .catch((err: any) => new Error(err))
     if (!signature || !hash || signature instanceof Error) {
-      setIsFetchingIDVId(false)
-      setKYCProcessingText('Failed, try again.')
+      setKYCInitiationFailed()
       return
     }
 
-    const url = 'https://kyc.clubs.place/api/createIDVId'
+    const url = `${kycClubsPlaceApi}/api/createIDVId`
     const headers = {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json;charset=UTF-8',
     }
     const body = JSON.stringify({
       hash,
       signature,
     })
-
     const res = await fetch(url, {
       method: 'POST',
       headers,
-      body: body,
+      body,
     })
+      .then(
+        (res) => {
+          if (res.ok) {
+            return res
+          }
+          throw new Error('Error ' + res.status + ': ' + res.statusText)
+        },
+        (err) => {
+          throw new Error(err.message)
+        },
+      )
+      .then((res) => res.json())
+      .then(
+        (res) =>
+          res as {
+            data: { id: string }
+            message: string
+          },
+      )
+      .catch((err) => {
+        setKYCInitiationFailed()
+      })
 
-    if (res.ok) {
-      const jsonResponse = (await res.json()) as {
-        data: { id: string }
-        message: string
-      }
-      const idvId = jsonResponse?.data?.id
-
-      if (idvId) {
-        setKYCProcessingText('Complete KYC and return to this tab.')
+    if (!(res instanceof Error)) {
+      if (res?.data?.id) {
+        setKYCProcessingText('KYC is in progress...')
         window.open(
-          `${import.meta.env.PUBLIC_ONDATO_VERIFICATION_URL}/?id=${idvId}`,
-          '_blank',
+          `${import.meta.env.PUBLIC_ONDATO_VERIFICATION_URL}/?id=${res?.data
+            ?.id}`,
+          '_self',
         )
       } else {
-        setKYCProcessingText('Failed, try again.')
-        setIsFetchingIDVId(false)
+        setKYCInitiationFailed()
       }
-    } else {
-      setKYCProcessingText('Failed, try again.')
-      setIsFetchingIDVId(false)
     }
   }
 
