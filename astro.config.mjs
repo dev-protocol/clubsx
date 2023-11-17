@@ -8,7 +8,6 @@ import vue from '@astrojs/vue'
 import react from '@astrojs/react'
 import svelte from '@astrojs/svelte'
 import commonjs from '@rollup/plugin-commonjs'
-import { nodePolyfills } from 'vite-plugin-node-polyfills'
 import builtInApiPaths from './built-in-api-paths'
 
 config()
@@ -62,7 +61,6 @@ export default defineConfig({
           return id.includes('qrcode')
         },
       }),
-      nodePolyfills(),
     ],
     server: {
       hmr: {
