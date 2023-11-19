@@ -3023,6 +3023,11 @@
   dependencies:
     server-only "^0.0.1"
 
+"@vercel/edge@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@vercel/edge/-/edge-1.1.1.tgz#9b2fc0081dfe95db8b4c3598275721b1ad85e43f"
+  integrity sha512-NtKiIbn9Cq6HWGy+qRudz28mz5nxfOJWls5Pnckjw1yCfSX8rhXdvY/il3Sy3Zd5n/sKCM2h7VSCCpJF/oaDrQ==
+
 "@vercel/nft@^0.23.1":
   version "0.23.1"
   resolved "https://registry.yarnpkg.com/@vercel/nft/-/nft-0.23.1.tgz#f17c5f9d3f3a0178ea25eb7397a14618c00529bf"

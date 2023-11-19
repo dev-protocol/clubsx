@@ -6,17 +6,17 @@ export const replaceWithFwdHost = (base: Request) => {
   const list = whenDefined(forwarded, (fwd) => fwd.split(';'))
   const regHeader = /^host=(.*)/i
   const regParam = /\/sites_\/([a-z|0-9|-]+)\/?/i
-  const hostHeader = whenDefined(list, (li) =>
+  const host = whenDefined(list, (li) =>
     li.find((val) => regHeader.test(val)),
   )?.replace(regHeader, '$1')
   const hostParam = regParam.test(url.href)
     ? `${url.href.match(regParam)?.[1]}.${url.host}`
     : undefined
-  console.log({ forwarded, host: hostHeader, 'base.url': base.url })
+  console.log({ forwarded, host, 'base.url': base.url })
   return url.href
     .replace(
       url.host,
-      url.host === hostHeader ? hostParam ?? url.host : hostHeader ?? url.host,
+      url.host === host ? hostParam ?? url.host : host ?? url.host,
     )
     .replace(regParam, '/')
 }
