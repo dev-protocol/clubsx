@@ -9,6 +9,7 @@ const action = async () => {
     import('./kougenji.mjs'),
     import('./temples.mjs'),
     import('./testing-for-dashboard-2.mjs'),
+    import('./tanadao.mjs'),
   ])
 
   await Promise.all(scripts.map((script) => script.default(client)))
