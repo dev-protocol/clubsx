@@ -78,7 +78,7 @@ const factory = async (client: Redis) => {
   }
 }
 
-export const POST = async () => {
+export const GET = async () => {
   const client = createClient({
     url: process.env.REDIS_URL,
     username: process.env.REDIS_USERNAME ?? '',
