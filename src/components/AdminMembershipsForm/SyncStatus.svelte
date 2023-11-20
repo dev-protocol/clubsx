@@ -198,7 +198,7 @@
   </p>
   <div class="relative max-h-96 overflow-y-auto rounded-md">
     <table
-      class="w-full max-w-5xl border-separate overflow-x-auto rounded-md border border-dp-blue-grey-200"
+      class="w-full max-w-5xl border-separate overflow-x-auto rounded-md border"
     >
       <thead>
         <tr class="grid grid-cols-[2fr,1fr,1fr]">
@@ -287,9 +287,7 @@
       </thead>
       <tbody>
         {#each statuses as status}
-          <tr
-            class="grid grid-cols-[2fr,1fr,1fr] border-b border-dp-blue-grey-200 last:border-0"
-          >
+          <tr class="grid grid-cols-[2fr,1fr,1fr] border-b last:border-0">
             <td class="flex items-center gap-2 p-2"
               ><img
                 class="h-10 w-10 rounded object-cover"
