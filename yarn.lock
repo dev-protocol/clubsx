@@ -556,10 +556,10 @@
     svelte "^3.49.0"
     vue "^3.2.0"
 
-"@devprotocol/clubs-core@2.3.3":
-  version "2.3.3"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-2.3.3.tgz#39f20c7276d14b814932cfa0292874a95319d983"
-  integrity sha512-cuv4gBjQ1QCicYZCOtIfh/DYoeaz5pNqfFV9Yf/DPiMK4AuxkUdln3ttqcQhfI81JDN2DrL64x/rcwAxxveMBw==
+"@devprotocol/clubs-core@2.3.4":
+  version "2.3.4"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-2.3.4.tgz#23274c3d4ace1824d7a206aa4c8434c257dc5cc5"
+  integrity sha512-lxyxyvbXjvb11bdSzDi6h9HqWuOVfdUbVfck/IC0MZ5B+OKXQ8Nzz0Id9CUGp0jB98AME2fFfDRn5/9E4dEjHg==
   dependencies:
     "@devprotocol/dev-kit" "8.6.0"
     "@devprotocol/elements" "1.1.0"
@@ -570,7 +570,7 @@
     dompurify "^3.0.6"
     js-base64 "^3.7.2"
     lit "^3.0.0"
-    marked "^9.1.2"
+    marked "^10.0.0"
     ramda "^0.29.0"
     rxjs "^7.8.1"
     web3modal "^1.9.12"
@@ -7989,7 +7989,7 @@ markdown-table@^3.0.0:
   resolved "https://registry.yarnpkg.com/markdown-table/-/markdown-table-3.0.3.tgz#e6331d30e493127e031dd385488b5bd326e4a6bd"
   integrity sha512-Z1NL3Tb1M9wH4XESsCDEksWoKTdlUafKc4pt0GRwjUyXaCFZ+dc3g2erqB6zm3szA2IUSi7VnPI+o/9jnxh9hw==
 
-marked@10.0.0:
+marked@10.0.0, marked@^10.0.0:
   version "10.0.0"
   resolved "https://registry.yarnpkg.com/marked/-/marked-10.0.0.tgz#7fe1805bb908433d760e2de0fcc8841a2b2d745c"
   integrity sha512-YiGcYcWj50YrwBgNzFoYhQ1hT6GmQbFG8SksnYJX1z4BXTHSOrz1GB5/Jm2yQvMg4nN1FHP4M6r03R10KrVUiA==
@@ -8003,11 +8003,6 @@ marked@^4.0.10:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/marked/-/marked-4.3.0.tgz#796362821b019f734054582038b116481b456cf3"
   integrity sha512-PRsaiG84bK+AMvxziE/lCFss8juXjNaWzVbN5tXAm4XjeaS9NAHhop+PjQxz2A9h8Q4M/xGmzP8vqNwy6JeK0A==
-
-marked@^9.1.2:
-  version "9.1.6"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-9.1.6.tgz#5d2a3f8180abfbc5d62e3258a38a1c19c0381695"
-  integrity sha512-jcByLnIFkd5gSXZmjNvS1TlmRhCXZjIzHYlaGkPlLIekG55JDR2Z4va9tZwCiP+/RDERiNhMOFu01xd6O5ct1Q==
 
 matcher@^5.0.0:
   version "5.0.0"
