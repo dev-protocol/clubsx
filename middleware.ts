@@ -15,7 +15,9 @@ const redirects = [
     host,
     matchers: [
       '/',
-      new RegExp('^/(plugins|dev-tokens|blog|post|pricing)(|/.*)$'),
+      new RegExp(
+        '^/(starter|ticketing|plugins|dev-tokens|blog|post|pricing)(|/.*)$',
+      ),
     ],
     destination: 'https://www.clubs.place',
   })),
@@ -57,32 +59,33 @@ export default function middleware(req: Request) {
 
   const hostnames = url.host.split('.') ?? []
   const [tenant] = hostnames
+  const api = url.pathname.startsWith('/api/')
   const html =
-    req.headers.get('accept')?.includes('text/html') ||
-    url.pathname
-      .split('/')
-      .slice(-1)
-      .every((p) => !/\..+$/.test(p))
+    !api &&
+    (req.headers.get('accept')?.includes('text/html') ||
+      url.pathname
+        .split('/')
+        .slice(-1)
+        .every((p) => !/\..+$/.test(p)))
   const bInApi = builtInApiPaths.some((p) => url.pathname.startsWith(p))
-  const pInApi = url.pathname.startsWith('/api/') && !bInApi
+  const pInApi = api && !bInApi
 
   const primaryHost =
     hosts.find((h) => url.host === h) ?? hosts.find((h) => url.host.endsWith(h))
 
-  if (bInApi && primaryHost && url.host !== primaryHost) {
-    const destination = new URL(url.href)
-    destination.host = primaryHost
-    return rewrite(destination, {
-      headers: { 'x-rewritten-url': destination.href },
-    })
-  }
-
   if ((html || pInApi) && primaryHost && url.host !== primaryHost) {
     const destination = new URL(url.href)
     destination.pathname = `/sites_/${tenant}${url.pathname}`
-    return rewrite(destination, {
-      headers: { 'x-rewritten-url': destination.href },
-    })
+    destination.host = primaryHost
+    console.log({ destination: destination.toString() })
+    return rewrite(destination)
+  }
+
+  if (primaryHost) {
+    const destination = new URL(url.href)
+    destination.host = primaryHost
+    console.log({ destination: destination.toString() })
+    return rewrite(destination)
   }
 
   return next()
