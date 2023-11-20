@@ -1,30 +1,8 @@
 <script lang="ts">
-  import type { DraftOptions } from '@constants/draft'
-  import type { ClubsConfiguration } from '@devprotocol/clubs-core'
-  import type { UndefinedOr } from '@devprotocol/util-ts'
-  import { detectStokensByPropertyAddress } from '@fixtures/dev-kit'
-  import { JsonRpcProvider } from 'ethers'
-  type TotalClubs = {
-    date: Date
-    config: ClubsConfiguration
-  }
+  import type { ClubWithStats } from '@pages/api/stats/types'
 
-  export let config: TotalClubs[]
-
-  const statusOf = (club: TotalClubs) =>
-    (
-      club.config.options?.find(
-        (option) => option.key === '__draft',
-      ) as UndefinedOr<DraftOptions>
-    )?.value.isInDraft
-      ? 'ℹ️'
-      : '✅'
-  const categoryOf = (club: TotalClubs) =>
-    (
-      club.config.options?.find(
-        (option) => option.key === '__draft',
-      ) as UndefinedOr<DraftOptions>
-    )?.value.category
+  export let config: ClubWithStats[]
+  const statusOf = (club: ClubWithStats) => (club.draft ? 'ℹ️' : '✅')
 </script>
 
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -36,8 +14,8 @@
         <th scope="col" class="px-6 py-3"> Clubs Name </th>
         <th scope="col" class="px-6 py-3"> Blockchain </th>
         <th scope="col" class="px-6 py-3"> Status </th>
-        <th scope="col" class="px-6 py-3"> Date </th>
-        <th scope="col" class="px-6 py-3"> Tokenised asset </th>
+        <!-- <th scope="col" class="px-6 py-3"> Date </th> -->
+        <!-- <th scope="col" class="px-6 py-3"> Tokenised asset </th> -->
         <th scope="col" class="px-6 py-3"> Members </th>
       </tr>
     </thead>
@@ -46,47 +24,40 @@
         <tr class="border-b bg-white dark:border-gray-700 dark:bg-gray-900">
           <td class="px-6 py-4">
             <a
-              href={club.config.url}
+              href={club.url}
               target="_blank"
               rel="noreferrer"
               class="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
-              >{club.config.name}</a
+              >{club.name}</a
             >
           </td>
           <td class="px-6 py-4">
-            {club.config.chainId === 1
+            {club.chainId === 1
               ? 'Ethereum'
-              : club.config.chainId === 137
-              ? 'Polygon'
-              : club.config.chainId === 4
-              ? 'Rinkeby'
-              : club.config.chainId === 80001
-              ? 'Mumbai'
-              : 'Unknown'}
+              : club.chainId === 137
+                ? 'Polygon'
+                : club.chainId === 4
+                  ? 'Rinkeby'
+                  : club.chainId === 80001
+                    ? 'Mumbai'
+                    : 'Unknown'}
           </td>
           <td class="px-6 py-4">
             {statusOf(club)}
           </td>
-          <td class="px-6 py-4">
+          <!-- <td class="px-6 py-4">
             {club.date?.toLocaleDateString('en-US', {
               year: 'numeric',
               month: 'long',
               day: 'numeric',
               timeZone: 'UTC',
             }) ?? 'Unknown'}
-          </td>
-          <td class="px-6 py-4">
+          </td> -->
+          <!-- <td class="px-6 py-4">
             {categoryOf(club)}
-          </td>
+          </td> -->
           <td class="px-6 py-4">
-            {#await detectStokensByPropertyAddress(new JsonRpcProvider(club.config.rpcUrl), club.config.propertyAddress)}
-              <span
-                class="block animate-pulse rounded bg-gray-500/60 text-5xl text-transparent"
-                >0</span
-              >
-            {:then members}
-              <span>{members?.length}</span>
-            {/await}
+            <span>{club.stats.members}</span>
           </td></tr
         >
       {/each}
