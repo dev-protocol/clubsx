@@ -1,51 +1,48 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import { decode } from '@devprotocol/clubs-core'
-  import type { DraftOptions } from '@constants/draft'
-  import type { ClubsConfiguration } from '@devprotocol/clubs-core'
   import Table from './Table.svelte'
-
-  type ClubsData = {
-    date: Date
-    config: ClubsConfiguration
-  }
+  import type { ClubWithStats, Stats } from '@pages/api/stats/types'
 
   let isLoading = true
-  let allClubs: ClubsData[] = []
-  let publishedClubs = 0
-  let uniqueCreators = 0
+  let lastUpdate: Date
+  let allClubs: ClubWithStats[] = []
+  // let publishedClubs = 0
+  // let uniqueCreators = 0
 
   const fetchTotalClubs = async () => {
     try {
-      const [acReq, ucRep] = await Promise.allSettled([
-        fetch('/api/stats?allClubs', { method: 'POST' }),
-        fetch('/api/stats?uniqueCreators', { method: 'POST' }),
+      const [acReq] = await Promise.allSettled([
+        fetch('/api/stats/allClubs'),
+        // fetch('/api/stats?uniqueCreators', { method: 'POST' }),
       ])
 
       if (!acReq || acReq.status !== 'fulfilled' || !acReq.value.ok) {
         throw new Error('Failed to fetch clubs data')
       }
-      if (!ucRep || ucRep.status !== 'fulfilled' || !ucRep.value.ok) {
-        throw new Error('Failed to fetch unique creators data')
-      }
+      // if (!ucRep || ucRep.status !== 'fulfilled' || !ucRep.value.ok) {
+      //   throw new Error('Failed to fetch unique creators data')
+      // }
 
-      const allclubs = await acReq.value.json()
-      uniqueCreators = await ucRep.value
-        .json()
-        .then((res) => res.uniqueCreators)
+      const stats = (await acReq.value.json()) as { data: Stats }
+      console.log({ stats })
+      allClubs = stats.data.clubs
+      lastUpdate = new Date(stats.data.lastUpdate)
+      // uniqueCreators = await ucRep.value
+      //   .json()
+      //   .then((res) => res.uniqueCreators)
 
-      for (const club of allclubs) {
-        const { date, config } = club
-        const decoded = decode(config)
-        const isDraft = decoded.options?.find(
-          (option: { key: string }) => option.key === '__draft',
-        ) as DraftOptions | undefined
-        if (!isDraft?.value.isInDraft) {
-          publishedClubs++
-        }
-        allClubs.push({ date: new Date(date), config: decoded })
-      }
-      allClubs.sort((a, b) => b.date.getTime() - a.date.getTime())
+      // for (const club of allclubs) {
+      //   const { date, config } = club
+      //   const decoded = decode(config)
+      //   const isDraft = decoded.options?.find(
+      //     (option: { key: string }) => option.key === '__draft',
+      //   ) as DraftOptions | undefined
+      //   if (!isDraft?.value.isInDraft) {
+      //     publishedClubs++
+      //   }
+      //   allClubs.push({ date: new Date(date), config: decoded })
+      // }
+      // allClubs.sort((a, b) => b.date.getTime() - a.date.getTime())
       // uncomment while debugging
       // console.log(allClubs)
     } catch (error) {
@@ -89,6 +86,9 @@
         🔥 Total Clubs Created: {allClubs.length}
       </p>
       <p class="text-xl text-gray-600 dark:text-gray-400">
+        Last update: {lastUpdate.toLocaleString()}
+      </p>
+      <!-- <p class="text-xl text-gray-600 dark:text-gray-400">
         🖼️ Unique Creators: {uniqueCreators}
       </p>
       <p class="text-lg text-gray-600 dark:text-gray-400">
@@ -96,7 +96,7 @@
       </p>
       <p class="text-base text-gray-600 dark:text-gray-400">
         ℹ️ In Draft: {allClubs.length - publishedClubs}
-      </p>
+      </p> -->
     </div>
     <div class="w-3/4 items-center justify-center py-8">
       <Table config={[...allClubs]} />
