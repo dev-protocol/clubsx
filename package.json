@@ -27,7 +27,7 @@
     "@types/marked": "^5.0.1",
     "@types/node": "^20.5.9",
     "@types/ramda": "0.29.9",
-    "@types/react": "18.2.37",
+    "@types/react": "18.2.38",
     "@types/three": "0.158.2",
     "@types/uuid": "^9.0.3",
     "ava": "^5.3.1",
