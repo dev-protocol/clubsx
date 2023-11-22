@@ -10,7 +10,7 @@ enum KYCStatuses {
   NOT_VERIFIED,
 }
 
-const kycClubsPlaceApi = 'http://localhost:4321'
+const kycClubsPlaceApi = 'https://kyc.clubs.place'
 
 const FundsInfo = (props: {
   propertyAddress: string
