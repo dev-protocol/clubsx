@@ -95,7 +95,10 @@ const FundsInfo = (props: {
       })
 
     if (!(res instanceof Error)) {
-      const statusText = res?.data?.status || 'Unverified'
+      const statusText =
+        res?.data?.status && res?.data?.status !== 'Unverified'
+          ? res?.data?.status
+          : 'Verify'
       const statusType =
         statusText === 'Approved' || statusText === 'Completed'
           ? KYCStatuses.VERIFIED
