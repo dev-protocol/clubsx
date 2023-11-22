@@ -85,26 +85,23 @@ const FundsInfo = (props: {
       .then(
         (res) =>
           res as {
-            address?: string
-            status?: string
-          }[],
+            data?: {
+              status?: string
+            }
+          },
       )
       .catch((err) => {
         setKYCProcessingText('Verify')
       })
 
     if (!(res instanceof Error)) {
-      // TODO: somehow figure out a way to use current item from the array.
-      // Currently for testing, I'm just fetching if kyc is approved.
-      const kycVerifiedResponse = res?.filter(
-        (res) => res.status === 'Approved',
-      )
-      if (kycVerifiedResponse && kycVerifiedResponse.length > 0) {
-        setKYCProcessingText('Verified')
-        setKYCStatus(KYCStatuses.VERIFIED)
-      } else {
-        setKYCProcessingText('Verify')
-      }
+      const statusText = res?.data?.status || 'Unverified'
+      const statusType =
+        statusText === 'Approved' || statusText === 'Completed'
+          ? KYCStatuses.VERIFIED
+          : KYCStatuses.NOT_VERIFIED
+      setKYCProcessingText(statusText)
+      setKYCStatus(statusType)
     }
 
     setIsFetchingKYCStatus(false)
