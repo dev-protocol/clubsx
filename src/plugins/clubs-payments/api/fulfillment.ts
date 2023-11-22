@@ -3,6 +3,7 @@ import {
   type ErrorOr,
   whenNotErrorAll,
   whenDefined,
+  isNotError,
 } from '@devprotocol/util-ts'
 import type { APIRoute } from 'astro'
 import fetch from 'cross-fetch'
@@ -162,6 +163,10 @@ export const post: ({
     )
     console.log(8, { params })
 
+    const orderId = isNotError(verification$1)
+      ? verification$1.order_id
+      : 'clubs-payments'
+
     const result$1 = await whenNotError(
       params,
       ([to, property, payload, token, input, gatewayAddress, fee]) =>
@@ -173,6 +178,7 @@ export const post: ({
               Authorization: `Bearer ${SEND_DEVPROTOCOL_API_KEY}`,
             },
             body: JSON.stringify({
+              requestId: orderId,
               rpcUrl,
               chainId,
               args: {
