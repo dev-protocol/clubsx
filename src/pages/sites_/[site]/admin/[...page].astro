@@ -22,6 +22,7 @@ import ConnectButton from '@components/Wallet/ConnectButton.vue'
 import PreviewBanner from '@components/PreviewBanner/PreviewBanner.astro'
 import { replaceWithFwdHost } from '@fixtures/url'
 import type { InferGetStaticPropsType } from 'astro'
+import Clarity from '@components/Clarity/Clarity.astro'
 
 const { site, page } = Astro.params
 
@@ -158,6 +159,7 @@ const siteBaseUrl = new URL(replaceWithFwdHost(Astro.request)).origin
           config={config as ClubsConfiguration}
           slot={ClubsSlotName.AdminBodyAfterContents}
         />
+        <Clarity />
       </Admin>
     </>
   ) : (
