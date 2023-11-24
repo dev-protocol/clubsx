@@ -20,6 +20,22 @@ import Preview1 from './assets/default-theme-1.jpg'
 import Preview2 from './assets/default-theme-2.jpg'
 import Preview3 from './assets/default-theme-3.jpg'
 
+const _surfaceColors = {
+  dark: {},
+  light: {}
+}
+
+const _disabledColors = {
+  black: {
+    bg: 'rgba(0, 0, 0, 0.12)',
+    ink: 'rgba(0, 0, 0, 0.37)'
+  },
+  white: {
+    bg: 'rgba(255, 255, 255, 0.12)',
+    ink: 'rgba(255, 255, 255, 0.37)'
+  },
+}
+
 export const colorPresets = {
   Purple: {
     bg: 'rgba(131, 138, 176, 1)',
@@ -56,11 +72,14 @@ export const colorPresets = {
   Blue: {
     bg: 'rgba(91, 139, 245, 1)',
     ink: 'rgba(255, 255, 255)',
+
   },
   Orange: {
     bg: 'rgba(255, 131, 83, 1)',
     backgroundGradient: ['rgba(249, 192, 82, 1)', 'rgba(249, 192, 82, 0)'],
     ink: 'rgba(255, 255, 255)',
+    disabledBg: _disabledColors.black.bg,
+    disabledInk: _disabledColors.black.ink,
   },
 }
 
@@ -68,6 +87,9 @@ export type GlobalConfigValue = {
   bg?: string
   backgroundGradient?: [string, string]
   ink?: string
+  themeMode?: 'dark' | 'light'
+  disabledBg?: string,
+  disabledInk?: string,
 }
 
 export type HomeConfigValue = {
