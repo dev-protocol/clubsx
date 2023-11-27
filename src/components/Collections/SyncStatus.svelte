@@ -250,7 +250,7 @@
     Memberships just created are not yet published on the blockchain. Submit all
     transactions to start offering memberships.
   </p>
-  <div class="max-h-96 overflow-y-auto rounded-md">
+  <div class="relative max-h-96 overflow-y-auto rounded-md">
     <table
       class="w-full max-w-5xl border-separate overflow-x-auto rounded-md border border-dp-blue-grey-200"
     >
@@ -265,7 +265,9 @@
               </span>
             {:then value}
               <button
-                class="hs-button is-outlined is-small"
+                class={`hs-button is-small ${
+                  value.length > 0 ? 'is-filled is-plox' : 'is-outlined'
+                }`}
                 disabled={value.length < 1}
                 on:click={onClickSyncDescriptor}
                 >{value.length > 0 ? 'Send' : 'Completed'}</button
@@ -303,7 +305,9 @@
               </span>
             {:then value}
               <button
-                class="hs-button is-outlined is-small"
+                class={`hs-button is-small ${
+                  value.length > 0 ? 'is-filled is-plox' : 'is-outlined'
+                }`}
                 disabled={value.length < 1}
                 on:click={onClickSyncImages}
                 >{value.length > 0 ? 'Send' : 'Completed'}</button
@@ -365,7 +369,7 @@
                       d="M4.5 12.75l6 6 9-13.5"
                     />
                   </svg>
-                {:else}<span class="text-sm text-dp-red-300">●</span
+                {:else}<span class="text-sm text-plox-300">●</span
                   >{/if}{/await}</td
             >
             <td class="flex items-center justify-center p-2"
@@ -386,12 +390,24 @@
                       d="M4.5 12.75l6 6 9-13.5"
                     />
                   </svg>
-                {:else}<span class="text-sm text-dp-red-300">●</span
+                {:else}<span class="text-sm text-plox-300">●</span
                   >{/if}{/await}</td
             >
           </tr>
         {/each}
       </tbody>
     </table>
+    {#await Promise.all([listOfoutOfSyncDescriptors, listOfoutOfSyncImages])}
+      <div
+        role="presentation"
+        class="absolute inset-0 flex flex-col gap-5 justify-center justify-items-center items-center bg-[#222b3d80] backdrop-blur-sm"
+      >
+        <div
+          class="h-40 w-40 animate-spin rounded-full border-4 border-l border-r border-t border-native-blue-300"
+        />
+        <p class="font-bold">⌛ Loading memberships</p>
+      </div>
+    {/await}
   </div>
 </section>
+
