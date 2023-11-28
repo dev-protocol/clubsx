@@ -7,6 +7,7 @@ import IdentityVerificationBg from './assets/Identity-Verification.mp4'
 
 enum KYCStatuses {
   VERIFIED,
+  IN_PROCESS,
   NOT_VERIFIED,
 }
 
@@ -93,16 +94,21 @@ const FundsInfo = (props: {
       })
 
     if (!(res instanceof Error)) {
-      const statusText =
-        res?.data?.status && res?.data?.status !== 'Unverified'
-          ? res?.data?.status
-          : 'Verify'
-      const statusType =
-        statusText === 'Approved' || statusText === 'Completed'
-          ? KYCStatuses.VERIFIED
-          : KYCStatuses.NOT_VERIFIED
+      const statusInDB = res?.data?.status?.toLowerCase()
+      const [statusText, status] =
+        statusInDB === 'rejected'
+          ? ['KYC rejected, try again', KYCStatuses.NOT_VERIFIED]
+          : statusInDB === 'approved'
+            ? ['Verified', KYCStatuses.VERIFIED]
+            : statusInDB === 'processed' || statusInDb === 'completed'
+              ? [
+                  'KYC in process, please wait for update',
+                  KYCStatuses.IN_PROCESS,
+                ]
+              : ['Verify', KYCStatuses.NOT_VERIFIED]
+
       setKYCProcessingText(statusText)
-      setKYCStatus(statusType)
+      setKYCStatus(status)
     }
 
     setIsFetchingKYCStatus(false)
@@ -121,6 +127,11 @@ const FundsInfo = (props: {
       setKYCInitiationFailed('KYC already verified')
       return
     }
+    if (KYCStatus === KYCStatuses.IN_PROCESS) {
+      setKYCInitiationFailed('KYC in process, please wait for updates')
+      return
+    }
+
     if (!signer) {
       setKYCInitiationFailed()
       return
@@ -242,7 +253,11 @@ const FundsInfo = (props: {
                 Not verified
               </p>
               <button
-                disabled={isFetchingKYCStatus || isFetchingIDVId}
+                disabled={
+                  isFetchingKYCStatus ||
+                  isFetchingIDVId ||
+                  KYCStatus === KYCStatuses.IN_PROCESS
+                }
                 onClick={initiateKYC}
                 className={`hs-button is-filled py-6 px-8 bg-dp-blue-grey-600 text-dp-blue-grey-ink ${
                   isFetchingKYCStatus || isFetchingIDVId
