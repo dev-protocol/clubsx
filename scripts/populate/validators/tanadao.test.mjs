@@ -1,8 +1,8 @@
-import test from 'ava'
+import { expect, it } from 'vitest'
 import { validator } from './tanadao.mjs'
 import { override } from '../constants/tanadao.mjs'
 
-test('validator returns true when the config has correct values', (t) => {
+it('validator returns true when the config has correct values', () => {
   const expectedOptions = [
     {
       key: 'override',
@@ -19,10 +19,10 @@ test('validator returns true when the config has correct values', (t) => {
     ],
   })
 
-  t.is(res, true)
+  expect(res).toBe(true)
 })
 
-test('validator returns error when the config has not correct values', (t) => {
+it('validator returns error when the config has not correct values', () => {
   const res = validator({
     plugins: [
       {
@@ -37,12 +37,11 @@ test('validator returns error when the config has not correct values', (t) => {
     ],
   })
 
-  t.deepEqual(
-    res,
+  expect(res).toEqual(
     new Error('Clubs Payments options does not have the expected options.'),
   )
 })
 
-test.todo(
+it.skip(
   'encodeIfValid is a function that returned by validatorFactory encapsulate validator',
 )
