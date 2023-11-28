@@ -168,9 +168,9 @@ export const post: ({
       ? verification$1.order_id
       : 'clubs-payments'
 
-    const result$1 = await whenNotError(
-      params,
-      ([to, property, payload, token, input, gatewayAddress, fee]) =>
+    const result$1 = await whenNotErrorAll(
+      [params, verify],
+      ([[to, property, payload, token, input, gatewayAddress, fee]]) =>
         fetch(
           'https://send.devprotocol.xyz/api/send-transactions/SwapTokensAndStakeDev',
           {
