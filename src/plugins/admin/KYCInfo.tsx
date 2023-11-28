@@ -10,8 +10,6 @@ enum KYCStatuses {
   NOT_VERIFIED,
 }
 
-const kycClubsPlaceApi = 'https://kyc.clubs.place'
-
 const FundsInfo = (props: {
   propertyAddress: string
   chainId: number
@@ -68,7 +66,7 @@ const FundsInfo = (props: {
       return
     }
 
-    const url = `${kycClubsPlaceApi}/api/user-status?address=${accountAddress}`
+    const url = `https://kyc.clubs.place/api/user-status?address=${accountAddress}`
     const res = await fetch(url)
       .then(
         (res) => {
@@ -137,7 +135,7 @@ const FundsInfo = (props: {
       return
     }
 
-    const url = `${kycClubsPlaceApi}/api/createIDVId`
+    const url = `https://kyc.clubs.place/api/createIDVId`
     const headers = {
       'Content-Type': 'application/json;charset=UTF-8',
     }
