@@ -49,6 +49,7 @@ const FundsInfo = (props: {
 
   useEffect(() => {
     if (!signer) {
+      setIsFetchingKYCStatus(false)
       setKYCStatus(KYCStatuses.NOT_VERIFIED)
       return
     }
