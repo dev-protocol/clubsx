@@ -100,7 +100,7 @@ const FundsInfo = (props: {
           ? ['KYC rejected, try again', KYCStatuses.NOT_VERIFIED]
           : statusInDB === 'approved'
             ? ['Verified', KYCStatuses.VERIFIED]
-            : statusInDB === 'processed' || statusInDb === 'completed'
+            : statusInDB === 'processed' || statusInDB === 'completed'
               ? [
                   'KYC in process, please wait for update',
                   KYCStatuses.IN_PROCESS,
