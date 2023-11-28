@@ -177,7 +177,7 @@ const FundsInfo = (props: {
         window.open(
           `${import.meta.env.PUBLIC_ONDATO_VERIFICATION_URL}/?id=${res?.data
             ?.id}`,
-          '_self',
+          '_blank',
         )
       } else {
         setKYCInitiationFailed()
