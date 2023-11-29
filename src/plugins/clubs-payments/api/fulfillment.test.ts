@@ -11,17 +11,41 @@ import { generateFulFillmentParamsId } from '../utils/gen-key'
 import { sha512 } from 'crypto-hash'
 import { Status, createRequestBody } from '../utils/webhooks'
 import type { PartialDeep } from 'type-fest'
+import { beforeEach } from 'node:test'
 
 const redisData = new Map()
 const POP_SERVER_KEY = '!@#'
+const REDIS_URL = '&*('
 const SEND_DEVPROTOCOL_API_KEY = '$%^'
 const SALT = '^&*'
 const WILL_BE_ERROR = 'will_be_error'
+const WILL_BE_FAILED_TO_FETCH = 'will_be_failed_to_fetch'
+
+enum MockUses {
+  Default = 'default',
+  Error = 'error',
+}
+
+const redisConnectMocks: Map<MockUses, () => Promise<any>> = new Map([
+  [
+    MockUses.Default,
+    async () => {
+      return null
+    },
+  ],
+  [
+    MockUses.Error,
+    async () => {
+      throw new Error('REDIS ERROR')
+    },
+  ],
+])
+let redisConnectUses: MockUses = MockUses.Default
 
 vi.mock('redis', async () => {
   const actual: typeof redis = await vi.importActual('redis')
   const lib = vi.fn(() => ({
-    connect: vi.fn(async () => null),
+    connect: vi.fn(() => redisConnectMocks.get(redisConnectUses)?.()),
     get: vi.fn(async (k) => redisData.get(k)),
     set: vi.fn(async (k, v) => redisData.set(k, v)),
     quit: vi.fn(),
@@ -34,11 +58,15 @@ vi.mock('cross-fetch', () => {
     return url.includes(WILL_BE_ERROR) ||
       opts?.body?.toString().includes(WILL_BE_ERROR)
       ? Promise.reject(new Error('ERROR'))
-      : { ok: true }
+      : url.includes(WILL_BE_FAILED_TO_FETCH) ||
+          opts?.body?.toString().includes(WILL_BE_FAILED_TO_FETCH)
+        ? { ok: false }
+        : { ok: true }
   })
   return { default: lib }
 })
 vi.stubEnv('POP_SERVER_KEY', POP_SERVER_KEY)
+vi.stubEnv('REDIS_URL', REDIS_URL)
 vi.stubEnv('SEND_DEVPROTOCOL_API_KEY', SEND_DEVPROTOCOL_API_KEY)
 vi.stubEnv('SALT', SALT)
 
@@ -292,167 +320,464 @@ describe('post returns {message: success} when it received a normal input', asyn
         },
       })
     })
+  })
+})
 
-    it('should return Response 200 even calling webhook failed', async () => {
-      const handler = post({
-        chainId: 137,
-        rpcUrl: 'https://polygon-rpc.com',
-        webhookOnFulfillment: jsonwebtoken.sign(
-          `${url}?${WILL_BE_ERROR}`,
-          SALT,
-        ),
-      })
-      const res = await handler({
-        request: new Request('http://foo', {
-          method: 'POST',
-          body: JSON.stringify(body),
-        }),
-      } as APIContext)
+describe('post returns {message: error} when it received an invalid input', async () => {
+  afterEach(() => {
+    vi.clearAllMocks()
+  })
 
-      expect((fetch as Mock).mock.results[1]).toEqual({
-        type: 'throw',
-        value: new Error('ERROR'),
+  describe('without `webhookOnFulfillment` option', () => {
+    describe('should return error if parsing body is failed', () => {
+      const body = null
+
+      it('returns error', async () => {
+        const handler = post({
+          chainId: 137,
+          rpcUrl: 'https://polygon-rpc.com',
+        })
+        const res = await handler({
+          request: new Request('http://foo', {
+            method: 'POST',
+            body,
+          }),
+        } as APIContext)
+
+        expect(res).toBeInstanceOf(Response)
+        expect(await (res as Response).json()).toEqual({
+          message: 'error',
+          error: 'SyntaxError: Unexpected end of JSON input',
+        })
       })
-      expect((res as Response).status).toEqual(200)
-      expect(await (res as Response).json()).toEqual({
-        message: 'error',
-        error: 'Error: ERROR',
+
+      it('should not call any external API', async () => {
+        const handler = post({
+          chainId: 137,
+          rpcUrl: 'https://polygon-rpc.com',
+        })
+        await handler({
+          request: new Request('http://foo', {
+            method: 'POST',
+            body,
+          }),
+        } as APIContext)
+
+        expect(fetch).toHaveBeenCalledTimes(0)
       })
     })
 
-    it('should not call webhook if decrypting webhook url failed', async () => {
-      const handler = post({
-        chainId: 137,
-        rpcUrl: 'https://polygon-rpc.com',
-        webhookOnFulfillment: jsonwebtoken.sign(url, '_WRONG_SALT_'),
-      })
-      const res = await handler({
-        request: new Request('http://foo', {
-          method: 'POST',
-          body: JSON.stringify(body),
-        }),
-      } as APIContext)
+    describe('should return error if `status` in body is not success', async () => {
+      const body = JSON.stringify(await createBody({ status: 'failure' }))
 
-      expect(fetch).toHaveBeenCalledTimes(1)
-      expect((fetch as Mock).mock.calls[0][0]).not.toBe(url)
-      expect((res as Response).status).toEqual(200)
+      it('returns error', async () => {
+        const handler = post({
+          chainId: 137,
+          rpcUrl: 'https://polygon-rpc.com',
+        })
+        const res = await handler({
+          request: new Request('http://foo', {
+            method: 'POST',
+            body,
+          }),
+        } as APIContext)
+
+        expect(res).toBeInstanceOf(Response)
+        expect(await (res as Response).json()).toEqual({
+          message: 'error',
+          error: 'Transaction must be success',
+        })
+      })
+
+      it('should not call any external API', async () => {
+        const handler = post({
+          chainId: 137,
+          rpcUrl: 'https://polygon-rpc.com',
+        })
+        await handler({
+          request: new Request('http://foo', {
+            method: 'POST',
+            body,
+          }),
+        } as APIContext)
+
+        expect(fetch).toHaveBeenCalledTimes(0)
+      })
     })
 
-    it('should not call webhook if calling send.devprotocol.xyz failed', async () => {
-      redisData.set(
-        generateFulFillmentParamsId(WILL_BE_ERROR),
-        AbiCoder.defaultAbiCoder().encode(abi, params),
-      )
-      const handler = post({
-        chainId: 137,
-        rpcUrl: 'https://polygon-rpc.com',
-        webhookOnFulfillment,
-      })
-      const res = await handler({
-        request: new Request('http://foo', {
-          method: 'POST',
-          body: JSON.stringify(await createBody({ order_id: WILL_BE_ERROR })),
-        }),
-      } as APIContext)
+    describe('should return error if `m_status` in body is not success (failure)', async () => {
+      const body = JSON.stringify(await createBody({ m_status: 'failure' }))
 
-      expect(fetch).toHaveBeenCalledTimes(1)
-      expect((fetch as Mock).mock.calls[0][0]).not.toBe(url)
-      expect((fetch as Mock).mock.results[0]).toEqual({
-        type: 'throw',
-        value: new Error('ERROR'),
+      it('returns error', async () => {
+        const handler = post({
+          chainId: 137,
+          rpcUrl: 'https://polygon-rpc.com',
+        })
+        const res = await handler({
+          request: new Request('http://foo', {
+            method: 'POST',
+            body,
+          }),
+        } as APIContext)
+
+        expect(res).toBeInstanceOf(Response)
+        expect(await (res as Response).json()).toEqual({
+          message: 'error',
+          error: 'Transaction must be success',
+        })
       })
-      expect((res as Response).status).toEqual(200)
+
+      it('should not call any external API', async () => {
+        const handler = post({
+          chainId: 137,
+          rpcUrl: 'https://polygon-rpc.com',
+        })
+        await handler({
+          request: new Request('http://foo', {
+            method: 'POST',
+            body,
+          }),
+        } as APIContext)
+
+        expect(fetch).toHaveBeenCalledTimes(0)
+      })
     })
 
-    it('should not call webhook if decording tx params failed', async () => {
+    describe('should return error if `m_status` in body is not success (pending)', async () => {
+      const body = JSON.stringify(await createBody({ m_status: 'pending' }))
+
+      it('returns error', async () => {
+        const handler = post({
+          chainId: 137,
+          rpcUrl: 'https://polygon-rpc.com',
+        })
+        const res = await handler({
+          request: new Request('http://foo', {
+            method: 'POST',
+            body,
+          }),
+        } as APIContext)
+
+        expect(res).toBeInstanceOf(Response)
+        expect(await (res as Response).json()).toEqual({
+          message: 'error',
+          error: 'Transaction must be success',
+        })
+      })
+
+      it('should not call any external API', async () => {
+        const handler = post({
+          chainId: 137,
+          rpcUrl: 'https://polygon-rpc.com',
+        })
+        await handler({
+          request: new Request('http://foo', {
+            method: 'POST',
+            body,
+          }),
+        } as APIContext)
+
+        expect(fetch).toHaveBeenCalledTimes(0)
+      })
+    })
+
+    describe('should return error if `signature` in body is not match to calculated value', async () => {
+      const body = JSON.stringify({
+        ...(await createBody()),
+        signature: '_wrong_value_',
+      })
+
+      it('returns error', async () => {
+        const handler = post({
+          chainId: 137,
+          rpcUrl: 'https://polygon-rpc.com',
+        })
+        const res = await handler({
+          request: new Request('http://foo', {
+            method: 'POST',
+            body,
+          }),
+        } as APIContext)
+
+        expect(fetch).toHaveBeenCalledTimes(0)
+        expect(res).toBeInstanceOf(Response)
+        expect(await (res as Response).json()).toEqual({
+          message: 'error',
+          error: 'Verification failed.',
+        })
+      })
+
+      it('should not call any external API', async () => {
+        const handler = post({
+          chainId: 137,
+          rpcUrl: 'https://polygon-rpc.com',
+        })
+        await handler({
+          request: new Request('http://foo', {
+            method: 'POST',
+            body,
+          }),
+        } as APIContext)
+
+        expect(fetch).toHaveBeenCalledTimes(0)
+      })
+    })
+
+    describe('should return error if creating redis failed', async () => {
+      const body = JSON.stringify(await createBody())
+
+      afterEach(() => {
+        redisConnectUses = MockUses.Default
+      })
+
+      it('returns error', async () => {
+        redisConnectUses = MockUses.Error
+
+        const handler = post({
+          chainId: 137,
+          rpcUrl: 'https://polygon-rpc.com',
+        })
+        const res = await handler({
+          request: new Request('http://foo', {
+            method: 'POST',
+            body,
+          }),
+        } as APIContext)
+
+        expect(res).toBeInstanceOf(Response)
+        expect(await (res as Response).json()).toEqual({
+          message: 'error',
+          error: 'Error: REDIS ERROR',
+        })
+      })
+
+      it('should not call any external API', async () => {
+        redisConnectUses = MockUses.Error
+
+        const handler = post({
+          chainId: 137,
+          rpcUrl: 'https://polygon-rpc.com',
+        })
+        await handler({
+          request: new Request('http://foo', {
+            method: 'POST',
+            body,
+          }),
+        } as APIContext)
+
+        expect(fetch).toHaveBeenCalledTimes(0)
+      })
+    })
+
+    describe('should return error if fetching stored tx params failed', async () => {
+      const order_id = '_random_'
+      redisData.delete(generateFulFillmentParamsId(order_id))
+      const body = JSON.stringify(await createBody({ order_id }))
+
+      it('returns error', async () => {
+        const handler = post({
+          chainId: 137,
+          rpcUrl: 'https://polygon-rpc.com',
+        })
+        const res = await handler({
+          request: new Request('http://foo', {
+            method: 'POST',
+            body,
+          }),
+        } as APIContext)
+
+        expect(res).toBeInstanceOf(Response)
+        expect(await (res as Response).json()).toEqual({
+          message: 'error',
+          error: 'Required params is not defined',
+        })
+      })
+
+      it('should not call any external API', async () => {
+        const handler = post({
+          chainId: 137,
+          rpcUrl: 'https://polygon-rpc.com',
+        })
+        await handler({
+          request: new Request('http://foo', {
+            method: 'POST',
+            body,
+          }),
+        } as APIContext)
+
+        expect(fetch).toHaveBeenCalledTimes(0)
+      })
+    })
+
+    describe('should return error if decording tx params failed', async () => {
       const order_id = '_123_'
       redisData.set(
         generateFulFillmentParamsId(order_id),
         AbiCoder.defaultAbiCoder().encode(['uint256'], ['1']), // Set wrong value
       )
+      const body = JSON.stringify(await createBody({ order_id }))
 
-      const handler = post({
-        chainId: 137,
-        rpcUrl: 'https://polygon-rpc.com',
-        webhookOnFulfillment,
+      it('returns error', async () => {
+        const handler = post({
+          chainId: 137,
+          rpcUrl: 'https://polygon-rpc.com',
+        })
+        const res = await handler({
+          request: new Request('http://foo', {
+            method: 'POST',
+            body,
+          }),
+        } as APIContext)
+
+        const json = await (res as Response).json()
+
+        expect((res as Response).status).toEqual(200)
+        expect(json.message).toEqual('error')
+        expect(json.error).toContain('data out-of-bounds')
       })
-      const res = await handler({
-        request: new Request('http://foo', {
-          method: 'POST',
-          body: JSON.stringify(await createBody({ order_id })),
-        }),
-      } as APIContext)
 
-      const json = await (res as Response).json()
-      expect(fetch).toHaveBeenCalledTimes(0)
-      expect((res as Response).status).toEqual(200)
-      expect(json.message).toEqual('error')
-      expect(json.error).toContain('data out-of-bounds')
-    })
+      it('should not call any external API', async () => {
+        const handler = post({
+          chainId: 137,
+          rpcUrl: 'https://polygon-rpc.com',
+        })
+        await handler({
+          request: new Request('http://foo', {
+            method: 'POST',
+            body,
+          }),
+        } as APIContext)
 
-    it('should not call webhook if `status` in body is success', async () => {
-      const handler = post({
-        chainId: 137,
-        rpcUrl: 'https://polygon-rpc.com',
-        webhookOnFulfillment,
-      })
-      const res = await handler({
-        request: new Request('http://foo', {
-          method: 'POST',
-          body: JSON.stringify(await createBody({ status: 'failure' })),
-        }),
-      } as APIContext)
-
-      const json = await (res as Response).json()
-      expect(fetch).toHaveBeenCalledTimes(0)
-      expect((res as Response).status).toEqual(200)
-      expect(json).toEqual({
-        message: 'error',
-        error: 'Transaction must be success',
+        expect(fetch).toHaveBeenCalledTimes(0)
       })
     })
 
-    it('should not call webhook if `m_status` in body is not success (failure)', async () => {
-      const handler = post({
-        chainId: 137,
-        rpcUrl: 'https://polygon-rpc.com',
-        webhookOnFulfillment,
-      })
-      const res = await handler({
-        request: new Request('http://foo', {
-          method: 'POST',
-          body: JSON.stringify(await createBody({ m_status: 'failure' })),
-        }),
-      } as APIContext)
+    describe('should return error if calling send.devprotocol.xyz failed', async () => {
+      const params = [
+        ZeroAddress,
+        ZeroAddress,
+        bytes32Hex(randomBytes(1)),
+        ZeroAddress,
+        '1',
+        ZeroAddress,
+        '0',
+      ]
+      redisData.set(
+        generateFulFillmentParamsId(WILL_BE_FAILED_TO_FETCH),
+        AbiCoder.defaultAbiCoder().encode(abi, params),
+      )
+      const body = JSON.stringify(
+        await createBody({ order_id: WILL_BE_FAILED_TO_FETCH }),
+      )
 
-      const json = await (res as Response).json()
-      expect(fetch).toHaveBeenCalledTimes(0)
-      expect((res as Response).status).toEqual(200)
-      expect(json).toEqual({
-        message: 'error',
-        error: 'Transaction must be success',
+      it('returns error', async () => {
+        const handler = post({
+          chainId: 137,
+          rpcUrl: 'https://polygon-rpc.com',
+        })
+        const res = await handler({
+          request: new Request('http://foo', {
+            method: 'POST',
+            body,
+          }),
+        } as APIContext)
+
+        expect(res).toBeInstanceOf(Response)
+        expect(await (res as Response).json()).toEqual({
+          message: 'error',
+          error: 'Failed to send blockchain transaction.',
+        })
+      })
+
+      it('should call only send.devprotocol.xyz', async () => {
+        const handler = post({
+          chainId: 137,
+          rpcUrl: 'https://polygon-rpc.com',
+        })
+        await handler({
+          request: new Request('http://foo', {
+            method: 'POST',
+            body,
+          }),
+        } as APIContext)
+
+        expect(fetch).toHaveBeenCalledTimes(1)
+        expect((fetch as Mock).mock.calls[0][0]).toBe(
+          'https://send.devprotocol.xyz/api/send-transactions/SwapTokensAndStakeDev',
+        )
+      })
+    })
+  })
+
+  describe('with `webhookOnFulfillment` option', () => {
+    describe('should return error if calling webhook failed', () => {
+      it('returns error', async () => {
+        const handler = post({
+          chainId: 137,
+          rpcUrl: 'https://polygon-rpc.com',
+          webhookOnFulfillment: jsonwebtoken.sign(
+            `http://webhooks?${WILL_BE_ERROR}`,
+            SALT,
+          ),
+        })
+        const res = await handler({
+          request: new Request('http://foo', {
+            method: 'POST',
+            body: JSON.stringify(await createBody()),
+          }),
+        } as APIContext)
+
+        expect(fetch).toHaveBeenCalledTimes(2)
+        expect((fetch as Mock).mock.results[1]).toEqual({
+          type: 'throw',
+          value: new Error('ERROR'),
+        })
+        expect((res as Response).status).toEqual(200)
+        expect(await (res as Response).json()).toEqual({
+          message: 'error',
+          error: 'Error: ERROR',
+        })
       })
     })
 
-    it('should not call webhook if `m_status` in body is not success (pending)', async () => {
+    describe('should return error if decrypting webhook url failed', async () => {
+      const url = 'http://webhooks'
+      const body = JSON.stringify(await createBody())
+      const webhookOnFulfillment = jsonwebtoken.sign(url, '_WRONG_SALT_')
+
       const handler = post({
         chainId: 137,
         rpcUrl: 'https://polygon-rpc.com',
         webhookOnFulfillment,
       })
-      const res = await handler({
-        request: new Request('http://foo', {
-          method: 'POST',
-          body: JSON.stringify(await createBody({ m_status: 'pending' })),
-        }),
-      } as APIContext)
 
-      const json = await (res as Response).json()
-      expect(fetch).toHaveBeenCalledTimes(0)
-      expect((res as Response).status).toEqual(200)
-      expect(json).toEqual({
-        message: 'error',
-        error: 'Transaction must be success',
+      it('returns error', async () => {
+        const res = await handler({
+          request: new Request('http://foo', {
+            method: 'POST',
+            body,
+          }),
+        } as APIContext)
+
+        expect((fetch as Mock).mock.calls[0][0]).not.toBe(url)
+        expect(await (res as Response).json()).toEqual({
+          message: 'error',
+          error: 'invalid signature',
+        })
+      })
+
+      it('should call only send.devprotocol.xyz', async () => {
+        await handler({
+          request: new Request('http://foo', {
+            method: 'POST',
+            body,
+          }),
+        } as APIContext)
+
+        expect(fetch).toHaveBeenCalledTimes(1)
+        expect((fetch as Mock).mock.calls[0][0]).toBe(
+          'https://send.devprotocol.xyz/api/send-transactions/SwapTokensAndStakeDev',
+        )
       })
     })
   })
