@@ -23,7 +23,7 @@ export const getPagePaths = (async (options, _) => [
     paths: ['quests', param],
     component: Id,
   })),
-]) satisfies ClubsFunctionGetPagePaths
+]) as ClubsFunctionGetPagePaths
 
 export const getAdminPaths = (async (options) => [
   {

@@ -151,7 +151,6 @@
           </div>
           <button
             class="hs-button is-error is-filled is-large max-w-fit"
-            type="button"
             id={`navigationLinks-${i}-remove-btn`}
             name={`navigationLinks-${i}-remove-btn`}
             on:click={() => removeNavigationLinks(link.display)}
@@ -192,7 +191,6 @@
       </div>
       <button
         class="hs-button is-filled is-large max-w-fit"
-        type="button"
         name="link-add-button"
         on:click={addNewNavigationLinks}
       >

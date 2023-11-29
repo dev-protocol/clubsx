@@ -1,51 +1,49 @@
-import test from 'ava'
+import { expect, it } from 'vitest'
 import { validatorFactory } from './validatorFactory.mjs'
 import { encode } from '@devprotocol/clubs-core'
 
-test('validatorFactory returns a curryed function that takes config and returns encoded config', (t) => {
+it('validatorFactory returns a curryed function that takes config and returns encoded config', () => {
   const validator = validatorFactory((config) => {
-    t.is(config.name, 'test')
+    expect(config.name).toBe('test')
     return true
   })
 
-  t.is(validator({ name: 'test' }), encode({ name: 'test' }))
+  expect(validator({ name: 'test' })).toEqual(encode({ name: 'test' }))
 })
 
-test('created function throws an Error when the handler returns a value other than true', (t) => {
+it('created function throws an Error when the handler returns a value other than true', () => {
   const validator = validatorFactory(() => {
     return false
   })
-  const res = t.throws(() => validator({ name: 'test' }))
-
-  t.is(res.message, 'Validator result must be true or Error')
+  expect(() => validator({ name: 'test' })).toThrowError(
+    'Validator result must be true or Error',
+  )
 })
 
-test('created function throws an Error when the handler returns a value other than Error', (t) => {
+it('created function throws an Error when the handler returns a value other than Error', () => {
   const validator = validatorFactory(() => {
     return undefined
   })
-  const res = t.throws(() => validator({ name: 'test' }))
-
-  t.is(res.message, 'Validator result must be true or Error')
+  expect(() => validator({ name: 'test' })).toThrowError(
+    'Validator result must be true or Error',
+  )
 })
 
-test('created function bypasses/throws an Error if the handler returns Error', (t) => {
+it('created function bypasses/throws an Error if the handler returns Error', () => {
   const validator = validatorFactory(() => {
     return new Error('TEST')
   })
 
-  const res = t.throws(() => validator({ name: 'test' }))
-
-  t.is(res.message, 'TEST')
+  expect(() => validator({ name: 'test' })).toThrowError('TEST')
 })
 
-test('created function throws an Error when the config will be changed in validation flow', (t) => {
+it('created function throws an Error when the config will be changed in validation flow', () => {
   const validator = validatorFactory((config) => {
     config.name = 'changed'
     return true
   })
 
-  const res = t.throws(() => validator({ name: 'test' }))
-
-  t.is(res.message, 'Validator is not allowed to change config')
+  expect(() => validator({ name: 'test' })).toThrowError(
+    'Validator is not allowed to change config',
+  )
 })

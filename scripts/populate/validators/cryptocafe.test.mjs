@@ -1,8 +1,8 @@
-import test from 'ava'
+import { expect, it } from 'vitest'
 import { validator } from './cryptocafe.mjs'
 import jsonwebtoken from 'jsonwebtoken'
 
-test('validator returns true when the config has correct values', (t) => {
+it('validator returns true when the config has correct values', () => {
   process.env.CRYPTOCAFE_TICKET_WEBHOOK_KEY = 'X'
   process.env.SALT = 'X'
 
@@ -25,10 +25,10 @@ test('validator returns true when the config has correct values', (t) => {
     ],
   })
 
-  t.is(res, true)
+  expect(res).toBe(true)
 })
 
-test('validator returns error when the config has not webhook URL for each tickets', (t) => {
+it('validator returns error when the config has not webhook URL for each tickets', () => {
   process.env.CRYPTOCAFE_TICKET_WEBHOOK_KEY = 'X'
   process.env.SALT = 'X'
 
@@ -46,10 +46,10 @@ test('validator returns error when the config has not webhook URL for each ticke
     ],
   })
 
-  t.deepEqual(res, new Error('Tickets must be having webhook URL'))
+  expect(res).toEqual(new Error('Tickets must be having webhook URL'))
 })
 
-test('validator returns error when the config has incorrect webhook URL for each tickets', (t) => {
+it('validator returns error when the config has incorrect webhook URL for each tickets', () => {
   process.env.CRYPTOCAFE_TICKET_WEBHOOK_KEY = 'X'
   process.env.SALT = 'X'
 
@@ -69,10 +69,10 @@ test('validator returns error when the config has incorrect webhook URL for each
     ],
   })
 
-  t.deepEqual(res, new Error('Tickets must be having webhook URL'))
+  expect(res).toEqual(new Error('Tickets must be having webhook URL'))
 })
 
-test('validator returns error when CRYPTOCAFE_TICKET_WEBHOOK_KEY is not set', (t) => {
+it('validator returns error when CRYPTOCAFE_TICKET_WEBHOOK_KEY is not set', () => {
   delete process.env.CRYPTOCAFE_TICKET_WEBHOOK_KEY
   process.env.SALT = 'X'
 
@@ -101,13 +101,12 @@ test('validator returns error when CRYPTOCAFE_TICKET_WEBHOOK_KEY is not set', (t
     ],
   })
 
-  t.deepEqual(
-    res,
+  expect(res).toEqual(
     new Error('CRYPTOCAFE_TICKET_WEBHOOK_KEY and SALT must be set'),
   )
 })
 
-test('validator returns error when SALT is not set', (t) => {
+it('validator returns error when SALT is not set', () => {
   process.env.CRYPTOCAFE_TICKET_WEBHOOK_KEY = 'X'
   delete process.env.SALT
 
@@ -136,13 +135,12 @@ test('validator returns error when SALT is not set', (t) => {
     ],
   })
 
-  t.deepEqual(
-    res,
+  expect(res).toEqual(
     new Error('CRYPTOCAFE_TICKET_WEBHOOK_KEY and SALT must be set'),
   )
 })
 
-test('validator returns error when CRYPTOCAFE_TICKET_WEBHOOK_KEY is empty', (t) => {
+it('validator returns error when CRYPTOCAFE_TICKET_WEBHOOK_KEY is empty', () => {
   process.env.CRYPTOCAFE_TICKET_WEBHOOK_KEY = ''
   process.env.SALT = 'X'
 
@@ -171,13 +169,12 @@ test('validator returns error when CRYPTOCAFE_TICKET_WEBHOOK_KEY is empty', (t) 
     ],
   })
 
-  t.deepEqual(
-    res,
+  expect(res).toEqual(
     new Error('CRYPTOCAFE_TICKET_WEBHOOK_KEY and SALT must be set'),
   )
 })
 
-test('validator returns error when SALT is empty', (t) => {
+it('validator returns error when SALT is empty', () => {
   process.env.CRYPTOCAFE_TICKET_WEBHOOK_KEY = 'X'
   process.env.SALT = ''
 
@@ -206,12 +203,11 @@ test('validator returns error when SALT is empty', (t) => {
     ],
   })
 
-  t.deepEqual(
-    res,
+  expect(res).toEqual(
     new Error('CRYPTOCAFE_TICKET_WEBHOOK_KEY and SALT must be set'),
   )
 })
 
-test.todo(
+it.skip(
   'encodeIfValid is a function that returned by validatorFactory encapsulate validator',
 )

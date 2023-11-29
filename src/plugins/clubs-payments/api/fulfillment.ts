@@ -15,15 +15,6 @@ import { createClient } from 'redis'
 import { generateFulFillmentParamsId } from '../utils/gen-key'
 import jsonwebtoken from 'jsonwebtoken'
 
-const {
-  POP_SERVER_KEY,
-  SEND_DEVPROTOCOL_API_KEY,
-  SALT,
-  REDIS_URL,
-  REDIS_USERNAME,
-  REDIS_PASSWORD,
-} = import.meta.env
-
 export const abi = [
   'address _mintFor',
   'address _propertyAddress',
@@ -70,6 +61,15 @@ export const post: ({
 }) => APIRoute =
   ({ chainId, rpcUrl, webhookOnFulfillment }) =>
   async ({ request }) => {
+    const {
+      POP_SERVER_KEY,
+      SEND_DEVPROTOCOL_API_KEY,
+      SALT,
+      REDIS_URL,
+      REDIS_USERNAME,
+      REDIS_PASSWORD,
+    } = import.meta.env
+
     // Step 1 - Read all the parameters and their values
     const verification$1: ErrorOr<RequestBody> = await request
       .json()
@@ -88,7 +88,8 @@ export const post: ({
 
     // Step 2a - Convert all string arrays into comma separated values
     const verification$3 = whenNotError(verification$1, (res) =>
-      toPairs(res).map(([key, value]) => {
+      toPairs(res).map((kv) => {
+        const [key, value] = kv as NonNullable<typeof kv>
         const value_ = Array.isArray(value) ? value.join(',') : value
         return [key, value_] as [keyof RequestBody, RequestBody[typeof key]]
       }),
