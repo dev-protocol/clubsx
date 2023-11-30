@@ -437,6 +437,10 @@ const populate = async (client) => {
                 },
               ],
             },
+            {
+              key: 'banId',
+              value: [214, 215],
+            },
           ],
         },
         {
