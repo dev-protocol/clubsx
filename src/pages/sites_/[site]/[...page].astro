@@ -18,6 +18,7 @@ import PreviewBanner from '@components/PreviewBanner/PreviewBanner.astro'
 import Footer from '@components/Footer/Footer.astro'
 import { replaceWithFwdHost } from '@fixtures/url'
 import type { InferGetStaticPropsType } from 'astro'
+import Clarity from '@components/Clarity/Clarity.astro'
 
 const { site, page } = Astro.params
 const config = await _config(site)
@@ -66,6 +67,8 @@ const fullPage = (path?.props.signals as undefined | string[])?.includes(
         <Content {...path.props} />
 
         <PreviewBanner config={decode<ClubsConfiguration>(config)} />
+
+        <Clarity />
       </Layout>
 
       <Footer {...(path.props as unknown as ClubsPropsPages)} {fullPage}>
