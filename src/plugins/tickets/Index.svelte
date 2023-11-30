@@ -12,11 +12,13 @@
   import { client, clientsSTokens } from '@devprotocol/dev-kit'
   import PQueue from 'p-queue'
   import { reverse } from 'ramda'
+  import type { BanningRules } from './utils/get-banning-rules'
 
   export let tickets: Tickets
   export let memberships: UndefinedOr<Membership[]>
   export let propertyAddress: string
   export let rpcUrl: string
+  export let ban: BanningRules
 
   let account: UndefinedOr<string>
   let ownedTickets: UndefinedOr<TicketWithStatus[]>
@@ -40,9 +42,11 @@
       detector(propertyAddress, _account),
     )
 
-    console.log({ idList })
+    const filteredIdList = idList?.filter((i) => ban.id.includes(i) === false)
 
-    await whenDefined(idList, async (li) => {
+    console.log({ idList, filteredIdList })
+
+    await whenDefined(filteredIdList, async (li) => {
       await Promise.all(
         reverse(li).map(async (id) =>
           queueTickets.add(async () => {
