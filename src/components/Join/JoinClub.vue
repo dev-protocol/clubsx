@@ -75,11 +75,11 @@ const { propertyAddress, tiers, tenantName, rpcUrl, preferedCurrency } =
     preferedCurrency?: 'dev' | 'eth'
   }>()
 
-let currency: Data['currency'] = preferedCurrency ?? 'dev'
-let composedTiers: Data['composedTiers'] = {
+const currency = ref<Data['currency']>(preferedCurrency ?? 'dev')
+const composedTiers = ref<Data['composedTiers']>({
   dev: preferedCurrency === 'dev' ? [...tiers] : undefined,
   eth: preferedCurrency === 'eth' ? [...tiers] : undefined,
-}
+})
 const images: Data['images'] = {
   DEV: DEV.src,
   ETH: ETH.src,
@@ -93,11 +93,11 @@ onMounted(async () => {
   const input = new FormData(form.value as HTMLFormElement).get('input') as
     | null
     | Data['currency']
-  currency = input as 'dev' | 'eth'
+  currency.value = input as 'dev' | 'eth'
   if (preferedCurrency === 'eth') {
     return
   }
-  composedTiers = await composeTiers({
+  composedTiers.value = await composeTiers({
     sourceTiers: tiers,
     provider: new JsonRpcProvider(rpcUrl),
     tokenAddress: propertyAddress ?? '',
@@ -107,6 +107,6 @@ onMounted(async () => {
 
 const switchInputs = (ev: Event) => {
   const { value } = ev.target as HTMLInputElement
-  currency = value as 'dev' | 'eth'
+  currency.value = value as 'dev' | 'eth'
 }
 </script>
