@@ -69,14 +69,14 @@
     let customDescriptorAddress
     switch (data.isTimeLimitedCollection) {
       case true:
-      customDescriptorAddress = customTimeDescriptorAddress
-      break
+        customDescriptorAddress = customTimeDescriptorAddress
+        break
       case false:
-      customDescriptorAddress = customMemberDescriptorAddress
-      break
+        customDescriptorAddress = customMemberDescriptorAddress
+        break
       case 'both':
-      customDescriptorAddress = customMixSlotDescriptorAddress
-      break
+        customDescriptorAddress = customMixSlotDescriptorAddress
+        break
     }
     const test =
       descriptor?.toLowerCase() === customDescriptorAddress?.toLowerCase()

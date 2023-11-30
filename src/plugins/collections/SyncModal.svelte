@@ -36,80 +36,81 @@
     (collection) =>
       collection.memberships.map((mem) => {
         const { decimals, address: token } = tokenInfo[mem.currency][chainId]
-        if(collection.isTimeLimitedCollection == true) {
+        if (collection.isTimeLimitedCollection == true) {
           return {
-              payload: bytes32Hex(mem.payload),
-              source: mem,
-              isTimeLimitedCollection: true,
-              state: {
-                src: mem.imageSrc,
-                name: JSON.stringify(mem.name).slice(1, -1),
-                description: JSON.stringify(mem.description).slice(1, -1),
-                deadline: collection.endTime ? BigInt(collection.endTime) : 0n,
-                requiredTokenAmount: parseUnits(String(mem.price), decimals),
-                requiredTokenFee: mem.fee?.percentage
-                  ? parseUnits(
-                      new BigNumber(mem.price)
-                        .times(mem.fee.percentage)
-                        .dp(decimals, 1)
-                        .toFixed(),
-                      decimals,
-                    )
-                  : 0n,
-                token: token,
-                gateway: mem.fee?.beneficiary ?? ZeroAddress,
-              },
-            }
-        }
-        else if (collection.isTimeLimitedCollection == false ) {
+            payload: bytes32Hex(mem.payload),
+            source: mem,
+            isTimeLimitedCollection: true,
+            state: {
+              src: mem.imageSrc,
+              name: JSON.stringify(mem.name).slice(1, -1),
+              description: JSON.stringify(mem.description).slice(1, -1),
+              deadline: collection.endTime ? BigInt(collection.endTime) : 0n,
+              requiredTokenAmount: parseUnits(String(mem.price), decimals),
+              requiredTokenFee: mem.fee?.percentage
+                ? parseUnits(
+                    new BigNumber(mem.price)
+                      .times(mem.fee.percentage)
+                      .dp(decimals, 1)
+                      .toFixed(),
+                    decimals,
+                  )
+                : 0n,
+              token: token,
+              gateway: mem.fee?.beneficiary ?? ZeroAddress,
+            },
+          }
+        } else if (collection.isTimeLimitedCollection == false) {
           return {
-              payload: bytes32Hex(mem.payload),
-              source: mem,
-              isTimeLimitedCollection: false,
-              state: {
-                src: mem.imageSrc,
-                name: JSON.stringify(mem.name).slice(1, -1),
-                description: JSON.stringify(mem.description).slice(1, -1),
-                slots: mem.memberCount ? BigInt(mem.memberCount) : 0n,
-                requiredTokenAmount: parseUnits(String(mem.price), decimals),
-                requiredTokenFee: mem.fee?.percentage
-                  ? parseUnits(
-                      new BigNumber(mem.price)
-                        .times(mem.fee.percentage)
-                        .dp(decimals, 1)
-                        .toFixed(),
-                      decimals,
-                    )
-                  : 0n,
-                token: token,
-                gateway: mem.fee?.beneficiary ?? ZeroAddress,
-              },
-            }
-        }
-        else {
+            payload: bytes32Hex(mem.payload),
+            source: mem,
+            isTimeLimitedCollection: false,
+            state: {
+              src: mem.imageSrc,
+              name: JSON.stringify(mem.name).slice(1, -1),
+              description: JSON.stringify(mem.description).slice(1, -1),
+              slots: mem.memberCount ? BigInt(mem.memberCount) : 0n,
+              requiredTokenAmount: parseUnits(String(mem.price), decimals),
+              requiredTokenFee: mem.fee?.percentage
+                ? parseUnits(
+                    new BigNumber(mem.price)
+                      .times(mem.fee.percentage)
+                      .dp(decimals, 1)
+                      .toFixed(),
+                    decimals,
+                  )
+                : 0n,
+              token: token,
+              gateway: mem.fee?.beneficiary ?? ZeroAddress,
+            },
+          }
+        } else {
           return {
-              payload: bytes32Hex(mem.payload),
-              source: mem,
-              isTimeLimitedCollection: "both",
-              state: {
-                src: mem.imageSrc,
-                name: JSON.stringify(mem.name).slice(1, -1),
-                description: JSON.stringify(mem.description).slice(1, -1),
-                slots: [collection.endTime ? BigInt(collection.endTime) : 0n, mem.memberCount ? BigInt(mem.memberCount) : 0n],
-                requiredTokenAmount: parseUnits(String(mem.price), decimals),
-                requiredTokenFee: mem.fee?.percentage
-                  ? parseUnits(
-                      new BigNumber(mem.price)
-                        .times(mem.fee.percentage)
-                        .dp(decimals, 1)
-                        .toFixed(),
-                      decimals,
-                    )
-                  : 0n,
-                token: token,
-                gateway: mem.fee?.beneficiary ?? ZeroAddress,
-              },
-            }
+            payload: bytes32Hex(mem.payload),
+            source: mem,
+            isTimeLimitedCollection: 'both',
+            state: {
+              src: mem.imageSrc,
+              name: JSON.stringify(mem.name).slice(1, -1),
+              description: JSON.stringify(mem.description).slice(1, -1),
+              slots: [
+                collection.endTime ? BigInt(collection.endTime) : 0n,
+                mem.memberCount ? BigInt(mem.memberCount) : 0n,
+              ],
+              requiredTokenAmount: parseUnits(String(mem.price), decimals),
+              requiredTokenFee: mem.fee?.percentage
+                ? parseUnits(
+                    new BigNumber(mem.price)
+                      .times(mem.fee.percentage)
+                      .dp(decimals, 1)
+                      .toFixed(),
+                    decimals,
+                  )
+                : 0n,
+              token: token,
+              gateway: mem.fee?.beneficiary ?? ZeroAddress,
+            },
+          }
         }
       }),
   )
@@ -122,7 +123,7 @@
     provider: ContractRunner
     propertyAddress: string
     payload: string
-    isTimeLimitedCollection: boolean | "both"
+    isTimeLimitedCollection: boolean | 'both'
   }) => {
     return callSlotCollections(
       provider,
@@ -147,9 +148,8 @@
       ({ isTimeLimitedCollection }) => !isTimeLimitedCollection,
     )
     const mixStates = states.filter(
-      ({ isTimeLimitedCollection }) => isTimeLimitedCollection == "both",
+      ({ isTimeLimitedCollection }) => isTimeLimitedCollection == 'both',
     )
-
 
     // Filter out states with empty payload
     const validTimeStates = timeStates.filter(
@@ -182,7 +182,7 @@
     }
 
     if (validMixStates.length) {
-      const res = await callSlotCollections(provider, 'setImages', "both", [
+      const res = await callSlotCollections(provider, 'setImages', 'both', [
         propertyAddress,
         validMixStates.map(({ state }) => state),
         validMixStates.map(({ payload }) => payload),

@@ -87,35 +87,35 @@ const defaultAddress: Address = {
 export async function callSlotCollections(
   provider: BrowserProvider | ContractRunner,
   functionName: 'getSlotsLeft',
-  isTimeSlot: boolean | "both",
+  isTimeSlot: boolean | 'both',
   args: [propertyAddress: string, key: string],
 ): Promise<number>
 
 export async function callSlotCollections(
   provider: BrowserProvider | ContractRunner,
   functionName: 'propertyImages',
-  isTimeSlot: boolean | "both",
+  isTimeSlot: boolean | 'both',
   args: [propertyAddress: string, key: string],
 ): Promise<Image>
 
 export async function callSlotCollections(
   provider: Signer | ContractRunner | BrowserProvider,
   functionName: 'setImages',
-  isTimeSlot: boolean | "both",
-  args: [propertyAddress: string, images: Image[] | MixImage [], keys: string[]],
+  isTimeSlot: boolean | 'both',
+  args: [propertyAddress: string, images: Image[] | MixImage[], keys: string[]],
 ): Promise<TransactionResponse>
 
 export async function callSlotCollections(
   provider: Signer,
   functionName: 'removeImage',
-  isTimeSlot: boolean | "both",
+  isTimeSlot: boolean | 'both',
   args: [propertyAddress: string, key: string],
 ): Promise<TransactionResponse>
 
 export async function callSlotCollections(
   provider: Signer | ContractRunner | BrowserProvider,
   functionName: string,
-  isTimeSlot: boolean | "both",
+  isTimeSlot: boolean | 'both',
   args: unknown[],
 ): Promise<unknown> {
   const chainId = await ('getNetwork' in provider
@@ -128,8 +128,8 @@ export async function callSlotCollections(
   const addressList =
     address.find((address) => address.chainId === chainId)?.addressList ||
     defaultAddress.addressList
-  
-  let contractAddress, contractABI;
+
+  let contractAddress, contractABI
 
   switch (isTimeSlot) {
     case true:
@@ -140,16 +140,12 @@ export async function callSlotCollections(
       contractAddress = addressList.memberSlot
       contractABI = memberABI
       break
-    case "both":
+    case 'both':
       contractAddress = addressList.mixSlot
       contractABI = mixSlotABI
       break
   }
-  const contract = new ethers.Contract(
-    contractAddress,
-    contractABI,
-    provider,
-  )
+  const contract = new ethers.Contract(contractAddress, contractABI, provider)
 
   const result: TransactionReceipt = await contract[functionName](...args)
   return result
