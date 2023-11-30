@@ -2,13 +2,17 @@
 import type { Membership } from '@plugins/memberships'
 import type { Tickets } from '.'
 import Index_ from './Index.svelte'
+import type { BanningRules } from './utils/get-banning-rules'
 
-const { tickets, memberships, propertyAddress, rpcUrl } = Astro.props as {
+type Props = {
   tickets: Tickets
   memberships: Membership[]
   propertyAddress: string
   rpcUrl: string
+  ban: BanningRules
 }
+
+const { tickets, memberships, propertyAddress, rpcUrl, ban } = Astro.props
 ---
 
 <Index_
@@ -17,4 +21,5 @@ const { tickets, memberships, propertyAddress, rpcUrl } = Astro.props as {
   memberships={memberships}
   propertyAddress={propertyAddress}
   rpcUrl={rpcUrl}
+  ban={ban}
 />
