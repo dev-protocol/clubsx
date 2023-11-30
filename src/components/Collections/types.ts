@@ -6,11 +6,11 @@ export type SlotLeft = {
 }
 
 export type State = {
-  [key: string]: string | bigint | number | undefined
+  [key: string]: string | bigint | number | bigint[] | undefined
 }
 export type ExpectedStatus = {
   payload: string
   source: CollectionMembership
-  isTimeLimitedCollection: boolean
+  isTimeLimitedCollection: boolean | 'both'
   state: State
 }

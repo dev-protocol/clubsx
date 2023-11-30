@@ -41,7 +41,7 @@ export type Collection = {
   name: string
   imageSrc: string
   status: 'Draft' | 'Published'
-  isTimeLimitedCollection: boolean
+  isTimeLimitedCollection: boolean | 'both'
   endTime?: number
   description: string
   memberships: CollectionMembership[]
@@ -214,6 +214,16 @@ export const getAdminPaths = (async (
     memberships: [],
   }
 
+  const presetSlotCollection: Collection = {
+    id: 'preset-member-collection',
+    name: 'My First Quantity Limited Collection',
+    imageSrc: '',
+    description: 'This is a quantity-limited collection.',
+    isTimeLimitedCollection: 'both',
+    status: 'Draft',
+    memberships: [],
+  }
+
   const existingMemberships =
     (existingMembershipsConfig?.options.find(
       (opt: ClubsPluginOption) => opt.key === 'memberships',
@@ -268,6 +278,19 @@ export const getAdminPaths = (async (
       props: {
         isTimeLimitedCollection: true,
         preset: presetTimeCollection,
+        collections,
+        existingMemberships,
+        rpcUrl,
+        propertyAddress,
+        name,
+      },
+    },
+    {
+      paths: ['collections', 'new', 'slot-limited-collection'],
+      component: AdminNew,
+      props: {
+        isTimeLimitedCollection: 'both',
+        preset: presetSlotCollection,
         collections,
         existingMemberships,
         rpcUrl,

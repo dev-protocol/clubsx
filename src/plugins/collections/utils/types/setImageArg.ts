@@ -9,3 +9,14 @@ export type Image = {
   readonly requiredTokenFee?: number | string | bigint
   readonly gateway?: string
 }
+
+
+export type MixImage = {
+  readonly src?: string
+  readonly name?: string
+  readonly description?: string
+  readonly slots?: [string | number | bigint , string | number | bigint]
+  readonly requiredTokenAmount?: number | string | bigint
+  readonly requiredTokenFee?: number | string | bigint
+  readonly gateway?: string
+}
