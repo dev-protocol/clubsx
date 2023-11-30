@@ -55,7 +55,6 @@
 {#if hasMenu === false}
   <div class="flex w-full justify-end">
     <button
-      type="button"
       on:click|preventDefault={() => action()}
       class={`hs-button is-large is-filled ${
         waiting ? 'animate-pulse bg-gray-500/60' : ''

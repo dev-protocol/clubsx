@@ -22,39 +22,42 @@ const upgrade = (key, config) => {
     return plg.name === 'admin'
       ? { ...plg, id: 'clubs-core:admin' }
       : plg.name === 'defaultTheme'
-      ? { ...plg, id: 'devprotocol:clubs:theme-1' }
-      : plg.name === 'join'
-      ? { ...plg, id: 'devprotocol:clubs:plugin:join' }
-      : plg.name === 'me'
-      ? { ...plg, id: 'devprotocol:clubs:plugin:me' }
-      : plg.name === 'community'
-      ? { ...plg, id: 'devprotocol:clubs:plugin:community' }
-      : plg.name === 'quests'
-      ? { ...plg, id: 'devprotocol:clubs:plugin:quests' }
-      : plg.name === 'members'
-      ? { ...plg, id: 'devprotocol:clubs:plugin:members' }
-      : plg.name === 'memberships'
-      ? { ...plg, id: 'devprotocol:clubs:simple-memberships' }
-      : plg.name === 'message'
-      ? { ...plg, id: 'devprotocol:clubs:gated-contact-form' }
-      : plg.name === 'marketplace'
-      ? { ...plg, id: 'devprotocol:clubs:clubsx:marketplace' }
-      : plg.name === 'perks'
-      ? { ...plg, id: 'devprotocol:clubs:plugin:perks' }
-      : plg.name === 'fiat'
-      ? { ...plg, id: 'devprotocol:clubs:plugin:pay-by-card' }
-      : plg.name === 'buy'
-      ? { ...plg, id: 'devprotocol:clubs:plugin:buy' }
-      : plg.name === 'nft'
-      ? { ...plg, id: 'devprotocol:clubs:plugin:nft' }
-      : (() => {
-          console.error(
-            key,
-            plg.name,
-            'This plugin does not have a suitable upgrade script',
-          )
-          return plg
-        })()
+        ? { ...plg, id: 'devprotocol:clubs:theme-1' }
+        : plg.name === 'join'
+          ? { ...plg, id: 'devprotocol:clubs:plugin:join' }
+          : plg.name === 'me'
+            ? { ...plg, id: 'devprotocol:clubs:plugin:me' }
+            : plg.name === 'community'
+              ? { ...plg, id: 'devprotocol:clubs:plugin:community' }
+              : plg.name === 'quests'
+                ? { ...plg, id: 'devprotocol:clubs:plugin:quests' }
+                : plg.name === 'members'
+                  ? { ...plg, id: 'devprotocol:clubs:plugin:members' }
+                  : plg.name === 'memberships'
+                    ? { ...plg, id: 'devprotocol:clubs:simple-memberships' }
+                    : plg.name === 'message'
+                      ? { ...plg, id: 'devprotocol:clubs:gated-contact-form' }
+                      : plg.name === 'marketplace'
+                        ? { ...plg, id: 'devprotocol:clubs:clubsx:marketplace' }
+                        : plg.name === 'perks'
+                          ? { ...plg, id: 'devprotocol:clubs:plugin:perks' }
+                          : plg.name === 'fiat'
+                            ? {
+                                ...plg,
+                                id: 'devprotocol:clubs:plugin:pay-by-card',
+                              }
+                            : plg.name === 'buy'
+                              ? { ...plg, id: 'devprotocol:clubs:plugin:buy' }
+                              : plg.name === 'nft'
+                                ? { ...plg, id: 'devprotocol:clubs:plugin:nft' }
+                                : (() => {
+                                    console.error(
+                                      key,
+                                      plg.name,
+                                      'This plugin does not have a suitable upgrade script',
+                                    )
+                                    return plg
+                                  })()
   })
 
   if (

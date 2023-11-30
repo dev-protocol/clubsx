@@ -25,11 +25,15 @@
   import Modal from './Modal.svelte'
   import { Strings } from './i18n'
   import { expirationDatetime } from './utils/date'
+  import type { BanningRules } from './utils/get-banning-rules'
 
   export let ticket: Ticket
   export let membership: UndefinedOr<Membership>
   export let sTokensId: UndefinedOr<number>
   export let rpcUrl: string
+  export let ban: BanningRules
+
+  const isInvalidId = ban.id.includes(sTokensId ?? 0)
 
   let benefits: UndefinedOr<TicketStatus[]>
   let signer: UndefinedOr<Signer>
@@ -160,8 +164,16 @@
 
 <section class="rounded-md bg-white p-6 text-black shadow">
   <div class="mx-auto grid max-w-lg gap-8">
-    {#if !sTokensId || !membership}
-      <p>Error</p>
+    {#if !sTokensId || !membership || isInvalidId}
+      <p class="text-center font-bold text-dp-white-600">
+        {#if !membership}
+          Internal error
+        {:else if !sTokensId}
+          No ID specified
+        {:else if isInvalidId}
+          Invalid ID
+        {/if}
+      </p>
     {:else}
       <p>#{sTokensId}</p>
 

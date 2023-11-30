@@ -44,8 +44,8 @@ export const GET = async ({
       !validNaming || !notReserved
         ? { error: 'Invalid naming' }
         : !validNamespace
-        ? { error: 'Aleady exists' }
-        : {}
+          ? { error: 'Aleady exists' }
+          : {}
     const status = validNaming && validNamespace ? 200 : 400
     return new Response(JSON.stringify(body), { status })
   } catch (error) {

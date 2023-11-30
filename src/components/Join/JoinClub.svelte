@@ -9,11 +9,15 @@
     Tier,
     Tiers,
   } from '@devprotocol/clubs-core'
-  import { CurrencyOption } from '@devprotocol/clubs-core'
+  import { CurrencyOption, i18nFactory } from '@devprotocol/clubs-core'
   import MembershipOption from '@components/AdminMembershipsForm/MembershipOption.svelte'
   import type { UndefinedOr } from '@devprotocol/util-ts'
+  import { Strings } from './i18n'
+  import { onMount } from 'svelte'
 
   const counter = new Map<CurrencyOption, number>()
+  const i18nBase = i18nFactory(Strings)
+  let i18n = i18nBase(['en'])
 
   export let tiers: Tiers
   export let injectedTiers: UndefinedOr<InjectedTiers>
@@ -47,12 +51,16 @@
     const { value } = ev.target as HTMLInputElement
     currency = value as CurrencyOption
   }
+
+  onMount(() => {
+    i18n = i18nBase(navigator.languages)
+  })
 </script>
 
 <section
   class="flex flex-col rounded-xl bg-dp-white-200 p-4 text-dp-white-ink shadow"
 >
-  <h2 class="mb-4 text-4xl font-bold">Join</h2>
+  <h2 class="mb-4 text-4xl font-bold">{i18n('Join')}</h2>
 
   <h3 class="mb-4 text-2xl font-bold">Purchase with</h3>
   <form
@@ -81,10 +89,10 @@
             src={currencyOption === 'usdc'
               ? USDC.src
               : currencyOption === 'matic'
-              ? MATIC.src
-              : currencyOption === 'eth'
-              ? ETH.src
-              : DEV.src}
+                ? MATIC.src
+                : currencyOption === 'eth'
+                  ? ETH.src
+                  : DEV.src}
             alt={currencyOption.toUpperCase()}
             class="h-8 w-8"
           />

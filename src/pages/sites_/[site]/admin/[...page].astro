@@ -10,7 +10,6 @@ import {
   type ClubsGetStaticPathsItem,
 } from '@devprotocol/clubs-core'
 import { config as _config } from '@fixtures/config'
-import VercelAnalytics from '@components/Analytics/VercelAnalytics.astro'
 import PageNotFound from '@pages/404.astro'
 import admin from '@plugins/admin'
 import marketplace from '@plugins/marketplace'
@@ -124,8 +123,8 @@ const siteBaseUrl = new URL(replaceWithFwdHost(Astro.request)).origin
             class:list={[
               '-mx-3 flex items-center gap-2 rounded p-3 font-bold transition-colors duration-500',
               page?.startsWith('marketplace')
-                ? 'bg-surface-200'
-                : 'hover:bg-surface-200',
+                ? 'bg-[var(--hs-theme-disabled)]'
+                : 'hover:bg-[var(--hs-theme-disabled)]',
             ]}
             href="/admin/marketplace"
           >
@@ -140,8 +139,8 @@ const siteBaseUrl = new URL(replaceWithFwdHost(Astro.request)).origin
             class:list={[
               '-mx-3 flex items-center gap-2 rounded p-3 font-bold transition-colors duration-500',
               page?.startsWith('funds')
-                ? 'bg-surface-200'
-                : 'hover:bg-surface-200',
+                ? 'bg-[var(--hs-theme-disabled)]'
+                : 'hover:bg-[var(--hs-theme-disabled)]',
             ]}
             href="/admin/funds"
           >
@@ -153,7 +152,6 @@ const siteBaseUrl = new URL(replaceWithFwdHost(Astro.request)).origin
         </li>
 
         <Content {...path.props} />
-        <VercelAnalytics />
         <PreviewBanner
           inAdmin={true}
           config={config as ClubsConfiguration}

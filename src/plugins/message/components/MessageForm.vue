@@ -185,8 +185,8 @@ export default defineComponent({
         isMember && !isInVerification
           ? 'is-plox'
           : isInVerification
-          ? 'animate-pulse'
-          : ''
+            ? 'animate-pulse'
+            : ''
       }`"
       :disabled="!isMember"
     >
