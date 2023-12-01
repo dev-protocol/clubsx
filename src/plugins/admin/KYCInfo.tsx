@@ -55,11 +55,15 @@ const FundsInfo = (props: {
     }
 
     fetchKYCStatus()
+    const interval = setInterval(() => fetchKYCStatus(true), 10 * 1000)
+    return () => clearInterval(interval) // Cleanup.
   }, [signer])
 
-  const fetchKYCStatus = async () => {
+  const fetchKYCStatus = async (isPolling: boolean = false) => {
     setIsFetchingKYCStatus(true)
-    setKYCProcessingText('Fetching KYC status...')
+    setKYCProcessingText(
+      `${isPolling ? 'Fetching' : 'Refreshing'} KYC status...`,
+    )
 
     const accountAddress = await signer?.getAddress()
     if (!accountAddress) {
