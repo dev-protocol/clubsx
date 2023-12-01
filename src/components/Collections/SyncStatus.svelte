@@ -23,7 +23,7 @@
     source: CollectionMembership
     state: State
     payload: string
-    isTimeLimitedCollection: boolean
+    isTimeLimitedCollection: boolean | 'both'
     customDescriptor: {
       set: Promise<boolean>
     }
@@ -36,12 +36,13 @@
   export let rpcUrl: string
   export let customTimeDescriptorAddress: string | undefined
   export let customMemberDescriptorAddress: string | undefined
+  export let customMixSlotDescriptorAddress: string | undefined
   export let expected: ExpectedStatus[]
   export let stateFetcher: (opts: {
     provider: ContractRunner
     propertyAddress: string
     payload: string
-    isTimeLimitedCollection: boolean
+    isTimeLimitedCollection: boolean | 'both'
   }) => Promise<Record<string, any>>
   export let stateSetter: (opts: {
     provider: Signer
@@ -64,12 +65,22 @@
     const descriptor = await whenDefined(sTokensManager, (cont) =>
       cont.descriptorOfPropertyByPayload(propertyAddress, data.payload),
     )
-    const customDescriptorAddres = data.isTimeLimitedCollection
-      ? customTimeDescriptorAddress
-      : customMemberDescriptorAddress
+
+    let customDescriptorAddress
+    switch (data.isTimeLimitedCollection) {
+      case true:
+        customDescriptorAddress = customTimeDescriptorAddress
+        break
+      case false:
+        customDescriptorAddress = customMemberDescriptorAddress
+        break
+      case 'both':
+        customDescriptorAddress = customMixSlotDescriptorAddress
+        break
+    }
     const test =
-      descriptor?.toLowerCase() === customDescriptorAddres?.toLowerCase()
-    console.log({ test, descriptor, customDescriptorAddres })
+      descriptor?.toLowerCase() === customDescriptorAddress?.toLowerCase()
+    console.log({ test, descriptor, customDescriptorAddress })
     return test
   }
 
@@ -159,6 +170,9 @@
     const memberItems = items.filter(
       ({ isTimeLimitedCollection }) => !isTimeLimitedCollection,
     )
+    const mixSlotItems = items.filter(
+      ({ isTimeLimitedCollection }) => isTimeLimitedCollection === 'both',
+    )
 
     // Filter out states with empty payload
     const validTimeStates = timeItems.filter(
@@ -167,8 +181,12 @@
     const validMemberStates = memberItems.filter(
       ({ payload }) => payload.trim() !== '',
     )
+    const validMixSlotStates = mixSlotItems.filter(
+      ({ payload }) => payload.trim() !== '',
+    )
     let resTime
     let resMem
+    let resMixSlot
     if (validTimeStates.length > 0) {
       resTime =
         (await whenDefinedAll(
@@ -204,6 +222,25 @@
         res_.wait().catch((err) => new Error(err)),
       )
       syncStatusDescriptor = resultMem instanceof Error ? resultMem : false
+    }
+    if (validMixSlotStates.length > 0) {
+      resMixSlot =
+        (await whenDefinedAll(
+          [sTokensManager, customMixSlotDescriptorAddress],
+          ([cont, descriptor]) =>
+            cont
+              .setTokenURIDescriptor(
+                propertyAddress,
+                descriptor,
+                mixSlotItems.map(({ payload }) => payload),
+              )
+              .catch((err) => new Error(err)),
+        )) ?? new Error('Client error: try it again!')
+      const resultMixSlot = await whenNotError(resMixSlot, (res_) =>
+        res_.wait().catch((err) => new Error(err)),
+      )
+      syncStatusDescriptor =
+        resultMixSlot instanceof Error ? resultMixSlot : false
     }
     initStatuses()
   }
