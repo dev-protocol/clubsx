@@ -1,4 +1,3 @@
-import type { BaseProvider } from '@ethersproject/providers'
 import { ethers } from 'ethers'
 import type {
   ContractRunner,
@@ -8,8 +7,6 @@ import type {
   Signer,
   Provider,
 } from 'ethers'
-import { timeABI } from './timeABI'
-import { memberABI } from './memberABI'
 import { mixSlotABI } from './mixSlotABI'
 import type { Image, MixImage } from './types/setImageArg'
 
@@ -87,35 +84,30 @@ const defaultAddress: Address = {
 export async function callSlotCollections(
   provider: BrowserProvider | ContractRunner,
   functionName: 'getSlotsLeft',
-  isTimeSlot: boolean | 'both',
   args: [propertyAddress: string, key: string],
 ): Promise<number>
 
 export async function callSlotCollections(
   provider: BrowserProvider | ContractRunner,
   functionName: 'propertyImages',
-  isTimeSlot: boolean | 'both',
   args: [propertyAddress: string, key: string],
 ): Promise<Image>
 
 export async function callSlotCollections(
   provider: Signer | ContractRunner | BrowserProvider,
   functionName: 'setImages',
-  isTimeSlot: boolean | 'both',
   args: [propertyAddress: string, images: Image[] | MixImage[], keys: string[]],
 ): Promise<TransactionResponse>
 
 export async function callSlotCollections(
   provider: Signer,
   functionName: 'removeImage',
-  isTimeSlot: boolean | 'both',
   args: [propertyAddress: string, key: string],
 ): Promise<TransactionResponse>
 
 export async function callSlotCollections(
   provider: Signer | ContractRunner | BrowserProvider,
   functionName: string,
-  isTimeSlot: boolean | 'both',
   args: unknown[],
 ): Promise<unknown> {
   const chainId = await ('getNetwork' in provider
@@ -129,22 +121,9 @@ export async function callSlotCollections(
     address.find((address) => address.chainId === chainId)?.addressList ||
     defaultAddress.addressList
 
-  let contractAddress, contractABI
+  const contractAddress = addressList.mixSlot
+  const contractABI = mixSlotABI
 
-  switch (isTimeSlot) {
-    case true:
-      contractAddress = addressList.timeSlot
-      contractABI = timeABI
-      break
-    case false:
-      contractAddress = addressList.memberSlot
-      contractABI = memberABI
-      break
-    case 'both':
-      contractAddress = addressList.mixSlot
-      contractABI = mixSlotABI
-      break
-  }
   const contract = new ethers.Contract(contractAddress, contractABI, provider)
 
   const result: TransactionReceipt = await contract[functionName](...args)

@@ -7,7 +7,11 @@ export type MembershipOption = {
   description: string
 }
 export type State = {
-  [key: string]: string | bigint | number
+  [key: string]:
+    | string
+    | bigint
+    | number
+    | ReadonlyArray<string | bigint | number>
 }
 export type ExpectedStatus = {
   payload: string
