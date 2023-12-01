@@ -14,7 +14,7 @@
   } from '@devprotocol/util-ts'
   import { arrayify, clientsSTokens } from '@devprotocol/dev-kit'
   import PQueue from 'p-queue'
-  import { values } from 'ramda'
+  import { equals, values } from 'ramda'
   import type { ExpectedStatus, State } from './types'
   import Skeleton from '@components/Global/Skeleton.svelte'
   import type { Membership } from '@plugins/memberships'
@@ -76,9 +76,12 @@
       }),
     )
     const expectedValues = values(data.state)
-    const resultValues = arrayify(res ?? {})
-    const test = expectedValues.every((v, i) => resultValues[i] === v)
+    const resultValues = arrayify(res ?? {}).map((v) =>
+      v instanceof Object ? values(v) : v,
+    )
+    const test = equals(expectedValues, resultValues)
     console.log('checkImage', test, propertyAddress, data)
+    console.log('compare', [expectedValues, resultValues])
     return test
   }
 
