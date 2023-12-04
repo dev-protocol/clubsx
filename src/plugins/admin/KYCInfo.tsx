@@ -277,6 +277,15 @@ const FundsInfo = (props: {
               </button>
             </div>
           </div>
+          <a
+            href="https://www.vecteezy.com/video/14415199-white-background-stripe-curve-wave-4k-resolution-clean-seamless-loop"
+            target="_blank"
+            rel="noopneer"
+            className="absolute right-0 opacity-50 translate-y-9 text-xs"
+          >
+            White Background Stripe Curve Wave 4K resolution clean, Seamless
+            loop Stock Videos by Vecteezy
+          </a>
         </div>
       )}
     </>
