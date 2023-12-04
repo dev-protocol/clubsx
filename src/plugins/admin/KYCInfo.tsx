@@ -11,6 +11,12 @@ enum KYCStatuses {
   NOT_VERIFIED,
 }
 
+const lazySetter = <T extends (v: any) => void>(
+  setter: T,
+  value: T extends (v: infer P) => void ? P : never,
+  delay: number,
+) => setTimeout(() => setter(value), delay)
+
 const FundsInfo = (props: {
   propertyAddress: string
   chainId: number
@@ -49,21 +55,22 @@ const FundsInfo = (props: {
 
   useEffect(() => {
     if (!signer) {
-      setIsFetchingKYCStatus(false)
+      lazySetter(setIsFetchingKYCStatus, false, 1000)
       setKYCStatus(KYCStatuses.NOT_VERIFIED)
       return
     }
 
     fetchKYCStatus()
+    const interval = setInterval(() => fetchKYCStatus(true), 10 * 1000)
+    return () => clearInterval(interval) // Cleanup.
   }, [signer])
 
-  const fetchKYCStatus = async () => {
+  const fetchKYCStatus = async (isPolling: boolean = false) => {
     setIsFetchingKYCStatus(true)
-    setKYCProcessingText('Fetching KYC status...')
 
     const accountAddress = await signer?.getAddress()
     if (!accountAddress) {
-      setIsFetchingKYCStatus(false)
+      lazySetter(setIsFetchingKYCStatus, false, 1000)
       setKYCProcessingText('Verify')
       return
     }
@@ -112,7 +119,7 @@ const FundsInfo = (props: {
       setKYCStatus(status)
     }
 
-    setIsFetchingKYCStatus(false)
+    lazySetter(setIsFetchingKYCStatus, false, 1000)
   }
 
   const setKYCInitiationFailed = (text?: string) => {
