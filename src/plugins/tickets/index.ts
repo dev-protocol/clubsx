@@ -19,6 +19,7 @@ import tickets1 from './assets/tickets-1.jpg'
 import tickets2 from './assets/tickets-2.jpg'
 import tickets3 from './assets/tickets-3.jpg'
 import readme from './README.md'
+import { getBanningRules } from './utils/get-banning-rules'
 
 export enum SlotType {
   WeekdayTime = 'weekday-time',
@@ -63,6 +64,7 @@ export const getPagePaths = (async (
   { getPluginConfigById },
 ) => {
   const tickets = getItems(options)
+  const ban = getBanningRules(options)
 
   const memberships: UndefinedOr<Membership>[] = tickets.map((tk) => {
     const [plg] = getPluginConfigById(tk.importedFrom.plugin)
@@ -78,7 +80,7 @@ export const getPagePaths = (async (
     ? [
         {
           paths: ['tickets'],
-          props: { tickets, memberships, propertyAddress, rpcUrl },
+          props: { tickets, memberships, propertyAddress, rpcUrl, ban },
           component: Index,
         },
         ...tickets.map((ticket, index) => ({
@@ -93,6 +95,7 @@ export const getPagePaths = (async (
             membership: memberships[index],
             propertyAddress,
             rpcUrl,
+            ban,
             signals: [ClubsPluginSignal.DisplayFullPage],
           },
           component: Id,

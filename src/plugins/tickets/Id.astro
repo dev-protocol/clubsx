@@ -2,12 +2,16 @@
 import type { Membership } from '@plugins/memberships'
 import type { Ticket } from '.'
 import Id_ from './Id.svelte'
+import type { BanningRules } from './utils/get-banning-rules'
 
-const { ticket, membership, rpcUrl } = Astro.props as {
+type Props = {
   ticket: Ticket
   membership: Membership
   rpcUrl: string
+  ban: BanningRules
 }
+
+const { ticket, membership, rpcUrl, ban } = Astro.props
 
 const sTokensId = Number(Astro.url.searchParams.get('id'))
 ---
@@ -18,4 +22,5 @@ const sTokensId = Number(Astro.url.searchParams.get('id'))
   membership={membership}
   sTokensId={sTokensId}
   rpcUrl={rpcUrl}
+  ban={ban}
 />
