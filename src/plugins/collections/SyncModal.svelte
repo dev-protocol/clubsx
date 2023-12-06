@@ -22,22 +22,15 @@
   export let chainId: number
   export let rpcUrl: string
 
-  const customTimeDescriptorAddress = address.find(
+  const customdescriptor = address.find(
     ({ chainId: chainId_ }) => chainId_ === chainId,
-  )?.addressList.timeSlot
-  const customMemberDescriptorAddress = address.find(
-    ({ chainId: chainId_ }) => chainId_ === chainId,
-  )?.addressList.memberSlot
-  const customMixSlotDescriptorAddress = address.find(
-    ({ chainId: chainId_ }) => chainId_ === chainId,
-  )?.addressList.mixSlot
+  )?.addressList
 
   const expectedMemberships: ExpectedStatus[] = collections.flatMap(
     (collection) =>
       collection.memberships.map((mem) => {
         const { decimals, address: token } = tokenInfo[mem.currency][chainId]
-        if (collection.isTimeLimitedCollection == true) {
-          return {
+        return {
             payload: bytes32Hex(mem.payload),
             source: mem,
             isTimeLimitedCollection: true,
@@ -46,6 +39,7 @@
               name: JSON.stringify(mem.name).slice(1, -1),
               description: JSON.stringify(mem.description).slice(1, -1),
               deadline: collection.endTime ? BigInt(collection.endTime) : 0n,
+              members:  mem.memberCount ? BigInt(mem.memberCount) : 0n,
               requiredTokenAmount: parseUnits(String(mem.price), decimals),
               requiredTokenFee: mem.fee?.percentage
                 ? parseUnits(
@@ -60,75 +54,21 @@
               gateway: mem.fee?.beneficiary ?? ZeroAddress,
             },
           }
-        } else if (collection.isTimeLimitedCollection == false) {
-          return {
-            payload: bytes32Hex(mem.payload),
-            source: mem,
-            isTimeLimitedCollection: false,
-            state: {
-              src: mem.imageSrc,
-              name: JSON.stringify(mem.name).slice(1, -1),
-              description: JSON.stringify(mem.description).slice(1, -1),
-              slots: mem.memberCount ? BigInt(mem.memberCount) : 0n,
-              requiredTokenAmount: parseUnits(String(mem.price), decimals),
-              requiredTokenFee: mem.fee?.percentage
-                ? parseUnits(
-                    new BigNumber(mem.price)
-                      .times(mem.fee.percentage)
-                      .dp(decimals, 1)
-                      .toFixed(),
-                    decimals,
-                  )
-                : 0n,
-              token: token,
-              gateway: mem.fee?.beneficiary ?? ZeroAddress,
-            },
-          }
-        } else {
-          return {
-            payload: bytes32Hex(mem.payload),
-            source: mem,
-            isTimeLimitedCollection: 'both',
-            state: {
-              src: mem.imageSrc,
-              name: JSON.stringify(mem.name).slice(1, -1),
-              description: JSON.stringify(mem.description).slice(1, -1),
-              slots: [
-                collection.endTime ? BigInt(collection.endTime) : 0n,
-                mem.memberCount ? BigInt(mem.memberCount) : 0n,
-              ],
-              requiredTokenAmount: parseUnits(String(mem.price), decimals),
-              requiredTokenFee: mem.fee?.percentage
-                ? parseUnits(
-                    new BigNumber(mem.price)
-                      .times(mem.fee.percentage)
-                      .dp(decimals, 1)
-                      .toFixed(),
-                    decimals,
-                  )
-                : 0n,
-              token: token,
-              gateway: mem.fee?.beneficiary ?? ZeroAddress,
-            },
-          }
-        }
-      }),
+        },
+      ),
   )
   const stateFetcher = async ({
     provider,
     propertyAddress,
     payload,
-    isTimeLimitedCollection,
   }: {
     provider: ContractRunner
     propertyAddress: string
     payload: string
-    isTimeLimitedCollection: boolean | 'both'
   }) => {
     return callSlotCollections(
       provider,
       'propertyImages',
-      isTimeLimitedCollection,
       [propertyAddress, payload],
     )
   }
@@ -141,51 +81,17 @@
     propertyAddress: string
     states: ExpectedStatus[]
   }) => {
-    const timeStates = states.filter(
-      ({ isTimeLimitedCollection }) => isTimeLimitedCollection,
-    )
-    const memberStates = states.filter(
-      ({ isTimeLimitedCollection }) => !isTimeLimitedCollection,
-    )
-    const mixStates = states.filter(
-      ({ isTimeLimitedCollection }) => isTimeLimitedCollection == 'both',
-    )
-
     // Filter out states with empty payload
-    const validTimeStates = timeStates.filter(
-      ({ payload }) => payload.trim() !== '',
-    )
-    const validMemberStates = memberStates.filter(
-      ({ payload }) => payload.trim() !== '',
-    )
-    const validMixStates = mixStates.filter(
+    const validStates = states.filter(
       ({ payload }) => payload.trim() !== '',
     )
 
     const results: TransactionResponse[] = []
-    if (validTimeStates.length) {
-      const res = await callSlotCollections(provider, 'setImages', true, [
+    if (validStates.length) {
+      const res = await callSlotCollections(provider, 'setImages', [
         propertyAddress,
-        validTimeStates.map(({ state }) => state),
-        validTimeStates.map(({ payload }) => payload),
-      ])
-      results.push(res)
-    }
-
-    if (validMemberStates.length) {
-      const res = await callSlotCollections(provider, 'setImages', false, [
-        propertyAddress,
-        validMemberStates.map(({ state }) => state),
-        validMemberStates.map(({ payload }) => payload),
-      ])
-      results.push(res)
-    }
-
-    if (validMixStates.length) {
-      const res = await callSlotCollections(provider, 'setImages', 'both', [
-        propertyAddress,
-        validMixStates.map(({ state }) => state),
-        validMixStates.map(({ payload }) => payload),
+        validStates.map(({ state }) => state),
+        validStates.map(({ payload }) => payload),
       ])
       results.push(res)
     }
@@ -194,9 +100,7 @@
 </script>
 
 <SyncStatus
-  {customTimeDescriptorAddress}
-  {customMemberDescriptorAddress}
-  {customMixSlotDescriptorAddress}
+  {customdescriptor}
   expected={expectedMemberships}
   {stateFetcher}
   {stateSetter}

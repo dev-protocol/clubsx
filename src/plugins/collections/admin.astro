@@ -1,7 +1,5 @@
 ---
-import limitedNoOfItemsImg from './assets/limited-number-of-items.svg'
-import timeLimitedCollectionImg from './assets/time-limited-collection.svg'
-import slotCollectionImg from './assets/slot-limited-collection.svg'
+import collectionsImg from './assets/slot-limited-collection.svg'
 import CollectionCard from '@components/Collections/CollectionCard.svelte'
 import type { Collection } from '@plugins/collections'
 
@@ -9,7 +7,7 @@ const { collections } = Astro.props as {
   collections: Collection[]
 }
 
-const baseRedirectionUrl = '/admin/collections/new'
+const baseRedirectionUrl = '/admin/collections'
 ---
 
 <div>
@@ -22,25 +20,11 @@ const baseRedirectionUrl = '/admin/collections/new'
 
   <div class="grid items-stretch gap-16 p-2.5 lg:grid-cols-2">
     <a
-      href={baseRedirectionUrl}
+      href={`${baseRedirectionUrl}/new`}
       class="flex items-center justify-center gap-4 rounded-[5px] bg-white p-2.5 lg:flex-col"
     >
-      <img src={limitedNoOfItemsImg.src} class="w-full max-w-[212px]" />
-      <p class="text-black lg:text-lg">Limited Quantity Items</p>
-    </a>
-    <a
-      href={`${baseRedirectionUrl}/time-limited-collection`}
-      class="flex items-center justify-center gap-4 rounded-[5px] bg-white p-2.5 lg:flex-col"
-    >
-      <img src={timeLimitedCollectionImg.src} class="w-full max-w-[212px]" />
-      <p class="text-black lg:text-lg">Time-limited Collection</p>
-    </a>
-    <a
-      href={`${baseRedirectionUrl}/slot-limited-collection`}
-      class="flex items-center justify-center gap-4 rounded-[5px] bg-white p-2.5 lg:flex-col"
-    >
-      <img src={slotCollectionImg.src} class="w-full max-w-[212px]" />
-      <p class="text-black lg:text-lg">Slot-limited Collection</p>
+      <img src={collectionsImg.src} class="w-full max-w-[212px]" />
+      <p class="text-black lg:text-lg">Created New Collections</p>
     </a>
   </div>
   {

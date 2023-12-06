@@ -5,7 +5,6 @@ import type { ClubsPropsAdminPages } from '@devprotocol/clubs-core'
 import type { Membership } from '@plugins/memberships'
 
 const {
-  isTimeLimitedCollection = false,
   rpcUrl,
   propertyAddress,
   preset,
@@ -32,7 +31,6 @@ const {
     existingCollections={collections}
     collection={preset}
     existingMemberships={existingMemberships}
-    isTimeLimitedCollection={isTimeLimitedCollection}
     clubName={name}
     currentPluginIndex={clubs.currentPluginIndex}
     propertyAddress={propertyAddress}

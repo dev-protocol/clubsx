@@ -41,7 +41,6 @@ export type Collection = {
   name: string
   imageSrc: string
   status: 'Draft' | 'Published'
-  isTimeLimitedCollection: boolean | 'both'
   endTime?: number
   description: string
   memberships: CollectionMembership[]
@@ -193,34 +192,13 @@ export const getAdminPaths = (async (
     'devprotocol:clubs:collections',
   )
 
-  const presetTimeCollection: Collection = {
+  const presetCollection: Collection = {
     id: 'preset-time-collection',
     name: 'My First Time Limited Collection',
     imageSrc: '',
     description: 'This is a time-limited collection.',
-    isTimeLimitedCollection: true,
     status: 'Draft',
     endTime: 0,
-    memberships: [],
-  }
-
-  const presetMemberCollection: Collection = {
-    id: 'preset-member-collection',
-    name: 'My First Quantity Limited Collection',
-    imageSrc: '',
-    description: 'This is a quantity-limited collection.',
-    isTimeLimitedCollection: false,
-    status: 'Draft',
-    memberships: [],
-  }
-
-  const presetSlotCollection: Collection = {
-    id: 'preset-member-collection',
-    name: 'My First Quantity Limited Collection',
-    imageSrc: '',
-    description: 'This is a quantity-limited collection.',
-    isTimeLimitedCollection: 'both',
-    status: 'Draft',
     memberships: [],
   }
 
@@ -263,34 +241,7 @@ export const getAdminPaths = (async (
       paths: ['collections', 'new'],
       component: AdminNew,
       props: {
-        isTimeLimitedCollection: false,
-        preset: presetMemberCollection,
-        collections,
-        existingMemberships,
-        rpcUrl,
-        propertyAddress,
-        name,
-      },
-    },
-    {
-      paths: ['collections', 'new', 'time-limited-collection'],
-      component: AdminNew,
-      props: {
-        isTimeLimitedCollection: true,
-        preset: presetTimeCollection,
-        collections,
-        existingMemberships,
-        rpcUrl,
-        propertyAddress,
-        name,
-      },
-    },
-    {
-      paths: ['collections', 'new', 'slot-limited-collection'],
-      component: AdminNew,
-      props: {
-        isTimeLimitedCollection: 'both',
-        preset: presetSlotCollection,
+        preset: presetCollection,
         collections,
         existingMemberships,
         rpcUrl,

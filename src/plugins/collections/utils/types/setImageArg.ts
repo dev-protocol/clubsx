@@ -3,18 +3,8 @@ export type Image = {
   readonly src?: string
   readonly name?: string
   readonly description?: string
-  readonly deadline?: number | string
-  readonly slots?: number | string
-  readonly requiredTokenAmount?: number | string | bigint
-  readonly requiredTokenFee?: number | string | bigint
-  readonly gateway?: string
-}
-
-export type MixImage = {
-  readonly src?: string
-  readonly name?: string
-  readonly description?: string
-  readonly slots?: [string | number | bigint, string | number | bigint]
+  readonly deadline?: number | string | bigint
+  readonly members?: number | string | bigint
   readonly requiredTokenAmount?: number | string | bigint
   readonly requiredTokenFee?: number | string | bigint
   readonly gateway?: string
