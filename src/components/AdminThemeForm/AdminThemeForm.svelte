@@ -192,7 +192,7 @@
       <button
         class="hs-button is-filled is-large max-w-fit"
         name="link-add-button"
-        on:click={addNewNavigationLinks}
+        on:click|preventDefault={addNewNavigationLinks}
       >
         <i class="hs-button__icon">
           <svg
