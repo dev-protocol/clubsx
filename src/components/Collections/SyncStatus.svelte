@@ -74,7 +74,7 @@
       stateFetcher({
         provider: prov,
         propertyAddress,
-        payload: data.payload
+        payload: data.payload,
       }),
     )
     const expectedValues = values(data.state)
@@ -150,9 +150,7 @@
     const items = await listOfoutOfSyncDescriptors
 
     // Filter out states with empty payload
-    const validStates = items.filter(
-      ({ payload }) => payload.trim() !== '',
-    )
+    const validStates = items.filter(({ payload }) => payload.trim() !== '')
     let res
     if (validStates.length > 0) {
       res =

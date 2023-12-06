@@ -31,31 +31,30 @@
       collection.memberships.map((mem) => {
         const { decimals, address: token } = tokenInfo[mem.currency][chainId]
         return {
-            payload: bytes32Hex(mem.payload),
-            source: mem,
-            isTimeLimitedCollection: true,
-            state: {
-              src: mem.imageSrc,
-              name: JSON.stringify(mem.name).slice(1, -1),
-              description: JSON.stringify(mem.description).slice(1, -1),
-              deadline: collection.endTime ? BigInt(collection.endTime) : 0n,
-              members:  mem.memberCount ? BigInt(mem.memberCount) : 0n,
-              requiredTokenAmount: parseUnits(String(mem.price), decimals),
-              requiredTokenFee: mem.fee?.percentage
-                ? parseUnits(
-                    new BigNumber(mem.price)
-                      .times(mem.fee.percentage)
-                      .dp(decimals, 1)
-                      .toFixed(),
-                    decimals,
-                  )
-                : 0n,
-              token: token,
-              gateway: mem.fee?.beneficiary ?? ZeroAddress,
-            },
-          }
-        },
-      ),
+          payload: bytes32Hex(mem.payload),
+          source: mem,
+          isTimeLimitedCollection: true,
+          state: {
+            src: mem.imageSrc,
+            name: JSON.stringify(mem.name).slice(1, -1),
+            description: JSON.stringify(mem.description).slice(1, -1),
+            deadline: collection.endTime ? BigInt(collection.endTime) : 0n,
+            members: mem.memberCount ? BigInt(mem.memberCount) : 0n,
+            requiredTokenAmount: parseUnits(String(mem.price), decimals),
+            requiredTokenFee: mem.fee?.percentage
+              ? parseUnits(
+                  new BigNumber(mem.price)
+                    .times(mem.fee.percentage)
+                    .dp(decimals, 1)
+                    .toFixed(),
+                  decimals,
+                )
+              : 0n,
+            token: token,
+            gateway: mem.fee?.beneficiary ?? ZeroAddress,
+          },
+        }
+      }),
   )
   const stateFetcher = async ({
     provider,
@@ -66,11 +65,10 @@
     propertyAddress: string
     payload: string
   }) => {
-    return callSlotCollections(
-      provider,
-      'propertyImages',
-      [propertyAddress, payload],
-    )
+    return callSlotCollections(provider, 'propertyImages', [
+      propertyAddress,
+      payload,
+    ])
   }
   const stateSetter = async ({
     provider,
@@ -82,9 +80,7 @@
     states: ExpectedStatus[]
   }) => {
     // Filter out states with empty payload
-    const validStates = states.filter(
-      ({ payload }) => payload.trim() !== '',
-    )
+    const validStates = states.filter(({ payload }) => payload.trim() !== '')
 
     const results: TransactionResponse[] = []
     if (validStates.length) {

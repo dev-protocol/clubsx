@@ -239,20 +239,20 @@
     >
       {#each collection.memberships as mem, i}
         {#if validationResult === true}
-            {#await getSlotsForMembership(mem) then slots}
-              <MembershipOption
-                clubName={clubName ?? 'Your Club'}
-                id={mem.id}
-                name={mem.name}
-                imagePath={mem.imageSrc}
-                price={mem.price.toString()}
-                currency={mem.currency}
-                description={mem.description}
-                action={`/collections/checkout/${bytes32Hex(mem.payload)}`}
-                actionLabel="Purchase"
-                slotOutTotal={slots}
-              />
-            {/await}
+          {#await getSlotsForMembership(mem) then slots}
+            <MembershipOption
+              clubName={clubName ?? 'Your Club'}
+              id={mem.id}
+              name={mem.name}
+              imagePath={mem.imageSrc}
+              price={mem.price.toString()}
+              currency={mem.currency}
+              description={mem.description}
+              action={`/collections/checkout/${bytes32Hex(mem.payload)}`}
+              actionLabel="Purchase"
+              slotOutTotal={slots}
+            />
+          {/await}
         {/if}
       {/each}
     </div>

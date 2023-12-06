@@ -88,11 +88,7 @@ export async function callSlotCollections(
     address.find((address) => address.chainId === chainId)?.addressList ||
     defaultAddress.addressList
 
-  const contract = new ethers.Contract(
-    addressList,
-    mixSlotABI,
-    provider,
-  )
+  const contract = new ethers.Contract(addressList, mixSlotABI, provider)
 
   const result: TransactionReceipt = await contract[functionName](...args)
   return result
