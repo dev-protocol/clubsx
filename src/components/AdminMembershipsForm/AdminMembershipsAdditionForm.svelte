@@ -15,7 +15,7 @@
     PAYMENT_TYPE_STAKE_FEE,
   } from '@constants/memberships'
   import { bytes32Hex } from '@devprotocol/clubs-core'
-  import HSButton from '@devprotocol/clubs-core/ui/svelte'
+  import { equals } from 'ramda'
 
   export let useOnFinishCallback: boolean = false
   export let currentPluginIndex: number
@@ -314,7 +314,11 @@
     // Duplication detection
     let count = 1
     let _id = id
-    while (existingMemberships.some((x) => x.id === id)) {
+    while (
+      existingMemberships
+        .filter((m) => equals(m.payload, membership.payload) === false)
+        .some((x) => x.id === id)
+    ) {
       count = count + 1
       id = `${_id}-${count}`
     }
