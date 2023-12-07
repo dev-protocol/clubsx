@@ -24,7 +24,7 @@
 
   const customdescriptor = address.find(
     ({ chainId: chainId_ }) => chainId_ === chainId,
-  )?.addressList
+  )?.address
 
   const expectedMemberships: ExpectedStatus[] = collections.flatMap(
     (collection) =>

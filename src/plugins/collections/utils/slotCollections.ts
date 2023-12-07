@@ -13,39 +13,39 @@ import type { Image } from './types/setImageArg'
 
 type Address = {
   chainId: number
-  addressList: string
+  address: string
 }
 
 export const address: Address[] = [
   {
     chainId: 1,
-    addressList: '0x0000000000000000000000000000000000000000',
+    address: '0x0000000000000000000000000000000000000000',
   },
   {
     chainId: 4,
-    addressList: '0x0000000000000000000000000000000000000000',
+    address: '0x0000000000000000000000000000000000000000',
   },
   {
     chainId: 42161,
-    addressList: '0x0000000000000000000000000000000000000000',
+    address: '0x0000000000000000000000000000000000000000',
   },
   {
     chainId: 421611,
-    addressList: '0x0000000000000000000000000000000000000000',
+    address: '0x0000000000000000000000000000000000000000',
   },
   {
     chainId: 137,
-    addressList: '0x0000000000000000000000000000000000000000',
+    address: '0x0000000000000000000000000000000000000000',
   },
   {
     chainId: 80001,
-    addressList: '0x40be0Bc51523E6eF9b1d7F98B8545859efC708c1',
+    address: '0x40be0Bc51523E6eF9b1d7F98B8545859efC708c1',
   },
 ]
 
 const defaultAddress: Address = {
   chainId: 137,
-  addressList: '0x0000000000000000000000000000000000000000',
+  address: '0x0000000000000000000000000000000000000000',
 }
 
 export async function callSlotCollections(
@@ -85,8 +85,8 @@ export async function callSlotCollections(
   })
 
   const addressList =
-    address.find((address) => address.chainId === chainId)?.addressList ||
-    defaultAddress.addressList
+    address.find((address) => address.chainId === chainId)?.address ||
+    defaultAddress.address
 
   const contract = new ethers.Contract(addressList, mixSlotABI, provider)
 
