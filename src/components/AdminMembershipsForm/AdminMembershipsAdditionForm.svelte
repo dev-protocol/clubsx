@@ -26,6 +26,7 @@
   export let propertyAddress: string | null | undefined = undefined
   export let clubName: string | undefined = undefined
   const metaOfPayload = bytes32Hex(membership.payload)
+  const originalBeneficiary = membership.fee?.beneficiary
 
   type MembershipPaymentType = 'instant' | 'stake' | 'custom' | ''
 
@@ -67,6 +68,8 @@
   const maxPrice = 1e20
   const minCustomFee100 = 0
   const maxCustomFee100 = 95
+
+  const beneficiary = () => originalBeneficiary ?? currentAddress ?? ZeroAddress
 
   const deleteMembership = (selectedMembership: Membership) => {
     updatingMembershipsStatus = true
@@ -139,7 +142,7 @@
         ...membership,
         fee: {
           percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
-          beneficiary: currentAddress ?? ZeroAddress,
+          beneficiary: beneficiary(),
         },
         paymentType: 'custom',
       }
@@ -154,7 +157,7 @@
         ...membership,
         fee: {
           percentage: PAYMENT_TYPE_INSTANT_FEE,
-          beneficiary: currentAddress ?? ZeroAddress,
+          beneficiary: beneficiary(),
         },
         paymentType: 'instant',
       }
@@ -166,7 +169,7 @@
         ...membership,
         fee: {
           percentage: PAYMENT_TYPE_STAKE_FEE,
-          beneficiary: currentAddress ?? ZeroAddress,
+          beneficiary: beneficiary(),
         },
         paymentType: 'stake',
       }
@@ -177,7 +180,7 @@
         ...membership,
         fee: {
           percentage: membershipCustomFee100 / 100,
-          beneficiary: currentAddress ?? ZeroAddress,
+          beneficiary: beneficiary(),
         },
         paymentType: 'custom',
       }
@@ -261,17 +264,12 @@
 
     const search = mode === 'edit' ? originalId : membership.id
     membership.accessControl = usingAccessControl ? accessControl : undefined
-    if (
-      currentAddress &&
-      membership.fee &&
-      currentAddress !== membership.fee.beneficiary &&
-      membership.fee.percentage > 0
-    ) {
+    if (membership.fee && membership.fee.percentage > 0) {
       membership = {
         ...membership,
         fee: {
           ...membership.fee,
-          beneficiary: currentAddress,
+          beneficiary: beneficiary(),
         },
       }
     }
@@ -283,6 +281,7 @@
         )
       : // If not, add it.
         [...existingMemberships, membership]
+    console.log('membership', membership, { currentAddress })
 
     setOptions(
       [{ key: 'memberships', value: newMemberships }],
@@ -351,7 +350,7 @@
       membership = {
         ...membership,
         fee: {
-          beneficiary: currentAddress ?? ZeroAddress,
+          beneficiary: beneficiary(),
           percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
         },
         paymentType: 'custom',
@@ -379,7 +378,7 @@
       ...membership,
       fee: {
         percentage: membershipCustomFee100 / 100,
-        beneficiary: currentAddress ?? ZeroAddress,
+        beneficiary: beneficiary(),
       },
       paymentType: 'custom',
     }
@@ -470,7 +469,7 @@
       ...membership,
       fee: {
         percentage: membershipCustomFee100,
-        beneficiary: currentAddress ?? ZeroAddress,
+        beneficiary: beneficiary(),
       },
       paymentType: 'custom',
     }
