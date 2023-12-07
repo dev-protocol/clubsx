@@ -105,10 +105,10 @@
     unist-util-visit "^4.1.2"
     vfile "^5.3.7"
 
-"@astrojs/netlify@3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@astrojs/netlify/-/netlify-3.1.0.tgz#bd55048c1e62145ec048a4c9bd822b7671d1b11d"
-  integrity sha512-+MMPq0c67nWnE347Xz1lLvUeopUqrCkcY+OBnkyJBB52FFJBuUCkYYQj6gwnwGmR11B3oLmcBQut02IKV7puTA==
+"@astrojs/netlify@3.1.1":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@astrojs/netlify/-/netlify-3.1.1.tgz#598a73cbe4a6efe4d23575ba9b93e8ce9b3db397"
+  integrity sha512-zXApWH3uaW0/sxu75S4XfVO7xe8pmPtlGzBDFWyeceIi9u2oWgnFdVdNEnZ/bb5//+54b4y/LeL4yzL5kDjX6Q==
   dependencies:
     "@astrojs/underscore-redirects" "^0.3.3"
     "@netlify/functions" "^2.0.1"
