@@ -1,3 +1,5 @@
+import type { ClubsFunctionStandardPlugin } from '@devprotocol/clubs-core'
+
 export const modules = {
   'devprotocol:clubs:plugin:community': () => import('@plugins/community'),
   'devprotocol:clubs:theme-1': () => import('@plugins/default-theme'),
@@ -7,7 +9,10 @@ export const modules = {
   'devprotocol:clubs:simple-memberships': () => import('@plugins/memberships'),
   'devprotocol:clubs:gated-contact-form': () => import('@plugins/message'),
   'devprotocol:clubs:plugin:quests': () => import('@plugins/quests'),
-  'clubs-plugin-links': () => import('@kazu80/clubs-plugin-links'),
+  'clubs-plugin-links': () =>
+    import(
+      '@kazu80/clubs-plugin-links'
+    ) as Promise<ClubsFunctionStandardPlugin>,
   'devprotocol:clubs:collections': () => import('@plugins/collections'),
   'devprotocol:clubs:plugin:tickets': () => import('@plugins/tickets'),
   'devprotocol:clubs:plugin:posts': () =>
