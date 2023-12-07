@@ -105,14 +105,14 @@
     unist-util-visit "^4.1.2"
     vfile "^5.3.7"
 
-"@astrojs/netlify@3.0.4":
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/@astrojs/netlify/-/netlify-3.0.4.tgz#7fcd6b64f924b28a954d7e3375d3af251fdb71ea"
-  integrity sha512-zVDr53WEAyrsAIvKNgi1DfER5Vq83/z8rT71r2Id/4ygw5dH04fPGjBroovJYMDXSip/rZQIvNa52A0iMFs7Ng==
+"@astrojs/netlify@3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/netlify/-/netlify-3.1.0.tgz#bd55048c1e62145ec048a4c9bd822b7671d1b11d"
+  integrity sha512-+MMPq0c67nWnE347Xz1lLvUeopUqrCkcY+OBnkyJBB52FFJBuUCkYYQj6gwnwGmR11B3oLmcBQut02IKV7puTA==
   dependencies:
     "@astrojs/underscore-redirects" "^0.3.3"
     "@netlify/functions" "^2.0.1"
-    esbuild "^0.19.2"
+    esbuild "^0.19.5"
 
 "@astrojs/prefetch@0.4.1":
   version "0.4.1"
@@ -5878,7 +5878,7 @@ esbuild@^0.19.2:
     "@esbuild/win32-ia32" "0.19.5"
     "@esbuild/win32-x64" "0.19.5"
 
-esbuild@^0.19.3:
+esbuild@^0.19.3, esbuild@^0.19.5:
   version "0.19.8"
   resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.19.8.tgz#ad05b72281d84483fa6b5345bd246c27a207b8f1"
   integrity sha512-l7iffQpT2OrZfH2rXIp7/FkmaeZM0vxbxN9KfiCwGYuZqzMg/JdvX26R31Zxn/Pxvsrg3Y9N6XTcnknqDyyv4w==
