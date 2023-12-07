@@ -15,7 +15,6 @@
     PAYMENT_TYPE_STAKE_FEE,
   } from '@constants/memberships'
   import { bytes32Hex } from '@devprotocol/clubs-core'
-  import HSButton from '@devprotocol/clubs-core/ui/svelte'
 
   export let useOnFinishCallback: boolean = false
   export let currentPluginIndex: number
@@ -51,7 +50,6 @@
 
   const originalId = membership.id
   const provider = new JsonRpcProvider(rpcUrl)
-  let membershipExists = false
   let loading = false
 
   let connection: typeof Connection
@@ -414,29 +412,25 @@
 
     const contract = l1 ?? l2
     const positions = await contract?.positionsOfProperty(propertyAddress)
-    noOfPositions = positions?.length || 0
 
     if (!positions || !positions?.length) {
       loading = false
       return
     }
 
-    for (const position of positions) {
-      const positionPayload = await contract?.payloadOf(position)
-
-      if (
-        bytes32Hex(
-          typeof membership.payload === typeof {} // If membership.payload is an object
-            ? new Uint8Array(Object.values(membership.payload)) // then we use only values
-            : membership.payload, // else we use the array/string directly
-        ) === positionPayload &&
-        !membershipExists
-      ) {
-        membershipExists = true
-        break
-      }
-    }
-
+    const filter = await Promise.all(
+      positions.map(async (position) => {
+        const positionPayload = await contract?.payloadOf(position)
+        return (
+          bytes32Hex(
+            typeof membership.payload === typeof {} // If membership.payload is an object
+              ? new Uint8Array(Object.values(membership.payload)) // then we use only values
+              : membership.payload, // else we use the array/string directly
+          ) === positionPayload
+        )
+      }),
+    )
+    noOfPositions = filter.filter((x) => x).length
     loading = false
   }
 
@@ -478,45 +472,15 @@
 
 <div class="relative grid gap-16">
   <!-- Form no editable message -->
-  {#if noOfPositions && membershipExists}
-    <div
-      class={`absolute inset-0 z-[1000] flex items-center justify-center bg-black/30 p-4 backdrop-blur-sm`}
-    >
-      <p
-        class="absolute top-[50%] h-full max-h-full w-full max-w-full text-center font-bold text-white"
-      >
-        This membership cannot be edited since it already has {noOfPositions} members.
-        <br />
-        {#if !membership.deprecated}
-          <button
-            class={`mt-2 w-fit rounded bg-dp-blue-grey-400 p-4 text-center text-sm font-semibold text-white ${
-              updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
-            }`}
-            id={`delete-opt`}
-            on:click|preventDefault={() => deleteMembership(membership)}
-            >Delete</button
-          >
-        {/if}
-        <br />
-        {#if membership.deprecated}
-          <button
-            class={`mt-2 w-fit rounded bg-dp-blue-grey-400 p-4 text-center text-sm font-semibold text-white ${
-              updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
-            }`}
-            id={`activate-opt`}
-            on:click|preventDefault={() => activateMembership(membership)}
-            >Activate</button
-          >
-        {/if}
-      </p>
-    </div>
+  {#if loading}
+    <p class="animate-pulse bg-gray-500/60 rounded text-transparent">.</p>
   {/if}
-  <form
-    on:change|preventDefault={(_) => update()}
-    class={`grid gap-16 ${loading ? 'animate-pulse' : ''} ${
-      membershipExists ? 'opacity-30' : ''
-    }`}
-  >
+  {#if !loading && noOfPositions > 0}
+    <p class="text-center bg-dp-yellow-200 rounded text-dp-yellow-ink">
+      ⚠️ This membership already has {noOfPositions} members.
+    </p>
+  {/if}
+  <form on:change|preventDefault={(_) => update()} class="grid gap-16">
     <div class="grid gap-16 lg:grid-cols-[3fr_2fr]">
       <!-- Form -->
       <div class="grid gap-8">
@@ -529,7 +493,6 @@
             on:change={onChangeName}
             id="membership-name"
             name="membership-name"
-            disabled={membershipExists}
           />
         </label>
 
@@ -548,7 +511,6 @@
               type="file"
               accept=".jpg, .jpeg, .png, .gif, .apng, .tiff"
               on:change={onFileSelected}
-              disabled={membershipExists}
             />
           </label>
           <p class="hs-form-field__helper mt-2">
@@ -597,7 +559,6 @@
               id="membership-price"
               name="membership-price"
               type="number"
-              disabled={membershipExists}
               min={minPrice}
               max={maxPrice}
             />
@@ -606,7 +567,6 @@
               name="membership-currency"
               class="hs-form-field__input w-fit"
               id="membership-currency"
-              disabled={membershipExists}
               on:change={resetMembershipFee}
             >
               <option value="USDC" class="bg-primary-200 text-primary-ink"
@@ -801,7 +761,6 @@
         bind:value={membership.description}
         id="membership-description"
         name="membership-description"
-        disabled={membershipExists}
       />
       <span class="hs-form-field__helper">
         Markdown is available <a
