@@ -36,7 +36,14 @@
       membership.accessControl.description,
   )
   let membershipPaymentType: MembershipPaymentType =
-    membership.paymentType ?? (membership.currency === 'DEV' ? 'custom' : '')
+    membership.paymentType ??
+    (membership.currency === 'DEV'
+      ? 'custom'
+      : membership.fee?.percentage === PAYMENT_TYPE_INSTANT_FEE
+        ? 'instant'
+        : membership.fee?.percentage === PAYMENT_TYPE_STAKE_FEE
+          ? 'stake'
+          : 'custom')
   let membershipCustomFee100: number = membership.fee
     ? membership.fee.percentage * 100
     : membership.currency === 'DEV'
