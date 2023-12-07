@@ -8,10 +8,10 @@ export const ALL: APIRoute = async (event) => {
 
   const config = () => _config(params.site)
 
-  const { all } = apiFactory({
+  const { ALL } = apiFactory({
     config,
     plugins,
   })
 
-  return all(event)
+  return ALL(event)
 }

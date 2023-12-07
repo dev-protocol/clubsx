@@ -1,6 +1,7 @@
 import type {
   ClubsConfiguration,
   ClubsFunctionPlugin,
+  ClubsFunctionStandardPlugin,
   ClubsNavigationLink,
   ClubsPluginMeta,
   ClubsPluginOptions,
@@ -231,7 +232,7 @@ export const plugins = [
   $11,
   $12,
   $13,
-  $14,
+  $14 as ClubsFunctionStandardPlugin,
   $15,
   $16,
   $17,
