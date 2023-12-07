@@ -70,7 +70,10 @@
   const minCustomFee100 = 0
   const maxCustomFee100 = 95
 
-  const beneficiary = () => originalBeneficiary ?? currentAddress ?? ZeroAddress
+  const beneficiary = () =>
+    (originalBeneficiary === ZeroAddress ? undefined : originalBeneficiary) ??
+    currentAddress ??
+    ZeroAddress
 
   const deleteMembership = (selectedMembership: Membership) => {
     updatingMembershipsStatus = true
