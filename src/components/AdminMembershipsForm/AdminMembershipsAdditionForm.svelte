@@ -15,7 +15,6 @@
     PAYMENT_TYPE_STAKE_FEE,
   } from '@constants/memberships'
   import { bytes32Hex } from '@devprotocol/clubs-core'
-  import HSButton from '@devprotocol/clubs-core/ui/svelte'
 
   export let useOnFinishCallback: boolean = false
   export let currentPluginIndex: number
@@ -473,9 +472,12 @@
 
 <div class="relative grid gap-16">
   <!-- Form no editable message -->
-  {#if noOfPositions > 0}
-    <p class="text-center font-bold">
-      This membership already has {noOfPositions} members.
+  {#if loading}
+    <p class="animate-pulse bg-gray-500/60 rounded text-transparent">.</p>
+  {/if}
+  {#if !loading && noOfPositions > 0}
+    <p class="text-center bg-dp-yellow-200 rounded text-dp-yellow-ink">
+      ⚠️ This membership already has {noOfPositions} members.
     </p>
   {/if}
   <form on:change|preventDefault={(_) => update()} class="grid gap-16">
