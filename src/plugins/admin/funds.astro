@@ -8,7 +8,7 @@ import {
   getFlagsByParams,
 } from '@fixtures/flags'
 
-import { Withdrawal } from './Withdrawal'
+import { KYCStatuses, Withdrawal } from './Withdrawal'
 
 const { memberships, chainId, propertyAddress } = Astro.props
 
@@ -39,6 +39,7 @@ const uniqueBeneficiaries = new Array(...new Set(beneficiaries))
         chainId={chainId}
         uniqueBeneficiaries={uniqueBeneficiaries}
         propertyAddress={propertyAddress}
+        KYCStatus={KYCStatuses.NOT_VERIFIED}
       />
     )
   }
