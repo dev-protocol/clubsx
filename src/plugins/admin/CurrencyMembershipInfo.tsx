@@ -17,6 +17,7 @@ type Props = {
   isYourWithdrawable: boolean
   uniqueBeneficiaries: string[]
   updateWithdrawableInDollars: (allCurrencyIndex: number, value: string) => void
+  isKYCVerified: boolean
 }
 
 const CurrencyMembershipInfo = (props: Props) => {
@@ -147,10 +148,12 @@ const CurrencyMembershipInfo = (props: Props) => {
       </p>
       <button
         onClick={() => claimWithdrawable(props.currency)}
-        disabled={true || !Number(withdrawable)} // TODO: temporary disabled until kyc is in place.
-        className={`hs-button is-filled col-span-2 disabled:cursor-not-allowed disabled:hover:animate-[horizontal-shaking_.06s_5] lg:col-span-1 ${
-          props.isYourWithdrawable ? '' : 'invisible'
-        }`}
+        disabled={!props.isKYCVerified || !Number(withdrawable)}
+        className={`hs-button is-filled col-span-2 ${
+          !props.isKYCVerified
+            ? 'disabled:cursor-not-allowed disabled:hover:animate-[horizontal-shaking_.06s_5]'
+            : ''
+        } lg:col-span-1 ${props.isYourWithdrawable ? '' : 'invisible'}`}
       >
         Withdraw {props.currency}
       </button>
