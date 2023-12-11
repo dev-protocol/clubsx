@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import StakeInfo from './StakeInfo'
+import type { KYCStatuses } from './Withdrawal'
 import { ALL_CURRENCIES } from '@constants/memberships'
 import CurrencyMembershipInfo from './CurrencyMembershipInfo'
 import NotVerifiedBannerImg from './assets/NotVerifiedBannerImg.svg'
@@ -9,6 +10,7 @@ const FundsInfo = (props: {
   propertyAddress: string
   chainId: number
   uniqueBeneficiaries: string[]
+  KYCStatus: KYCStatuses
 }) => {
   const [connection, setConnection] = useState<any>(undefined)
   const [currentAddress, setCurrentAddress] = useState<string>()
