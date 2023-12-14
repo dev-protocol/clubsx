@@ -16,9 +16,7 @@
   } from '@constants/memberships'
   import { bytes32Hex } from '@devprotocol/clubs-core'
   import { equals } from 'ramda'
-  import {
-    emptyDummyImage
-  } from '@plugins/collections/fixtures'
+  import { emptyDummyImage } from '@plugins/collections/fixtures'
 
   export let useOnFinishCallback: boolean = false
   export let currentPluginIndex: number
@@ -307,11 +305,12 @@
 
     const file = e.currentTarget.files[0]
 
-    const updatedImagepath = (await uploadImageAndGetPath(file)) || emptyDummyImage(400, 400)
+    const updatedImagepath =
+      (await uploadImageAndGetPath(file)) || emptyDummyImage(400, 400)
 
     membership.imageSrc = updatedImagepath
     membership = {
-      ...membership
+      ...membership,
     }
 
     update()
