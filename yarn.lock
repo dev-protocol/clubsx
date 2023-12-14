@@ -588,10 +588,17 @@
     svelte "^4.0.0"
     vue "^3.2.0"
 
+<<<<<<< HEAD
+"@devprotocol/clubs-plugin-posts@0.8.1":
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts/-/clubs-plugin-posts-0.8.1.tgz#5b7300c1e2d54e05cad673f60c027faf9b438922"
+  integrity sha512-Ikd14Qn8aSMB2F+vIQMksGI2uduT0aQS8n7FjzJFVUln7k9rVqKFL7S6J4O71RTirvYg1N2/IksfI2hT+IkI4w==
+=======
 "@devprotocol/clubs-plugin-posts@0.8.0":
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts/-/clubs-plugin-posts-0.8.0.tgz#67e882bdeb01ef17d12e875af4cee021ac06dc11"
   integrity sha512-V/BDEmi1XiWttSWOzJczb4MLj4p0t1CsBFD4K2AoILpoXPyiii7DnFIbjqnWehJZ/05kKedbP5w0htt/zkcVQQ==
+>>>>>>> main
   dependencies:
     "@boringer-avatars/vue3" "^0.2.1"
     "@devprotocol/dev-kit" "8.6.0"
@@ -600,7 +607,11 @@
     dayjs "^1.11.8"
     dompurify "^3.0.5"
     ethers "^6.6.4"
+<<<<<<< HEAD
+    marked "11.1.0"
+=======
     marked "11.0.1"
+>>>>>>> main
     photoswipe "5.4.3"
     ramda "0.29.1"
     redis "^4.6.7"
@@ -7730,10 +7741,17 @@ marked@10.0.0, marked@^10.0.0:
   resolved "https://registry.yarnpkg.com/marked/-/marked-10.0.0.tgz#7fe1805bb908433d760e2de0fcc8841a2b2d745c"
   integrity sha512-YiGcYcWj50YrwBgNzFoYhQ1hT6GmQbFG8SksnYJX1z4BXTHSOrz1GB5/Jm2yQvMg4nN1FHP4M6r03R10KrVUiA==
 
+<<<<<<< HEAD
+marked@11.1.0:
+  version "11.1.0"
+  resolved "https://registry.yarnpkg.com/marked/-/marked-11.1.0.tgz#f2d12323e80ba8a97cc8262fe7e94fcc007476ab"
+  integrity sha512-fvKJWAPEafVj1dwGwcPI5mBB/0pvViL6NlCbNDG1HOIRwwAU/jeMoFxfbRLuirO1wRH7m4yPvBqD/O1wyWvayw==
+=======
 marked@11.0.1:
   version "11.0.1"
   resolved "https://registry.yarnpkg.com/marked/-/marked-11.0.1.tgz#f8010ec2e358c0f4efedbac1ed3dbac2c7f46cdc"
   integrity sha512-P4kDhFEMlvLePBPRwOcMOv6+lYUbhfbSxJFs3Jb4Qx7v6K7l+k8Dxh9CEGfRvK71tL+qIFz5y7Pe4uzt4+/A3A==
+>>>>>>> main
 
 mdast-util-definitions@^6.0.0:
   version "6.0.0"
