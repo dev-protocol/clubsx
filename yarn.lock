@@ -8679,9 +8679,9 @@ p-queue@^7.4.1:
     p-timeout "^5.0.2"
 
 p-queue@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/p-queue/-/p-queue-8.0.0.tgz#f92b4855b81cc478765d44f2361f0e517f5e1bc7"
-  integrity sha512-7LAaj8F47D5963LiTIAb/4UWR6w6SnDrDlxXg9ev/U0Lg9h35Kg8C8KiBry0c6MUofSicdLsEvS0j25gHAyCuA==
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/p-queue/-/p-queue-8.0.1.tgz#718b7f83836922ef213ddec263ff4223ce70bef8"
+  integrity sha512-NXzu9aQJTAzbBqOt2hwsR63ea7yvxJc0PwN/zobNAudYfb1B7R08SzB4TsLeSbUCuG467NhnoT0oO6w1qRO+BA==
   dependencies:
     eventemitter3 "^5.0.1"
     p-timeout "^6.1.2"
