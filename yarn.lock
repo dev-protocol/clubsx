@@ -581,23 +581,23 @@
     svelte "^4.0.0"
     vue "^3.2.0"
 
-"@devprotocol/clubs-plugin-posts@0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts/-/clubs-plugin-posts-0.7.0.tgz#3ec5afd85778bf59dff891094711ffef84d1d9a2"
-  integrity sha512-IjFigxLxpS7BD4ueCKEctomCW4LASSaipG8eIcgbJhxLFoc62IIEJnHzpKeWHf7v7Ah+t5bsX9ovS5xw8pZ/Dg==
+"@devprotocol/clubs-plugin-posts@0.8.1":
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts/-/clubs-plugin-posts-0.8.1.tgz#5b7300c1e2d54e05cad673f60c027faf9b438922"
+  integrity sha512-Ikd14Qn8aSMB2F+vIQMksGI2uduT0aQS8n7FjzJFVUln7k9rVqKFL7S6J4O71RTirvYg1N2/IksfI2hT+IkI4w==
   dependencies:
     "@boringer-avatars/vue3" "^0.2.1"
-    "@devprotocol/dev-kit" "8.5.1"
+    "@devprotocol/dev-kit" "8.6.0"
     "@devprotocol/util-ts" "4.0.0"
     bignumber.js "9.1.2"
     dayjs "^1.11.8"
     dompurify "^3.0.5"
     ethers "^6.6.4"
-    marked "9.1.2"
-    photoswipe "5.4.2"
+    marked "11.1.0"
+    photoswipe "5.4.3"
     ramda "0.29.1"
     redis "^4.6.7"
-    sass "1.69.4"
+    sass "1.69.5"
     uuid "^9.0.0"
 
 "@devprotocol/dev-kit@7.3.0":
@@ -619,16 +619,6 @@
     bignumber.js "9.1.1"
     js-base64 "^3.7.2"
     ramda "^0.28.0"
-
-"@devprotocol/dev-kit@8.5.1":
-  version "8.5.1"
-  resolved "https://registry.yarnpkg.com/@devprotocol/dev-kit/-/dev-kit-8.5.1.tgz#6edb09e18ef81e65d634f65e20c7c6943ed1ab6a"
-  integrity sha512-V1kPlFPOIXheSKwNTYYX3IbDRSFhHYm5THMxg3SaL80bpWzcMPoIVBze+38B0T2CQ+8EGLEL4T8mg2R/nOH+Wg==
-  dependencies:
-    "@devprotocol/util-ts" "3.1.0"
-    bignumber.js "9.1.2"
-    js-base64 "^3.7.2"
-    ramda "^0.29.0"
 
 "@devprotocol/dev-kit@8.6.0":
   version "8.6.0"
@@ -678,14 +668,6 @@
   dependencies:
     ethers "^5.7.2"
     ramda "^0.28.0"
-
-"@devprotocol/util-ts@3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/util-ts/-/util-ts-3.1.0.tgz#8eaf8e394a80b3582e1609424cbe1b90b7e99c58"
-  integrity sha512-F2xPZ9X/Gbxior7QJjy9rb9m117C231NbuWctJ/LOBMfbqCvzyGvmKskx9G5vUTx6sOjmMNtYTJwRQ2+2WFTgw==
-  dependencies:
-    ethers "^5.7.2"
-    ramda "^0.29.0"
 
 "@devprotocol/util-ts@4.0.0":
   version "4.0.0"
@@ -7732,10 +7714,10 @@ marked@10.0.0, marked@^10.0.0:
   resolved "https://registry.yarnpkg.com/marked/-/marked-10.0.0.tgz#7fe1805bb908433d760e2de0fcc8841a2b2d745c"
   integrity sha512-YiGcYcWj50YrwBgNzFoYhQ1hT6GmQbFG8SksnYJX1z4BXTHSOrz1GB5/Jm2yQvMg4nN1FHP4M6r03R10KrVUiA==
 
-marked@9.1.2:
-  version "9.1.2"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-9.1.2.tgz#a54ca772d2b5a43de7d8ed40111354b4b7985527"
-  integrity sha512-qoKMJqK0w6vkLk8+KnKZAH6neUZSNaQqVZ/h2yZ9S7CbLuFHyS2viB0jnqcWF9UKjwsAbMrQtnQhdmdvOVOw9w==
+marked@11.1.0:
+  version "11.1.0"
+  resolved "https://registry.yarnpkg.com/marked/-/marked-11.1.0.tgz#f2d12323e80ba8a97cc8262fe7e94fcc007476ab"
+  integrity sha512-fvKJWAPEafVj1dwGwcPI5mBB/0pvViL6NlCbNDG1HOIRwwAU/jeMoFxfbRLuirO1wRH7m4yPvBqD/O1wyWvayw==
 
 mdast-util-definitions@^6.0.0:
   version "6.0.0"
@@ -8796,10 +8778,10 @@ periscopic@^3.1.0:
     estree-walker "^3.0.0"
     is-reference "^3.0.0"
 
-photoswipe@5.4.2:
-  version "5.4.2"
-  resolved "https://registry.yarnpkg.com/photoswipe/-/photoswipe-5.4.2.tgz#bed976c27f876bd9c86085a022701a8cea484f7e"
-  integrity sha512-z5hr36nAIPOZbHJPbCJ/mQ3+ZlizttF9za5gKXKH/us1k4KNHaRbC63K1Px5sVVKUtGb/2+ixHpKqtwl0WAwvA==
+photoswipe@5.4.3:
+  version "5.4.3"
+  resolved "https://registry.yarnpkg.com/photoswipe/-/photoswipe-5.4.3.tgz#413670ab08ac062c09f2f8dd645dcd1278afcb4a"
+  integrity sha512-9UC6oJBK4oXFZ5HcdlcvGkfEHsVrmE4csUdCQhEjHYb3PvPLO3PG7UhnPuOgjxwmhq5s17Un5NUdum01LgBDng==
 
 picocolors@^1.0.0:
   version "1.0.0"
@@ -9687,15 +9669,6 @@ sass@1.60.0:
   version "1.60.0"
   resolved "https://registry.yarnpkg.com/sass/-/sass-1.60.0.tgz#657f0c23a302ac494b09a5ba8497b739fb5b5a81"
   integrity sha512-updbwW6fNb5gGm8qMXzVO7V4sWf7LMXnMly/JEyfbfERbVH46Fn6q02BX7/eHTdKpE7d+oTkMMQpFWNUMfFbgQ==
-  dependencies:
-    chokidar ">=3.0.0 <4.0.0"
-    immutable "^4.0.0"
-    source-map-js ">=0.6.2 <2.0.0"
-
-sass@1.69.4:
-  version "1.69.4"
-  resolved "https://registry.yarnpkg.com/sass/-/sass-1.69.4.tgz#10c735f55e3ea0b7742c6efa940bce30e07fbca2"
-  integrity sha512-+qEreVhqAy8o++aQfCJwp0sklr2xyEzkm9Pp/Igu9wNPoe7EZEQ8X/MBvvXggI2ql607cxKg/RKOwDj6pp2XDA==
   dependencies:
     chokidar ">=3.0.0 <4.0.0"
     immutable "^4.0.0"
