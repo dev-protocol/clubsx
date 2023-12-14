@@ -15,8 +15,7 @@ const populate = async (client) => {
       propertyAddress: 'propertyAdd',
       adminRolePoints: 0,
       chainId: 80001,
-      rpcUrl:
-        '',
+      rpcUrl: '',
       options: [
         {
           key: 'ogp',
