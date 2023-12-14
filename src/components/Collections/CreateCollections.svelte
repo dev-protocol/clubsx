@@ -788,22 +788,22 @@
       >
     </label>
 
-      <label class="hs-form-field is-filled is-required">
-        <span class="hs-form-field__label">End date</span>
-        <input
-          bind:value={formattedEndTime}
-          on:change={onEndTimeChange}
-          type="datetime-local"
-          class="hs-form-field__input w-full max-w-md"
-          id="collectino-start-date"
-          name="collection-start-date"
-          min={formatUnixTimestamp(Date.now() / 1000)}
-          max="2038-01-18T00:00"
-        />
-        {#if invalidEndTimeMsg !== ''}
-          <p class="text-danger-300">* {invalidEndTimeMsg}</p>
-        {/if}
-      </label>
+    <label class="hs-form-field is-filled is-required">
+      <span class="hs-form-field__label">End date</span>
+      <input
+        bind:value={formattedEndTime}
+        on:change={onEndTimeChange}
+        type="datetime-local"
+        class="hs-form-field__input w-full max-w-md"
+        id="collectino-start-date"
+        name="collection-start-date"
+        min={formatUnixTimestamp(Date.now() / 1000)}
+        max="2038-01-18T00:00"
+      />
+      {#if invalidEndTimeMsg !== ''}
+        <p class="text-danger-300">* {invalidEndTimeMsg}</p>
+      {/if}
+    </label>
 
     <label class="hs-form-field is-filled is-required">
       <span class="hs-form-field__label">Description</span>
@@ -931,19 +931,19 @@
             on:change={onMembershipFileSelected}
           />
         </label>
-          <label class="hs-form-field is-filled is-required">
-            <span class="hs-form-field__label">Maximum number of sales</span>
-            <input
-              bind:value={membership.memberCount}
-              on:change={() => onChangeMemberCount(membership)}
-              class="hs-form-field__input"
-              id="sales-number"
-              type="number"
-              name="sales-number"
-              min="1"
-              max="4294967294"
-            />
-          </label>
+        <label class="hs-form-field is-filled is-required">
+          <span class="hs-form-field__label">Maximum number of sales</span>
+          <input
+            bind:value={membership.memberCount}
+            on:change={() => onChangeMemberCount(membership)}
+            class="hs-form-field__input"
+            id="sales-number"
+            type="number"
+            name="sales-number"
+            min="1"
+            max="4294967294"
+          />
+        </label>
 
         <!-- Price -->
         <div class="hs-form-field is-filled is-required">

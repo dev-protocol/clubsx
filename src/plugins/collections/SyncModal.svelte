@@ -80,33 +80,33 @@
   }) => {
     // Filter out states with empty payload
     const validStates = states.filter(({ payload }) => payload.trim() !== '')
-    console.log({validStates})
+    console.log({ validStates })
 
     const results: TransactionResponse[] = []
     if (validStates.length) {
-    try {
-      const args = [
-        propertyAddress,
-        validStates.map(({ state }) => state),
-        validStates.map(({ payload }) => payload),
-      ]
-      console.log({args})
-      const res = await callSlotCollections(provider, 'setImages', [
-        propertyAddress,
-        validStates.map(({ state }) => state),
-        validStates.map(({ payload }) => payload),
-      ]);
-      // const res2 = await callSlotCollections(provider, 'propertyImages', [
-      //   propertyAddress,
-      //   "0x4b7f37427bb4f845726fcccf7e25390b25cf9dbfc82846d73dcc1688f93d3e4d",
-      // ]);
-      // console.log({res2})
-      results.push(res);
-    } catch (error) {
-      console.log('Error in callSlotCollections:', error);
+      try {
+        const args = [
+          propertyAddress,
+          validStates.map(({ state }) => state),
+          validStates.map(({ payload }) => payload),
+        ]
+        console.log({ args })
+        const res = await callSlotCollections(provider, 'setImages', [
+          propertyAddress,
+          validStates.map(({ state }) => state),
+          validStates.map(({ payload }) => payload),
+        ])
+        // const res2 = await callSlotCollections(provider, 'propertyImages', [
+        //   propertyAddress,
+        //   "0x4b7f37427bb4f845726fcccf7e25390b25cf9dbfc82846d73dcc1688f93d3e4d",
+        // ]);
+        // console.log({res2})
+        results.push(res)
+      } catch (error) {
+        console.log('Error in callSlotCollections:', error)
+      }
     }
-  }
-  return results;
+    return results
   }
 </script>
 

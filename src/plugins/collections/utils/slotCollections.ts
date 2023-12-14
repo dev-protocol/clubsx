@@ -89,7 +89,7 @@ export async function callSlotCollections(
     defaultAddress.address
 
   const contract = new ethers.Contract(addressList, mixSlotABI, provider)
-  console.log({contract})
+  console.log({ contract })
 
   const result: TransactionReceipt = await contract[functionName](...args)
   return result
