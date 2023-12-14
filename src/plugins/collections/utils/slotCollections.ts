@@ -39,7 +39,7 @@ export const address: Address[] = [
   },
   {
     chainId: 80001,
-    address: '0x40be0Bc51523E6eF9b1d7F98B8545859efC708c1',
+    address: '0x1d82F8BA629dDfC1Ca971C38d03E087D64Cfd531',
   },
 ]
 
@@ -89,6 +89,7 @@ export async function callSlotCollections(
     defaultAddress.address
 
   const contract = new ethers.Contract(addressList, mixSlotABI, provider)
+  console.log({contract})
 
   const result: TransactionReceipt = await contract[functionName](...args)
   return result

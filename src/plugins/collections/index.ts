@@ -194,9 +194,9 @@ export const getAdminPaths = (async (
 
   const presetCollection: Collection = {
     id: 'preset-time-collection',
-    name: 'My First Time Limited Collection',
+    name: 'My First Slot Collection',
     imageSrc: '',
-    description: 'This is a time-limited collection.',
+    description: 'This is a slot collection.',
     status: 'Draft',
     endTime: 0,
     memberships: [],

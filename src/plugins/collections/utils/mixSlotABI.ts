@@ -1,749 +1,735 @@
-export const mixSlotABI = [
+export const mixSlotABI =  [
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: false,
-        internalType: 'uint8',
-        name: 'version',
-        type: 'uint8',
-      },
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "version",
+        "type": "uint8"
+      }
     ],
-    name: 'Initialized',
-    type: 'event',
+    "name": "Initialized",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: true,
-        internalType: 'address',
-        name: 'previousOwner',
-        type: 'address',
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
       },
       {
-        indexed: true,
-        internalType: 'address',
-        name: 'newOwner',
-        type: 'address',
-      },
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
     ],
-    name: 'OwnershipTransferred',
-    type: 'event',
+    "name": "OwnershipTransferred",
+    "type": "event"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: '_token',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "_token",
+        "type": "address"
+      }
     ],
-    name: 'allowListToken',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "allowListToken",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
     ],
-    name: 'allowlistedTokens',
-    outputs: [
+    "name": "allowlistedTokens",
+    "outputs": [
       {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: '_token',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "_token",
+        "type": "address"
+      }
     ],
-    name: 'denyListToken',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "denyListToken",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: 'id',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
       },
       {
-        internalType: 'address',
-        name: '',
-        type: 'address',
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       },
       {
-        components: [
+        "components": [
           {
-            internalType: 'address',
-            name: 'property',
-            type: 'address',
+            "internalType": "address",
+            "name": "property",
+            "type": "address"
           },
           {
-            internalType: 'uint256',
-            name: 'amount',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
           },
           {
-            internalType: 'uint256',
-            name: 'price',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "price",
+            "type": "uint256"
           },
           {
-            internalType: 'uint256',
-            name: 'cumulativeReward',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "cumulativeReward",
+            "type": "uint256"
           },
           {
-            internalType: 'uint256',
-            name: 'pendingReward',
-            type: 'uint256',
-          },
+            "internalType": "uint256",
+            "name": "pendingReward",
+            "type": "uint256"
+          }
         ],
-        internalType: 'struct ISTokensManagerStruct.StakingPositions',
-        name: '_positions',
-        type: 'tuple',
+        "internalType": "struct ISTokensManagerStruct.StakingPositions",
+        "name": "_positions",
+        "type": "tuple"
       },
       {
-        components: [
+        "components": [
           {
-            internalType: 'uint256',
-            name: 'entireReward',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "entireReward",
+            "type": "uint256"
           },
           {
-            internalType: 'uint256',
-            name: 'cumulativeReward',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "cumulativeReward",
+            "type": "uint256"
           },
           {
-            internalType: 'uint256',
-            name: 'withdrawableReward',
-            type: 'uint256',
-          },
+            "internalType": "uint256",
+            "name": "withdrawableReward",
+            "type": "uint256"
+          }
         ],
-        internalType: 'struct ISTokensManagerStruct.Rewards',
-        name: '',
-        type: 'tuple',
+        "internalType": "struct ISTokensManagerStruct.Rewards",
+        "name": "",
+        "type": "tuple"
       },
       {
-        internalType: 'bytes32',
-        name: 'key',
-        type: 'bytes32',
-      },
+        "internalType": "bytes32",
+        "name": "key",
+        "type": "bytes32"
+      }
     ],
-    name: 'description',
-    outputs: [
+    "name": "description",
+    "outputs": [
       {
-        internalType: 'string',
-        name: '',
-        type: 'string',
-      },
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'dev',
-    outputs: [
+    "inputs": [],
+    "name": "dev",
+    "outputs": [
       {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: '_property',
-        type: 'address',
+        "internalType": "address",
+        "name": "_property",
+        "type": "address"
       },
       {
-        internalType: 'bytes32',
-        name: '_key',
-        type: 'bytes32',
-      },
+        "internalType": "bytes32",
+        "name": "_key",
+        "type": "bytes32"
+      }
     ],
-    name: 'getSlotsLeft',
-    outputs: [
+    "name": "getSlotsLeft",
+    "outputs": [
       {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: '_property',
-        type: 'address',
+        "internalType": "address",
+        "name": "_property",
+        "type": "address"
       },
       {
-        internalType: 'bytes32',
-        name: '_key',
-        type: 'bytes32',
-      },
+        "internalType": "bytes32",
+        "name": "_key",
+        "type": "bytes32"
+      }
     ],
-    name: 'getTimeLeft',
-    outputs: [
+    "name": "getTimeLeft",
+    "outputs": [
       {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: 'id',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
       },
       {
-        internalType: 'address',
-        name: '',
-        type: 'address',
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       },
       {
-        components: [
+        "components": [
           {
-            internalType: 'address',
-            name: 'property',
-            type: 'address',
+            "internalType": "address",
+            "name": "property",
+            "type": "address"
           },
           {
-            internalType: 'uint256',
-            name: 'amount',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
           },
           {
-            internalType: 'uint256',
-            name: 'price',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "price",
+            "type": "uint256"
           },
           {
-            internalType: 'uint256',
-            name: 'cumulativeReward',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "cumulativeReward",
+            "type": "uint256"
           },
           {
-            internalType: 'uint256',
-            name: 'pendingReward',
-            type: 'uint256',
-          },
+            "internalType": "uint256",
+            "name": "pendingReward",
+            "type": "uint256"
+          }
         ],
-        internalType: 'struct ISTokensManagerStruct.StakingPositions',
-        name: '_positions',
-        type: 'tuple',
+        "internalType": "struct ISTokensManagerStruct.StakingPositions",
+        "name": "_positions",
+        "type": "tuple"
       },
       {
-        components: [
+        "components": [
           {
-            internalType: 'uint256',
-            name: 'entireReward',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "entireReward",
+            "type": "uint256"
           },
           {
-            internalType: 'uint256',
-            name: 'cumulativeReward',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "cumulativeReward",
+            "type": "uint256"
           },
           {
-            internalType: 'uint256',
-            name: 'withdrawableReward',
-            type: 'uint256',
-          },
+            "internalType": "uint256",
+            "name": "withdrawableReward",
+            "type": "uint256"
+          }
         ],
-        internalType: 'struct ISTokensManagerStruct.Rewards',
-        name: '',
-        type: 'tuple',
+        "internalType": "struct ISTokensManagerStruct.Rewards",
+        "name": "",
+        "type": "tuple"
       },
       {
-        internalType: 'bytes32',
-        name: 'key',
-        type: 'bytes32',
-      },
+        "internalType": "bytes32",
+        "name": "key",
+        "type": "bytes32"
+      }
     ],
-    name: 'image',
-    outputs: [
+    "name": "image",
+    "outputs": [
       {
-        internalType: 'string',
-        name: '',
-        type: 'string',
-      },
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: '_contract',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "_contract",
+        "type": "address"
+      }
     ],
-    name: 'initialize',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "initialize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: 'id',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
       },
       {
-        internalType: 'address',
-        name: '',
-        type: 'address',
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       },
       {
-        components: [
+        "components": [
           {
-            internalType: 'address',
-            name: 'property',
-            type: 'address',
+            "internalType": "address",
+            "name": "property",
+            "type": "address"
           },
           {
-            internalType: 'uint256',
-            name: 'amount',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
           },
           {
-            internalType: 'uint256',
-            name: 'price',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "price",
+            "type": "uint256"
           },
           {
-            internalType: 'uint256',
-            name: 'cumulativeReward',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "cumulativeReward",
+            "type": "uint256"
           },
           {
-            internalType: 'uint256',
-            name: 'pendingReward',
-            type: 'uint256',
-          },
+            "internalType": "uint256",
+            "name": "pendingReward",
+            "type": "uint256"
+          }
         ],
-        internalType: 'struct ISTokensManagerStruct.StakingPositions',
-        name: '_positions',
-        type: 'tuple',
+        "internalType": "struct ISTokensManagerStruct.StakingPositions",
+        "name": "_positions",
+        "type": "tuple"
       },
       {
-        components: [
+        "components": [
           {
-            internalType: 'uint256',
-            name: 'entireReward',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "entireReward",
+            "type": "uint256"
           },
           {
-            internalType: 'uint256',
-            name: 'cumulativeReward',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "cumulativeReward",
+            "type": "uint256"
           },
           {
-            internalType: 'uint256',
-            name: 'withdrawableReward',
-            type: 'uint256',
-          },
+            "internalType": "uint256",
+            "name": "withdrawableReward",
+            "type": "uint256"
+          }
         ],
-        internalType: 'struct ISTokensManagerStruct.Rewards',
-        name: '',
-        type: 'tuple',
+        "internalType": "struct ISTokensManagerStruct.Rewards",
+        "name": "",
+        "type": "tuple"
       },
       {
-        internalType: 'bytes32',
-        name: 'key',
-        type: 'bytes32',
-      },
+        "internalType": "bytes32",
+        "name": "key",
+        "type": "bytes32"
+      }
     ],
-    name: 'name',
-    outputs: [
+    "name": "name",
+    "outputs": [
       {
-        internalType: 'string',
-        name: '',
-        type: 'string',
-      },
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: 'id',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
       },
       {
-        internalType: 'address',
-        name: '',
-        type: 'address',
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       },
       {
-        components: [
+        "components": [
           {
-            internalType: 'address',
-            name: 'property',
-            type: 'address',
+            "internalType": "address",
+            "name": "property",
+            "type": "address"
           },
           {
-            internalType: 'uint256',
-            name: 'amount',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
           },
           {
-            internalType: 'uint256',
-            name: 'price',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "price",
+            "type": "uint256"
           },
           {
-            internalType: 'uint256',
-            name: 'cumulativeReward',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "cumulativeReward",
+            "type": "uint256"
           },
           {
-            internalType: 'uint256',
-            name: 'pendingReward',
-            type: 'uint256',
-          },
+            "internalType": "uint256",
+            "name": "pendingReward",
+            "type": "uint256"
+          }
         ],
-        internalType: 'struct ISTokensManagerStruct.StakingPositions',
-        name: '_positions',
-        type: 'tuple',
+        "internalType": "struct ISTokensManagerStruct.StakingPositions",
+        "name": "_positions",
+        "type": "tuple"
       },
       {
-        internalType: 'bytes32',
-        name: 'key',
-        type: 'bytes32',
-      },
+        "internalType": "bytes32",
+        "name": "key",
+        "type": "bytes32"
+      }
     ],
-    name: 'onBeforeMint',
-    outputs: [
+    "name": "onBeforeMint",
+    "outputs": [
       {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
     ],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'owner',
-    outputs: [
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
       {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: '',
-        type: 'address',
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       },
       {
-        internalType: 'bytes32',
-        name: '',
-        type: 'bytes32',
-      },
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
     ],
-    name: 'propertyImageClaimedSlots',
-    outputs: [
+    "name": "propertyImageClaimedSlots",
+    "outputs": [
       {
-        internalType: 'uint32',
-        name: '',
-        type: 'uint32',
-      },
+        "internalType": "uint32",
+        "name": "",
+        "type": "uint32"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: '',
-        type: 'address',
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       },
       {
-        internalType: 'bytes32',
-        name: '',
-        type: 'bytes32',
-      },
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
     ],
-    name: 'propertyImages',
-    outputs: [
+    "name": "propertyImages",
+    "outputs": [
       {
-        internalType: 'string',
-        name: 'src',
-        type: 'string',
+        "internalType": "string",
+        "name": "src",
+        "type": "string"
       },
       {
-        internalType: 'string',
-        name: 'name',
-        type: 'string',
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
       },
       {
-        internalType: 'string',
-        name: 'description',
-        type: 'string',
+        "internalType": "string",
+        "name": "description",
+        "type": "string"
       },
       {
-        components: [
+        "internalType": "uint256",
+        "name": "deadline",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint32",
+        "name": "members",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint256",
+        "name": "requiredTokenAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "requiredTokenFee",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "gateway",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_propertyAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_key",
+        "type": "bytes32"
+      }
+    ],
+    "name": "removeImage",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_dev",
+        "type": "address"
+      }
+    ],
+    "name": "setDevToken",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_propertyAddress",
+        "type": "address"
+      },
+      {
+        "components": [
           {
-            internalType: 'uint256',
-            name: 'deadline',
-            type: 'uint256',
+            "internalType": "string",
+            "name": "src",
+            "type": "string"
           },
           {
-            internalType: 'uint32',
-            name: 'members',
-            type: 'uint32',
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
           },
+          {
+            "internalType": "string",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "deadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint32",
+            "name": "members",
+            "type": "uint32"
+          },
+          {
+            "internalType": "uint256",
+            "name": "requiredTokenAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "requiredTokenFee",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "gateway",
+            "type": "address"
+          }
         ],
-        internalType: 'struct SlotCollections.SlotType',
-        name: 'slot',
-        type: 'tuple',
+        "internalType": "struct SlotCollections.Image[]",
+        "name": "_images",
+        "type": "tuple[]"
       },
       {
-        internalType: 'uint256',
-        name: 'requiredTokenAmount',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: 'requiredTokenFee',
-        type: 'uint256',
-      },
-      {
-        internalType: 'address',
-        name: 'token',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'gateway',
-        type: 'address',
-      },
+        "internalType": "bytes32[]",
+        "name": "_keys",
+        "type": "bytes32[]"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "name": "setImages",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: '_propertyAddress',
-        type: 'address',
-      },
-      {
-        internalType: 'bytes32',
-        name: '_key',
-        type: 'bytes32',
-      },
+        "internalType": "address",
+        "name": "_contract",
+        "type": "address"
+      }
     ],
-    name: 'removeImage',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "setSwapAndStake",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'renounceOwnership',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "stakedAmountAtMinted",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [],
+    "name": "swapAndStake",
+    "outputs": [
       {
-        internalType: 'address',
-        name: '_dev',
-        type: 'address',
-      },
+        "internalType": "contract ISwapAndStake",
+        "name": "",
+        "type": "address"
+      }
     ],
-    name: 'setDevToken',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: '_propertyAddress',
-        type: 'address',
-      },
-      {
-        components: [
-          {
-            internalType: 'string',
-            name: 'src',
-            type: 'string',
-          },
-          {
-            internalType: 'string',
-            name: 'name',
-            type: 'string',
-          },
-          {
-            internalType: 'string',
-            name: 'description',
-            type: 'string',
-          },
-          {
-            components: [
-              {
-                internalType: 'uint256',
-                name: 'deadline',
-                type: 'uint256',
-              },
-              {
-                internalType: 'uint32',
-                name: 'members',
-                type: 'uint32',
-              },
-            ],
-            internalType: 'struct SlotCollections.SlotType',
-            name: 'slot',
-            type: 'tuple',
-          },
-          {
-            internalType: 'uint256',
-            name: 'requiredTokenAmount',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: 'requiredTokenFee',
-            type: 'uint256',
-          },
-          {
-            internalType: 'address',
-            name: 'token',
-            type: 'address',
-          },
-          {
-            internalType: 'address',
-            name: 'gateway',
-            type: 'address',
-          },
-        ],
-        internalType: 'struct SlotCollections.Image[]',
-        name: '_images',
-        type: 'tuple[]',
-      },
-      {
-        internalType: 'bytes32[]',
-        name: '_keys',
-        type: 'bytes32[]',
-      },
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
     ],
-    name: 'setImages',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '_contract',
-        type: 'address',
-      },
-    ],
-    name: 'setSwapAndStake',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    name: 'stakedAmountAtMinted',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'swapAndStake',
-    outputs: [
-      {
-        internalType: 'contract ISwapAndStake',
-        name: '',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'newOwner',
-        type: 'address',
-      },
-    ],
-    name: 'transferOwnership',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
 ]

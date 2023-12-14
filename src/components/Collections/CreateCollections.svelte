@@ -33,7 +33,6 @@
   export let existingCollections: Collection[] = []
   export let existingMemberships: Membership[] = []
   export let collection: Collection
-  export let isTimeLimitedCollection: boolean | 'both' = false
   export let clubName: string | undefined = undefined
   export let isAdding: boolean = false
   export let useOnFinishCallback: boolean = false
@@ -789,7 +788,6 @@
       >
     </label>
 
-    {#if isTimeLimitedCollection == true || isTimeLimitedCollection == 'both'}
       <label class="hs-form-field is-filled is-required">
         <span class="hs-form-field__label">End date</span>
         <input
@@ -806,7 +804,6 @@
           <p class="text-danger-300">* {invalidEndTimeMsg}</p>
         {/if}
       </label>
-    {/if}
 
     <label class="hs-form-field is-filled is-required">
       <span class="hs-form-field__label">Description</span>
@@ -934,7 +931,6 @@
             on:change={onMembershipFileSelected}
           />
         </label>
-        {#if isTimeLimitedCollection == false || isTimeLimitedCollection == 'both'}
           <label class="hs-form-field is-filled is-required">
             <span class="hs-form-field__label">Maximum number of sales</span>
             <input
@@ -948,7 +944,6 @@
               max="4294967294"
             />
           </label>
-        {/if}
 
         <!-- Price -->
         <div class="hs-form-field is-filled is-required">
