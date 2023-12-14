@@ -2,14 +2,9 @@ import React, { useEffect, useState } from 'react'
 
 import { hashMessage, type Signer } from 'ethers'
 
+import { KYCStatuses } from './Withdrawal'
 import NotVerifiedBannerImg from './assets/NotVerifiedBannerImg.svg'
 import IdentityVerificationBg from './assets/Identity-Verification.mp4'
-
-enum KYCStatuses {
-  VERIFIED,
-  IN_PROCESS,
-  NOT_VERIFIED,
-}
 
 const lazySetter = <T extends (v: any) => void>(
   setter: T,
@@ -21,15 +16,16 @@ const FundsInfo = (props: {
   propertyAddress: string
   chainId: number
   uniqueBeneficiaries: string[]
+  KYCStatus: KYCStatuses
+  setKYCStatus: (status: KYCStatuses) => void
 }) => {
+  const { KYCStatus, setKYCStatus } = props
+
   const [signer, setSigner] = useState<Signer>()
   const [connection, setConnection] = useState<any>(undefined)
   const [isFetchingIDVId, setIsFetchingIDVId] = useState<boolean>(false)
   const [kycProcessingTxt, setKYCProcessingText] = useState<string>('Verify')
   const [isFetchingKYCStatus, setIsFetchingKYCStatus] = useState<boolean>(true)
-  const [KYCStatus, setKYCStatus] = useState<KYCStatuses>(
-    KYCStatuses.NOT_VERIFIED,
-  )
 
   useEffect(() => {
     const checkConnection = async () => {

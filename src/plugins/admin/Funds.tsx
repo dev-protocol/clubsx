@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import StakeInfo from './StakeInfo'
+import { KYCStatuses } from './Withdrawal'
 import { ALL_CURRENCIES } from '@constants/memberships'
 import CurrencyMembershipInfo from './CurrencyMembershipInfo'
 import NotVerifiedBannerImg from './assets/NotVerifiedBannerImg.svg'
@@ -9,6 +10,7 @@ const FundsInfo = (props: {
   propertyAddress: string
   chainId: number
   uniqueBeneficiaries: string[]
+  KYCStatus: KYCStatuses
 }) => {
   const [connection, setConnection] = useState<any>(undefined)
   const [currentAddress, setCurrentAddress] = useState<string>()
@@ -99,6 +101,7 @@ const FundsInfo = (props: {
               isYourWithdrawable={true}
               uniqueBeneficiaries={[]}
               updateWithdrawableInDollars={updateYourTotalWithdrawable}
+              isKYCVerified={KYCStatuses.VERIFIED === props.KYCStatus}
             />
           ))}
         </div>
@@ -136,6 +139,7 @@ const FundsInfo = (props: {
               isYourWithdrawable={false}
               uniqueBeneficiaries={props.uniqueBeneficiaries}
               updateWithdrawableInDollars={updateTotalWithdrawable}
+              isKYCVerified={false}
             />
           ))}
         </div>
@@ -155,6 +159,7 @@ const FundsInfo = (props: {
             chainId={props.chainId}
             isYourWithdrawable={true}
             propertyAddress={props.propertyAddress}
+            isKYCVerified={KYCStatuses.VERIFIED === props.KYCStatus}
           />
         </div>
 
@@ -181,6 +186,7 @@ const FundsInfo = (props: {
             fetcherType={'cumulative'}
             isYourWithdrawable={false}
             propertyAddress={props.propertyAddress}
+            isKYCVerified={false}
           />
         </div>
       </div>
