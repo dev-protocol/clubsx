@@ -1,6 +1,6 @@
 <script lang="ts">
   import { ClubsEvents, setOptions } from '@devprotocol/clubs-core'
-  import { buildConfig, controlModal } from '@devprotocol/clubs-core'
+  import { buildConfig } from '@devprotocol/clubs-core'
   import type { Collection, CollectionMembership } from '@plugins/collections'
   import MembershipOption from '@components/AdminMembershipsForm/MembershipOption.svelte'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
@@ -17,8 +17,6 @@
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
   import {
     randomBytes,
-    parseUnits,
-    keccak256,
     JsonRpcProvider,
     ZeroAddress,
     type Signer,
@@ -26,7 +24,6 @@
   import { onMount } from 'svelte'
   import BigNumber from 'bignumber.js'
   import { clientsSTokens } from '@devprotocol/dev-kit'
-  import { tokenInfo } from '@constants/common'
   import { bytes32Hex } from '@devprotocol/clubs-core'
   import type { Membership } from '@plugins/memberships'
 
