@@ -184,10 +184,10 @@
     set-cookie-parser "^2.6.0"
     web-vitals "^3.4.0"
 
-"@astrojs/vue@4.0.3":
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/@astrojs/vue/-/vue-4.0.3.tgz#08fb7b7e97386fa03557b5b5dccc9d73191a9054"
-  integrity sha512-BujFhnw/bvyWhTFzfcjdR4XDdlShjB09AV6jDv+v6SX8tbx/IAB1EWbzkbYNrTMae3fPKNVsCdNLjX1gMg/P2A==
+"@astrojs/vue@4.0.4":
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/@astrojs/vue/-/vue-4.0.4.tgz#77381f5ba30b3427db60fd06ba326d65b62fe3f2"
+  integrity sha512-Ju09f0x27TOCi84r7h0ZNlQLbbdZabyMYmuGAMPc4p7v4sD+hseCQ1RoReyFMiISgKM1xOPfZ9UnFjiEmqifeg==
   dependencies:
     "@vitejs/plugin-vue" "^4.5.0"
     "@vitejs/plugin-vue-jsx" "^3.1.0"
