@@ -268,8 +268,8 @@
 
   const onEndTimeChange = async (event: Event) => {
     const value = (event.target as HTMLInputElement)?.value || 0
-    const passedUnixTime = new Date(value).getTime() / 1000
-    const currentTime = Date.now() / 1000
+    const passedUnixTime = Math.round(new Date(value).getTime() / 1000)
+    const currentTime = Math.round(Date.now() / 1000)
     if (passedUnixTime <= currentTime) {
       const twoMinutes = 120
       collection = {
@@ -409,20 +409,21 @@
   }
 
   const changeSaleDurationType = async (type: SaleDurationType) => {
+    const currentTime = Math.round(Date.now() / 1000)
     if (type === '1week') {
       collection = {
         ...collection,
-        endTime: Date.now() / 1000 + 604800,
+        endTime: currentTime + 604800,
       }
-      formattedEndTime = formatUnixTimestamp(Date.now() / 1000 + 604800)
+      formattedEndTime = formatUnixTimestamp(currentTime + 604800)
       saleDurationType = '1week'
     }
     if (type === '30days') {
       collection = {
         ...collection,
-        endTime: Date.now() / 1000 + 2592000,
+        endTime: currentTime + 2592000,
       }
-      formattedEndTime = formatUnixTimestamp(Date.now() / 1000 + 2592000)
+      formattedEndTime = formatUnixTimestamp(currentTime + 2592000)
       saleDurationType = '30days'
     }
     if (type === 'custom') {
