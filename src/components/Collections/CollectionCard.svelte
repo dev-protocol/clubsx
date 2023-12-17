@@ -29,20 +29,6 @@
             <div class="flex flex-row gap-4">
               <div
                 class={`flex flex-col items-start gap-2.5 rounded px-2.5
-          ${
-            collection.isTimeLimitedCollection
-              ? 'bg-dp-yellow-200'
-              : 'bg-native-blue-300'
-          }`}
-              >
-                <p class="text-center text-sm font-bold text-black">
-                  {collection.isTimeLimitedCollection
-                    ? 'Time Limited'
-                    : 'Limited Amount'}
-                </p>
-              </div>
-              <div
-                class={`flex flex-col items-start gap-2.5 rounded px-2.5
           ${collection.status === 'Draft' ? 'bg-[#C4C4C4]' : ''}`}
               >
                 <p class="text-center text-sm font-bold text-black">

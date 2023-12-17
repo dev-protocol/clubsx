@@ -1,6 +1,6 @@
 <script lang="ts">
   import { ClubsEvents, setOptions } from '@devprotocol/clubs-core'
-  import { buildConfig, controlModal } from '@devprotocol/clubs-core'
+  import { buildConfig } from '@devprotocol/clubs-core'
   import type { Collection, CollectionMembership } from '@plugins/collections'
   import MembershipOption from '@components/AdminMembershipsForm/MembershipOption.svelte'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
@@ -17,8 +17,6 @@
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
   import {
     randomBytes,
-    parseUnits,
-    keccak256,
     JsonRpcProvider,
     ZeroAddress,
     type Signer,
@@ -26,14 +24,12 @@
   import { onMount } from 'svelte'
   import BigNumber from 'bignumber.js'
   import { clientsSTokens } from '@devprotocol/dev-kit'
-  import { tokenInfo } from '@constants/common'
   import { bytes32Hex } from '@devprotocol/clubs-core'
   import type { Membership } from '@plugins/memberships'
 
   export let existingCollections: Collection[] = []
   export let existingMemberships: Membership[] = []
   export let collection: Collection
-  export let isTimeLimitedCollection: boolean = false
   export let clubName: string | undefined = undefined
   export let isAdding: boolean = false
   export let useOnFinishCallback: boolean = false
@@ -46,7 +42,27 @@
   let connection: typeof Connection
   let signer: Signer | undefined
   let currentAddress: string | undefined
+  let showDateRow = false
+  let showSaleLimitRow = false
+  function toggleDateRow() {
+    showDateRow = !showDateRow
+    saleDurationType = ''
+    collection = {
+      ...collection,
+      endTime: 0,
+    }
+  }
+  function toggleSaleLimitRow() {
+    showSaleLimitRow = !showSaleLimitRow
+    saleLimitType = ''
+    membership = {
+      ...membership,
+      memberCount: 0,
+    }
+  }
 
+  type SaleDurationType = '1week' | '30days' | 'custom' | ''
+  type SaleLimitType = '10' | '100' | 'custom' | ''
   type MembershipPaymentType = 'instant' | 'stake' | 'custom' | ''
   // note: treat this variable as state variable which stores the state for memberships edits and also for storing in DB
   const defaultMembership: CollectionMembership = {
@@ -62,6 +78,7 @@
       beneficiary: ZeroAddress,
     },
     payload: randomBytes(8),
+    memberCount: 0,
   }
   export let membership: CollectionMembership = {
     ...defaultMembership,
@@ -69,6 +86,8 @@
 
   let membershipPaymentType: MembershipPaymentType =
     membership.paymentType ?? (membership.currency === 'DEV' ? 'custom' : '')
+  let saleDurationType: SaleDurationType = collection.endTime ? 'custom' : ''
+  let saleLimitType: SaleLimitType = membership.memberCount ? 'custom' : ''
   let membershipCustomFee100: number = membership.fee
     ? membership.fee.percentage * 100
     : membership.currency === 'DEV'
@@ -249,8 +268,8 @@
 
   const onEndTimeChange = async (event: Event) => {
     const value = (event.target as HTMLInputElement)?.value || 0
-    const passedUnixTime = new Date(value).getTime() / 1000
-    const currentTime = Date.now() / 1000
+    const passedUnixTime = Math.round(new Date(value).getTime() / 1000)
+    const currentTime = Math.round(Date.now() / 1000)
     if (passedUnixTime <= currentTime) {
       const twoMinutes = 120
       collection = {
@@ -258,8 +277,7 @@
         endTime: currentTime + twoMinutes,
       }
       formattedEndTime = formatUnixTimestamp(currentTime + twoMinutes)
-      invalidEndTimeMsg =
-        'Invalid end time: Minimum allowed is 2 minutes from now.'
+      invalidEndTimeMsg = 'Invalid Time: Minimum allowed 2 minutes from now.'
     } else {
       invalidEndTimeMsg = ''
       collection = {
@@ -388,6 +406,51 @@
     } else {
       invalidFeeMsg = ''
     }
+  }
+
+  const changeSaleDurationType = async (type: SaleDurationType) => {
+    const currentTime = Math.round(Date.now() / 1000)
+    if (type === '1week') {
+      collection = {
+        ...collection,
+        endTime: currentTime + 604800,
+      }
+      formattedEndTime = formatUnixTimestamp(currentTime + 604800)
+      saleDurationType = '1week'
+    }
+    if (type === '30days') {
+      collection = {
+        ...collection,
+        endTime: currentTime + 2592000,
+      }
+      formattedEndTime = formatUnixTimestamp(currentTime + 2592000)
+      saleDurationType = '30days'
+    }
+    if (type === 'custom') {
+      saleDurationType = 'custom'
+    }
+    update()
+  }
+
+  const changeSaleLimitType = async (type: SaleLimitType) => {
+    if (type === '10') {
+      membership = {
+        ...membership,
+        memberCount: 10,
+      }
+      saleLimitType = '10'
+    }
+    if (type === '100') {
+      membership = {
+        ...membership,
+        memberCount: 100,
+      }
+      saleLimitType = '100'
+    }
+    if (type === 'custom') {
+      saleLimitType = 'custom'
+    }
+    update()
   }
 
   const changeMembershipPaymentType = async (
@@ -788,25 +851,71 @@
         >Recommended image size is 2400 x 1200px</span
       >
     </label>
-
-    {#if isTimeLimitedCollection}
-      <label class="hs-form-field is-filled is-required">
-        <span class="hs-form-field__label">End date</span>
-        <input
-          bind:value={formattedEndTime}
-          on:change={onEndTimeChange}
-          type="datetime-local"
-          class="hs-form-field__input w-full max-w-md"
-          id="collectino-start-date"
-          name="collection-start-date"
-          min={formatUnixTimestamp(Date.now() / 1000)}
-          max="2038-01-18T00:00"
-        />
-        {#if invalidEndTimeMsg !== ''}
-          <p class="text-danger-300">* {invalidEndTimeMsg}</p>
-        {/if}
-      </label>
-    {/if}
+    <div class="grid w-full max-w-md items-center justify-start gap-2">
+      <button
+        on:click|preventDefault={() => toggleDateRow()}
+        class={`hs-button is-filled`}
+        id="collection-end-time"
+        name="collection-end-time"
+      >
+        {collection.endTime !== 0
+          ? 'Reset'
+          : showDateRow
+          ? 'Cancel'
+          : 'Set Sale Duration'}
+      </button>
+      {#if showDateRow}
+        <div class="grid grid-cols-3 gap-2">
+          <button
+            on:click|preventDefault={() => changeSaleDurationType('1week')}
+            class={`hs-button ${
+              saleDurationType === '1week' ? 'is-filled' : 'border-white'
+            }`}
+            id="collection-end-time"
+            name="collection-end-time"
+          >
+            1 Week
+          </button>
+          <button
+            on:click|preventDefault={() => changeSaleDurationType('30days')}
+            class={`hs-button ${
+              saleDurationType === '30days' ? 'is-filled' : 'border-white'
+            }`}
+            id="collection-end-time"
+            name="collection-end-time"
+          >
+            30 Days
+          </button>
+          <button
+            on:click|preventDefault={() => changeSaleDurationType('custom')}
+            class={`hs-button ${
+              saleDurationType === 'custom' ? 'is-filled' : 'border-white'
+            }`}
+            id="collection-end-time"
+            name="collection-end-time"
+          >
+            Custom
+          </button>
+        </div>
+      {/if}
+      {#if saleDurationType === 'custom'}
+        <label class="grid hs-form-field is-filled is-required">
+          <input
+            bind:value={formattedEndTime}
+            on:change={onEndTimeChange}
+            type="datetime-local"
+            class="hs-form-field__input w-full max-w-md"
+            id="collectino-start-date"
+            name="collection-start-date"
+            min={formatUnixTimestamp(Date.now() / 1000)}
+            max="2038-01-18T00:00"
+          />
+          {#if invalidEndTimeMsg !== ''}
+            <p class="text-danger-300">* {invalidEndTimeMsg}</p>
+          {/if}
+        </label>
+      {/if}
+    </div>
 
     <label class="hs-form-field is-filled is-required">
       <span class="hs-form-field__label">Description</span>
@@ -934,22 +1043,68 @@
             on:change={onMembershipFileSelected}
           />
         </label>
-        {#if !isTimeLimitedCollection}
-          <label class="hs-form-field is-filled is-required">
-            <span class="hs-form-field__label">Maximum number of sales</span>
-            <input
-              bind:value={membership.memberCount}
-              on:change={() => onChangeMemberCount(membership)}
-              class="hs-form-field__input"
-              id="sales-number"
-              type="number"
-              name="sales-number"
-              min="1"
-              max="4294967294"
-            />
-          </label>
-        {/if}
-
+        <div class="grid w-full max-w-md items-center justify-start gap-2">
+          <button
+            on:click|preventDefault={() => toggleSaleLimitRow()}
+            class={`hs-button is-filled`}
+            id="sales-number"
+            name="sales-number"
+          >
+            {membership.memberCount !== 0
+              ? 'Reset'
+              : showSaleLimitRow
+              ? 'Cancel'
+              : 'Set Sale Limit'}
+          </button>
+          {#if showSaleLimitRow}
+            <div class="grid grid-cols-3 gap-2">
+              <button
+                on:click|preventDefault={() => changeSaleLimitType('10')}
+                class={`hs-button ${
+                  saleLimitType === '10' ? 'is-filled' : 'border-white'
+                }`}
+                id="collection-end-time"
+                name="collection-end-time"
+              >
+                10
+              </button>
+              <button
+                on:click|preventDefault={() => changeSaleLimitType('100')}
+                class={`hs-button ${
+                  saleLimitType === '100' ? 'is-filled' : 'border-white'
+                }`}
+                id="collection-end-time"
+                name="collection-end-time"
+              >
+                100
+              </button>
+              <button
+                on:click|preventDefault={() => changeSaleLimitType('custom')}
+                class={`hs-button ${
+                  saleLimitType === 'custom' ? 'is-filled' : 'border-white'
+                }`}
+                id="collection-end-time"
+                name="collection-end-time"
+              >
+                Custom
+              </button>
+            </div>
+          {/if}
+          {#if saleLimitType === 'custom'}
+            <label class="hs-form-field is-filled is-required">
+              <input
+                bind:value={membership.memberCount}
+                on:change={() => onChangeMemberCount(membership)}
+                class="hs-form-field__input"
+                id="sales-number"
+                type="number"
+                name="sales-number"
+                min="1"
+                max="4294967294"
+              />
+            </label>
+          {/if}
+        </div>
         <!-- Price -->
         <div class="hs-form-field is-filled is-required">
           <span class="hs-form-field__label"> Price </span>
@@ -1161,6 +1316,7 @@
           <button
             on:click={() => handleSaveClick()}
             class={`hs-button is-filled is-large`}
+            disabled={collection.endTime === 0 && membership.memberCount === 0}
           >
             Save
           </button>
@@ -1176,6 +1332,11 @@
             </button>
           {/if}
         </div>
+        {#if collection.endTime === 0 && membership.memberCount === 0}
+          <span class="text-red-600"
+            >**Sale Duration, Sale Limit Both Cannot be Zero</span
+          >
+        {/if}
       {/if}
     </div>
     <!-- Previous Memberships -->

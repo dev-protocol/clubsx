@@ -76,13 +76,14 @@
 
   const getSlotsForMembership = async (membership: CollectionMembership) => {
     const provider = new JsonRpcProvider(rpcUrl)
-    let left = await callSlotCollections(provider, 'getSlotsLeft', false, [
+    let left = await callSlotCollections(provider, 'getSlotsLeft', [
       propertyAddress,
       bytes32Hex(membership.payload),
     ])
     left = Number(left)
     const total = membership.memberCount
     console.log({ left, total })
+    if (membership.memberCount === 0) return undefined
     return { left, total } as SlotLeft
   }
 
@@ -216,7 +217,7 @@
       </div>
     {/if}
     <!-- Time left -->
-    {#if collection.isTimeLimitedCollection}
+    {#if collection.endTime !== undefined && collection.endTime > 0}
       <div
         class="flex flex-col items-center justify-center gap-3 self-stretch rounded-[10px] bg-white p-5"
       >
@@ -239,22 +240,7 @@
     >
       {#each collection.memberships as mem, i}
         {#if validationResult === true}
-          {#if !collection.isTimeLimitedCollection}
-            {#await getSlotsForMembership(mem) then slots}
-              <MembershipOption
-                clubName={clubName ?? 'Your Club'}
-                id={mem.id}
-                name={mem.name}
-                imagePath={mem.imageSrc}
-                price={mem.price.toString()}
-                currency={mem.currency}
-                description={mem.description}
-                action={`/collections/checkout/${bytes32Hex(mem.payload)}`}
-                actionLabel="Purchase"
-                slotOutTotal={slots}
-              />
-            {/await}
-          {:else}
+          {#await getSlotsForMembership(mem) then slots}
             <MembershipOption
               clubName={clubName ?? 'Your Club'}
               id={mem.id}
@@ -265,9 +251,9 @@
               description={mem.description}
               action={`/collections/checkout/${bytes32Hex(mem.payload)}`}
               actionLabel="Purchase"
-              slotOutTotal={undefined}
+              slotOutTotal={slots}
             />
-          {/if}
+          {/await}
         {/if}
       {/each}
     </div>

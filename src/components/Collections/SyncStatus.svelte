@@ -14,7 +14,7 @@
   } from '@devprotocol/util-ts'
   import { arrayify, clientsSTokens } from '@devprotocol/dev-kit'
   import PQueue from 'p-queue'
-  import { values } from 'ramda'
+  import { equals, values } from 'ramda'
   import type { ExpectedStatus, State } from './types'
   import Skeleton from '@components/Global/Skeleton.svelte'
   import type { CollectionMembership } from '@plugins/collections'
@@ -23,7 +23,6 @@
     source: CollectionMembership
     state: State
     payload: string
-    isTimeLimitedCollection: boolean
     customDescriptor: {
       set: Promise<boolean>
     }
@@ -34,14 +33,12 @@
 
   export let propertyAddress: string
   export let rpcUrl: string
-  export let customTimeDescriptorAddress: string | undefined
-  export let customMemberDescriptorAddress: string | undefined
+  export let customdescriptor: string | undefined
   export let expected: ExpectedStatus[]
   export let stateFetcher: (opts: {
     provider: ContractRunner
     propertyAddress: string
     payload: string
-    isTimeLimitedCollection: boolean
   }) => Promise<Record<string, any>>
   export let stateSetter: (opts: {
     provider: Signer
@@ -64,12 +61,11 @@
     const descriptor = await whenDefined(sTokensManager, (cont) =>
       cont.descriptorOfPropertyByPayload(propertyAddress, data.payload),
     )
-    const customDescriptorAddres = data.isTimeLimitedCollection
-      ? customTimeDescriptorAddress
-      : customMemberDescriptorAddress
+
+    let customDescriptorAddress = customdescriptor
     const test =
-      descriptor?.toLowerCase() === customDescriptorAddres?.toLowerCase()
-    console.log({ test, descriptor, customDescriptorAddres })
+      descriptor?.toLowerCase() === customDescriptorAddress?.toLowerCase()
+    console.log({ test, descriptor, customDescriptorAddress })
     return test
   }
 
@@ -79,37 +75,36 @@
         provider: prov,
         propertyAddress,
         payload: data.payload,
-        isTimeLimitedCollection: data.isTimeLimitedCollection,
       }),
     )
     const expectedValues = values(data.state)
-    const resultValues = arrayify(res ?? {})
-    const test = expectedValues.every((v, i) => resultValues[i] === v)
-
+    const resultValues = arrayify(res ?? {}).map((v) =>
+      v instanceof Object ? values(v) : v,
+    )
+    const test = equals(expectedValues, resultValues)
     console.log('checkImage', test, propertyAddress, data)
+    console.log('compare', [expectedValues, resultValues])
     return test
   }
 
   const sourceStatuses: () => Status[] = () =>
     expected.map(
-      ({ payload, source, state, isTimeLimitedCollection }): Status => ({
+      ({ payload, source, state }): Status => ({
         source,
         state,
         payload,
-        isTimeLimitedCollection,
         customDescriptor: {
           set: queue.add(() =>
             checkCustomDescriptor({
               payload,
               source,
               state,
-              isTimeLimitedCollection,
             }),
           ) as Promise<boolean>,
         },
         image: {
           set: queue.add(() =>
-            checkImage({ payload, source, state, isTimeLimitedCollection }),
+            checkImage({ payload, source, state }),
           ) as Promise<boolean>,
         },
       }),
@@ -153,57 +148,27 @@
     const [l1, l2] = await clientsSTokens(provider)
     const sTokensManager = l1 ?? l2
     const items = await listOfoutOfSyncDescriptors
-    const timeItems = items.filter(
-      ({ isTimeLimitedCollection }) => isTimeLimitedCollection,
-    )
-    const memberItems = items.filter(
-      ({ isTimeLimitedCollection }) => !isTimeLimitedCollection,
-    )
 
     // Filter out states with empty payload
-    const validTimeStates = timeItems.filter(
-      ({ payload }) => payload.trim() !== '',
-    )
-    const validMemberStates = memberItems.filter(
-      ({ payload }) => payload.trim() !== '',
-    )
-    let resTime
-    let resMem
-    if (validTimeStates.length > 0) {
-      resTime =
+    const validStates = items.filter(({ payload }) => payload.trim() !== '')
+    let res
+    if (validStates.length > 0) {
+      res =
         (await whenDefinedAll(
-          [sTokensManager, customTimeDescriptorAddress],
+          [sTokensManager, customdescriptor],
           ([cont, descriptor]) =>
             cont
               .setTokenURIDescriptor(
                 propertyAddress,
                 descriptor,
-                timeItems.map(({ payload }) => payload),
+                items.map(({ payload }) => payload),
               )
               .catch((err) => new Error(err)),
         )) ?? new Error('Client error: try it again!')
-      const resultTime = await whenNotError(resTime, (res_) =>
+      const resultTime = await whenNotError(res, (res_) =>
         res_.wait().catch((err) => new Error(err)),
       )
       syncStatusDescriptor = resultTime instanceof Error ? resultTime : false
-    }
-    if (validMemberStates.length > 0) {
-      resMem =
-        (await whenDefinedAll(
-          [sTokensManager, customMemberDescriptorAddress],
-          ([cont, descriptor]) =>
-            cont
-              .setTokenURIDescriptor(
-                propertyAddress,
-                descriptor,
-                memberItems.map(({ payload }) => payload),
-              )
-              .catch((err) => new Error(err)),
-        )) ?? new Error('Client error: try it again!')
-      const resultMem = await whenNotError(resMem, (res_) =>
-        res_.wait().catch((err) => new Error(err)),
-      )
-      syncStatusDescriptor = resultMem instanceof Error ? resultMem : false
     }
     initStatuses()
   }
@@ -215,19 +180,21 @@
       payload: image.payload,
       state: image.state,
       source: image.source,
-      isTimeLimitedCollection: image.isTimeLimitedCollection,
     }))
+    console.log({ items })
     const res =
       (await whenDefinedAll([items, signer], ([states, signer_]) =>
         stateSetter({ provider: signer_, states, propertyAddress }).catch(
           (err) => new Error(err),
         ),
       )) ?? new Error('Client error: try it again!')
+    console.log({ res })
     const result = await whenNotError(res, (res_) =>
       Promise.all(
         res_.map((res__) => res__.wait().catch((err) => new Error(err))),
       ).catch((err) => new Error(err)),
     )
+    console.log({ result })
     syncStatusImages = result instanceof Error ? result : false
     initStatuses()
   }
@@ -250,7 +217,7 @@
     Memberships just created are not yet published on the blockchain. Submit all
     transactions to start offering memberships.
   </p>
-  <div class="max-h-96 overflow-y-auto rounded-md">
+  <div class="relative max-h-96 overflow-y-auto rounded-md">
     <table
       class="w-full max-w-5xl border-separate overflow-x-auto rounded-md border border-dp-blue-grey-200"
     >
@@ -265,7 +232,9 @@
               </span>
             {:then value}
               <button
-                class="hs-button is-outlined is-small"
+                class={`hs-button is-small ${
+                  value.length > 0 ? 'is-filled is-plox' : 'is-outlined'
+                }`}
                 disabled={value.length < 1}
                 on:click={onClickSyncDescriptor}
                 >{value.length > 0 ? 'Send' : 'Completed'}</button
@@ -303,7 +272,9 @@
               </span>
             {:then value}
               <button
-                class="hs-button is-outlined is-small"
+                class={`hs-button is-small ${
+                  value.length > 0 ? 'is-filled is-plox' : 'is-outlined'
+                }`}
                 disabled={value.length < 1}
                 on:click={onClickSyncImages}
                 >{value.length > 0 ? 'Send' : 'Completed'}</button
@@ -365,7 +336,7 @@
                       d="M4.5 12.75l6 6 9-13.5"
                     />
                   </svg>
-                {:else}<span class="text-sm text-dp-red-300">●</span
+                {:else}<span class="text-sm text-plox-300">●</span
                   >{/if}{/await}</td
             >
             <td class="flex items-center justify-center p-2"
@@ -386,12 +357,23 @@
                       d="M4.5 12.75l6 6 9-13.5"
                     />
                   </svg>
-                {:else}<span class="text-sm text-dp-red-300">●</span
+                {:else}<span class="text-sm text-plox-300">●</span
                   >{/if}{/await}</td
             >
           </tr>
         {/each}
       </tbody>
     </table>
+    {#await Promise.all([listOfoutOfSyncDescriptors, listOfoutOfSyncImages])}
+      <div
+        role="presentation"
+        class="absolute inset-0 flex flex-col gap-5 justify-center justify-items-center items-center bg-[#222b3d80] backdrop-blur-sm"
+      >
+        <div
+          class="h-40 w-40 animate-spin rounded-full border-4 border-l border-r border-t border-native-blue-300"
+        />
+        <p class="font-bold">⌛ Loading memberships</p>
+      </div>
+    {/await}
   </div>
 </section>

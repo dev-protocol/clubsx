@@ -41,7 +41,6 @@ export type Collection = {
   name: string
   imageSrc: string
   status: 'Draft' | 'Published'
-  isTimeLimitedCollection: boolean
   endTime?: number
   description: string
   memberships: CollectionMembership[]
@@ -193,24 +192,13 @@ export const getAdminPaths = (async (
     'devprotocol:clubs:collections',
   )
 
-  const presetTimeCollection: Collection = {
+  const presetCollection: Collection = {
     id: 'preset-time-collection',
-    name: 'My First Time Limited Collection',
+    name: 'My First Slot Collection',
     imageSrc: '',
-    description: 'This is a time-limited collection.',
-    isTimeLimitedCollection: true,
+    description: 'This is a slot collection.',
     status: 'Draft',
     endTime: 0,
-    memberships: [],
-  }
-
-  const presetMemberCollection: Collection = {
-    id: 'preset-member-collection',
-    name: 'My First Quantity Limited Collection',
-    imageSrc: '',
-    description: 'This is a quantity-limited collection.',
-    isTimeLimitedCollection: false,
-    status: 'Draft',
     memberships: [],
   }
 
@@ -253,21 +241,7 @@ export const getAdminPaths = (async (
       paths: ['collections', 'new'],
       component: AdminNew,
       props: {
-        isTimeLimitedCollection: false,
-        preset: presetMemberCollection,
-        collections,
-        existingMemberships,
-        rpcUrl,
-        propertyAddress,
-        name,
-      },
-    },
-    {
-      paths: ['collections', 'new', 'time-limited-collection'],
-      component: AdminNew,
-      props: {
-        isTimeLimitedCollection: true,
-        preset: presetTimeCollection,
+        preset: presetCollection,
         collections,
         existingMemberships,
         rpcUrl,
