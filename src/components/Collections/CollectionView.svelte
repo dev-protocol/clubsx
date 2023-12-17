@@ -83,7 +83,7 @@
     left = Number(left)
     const total = membership.memberCount
     console.log({ left, total })
-    if(membership.memberCount === 0) return undefined
+    if (membership.memberCount === 0) return undefined
     return { left, total } as SlotLeft
   }
 
