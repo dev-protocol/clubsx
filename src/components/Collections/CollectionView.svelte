@@ -193,7 +193,7 @@
             </div>
           {/if}
           {#if validationResult !== true}
-            <!-- Memberships -->
+            <!-- Required Memberships -->
             <div
               class="grid w-full grid-cols-[repeat(auto-fit,_minmax(120px,_1fr))] justify-between gap-4"
             >
@@ -241,18 +241,20 @@
       {#each collection.memberships as mem, i}
         {#if validationResult === true}
           {#await getSlotsForMembership(mem) then slots}
-            <MembershipOption
-              clubName={clubName ?? 'Your Club'}
-              id={mem.id}
-              name={mem.name}
-              imagePath={mem.imageSrc}
-              price={mem.price.toString()}
-              currency={mem.currency}
-              description={mem.description}
-              action={`/collections/checkout/${bytes32Hex(mem.payload)}`}
-              actionLabel="Purchase"
-              slotOutTotal={slots}
-            />
+            {#if !mem.deprecated}
+              <MembershipOption
+                clubName={clubName ?? 'Your Club'}
+                id={mem.id}
+                name={mem.name}
+                imagePath={mem.imageSrc}
+                price={mem.price.toString()}
+                currency={mem.currency}
+                description={mem.description}
+                action={`/collections/checkout/${bytes32Hex(mem.payload)}`}
+                actionLabel="Purchase"
+                slotOutTotal={slots}
+              />
+            {/if}
           {/await}
         {/if}
       {/each}
