@@ -213,12 +213,11 @@
   }
 
   const activateMembership = (
-    selectedCollection: Collection,
     selectedMembership: CollectionMembership,
   ) => {
     updatingMembershipsStatus = true
 
-    const membership = selectedCollection.memberships.find(
+    const membership = collection.memberships.find(
       (m: CollectionMembership) =>
         JSON.stringify(m.payload) ===
         JSON.stringify(selectedMembership.payload),
@@ -234,12 +233,12 @@
           key: 'collections',
           value: [
             ...existingCollections.filter(
-              (c: Collection) => c.id !== selectedCollection.id,
+              (c: Collection) => c.id !== collection.id,
             ),
             {
-              ...selectedCollection,
+              ...collection,
               memberships: [
-                ...selectedCollection.memberships.filter(
+                ...collection.memberships.filter(
                   (m: CollectionMembership) => m.id !== membership.id,
                 ),
                 { ...selectedMembership, deprecated: false },
@@ -727,6 +726,9 @@
     }
     membership.payload = randomBytes(8)
     onChangePrice(membership)
+    if(mode === 'editMem'){
+      setTimeout(buildConfig, 50)
+    }
   }
   const selectAllowlist = (mem: Membership) => {
     // if mem.payload already exists in collection.requiredMemberships then remove it otherwise add it to collection.requiredMemberships
@@ -1318,12 +1320,12 @@
             class={`hs-button is-filled is-large`}
             disabled={collection.endTime === 0 && membership.memberCount === 0}
           >
-            Save
+            {mode === 'editMem' ? 'Save' : 'Add to Collection'}
           </button>
 
           {#if mode === 'editMem' && !membership.deprecated}
             <button
-              class={`hs-button is-filled is-large ${
+              class={`hs-button is-filled is-large is-error ${
                 updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
               }`}
               on:click|preventDefault={() => deleteMembership(membership)}
@@ -1331,6 +1333,16 @@
               <span class="hs-button__label"> Delete </span>
             </button>
           {/if}
+          {#if mode === 'editMem' && membership.deprecated}
+          <button
+            class={`hs-button is-filled w-fit ${
+              updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
+            }`}
+            on:click|preventDefault={() => activateMembership(membership)}
+          >
+            <span class="hs-button__label"> Activate </span>
+          </button>
+        {/if}
         </div>
         {#if collection.endTime === 0 && membership.memberCount === 0}
           <span class="text-red-600"
@@ -1340,6 +1352,7 @@
       {/if}
     </div>
     <!-- Previous Memberships -->
+    <h1 class="font-title text-2xl font-bold">Existing Collection Items</h1>
     <div
       class="grid grid-cols-[repeat(auto-fit,_minmax(120px,_1fr))] justify-between gap-4"
     >
@@ -1357,12 +1370,14 @@
               currency={mem.currency}
               description={mem.description}
             />
-            <a
+            {#if mode !== 'editMem'}
+              <a
               class="hs-button is-filled is-fullwidth mt-4"
               href={`${collection.id}/${mem.id}`}
-            >
-              <span class="hs-button__label">Edit</span>
-            </a>
+              >
+                <span class="hs-button__label">Select</span>
+              </a>
+            {/if}
           </div>
         {/if}
       {/each}
