@@ -861,8 +861,8 @@
         {collection.endTime !== 0
           ? 'Reset'
           : showDateRow
-          ? 'Cancel'
-          : 'Set Sale Duration'}
+            ? 'Cancel'
+            : 'Set Sale Duration'}
       </button>
       {#if showDateRow}
         <div class="grid grid-cols-3 gap-2">
@@ -1053,8 +1053,8 @@
             {membership.memberCount !== 0
               ? 'Reset'
               : showSaleLimitRow
-              ? 'Cancel'
-              : 'Set Sale Limit'}
+                ? 'Cancel'
+                : 'Set Sale Limit'}
           </button>
           {#if showSaleLimitRow}
             <div class="grid grid-cols-3 gap-2">
