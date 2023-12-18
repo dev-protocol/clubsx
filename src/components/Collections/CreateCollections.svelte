@@ -94,6 +94,9 @@
       ? DEV_TOKEN_PAYMENT_TYPE_FEE * 100
       : 0
   let updatingMembershipsStatus: Set<string> = new Set()
+  let globalUpdateState = {
+    isLoading: false,
+  }
   let noOfPositions: number = 0
   let invalidPriceMsg: string = ''
   let invalidFeeMsg: string = ''
@@ -110,6 +113,10 @@
   const maxPrice = 1e20
   const minCustomFee100 = 0
   const maxCustomFee100 = 95
+
+  function setLoading(isLoading: boolean) {
+    globalUpdateState.isLoading = isLoading;
+  }
 
   // TODO: call this function on save btn trigger as well.
   const onChangeName = () => {
@@ -147,6 +154,7 @@
     if (!e.currentTarget.files || !collection) {
       return
     }
+    setLoading(true)
 
     const file = e.currentTarget.files[0]
 
@@ -156,6 +164,7 @@
     collection = collection
 
     update()
+    setLoading(false)
   }
 
   const onMembershipFileSelected = async (
@@ -166,7 +175,7 @@
     if (!e.currentTarget.files || !membership) {
       return
     }
-
+    setLoading(true)
     const file = e.currentTarget.files[0]
 
     membership.imageSrc =
@@ -174,6 +183,7 @@
 
     updateState()
     update()
+    setLoading(false)
   }
 
   const deleteMembership = (selectedMembership: CollectionMembership) => {
@@ -827,10 +837,10 @@
       </select>
     </label>
     <!-- collection cover image uploader-->
-    <label class="hs-form-field is-filled is-required">
+    <label class="hs-form-field is-filled max-w-xl is-required">
       <span class="hs-form-field__label">Collection cover image</span>
       <div
-        class="aspect-[2/1] w-full max-w-xl cursor-pointer rounded-xl border border-[#ffffff1a] bg-[#ffffff1a] p-2"
+        class="aspect-[2/1] w-full cursor-pointer rounded-xl border border-[#ffffff1a] bg-[#ffffff1a] p-2"
       >
         {#if collection.imageSrc !== ''}
           <img
@@ -839,7 +849,7 @@
             alt={`${collection.name}-collection-cover-image`}
           />
         {:else}
-          <div class="h-full w-full rounded-xl bg-dp-blue-grey-600" />
+          <div class={`h-full w-full rounded-xl ${globalUpdateState.isLoading ? 'animate-pulse bg-gray-500/60' : 'bg-dp-blue-grey-600'}`}/>
         {/if}
       </div>
       <input
@@ -848,7 +858,7 @@
         style="display:none"
         type="file"
         accept=".jpg, .jpeg, .png, .gif, .apng, .tiff"
-        class="hs-button is-filled is-large cursor-pointer"
+        class="cursor-pointer"
         on:change={onCollectionFileSelected}
       />
       <span class="hs-form-field__helper"
@@ -1034,7 +1044,7 @@
                 alt={`${membership.name}-membership-image`}
               />
             {:else}
-              <div class="h-full w-full rounded-xl bg-dp-blue-grey-600" />
+            <div class={`h-full w-full rounded-xl ${globalUpdateState.isLoading ? 'animate-pulse bg-gray-500/60' : 'bg-dp-blue-grey-600'}`}/>
             {/if}
           </div>
           <input
