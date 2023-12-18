@@ -93,7 +93,10 @@
     : membership.currency === 'DEV'
       ? DEV_TOKEN_PAYMENT_TYPE_FEE * 100
       : 0
-  let updatingMembershipsStatus: boolean = false
+  let updatingMembershipsStatus: Set<string> = new Set()
+  let globalUpdateState = {
+    isLoading: false,
+  }
   let noOfPositions: number = 0
   let invalidPriceMsg: string = ''
   let invalidFeeMsg: string = ''
@@ -110,6 +113,10 @@
   const maxPrice = 1e20
   const minCustomFee100 = 0
   const maxCustomFee100 = 95
+
+  function setLoading(isLoading: boolean) {
+    globalUpdateState.isLoading = isLoading
+  }
 
   // TODO: call this function on save btn trigger as well.
   const onChangeName = () => {
@@ -147,6 +154,7 @@
     if (!e.currentTarget.files || !collection) {
       return
     }
+    setLoading(true)
 
     const file = e.currentTarget.files[0]
 
@@ -156,6 +164,7 @@
     collection = collection
 
     update()
+    setLoading(false)
   }
 
   const onMembershipFileSelected = async (
@@ -166,7 +175,7 @@
     if (!e.currentTarget.files || !membership) {
       return
     }
-
+    setLoading(true)
     const file = e.currentTarget.files[0]
 
     membership.imageSrc =
@@ -174,10 +183,14 @@
 
     updateState()
     update()
+    setLoading(false)
   }
 
   const deleteMembership = (selectedMembership: CollectionMembership) => {
-    updatingMembershipsStatus = true
+    updatingMembershipsStatus = new Set([
+      ...updatingMembershipsStatus.values(),
+      `${JSON.stringify(selectedMembership.payload)}`,
+    ])
 
     const membership = collection.memberships.find(
       (m: CollectionMembership) =>
@@ -212,13 +225,13 @@
     setTimeout(buildConfig, 50)
   }
 
-  const activateMembership = (
-    selectedCollection: Collection,
-    selectedMembership: CollectionMembership,
-  ) => {
-    updatingMembershipsStatus = true
+  const activateMembership = (selectedMembership: CollectionMembership) => {
+    updatingMembershipsStatus = new Set([
+      ...updatingMembershipsStatus.values(),
+      `${JSON.stringify(selectedMembership.payload)}`,
+    ])
 
-    const membership = selectedCollection.memberships.find(
+    const membership = collection.memberships.find(
       (m: CollectionMembership) =>
         JSON.stringify(m.payload) ===
         JSON.stringify(selectedMembership.payload),
@@ -234,12 +247,12 @@
           key: 'collections',
           value: [
             ...existingCollections.filter(
-              (c: Collection) => c.id !== selectedCollection.id,
+              (c: Collection) => c.id !== collection.id,
             ),
             {
-              ...selectedCollection,
+              ...collection,
               memberships: [
-                ...selectedCollection.memberships.filter(
+                ...collection.memberships.filter(
                   (m: CollectionMembership) => m.id !== membership.id,
                 ),
                 { ...selectedMembership, deprecated: false },
@@ -727,6 +740,9 @@
     }
     membership.payload = randomBytes(8)
     onChangePrice(membership)
+    if (mode === 'editMem') {
+      setTimeout(buildConfig, 50)
+    }
   }
   const selectAllowlist = (mem: Membership) => {
     // if mem.payload already exists in collection.requiredMemberships then remove it otherwise add it to collection.requiredMemberships
@@ -783,8 +799,6 @@
   }
 
   const onFinishCallback = async (ev: any) => {
-    updatingMembershipsStatus = false
-
     if (!ev.detail.success) {
       return
     }
@@ -823,10 +837,10 @@
       </select>
     </label>
     <!-- collection cover image uploader-->
-    <label class="hs-form-field is-filled is-required">
+    <label class="hs-form-field is-filled max-w-xl is-required">
       <span class="hs-form-field__label">Collection cover image</span>
       <div
-        class="aspect-[2/1] w-full max-w-xl cursor-pointer rounded-xl border border-[#ffffff1a] bg-[#ffffff1a] p-2"
+        class="aspect-[2/1] w-full cursor-pointer rounded-xl border border-[#ffffff1a] bg-[#ffffff1a] p-2"
       >
         {#if collection.imageSrc !== ''}
           <img
@@ -835,7 +849,13 @@
             alt={`${collection.name}-collection-cover-image`}
           />
         {:else}
-          <div class="h-full w-full rounded-xl bg-dp-blue-grey-600" />
+          <div
+            class={`h-full w-full rounded-xl ${
+              globalUpdateState.isLoading
+                ? 'animate-pulse bg-gray-500/60'
+                : 'bg-dp-blue-grey-600'
+            }`}
+          />
         {/if}
       </div>
       <input
@@ -844,7 +864,7 @@
         style="display:none"
         type="file"
         accept=".jpg, .jpeg, .png, .gif, .apng, .tiff"
-        class="hs-button is-filled is-large cursor-pointer"
+        class="cursor-pointer"
         on:change={onCollectionFileSelected}
       />
       <span class="hs-form-field__helper"
@@ -861,8 +881,8 @@
         {collection.endTime !== 0
           ? 'Reset'
           : showDateRow
-          ? 'Cancel'
-          : 'Set Sale Duration'}
+            ? 'Cancel'
+            : 'Set Sale Duration'}
       </button>
       {#if showDateRow}
         <div class="grid grid-cols-3 gap-2">
@@ -1030,7 +1050,13 @@
                 alt={`${membership.name}-membership-image`}
               />
             {:else}
-              <div class="h-full w-full rounded-xl bg-dp-blue-grey-600" />
+              <div
+                class={`h-full w-full rounded-xl ${
+                  globalUpdateState.isLoading
+                    ? 'animate-pulse bg-gray-500/60'
+                    : 'bg-dp-blue-grey-600'
+                }`}
+              />
             {/if}
           </div>
           <input
@@ -1053,8 +1079,8 @@
             {membership.memberCount !== 0
               ? 'Reset'
               : showSaleLimitRow
-              ? 'Cancel'
-              : 'Set Sale Limit'}
+                ? 'Cancel'
+                : 'Set Sale Limit'}
           </button>
           {#if showSaleLimitRow}
             <div class="grid grid-cols-3 gap-2">
@@ -1318,17 +1344,41 @@
             class={`hs-button is-filled is-large`}
             disabled={collection.endTime === 0 && membership.memberCount === 0}
           >
-            Save
+            {mode === 'editMem' ? 'Save' : 'Add to Collection'}
           </button>
 
           {#if mode === 'editMem' && !membership.deprecated}
             <button
-              class={`hs-button is-filled is-large ${
-                updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
+              disabled={updatingMembershipsStatus.has(
+                `${JSON.stringify(membership.payload)}`,
+              )}
+              class={`hs-button is-filled is-large is-error ${
+                updatingMembershipsStatus.has(
+                  `${JSON.stringify(membership.payload)}`,
+                )
+                  ? 'animate-pulse bg-gray-500/60'
+                  : ''
               }`}
               on:click|preventDefault={() => deleteMembership(membership)}
             >
               <span class="hs-button__label"> Delete </span>
+            </button>
+          {/if}
+          {#if mode === 'editMem' && membership.deprecated}
+            <button
+              disabled={updatingMembershipsStatus.has(
+                `${JSON.stringify(membership.payload)}`,
+              )}
+              class={`hs-button is-filled is-large ${
+                updatingMembershipsStatus.has(
+                  `${JSON.stringify(membership.payload)}`,
+                )
+                  ? 'animate-pulse bg-gray-500/60'
+                  : ''
+              }`}
+              on:click|preventDefault={() => activateMembership(membership)}
+            >
+              <span class="hs-button__label"> Activate </span>
             </button>
           {/if}
         </div>
@@ -1340,6 +1390,7 @@
       {/if}
     </div>
     <!-- Previous Memberships -->
+    <h1 class="font-title text-2xl font-bold">Existing Collection Items</h1>
     <div
       class="grid grid-cols-[repeat(auto-fit,_minmax(120px,_1fr))] justify-between gap-4"
     >
@@ -1357,12 +1408,49 @@
               currency={mem.currency}
               description={mem.description}
             />
-            <a
-              class="hs-button is-filled is-fullwidth mt-4"
-              href={`${collection.id}/${mem.id}`}
-            >
-              <span class="hs-button__label">Edit</span>
-            </a>
+            {#if mode !== 'editMem'}
+              <a
+                class="hs-button is-filled is-fullwidth mt-4"
+                href={`${collection.id}/${mem.id}`}
+              >
+                <span class="hs-button__label">Select</span>
+              </a>
+              {#if !mem.deprecated}
+                <button
+                  disabled={updatingMembershipsStatus.has(
+                    `${JSON.stringify(mem.payload)}`,
+                  )}
+                  class={`hs-button is-filled is-fullwidth is-error mt-4 ${
+                    updatingMembershipsStatus.has(
+                      `${JSON.stringify(mem.payload)}`,
+                    )
+                      ? 'animate-pulse bg-gray-500/60'
+                      : ''
+                  }`}
+                  id={`delete-opt-${i}`}
+                  on:click|preventDefault={() => deleteMembership(mem)}
+                >
+                  <span class="hs-button__label">Delete</span>
+                </button>
+              {/if}
+              {#if mem.deprecated}
+                <button
+                  disabled={updatingMembershipsStatus.has(
+                    `${JSON.stringify(mem.payload)}`,
+                  )}
+                  class={`hs-button is-filled is-fullwidth mt-4 ${
+                    updatingMembershipsStatus.has(
+                      `${JSON.stringify(mem.payload)}`,
+                    )
+                      ? 'animate-pulse bg-gray-500/60'
+                      : ''
+                  }`}
+                  id={`activate-opt-${i}`}
+                  on:click|preventDefault={() => activateMembership(mem)}
+                  >Activate</button
+                >
+              {/if}
+            {/if}
           </div>
         {/if}
       {/each}
