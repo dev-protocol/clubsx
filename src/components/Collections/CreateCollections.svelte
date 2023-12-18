@@ -212,9 +212,7 @@
     setTimeout(buildConfig, 50)
   }
 
-  const activateMembership = (
-    selectedMembership: CollectionMembership,
-  ) => {
+  const activateMembership = (selectedMembership: CollectionMembership) => {
     updatingMembershipsStatus = true
 
     const membership = collection.memberships.find(
@@ -726,7 +724,7 @@
     }
     membership.payload = randomBytes(8)
     onChangePrice(membership)
-    if(mode === 'editMem'){
+    if (mode === 'editMem') {
       setTimeout(buildConfig, 50)
     }
   }
@@ -863,8 +861,8 @@
         {collection.endTime !== 0
           ? 'Reset'
           : showDateRow
-          ? 'Cancel'
-          : 'Set Sale Duration'}
+            ? 'Cancel'
+            : 'Set Sale Duration'}
       </button>
       {#if showDateRow}
         <div class="grid grid-cols-3 gap-2">
@@ -1055,8 +1053,8 @@
             {membership.memberCount !== 0
               ? 'Reset'
               : showSaleLimitRow
-              ? 'Cancel'
-              : 'Set Sale Limit'}
+                ? 'Cancel'
+                : 'Set Sale Limit'}
           </button>
           {#if showSaleLimitRow}
             <div class="grid grid-cols-3 gap-2">
@@ -1334,15 +1332,15 @@
             </button>
           {/if}
           {#if mode === 'editMem' && membership.deprecated}
-          <button
-            class={`hs-button is-filled w-fit ${
-              updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
-            }`}
-            on:click|preventDefault={() => activateMembership(membership)}
-          >
-            <span class="hs-button__label"> Activate </span>
-          </button>
-        {/if}
+            <button
+              class={`hs-button is-filled w-fit ${
+                updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
+              }`}
+              on:click|preventDefault={() => activateMembership(membership)}
+            >
+              <span class="hs-button__label"> Activate </span>
+            </button>
+          {/if}
         </div>
         {#if collection.endTime === 0 && membership.memberCount === 0}
           <span class="text-red-600"
@@ -1372,8 +1370,8 @@
             />
             {#if mode !== 'editMem'}
               <a
-              class="hs-button is-filled is-fullwidth mt-4"
-              href={`${collection.id}/${mem.id}`}
+                class="hs-button is-filled is-fullwidth mt-4"
+                href={`${collection.id}/${mem.id}`}
               >
                 <span class="hs-button__label">Select</span>
               </a>
