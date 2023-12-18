@@ -115,7 +115,7 @@
   const maxCustomFee100 = 95
 
   function setLoading(isLoading: boolean) {
-    globalUpdateState.isLoading = isLoading;
+    globalUpdateState.isLoading = isLoading
   }
 
   // TODO: call this function on save btn trigger as well.
@@ -849,7 +849,13 @@
             alt={`${collection.name}-collection-cover-image`}
           />
         {:else}
-          <div class={`h-full w-full rounded-xl ${globalUpdateState.isLoading ? 'animate-pulse bg-gray-500/60' : 'bg-dp-blue-grey-600'}`}/>
+          <div
+            class={`h-full w-full rounded-xl ${
+              globalUpdateState.isLoading
+                ? 'animate-pulse bg-gray-500/60'
+                : 'bg-dp-blue-grey-600'
+            }`}
+          />
         {/if}
       </div>
       <input
@@ -1044,7 +1050,13 @@
                 alt={`${membership.name}-membership-image`}
               />
             {:else}
-            <div class={`h-full w-full rounded-xl ${globalUpdateState.isLoading ? 'animate-pulse bg-gray-500/60' : 'bg-dp-blue-grey-600'}`}/>
+              <div
+                class={`h-full w-full rounded-xl ${
+                  globalUpdateState.isLoading
+                    ? 'animate-pulse bg-gray-500/60'
+                    : 'bg-dp-blue-grey-600'
+                }`}
+              />
             {/if}
           </div>
           <input
