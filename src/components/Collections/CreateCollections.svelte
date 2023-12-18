@@ -789,7 +789,6 @@
   }
 
   const onFinishCallback = async (ev: any) => {
-
     if (!ev.detail.success) {
       return
     }
@@ -1429,7 +1428,7 @@
                   >Activate</button
                 >
               {/if}
-              {/if}
+            {/if}
           </div>
         {/if}
       {/each}
