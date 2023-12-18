@@ -93,7 +93,7 @@
     : membership.currency === 'DEV'
       ? DEV_TOKEN_PAYMENT_TYPE_FEE * 100
       : 0
-  let updatingMembershipsStatus: boolean = false
+  let updatingMembershipsStatus: Set<string> = new Set()
   let noOfPositions: number = 0
   let invalidPriceMsg: string = ''
   let invalidFeeMsg: string = ''
@@ -177,7 +177,10 @@
   }
 
   const deleteMembership = (selectedMembership: CollectionMembership) => {
-    updatingMembershipsStatus = true
+    updatingMembershipsStatus = new Set([
+      ...updatingMembershipsStatus.values(),
+      `${JSON.stringify(selectedMembership.payload)}`,
+    ])
 
     const membership = collection.memberships.find(
       (m: CollectionMembership) =>
@@ -213,7 +216,10 @@
   }
 
   const activateMembership = (selectedMembership: CollectionMembership) => {
-    updatingMembershipsStatus = true
+    updatingMembershipsStatus = new Set([
+      ...updatingMembershipsStatus.values(),
+      `${JSON.stringify(selectedMembership.payload)}`,
+    ])
 
     const membership = collection.memberships.find(
       (m: CollectionMembership) =>
@@ -783,7 +789,6 @@
   }
 
   const onFinishCallback = async (ev: any) => {
-    updatingMembershipsStatus = false
 
     if (!ev.detail.success) {
       return
@@ -1323,8 +1328,15 @@
 
           {#if mode === 'editMem' && !membership.deprecated}
             <button
+              disabled={updatingMembershipsStatus.has(
+                `${JSON.stringify(membership.payload)}`,
+              )}
               class={`hs-button is-filled is-large is-error ${
-                updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
+                updatingMembershipsStatus.has(
+                  `${JSON.stringify(membership.payload)}`,
+                )
+                  ? 'animate-pulse bg-gray-500/60'
+                  : ''
               }`}
               on:click|preventDefault={() => deleteMembership(membership)}
             >
@@ -1333,8 +1345,15 @@
           {/if}
           {#if mode === 'editMem' && membership.deprecated}
             <button
-              class={`hs-button is-filled w-fit ${
-                updatingMembershipsStatus ? 'animate-pulse bg-gray-500/60' : ''
+              disabled={updatingMembershipsStatus.has(
+                `${JSON.stringify(membership.payload)}`,
+              )}
+              class={`hs-button is-filled is-large ${
+                updatingMembershipsStatus.has(
+                  `${JSON.stringify(membership.payload)}`,
+                )
+                  ? 'animate-pulse bg-gray-500/60'
+                  : ''
               }`}
               on:click|preventDefault={() => activateMembership(membership)}
             >
@@ -1375,7 +1394,42 @@
               >
                 <span class="hs-button__label">Select</span>
               </a>
-            {/if}
+              {#if !mem.deprecated}
+                <button
+                  disabled={updatingMembershipsStatus.has(
+                    `${JSON.stringify(mem.payload)}`,
+                  )}
+                  class={`hs-button is-filled is-fullwidth is-error mt-4 ${
+                    updatingMembershipsStatus.has(
+                      `${JSON.stringify(mem.payload)}`,
+                    )
+                      ? 'animate-pulse bg-gray-500/60'
+                      : ''
+                  }`}
+                  id={`delete-opt-${i}`}
+                  on:click|preventDefault={() => deleteMembership(mem)}
+                >
+                  <span class="hs-button__label">Delete</span>
+                </button>
+              {/if}
+              {#if mem.deprecated}
+                <button
+                  disabled={updatingMembershipsStatus.has(
+                    `${JSON.stringify(mem.payload)}`,
+                  )}
+                  class={`hs-button is-filled is-fullwidth mt-4 ${
+                    updatingMembershipsStatus.has(
+                      `${JSON.stringify(mem.payload)}`,
+                    )
+                      ? 'animate-pulse bg-gray-500/60'
+                      : ''
+                  }`}
+                  id={`activate-opt-${i}`}
+                  on:click|preventDefault={() => activateMembership(mem)}
+                  >Activate</button
+                >
+              {/if}
+              {/if}
           </div>
         {/if}
       {/each}
