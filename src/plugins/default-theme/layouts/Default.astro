@@ -3,22 +3,24 @@ import {
   type ClubsConfiguration,
   ClubsPluginSignal,
 } from '@devprotocol/clubs-core'
-import type { UndefinedOr } from '@devprotocol/util-ts'
+import type {UndefinedOr} from '@devprotocol/util-ts'
 import Header from '../components/Header/Header.astro'
 import Hero from '../components/Hero/Hero.astro'
-import type { NavLink } from '@constants/navLink'
+import type {NavLink} from '@constants/navLink'
 import Navigation from '../components/Navigation/Navigation.astro'
-import type { DraftOptions } from '@constants/draft'
+import type {DraftOptions} from '@constants/draft'
 import TokensInfo from '../components/Tokens/Info.svelte'
 import StartWithClubs from '../assets/Start-with-Clubs--dark.png'
 import Twitter from '@components/Icons/Twitter.astro'
 import Discord from '@components/Icons/Discord.astro'
 import Share from '../components/Share/Share.svelte'
-import type { Membership } from '@plugins/memberships'
-import type { GlobalConfigValue, HomeConfigValue } from '..'
-import { replaceWithFwdHost } from '@fixtures/url'
+import type {Membership} from '@plugins/memberships'
+import type {GlobalConfigValue, HomeConfigValue} from '..'
+import {replaceWithFwdHost} from '@fixtures/url'
 
-const { page } = Astro.params
+import '../styles';
+
+const {page} = Astro.params
 const {
   theme1: {
     metaTitle,
@@ -44,7 +46,7 @@ const {
 const displayFullPage = signals?.includes(ClubsPluginSignal.DisplayFullPage)
 const notDisplayConnection = signals?.includes('connection-button-hide')
 
-const { name, propertyAddress, rpcUrl, chainId } = config
+const {name, propertyAddress, rpcUrl, chainId} = config
 const title = metaTitle ? `${config.name} : ${metaTitle}` : config.name
 
 const ogp = config.options?.find((option) => option.key === 'ogp')
@@ -82,9 +84,7 @@ const url = replaceWithFwdHost(Astro.request)
 
 const backgroundColor = globalConfig?.bg ?? '#ADADAD'
 const bodyColor = globalConfig?.ink ?? '#fff'
-const disabledBackgroundColor = globalConfig?.disabledBg ?? 'rgba(0, 0, 0, 0.12)'
-const disabledBodyColor = globalConfig?.disabledInk ?? 'rgba(0, 0, 0, 0.37)'
-
+const themeMode = globalConfig?.themeMode ?? 'dark'
 
 const hasNotAMembership = memberships ? memberships.length < 1 : true
 
@@ -94,70 +94,69 @@ const truncatedDescription = ((desc) =>
 ])
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>{title}</title>
-    <link rel="icon" type="image/svg" href={avatarImgSrc || '/favicon.svg'} />
-    <meta name="description" content={`${truncatedDescription}`} />
-    <meta property="og:title" content={title} />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={url} />
-    <meta property="og:image" content={`${ogp?.image}`} />
-    <meta property="og:description" content={truncatedDescription} />
-    <meta property="og:site_name" content={config.name} />
-    <meta name="twitter:site" content={config.twitterHandle} />
-    <meta name="twitter:creator" content={config.twitterHandle} />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={truncatedDescription} />
-    <meta name="twitter:image" content={`${ogp?.image}`} />
-    <style define:vars={{ bodyColor, backgroundColor, disabledBodyColor, disabledBackgroundColor }}>
-      :root {
-        --hs-theme-background: var(--backgroundColor) !important;
-        --hs-theme-background-ink: var(--bodyColor) !important;
-        --hs-theme-disabled: var(--disabledBackgroundColor) !important;
-        --hs-theme-disabled-ink: var(--disabledBodyColor) !important;
-      }
+<html lang="en" hashi-theme={themeMode}>
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width"/>
+  <title>{title}</title>
+  <link rel="icon" type="image/svg" href={avatarImgSrc || '/favicon.svg'}/>
+  <meta name="description" content={`${truncatedDescription}`}/>
+  <meta property="og:title" content={title}/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content={url}/>
+  <meta property="og:image" content={`${ogp?.image}`}/>
+  <meta property="og:description" content={truncatedDescription}/>
+  <meta property="og:site_name" content={config.name}/>
+  <meta name="twitter:site" content={config.twitterHandle}/>
+  <meta name="twitter:creator" content={config.twitterHandle}/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content={title}/>
+  <meta name="twitter:description" content={truncatedDescription}/>
+  <meta name="twitter:image" content={`${ogp?.image}`}/>
+  <style define:vars={{bodyColor, backgroundColor}}>
+    :root {
+      --hs-theme-background: var(--backgroundColor) !important;
+      --hs-theme-background-ink: var(--bodyColor) !important;
+    }
 
-      html,
-      body {
+    html,
+    body {
 
-      }
-    </style>
-  </head>
+    }
+  </style>
+</head>
 
-  <body class="grid min-h-screen gap-5 overflow-x-hidden font-body">
-    <Header
-      chainId={chainId}
-      config={config}
-      connection={!notDisplayConnection}
-    >
-      <slot name="clubs:connect-button" slot="header:connect-button" />
-    </Header>
-    <Hero
-      image={homeConfig?.hero?.image}
-      avatar={avatarImgSrc}
-      name={name}
-      propertyAddress={propertyAddress}
-      rpcUrl={rpcUrl}
-      socialLinks={socialLinks}
-      description={homeConfig?.description}
-      globalConfig={globalConfig}
-      compact={displayFullPage}
-      isInDraft={isInDraft}
-    />
-    {
-      !displayFullPage && (
-        <section class="container relative mx-auto grid max-w-2xl grid-cols-2 items-stretch justify-between gap-4 px-6">
+<body class="grid min-h-screen gap-5 overflow-x-hidden font-body">
+<Header
+  chainId={chainId}
+  config={config}
+  connection={!notDisplayConnection}
+>
+  <slot name="clubs:connect-button" slot="header:connect-button"/>
+</Header>
+<Hero
+  image={homeConfig?.hero?.image}
+  avatar={avatarImgSrc}
+  name={name}
+  propertyAddress={propertyAddress}
+  rpcUrl={rpcUrl}
+  socialLinks={socialLinks}
+  description={homeConfig?.description}
+  globalConfig={globalConfig}
+  compact={displayFullPage}
+  isInDraft={isInDraft}
+/>
+<section class="w-full max-w-[672px] mx-auto px-6 flex flex-col flex-nowrap gap-4">
+  {
+    !displayFullPage && (
+      <section class="container relative grid grid-cols-2 items-stretch justify-between gap-4">
           <span>
             <a
               href={hasNotAMembership ? undefined : '/join'}
               class:list={[
-                'hs-button is-filled w-fit gap-2 rounded-full border-0 bg-white px-7 py-2 text-2xl font-bold text-black',
-                { 'cursor-wait': hasNotAMembership },
-                { 'text-black/30': hasNotAMembership },
+                'hs-button is-filled is-large w-fit gap-2 rounded-full border-0 bg-white px-7 py-2 text-2xl font-bold text-black',
+                {'cursor-wait': hasNotAMembership},
+                {'text-black/30': hasNotAMembership},
               ]}
             >
               <svg
@@ -177,138 +176,143 @@ const truncatedDescription = ((desc) =>
               Join
             </a>
           </span>
-          <span class="flex items-stretch justify-end gap-4 text-white">
+        <span class="flex items-stretch justify-end gap-4 text-white">
             <a
               href="#info"
-              class="inline-flex aspect-square h-full items-center justify-center rounded-full border-2"
+              class="hs-button is-icon-only is-outlined is-large inline-flex border-2 aspect-square"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="h-6 w-6"
-              >
+             <i class="hs-button__icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="h-6 w-6"
+                >
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"
                 />
               </svg>
+             </i>
             </a>
             <Share
               client:load
               title={title}
               text=""
               url={url}
-              className="inline-flex aspect-square h-full items-center justify-center rounded-full border-2"
+              className="hs-button is-icon-only is-outlined inline-flex aspect-square is-large"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="h-6 w-6"
-              >
+              <i class="hs-button__icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="h-6 w-6"
+                >
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
                 />
               </svg>
+              </i>
             </Share>
           </span>
-        </section>
-      )
-    }
+      </section>
+    )
+  }
 
-    {
-      !displayFullPage && (
-        <section class="relative overflow-x-scroll px-[clamp(1.5rem,((100vw_-_42rem)/2+1.5rem),100%)] pb-8">
-          <Navigation
-            type="tab"
-            links={navigationLinks}
-            current={currentLink}
-          />
-        </section>
-      )
-    }
-    <main class="container relative mx-auto max-w-4xl px-6 xl:px-0">
-      <slot />
-      {
-        socials && (
-          <ul class="mx-auto my-16 flex justify-center gap-12">
-            {socials.map(
-              (link) =>
-                link?.path !== '' && (
-                  <a
-                    href={link?.path}
-                    target="_blank"
-                    rel="noopener"
-                    class="inline-flex aspect-square items-center justify-center rounded-full border-2 p-4"
-                  >
-                    {link?.kind === 'twitter' ? (
-                      <Twitter />
-                    ) : link?.kind === 'discord' ? (
-                      <Discord />
-                    ) : (
-                      link?.display
-                    )}
-                  </a>
-                ),
-            )}
-          </ul>
-        )
-      }{
-        !displayFullPage && (
-          <>
-            <hr class="my-16 opacity-30" />
-            <Navigation links={navigationLinks} current={currentLink} />
-          </>
-        )
-      }
-    </main>
-    <footer
-      id="info"
-      class="container mx-auto grid max-w-2xl justify-center justify-items-center gap-24 px-4 py-16"
-    >
-      {
-        footerLinks && (
-          <section>
-            <ul class="my-4 grid gap-2">
-              {footerLinks.map((x) => (
-                <li>
-                  <a href={x.path} class="text-sm opacity-80">
-                    {x.display}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </section>
-        )
-      }
-      {
-        !displayFullPage && (
-          <div>
-            <TokensInfo
-              client:load
-              propertyAddress={config.propertyAddress}
-              chainId={config.chainId}
-              rpcUrl={config.rpcUrl}
-            />
-          </div>
-        )
-      }
-      <a href="https://clubs.place"
-        ><img
-          src={StartWithClubs.src}
-          width="130"
-          height="46"
-          class="w-[190px]"
-        /></a
-      >
-    </footer>
-  </body>
+  {
+    !displayFullPage && (
+      <section class="w-full relative overflow-x-scroll pb-8 mx-auto scrollbar-none">
+        <Navigation
+          type="tab"
+          links={navigationLinks}
+          current={currentLink}
+        />
+      </section>
+    )
+  }
+</section>
+<main class="container relative mx-auto max-w-4xl px-6 xl:px-0">
+  <slot/>
+  {
+    socials && (
+      <ul class="mx-auto my-16 flex justify-center gap-12">
+        {socials.map(
+          (link) =>
+            link?.path !== '' && (
+              <a
+                href={link?.path}
+                target="_blank"
+                rel="noopener"
+                class="inline-flex aspect-square items-center justify-center rounded-full border-2 p-4"
+              >
+                {link?.kind === 'twitter' ? (
+                  <Twitter/>
+                ) : link?.kind === 'discord' ? (
+                  <Discord/>
+                ) : (
+                  link?.display
+                )}
+              </a>
+            ),
+        )}
+      </ul>
+    )
+  }{
+  !displayFullPage && (
+    <>
+      <hr class="my-16 opacity-30"/>
+      <Navigation links={navigationLinks} current={currentLink}/>
+    </>
+  )
+}
+</main>
+<footer
+  id="info"
+  class="container mx-auto grid max-w-2xl justify-center justify-items-center gap-24 px-4 py-16"
+>
+  {
+    footerLinks && (
+      <section>
+        <ul class="my-4 grid gap-2">
+          {footerLinks.map((x) => (
+            <li>
+              <a href={x.path} class="text-sm opacity-80">
+                {x.display}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+  {
+    !displayFullPage && (
+      <div>
+        <TokensInfo
+          client:load
+          propertyAddress={config.propertyAddress}
+          chainId={config.chainId}
+          rpcUrl={config.rpcUrl}
+        />
+      </div>
+    )
+  }
+  <a href="https://clubs.place"
+  ><img
+    src={StartWithClubs.src}
+    width="130"
+    height="46"
+    class="w-[190px]"
+  /></a
+  >
+</footer>
+</body>
 </html>

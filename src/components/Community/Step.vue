@@ -1,5 +1,5 @@
 <template>
-  <div class="relative overflow-hidden rounded-2xl">
+  <div class="relative overflow-hidden rounded-2xl text-surface-ink">
     <div
       class="step__overlay absolute flex h-full w-full flex-col justify-center px-6"
     >
@@ -31,7 +31,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use '@devprotocol/hashi';
+
 .step__overlay {
-  background: linear-gradient(90deg, #000 10%, rgba(0 0 0 / 0) 100%);
+  background: linear-gradient(90deg, rgba(255 255 255 / 70%) 10%, rgba(255 255 255 / 0) 100%);
+
+  @include hashi.dark-mode() {
+    background: linear-gradient(90deg, #000 10%, rgba(0 0 0 / 0) 100%);
+  }
 }
 </style>

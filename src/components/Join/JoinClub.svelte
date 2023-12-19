@@ -14,6 +14,7 @@
   import type { UndefinedOr } from '@devprotocol/util-ts'
   import { Strings } from './i18n'
   import { onMount } from 'svelte'
+  import { CLBRadio } from '@devprotocol/clubs-core/ui/svelte';
 
   const counter = new Map<CurrencyOption, number>()
   const i18nBase = i18nFactory(Strings)
@@ -58,7 +59,7 @@
 </script>
 
 <section
-  class="flex flex-col rounded-xl bg-dp-white-200 p-4 text-dp-white-ink shadow"
+  class="flex flex-col rounded-xl bg-surface-400 p-10 text-surface-ink shadow bg-opacity-40"
 >
   <h2 class="mb-4 text-4xl font-bold">{i18n('Join')}</h2>
 
@@ -71,33 +72,19 @@
   >
     {#each currencyList as currencyOption}
       {#if currencies.has(currencyOption)}
-        <label
-          class={`flex items-center gap-2 rounded border p-8 py-4 ${
-            currency === currencyOption
-              ? 'border-native-blue-400'
-              : 'border-white/20'
-          }`}
-        >
-          <input
-            class=""
-            type="radio"
-            name="input"
-            value={currencyOption}
-            checked={preferedCurrency === currencyOption}
-          />
-          <img
-            src={currencyOption === 'usdc'
+        <CLBRadio
+          label={currencyOption.toUpperCase()}
+          value={currencyOption}
+          isChecked={preferedCurrency === currencyOption}
+          media={currencyOption === 'usdc'
               ? USDC.src
               : currencyOption === 'matic'
                 ? MATIC.src
                 : currencyOption === 'eth'
                   ? ETH.src
                   : DEV.src}
-            alt={currencyOption.toUpperCase()}
-            class="h-8 w-8"
-          />
-          <span class="font-bold">{currencyOption.toUpperCase()}</span>
-        </label>
+          mediaAlt={`${currencyOption.toUpperCase()} icon.`}
+        />
       {/if}
     {/each}
     <slot name="currency:option" />
@@ -118,7 +105,7 @@
             currency={tier.currency}
           />
           <a
-            class="mt-2 block w-full rounded bg-black py-4 text-center text-sm font-semibold text-white"
+            class="mt-2 hs-button is-filled is-fullwidth"
             id={`select-opt-${i}-${currency}`}
             href={'checkoutUrl' in tier ? tier.checkoutUrl : `/join/${tier.id}`}
             >Select</a

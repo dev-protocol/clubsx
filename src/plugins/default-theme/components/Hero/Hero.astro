@@ -15,7 +15,7 @@ const {
 } = Astro.props as {
   globalConfig?: {
     bg: string
-    backgroundGradient?: [string, string]
+    bgGradient?: [string, string]
   }
   image?: string
   avatar?: string
@@ -27,8 +27,8 @@ const {
   isInDraft?: boolean
 }
 
-const backgroundGradientColorFrom = globalConfig?.backgroundGradient?.[0]
-const backgroundGradientColorTo = globalConfig?.backgroundGradient?.[1]
+const backgroundGradientColorFrom = globalConfig?.bgGradient?.[0]
+const backgroundGradientColorTo = globalConfig?.bgGradient?.[1]
 ---
 
 <style define:vars={{ backgroundGradientColorFrom, backgroundGradientColorTo }}>
@@ -92,7 +92,7 @@ const backgroundGradientColorTo = globalConfig?.backgroundGradient?.[1]
 
 <!-- Avatar, Title, etc.  -->
 <section
-  class="container relative mx-auto flex flex max-w-4xl items-start justify-center gap-6 px-6"
+  class="container relative mx-auto flex max-w-4xl items-start justify-center gap-6 px-6"
 >
   <div class="grid max-w-2xl grid-cols-[1fr_auto] items-center gap-2">
     <a href="/">

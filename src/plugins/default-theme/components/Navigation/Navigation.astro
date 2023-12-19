@@ -11,8 +11,7 @@ const { links, type = 'large-buttons' } = Astro.props as {
 <nav>
   <ul
     class:list={[
-      'mx-auto',
-      { 'grid gap-6': type === 'large-buttons' },
+      { 'flex justify-start gap-3': type === 'large-buttons' },
       { 'flex justify-start gap-3': type === 'tab' },
     ]}
   >
@@ -24,13 +23,13 @@ const { links, type = 'large-buttons' } = Astro.props as {
               <a
                 href={link.path}
                 class:list={[
-                  'hs-button rounded-full font-bold transition hover:bg-white/80',
+                  'hs-button is-small font-bold transition',
                   {
-                    'is-outlined border-[var(--bodyColor)] px-5 py-2 text-xl text-[var(--bodyColor)] hover:text-[var(--backgroundColor)]':
+                    'is-outlined px-5 py-2 text-xl':
                       type === 'tab',
                   },
                   {
-                    'is-filled w-full border-0 bg-white p-5 text-xl text-black lg:text-2xl':
+                    'is-filled is-large w-full border-0 bg-white p-5 text-xl text-black lg:text-2xl':
                       type === 'large-buttons',
                   },
                 ]}
