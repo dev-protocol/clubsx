@@ -90,13 +90,15 @@
     key: string,
   ): {
     bg: string
-    backgroundGradient?: [string, string]
+    bgGradient?: [string, string]
     ink?: string
+    themeMode?: string
   } => {
     return colorPresets[key as keyof typeof ColorPresets] as {
       bg: string
-      backgroundGradient?: [string, string]
+      bgGradient?: [string, string]
       ink?: string
+      themeMode?: string
     }
   }
 
@@ -121,7 +123,7 @@
           `background: radial-gradient(50% 50% at 50% 50%, ${
             gradient ? gradient[0] : 'rgba(0,0,0,0)'
           } 0%, ${gradient ? gradient[1] : 'rgba(0,0,0,0)'} 100%)`)(
-          globalConfig.backgroundGradient,
+          globalConfig.bgGradient,
         )}
       />
       {#if homeConfig.hero?.image && homeConfig.hero.image != '' && uploading === false}
@@ -189,14 +191,14 @@
             style={`background-color: ${getColor(presetKey).bg}`}
             title={presetKey}
           >
-            {#if getColor(presetKey).backgroundGradient !== undefined}
+            {#if getColor(presetKey).bgGradient !== undefined}
               <div
                 class="absolute h-full w-full"
                 style={((gradient) =>
                   `background: linear-gradient(135deg, ${
                     gradient && gradient[0]
                   } 0%, ${gradient && gradient[1]} 100%);`)(
-                  getColor(presetKey).backgroundGradient,
+                  getColor(presetKey).bgGradient,
                 )}
               />
             {/if}

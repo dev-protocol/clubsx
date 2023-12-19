@@ -39,10 +39,11 @@ export const defaultConfig: ClubsConfiguration = {
           key: 'globalConfig',
           value: {
             bg: 'rgba(131, 138, 176, 1)',
-            backgroundGradient: [
+            bgGradient: [
               'rgba(204, 0, 255, 0.2)',
               'rgba(204, 0, 255, 0)',
             ],
+            themeMode: 'dark',
           },
         },
         {

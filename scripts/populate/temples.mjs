@@ -180,7 +180,7 @@ const populate = async (client) => {
               key: 'globalConfig',
               value: {
                 bg: 'rgba(68, 59, 45, 1)',
-                backgroundGradient: [
+                bgGradient: [
                   'rgba(255, 201, 119, 0.2)',
                   'rgba(255, 201, 119, 0)',
                 ],
