@@ -20,76 +20,65 @@ import Preview1 from './assets/default-theme-1.jpg'
 import Preview2 from './assets/default-theme-2.jpg'
 import Preview3 from './assets/default-theme-3.jpg'
 
-const _surfaceColors = {
-  dark: {},
-  light: {}
-}
-
-const _disabledColors = {
-  black: {
-    bg: 'rgba(0, 0, 0, 0.12)',
-    ink: 'rgba(0, 0, 0, 0.37)'
-  },
-  white: {
-    bg: 'rgba(255, 255, 255, 0.12)',
-    ink: 'rgba(255, 255, 255, 0.37)'
-  },
-}
-
 export const colorPresets = {
   Purple: {
     bg: 'rgba(131, 138, 176, 1)',
-    backgroundGradient: ['rgba(204, 0, 255, 0.2)', 'rgba(204, 0, 255, 0)'],
+    bgGradient: ['rgba(204, 0, 255, 0.2)', 'rgba(204, 0, 255, 0)'],
     ink: 'rgba(255, 255, 255)',
+    themeMode: 'dark'
   },
   Grey: {
     bg: 'rgba(173, 173, 173, 1)',
     ink: '#111111',
+    themeMode: 'light'
   },
   Black: {
     bg: 'rgba(29, 36, 38, 1)',
     ink: 'rgba(255, 255, 255, 1)',
+    themeMode: 'dark'
   },
   Brown: {
     bg: 'rgba(68, 59, 45, 1)',
-    backgroundGradient: ['rgba(255, 201, 119, 0.2)', 'rgba(255, 201, 119, 0)'],
+    bgGradient: ['rgba(255, 201, 119, 0.2)', 'rgba(255, 201, 119, 0)'],
     ink: 'rgb(252, 225, 203)',
+    themeMode: 'dark'
   },
   Stone: {
     bg: 'rgba(96, 119, 124, 1)',
-    backgroundGradient: ['rgba(196, 196, 196, 0.5)', 'rgba(196, 196, 196, 0)'],
+    bgGradient: ['rgba(196, 196, 196, 0.5)', 'rgba(196, 196, 196, 0)'],
     ink: 'rgba(255, 255, 255, 1)',
+    themeMode: 'dark'
   },
   Matcha: {
     bg: 'rgba(63, 78, 38, 1)',
     ink: 'rgb(252, 225, 203)',
+    themeMode: 'dark'
   },
   Pink: {
     bg: 'rgba(255, 187, 195, 1)',
-    backgroundGradient: ['rgba(255, 173, 217, 1)', 'rgba(255, 173, 217, 0)'],
+    bgGradient: ['rgba(255, 173, 217, 1)', 'rgba(255, 173, 217, 0)'],
     ink: 'rgba(255, 255, 255)',
+    themeMode: 'light'
   },
   Blue: {
     bg: 'rgba(91, 139, 245, 1)',
     ink: 'rgba(255, 255, 255)',
+    themeMode: 'dark'
 
   },
   Orange: {
     bg: 'rgba(255, 131, 83, 1)',
-    backgroundGradient: ['rgba(249, 192, 82, 1)', 'rgba(249, 192, 82, 0)'],
+    bgGradient: ['rgba(249, 192, 82, 1)', 'rgba(249, 192, 82, 0)'],
     ink: 'rgba(255, 255, 255)',
-    disabledBg: _disabledColors.black.bg,
-    disabledInk: _disabledColors.black.ink,
+    themeMode: 'dark'
   },
 }
 
 export type GlobalConfigValue = {
   bg?: string
-  backgroundGradient?: [string, string]
+  bgGradient?: [string, string]
   ink?: string
-  themeMode?: 'dark' | 'light'
-  disabledBg?: string,
-  disabledInk?: string,
+  themeMode: 'dark' | 'light'
 }
 
 export type HomeConfigValue = {
