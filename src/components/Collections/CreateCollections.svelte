@@ -952,13 +952,8 @@
     <!-- Allowlist -->
     <div class="hs-form-field grid gap-2">
       <span class="hs-form-field__label">Allowlist</span>
-      <span
-        >Please set the people who can access this collection. Add new
-        memberships from [<a href="/admin/memberships" class="hs-link">here</a
-        >].</span
-      >
       <label
-        class="flex items-center rounded-md bg-dp-blue-grey-600 p-5"
+        class="flex items-center rounded-md bg-dp-blue-grey-600 p-5 cursor-pointer"
         for="access"
       >
         <input
@@ -973,9 +968,14 @@
           }}
         />
         <span class="ml-3 block text-justify text-base font-normal text-white"
-          >Pubic access (Open to everyone)</span
+          >Public access (Open to everyone)</span
         >
       </label>
+      <span
+        >Choose membership requirements for collection access. To add more
+        memberships, click [<a href="/admin/memberships" class="hs-link">here</a
+        >].</span
+      >
       <div
         class="grid grid-cols-[repeat(auto-fit,_minmax(160px,_1fr))] justify-between gap-4 pt-2.5"
       >

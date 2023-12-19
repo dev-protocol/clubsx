@@ -200,6 +200,7 @@ export const getAdminPaths = (async (
     status: 'Draft',
     endTime: 0,
     memberships: [],
+    requiredMemberships: [],
   }
 
   const existingMemberships =
