@@ -973,7 +973,7 @@
           }}
         />
         <span class="ml-3 block text-justify text-base font-normal text-white"
-          >Pubic access (Open to everyone)</span
+          >Public access (Open to everyone)</span
         >
       </label>
       <div
