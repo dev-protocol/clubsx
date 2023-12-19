@@ -207,6 +207,9 @@
         {
           key: 'collections',
           value: [
+            ...existingCollections.filter(
+              (c: Collection) => c.id !== collection.id,
+            ),
             {
               ...collection,
               memberships: [
