@@ -1,0 +1,164 @@
+@use '@devprotocol/hashi';
+@use '@devprotocol/hashi/hs-button';
+@use '@devprotocol/hashi/hs-link';
+@use '@devprotocol/hashi/hs-tick-field';
+
+@mixin render() {
+  // BUTTON COLOR VARIANTS //
+  @include hs-button.extend('filled.plox') {
+    @include hs-button.color(
+        (
+          fill: 'plox.400',
+          ink: 'plox.ink',
+          border: 'plox.400',
+        )
+    );
+
+    &:hover,
+    &:focus {
+      @include hs-button.color(
+          (
+            fill: 'plox.400',
+            ink: 'plox.ink',
+            border: 'plox.400',
+          )
+      );
+    }
+
+    &:active {
+      @include hs-button.color(
+          (
+            fill: 'plox.200',
+            ink: 'plox.ink',
+            border: 'plox.200',
+          )
+      );
+    }
+  }
+  @include hs-button.extend('filled.native-blue') {
+    @include hs-button.color(
+        (
+          fill: 'native-blue.400',
+          ink: 'native-blue.ink',
+          border: 'native-blue.400',
+        )
+    );
+
+    &:hover,
+    &:focus {
+      @include hs-button.color(
+          (
+            fill: 'native-blue.300',
+            ink: 'native-blue.ink',
+            border: 'native-blue.300',
+          )
+      );
+    }
+
+    &:active {
+      @include hs-button.color(
+          (
+            fill: 'native-blue.200',
+            ink: 'native-blue.ink',
+            border: 'native-blue.200',
+          )
+      );
+    }
+  }
+
+  // BUTTON SHAPE VARIANTS //
+  @include hs-button.extend('fullwidth') {
+    @include hs-button.shape(
+        (
+          width: (
+            min: 100%,
+            default: 100%,
+            max: 100%,
+          ),
+        )
+    );
+  }
+  @include hs-button.extend('contained') {
+    @include hs-button.shape(
+        (
+          width: (
+            min: auto,
+            default: auto,
+            max: max-content,
+          ),
+        )
+    );
+  }
+  @include hs-button.extend('small') {
+    @include hs-button.shape(
+        (
+          padding: (
+            'xs',
+            'sm',
+          ),
+        )
+    );
+    @include hs-button.typography(
+        (
+          size: 14px,
+        )
+    );
+  }
+  @include hs-button.extend('large') {
+    @include hs-button.shape(
+        (
+          padding: (
+            'lg',
+            'xl',
+          ),
+        )
+    );
+  }
+
+  // LINK COLOR VARIANTS //
+  @include hs-link.extend('native-blue') {
+    @include hs-link.color(
+        (
+          ink: 'native-blue.400',
+        )
+    );
+
+    &:hover,
+    &:focus {
+      @include hs-link.color(
+          (
+            fill:
+            rgba(
+                hashi.primitive-token-get('native-blue.400'),
+                hashi.$color-fill-hover-opacity
+            ),
+            ink: 'native-blue.400',
+          )
+      );
+    }
+
+    &:active {
+      @include hs-link.color(
+          (
+            fill:
+            rgba(
+                hashi.primitive-token-get('native-blue.400'),
+                hashi.$color-fill-active-opacity
+            ),
+            ink: 'native-blue.400',
+          )
+      );
+    }
+  }
+
+  // TICK FIELD COLOR VARIANTS //
+  @include hs-tick-field.extend('disabled') {
+    @include hs-tick-field.color(
+        (
+          fill: 'disabled',
+          ink: 'disabled-ink',
+          border: 'disabled',
+        )
+    );
+  }
+}

@@ -1,29 +1,7 @@
-@use '@devprotocol/clubs-core/src/styles/clubs.theme' as clubs;
-@use '@devprotocol/clubs-core/src/styles/clubs.variants' as variants;
+@use 'clubs-default.theme' as clubs;
 
 @use '@devprotocol/hashi' with (
-  $theme: (
-    primary: 'dp-white',
-    primary-dark: 'dp-blue-grey',
-    accent: 'dp-blue-grey',
-    accent-dark: 'dp-white',
-    surface: 'dp-white',
-    surface-dark: 'dp-blue-grey',
-    background: 'dp-white.200',
-    dark-background: 'dp-blue-grey.600',
-    dark-mode: 'attribute',
-    extend: (
-      padding: (
-        xs: 0.3rem,
-        sm: 0.5rem,
-        md: 0.7rem,
-        lg: 1rem,
-        xl: 1.2rem,
-      ),
-      stroke: 3px,
-      stroke-set-accent-dark: white,
-    ),
-  )
+  $theme: clubs.$theme
 );
 @use '@devprotocol/hashi/hs-button' with (
 	$theme: clubs.$button-theme
@@ -47,6 +25,8 @@
 );
 @use '@devprotocol/hashi/hs-utils';
 
+@use 'clubs-default.variants' as variants;
+
 @include hashi.init() {
   @include hs-button.render();
   @include hs-button-group.render();
@@ -56,4 +36,12 @@
   @include hs-select-field.render();
   @include hs-tick-field.render();
   @include hs-wallet.render();
+
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
 }
