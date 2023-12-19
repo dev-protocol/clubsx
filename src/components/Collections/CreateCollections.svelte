@@ -972,9 +972,10 @@
         >
       </label>
       <span
-      >Choose membership requirements for collection access. To add more memberships, click [<a href="/admin/memberships" class="hs-link">here</a
-      >].</span
-    >
+        >Choose membership requirements for collection access. To add more
+        memberships, click [<a href="/admin/memberships" class="hs-link">here</a
+        >].</span
+      >
       <div
         class="grid grid-cols-[repeat(auto-fit,_minmax(160px,_1fr))] justify-between gap-4 pt-2.5"
       >
