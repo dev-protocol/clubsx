@@ -1,4 +1,4 @@
-export const memberABI = [
+export const mixSlotABI = [
   {
     anonymous: false,
     inputs: [
@@ -30,6 +30,51 @@ export const memberABI = [
     ],
     name: 'OwnershipTransferred',
     type: 'event',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_token',
+        type: 'address',
+      },
+    ],
+    name: 'allowListToken',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    name: 'allowlistedTokens',
+    outputs: [
+      {
+        internalType: 'bool',
+        name: '',
+        type: 'bool',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_token',
+        type: 'address',
+      },
+    ],
+    name: 'denyListToken',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [
@@ -115,6 +160,19 @@ export const memberABI = [
     type: 'function',
   },
   {
+    inputs: [],
+    name: 'dev',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
     inputs: [
       {
         internalType: 'address',
@@ -128,6 +186,30 @@ export const memberABI = [
       },
     ],
     name: 'getSlotsLeft',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_property',
+        type: 'address',
+      },
+      {
+        internalType: 'bytes32',
+        name: '_key',
+        type: 'bytes32',
+      },
+    ],
+    name: 'getTimeLeft',
     outputs: [
       {
         internalType: 'uint256',
@@ -446,8 +528,13 @@ export const memberABI = [
         type: 'string',
       },
       {
+        internalType: 'uint256',
+        name: 'deadline',
+        type: 'uint256',
+      },
+      {
         internalType: 'uint32',
-        name: 'slots',
+        name: 'members',
         type: 'uint32',
       },
       {
@@ -503,6 +590,19 @@ export const memberABI = [
     inputs: [
       {
         internalType: 'address',
+        name: '_dev',
+        type: 'address',
+      },
+    ],
+    name: 'setDevToken',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
         name: '_propertyAddress',
         type: 'address',
       },
@@ -524,8 +624,13 @@ export const memberABI = [
             type: 'string',
           },
           {
+            internalType: 'uint256',
+            name: 'deadline',
+            type: 'uint256',
+          },
+          {
             internalType: 'uint32',
-            name: 'slots',
+            name: 'members',
             type: 'uint32',
           },
           {
@@ -549,7 +654,7 @@ export const memberABI = [
             type: 'address',
           },
         ],
-        internalType: 'struct MembersCollections.Image[]',
+        internalType: 'struct SlotCollections.Image[]',
         name: '_images',
         type: 'tuple[]',
       },
@@ -606,7 +711,7 @@ export const memberABI = [
     name: 'swapAndStake',
     outputs: [
       {
-        internalType: 'contract IDynamicTokenSwapAndStake',
+        internalType: 'contract ISwapAndStake',
         name: '',
         type: 'address',
       },
