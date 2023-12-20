@@ -24,7 +24,7 @@ const FundsInfo = (props: {
   const [signer, setSigner] = useState<Signer>()
   const [connection, setConnection] = useState<any>(undefined)
   const [isFetchingIDVId, setIsFetchingIDVId] = useState<boolean>(false)
-  const [kycProcessingTxt, setKYCProcessingText] = useState<string>('Verify')
+  const [kycButtonTxt, setKYCButtonText] = useState<string>('Verify')
   const [isFetchingKYCStatus, setIsFetchingKYCStatus] = useState<boolean>(true)
 
   useEffect(() => {
@@ -67,7 +67,7 @@ const FundsInfo = (props: {
     const accountAddress = await signer?.getAddress()
     if (!accountAddress) {
       lazySetter(setIsFetchingKYCStatus, false, 1000)
-      setKYCProcessingText('Verify')
+      setKYCButtonText('Verify')
       return
     }
 
@@ -94,7 +94,7 @@ const FundsInfo = (props: {
           },
       )
       .catch((err) => {
-        setKYCProcessingText('Verify')
+        setKYCButtonText('Verify')
       })
 
     if (!(res instanceof Error)) {
@@ -113,7 +113,7 @@ const FundsInfo = (props: {
                   ]
                 : ['Verify', KYCStatuses.NOT_VERIFIED]
 
-      setKYCProcessingText(statusText)
+      setKYCButtonText(statusText)
       setKYCStatus(status)
     }
 
@@ -122,12 +122,12 @@ const FundsInfo = (props: {
 
   const setKYCInitiationFailed = (text?: string) => {
     setIsFetchingIDVId(false)
-    setKYCProcessingText(text || 'Failed, try again.') // TODO: replace with a user friendly feedback text.
+    setKYCButtonText(text || 'Failed, try again.') // TODO: replace with a user friendly feedback text.
   }
 
   const initiateKYC = async () => {
     setIsFetchingIDVId(true)
-    setKYCProcessingText('Initiating KYC process...')
+    setKYCButtonText('Initiating KYC process...')
 
     if (KYCStatus === KYCStatuses.VERIFIED) {
       setKYCInitiationFailed('KYC already verified')
@@ -190,7 +190,7 @@ const FundsInfo = (props: {
 
     if (!(res instanceof Error)) {
       if (res?.data?.id) {
-        setKYCProcessingText('KYC is in progress...')
+        setKYCButtonText('KYC is in progress...')
         window.open(
           `${import.meta.env.PUBLIC_ONDATO_VERIFICATION_URL}/?id=${res?.data
             ?.id}`,
@@ -271,7 +271,7 @@ const FundsInfo = (props: {
                     : ''
                 }`}
               >
-                {kycProcessingTxt}
+                {kycButtonTxt}
               </button>
             </div>
           </div>
