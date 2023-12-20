@@ -165,6 +165,11 @@ const FundsInfo = (props: {
           setKYCButtonText('Verify')
           setKYCStatus(KYCStatuses.NOT_VERIFIED)
           break
+        case 'unverified':
+          setCurrentKYCStatusText('Not verified')
+          setKYCButtonText('Verify')
+          setKYCStatus(KYCStatuses.NOT_VERIFIED)
+          break
         default:
           setCurrentKYCStatusText(
             `Not verified.\nYou can start a fresh application clicking on the Verify button below.`,
