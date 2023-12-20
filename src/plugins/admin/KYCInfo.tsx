@@ -67,7 +67,10 @@ const FundsInfo = (props: {
   }, [signer])
 
   const fetchKYCStatus = async (isPolling: boolean = false) => {
-    setIsFetchingKYCStatus(true)
+    if (isPolling) {
+      // Ignore triggering animate-pulse when polling for better UX.
+      setIsFetchingKYCStatus(true)
+    }
 
     const accountAddress = await signer?.getAddress()
     if (!accountAddress) {
@@ -156,12 +159,12 @@ const FundsInfo = (props: {
           setKYCStatus(KYCStatuses.IN_PROCESS)
           break
         case 'approved':
-          setCurrentKYCStatusText('Your KYC application is approved')
+          setCurrentKYCStatusText('Your KYC application is approved.')
           setKYCButtonText('Verified')
           setKYCStatus(KYCStatuses.VERIFIED)
           break
         case 'rejected':
-          setCurrentKYCStatusText('Your KYC application was rejected')
+          setCurrentKYCStatusText('Your KYC application was rejected.')
           setKYCButtonText('Verify')
           setKYCStatus(KYCStatuses.NOT_VERIFIED)
           break
