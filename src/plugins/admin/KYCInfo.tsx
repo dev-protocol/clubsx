@@ -178,26 +178,21 @@ const FundsInfo = (props: {
     lazySetter(setIsFetchingKYCStatus, false, 1000)
   }
 
-  const setKYCInitiationFailed = (text?: string) => {
+  const setKYCInitiationFailed = (
+    btnTxt?: string,
+    currentStatusTxt?: string,
+  ) => {
     setIsFetchingIDVId(false)
-    setKYCButtonText(text || 'Failed, try again.') // TODO: replace with a user friendly feedback text.
+    setKYCButtonText(btnTxt || 'Verify')
+    setCurrentKYCStatusText(currentStatusTxt || 'Not verified')
   }
 
   const initiateKYC = async () => {
     setIsFetchingIDVId(true)
-    setKYCButtonText('Initiating KYC process...')
+    setKYCButtonText('Processing...')
 
-    if (KYCStatus === KYCStatuses.VERIFIED) {
-      setKYCInitiationFailed('KYC already verified')
-      return
-    }
-    if (KYCStatus === KYCStatuses.IN_PROCESS) {
-      setKYCInitiationFailed('KYC in process, please wait for updates')
-      return
-    }
-
-    if (!signer) {
-      setKYCInitiationFailed()
+    if (KYCStatus === KYCStatuses.VERIFIED || !signer) {
+      setKYCInitiationFailed('Verified', 'Verified')
       return
     }
 
@@ -206,7 +201,7 @@ const FundsInfo = (props: {
       .signMessage(hash)
       .catch((err: any) => new Error(err))
     if (!signature || !hash || signature instanceof Error) {
-      setKYCInitiationFailed()
+      setKYCInitiationFailed('Verify', 'Not verified')
       return
     }
 
@@ -243,7 +238,7 @@ const FundsInfo = (props: {
           },
       )
       .catch((err) => {
-        setKYCInitiationFailed()
+        setKYCInitiationFailed('Verify', 'Not verified')
       })
 
     if (!(res instanceof Error)) {
@@ -317,11 +312,7 @@ const FundsInfo = (props: {
                 {currentKYCStatusTxt}
               </p>
               <button
-                disabled={
-                  isFetchingKYCStatus ||
-                  isFetchingIDVId ||
-                  KYCStatus === KYCStatuses.IN_PROCESS
-                }
+                disabled={isFetchingKYCStatus || isFetchingIDVId}
                 onClick={initiateKYC}
                 className={`hs-button is-filled py-6 px-8 bg-dp-blue-grey-600 text-dp-blue-grey-ink ${
                   isFetchingKYCStatus ||
