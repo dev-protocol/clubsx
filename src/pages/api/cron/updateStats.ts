@@ -131,11 +131,11 @@ export const GET = async () => {
 
   for (const club of sorted) {
     if (!club.draft) {
-      publishedClubsWithMembers++;
-        if (club.stats.members === 0) {
-            break; // Exit the loop once the first club with 0 members is found
-        }
-        totalNumberOfMembersInPublishedClubs += club.stats.members;
+      publishedClubsWithMembers++
+      if (club.stats.members === 0) {
+        break // Exit the loop once the first club with 0 members is found
+      }
+      totalNumberOfMembersInPublishedClubs += club.stats.members
     }
   }
 
