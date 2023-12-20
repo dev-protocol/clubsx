@@ -314,7 +314,7 @@ const FundsInfo = (props: {
                 <img src={NotVerifiedBannerImg.src} alt="Not verified" />
               </div>
               <p className="w-fit font-body text-base font-bold text-dp-white-ink">
-                Not verified
+                {currentKYCStatusTxt}
               </p>
               <button
                 disabled={
@@ -324,7 +324,9 @@ const FundsInfo = (props: {
                 }
                 onClick={initiateKYC}
                 className={`hs-button is-filled py-6 px-8 bg-dp-blue-grey-600 text-dp-blue-grey-ink ${
-                  isFetchingKYCStatus || isFetchingIDVId
+                  isFetchingKYCStatus ||
+                  isFetchingIDVId ||
+                  KYCStatuses.IN_PROCESS
                     ? 'animate-pulse bg-dp-blue-grey-600'
                     : ''
                 }`}
@@ -333,7 +335,7 @@ const FundsInfo = (props: {
               </button>
             </div>
           </div>
-          <a
+          {/* <a
             href="https://www.vecteezy.com/video/14415199-white-background-stripe-curve-wave-4k-resolution-clean-seamless-loop"
             target="_blank"
             rel="noopneer"
@@ -341,7 +343,7 @@ const FundsInfo = (props: {
           >
             White Background Stripe Curve Wave 4K resolution clean, Seamless
             loop Stock Videos by Vecteezy
-          </a>
+          </a> */}
         </div>
       )}
     </>
