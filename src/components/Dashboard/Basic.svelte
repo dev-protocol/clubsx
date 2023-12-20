@@ -6,10 +6,8 @@
   let isLoading = true
   let lastUpdate: Date
   let allClubs: ClubWithStats[] = []
-  let publishedClubs = 0
-  let uniqueCreators = 0
-  let unPublishedClubs = 0
-  let totalPublishedClubsMembers = 0
+  // let publishedClubs = 0
+  // let uniqueCreators = 0
 
   const fetchTotalClubs = async () => {
     try {
@@ -29,10 +27,6 @@
       console.log({ stats })
       allClubs = stats.data.clubs
       lastUpdate = new Date(stats.data.lastUpdate)
-      publishedClubs = stats.data.published
-      uniqueCreators = stats.data.uniqueCreators
-      unPublishedClubs = stats.data.unpublished
-      totalPublishedClubsMembers = stats.data.publishedClubsMembers
       // uniqueCreators = await ucRep.value
       //   .json()
       //   .then((res) => res.uniqueCreators)
@@ -81,7 +75,7 @@
     </div>
   {:else}
     <div
-      class="border-native-blue-400 max-w-md justify-start rounded-lg border border-[3px] bg-white p-6 shadow dark:border-gray-700 dark:bg-gray-800"
+      class="border-native-blue-400 max-w-sm justify-start rounded-lg border border-[3px] bg-white p-6 shadow dark:border-gray-700 dark:bg-gray-800"
     >
       <h5
         class="mb-2 text-center text-3xl font-semibold tracking-tight text-gray-900 dark:text-white"
@@ -92,20 +86,17 @@
         🔥 Total Clubs Created: {allClubs.length}
       </p>
       <p class="text-xl text-gray-600 dark:text-gray-400">
+        Last update: {lastUpdate.toLocaleString()}
+      </p>
+      <!-- <p class="text-xl text-gray-600 dark:text-gray-400">
         🖼️ Unique Creators: {uniqueCreators}
       </p>
       <p class="text-lg text-gray-600 dark:text-gray-400">
         ✅ Published: {publishedClubs}
       </p>
-      <p class="text-lg text-gray-600 dark:text-gray-400">
-        🙋🏻‍♂️ Members of Published Clubs : {totalPublishedClubsMembers}
-      </p>
       <p class="text-base text-gray-600 dark:text-gray-400">
-        ℹ️ In Draft: {unPublishedClubs}
-      </p>
-      <p class="text-xl text-gray-600 dark:text-gray-400">
-        ⏰ Last updated: {lastUpdate.toLocaleString()}
-      </p>
+        ℹ️ In Draft: {allClubs.length - publishedClubs}
+      </p> -->
     </div>
     <div class="w-3/4 items-center justify-center py-8">
       <Table config={[...allClubs]} />

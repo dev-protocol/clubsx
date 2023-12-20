@@ -95,9 +95,6 @@ export const GET = async () => {
   const clubs = new Set<ClubWithStats>()
   const getClub = await factory(client)
   const promises = new Set<Promise<void>>()
-  let uniqueCreators = 0
-  let publishedClubs = 0
-  let totalNumberOfMembersInPublishedClubs = 0
   const handler = async (key: string) => {
     const res = await getClub(key)
     console.log({ key, res })
@@ -108,10 +105,6 @@ export const GET = async () => {
   }
 
   for await (const key of client.scanIterator()) {
-    // keep this first than next if
-    if (key.includes('id::')) {
-      uniqueCreators++
-    }
     if (key.includes(':')) {
       // This is not a ClubsConfiguration
       continue
@@ -127,27 +120,10 @@ export const GET = async () => {
     (a, b) => b.stats.members - a.stats.members,
   )
   console.log('@@@', sorted)
-  console.log('uniqueCreators', uniqueCreators)
-
-  for (const club of sorted) {
-    if (!club.draft) {
-      publishedClubs++
-      totalNumberOfMembersInPublishedClubs += club.stats.members
-    }
-  }
-  console.log('publishedClubs', publishedClubs)
-  console.log(
-    'totalNumberOfMembersInPublishedClubs',
-    totalNumberOfMembersInPublishedClubs,
-  )
 
   const data: Stats = {
     lastUpdate: new Date().toUTCString(),
     clubs: sorted,
-    uniqueCreators: uniqueCreators,
-    published: publishedClubs,
-    unpublished: sorted.length - publishedClubs,
-    publishedClubsMembers: totalNumberOfMembersInPublishedClubs,
   }
 
   await client.set(generateStatsId(), JSON.stringify(data))
