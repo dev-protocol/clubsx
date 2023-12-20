@@ -26,6 +26,8 @@ const FundsInfo = (props: {
   const [isFetchingIDVId, setIsFetchingIDVId] = useState<boolean>(false)
   const [kycButtonTxt, setKYCButtonText] = useState<string>('Verify')
   const [isFetchingKYCStatus, setIsFetchingKYCStatus] = useState<boolean>(true)
+  const [currentKYCStatusTxt, setCurrentKYCStatusText] =
+    useState<string>('Not verified')
 
   useEffect(() => {
     const checkConnection = async () => {
@@ -51,8 +53,11 @@ const FundsInfo = (props: {
 
   useEffect(() => {
     if (!signer) {
+      lazySetter(setIsFetchingIDVId, false, 1000)
       lazySetter(setIsFetchingKYCStatus, false, 1000)
       setKYCStatus(KYCStatuses.NOT_VERIFIED)
+      setCurrentKYCStatusText('Not verified')
+      setKYCButtonText('Verify')
       return
     }
 
@@ -66,8 +71,11 @@ const FundsInfo = (props: {
 
     const accountAddress = await signer?.getAddress()
     if (!accountAddress) {
+      lazySetter(setIsFetchingIDVId, false, 1000)
       lazySetter(setIsFetchingKYCStatus, false, 1000)
       setKYCButtonText('Verify')
+      setCurrentKYCStatusText('Not verified')
+      setKYCStatus(KYCStatuses.NOT_VERIFIED)
       return
     }
 
@@ -84,7 +92,12 @@ const FundsInfo = (props: {
           throw new Error(err.message)
         },
       )
-      .then((res) => res.json())
+      .then(
+        (res) => res.json(),
+        (err) => {
+          throw new Error(err.message)
+        },
+      )
       .then(
         (res) =>
           res as {
@@ -92,29 +105,74 @@ const FundsInfo = (props: {
               status?: string
             }
           },
+        (err) => {
+          throw new Error(err.message)
+        },
+      )
+      .then(
+        (res) =>
+          res && res.data && res.data.status
+            ? res.data.status.toLowerCase()
+            : 'unverified',
+        (err) => {
+          throw new Error(err.message)
+        },
       )
       .catch((err) => {
+        setCurrentKYCStatusText('Not verified')
         setKYCButtonText('Verify')
+        setKYCStatus(KYCStatuses.NOT_VERIFIED)
+        return undefined
       })
 
-    if (!(res instanceof Error)) {
-      const statusInDB = res?.data?.status?.toLowerCase()
-      const [statusText, status] =
-        statusInDB === 'rejected'
-          ? ['KYC rejected, try again', KYCStatuses.NOT_VERIFIED]
-          : statusInDB === 'approved'
-            ? ['Verified', KYCStatuses.VERIFIED]
-            : statusInDB === 'completed'
-              ? ['Completed', KYCStatuses.IN_PROCESS]
-              : statusInDB === 'processed'
-                ? [
-                    'KYC in process, please wait for update',
-                    KYCStatuses.IN_PROCESS,
-                  ]
-                : ['Verify', KYCStatuses.NOT_VERIFIED]
-
-      setKYCButtonText(statusText)
-      setKYCStatus(status)
+    if (res) {
+      switch (res) {
+        case 'inprogress':
+          setCurrentKYCStatusText(
+            `Your KYC application is in progress.\nComplete your KYC application and return to this page.\nYou can start a fresh application by clicking on the Verify button below.`,
+          )
+          setKYCButtonText('Verify')
+          setKYCStatus(KYCStatuses.IN_PROCESS)
+          break
+        case 'aborted':
+          setCurrentKYCStatusText(
+            `Your KYC application was incomplete.\nYou must start a fresh application by clicking on the Verify button below.`,
+          )
+          setKYCButtonText('Verify')
+          setKYCStatus(KYCStatuses.NOT_VERIFIED)
+          break
+        case 'expired':
+          setCurrentKYCStatusText(
+            `Your previous KYC application was incomplete and it has expired.\nYou must start a fresh application by clicking on the Verify button below.`,
+          )
+          setKYCButtonText('Verify')
+          setKYCStatus(KYCStatuses.NOT_VERIFIED)
+          break
+        case 'awaiting':
+          setCurrentKYCStatusText(
+            `Your previous KYC application is either in review or was left incomplete.\nIf you have completed the application process please wait for the verification.\nIf not, you can start a fresh application by clicking on the Verify button below.`,
+          )
+          setKYCButtonText('Verify')
+          setKYCStatus(KYCStatuses.IN_PROCESS)
+          break
+        case 'approved':
+          setCurrentKYCStatusText('Your KYC application is approved')
+          setKYCButtonText('Verified')
+          setKYCStatus(KYCStatuses.VERIFIED)
+          break
+        case 'rejected':
+          setCurrentKYCStatusText('Your KYC application was rejected')
+          setKYCButtonText('Verify')
+          setKYCStatus(KYCStatuses.NOT_VERIFIED)
+          break
+        default:
+          setCurrentKYCStatusText(
+            'Not verified.\nYou can start a fresh application clicking on the Verify button below.',
+          )
+          setKYCButtonText('Verify')
+          setKYCStatus(KYCStatuses.NOT_VERIFIED)
+          break
+      }
     }
 
     lazySetter(setIsFetchingKYCStatus, false, 1000)
