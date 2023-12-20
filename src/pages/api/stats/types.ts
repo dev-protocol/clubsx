@@ -14,7 +14,7 @@ export type Stats = {
   lastUpdate: string
   clubs: ClubWithStats[]
   uniqueCreators: number
-  published: number
+  publishedClubsWithMembers: number
   unpublished: number
   publishedClubsMembers: number
 }

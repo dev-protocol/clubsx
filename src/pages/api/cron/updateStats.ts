@@ -96,7 +96,7 @@ export const GET = async () => {
   const getClub = await factory(client)
   const promises = new Set<Promise<void>>()
   let uniqueCreators = 0
-  let publishedClubs = 0
+  let publishedClubsWithMembers = 0
   let totalNumberOfMembersInPublishedClubs = 0
   const handler = async (key: string) => {
     const res = await getClub(key)
@@ -131,11 +131,15 @@ export const GET = async () => {
 
   for (const club of sorted) {
     if (!club.draft) {
-      publishedClubs++
-      totalNumberOfMembersInPublishedClubs += club.stats.members
+      publishedClubsWithMembers++;
+        if (club.stats.members === 0) {
+            break; // Exit the loop once the first club with 0 members is found
+        }
+        totalNumberOfMembersInPublishedClubs += club.stats.members;
     }
   }
-  console.log('publishedClubs', publishedClubs)
+
+  console.log('publishedClubsWithMembers', publishedClubsWithMembers)
   console.log(
     'totalNumberOfMembersInPublishedClubs',
     totalNumberOfMembersInPublishedClubs,
@@ -145,8 +149,8 @@ export const GET = async () => {
     lastUpdate: new Date().toUTCString(),
     clubs: sorted,
     uniqueCreators: uniqueCreators,
-    published: publishedClubs,
-    unpublished: sorted.length - publishedClubs,
+    publishedClubsWithMembers: publishedClubsWithMembers,
+    unpublished: sorted.length - publishedClubsWithMembers,
     publishedClubsMembers: totalNumberOfMembersInPublishedClubs,
   }
 
