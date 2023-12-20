@@ -328,7 +328,7 @@ const FundsInfo = (props: {
                 className={`hs-button is-filled py-6 px-8 bg-dp-blue-grey-600 text-dp-blue-grey-ink ${
                   isFetchingKYCStatus ||
                   isFetchingIDVId ||
-                  KYCStatuses.IN_PROCESS
+                  KYCStatus === KYCStatuses.IN_PROCESS
                     ? 'animate-pulse bg-dp-blue-grey-600'
                     : ''
                 }`}
