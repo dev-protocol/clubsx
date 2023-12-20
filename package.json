@@ -88,7 +88,7 @@
     "crypto-hash": "^3.0.0",
     "dayjs": "^1.11.9",
     "dompurify": "^3.0.5",
-    "ethers": "6.9.0",
+    "ethers": "6.9.1",
     "fast-average-color": "^9.4.0",
     "firebase": "^10.3.1",
     "firebase-admin": "^12.0.0",
