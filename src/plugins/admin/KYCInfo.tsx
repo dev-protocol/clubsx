@@ -167,7 +167,7 @@ const FundsInfo = (props: {
           break
         default:
           setCurrentKYCStatusText(
-            'Not verified.\nYou can start a fresh application clicking on the Verify button below.',
+            `Not verified.\nYou can start a fresh application clicking on the Verify button below.`,
           )
           setKYCButtonText('Verify')
           setKYCStatus(KYCStatuses.NOT_VERIFIED)
@@ -243,7 +243,9 @@ const FundsInfo = (props: {
 
     if (!(res instanceof Error)) {
       if (res?.data?.id) {
-        setKYCButtonText('KYC is in progress...')
+        setCurrentKYCStatusText(
+          'Complete your KYC application and return to this page.',
+        )
         window.open(
           `${import.meta.env.PUBLIC_ONDATO_VERIFICATION_URL}/?id=${res?.data
             ?.id}`,
@@ -308,8 +310,12 @@ const FundsInfo = (props: {
               <div className="w-fit rounded-lg bg-native-blue-400 p-5">
                 <img src={NotVerifiedBannerImg.src} alt="Not verified" />
               </div>
-              <p className="w-fit font-body text-base font-bold text-dp-white-ink">
-                {currentKYCStatusTxt}
+              <p className="w-fit font-body text-base text-center font-bold text-dp-white-ink">
+                {currentKYCStatusTxt.split('\n').map((text: string) => (
+                  <>
+                    {text} <br />
+                  </>
+                ))}
               </p>
               <button
                 disabled={isFetchingKYCStatus || isFetchingIDVId}
