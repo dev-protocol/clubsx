@@ -24,8 +24,10 @@ const FundsInfo = (props: {
   const [signer, setSigner] = useState<Signer>()
   const [connection, setConnection] = useState<any>(undefined)
   const [isFetchingIDVId, setIsFetchingIDVId] = useState<boolean>(false)
-  const [kycProcessingTxt, setKYCProcessingText] = useState<string>('Verify')
+  const [kycButtonTxt, setKYCButtonText] = useState<string>('Verify')
   const [isFetchingKYCStatus, setIsFetchingKYCStatus] = useState<boolean>(true)
+  const [currentKYCStatusTxt, setCurrentKYCStatusText] =
+    useState<string>('Not verified')
 
   useEffect(() => {
     const checkConnection = async () => {
@@ -51,8 +53,11 @@ const FundsInfo = (props: {
 
   useEffect(() => {
     if (!signer) {
+      lazySetter(setIsFetchingIDVId, false, 1000)
       lazySetter(setIsFetchingKYCStatus, false, 1000)
       setKYCStatus(KYCStatuses.NOT_VERIFIED)
+      setCurrentKYCStatusText('Not verified')
+      setKYCButtonText('Verify')
       return
     }
 
@@ -62,12 +67,18 @@ const FundsInfo = (props: {
   }, [signer])
 
   const fetchKYCStatus = async (isPolling: boolean = false) => {
-    setIsFetchingKYCStatus(true)
+    if (isPolling) {
+      // Ignore triggering animate-pulse when polling for better UX.
+      setIsFetchingKYCStatus(true)
+    }
 
     const accountAddress = await signer?.getAddress()
     if (!accountAddress) {
+      lazySetter(setIsFetchingIDVId, false, 1000)
       lazySetter(setIsFetchingKYCStatus, false, 1000)
-      setKYCProcessingText('Verify')
+      setKYCButtonText('Verify')
+      setCurrentKYCStatusText('Not verified')
+      setKYCStatus(KYCStatuses.NOT_VERIFIED)
       return
     }
 
@@ -84,7 +95,12 @@ const FundsInfo = (props: {
           throw new Error(err.message)
         },
       )
-      .then((res) => res.json())
+      .then(
+        (res) => res.json(),
+        (err) => {
+          throw new Error(err.message)
+        },
+      )
       .then(
         (res) =>
           res as {
@@ -92,54 +108,99 @@ const FundsInfo = (props: {
               status?: string
             }
           },
+        (err) => {
+          throw new Error(err.message)
+        },
+      )
+      .then(
+        (res) =>
+          res && res.data && res.data.status
+            ? res.data.status.toLowerCase()
+            : 'unverified',
+        (err) => {
+          throw new Error(err.message)
+        },
       )
       .catch((err) => {
-        setKYCProcessingText('Verify')
+        setCurrentKYCStatusText('Not verified')
+        setKYCButtonText('Verify')
+        setKYCStatus(KYCStatuses.NOT_VERIFIED)
+        return undefined
       })
 
-    if (!(res instanceof Error)) {
-      const statusInDB = res?.data?.status?.toLowerCase()
-      const [statusText, status] =
-        statusInDB === 'rejected'
-          ? ['KYC rejected, try again', KYCStatuses.NOT_VERIFIED]
-          : statusInDB === 'approved'
-            ? ['Verified', KYCStatuses.VERIFIED]
-            : statusInDB === 'completed'
-              ? ['Completed', KYCStatuses.IN_PROCESS]
-              : statusInDB === 'processed'
-                ? [
-                    'KYC in process, please wait for update',
-                    KYCStatuses.IN_PROCESS,
-                  ]
-                : ['Verify', KYCStatuses.NOT_VERIFIED]
-
-      setKYCProcessingText(statusText)
-      setKYCStatus(status)
+    if (res) {
+      switch (res) {
+        case 'inprogress':
+          setCurrentKYCStatusText(
+            `Your KYC application is in progress.\nComplete your KYC application and return to this page.\nYou can start a fresh application by clicking on the Verify button below.`,
+          )
+          setKYCButtonText('Verify')
+          setKYCStatus(KYCStatuses.IN_PROCESS)
+          break
+        case 'aborted':
+          setCurrentKYCStatusText(
+            `Your KYC application was incomplete.\nYou must start a fresh application by clicking on the Verify button below.`,
+          )
+          setKYCButtonText('Verify')
+          setKYCStatus(KYCStatuses.NOT_VERIFIED)
+          break
+        case 'expired':
+          setCurrentKYCStatusText(
+            `Your previous KYC application was incomplete and it has expired.\nYou must start a fresh application by clicking on the Verify button below.`,
+          )
+          setKYCButtonText('Verify')
+          setKYCStatus(KYCStatuses.NOT_VERIFIED)
+          break
+        case 'awaiting':
+          setCurrentKYCStatusText(
+            `Your previous KYC application is either in review or was left incomplete.\nIf you have completed the application process please wait for the verification.\nIf not, you can start a fresh application by clicking on the Verify button below.`,
+          )
+          setKYCButtonText('Verify')
+          setKYCStatus(KYCStatuses.IN_PROCESS)
+          break
+        case 'approved':
+          setCurrentKYCStatusText('Your KYC application is approved.')
+          setKYCButtonText('Verified')
+          setKYCStatus(KYCStatuses.VERIFIED)
+          break
+        case 'rejected':
+          setCurrentKYCStatusText('Your KYC application was rejected.')
+          setKYCButtonText('Verify')
+          setKYCStatus(KYCStatuses.NOT_VERIFIED)
+          break
+        case 'unverified':
+          setCurrentKYCStatusText('Not verified')
+          setKYCButtonText('Verify')
+          setKYCStatus(KYCStatuses.NOT_VERIFIED)
+          break
+        default:
+          setCurrentKYCStatusText(
+            `Not verified.\nYou can start a fresh application clicking on the Verify button below.`,
+          )
+          setKYCButtonText('Verify')
+          setKYCStatus(KYCStatuses.NOT_VERIFIED)
+          break
+      }
     }
 
     lazySetter(setIsFetchingKYCStatus, false, 1000)
   }
 
-  const setKYCInitiationFailed = (text?: string) => {
+  const setKYCInitiationFailed = (
+    btnTxt?: string,
+    currentStatusTxt?: string,
+  ) => {
     setIsFetchingIDVId(false)
-    setKYCProcessingText(text || 'Failed, try again.') // TODO: replace with a user friendly feedback text.
+    setKYCButtonText(btnTxt || 'Verify')
+    setCurrentKYCStatusText(currentStatusTxt || 'Not verified')
   }
 
   const initiateKYC = async () => {
     setIsFetchingIDVId(true)
-    setKYCProcessingText('Initiating KYC process...')
+    setKYCButtonText('Processing...')
 
-    if (KYCStatus === KYCStatuses.VERIFIED) {
-      setKYCInitiationFailed('KYC already verified')
-      return
-    }
-    if (KYCStatus === KYCStatuses.IN_PROCESS) {
-      setKYCInitiationFailed('KYC in process, please wait for updates')
-      return
-    }
-
-    if (!signer) {
-      setKYCInitiationFailed()
+    if (KYCStatus === KYCStatuses.VERIFIED || !signer) {
+      setKYCInitiationFailed('Verified', 'Verified')
       return
     }
 
@@ -148,7 +209,7 @@ const FundsInfo = (props: {
       .signMessage(hash)
       .catch((err: any) => new Error(err))
     if (!signature || !hash || signature instanceof Error) {
-      setKYCInitiationFailed()
+      setKYCInitiationFailed('Verify', 'Not verified')
       return
     }
 
@@ -185,17 +246,20 @@ const FundsInfo = (props: {
           },
       )
       .catch((err) => {
-        setKYCInitiationFailed()
+        setKYCInitiationFailed('Verify', 'Not verified')
       })
 
     if (!(res instanceof Error)) {
       if (res?.data?.id) {
-        setKYCProcessingText('KYC is in progress...')
+        setCurrentKYCStatusText(
+          'Complete your KYC application and return to this page.',
+        )
         window.open(
           `${import.meta.env.PUBLIC_ONDATO_VERIFICATION_URL}/?id=${res?.data
             ?.id}`,
           '_blank',
         )
+        setTimeout(() => setIsFetchingIDVId(false), 30 * 1000) // Set isFetchingIDVId to false in 30 secs.
       } else {
         setKYCInitiationFailed()
       }
@@ -255,27 +319,29 @@ const FundsInfo = (props: {
               <div className="w-fit rounded-lg bg-native-blue-400 p-5">
                 <img src={NotVerifiedBannerImg.src} alt="Not verified" />
               </div>
-              <p className="w-fit font-body text-base font-bold text-dp-white-ink">
-                Not verified
+              <p className="w-fit font-body text-base text-center font-bold text-dp-white-ink">
+                {currentKYCStatusTxt.split('\n').map((text: string) => (
+                  <>
+                    {text} <br />
+                  </>
+                ))}
               </p>
               <button
-                disabled={
+                disabled={isFetchingKYCStatus || isFetchingIDVId}
+                onClick={initiateKYC}
+                className={`hs-button is-filled py-6 px-8 bg-dp-blue-grey-600 text-dp-blue-grey-ink ${
                   isFetchingKYCStatus ||
                   isFetchingIDVId ||
                   KYCStatus === KYCStatuses.IN_PROCESS
-                }
-                onClick={initiateKYC}
-                className={`hs-button is-filled py-6 px-8 bg-dp-blue-grey-600 text-dp-blue-grey-ink ${
-                  isFetchingKYCStatus || isFetchingIDVId
                     ? 'animate-pulse bg-dp-blue-grey-600'
                     : ''
                 }`}
               >
-                {kycProcessingTxt}
+                {kycButtonTxt}
               </button>
             </div>
           </div>
-          <a
+          {/* <a
             href="https://www.vecteezy.com/video/14415199-white-background-stripe-curve-wave-4k-resolution-clean-seamless-loop"
             target="_blank"
             rel="noopneer"
@@ -283,7 +349,7 @@ const FundsInfo = (props: {
           >
             White Background Stripe Curve Wave 4K resolution clean, Seamless
             loop Stock Videos by Vecteezy
-          </a>
+          </a> */}
         </div>
       )}
     </>
