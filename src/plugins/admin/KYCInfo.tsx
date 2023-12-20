@@ -259,6 +259,7 @@ const FundsInfo = (props: {
             ?.id}`,
           '_blank',
         )
+        setTimeout(() => setIsFetchingIDVId(false), 30 * 1000) // Set isFetchingIDVId to false in 30 secs.
       } else {
         setKYCInitiationFailed()
       }
