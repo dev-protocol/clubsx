@@ -130,13 +130,16 @@ export const GET = async () => {
   console.log('uniqueCreators', uniqueCreators)
 
   for (const club of sorted) {
-    if(!club.draft) {
+    if (!club.draft) {
       publishedClubs++
       totalNumberOfMembersInPublishedClubs += club.stats.members
     }
   }
   console.log('publishedClubs', publishedClubs)
-  console.log('totalNumberOfMembersInPublishedClubs', totalNumberOfMembersInPublishedClubs)
+  console.log(
+    'totalNumberOfMembersInPublishedClubs',
+    totalNumberOfMembersInPublishedClubs,
+  )
 
   const data: Stats = {
     lastUpdate: new Date().toUTCString(),
