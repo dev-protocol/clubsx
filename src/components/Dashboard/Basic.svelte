@@ -29,7 +29,7 @@
       console.log({ stats })
       allClubs = stats.data.clubs
       lastUpdate = new Date(stats.data.lastUpdate)
-      publishedClubs = stats.data.published
+      publishedClubs = stats.data.publishedClubsWithMembers
       uniqueCreators = stats.data.uniqueCreators
       unPublishedClubs = stats.data.unpublished
       totalPublishedClubsMembers = stats.data.publishedClubsMembers
@@ -95,7 +95,7 @@
         🖼️ Unique Creators: {uniqueCreators}
       </p>
       <p class="text-lg text-gray-600 dark:text-gray-400">
-        ✅ Published: {publishedClubs}
+        ✅ Published <span class="text-xs"> (With > 0 Members)</span>: {publishedClubs}
       </p>
       <p class="text-lg text-gray-600 dark:text-gray-400">
         🙋🏻‍♂️ Members of Published Clubs : {totalPublishedClubsMembers}
@@ -103,7 +103,7 @@
       <p class="text-base text-gray-600 dark:text-gray-400">
         ℹ️ In Draft: {unPublishedClubs}
       </p>
-      <p class="text-xl text-gray-600 dark:text-gray-400">
+      <p class="text-sm text-gray-600 dark:text-gray-400">
         ⏰ Last updated: {lastUpdate.toLocaleString()}
       </p>
     </div>
