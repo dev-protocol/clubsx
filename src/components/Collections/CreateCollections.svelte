@@ -1397,10 +1397,10 @@
       {/if}
     </div>
     <!-- UnSaved Memberships -->
-    <h1 class="font-title text-2xl font-bold">{unSavedMemberships.length > 0 ? 'Unsaved Collection Items': ''}</h1>
-    <div
-      class="grid sm:grid-cols-4 md:grid-cols-3 justify-between gap-4"
-    >
+    <h1 class="font-title text-2xl font-bold">
+      {unSavedMemberships.length > 0 ? 'Unsaved Collection Items' : ''}
+    </h1>
+    <div class="grid sm:grid-cols-4 md:grid-cols-3 justify-between gap-4">
       {#each collection.memberships as mem, i}
         {#if mem.id !== membership.id && unSavedMemberships.includes(bytes32Hex(mem.payload))}
           <div class="">
