@@ -4,10 +4,5 @@
       "path": "/api/cron/updateStats",
       "schedule": "0 0 * * *"
     }
-  ],
-  "functions": {
-    "api/cron/updateStats.ts" : {
-      "maxDuration": 300
-    }
-  }
+  ]
 }
