@@ -97,6 +97,7 @@
   let globalUpdateState = {
     isLoading: false,
   }
+  let unSavedMemberships: string[] = []
   let noOfPositions: number = 0
   let invalidPriceMsg: string = ''
   let invalidFeeMsg: string = ''
@@ -738,11 +739,14 @@
     updateState()
     update()
     setIsAdding(false)
+    // We are not using unSavedMemberships.push(bytes32Hex(membership.payload)) because of svelete's reactivity issue
+    unSavedMemberships = [...unSavedMemberships, bytes32Hex(membership.payload)]
     membership = {
       ...defaultMembership,
     }
     membership.payload = randomBytes(8)
     onChangePrice(membership)
+    // since editMem is a existing DB entry, its state updation should be handled individually
     if (mode === 'editMem') {
       setTimeout(buildConfig, 50)
     }
@@ -971,7 +975,7 @@
           }}
         />
         <span class="ml-3 block text-justify text-base font-normal text-white"
-          >Public access (Open to everyone)</span
+          >Public access (Open to everyone for purchase)</span
         >
       </label>
       <span
@@ -980,7 +984,7 @@
         >].</span
       >
       <div
-        class="grid grid-cols-[repeat(auto-fit,_minmax(160px,_1fr))] justify-between gap-4 pt-2.5"
+        class="grid sm:grid-cols-4 md:grid-cols-3 justify-between gap-4 pt-2.5"
       >
         {#each existingMemberships as mem, i}
           <div
@@ -1392,13 +1396,36 @@
         {/if}
       {/if}
     </div>
+    <!-- UnSaved Memberships -->
+    <h1 class="font-title text-2xl font-bold">{unSavedMemberships.length > 0 ? 'Unsaved Collection Items': ''}</h1>
+    <div
+      class="grid sm:grid-cols-4 md:grid-cols-3 justify-between gap-4"
+    >
+      {#each collection.memberships as mem, i}
+        {#if mem.id !== membership.id && unSavedMemberships.includes(bytes32Hex(mem.payload))}
+          <div class="">
+            <MembershipOption
+              clubName={clubName ?? 'Your Club'}
+              id={mem.id}
+              name={mem.name}
+              imagePath={mem.imageSrc.trim().length > 0
+                ? mem.imageSrc
+                : emptyDummyImage(400, 400)}
+              price={mem.price.toString()}
+              currency={mem.currency}
+              description={mem.description}
+            />
+          </div>
+        {/if}
+      {/each}
+    </div>
     <!-- Previous Memberships -->
     <h1 class="font-title text-2xl font-bold">Existing Collection Items</h1>
     <div
       class="grid grid-cols-[repeat(auto-fit,_minmax(120px,_1fr))] justify-between gap-4"
     >
       {#each collection.memberships as mem, i}
-        {#if mem.id !== membership.id}
+        {#if mem.id !== membership.id && !unSavedMemberships.includes(bytes32Hex(mem.payload))}
           <div>
             <MembershipOption
               clubName={clubName ?? 'Your Club'}
