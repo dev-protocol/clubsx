@@ -6,7 +6,7 @@
     }
   ],
   "functions": {
-    "api/cron/**/*" : {
+    "api/cron/updateStats.ts": {
       "maxDuration": 300
     }
   }
