@@ -20,6 +20,55 @@ import Preview1 from './assets/default-theme-1.jpg'
 import Preview2 from './assets/default-theme-2.jpg'
 import Preview3 from './assets/default-theme-3.jpg'
 
+type ClubsThemeColors = {
+  200: string,
+  300: string,
+  400: string,
+  600: string,
+  ink: string
+}
+
+type ClubsThemeColorsDefaultOnly = {
+  default: string,
+  ink: string
+}
+
+type ClubsThemeSchema = {
+  primary: ClubsThemeColors,
+  accent: ClubsThemeColors,
+  surface?: ClubsThemeColors, // TODO: Remove undefined when finished
+  background: string,
+  backgroundGradient?: [string, string],
+  backgroundInk: string
+  error?: ClubsThemeColors, // TODO: Remove undefined when finished
+  success?: ClubsThemeColors, // TODO: Remove undefined when finished
+  disabled?: ClubsThemeColorsDefaultOnly // TODO: Remove undefined when finished
+}
+
+const _theme = {
+  bg: 'rgba(255, 131, 83, 1)',
+  bgGradient: ['rgba(249, 192, 82, 1)', 'rgba(249, 192, 82, 0)'],
+  ink: 'rgba(255, 255, 255)',
+  primary: {
+    200: '',
+    300: '',
+    400: '',
+    600: '',
+    ink: ''
+  },
+  accent: {
+    200: 'rgb(103,67,52)',
+    300: 'rgb(73,45,32)',
+    400: 'rgb(54, 27, 16, 1)',
+    600: 'rgb(26,10,2)',
+    ink: 'rgba(249, 192, 82, 1)'
+  }
+}
+
+const defineThemeVariables = (theme: ClubsThemeSchema) => {
+  // TODO: Add targeting functionality...
+}
+
 export const colorPresets = {
   Purple: {
     bg: 'rgba(131, 138, 176, 1)',
@@ -70,14 +119,16 @@ export const colorPresets = {
     bg: 'rgba(255, 131, 83, 1)',
     bgGradient: ['rgba(249, 192, 82, 1)', 'rgba(249, 192, 82, 0)'],
     ink: 'rgba(255, 255, 255)',
+    theme: _theme,
     themeMode: 'dark'
   },
 }
 
 export type GlobalConfigValue = {
-  bg?: string
-  bgGradient?: [string, string]
-  ink?: string
+  bg?: string // TODO: Remove these when finished
+  bgGradient?: [string, string] // TODO: Remove these when finished
+  ink?: string // TODO: Remove these when finished
+  theme?: ClubsThemeSchema // TODO: Remove undefined when finished
   themeMode: 'dark' | 'light'
 }
 
