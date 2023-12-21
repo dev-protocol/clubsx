@@ -158,6 +158,13 @@ const FundsInfo = (props: {
           setKYCButtonText('Verify')
           setKYCStatus(KYCStatuses.IN_PROCESS)
           break
+        case 'initiated':
+          setCurrentKYCStatusText(
+            `Complete your KYC application and return to this page.\nYou can start a fresh application by clicking on the Verify button below.`,
+          )
+          setKYCButtonText('Verify')
+          setKYCStatus(KYCStatuses.IN_PROCESS)
+          break
         case 'approved':
           setCurrentKYCStatusText('Your KYC application is approved.')
           setKYCButtonText('Verified')
