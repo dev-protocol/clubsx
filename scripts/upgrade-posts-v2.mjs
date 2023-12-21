@@ -6,7 +6,7 @@ import { toUtf8Bytes } from 'ethers'
 
 dotenv.config()
 
-const upgrade = (config) => {
+const upgradeConfig = (config) => {
   const decodedConfig = decode(config)
 
   const upgradedConfig = {
@@ -77,7 +77,7 @@ const main = async () => {
       /**
        * Upgrade the config
        */
-      const upgradedConfig = upgrade(encodedConfig)
+      const upgradedConfig = upgradeConfig(encodedConfig)
 
       /**
        * In the case the config is already up-to-date, continue to the next key
@@ -92,6 +92,26 @@ const main = async () => {
        */
       await client.set(key, upgradedConfig)
       console.log('Upgraded', key)
+
+      /**
+       * Copy posts content
+       */
+      const oldId = 'default'
+      const newId = 'default-2'
+      const res = await fetch(
+        `https://${upgradedConfig.url}/api/devprotocol:clubs:plugin:posts/${oldId}/copy/to/${newId}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      )
+
+      if (res.status !== 200) {
+        console.log('Failed to copy posts content', key)
+        continue
+      }
     }
 
     console.log('DB Upgraded')
