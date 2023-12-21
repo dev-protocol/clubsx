@@ -28,6 +28,7 @@ const FundsInfo = (props: {
   const [isFetchingKYCStatus, setIsFetchingKYCStatus] = useState<boolean>(true)
   const [currentKYCStatusTxt, setCurrentKYCStatusText] =
     useState<string>('Not verified')
+  const [kycInformativeMessage, setKYCInformativeMessage] = useState<string>('')
 
   useEffect(() => {
     const checkConnection = async () => {
@@ -131,54 +132,70 @@ const FundsInfo = (props: {
     if (res) {
       switch (res) {
         case 'inprogress':
-          setCurrentKYCStatusText(
-            `Your KYC application is in progress.\nComplete your KYC application and return to this page.\nYou can start a fresh application by clicking on the Verify button below.`,
-          )
+          setCurrentKYCStatusText(`Your KYC application is in progress.`)
           setKYCButtonText('Verify')
           setKYCStatus(KYCStatuses.IN_PROCESS)
+          setKYCInformativeMessage(
+            `Complete your KYC application and return to this page. You can start a new application process by clicking on the Verify button.`,
+          )
           break
         case 'aborted':
-          setCurrentKYCStatusText(
-            `Your KYC application was incomplete.\nYou must start a fresh application by clicking on the Verify button below.`,
-          )
+          setCurrentKYCStatusText(`Your KYC application was incomplete.`)
           setKYCButtonText('Verify')
           setKYCStatus(KYCStatuses.NOT_VERIFIED)
+          setKYCInformativeMessage(``)
           break
         case 'expired':
           setCurrentKYCStatusText(
-            `Your previous KYC application was incomplete and it has expired.\nYou must start a fresh application by clicking on the Verify button below.`,
+            `Your previous KYC application was incomplete and it has expired.`,
           )
           setKYCButtonText('Verify')
           setKYCStatus(KYCStatuses.NOT_VERIFIED)
+          setKYCInformativeMessage(``)
           break
         case 'awaiting':
           setCurrentKYCStatusText(
-            `Your previous KYC application is either in review or was left incomplete.\nIf you have completed the application process please wait for the verification.\nIf not, you can start a fresh application by clicking on the Verify button below.`,
+            `Your previous KYC application is still under review.`,
           )
           setKYCButtonText('Verify')
           setKYCStatus(KYCStatuses.IN_PROCESS)
+          setKYCInformativeMessage(
+            `Please wait for a couple of minutes for the verification. If you left it incomplete or are unsure if it was completed, you can always start a new application by clicking the Verify button below.`,
+          )
+          break
+        case 'initiated':
+          setCurrentKYCStatusText(
+            `Complete your KYC application and return to this page.`,
+          )
+          setKYCButtonText('Verify')
+          setKYCStatus(KYCStatuses.IN_PROCESS)
+          setKYCInformativeMessage(
+            `You can start a fresh application by clicking on the Verify button below.`,
+          )
           break
         case 'approved':
           setCurrentKYCStatusText('Your KYC application is approved.')
           setKYCButtonText('Verified')
           setKYCStatus(KYCStatuses.VERIFIED)
+          setKYCInformativeMessage(``)
           break
         case 'rejected':
           setCurrentKYCStatusText('Your KYC application was rejected.')
           setKYCButtonText('Verify')
           setKYCStatus(KYCStatuses.NOT_VERIFIED)
+          setKYCInformativeMessage(``)
           break
         case 'unverified':
           setCurrentKYCStatusText('Not verified')
           setKYCButtonText('Verify')
           setKYCStatus(KYCStatuses.NOT_VERIFIED)
+          setKYCInformativeMessage(``)
           break
         default:
-          setCurrentKYCStatusText(
-            `Not verified.\nYou can start a fresh application clicking on the Verify button below.`,
-          )
+          setCurrentKYCStatusText(`Not verified`)
           setKYCButtonText('Verify')
           setKYCStatus(KYCStatuses.NOT_VERIFIED)
+          setKYCInformativeMessage(``)
           break
       }
     }
@@ -289,6 +306,14 @@ const FundsInfo = (props: {
           <p className="text-black">Not connected to a wallet</p>
         </div>
       )}
+
+      {signer &&
+        kycInformativeMessage !== '' &&
+        kycInformativeMessage.length > 0 && (
+          <div className="mb-8 flex w-fit max-w-full items-center justify-center gap-5 rounded-md bg-dp-yellow-400 px-8 py-4">
+            <p className="text-black">{kycInformativeMessage}</p>
+          </div>
+        )}
 
       {KYCStatus === KYCStatuses.VERIFIED && (
         <div className="w-full grid lg:grid-cols-2 gap-5 py-5 px-8 rounded-2xl bg-dp-blue-grey-300 dark:bg-dp-blue-grey-200 justify-center items-center">

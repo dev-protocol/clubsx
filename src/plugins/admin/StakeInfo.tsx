@@ -31,6 +31,7 @@ const CurrencyMembershipInfo = (props: Props) => {
   const [connection, setConnection] = useState<any>(undefined)
   const [isFetchingData, setIsFetchingData] = useState<boolean>()
   const [withdrawContract, setWithdrawContract] = useState<Contract>()
+  const [claimBtnTxt, setClaimBtnTxt] = useState<string>('Withdraw DEV')
 
   useEffect(() => {
     const checkConnection = async () => {
@@ -47,7 +48,10 @@ const CurrencyMembershipInfo = (props: Props) => {
     }
 
     setSigner(connection.connection().signer.getValue())
-    connection.connection().signer.subscribe((s: Signer) => setSigner(s))
+    const connectionSub = connection
+      .connection()
+      .signer.subscribe((s: Signer) => setSigner(s))
+    return () => connectionSub.unsubscribe() // Cleanup to remove pervious subscribers.
   }, [connection])
 
   useEffect(() => {
@@ -121,9 +125,12 @@ const CurrencyMembershipInfo = (props: Props) => {
     }
 
     setIsClaiming(true)
+    setClaimBtnTxt('Processing...')
     const txReceipt = await withdrawContract.withdraw(props.propertyAddress)
     await txReceipt.wait(1) // TODO: detect success failure
+    fetchWithdrawable()
     setIsClaiming(false)
+    setClaimBtnTxt('Withdraw DEV')
   }
 
   return (
@@ -136,15 +143,17 @@ const CurrencyMembershipInfo = (props: Props) => {
       </p>
       <p className="text-base font-bold opacity-50">DEV</p>
       <button
-        disabled={!props.isKYCVerified || !Number(withdrawable)}
+        disabled={!props.isKYCVerified || !Number(withdrawable) || isClaiming}
         onClick={claimWithdrawable}
         className={`hs-button is-filled col-span-2 ${
           !props.isKYCVerified
             ? 'disabled:cursor-not-allowed disabled:hover:animate-[horizontal-shaking_.06s_5]'
             : ''
-        } lg:col-span-1 ${props.isYourWithdrawable ? '' : 'invisible'}`}
+        } lg:col-span-1 ${props.isYourWithdrawable ? '' : 'invisible'} ${
+          isClaiming ? 'animate-pulse bg-dp-blue-grey-600' : ''
+        }`}
       >
-        Withdraw DEV
+        {claimBtnTxt}
       </button>
     </section>
   )
