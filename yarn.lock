@@ -149,10 +149,10 @@
     "@sveltejs/vite-plugin-svelte" "^3.0.0"
     svelte2tsx "^0.6.25"
 
-"@astrojs/tailwind@5.0.3":
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/@astrojs/tailwind/-/tailwind-5.0.3.tgz#4e43a639837bb20426862daeeabd295750d73bb4"
-  integrity sha512-p+uFa1PNuV8RxhGkPUFgVq8CUbmS3xr0u5k1An2xKECLotRh7vsrGcPUijHvYOt42URohcg8rIq0CxNoVMhReg==
+"@astrojs/tailwind@5.0.4":
+  version "5.0.4"
+  resolved "https://registry.yarnpkg.com/@astrojs/tailwind/-/tailwind-5.0.4.tgz#ddf9376fcfca83f386742ad21d5537a3738fa0c1"
+  integrity sha512-50ImfEFRBjndtWus6xJOWQ4EVpZWB4d+hieosMPm1Tca68mNTX+Yi1/PhTMk9q/w7iZPIUK/KGBoovo15O10eQ==
   dependencies:
     autoprefixer "^10.4.15"
     postcss "^8.4.28"
