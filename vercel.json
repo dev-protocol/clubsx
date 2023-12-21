@@ -6,7 +6,7 @@
     }
   ],
   "functions": {
-    "pages/api/**/*.ts": {
+    "pages/api/cron/**/*.ts": {
       "maxDuration": 300
     }
   }
