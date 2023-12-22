@@ -25,12 +25,12 @@
     "@jridgewell/gen-mapping" "^0.3.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@astrojs/check@0.3.2":
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/@astrojs/check/-/check-0.3.2.tgz#32ca01ee6e83cc16b5286c05e7d230fe0be9b776"
-  integrity sha512-3w+FUauJpfbR0sHPM7GXcn97sKgw2E+BBpXWyPwQQjxOZFU8AozVE7BP4kyGMPI+qYI2tGqDBklHMlezyfSb2A==
+"@astrojs/check@0.3.4":
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/@astrojs/check/-/check-0.3.4.tgz#b09d04f50570b4f579e336a30e7237ee9fd839bf"
+  integrity sha512-Wi4KwW38J3GCd/U6LH2UuU4uc4P/K1WYaqhoKm2o7rVoGhQfO+RWrSO26rUPRXYbmae8JugAgpCmsHC8bt5RlA==
   dependencies:
-    "@astrojs/language-server" "^2.5.3"
+    "@astrojs/language-server" "^2.5.5"
     chokidar "^3.5.3"
     fast-glob "^3.3.1"
     kleur "^4.1.5"
@@ -56,10 +56,10 @@
   resolved "https://registry.yarnpkg.com/@astrojs/internal-helpers/-/internal-helpers-0.2.1.tgz#4e2e6aabaa9819f17119aa10f413c4d6122c94cf"
   integrity sha512-06DD2ZnItMwUnH81LBLco3tWjcZ1lGU9rLCCBaeUCGYe9cI0wKyY2W3kDyoW1I6GmcWgt1fu+D1CTvz+FIKf8A==
 
-"@astrojs/language-server@^2.5.3":
-  version "2.5.3"
-  resolved "https://registry.yarnpkg.com/@astrojs/language-server/-/language-server-2.5.3.tgz#636e4c64e2913c0eff28563cabe6b4ead95fa554"
-  integrity sha512-AcSWu/u+qtFxVbqEXWZQb57xy0JCXHRv7uOcogxGT6STGDrMiCCfkoAZnDPf3Xi2qOhG/vWKKOQZktpZhzCAmQ==
+"@astrojs/language-server@^2.5.5":
+  version "2.5.5"
+  resolved "https://registry.yarnpkg.com/@astrojs/language-server/-/language-server-2.5.5.tgz#ad8ec3c8d360fd579d5125926751c0d8de025865"
+  integrity sha512-hk7a8S7bpf//BOA6mMjiYqi/eiYtGPfUfw59eVXdutdRFdwDHtu4jcsLu43ZaId56pAcE8qFjIvJxySvzcxiUA==
   dependencies:
     "@astrojs/compiler" "^2.2.2"
     "@jridgewell/sourcemap-codec" "^1.4.15"
