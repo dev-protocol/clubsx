@@ -6,9 +6,7 @@ import { toUtf8Bytes } from 'ethers'
 
 dotenv.config()
 
-const upgradeConfig = (config) => {
-  const decodedConfig = decode(config)
-
+const upgradeConfig = (decodedConfig, feeds) => {
   const upgradedConfig = {
     ...decodedConfig,
     plugins: decodedConfig.plugins.map((plugin) => {
@@ -23,19 +21,7 @@ const upgradeConfig = (config) => {
           if (option.name === 'feeds') {
             return {
               name: 'feeds',
-              value: [
-                {
-                  id: decodedConfig.name,
-                  slug: 'posts',
-                  database: {
-                    type: 'documents:redis',
-                    key: uuidv5(
-                      toUtf8Bytes(decodedConfig.name), // <!-- what should this be?
-                      uuidv5(decodedConfig.url, uuidv5.URL),
-                    ),
-                  },
-                },
-              ],
+              value: feeds,
             }
           }
           return option
@@ -72,25 +58,61 @@ const main = async () => {
       /**
        * Fetch the encoded config associated with the key
        */
+
       const encodedConfig = await client.get(key)
+      const decodedConfig = decode(encodedConfig)
 
       /**
-       * Upgrade the config
+       * Find the posts plugin
        */
-      const upgradedConfig = upgradeConfig(encodedConfig)
+      const pluginPost = decodedConfig.plugins.find(
+        (plugin) => plugin.name === 'devprotocol:clubs:plugin:posts',
+      )
 
-      /**
-       * In the case the config is already up-to-date, continue to the next key
-       */
-      if (encodedConfig === upgradedConfig) {
-        console.log('Up-to-date', key)
+      /** Club doesn't have Posts installed, continue */
+      if (!pluginPost) {
+        console.log('Skipped: no post plugin', key)
         continue
       }
 
       /**
-       * Set the upgraded config
+       * Find the feeds option
+       **/
+      const feeds = pluginPost.options.find((option) => option.name === 'feeds')
+
+      /** Club doesn't have Posts installed, continue */
+      if (!feeds) {
+        console.log('Skipped: no feeds found', key)
+        continue
+      }
+
+      /**
+       * We add the new feed value for copying the posts content
        */
-      await client.set(key, upgradedConfig)
+      const appendedFeeds = [
+        feeds.value,
+        {
+          id: 'default-2',
+          slug: 'posts',
+          database: {
+            type: 'documents:redis',
+            key: uuidv5(
+              toUtf8Bytes('default-2'), // <!-- what should this be?
+              uuidv5(decodedConfig.url, uuidv5.URL),
+            ),
+          },
+        },
+      ]
+
+      /**
+       * Create a new config
+       */
+      const addedFeedValueConfig = upgradeConfig(decodedConfig, appendedFeeds)
+
+      /**
+       * Save the upgraded config
+       */
+      await client.set(key, addedFeedValueConfig)
       console.log('Upgraded', key)
 
       /**
@@ -99,7 +121,7 @@ const main = async () => {
       const oldId = 'default'
       const newId = 'default-2'
       const res = await fetch(
-        `https://${upgradedConfig.url}/api/devprotocol:clubs:plugin:posts/${oldId}/copy/to/${newId}`,
+        `https://${addedFeedValueConfig.url}/api/devprotocol:clubs:plugin:posts/${oldId}/copy/to/${newId}`,
         {
           method: 'POST',
           headers: {
@@ -112,6 +134,18 @@ const main = async () => {
         console.log('Failed to copy posts content', key)
         continue
       }
+
+      /**
+       * Remove the prior feed value
+       */
+      const removedFeeds = feeds.value.filter((feed) => feed.id !== oldId)
+      const upgradedConfig = upgradeConfig(decodedConfig, removedFeeds)
+
+      /**
+       * Set the upgraded config
+       */
+      await client.set(key, upgradedConfig)
+      console.log('Upgraded', key)
     }
 
     console.log('DB Upgraded')
