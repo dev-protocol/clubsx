@@ -455,17 +455,10 @@
     "@babel/helper-plugin-utils" "^7.22.5"
     "@babel/plugin-syntax-typescript" "^7.23.3"
 
-"@babel/runtime@^7.17.2", "@babel/runtime@^7.23.2":
+"@babel/runtime@^7.17.2", "@babel/runtime@^7.22.6", "@babel/runtime@^7.23.2", "@babel/runtime@^7.3.1", "@babel/runtime@^7.8.3":
   version "7.23.6"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.23.6.tgz#c05e610dc228855dc92ef1b53d07389ed8ab521d"
   integrity sha512-zHd0eUrf5GZoOWVCXp6koAKQTfZV07eit6bGPmJgnZdnSAvvZee6zniW2XMF7Cmc4ISOOnPy3QaSiIJGJkVEDQ==
-  dependencies:
-    regenerator-runtime "^0.14.0"
-
-"@babel/runtime@^7.22.6", "@babel/runtime@^7.3.1", "@babel/runtime@^7.8.3":
-  version "7.23.5"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.23.5.tgz#11edb98f8aeec529b82b211028177679144242db"
-  integrity sha512-NdUTHcPe4C99WxPub+K9l9tK5/lV4UXIoaHSYgzco9BCyjKAAwzdBI+wWtYqHt7LJdbo74ZjRPJgzVweq1sz0w==
   dependencies:
     regenerator-runtime "^0.14.0"
 
@@ -531,15 +524,7 @@
     stream-browserify "^3.0.0"
     util "^0.12.4"
 
-"@crossmint/client-sdk-base@1.1.2":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-base/-/client-sdk-base-1.1.2.tgz#4427744072a74cb1f0a4c47c54bf6ae083f5b9b9"
-  integrity sha512-aTJtbMmWNvxugqe2VSpDLJiROvVobpN2c65hj93QN0dlKgVPJafH1AZUK06exsKvWCikabZfRARTae3s0rDtew==
-  dependencies:
-    exponential-backoff "3.1.1"
-    uuid "9.0.1"
-
-"@crossmint/client-sdk-base@^1.0.1-alpha.6":
+"@crossmint/client-sdk-base@1.1.3", "@crossmint/client-sdk-base@^1.0.1-alpha.6":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-base/-/client-sdk-base-1.1.3.tgz#b65c618cbe4a3188cd341f560a3f6cec2a013e42"
   integrity sha512-J+VsgW0g2XJ56neT9pEvIAglWvq5ClxWUT2lcx1m7bYeXLFVBy9aBG70tDbqDOyqaTj6Mr0dtH9c1/0aNC/GIA==
@@ -548,11 +533,11 @@
     uuid "9.0.1"
 
 "@crossmint/client-sdk-react-ui@^1.0.1-alpha.6":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-react-ui/-/client-sdk-react-ui-1.1.2.tgz#f7c45c4fdf59ec288e84e9715559e4c548fde3bd"
-  integrity sha512-rHEodBKX+fxRP0qCPaNkCmSB+N+XFCBOLHewyRpVochgED/y7fFxhbQgET7iilhM4xX3J+kHOBOZ5kcvG7+pKQ==
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-react-ui/-/client-sdk-react-ui-1.1.3.tgz#811585ce0bd6a8c6ef33b94e8dab549f69250889"
+  integrity sha512-mEbCpkJBUoY7vTj56WJ+sCrF1wophud09Vd8d+dbJuW/2xlhkgbv2pT6/cmjxYCivszvsw/NRqq0AIS7aVTGHA==
   dependencies:
-    "@crossmint/client-sdk-base" "1.1.2"
+    "@crossmint/client-sdk-base" "1.1.3"
     "@ethersproject/transactions" "5.7.0"
     "@solana/web3.js" "1.78.5"
     bs58 "5.0.0"
@@ -2070,14 +2055,14 @@
     "@netlify/node-cookies" "^0.1.0"
     urlpattern-polyfill "8.0.2"
 
-"@noble/curves@1.2.0", "@noble/curves@^1.0.0", "@noble/curves@~1.2.0":
+"@noble/curves@1.2.0", "@noble/curves@~1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@noble/curves/-/curves-1.2.0.tgz#92d7e12e4e49b23105a2555c6984d41733d65c35"
   integrity sha512-oYclrNgRaM9SsBUBVbb8M6DTV7ZHRTKugureoYEncY5c65HOmRzvSiTE3y5CYaPYJA/GVkrhXEoF0M3Ya9PMnw==
   dependencies:
     "@noble/hashes" "1.3.2"
 
-"@noble/curves@^1.2.0":
+"@noble/curves@^1.0.0", "@noble/curves@^1.2.0":
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/@noble/curves/-/curves-1.3.0.tgz#01be46da4fd195822dab821e72f71bf4aeec635e"
   integrity sha512-t01iSXPuN+Eqzb4eBX0S5oubSqXbK/xXa1Ne18Hj8f9pStxztHCE2gfboSp/dZRLSqfuLpRK2nDXDK+W9puocA==
@@ -9561,9 +9546,9 @@ redis@^4.6.7:
     "@redis/time-series" "1.0.5"
 
 regenerator-runtime@^0.14.0:
-  version "0.14.0"
-  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.14.0.tgz#5e19d68eb12d486f797e15a3c6a918f7cec5eb45"
-  integrity sha512-srw17NI0TUWHuGa5CFGGmhfNIeja30WMBfbslPNhf6JrqQlLN5gcrvig1oqPxiVaXb0oW0XRKtH6Nngs5lKCIA==
+  version "0.14.1"
+  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.14.1.tgz#356ade10263f685dda125100cd862c1db895327f"
+  integrity sha512-dYnhHh0nJoMfnkZs6GmmhFknAGRrLznOu5nc9ML+EJxGvrx6H7teuevqVqCuPcPK//3eDrrjQhehXVx9cnkGdw==
 
 regexp.prototype.flags@^1.5.1:
   version "1.5.1"
@@ -9808,9 +9793,9 @@ rollup@^4.2.0:
     fsevents "~2.3.2"
 
 rpc-websockets@^7.5.1:
-  version "7.8.0"
-  resolved "https://registry.yarnpkg.com/rpc-websockets/-/rpc-websockets-7.8.0.tgz#1bcf571f65c51803e81f0824e9540a0da35a5287"
-  integrity sha512-AStkq6KDvSAmA4WiwlK1pDvj/33BWmExTATUokC0v+NhWekXSTNzXS5OGXeYwq501/pj6lBZMofg/h4dx4/tCg==
+  version "7.9.0"
+  resolved "https://registry.yarnpkg.com/rpc-websockets/-/rpc-websockets-7.9.0.tgz#a3938e16d6f134a3999fdfac422a503731bf8973"
+  integrity sha512-DwKewQz1IUA5wfLvgM8wDpPRcr+nWSxuFxx5CbrI2z/MyyZ4nXLM86TvIA+cI1ZAdqC8JIBR1mZR55dzaLU+Hw==
   dependencies:
     "@babel/runtime" "^7.17.2"
     eventemitter3 "^4.0.7"
