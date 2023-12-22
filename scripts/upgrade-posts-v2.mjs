@@ -90,7 +90,7 @@ const main = async () => {
        * We add the new feed value for copying the posts content
        */
       const appendedFeeds = [
-        feeds.value,
+        ...feeds.value,
         {
           id: 'default-2',
           slug: 'posts',
