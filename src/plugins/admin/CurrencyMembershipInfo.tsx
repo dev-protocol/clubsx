@@ -26,6 +26,9 @@ const CurrencyMembershipInfo = (props: Props) => {
   const [withdrawable, setWithdrawable] = useState<string>()
   const [connection, setConnection] = useState<any>(undefined)
   const [isFetchingData, setIsFetchingData] = useState<boolean>()
+  const [claimBtnTxt, setClaimBtnTxt] = useState<string>(
+    `Withdraw ${props.currency}`,
+  )
   const [withdrawableInDollars, setWithdrawableInDollars] = useState<string>()
   const [swapAndStakeContract, setSwapAndStakeContract] = useState<Contract>()
 
@@ -44,7 +47,10 @@ const CurrencyMembershipInfo = (props: Props) => {
     }
 
     setSigner(connection.connection().signer.getValue())
-    connection.connection().signer.subscribe((s: Signer) => setSigner(s))
+    const connectionSub = connection
+      .connection()
+      .signer.subscribe((s: Signer) => setSigner(s))
+    return () => connectionSub.unsubscribe() // Cleanup to remove pervious subscribers.
   }, [connection])
 
   useEffect(() => {
@@ -124,10 +130,13 @@ const CurrencyMembershipInfo = (props: Props) => {
     }
 
     setIsClaiming(true)
+    setClaimBtnTxt('Processing...')
     const tokenAddress = tokenInfo[tokenSymbol][props.chainId].address
     const txReceipt = await swapAndStakeContract.claim(tokenAddress)
-    await txReceipt.wait(1) // TODO: detect success failure
+    await txReceipt.wait(1)
+    fetchWithdrawable()
     setIsClaiming(false)
+    setClaimBtnTxt(`Withdraw ${props.currency}`)
   }
 
   return (
@@ -148,14 +157,16 @@ const CurrencyMembershipInfo = (props: Props) => {
       </p>
       <button
         onClick={() => claimWithdrawable(props.currency)}
-        disabled={!props.isKYCVerified || !Number(withdrawable)}
+        disabled={!props.isKYCVerified || !Number(withdrawable) || isClaiming}
         className={`hs-button is-filled col-span-2 ${
           !props.isKYCVerified
             ? 'disabled:cursor-not-allowed disabled:hover:animate-[horizontal-shaking_.06s_5]'
             : ''
-        } lg:col-span-1 ${props.isYourWithdrawable ? '' : 'invisible'}`}
+        } lg:col-span-1 ${props.isYourWithdrawable ? '' : 'invisible'} ${
+          isClaiming ? 'animate-pulse bg-dp-blue-grey-600' : ''
+        }`}
       >
-        Withdraw {props.currency}
+        {claimBtnTxt}
       </button>
     </section>
   )
