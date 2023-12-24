@@ -13,4 +13,8 @@ export type ClubWithStats = Club & {
 export type Stats = {
   lastUpdate: string
   clubs: ClubWithStats[]
+  uniqueCreators: number
+  publishedClubsWithMembers: number
+  unpublished: number
+  publishedClubsMembers: number
 }
