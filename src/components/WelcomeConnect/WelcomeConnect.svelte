@@ -3,13 +3,14 @@
   import type Web3Modal from 'web3modal'
 
   import type { ClubsConfiguration } from '@devprotocol/clubs-core'
-  import { encode, setConfig } from '@devprotocol/clubs-core'
+  import { encode, i18nFactory, setConfig } from '@devprotocol/clubs-core'
   import { BrowserProvider, hashMessage } from 'ethers'
   import { defaultConfig } from '@constants/defaultConfig'
   import { onMount } from 'svelte'
   import EmailConnect from '../EmailConnect/EmailConnect.svelte'
   import type { DraftOptions } from '@constants/draft'
   import type { UndefinedOr } from '@devprotocol/util-ts'
+  import { Strings } from './i18n'
 
   export let siteName: string
 
@@ -18,11 +19,14 @@
   let disableCreationUsingWallet: boolean = false
   let GetModalProvider: Web3Modal
   let EthersProviderFrom: typeof TypeEthersProviderFrom
+  const i18nBase = i18nFactory(Strings)
+  let i18n = i18nBase(['en'])
 
   onMount(async () => {
     const wallet = await import('@fixtures/wallet')
     GetModalProvider = wallet.GetModalProvider()
     EthersProviderFrom = wallet.EthersProviderFrom
+    i18n = i18nBase(navigator.languages)
   })
 
   const walletConnect = async () => {
@@ -156,8 +160,8 @@
 
 <div class="relative grid justify-center p-4 md:p-0">
   <section class="my-16 grid gap-8 text-center md:my-32">
-    <h1 class="text-2xl font-bold md:text-5xl">Connect Your Account</h1>
-    <p>Link your account to your club.</p>
+    <h1 class="text-2xl font-bold md:text-5xl">{i18n('Header')}</h1>
+    <p>{i18n('SubHeader')}</p>
   </section>
 
   <section class="grid gap-24">
@@ -171,7 +175,7 @@
     </p>
 
     <div class="flex flex-col items-center">
-      <span class="mb-4">Already have a wallet?</span>
+      <span class="mb-4">{i18n('WalletCheck')}</span>
 
       <button
         class={`hs-button is-filled is-native-blue px-8 py-4 text-inherit ${
