@@ -6,6 +6,8 @@ import { toUtf8Bytes } from 'ethers'
 
 dotenv.config()
 
+let isIndexCreated = false
+
 const upgradeConfig = (decodedConfig, feeds) => {
   const upgradedConfig = {
     ...decodedConfig,
@@ -13,14 +15,14 @@ const upgradeConfig = (decodedConfig, feeds) => {
       /**
        * Find the posts plugin
        */
-      if (plugin.name === 'devprotocol:clubs:plugin:posts') {
+      if (plugin.id === 'devprotocol:clubs:plugin:posts') {
         /**
          * Find the feeds option and replace it with the new one
          */
         const options = plugin.options.map((option) => {
-          if (option.name === 'feeds') {
+          if (option.key === 'feeds') {
             return {
-              name: 'feeds',
+              key: 'feeds',
               value: feeds,
             }
           }
@@ -115,23 +117,48 @@ const main = async () => {
       console.log('Upgraded', key)
 
       /**
+       * Create required indexes
+       * This API can be called repeatedly, but it has no effect after the first call, so call it only once.
+       */
+      if (isIndexCreated === false) {
+        const res1 = await fetch(
+          `http://localhost:3000/sites_/${key}/api/devprotocol:clubs:plugin:posts/indexing/documents:redis`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+        )
+
+        if (!res1.ok) {
+          console.log('status is: ', res1.status)
+          console.log('status text is: ', res1.statusText)
+          console.log('Failed to create indexes', key)
+          console.log('----')
+          continue
+        }
+        isIndexCreated = true
+      }
+
+      /**
        * Copy posts content
        */
       const oldId = 'default'
       const newId = 'default-2'
-      const url = `${decodedConfig.url}/api/devprotocol:clubs:plugin:posts/${oldId}/copy/to/${newId}`
-      console.log('Copying posts content', key, url)
+      const copyUrl = `http://localhost:3000/sites_/${key}/api/devprotocol:clubs:plugin:posts/${oldId}/copy/to/${newId}`
+      console.log('Copying posts content', key, copyUrl)
 
-      const res = await fetch(url, {
+      const res2 = await fetch(copyUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
       })
 
-      if (!res.ok) {
-        console.log('status is: ', res.status)
-        console.log('status text is: ', res.statusText)
+      if (!res2.ok) {
+        console.log('status is: ', res2.status)
+        console.log('status text is: ', res2.statusText)
         console.log('Failed to copy posts content', key)
         console.log('----')
         continue
@@ -140,7 +167,9 @@ const main = async () => {
       /**
        * Remove the prior feed value
        */
-      const removedFeeds = feeds.value.filter((feed) => feed.id !== oldId)
+      const removedFeeds = appendedFeeds.map((feed) =>
+        feed.id === oldId ? { ...feed, slug: '_old_default_feed' } : feed,
+      )
       const upgradedConfig = upgradeConfig(decodedConfig, removedFeeds)
 
       /**
