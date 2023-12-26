@@ -66,7 +66,7 @@ const main = async () => {
        * Find the posts plugin
        */
       const pluginPost = decodedConfig.plugins.find(
-        (plugin) => plugin.name === 'devprotocol:clubs:plugin:posts',
+        (plugin) => plugin.id === 'devprotocol:clubs:plugin:posts',
       )
 
       /** Club doesn't have Posts installed, continue */
