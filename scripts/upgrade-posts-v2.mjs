@@ -51,7 +51,6 @@ const main = async () => {
     for await (const key of client.scanIterator()) {
       if (key.includes(':')) {
         // This is not a ClubsConfiguration
-        console.log('Skipped:', key)
         continue
       }
 
@@ -78,7 +77,7 @@ const main = async () => {
       /**
        * Find the feeds option
        **/
-      const feeds = pluginPost.options.find((option) => option.name === 'feeds')
+      const feeds = pluginPost.options.find((option) => option.key === 'feeds')
 
       /** Club doesn't have Posts installed, continue */
       if (!feeds) {
@@ -120,15 +119,14 @@ const main = async () => {
        */
       const oldId = 'default'
       const newId = 'default-2'
-      const res = await fetch(
-        `https://${addedFeedValueConfig.url}/api/devprotocol:clubs:plugin:posts/${oldId}/copy/to/${newId}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+      const url = `https://${decodedConfig.url}/api/devprotocol:clubs:plugin:posts/${oldId}/copy/to/${newId}`
+
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      )
+      })
 
       if (res.status !== 200) {
         console.log('Failed to copy posts content', key)
