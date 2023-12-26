@@ -51,7 +51,6 @@ const main = async () => {
     for await (const key of client.scanIterator()) {
       if (key.includes(':')) {
         // This is not a ClubsConfiguration
-        // console.log('Skipped:', key)
         continue
       }
 
@@ -120,11 +119,7 @@ const main = async () => {
        */
       const oldId = 'default'
       const newId = 'default-2'
-
-      console.log('addedFeedValueConfig: ', addedFeedValueConfig)
-
       const url = `https://${decodedConfig.url}/api/devprotocol:clubs:plugin:posts/${oldId}/copy/to/${newId}`
-      console.log('url is: ', url)
 
       const res = await fetch(url, {
         method: 'POST',
