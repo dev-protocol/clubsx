@@ -90,17 +90,18 @@ const main = async () => {
       /**
        * We add the new feed value for copying the posts content
        */
+      const scope = uuidv5(
+        toUtf8Bytes('default-2'),
+        uuidv5(decodedConfig.url, uuidv5.URL),
+      )
       const appendedFeeds = [
-        ...feeds.value,
+        ...feeds.value.filter((feed) => feed.database.key !== scope),
         {
           id: 'default-2',
           slug: 'posts',
           database: {
             type: 'documents:redis',
-            key: uuidv5(
-              toUtf8Bytes('default-2'), // <!-- what should this be?
-              uuidv5(decodedConfig.url, uuidv5.URL),
-            ),
+            key: scope,
           },
         },
       ]
