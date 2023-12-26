@@ -119,7 +119,8 @@ const main = async () => {
        */
       const oldId = 'default'
       const newId = 'default-2'
-      const url = `https://${decodedConfig.url}/api/devprotocol:clubs:plugin:posts/${oldId}/copy/to/${newId}`
+      const url = `${decodedConfig.url}/api/devprotocol:clubs:plugin:posts/${oldId}/copy/to/${newId}`
+      console.log('Copying posts content', key, url)
 
       const res = await fetch(url, {
         method: 'POST',
@@ -128,8 +129,11 @@ const main = async () => {
         },
       })
 
-      if (res.status !== 200) {
+      if (!res.ok) {
+        console.log('status is: ', res.status)
+        console.log('status text is: ', res.statusText)
         console.log('Failed to copy posts content', key)
+        console.log('----')
         continue
       }
 
