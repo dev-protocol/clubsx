@@ -3,18 +3,18 @@ import type { ClubsI18nParts } from '@devprotocol/clubs-core'
 export const Strings = {
   EmailSending: {
     en: () => 'Sending a magic link',
-    ja: () => '',
+    ja: () => 'マジックリンクを送る',
   },
   EmailSent: {
     en: () => 'Check your inbox',
-    ja: () => '',
+    ja: () => '受信トレイを確認してください',
   },
   Continue: {
     en: () => 'Continue',
-    ja: () => '',
+    ja: () => '続ける',
   },
   EmailPlaceholder: {
     en: () => 'Your email',
-    ja: () => '',
+    ja: () => 'eメールアドレス',
   },
 } satisfies ClubsI18nParts
