@@ -7,7 +7,17 @@
   let emailErrorMessage = ''
   let emailSent = false
   let emailSending = false
+  import { Strings } from './i18n'
+  import { onMount } from 'svelte'
+  import { i18nFactory } from '@devprotocol/clubs-core'
   const emailEndpoint = import.meta.env.PUBLIC_EMAIL_AUTH_ENDPOINT
+
+  const i18nBase = i18nFactory(Strings)
+  let i18n = i18nBase(['en'])
+
+  onMount(() => {
+    i18n = i18nBase(navigator.languages)
+  })
 
   const sendMagicLink = async () => {
     if (emailSent) {
@@ -45,12 +55,12 @@
 {#if emailSending}
   <span
     class="hs-button is-filled animate-pulse rounded bg-gray-500/60 px-8 py-4 text-inherit"
-    >Sending a magic link</span
+    >{i18n('EmailSending')}</span
   >
 {:else if emailSent}
   <span
     class="hs-button is-filled bg-success-300 cursor-default px-8 py-4 text-inherit"
-    >Check your inbox</span
+    >{i18n('EmailSent')}</span
   >
 {:else}
   <div class="grid auto-rows-auto grid-cols-[1fr_auto] items-center gap-2">
@@ -60,7 +70,7 @@
         id="email"
         name="email"
         type="email"
-        placeholder="Your email"
+        placeholder={i18n('EmailPlaceholder')}
         class="hs-form-field__input"
       />
     </label>
@@ -68,7 +78,7 @@
       on:click|preventDefault={(_) => sendMagicLink()}
       class="hs-button is-filled is-native-blue px-8 py-4 text-inherit"
     >
-      Continue
+      {i18n('Continue')}
     </button>
     {#if emailErrorMessage.length > 0}
       <span class="bg-danger-300 col-span-2 rounded-md px-8 py-4 text-sm"
