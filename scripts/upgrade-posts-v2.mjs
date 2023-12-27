@@ -48,6 +48,16 @@ const main = async () => {
     await client.connect()
 
     /**
+     * Drop the indexes
+     */
+    await Promise.all([
+      client.ft.dropindex('idx::devprotocol:clubs:plugin:posts::post'),
+      client.ft.dropindex('idx::devprotocol:clubs:plugin:posts::comment'),
+      client.ft.dropindex('idx::devprotocol:clubs:plugin:posts::reaction'),
+      client.ft.dropindex('idx::devprotocol:clubs:plugin:posts::option'),
+    ])
+
+    /**
      * Loop through the redis keys
      */
     for await (const key of client.scanIterator()) {
