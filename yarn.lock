@@ -80,10 +80,10 @@
     vscode-html-languageservice "^5.1.0"
     vscode-uri "^3.0.8"
 
-"@astrojs/lit@4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@astrojs/lit/-/lit-4.0.0.tgz#3e76aa0bd8d62d4392c152c732d3deb5f8c3c081"
-  integrity sha512-SGJ/GHpDE8O4pp9CENWXlWwINliHxILbKzsZxftCOqvge1+m3XKxStTrE26+fD8cOyQEA2PTnxtFdvQJPf0l1w==
+"@astrojs/lit@4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@astrojs/lit/-/lit-4.0.1.tgz#2ea0303344d13d3213a38606e62eb63079cf1030"
+  integrity sha512-dBTtsTlKC3TJhsZl5uzcwwTAuP1mgY3bHZDdAQVT7uVYXOfpeYeS9crQbr32BKRGx5WbqqZPDdz0TVyFpjBHSA==
   dependencies:
     "@lit-labs/ssr" "^3.2.0"
     "@lit-labs/ssr-client" "^1.1.5"
