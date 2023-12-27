@@ -75,6 +75,7 @@
   }
 
   const getSlotsForMembership = async (membership: CollectionMembership) => {
+    if (membership.memberCount === 0) return undefined
     const provider = new JsonRpcProvider(rpcUrl)
     let left = await callSlotCollections(provider, 'getSlotsLeft', [
       propertyAddress,

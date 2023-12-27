@@ -18,7 +18,8 @@
     "flushDb": "node ./scripts/flushDb.mjs",
     "upgradeDb": "node ./scripts/upgrade.mjs",
     "genApiPaths": "node ./scripts/generate-built-in-api-paths.mjs",
-    "copy": "node ./scripts/copy.mjs"
+    "copy": "node ./scripts/copy.mjs",
+    "migratePosts": "node ./scripts/upgrade-posts-v2.mjs"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.4",
@@ -65,7 +66,7 @@
     "@crossmint/client-sdk-base": "^1.0.1-alpha.6",
     "@crossmint/client-sdk-react-ui": "^1.0.1-alpha.6",
     "@devprotocol/clubs-core": "3.0.0-alpha.0",
-    "@devprotocol/clubs-plugin-posts": "0.8.3",
+    "@devprotocol/clubs-plugin-posts": "0.8.6",
     "@devprotocol/dev-kit": "8.6.0",
     "@devprotocol/elements": "1.1.0",
     "@devprotocol/hashi": "2.2.2",

@@ -35,17 +35,17 @@ export const address: Address[] = [
   },
   {
     chainId: 137,
-    address: '0x0000000000000000000000000000000000000000',
+    address: '0x770170D683dEAa057E9C9664C08273f8258d42E1',
   },
   {
     chainId: 80001,
-    address: '0x1d82F8BA629dDfC1Ca971C38d03E087D64Cfd531',
+    address: '0xb10f6AB0E0497aFe597baE9bBF8920906B461e73',
   },
 ]
 
 const defaultAddress: Address = {
   chainId: 137,
-  address: '0x0000000000000000000000000000000000000000',
+  address: '0x770170D683dEAa057E9C9664C08273f8258d42E1',
 }
 
 export async function callSlotCollections(
