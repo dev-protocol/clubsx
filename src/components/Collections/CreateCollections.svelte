@@ -67,7 +67,7 @@
   // note: treat this variable as state variable which stores the state for memberships edits and also for storing in DB
   const defaultMembership: CollectionMembership = {
     id: '',
-    name: 'My First Membership',
+    name: 'My First Item',
     description: '',
     price: 0,
     currency: 'USDC',
