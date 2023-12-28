@@ -264,7 +264,7 @@ export const meta = {
     priceCurrency: 'DEV',
   },
   description: `Dummy is a content generation toolkit designed to make the development.`,
-  previewImages: [Preview1.src, Preview2.src , Preview3.src],
+  previewImages: [Preview1.src, Preview2.src, Preview3.src],
   readme: Readme,
 } satisfies ClubsPluginMeta
 
