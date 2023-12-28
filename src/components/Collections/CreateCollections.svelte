@@ -1435,7 +1435,7 @@
                 ? mem.imageSrc
                 : emptyDummyImage(400, 400)}
               price={mem.price.toString()}
-            5  currency={mem.currency}
+              currency={mem.currency}
               description={mem.description}
             />
             {#if mode !== 'editMem'}
