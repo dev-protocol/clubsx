@@ -80,10 +80,10 @@
     vscode-html-languageservice "^5.1.0"
     vscode-uri "^3.0.8"
 
-"@astrojs/lit@4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@astrojs/lit/-/lit-4.0.0.tgz#3e76aa0bd8d62d4392c152c732d3deb5f8c3c081"
-  integrity sha512-SGJ/GHpDE8O4pp9CENWXlWwINliHxILbKzsZxftCOqvge1+m3XKxStTrE26+fD8cOyQEA2PTnxtFdvQJPf0l1w==
+"@astrojs/lit@4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@astrojs/lit/-/lit-4.0.1.tgz#2ea0303344d13d3213a38606e62eb63079cf1030"
+  integrity sha512-dBTtsTlKC3TJhsZl5uzcwwTAuP1mgY3bHZDdAQVT7uVYXOfpeYeS9crQbr32BKRGx5WbqqZPDdz0TVyFpjBHSA==
   dependencies:
     "@lit-labs/ssr" "^3.2.0"
     "@lit-labs/ssr-client" "^1.1.5"
@@ -133,18 +133,18 @@
   dependencies:
     prismjs "^1.29.0"
 
-"@astrojs/react@3.0.8":
-  version "3.0.8"
-  resolved "https://registry.yarnpkg.com/@astrojs/react/-/react-3.0.8.tgz#a1693bc8151047836ca71e0fc28488d74aae7192"
-  integrity sha512-EiIWgiRmw4rAxl2+AUK9VBdKvQrOgG/33dTeP+CX3iPzvlx51deaaHwlJIqEQCIIc6qgaIrXEhsJh8NyG9mxJQ==
+"@astrojs/react@3.0.9":
+  version "3.0.9"
+  resolved "https://registry.yarnpkg.com/@astrojs/react/-/react-3.0.9.tgz#2ca7240c884d403b13d83e938f277b981376c523"
+  integrity sha512-31J5yF5p9yBFV1axBooLA9PB4B2+MYm7swWhtlezSsJiUNXRFo5Is9qI3teJ7cKgmaCv+ZA593Smskko0NGaDQ==
   dependencies:
     "@vitejs/plugin-react" "^4.2.0"
     ultrahtml "^1.3.0"
 
-"@astrojs/svelte@5.0.2":
-  version "5.0.2"
-  resolved "https://registry.yarnpkg.com/@astrojs/svelte/-/svelte-5.0.2.tgz#d25d31da416c61f9a67e18c54dc7aa7df3a7e7df"
-  integrity sha512-B5h7sRXFmNvZucQlhz8MBsrsYfmVYCtcBUdDGe4ndJyBpD+klvmw31NGqhQp4z6HqxwbSWgaAvjXt/A76cgLIA==
+"@astrojs/svelte@5.0.3":
+  version "5.0.3"
+  resolved "https://registry.yarnpkg.com/@astrojs/svelte/-/svelte-5.0.3.tgz#538c6c56757bed1109be63631ec971fa281b77c9"
+  integrity sha512-6TUBRUxmsEczKPBT6oDUAfvzuFCmITuhZfKPT5ZtOOyj9XOVnEnj/Iobd3ajKUbpWNYX7qZVAd1KMkmJc1Nhsg==
   dependencies:
     "@sveltejs/vite-plugin-svelte" "^3.0.0"
     svelte2tsx "^0.6.25"
@@ -9203,10 +9203,10 @@ prettier-linter-helpers@^1.0.0:
   dependencies:
     fast-diff "^1.1.2"
 
-prettier-plugin-astro@0.12.2:
-  version "0.12.2"
-  resolved "https://registry.yarnpkg.com/prettier-plugin-astro/-/prettier-plugin-astro-0.12.2.tgz#e52d62989cbeb0373714f49debf7f35c21070a39"
-  integrity sha512-1OXSEht27zrnX7rCa0bEpLdspeumFW4hnj4+JzPuG5bRlSOAhD0rbXBNZfRD9q0Qbr00EcCcnjd6k6M8q+GfTA==
+prettier-plugin-astro@0.12.3:
+  version "0.12.3"
+  resolved "https://registry.yarnpkg.com/prettier-plugin-astro/-/prettier-plugin-astro-0.12.3.tgz#5e581f71b834cb73a840ffd44381812f236a7a60"
+  integrity sha512-GthUSu3zCvmtVyqlArosez0xE08vSJ0R1sWurxIWpABaCkNGYFANoUdFkqmIo54EV2uPLGcVJzOucWvCjPBWvg==
   dependencies:
     "@astrojs/compiler" "^1.5.5"
     prettier "^3.0.0"

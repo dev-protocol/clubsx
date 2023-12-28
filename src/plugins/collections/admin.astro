@@ -12,9 +12,9 @@ const baseRedirectionUrl = '/admin/collections'
 
 <div>
   <h1 class="mb-16 font-title text-2xl font-bold">Your Clubs Store</h1>
-  <h2 class="mb-16 text-3xl">Create a new collection</h2>
+  <h2 class="mb-16 text-3xl">Create a new Clubs Shop</h2>
   <div class="mb-16 text-xl text-white">
-    Create a collection, register some digital items, and your web3 store go
+    Create a Clubs Shop, register some digital items, and your web3 store go
     live in minutes.<br />
   </div>
 
@@ -23,13 +23,13 @@ const baseRedirectionUrl = '/admin/collections'
       href={`${baseRedirectionUrl}/new`}
       class="flex items-center justify-center gap-4 rounded-[5px] bg-white p-2.5 lg:flex-col"
     >
-      <p class="text-black lg:text-lg">+ Create New Collections</p>
+      <p class="text-black lg:text-lg">+ Create New Clubs Shop</p>
     </a>
   </div>
   {
     collections.length > 0 ? (
       <div class="mt-16 flex flex-col">
-        <h2 class="mb-16 text-3xl">Existing collections</h2>
+        <h2 class="mb-16 text-3xl">Existing Shops</h2>
         <CollectionCard collections={collections} client:only="svelte" />
       </div>
     ) : null

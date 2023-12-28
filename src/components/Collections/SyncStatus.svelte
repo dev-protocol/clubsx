@@ -212,10 +212,12 @@
 </script>
 
 <section class="max-h-[80vh] overflow-y-auto">
-  <h2 class="mb-6 text-2xl">Publish memberships on the blockchain</h2>
+  <h2 class="mb-6 text-2xl">
+    Publish Memberships/Collections on the blockchain
+  </h2>
   <p class="mb-8">
-    Memberships just created are not yet published on the blockchain. Submit all
-    transactions to start offering memberships.
+    Memberships/Collections just created are not yet published on the
+    blockchain. Submit all transactions to start offering memberships.
   </p>
   <div class="relative max-h-96 overflow-y-auto rounded-md">
     <table
