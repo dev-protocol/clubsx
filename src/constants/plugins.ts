@@ -215,7 +215,7 @@ export const installablePlugins: InstallablePlugins[] = [
     developer: 'Dev Protocol',
     repositoryUrl: 'https://github.com/dev-protocol/clubsx',
     pluginOptions: [],
-    navigationLinks: [{ display: 'Collections', path: '/collections' }],
+    navigationLinks: [{ display: 'Clubs Shop', path: '/collections' }],
   },
 ]
 
