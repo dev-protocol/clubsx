@@ -138,7 +138,7 @@ export const installablePlugins: InstallablePlugins[] = [
           {
             id: 'default',
             database: {
-              type: 'encoded:redis',
+              type: 'documents:redis',
               key: `${PostsPlugin.meta.id}::${uuidv5(
                 'default',
                 uuidv5(config.url, uuidv5.URL),
