@@ -136,11 +136,11 @@ export const installablePlugins: InstallablePlugins[] = [
         key: 'feeds',
         value: [
           {
-            id: 'default-2',
+            id: 'default',
             database: {
               type: 'documents:redis',
               key: `${PostsPlugin.meta.id}::${uuidv5(
-                'default-2',
+                'default',
                 uuidv5(config.url, uuidv5.URL),
               )}`,
             },
