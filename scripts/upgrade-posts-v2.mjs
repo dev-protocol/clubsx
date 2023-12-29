@@ -50,12 +50,27 @@ const main = async () => {
     /**
      * Drop the indexes
      */
-    await Promise.all([
-      client.ft.dropIndex('idx::devprotocol:clubs:plugin:posts::post'),
-      client.ft.dropIndex('idx::devprotocol:clubs:plugin:posts::comment'),
-      client.ft.dropIndex('idx::devprotocol:clubs:plugin:posts::reaction'),
-      client.ft.dropIndex('idx::devprotocol:clubs:plugin:posts::option'),
-    ])
+    const indexes = [
+      'idx::devprotocol:clubs:plugin:posts::post',
+      'idx::devprotocol:clubs:plugin:posts::comment',
+      'idx::devprotocol:clubs:plugin:posts::reaction',
+      'idx::devprotocol:clubs:plugin:posts::option',
+    ]
+
+    await Promise.all(
+      indexes.map(async (index) => {
+        try {
+          await client.ft.info(index)
+          // If the above line doesn't throw an error, the index exists, so we can drop it
+          await client.ft.dropIndex(index)
+        } catch (error) {
+          // If the index doesn't exist, an error will be thrown and we can ignore it
+          console.log(
+            `Index ${index} does not exist or other error occurred: ${error.message}`,
+          )
+        }
+      }),
+    )
 
     /**
      * Loop through the redis keys
