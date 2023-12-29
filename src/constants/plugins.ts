@@ -9,6 +9,7 @@ import type {
   ClubsThemePluginMeta,
 } from '@devprotocol/clubs-core'
 import { v5 as uuidv5 } from 'uuid'
+import { toUtf8Bytes } from 'ethers'
 
 import $1 from '@plugins/default-theme'
 import $2 from '@plugins/buy'
@@ -138,11 +139,11 @@ export const installablePlugins: InstallablePlugins[] = [
           {
             id: 'default',
             database: {
-              type: 'encoded:redis',
-              key: `${PostsPlugin.meta.id}::${uuidv5(
-                'default',
+              type: 'documents:redis',
+              key: uuidv5(
+                toUtf8Bytes('default'),
                 uuidv5(config.url, uuidv5.URL),
-              )}`,
+              ),
             },
           },
         ],
