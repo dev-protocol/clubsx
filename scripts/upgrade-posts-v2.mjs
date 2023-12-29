@@ -51,10 +51,10 @@ const main = async () => {
      * Drop the indexes
      */
     await Promise.all([
-      client.ft.dropindex('idx::devprotocol:clubs:plugin:posts::post'),
-      client.ft.dropindex('idx::devprotocol:clubs:plugin:posts::comment'),
-      client.ft.dropindex('idx::devprotocol:clubs:plugin:posts::reaction'),
-      client.ft.dropindex('idx::devprotocol:clubs:plugin:posts::option'),
+      client.ft.dropIndex('idx::devprotocol:clubs:plugin:posts::post'),
+      client.ft.dropIndex('idx::devprotocol:clubs:plugin:posts::comment'),
+      client.ft.dropIndex('idx::devprotocol:clubs:plugin:posts::reaction'),
+      client.ft.dropIndex('idx::devprotocol:clubs:plugin:posts::option'),
     ])
 
     /**
