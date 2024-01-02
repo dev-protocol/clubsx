@@ -116,20 +116,11 @@ const truncatedDescription = ((desc) =>
   <meta name="twitter:title" content={title}/>
   <meta name="twitter:description" content={truncatedDescription}/>
   <meta name="twitter:image" content={`${ogp?.image}`}/>
-  <style define:vars={{bodyColor, backgroundColor, ...accent}}>
+  <!--<link rel="stylesheet" href={theme}/>-->
+  <style define:vars={styleDefinitions}>
     :root {
-      --hs-theme-accent-200: var(--accent200) !important;
-      --hs-theme-accent-300: var(--accent300) !important;
-      --hs-theme-accent-400: var(--accent400) !important;
-      --hs-theme-accent-600: var(--accent600) !important;
-      --hs-theme-accent-ink: var(--accentInk) !important;
       --hs-theme-background: var(--backgroundColor) !important;
       --hs-theme-background-ink: var(--bodyColor) !important;
-    }
-
-    html,
-    body {
-
     }
   </style>
 </head>
