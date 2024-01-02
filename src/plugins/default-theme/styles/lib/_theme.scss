@@ -1,0 +1,5 @@
+@use '@devprotocol/hashi/hs-core';
+
+@mixin set-theme($theme) {
+  @include hs-core.token-config($theme);
+}
