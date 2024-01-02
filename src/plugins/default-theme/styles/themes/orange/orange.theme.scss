@@ -1,0 +1,18 @@
+$theme: (
+  primary: 'dp-orange',
+  primary-dark: 'dp-orange',
+  accent: 'clb-orange-accent',
+  accent-dark: 'clb-orange-accent',
+  disabled: 'dp-black-alpha',
+  dark-mode: 'attribute',
+  extend: (
+    stroke: 3px,
+    clb-orange-accent: (
+      200: rgb(103, 67, 52, 1),
+      300: rgb(73, 45, 32, 1),
+      400: rgb(54, 27, 16, 1),
+      600: rgb(26, 10, 2, 1),
+      ink: rgba(249, 192, 82, 1),
+    )
+  ),
+);
