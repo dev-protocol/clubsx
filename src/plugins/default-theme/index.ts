@@ -20,13 +20,7 @@ import Preview1 from './assets/default-theme-1.jpg'
 import Preview2 from './assets/default-theme-2.jpg'
 import Preview3 from './assets/default-theme-3.jpg'
 
-type ClubsThemeColors = {
-  200: string,
-  300: string,
-  400: string,
-  600: string,
-  ink: string
-}
+import OrangeTheme from './styles/themes/orange/main.scss'
 
 type ClubsThemeColorsDefaultOnly = {
   default: string,
@@ -89,7 +83,7 @@ export const colorPresets = {
     bg: 'rgba(255, 131, 83, 1)',
     bgGradient: ['rgba(249, 192, 82, 1)', 'rgba(249, 192, 82, 0)'],
     ink: 'rgba(255, 255, 255)',
-    theme: _theme,
+    theme: OrangeTheme,
     themeMode: 'dark'
   },
 }
@@ -98,7 +92,7 @@ export type GlobalConfigValue = {
   bg?: string // TODO: Remove these when finished
   bgGradient?: [string, string] // TODO: Remove these when finished
   ink?: string // TODO: Remove these when finished
-  theme?: ClubsThemeSchema // TODO: Remove undefined when finished
+  theme?: ClubsThemeSchema | any // TODO: Remove undefined when finished
   themeMode: 'dark' | 'light'
 }
 
