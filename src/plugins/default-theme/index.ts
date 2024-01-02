@@ -34,39 +34,10 @@ type ClubsThemeColorsDefaultOnly = {
 }
 
 type ClubsThemeSchema = {
-  primary: ClubsThemeColors,
-  accent: ClubsThemeColors,
-  surface?: ClubsThemeColors, // TODO: Remove undefined when finished
   background: string,
   backgroundGradient?: [string, string],
   backgroundInk: string
-  error?: ClubsThemeColors, // TODO: Remove undefined when finished
-  success?: ClubsThemeColors, // TODO: Remove undefined when finished
-  disabled?: ClubsThemeColorsDefaultOnly // TODO: Remove undefined when finished
-}
-
-const _theme = {
-  bg: 'rgba(255, 131, 83, 1)',
-  bgGradient: ['rgba(249, 192, 82, 1)', 'rgba(249, 192, 82, 0)'],
-  ink: 'rgba(255, 255, 255)',
-  primary: {
-    200: '',
-    300: '',
-    400: '',
-    600: '',
-    ink: ''
-  },
-  accent: {
-    200: 'rgb(103,67,52)',
-    300: 'rgb(73,45,32)',
-    400: 'rgb(54, 27, 16, 1)',
-    600: 'rgb(26,10,2)',
-    ink: 'rgba(249, 192, 82, 1)'
-  }
-}
-
-const defineThemeVariables = (theme: ClubsThemeSchema) => {
-  // TODO: Add targeting functionality...
+  themeFile: any
 }
 
 export const colorPresets = {
@@ -113,7 +84,6 @@ export const colorPresets = {
     bg: 'rgba(91, 139, 245, 1)',
     ink: 'rgba(255, 255, 255)',
     themeMode: 'dark'
-
   },
   Orange: {
     bg: 'rgba(255, 131, 83, 1)',
