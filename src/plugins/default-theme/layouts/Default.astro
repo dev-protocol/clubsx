@@ -89,7 +89,10 @@ const theme = globalConfig?.theme ?? {}
 
 const hasNotAMembership = memberships ? memberships.length < 1 : true
 
-const { accent } = theme
+const styleDefinitions = {
+  bodyColor,
+  backgroundColor
+}
 
 const truncatedDescription = ((desc) =>
   desc.slice(0, 139).join('') + (desc.length > 139 ? '...' : ''))([
