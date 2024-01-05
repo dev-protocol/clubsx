@@ -508,6 +508,11 @@
   resolved "https://registry.yarnpkg.com/@boringer-avatars/vue3/-/vue3-0.2.1.tgz#db9d4183540de0d0af9e4e160cfc009f6f405e87"
   integrity sha512-KzAfh31SDXToTvFL0tBNG5Ur+VzfD1PP4jmY5/GS+eIuObGTIAiUu9eiht0LjuAGI+0xCgnaEgsTrOx8H3vLOQ==
 
+"@coffeeandfun/google-profanity-words@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@coffeeandfun/google-profanity-words/-/google-profanity-words-2.1.0.tgz#8e195868694ad655755f53069599dd766943b51f"
+  integrity sha512-j7/N2C01g5W22ReQ4laVR5MdTFRidDLkVY9z6z9Mresla83sd9vQalMXypQnT1+RuHErEfGIYNm5/Hu/LF/zzA==
+
 "@coinbase/wallet-sdk@^3.6.6":
   version "3.7.2"
   resolved "https://registry.yarnpkg.com/@coinbase/wallet-sdk/-/wallet-sdk-3.7.2.tgz#7a89bd9e3a06a1f26d4480d8642af33fb0c7e3aa"

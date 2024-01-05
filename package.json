@@ -63,6 +63,7 @@
     "@astrojs/tailwind": "5.1.0",
     "@astrojs/vercel": "6.1.2",
     "@astrojs/vue": "4.0.7",
+    "@coffeeandfun/google-profanity-words": "^2.1.0",
     "@crossmint/client-sdk-base": "^1.0.1-alpha.6",
     "@crossmint/client-sdk-react-ui": "^1.0.1-alpha.6",
     "@devprotocol/clubs-core": "3.0.0",
