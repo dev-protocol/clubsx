@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.4",
+    "@types/bad-words": "^3.0.3",
     "@types/dompurify": "^3.0.2",
     "@types/dotenv": "8.2.0",
     "@types/marked": "^5.0.1",
@@ -63,7 +64,6 @@
     "@astrojs/tailwind": "5.1.0",
     "@astrojs/vercel": "6.1.2",
     "@astrojs/vue": "4.0.7",
-    "@coffeeandfun/google-profanity-words": "^2.1.0",
     "@crossmint/client-sdk-base": "^1.0.1-alpha.6",
     "@crossmint/client-sdk-react-ui": "^1.0.1-alpha.6",
     "@devprotocol/clubs-core": "3.0.0",
@@ -85,6 +85,7 @@
     "@webcomponents/template-shadowroot": "^0.2.1",
     "astro": "4.1.0",
     "autoprefixer": "10.4.16",
+    "bad-words": "^3.0.4",
     "bignumber.js": "9.1.2",
     "cross-fetch": "^4.0.0",
     "crypto-hash": "^3.0.0",

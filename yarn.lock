@@ -508,11 +508,6 @@
   resolved "https://registry.yarnpkg.com/@boringer-avatars/vue3/-/vue3-0.2.1.tgz#db9d4183540de0d0af9e4e160cfc009f6f405e87"
   integrity sha512-KzAfh31SDXToTvFL0tBNG5Ur+VzfD1PP4jmY5/GS+eIuObGTIAiUu9eiht0LjuAGI+0xCgnaEgsTrOx8H3vLOQ==
 
-"@coffeeandfun/google-profanity-words@^2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@coffeeandfun/google-profanity-words/-/google-profanity-words-2.1.0.tgz#8e195868694ad655755f53069599dd766943b51f"
-  integrity sha512-j7/N2C01g5W22ReQ4laVR5MdTFRidDLkVY9z6z9Mresla83sd9vQalMXypQnT1+RuHErEfGIYNm5/Hu/LF/zzA==
-
 "@coinbase/wallet-sdk@^3.6.6":
   version "3.7.2"
   resolved "https://registry.yarnpkg.com/@coinbase/wallet-sdk/-/wallet-sdk-3.7.2.tgz#7a89bd9e3a06a1f26d4480d8642af33fb0c7e3aa"
@@ -2865,6 +2860,11 @@
   dependencies:
     "@babel/types" "^7.20.7"
 
+"@types/bad-words@^3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@types/bad-words/-/bad-words-3.0.3.tgz#fcda6626a916d8de76f605f64e33a3c6162b6f57"
+  integrity sha512-jYdpTxDOJ+EENnsCwt8cOZhV/+4+qcwhks1igrOSg4zwwA17rsPqLsZpTo1l+OwViNu+5SPus0v5g7iGx+ofzA==
+
 "@types/body-parser@*":
   version "1.19.5"
   resolved "https://registry.yarnpkg.com/@types/body-parser/-/body-parser-1.19.5.tgz#04ce9a3b677dc8bd681a17da1ab9835dc9d3ede4"
@@ -4532,6 +4532,18 @@ axobject-query@^4.0.0:
     "@babel/plugin-syntax-jsx" "^7.22.5"
     lodash "^4.17.21"
     picomatch "^2.3.1"
+
+bad-words@^3.0.4:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/bad-words/-/bad-words-3.0.4.tgz#044c83935c4c363a905d47b5e0179f7241fecaec"
+  integrity sha512-v/Q9uRPH4+yzDVLL4vR1+S9KoFgOEUl5s4axd6NIAq8SV2mradgi4E8lma/Y0cw1ltVdvyegCQQKffCPRCp8fg==
+  dependencies:
+    badwords-list "^1.0.0"
+
+badwords-list@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/badwords-list/-/badwords-list-1.0.0.tgz#5e9856dbf13482a295c3b0b304afb9d4cfc5c579"
+  integrity sha512-oWhaSG67e+HQj3OGHQt2ucP+vAPm1wTbdp2aDHeuh4xlGXBdWwzZ//pfu6swf5gZ8iX0b7JgmSo8BhgybbqszA==
 
 bail@^2.0.0:
   version "2.0.2"

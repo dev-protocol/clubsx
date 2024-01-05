@@ -1,6 +1,6 @@
 import reservedNamespacies from '@constants/reserved-namespacies'
 import { createClient } from 'redis'
-import { ProfanityEngine } from '@coffeeandfun/google-profanity-words'
+import BadWords from 'bad-words'
 
 /**
  * This accepts only 3-42 strings includes a-z, 0-9 or -, and returns boolean
@@ -17,15 +17,7 @@ export const GET = async ({
 }) => {
   const validNaming = validate(site)
   const notReserved = reservedNamespacies.includes(site ?? '') === false
-  const profanityEngine = new ProfanityEngine()
-  const allProfanity = await profanityEngine.all()
-  let isProfane = false
-  for (const word of allProfanity) {
-    if (site?.toLowerCase().includes(word)) {
-      isProfane = true
-      break
-    }
-  }
+  const isProfane = new BadWords().isProfane(site?.toLowerCase() ?? '')
 
   const client =
     validNaming && notReserved && !isProfane
