@@ -34,7 +34,15 @@ type ClubsThemeSchema = {
   themeFile: any
 }
 
-export const colorPresets = {
+export type GlobalConfigValue = {
+  bg?: string // TODO: Remove these when finished
+  bgGradient?: [string, string] // TODO: Remove these when finished
+  ink?: string // TODO: Remove these when finished
+  theme?: ClubsThemeSchema | any // TODO: Remove undefined when finished
+  themeMode: 'dark' | 'light'
+}
+
+export const colorPresets: Record<string, GlobalConfigValue> = {
   Purple: {
     bg: 'rgba(131, 138, 176, 1)',
     bgGradient: ['rgba(204, 0, 255, 0.2)', 'rgba(204, 0, 255, 0)'],
@@ -86,14 +94,6 @@ export const colorPresets = {
     theme: OrangeTheme,
     themeMode: 'dark'
   },
-}
-
-export type GlobalConfigValue = {
-  bg?: string // TODO: Remove these when finished
-  bgGradient?: [string, string] // TODO: Remove these when finished
-  ink?: string // TODO: Remove these when finished
-  theme?: ClubsThemeSchema | any // TODO: Remove undefined when finished
-  themeMode: 'dark' | 'light'
 }
 
 export type HomeConfigValue = {
