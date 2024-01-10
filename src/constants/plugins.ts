@@ -1,6 +1,7 @@
 import type {
   ClubsConfiguration,
   ClubsFunctionPlugin,
+  ClubsFunctionStandardPlugin,
   ClubsNavigationLink,
   ClubsPluginMeta,
   ClubsPluginOptions,
@@ -8,6 +9,7 @@ import type {
   ClubsThemePluginMeta,
 } from '@devprotocol/clubs-core'
 import { v5 as uuidv5 } from 'uuid'
+import { toUtf8Bytes } from 'ethers'
 
 import $1 from '@plugins/default-theme'
 import $2 from '@plugins/buy'
@@ -137,11 +139,11 @@ export const installablePlugins: InstallablePlugins[] = [
           {
             id: 'default',
             database: {
-              type: 'encoded:redis',
-              key: `${PostsPlugin.meta.id}::${uuidv5(
-                'default',
+              type: 'documents:redis',
+              key: uuidv5(
+                toUtf8Bytes('default'),
                 uuidv5(config.url, uuidv5.URL),
-              )}`,
+              ),
             },
           },
         ],
@@ -213,7 +215,7 @@ export const installablePlugins: InstallablePlugins[] = [
     developer: 'Dev Protocol',
     repositoryUrl: 'https://github.com/dev-protocol/clubsx',
     pluginOptions: [],
-    navigationLinks: [{ display: 'Collections', path: '/collections' }],
+    navigationLinks: [{ display: 'Clubs Shop', path: '/collections' }],
   },
 ]
 
@@ -231,7 +233,7 @@ export const plugins = [
   $11,
   $12,
   $13,
-  $14,
+  $14 as ClubsFunctionStandardPlugin,
   $15,
   $16,
   $17,

@@ -97,9 +97,9 @@
   })
 </script>
 
-<svelte:head>
+<!-- <svelte:head>
   <link rel="prefetch" href={imagePath} />
-</svelte:head>
+</svelte:head> -->
 
 <div
   class={`grid grid-rows-[auto_1fr] overflow-hidden rounded-xl shadow-2xl ${className}`}
