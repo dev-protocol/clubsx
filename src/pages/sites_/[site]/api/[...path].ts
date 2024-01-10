@@ -3,15 +3,15 @@ import { config as _config } from '@fixtures/config'
 import { plugins } from '@constants/plugins'
 import type { APIRoute } from 'astro'
 
-export const all: APIRoute = async (event) => {
+export const ALL: APIRoute = async (event) => {
   const { params } = event
 
   const config = () => _config(params.site)
 
-  const { all } = apiFactory({
+  const { ALL } = apiFactory({
     config,
     plugins,
   })
 
-  return all(event)
+  return ALL(event)
 }

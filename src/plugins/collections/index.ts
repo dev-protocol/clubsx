@@ -16,11 +16,12 @@ import { default as SyncModal } from './SyncModal.astro'
 import { default as OpenModalButton } from './OpenModalButton.astro'
 import { default as Index } from './index.astro'
 import { default as Id } from './[id].astro'
-import { default as Icon } from './assets/icon.svg'
+import { default as Icon } from './assets/icon.png'
 import Checkout from './checkout.astro'
 import { Content as Readme } from './README.md'
-import Preview1 from './assets/limited-number-of-items.svg'
-import Preview2 from './assets/time-limited-collection.svg'
+import Preview1 from './assets/clubs-shop-1.png'
+import Preview2 from './assets/clubs-shop-2.png'
+import Preview3 from './assets/clubs-shop-3.png'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import { ZeroAddress, randomBytes, toUtf8Bytes } from 'ethers'
 import type { Membership } from '@plugins/memberships'
@@ -41,7 +42,6 @@ export type Collection = {
   name: string
   imageSrc: string
   status: 'Draft' | 'Published'
-  isTimeLimitedCollection: boolean
   endTime?: number
   description: string
   memberships: CollectionMembership[]
@@ -193,25 +193,15 @@ export const getAdminPaths = (async (
     'devprotocol:clubs:collections',
   )
 
-  const presetTimeCollection: Collection = {
+  const presetCollection: Collection = {
     id: 'preset-time-collection',
-    name: 'My First Time Limited Collection',
+    name: 'My First Slot Collection',
     imageSrc: '',
-    description: 'This is a time-limited collection.',
-    isTimeLimitedCollection: true,
+    description: 'This is a slot collection.',
     status: 'Draft',
     endTime: 0,
     memberships: [],
-  }
-
-  const presetMemberCollection: Collection = {
-    id: 'preset-member-collection',
-    name: 'My First Quantity Limited Collection',
-    imageSrc: '',
-    description: 'This is a quantity-limited collection.',
-    isTimeLimitedCollection: false,
-    status: 'Draft',
-    memberships: [],
+    requiredMemberships: [],
   }
 
   const existingMemberships =
@@ -253,21 +243,7 @@ export const getAdminPaths = (async (
       paths: ['collections', 'new'],
       component: AdminNew,
       props: {
-        isTimeLimitedCollection: false,
-        preset: presetMemberCollection,
-        collections,
-        existingMemberships,
-        rpcUrl,
-        propertyAddress,
-        name,
-      },
-    },
-    {
-      paths: ['collections', 'new', 'time-limited-collection'],
-      component: AdminNew,
-      props: {
-        isTimeLimitedCollection: true,
-        preset: presetTimeCollection,
+        preset: presetCollection,
         collections,
         existingMemberships,
         rpcUrl,
@@ -280,15 +256,15 @@ export const getAdminPaths = (async (
 
 export const meta = {
   id: 'devprotocol:clubs:collections',
-  displayName: 'Collections',
+  displayName: 'Clubs Shop',
   category: ClubsPluginCategory.Monetization,
   icon: Icon.src,
   offer: {
     price: 0,
     priceCurrency: 'DEV',
   },
-  description: `Dummy is a content generation toolkit designed to make the development.`,
-  previewImages: [Preview1.src, Preview2.src],
+  description: `Clubs Shop Plugin: Revolutionize Your Club's Digital Merchandising`,
+  previewImages: [Preview1.src, Preview2.src, Preview3.src],
   readme: Readme,
 } satisfies ClubsPluginMeta
 

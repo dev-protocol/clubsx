@@ -1,8 +1,9 @@
 ---
-import KYCInfo from './KYCInfo'
-import FundsInfo from './Funds.tsx'
+import FundsTeaser from './FundsTeaser.tsx'
 import { ZeroAddress } from 'ethers'
 import type { Membership } from '@plugins/memberships'
+
+import { KYCStatuses, Withdrawal } from './Withdrawal'
 
 const { memberships, chainId, propertyAddress } = Astro.props
 
@@ -14,14 +15,9 @@ const uniqueBeneficiaries = new Array(...new Set(beneficiaries))
 
 <section class="flex flex-col">
   <h1 class="mb-16 font-title text-lg font-bold">Funds</h1>
+
   <div class="grid gap-16">
-    <KYCInfo
-      client:only="react"
-      chainId={chainId}
-      uniqueBeneficiaries={uniqueBeneficiaries}
-      propertyAddress={propertyAddress}
-    />
-    <FundsInfo
+    <Withdrawal
       client:only="react"
       chainId={chainId}
       uniqueBeneficiaries={uniqueBeneficiaries}
