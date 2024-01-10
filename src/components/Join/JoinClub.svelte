@@ -72,19 +72,6 @@
   >
     {#each currencyList as currencyOption}
       {#if currencies.has(currencyOption)}
-        <CLBRadio
-          label={currencyOption.toUpperCase()}
-          value={currencyOption}
-          isChecked={preferedCurrency === currencyOption}
-          media={currencyOption === 'usdc'
-              ? USDC.src
-              : currencyOption === 'matic'
-                ? MATIC.src
-                : currencyOption === 'eth'
-                  ? ETH.src
-                  : DEV.src}
-          mediaAlt={`${currencyOption.toUpperCase()} icon.`}
-        />
         <label
           class={`hs-tick-field`}
         >
