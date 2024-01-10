@@ -85,6 +85,32 @@
                   : DEV.src}
           mediaAlt={`${currencyOption.toUpperCase()} icon.`}
         />
+        <label
+          class={`hs-tick-field`}
+        >
+          <input
+            class="hs-tick-field__input"
+            type="radio"
+            value={currencyOption}
+            checked={preferedCurrency === currencyOption}
+          />
+          <img
+            class="hs-tick-field__sprite"
+            src={currencyOption === 'usdc'
+              ? USDC.src
+              : currencyOption === 'matic'
+                ? MATIC.src
+                : currencyOption === 'eth'
+                  ? ETH.src
+                  : DEV.src}
+                  width="32"
+                  height="32"
+                  alt={`${currencyOption.toUpperCase()} icon.`}
+          />
+          <span style="display: flex; flex-flow: column nowrap; align-items: start">
+            <span class="hs-tick-field__label">{currencyOption.toUpperCase()}</span>
+          </span>
+        </label>
       {/if}
     {/each}
     <slot name="currency:option" />

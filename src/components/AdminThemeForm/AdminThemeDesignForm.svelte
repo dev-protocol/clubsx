@@ -123,7 +123,7 @@
           `background: radial-gradient(50% 50% at 50% 50%, ${
             gradient ? gradient[0] : 'rgba(0,0,0,0)'
           } 0%, ${gradient ? gradient[1] : 'rgba(0,0,0,0)'} 100%)`)(
-          globalConfig.bgGradient,
+          globalConfig.backgroundGradient,
         )}
       />
       {#if homeConfig.hero?.image && homeConfig.hero.image != '' && uploading === false}
