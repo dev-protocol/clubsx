@@ -23,7 +23,7 @@ import Preview3 from './assets/default-theme-3.jpg'
 export const colorPresets = {
   Purple: {
     bg: 'rgba(131, 138, 176, 1)',
-    bgGradient: ['rgba(204, 0, 255, 0.2)', 'rgba(204, 0, 255, 0)'],
+    backgroundGradient: ['rgba(204, 0, 255, 0.2)', 'rgba(204, 0, 255, 0)'],
     ink: 'rgba(255, 255, 255)',
     themeMode: 'dark'
   },
@@ -39,13 +39,13 @@ export const colorPresets = {
   },
   Brown: {
     bg: 'rgba(68, 59, 45, 1)',
-    bgGradient: ['rgba(255, 201, 119, 0.2)', 'rgba(255, 201, 119, 0)'],
+    backgroundGradient: ['rgba(255, 201, 119, 0.2)', 'rgba(255, 201, 119, 0)'],
     ink: 'rgb(252, 225, 203)',
     themeMode: 'dark'
   },
   Stone: {
     bg: 'rgba(96, 119, 124, 1)',
-    bgGradient: ['rgba(196, 196, 196, 0.5)', 'rgba(196, 196, 196, 0)'],
+    backgroundGradient: ['rgba(196, 196, 196, 0.5)', 'rgba(196, 196, 196, 0)'],
     ink: 'rgba(255, 255, 255, 1)',
     themeMode: 'dark'
   },
@@ -56,7 +56,7 @@ export const colorPresets = {
   },
   Pink: {
     bg: 'rgba(255, 187, 195, 1)',
-    bgGradient: ['rgba(255, 173, 217, 1)', 'rgba(255, 173, 217, 0)'],
+    backgroundGradient: ['rgba(255, 173, 217, 1)', 'rgba(255, 173, 217, 0)'],
     ink: 'rgba(255, 255, 255)',
     themeMode: 'light'
   },
@@ -68,7 +68,7 @@ export const colorPresets = {
   },
   Orange: {
     bg: 'rgba(255, 131, 83, 1)',
-    bgGradient: ['rgba(249, 192, 82, 1)', 'rgba(249, 192, 82, 0)'],
+    backgroundGradient: ['rgba(249, 192, 82, 1)', 'rgba(249, 192, 82, 0)'],
     ink: 'rgba(255, 255, 255)',
     themeMode: 'dark'
   },
@@ -76,7 +76,7 @@ export const colorPresets = {
 
 export type GlobalConfigValue = {
   bg?: string
-  bgGradient?: [string, string]
+  backgroundGradient?: [string, string]
   ink?: string
   themeMode: 'dark' | 'light'
 }

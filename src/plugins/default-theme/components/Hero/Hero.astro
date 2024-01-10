@@ -15,7 +15,7 @@ const {
 } = Astro.props as {
   globalConfig?: {
     bg: string
-    bgGradient?: [string, string]
+    backgroundGradient?: [string, string]
   }
   image?: string
   avatar?: string
@@ -27,8 +27,8 @@ const {
   isInDraft?: boolean
 }
 
-const backgroundGradientColorFrom = globalConfig?.bgGradient?.[0]
-const backgroundGradientColorTo = globalConfig?.bgGradient?.[1]
+const backgroundGradientColorFrom = globalConfig?.backgroundGradient?.[0]
+const backgroundGradientColorTo = globalConfig?.backgroundGradient?.[1]
 ---
 
 <style define:vars={{ backgroundGradientColorFrom, backgroundGradientColorTo }}>
