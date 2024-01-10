@@ -75,7 +75,7 @@ export const colorPresets = {
 }
 
 export type GlobalConfigValue = {
-  bg?: string
+  bg: string
   backgroundGradient?: [string, string]
   ink?: string
   themeMode: 'dark' | 'light'
