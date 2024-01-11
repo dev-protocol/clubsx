@@ -3826,102 +3826,102 @@
     "@walletconnect/window-getters" "^1.0.1"
     tslib "1.14.1"
 
-"@web3modal/common@3.5.5":
-  version "3.5.5"
-  resolved "https://registry.yarnpkg.com/@web3modal/common/-/common-3.5.5.tgz#48eecef8da323d5f5f5c6795b42b30aef0cfa735"
-  integrity sha512-RSzq8cJshm4cgAcawksWy7tkVCkvORxm95Ee6Po9G1vSb4+WCJFhzvbQIW4AAEstSNszm76qIH8rZAtOAj2Lyw==
+"@web3modal/common@3.5.6":
+  version "3.5.6"
+  resolved "https://registry.yarnpkg.com/@web3modal/common/-/common-3.5.6.tgz#7dede95bed551d569e2b78ca13f3376cd3325900"
+  integrity sha512-3rjpPynxBju6kyQgn7mJIhcZAk+K5mqZtYy4TMg1oq9rZ6w4K5ydCTk6CfI1NEP+mrTOHRY2OnASDOSQ/TLGcQ==
   dependencies:
     dayjs "1.11.10"
 
-"@web3modal/core@3.5.5":
-  version "3.5.5"
-  resolved "https://registry.yarnpkg.com/@web3modal/core/-/core-3.5.5.tgz#fcb5061e97c62f07f05c1caa30e1c7cf760e397e"
-  integrity sha512-UZ+pHRYE/cFBZMRzGshwMoJZMY/Mz3si0pb2Ob33MmI06Fa5BnO8bJpiTIfHY2V0+IJ+EPtW+PjeatfkXHxccA==
+"@web3modal/core@3.5.6":
+  version "3.5.6"
+  resolved "https://registry.yarnpkg.com/@web3modal/core/-/core-3.5.6.tgz#2877cb37fc5c11e51ecd8dd36851e2376da4358c"
+  integrity sha512-MxGtZSp5BoGEJqQct589AGEc9FCTvIoPiIPuy9BDeI80NuWGojeIWuS0FTn/8XFvtTABHtRTbO9qYTRAvr2LLQ==
   dependencies:
-    "@web3modal/common" "3.5.5"
-    "@web3modal/wallet" "3.5.5"
+    "@web3modal/common" "3.5.6"
+    "@web3modal/wallet" "3.5.6"
     valtio "1.11.2"
 
-"@web3modal/polyfills@3.5.5":
-  version "3.5.5"
-  resolved "https://registry.yarnpkg.com/@web3modal/polyfills/-/polyfills-3.5.5.tgz#dfe62bc25cde103041bf5a64096ee81940ac8cd1"
-  integrity sha512-ovMPV12Z53eoIivecQ6VrtqSbmC3K1qES69nDVOGmZTZTwLcb+GSNfH2SRtn/l2tpCtkCNcu14rnbzZ1vEKcYQ==
+"@web3modal/polyfills@3.5.6":
+  version "3.5.6"
+  resolved "https://registry.yarnpkg.com/@web3modal/polyfills/-/polyfills-3.5.6.tgz#eecce916efe74c25ec94067d6277b037fb06e6d1"
+  integrity sha512-q+bShMQu0haYrnvsSkGmmxd7wrrhzqbcaVQXsQselVumtue7cqNeQISsTJCRI1wtUwPPls+EEFQzvaJc09ahjg==
   dependencies:
     buffer "6.0.3"
 
-"@web3modal/scaffold-react@3.5.5":
-  version "3.5.5"
-  resolved "https://registry.yarnpkg.com/@web3modal/scaffold-react/-/scaffold-react-3.5.5.tgz#daf9afebe6e0f1e0a08a0f854f8492f70a1bb980"
-  integrity sha512-tUcosVT9B/0yd7yF/cpd61/8y3KVPlM05bDefKBKqLWHbTdYxBVMBRkpw461pRM81j0H3xN2Gh0CgTykplgO2Q==
+"@web3modal/scaffold-react@3.5.6":
+  version "3.5.6"
+  resolved "https://registry.yarnpkg.com/@web3modal/scaffold-react/-/scaffold-react-3.5.6.tgz#3571ccfb1a2c80793bc83b710101b21187e242df"
+  integrity sha512-s0gmLrQ9VqFkjFkSTUk9lZQF76oLs9E7JILVetlNYX+1Y1PFAQZ41uExgPgXPgnUJoAzcLpib7nuOBhRaTVQ+A==
   dependencies:
-    "@web3modal/scaffold" "3.5.5"
+    "@web3modal/scaffold" "3.5.6"
 
-"@web3modal/scaffold-utils@3.5.5":
-  version "3.5.5"
-  resolved "https://registry.yarnpkg.com/@web3modal/scaffold-utils/-/scaffold-utils-3.5.5.tgz#0896e91da1a5493b16bef58c990a5b5b4551e308"
-  integrity sha512-nKfTbfRp64n7SgFl9aGSBZvV9jlqRodmeWpKfghoqD347Gm16T0nXab/IMou5xqbPX9UImUiD/zSG/LMdsLxiQ==
+"@web3modal/scaffold-utils@3.5.6":
+  version "3.5.6"
+  resolved "https://registry.yarnpkg.com/@web3modal/scaffold-utils/-/scaffold-utils-3.5.6.tgz#ec51ecd9e032b349f5c18fa2276dc946bc57dc84"
+  integrity sha512-St9nr8hud05IP26ebBtC1AGP2/+nmrg0cECYiwBMEdWfYQouhxOF7XkBFJg9pU5WFTXjJhG6C5fnNywVNgEsYQ==
   dependencies:
-    "@web3modal/polyfills" "3.5.5"
-    "@web3modal/scaffold" "3.5.5"
+    "@web3modal/polyfills" "3.5.6"
+    "@web3modal/scaffold" "3.5.6"
     valtio "1.11.2"
 
-"@web3modal/scaffold-vue@3.5.5":
-  version "3.5.5"
-  resolved "https://registry.yarnpkg.com/@web3modal/scaffold-vue/-/scaffold-vue-3.5.5.tgz#242f37ab8fe6d53b7b1a68e14c56f7282bf13e56"
-  integrity sha512-KDDdY2dhxkeZPyyWlFIuY0jdF2tlTdLkR4SaHzm/ZR6oKU3+gr4MXY5BKUo9gk8C9chO0oTjYPBFdFMUo/ETkw==
+"@web3modal/scaffold-vue@3.5.6":
+  version "3.5.6"
+  resolved "https://registry.yarnpkg.com/@web3modal/scaffold-vue/-/scaffold-vue-3.5.6.tgz#b3c25c74da3e2bd1804186de4641970d17159ef8"
+  integrity sha512-oYrg8AV7DJezR5AGSqwuTHgu0tLv94lxfoMlyU3orGCebqlXJV+yqrbkLb9nyJS+sHonjd1KnvCywIieps8Djw==
   dependencies:
-    "@web3modal/scaffold" "3.5.5"
+    "@web3modal/scaffold" "3.5.6"
 
-"@web3modal/scaffold@3.5.5":
-  version "3.5.5"
-  resolved "https://registry.yarnpkg.com/@web3modal/scaffold/-/scaffold-3.5.5.tgz#a15492eb730effa9ed7980771e821b5237220245"
-  integrity sha512-qFNSkv0zqazo2WXFqNdN1bIOnjhGv3eoD/HzEDgV1a6VIyLzLoFdXexDX+06ey1FAtMQRml/F2yVTZskln5taA==
+"@web3modal/scaffold@3.5.6":
+  version "3.5.6"
+  resolved "https://registry.yarnpkg.com/@web3modal/scaffold/-/scaffold-3.5.6.tgz#1268d2bdbb8795260bef3a0758008a09affdc1dc"
+  integrity sha512-dAovxCGNt1TTF1F3k2LE7hvFGnNQyLgS+hrsZett1/PbKJ7/ejtk/mjVqxSYRRfsCu86ZMvScRcj8FJtJ3t7qg==
   dependencies:
-    "@web3modal/common" "3.5.5"
-    "@web3modal/core" "3.5.5"
-    "@web3modal/ui" "3.5.5"
+    "@web3modal/common" "3.5.6"
+    "@web3modal/core" "3.5.6"
+    "@web3modal/ui" "3.5.6"
     lit "3.1.0"
 
-"@web3modal/siwe@3.5.5":
-  version "3.5.5"
-  resolved "https://registry.yarnpkg.com/@web3modal/siwe/-/siwe-3.5.5.tgz#210a922ebda5a3f3ebc75bcfc5a5bd2287556c31"
-  integrity sha512-8yNE7JX9+gDjozvN9cCUqcjBgsdxgQ9YzYyxujIfMrBOJ9v3HdbF/3whmsyaMzSv+NNtiDUCufBW30/4zz5Wnw==
+"@web3modal/siwe@3.5.6":
+  version "3.5.6"
+  resolved "https://registry.yarnpkg.com/@web3modal/siwe/-/siwe-3.5.6.tgz#5a27d49d45d06b2a48fbf258d8589950ca2f4795"
+  integrity sha512-NqiGAcvKOdAyNH0xr72ZpJG+YACQgQ5kmvKzRcxlwvo75TW6AVjMMpiC2CzKsTJ7foiTN0dXbsLifMy2OGlrAA==
   dependencies:
-    "@web3modal/core" "3.5.5"
-    "@web3modal/scaffold-utils" "3.5.5"
+    "@web3modal/core" "3.5.6"
+    "@web3modal/scaffold-utils" "3.5.6"
   optionalDependencies:
     react ">=17"
     react-dom ">=17"
     vue ">=3"
 
-"@web3modal/ui@3.5.5":
-  version "3.5.5"
-  resolved "https://registry.yarnpkg.com/@web3modal/ui/-/ui-3.5.5.tgz#3102aeadacc23a6e1da65660c38f67582d418445"
-  integrity sha512-rq8OzGzKDkuBlj26WFMk8IFdkb7Ryedn3aIDQupZsB55d3SUjDg8sBExsoR8I4NdtJjazGokthh4SkPOOO55nA==
+"@web3modal/ui@3.5.6":
+  version "3.5.6"
+  resolved "https://registry.yarnpkg.com/@web3modal/ui/-/ui-3.5.6.tgz#c2a9ccf354cb1390d87b44b7a279e7ee4a7383c9"
+  integrity sha512-XO/KmruzDaZDmhU4ZYhRIelN9vRBWiBjLeFfUz/LEnbRRagzGBZtHXabQ5zUnivReUo9mE7uoQIZbax+GPIJyw==
   dependencies:
     lit "3.1.0"
     qrcode "1.5.3"
 
-"@web3modal/wagmi@3.5.5":
-  version "3.5.5"
-  resolved "https://registry.yarnpkg.com/@web3modal/wagmi/-/wagmi-3.5.5.tgz#b1f945d47ee8e740b8aab1f6e12909e77b23c522"
-  integrity sha512-2ATkwY9Ond1j1K6NoJP+Lfkg4WmNvgX3Y4L57Efdq8nU5iYWhIRs2PZnvz2nrD3J44bkdaaNKLz7r1vBqtg4Gw==
+"@web3modal/wagmi@3.5.6":
+  version "3.5.6"
+  resolved "https://registry.yarnpkg.com/@web3modal/wagmi/-/wagmi-3.5.6.tgz#17dcc095f8e6cfd416fb216543f6c3fd0ee5678b"
+  integrity sha512-7JQOOy6iEAIKSy+lLbv0udhXXY3+ZNW9RGnnwOBtdrp7K6KOsWjGl69xMev8O+SCx87A/+fnp9d9raFnZ+SJQA==
   dependencies:
-    "@web3modal/polyfills" "3.5.5"
-    "@web3modal/scaffold" "3.5.5"
-    "@web3modal/scaffold-react" "3.5.5"
-    "@web3modal/scaffold-utils" "3.5.5"
-    "@web3modal/scaffold-vue" "3.5.5"
+    "@web3modal/polyfills" "3.5.6"
+    "@web3modal/scaffold" "3.5.6"
+    "@web3modal/scaffold-react" "3.5.6"
+    "@web3modal/scaffold-utils" "3.5.6"
+    "@web3modal/scaffold-vue" "3.5.6"
   optionalDependencies:
-    "@web3modal/siwe" "3.5.5"
+    "@web3modal/siwe" "3.5.6"
     react ">=17"
     react-dom ">=17"
     vue ">=3"
 
-"@web3modal/wallet@3.5.5":
-  version "3.5.5"
-  resolved "https://registry.yarnpkg.com/@web3modal/wallet/-/wallet-3.5.5.tgz#e8d08a1bec5622e428310bec250388d8bd1f6cd5"
-  integrity sha512-RlbPtTxUQWe3HauHaj2hT3lIrmIfcWZwXG0tD2mM1sPbIrE9YaUkQwJnMyDPmOkFHsZkEZavulK4Sdxw7Mj3Lw==
+"@web3modal/wallet@3.5.6":
+  version "3.5.6"
+  resolved "https://registry.yarnpkg.com/@web3modal/wallet/-/wallet-3.5.6.tgz#e635762f9cc5eb032f53f81d1f75606c1adb1cd0"
+  integrity sha512-uYlO+qtD6GsbssHXqghiNDUD8y8gAvHqAAqW65AErCTHyNCxiTHBlJcP1dDfzs6AIO/7WFmUef/Pq32jlGawBg==
   dependencies:
     zod "3.22.4"
 
