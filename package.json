@@ -113,7 +113,7 @@
     "truncate-eth-address": "1.0.2",
     "uuid": "^9.0.0",
     "viem": "^2.0.0",
-    "vue": "3.4.10",
+    "vue": "3.4.11",
     "web3modal": "1.9.12"
   },
   "repository": "https://github.com/dev-protocol/clubs.git",
