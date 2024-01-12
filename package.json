@@ -55,7 +55,7 @@
     "vue-tsc": "^1.8.10"
   },
   "dependencies": {
-    "@astrojs/check": "0.3.4",
+    "@astrojs/check": "0.4.1",
     "@astrojs/lit": "4.0.1",
     "@astrojs/netlify": "4.1.1",
     "@astrojs/prefetch": "0.4.1",
