@@ -44,7 +44,7 @@
     "fs-extra": "^11.1.1",
     "glob": "^10.3.4",
     "husky": "8.0.3",
-    "prettier": "3.1.1",
+    "prettier": "3.2.1",
     "prettier-plugin-astro": "0.12.3",
     "prettier-plugin-svelte": "3.1.2",
     "prettier-plugin-tailwindcss": "0.5.11",
@@ -55,7 +55,7 @@
     "vue-tsc": "^1.8.10"
   },
   "dependencies": {
-    "@astrojs/check": "0.3.4",
+    "@astrojs/check": "0.4.1",
     "@astrojs/lit": "4.0.1",
     "@astrojs/netlify": "4.1.1",
     "@astrojs/prefetch": "0.4.1",
@@ -91,7 +91,7 @@
     "crypto-hash": "^3.0.0",
     "dayjs": "^1.11.9",
     "dompurify": "^3.0.5",
-    "ethers": "6.9.2",
+    "ethers": "6.10.0",
     "fast-average-color": "^9.4.0",
     "firebase": "^10.3.1",
     "firebase-admin": "^12.0.0",
@@ -113,7 +113,7 @@
     "truncate-eth-address": "1.0.2",
     "uuid": "^9.0.0",
     "viem": "^1.10.8",
-    "vue": "3.4.10",
+    "vue": "3.4.13",
     "web3modal": "1.9.12"
   },
   "repository": "https://github.com/dev-protocol/clubs.git",
