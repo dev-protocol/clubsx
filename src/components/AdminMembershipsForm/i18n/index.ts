@@ -3,12 +3,12 @@ import type { ClubsI18nParts } from '@devprotocol/clubs-core'
 export const Strings = {
   Creator: {
     en: () => 'Creator',
-    ja: () => '',
+    ja: () => 'クリエイター',
   },
   CreatorDescription: {
     en: () =>
       'Start a subscription for your lessons, contents, experiences, and more.',
-    ja: () => '',
+    ja: () => '授業、コンテンツ、体験のサブスクリプション向けのメンバーシップ',
   },
   CreatorExampleName: {
     en: () => 'Example: Dev Protocol',
@@ -16,46 +16,46 @@ export const Strings = {
   },
   Business: {
     en: () => 'Business',
-    ja: () => '',
+    ja: () => 'ビジネス',
   },
   BusinessDescription: {
     en: () => 'Provide special offers to members/non-members.',
-    ja: () => '',
+    ja: () => '会員/非会員に特別なオファーを提供するメンバーシップ',
   },
   BusinessExampleName: {
     en: () => 'Clubs Hotel',
-    ja: () => '',
+    ja: () => 'Clubsホテル',
   },
   Public: {
     en: () => 'Public',
-    ja: () => '',
+    ja: () => 'パブリック',
   },
   PublicDescription: {
     en: () => 'Start a co-creation project and invite members.',
-    ja: () => '',
+    ja: () => '共同プロジェクトのメンバー募集のためのメンバーシップ',
   },
   PublicExampleName: {
     en: () => 'Public Project',
-    ja: () => '',
+    ja: () => '公共プロジェクト',
   },
   Select: {
     en: () => 'Select',
-    ja: () => '',
+    ja: () => '選択する',
   },
   Example: {
     en: () => 'Example',
-    ja: () => '',
+    ja: () => '例',
   },
   ExistingMemberships: {
     en: () => 'Existing Memberships',
-    ja: () => '',
+    ja: () => '既存のメンバーシップ',
   },
   Delete: {
     en: () => 'Delete',
-    ja: () => '',
+    ja: () => '削除する',
   },
   Activate: {
     en: () => 'Activate',
-    ja: () => '',
+    ja: () => '有効にする',
   },
 } satisfies ClubsI18nParts
