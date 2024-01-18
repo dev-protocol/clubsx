@@ -1,5 +1,9 @@
 <script lang="ts">
-  import { type ClubsPluginOptions, decode } from '@devprotocol/clubs-core'
+  import {
+    type ClubsPluginOptions,
+    decode,
+    i18nFactory,
+  } from '@devprotocol/clubs-core'
   import { setOptions } from '@devprotocol/clubs-core'
   import type { UndefinedOr } from '@devprotocol/util-ts'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
@@ -10,6 +14,7 @@
   } from '@plugins/default-theme'
   import { equals } from 'ramda'
   import { onMount } from 'svelte'
+  import { Strings } from './i18n'
 
   type ColorPresetKey = keyof typeof ColorPresets
 
@@ -45,6 +50,9 @@
         }
       },
     ) || 'Purple' // else defaults to Purple
+
+  const i18nBase = i18nFactory(Strings)
+  let i18n = i18nBase(['en'])
 
   const update = (e?: any) => {
     globalConfig = colorPresets[selectedColorPreset] as GlobalConfigValue
@@ -105,11 +113,12 @@
     if (false === equals(getColor(selectedColorPreset), globalConfig)) {
       update()
     }
+    i18n = i18nBase(navigator.languages)
   })
 </script>
 
 <div role="presentation" class="hs-form-field">
-  <span class="hs-form-field__label"> Preview </span>
+  <span class="hs-form-field__label"> {i18n('Preview')} </span>
   <div
     class="aspect-square max-w-lg overflow-hidden rounded-xl transition"
     style={`background-color: ${globalConfig.bg}; color: ${globalConfig.ink};`}
@@ -168,7 +177,7 @@
   class="grid justify-stretch gap-16"
 >
   <div class="hs-form-field grid justify-items-start gap-2">
-    <span class="hs-form-field__label"> Theme color </span>
+    <span class="hs-form-field__label"> {i18n('ThemeColor')} </span>
     <div class="flex flex-wrap gap-6">
       {#each Object.keys(colorPresets) as presetKey}
         <label class="theme-chip cursor-pointer">
@@ -205,7 +214,7 @@
                 class="absolute grid h-full w-full place-items-center font-bold"
                 style={((ink) => `color: ${ink};`)(getColor(presetKey).ink)}
               >
-                Text
+                {i18n('Text')}
               </div>
             {/if}
           </div></label
@@ -217,11 +226,11 @@
   <div>
     <div class="grid justify-items-start">
       <span class="hs-form-field">
-        <span class="hs-form-field__label"> Cover image </span></span
+        <span class="hs-form-field__label"> {i18n('CoverImage')} </span></span
       >
       <label class="hs-form-field w-fit">
         <span class="hs-button is-filled is-large cursor-pointer"
-          >Upload to change</span
+          >{i18n('UploadToChange')}</span
         >
 
         <input
@@ -233,7 +242,7 @@
         />
 
         <span class="hs-form-field__helper opacity-60"
-          >* Recommended image size is 2400 x 1200 px</span
+          >* {i18n('RecommendedImageSize')}</span
         >
       </label>
     </div>
@@ -241,7 +250,7 @@
 
   <label class="hs-form-field">
     <span class="hs-form-field__label">
-      Short description to introduce about you
+      {i18n('Description')}
     </span>
     <textarea
       rows="5"
@@ -253,7 +262,7 @@
   </label>
 
   <label class="hs-form-field">
-    <span class="hs-form-field__label"> Your introduction </span>
+    <span class="hs-form-field__label"> {i18n('YourIntroduction')} </span>
     <textarea
       rows="10"
       class="hs-form-field__input"
@@ -261,7 +270,7 @@
       id="club-body"
       name="club-body"
     />
-    <span class="hs-form-field__helper">Markdown is available</span>
+    <span class="hs-form-field__helper">{i18n('MarkdownSupported')}</span>
   </label>
 </form>
 

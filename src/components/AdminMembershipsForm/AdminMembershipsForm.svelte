@@ -1,10 +1,11 @@
 <script lang="ts">
   import { onMount } from 'svelte'
 
-  import { ClubsEvents, setOptions } from '@devprotocol/clubs-core'
+  import { ClubsEvents, i18nFactory, setOptions } from '@devprotocol/clubs-core'
   import MembershipOptionCard from './MembershipOption.svelte'
   import type { Membership } from '@plugins/memberships'
   import { buildConfig } from '@devprotocol/clubs-core'
+  import { Strings } from './i18n'
 
   export let currentPluginIndex: number
   export let memberships: Membership[] = []
@@ -13,6 +14,20 @@
   export let clubName: string | undefined = undefined
 
   let updatingMembershipsStatus: Set<string> = new Set()
+
+  type PresetExplanation = {
+    title: string
+    desc: string
+    example?: {
+      clubs: string
+      name: string
+      avatar: string
+      cover: string
+    }
+  }
+
+  const i18nBase = i18nFactory(Strings)
+  let i18n = i18nBase(['en'])
 
   const deleteMembership = (selectedMembership: Membership) => {
     updatingMembershipsStatus = new Set([
@@ -77,38 +92,44 @@
     setTimeout(buildConfig, 50)
   }
 
-  const presetExplanations = [
-    {
-      title: 'Creator',
-      desc: 'Start a subscription for your lessons, contents, experiences, and more.',
-      example: {
-        clubs: 'https://my-vlog.clubs.place/',
-        name: 'My Vlog',
-        avatar: 'https://i.imgur.com/195I7Ch.png',
-        cover: 'https://i.imgur.com/WihEmii.jpg',
+  let presetExplanations: PresetExplanation[] = []
+
+  const setPresetExplanations = () => {
+    presetExplanations = [
+      {
+        title: i18n('Creator'),
+        desc: i18n('CreatorDescription'),
+        example: {
+          clubs: 'https://my-vlog.clubs.place/',
+          name: i18n('CreatorExampleName'),
+          avatar: 'https://i.imgur.com/195I7Ch.png',
+          cover: 'https://i.imgur.com/WihEmii.jpg',
+        },
       },
-    },
-    {
-      title: 'Business',
-      desc: 'Provide special offers to members/non-members.',
-      example: {
-        clubs: 'https://hotel.clubs.place/',
-        name: 'Clubs Hotel',
-        avatar: 'https://i.imgur.com/lWwQnRl.jpg',
-        cover: 'https://i.imgur.com/hDBx7VD.jpg',
+      {
+        title: i18n('Business'),
+        desc: i18n('BusinessDescription'),
+        example: {
+          clubs: 'https://hotel.clubs.place/',
+          name: i18n('BusinessExampleName'),
+          avatar: 'https://i.imgur.com/lWwQnRl.jpg',
+          cover: 'https://i.imgur.com/hDBx7VD.jpg',
+        },
       },
-    },
-    {
-      title: 'Public',
-      desc: 'Start a co-creation project and invite members.',
-      example: {
-        clubs: 'https://public.clubs.place/',
-        name: 'Public Project',
-        avatar: 'https://i.imgur.com/j4TDkTr.png',
-        cover: 'https://i.imgur.com/iKw1D0X.jpg',
+      {
+        title: i18n('Public'),
+        desc: i18n('PublicDescription'),
+        example: {
+          clubs: 'https://public.clubs.place/',
+          name: i18n('PublicExampleName'),
+          avatar: 'https://i.imgur.com/j4TDkTr.png',
+          cover: 'https://i.imgur.com/iKw1D0X.jpg',
+        },
       },
-    },
-  ]
+    ]
+  }
+
+  setPresetExplanations()
 
   const getColStart = (i: number) =>
     i === 0
@@ -144,6 +165,8 @@
         }
       },
     )
+    i18n = i18nBase(navigator.languages)
+    setPresetExplanations()
   })
 </script>
 
@@ -207,7 +230,7 @@
               <div class="p-2 pl-10">
                 <span
                   class="px-2 rounded bg-dp-blue-grey-300 text-dp-blue-grey-ink dark:bg-dp-white-600 dark:text-dp-white-ink text-xs"
-                  >Example</span
+                  >{i18n('Example')}</span
                 >
                 <p class="font-bold">
                   {presetExplanations[i].example?.name}
@@ -220,7 +243,7 @@
     </div>
   {/if}
   {#if memberships.length > 0}
-    <h2 class="mb-8 text-2xl">Existing memberships</h2>
+    <h2 class="mb-8 text-2xl">{i18n('ExistingMemberships')}</h2>
     <div
       class="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] justify-between gap-4"
     >
@@ -240,7 +263,7 @@
             id={`select-opt-${i}`}
             href={`${base}/memberships/${membership.id}`}
           >
-            <span class="hs-button__label">Select</span>
+            <span class="hs-button__label">{i18n('Select')}</span>
           </a>
           {#if !membership.deprecated}
             <button
@@ -259,7 +282,7 @@
               id={`delete-opt-${i}`}
               on:click|preventDefault={() => deleteMembership(membership)}
             >
-              <span class="hs-button__label">Delete</span>
+              <span class="hs-button__label">{i18n('Delete')}</span>
             </button>
           {/if}
           {#if membership.deprecated}
@@ -278,7 +301,7 @@
               }`}
               id={`activate-opt-${i}`}
               on:click|preventDefault={() => activateMembership(membership)}
-              >Activate</button
+              >{i18n('Activate')}</button
             >
           {/if}
         </div>
