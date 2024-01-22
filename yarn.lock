@@ -41,10 +41,15 @@
   resolved "https://registry.yarnpkg.com/@astrojs/compiler/-/compiler-1.8.2.tgz#f305d5724c45a9932a8ef4e87b2e7227d15d1c2b"
   integrity sha512-o/ObKgtMzl8SlpIdzaxFnt7SATKPxu4oIP/1NL+HDJRzxfJcAkOTAb/ZKMRyULbz4q+1t2/DAebs2Z1QairkZw==
 
-"@astrojs/compiler@^2.3.4", "@astrojs/compiler@^2.4.0":
+"@astrojs/compiler@^2.4.0":
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/@astrojs/compiler/-/compiler-2.4.1.tgz#372738948e5732b7a87e7ad1ac7cf1fc203e75d8"
   integrity sha512-4M6G6UBI84gPYzyN6jSG3c+jeZ3dBVOnGPzp47SS5ayc2tsWhbXZ4nnNWGJU+ESiQ6ScjywJnpddxTO2w41Qeg==
+
+"@astrojs/compiler@^2.5.0":
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/compiler/-/compiler-2.5.0.tgz#dba7a7a936aed98089b93505dda1c1011ba82746"
+  integrity sha512-ZDluNgMIJT+z+HJcZ6QEJ/KqaFkTkrb+Za6c6VZs8G/nb1LBErL14/iU5EVJ9yu25i4QCLweuBJ3m5df34gZJg==
 
 "@astrojs/internal-helpers@0.2.1":
   version "0.2.1"
@@ -85,10 +90,10 @@
     "@lit-labs/ssr-dom-shim" "^1.1.2"
     parse5 "^7.1.2"
 
-"@astrojs/markdown-remark@4.1.0":
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/@astrojs/markdown-remark/-/markdown-remark-4.1.0.tgz#17cf55d38064859595ad6dfac5b951a1c22e0da9"
-  integrity sha512-JnIy6zk+6f/SgSVMZecZFxQt0faT1uBckwYCuBxKH1hYYJsal8OOe+tx6JxfnyaV+xViyjUvQ28mmn+p/F5LkQ==
+"@astrojs/markdown-remark@4.2.0":
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/markdown-remark/-/markdown-remark-4.2.0.tgz#82b13d32899547900fcfb1618d9cf29d13c88fc6"
+  integrity sha512-qQB+LoxmIqzkhLXaQAzfzlBxZU1jeQYailsifurz89WeY0Q8ywIj8uQQSyqxb7rPPg3ZfdNdxsN9lF5UaCRn0w==
   dependencies:
     "@astrojs/prism" "^3.0.0"
     github-slugger "^2.0.0"
@@ -4024,14 +4029,14 @@ assertion-error@^1.1.0:
   resolved "https://registry.yarnpkg.com/assertion-error/-/assertion-error-1.1.0.tgz#e60b6b0e8f301bd97e5375215bda406c85118c0b"
   integrity sha512-jgsaNduz+ndvGyFt3uSuWqvy4lCnIJiovtouQN5JZHOKCS2QuhEdbcQHFhVksz2N2U9hXJo8odG7ETyWlEeuDw==
 
-astro@4.2.1:
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/astro/-/astro-4.2.1.tgz#c0676bdd63cdd8ac2e46f53b7a72229ad302b24b"
-  integrity sha512-TcrveW2/lohmljrbTUgcDxajEdF1yK+zBvb7SXroloGix/d4jkegO6GANFgvyy0zprMyajW7qgJEFyhWUX86Vw==
+astro@4.2.2:
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/astro/-/astro-4.2.2.tgz#6f2a66e7866fdb3c8eb2985d28450be1a27e90cf"
+  integrity sha512-YCt5rYe05DLp+NUnnW4EGANy7AtCRGNbwjKWjwDMwn76lvuWCo8S5tSn3pCOZuGWdoqI6zvOMpBaggY4z6N69w==
   dependencies:
-    "@astrojs/compiler" "^2.3.4"
+    "@astrojs/compiler" "^2.5.0"
     "@astrojs/internal-helpers" "0.2.1"
-    "@astrojs/markdown-remark" "4.1.0"
+    "@astrojs/markdown-remark" "4.2.0"
     "@astrojs/telemetry" "3.0.4"
     "@babel/core" "^7.23.3"
     "@babel/generator" "^7.23.3"
