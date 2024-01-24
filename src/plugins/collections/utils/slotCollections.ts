@@ -77,9 +77,10 @@ export async function callSlotCollections(
   functionName: string,
   args: unknown[],
 ): Promise<unknown> {
-  const chainId = await ('getNetwork' in provider
-    ? (provider as BrowserProvider).getNetwork()
-    : ((provider as Signer).provider as Provider).getNetwork()
+  const chainId = await (
+    'getNetwork' in provider
+      ? (provider as BrowserProvider).getNetwork()
+      : ((provider as Signer).provider as Provider).getNetwork()
   ).then((network) => {
     return Number(network.chainId)
   })

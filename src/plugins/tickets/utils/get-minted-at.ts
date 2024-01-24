@@ -57,9 +57,8 @@ export const getMintedAt = async (options: {
     ),
   )
   const blockNumber = whenDefined(logs, (log) => log[0].blockNumber)
-  const block = await whenDefined(
-    blockNumber,
-    (block) => options.provider.provider?.getBlock(block),
+  const block = await whenDefined(blockNumber, (block) =>
+    options.provider.provider?.getBlock(block),
   )
   const timestampMs = whenDefined(block, ({ timestamp }) => timestamp * 1000)
 
