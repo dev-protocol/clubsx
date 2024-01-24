@@ -24,6 +24,6 @@ jobs:
       - name: Pull Vercel Environment Information
         run: vercel pull --yes --environment=${{ steps.check.outputs.isPrerelease == 'true' && 'preview' || 'production' }} --token=${{ secrets.VERCEL_TOKEN }}
       - name: Build Project Artifacts
-        run: vercel build ${{ steps.check.outputs.isPrerelease == 'true' && '' || '--prod' }} --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel build ${{ steps.check.outputs.isPrerelease == 'true' && ' ' || '--prod' }} --token=${{ secrets.VERCEL_TOKEN }}
       - name: Deploy Project Artifacts to Vercel
-        run: vercel deploy --prebuilt ${{ steps.check.outputs.isPrerelease == 'true' && '' || '--prod' }} --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel deploy --prebuilt ${{ steps.check.outputs.isPrerelease == 'true' && ' ' || '--prod' }} --token=${{ secrets.VERCEL_TOKEN }}
