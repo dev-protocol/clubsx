@@ -272,8 +272,9 @@ const FundsInfo = (props: {
           'Complete your KYC application and return to this page.',
         )
         window.open(
-          `${import.meta.env.PUBLIC_ONDATO_VERIFICATION_URL}/?id=${res?.data
-            ?.id}`,
+          `${import.meta.env.PUBLIC_ONDATO_VERIFICATION_URL}/?id=${
+            res?.data?.id
+          }`,
           '_blank',
         )
         setTimeout(() => setIsFetchingIDVId(false), 30 * 1000) // Set isFetchingIDVId to false in 30 secs.

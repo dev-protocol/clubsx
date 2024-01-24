@@ -12,7 +12,8 @@ export const Strings = {
   PublishingRecommendation: {
     en: () =>
       "These are used only for authentication when publishing. If you don't have any of these, we recommend ",
-    ja: () => '選択したプロジェクトはクラブを発行する際に認証する目的でのみ使用します。いずれも持っていない場合は',
+    ja: () =>
+      '選択したプロジェクトはクラブを発行する際に認証する目的でのみ使用します。いずれも持っていない場合は',
   },
   CreatingDiscord: {
     en: () => 'creating a Discord server ↗',

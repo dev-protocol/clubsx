@@ -1,0 +1,29 @@
+name: Production Tag Deployment
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+on:
+  release:
+    types: [published]
+
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+      - name: Check if pre-release
+        id: check
+        run: |
+          IS_PRERELEASE=$(curl --silent --show-error \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ github.ref_name }}" \
+            | jq '.prerelease')
+          echo "::set-output name=isPrerelease::$IS_PRERELEASE"
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=${{ steps.check.outputs.isPrerelease == 'true' && 'prerelease' || 'production' }} --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Build Project Artifacts
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Deploy Project Artifacts to Vercel
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
