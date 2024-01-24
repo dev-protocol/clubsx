@@ -25,5 +25,13 @@ jobs:
         run: vercel pull --yes --environment=${{ steps.check.outputs.isPrerelease == 'true' && 'preview' || 'production' }} --token=${{ secrets.VERCEL_TOKEN }}
       - name: Build Project Artifacts
         run: vercel build ${{ steps.check.outputs.isPrerelease == 'true' && ' ' || '--prod' }} --token=${{ secrets.VERCEL_TOKEN }}
-      - name: Deploy Project Artifacts to Vercel
-        run: vercel deploy --prebuilt ${{ steps.check.outputs.isPrerelease == 'true' && ' ' || '--prod' }} --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Deploy
+        id: deploy
+        run: |
+          output=$(vercel deploy --prebuilt ${{ steps.check.outputs.isPrerelease == 'true' && ' ' || '--prod' }} --token=${{ secrets.VERCEL_TOKEN }})
+          echo "::set-output name=url::$output"
+        shell: bash
+
+      - name: Alias
+        if: steps.check.outputs.isPrerelease == 'true'
+        run: vercel alias ${{ steps.deploy.outputs.url }} prerelease.clubs.place --token=${{ secrets.VERCEL_TOKEN }}
