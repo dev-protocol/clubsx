@@ -3,16 +3,13 @@ env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 on:
-  workflow_run:
-    workflows: ['Build']
-    types:
-      - completed
-
+  push:
+    # Pattern matched against refs/tags
+    tags:
+      - '*' # Push events to every tag not containing /
 jobs:
   Deploy-Production:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' && github.ref_type == 'tag' }}
-
     steps:
       - uses: actions/checkout@v3
       - name: Install Vercel CLI
