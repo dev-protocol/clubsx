@@ -5,6 +5,7 @@
     type ClubsPlugin,
     type ClubsPluginOptions,
     decode,
+    i18nFactory,
   } from '@devprotocol/clubs-core'
   import { setConfig } from '@devprotocol/clubs-core'
   import type { UndefinedOr } from '@devprotocol/util-ts'
@@ -12,6 +13,8 @@
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import type { colorPresets as ColorPresets } from '@plugins/default-theme'
   import AdminThemeDesignForm from './AdminThemeDesignForm.svelte'
+  import { Strings } from './i18n'
+  import { onMount } from 'svelte'
 
   const defaultSocialLinks: NavLink[] = [
     { path: '', display: 'Twitter', kind: 'twitter' },
@@ -29,6 +32,8 @@
   export let currentPluginIndex: number
 
   let uploading = false
+  const i18nBase = i18nFactory(Strings)
+  let i18n = i18nBase(['en'])
 
   if (socialLinks.length < 2) {
     socialLinks = Array.from(
@@ -38,6 +43,10 @@
 
   let ogpValue = config.options?.find((option) => option.key === 'ogp')
     ?.value as UndefinedOr<{ image?: string }>
+
+  onMount(() => {
+    i18n = i18nBase(navigator.languages)
+  })
 
   const update = (e?: any) => {
     const _navigationLinks = {
@@ -128,7 +137,7 @@
 
 <form on:change|preventDefault={(e) => update(e)} class="grid gap-16">
   <section class="hs-form-field w-full">
-    <p class="hs-form-field__label mb-4">Navigation links</p>
+    <p class="hs-form-field__label mb-4">{i18n('NavigationLinks')}</p>
     <section>
       {#each navigationLinks as link, i}
         <section class="mb-8 flex flex-row items-center gap-4">
@@ -224,7 +233,7 @@
   </section>
 
   <label class="hs-form-field">
-    <span class="hs-form-field__label mb-4"> Social links </span>
+    <span class="hs-form-field__label mb-4"> {i18n('SocialLinks')} </span>
     {#each socialLinks as link, i}
       <div class="mb-4 flex flex-col items-start lg:flex-row lg:items-center">
         <span class="hs-form-field__label w-28 text-sm capitalize"
@@ -244,9 +253,7 @@
   <div>
     <div class="grid justify-items-start gap-2">
       <span class="hs-form-field">
-        <span class="hs-form-field__label">
-          OGP (Open Graph Protocol) Image</span
-        >
+        <span class="hs-form-field__label"> {i18n('OGP')}</span>
       </span>
       {#if ogpValue?.image && uploading === false}
         <img src={ogpValue.image} class="max-w-md rounded" alt="OGP" />
@@ -259,7 +266,7 @@
       {/if}
       <label class="hs-form-field w-fit">
         <span class="hs-button is-filled is-large cursor-pointer"
-          >Upload to change</span
+          >{i18n('UploadToChange')}</span
         >
 
         <input
@@ -271,13 +278,13 @@
           on:change={onFileSelected}
         />
         <span class="mt-1 text-xs opacity-60"
-          >*Image size should be 1200 x 630 pixels</span
+          >* {i18n('RecommendedImageSize2')}</span
         >
       </label>
     </div>
   </div>
 
-  <h2 class="font-title text-2xl font-bold">Design</h2>
+  <h2 class="font-title text-2xl font-bold">{i18n('Design')}</h2>
 
   <AdminThemeDesignForm
     {currentPluginIndex}

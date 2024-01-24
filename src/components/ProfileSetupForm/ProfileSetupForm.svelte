@@ -1,15 +1,18 @@
 <script lang="ts">
   import Skeleton from '@components/Global/Skeleton.svelte'
   import type { DraftOptions } from '@constants/draft'
-  import { setConfig } from '@devprotocol/clubs-core'
+  import { i18nFactory, setConfig } from '@devprotocol/clubs-core'
   import type { ClubsConfiguration } from '@devprotocol/clubs-core'
   import type { UndefinedOr } from '@devprotocol/util-ts'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import { onMount } from 'svelte'
+  import { Strings } from './i18n'
 
   export let config: ClubsConfiguration
 
   let { name, twitterHandle } = config
+  const i18nBase = i18nFactory(Strings)
+  let i18n = i18nBase(['en'])
 
   const projectCategories = [
     {
@@ -91,12 +94,13 @@
 
   onMount(() => {
     update()
+    i18n = i18nBase(navigator.languages)
   })
 </script>
 
 <form on:change|preventDefault={(e) => update()} class="grid gap-16">
   <label class="hs-form-field is-filled is-required">
-    <span class="hs-form-field__label"> Club Name </span>
+    <span class="hs-form-field__label"> {i18n('ClubName')} </span>
     <input
       class="hs-form-field__input min-w-full max-w-full"
       bind:value={name}
@@ -106,7 +110,7 @@
   </label>
 
   <label class="hs-select-field is-filled is-required">
-    <span class="hs-select-field__label"> Project Category </span>
+    <span class="hs-select-field__label"> {i18n('ProjectCategory')} </span>
     <select
       bind:value={projectCategory}
       id="project-category"
@@ -118,18 +122,18 @@
       {/each}
     </select>
     <span class="mt-1 text-sm opacity-60"
-      >These are used only for authentication when publishing. If you don't have
-      any of these, we recommend <a
+      >{i18n('PublishingRecommendation')}
+      <a
         href="https://support.discord.com/hc/en-us/articles/204849977"
         class="hs-link text-sm text-white"
         target="_blank"
-        rel="noopener noreferrer">creating a Discord ↗</a
+        rel="noopener noreferrer">{i18n('CreatingDiscord')}</a
       >.</span
     >
   </label>
 
   <label class="hs-form-field is-filled">
-    <span class="hs-form-field__label"> Twitter Handle </span>
+    <span class="hs-form-field__label"> {i18n('TwitterHandle')} </span>
     <input
       class="hs-form-field__input min-w-full max-w-full"
       bind:value={twitterHandle}
@@ -140,7 +144,7 @@
 
   <div class="flex flex-col items-start">
     <span class="hs-form-field">
-      <span class="hs-form-field__label">Avatar</span>
+      <span class="hs-form-field__label">{i18n('Avatar')}</span>
     </span>
 
     {#if avatarUploading}
@@ -152,7 +156,7 @@
     {/if}
     <label class="hs-form-field w-fit" for="avatarPath">
       <span class="hs-button is-filled is-large w-fit cursor-pointer"
-        >Choose Image</span
+        >{i18n('ImageSelect')}</span
       >
       <input
         id="avatarPath"
@@ -162,8 +166,7 @@
         on:change={onFileSelected}
       />
     </label>
-    <span class="mt-1 text-xs opacity-60"
-      >* Recommended image size is 600px x 600px</span
+    <span class="mt-1 text-xs opacity-60">* {i18n('RecommendedImageSize')}</span
     >
   </div>
 </form>
