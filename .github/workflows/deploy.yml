@@ -32,6 +32,10 @@ jobs:
           echo "::set-output name=url::$output"
         shell: bash
 
-      - name: Alias
+      - name: Alias Prerelease
         if: steps.check.outputs.isPrerelease == 'true'
-        run: vercel alias ${{ steps.deploy.outputs.url }} prerelease.clubs.place --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel alias ${{ steps.deploy.outputs.url }} prerelease.clubs.place --token=${{ secrets.VERCEL_TOKEN }} --scope devprtcl
+
+      - name: Alias Wildcare Prerelease
+        if: steps.check.outputs.isPrerelease == 'true'
+        run: vercel alias ${{ steps.deploy.outputs.url }} *.prerelease.clubs.place --token=${{ secrets.VERCEL_TOKEN }} --scope devprtcl
