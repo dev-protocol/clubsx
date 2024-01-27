@@ -61,8 +61,8 @@ export default {
 
             const accountStokenIDs = await positionsOfOwner(prov, userAddress)
 
-            const membershipStokenIDs = accountStokenIDs?.filter(
-              (stokenID) => stokenIDs?.includes(stokenID),
+            const membershipStokenIDs = accountStokenIDs?.filter((stokenID) =>
+              stokenIDs?.includes(stokenID),
             )
 
             const ret = await whenDefined(membershipStokenIDs, (ids) =>

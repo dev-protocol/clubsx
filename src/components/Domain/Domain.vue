@@ -55,7 +55,7 @@ export default {
       this.daoName = this.namePreset
       this.verifySiteName()
     }
-    i18n = i18nBase(navigator.languages)
+    this.i18n = i18nBase(navigator.languages)
   },
   computed: {
     network() {
