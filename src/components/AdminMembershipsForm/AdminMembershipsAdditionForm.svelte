@@ -107,6 +107,15 @@
     setTimeout(buildConfig, 50)
   }
 
+  const updateMembershipPriceType = (isUnpriced: boolean = false) => {
+    membership = {
+      ...membership,
+      isUnpriced: isUnpriced,
+    }
+
+    update()
+  }
+
   const activateMembership = (selectedMembership: Membership) => {
     updatingMembershipsStatus = true
 
@@ -564,10 +573,34 @@
           </p>
         </div>
 
-        {#if !membership.isUnpriced}
-          <!-- Price -->
-          <div class="hs-form-field is-filled is-required">
-            <span class="hs-form-field__label"> Price </span>
+        <!-- Price -->
+        <div class="hs-form-field is-filled is-required">
+          <span class="hs-form-field__label"> Price </span>
+          <div
+            class="flex w-full max-w-full items-center justify-start gap-1 mb-2"
+          >
+            <button
+              on:click|preventDefault={() => updateMembershipPriceType(true)}
+              class={`hs-button is-large is-filled flex max-w-[33%] grow items-center justify-center gap-2 ${
+                membership.isUnpriced ? '' : 'opacity-50'
+              }`}
+              id="membership-unpriced"
+              name="membership-unpriced"
+            >
+              Unpriced
+            </button>
+            <button
+              on:click|preventDefault={() => updateMembershipPriceType(false)}
+              class={`hs-button is-large is-filled flex max-w-[33%] grow items-center justify-center gap-2 ${
+                membership.isUnpriced ? 'opacity-50' : ''
+              }`}
+              id="membership-priced"
+              name="membership-priced"
+            >
+              Priced
+            </button>
+          </div>
+          {#if !membership.isUnpriced}
             <div
               class="flex w-full max-w-full items-center justify-start gap-1"
             >
@@ -611,8 +644,8 @@
             {#if invalidPriceMsg !== ''}
               <p class="text-danger-300">* {invalidPriceMsg}</p>
             {/if}
-          </div>
-        {/if}
+          {/if}
+        </div>
 
         <!-- Earning model -->
         <div class="hs-form-field is-filled is-required">
