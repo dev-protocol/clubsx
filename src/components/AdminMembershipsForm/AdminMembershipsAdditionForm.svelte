@@ -306,7 +306,7 @@
     const search = mode === 'edit' ? originalId : membership.id
     membership.accessControl = usingAccessControl ? accessControl : undefined
     if (
-      membership.isUnpriced &&
+      !membership.isUnpriced &&
       membership.fee &&
       membership.fee.percentage > 0
     ) {
