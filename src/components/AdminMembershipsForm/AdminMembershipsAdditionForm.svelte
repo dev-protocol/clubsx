@@ -107,13 +107,29 @@
     setTimeout(buildConfig, 50)
   }
 
-  const updateMembershipPriceType = (isUnpriced: boolean = false) => {
+  const setMembershipToUnpriced = () => {
     membership = {
       ...membership,
-      isUnpriced: isUnpriced,
+      fee: {
+        percentage: 0,
+        beneficiary: ZeroAddress,
+      },
+      isUnpriced: true,
+      paymentType: 'custom',
     }
-
     update()
+  }
+
+  const updateMembershipPriceType = (isUnpriced: boolean = false) => {
+    if (isUnpriced) {
+      setMembershipToUnpriced()
+    } else {
+      membership = {
+        ...membership,
+        isUnpriced: false,
+      }
+      update()
+    }
   }
 
   const activateMembership = (selectedMembership: Membership) => {
@@ -148,6 +164,11 @@
   }
 
   const changeMembershipPaymentType = async (type: MembershipPaymentType) => {
+    if (membership.isUnpriced) {
+      setMembershipToUnpriced()
+      return // This action is not allowed for unpriced membership.
+    }
+
     if (membership.currency === 'DEV') {
       // Update the membership fee in case of currency change to dev token.
       membershipPaymentType = 'custom'
@@ -159,6 +180,7 @@
           beneficiary: beneficiary(),
         },
         paymentType: 'custom',
+        isUnpriced: false, // Sanity check update to refect same state.
       }
 
       update() // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
@@ -174,6 +196,7 @@
           beneficiary: beneficiary(),
         },
         paymentType: 'instant',
+        isUnpriced: false, // Sanity check update to refect same state.
       }
     }
 
@@ -186,6 +209,7 @@
           beneficiary: beneficiary(),
         },
         paymentType: 'stake',
+        isUnpriced: false, // Sanity check update to refect same state.
       }
     }
 
@@ -197,6 +221,7 @@
           beneficiary: beneficiary(),
         },
         paymentType: 'custom',
+        isUnpriced: false, // Sanity check update to refect same state.
       }
     }
 
@@ -270,15 +295,21 @@
 
   const update = () => {
     if (
-      membership.price < minPrice ||
-      membership.price > maxPrice ||
-      membershipPaymentType === ''
-    )
+      !membership.isUnpriced &&
+      (membership.price < minPrice ||
+        membership.price > maxPrice ||
+        membershipPaymentType === '')
+    ) {
       return
+    }
 
     const search = mode === 'edit' ? originalId : membership.id
     membership.accessControl = usingAccessControl ? accessControl : undefined
-    if (membership.fee && membership.fee.percentage > 0) {
+    if (
+      membership.isUnpriced &&
+      membership.fee &&
+      membership.fee.percentage > 0
+    ) {
       membership = {
         ...membership,
         fee: {
@@ -342,6 +373,11 @@
   }
 
   const onChangePrice = async () => {
+    if (membership.isUnpriced) {
+      setMembershipToUnpriced()
+      return // Not allowed when membership is unpriced.
+    }
+
     const value = membership.price
 
     if (value < minPrice) {
@@ -362,6 +398,11 @@
   }
 
   const onChangeCustomFee = async () => {
+    if (membership.isUnpriced) {
+      setMembershipToUnpriced()
+      return // Not allowed if membership is unpriced.
+    }
+
     if (membership.currency === 'DEV') {
       // Update the membership fee in case of currency change to dev token.
       membershipPaymentType = 'custom'
