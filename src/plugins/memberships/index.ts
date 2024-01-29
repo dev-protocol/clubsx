@@ -28,6 +28,7 @@ export type Membership = {
   id: string
   name: string
   description: string
+  isUnpriced?: boolean
   price: number
   currency: 'USDC' | 'DEV' | 'ETH' | 'MATIC'
   imageSrc: string

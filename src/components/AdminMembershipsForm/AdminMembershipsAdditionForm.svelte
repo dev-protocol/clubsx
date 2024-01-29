@@ -286,7 +286,6 @@
         )
       : // If not, add it.
         [...existingMemberships, membership]
-    console.log('membership', membership, { currentAddress })
 
     setOptions(
       [{ key: 'memberships', value: newMemberships }],
@@ -565,51 +564,55 @@
           </p>
         </div>
 
-        <!-- Price -->
-        <div class="hs-form-field is-filled is-required">
-          <span class="hs-form-field__label"> Price </span>
-          <div class="flex w-full max-w-full items-center justify-start gap-1">
-            <input
-              class="hs-form-field__input grow"
-              bind:value={membership.price}
-              on:change={onChangePrice}
-              on:keyup={validateMembershipPrice}
-              id="membership-price"
-              name="membership-price"
-              type="number"
-              min={minPrice}
-              max={maxPrice}
-            />
-            <select
-              bind:value={membership.currency}
-              name="membership-currency"
-              class="hs-form-field__input w-fit"
-              id="membership-currency"
-              on:change={resetMembershipFee}
+        {#if !membership.isUnpriced}
+          <!-- Price -->
+          <div class="hs-form-field is-filled is-required">
+            <span class="hs-form-field__label"> Price </span>
+            <div
+              class="flex w-full max-w-full items-center justify-start gap-1"
             >
-              <option value="USDC" class="bg-primary-200 text-primary-ink"
-                >USDC</option
+              <input
+                class="hs-form-field__input grow"
+                bind:value={membership.price}
+                on:change={onChangePrice}
+                on:keyup={validateMembershipPrice}
+                id="membership-price"
+                name="membership-price"
+                type="number"
+                min={minPrice}
+                max={maxPrice}
+              />
+              <select
+                bind:value={membership.currency}
+                name="membership-currency"
+                class="hs-form-field__input w-fit"
+                id="membership-currency"
+                on:change={resetMembershipFee}
               >
-              <option value="ETH" class="bg-primary-200 text-primary-ink"
-                >ETH</option
+                <option value="USDC" class="bg-primary-200 text-primary-ink"
+                  >USDC</option
+                >
+                <option value="ETH" class="bg-primary-200 text-primary-ink"
+                  >ETH</option
+                >
+                <option value="MATIC" class="bg-primary-200 text-primary-ink"
+                  >MATIC</option
+                >
+                <option value="DEV" class="bg-primary-200 text-primary-ink"
+                  >DEV</option
+                >
+              </select>
+            </div>
+            <p class="hs-form-field__helper mt-2">
+              * If you choose USDC, you can active <u
+                >the credit card payment plugin.</u
               >
-              <option value="MATIC" class="bg-primary-200 text-primary-ink"
-                >MATIC</option
-              >
-              <option value="DEV" class="bg-primary-200 text-primary-ink"
-                >DEV</option
-              >
-            </select>
+            </p>
+            {#if invalidPriceMsg !== ''}
+              <p class="text-danger-300">* {invalidPriceMsg}</p>
+            {/if}
           </div>
-          <p class="hs-form-field__helper mt-2">
-            * If you choose USDC, you can active <u
-              >the credit card payment plugin.</u
-            >
-          </p>
-          {#if invalidPriceMsg !== ''}
-            <p class="text-danger-300">* {invalidPriceMsg}</p>
-          {/if}
-        </div>
+        {/if}
 
         <!-- Earning model -->
         <div class="hs-form-field is-filled is-required">
