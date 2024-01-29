@@ -166,7 +166,7 @@
   const changeMembershipPaymentType = async (type: MembershipPaymentType) => {
     if (membership.isUnpriced) {
       setMembershipToUnpriced()
-      return // This action is not allowed for unpriced membership.
+      return // Further action is not allowed for unpriced membership.
     }
 
     if (membership.currency === 'DEV') {
@@ -400,7 +400,7 @@
   const onChangeCustomFee = async () => {
     if (membership.isUnpriced) {
       setMembershipToUnpriced()
-      return // Not allowed if membership is unpriced.
+      return // Futher steps are not allowed for unpriced memberships.
     }
 
     if (membership.currency === 'DEV') {
@@ -415,6 +415,7 @@
           percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
         },
         paymentType: 'custom',
+        isUnpriced: false,
       }
 
       // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
@@ -442,6 +443,7 @@
         beneficiary: beneficiary(),
       },
       paymentType: 'custom',
+      isUnpriced: false,
     }
 
     // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
@@ -520,6 +522,11 @@
   }
 
   const resetMembershipFee = () => {
+    if (membership.isUnpriced) {
+      setMembershipToUnpriced()
+      return // Futher steps are not allowed for unpriced memberships.
+    }
+
     if (membership.currency !== 'DEV') return
 
     membershipCustomFee100 = 0
@@ -533,6 +540,7 @@
         beneficiary: beneficiary(),
       },
       paymentType: 'custom',
+      isUnpriced: false, // Sanity check to maintain consistency across all states.
     }
   }
 </script>
