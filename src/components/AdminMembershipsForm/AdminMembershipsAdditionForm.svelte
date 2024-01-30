@@ -118,6 +118,8 @@
       paymentType: 'custom',
       price: 0,
     }
+    membershipCustomFee100 = 0
+    membershipPaymentType = 'custom'
     update()
   }
 
