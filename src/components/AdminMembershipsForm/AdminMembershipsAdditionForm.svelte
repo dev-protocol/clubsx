@@ -116,6 +116,7 @@
       },
       isUnpriced: true,
       paymentType: 'custom',
+      price: 0,
     }
     update()
   }
@@ -309,7 +310,19 @@
 
     const search = mode === 'edit' ? originalId : membership.id
     membership.accessControl = usingAccessControl ? accessControl : undefined
-    if (
+
+    if (membership.isUnpriced) {
+      membership = {
+        ...membership,
+        isUnpriced: true,
+        paymentType: 'custom',
+        price: 0,
+        fee: {
+          percentage: 0,
+          beneficiary: ZeroAddress,
+        },
+      }
+    } else if (
       !membership.isUnpriced &&
       membership.fee &&
       membership.fee.percentage > 0
