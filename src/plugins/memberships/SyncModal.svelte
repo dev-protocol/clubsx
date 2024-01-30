@@ -9,6 +9,7 @@
     type Signer,
     ZeroAddress,
     parseUnits,
+    MaxUint256,
   } from 'ethers'
   import { tokenInfo } from '@constants/common'
   import BigNumber from 'bignumber.js'
@@ -34,10 +35,10 @@
         name: JSON.stringify(mem.name).slice(1, -1),
         description: JSON.stringify(mem.description).slice(1, -1),
         requiredTokenAmount: mem.isUnpriced
-          ? 0n
+          ? MaxUint256
           : parseUnits(String(mem.price), decimals),
         requiredTokenFee: mem.isUnpriced
-          ? 0n
+          ? MaxUint256
           : mem.fee?.percentage
             ? parseUnits(
                 new BigNumber(mem.price)
