@@ -33,22 +33,28 @@
         src: mem.imageSrc,
         name: JSON.stringify(mem.name).slice(1, -1),
         description: JSON.stringify(mem.description).slice(1, -1),
-        requiredTokenAmount: parseUnits(String(mem.price), decimals),
-        requiredTokenFee: mem.fee?.percentage
-          ? parseUnits(
-              new BigNumber(mem.price)
-                .times(mem.fee.percentage)
-                .dp(decimals, 1)
-                .toFixed(),
-              decimals,
-            )
-          : 0n,
-        gateway: mem.fee?.beneficiary ?? ZeroAddress,
+        requiredTokenAmount: mem.isUnpriced
+          ? 0n
+          : parseUnits(String(mem.price), decimals),
+        requiredTokenFee: mem.isUnpriced
+          ? 0n
+          : mem.fee?.percentage
+            ? parseUnits(
+                new BigNumber(mem.price)
+                  .times(mem.fee.percentage)
+                  .dp(decimals, 1)
+                  .toFixed(),
+                decimals,
+              )
+            : 0n,
+        gateway: mem.isUnpriced
+          ? ZeroAddress
+          : mem.fee?.beneficiary ?? ZeroAddress,
         token: token,
       },
     }
   })
-  console.log({ expectedMemberships })
+
   const stateFetcher = async ({
     provider,
     propertyAddress,
