@@ -121,6 +121,10 @@
   }
 
   const updateMembershipPriceType = (isUnpriced: boolean = false) => {
+    if (noOfPositions > 0) {
+      return // You can't update membership type when there are members already.
+    }
+
     if (isUnpriced) {
       setMembershipToUnpriced()
     } else {
@@ -635,6 +639,7 @@
               }`}
               id="membership-unpriced"
               name="membership-unpriced"
+              disabled={!membership.isUnpriced && noOfPositions > 0}
             >
               Unpriced
             </button>
@@ -645,10 +650,22 @@
               }`}
               id="membership-priced"
               name="membership-priced"
+              disabled={membership.isUnpriced && noOfPositions > 0}
             >
               Priced
             </button>
           </div>
+          {#if membership.isUnpriced}
+            <div
+              class="flex w-full max-w-full items-center justify-start gap-1"
+            >
+              <p class="hs-form-field__helper mt-2">
+                * Unpriced memberships can not be bought, <u
+                  >they are available via invite only.</u
+                >
+              </p>
+            </div>
+          {/if}
           {#if !membership.isUnpriced}
             <div
               class="flex w-full max-w-full items-center justify-start gap-1"
