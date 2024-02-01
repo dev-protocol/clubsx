@@ -171,16 +171,17 @@
   resolved "https://registry.yarnpkg.com/@astrojs/underscore-redirects/-/underscore-redirects-0.3.3.tgz#a968b6980ad34d84093100264a1035b130732137"
   integrity sha512-qDAKhFO4M1KzP7mxoJfiehf8oyf3EB158MxAa6z10NeD2pR3o4K3LlOQI8CfJgXE+BDBQcnaLvVCg/Mz/Gkg4Q==
 
-"@astrojs/vercel@7.0.2":
-  version "7.0.2"
-  resolved "https://registry.yarnpkg.com/@astrojs/vercel/-/vercel-7.0.2.tgz#667bef7b8ff297ef6f11a2e1ff15dc31eb0f4ad4"
-  integrity sha512-XlUNqstoGVDDk5txGF2JadSt+jK79peMeFHlH6D5u9d9yeql1Kyw2o9nPvu9nr1PMdnDrBkF82DQE06iIzXZ1Q==
+"@astrojs/vercel@7.1.0":
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/vercel/-/vercel-7.1.0.tgz#804bb8939da2dd29e91746c3302345117b3f03ba"
+  integrity sha512-J5iskScOm90X+XSwY9f87vPhFS0fPyTq2IXn1SZrU2gAqxvdEegiAwlpf1AhMnIwP87XsAQVIoJxzLeKzNo6DQ==
   dependencies:
     "@astrojs/internal-helpers" "0.2.1"
     "@vercel/analytics" "^1.0.2"
     "@vercel/nft" "^0.24.3"
     esbuild "^0.19.6"
     fast-glob "^3.3.2"
+    minimatch "^9.0.3"
     set-cookie-parser "^2.6.0"
     web-vitals "^3.4.0"
 
