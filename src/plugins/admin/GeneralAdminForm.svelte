@@ -7,11 +7,17 @@
 
   const AVATAR_IMG_SRC = 'avatarImgSrc'
   const toggleEnableClasses =
-      'h-[56px] rounded-[999px] bg-white text-black p-[16px] cursor-pointer'
-    const toggleDisableClasses =
-      'h-[56px] rounded-[999px] b-0 p-[16px] cursor-pointer'
-  let { name, adminPageVisibility, description, twitterHandle, propertyAddress, adminRolePoints } =
-    config
+    'h-[56px] rounded-[999px] bg-white text-black p-[16px] cursor-pointer'
+  const toggleDisableClasses =
+    'h-[56px] rounded-[999px] b-0 p-[16px] cursor-pointer'
+  let {
+    name,
+    adminPageVisibility,
+    description,
+    twitterHandle,
+    propertyAddress,
+    adminRolePoints,
+  } = config
   let avatarPath =
     config.options?.find((opt) => opt.key === AVATAR_IMG_SRC)?.value ?? ''
   let avatarUploading = false
@@ -115,23 +121,42 @@
       <p class="h-[24px] font-body text-base font-normal capitalize leading-6">
         Admin Page Visibility
       </p>
-        <div class="flex w-full flex-row items-center justify-between gap-[10px] p-0">
-          <div class="flex h-[68px] flex-row items-center justify-start gap-[16px] rounded-[99px] border-[3px] border-white p-1.5">
-            <div on:click={!adminPageVisibility ? () => {} : () => toggleAdminPageVisibility()}
-              class={!adminPageVisibility ?  toggleEnableClasses : toggleDisableClasses}>
-              <button class="h-[24px] font-body text-base font-normal leading-6">
-                Public
-              </button>
-            </div>
-            <div on:click={adminPageVisibility ? () => {} : () => toggleAdminPageVisibility()}
-              class={adminPageVisibility ? toggleEnableClasses : toggleDisableClasses}>
-              <button class="h-[24px] font-body text-base font-normal leading-6">
-               Private
-              </button>
-            </div>
+      <div
+        class="flex w-full flex-row items-center justify-between gap-[10px] p-0"
+      >
+        <div
+          class="flex h-[68px] flex-row items-center justify-start gap-[16px] rounded-[99px] border-[3px] border-white p-1.5"
+        >
+          <div
+            on:click={!adminPageVisibility
+              ? () => {}
+              : () => toggleAdminPageVisibility()}
+            class={!adminPageVisibility
+              ? toggleEnableClasses
+              : toggleDisableClasses}
+          >
+            <button class="h-[24px] font-body text-base font-normal leading-6">
+              Public
+            </button>
+          </div>
+          <div
+            on:click={adminPageVisibility
+              ? () => {}
+              : () => toggleAdminPageVisibility()}
+            class={adminPageVisibility
+              ? toggleEnableClasses
+              : toggleDisableClasses}
+          >
+            <button class="h-[24px] font-body text-base font-normal leading-6">
+              Private
+            </button>
           </div>
         </div>
-        <span class="text-xs">Keeping the visibilty private restricts viewing to admin & editable role holders only</span>
+      </div>
+      <span class="text-xs"
+        >Keeping the visibilty private restricts viewing to admin & editable
+        role holders only</span
+      >
     </div>
 
     <label class="hs-form-field is-filled mb-10 flex flex-col">
