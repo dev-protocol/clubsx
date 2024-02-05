@@ -158,7 +158,7 @@ const siteBaseUrl = new URL(replaceWithFwdHost(Astro.request)).origin
           <Content {...path.props} />
           <div id="config-container" data-config={JSON.stringify(config)} />
         </div>
-        <div id="non-admin-message"></div>
+        <div id="non-admin-message" />
         <PreviewBanner
           inAdmin={true}
           config={config as ClubsConfiguration}
@@ -178,10 +178,7 @@ const siteBaseUrl = new URL(replaceWithFwdHost(Astro.request)).origin
 }
 
 <script>
-  import {
-    type ethers,
-    JsonRpcProvider
-  } from 'ethers'
+  import { type ethers, JsonRpcProvider } from 'ethers'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
   import type { DraftOptions } from '@constants/draft'
   import { decode, onSubmitConfig, isAdmin } from '@devprotocol/clubs-core'
@@ -206,26 +203,27 @@ const siteBaseUrl = new URL(replaceWithFwdHost(Astro.request)).origin
   })
   async function waitForCurrentAddress() {
     return new Promise((resolve, reject) => {
-        const interval = setInterval(() => {
-            if (currentAddress !== undefined) {
-                clearInterval(interval);
-                resolve(currentAddress);
-            }
-        }, 100); // Check every 100ms, adjust as needed
+      const interval = setInterval(() => {
+        if (currentAddress !== undefined) {
+          clearInterval(interval)
+          resolve(currentAddress)
+        }
+      }, 100) // Check every 100ms, adjust as needed
 
-        // Optionally, timeout to reject the promise if it takes too long
-        const timeout = setTimeout(() => {
-            clearInterval(interval);
-            reject(new Error("Timeout waiting for currentAddress"));
-        }, 5000); // Timeout after 5000ms, adjust as needed
-    });
+      // Optionally, timeout to reject the promise if it takes too long
+      const timeout = setTimeout(() => {
+        clearInterval(interval)
+        reject(new Error('Timeout waiting for currentAddress'))
+      }, 5000) // Timeout after 5000ms, adjust as needed
+    })
   }
   async function handleAccessDenied() {
-    let targetDiv = document.getElementById("non-admin-message");
+    let targetDiv = document.getElementById('non-admin-message')
     if (targetDiv) {
-      targetDiv.innerHTML = "<p>🚀 Whoops! It looks like you've stumbled into a secret space mission reserved for our Club Admins! While we appreciate your adventurous spirit, this area is off-limits to non-admin explorers. But don't worry, your own mission awaits back on familiar territory. Click <u><a href='https://clubs.place/domain'>here</a></u> to create your own club. Your future club might become the shining star that guides others to their own club-creating journey! 🌟 Keep exploring and may the stars align for your club-building adventure!</p>";
+      targetDiv.innerHTML =
+        "<p>🚀 Whoops! It looks like you've stumbled into a secret space mission reserved for our Club Admins! While we appreciate your adventurous spirit, this area is off-limits to non-admin explorers. But don't worry, your own mission awaits back on familiar territory. Click <u><a href='https://clubs.place/domain'>here</a></u> to create your own club. Your future club might become the shining star that guides others to their own club-creating journey! 🌟 Keep exploring and may the stars align for your club-building adventure!</p>"
     }
-    console.error('Access denied or error fetching data');
+    console.error('Access denied or error fetching data')
   }
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -251,12 +249,16 @@ const siteBaseUrl = new URL(replaceWithFwdHost(Astro.request)).origin
     async function fetchDataAndProcess() {
       try {
         if (config && config?.adminPageVisibility) {
-            try{
-            await waitForCurrentAddress();
-            const address = currentAddress  as string
+          try {
+            await waitForCurrentAddress()
+            const address = currentAddress as string
             const provider = new JsonRpcProvider(config?.rpcUrl)
             console.log('here-1')
-            const access = await isAdmin({address: address, previousConfiguration: config, provider: provider})
+            const access = await isAdmin({
+              address: address,
+              previousConfiguration: config,
+              provider: provider,
+            })
             console.log('here-2')
             console.log('access:', access)
             if (mainContainer && access) {
@@ -266,11 +268,11 @@ const siteBaseUrl = new URL(replaceWithFwdHost(Astro.request)).origin
                 mainContainer.dataset.showNavigation,
               )
             } else {
-              handleAccessDenied();
-            }
-            } catch (error) {
               handleAccessDenied()
             }
+          } catch (error) {
+            handleAccessDenied()
+          }
         }
       } catch (error) {
         console.error('Error fetching data:', error)
@@ -278,7 +280,6 @@ const siteBaseUrl = new URL(replaceWithFwdHost(Astro.request)).origin
     }
     fetchDataAndProcess()
   })
-
 
   onSubmitConfig(async (data, onFinish) => {
     const splitHostname = window.location.hostname.split('.')
