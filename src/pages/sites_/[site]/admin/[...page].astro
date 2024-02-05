@@ -241,8 +241,7 @@ const siteBaseUrl = new URL(replaceWithFwdHost(Astro.request)).origin
       mainContainer.dataset.showNavigation = 'true'
       let targetDiv = document.getElementById('non-admin-message')
       if (targetDiv) {
-        targetDiv.innerHTML =
-          "<p>Please wait...</p>"
+        targetDiv.innerHTML = '<p>Please wait...</p>'
       }
     } else {
       console.error('mainContainer not found')
