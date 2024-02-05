@@ -237,12 +237,13 @@ const siteBaseUrl = new URL(replaceWithFwdHost(Astro.request)).origin
     } else {
       console.error('configContainer not found')
     }
-    if (mainContainer) {
+    if (mainContainer && config?.adminPageVisibility) {
       mainContainer.dataset.showNavigation = 'true'
-      console.log(
-        'Dataset updated first time:',
-        mainContainer.dataset.showNavigation,
-      )
+      let targetDiv = document.getElementById('non-admin-message')
+      if (targetDiv) {
+        targetDiv.innerHTML =
+          "<p>Please wait...</p>"
+      }
     } else {
       console.error('mainContainer not found')
     }
@@ -253,20 +254,14 @@ const siteBaseUrl = new URL(replaceWithFwdHost(Astro.request)).origin
             await waitForCurrentAddress()
             const address = currentAddress as string
             const provider = new JsonRpcProvider(config?.rpcUrl)
-            console.log('here-1')
             const access = await isAdmin({
               address: address,
               previousConfiguration: config,
               provider: provider,
             })
-            console.log('here-2')
             console.log('access:', access)
             if (mainContainer && access) {
               mainContainer.dataset.showNavigation = 'false'
-              console.log(
-                'Dataset updated second time:',
-                mainContainer.dataset.showNavigation,
-              )
             } else {
               handleAccessDenied()
             }
