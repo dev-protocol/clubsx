@@ -29,7 +29,7 @@
     "@types/marked": "^5.0.1",
     "@types/node": "^20.5.9",
     "@types/ramda": "0.29.10",
-    "@types/react": "18.2.53",
+    "@types/react": "18.2.54",
     "@types/three": "0.161.2",
     "@types/uuid": "^9.0.3",
     "dotenv": "16.4.1",
