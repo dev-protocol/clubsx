@@ -65,3 +65,10 @@ export const schemaId = keccak256(encode(schema))
 export const invitationDocument = (
   base: Omit<Invitation, 'id'>,
 ): Invitation => ({ ...base, id: nanoid(10) })
+
+/**
+ * Returns string that available for searching as TAG
+ * @param id - the base string
+ * @returns the TAG string
+ */
+export const uuidToQuery = (id: string) => id.replaceAll('-', '\\-')

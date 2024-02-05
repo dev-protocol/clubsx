@@ -11,8 +11,16 @@ import { Content as Readme } from './README.md'
 import Preview1 from './assets/default-theme-1.jpg'
 import Preview2 from './assets/default-theme-2.jpg'
 import Preview3 from './assets/default-theme-3.jpg'
-import { aperture, o } from 'ramda'
+import { aperture } from 'ramda'
 import { withCheckingIndex, getDefaultClient } from './redis'
+import { Index, schema, uuidToQuery, type Invitation } from './redis-schema'
+import {
+  isNotError,
+  whenDefined,
+  whenNotError,
+  whenNotErrorAll,
+  type UndefinedOr,
+} from '@devprotocol/util-ts'
 
 export const getPagePaths = (async (options, config) => {
   return []
@@ -25,15 +33,44 @@ export const getApiPaths = (async (options, config) => {
       method: 'GET',
       handler: async (req) => {
         // Detect the passed invitation ID
-        const [, id] =
+        const [, givenId] =
           aperture(2, req.url.pathname.split('/')).find(
             ([p]) => p === 'invitations',
           ) ?? []
 
-        // Generate a redis client while checking the latest schema is indexing and create/update index if it's not.
-        const client = await withCheckingIndex(getDefaultClient)
+        const id =
+          whenDefined(givenId, (_id) => _id) ?? new Error('ID is required')
 
-        return new Response()
+        // Generate a redis client while checking the latest schema is indexing and create/update index if it's not.
+        const client = await withCheckingIndex(getDefaultClient).catch(
+          (err) => err as Error,
+        )
+
+        // Try to fetch the mapped invitation.
+        const data = await whenNotErrorAll([id, client], ([_id, _client]) =>
+          _client.ft.search(
+            Index,
+            `@${schema['$.id'].AS}:{${uuidToQuery(_id)}}`,
+            {
+              LIMIT: {
+                from: 0,
+                size: 1,
+              },
+            },
+          ),
+        )
+
+        const res = whenNotError(
+          data,
+          (d) =>
+            (d.documents.find((x) => x.value)
+              ?.value as UndefinedOr<Invitation>) ??
+            new Error('ID is not found.'),
+        )
+
+        return new Response(JSON.stringify(res), {
+          status: isNotError(res) ? 200 : 400,
+        })
       },
     },
   ]
