@@ -1,6 +1,14 @@
 import { createClient } from 'redis'
 import type { AsyncReturnType } from 'type-fest'
-import { Index, Prefix, SchemaKey, schema, schemaId } from './redis-schema'
+import {
+  Index,
+  Prefix,
+  SchemaKey,
+  schemaHistory,
+  schemaHistoryId,
+  schemaInvitation,
+  schemaInvitationId,
+} from './redis-schema'
 
 export const defaultClient = createClient({
   url: import.meta.env.REDIS_URL,
@@ -30,14 +38,28 @@ export const withCheckingIndex = async <
   getClient: T,
 ): Promise<AsyncReturnType<T>> => {
   const client = (await getClient()) as AsyncReturnType<T>
-  const currentScm = await client.get(SchemaKey)
-  const isSchemaIndexed = currentScm === schemaId
-  return isSchemaIndexed
+  const currentScmI = await client.get(SchemaKey.Invitation)
+  const currentScmH = await client.get(SchemaKey.History)
+  const isScmIIndexed = currentScmI === schemaInvitationId
+  const isScmHIndexed = currentScmH === schemaHistoryId
+  const ON = 'JSON'
+  return isScmIIndexed && isScmHIndexed
     ? client
-    : client.ft
-        .dropIndex(Index)
+    : Promise.all([
+        client.ft.dropIndex(Index.Invitation),
+        client.ft.dropIndex(Index.History),
+      ])
         .then(() =>
-          client.ft.create(Index, schema, { ON: 'JSON', PREFIX: Prefix }),
+          Promise.all([
+            client.ft.create(Index.Invitation, schemaInvitation, {
+              ON,
+              PREFIX: Prefix.Invitation,
+            }),
+            client.ft.create(Index.History, schemaHistory, {
+              ON,
+              PREFIX: Prefix.History,
+            }),
+          ]),
         )
         .then(() => client)
 }

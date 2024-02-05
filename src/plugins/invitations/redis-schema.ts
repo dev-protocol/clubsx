@@ -3,11 +3,20 @@ import { SchemaFieldTypes, type RediSearchSchema } from 'redis'
 import { keccak256 } from 'ethers'
 import { nanoid } from 'nanoid'
 
-export const Index = 'idx::devprotocol:clubs:invitation'
+export enum Index {
+  Invitation = 'idx::devprotocol:clubs:invitation:code',
+  History = 'idx::devprotocol:clubs:invitation:history',
+}
 
-export const Prefix = 'doc::devprotocol:clubs:invitation::'
+export enum Prefix {
+  Invitation = 'doc::devprotocol:clubs:invitation:code::',
+  History = 'doc::devprotocol:clubs:invitation:history::',
+}
 
-export const SchemaKey = 'scm::devprotocol:clubs:invitation'
+export enum SchemaKey {
+  Invitation = 'scm::devprotocol:clubs:invitation:code',
+  History = 'scm::devprotocol:clubs:invitation:history',
+}
 
 export type Invitation = {
   id: string
@@ -18,6 +27,13 @@ export type Invitation = {
   membership: {
     payload: string
   }
+}
+
+export type History = {
+  id: string
+  usedId: string
+  datetime: number
+  account: string
 }
 
 export const id = {
@@ -48,14 +64,44 @@ export const membershipPayload = {
   },
 } satisfies RediSearchSchema
 
-export const schema = {
+export const usedId = {
+  '$.usedId': {
+    type: SchemaFieldTypes.TAG,
+    AS: 'usedId',
+  },
+} satisfies RediSearchSchema
+
+export const datetime = {
+  '$.datetime': {
+    type: SchemaFieldTypes.NUMERIC,
+    AS: 'datetime',
+  },
+} satisfies RediSearchSchema
+
+export const account = {
+  '$.account': {
+    type: SchemaFieldTypes.TAG,
+    AS: 'account',
+  },
+} satisfies RediSearchSchema
+
+export const schemaInvitation = {
   ...id,
   ...disabled,
   ...conditionsReceipient,
   ...membershipPayload,
 }
 
-export const schemaId = keccak256(encode(schema))
+export const schemaHistory = {
+  ...id,
+  ...usedId,
+  ...datetime,
+  ...account,
+}
+
+export const schemaInvitationId = keccak256(encode(schemaInvitation))
+
+export const schemaHistoryId = keccak256(encode(schemaHistory))
 
 /**
  * Generate a new invitation document
@@ -65,6 +111,16 @@ export const schemaId = keccak256(encode(schema))
 export const invitationDocument = (
   base: Omit<Invitation, 'id'>,
 ): Invitation => ({ ...base, id: nanoid(10) })
+
+/**
+ * Generate a new history document
+ * @param base - the history item without ID
+ * @returns the generated new history document without ID duplication check
+ */
+export const historyDocument = (base: Omit<History, 'id'>): History => ({
+  ...base,
+  id: nanoid(),
+})
 
 /**
  * Returns string that available for searching as TAG

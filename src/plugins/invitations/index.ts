@@ -13,7 +13,15 @@ import Preview2 from './assets/default-theme-2.jpg'
 import Preview3 from './assets/default-theme-3.jpg'
 import { aperture } from 'ramda'
 import { withCheckingIndex, getDefaultClient } from './redis'
-import { Index, schema, uuidToQuery, type Invitation } from './redis-schema'
+import {
+  Index,
+  Prefix,
+  schemaInvitation,
+  schemaHistory,
+  uuidToQuery,
+  type Invitation,
+  type History,
+} from './redis-schema'
 import {
   isNotError,
   whenDefined,
@@ -49,8 +57,8 @@ export const getApiPaths = (async (options, config) => {
         // Try to fetch the mapped invitation.
         const data = await whenNotErrorAll([id, client], ([_id, _client]) =>
           _client.ft.search(
-            Index,
-            `@${schema['$.id'].AS}:{${uuidToQuery(_id)}}`,
+            Index.Invitation,
+            `@${schemaInvitation['$.id'].AS}:{${uuidToQuery(_id)}}`,
             {
               LIMIT: {
                 from: 0,
