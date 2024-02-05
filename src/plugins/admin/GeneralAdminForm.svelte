@@ -70,6 +70,7 @@
   }
 
   const toggleAdminPageVisibility = () => {
+    // true when private, false when public
     adminPageVisibility = !adminPageVisibility
     updateConfig()
   }

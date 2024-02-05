@@ -22,7 +22,6 @@ import PreviewBanner from '@components/PreviewBanner/PreviewBanner.astro'
 import { replaceWithFwdHost } from '@fixtures/url'
 import type { InferGetStaticPropsType } from 'astro'
 import Clarity from '@components/Clarity/Clarity.astro'
-import { clientsProperty } from '@devprotocol/dev-kit/agent'
 
 const { site, page } = Astro.params
 
@@ -159,20 +158,7 @@ const siteBaseUrl = new URL(replaceWithFwdHost(Astro.request)).origin
           <Content {...path.props} />
           <div id="config-container" data-config={JSON.stringify(config)} />
         </div>
-        <div>
-          <p>
-            🚀 Whoops! It looks like you've stumbled into a secret space mission
-            reserved for our Admin Astronauts! While we appreciate your
-            adventurous spirit, this area is off-limits to non-admin explorers.
-            But don't worry, your own mission awaits back on familiar territory.
-            Click{' '}
-            <u>
-              <a href="https://clubs.place/">here</a>
-            </u>{' '}
-            to safely return to known space. And who knows? Maybe one day you'll
-            get your own astronaut wings! 🌟
-          </p>
-        </div>
+        <div id="non-admin-message"></div>
         <PreviewBanner
           inAdmin={true}
           config={config as ClubsConfiguration}
@@ -194,17 +180,14 @@ const siteBaseUrl = new URL(replaceWithFwdHost(Astro.request)).origin
 <script>
   import {
     type ethers,
-    JsonRpcProvider,
-    formatUnits,
-    WeiPerEther,
+    JsonRpcProvider
   } from 'ethers'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
   import type { DraftOptions } from '@constants/draft'
-  import { decode, onSubmitConfig } from '@devprotocol/clubs-core'
+  import { decode, onSubmitConfig, isAdmin } from '@devprotocol/clubs-core'
   import { onMountClient } from '@devprotocol/clubs-core'
   import { hashMessage } from 'ethers'
   import { type ClubsConfiguration } from '@devprotocol/clubs-core'
-  import { clientsProperty } from '@devprotocol/dev-kit/agent'
 
   let connection: typeof Connection
   let signer: ethers.Signer | undefined
@@ -221,22 +204,41 @@ const siteBaseUrl = new URL(replaceWithFwdHost(Astro.request)).origin
       console.log('currentAddress', currentAddress)
     })
   })
+  async function waitForCurrentAddress() {
+    return new Promise((resolve, reject) => {
+        const interval = setInterval(() => {
+            if (currentAddress !== undefined) {
+                clearInterval(interval);
+                resolve(currentAddress);
+            }
+        }, 100); // Check every 100ms, adjust as needed
+
+        // Optionally, timeout to reject the promise if it takes too long
+        const timeout = setTimeout(() => {
+            clearInterval(interval);
+            reject(new Error("Timeout waiting for currentAddress"));
+        }, 5000); // Timeout after 5000ms, adjust as needed
+    });
+  }
+  async function handleAccessDenied() {
+    let targetDiv = document.getElementById("non-admin-message");
+    if (targetDiv) {
+      targetDiv.innerHTML = "<p>🚀 Whoops! It looks like you've stumbled into a secret space mission reserved for our Club Admins! While we appreciate your adventurous spirit, this area is off-limits to non-admin explorers. But don't worry, your own mission awaits back on familiar territory. Click <u><a href='https://clubs.place/domain'>here</a></u> to create your own club. Your future club might become the shining star that guides others to their own club-creating journey! 🌟 Keep exploring and may the stars align for your club-building adventure!</p>";
+    }
+    console.error('Access denied or error fetching data');
+  }
 
   document.addEventListener('DOMContentLoaded', () => {
     const mainContainer = document.getElementById('__clubs:main-container__')
     const configContainer = document.getElementById('config-container')
     let config: ClubsConfiguration | undefined
     if (configContainer) {
-      console.log('configContainer:', configContainer)
       config = JSON.parse(
         configContainer?.dataset?.config as string,
       ) as ClubsConfiguration
-      console.log('property address', config?.propertyAddress)
-      console.log({ config })
     } else {
       console.error('configContainer not found')
     }
-
     if (mainContainer) {
       mainContainer.dataset.showNavigation = 'true'
       console.log(
@@ -246,40 +248,29 @@ const siteBaseUrl = new URL(replaceWithFwdHost(Astro.request)).origin
     } else {
       console.error('mainContainer not found')
     }
-
     async function fetchDataAndProcess() {
       try {
-        if (config) {
-          const provider = new JsonRpcProvider(config?.rpcUrl)
-          const propertyClient = await clientsProperty(
-            provider,
-            config?.propertyAddress,
-          )
-
-          // eslint-disable-next-line functional/no-conditional-statement
-          if (!propertyClient || propertyClient.length <= 0) {
-            return false
-          }
-
-          const property = propertyClient[0] ?? propertyClient[1]
-          const totalSupply = BigInt((await property?.totalSupply()) ?? 0)
-          const userBalance = BigInt(
-            (await property?.balanceOf(currentAddress || '')) ?? 0,
-          )
-
-          const userShare = Number(
-            // Parsing (balance * 1e18 / supply) with 1e16
-            formatUnits((userBalance * WeiPerEther) / totalSupply, 16),
-          )
-          if (mainContainer && userShare >= config.adminRolePoints) {
-            mainContainer.dataset.showNavigation = 'false'
-            console.log(
-              'Dataset updated second time:',
-              mainContainer.dataset.showNavigation,
-            )
-          } else {
-            console.error('mainContainer not found')
-          }
+        if (config && config?.adminPageVisibility) {
+            try{
+            await waitForCurrentAddress();
+            const address = currentAddress  as string
+            const provider = new JsonRpcProvider(config?.rpcUrl)
+            console.log('here-1')
+            const access = await isAdmin({address: address, previousConfiguration: config, provider: provider})
+            console.log('here-2')
+            console.log('access:', access)
+            if (mainContainer && access) {
+              mainContainer.dataset.showNavigation = 'false'
+              console.log(
+                'Dataset updated second time:',
+                mainContainer.dataset.showNavigation,
+              )
+            } else {
+              handleAccessDenied();
+            }
+            } catch (error) {
+              handleAccessDenied()
+            }
         }
       } catch (error) {
         console.error('Error fetching data:', error)
@@ -287,6 +278,7 @@ const siteBaseUrl = new URL(replaceWithFwdHost(Astro.request)).origin
     }
     fetchDataAndProcess()
   })
+
 
   onSubmitConfig(async (data, onFinish) => {
     const splitHostname = window.location.hostname.split('.')
