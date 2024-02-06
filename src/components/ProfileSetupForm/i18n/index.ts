@@ -35,4 +35,9 @@ export const Strings = {
     en: () => 'Recommended image size is 600px x 600px',
     ja: () => '推奨サイズ 600 x 600 ピクセル',
   },
+  ForExampleTwitterHandle: {
+    en: () => "Enter the Twitter handle only, like 'elonmusk' – no '@' or URL needed",
+    ja: () => 'アカウント名あるいはリンクではなく、ツイッターのハンドル名を入力してください。例：「クラブ太郎」',
+  },
+  
 } satisfies ClubsI18nParts

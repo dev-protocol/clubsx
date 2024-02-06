@@ -140,6 +140,7 @@
       id="twitter-handle"
       name="twitter-handle"
     />
+    <span class="mt-1 text-sm opacity-60">{i18n('ForExampleTwitterHandle')}</span>
   </label>
 
   <div class="flex flex-col items-start">
