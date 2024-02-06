@@ -6,9 +6,9 @@
         class="align-items-center flex items-center justify-items-center gap-3"
       >
         <img v-if="connected" alt="Status" :src="checkImage" class="h-6 w-6" />
-        <h2 v-bind:class="stepTextClasses">Connect your wallet</h2>
+        <h2 v-bind:class="stepTextClasses">{{ i18n('ConnectYourWallet') }}</h2>
       </section>
-      <p class="text-base">How do I create a wallet?</p>
+      <p class="text-base">{{ i18n('HowToCreate') }}</p>
     </section>
     <ConnectButton
       lable="buttonText"
@@ -26,12 +26,18 @@ import { onMountClient } from '@devprotocol/clubs-core'
 import { watchWalletClient } from '@wagmi/core'
 import { whenDefined } from '@devprotocol/util-ts'
 import { BrowserProvider } from 'ethers'
+import { Strings } from './i18n'
+import { i18nFactory } from '@devprotocol/clubs-core'
+
+const i18nBase = i18nFactory(Strings)
+let i18n = i18nBase(['en'])
 
 type Data = {
   connected: boolean
   connection?: typeof Connection
   isAwaitingWalletConfirmation: boolean
   connectButtonTextMsg: string
+  i18n: ReturnType<typeof i18nBase>
 }
 
 export default defineComponent({
@@ -46,6 +52,7 @@ export default defineComponent({
       connected: false,
       isAwaitingWalletConfirmation: false,
       connectButtonTextMsg: 'Connect',
+      i18n: i18nBase(['en']),
     }
   },
   computed: {
@@ -71,9 +78,10 @@ export default defineComponent({
     },
   },
   async mounted() {
+    this.i18n = i18nBase(navigator.languages)
     onMountClient(async () => {
       this.connected = false
-      this.connectButtonTextMsg = 'Fetching wallet details...'
+      this.connectButtonTextMsg = this.i18n('FetchingWalletDetails')
 
       const { connection } = await import('@devprotocol/clubs-core/connection')
       this.connection = connection
@@ -87,10 +95,10 @@ export default defineComponent({
       connection().account.subscribe((account) => {
         if (account) {
           this.connected = true
-          this.connectButtonTextMsg = 'Connected'
+          this.connectButtonTextMsg = this.i18n('Connected')
         } else {
           this.connected = false
-          this.connectButtonTextMsg = 'Connect'
+          this.connectButtonTextMsg = this.i18n('Connect')
         }
 
         this.isAwaitingWalletConfirmation = false
