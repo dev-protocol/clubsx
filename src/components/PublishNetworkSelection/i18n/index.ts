@@ -24,7 +24,8 @@ export const Strings = {
   },
   NoToken: {
     en: () => "Don't have a token for your Club yet? Click here to activate.",
-    ja: () => 'クラブにトークンがない場合は、ここをクリックして有効にしてください',
+    ja: () =>
+      'クラブにトークンがない場合は、ここをクリックして有効にしてください',
   },
   ActivateToken: {
     en: () => 'Activate your Club token.',
@@ -32,11 +33,13 @@ export const Strings = {
   },
   MissingStep: {
     en: () => 'Complete Basic info, Design, Memberships before activation.',
-    ja: () => '有効にする前に、基本情報、デザイン、メンバーシップの設定を完了させましょう',
+    ja: () =>
+      '有効にする前に、基本情報、デザイン、メンバーシップの設定を完了させましょう',
   },
   EnableMemberships: {
     en: () => 'Enable a memberships contract to use memberships.',
-    ja: () => 'メンバーシップを使うためにメンバーシップコントラクトを有効にしましょう',
+    ja: () =>
+      'メンバーシップを使うためにメンバーシップコントラクトを有効にしましょう',
   },
   StoreMemberships: {
     en: () => 'Store your memberships to a contract.',

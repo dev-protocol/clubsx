@@ -223,10 +223,12 @@ const siteBaseUrl = new URL(replaceWithFwdHost(Astro.request)).origin
       targetDiv.innerHTML =
         "<p>🚀 Whoops! It looks like you've stumbled into a secret space mission reserved for our Club Admins! While we appreciate your adventurous spirit, this area is off-limits to non-admin explorers. But don't worry, your own mission awaits back on familiar territory. Click <u><a href='https://clubs.place/domain'>here</a></u> to create your own club. Your future club might become the shining star that guides others to their own club-creating journey! 🌟 Keep exploring and may the stars align for your club-building adventure!</p>"
     }
-    console.error('Access denied or error fetching data')
+    console.error('Error: Access denied or error fetching data')
   }
 
   document.addEventListener('DOMContentLoaded', () => {
+    const dataTypeValue = document.body.getAttribute('data-page')
+    console.log('dataTypeValue:', dataTypeValue)
     const mainContainer = document.getElementById('__clubs:main-container__')
     const configContainer = document.getElementById('config-container')
     let config: ClubsConfiguration | undefined
@@ -237,14 +239,18 @@ const siteBaseUrl = new URL(replaceWithFwdHost(Astro.request)).origin
     } else {
       console.error('configContainer not found')
     }
-    if (mainContainer && config?.adminPageVisibility) {
+    if (
+      mainContainer &&
+      config?.adminPageVisibility &&
+      dataTypeValue !== 'marketplace'
+    ) {
       mainContainer.dataset.showNavigation = 'true'
       let targetDiv = document.getElementById('non-admin-message')
       if (targetDiv) {
         targetDiv.innerHTML = '<p>Please wait...</p>'
       }
     } else {
-      console.error('mainContainer not found')
+      console.error('Error: Access denied or error fetching data')
     }
     async function fetchDataAndProcess() {
       try {
@@ -265,6 +271,7 @@ const siteBaseUrl = new URL(replaceWithFwdHost(Astro.request)).origin
               handleAccessDenied()
             }
           } catch (error) {
+            console.error(error)
             handleAccessDenied()
           }
         }
