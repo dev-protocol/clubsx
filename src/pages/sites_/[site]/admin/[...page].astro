@@ -239,7 +239,11 @@ const siteBaseUrl = new URL(replaceWithFwdHost(Astro.request)).origin
     } else {
       console.error('configContainer not found')
     }
-    if (mainContainer && config?.adminPageVisibility && dataTypeValue !== 'marketplace') {
+    if (
+      mainContainer &&
+      config?.adminPageVisibility &&
+      dataTypeValue !== 'marketplace'
+    ) {
       mainContainer.dataset.showNavigation = 'true'
       let targetDiv = document.getElementById('non-admin-message')
       if (targetDiv) {
