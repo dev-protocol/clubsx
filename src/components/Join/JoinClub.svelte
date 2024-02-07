@@ -74,8 +74,14 @@
       {#if currencies.has(currencyOption)}
         <CLBRadio
           label={currencyOption.toUpperCase()}
+          id={currencyOption}
+          type=""
+          helper=""
+          name="currency"
           value={currencyOption}
           isChecked={preferedCurrency === currencyOption}
+          isDisabled={false}
+          onChange={()=>{}}
           media={currencyOption === 'usdc'
               ? USDC.src
               : currencyOption === 'matic'
