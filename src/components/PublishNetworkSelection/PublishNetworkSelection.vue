@@ -12,9 +12,9 @@
           :src="checkImage"
           class="h-6 w-6"
         />
-        <h2 v-bind:class="step2TextClasses">Choose network</h2>
+        <h2 v-bind:class="step2TextClasses">{{ i18n('ChooseNetwork') }}</h2>
       </section>
-      <p class="text-base">What is the difference between networks?</p>
+      <p class="text-base">{{ i18n('NetworkDifference') }}</p>
     </section>
     <div>
       <section
@@ -45,7 +45,7 @@
           "
         >
           <span class="hs-button__label"> Polygon </span>
-          <span class="text-center text-xs"> Recommended </span>
+          <span class="text-center text-xs"> {{ i18n('Recommended') }} </span>
         </button>
         <button
           @click="changeNetwork('arbitrum')"
@@ -148,7 +148,7 @@
           :src="checkImage"
           class="h-6 w-6"
         />
-        <h2 v-bind:class="step3TextClasses">Activate</h2>
+        <h2 v-bind:class="step3TextClasses">{{ i18n('Activate') }}</h2>
       </section>
     </section>
     <section class="grid gap-4">
@@ -307,8 +307,7 @@
               "
               class="text-left text-sm font-bold text-gray-200"
             >
-              Already have a property on Niwa? Click to enter your property
-              address.
+              {{ i18n('ExistingProperty') }}
             </button>
           </div>
           <div v-if="propertyMode === 'CONNECT'">
@@ -320,7 +319,7 @@
               "
               class="text-left text-sm font-bold text-gray-200"
             >
-              Don't have a token for your Club yet? Click here to activate.
+              {{ i18n('NoToken') }}
             </button>
           </div>
         </div>
@@ -330,7 +329,7 @@
         v-if="!category || !membershipsPluginOptions?.length"
         class="font-DMSans bg-danger-300 rounded px-4 py-2 text-base font-normal text-white"
       >
-        Complete Basic info, Design, Memberships before activation.
+        {{ i18n('MissingStep') }}
       </p>
     </section>
   </section>
@@ -373,6 +372,8 @@ import { tokenInfo } from '@constants/common'
 import { bytes32Hex } from '@devprotocol/clubs-core'
 import StepperItem from './StepperItem.vue'
 import StepperSeparator from './StepperSeparator.vue'
+import { Strings } from './i18n'
+import { i18nFactory } from '@devprotocol/clubs-core'
 
 type Data = {
   networkSelected: String
@@ -396,10 +397,13 @@ type Data = {
   clubPublished: boolean
   propertyMode: 'CREATE' | 'CONNECT'
   showTestnets: boolean
+  i18n: ReturnType<typeof i18nBase>
 }
 
 let provider: ContractRunner | undefined
 let signer: Signer | undefined
+const i18nBase = i18nFactory(Strings)
+let i18n = i18nBase(['en'])
 
 export default defineComponent({
   name: 'PublishNetworkSelection',
@@ -448,6 +452,7 @@ export default defineComponent({
       clubPublished: false,
       propertyMode: 'CREATE',
       showTestnets: false,
+      i18n: i18nBase(['en']),
     }
   },
   computed: {
@@ -526,10 +531,10 @@ export default defineComponent({
     },
     step3InterStepSubInfo() {
       return !this.addressFromNiwaOrConfigIsValid
-        ? 'Activate your Club token.'
+        ? this.i18n('ActivateToken')
         : !this.membershipInitialized
-          ? 'Enable a memberships contract to use memberships.'
-          : 'Store your memberships to a contract.'
+          ? this.i18n('EnableMemberships')
+          : this.i18n('StoreMemberships')
     },
     async initMembershipStatus() {
       return (await this.getStep2CompletionStatusAndMessages())
@@ -541,6 +546,7 @@ export default defineComponent({
   },
   async mounted() {
     this.showTestnets = new URL(location.href).searchParams.has('testnets')
+    this.i18n = i18nBase(navigator.languages)
 
     onMountClient(async () => {
       const [{ connection }] = await Promise.all([
@@ -567,13 +573,13 @@ export default defineComponent({
   methods: {
     async getStep2CompletionStatusAndMessages() {
       let initMbmershipTxnProcessing = true
-      let initMembershipTxnStatusMsg = 'Fetching initialization details...'
+      let initMembershipTxnStatusMsg = this.i18n('FetchingDetails')
       let membershipInitialized = false
 
       const currentChainId: number | null = this.getChainId()
       if (!provider || !this.addressFromNiwaOrConfig || !currentChainId) {
         initMbmershipTxnProcessing = false
-        initMembershipTxnStatusMsg = 'Initialize your memberships'
+        initMembershipTxnStatusMsg = this.i18n('InitMemberships')
         membershipInitialized = false
         return {
           initMbmershipTxnProcessing,
@@ -592,7 +598,7 @@ export default defineComponent({
       )?.address
       if (!descriptiorAddress) {
         initMbmershipTxnProcessing = false
-        initMembershipTxnStatusMsg = 'Initialize your memberships'
+        initMembershipTxnStatusMsg = this.i18n('InitMemberships')
         membershipInitialized = false
         return {
           initMbmershipTxnProcessing,
@@ -609,8 +615,8 @@ export default defineComponent({
         descriptorAddressInContract?.toLowerCase() ===
         descriptiorAddress?.toLocaleLowerCase()
       initMembershipTxnStatusMsg = membershipInitialized
-        ? 'Membership initialized, fetching setup details...'
-        : 'Initialize your memberships'
+        ? this.i18n('MembershipInitialized')
+        : this.i18n('InitMemberships')
 
       return {
         initMbmershipTxnProcessing,
@@ -622,7 +628,7 @@ export default defineComponent({
     async updateStep2CompletionStatus() {
       this.membershipInitialized = false
       this.initMbmershipTxnProcessing = true
-      this.initMembershipTxnStatusMsg = 'Fetching initialization details...'
+      this.initMembershipTxnStatusMsg = this.i18n('FetchingDetails')
 
       const {
         initMbmershipTxnProcessing,
@@ -702,11 +708,11 @@ export default defineComponent({
       )
       if (this.popupWindow) {
         this.isTokenizing = true
-        this.tokenizingStatusMsg = 'Activation in process...'
+        this.tokenizingStatusMsg = this.i18n('ActivationInProgress')
         window.addEventListener('message', this.listenForAddress, false)
       } else {
         this.isTokenizing = false
-        this.tokenizingStatusMsg = 'Activating failed, try again!'
+        this.tokenizingStatusMsg = this.i18n('ActivationFailed')
       }
     },
 
@@ -720,16 +726,16 @@ export default defineComponent({
       const { address } = event.data
       if (!address) {
         this.isTokenizing = false
-        this.tokenizingStatusMsg = 'Activation failed, try again!'
+        this.tokenizingStatusMsg = this.i18n('ActivationFailed')
         return
       }
 
       try {
         this.addressFromNiwa = address
         this.updateConfig(false)
-        this.tokenizingStatusMsg = 'Activated, setting up initialization..'
+        this.tokenizingStatusMsg = this.i18n('Activated')
       } catch (error) {
-        this.tokenizingStatusMsg = 'Activated failed, try again!'
+        this.tokenizingStatusMsg = this.i18n('ActivationFailed')
       } finally {
         this.isTokenizing = false
       }
@@ -740,20 +746,19 @@ export default defineComponent({
         ClubsEvents.FinishConfiguration,
         (ev: any) => {
           this.isRemovingDraftStatus = true
-          this.removingDraftStatusMsg = 'Finalizing publishing...'
+          this.removingDraftStatusMsg = i18n('Finalizing')
 
           if (typeof ev.detail.success === 'boolean') {
             if (ev.detail.success) {
               this.clubPublished = true
-              this.removingDraftStatusMsg =
-                'Your Club is published, loading overview...'
+              this.removingDraftStatusMsg = this.i18n('LoadingOverview')
               window.location.href = new URL(
                 '/admin/overview',
                 `${location.protocol}//${this.site}.${location.host}`,
               ).toString()
             } else {
               this.clubPublished = false
-              this.removingDraftStatusMsg = 'Publishing failed, try again!'
+              this.removingDraftStatusMsg = this.i18n('PublishFailed')
             }
           }
 
@@ -810,13 +815,13 @@ export default defineComponent({
           try {
             if (disableDraft) {
               this.isRemovingDraftStatus = true
-              this.removingDraftStatusMsg = 'Publishing your club...'
+              this.removingDraftStatusMsg = i18n('Publishing')
             }
             buildConfig()
           } catch (error) {
             if (disableDraft) {
               this.clubPublished = false
-              this.removingDraftStatusMsg = 'Publish failed, try again!'
+              this.removingDraftStatusMsg = this.i18n('PublishFailed')
               this.isRemovingDraftStatus = false
             }
           }
@@ -826,7 +831,7 @@ export default defineComponent({
 
       if (disableDraft) {
         this.isRemovingDraftStatus = true
-        this.removingDraftStatusMsg = 'Preparing publishing your club...'
+        this.removingDraftStatusMsg = this.i18n('PreparingPublishing')
         this.onRemovingDraft() // Attach the onFinishConfigurationListener to update states.
       }
       setConfig(nextConfig)
@@ -836,7 +841,7 @@ export default defineComponent({
       if (this.initMbmershipTxnProcessing) return
 
       this.initMbmershipTxnProcessing = true
-      this.initMembershipTxnStatusMsg = 'Initializing memberhips...'
+      this.initMembershipTxnStatusMsg = this.i18n('InitMemberships')
 
       const currentChainId: number | null = this.getChainId()
       if (
@@ -846,7 +851,7 @@ export default defineComponent({
         !signer
       ) {
         this.initMbmershipTxnProcessing = false
-        this.initMembershipTxnStatusMsg = 'Initialization failed, try again!'
+        this.initMembershipTxnStatusMsg = this.i18n('InitMembershipsFailed')
         return
       }
 
@@ -855,7 +860,7 @@ export default defineComponent({
       )?.address
       if (!descriptiorAddress) {
         this.initMbmershipTxnProcessing = false
-        this.initMembershipTxnStatusMsg = 'Initialization failed, try again!'
+        this.initMembershipTxnStatusMsg = this.i18n('InitMembershipsFailed')
         return
       }
 
@@ -865,13 +870,12 @@ export default defineComponent({
           ? (this.addressFromNiwa as string)
           : (this.addressFromNiwaOrConfig as string)
 
-        this.initMembershipTxnStatusMsg =
-          'Awaiting transaction confirmation on wallet...'
+        this.initMembershipTxnStatusMsg = this.i18n('AwaitingConfirmation')
 
         const l = l1 || l2
         if (!l) {
           this.initMbmershipTxnProcessing = false
-          this.initMembershipTxnStatusMsg = 'Initialization failed, try again!'
+          this.initMembershipTxnStatusMsg = this.i18n('InitMembershipsFailed')
           return
         }
 
@@ -886,20 +890,19 @@ export default defineComponent({
           keys,
         )
 
-        this.initMembershipTxnStatusMsg =
-          'Transaction processing on the blockchain...'
+        this.initMembershipTxnStatusMsg = this.i18n('TransactionProcessing')
         const response = await tx?.wait(1)
 
         if (response?.status) {
-          this.initMembershipTxnStatusMsg = 'Initialization done.'
+          this.initMembershipTxnStatusMsg = this.i18n('InitializationComplete')
           this.membershipInitialized = true
         } else {
-          this.initMembershipTxnStatusMsg = 'Initialization failed, try again!'
+          this.initMembershipTxnStatusMsg = this.i18n('InitMembershipsFailed')
           this.membershipInitialized = false
         }
       } catch (error) {
         this.membershipInitialized = false
-        this.initMembershipTxnStatusMsg = 'Initialization failed, try again!'
+        this.initMembershipTxnStatusMsg = this.i18n('InitMembershipsFailed')
       } finally {
         this.initMbmershipTxnProcessing = false
       }
@@ -907,7 +910,7 @@ export default defineComponent({
 
     async validateManuallyAddedProperty() {
       if (!provider) {
-        this.tokenizingStatusMsg = 'No provider provided, try again!'
+        this.tokenizingStatusMsg = this.i18n('NoProvider')
         return
       }
 
@@ -923,7 +926,7 @@ export default defineComponent({
       } else {
         this.addressFromNiwa = ''
         this.manualAddressFromNiwa = ''
-        this.tokenizingStatusMsg = 'Entered address failed, try again!'
+        this.tokenizingStatusMsg = this.i18n('AddressFailed')
         setTimeout(() => {
           this.tokenizingStatusMsg = 'Next'
         }, 3000)
@@ -934,7 +937,7 @@ export default defineComponent({
       if (this.setupMemberhipTxnProcessing) return
 
       this.setupMemberhipTxnProcessing = true
-      this.setupMbmershipTxnStatusMsg = 'Setting up memberships...'
+      this.setupMbmershipTxnStatusMsg = this.i18n('SettingUpMemberships')
 
       if (
         !signer ||
@@ -942,7 +945,9 @@ export default defineComponent({
         !this.membershipInitialized
       ) {
         this.setupMemberhipTxnProcessing = false
-        this.setupMbmershipTxnStatusMsg = 'Setup failed, try again!'
+        this.setupMbmershipTxnStatusMsg = this.i18n(
+          'SettingUpMembershipsFailed',
+        )
         return
       }
 
@@ -950,7 +955,9 @@ export default defineComponent({
         const currentChainId: number | null = this.getChainId()
         if (!currentChainId) {
           this.membershipSet = false
-          this.setupMbmershipTxnStatusMsg = 'Setup failed, try again!'
+          this.setupMbmershipTxnStatusMsg = this.i18n(
+            'SettingUpMembershipsFailed',
+          )
           this.setupMemberhipTxnProcessing = false
           return
         }
@@ -988,30 +995,32 @@ export default defineComponent({
             bytes32Hex(opt.payload),
           ) || []
 
-        this.setupMbmershipTxnStatusMsg =
-          'Awaiting transaction confirmation on wallet...'
+        this.setupMbmershipTxnStatusMsg = this.i18n('AwaitingConfirmation')
         const tx = await callSimpleCollections(signer, 'setImages', [
           propertyAddress,
           images,
           keys,
         ])
 
-        this.setupMbmershipTxnStatusMsg =
-          'Transaction processing on the blockchain...'
+        this.setupMbmershipTxnStatusMsg = this.i18n('TransactionProcessing')
         const response = await tx?.wait(1)
 
         if (response?.status) {
           this.membershipSet = true
-          this.setupMbmershipTxnStatusMsg = 'Memberships setup complete'
+          this.setupMbmershipTxnStatusMsg = this.i18n('MembershipSetupComplete')
           // Disable the draft.
           this.updateConfig(true)
         } else {
-          this.setupMbmershipTxnStatusMsg = 'Setup failed, try again!'
+          this.setupMbmershipTxnStatusMsg = this.i18n(
+            'SettingUpMembershipsFailed',
+          )
           this.membershipSet = false
         }
       } catch (error) {
         this.membershipSet = false
-        this.setupMbmershipTxnStatusMsg = 'Setup failed, try again!'
+        this.setupMbmershipTxnStatusMsg = this.i18n(
+          'SettingUpMembershipsFailed',
+        )
       } finally {
         this.setupMemberhipTxnProcessing = false
       }
