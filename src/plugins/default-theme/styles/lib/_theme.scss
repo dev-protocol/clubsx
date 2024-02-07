@@ -1,5 +1,84 @@
 @use '@devprotocol/hashi/hs-core';
+@use 'sass:map';
+
+@function _sanitize-color($query, $tone) {
+  @if $tone == 'default' { @return $query; }
+  @return '#{$query}-#{$tone}';
+}
+
+@function _get-color($query, $tone) {
+  @return hs-core.token-switch('#{$query}-#{$tone}', hs-core.primitive-token-switch('#{$query}.#{$tone}', var(--hs-theme-#{_sanitize-color($query, $tone)})));
+}
+
+@function _raw($query) {
+  @return hs-core.token-switch-raw($query, hs-core.primitive-token-switch($query));
+}
 
 @mixin set-theme($theme) {
-  @include hs-core.token-config($theme);
+  $_primary: map.get($theme, 'primary');
+  $_primary-dark: map.get($theme, 'primary-dark');
+  $_accent: map.get($theme, 'accent');
+  $_accent-dark: map.get($theme, 'accent-dark');
+  $_surface: map.get($theme, 'surface');
+  $_surface-dark: map.get($theme, 'surface-dark');
+  $_disabled: map.get($theme, 'disabled');
+  $_extend: map.get($theme, 'extend');
+
+  @include hs-core.token-config($map: $_extend);
+  @include hs-core.token-config(
+    $primary: (
+      200: _get-color($_primary, 200),
+      300: _get-color($_primary, 300),
+      400: _get-color($_primary, 400),
+      600: _get-color($_primary, 600),
+      'ink': _get-color($_primary, 'ink'),
+      'dark': (
+        200: _get-color($_primary-dark, 200),
+        300: _get-color($_primary-dark, 300),
+        400: _get-color($_primary-dark, 400),
+        600: _get-color($_primary-dark, 600),
+        'ink': _get-color($_primary-dark, 'ink')
+      ),
+    ),
+    $accent: (
+      200: _get-color($_accent, 200),
+      300: _get-color($_accent, 300),
+      400: _get-color($_accent, 400),
+      600: _get-color($_accent, 600),
+      'ink': _get-color($_accent, 'ink'),
+      'dark': (
+        200: _get-color($_accent-dark, 200),
+        300: _get-color($_accent-dark, 300),
+        400: _get-color($_accent-dark, 400),
+        600: _get-color($_accent-dark, 600),
+        'ink': _get-color($_accent-dark, 'ink')
+      ),
+    ),
+    $surface: (
+      200: _get-color($_surface, 200),
+      300: _get-color($_surface, 300),
+      400: _get-color($_surface, 400),
+      600: _get-color($_surface, 600),
+      'ink': _get-color($_surface, 'ink'),
+      'dark': (
+        200: _get-color($_surface-dark, 200),
+        300: _get-color($_surface-dark, 300),
+        400: _get-color($_surface-dark, 400),
+        600: _get-color($_surface-dark, 600),
+        'ink': _get-color($_surface-dark, 'ink')
+      ),
+    ),
+    $disabled: (
+      'default': _get-color($_disabled, 'default'),
+      'ink': _get-color($_disabled, 'ink')
+    ),
+  );
+  @include hs-core.token-config(
+    $accent-alpha: (
+      200: rgba(_raw('accent-200'), 8%),
+      300: rgba(_raw('accent-300'), 12%),
+      400: rgba(_raw('accent-400'), 20%),
+      600: rgba(_raw('accent-600'), 33%)
+    ),
+  );
 }

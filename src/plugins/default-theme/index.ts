@@ -20,24 +20,20 @@ import Preview1 from './assets/default-theme-1.jpg'
 import Preview2 from './assets/default-theme-2.jpg'
 import Preview3 from './assets/default-theme-3.jpg'
 
-import OrangeTheme from './styles/themes/orange/main.scss'
-
 type ClubsThemeColorsDefaultOnly = {
   default: string,
   ink: string
 }
 
 type ClubsThemeSchema = {
-  background: string,
-  backgroundGradient?: [string, string],
-  backgroundInk: string
+  themeName: string,
   themeFile: any
 }
 
 export type GlobalConfigValue = {
-  bg?: string // TODO: Remove these when finished
-  bgGradient?: [string, string] // TODO: Remove these when finished
-  ink?: string // TODO: Remove these when finished
+  bg: string
+  bgGradient?: [string, string]
+  ink: string
   theme?: ClubsThemeSchema | any // TODO: Remove undefined when finished
   themeMode: 'dark' | 'light'
 }
@@ -47,52 +43,78 @@ export const colorPresets: Record<string, GlobalConfigValue> = {
     bg: 'rgba(131, 138, 176, 1)',
     bgGradient: ['rgba(204, 0, 255, 0.2)', 'rgba(204, 0, 255, 0)'],
     ink: 'rgba(255, 255, 255)',
+    theme: {
+      themeName: 'purple'
+    },
     themeMode: 'dark'
   },
   Grey: {
     bg: 'rgba(173, 173, 173, 1)',
     ink: '#111111',
+    theme: {
+      themeName: 'grey'
+    },
     themeMode: 'light'
   },
   Black: {
     bg: 'rgba(29, 36, 38, 1)',
     ink: 'rgba(255, 255, 255, 1)',
+    theme: {
+      themeName: 'black'
+    },
     themeMode: 'dark'
   },
   Brown: {
     bg: 'rgba(68, 59, 45, 1)',
     bgGradient: ['rgba(255, 201, 119, 0.2)', 'rgba(255, 201, 119, 0)'],
     ink: 'rgb(252, 225, 203)',
+    theme: {
+      themeName: 'brown'
+    },
     themeMode: 'dark'
   },
   Stone: {
     bg: 'rgba(96, 119, 124, 1)',
     bgGradient: ['rgba(196, 196, 196, 0.5)', 'rgba(196, 196, 196, 0)'],
     ink: 'rgba(255, 255, 255, 1)',
+    theme: {
+      themeName: 'stone'
+    },
     themeMode: 'dark'
   },
   Matcha: {
     bg: 'rgba(63, 78, 38, 1)',
     ink: 'rgb(252, 225, 203)',
+    theme: {
+      themeName: 'matcha'
+    },
     themeMode: 'dark'
   },
   Pink: {
     bg: 'rgba(255, 187, 195, 1)',
     bgGradient: ['rgba(255, 173, 217, 1)', 'rgba(255, 173, 217, 0)'],
     ink: 'rgba(255, 255, 255)',
+    theme: {
+      themeName: 'pink'
+    },
     themeMode: 'light'
   },
   Blue: {
     bg: 'rgba(91, 139, 245, 1)',
     ink: 'rgba(255, 255, 255)',
+    theme: {
+      themeName: 'blue'
+    },
     themeMode: 'dark'
   },
   Orange: {
     bg: 'rgba(255, 131, 83, 1)',
     bgGradient: ['rgba(249, 192, 82, 1)', 'rgba(249, 192, 82, 0)'],
     ink: 'rgba(255, 255, 255)',
-    theme: OrangeTheme,
-    themeMode: 'dark'
+    theme: {
+      themeName: 'orange',
+    },
+    themeMode: 'light'
   },
 }
 
