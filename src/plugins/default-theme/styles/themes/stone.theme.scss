@@ -1,0 +1,46 @@
+@use '../lib';
+
+$theme: (
+  primary: 'clb-stone-reverse',
+  primary-dark: 'clb-stone-reverse',
+  accent: 'dp-white',
+  accent-dark: 'dp-white',
+  surface: 'clb-stone',
+  surface-dark: 'clb-stone',
+  disabled: 'dp-white-alpha',
+  extend: (
+    clb-stone: (
+      200: #c4c4c4,
+      300: #969696,
+      400: #646464,
+      600: #3a3a3a,
+      ink: #ffffff,
+    ),
+    clb-stone-reverse: (
+      200: #b2b2b2,
+      300: #737373,
+      400: #3a3a3a,
+      600: #1f1f1f,
+      ink: #000000,
+    ),
+  ),
+);
+
+@mixin init() {
+  html[clubs-theme="stone"] {
+    @include lib.set-theme($theme);
+    .hs-tick-field {
+      --hs-tick-field-ink: var(--hs-theme-primary-600) !important;
+      --hs-tick-field-label-ink: var(--hs-tick-field-ink) !important;
+      --hs-tick-field-helper-ink: var(--hs-tick-field-ink) !important;
+
+      &:hover {
+        --hs-tick-field-border: var(--hs-theme-primary-600);
+      }
+
+      .hs-tick-field__input:checked {
+        --hs-tick-field-input-border: var(--hs-theme-primary-600) !important;
+      }
+    }
+  }
+}

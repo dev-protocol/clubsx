@@ -26,8 +26,11 @@
 @use '@devprotocol/hashi/hs-utils';
 
 @use 'clubs-default.variants' as variants;
+@use 'clubs-default.colors' as colors;
 
 @include hashi.init() {
+  @include colors.render();
+
   @include hs-button.render();
   @include hs-button-group.render();
   // @include hs-card.render();

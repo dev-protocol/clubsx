@@ -1,0 +1,53 @@
+@use '../lib';
+
+// 明治のアポロチョコ・テーマも呼べばいいよ
+$theme: (
+  primary: 'hana',
+  primary-dark: 'hana',
+  accent: 'ume-reverse',
+  accent-dark: 'ume-reverse',
+  surface: 'hana',
+  surface-dark: 'hana',
+  disabled: 'hana-alpha-disabled',
+  dark-mode: 'attribute',
+  extend: (
+    'ume': (
+      200: #f8dacb,
+      300: #ffd0b4,
+      400: #ffc09c,
+      600: #c88762,
+      'ink': #3c1f11
+    ),
+    'ume-reverse': (
+      200: #8d674e,
+      300: #593224,
+      400: #3c1f11,
+      600: #230f07,
+      'ink': #ffc09c
+    ),
+    'hana': (
+      200: #ffb8d7,
+      300: #ff77a9,
+      400: #ec407a,
+      600: #b4004e,
+      'ink': #ffffff
+    ),
+    'hana-alpha': (
+      200: rgba(255, 119, 169, 0.08),
+      300: rgba(255, 119, 169, 0.12),
+      400: rgba(255, 119, 169, 0.20),
+      600: rgba(255, 119, 169, 0.33),
+      ink: #ec407a,
+    ),
+    'hana-alpha-disabled': (
+      'default': rgba(131, 28, 66, 0.2),
+      'ink': rgba(131, 28, 66, 0.33)
+    )
+  ),
+);
+
+@mixin init() {
+  html[clubs-theme="pink"] {
+    @include lib.set-theme($theme);
+  }
+}

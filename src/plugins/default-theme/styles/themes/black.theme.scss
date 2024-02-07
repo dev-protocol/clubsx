@@ -1,0 +1,36 @@
+@use '../lib';
+
+$theme: (
+  primary: 'clb-black',
+  primary-dark: 'clb-black',
+  accent: 'dp-white',
+  accent-dark: 'dp-white',
+  surface: 'clb-black',
+  surface-dark: 'clb-black',
+  disabled: 'dp-white-alpha',
+  extend: (
+    clb-black: (
+      200: #3e4849,
+      300: #1d2426,
+      400: #10191a,
+      600: #051010,
+      ink: #ffffff,
+    ),
+    clb-stone-reverse: (
+      200: #b2b2b2,
+      300: #737373,
+      400: #3a3a3a,
+      600: #1f1f1f,
+      ink: #000000,
+    ),
+  ),
+);
+
+@mixin init() {
+  html[clubs-theme="black"] {
+    @include lib.set-theme($theme);
+    .hs-tick-field {
+      //
+    }
+  }
+}

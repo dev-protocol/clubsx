@@ -1,0 +1,37 @@
+@use '../lib';
+
+$theme: (
+  primary: 'clb-matcha',
+  primary-dark: 'clb-matcha',
+  accent: 'clb-matcha-reverse',
+  accent-dark: 'clb-matcha-reverse',
+  surface: 'clb-matcha',
+  surface-dark: 'clb-matcha',
+  disabled: 'clb-matcha-reverse-disabled',
+  extend: (
+    clb-matcha: (
+      200: #62734d,
+      300: #3f4e26,
+      400: #293418,
+      600: #151c08,
+      ink: #fce1cb,
+    ),
+    clb-matcha-reverse: (
+      200: #fff4ec,
+      300: #ffe7d6,
+      400: #fce1cb,
+      600: #dac7b2,
+      ink: #131a07,
+    ),
+    clb-matcha-reverse-disabled: (
+      default: rgba(#ffe7d6, 20%),
+      ink: rgba(#ffe7d6, 33%),
+    ),
+  ),
+);
+
+@mixin init() {
+  html[clubs-theme="matcha"] {
+    @include lib.set-theme($theme);
+  }
+}

@@ -1,0 +1,37 @@
+@use '../lib';
+
+$theme: (
+  primary: 'dp-blue-grey',
+  primary-dark: 'dp-blue-grey',
+  accent: 'dp-white-reverse',
+  accent-dark: 'dp-white-reverse',
+  surface: 'clb-purple',
+  surface-dark: 'clb-purple',
+  disabled: 'dp-white-alpha',
+  extend: (
+    clb-purple: (
+      200: #b8bede,
+      300: #838ab0,
+      400: #3d4157,
+      600: #1b222f,
+      ink: #ffffff,
+    ),
+  ),
+);
+
+@mixin init() {
+  html[clubs-theme="purple"] {
+    @include lib.set-theme($theme);
+    .hs-tick-field {
+      --hs-tick-field-fill: var(--hs-theme-surface-300);
+
+      &:hover {
+        --hs-tick-field-border: var(--hs-theme-surface-200);
+      }
+
+      .hs-tick-field__input:checked {
+        --hs-tick-field-input-border: var(--hs-theme-surface-200) !important;
+      }
+    }
+  }
+}

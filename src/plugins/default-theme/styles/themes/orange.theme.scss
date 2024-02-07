@@ -1,0 +1,55 @@
+@use '../lib';
+
+$theme: (
+  primary: 'clb-saamon',
+  primary-dark: 'clb-saamon',
+  accent: 'clb-choko',
+  accent-dark: 'clb-choko',
+  surface: 'clb-saamon',
+  surface-dark: 'clb-saamon',
+  disabled: 'clb-choko-alpha-disabled',
+  dark-mode: 'attribute',
+  extend: (
+    clb-saamon: (
+      200: #ff9c78,
+      300: #cc5425,
+      400: #9f3613,
+      600: #6e2808,
+      ink: #fff,
+    ),
+    clb-choko: (
+      200: rgb(103, 67, 52, 1),
+      300: rgb(73, 45, 32, 1),
+      400: rgb(54, 27, 16, 1),
+      600: rgb(26, 10, 2, 1),
+      ink: #f9c052,
+    ),
+    clb-choko-alpha: (
+      200: rgba(54, 27, 16, 0.08),
+      300: rgba(54, 27, 16, 0.12),
+      400: rgba(54, 27, 16, 0.20),
+      600: rgba(54, 27, 16, 0.33),
+      ink: rgba(54, 27, 16, 1),
+    ),
+    clb-choko-alpha-disabled: (
+      'default': rgba(54, 27, 16, 0.20),
+      'ink': rgba(54, 27, 16, 0.33)
+    )
+  ),
+);
+
+@mixin init() {
+  html[clubs-theme="orange"] {
+    @include lib.set-theme($theme);
+    --hs-tick-field-fill: var(--hs-theme-primary-300);
+    --hs-tick-field-border: var(--hs-theme-primary-300);
+
+    .hs-tick-field:hover {
+      --hs-tick-field-border: var(--hs-theme-primary-200);
+    }
+
+    .hs-tick-field__input:checked {
+      --hs-tick-field-input-border: var(--hs-theme-primary-200) !important;
+    }
+  }
+}

@@ -1,7 +1,0 @@
-@use '../../lib' as lib;
-
-@use 'orange.theme' as *;
-
-:root {
-  @include lib.set-theme($theme);
-}

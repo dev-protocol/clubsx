@@ -1,0 +1,17 @@
+@use 'themes/orange.theme';
+@use 'themes/pink.theme';
+@use 'themes/matcha.theme';
+@use 'themes/brown.theme';
+@use 'themes/stone.theme';
+@use 'themes/black.theme';
+@use 'themes/purple.theme';
+
+@mixin render() {
+  @include purple.init();
+  @include black.init();
+  @include brown.init();
+  @include stone.init();
+  @include matcha.init();
+  @include pink.init();
+  @include orange.init();
+}

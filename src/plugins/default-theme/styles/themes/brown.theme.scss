@@ -1,0 +1,38 @@
+@use '../lib';
+
+$theme: (
+  primary: 'clb-brown',
+  primary-dark: 'clb-brown',
+  accent: 'clb-brown-reverse',
+  accent-dark: 'clb-brown-reverse',
+  surface: 'clb-brown',
+  surface-dark: 'clb-brown',
+  disabled: 'clb-brown-reverse-disabled',
+  dark-mode: 'attribute',
+  extend: (
+    clb-brown: (
+      200: #6e6254,
+      300: #443b2d,
+      400: #362b1b,
+      600: #181307,
+      ink: #fce1cb,
+    ),
+    clb-brown-reverse: (
+      200: #fff4ec,
+      300: #ffe7d6,
+      400: #fce1cb,
+      600: #dac7b2,
+      ink: #131a07,
+    ),
+    clb-brown-reverse-disabled: (
+      default: rgba(#ffe7d6, 20%),
+      ink: rgba(#ffe7d6, 33%),
+    ),
+  ),
+);
+
+@mixin init() {
+  html[clubs-theme="brown"] {
+    @include lib.set-theme($theme);
+  }
+}
