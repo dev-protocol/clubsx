@@ -84,14 +84,12 @@ export const composeTiers = async ({
   )
   const forEth = await Promise.all(
     forDev.map(async ({ ...tier }) => {
-      const amount = tier.amount
-        ? await fetchEthForDev({
-            provider,
-            tokenAddress,
-            amount: tier.amount,
-          })
-        : undefined
-      return { ...tier, amount: amount && formatEther(amount) }
+      const amount = await fetchEthForDev({
+        provider,
+        tokenAddress,
+        amount: tier.amount,
+      })
+      return { ...tier, amount: formatEther(amount) }
     }),
   )
   return {

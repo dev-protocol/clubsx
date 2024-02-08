@@ -14,6 +14,7 @@ import { default as Icon } from './assets/icon.svg'
 import { Content as Readme } from './README.md'
 import Preview1 from './assets/join-1.jpg'
 import Preview2 from './assets/join-2.jpg'
+import { isPriced } from '@plugins/memberships/utils/is'
 
 export const getPagePaths = (async (
   _,
@@ -32,9 +33,9 @@ export const getPagePaths = (async (
     (membership) => !membership.deprecated,
   )
 
-  const tiers = memberships?.map((mem) => ({
+  const tiers = memberships?.filter(isPriced)?.map((mem) => ({
     ...mem,
-    currency: mem.currency?.toLocaleLowerCase(),
+    currency: mem.currency.toLocaleLowerCase(),
     title: mem.name,
     amount: mem.price,
     badgeImageSrc: mem.imageSrc,

@@ -191,7 +191,7 @@
           id={opt.id}
           name={opt.name}
           imagePath={opt.imageSrc}
-          price={opt.price.toString()}
+          price={opt.price?.toString()}
           currency={opt.currency}
           description={opt.description}
           className={`lg:row-start-3 ${getColStart(i)}`}
@@ -254,7 +254,7 @@
             id={membership.id}
             name={membership.name}
             imagePath={membership.imageSrc}
-            price={membership.price.toString()}
+            price={membership.price?.toString()}
             currency={membership.currency}
             description={membership.description}
           />

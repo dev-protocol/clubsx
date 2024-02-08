@@ -204,7 +204,7 @@
                   name={mem.name}
                   imagePath={mem.imageSrc}
                   currency={mem.currency}
-                  price={mem.price.toString()}
+                  price={mem.price?.toString()}
                   description={mem.description}
                   action={`/join/${mem.id}`}
                   actionLabel={'Purchase'}

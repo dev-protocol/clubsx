@@ -374,6 +374,7 @@ import StepperItem from './StepperItem.vue'
 import StepperSeparator from './StepperSeparator.vue'
 import { Strings } from './i18n'
 import { i18nFactory } from '@devprotocol/clubs-core'
+import { isPriced } from '@plugins/memberships/utils/is'
 
 type Data = {
   networkSelected: String
@@ -967,8 +968,9 @@ export default defineComponent({
           : (this.addressFromNiwaOrConfig as string)
         const images: ERC20Image[] =
           this.membershipsPluginOptions?.map((opt) => {
-            const { decimals, address: token } =
-              tokenInfo[opt.currency][currentChainId]
+            const { decimals, address: token } = isPriced(opt)
+              ? tokenInfo[opt.currency][currentChainId]
+              : { decimals: 1, address: ZeroAddress }
 
             return {
               src: opt.imageSrc,
@@ -978,14 +980,15 @@ export default defineComponent({
                 String(opt.price),
                 decimals,
               ).toString(),
-              requiredTokenFee: opt.fee?.percentage
-                ? parseUnits(
-                    new BigNumber(opt.price)
-                      .times(opt.fee.percentage)
-                      .toFixed(),
-                    decimals,
-                  ).toString()
-                : 0n,
+              requiredTokenFee:
+                opt.fee?.percentage && opt.price
+                  ? parseUnits(
+                      new BigNumber(opt.price)
+                        .times(opt.fee.percentage)
+                        .toFixed(),
+                      decimals,
+                    ).toString()
+                  : 0n,
               gateway: opt.fee?.beneficiary ?? ZeroAddress,
               token: token,
             }
