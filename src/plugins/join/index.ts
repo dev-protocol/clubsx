@@ -34,7 +34,7 @@ export const getPagePaths = (async (
 
   const tiers = memberships?.map((mem) => ({
     ...mem,
-    currency: mem.currency.toLocaleLowerCase(),
+    currency: mem.currency?.toLocaleLowerCase(),
     title: mem.name,
     amount: mem.price,
     badgeImageSrc: mem.imageSrc,

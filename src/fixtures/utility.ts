@@ -84,12 +84,14 @@ export const composeTiers = async ({
   )
   const forEth = await Promise.all(
     forDev.map(async ({ ...tier }) => {
-      const amount = await fetchEthForDev({
-        provider,
-        tokenAddress,
-        amount: tier.amount,
-      })
-      return { ...tier, amount: formatEther(amount) }
+      const amount = tier.amount
+        ? await fetchEthForDev({
+            provider,
+            tokenAddress,
+            amount: tier.amount,
+          })
+        : undefined
+      return { ...tier, amount: amount && formatEther(amount) }
     }),
   )
   return {
@@ -148,8 +150,9 @@ export const checkMemberships = async (
       const testForAmount =
         payload && membership.currency === 'DEV'
           ? undefined
-          : BigInt((await contract.positions(tokenId)).amount) >
-            BigInt(parseEther(membership.price.toString()))
+          : membership.price &&
+            BigInt((await contract.positions(tokenId)).amount) >
+              BigInt(parseEther(membership.price.toString()))
 
       if (testForPayload || testForAmount) {
         return tokenId

@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro'
 import fetch from 'cross-fetch'
 import {
   AbiCoder,
+  MaxUint256,
   ZeroAddress,
   keccak256,
   parseUnits,
@@ -143,7 +144,8 @@ export const get: ({
     )
 
     const sourcePaymentToken = whenNotError(membership, ({ source }) =>
-      source.currency === 'MATIC' && (chainId === 137 || chainId === 80001)
+      (source.currency === 'MATIC' && (chainId === 137 || chainId === 80001)) ||
+      !source.currency
         ? ZeroAddress
         : getTokenAddress(source.currency, chainId),
     )
@@ -153,10 +155,12 @@ export const get: ({
      */
     const abiEncoder = AbiCoder.defaultAbiCoder()
     const abiParams = whenNotError(membership, (mem) => {
-      const amount = parseUnits(
-        mem.source.price.toString(),
-        mem.source.currency === 'USDC' ? 6 : 18,
-      )
+      const amount = mem.source.price
+        ? parseUnits(
+            mem.source.price.toString(),
+            mem.source.currency === 'USDC' ? 6 : 18,
+          )
+        : MaxUint256
       return [
         eoa,
         propertyAddress,
