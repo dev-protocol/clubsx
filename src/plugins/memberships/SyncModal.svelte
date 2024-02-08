@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Membership } from '@plugins/memberships'
+  import { isPriced, type Membership } from '@plugins/memberships'
   import {
     address,
     callSimpleCollections,
@@ -26,7 +26,10 @@
     ({ chainId: chainId_ }) => chainId_ === chainId,
   )?.address
   const expectedMemberships = memberships.map((mem) => {
-    const { decimals, address: token } = tokenInfo[mem.currency][chainId]
+    const isHavingPrice = isPriced(mem)
+    const { decimals, address: token } = isHavingPrice
+      ? tokenInfo[mem.currency][chainId]
+      : { decimals: 1, address: ZeroAddress }
     return {
       payload: bytes32Hex(mem.payload),
       source: mem,
@@ -34,10 +37,10 @@
         src: mem.imageSrc,
         name: JSON.stringify(mem.name).slice(1, -1),
         description: JSON.stringify(mem.description).slice(1, -1),
-        requiredTokenAmount: mem.isUnpriced
+        requiredTokenAmount: !isHavingPrice
           ? MaxUint256
           : parseUnits(String(mem.price), decimals),
-        requiredTokenFee: mem.isUnpriced
+        requiredTokenFee: !isHavingPrice
           ? MaxUint256
           : mem.fee?.percentage
             ? parseUnits(
@@ -48,7 +51,7 @@
                 decimals,
               )
             : 0n,
-        gateway: mem.isUnpriced
+        gateway: !isHavingPrice
           ? ZeroAddress
           : mem.fee?.beneficiary ?? ZeroAddress,
         token: token,

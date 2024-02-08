@@ -2,7 +2,11 @@
   import { ClubsEvents, setOptions } from '@devprotocol/clubs-core'
   import MembershipOptionCard from './MembershipOption.svelte'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
-  import type { Membership } from '@plugins/memberships/index'
+  import {
+    isUnpriced,
+    isPriced,
+    type Membership,
+  } from '@plugins/memberships/index'
   import { JsonRpcProvider, ZeroAddress, type Signer } from 'ethers'
   import { onMount } from 'svelte'
   import BigNumber from 'bignumber.js'
@@ -110,30 +114,22 @@
   const setMembershipToUnpriced = () => {
     membership = {
       ...membership,
-      fee: {
-        percentage: 0,
-        beneficiary: ZeroAddress,
-      },
-      isUnpriced: true,
-      paymentType: 'custom',
-      price: 0,
+      price: undefined,
+      currency: undefined,
     }
     membershipCustomFee100 = 0
     membershipPaymentType = 'custom'
     update()
   }
 
-  const updateMembershipPriceType = (isUnpriced: boolean = false) => {
-    if (noOfPositions > 0) {
-      return // You can't update membership type when there are members already.
-    }
-
-    if (isUnpriced) {
+  const updateMembershipPriceType = (unpriced: boolean = false) => {
+    if (unpriced) {
       setMembershipToUnpriced()
     } else {
       membership = {
         ...membership,
-        isUnpriced: false,
+        price: 0,
+        currency: 'USDC',
       }
       update()
     }
@@ -171,7 +167,7 @@
   }
 
   const changeMembershipPaymentType = async (type: MembershipPaymentType) => {
-    if (membership.isUnpriced) {
+    if (!isPriced(membership)) {
       setMembershipToUnpriced()
       return // Further action is not allowed for unpriced membership.
     }
@@ -187,7 +183,6 @@
           beneficiary: beneficiary(),
         },
         paymentType: 'custom',
-        isUnpriced: false, // Sanity check update to refect same state.
       }
 
       update() // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
@@ -203,7 +198,6 @@
           beneficiary: beneficiary(),
         },
         paymentType: 'instant',
-        isUnpriced: false, // Sanity check update to refect same state.
       }
     }
 
@@ -216,7 +210,6 @@
           beneficiary: beneficiary(),
         },
         paymentType: 'stake',
-        isUnpriced: false, // Sanity check update to refect same state.
       }
     }
 
@@ -228,7 +221,6 @@
           beneficiary: beneficiary(),
         },
         paymentType: 'custom',
-        isUnpriced: false, // Sanity check update to refect same state.
       }
     }
 
@@ -302,7 +294,7 @@
 
   const update = () => {
     if (
-      !membership.isUnpriced &&
+      isPriced(membership) &&
       (membership.price < minPrice ||
         membership.price > maxPrice ||
         membershipPaymentType === '')
@@ -313,22 +305,7 @@
     const search = mode === 'edit' ? originalId : membership.id
     membership.accessControl = usingAccessControl ? accessControl : undefined
 
-    if (membership.isUnpriced) {
-      membership = {
-        ...membership,
-        isUnpriced: true,
-        paymentType: 'custom',
-        price: 0,
-        fee: {
-          percentage: 0,
-          beneficiary: ZeroAddress,
-        },
-      }
-    } else if (
-      !membership.isUnpriced &&
-      membership.fee &&
-      membership.fee.percentage > 0
-    ) {
+    if (membership.fee && membership.fee.percentage > 0) {
       membership = {
         ...membership,
         fee: {
@@ -392,7 +369,7 @@
   }
 
   const onChangePrice = async () => {
-    if (membership.isUnpriced) {
+    if (!isPriced(membership)) {
       setMembershipToUnpriced()
       return // Not allowed when membership is unpriced.
     }
@@ -417,7 +394,7 @@
   }
 
   const onChangeCustomFee = async () => {
-    if (membership.isUnpriced) {
+    if (!isPriced(membership)) {
       setMembershipToUnpriced()
       return // Futher steps are not allowed for unpriced memberships.
     }
@@ -434,7 +411,6 @@
           percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
         },
         paymentType: 'custom',
-        isUnpriced: false,
       }
 
       // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
@@ -462,7 +438,6 @@
         beneficiary: beneficiary(),
       },
       paymentType: 'custom',
-      isUnpriced: false,
     }
 
     // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
@@ -541,7 +516,7 @@
   }
 
   const resetMembershipFee = () => {
-    if (membership.isUnpriced) {
+    if (!isPriced(membership)) {
       setMembershipToUnpriced()
       return // Futher steps are not allowed for unpriced memberships.
     }
@@ -559,7 +534,6 @@
         beneficiary: beneficiary(),
       },
       paymentType: 'custom',
-      isUnpriced: false, // Sanity check to maintain consistency across all states.
     }
   }
 </script>
@@ -650,27 +624,27 @@
             <button
               on:click|preventDefault={() => updateMembershipPriceType(true)}
               class={`hs-button is-large is-filled flex max-w-[33%] grow items-center justify-center gap-2 ${
-                membership.isUnpriced ? '' : 'opacity-50'
+                isUnpriced(membership) ? '' : 'opacity-50'
               }`}
               id="membership-unpriced"
               name="membership-unpriced"
-              disabled={!membership.isUnpriced && noOfPositions > 0}
+              disabled={isPriced(membership)}
             >
               Unpriced
             </button>
             <button
               on:click|preventDefault={() => updateMembershipPriceType(false)}
               class={`hs-button is-large is-filled flex max-w-[33%] grow items-center justify-center gap-2 ${
-                membership.isUnpriced ? 'opacity-50' : ''
+                isUnpriced(membership) ? 'opacity-50' : ''
               }`}
               id="membership-priced"
               name="membership-priced"
-              disabled={membership.isUnpriced && noOfPositions > 0}
+              disabled={isUnpriced(membership)}
             >
               Priced
             </button>
           </div>
-          {#if membership.isUnpriced}
+          {#if isUnpriced(membership)}
             <div
               class="flex w-full max-w-full items-center justify-start gap-1"
             >
@@ -681,7 +655,7 @@
               </p>
             </div>
           {/if}
-          {#if !membership.isUnpriced}
+          {#if isPriced(membership)}
             <div
               class="flex w-full max-w-full items-center justify-start gap-1"
             >
@@ -728,7 +702,7 @@
           {/if}
         </div>
 
-        {#if !membership.isUnpriced}
+        {#if isPriced(membership)}
           <!-- Earning model -->
           <div class="hs-form-field is-filled is-required">
             <span class="hs-form-field__label"> Earning model </span>
