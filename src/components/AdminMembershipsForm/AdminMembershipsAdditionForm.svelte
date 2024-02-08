@@ -2,11 +2,8 @@
   import { ClubsEvents, setOptions } from '@devprotocol/clubs-core'
   import MembershipOptionCard from './MembershipOption.svelte'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
-  import {
-    isUnpriced,
-    isPriced,
-    type Membership,
-  } from '@plugins/memberships/index'
+  import type { Membership } from '@plugins/memberships/index'
+  import { isUnpriced, isPriced } from '@plugins/memberships/utils/is'
   import { JsonRpcProvider, ZeroAddress, type Signer } from 'ethers'
   import { onMount } from 'svelte'
   import BigNumber from 'bignumber.js'
@@ -622,26 +619,24 @@
             class="flex w-full max-w-full items-center justify-start gap-1 mb-2"
           >
             <button
-              on:click|preventDefault={() => updateMembershipPriceType(true)}
-              class={`hs-button is-large is-filled flex max-w-[33%] grow items-center justify-center gap-2 ${
-                isUnpriced(membership) ? '' : 'opacity-50'
-              }`}
-              id="membership-unpriced"
-              name="membership-unpriced"
-              disabled={isPriced(membership)}
-            >
-              Unpriced
-            </button>
-            <button
               on:click|preventDefault={() => updateMembershipPriceType(false)}
               class={`hs-button is-large is-filled flex max-w-[33%] grow items-center justify-center gap-2 ${
                 isUnpriced(membership) ? 'opacity-50' : ''
               }`}
               id="membership-priced"
               name="membership-priced"
-              disabled={isUnpriced(membership)}
             >
               Priced
+            </button>
+            <button
+              on:click|preventDefault={() => updateMembershipPriceType(true)}
+              class={`hs-button is-large is-filled flex max-w-[33%] grow items-center justify-center gap-2 ${
+                isUnpriced(membership) ? '' : 'opacity-50'
+              }`}
+              id="membership-unpriced"
+              name="membership-unpriced"
+            >
+              Unpriced
             </button>
           </div>
           {#if isUnpriced(membership)}

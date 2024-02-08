@@ -48,12 +48,6 @@ export type PricedMembership = UnpricedMembership & {
   price: NonNullable<Membership['price']>
   currency: NonNullable<Membership['currency']>
 }
-export const isUnpriced = (m: Membership): m is UnpricedMembership => {
-  return typeof m.price === 'undefined' && typeof m.currency === 'undefined'
-}
-export const isPriced = (m: Membership): m is PricedMembership => {
-  return typeof m.price !== 'undefined' && typeof m.currency !== 'undefined'
-}
 
 const presets: Membership[] = [
   {

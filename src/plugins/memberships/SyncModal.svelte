@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { isPriced, type Membership } from '@plugins/memberships'
+  import { type Membership } from '@plugins/memberships'
+  import { isPriced } from './utils/is'
   import {
     address,
     callSimpleCollections,
