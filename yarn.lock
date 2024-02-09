@@ -531,9 +531,9 @@
     uuid "9.0.1"
 
 "@crossmint/client-sdk-base@^1.0.1-alpha.6":
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-base/-/client-sdk-base-1.1.4.tgz#a9441617b5db822b85149616ff4fcefc90642306"
-  integrity sha512-5jhFP2AfWzR2PASPGMF8DFox2RU2pajn3A49iauzuRce0KAn2HRdH49W24WWi0wwyjFZRpKJy5JGxUgB26y1tg==
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-base/-/client-sdk-base-1.1.5.tgz#9b420e005f8e3d3f8dc8361132a9083ac6242100"
+  integrity sha512-Ap+T68rZXCjq9CwRoVFskJhuwj5j0NWfrDdWpjnwEcIRpzzpKukicUHQdyRZ1kioxm1PPBZtXpnaOogSd9GMMw==
   dependencies:
     "@crossmint/common-sdk-base" "0.0.3"
     exponential-backoff "3.1.1"
