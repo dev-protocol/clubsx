@@ -13,6 +13,7 @@ import Preview2 from './assets/default-theme-2.jpg'
 import Preview3 from './assets/default-theme-3.jpg'
 import getInvitationsId from './handlers/get-invitations-id'
 import getInvitationsCheck from './handlers/get-invitations-check'
+import claimInvitation from './handlers/claim-invitation'
 
 export const getPagePaths = (async (options, config) => {
   return []
@@ -29,6 +30,15 @@ export const getApiPaths = (async (options, config) => {
       paths: ['invitations', 'check', SinglePath],
       method: 'GET',
       handler: getInvitationsCheck,
+    },
+    {
+      paths: ['invitations', 'claim'],
+      method: 'POST',
+      handler: claimInvitation({
+        rpcUrl: config.rpcUrl,
+        chainId: config.chainId,
+        property: config.propertyAddress,
+      }),
     },
   ]
 }) satisfies ClubsFunctionGetApiPaths
