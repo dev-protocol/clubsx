@@ -1002,7 +1002,7 @@
               imagePath={mem.imageSrc.trim().length > 0
                 ? mem.imageSrc
                 : emptyDummyImage(400, 400)}
-              price={mem.price.toString()}
+              price={mem.price?.toString()}
               currency={mem.currency}
               description={mem.description}
               extendable={false}
