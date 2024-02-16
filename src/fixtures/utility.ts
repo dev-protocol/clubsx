@@ -148,8 +148,9 @@ export const checkMemberships = async (
       const testForAmount =
         payload && membership.currency === 'DEV'
           ? undefined
-          : BigInt((await contract.positions(tokenId)).amount) >
-            BigInt(parseEther(membership.price.toString()))
+          : membership.price &&
+            BigInt((await contract.positions(tokenId)).amount) >
+              BigInt(parseEther(membership.price.toString()))
 
       if (testForPayload || testForAmount) {
         return tokenId

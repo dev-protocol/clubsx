@@ -24,7 +24,7 @@ import Preview2 from './assets/clubs-shop-2.png'
 import Preview3 from './assets/clubs-shop-3.png'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import { ZeroAddress, randomBytes, toUtf8Bytes } from 'ethers'
-import type { Membership } from '@plugins/memberships'
+import type { Membership, PricedMembership } from '@plugins/memberships'
 import {
   PAYMENT_TYPE_INSTANT_FEE,
   PAYMENT_TYPE_STAKE_FEE,
@@ -33,7 +33,7 @@ import { JsonRpcProvider } from 'ethers'
 import { bytes32Hex } from '@devprotocol/clubs-core'
 import { checkMemberships } from '@fixtures/utility.ts'
 
-export type CollectionMembership = Membership & {
+export type CollectionMembership = PricedMembership & {
   memberCount?: number
 }
 

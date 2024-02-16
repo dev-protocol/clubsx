@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Membership } from '@plugins/memberships'
+  import { isPriced } from './utils/is'
   import {
     address,
     callSimpleCollections,
@@ -9,6 +10,7 @@
     type Signer,
     ZeroAddress,
     parseUnits,
+    MaxUint256,
   } from 'ethers'
   import { tokenInfo } from '@constants/common'
   import BigNumber from 'bignumber.js'
@@ -25,7 +27,10 @@
     ({ chainId: chainId_ }) => chainId_ === chainId,
   )?.address
   const expectedMemberships = memberships.map((mem) => {
-    const { decimals, address: token } = tokenInfo[mem.currency][chainId]
+    const isHavingPrice = isPriced(mem)
+    const { decimals, address: token } = isHavingPrice
+      ? tokenInfo[mem.currency][chainId]
+      : { decimals: 1, address: ZeroAddress }
     return {
       payload: bytes32Hex(mem.payload),
       source: mem,
@@ -33,22 +38,28 @@
         src: mem.imageSrc,
         name: JSON.stringify(mem.name).slice(1, -1),
         description: JSON.stringify(mem.description).slice(1, -1),
-        requiredTokenAmount: parseUnits(String(mem.price), decimals),
-        requiredTokenFee: mem.fee?.percentage
-          ? parseUnits(
-              new BigNumber(mem.price)
-                .times(mem.fee.percentage)
-                .dp(decimals, 1)
-                .toFixed(),
-              decimals,
-            )
-          : 0n,
-        gateway: mem.fee?.beneficiary ?? ZeroAddress,
+        requiredTokenAmount: !isHavingPrice
+          ? MaxUint256
+          : parseUnits(String(mem.price), decimals),
+        requiredTokenFee: !isHavingPrice
+          ? MaxUint256
+          : mem.fee?.percentage
+            ? parseUnits(
+                new BigNumber(mem.price)
+                  .times(mem.fee.percentage)
+                  .dp(decimals, 1)
+                  .toFixed(),
+                decimals,
+              )
+            : 0n,
+        gateway: !isHavingPrice
+          ? ZeroAddress
+          : mem.fee?.beneficiary ?? ZeroAddress,
         token: token,
       },
     }
   })
-  console.log({ expectedMemberships })
+
   const stateFetcher = async ({
     provider,
     propertyAddress,

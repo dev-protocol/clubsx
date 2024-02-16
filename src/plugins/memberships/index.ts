@@ -28,8 +28,8 @@ export type Membership = {
   id: string
   name: string
   description: string
-  price: number
-  currency: 'USDC' | 'DEV' | 'ETH' | 'MATIC'
+  price?: number
+  currency?: 'USDC' | 'DEV' | 'ETH' | 'MATIC'
   imageSrc: string
   payload: Uint8Array | string
   fee?: {
@@ -42,6 +42,11 @@ export type Membership = {
     url: string
     description: string
   }
+}
+export type UnpricedMembership = Omit<Membership, 'price' | 'currency'>
+export type PricedMembership = UnpricedMembership & {
+  price: NonNullable<Membership['price']>
+  currency: NonNullable<Membership['currency']>
 }
 
 const presets: Membership[] = [

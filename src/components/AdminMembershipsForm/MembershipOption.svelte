@@ -132,12 +132,14 @@
 
     <div class="relative col-start-1">
       <p>{name}</p>
-      <p
-        class="grid grid-cols-[auto_1fr] items-center gap-1 text-sm opacity-70"
-      >
-        <span class="truncate">{price}</span>
-        {currency.toUpperCase()}
-      </p>
+      {#if price && Number(price)}
+        <p
+          class="grid grid-cols-[auto_1fr] items-center gap-1 text-sm opacity-70"
+        >
+          <span class="truncate">{price}</span>
+          {currency.toUpperCase()}
+        </p>
+      {/if}
     </div>
 
     {#if extendable}
@@ -243,7 +245,9 @@
       <div
         class="grid grid-cols-[1fr_auto] content-baseline items-center gap-3 overflow-hidden px-2.5"
       >
-        <p class="text-2xl font-bold">{price} {currency.toUpperCase()}</p>
+        {#if price && Number(price)}
+          <p class="text-2xl font-bold">{price} {currency.toUpperCase()}</p>
+        {/if}
 
         {#if action && actionLabel}
           <a
