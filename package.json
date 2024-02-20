@@ -32,7 +32,7 @@
     "@types/react": "18.2.57",
     "@types/three": "0.161.2",
     "@types/uuid": "^9.0.3",
-    "dotenv": "16.4.4",
+    "dotenv": "16.4.5",
     "eslint": "8.56.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-config-standard": "17.1.0",
