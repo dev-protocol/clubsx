@@ -19,7 +19,11 @@ export const getPagePaths = (async (options, config) => {
   return []
 }) satisfies ClubsFunctionGetPagePaths
 
-export const getApiPaths = (async (options, config) => {
+export const getApiPaths = (async (
+  options,
+  { rpcUrl, chainId, propertyAddress },
+  { getPluginConfigById },
+) => {
   return [
     {
       paths: ['invitations', SinglePath],
@@ -35,9 +39,10 @@ export const getApiPaths = (async (options, config) => {
       paths: ['invitations', 'claim'],
       method: 'POST',
       handler: claimInvitation({
-        rpcUrl: config.rpcUrl,
-        chainId: config.chainId,
-        property: config.propertyAddress,
+        rpcUrl,
+        chainId,
+        property: propertyAddress,
+        getPluginConfigById,
       }),
     },
   ]
