@@ -118,7 +118,7 @@ export const handler =
           rpcUrl,
           chainId,
           args: {
-            to: invitation.conditions?.recipient,
+            to: address,
             property,
             payload: invitationMembership?.payload,
             gatewayAddress: invitation.conditions?.recipient,
