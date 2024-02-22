@@ -1,5 +1,5 @@
 import { getDefaultClient } from '../redis'
-import { verifyMessage } from 'ethers'
+import { parseUnits, verifyMessage } from 'ethers'
 import { check } from './get-invitations-check'
 import type {
   ClubsFunctionGetPluginConfigById,
@@ -106,6 +106,26 @@ export const handler =
 
     const sendDevProtocolApiKey = process.env.SEND_DEVPROTOCOL_API_KEY ?? ''
 
+    const membershipPrice = invitationMembership?.price
+
+    if (!membershipPrice) {
+      return new Response(
+        JSON.stringify({ error: 'Membership price not found' }),
+        {
+          status: 500,
+        },
+      )
+    }
+
+    const parsedPrice =
+      invitationMembership?.currency === 'USDC'
+        ? parseUnits(invitationMembership?.price.toString(), 6)
+        : parseUnits(invitationMembership?.price.toString(), 18)
+
+    const fee =
+      (parsedPrice * BigInt(invitationMembership.fee?.percentage ?? 0)) /
+      BigInt(10)
+
     const res = fetch(
       'https://send.devprotocol.xyz/api/send-transactions/SwapTokensAndStakeDev',
       {
@@ -121,11 +141,11 @@ export const handler =
             to: address,
             property,
             payload: invitationMembership?.payload,
-            gatewayAddress: invitation.conditions?.recipient,
+            gatewayAddress: invitationMembership?.fee?.beneficiary,
             amounts: {
               token: invitationMembership?.currency,
-              input: invitationMembership?.price,
-              fee: invitationMembership?.fee,
+              input: parsedPrice,
+              fee,
             },
           },
         }),
