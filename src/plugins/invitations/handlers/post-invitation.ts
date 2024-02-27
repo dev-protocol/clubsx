@@ -2,6 +2,14 @@ import type { APIRoute } from 'astro'
 import { Prefix, invitationDocument } from '../redis-schema'
 import { getDefaultClient } from '../redis'
 
+const checkExisting = async ({ invitationId }: { invitationId: string }) => {
+  const client = await getDefaultClient()
+
+  const keyExists = await client.exists(`${Prefix.Invitation}::${invitationId}`)
+
+  return keyExists === 1 ? true : false
+}
+
 export const POST: APIRoute = async ({ request }) => {
   const { signature, message, membership, conditions } =
     (await request.json()) as {
@@ -22,6 +30,13 @@ export const POST: APIRoute = async ({ request }) => {
     membership,
     conditions,
   })
+
+  if (await checkExisting({ invitationId: invitation.id })) {
+    return new Response(
+      JSON.stringify({ error: 'invitation already exists' }),
+      { status: 400 },
+    )
+  }
 
   client.set(
     `${Prefix.Invitation}::${invitation.id}`,
