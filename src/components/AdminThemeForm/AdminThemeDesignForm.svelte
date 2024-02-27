@@ -271,18 +271,18 @@
     <span class="hs-form-field__label mb-3">
       {i18n('SectionOrdering')}
     </span>
-    <div class="max-w-full flex gap-3 items-start justify-items-center">
+    <div
+      class="max-w-full flex gap-0 items-start justify-items-center p-2 bg-[var(--hs-theme-disabled)] w-fit"
+    >
       <button
-        class="hs-button is-large is-filled"
+        class={`hs-button is-large border-0 ${sectionOrderingConfig === 'about-first' ? 'is-filled' : 'bg-transparent'}`}
         on:click|preventDefault={() => onUpdateSectionsOrder('about-first')}
-        disabled={sectionOrderingConfig === 'about-first'}
         >Show about first</button
       >
       <button
-        class="hs-button is-large is-filled"
+        class={`hs-button is-large border-0 ${sectionOrderingConfig !== 'about-first' ? 'is-filled' : 'bg-transparent'}`}
         on:click|preventDefault={() =>
           onUpdateSectionsOrder('memberships-first')}
-        disabled={sectionOrderingConfig === 'memberships-first'}
         >Show memberships first</button
       >
     </div>
