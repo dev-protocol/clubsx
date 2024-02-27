@@ -75,9 +75,18 @@
         key: 'homeConfig',
         value: homeConfig,
       },
+      {
+        key: 'sectionsOrder',
+        value: sectionOrderingConfig,
+      },
     ]
     setOptions(newOptions, currentPluginIndex)
     onUpdate && onUpdate(newOptions)
+  }
+
+  const onUpdateSectionsOrder = async (orderValue: SectionOrderingValue) => {
+    sectionOrderingConfig = orderValue
+    update()
   }
 
   const onFileSelected = async (
@@ -265,11 +274,14 @@
     <div class="max-w-full flex gap-3 items-start justify-items-center">
       <button
         class="hs-button is-large is-filled"
+        on:click|preventDefault={() => onUpdateSectionsOrder('about-first')}
         disabled={sectionOrderingConfig === 'about-first'}
         >Show about first</button
       >
       <button
         class="hs-button is-large is-filled"
+        on:click|preventDefault={() =>
+          onUpdateSectionsOrder('memberships-first')}
         disabled={sectionOrderingConfig === 'memberships-first'}
         >Show memberships first</button
       >
