@@ -78,6 +78,8 @@ export type HomeConfigValue = {
   body?: string
 }
 
+export type SectionOrderingValue = 'about-first' | 'memberships-first'
+
 export const getPagePaths = (async (
   options,
   config,

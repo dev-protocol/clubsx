@@ -11,6 +11,7 @@
     colorPresets as ColorPresets,
     GlobalConfigValue,
     HomeConfigValue,
+    SectionOrderingValue,
   } from '@plugins/default-theme'
   import { equals } from 'ramda'
   import { onMount } from 'svelte'
@@ -23,6 +24,15 @@
     encodedOptions,
   ) as unknown as ClubsPluginOptions
   export let colorPresets: typeof ColorPresets
+
+  let sectionOrderingConfig: SectionOrderingValue =
+    (
+      options.find((option) => option.key === 'sectionsOrder') as UndefinedOr<{
+        key: 'sectionsOrder'
+        value: SectionOrderingValue
+      }>
+    )?.value ?? 'memberships-first'
+
   let homeConfig: HomeConfigValue =
     (
       options.find((option) => option.key === 'homeConfig') as UndefinedOr<{
@@ -252,12 +262,18 @@
     <span class="hs-form-field__label mb-3">
       {i18n('SectionOrdering')}
     </span>
-    <label class="max-w-full flex gap-3 items-start justify-items-center">
-      <button class="hs-button is-large is-filled">Show about first</button>
-      <button class="hs-button is-large is-filled"
+    <div class="max-w-full flex gap-3 items-start justify-items-center">
+      <button
+        class="hs-button is-large is-filled"
+        disabled={sectionOrderingConfig === 'about-first'}
+        >Show about first</button
+      >
+      <button
+        class="hs-button is-large is-filled"
+        disabled={sectionOrderingConfig === 'memberships-first'}
         >Show memberships first</button
       >
-    </label>
+    </div>
   </label>
 
   <label class="hs-form-field">
