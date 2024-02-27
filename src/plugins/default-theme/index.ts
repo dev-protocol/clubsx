@@ -102,6 +102,14 @@ export const getPagePaths = (async (
   const homeConfig = options.find((opt) => opt.key === 'homeConfig')
     ?.value as UndefinedOr<HomeConfig>
 
+  const sectionsOrderConfig =
+    (
+      options.find((opt) => opt.key === 'sectionsOrder') as UndefinedOr<{
+        key: 'sectionsOrder'
+        value: SectionOrderingValue
+      }>
+    )?.value ?? 'memberships-first'
+
   const sidebarPrimaryLinks =
     config.options?.find((option) => option.key === 'sidebarPrimaryLinks')
       ?.value ?? ([] as NavLink[])
@@ -129,6 +137,7 @@ export const getPagePaths = (async (
             sidebarPrimaryLinks,
             sidebarLinks,
             avatarImgSrc,
+            sectionsOrderConfig,
             signals: ['connection-button-hide'],
           },
         },
