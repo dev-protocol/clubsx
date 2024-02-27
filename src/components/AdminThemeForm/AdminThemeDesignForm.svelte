@@ -249,6 +249,18 @@
   </div>
 
   <label class="hs-form-field">
+    <span class="hs-form-field__label mb-3">
+      {i18n('SectionOrdering')}
+    </span>
+    <label class="max-w-full flex gap-3 items-start justify-items-center">
+      <button class="hs-button is-large is-filled">Show about first</button>
+      <button class="hs-button is-large is-filled"
+        >Show memberships first</button
+      >
+    </label>
+  </label>
+
+  <label class="hs-form-field">
     <span class="hs-form-field__label">
       {i18n('Description')}
     </span>
