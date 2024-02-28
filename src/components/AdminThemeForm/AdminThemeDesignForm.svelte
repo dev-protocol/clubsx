@@ -277,13 +277,13 @@
       <button
         class={`hs-button is-large border-0 ${sectionOrderingConfig === 'about-first' ? 'is-filled' : 'bg-transparent'}`}
         on:click|preventDefault={() => onUpdateSectionsOrder('about-first')}
-        >Show about first</button
+        >{i18n('ShowAboutFirst')}</button
       >
       <button
         class={`hs-button is-large border-0 ${sectionOrderingConfig !== 'about-first' ? 'is-filled' : 'bg-transparent'}`}
         on:click|preventDefault={() =>
           onUpdateSectionsOrder('memberships-first')}
-        >Show memberships first</button
+        >{i18n('ShowMembershipsFirst')}</button
       >
     </div>
   </label>
