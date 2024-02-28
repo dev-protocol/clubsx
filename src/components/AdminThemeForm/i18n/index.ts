@@ -27,7 +27,11 @@ export const Strings = {
   },
   Description: {
     en: () => 'Short description to introduce yourself',
-    ja: () => 'クラブ紹介（短文）',
+    ja: () => 'クラブ紹介（短文',
+  },
+  SectionOrdering: {
+    en: () => 'Section ordering',
+    ja: () => 'セクションの順序付け',
   },
   YourIntroduction: {
     en: () => 'Your introduction',
