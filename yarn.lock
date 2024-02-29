@@ -144,13 +144,13 @@
     "@vitejs/plugin-react" "^4.2.0"
     ultrahtml "^1.3.0"
 
-"@astrojs/svelte@5.1.0":
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/@astrojs/svelte/-/svelte-5.1.0.tgz#f93d9dcd0b16cbc9ef5b6933a63450eb04f4a044"
-  integrity sha512-1f0wkFkHs+1vcCliaEB1j9SYEU/n5ZYTAASv5Rkq6nvjNFRrnPuXLQCYIYFqdGGqFm6UPdgKpJBFbFFeQlr4yA==
+"@astrojs/svelte@5.2.0":
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/svelte/-/svelte-5.2.0.tgz#0a7e55e386a558cc2338f63d130fff450f7129b0"
+  integrity sha512-GmwbXks2WMkmAfl0rlPM/2gA1RtmZzjGV2mOceV3g7QNyjIsSYBPKrlEnSFnuR+YMvlAtWdbMFBsb3gtGxnTTg==
   dependencies:
     "@sveltejs/vite-plugin-svelte" "^3.0.0"
-    svelte2tsx "^0.6.25"
+    svelte2tsx "^0.6.27"
 
 "@astrojs/tailwind@5.1.0":
   version "5.1.0"
@@ -10159,7 +10159,7 @@ svelte-preprocess@^5.1.0:
     sorcery "^0.11.0"
     strip-indent "^3.0.0"
 
-svelte2tsx@^0.6.25:
+svelte2tsx@^0.6.27:
   version "0.6.27"
   resolved "https://registry.yarnpkg.com/svelte2tsx/-/svelte2tsx-0.6.27.tgz#5b2c21f38608be51cd32de177722f123e57919e5"
   integrity sha512-E1uPW1o6VsbRz+nUk3fznZ2lSmCITAJoNu8AYefWSvIwE2pSB01i5sId4RMbWNzfcwCQl1DcgGShCPcldl4rvg==
