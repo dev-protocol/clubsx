@@ -11,17 +11,14 @@ const checkExisting = async ({ invitationId }: { invitationId: string }) => {
 }
 
 export const POST: APIRoute = async ({ request }) => {
-  const { signature, message, membership, conditions } =
-    (await request.json()) as {
-      signature: string
-      message: string
-      membership: {
-        payload: string
-      }
-      conditions?: {
-        recipient?: string[]
-      }
+  const { membership, conditions } = (await request.json()) as {
+    membership: {
+      payload: string
     }
+    conditions?: {
+      recipient?: string[]
+    }
+  }
 
   // Generate a redis client while checking the latest schema is indexing and create/update index if it's not.
   const client = await getDefaultClient()
