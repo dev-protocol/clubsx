@@ -581,10 +581,10 @@
     svelte "^3.49.0"
     vue "^3.2.0"
 
-"@devprotocol/clubs-core@3.1.8":
-  version "3.1.8"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-3.1.8.tgz#94c630b782caa7234b09ef09011fedd81b8e3416"
-  integrity sha512-Qkm7teu8Tqej+388qbXbkZoziP+9jLFnvwLXHWSqHYJOmzA6VG0nbxvChKi7lM7UURKjhrdlveuAQ4+o+7VoRw==
+"@devprotocol/clubs-core@3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-3.2.0.tgz#c14f9993f20cf355a2d9990f0588f215548da5ad"
+  integrity sha512-rMbnPFXYq3G95thd2Fj1+KZ9xg1kWKZgrZQ9xyInpKpIWy/gQAft6R85htwgN4zYSaCBg8v9UehXmN/dGTvFgQ==
   dependencies:
     "@devprotocol/dev-kit" "8.6.0"
     "@devprotocol/elements" "1.1.0"
@@ -592,6 +592,7 @@
     "@devprotocol/util-ts" "4.0.0"
     "@ethersproject/abstract-provider" "^5.7.0"
     "@metamask/detect-provider" "^2.0.0"
+    cross-fetch "^4.0.0"
     dompurify "^3.0.6"
     js-base64 "^3.7.2"
     lit "^3.0.0"
@@ -599,7 +600,7 @@
     ramda "^0.29.0"
     rxjs "^7.8.1"
     web3modal "^1.9.12"
-    yaml "2.3.4"
+    yaml "2.4.0"
   optionalDependencies:
     react "^18.0.0"
     react-dom "^18.0.0"
@@ -11380,7 +11381,12 @@ yaml@2.2.1:
   resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.2.1.tgz#3014bf0482dcd15147aa8e56109ce8632cd60ce4"
   integrity sha512-e0WHiYql7+9wr4cWMx3TVQrNwejKaEe7/rHNmQmqRjazfOP5W8PB6Jpebb5o6fIapbz9o9+2ipcaTM2ZwDI6lw==
 
-yaml@2.3.4, yaml@^2.3.4:
+yaml@2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.4.0.tgz#2376db1083d157f4b3a452995803dbcf43b08140"
+  integrity sha512-j9iR8g+/t0lArF4V6NE/QCfT+CO7iLqrXAHZbJdo+LfjqP1vR8Fg5bSiaq6Q2lOD1AUEVrEVIgABvBFYojJVYQ==
+
+yaml@^2.3.4:
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.3.4.tgz#53fc1d514be80aabf386dc6001eb29bf3b7523b2"
   integrity sha512-8aAvwVUSHpfEqTQ4w/KMlf3HcRdt50E5ODIQJBw1fQ5RL34xabzxtUlzTXVqc4rkZsPbvrXKWnABCD7kWSmocA==
