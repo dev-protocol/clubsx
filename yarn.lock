@@ -531,11 +531,11 @@
     uuid "9.0.1"
 
 "@crossmint/client-sdk-base@^1.0.1-alpha.6":
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-base/-/client-sdk-base-1.1.6.tgz#7f6353ea34452d0492853fe080c08bd4a5c0b30b"
-  integrity sha512-PWUuBq7+kO1at4r6cm9QYdUTsPuOi5U30o9+T966HxKUHln5QNAqXtRQVU681+Zy14OzulJW19ChnzrZPJ76bA==
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-base/-/client-sdk-base-1.1.8.tgz#764a88c9c25d567c81403606fd69dd2c2537b772"
+  integrity sha512-DbkUDg+z4S1KA3aINpu/F7OIF20IWDDnAY1+1QMvd+9HQ3WKgF8iikii5CFnRyWjw3wnUXTJgeKkqUAHfrGXSg==
   dependencies:
-    "@crossmint/common-sdk-base" "0.0.3"
+    "@crossmint/common-sdk-base" "0.0.6"
     exponential-backoff "3.1.1"
     uuid "9.0.1"
 
@@ -551,10 +551,10 @@
     lodash.isequal "4.5.0"
     react-jss "10.10.0"
 
-"@crossmint/common-sdk-base@0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@crossmint/common-sdk-base/-/common-sdk-base-0.0.3.tgz#6c684bf2bbc0423eeab4cb6d831dd7d7c8cac951"
-  integrity sha512-TzVjuaC2JI4Zat0av94veHoRn2ODomw/3fjrOTW0u5KbguALTstn2kCdphatCD4KCDA1uq1XjEqpFa+EQl2Yjw==
+"@crossmint/common-sdk-base@0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@crossmint/common-sdk-base/-/common-sdk-base-0.0.6.tgz#e7f42fda8025221128a3654070b44cb189b5d234"
+  integrity sha512-kIn2KJpvoKPPy/iDiMdXTnaieKkmJ04q7cyCemNRj82CVBums8pVCMe4mQWUBJX76YyXrmoe8wZssSDF6Qq0AQ==
   dependencies:
     bs58 "5.0.0"
     tweetnacl "1.0.3"
