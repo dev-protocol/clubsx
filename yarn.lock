@@ -4099,10 +4099,10 @@ assertion-error@^1.1.0:
   resolved "https://registry.yarnpkg.com/assertion-error/-/assertion-error-1.1.0.tgz#e60b6b0e8f301bd97e5375215bda406c85118c0b"
   integrity sha512-jgsaNduz+ndvGyFt3uSuWqvy4lCnIJiovtouQN5JZHOKCS2QuhEdbcQHFhVksz2N2U9hXJo8odG7ETyWlEeuDw==
 
-astro@4.4.6:
-  version "4.4.6"
-  resolved "https://registry.yarnpkg.com/astro/-/astro-4.4.6.tgz#de1cafdc9935c855dbfad8a799d4364d268df9aa"
-  integrity sha512-kns2TtiMYTyDPgcvtaQjMfBhY/F/2+O3eSX4XWH13FFQW1hp7AcTXfGwq8SvJ14JNoU4bsKeJbaB9CxUN9ZQlQ==
+astro@4.4.8:
+  version "4.4.8"
+  resolved "https://registry.yarnpkg.com/astro/-/astro-4.4.8.tgz#7729fcf7b9776db703d91fb5253f34c12d298cd7"
+  integrity sha512-jAAfzvgHOfuZmqJjnSDownVNuWKYmsGkrFqecEppHarMA/cZ5QIboW6GQHZ8eGZQdtYRCjON3h4i64XFZfuwSg==
   dependencies:
     "@astrojs/compiler" "^2.5.3"
     "@astrojs/internal-helpers" "0.2.1"
@@ -4163,7 +4163,7 @@ astro@4.4.6:
     tsconfck "^3.0.0"
     unist-util-visit "^5.0.0"
     vfile "^6.0.1"
-    vite "^5.1.2"
+    vite "^5.1.4"
     vitefu "^0.2.5"
     which-pm "^2.1.1"
     yargs-parser "^21.1.1"
@@ -10964,10 +10964,10 @@ vite@^5.0.0:
   optionalDependencies:
     fsevents "~2.3.3"
 
-vite@^5.1.2:
-  version "5.1.2"
-  resolved "https://registry.yarnpkg.com/vite/-/vite-5.1.2.tgz#34e04d38db27ceebe6f0c9d053ea14d6496753d1"
-  integrity sha512-uwiFebQbTWRIGbCaTEBVAfKqgqKNKMJ2uPXsXeLIZxM8MVMjoS3j0cG8NrPxdDIadaWnPSjrkLWffLSC+uiP3Q==
+vite@^5.1.4:
+  version "5.1.4"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-5.1.4.tgz#14e9d3e7a6e488f36284ef13cebe149f060bcfb6"
+  integrity sha512-n+MPqzq+d9nMVTKyewqw6kSt+R3CkvF9QAKY8obiQn8g1fwTscKxyfaYnC632HtBXAQGc1Yjomphwn1dtwGAHg==
   dependencies:
     esbuild "^0.19.3"
     postcss "^8.4.35"
