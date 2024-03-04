@@ -22,7 +22,7 @@ export type Invitation = {
   id: string
   disabled?: boolean
   conditions?: {
-    recipient?: string[]
+    recipient?: string
   }
   membership: {
     payload: string

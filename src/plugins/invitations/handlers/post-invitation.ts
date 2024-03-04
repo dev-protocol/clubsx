@@ -16,7 +16,7 @@ export const POST: APIRoute = async ({ request }) => {
       payload: string
     }
     conditions?: {
-      recipient?: string[]
+      recipient?: string
     }
   }
 
