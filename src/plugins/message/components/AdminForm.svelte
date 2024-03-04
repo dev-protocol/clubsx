@@ -221,7 +221,7 @@
               alt={`${mem.name} Membership`}
             />
             <span class="font-semibold"
-              >{mem.price} {mem.currency.toUpperCase()}</span
+              >{mem.price} {mem.currency?.toUpperCase()}</span
             >
             <span class="text-sm">{mem.description}</span>
           </div>

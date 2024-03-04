@@ -3,8 +3,9 @@ import Markdown from '@components/Markdown/Markdown.astro'
 import Memberships from '../components/Memberships/Memberships.astro'
 import type { Membership } from '@plugins/memberships'
 import { ClubsSlotName, type ClubsPropsPages } from '@devprotocol/clubs-core'
+import type { SectionOrderingValue } from '..'
 
-const { memberships, homeConfig, name, clubs } =
+const { memberships, homeConfig, name, clubs, sectionsOrderConfig } =
   Astro.props as ClubsPropsPages & {
     memberships?: Membership[]
     homeConfig: {
@@ -15,6 +16,7 @@ const { memberships, homeConfig, name, clubs } =
       body: string
     }
     name: string
+    sectionsOrderConfig: SectionOrderingValue
   }
 
 const SlotsPageContentHomeBeforeContent = clubs.slots.filter(({ slot }) => {
@@ -26,24 +28,37 @@ const SlotsPageContentHomeAfterContent = clubs.slots.filter(({ slot }) => {
 ---
 
 <article class="grid gap-6">
-  <section class="grid">
-    {
-      memberships ? (
-        <>
-          <h2 class="text-center text-2xl font-bold lg:text-4xl">
-            {memberships.length > 1 ? 'Select a membership' : 'Become a member'}
-          </h2>
-          <Memberships memberships={memberships} name={name} />
-        </>
-      ) : (
-        <div class="mx-auto my-8 w-full max-w-2xl rounded-lg bg-black/10 p-6 text-center">
-          <h2 class="text-xl font-bold lg:text-4xl">
-            Please wait for the launch.
-          </h2>
-        </div>
-      )
-    }
-  </section>
+  {
+    sectionsOrderConfig && sectionsOrderConfig === 'about-first' ? (
+      <>
+        <h2 class="text-center text-xl font-bold lg:text-4xl">About {name}</h2>
+        <Markdown
+          body={homeConfig.body}
+          class="mx-auto mt-4 w-full max-w-2xl lg:mt-6"
+          size="xl"
+        />
+      </>
+    ) : (
+      <section class="grid">
+        {memberships ? (
+          <>
+            <h2 class="text-center text-2xl font-bold lg:text-4xl">
+              {memberships.length > 1
+                ? 'Select a membership'
+                : 'Become a member'}
+            </h2>
+            <Memberships memberships={memberships} name={name} />
+          </>
+        ) : (
+          <div class="mx-auto my-8 w-full max-w-2xl rounded-lg bg-black/10 p-6 text-center">
+            <h2 class="text-xl font-bold lg:text-4xl">
+              Please wait for the launch.
+            </h2>
+          </div>
+        )}
+      </section>
+    )
+  }
 
   {
     // Display slots of PageContentHomeBeforeContent
@@ -52,12 +67,37 @@ const SlotsPageContentHomeAfterContent = clubs.slots.filter(({ slot }) => {
     ))
   }
 
-  <h2 class="text-center text-xl font-bold lg:text-4xl">About {name}</h2>
-  <Markdown
-    body={homeConfig.body}
-    class="mx-auto mt-4 w-full max-w-2xl lg:mt-6"
-    size="xl"
-  />
+  {
+    sectionsOrderConfig && sectionsOrderConfig === 'about-first' ? (
+      <section class="grid">
+        {memberships ? (
+          <>
+            <h2 class="text-center text-2xl font-bold lg:text-4xl">
+              {memberships.length > 1
+                ? 'Select a membership'
+                : 'Become a member'}
+            </h2>
+            <Memberships memberships={memberships} name={name} />
+          </>
+        ) : (
+          <div class="mx-auto my-8 w-full max-w-2xl rounded-lg bg-black/10 p-6 text-center">
+            <h2 class="text-xl font-bold lg:text-4xl">
+              Please wait for the launch.
+            </h2>
+          </div>
+        )}
+      </section>
+    ) : (
+      <>
+        <h2 class="text-center text-xl font-bold lg:text-4xl">About {name}</h2>
+        <Markdown
+          body={homeConfig.body}
+          class="mx-auto mt-4 w-full max-w-2xl lg:mt-6"
+          size="xl"
+        />
+      </>
+    )
+  }
 
   {
     // Display slots of SlotsPageContentHomeAfterContent
