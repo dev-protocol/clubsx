@@ -612,10 +612,10 @@
     svelte "^4.0.0"
     vue "^3.2.0"
 
-"@devprotocol/clubs-plugin-posts@0.10.0":
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts/-/clubs-plugin-posts-0.10.0.tgz#a8d72acc65e63ad5cd512480de5fd033b1f877c1"
-  integrity sha512-OUS9GPDOhUHjsoX/RMsQnEPCAS52uEmY7kXW2vcIRub5ot0UoWoK3aa3+ifOF/pK/VGU1YyaXyPmHQONTmJEZQ==
+"@devprotocol/clubs-plugin-posts@0.11.0":
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts/-/clubs-plugin-posts-0.11.0.tgz#b2c00b817dc095f12c1f47d0b8d2cafbb848d858"
+  integrity sha512-471+aCUn9YyQS/gHLpXkALceD1lrQOmXJ0FSNyO2Uf5JWuHWiWK/Dv5V4/7mB6xiHg5yJcyfPkgEvUtZMnQUbw==
   dependencies:
     "@boringer-avatars/vue3" "^0.2.1"
     "@devprotocol/dev-kit" "8.6.0"
@@ -628,7 +628,7 @@
     photoswipe "5.4.3"
     ramda "0.29.1"
     redis "^4.6.7"
-    sass "1.70.0"
+    sass "1.71.1"
     uuid "^9.0.0"
 
 "@devprotocol/dev-kit@7.3.0":
@@ -9653,15 +9653,6 @@ sass@1.60.0:
   version "1.60.0"
   resolved "https://registry.yarnpkg.com/sass/-/sass-1.60.0.tgz#657f0c23a302ac494b09a5ba8497b739fb5b5a81"
   integrity sha512-updbwW6fNb5gGm8qMXzVO7V4sWf7LMXnMly/JEyfbfERbVH46Fn6q02BX7/eHTdKpE7d+oTkMMQpFWNUMfFbgQ==
-  dependencies:
-    chokidar ">=3.0.0 <4.0.0"
-    immutable "^4.0.0"
-    source-map-js ">=0.6.2 <2.0.0"
-
-sass@1.70.0:
-  version "1.70.0"
-  resolved "https://registry.yarnpkg.com/sass/-/sass-1.70.0.tgz#761197419d97b5358cb25f9dd38c176a8a270a75"
-  integrity sha512-uUxNQ3zAHeAx5nRFskBnrWzDUJrrvpCPD5FNAoRvTi0WwremlheES3tg+56PaVtCs5QDRX5CBLxxKMDJMEa1WQ==
   dependencies:
     chokidar ">=3.0.0 <4.0.0"
     immutable "^4.0.0"
