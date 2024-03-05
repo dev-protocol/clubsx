@@ -10,7 +10,7 @@ const checkExisting = async ({ invitationId }: { invitationId: string }) => {
   return keyExists === 1 ? true : false
 }
 
-export const POST: APIRoute = async ({ request }) => {
+export const handler: APIRoute = async ({ request }) => {
   const { membership, conditions } = (await request.json()) as {
     membership: {
       payload: string
@@ -42,3 +42,5 @@ export const POST: APIRoute = async ({ request }) => {
 
   return new Response(JSON.stringify({ id: invitation.id }), { status: 200 })
 }
+
+export default handler
