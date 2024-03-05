@@ -14,6 +14,7 @@ import Preview3 from './assets/default-theme-3.jpg'
 import getInvitationsId from './handlers/get-invitations-id'
 import getInvitationsCheck from './handlers/get-invitations-check'
 import claimInvitation from './handlers/claim-invitation'
+import postInvitation from './handlers/post-invitation'
 
 export const getPagePaths = (async (options, config) => {
   return []
@@ -34,6 +35,11 @@ export const getApiPaths = (async (
       paths: ['invitations', 'check', SinglePath],
       method: 'GET',
       handler: getInvitationsCheck,
+    },
+    {
+      paths: ['invitations'],
+      method: 'POST',
+      handler: postInvitation,
     },
     {
       paths: ['invitations', 'claim'],
