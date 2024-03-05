@@ -29,6 +29,7 @@ import $15 from '@plugins/join-legacy'
 import $16 from '@plugins/clubs-payments'
 import $17 from '@plugins/tickets'
 import $18 from '@plugins/collections'
+import $19 from '@plugins/invitations'
 
 import * as PostsPlugin from '@devprotocol/clubs-plugin-posts'
 
@@ -239,6 +240,7 @@ export const plugins = [
   $17,
   $18,
   PostsPlugin,
+  $19,
 ] satisfies ClubsPlugins
 
 export const paidBundledItems: PaidBundledItem[] = [
