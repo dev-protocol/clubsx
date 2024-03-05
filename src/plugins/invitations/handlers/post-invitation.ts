@@ -11,6 +11,8 @@ const checkExisting = async ({ invitationId }: { invitationId: string }) => {
 }
 
 export const handler: APIRoute = async ({ request }) => {
+  console.log('creating invitation')
+
   const { membership, conditions } = (await request.json()) as {
     membership: {
       payload: string
@@ -35,10 +37,12 @@ export const handler: APIRoute = async ({ request }) => {
     )
   }
 
-  client.set(
+  await client.set(
     `${Prefix.Invitation}::${invitation.id}`,
     JSON.stringify(invitation),
   )
+
+  console.log('Invitation created:', invitation.id)
 
   return new Response(JSON.stringify({ id: invitation.id }), { status: 200 })
 }
