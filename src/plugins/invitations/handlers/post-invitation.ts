@@ -1,4 +1,3 @@
-import type { APIRoute } from 'astro'
 import { Prefix, invitationDocument } from '../redis-schema'
 import { getDefaultClient } from '../redis'
 import {
@@ -19,9 +18,7 @@ const checkExisting = async ({ invitationId }: { invitationId: string }) => {
 export const handler =
   (conf: ClubsConfiguration) =>
   async ({ request }: { request: Request }) => {
-    console.log('creating invitation')
-
-    const { membership, conditions, signature, message, site } =
+    const { membership, conditions, signature, message } =
       (await request.json()) as {
         membership: {
           payload: string
@@ -31,7 +28,6 @@ export const handler =
         }
         signature: string
         message: string
-        site: string
       }
 
     const client = await getDefaultClient()
@@ -63,8 +59,6 @@ export const handler =
       `${Prefix.Invitation}::${invitation.id}`,
       JSON.stringify(invitation),
     )
-
-    console.log('Invitation created:', invitation.id)
 
     return new Response(JSON.stringify({ id: invitation.id }), { status: 200 })
   }
