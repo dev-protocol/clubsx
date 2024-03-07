@@ -612,6 +612,19 @@
     svelte "^4.0.0"
     vue "^3.2.0"
 
+"@devprotocol/clubs-plugin-posts-voting@^0.5.1":
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts-voting/-/clubs-plugin-posts-voting-0.5.1.tgz#52348846556408f738449779fa2bfbe9267280a6"
+  integrity sha512-XeSzFRnVgpPeh5ZYmpOweP51TOMSEN36ACwnfuxGF1SrC3HcPgjPm2PxFghkxJZl/OCh6IvwU/srH0zqGemlnQ==
+  dependencies:
+    "@devprotocol/dev-kit" "8.6.0"
+    "@devprotocol/util-ts" "4.0.0"
+    bignumber.js "9.1.2"
+    ethers "6.11.1"
+    ramda "0.29.1"
+    sass "1.71.1"
+    uuid "^9.0.1"
+
 "@devprotocol/clubs-plugin-posts@0.11.0":
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts/-/clubs-plugin-posts-0.11.0.tgz#b2c00b817dc095f12c1f47d0b8d2cafbb848d858"
