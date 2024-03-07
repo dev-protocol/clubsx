@@ -1,6 +1,12 @@
 import type { APIRoute } from 'astro'
 import { Prefix, invitationDocument } from '../redis-schema'
 import { getDefaultClient } from '../redis'
+import {
+  authenticate,
+  type ClubsConfiguration,
+  encode,
+} from '@devprotocol/clubs-core'
+import { getDefaultProvider } from 'ethers'
 
 const checkExisting = async ({ invitationId }: { invitationId: string }) => {
   const client = await getDefaultClient()
@@ -10,41 +16,57 @@ const checkExisting = async ({ invitationId }: { invitationId: string }) => {
   return keyExists === 1 ? true : false
 }
 
-export const handler: APIRoute = async ({ request }) => {
-  console.log('creating invitation')
+export const handler =
+  (conf: ClubsConfiguration) =>
+  async ({ request }: { request: Request }) => {
+    console.log('creating invitation')
 
-  const { membership, conditions } = (await request.json()) as {
-    membership: {
-      payload: string
+    const { membership, conditions, signature, message, site } =
+      (await request.json()) as {
+        membership: {
+          payload: string
+        }
+        conditions?: {
+          recipient?: string
+        }
+        signature: string
+        message: string
+        site: string
+      }
+
+    const client = await getDefaultClient()
+
+    const authenticated = await authenticate({
+      message,
+      signature,
+      previousConfiguration: encode(conf),
+      provider: getDefaultProvider(conf.rpcUrl),
+    })
+
+    if (!authenticated) {
+      return new Response(JSON.stringify({}), { status: 401 })
     }
-    conditions?: {
-      recipient?: string
+
+    const invitation = invitationDocument({
+      membership,
+      conditions,
+    })
+
+    if (await checkExisting({ invitationId: invitation.id })) {
+      return new Response(
+        JSON.stringify({ error: 'invitation already exists' }),
+        { status: 400 },
+      )
     }
-  }
 
-  // Generate a redis client while checking the latest schema is indexing and create/update index if it's not.
-  const client = await getDefaultClient()
-
-  const invitation = invitationDocument({
-    membership,
-    conditions,
-  })
-
-  if (await checkExisting({ invitationId: invitation.id })) {
-    return new Response(
-      JSON.stringify({ error: 'invitation already exists' }),
-      { status: 400 },
+    await client.set(
+      `${Prefix.Invitation}::${invitation.id}`,
+      JSON.stringify(invitation),
     )
+
+    console.log('Invitation created:', invitation.id)
+
+    return new Response(JSON.stringify({ id: invitation.id }), { status: 200 })
   }
-
-  await client.set(
-    `${Prefix.Invitation}::${invitation.id}`,
-    JSON.stringify(invitation),
-  )
-
-  console.log('Invitation created:', invitation.id)
-
-  return new Response(JSON.stringify({ id: invitation.id }), { status: 200 })
-}
 
 export default handler
