@@ -625,10 +625,10 @@
     sass "1.71.1"
     uuid "^9.0.1"
 
-"@devprotocol/clubs-plugin-posts@0.11.0":
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts/-/clubs-plugin-posts-0.11.0.tgz#b2c00b817dc095f12c1f47d0b8d2cafbb848d858"
-  integrity sha512-471+aCUn9YyQS/gHLpXkALceD1lrQOmXJ0FSNyO2Uf5JWuHWiWK/Dv5V4/7mB6xiHg5yJcyfPkgEvUtZMnQUbw==
+"@devprotocol/clubs-plugin-posts@0.13.0":
+  version "0.13.0"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts/-/clubs-plugin-posts-0.13.0.tgz#ee111e812b75c489988ba52223351d456f2495d7"
+  integrity sha512-v8ZucIAMpO8t9pb/2LH/1yiV5IkB73wK4uR4M1hHWrc06vWQ393dJroVyBXIbcrv9Coohc+PWLGsLa37G2V+dA==
   dependencies:
     "@boringer-avatars/vue3" "^0.2.1"
     "@devprotocol/dev-kit" "8.6.0"
@@ -637,7 +637,8 @@
     dayjs "^1.11.8"
     dompurify "^3.0.5"
     ethers "^6.6.4"
-    marked "12.0.0"
+    marked "12.0.1"
+    nanoid "^5.0.6"
     photoswipe "5.4.3"
     ramda "0.29.1"
     redis "^4.6.7"
@@ -7751,10 +7752,10 @@ marked@10.0.0, marked@^10.0.0:
   resolved "https://registry.yarnpkg.com/marked/-/marked-10.0.0.tgz#7fe1805bb908433d760e2de0fcc8841a2b2d745c"
   integrity sha512-YiGcYcWj50YrwBgNzFoYhQ1hT6GmQbFG8SksnYJX1z4BXTHSOrz1GB5/Jm2yQvMg4nN1FHP4M6r03R10KrVUiA==
 
-marked@12.0.0:
-  version "12.0.0"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-12.0.0.tgz#051ea8c8c7f65148a63003df1499515a2c6de716"
-  integrity sha512-Vkwtq9rLqXryZnWaQc86+FHLC6tr/fycMfYAhiOIXkrNmeGAyhSxjqu0Rs1i0bBqw5u0S7+lV9fdH2ZSVaoa0w==
+marked@12.0.1:
+  version "12.0.1"
+  resolved "https://registry.yarnpkg.com/marked/-/marked-12.0.1.tgz#8ab1eb15560c7cbe3b011074845d7ca6c4d392b0"
+  integrity sha512-Y1/V2yafOcOdWQCX0XpAKXzDakPOpn6U0YLxTJs3cww6VxOzZV1BTOOYWLvH3gX38cq+iLwljHHTnMtlDfg01Q==
 
 mdast-util-definitions@^6.0.0:
   version "6.0.0"
@@ -8393,7 +8394,7 @@ nanoid@^3.3.7:
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.7.tgz#d0c301a691bc8d54efa0a2226ccf3fe2fd656bd8"
   integrity sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==
 
-nanoid@^5.0.5:
+nanoid@^5.0.5, nanoid@^5.0.6:
   version "5.0.6"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-5.0.6.tgz#7f99a033aa843e4dcf9778bdaec5eb02f4dc44d5"
   integrity sha512-rRq0eMHoGZxlvaFOUdK1Ev83Bd1IgzzR+WJ3IbDJ7QOSdAxYjlurSPqFs9s4lJg29RT6nPwizFtJhQS6V5xgiA==
