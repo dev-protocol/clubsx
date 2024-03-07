@@ -22,7 +22,7 @@ export const getPagePaths = (async (options, config) => {
 
 export const getApiPaths = (async (
   options,
-  { rpcUrl, chainId, propertyAddress },
+  config,
   { getPluginConfigById },
 ) => {
   return [
@@ -39,15 +39,15 @@ export const getApiPaths = (async (
     {
       paths: ['invitations'],
       method: 'POST',
-      handler: postInvitation,
+      handler: postInvitation(config),
     },
     {
       paths: ['invitations', 'claim'],
       method: 'POST',
       handler: claimInvitation({
-        rpcUrl,
-        chainId,
-        property: propertyAddress,
+        rpcUrl: config.rpcUrl,
+        chainId: config.chainId,
+        property: config.propertyAddress,
         getPluginConfigById,
       }),
     },
