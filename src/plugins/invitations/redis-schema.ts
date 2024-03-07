@@ -1,6 +1,6 @@
 import { encode } from '@devprotocol/clubs-core'
 import { SchemaFieldTypes, type RediSearchSchema } from 'redis'
-import { keccak256 } from 'ethers'
+import { keccak256, toUtf8Bytes } from 'ethers'
 import { nanoid } from 'nanoid'
 
 export enum Index {
@@ -99,9 +99,11 @@ export const schemaHistory = {
   ...account,
 }
 
-export const schemaInvitationId = keccak256(encode(schemaInvitation))
+export const schemaInvitationId = keccak256(
+  toUtf8Bytes(encode(schemaInvitation)),
+)
 
-export const schemaHistoryId = keccak256(encode(schemaHistory))
+export const schemaHistoryId = keccak256(toUtf8Bytes(encode(schemaHistory)))
 
 /**
  * Generate a new invitation document
