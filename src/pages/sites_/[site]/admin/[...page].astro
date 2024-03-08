@@ -8,6 +8,7 @@ import {
   type ClubsFunctionFactoryOptions,
   type ClubsFunctionAdminFactoryResult,
   type ClubsGetStaticPathsItem,
+  routerFactory,
 } from '@devprotocol/clubs-core'
 import { config as _config } from '@fixtures/config'
 import PageNotFound from '@pages/404.astro'
@@ -34,9 +35,9 @@ const { getStaticPaths } = adminFactory(
   options,
 ) as ClubsFunctionAdminFactoryResult<typeof options>
 
-const _path = (await getStaticPaths()).find(
-  ({ params }) => params.page === page,
-)
+const router = routerFactory(await getStaticPaths(), (p) => p.params.page)
+const _path = router(page)
+
 const path = {
   ..._path,
   props: {
