@@ -1,13 +1,13 @@
 import { createClient } from 'redis'
 import type { AsyncReturnType } from 'type-fest'
 import {
-  Index,
-  Prefix,
-  SchemaKey,
-  schemaHistory,
-  schemaHistoryId,
-  schemaInvitation,
-  schemaInvitationId,
+  AchievementIndex,
+  AchievementPrefix,
+  AchievementSchemaKey,
+  schemaAchievementsHistory,
+  schemaAchievementsHistoryId,
+  schemaAchievement,
+  schemaAchievementId,
 } from './redis-schema'
 
 export const defaultClient = createClient({
@@ -38,27 +38,31 @@ export const withCheckingIndex = async <
   getClient: T,
 ): Promise<AsyncReturnType<T>> => {
   const client = (await getClient()) as AsyncReturnType<T>
-  const currentScmI = await client.get(SchemaKey.Invitation)
-  const currentScmH = await client.get(SchemaKey.History)
-  const isScmIIndexed = currentScmI === schemaInvitationId
-  const isScmHIndexed = currentScmH === schemaHistoryId
+  const currentScmI = await client.get(AchievementSchemaKey.Achievement)
+  const currentScmH = await client.get(AchievementSchemaKey.History)
+  const isScmIIndexed = currentScmI === schemaAchievementId
+  const isScmHIndexed = currentScmH === schemaAchievementsHistoryId
   const ON = 'JSON'
   return isScmIIndexed && isScmHIndexed
     ? client
     : Promise.all([
-        client.ft.dropIndex(Index.Invitation),
-        client.ft.dropIndex(Index.History),
+        client.ft.dropIndex(AchievementIndex.Achievement),
+        client.ft.dropIndex(AchievementIndex.History),
       ])
         .then(() =>
           Promise.all([
-            client.ft.create(Index.Invitation, schemaInvitation, {
+            client.ft.create(AchievementIndex.Achievement, schemaAchievement, {
               ON,
-              PREFIX: Prefix.Invitation,
+              PREFIX: AchievementPrefix.Achievement,
             }),
-            client.ft.create(Index.History, schemaHistory, {
-              ON,
-              PREFIX: Prefix.History,
-            }),
+            client.ft.create(
+              AchievementIndex.History,
+              schemaAchievementsHistory,
+              {
+                ON,
+                PREFIX: AchievementPrefix.History,
+              },
+            ),
           ]),
         )
         .then(() => client)

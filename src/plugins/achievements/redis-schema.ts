@@ -3,33 +3,45 @@ import { SchemaFieldTypes, type RediSearchSchema } from 'redis'
 import { keccak256, toUtf8Bytes } from 'ethers'
 import { nanoid } from 'nanoid'
 
-export enum Index {
-  Invitation = 'idx::devprotocol:clubs:invitation:code',
-  History = 'idx::devprotocol:clubs:invitation:history',
+export enum AchievementIndex {
+  Achievement = 'idx::devprotocol:clubs:achievement:code',
+  History = 'idx::devprotocol:clubs:achievement:history',
 }
 
-export enum Prefix {
-  Invitation = 'doc::devprotocol:clubs:invitation:code::',
-  History = 'doc::devprotocol:clubs:invitation:history::',
+export enum AchievementPrefix {
+  Achievement = 'doc::devprotocol:clubs:achievement:code::',
+  History = 'doc::devprotocol:clubs:achievement:history::',
 }
 
-export enum SchemaKey {
-  Invitation = 'scm::devprotocol:clubs:invitation:code',
-  History = 'scm::devprotocol:clubs:invitation:history',
+export enum AchievementSchemaKey {
+  Achievement = 'scm::devprotocol:clubs:achievement:code',
+  History = 'scm::devprotocol:clubs:achievement:history',
 }
 
-export type Invitation = {
+export type NumberAttribute = {
+  trait_type: string
+  display_type: string
+  value: string
+}
+
+export type StringAttribute = {
+  trait_type: string
+  value: string
+}
+
+export type Achievement = {
   id: string
-  disabled?: boolean
-  conditions?: {
-    recipient?: string
-  }
-  membership: {
-    payload: string
+  contract: string
+  metadata: {
+    name: string
+    description: string
+    image: string
+    numberAttributes: NumberAttribute[]
+    stringAttributes: StringAttribute[]
   }
 }
 
-export type History = {
+export type AchievementHistory = {
   id: string
   usedId: string
   datetime: number
@@ -43,24 +55,45 @@ export const id = {
   },
 } satisfies RediSearchSchema
 
-export const disabled = {
-  '$.disabled': {
+export const contract = {
+  '$.contract': {
     type: SchemaFieldTypes.TAG,
-    AS: 'disabled',
+    AS: 'contract',
   },
 } satisfies RediSearchSchema
 
-export const conditionsRecipient = {
-  '$.conditions.recipient': {
+export const metadataName = {
+  '$.metadata.name': {
     type: SchemaFieldTypes.TEXT,
-    AS: 'conditionsRecipient',
+    AS: 'metadataName',
   },
 } satisfies RediSearchSchema
 
-export const membershipPayload = {
-  '$.membership.payload': {
+export const metadataDescription = {
+  '$.metadata.description': {
+    type: SchemaFieldTypes.TEXT,
+    AS: 'metadataDescription',
+  },
+} satisfies RediSearchSchema
+
+export const metadataImage = {
+  '$.metadata.image': {
+    type: SchemaFieldTypes.TEXT,
+    AS: 'metadataImage',
+  },
+} satisfies RediSearchSchema
+
+export const metadataNumberAttributes = {
+  '$.metadata.numberAttributes': {
+    type: SchemaFieldTypes.TEXT,
+    AS: 'metadataNumberAttributes',
+  },
+} satisfies RediSearchSchema
+
+export const metadataStringAttributes = {
+  '$.membership.stringAttributes': {
     type: SchemaFieldTypes.TAG,
-    AS: 'membershipPayload',
+    AS: 'metadataStringAttributes',
   },
 } satisfies RediSearchSchema
 
@@ -85,41 +118,48 @@ export const account = {
   },
 } satisfies RediSearchSchema
 
-export const schemaInvitation = {
+export const schemaAchievement = {
   ...id,
-  ...disabled,
-  ...conditionsRecipient,
-  ...membershipPayload,
+  ...contract,
+  ...metadataName,
+  ...metadataDescription,
+  ...metadataImage,
+  ...metadataNumberAttributes,
+  ...metadataStringAttributes,
 }
 
-export const schemaHistory = {
+export const schemaAchievementsHistory = {
   ...id,
   ...usedId,
   ...datetime,
   ...account,
 }
 
-export const schemaInvitationId = keccak256(
-  toUtf8Bytes(encode(schemaInvitation)),
+export const schemaAchievementId = keccak256(
+  toUtf8Bytes(encode(schemaAchievement)),
 )
 
-export const schemaHistoryId = keccak256(toUtf8Bytes(encode(schemaHistory)))
+export const schemaAchievementsHistoryId = keccak256(
+  toUtf8Bytes(encode(schemaAchievementsHistory)),
+)
 
 /**
- * Generate a new invitation document
- * @param base - the invitation item without ID
- * @returns the generated new invitation document without ID duplication check
+ * Generate a new achievement document
+ * @param base - the achievement item without ID
+ * @returns the generated new achievement document without ID duplication check
  */
-export const invitationDocument = (
-  base: Omit<Invitation, 'id'>,
-): Invitation => ({ ...base, id: nanoid(10) })
+export const achievementDocument = (
+  base: Omit<Achievement, 'id'>,
+): Achievement => ({ ...base, id: nanoid(10) })
 
 /**
  * Generate a new history document
  * @param base - the history item without ID
  * @returns the generated new history document without ID duplication check
  */
-export const historyDocument = (base: Omit<History, 'id'>): History => ({
+export const achievementHistoryDocument = (
+  base: Omit<AchievementHistory, 'id'>,
+): AchievementHistory => ({
   ...base,
   id: nanoid(),
 })
