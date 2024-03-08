@@ -71,7 +71,6 @@ const twitterHandle = 'poweredbyClubs'
 <script>
   import { onSubmitConfig } from '@devprotocol/clubs-core'
   import { GetModalProvider, ReConnectWallet } from '@fixtures/wallet'
-  import { hashMessage } from 'ethers'
   import { onAuthStateChanged } from 'firebase/auth'
   import { instanceStore } from '../fixtures/firebase/clientInstance'
 
@@ -99,7 +98,7 @@ const twitterHandle = 'poweredbyClubs'
     }
     const signer = await provider.getSigner()
 
-    const hash = hashMessage(data)
+    const hash = `Update clubs config for ${site} @ts:${new Date().getTime()}`
     const sig = await signer.signMessage(hash)
     if (!sig) {
       return
