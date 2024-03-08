@@ -586,10 +586,10 @@
     svelte "^3.49.0"
     vue "^3.2.0"
 
-"@devprotocol/clubs-core@3.2.0":
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-3.2.0.tgz#c14f9993f20cf355a2d9990f0588f215548da5ad"
-  integrity sha512-rMbnPFXYq3G95thd2Fj1+KZ9xg1kWKZgrZQ9xyInpKpIWy/gQAft6R85htwgN4zYSaCBg8v9UehXmN/dGTvFgQ==
+"@devprotocol/clubs-core@3.3.1":
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-3.3.1.tgz#5b54efd1a926c1ea790252e41e34a48fbc49b28a"
+  integrity sha512-8zDTNQvnVPsEY3gr0wO4MFj0e9Ndq7lQgje1j0AFjDwXO3vir1gSTJWROki/prdXEJthPjPJ+apUvkvTdDJ6Sg==
   dependencies:
     "@devprotocol/dev-kit" "8.6.0"
     "@devprotocol/elements" "1.1.0"
@@ -597,15 +597,14 @@
     "@devprotocol/util-ts" "4.0.0"
     "@ethersproject/abstract-provider" "^5.7.0"
     "@metamask/detect-provider" "^2.0.0"
-    cross-fetch "^4.0.0"
+    axios "^1.6.7"
     dompurify "^3.0.6"
     js-base64 "^3.7.2"
     lit "^3.0.0"
     marked "^10.0.0"
     ramda "^0.29.0"
     rxjs "^7.8.1"
-    web3modal "^1.9.12"
-    yaml "2.4.0"
+    yaml "2.4.1"
   optionalDependencies:
     react "^18.0.0"
     react-dom "^18.0.0"
@@ -4252,7 +4251,7 @@ available-typed-arrays@^1.0.5, available-typed-arrays@^1.0.6:
   resolved "https://registry.yarnpkg.com/available-typed-arrays/-/available-typed-arrays-1.0.6.tgz#ac812d8ce5a6b976d738e1c45f08d0b00bc7d725"
   integrity sha512-j1QzY8iPNPG4o4xmO3ptzpRxTciqD3MgEHtifP/YnJpIo58Xu+ne4BejlbkuaLfXn/nz6HFiw29bLpj2PNMdGg==
 
-axios@^1.6.4:
+axios@^1.6.4, axios@^1.6.7:
   version "1.6.7"
   resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.7.tgz#7b48c2e27c96f9c68a2f8f31e2ab19f59b06b0a7"
   integrity sha512-/hDJGff6/c7u0hDkvkGxR/oy6CbCs8ziCsC7SqmhjfozqiJGc8Z11wrv9z9lYfY4K8l+H9TpjcMDX0xOZmx+RA==
@@ -11224,7 +11223,7 @@ web-vitals@^3.4.0:
   resolved "https://registry.yarnpkg.com/web-vitals/-/web-vitals-3.5.2.tgz#5bb58461bbc173c3f00c2ddff8bfe6e680999ca9"
   integrity sha512-c0rhqNcHXRkY/ogGDJQxZ9Im9D19hDihbzSQJrsioex+KnFgmMzBiy57Z1EjkhX/+OjyBpclDCzz2ITtjokFmg==
 
-web3modal@1.9.12, web3modal@^1.9.12, web3modal@^1.9.9:
+web3modal@1.9.12, web3modal@^1.9.9:
   version "1.9.12"
   resolved "https://registry.yarnpkg.com/web3modal/-/web3modal-1.9.12.tgz#cb000888fa422a96e3df552d4784e347ba35efcc"
   integrity sha512-RiLY2tNOEUCobtsMTmhwl/FoHZGxRZz7SSdLsh6qbbybPNUO0rFPY8xam9SpPwlLd2cUDGiWkLgDUJde0sHxdw==
@@ -11432,10 +11431,10 @@ yaml@2.2.1:
   resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.2.1.tgz#3014bf0482dcd15147aa8e56109ce8632cd60ce4"
   integrity sha512-e0WHiYql7+9wr4cWMx3TVQrNwejKaEe7/rHNmQmqRjazfOP5W8PB6Jpebb5o6fIapbz9o9+2ipcaTM2ZwDI6lw==
 
-yaml@2.4.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.4.0.tgz#2376db1083d157f4b3a452995803dbcf43b08140"
-  integrity sha512-j9iR8g+/t0lArF4V6NE/QCfT+CO7iLqrXAHZbJdo+LfjqP1vR8Fg5bSiaq6Q2lOD1AUEVrEVIgABvBFYojJVYQ==
+yaml@2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.4.1.tgz#2e57e0b5e995292c25c75d2658f0664765210eed"
+  integrity sha512-pIXzoImaqmfOrL7teGUBt/T7ZDnyeGBWyXQBvOVhLkWLN37GXv8NMLK406UY6dS51JfcQHsmcW5cJ441bHg6Lg==
 
 yaml@^2.3.4:
   version "2.3.4"
