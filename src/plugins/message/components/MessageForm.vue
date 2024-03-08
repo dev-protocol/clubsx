@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { hashMessage, type BrowserProvider } from 'ethers'
+import type { BrowserProvider } from 'ethers'
 import { checkMemberships } from '@fixtures/utility'
 import type { Membership } from '@plugins/memberships'
 import type { PropType } from '@vue/runtime-core'
@@ -80,7 +80,7 @@ export default defineComponent({
       }
 
       const encodedData = window.btoa(JSON.stringify(data))
-      const hash = hashMessage(encodedData)
+      const hash = `Sign to send message. @ts:${new Date().getTime()}`
       const sig = await signer.signMessage(hash)
       if (!sig) {
         return

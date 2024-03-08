@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { hashMessage, type Signer } from 'ethers'
+import type { Signer } from 'ethers'
 
 import { KYCStatuses } from './Withdrawal'
 import NotVerifiedBannerImg from './assets/NotVerifiedBannerImg.svg'
@@ -221,7 +221,7 @@ const FundsInfo = (props: {
       return
     }
 
-    const hash = hashMessage(`Verifying Clubs KYC`)
+    const hash = `Verifying Clubs KYC @ts:${new Date().getTime()}`
     const signature = await signer
       .signMessage(hash)
       .catch((err: any) => new Error(err))
