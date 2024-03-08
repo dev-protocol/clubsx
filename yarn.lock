@@ -534,16 +534,7 @@
     stream-browserify "^3.0.0"
     util "^0.12.4"
 
-"@crossmint/client-sdk-base@1.1.8":
-  version "1.1.8"
-  resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-base/-/client-sdk-base-1.1.8.tgz#764a88c9c25d567c81403606fd69dd2c2537b772"
-  integrity sha512-DbkUDg+z4S1KA3aINpu/F7OIF20IWDDnAY1+1QMvd+9HQ3WKgF8iikii5CFnRyWjw3wnUXTJgeKkqUAHfrGXSg==
-  dependencies:
-    "@crossmint/common-sdk-base" "0.0.6"
-    exponential-backoff "3.1.1"
-    uuid "9.0.1"
-
-"@crossmint/client-sdk-base@^1.0.1-alpha.6":
+"@crossmint/client-sdk-base@1.1.9", "@crossmint/client-sdk-base@^1.0.1-alpha.6":
   version "1.1.9"
   resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-base/-/client-sdk-base-1.1.9.tgz#48dcd9cbc3e93654e32007e338212cff7afe5bb7"
   integrity sha512-w8f3Z4dVHLqgE9E16qQoV+DEwX1UOiE4lKhD0tAQhHgEYrdNOslY8vekks+94/vutqv3zVA2f5CMzRfBA5fe+g==
@@ -553,11 +544,11 @@
     uuid "9.0.1"
 
 "@crossmint/client-sdk-react-ui@^1.0.1-alpha.6":
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-react-ui/-/client-sdk-react-ui-1.1.5.tgz#a29de30439b92d4d3e061be32c38f0036d3b6977"
-  integrity sha512-q+nwJ+LX1+inWEcm2iEaDl0WzfIrU02XwJJKyau2/3Skns+sq/OZKseEFZBiy0JETG5qlDccqArdEpiQf7jJ/g==
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-react-ui/-/client-sdk-react-ui-1.1.6.tgz#6f8bbcc95c315b9f7361ee9160c7d3cfffaad19e"
+  integrity sha512-/AqURTjex9a29DRap0WgWVRnR4xpOEzOp9ToYlyvFcdGCwJ4g3I9c6A/Kth0fWNkVxsI3UHdlbdCbNba0IBtfA==
   dependencies:
-    "@crossmint/client-sdk-base" "1.1.8"
+    "@crossmint/client-sdk-base" "1.1.9"
     "@crossmint/common-sdk-base" "0.0.6"
     "@ethersproject/transactions" "5.7.0"
     "@solana/web3.js" "1.78.5"
