@@ -16,7 +16,7 @@
   import { type TicketStatus, ticketStatus } from './utils/status'
   import Skeleton from '@components/Global/Skeleton.svelte'
   import Check from './Check.svelte'
-  import { type Signer, hashMessage, JsonRpcProvider } from 'ethers'
+  import { type Signer, JsonRpcProvider } from 'ethers'
   import { bytes32Hex } from '@devprotocol/clubs-core'
   import { marked } from 'marked'
   import DOMPurify from 'dompurify'
@@ -63,7 +63,7 @@
         },
         action: async () => {
           idIsLoading = benefitId
-          const hash = hashMessage('')
+          const hash = `Use ${ticket.name}/${benefit?.self.use.name} with #${sTokensId} @ts:${new Date().getTime()}`
           timeoutToHint = setTimeout(() => {
             openModal(Modal, {
               spinner: true,

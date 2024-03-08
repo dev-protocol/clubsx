@@ -4,7 +4,6 @@
   import { onMount } from 'svelte'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
   import type { Profile } from '@pages/api/profile'
-  import { hashMessage } from 'ethers'
 
   export let id: string
 
@@ -37,7 +36,7 @@
     if (!signer) {
       return
     }
-    const hash = hashMessage('Save')
+    const hash = `Update profile: ${profile.username} @ts:${new Date().getTime()}`
     const sig = await signer.signMessage(hash)
     const req = await fetch('/api/profile', {
       method: 'POST',

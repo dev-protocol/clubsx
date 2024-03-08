@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { hashMessage } from 'ethers'
 import { computed, onMounted, ref } from 'vue'
 import type { PluginMeta } from '@constants/plugins'
 import type { connection as Connection } from '@devprotocol/clubs-core/connection'
@@ -40,7 +39,7 @@ async function addPluginToClub() {
   connection.value && connection.value().signer.next(signer)
 
   // Sign the data.
-  const hash = hashMessage(props.plugin.id)
+  const hash = `Install ${props.plugin.displayName} to ${props.site} @ts:${new Date().getTime()}`
   let sig: string
   try {
     sig = await signer.signMessage(hash)

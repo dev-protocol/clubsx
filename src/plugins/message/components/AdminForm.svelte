@@ -1,7 +1,7 @@
 <script lang="ts">
   import { setOptions } from '@devprotocol/clubs-core'
   import type { Membership } from '@plugins/memberships'
-  import { type Signer, hashMessage } from 'ethers'
+  import type { Signer } from 'ethers'
   import type { GatedMessage } from '../types'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
   import { onMount } from 'svelte'
@@ -95,7 +95,7 @@
       return
     }
 
-    const hash = hashMessage(form.destinationEmail)
+    const hash = `Decrypt email for ${site} @ts:${new Date().getTime()}`
     const sig = await signer.signMessage(hash)
     if (!sig) {
       return
