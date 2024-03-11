@@ -4,7 +4,7 @@
 
   import type { ClubsConfiguration } from '@devprotocol/clubs-core'
   import { encode, i18nFactory, setConfig } from '@devprotocol/clubs-core'
-  import { BrowserProvider, hashMessage } from 'ethers'
+  import { BrowserProvider } from 'ethers'
   import { defaultConfig } from '@constants/defaultConfig'
   import { onMount } from 'svelte'
   import EmailConnect from '../EmailConnect/EmailConnect.svelte'
@@ -96,7 +96,7 @@
     // Get the signature ready.
     const signer = await provider.getSigner()
     const encodedConfig = encode(config)
-    const hash = hashMessage(encodedConfig)
+    const hash = `Create clubs for ${siteName} @ts:${new Date().getTime()}`
 
     let sig: string | undefined
     try {
