@@ -6,7 +6,7 @@ import {
   schemaAchievement,
   schemaAchievementsHistory,
   uuidToQuery,
-  type Achievement
+  type Achievement,
 } from '../redis-schema'
 import {
   isNotError,
