@@ -67,7 +67,7 @@
     "@crossmint/client-sdk-base": "^1.0.1-alpha.6",
     "@crossmint/client-sdk-react-ui": "^1.0.1-alpha.6",
     "@devprotocol/clubs-core": "3.3.1",
-    "@devprotocol/clubs-plugin-posts": "0.14.1",
+    "@devprotocol/clubs-plugin-posts": "0.14.2",
     "@devprotocol/clubs-plugin-posts-voting": "^0.5.1",
     "@devprotocol/dev-kit": "8.6.0",
     "@devprotocol/elements": "1.1.0",
