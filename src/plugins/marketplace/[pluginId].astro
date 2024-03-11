@@ -9,6 +9,7 @@ import { createGetPluginMeta } from './utils/createGetPluginMeta'
 import AddPluginButton from '@components/AddPluginButton/AddPluginButton.vue'
 import PluginItem from './components/PluginItem.astro'
 import Markdown from '@components/Markdown/Markdown.astro'
+import { imageSrc } from './utils/imageSrc'
 
 const { site } = Astro.params
 
@@ -77,7 +78,7 @@ const READMEComponent = plugin.readme
         ).map((image) => (
           <img
             class="h-[24rem] w-auto max-w-none rounded-lg lg:h-[30rem]"
-            src={image}
+            src={imageSrc(image)}
           />
         ))
       }
