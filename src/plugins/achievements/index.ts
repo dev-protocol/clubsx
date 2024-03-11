@@ -22,7 +22,7 @@ export const getApiPaths = (async (
 ) => {
   return [
     {
-      paths: ['invitations'],
+      paths: ['achievements'],
       method: 'POST',
       handler: addAchievements(config),
     },
