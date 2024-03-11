@@ -103,8 +103,8 @@ export const metadataNumberAttributes = {
 } satisfies RediSearchSchema
 
 export const metadataStringAttributes = {
-  '$.membership.stringAttributes': {
-    type: SchemaFieldTypes.TAG,
+  '$.metadata.stringAttributes': {
+    type: SchemaFieldTypes.TEXT,
     AS: 'metadataStringAttributes',
   },
 } satisfies RediSearchSchema
@@ -162,18 +162,7 @@ export const schemaAchievementsHistoryId = keccak256(
  */
 export const achievementDocument = (
   base: Omit<Achievement, 'id'>,
-): AchievementForDb => {
-  const achievement = {
-    ...base,
-    metadata: {
-      ...base.metadata,
-      numberAttributes: encode(base.metadata.numberAttributes),
-      stringAttributes: encode(base.metadata.stringAttributes),
-    },
-  }
-
-  return { ...achievement, id: nanoid(10) }
-}
+): Achievement => ({ ...base, id: nanoid(10) })
 
 /**
  * Generate a new history document
