@@ -41,6 +41,18 @@ export type Achievement = {
   }
 }
 
+export type AchievementForDb = {
+  id: string
+  contract: string
+  metadata: {
+    name: string
+    description: string
+    image: string
+    numberAttributes: string
+    stringAttributes: string
+  }
+}
+
 export type AchievementHistory = {
   id: string
   usedId: string
@@ -150,7 +162,18 @@ export const schemaAchievementsHistoryId = keccak256(
  */
 export const achievementDocument = (
   base: Omit<Achievement, 'id'>,
-): Achievement => ({ ...base, id: nanoid(10) })
+): AchievementForDb => {
+  const achievement = {
+    ...base,
+    metadata: {
+      ...base.metadata,
+      numberAttributes: encode(base.metadata.numberAttributes),
+      stringAttributes: encode(base.metadata.stringAttributes),
+    },
+  }
+
+  return { ...achievement, id: nanoid(10) }
+}
 
 /**
  * Generate a new history document

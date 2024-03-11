@@ -8,13 +8,8 @@ import type {
 import { ClubsPluginCategory, SinglePath } from '@devprotocol/clubs-core'
 import { default as Icon } from './assets/icon.svg' // @todo: replace this icon
 import { Content as Readme } from './README.md'
-// import Preview1 from './assets/default-theme-1.jpg'
-// import Preview2 from './assets/default-theme-2.jpg'
-// import Preview3 from './assets/default-theme-3.jpg'
-import getInvitationsId from './handlers/get-invitations-id'
-import getInvitationsCheck from './handlers/get-invitations-check'
-import claimInvitation from './handlers/claim-invitation'
-import postInvitation from './handlers/post-invitation'
+
+import addAchievements from './handlers/addAchievement'
 
 export const getPagePaths = (async (options, config) => {
   return []
@@ -27,29 +22,9 @@ export const getApiPaths = (async (
 ) => {
   return [
     {
-      paths: ['invitations', SinglePath],
-      method: 'GET',
-      handler: getInvitationsId,
-    },
-    {
-      paths: ['invitations', 'check', SinglePath],
-      method: 'GET',
-      handler: getInvitationsCheck,
-    },
-    {
       paths: ['invitations'],
       method: 'POST',
-      handler: postInvitation(config),
-    },
-    {
-      paths: ['invitations', 'claim'],
-      method: 'POST',
-      handler: claimInvitation({
-        rpcUrl: config.rpcUrl,
-        chainId: config.chainId,
-        property: config.propertyAddress,
-        getPluginConfigById,
-      }),
+      handler: addAchievements(config),
     },
   ]
 }) satisfies ClubsFunctionGetApiPaths
@@ -60,8 +35,8 @@ export const getAdminPaths = (async (
 ) => []) satisfies ClubsFunctionGetAdminPaths
 
 export const meta = {
-  id: 'devprotocol:clubs:plugin:invitations',
-  displayName: 'Invitations',
+  id: 'devprotocol:clubs:plugin:achievements',
+  displayName: 'Achievements',
   category: ClubsPluginCategory.Growth,
   icon: Icon.src,
   description: `Basic theme with multiple color schemes.`,
