@@ -10,6 +10,8 @@ import { default as Icon } from './assets/icon.svg' // @todo: replace this icon
 import { Content as Readme } from './README.md'
 
 import addAchievements from './handlers/addAchievement'
+import checkAchievement from './handlers/checkAchievement'
+import fetchAchievement from './handlers/fetchAchievementId'
 
 export const getPagePaths = (async (options, config) => {
   return []
@@ -21,6 +23,16 @@ export const getApiPaths = (async (
   { getPluginConfigById },
 ) => {
   return [
+    {
+      paths: ['invitations', SinglePath],
+      method: 'GET',
+      handler: fetchAchievement,
+    },
+    {
+      paths: ['invitations', 'check', SinglePath],
+      method: 'GET',
+      handler: checkAchievement,
+    },
     {
       paths: ['achievements'],
       method: 'POST',
