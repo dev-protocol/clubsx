@@ -616,10 +616,10 @@
     svelte "^4.0.0"
     vue "^3.2.0"
 
-"@devprotocol/clubs-plugin-posts-voting@^0.5.1":
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts-voting/-/clubs-plugin-posts-voting-0.5.1.tgz#52348846556408f738449779fa2bfbe9267280a6"
-  integrity sha512-XeSzFRnVgpPeh5ZYmpOweP51TOMSEN36ACwnfuxGF1SrC3HcPgjPm2PxFghkxJZl/OCh6IvwU/srH0zqGemlnQ==
+"@devprotocol/clubs-plugin-posts-voting@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts-voting/-/clubs-plugin-posts-voting-0.6.0.tgz#fe04937484df47b2988ca7ffd73b5e25a89b6b2b"
+  integrity sha512-H7Y0xS6Snw1p/9ggw1LqgqGP0Rxdl5MIbpIhGkWThIKxfKAxbFrKvFZ3BmwQhKShrdc2ruStocqGgdrsypB/zg==
   dependencies:
     "@devprotocol/dev-kit" "8.6.0"
     "@devprotocol/util-ts" "4.0.0"
