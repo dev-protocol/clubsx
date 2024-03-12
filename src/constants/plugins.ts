@@ -247,7 +247,7 @@ export const plugins = [
   $16,
   $17,
   $18,
-  PostsPlugin,
+  PostsPlugin as ClubsFunctionStandardPlugin,
   $19,
   $20,
 ] satisfies ClubsPlugins

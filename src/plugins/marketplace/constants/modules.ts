@@ -16,7 +16,9 @@ export const modules = {
   'devprotocol:clubs:collections': () => import('@plugins/collections'),
   'devprotocol:clubs:plugin:tickets': () => import('@plugins/tickets'),
   'devprotocol:clubs:plugin:posts': () =>
-    import('@devprotocol/clubs-plugin-posts'),
+    import(
+      '@devprotocol/clubs-plugin-posts'
+    ) as Promise<ClubsFunctionStandardPlugin>,
   'devprotocol:clubs:plugin:posts:voting': () =>
     import('@devprotocol/clubs-plugin-posts-voting'),
   'devprotocol:clubs:plugin:pay-by-card': () => import('@plugins/pay-by-card'),
