@@ -7,9 +7,8 @@
 
   const AVATAR_IMG_SRC = 'avatarImgSrc'
   const toggleEnableClasses =
-    'h-[56px] rounded-[999px] bg-white text-black p-[16px] cursor-pointer'
-  const toggleDisableClasses =
-    'h-[56px] rounded-[999px] b-0 p-[16px] cursor-pointer'
+    'rounded-lg bg-white text-black p-8 py-4 cursor-pointer'
+  const toggleDisableClasses = 'rounded-lg b-0 p-8 py-4 cursor-pointer'
   let {
     name,
     adminPageVisibility,
@@ -118,15 +117,13 @@
         will be locked out.
       </span>
     </label>
-    <div class="relative flex flex-col items-start gap-[8px] p-0 mb-10">
-      <p class="h-[24px] font-body text-base font-normal capitalize leading-6">
+    <div class="relative flex flex-col items-start gap-4 p-0 mb-10">
+      <p class="font-body text-base font-normal capitalize leading-6">
         Admin Page Visibility
       </p>
-      <div
-        class="flex w-full flex-row items-center justify-between gap-[10px] p-0"
-      >
+      <div class="flex w-full flex-row items-center justify-between gap-4 p-0">
         <div
-          class="flex h-[68px] flex-row items-center justify-start gap-[16px] rounded-[99px] border-[3px] border-white p-1.5"
+          class="flex flex-row items-center justify-start gap-8 rounded-lg border-[3px] border-surface-ink p-3"
         >
           <div
             on:click={!adminPageVisibility
@@ -136,7 +133,7 @@
               ? toggleEnableClasses
               : toggleDisableClasses}
           >
-            <button class="h-[24px] font-body text-base font-normal leading-6">
+            <button class="font-body text-base font-normal leading-6">
               Public
             </button>
           </div>
@@ -148,7 +145,7 @@
               ? toggleEnableClasses
               : toggleDisableClasses}
           >
-            <button class="h-[24px] font-body text-base font-normal leading-6">
+            <button class="font-body text-base font-normal leading-6">
               Private
             </button>
           </div>
