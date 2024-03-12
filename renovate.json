@@ -4,6 +4,10 @@
     {
       "matchPackagePatterns": ["*"],
       "automerge": true
+    },
+    {
+      "packageNames": ["viem"],
+      "allowedVersions": "< 2.0.0"
     }
   ]
 }
