@@ -10,6 +10,7 @@ import { default as Icon } from './assets/icon.svg' // @todo: replace this icon
 import { Content as Readme } from './README.md'
 
 import addAchievements from './handlers/addAchievement'
+import claimAchievement from './handlers/claimAchievement'
 import checkAchievement from './handlers/checkAchievement'
 import fetchAchievement from './handlers/fetchAchievementId'
 
@@ -37,6 +38,15 @@ export const getApiPaths = (async (
       paths: ['achievements'],
       method: 'POST',
       handler: addAchievements(config),
+    },
+    {
+      paths: ['invitations', 'claim'],
+      method: 'POST',
+      handler: claimAchievement({
+        rpcUrl: config.rpcUrl,
+        chainId: config.chainId,
+        property: config.propertyAddress,
+      }),
     },
   ]
 }) satisfies ClubsFunctionGetApiPaths
