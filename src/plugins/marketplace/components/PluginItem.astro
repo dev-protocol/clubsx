@@ -6,6 +6,7 @@ import Transparent from '../assets/Transparent.astro'
 import pluginDefaultIcon from '@assets/default-plugin-icon.jpg'
 import Wrapper from './Wrapper.astro'
 import At from '@components/Icons/at-symbol.astro'
+import { imageSrc } from '../utils/imageSrc'
 
 interface Props {
   plugin: PluginMeta
@@ -101,7 +102,7 @@ const pluginUrl = plugin.planned ? undefined : `/admin/marketplace/${plugin.id}`
       )
     }
     <img
-      src={plugin.icon || pluginDefaultIcon.src}
+      src={imageSrc(plugin.icon || pluginDefaultIcon.src)}
       class:list={[
         'row-span-3 aspect-square rounded-[20%]',
         { 'h-16 lg:h-20': size === 'medium' },

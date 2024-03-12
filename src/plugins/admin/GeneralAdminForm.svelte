@@ -6,10 +6,8 @@
   export let config: ClubsConfiguration
 
   const AVATAR_IMG_SRC = 'avatarImgSrc'
-  const toggleEnableClasses =
-    'h-[56px] rounded-[999px] bg-white text-black p-[16px] cursor-pointer'
-  const toggleDisableClasses =
-    'h-[56px] rounded-[999px] b-0 p-[16px] cursor-pointer'
+  const toggleButtonClasses =
+    'rounded-lg disabled:bg-white bg-transparent disabled:text-black text-white p-8 py-4 cursor-pointer'
   let {
     name,
     adminPageVisibility,
@@ -70,8 +68,8 @@
   }
 
   const toggleAdminPageVisibility = () => {
-    // true when private, false when public
-    adminPageVisibility = !adminPageVisibility
+    adminPageVisibility =
+      adminPageVisibility !== 'private' ? 'private' : 'public'
     updateConfig()
   }
 </script>
@@ -118,40 +116,28 @@
         will be locked out.
       </span>
     </label>
-    <div class="relative flex flex-col items-start gap-[8px] p-0 mb-10">
-      <p class="h-[24px] font-body text-base font-normal capitalize leading-6">
+    <div class="relative flex flex-col items-start gap-4 p-0 mb-10">
+      <p class="font-body text-base font-normal capitalize leading-6">
         Admin Page Visibility
       </p>
-      <div
-        class="flex w-full flex-row items-center justify-between gap-[10px] p-0"
-      >
+      <div class="flex w-full flex-row items-center justify-between gap-4 p-0">
         <div
-          class="flex h-[68px] flex-row items-center justify-start gap-[16px] rounded-[99px] border-[3px] border-white p-1.5"
+          class="flex flex-row items-center justify-start gap-8 rounded-lg border-[3px] border-surface-ink p-3"
         >
-          <div
-            on:click={!adminPageVisibility
-              ? () => {}
-              : () => toggleAdminPageVisibility()}
-            class={!adminPageVisibility
-              ? toggleEnableClasses
-              : toggleDisableClasses}
+          <button
+            on:click={() => toggleAdminPageVisibility()}
+            disabled={adminPageVisibility !== 'private'}
+            class={toggleButtonClasses}
           >
-            <button class="h-[24px] font-body text-base font-normal leading-6">
-              Public
-            </button>
-          </div>
-          <div
-            on:click={adminPageVisibility
-              ? () => {}
-              : () => toggleAdminPageVisibility()}
-            class={adminPageVisibility
-              ? toggleEnableClasses
-              : toggleDisableClasses}
+            Public
+          </button>
+          <button
+            on:click={() => toggleAdminPageVisibility()}
+            disabled={adminPageVisibility === 'private'}
+            class={toggleButtonClasses}
           >
-            <button class="h-[24px] font-body text-base font-normal leading-6">
-              Private
-            </button>
-          </div>
+            Private
+          </button>
         </div>
       </div>
       <span class="text-xs"

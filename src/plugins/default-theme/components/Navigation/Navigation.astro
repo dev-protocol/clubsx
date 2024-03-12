@@ -20,11 +20,18 @@ const { links, type = 'large-buttons' } = Astro.props as {
       links.map(
         (link) =>
           link.enable !== false && (
-            <li class:list={[{ 'last:pr-24': type === 'tab' }]}>
+            <li
+              class:list={[
+                {
+                  'last:pr-[clamp(1.5rem,((100vw_-_42rem)/2+1.5rem),100%)]':
+                    type === 'tab',
+                },
+              ]}
+            >
               <a
                 href={link.path}
                 class:list={[
-                  'hs-button rounded-full font-bold transition hover:bg-white/80',
+                  'hs-button rounded-full font-bold transition hover:bg-white/80 break-keep whitespace-nowrap',
                   {
                     'is-outlined border-[var(--bodyColor)] px-5 py-2 text-xl text-[var(--bodyColor)] hover:text-[var(--backgroundColor)]':
                       type === 'tab',
