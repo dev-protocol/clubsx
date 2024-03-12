@@ -11040,9 +11040,9 @@ viem@^1.0.0, viem@^1.6.0:
     ws "8.13.0"
 
 viem@^2.0.0:
-  version "2.8.4"
-  resolved "https://registry.yarnpkg.com/viem/-/viem-2.8.4.tgz#553996181d2d22237e31476218178d3fe96e2e3d"
-  integrity sha512-zBC8+YNKzo+XeUsCyXdrFzimH9Ei/nRfUKldPmVRoR/lR56/sqkDPyfCE1yvzwwmA9AJ9m9m2HtSPgl9NiTReA==
+  version "2.7.16"
+  resolved "https://registry.yarnpkg.com/viem/-/viem-2.7.16.tgz#99e66bbec661b2284bc32061474f20a90381bdcb"
+  integrity sha512-yOPa9yaoJUm44m0Qe3ugHnkHol3QQlFxN3jT+bq+lQip7X7cWdPfmguyfLWX2viCXcmYZUDiQdeFbkPW9lw11Q==
   dependencies:
     "@adraffy/ens-normalize" "1.10.0"
     "@noble/curves" "1.2.0"
