@@ -10,9 +10,13 @@ import {
   type UndefinedOr,
 } from '@devprotocol/util-ts'
 
-import { ACHIEVEMENT_SCHEMA } from '../db/schema'
-import { type Achievement } from '../types'
-import { ACHIEVEMENT_INDEX, uuidToQuery } from '../utils'
+import { type AchievementItem } from '../types'
+import { ACHIEVEMENT_ITEM_SCHEMA } from '../db/schema'
+import {
+  AchievementIndex,
+  checkForExistingAchievementInfo,
+  uuidToQuery,
+} from '../utils'
 import { getDefaultClient, withCheckingIndex } from '../db/redis'
 
 const handler: APIRoute = async (req) => {
@@ -31,7 +35,7 @@ const handler: APIRoute = async (req) => {
   // Detect the passed achievement ID
   const [, givenId] =
     aperture(2, req.url.pathname.split('/')).find(([p]) => p === 'check') ?? []
-  const achievementId =
+  const achievementItemId =
     whenDefined(givenId, (_id) => _id) ?? new Error('ID is required')
 
   // Generate a redis client while checking the latest schema is indexing and create/update index if it's not.
@@ -39,12 +43,12 @@ const handler: APIRoute = async (req) => {
     (err) => err as Error,
   )
 
-  const achievementDocuments = await whenNotErrorAll(
-    [achievementId, client, props],
+  const achievementItemDocuments = await whenNotErrorAll(
+    [achievementItemId, client, props],
     ([_id, _client]) =>
       _client.ft.search(
-        ACHIEVEMENT_INDEX,
-        `@${ACHIEVEMENT_SCHEMA['$.id'].AS}:{${uuidToQuery(_id)}}`,
+        AchievementIndex.AchievementItem,
+        `@${ACHIEVEMENT_ITEM_SCHEMA['$.id'].AS}:{${uuidToQuery(_id)}}`,
         {
           LIMIT: {
             from: 0,
@@ -53,19 +57,35 @@ const handler: APIRoute = async (req) => {
         },
       ),
   )
-  const achievement = whenNotError(
-    achievementDocuments,
+  const achievementItem = whenNotError(
+    achievementItemDocuments,
     (d) =>
-      (d.documents.find((x) => x.value)?.value as UndefinedOr<Achievement>) ??
+      (d.documents.find((x) => x.value)
+        ?.value as UndefinedOr<AchievementItem>) ??
       new Error('ID is not found.'),
+  )
+  const doesachievementInfoExists = await whenNotError(
+    achievementItem,
+    (aI) =>
+      whenDefined(
+        aI,
+        async (_aI) =>
+          await checkForExistingAchievementInfo(_aI.achievementInfoId),
+      ) ?? false,
   )
 
   return new Response(
     JSON.stringify({
-      available: isNotError(achievement) ? achievement.claimed : false,
+      available:
+        isNotError(achievementItem) && isNotError(doesachievementInfoExists)
+          ? doesachievementInfoExists && achievementItem.claimed
+          : false,
     }),
     {
-      status: isNotError(achievement) ? 200 : 400,
+      status:
+        isNotError(achievementItem) && isNotError(doesachievementInfoExists)
+          ? 200
+          : 400,
     },
   )
 }

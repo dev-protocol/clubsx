@@ -9,10 +9,14 @@ import {
   type UndefinedOr,
 } from '@devprotocol/util-ts'
 
-import { type Achievement } from '../types'
-import { ACHIEVEMENT_SCHEMA } from '../db/schema'
-import { ACHIEVEMENT_INDEX, uuidToQuery } from '../utils'
+import { AchievementIndex, uuidToQuery } from '../utils'
 import { withCheckingIndex, getDefaultClient } from '../db/redis'
+import { ACHIEVEMENT_ITEM_SCHEMA, ACHIEVEMENT_INFO_SCHEMA } from '../db/schema'
+import {
+  type Achievement,
+  type AchievementItem,
+  type AchievementInfo,
+} from '../types'
 
 const handler: APIRoute = async (req) => {
   // Detect the passed achievement ID
@@ -29,12 +33,12 @@ const handler: APIRoute = async (req) => {
   )
 
   // Try to fetch the mapped achievement.
-  const data = await whenNotErrorAll(
+  const achievementItemDocuments = await whenNotErrorAll(
     [achievementId, client],
     ([_id, _client]) =>
       _client.ft.search(
-        ACHIEVEMENT_INDEX,
-        `@${ACHIEVEMENT_SCHEMA['$.id'].AS}:{${uuidToQuery(_id)}}`,
+        AchievementIndex.AchievementItem,
+        `@${ACHIEVEMENT_ITEM_SCHEMA['$.id'].AS}:{${uuidToQuery(_id)}}`,
         {
           LIMIT: {
             from: 0,
@@ -43,17 +47,42 @@ const handler: APIRoute = async (req) => {
         },
       ),
   )
-
-  const achievement = whenNotError(
-    data,
+  const achievementItem = whenNotError(
+    achievementItemDocuments,
     (d) =>
-      (d.documents.find((x) => x.value)?.value as UndefinedOr<Achievement>) ??
+      (d.documents.find((x) => x.value)
+        ?.value as UndefinedOr<AchievementItem>) ??
+      new Error('ID is not found.'),
+  )
+  const achievementInfoDocuments = await whenNotErrorAll(
+    [achievementItem, client],
+    ([_achievementItem, _client]) =>
+      _client.ft.search(
+        AchievementIndex.AchievementInfo,
+        `@${ACHIEVEMENT_INFO_SCHEMA['$.id'].AS}:{${uuidToQuery(_achievementItem.achievementInfoId)}}`,
+        {
+          LIMIT: {
+            from: 0,
+            size: 1,
+          },
+        },
+      ),
+  )
+  const achievementInfo = whenNotError(
+    achievementInfoDocuments,
+    (d) =>
+      (d.documents.find((x) => x.value)
+        ?.value as UndefinedOr<AchievementInfo>) ??
       new Error('ID is not found.'),
   )
 
-  return new Response(JSON.stringify(achievement), {
-    status: isNotError(achievement) ? 200 : 400,
-  })
+  return new Response(
+    JSON.stringify({ ...achievementInfo, ...achievementItem }),
+    {
+      status:
+        isNotError(achievementInfo) && isNotError(achievementItem) ? 200 : 400,
+    },
+  )
 }
 
 export default handler
