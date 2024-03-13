@@ -9,7 +9,7 @@ export type StringAttribute = {
   value: string
 }
 
-export type Achievement = {
+export type AchievementInfo = {
   id: string
   contract: string
   metadata: {
@@ -19,12 +19,19 @@ export type Achievement = {
     numberAttributes: NumberAttribute[]
     stringAttributes: StringAttribute[]
   }
+}
+
+export type AchievementItem = {
+  id: string
+  achievementInfoId: string
   account: string
   claimed: boolean
   claimedSBTTokenId: number
   createdOnTimestamp: number
   claimedOnTimestamp: number
 }
+
+export type Achievement = AchievementInfo & AchievementItem
 
 export type ClaimAchievementApiHandlerParams = {
   rpcUrl: string

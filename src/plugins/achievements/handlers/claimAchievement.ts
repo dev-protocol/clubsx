@@ -7,15 +7,16 @@ import {
 } from '@devprotocol/util-ts'
 
 import { getDefaultClient } from '../db/redis'
-import { ACHIEVEMENT_SCHEMA } from '../db/schema'
+import { ACHIEVEMENT_ITEM_SCHEMA } from '../db/schema'
 import {
   type Achievement,
   type ClaimAchievementApiHandlerParams,
 } from '../types'
 import {
-  ACHIEVEMENT_INDEX,
-  ACHIEVEMENT_PREFIX,
-  checkForExistingAchievementId,
+  AchievementIndex,
+  AchievementPrefix,
+  checkForExistingAchievementInfo,
+  checkForExistingAchievementItem,
   uuidToQuery,
 } from '../utils'
 
@@ -23,19 +24,20 @@ export const handler =
   ({ rpcUrl, chainId, property }: ClaimAchievementApiHandlerParams) =>
   async ({ request }: { readonly request: Request }) => {
     // 1. Get the req data.
-    const { message, signature, achievementId } = (await request.json()) as {
-      message: string
-      signature: string
-      achievementId: string
-    }
+    const { message, signature, achievementItemId } =
+      (await request.json()) as {
+        message: string
+        signature: string
+        achievementItemId: string
+      }
     // 2. Validated presence of req data.
-    if (
-      !achievementId ||
-      !message ||
-      !signature ||
-      !(await checkForExistingAchievementId(achievementId))
-    ) {
+    if (!achievementItemId || !message || !signature) {
       return new Response(JSON.stringify({ error: 'Bad data' }), {
+        status: 400,
+      })
+    }
+    if (!(await checkForExistingAchievementItem(achievementItemId))) {
+      return new Response(JSON.stringify({ error: 'Bad achievement data' }), {
         status: 400,
       })
     }
@@ -49,12 +51,12 @@ export const handler =
     }
 
     // 4. Fetch the mapped achievement documents.
-    const data = await whenNotErrorAll(
-      [achievementId, client],
+    const achievementitemData = await whenNotErrorAll(
+      [achievementItemId, client],
       ([_id, _client]) =>
         _client.ft.search(
-          ACHIEVEMENT_INDEX,
-          `@${ACHIEVEMENT_SCHEMA['$.id'].AS}:{${uuidToQuery(_id)}}`,
+          AchievementIndex.AchievementItem,
+          `@${ACHIEVEMENT_ITEM_SCHEMA['$.id'].AS}:{${uuidToQuery(_id)}}`,
           {
             LIMIT: {
               from: 0,
@@ -64,14 +66,14 @@ export const handler =
         ),
     )
     // 5. Fetch achievement from mapped documents.
-    const achievement = whenNotError(
-      data,
+    const achievementItem = whenNotError(
+      achievementitemData,
       (d) =>
         (d.documents.find((x) => x.value)?.value as UndefinedOr<Achievement>) ??
         new Error('ID is not found.'),
     )
     // 6. Validate achievement is fetched properly.
-    if (achievement instanceof Error) {
+    if (achievementItem instanceof Error) {
       return new Response(
         JSON.stringify({ error: 'Achievement is not found' }),
         {
@@ -79,18 +81,23 @@ export const handler =
         },
       )
     }
-    // 7. Validated achievement ids are matched.
-    if (achievementId !== achievement.id) {
+    // 7. Validated achievement ids are matched and that achievement info also exists
+    if (
+      achievementItemId !== achievementItem.id ||
+      !(await checkForExistingAchievementInfo(
+        achievementItem.achievementInfoId,
+      ))
+    ) {
       return new Response(JSON.stringify({ error: 'Bad data sent to api' }), {
         status: 400,
       })
     }
     // 8. Validate if achievement is already claimed.
-    if (achievement.claimed) {
+    if (achievementItem.claimed) {
       return new Response(
         JSON.stringify({ error: 'Achievement already claimed' }),
         {
-          status: 401,
+          status: 400,
         },
       )
     }
@@ -98,7 +105,7 @@ export const handler =
     // 9. Get the msg.sender / claimer addr.
     const account = verifyMessage(message, signature)
     // 10. Valdiate that claimer address is same as the one who is rewarded with achievement.
-    if (account !== achievement.account) {
+    if (account !== achievementItem.account) {
       return new Response(
         JSON.stringify({ error: 'Sender not achievement receiver' }),
         {
@@ -112,19 +119,19 @@ export const handler =
     // 9. Update the record to mark the achievement as claimed.
     const claimedSBTTokenId = 1
     await client.json.set(
-      `${ACHIEVEMENT_PREFIX}::${achievementId}`,
+      `${AchievementPrefix.AchievementInfo}::${achievementItemId}`,
       '$',
-      JSON.stringify({
-        ...achievement,
+      {
+        ...achievementItem,
         claimedOnTimestamp: Date.now(),
         claimed: true,
         claimedSBTTokenId: claimedSBTTokenId,
-      }),
+      },
     )
 
     // 10. Return response.
     return new Response(
-      JSON.stringify({ id: achievementId, claimedSBTTokenId }),
+      JSON.stringify({ id: achievementItemId, claimedSBTTokenId }),
       { status: 200 },
     )
   }

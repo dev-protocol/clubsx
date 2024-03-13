@@ -1,11 +1,16 @@
 import { createClient } from 'redis'
 import type { AsyncReturnType } from 'type-fest'
 
-import { ACHIEVEMENT_SCHEMA, ACHIEVEMENT_SCHEMA_ID } from './schema'
 import {
-  ACHIEVEMENT_INDEX,
-  ACHIEVEMENT_PREFIX,
-  ACHIEVEMENT_SCHEMA_KEY,
+  ACHIEVEMENT_INFO_SCHEMA,
+  ACHIEVEMENT_INFO_SCHEMA_ID,
+  ACHIEVEMENT_ITEM_SCHEMA,
+  ACHIEVEMENT_ITEM_SCHEMA_ID,
+} from './schema'
+import {
+  AchievementIndex,
+  AchievementPrefix,
+  AchievementSchemaKey,
 } from '../utils'
 
 export const defaultClient = createClient({
@@ -36,18 +41,41 @@ export const withCheckingIndex = async <
   getClient: T,
 ): Promise<AsyncReturnType<T>> => {
   const client = (await getClient()) as AsyncReturnType<T>
-  const currentScmI = await client.get(ACHIEVEMENT_SCHEMA_KEY)
-  const isScmIIndexed = currentScmI === ACHIEVEMENT_SCHEMA_ID
+  const currentScmOfInfo = await client.get(
+    AchievementSchemaKey.AchievementInfo,
+  )
+  const currentScmOfItem = await client.get(
+    AchievementSchemaKey.AchievementItem,
+  )
+  const isScmOfInfoIndexed = currentScmOfInfo === ACHIEVEMENT_INFO_SCHEMA_ID
+  const isScmOfItemIndexed = currentScmOfItem === ACHIEVEMENT_ITEM_SCHEMA_ID
+
   const ON = 'JSON'
-  return isScmIIndexed
+
+  return isScmOfInfoIndexed && isScmOfItemIndexed
     ? client
-    : Promise.all([client.ft.dropIndex(ACHIEVEMENT_INDEX)])
+    : Promise.all([
+        client.ft.dropIndex(AchievementIndex.AchievementInfo),
+        client.ft.dropIndex(AchievementIndex.AchievementItem),
+      ])
         .then(() =>
           Promise.all([
-            client.ft.create(ACHIEVEMENT_INDEX, ACHIEVEMENT_SCHEMA, {
-              ON,
-              PREFIX: ACHIEVEMENT_PREFIX,
-            }),
+            client.ft.create(
+              AchievementIndex.AchievementInfo,
+              ACHIEVEMENT_INFO_SCHEMA,
+              {
+                ON,
+                PREFIX: AchievementPrefix.AchievementInfo,
+              },
+            ),
+            client.ft.create(
+              AchievementIndex.AchievementItem,
+              ACHIEVEMENT_ITEM_SCHEMA,
+              {
+                ON,
+                PREFIX: AchievementPrefix.AchievementItem,
+              },
+            ),
           ]),
         )
         .then(() => client)

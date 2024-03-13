@@ -10,6 +10,7 @@ export const id = {
   },
 } satisfies RediSearchSchema
 
+/* >>>>> ACHIEVEMENT INFO SCHEMA >>>>> */
 export const contract = {
   '$.contract': {
     type: SchemaFieldTypes.TAG,
@@ -52,6 +53,32 @@ export const metadataStringAttributes = {
   },
 } satisfies RediSearchSchema
 
+/// @dev This schema is used to store info of achievements. There will
+/// be only one achievement info for one kind of achievements. The id will be
+/// derived from payload(fields of object) of info to avoid duplication and easy checking.
+export const ACHIEVEMENT_INFO_SCHEMA = {
+  ...id,
+  ...contract,
+  ...metadataName,
+  ...metadataDescription,
+  ...metadataImage,
+  ...metadataNumberAttributes,
+  ...metadataStringAttributes,
+}
+
+export const ACHIEVEMENT_INFO_SCHEMA_ID = keccak256(
+  toUtf8Bytes(encode(ACHIEVEMENT_INFO_SCHEMA)),
+)
+/* <<<<< ACHIEVEMENT INFO SCHEMA <<<<< */
+
+/* >>>>> ACHIEVEMENT REWARDED SCHEMA >>>>> */
+export const achievementInfoId = {
+  '$.achievementInfoId': {
+    type: SchemaFieldTypes.TAG,
+    AS: 'achievementInfoId',
+  },
+} satisfies RediSearchSchema
+
 export const account = {
   '$.account': {
     type: SchemaFieldTypes.TAG,
@@ -87,14 +114,13 @@ export const claimedSBTTokenId = {
   },
 } satisfies RediSearchSchema
 
-export const ACHIEVEMENT_SCHEMA = {
+/// @dev This schema is used to store the achievement given to a user.
+/// The achievement id can be used to fetch metadata and info of what achievement is
+/// unlocked by the user. This way many users can have sample achievements and/or a user
+/// can unlock multiple achievements of same type.
+export const ACHIEVEMENT_ITEM_SCHEMA = {
   ...id,
-  ...contract,
-  ...metadataName,
-  ...metadataDescription,
-  ...metadataImage,
-  ...metadataNumberAttributes,
-  ...metadataStringAttributes,
+  ...achievementInfoId,
   ...account,
   ...claimed,
   ...createdOnTimestamp,
@@ -102,6 +128,7 @@ export const ACHIEVEMENT_SCHEMA = {
   ...claimedSBTTokenId,
 }
 
-export const ACHIEVEMENT_SCHEMA_ID = keccak256(
-  toUtf8Bytes(encode(ACHIEVEMENT_SCHEMA)),
+export const ACHIEVEMENT_ITEM_SCHEMA_ID = keccak256(
+  toUtf8Bytes(encode(ACHIEVEMENT_ITEM_SCHEMA)),
 )
+/* <<<<< ACHIEVEMENT REWARDED SCHEMA <<<<< */
