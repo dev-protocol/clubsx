@@ -6,9 +6,9 @@ import type {
   ClubsPluginMeta,
 } from '@devprotocol/clubs-core'
 import { ClubsPluginCategory, SinglePath } from '@devprotocol/clubs-core'
-import { default as Icon } from './assets/icon.svg' // @todo: replace this icon
-import { Content as Readme } from './README.md'
 
+import { Content as Readme } from './README.md'
+import { default as Icon } from './assets/icon.svg' // @TODO: replace this.
 import addAchievements from './handlers/addAchievement'
 import claimAchievement from './handlers/claimAchievement'
 import checkAchievement from './handlers/checkAchievement'
@@ -18,11 +18,7 @@ export const getPagePaths = (async (options, config) => {
   return []
 }) satisfies ClubsFunctionGetPagePaths
 
-export const getApiPaths = (async (
-  options,
-  config,
-  { getPluginConfigById },
-) => {
+export const getApiPaths = (async (options, config, _) => {
   return [
     {
       paths: ['invitations', SinglePath],
@@ -62,7 +58,7 @@ export const meta = {
   category: ClubsPluginCategory.Growth,
   icon: Icon.src,
   description: `Basic theme with multiple color schemes.`,
-  // previewImages: [Preview1.src, Preview2.src, Preview3.src],
+  previewImages: [Icon.src, Icon.src, Icon.src], // @TODO: replace this.
   readme: Readme,
 } satisfies ClubsPluginMeta
 

@@ -1,77 +1,87 @@
-import {
-  AchievementPrefix,
-  achievementDocument,
-  type NumberAttribute,
-  type StringAttribute,
-} from '../redis-schema'
-import { getDefaultClient } from '../redis'
+import { getDefaultProvider } from 'ethers'
+
 import {
   authenticate,
   type ClubsConfiguration,
   encode,
 } from '@devprotocol/clubs-core'
-import { getDefaultProvider } from 'ethers'
 
-const checkExisting = async ({ id }: { id: string }) => {
-  const client = await getDefaultClient()
-  const keyExists = await client.exists(
-    `${AchievementPrefix.Achievement}::${id}`,
-  )
-  return keyExists === 1 ? true : false
-}
+import { type Achievement } from '../types'
+import {
+  ACHIEVEMENT_PREFIX,
+  getAchievementDocument,
+  checkForExistingAchievementId,
+} from '../utils'
+import { getDefaultClient } from '../db/redis'
 
 export const handler =
   (conf: ClubsConfiguration) =>
   async ({ request }: { request: Request }) => {
-    const {
-      achievement: achievementData,
-      signature,
-      message,
-    } = (await request.json()) as {
-      achievement: {
-        id: string
-        contract: string
-        metadata: {
-          name: string
-          description: string
-          image: string
-          numberAttributes: NumberAttribute[]
-          stringAttributes: StringAttribute[]
-        }
-      }
+    // 1. Get the data.
+    const { message, signature, achievement } = (await request.json()) as {
       message: string
       signature: string
+      achievement: Achievement
+    }
+    // 2. Validate all data is present.
+    if (!achievement || !message || !signature) {
+      return new Response(JSON.stringify({ error: 'Bad data' }), {
+        status: 401,
+      })
+    }
+    // 3. Validate data is not corrupt.
+    if (
+      achievement.claimed ||
+      achievement.claimedOnTimestamp > 0 ||
+      achievement.createdOnTimestamp > 0 ||
+      achievement.claimedSBTTokenId > 0
+    ) {
+      return new Response(
+        JSON.stringify({ error: 'Cannot created bad achievement' }),
+        { status: 401 },
+      )
     }
 
-    const client = await getDefaultClient()
-
+    // 4. Authenticate for only admin's allowed to add achievements.
     const authenticated = await authenticate({
       message,
       signature,
       previousConfiguration: encode(conf),
       provider: getDefaultProvider(conf.rpcUrl),
     })
-
+    // 5. Validate authentication.
     if (!authenticated) {
-      return new Response(JSON.stringify({}), { status: 401 })
+      return new Response(JSON.stringify({ error: 'Invalid access' }), {
+        status: 401,
+      })
     }
 
-    const achievement = achievementDocument({
-      ...achievementData,
-    })
+    // 6. Get client and validate client.
+    const client = await getDefaultClient()
+    if (!client) {
+      return new Response(JSON.stringify({ error: 'Client not found' }), {
+        status: 404,
+      })
+    }
 
-    if (await checkExisting({ id: achievement.id })) {
+    // 7. Create achievement document.
+    const achievementDocument = getAchievementDocument({
+      ...achievement,
+    })
+    // 8. Check if achivementId is already present.
+    if (await checkForExistingAchievementId(achievementDocument.id)) {
       return new Response(
         JSON.stringify({ error: 'Achievement already exists' }),
         { status: 400 },
       )
     }
+    // 9. Seth the record and update timestamp of record.
+    await client.json.set(`${ACHIEVEMENT_PREFIX}::${achievement.id}`, '$', {
+      ...achievement,
+      createdOnTimestamp: Date.now(),
+    })
 
-    await client.set(
-      `${AchievementPrefix.Achievement}::${achievement.id}`,
-      JSON.stringify(achievement),
-    )
-
+    // 10. Return the id as response of the new data saved
     return new Response(JSON.stringify({ id: achievement.id }), { status: 200 })
   }
 

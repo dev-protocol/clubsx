@@ -1,1 +1,1 @@
-# Invitations Plugin
+# Achievements Plugin

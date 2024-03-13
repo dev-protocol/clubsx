@@ -1,14 +1,12 @@
 import { createClient } from 'redis'
 import type { AsyncReturnType } from 'type-fest'
+
+import { ACHIEVEMENT_SCHEMA, ACHIEVEMENT_SCHEMA_ID } from './schema'
 import {
-  AchievementIndex,
-  AchievementPrefix,
-  AchievementSchemaKey,
-  schemaAchievementsHistory,
-  schemaAchievementsHistoryId,
-  schemaAchievement,
-  schemaAchievementId,
-} from './redis-schema'
+  ACHIEVEMENT_INDEX,
+  ACHIEVEMENT_PREFIX,
+  ACHIEVEMENT_SCHEMA_KEY,
+} from '../utils'
 
 export const defaultClient = createClient({
   url: import.meta.env.REDIS_URL,
@@ -38,31 +36,18 @@ export const withCheckingIndex = async <
   getClient: T,
 ): Promise<AsyncReturnType<T>> => {
   const client = (await getClient()) as AsyncReturnType<T>
-  const currentScmI = await client.get(AchievementSchemaKey.Achievement)
-  const currentScmH = await client.get(AchievementSchemaKey.History)
-  const isScmIIndexed = currentScmI === schemaAchievementId
-  const isScmHIndexed = currentScmH === schemaAchievementsHistoryId
+  const currentScmI = await client.get(ACHIEVEMENT_SCHEMA_KEY)
+  const isScmIIndexed = currentScmI === ACHIEVEMENT_SCHEMA_ID
   const ON = 'JSON'
-  return isScmIIndexed && isScmHIndexed
+  return isScmIIndexed
     ? client
-    : Promise.all([
-        client.ft.dropIndex(AchievementIndex.Achievement),
-        client.ft.dropIndex(AchievementIndex.History),
-      ])
+    : Promise.all([client.ft.dropIndex(ACHIEVEMENT_INDEX)])
         .then(() =>
           Promise.all([
-            client.ft.create(AchievementIndex.Achievement, schemaAchievement, {
+            client.ft.create(ACHIEVEMENT_INDEX, ACHIEVEMENT_SCHEMA, {
               ON,
-              PREFIX: AchievementPrefix.Achievement,
+              PREFIX: ACHIEVEMENT_PREFIX,
             }),
-            client.ft.create(
-              AchievementIndex.History,
-              schemaAchievementsHistory,
-              {
-                ON,
-                PREFIX: AchievementPrefix.History,
-              },
-            ),
           ]),
         )
         .then(() => client)
