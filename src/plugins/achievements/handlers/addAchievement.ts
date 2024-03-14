@@ -100,13 +100,15 @@ export const handler =
 
     // 9. Seth the record and update timestamp of record.
     await client.json.set(
-      `${AchievementPrefix.AchievementItem}::${achievement.id}`,
+      `${AchievementPrefix.AchievementItem}::${achievementItemDocument.id}`,
       '$',
       achievementItemDocument,
     )
 
     // 10. Return the id as response of the new data saved
-    return new Response(JSON.stringify({ id: achievement.id }), { status: 200 })
+    return new Response(JSON.stringify({ id: achievementItemDocument.id }), {
+      status: 200,
+    })
   }
 
 export default handler
