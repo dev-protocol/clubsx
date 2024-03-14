@@ -23,25 +23,21 @@ export const handler =
     const { message, signature, achievement } = (await request.json()) as {
       message: string
       signature: string
-      achievement: Achievement
+      achievement: Omit<
+        Achievement,
+        | 'id'
+        | 'achievementInfoId'
+        | 'claimed'
+        | 'claimedSBTTokenId'
+        | 'createdOnTimestamp'
+        | 'claimedOnTimestamp'
+      >
     }
     // 2. Validate all data is present.
     if (!achievement || !message || !signature) {
       return new Response(JSON.stringify({ error: 'Missing data' }), {
         status: 400,
       })
-    }
-    // 3. Validate data is not corrupt.
-    if (
-      achievement.claimed ||
-      achievement.claimedOnTimestamp > 0 ||
-      achievement.createdOnTimestamp > 0 ||
-      achievement.claimedSBTTokenId > 0
-    ) {
-      return new Response(
-        JSON.stringify({ error: 'Cannot created bad achievement' }),
-        { status: 400 },
-      )
     }
 
     // 4. Authenticate for only admin's allowed to add achievements.

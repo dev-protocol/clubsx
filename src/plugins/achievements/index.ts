@@ -21,12 +21,12 @@ export const getPagePaths = (async (options, config) => {
 export const getApiPaths = (async (options, config, _) => {
   return [
     {
-      paths: ['invitations', SinglePath],
+      paths: ['achievements', SinglePath],
       method: 'GET',
       handler: fetchAchievement,
     },
     {
-      paths: ['invitations', 'check', SinglePath],
+      paths: ['achievements', 'check', SinglePath],
       method: 'GET',
       handler: checkAchievement,
     },
@@ -36,7 +36,7 @@ export const getApiPaths = (async (options, config, _) => {
       handler: addAchievements(config),
     },
     {
-      paths: ['invitations', 'claim'],
+      paths: ['achievements', 'claim'],
       method: 'POST',
       handler: claimAchievement({
         rpcUrl: config.rpcUrl,
