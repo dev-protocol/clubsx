@@ -1,0 +1,56 @@
+---
+import type { Membership } from '@devprotocol/clubs-core'
+import ClaimButton from './components/ClaimButton.svelte'
+import type { Invitation } from './redis-schema'
+const { id } = Astro.params
+const { memberships } = Astro.props as {
+  memberships: Membership[]
+}
+
+const res = await fetch(
+  `/api/devprotocol:clubs:plugin:invitations/invitations/${id}`,
+  {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  },
+)
+
+if (!res.ok) {
+  return {
+    status: 404,
+    headers: {
+      location: '/404',
+    },
+  }
+}
+
+const { invitation } = (await res.json()) as { invitation: Invitation }
+
+const membership = memberships.find(
+  (m) => m.payload === invitation.membership.payload,
+)
+
+if (!membership) {
+  return {
+    status: 404,
+    headers: {
+      location: '/404',
+    },
+  }
+}
+---
+
+<div class="flex flex-col container mx-auto max-w-sm">
+  <img class="mb-4" src={membership.imageSrc} alt={membership.name} />
+
+  <div class="mb-4">
+    <ClaimButton {invitation} />
+  </div>
+
+  <div class="flex flex-col">
+    <h2>{membership.name}</h2>
+
+    <p class="bg-gray-50 rounded p-8">{membership.description}</p>
+  </div>
+</div>
