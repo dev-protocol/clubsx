@@ -72,6 +72,7 @@ const CurrencyMembershipInfo = (props: Props) => {
   }, [
     swapAndStakeContract,
     dataOfPriceAPI?.price,
+    signer,
     props.currency,
     props.chainId,
   ])
