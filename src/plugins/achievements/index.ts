@@ -1,3 +1,4 @@
+import type { UndefinedOr } from '@devprotocol/util-ts'
 import type {
   ClubsFunctionGetAdminPaths,
   ClubsFunctionGetApiPaths,
@@ -7,15 +8,27 @@ import type {
 } from '@devprotocol/clubs-core'
 import { ClubsPluginCategory, SinglePath } from '@devprotocol/clubs-core'
 
+import Id from './pages/[id].astro'
 import { Content as Readme } from './README.md'
 import { default as Icon } from './assets/icon.svg' // @TODO: replace this.
 import addAchievements from './handlers/addAchievement'
 import claimAchievement from './handlers/claimAchievement'
 import checkAchievement from './handlers/checkAchievement'
 import fetchAchievement from './handlers/fetchAchievementId'
+import { PLUGIN_ACHIEVEMENT_IDS_OPTION_KEY } from './utils'
 
 export const getPagePaths = (async (options, config) => {
-  return []
+  const achievementIds =
+    (options.find((opt) => opt.key === PLUGIN_ACHIEVEMENT_IDS_OPTION_KEY)
+      ?.value as UndefinedOr<string[]>) ?? []
+
+  return [
+    ...achievementIds.map((id: string) => ({
+      paths: ['achievement', id],
+      component: Id,
+      props: {},
+    })),
+  ]
 }) satisfies ClubsFunctionGetPagePaths
 
 export const getApiPaths = (async (options, config, _) => {
