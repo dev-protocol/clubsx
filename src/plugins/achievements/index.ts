@@ -57,7 +57,7 @@ export const meta = {
   displayName: 'Achievements',
   category: ClubsPluginCategory.Growth,
   icon: Icon.src,
-  description: `Basic theme with multiple color schemes.`,
+  description: `Achievements plugin.`,
   previewImages: [Icon.src, Icon.src, Icon.src], // @TODO: replace this.
   readme: Readme,
 } satisfies ClubsPluginMeta

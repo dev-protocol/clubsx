@@ -32,8 +32,9 @@ import $18 from '@plugins/collections'
 import $19 from '@plugins/invitations'
 import $20 from '@devprotocol/clubs-plugin-posts-voting'
 import $21 from '@plugins/achievements'
-
 import * as PostsPlugin from '@devprotocol/clubs-plugin-posts'
+
+import { PLUGIN_ACHIEVEMENT_IDS_OPTION_KEY } from '@plugins/achievements/utils'
 
 export type PluginTag =
   | 'New & Upcoming'
@@ -166,7 +167,7 @@ export const installablePlugins: InstallablePlugins[] = [
   {
     id: $21.meta.id,
     tag: 'New & Upcoming',
-    pluginOptions: [],
+    pluginOptions: [{ key: PLUGIN_ACHIEVEMENT_IDS_OPTION_KEY, value: [] }],
     developer: 'Dev Protocol',
     repositoryUrl: 'https://github.com/dev-protocol/clubsx',
   },
