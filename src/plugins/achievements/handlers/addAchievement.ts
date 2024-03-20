@@ -40,6 +40,14 @@ export const handler =
       })
     }
 
+    // 3. Get client and validate client.
+    const client = await getDefaultClient()
+    if (!client) {
+      return new Response(JSON.stringify({ error: 'Client not found' }), {
+        status: 500,
+      })
+    }
+
     // 4. Authenticate for only admin's allowed to add achievements.
     const authenticated = await authenticate({
       message,
@@ -51,14 +59,6 @@ export const handler =
     if (!authenticated) {
       return new Response(JSON.stringify({ error: 'Invalid access' }), {
         status: 401,
-      })
-    }
-
-    // 6. Get client and validate client.
-    const client = await getDefaultClient()
-    if (!client) {
-      return new Response(JSON.stringify({ error: 'Client not found' }), {
-        status: 500,
       })
     }
 
@@ -78,7 +78,7 @@ export const handler =
       claimedOnTimestamp: 0,
     })
 
-    // 8. Check if achivementId is already present.
+    // 8:a. Check if achivementId is already present.
     if (await checkForExistingAchievementItem(achievementItemDocument.id)) {
       return new Response(
         JSON.stringify({ error: 'Achievement already exists' }),
@@ -86,11 +86,9 @@ export const handler =
       )
     }
 
-    const isAchievementInfoPresent = await checkForExistingAchievementInfo(
-      achievementInfoDocument.id,
-    )
-    if (!isAchievementInfoPresent) {
-      // We are creating a new type of achievement.
+    // 8:b. Check if achivement info Id is already present.
+    if (!(await checkForExistingAchievementInfo(achievementInfoDocument.id))) {
+      // If not present, then We are creating a new type of achievement.
       await client.json.set(
         `${AchievementPrefix.AchievementInfo}::${achievementInfoDocument.id}`,
         '$',
