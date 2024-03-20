@@ -6,6 +6,8 @@ import { encode } from '@devprotocol/clubs-core'
 import { getDefaultClient } from './db/redis'
 import type { AchievementInfo, AchievementItem } from './types'
 
+export const PLUGIN_ACHIEVEMENT_IDS_OPTION_KEY = 'achievementIds'
+
 export enum AchievementIndex {
   AchievementInfo = 'idx::devprotocol:clubs:achievement:info',
   AchievementItem = 'idx::devprotocol:clubs:achievement:item',
