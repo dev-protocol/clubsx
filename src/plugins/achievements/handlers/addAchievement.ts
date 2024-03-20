@@ -20,41 +20,29 @@ export const handler =
   (conf: ClubsConfiguration) =>
   async ({ request }: { request: Request }) => {
     // 1. Get the data.
-    const { message, signature, achievement } = (await request.json()) as {
-      message: string
-      signature: string
-      achievement: Omit<
-        Achievement,
-        | 'id'
-        | 'achievementInfoId'
-        | 'claimed'
-        | 'claimedSBTTokenId'
-        | 'createdOnTimestamp'
-        | 'claimedOnTimestamp'
-      >
-    }
+    const { site, message, signature, achievement } =
+      (await request.json()) as {
+        site: string
+        message: string
+        signature: string
+        achievement: Omit<
+          Achievement,
+          | 'id'
+          | 'achievementInfoId'
+          | 'claimed'
+          | 'claimedSBTTokenId'
+          | 'createdOnTimestamp'
+          | 'claimedOnTimestamp'
+        >
+      }
     // 2. Validate all data is present.
-    if (!achievement || !message || !signature) {
+    if (!achievement || !message || !signature || !site) {
       return new Response(JSON.stringify({ error: 'Missing data' }), {
         status: 400,
       })
     }
 
-    // 4. Authenticate for only admin's allowed to add achievements.
-    // const authenticated = await authenticate({
-    //   message,
-    //   signature,
-    //   previousConfiguration: encode(conf),
-    //   provider: getDefaultProvider(conf.rpcUrl),
-    // })
-    // // 5. Validate authentication.
-    // if (!authenticated) {
-    //   return new Response(JSON.stringify({ error: 'Invalid access' }), {
-    //     status: 401,
-    //   })
-    // }
-
-    // 6. Get client and validate client.
+    // 3. Get client and validate client.
     const client = await getDefaultClient()
     if (!client) {
       return new Response(JSON.stringify({ error: 'Client not found' }), {
@@ -62,7 +50,30 @@ export const handler =
       })
     }
 
-    // 7. Create achievement document.
+    // 4. Authenticate for only admin's allowed to add achievements.
+    const previousConfiguration = await client.get(site)
+    if (!previousConfiguration || previousConfiguration !== encode(conf)) {
+      return new Response(
+        JSON.stringify({ error: 'Encoded config not found' }),
+        {
+          status: 401,
+        },
+      )
+    }
+    const authenticated = await authenticate({
+      message,
+      signature,
+      previousConfiguration,
+      provider: getDefaultProvider(conf.rpcUrl),
+    })
+    // 5. Validate authentication.
+    if (!authenticated) {
+      return new Response(JSON.stringify({ error: 'Invalid access' }), {
+        status: 401,
+      })
+    }
+
+    // 6. Create achievement document.
     const achievementInfoDocument = getAchievementInfoDocument({
       contract: achievement.contract,
       metadata: {
@@ -78,7 +89,7 @@ export const handler =
       claimedOnTimestamp: 0,
     })
 
-    // 8. Check if achivementId is already present.
+    // 7. Check if achivementId is already present.
     if (await checkForExistingAchievementItem(achievementItemDocument.id)) {
       return new Response(
         JSON.stringify({ error: 'Achievement already exists' }),
@@ -86,10 +97,8 @@ export const handler =
       )
     }
 
-    const isAchievementInfoPresent = await checkForExistingAchievementInfo(
-      achievementInfoDocument.id,
-    )
-    if (!isAchievementInfoPresent) {
+    // 8. Check if achivement info is already present
+    if (!(await checkForExistingAchievementInfo(achievementInfoDocument.id))) {
       // We are creating a new type of achievement.
       await client.json.set(
         `${AchievementPrefix.AchievementInfo}::${achievementInfoDocument.id}`,
