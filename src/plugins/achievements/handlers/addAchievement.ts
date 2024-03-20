@@ -20,21 +20,23 @@ export const handler =
   (conf: ClubsConfiguration) =>
   async ({ request }: { request: Request }) => {
     // 1. Get the data.
-    const { message, signature, achievement } = (await request.json()) as {
-      message: string
-      signature: string
-      achievement: Omit<
-        Achievement,
-        | 'id'
-        | 'achievementInfoId'
-        | 'claimed'
-        | 'claimedSBTTokenId'
-        | 'createdOnTimestamp'
-        | 'claimedOnTimestamp'
-      >
-    }
+    const { site, message, signature, achievement } =
+      (await request.json()) as {
+        site: string
+        message: string
+        signature: string
+        achievement: Omit<
+          Achievement,
+          | 'id'
+          | 'achievementInfoId'
+          | 'claimed'
+          | 'claimedSBTTokenId'
+          | 'createdOnTimestamp'
+          | 'claimedOnTimestamp'
+        >
+      }
     // 2. Validate all data is present.
-    if (!achievement || !message || !signature) {
+    if (!achievement || !message || !signature || !site) {
       return new Response(JSON.stringify({ error: 'Missing data' }), {
         status: 400,
       })
