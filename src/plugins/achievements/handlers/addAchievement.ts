@@ -51,10 +51,20 @@ export const handler =
     }
 
     // 4. Authenticate for only admin's allowed to add achievements.
+    const previousConfiguration = await client.get(site)
+    if (!previousConfiguration || previousConfiguration !== encode(conf)) {
+      // Previous config should be present, and also 'site req param' should match the conf passed to handler.
+      return new Response(
+        JSON.stringify({ error: 'Encoded config not found' }),
+        {
+          status: 401,
+        },
+      )
+    }
     const authenticated = await authenticate({
       message,
       signature,
-      previousConfiguration: encode(conf),
+      previousConfiguration,
       provider: getDefaultProvider(conf.rpcUrl),
     })
     // 5. Validate authentication.
