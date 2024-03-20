@@ -149,9 +149,10 @@ export const handler =
             ), // Keep all the remaining plugin options same.
             {
               ...achievementIdsOption,
-              value: (achievementIdsOption.value as string[]).push(
+              value: [
+                ...(achievementIdsOption.value as string[]),
                 achievementItemDocument.id,
-              ), // Add new id in the array, we know the .value will be array since we are setting this to [] while installing plugin.
+              ], // Add new id in the array, we know the .value will be array since we are setting this to [] while installing plugin.
             },
           ],
         },
