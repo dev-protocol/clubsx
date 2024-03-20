@@ -170,8 +170,8 @@ export const installablePlugins: InstallablePlugins[] = [
     pluginOptions: [
       {
         key: PLUGIN_ACHIEVEMENT_IDS_OPTION_KEY,
-        value: []
-      }
+        value: [],
+      },
     ],
     developer: 'Dev Protocol',
     repositoryUrl: 'https://github.com/dev-protocol/clubsx',
