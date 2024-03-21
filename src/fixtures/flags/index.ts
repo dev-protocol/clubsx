@@ -1,10 +1,14 @@
 import { whenDefined, type UndefinedOr } from '@devprotocol/util-ts'
 
-export enum FeatureFlags {}
+export enum FeatureFlags {
+  AchievementsOnMarketplace = 'achievements-on-marketplace',
+}
 export enum FeatureFlagValues {
   Enable = 'enable',
 }
-export const flags: Map<FeatureFlags, FeatureFlagValues[]> = new Map([])
+export const flags: Map<FeatureFlags, FeatureFlagValues[]> = new Map([
+  [FeatureFlags.AchievementsOnMarketplace, [FeatureFlagValues.Enable]],
+])
 
 export const getFlagsByParams = ({
   url,
