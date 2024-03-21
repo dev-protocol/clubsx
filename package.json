@@ -26,7 +26,7 @@
     "@types/bad-words": "^3.0.3",
     "@types/dompurify": "^3.0.2",
     "@types/dotenv": "8.2.0",
-    "@types/marked": "^5.0.1",
+    "@types/marked": "^6.0.0",
     "@types/node": "^20.5.9",
     "@types/ramda": "0.29.11",
     "@types/react": "18.2.67",
