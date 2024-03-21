@@ -1,1 +1,7 @@
-HI
+---
+import Achievement from '../components/Achievement.svelte'
+
+const { id } = Astro.props as { id: string }
+---
+
+<Achievement client:only="svelte" achievementId={id} />

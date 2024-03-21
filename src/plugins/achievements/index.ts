@@ -26,7 +26,7 @@ export const getPagePaths = (async (options, config) => {
     ...achievementIds.map((id: string) => ({
       paths: ['achievement', id],
       component: Id,
-      props: {},
+      props: { id },
     })),
   ]
 }) satisfies ClubsFunctionGetPagePaths
