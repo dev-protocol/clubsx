@@ -114,28 +114,36 @@
   }
 
   const claimAchievement = async () => {
-    if (
-      !achievementId ||
-      !signer ||
-      !currentAddress ||
-      currentAddress === ZeroAddress
-    ) {
+    if (!achievementId) {
       isClaimingAchievement = false
+      claimBtnFeedbackTxt = 'Achievement not found.'
+      return
+    }
+    if (!signer || !currentAddress || currentAddress === ZeroAddress) {
+      isClaimingAchievement = false
+      claimBtnFeedbackTxt = 'Please sign in to claim.'
+      return
+    }
+    if (achievement.claimed) {
+      isClaimingAchievement = false
+      claimBtnFeedbackTxt = 'Achievement already claimed.'
+      return
+    }
+    if (achievement.account !== currentAddress) {
+      isClaimingAchievement = false
+      claimBtnFeedbackTxt = `Look's like this achievement doesn't belong to you.`
       return
     }
 
-    if (achievement.account !== currentAddress || achievement.claimed) {
-      isClaimingAchievement = false
-      return
-    }
-
+    claimBtnFeedbackTxt = ''
+    isClaimingAchievement = true
     const hash = `Claiming Achievement @id${achievementId} @ts:${new Date().getTime()}`
     const signature = await signer
       .signMessage(hash)
       .catch((err: any) => new Error(err))
     if (!signature || !hash || signature instanceof Error) {
       isClaimingAchievement = false
-      // @TODO: set a error msg
+      claimBtnFeedbackTxt = `Wallet signature rejected, try again.`
       return
     }
 
@@ -177,22 +185,19 @@
         return err
       })
 
-    console.log('Response', res)
     if (!(res instanceof Error)) {
       if (res?.id && res?.claimedSBTTokenId) {
-        achievement.claimedSBTTokenId = res.claimedSBTTokenId
         achievement.claimed = true
-        // window.open(
-        //   `${import.meta.env.PUBLIC_ONDATO_VERIFICATION_URL}/?id=${
-        //     res?.data?.id
-        //   }`,
-        //   '_blank',
-        // )
-        // setTimeout(() => setIsFetchingIDVId(false), 30 * 1000) // Set isFetchingIDVId to false in 30 secs.
+        achievement.claimedSBTTokenId = res.claimedSBTTokenId
+        claimBtnFeedbackTxt = 'This achievement is claimed.'
       } else {
-        // @TODO: handle error state
+        claimBtnFeedbackTxt = 'Error occured, try agian or contact support.'
       }
+    } else {
+      claimBtnFeedbackTxt = 'Error occured, try agian or contact support.'
     }
+
+    isClaimingAchievement = false
   }
 </script>
 
@@ -235,10 +240,10 @@
           achievement?.account !== currentAddress ||
           achievement.claimed}
         class={`w-full px-4 py-3 mb-1 hs-button is-filled cursor-pointer rounded font-bold text-2xl border-[3px]
-          ${isFetchingAchievementData ? 'animate-pulse bg-gray-500/60' : ''}
+          ${isFetchingAchievementData || isClaimingAchievement ? 'animate-pulse bg-gray-500/60' : ''}
           ${achievement?.claimed || (achievement?.account !== currentAddress && currentAddress && currentAddress !== ZeroAddress) ? 'line-through' : ''}`}
       >
-        Claim
+        {isClaimingAchievement ? 'Claiming' : 'Claim'}
       </button>
       <p
         class={`text-center w-full text-base font-medium ${!currentAddress || currentAddress === ZeroAddress ? 'text-[#FF3815]' : 'text-black'}`}
