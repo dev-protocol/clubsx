@@ -1,7 +1,9 @@
 <script lang="ts">
   import { onMount } from 'svelte'
+  import { ZeroAddress, type Signer } from 'ethers'
 
   import { i18nFactory } from '@devprotocol/clubs-core'
+  import type { connection as Connection } from '@devprotocol/clubs-core/connection'
 
   import { Strings } from '../i18n'
   import Achievement from '../assets/achievement.svg'
@@ -11,8 +13,24 @@
   const i18nBase = i18nFactory(Strings)
   let i18n = i18nBase(['en'])
 
+  let connection: typeof Connection
+  let signer: Signer | undefined
+  let currentAddress: string | undefined
+
+  const connectOnMount = async () => {
+    const _connection = await import('@devprotocol/clubs-core/connection')
+    connection = _connection.connection
+    connection().signer.subscribe((s) => {
+      signer = s
+    })
+    connection().account.subscribe((a) => {
+      currentAddress = a
+    })
+  }
+
   onMount(() => {
     i18n = i18nBase(navigator.languages)
+    connectOnMount()
   })
 </script>
 
@@ -34,13 +52,16 @@
   </div>
 
   <div class="min-w-[41%] w-[41%] max-w-full">
-    <div
-      class="w-full px-8 py-6 mb-2.5 hs-button is-filled cursor-pointer rounded font-bold text-3xl border-[3px]"
+    <button
+      disabled={!currentAddress || currentAddress === ZeroAddress}
+      class="w-full px-4 py-3 mb-2.5 hs-button is-filled cursor-pointer rounded font-bold text-2xl border-[3px]"
     >
       Claim
-    </div>
-    <p class="text-center w-full text-xl font-medium text-black">
-      Sign to claim the achievement.
+    </button>
+    <p class={`text-center w-full text-xl font-medium text-black`}>
+      {!currentAddress || currentAddress === ZeroAddress
+        ? 'Please sign in.'
+        : 'Sign to claim the achievement.'}
     </p>
   </div>
 
