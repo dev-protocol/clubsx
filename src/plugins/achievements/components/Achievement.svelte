@@ -21,6 +21,7 @@
   let signer: Signer | undefined
   let currentAddress: string | undefined
 
+  let isClaimingAchievement = false
   let isFetchingAchievementData = false
   let isAchievementDataNotFetched = false
   let claimBtnFeedbackTxt = 'Please sign in.'
@@ -107,6 +108,88 @@
 
     isFetchingAchievementData = false
   }
+
+  const claimAchievement = async () => {
+    if (
+      !achievementId ||
+      !signer ||
+      !currentAddress ||
+      currentAddress === ZeroAddress
+    ) {
+      isClaimingAchievement = false
+      return
+    }
+
+    if (achievement.account !== currentAddress || achievement.claimed) {
+      isClaimingAchievement = false
+      return
+    }
+
+    const hash = `Claiming Achievement @id${achievementId} @ts:${new Date().getTime()}`
+    const signature = await signer
+      .signMessage(hash)
+      .catch((err: any) => new Error(err))
+    if (!signature || !hash || signature instanceof Error) {
+      isClaimingAchievement = false
+      // @TODO: set a error msg
+      return
+    }
+
+    const url = `/api/${meta.id}/achievements/claim`
+    const headers = {
+      'Content-Type': 'application/json;charset=UTF-8',
+    }
+    const body = JSON.stringify({
+      message: hash,
+      signature,
+      achievementItemId: achievementId,
+    })
+    const res = await fetch(url, { method: 'POST', headers, body })
+      .then(
+        (res) => {
+          if (res.ok) {
+            return res
+          }
+          throw new Error('Error ' + res.status + ': ' + res.statusText)
+        },
+        (err) => {
+          throw new Error(err.message)
+        },
+      )
+      .then(
+        (res) => res.json(),
+        (err) => {
+          throw new Error(err.message)
+        },
+      )
+      .then(
+        (res) => res as { id: string; claimedSBTTokenId: string },
+        (err) => {
+          throw new Error(err.message)
+        },
+      )
+      .catch((err) => {
+        //@TODO: handle error state
+        return err
+      })
+
+    console.log('Response', res)
+    if (!(res instanceof Error)) {
+      if (res?.id && res?.claimedSBTTokenId) {
+        achievement.claimedSBTTokenId = res.claimedSBTTokenId
+        achievement.claimed = true
+        // window.open(
+        //   `${import.meta.env.PUBLIC_ONDATO_VERIFICATION_URL}/?id=${
+        //     res?.data?.id
+        //   }`,
+        //   '_blank',
+        // )
+        // setTimeout(() => setIsFetchingIDVId(false), 30 * 1000) // Set isFetchingIDVId to false in 30 secs.
+      } else {
+        // @TODO: handle error state
+      }
+    }
+  }
 </script>
 
 <section
@@ -139,6 +222,7 @@
 
     <div class="min-w-[41%] w-[41%] max-w-full">
       <button
+        on:click|preventDefault={claimAchievement}
         disabled={!currentAddress ||
           currentAddress === ZeroAddress ||
           achievement?.account !== currentAddress}

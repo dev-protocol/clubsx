@@ -63,12 +63,19 @@ const handler =
     )
 
     return new Response(
-      JSON.stringify({ ...achievementItem, ...achievementInfo }),
+      isNotError(achievementInfo) && isNotError(achievementItem)
+        ? JSON.stringify({
+            ...achievementItem,
+            ...achievementInfo,
+            achievementId: achievementItem.id,
+            achievementInfoId: achievementInfo.id,
+          })
+        : JSON.stringify({ error: 'Invalid data found' }),
       {
         status:
           isNotError(achievementInfoDocument) && isNotError(achievementItem)
             ? 200
-            : 400,
+            : 500,
       },
     )
   }
