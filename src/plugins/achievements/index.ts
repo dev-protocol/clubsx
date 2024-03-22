@@ -1,4 +1,5 @@
 import type { UndefinedOr } from '@devprotocol/util-ts'
+import { ClubsPluginCategory, SinglePath } from '@devprotocol/clubs-core'
 import type {
   ClubsFunctionGetAdminPaths,
   ClubsFunctionGetApiPaths,
@@ -6,7 +7,6 @@ import type {
   ClubsFunctionPlugin,
   ClubsPluginMeta,
 } from '@devprotocol/clubs-core'
-import { ClubsPluginCategory, SinglePath } from '@devprotocol/clubs-core'
 
 import Id from './pages/[id].astro'
 import { Content as Readme } from './README.md'
