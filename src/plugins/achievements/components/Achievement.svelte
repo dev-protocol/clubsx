@@ -93,6 +93,14 @@
       })
 
     if (response) {
+      if (response.account !== currentAddress) {
+        claimBtnFeedbackTxt = `Looks like you can't claim this.`
+      }
+
+      if (response.claimed && response.account === currentAddress) {
+        claimBtnFeedbackTxt = 'This achievement is already claimed.'
+      }
+
       achievement = response
       isAchievementDataNotFetched = false
     }
