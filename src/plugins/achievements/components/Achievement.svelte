@@ -17,8 +17,8 @@
   let i18n = i18nBase(['en'])
 
   let achievement: Achievement
-  let connection: typeof Connection
   let signer: Signer | undefined
+  let connection: typeof Connection
   let currentAddress: string | undefined
 
   let isClaimingAchievement = false
@@ -94,7 +94,11 @@
       })
 
     if (response) {
-      if (response.account !== currentAddress) {
+      if (
+        currentAddress &&
+        currentAddress != ZeroAddress &&
+        response.account !== currentAddress
+      ) {
         claimBtnFeedbackTxt = `Looks like you can't claim this.`
       }
 
@@ -223,10 +227,16 @@
     <div class="min-w-[41%] w-[41%] max-w-full">
       <button
         on:click|preventDefault={claimAchievement}
-        disabled={!currentAddress ||
+        disabled={!achievementId ||
+          !signer ||
+          !currentAddress ||
           currentAddress === ZeroAddress ||
-          achievement?.account !== currentAddress}
-        class={`w-full px-4 py-3 mb-1 hs-button is-filled cursor-pointer rounded font-bold text-2xl border-[3px] ${isFetchingAchievementData ? 'animate-pulse bg-gray-500/60' : ''}`}
+          !achievement ||
+          achievement?.account !== currentAddress ||
+          achievement.claimed}
+        class={`w-full px-4 py-3 mb-1 hs-button is-filled cursor-pointer rounded font-bold text-2xl border-[3px]
+          ${isFetchingAchievementData ? 'animate-pulse bg-gray-500/60' : ''}
+          ${achievement?.claimed || (achievement?.account !== currentAddress && currentAddress && currentAddress !== ZeroAddress) ? 'line-through' : ''}`}
       >
         Claim
       </button>
