@@ -32,12 +32,16 @@ export const getPagePaths = (async (options, config) => {
 }) satisfies ClubsFunctionGetPagePaths
 
 export const getApiPaths = (async (options, config, _) => {
+  const achievementIds =
+    (options.find((opt) => opt.key === PLUGIN_ACHIEVEMENT_IDS_OPTION_KEY)
+      ?.value as UndefinedOr<string[]>) ?? []
+
   return [
-    {
-      paths: ['achievements', SinglePath],
+    ...achievementIds.map((id: string) => ({
+      paths: ['achievement', id],
       method: 'GET',
-      handler: fetchAchievement,
-    },
+      handler: fetchAchievement(id),
+    })),
     {
       paths: ['achievements', 'check', SinglePath],
       method: 'GET',
