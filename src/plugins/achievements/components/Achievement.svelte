@@ -13,9 +13,6 @@
 
   export let achievementId: string = ''
 
-  const i18nBase = i18nFactory(Strings)
-  let i18n = i18nBase(['en'])
-
   let achievement: Achievement
   let signer: Signer | undefined
   let connection: typeof Connection
@@ -25,6 +22,9 @@
   let isFetchingAchievementData = false
   let isAchievementDataNotFetched = false
   let claimBtnFeedbackTxt = 'Please sign in.'
+
+  const i18nBase = i18nFactory(Strings)
+  let i18n = i18nBase(['en'])
 
   const connectOnMount = async () => {
     const _connection = await import('@devprotocol/clubs-core/connection')
@@ -46,12 +46,6 @@
       currentAddress = a
     })
   }
-
-  onMount(() => {
-    i18n = i18nBase(navigator.languages)
-    connectOnMount()
-    fetchAchievement()
-  })
 
   const fetchAchievement = async () => {
     if (!achievementId) {
@@ -199,6 +193,12 @@
 
     isClaimingAchievement = false
   }
+
+  onMount(() => {
+    i18n = i18nBase(navigator.languages)
+    connectOnMount()
+    fetchAchievement()
+  })
 </script>
 
 <section
@@ -209,9 +209,13 @@
   </h2>
 
   {#if isAchievementDataNotFetched}
-    <h2 class="text-2xl font-bold">
-      {i18n('AchievementDataNotFound')}
-    </h2>
+    <div
+      class="rounded-[19px] p-4 border-[1px] min-w-[41%] w-[41%] max-w-full border-black/20 bg-black/10"
+    >
+      <h2 class="text-2xl font-bold">
+        {i18n('AchievementDataNotFound')}
+      </h2>
+    </div>
   {/if}
 
   {#if !isAchievementDataNotFetched}
