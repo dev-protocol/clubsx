@@ -11,8 +11,6 @@
   import type { Achievement } from '../types'
   import Skeleton from '@components/Global/Skeleton.svelte'
   import AchievementDefaultIcon from '../assets/achievement.svg'
-  import type { A } from 'vitest/dist/reporters-P7C2ytIv'
-  import { sign } from 'crypto'
 
   const i18nBase = i18nFactory(Strings)
   let i18n = i18nBase(['en'])
@@ -214,7 +212,7 @@
         },
       )
       .catch((err) => {
-        //@TODO: handle error state
+        computeClaimBtnTxt(true, false, currentAddress, signer, achievement)
         return err
       })
 
@@ -284,15 +282,27 @@
           achievement.claimed}
         class={`w-full px-4 py-3 mb-1 hs-button is-filled cursor-pointer rounded font-bold text-2xl border-[3px]
           ${isFetchingAchievementData || isClaimingAchievement ? 'animate-pulse bg-gray-500/60' : ''}
-          ${achievement?.claimed || (achievement?.account !== currentAddress && currentAddress && currentAddress !== ZeroAddress) ? 'line-through' : ''}`}
+          ${
+            (achievement && achievement?.claimed) ||
+            (achievement &&
+              achievement?.account !== currentAddress &&
+              currentAddress &&
+              currentAddress !== ZeroAddress)
+              ? 'line-through'
+              : ''
+          }`}
       >
         {isClaimingAchievement ? 'Claiming' : 'Claim'}
       </button>
-      <p
-        class={`text-center w-full text-base font-medium ${isClaimBtnFeedbackTxtColorRed ? 'text-[#FF3815]' : 'text-black'}`}
-      >
-        {claimBtnFeedbackTxt}
-      </p>
+      {#if isFetchingAchievementData}
+        <Skeleton />
+      {:else}
+        <p
+          class={`text-center w-full text-base font-medium ${isClaimBtnFeedbackTxtColorRed ? 'text-[#FF3815]' : 'text-black'}`}
+        >
+          {claimBtnFeedbackTxt}
+        </p>
+      {/if}
     </div>
 
     <div class="min-w-[41%] w-[41%] max-w-full text-3xl font-medium">
