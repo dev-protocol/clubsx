@@ -1,88 +1,83 @@
-import { aperture } from 'ramda'
-import type { APIRoute } from 'astro'
-
 import {
   isNotError,
-  whenDefined,
   whenNotError,
   whenNotErrorAll,
   type UndefinedOr,
 } from '@devprotocol/util-ts'
 
-import { AchievementIndex, uuidToQuery } from '../utils'
-import { withCheckingIndex, getDefaultClient } from '../db/redis'
+import { getDefaultClient } from '../db/redis'
+import { AchievementIndex, AchievementPrefix, uuidToQuery } from '../utils'
 import { ACHIEVEMENT_ITEM_SCHEMA, ACHIEVEMENT_INFO_SCHEMA } from '../db/schema'
-import {
-  type Achievement,
-  type AchievementItem,
-  type AchievementInfo,
-} from '../types'
+import { type AchievementItem, type AchievementInfo } from '../types'
 
-const handler: APIRoute = async (req) => {
-  // Detect the passed achievement ID
-  const [, givenId] =
-    aperture(2, req.url.pathname.split('/')).find(
-      ([p]) => p === 'achievement',
-    ) ?? []
-  const achievementId =
-    whenDefined(givenId, (_id) => _id) ?? new Error('ID is required')
+const handler =
+  (achievementId: string) =>
+  async ({ request }: { request: Request }) => {
+    if (!achievementId) {
+      return new Response(JSON.stringify({ error: 'Missing data' }), {
+        status: 400,
+      })
+    }
 
-  // Generate a redis client while checking the latest schema is indexing and create/update index if it's not.
-  const client = await withCheckingIndex(getDefaultClient).catch(
-    (err) => err as Error,
-  )
+    // 2. Generate a redis client.
+    const client = await getDefaultClient()
+    if (!client) {
+      return new Response(JSON.stringify({ error: 'Missing client' }), {
+        status: 400,
+      })
+    }
 
-  // Try to fetch the mapped achievement.
-  const achievementItemDocuments = await whenNotErrorAll(
-    [achievementId, client],
-    ([_id, _client]) =>
-      _client.ft.search(
-        AchievementIndex.AchievementItem,
-        `@${ACHIEVEMENT_ITEM_SCHEMA['$.id'].AS}:{${uuidToQuery(_id)}}`,
-        {
-          LIMIT: {
-            from: 0,
-            size: 1,
+    // 3. Try to fetch the mapped achievement.
+    const achievementItemDocuments = await whenNotErrorAll(
+      [achievementId, client],
+      ([_id, _client]) =>
+        _client.ft.search(
+          AchievementIndex.AchievementItem,
+          `@${ACHIEVEMENT_ITEM_SCHEMA['$.id'].AS}:{${uuidToQuery(_id)}}`,
+          {
+            LIMIT: {
+              from: 0,
+              size: 1,
+            },
           },
-        },
-      ),
-  )
-  const achievementItem = whenNotError(
-    achievementItemDocuments,
-    (d) =>
-      (d.documents.find((x) => x.value)
-        ?.value as UndefinedOr<AchievementItem>) ??
-      new Error('ID is not found.'),
-  )
-  const achievementInfoDocuments = await whenNotErrorAll(
-    [achievementItem, client],
-    ([_achievementItem, _client]) =>
-      _client.ft.search(
-        AchievementIndex.AchievementInfo,
-        `@${ACHIEVEMENT_INFO_SCHEMA['$.id'].AS}:{${uuidToQuery(_achievementItem.achievementInfoId)}}`,
-        {
-          LIMIT: {
-            from: 0,
-            size: 1,
-          },
-        },
-      ),
-  )
-  const achievementInfo = whenNotError(
-    achievementInfoDocuments,
-    (d) =>
-      (d.documents.find((x) => x.value)
-        ?.value as UndefinedOr<AchievementInfo>) ??
-      new Error('ID is not found.'),
-  )
+        ),
+    )
+    const achievementItem = whenNotError(
+      achievementItemDocuments,
+      (d) =>
+        (d.documents.find((x) => x.value)
+          ?.value as UndefinedOr<AchievementItem>) ??
+        new Error('ID is not found.'),
+    )
+    const achievementInfoDocument = await whenNotErrorAll(
+      [achievementItem, client],
+      ([_achievementItem, _client]) =>
+        _client.json.get(
+          `${AchievementPrefix.AchievementInfo}::${_achievementItem.achievementInfoId}`,
+        ),
+    )
+    const achievementInfo = whenNotError(
+      achievementInfoDocument,
+      (d) =>
+        (d as UndefinedOr<AchievementInfo>) ?? new Error('ID is not found.'),
+    )
 
-  return new Response(
-    JSON.stringify({ ...achievementInfo, ...achievementItem }),
-    {
-      status:
-        isNotError(achievementInfo) && isNotError(achievementItem) ? 200 : 400,
-    },
-  )
-}
+    return new Response(
+      isNotError(achievementInfo) && isNotError(achievementItem)
+        ? JSON.stringify({
+            ...achievementItem,
+            ...achievementInfo,
+            achievementId: achievementItem.id,
+            achievementInfoId: achievementInfo.id,
+          })
+        : JSON.stringify({ error: 'Invalid data found' }),
+      {
+        status:
+          isNotError(achievementInfoDocument) && isNotError(achievementItem)
+            ? 200
+            : 500,
+      },
+    )
+  }
 
 export default handler

@@ -119,7 +119,7 @@ export const handler =
     // 9. Update the record to mark the achievement as claimed.
     const claimedSBTTokenId = 1
     await client.json.set(
-      `${AchievementPrefix.AchievementInfo}::${achievementItemId}`,
+      `${AchievementPrefix.AchievementItem}::${achievementItemId}`,
       '$',
       {
         ...achievementItem,

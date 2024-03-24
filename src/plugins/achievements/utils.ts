@@ -1,10 +1,10 @@
 import { nanoid } from 'nanoid'
-import { keccak256, toUtf8Bytes } from 'ethers'
+import { ZeroAddress, keccak256, toUtf8Bytes } from 'ethers'
 
 import { encode } from '@devprotocol/clubs-core'
 
 import { getDefaultClient } from './db/redis'
-import type { AchievementInfo, AchievementItem } from './types'
+import type { Achievement, AchievementInfo, AchievementItem } from './types'
 
 export const PLUGIN_ACHIEVEMENT_IDS_OPTION_KEY = 'achievementIds'
 
