@@ -3,6 +3,7 @@
   import { ZeroAddress, type Signer } from 'ethers'
 
   import { i18nFactory } from '@devprotocol/clubs-core'
+  import type { UndefinedOr } from '@devprotocol/util-ts'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
 
   import { meta } from '../index'
@@ -10,6 +11,8 @@
   import type { Achievement } from '../types'
   import Skeleton from '@components/Global/Skeleton.svelte'
   import AchievementDefaultIcon from '../assets/achievement.svg'
+  import type { A } from 'vitest/dist/reporters-P7C2ytIv'
+  import { sign } from 'crypto'
 
   const i18nBase = i18nFactory(Strings)
   let i18n = i18nBase(['en'])
@@ -26,25 +29,61 @@
   let isAchievementDataNotFetched = false
   let claimBtnFeedbackTxt = i18n('SignInMsg')
 
+  const computeClaimBtnTxt = (
+    _hasTxErrorOccured: boolean = false,
+    _isWalletSigRejected: boolean = false,
+    _currentAddress: UndefinedOr<string>,
+    _signer: UndefinedOr<Signer>,
+    _achievement: UndefinedOr<Achievement>,
+  ) => {
+    if (_hasTxErrorOccured) {
+      claimBtnFeedbackTxt = i18n('TxErrorMsg')
+      return
+    }
+
+    if (_isWalletSigRejected) {
+      claimBtnFeedbackTxt = i18n('TxSigRejected')
+      return
+    }
+
+    if (_achievement) {
+      if (_achievement.claimed) {
+        claimBtnFeedbackTxt = i18n('AlreadyClaimed')
+        return
+      }
+
+      if (
+        _signer &&
+        _currentAddress &&
+        _currentAddress !== ZeroAddress &&
+        _achievement.account !== _currentAddress
+      ) {
+        claimBtnFeedbackTxt = i18n('CantClaimMsg')
+        return
+      }
+
+      if (_signer && _currentAddress && _currentAddress !== ZeroAddress) {
+        claimBtnFeedbackTxt = i18n('SignTxMsg')
+        return
+      }
+    }
+
+    if (!_currentAddress || !_signer || _currentAddress === ZeroAddress) {
+      claimBtnFeedbackTxt = i18n('SignInMsg')
+    }
+  }
+
   const connectOnMount = async () => {
     const _connection = await import('@devprotocol/clubs-core/connection')
     connection = _connection.connection
 
     connection().signer.subscribe((s) => {
-      if (!s) {
-        claimBtnFeedbackTxt = i18n('SignInMsg')
-      } else {
-        claimBtnFeedbackTxt = 'Sign to claim the achievement.'
-      }
+      computeClaimBtnTxt(false, false, currentAddress, s, achievement)
       signer = s
     })
 
     connection().account.subscribe((a) => {
-      if (!a || a === ZeroAddress) {
-        claimBtnFeedbackTxt = i18n('SignInMsg')
-      } else {
-        claimBtnFeedbackTxt = 'Sign to claim the achievement.'
-      }
+      computeClaimBtnTxt(false, false, a, signer, achievement)
       currentAddress = a
     })
   }
@@ -92,20 +131,9 @@
       })
 
     if (response) {
-      if (
-        currentAddress &&
-        currentAddress != ZeroAddress &&
-        response.account !== currentAddress
-      ) {
-        claimBtnFeedbackTxt = `Looks like you can't claim this.`
-      }
-
-      if (response.claimed && response.account === currentAddress) {
-        claimBtnFeedbackTxt = 'This achievement is already claimed.'
-      }
-
       achievement = response
       isAchievementDataNotFetched = false
+      computeClaimBtnTxt(false, false, currentAddress, signer, achievement)
     }
 
     isFetchingAchievementData = false
@@ -114,22 +142,22 @@
   const claimAchievement = async () => {
     if (!achievementId) {
       isClaimingAchievement = false
-      claimBtnFeedbackTxt = 'Achievement not found.'
+      computeClaimBtnTxt(false, false, currentAddress, signer, achievement)
       return
     }
     if (!signer || !currentAddress || currentAddress === ZeroAddress) {
       isClaimingAchievement = false
-      claimBtnFeedbackTxt = 'Please sign in to claim.'
+      computeClaimBtnTxt(false, false, currentAddress, signer, achievement)
       return
     }
     if (achievement.claimed) {
       isClaimingAchievement = false
-      claimBtnFeedbackTxt = 'Achievement already claimed.'
+      computeClaimBtnTxt(false, false, currentAddress, signer, achievement)
       return
     }
     if (achievement.account !== currentAddress) {
       isClaimingAchievement = false
-      claimBtnFeedbackTxt = `Look's like this achievement doesn't belong to you.`
+      computeClaimBtnTxt(false, false, currentAddress, signer, achievement)
       return
     }
 
@@ -141,7 +169,7 @@
       .catch((err: any) => new Error(err))
     if (!signature || !hash || signature instanceof Error) {
       isClaimingAchievement = false
-      claimBtnFeedbackTxt = `Wallet signature rejected, try again.`
+      computeClaimBtnTxt(false, true, currentAddress, signer, achievement)
       return
     }
 
@@ -187,12 +215,12 @@
       if (res?.id && res?.claimedSBTTokenId) {
         achievement.claimed = true
         achievement.claimedSBTTokenId = res.claimedSBTTokenId
-        claimBtnFeedbackTxt = 'This achievement is claimed.'
+        computeClaimBtnTxt(false, false, currentAddress, signer, achievement)
       } else {
-        claimBtnFeedbackTxt = 'Error occured, try agian or contact support.'
+        computeClaimBtnTxt(true, false, currentAddress, signer, achievement)
       }
     } else {
-      claimBtnFeedbackTxt = 'Error occured, try agian or contact support.'
+      computeClaimBtnTxt(true, false, currentAddress, signer, achievement)
     }
 
     isClaimingAchievement = false
