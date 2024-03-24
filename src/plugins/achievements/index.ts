@@ -1,6 +1,7 @@
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import { ClubsPluginCategory, SinglePath } from '@devprotocol/clubs-core'
 import type {
+  ClubsApiPath,
   ClubsFunctionGetAdminPaths,
   ClubsFunctionGetApiPaths,
   ClubsFunctionGetPagePaths,
@@ -41,7 +42,7 @@ export const getApiPaths = (async (options, config, _) => {
       paths: ['achievement', id],
       method: 'GET',
       handler: fetchAchievement(id),
-    })),
+    } as ClubsApiPath)),
     {
       paths: ['achievements', 'check', SinglePath],
       method: 'GET',
