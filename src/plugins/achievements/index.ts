@@ -38,11 +38,14 @@ export const getApiPaths = (async (options, config, _) => {
       ?.value as UndefinedOr<string[]>) ?? []
 
   return [
-    ...achievementIds.map((id: string) => ({
-      paths: ['achievement', id],
-      method: 'GET',
-      handler: fetchAchievement(id),
-    } as ClubsApiPath)),
+    ...achievementIds.map(
+      (id: string) =>
+        ({
+          paths: ['achievement', id],
+          method: 'GET',
+          handler: fetchAchievement(id),
+        }) as ClubsApiPath,
+    ),
     {
       paths: ['achievements', 'check', SinglePath],
       method: 'GET',

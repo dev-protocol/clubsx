@@ -10,7 +10,7 @@
   import { Strings } from '../i18n'
   import type { Achievement } from '../types'
   import Skeleton from '@components/Global/Skeleton.svelte'
-  import AchievementDefaultIcon from '../assets/achievement.svg'
+  import AchievementDefaultIcon from '../assets/achievement.svelte'
 
   const i18nBase = i18nFactory(Strings)
   let i18n = i18nBase(['en'])
