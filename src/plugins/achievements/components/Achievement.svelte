@@ -11,6 +11,9 @@
   import Skeleton from '@components/Global/Skeleton.svelte'
   import AchievementDefaultIcon from '../assets/achievement.svg'
 
+  const i18nBase = i18nFactory(Strings)
+  let i18n = i18nBase(['en'])
+
   export let achievementId: string = ''
 
   let achievement: Achievement
@@ -21,17 +24,14 @@
   let isClaimingAchievement = false
   let isFetchingAchievementData = false
   let isAchievementDataNotFetched = false
-  let claimBtnFeedbackTxt = 'Please sign in.'
-
-  const i18nBase = i18nFactory(Strings)
-  let i18n = i18nBase(['en'])
+  let claimBtnFeedbackTxt = i18n('SignInMsg')
 
   const connectOnMount = async () => {
     const _connection = await import('@devprotocol/clubs-core/connection')
     connection = _connection.connection
     connection().signer.subscribe((s) => {
       if (!s) {
-        claimBtnFeedbackTxt = 'Please sign in.'
+        claimBtnFeedbackTxt = i18n('SignInMsg')
       } else {
         claimBtnFeedbackTxt = 'Sign to claim the achievement.'
       }
@@ -39,7 +39,7 @@
     })
     connection().account.subscribe((a) => {
       if (!a || a === ZeroAddress) {
-        claimBtnFeedbackTxt = 'Please sign in.'
+        claimBtnFeedbackTxt = i18n('SignInMsg')
       } else {
         claimBtnFeedbackTxt = 'Sign to claim the achievement.'
       }
@@ -55,6 +55,8 @@
     }
 
     isFetchingAchievementData = true
+    isAchievementDataNotFetched = false
+
     const response = await fetch(
       `/api/${meta.id}/achievement/${achievementId}`,
       { method: 'GET' },

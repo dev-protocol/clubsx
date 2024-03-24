@@ -9,4 +9,8 @@ export const Strings = {
     en: 'We could not find the Achievement, try again or contact the team for support.',
     ja: '実績が見つかりませんでした。再試行するか、チームに連絡してサポートを求めてください。',
   },
+  SignInMsg: {
+    en: 'Please sign in.',
+    ja: 'サインインしてください',
+  },
 } satisfies ClubsI18nParts
