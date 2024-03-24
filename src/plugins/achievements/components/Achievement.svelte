@@ -336,7 +336,14 @@
         {#each achievement?.metadata?.numberAttributes as data, i}
           <div class="flex w-full justify-between items-start">
             <p class="text-base font-normal">{data.trait_type}</p>
-            <p class="text-base font-bold">{data.value}</p>
+            <p class="text-base font-bold">
+              {data.display_type === 'number'
+                ? new Intl.NumberFormat(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 3,
+                  }).format(Number(data.value) || 0)
+                : data.value}
+            </p>
           </div>
         {/each}
         {#each achievement?.metadata?.stringAttributes as data, i}
