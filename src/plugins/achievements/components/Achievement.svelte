@@ -29,6 +29,7 @@
   const connectOnMount = async () => {
     const _connection = await import('@devprotocol/clubs-core/connection')
     connection = _connection.connection
+
     connection().signer.subscribe((s) => {
       if (!s) {
         claimBtnFeedbackTxt = i18n('SignInMsg')
@@ -37,6 +38,7 @@
       }
       signer = s
     })
+
     connection().account.subscribe((a) => {
       if (!a || a === ZeroAddress) {
         claimBtnFeedbackTxt = i18n('SignInMsg')
