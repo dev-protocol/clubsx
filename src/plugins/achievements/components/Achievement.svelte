@@ -270,40 +270,58 @@
       {/if}
     </div>
 
-    <div class="min-w-[41%] w-[41%] max-w-full">
-      <button
-        on:click|preventDefault={claimAchievement}
-        disabled={!achievementId ||
-          !signer ||
-          !currentAddress ||
-          currentAddress === ZeroAddress ||
-          !achievement ||
-          achievement?.account !== currentAddress ||
-          achievement.claimed}
-        class={`w-full px-4 py-3 mb-1 hs-button is-filled cursor-pointer rounded font-bold text-2xl border-[3px]
-          ${isFetchingAchievementData || isClaimingAchievement ? 'animate-pulse bg-gray-500/60' : ''}
-          ${
-            (achievement && achievement?.claimed) ||
-            (achievement &&
-              achievement?.account !== currentAddress &&
-              currentAddress &&
-              currentAddress !== ZeroAddress)
-              ? 'line-through'
-              : ''
-          }`}
+    {#if achievement?.claimed && achievement?.claimedSBTTokenId > 0 && achievement?.account === currentAddress}
+      <div
+        class="flex flex-col items-center min-w-[41%] w-[41%] max-w-full gap-2"
       >
-        {isClaimingAchievement ? 'Claiming' : 'Claim'}
-      </button>
-      {#if isFetchingAchievementData}
-        <Skeleton />
-      {:else}
-        <p
-          class={`text-center w-full text-base font-medium ${isClaimBtnFeedbackTxtColorRed ? 'text-[#FF3815]' : 'text-black'}`}
-        >
-          {claimBtnFeedbackTxt}
+        <p class="w-full max-w-full text-3xl font-medium text-center">
+          {i18n('Congratulations')}
         </p>
-      {/if}
-    </div>
+        <p class="w-full max-w-full text-xl font-medium text-center">
+          {i18n('YouAreNowHolding') + ' ' + achievement?.metadata?.name}
+        </p>
+        <div
+          class="w-full max-w-full p-2.5 rounded-md bg-[#F1F1F1] text-base font-normal"
+        >
+          {achievement?.metadata?.description}
+        </div>
+      </div>
+    {:else}
+      <div class="min-w-[41%] w-[41%] max-w-full">
+        <button
+          on:click|preventDefault={claimAchievement}
+          disabled={!achievementId ||
+            !signer ||
+            !currentAddress ||
+            currentAddress === ZeroAddress ||
+            !achievement ||
+            achievement?.account !== currentAddress ||
+            achievement.claimed}
+          class={`w-full px-4 py-3 mb-1 hs-button is-filled cursor-pointer rounded font-bold text-2xl border-[3px]
+            ${isFetchingAchievementData || isClaimingAchievement ? 'animate-pulse bg-gray-500/60' : ''}
+            ${
+              (achievement && achievement?.claimed) ||
+              (achievement &&
+                achievement?.account !== currentAddress &&
+                currentAddress &&
+                currentAddress !== ZeroAddress)
+                ? 'line-through'
+                : ''
+            }`}
+        >
+          {isClaimingAchievement ? 'Claiming' : 'Claim'}
+        </button>
+        {#if isFetchingAchievementData}
+          <Skeleton />
+        {:else}
+          <p
+            class={`text-center w-full text-base font-medium ${isClaimBtnFeedbackTxtColorRed ? 'text-[#FF3815]' : 'text-black'}`}
+          >
+            {claimBtnFeedbackTxt}
+          </p>
+        {/if}
+      </div>
+    {/if}
 
     <div class="min-w-[41%] w-[41%] max-w-full text-3xl font-medium">
       {#if isFetchingAchievementData}

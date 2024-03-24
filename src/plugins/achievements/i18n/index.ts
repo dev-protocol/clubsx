@@ -1,6 +1,14 @@
 import type { ClubsI18nParts } from '@devprotocol/clubs-core'
 
 export const Strings = {
+  YouAreNowHolding: {
+    en: 'You are now holding',
+    ja: 'あなたは今持っています',
+  },
+  Congratulations: {
+    en: 'Congratulation!',
+    ja: 'おめでとうございます！',
+  },
   TxErrorMsg: {
     en: 'Error occured, try agian or contact support.',
     ja: 'エラーが発生しました。agian を試すか、サポートにお問い合わせください。',
