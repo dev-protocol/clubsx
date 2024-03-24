@@ -27,6 +27,7 @@
   let isClaimingAchievement = false
   let isFetchingAchievementData = false
   let isAchievementDataNotFetched = false
+  let isClaimBtnFeedbackTxtColorRed = false
   let claimBtnFeedbackTxt = i18n('SignInMsg')
 
   const computeClaimBtnTxt = (
@@ -38,17 +39,20 @@
   ) => {
     if (_hasTxErrorOccured) {
       claimBtnFeedbackTxt = i18n('TxErrorMsg')
+      isClaimBtnFeedbackTxtColorRed = true
       return
     }
 
     if (_isWalletSigRejected) {
       claimBtnFeedbackTxt = i18n('TxSigRejected')
+      isClaimBtnFeedbackTxtColorRed = true
       return
     }
 
     if (_achievement) {
       if (_achievement.claimed) {
         claimBtnFeedbackTxt = i18n('AlreadyClaimed')
+        isClaimBtnFeedbackTxtColorRed = true
         return
       }
 
@@ -59,17 +63,20 @@
         _achievement.account !== _currentAddress
       ) {
         claimBtnFeedbackTxt = i18n('CantClaimMsg')
+        isClaimBtnFeedbackTxtColorRed = true
         return
       }
 
       if (_signer && _currentAddress && _currentAddress !== ZeroAddress) {
         claimBtnFeedbackTxt = i18n('SignTxMsg')
+        isClaimBtnFeedbackTxtColorRed = false
         return
       }
     }
 
     if (!_currentAddress || !_signer || _currentAddress === ZeroAddress) {
       claimBtnFeedbackTxt = i18n('SignInMsg')
+      isClaimBtnFeedbackTxtColorRed = true
     }
   }
 
@@ -282,7 +289,7 @@
         {isClaimingAchievement ? 'Claiming' : 'Claim'}
       </button>
       <p
-        class={`text-center w-full text-base font-medium ${!currentAddress || currentAddress === ZeroAddress ? 'text-[#FF3815]' : 'text-black'}`}
+        class={`text-center w-full text-base font-medium ${isClaimBtnFeedbackTxtColorRed ? 'text-[#FF3815]' : 'text-black'}`}
       >
         {claimBtnFeedbackTxt}
       </p>
