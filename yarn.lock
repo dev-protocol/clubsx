@@ -608,16 +608,7 @@
     stream-browserify "^3.0.0"
     util "^0.12.4"
 
-"@crossmint/client-sdk-base@1.1.10":
-  version "1.1.10"
-  resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-base/-/client-sdk-base-1.1.10.tgz#b1c111eb57152f27241fd89ba616d05607578f40"
-  integrity sha512-8yiEcPnzEJuGrzvR8PPvIJAOeFNAtnZuwoFXKPRc8XWkvsC5c7WdlPsIGRn0zGnqAMJC6EGKGkYZQDHwXbKqEw==
-  dependencies:
-    "@crossmint/common-sdk-base" "0.0.9"
-    exponential-backoff "3.1.1"
-    uuid "9.0.1"
-
-"@crossmint/client-sdk-base@^1.0.1-alpha.6":
+"@crossmint/client-sdk-base@1.1.12", "@crossmint/client-sdk-base@^1.0.1-alpha.6":
   version "1.1.12"
   resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-base/-/client-sdk-base-1.1.12.tgz#9cb222b22f27bb2c246c0264dd64a1a7b368e8e1"
   integrity sha512-qtpyRfsiTiWp7/Zt4QKND3GsnCl6tx+hySkhtGPEakerj3UHWMNu87pdvv7hQ8fklDTPJiwG3Giv4JUqqRNCFA==
@@ -627,12 +618,12 @@
     uuid "9.0.1"
 
 "@crossmint/client-sdk-react-ui@^1.0.1-alpha.6":
-  version "1.1.7"
-  resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-react-ui/-/client-sdk-react-ui-1.1.7.tgz#8b4b72af8ee80b9b5d81dfad32898edfa672d393"
-  integrity sha512-R3hLEyxRDaW4Uhl0Rka3mvVTqqJJh6rxW6MdQ2RBUVY4MxkAoNsf4wwK+pbAZJ8OiCljEuT5kmszGa8vGW+2fw==
+  version "1.1.9"
+  resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-react-ui/-/client-sdk-react-ui-1.1.9.tgz#5b084784ed573578fb44e6767b9b97700aee53cb"
+  integrity sha512-GNYwJU8TaBtcogaUo+IrXnbSfCKvgqlbfG3ZsDhsoh7LIoTne3yEO8lL6vPYTGpeZi+bhksuAJRV+iDtBlrLJg==
   dependencies:
-    "@crossmint/client-sdk-base" "1.1.10"
-    "@crossmint/common-sdk-base" "0.0.9"
+    "@crossmint/client-sdk-base" "1.1.12"
+    "@crossmint/common-sdk-base" "0.0.11"
     "@ethersproject/transactions" "5.7.0"
     "@solana/web3.js" "1.78.5"
     bs58 "5.0.0"
@@ -643,14 +634,6 @@
   version "0.0.11"
   resolved "https://registry.yarnpkg.com/@crossmint/common-sdk-base/-/common-sdk-base-0.0.11.tgz#f67a1323e9a805e2bdf0e73c63e529170ca4e502"
   integrity sha512-BhK3H7fXlAQgzu664uFQyLPkC9oX7QcCIwCmFzXaFAh6Nasr0L9T+nkJmrGkhSdfB2KPGmR2VDYuxG+w/xEfZA==
-  dependencies:
-    bs58 "5.0.0"
-    tweetnacl "1.0.3"
-
-"@crossmint/common-sdk-base@0.0.9":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@crossmint/common-sdk-base/-/common-sdk-base-0.0.9.tgz#09b91d86cecf0b0b0089f58186143d4744a6a513"
-  integrity sha512-JrNQsSPMoaQbEsXazzWgL26tng+vbUwwc6NUutSjTioioRYQRIFP2qXHM712BG7S75vS13PpotT6JaSsUyigJQ==
   dependencies:
     bs58 "5.0.0"
     tweetnacl "1.0.3"
