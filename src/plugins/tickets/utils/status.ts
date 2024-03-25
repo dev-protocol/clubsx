@@ -273,6 +273,7 @@ export const ticketStatus = async (
   ticket: Ticket,
   opts: {
     tokenId: number | string
+    erc721Enumerable: string | false
     provider: ContractRunner
   },
 ): Promise<TicketStatus[]> => {

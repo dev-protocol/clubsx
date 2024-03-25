@@ -6,21 +6,23 @@ import type { BanningRules } from './utils/get-banning-rules'
 
 type Props = {
   ticket: Ticket
-  membership: Membership
+  membership?: Membership
+  erc721Enumerable?: string
   rpcUrl: string
   ban: BanningRules
 }
 
-const { ticket, membership, rpcUrl, ban } = Astro.props
+const { ticket, membership, erc721Enumerable, rpcUrl, ban } = Astro.props
 
-const sTokensId = Number(Astro.url.searchParams.get('id'))
+const tokenId = Number(Astro.url.searchParams.get('id'))
 ---
 
 <Id_
   client:load
   ticket={ticket}
   membership={membership}
-  sTokensId={sTokensId}
+  erc721Enumerable={erc721Enumerable}
+  tokenId={tokenId}
   rpcUrl={rpcUrl}
   ban={ban}
 />

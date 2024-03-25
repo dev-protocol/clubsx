@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro'
-import type { Ticket } from '..'
+import { isMembershipTicket, type Ticket } from '..'
 import { createClient } from 'redis'
 import { genHistoryKey } from '../utils/gen-key'
 
@@ -15,7 +15,12 @@ export const get: (opts: {
         status: 400,
       })
     }
-    const dbKey = genHistoryKey(propertyAddress, ticket.payload, id)
+    const membershipTicket = isMembershipTicket(ticket) && ticket
+    const dbKey = genHistoryKey(
+      propertyAddress,
+      membershipTicket ? membershipTicket.payload : ticket.erc721Enumerable,
+      id,
+    )
 
     const client = createClient({
       url: process.env.REDIS_URL,
