@@ -1,5 +1,11 @@
 import type { APIRoute } from 'astro'
-import type { Ticket, TicketHistories, TicketHistory } from '..'
+import {
+  isMembershipTicket,
+  isNFTTicket,
+  type Ticket,
+  type TicketHistories,
+  type TicketHistory,
+} from '..'
 import { createClient } from 'redis'
 import { decode, encode } from '@devprotocol/clubs-core'
 import { whenDefined, whenDefinedAll } from '@devprotocol/util-ts'
@@ -36,7 +42,12 @@ export const post: (opts: {
       )
     }
 
-    const dbKey = genHistoryKey(propertyAddress, ticket.payload, id)
+    const membershipTicket = isMembershipTicket(ticket) && ticket
+    const dbKey = genHistoryKey(
+      propertyAddress,
+      membershipTicket ? membershipTicket.payload : ticket.erc721Enumerable,
+      id,
+    )
     const provider = new JsonRpcProvider(rpcUrl)
 
     const account = recoverAddress(hashMessage(hash), sig)
@@ -72,6 +83,7 @@ export const post: (opts: {
 
     const statuses = await ticketStatus(history, ticket, {
       tokenId: id,
+      erc721Enumerable: isNFTTicket(ticket) ? ticket.erc721Enumerable : false,
       provider,
     })
 

@@ -1,6 +1,6 @@
 ---
 import type { CheckoutOptions } from '@devprotocol/clubs-core/ui/components'
-import type { Tickets } from '.'
+import { isMembershipTicket, type Tickets } from '.'
 import { bytes32Hex } from '@devprotocol/clubs-core'
 
 const { checkoutOptions, tickets } = Astro.props as {
@@ -9,8 +9,10 @@ const { checkoutOptions, tickets } = Astro.props as {
 }
 
 const { payload } = checkoutOptions
-const isTicket = tickets.some(
-  (t) => bytes32Hex(t.payload) === bytes32Hex(payload ?? ''),
+const isTicket = tickets.some((t) =>
+  isMembershipTicket(t)
+    ? bytes32Hex(t.payload) === bytes32Hex(payload ?? '')
+    : false,
 )
 ---
 

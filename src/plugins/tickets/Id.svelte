@@ -7,7 +7,7 @@
   import type { Ticket, TicketHistories } from '.'
   import type { Membership } from '@plugins/memberships'
   import { onMount } from 'svelte'
-  import { meta } from './index'
+  import { isNFTTicket } from './index'
   import {
     ProseTextInherit,
     decode,
@@ -17,23 +17,24 @@
   import Skeleton from '@components/Global/Skeleton.svelte'
   import Check from './Check.svelte'
   import { type Signer, JsonRpcProvider } from 'ethers'
-  import { bytes32Hex } from '@devprotocol/clubs-core'
   import { marked } from 'marked'
   import DOMPurify from 'dompurify'
   import { Modals, closeAllModals, closeModal, openModal } from 'svelte-modals'
   import { fade } from 'svelte/transition'
   import Modal from './Modal.svelte'
   import { Strings } from './i18n'
-  import { expirationDatetime } from './utils/date'
   import type { BanningRules } from './utils/get-banning-rules'
+  import { getMetadata } from './utils/nft'
+  import { requestToGetHistory, requestToPostRedeem } from './utils/api'
 
   export let ticket: Ticket
   export let membership: UndefinedOr<Membership>
-  export let sTokensId: UndefinedOr<number>
+  export let erc721Enumerable: UndefinedOr<string>
+  export let tokenId: UndefinedOr<number>
   export let rpcUrl: string
   export let ban: BanningRules
 
-  const isInvalidId = ban.id.includes(sTokensId ?? 0)
+  const isInvalidId = ban.id.includes(tokenId ?? 0)
 
   let benefits: UndefinedOr<TicketStatus[]>
   let signer: UndefinedOr<Signer>
@@ -47,6 +48,16 @@
 
   const mdToHtml = (str?: string) => DOMPurify.sanitize(marked.parse(str ?? ''))
   const provider = new JsonRpcProvider(rpcUrl)
+
+  const nft = membership
+    ? Promise.resolve({
+        ...membership,
+        image: membership.imageSrc,
+        attributes: undefined,
+      })
+    : erc721Enumerable && tokenId
+      ? getMetadata(erc721Enumerable, tokenId, provider)
+      : undefined
 
   const onClickABenefit = (benefitId: string) => async () => {
     whenDefined(signer, async (sigr) => {
@@ -62,8 +73,11 @@
           closeAllModals()
         },
         action: async () => {
+          /**
+           * Define the action after clicking the claiming button.
+           */
           idIsLoading = benefitId
-          const hash = `Use ${ticket.name}/${benefit?.self.use.name} with #${sTokensId} @ts:${new Date().getTime()}`
+          const hash = `Use ${ticket.name}/${benefit?.self.use.name} with #${tokenId} @ts:${new Date().getTime()}`
           timeoutToHint = setTimeout(() => {
             openModal(Modal, {
               spinner: true,
@@ -83,22 +97,16 @@
           const opts = whenNotError(sig, (_sig) => ({
             hash,
             sig: _sig,
-            id: sTokensId,
+            id: tokenId,
             benefitId,
           }))
           const res = await whenNotError(opts, (_opts) => {
             isWaitingForAPIResult = true
-            return fetch(
-              `/api/${meta.id}/redeem/${bytes32Hex(ticket.payload)}`,
-              {
-                method: 'POST',
-                body: JSON.stringify(_opts),
-              },
-            )
+            return requestToPostRedeem(ticket, _opts)
           })
           const result = await whenNotError(res, async (_res) =>
             _res.ok
-              ? fetchTicketStatus(sTokensId!!)
+              ? fetchTicketStatus(tokenId!!)
               : new Error(((await _res.json()) as { message: string }).message),
           )
           if (result instanceof Error) {
@@ -123,6 +131,9 @@
       })
   }
   const onClickBackdrop = () => {
+    /**
+     * Define the action when clicking the modal backdrop.
+     */
     if (timeoutToHint !== undefined) {
       clearTimeout(timeoutToHint)
       timeoutToHint = undefined
@@ -137,20 +148,22 @@
   }
 
   const fetchTicketStatus = async (id: string | number) => {
-    const res = await fetch(
-      `/api/${meta.id}/history/${bytes32Hex(ticket.payload)}?id=${id}`,
-    )
+    const res = await requestToGetHistory(ticket, id)
     const text = res.ok ? await res.text() : undefined
     const history: TicketHistories =
       whenDefined(text, (txt) => decode<TicketHistories>(txt)) ?? {}
-    benefits = await ticketStatus(history, ticket, { tokenId: id, provider })
+    benefits = await ticketStatus(history, ticket, {
+      tokenId: id,
+      erc721Enumerable: isNFTTicket(ticket) ? ticket.erc721Enumerable : false,
+      provider,
+    })
     console.log(history, benefits)
   }
 
   onMount(async () => {
     i18n = i18nBase(navigator.languages)
-    if (sTokensId) {
-      fetchTicketStatus(sTokensId)
+    if (tokenId) {
+      fetchTicketStatus(tokenId)
     }
   })
 
@@ -164,28 +177,51 @@
 
 <section class="rounded-md bg-white p-6 text-black shadow">
   <div class="mx-auto grid max-w-lg gap-8">
-    {#if !sTokensId || !membership || isInvalidId}
+    {#if !tokenId || !nft || isInvalidId}
       <p class="text-center font-bold text-dp-white-600">
-        {#if !membership}
+        {#if !nft}
           Internal error
-        {:else if !sTokensId}
+        {:else if !tokenId}
           No ID specified
         {:else if isInvalidId}
           Invalid ID
         {/if}
       </p>
     {:else}
-      <p>#{sTokensId}</p>
+      <p>#{tokenId}</p>
 
       <div class="rounded-lg border border-black/20 bg-black/10 p-4">
-        <img
-          src={membership.imageSrc}
-          alt={membership.name}
-          class="h-auto w-full rounded object-cover object-center sm:h-full sm:w-full"
-        />
+        {#await nft then _nft}
+          {#if _nft instanceof Error}
+            <p>Error: {_nft.message}</p>
+          {:else}
+            <img
+              src={_nft.image}
+              alt={_nft.name}
+              class="h-auto w-full rounded object-cover object-center sm:h-full sm:w-full"
+            />
+          {/if}
+        {/await}
       </div>
 
       <h2 class="text-2xl font-bold">{ticket.name}</h2>
+
+      {#await nft then _nft}
+        {#if _nft instanceof Error}
+          <p>Error: {_nft.message}</p>
+        {:else if _nft.attributes}
+          <dl
+            class="rounded-md p-2 bg-surface-300 grid gap-2 gap-y-4 grid-cols-[auto,1fr]"
+          >
+            {#each _nft.attributes as attr}
+              <dt class="break-all text-accent-200">{attr.trait_type}</dt>
+              <dd class="font-bold break-all text-right text-surface-ink">
+                {attr.value}
+              </dd>
+            {/each}
+          </dl>
+        {/if}
+      {/await}
 
       {#if benefits === undefined}
         <span class="h-40">

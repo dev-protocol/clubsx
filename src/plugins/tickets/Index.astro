@@ -7,18 +7,21 @@ import type { BanningRules } from './utils/get-banning-rules'
 type Props = {
   tickets: Tickets
   memberships: Membership[]
+  enumerableNFTs: string[]
   propertyAddress: string
   rpcUrl: string
   ban: BanningRules
 }
 
-const { tickets, memberships, propertyAddress, rpcUrl, ban } = Astro.props
+const { tickets, memberships, enumerableNFTs, propertyAddress, rpcUrl, ban } =
+  Astro.props
 ---
 
 <Index_
   client:load
   tickets={tickets}
   memberships={memberships}
+  enumerableNFTs={enumerableNFTs}
   propertyAddress={propertyAddress}
   rpcUrl={rpcUrl}
   ban={ban}
