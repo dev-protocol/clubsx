@@ -87,7 +87,7 @@ export const composeTiers = async ({
       const amount = await fetchEthForDev({
         provider,
         tokenAddress,
-        amount: tier.amount,
+        amount: tier.amount ?? 0,
       })
       return { ...tier, amount: formatEther(amount) }
     }),
