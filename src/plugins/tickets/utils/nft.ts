@@ -15,6 +15,7 @@ export const ABI_NFT = [
   'function tokenURI(uint256 tokenId) external view returns (string)',
   'function tokenOfOwnerByIndex(address owner, uint256 index) public view returns (uint256)',
   'function balanceOf(address owner) external view returns (uint256 balance)',
+  'function ownerOf(uint256 tokenId) external view returns (address owner)',
 ]
 
 const metadata = (str: string): ErrorOr<Metadata> =>

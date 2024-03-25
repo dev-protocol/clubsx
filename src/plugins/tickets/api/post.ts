@@ -11,13 +11,14 @@ import { decode, encode } from '@devprotocol/clubs-core'
 import { whenDefined, whenDefinedAll } from '@devprotocol/util-ts'
 import { always } from 'ramda'
 import { ticketStatus } from '../utils/status'
-import { JsonRpcProvider, hashMessage, recoverAddress } from 'ethers'
+import { Contract, JsonRpcProvider, hashMessage, recoverAddress } from 'ethers'
 import { clientsSTokens } from '@devprotocol/dev-kit'
 import { genHistoryKey } from '../utils/gen-key'
 import { now } from '../utils/date'
 import { Status } from '../utils/webhooks'
 import jsonwebtoken from 'jsonwebtoken'
 import fetch from 'cross-fetch'
+import { ABI_NFT } from '../utils/nft'
 
 export const post: (opts: {
   ticket: Ticket
@@ -51,8 +52,10 @@ export const post: (opts: {
     const provider = new JsonRpcProvider(rpcUrl)
 
     const account = recoverAddress(hashMessage(hash), sig)
-    const [l1, l2] = await clientsSTokens(provider)
-    const owner = await (l1 ?? l2)?.ownerOf(Number(id))
+    const nft = isNFTTicket(ticket)
+      ? new Contract(ticket.erc721Enumerable, ABI_NFT, provider)
+      : await clientsSTokens(provider).then(([l1, l2]) => l1 ?? l2)
+    const owner = await nft?.ownerOf(Number(id))
     const isOwner = owner?.toLowerCase() === account.toLowerCase()
 
     if (!isOwner) {
