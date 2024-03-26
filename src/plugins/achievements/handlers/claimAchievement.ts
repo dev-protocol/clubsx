@@ -152,7 +152,7 @@ export const handler =
           Authorization: `Bearer ${SEND_DEV_PROTOCOL_API_KEY}`,
         },
         body: JSON.stringify({
-          requestId: achievementItem.id,
+          requestId: `${achievementItem.id}${account}`, // achievementItem.id + user signing EOA
           rpcUrl,
           chainId,
           metadata: {
