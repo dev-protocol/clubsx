@@ -34,7 +34,8 @@ export const getPagePaths = (async (
   return [
     {
       paths: ['invitations', SinglePath],
-      component: Id({ memberships }),
+      component: Id,
+      props: { memberships, baseUrl: config.url },
     },
   ]
 }) satisfies ClubsFunctionGetPagePaths

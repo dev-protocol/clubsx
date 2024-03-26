@@ -2,21 +2,31 @@
 import type { Membership } from '@devprotocol/clubs-core'
 import ClaimButton from './components/ClaimButton.svelte'
 import type { Invitation } from './redis-schema'
-const { id } = Astro.params
-const { memberships } = Astro.props as {
+
+const fullUrl = Astro.url.pathname
+// get the last value of the url
+const invitationId = fullUrl.split('/').pop()
+console.log('invitation id is: ', invitationId)
+
+const { memberships, baseUrl } = Astro.props as {
   memberships: Membership[]
+  baseUrl: string
 }
 
 const res = await fetch(
-  `/api/devprotocol:clubs:plugin:invitations/invitations/${id}`,
+  // `${baseUrl}/api/devprotocol:clubs:plugin:invitations/invitations/${invitationId}`,
+  // `http://pizza.localhost:3000/api/devprotocol:clubs:plugin:invitations/invitations/${invitationId}`,
+  `http://localhost:3000/sites_/pizza/api/devprotocol:clubs:plugin:invitations/invitations/${invitationId}`,
   {
+    method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
-  },
+  }
 )
 
 if (!res.ok) {
+  console.log('in here!')
   return {
     status: 404,
     headers: {
@@ -28,10 +38,11 @@ if (!res.ok) {
 const { invitation } = (await res.json()) as { invitation: Invitation }
 
 const membership = memberships.find(
-  (m) => m.payload === invitation.membership.payload,
+  (m) => m.payload === invitation.membership.payload
 )
 
 if (!membership) {
+  console.log('no membership!')
   return {
     status: 404,
     headers: {

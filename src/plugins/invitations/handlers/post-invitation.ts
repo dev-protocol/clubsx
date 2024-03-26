@@ -18,6 +18,7 @@ const checkExisting = async ({ invitationId }: { invitationId: string }) => {
 export const handler =
   (conf: ClubsConfiguration) =>
   async ({ request }: { request: Request }) => {
+    console.log('create invitation hit')
     const { membership, conditions, signature, message } =
       (await request.json()) as {
         membership: {
@@ -32,16 +33,18 @@ export const handler =
 
     const client = await getDefaultClient()
 
-    const authenticated = await authenticate({
-      message,
-      signature,
-      previousConfiguration: encode(conf),
-      provider: getDefaultProvider(conf.rpcUrl),
-    })
+    // const authenticated = await authenticate({
+    //   message,
+    //   signature,
+    //   previousConfiguration: encode(conf),
+    //   provider: getDefaultProvider(conf.rpcUrl),
+    // })
 
-    if (!authenticated) {
-      return new Response(JSON.stringify({}), { status: 401 })
-    }
+    // if (!authenticated) {
+    //   return new Response(JSON.stringify({ message: 'unauthenticated' }), {
+    //     status: 401,
+    //   })
+    // }
 
     const invitation = invitationDocument({
       membership,

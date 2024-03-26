@@ -1,12 +1,14 @@
-const KEY = ''
-const MEMBERSHIP_PAYLOAD = new Uint8Array([])
+const KEY = 'pizza'
+const MEMBERSHIP_PAYLOAD = new Uint8Array([
+  47, 255, 181, 254, 85, 225, 124, 168,
+])
 const RECIPIENT = ''
 const SIGNATURE = ''
 const MESSAGE = `Create a new invitation for ${KEY} @ts:${new Date().getTime()}`
 
 const main = async () => {
   const res = await fetch(
-    `https://${KEY}.clubs.place/api/devprotocol:clubs:plugin:invitations/invitations`,
+    `http://localhost:3000/sites_/pizza/api/devprotocol:clubs:plugin:invitations/invitations`,
     {
       method: 'POST',
       body: JSON.stringify({
@@ -22,12 +24,14 @@ const main = async () => {
     },
   )
 
+  const json = await res.json()
+
   if (res.status !== 200) {
+    console.log('failed json is: ', json)
     throw new Error('Failed to create an invitation')
   }
 
-  const json = await res.json()
-  console.log(`Invitation created: ${json}`)
+  console.log(`new invitation id is: `, json.id)
 }
 
 main()
