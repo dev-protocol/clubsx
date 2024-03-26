@@ -46,8 +46,8 @@ export const withCheckingIndex = async <
   return isScmIIndexed && isScmHIndexed
     ? client
     : Promise.all([
-        client.ft.dropIndex(Index.Invitation),
-        client.ft.dropIndex(Index.History),
+        client.ft.dropIndex(Index.Invitation).catch(() => null),
+        client.ft.dropIndex(Index.History).catch(() => null),
       ])
         .then(() =>
           Promise.all([
@@ -59,6 +59,12 @@ export const withCheckingIndex = async <
               ON,
               PREFIX: Prefix.History,
             }),
+          ]),
+        )
+        .then(() =>
+          Promise.all([
+            client.set(SchemaKey.Invitation, schemaInvitationId),
+            client.set(SchemaKey.History, schemaHistoryId),
           ]),
         )
         .then(() => client)

@@ -27,7 +27,7 @@ const main = async () => {
   }
 
   const json = await res.json()
-  console.log(`Invitation created: ${json}`)
+  console.log('Invitation created:', json)
 }
 
 main()
