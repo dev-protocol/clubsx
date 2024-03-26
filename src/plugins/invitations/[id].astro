@@ -22,7 +22,7 @@ const res = await fetch(
     headers: {
       'Content-Type': 'application/json',
     },
-  }
+  },
 )
 
 if (!res.ok) {
@@ -38,7 +38,7 @@ if (!res.ok) {
 const { invitation } = (await res.json()) as { invitation: Invitation }
 
 const membership = memberships.find(
-  (m) => m.payload === invitation.membership.payload
+  (m) => m.payload === invitation.membership.payload,
 )
 
 if (!membership) {
