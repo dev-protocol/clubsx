@@ -687,16 +687,16 @@
     vue "^3.2.0"
 
 "@devprotocol/clubs-plugin-posts-voting@^0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts-voting/-/clubs-plugin-posts-voting-0.6.0.tgz#fe04937484df47b2988ca7ffd73b5e25a89b6b2b"
-  integrity sha512-H7Y0xS6Snw1p/9ggw1LqgqGP0Rxdl5MIbpIhGkWThIKxfKAxbFrKvFZ3BmwQhKShrdc2ruStocqGgdrsypB/zg==
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts-voting/-/clubs-plugin-posts-voting-0.6.1.tgz#af9133f85c87c0b0c2abc50533eabed233d8bc53"
+  integrity sha512-R/FTptpkIciaM1e60UiqTRAwUy0mDeGIwaTYe2K/dftDhybWXre6X9cfFi2q+DbLfIQjQZPeF5uHbQ7K7HREag==
   dependencies:
     "@devprotocol/dev-kit" "8.6.0"
     "@devprotocol/util-ts" "4.0.0"
     bignumber.js "9.1.2"
     ethers "6.11.1"
     ramda "0.29.1"
-    sass "1.71.1"
+    sass "1.72.0"
     uuid "^9.0.1"
 
 "@devprotocol/clubs-plugin-posts@0.15.3":
@@ -9638,15 +9638,6 @@ sass@1.60.0:
   version "1.60.0"
   resolved "https://registry.yarnpkg.com/sass/-/sass-1.60.0.tgz#657f0c23a302ac494b09a5ba8497b739fb5b5a81"
   integrity sha512-updbwW6fNb5gGm8qMXzVO7V4sWf7LMXnMly/JEyfbfERbVH46Fn6q02BX7/eHTdKpE7d+oTkMMQpFWNUMfFbgQ==
-  dependencies:
-    chokidar ">=3.0.0 <4.0.0"
-    immutable "^4.0.0"
-    source-map-js ">=0.6.2 <2.0.0"
-
-sass@1.71.1:
-  version "1.71.1"
-  resolved "https://registry.yarnpkg.com/sass/-/sass-1.71.1.tgz#dfb09c63ce63f89353777bbd4a88c0a38386ee54"
-  integrity sha512-wovtnV2PxzteLlfNzbgm1tFXPLoZILYAMJtvoXXkD7/+1uP41eKkIt1ypWq5/q2uT94qHjXehEYfmjKOvjL9sg==
   dependencies:
     chokidar ">=3.0.0 <4.0.0"
     immutable "^4.0.0"
