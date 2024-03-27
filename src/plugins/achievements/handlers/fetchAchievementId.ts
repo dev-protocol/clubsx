@@ -6,13 +6,20 @@ import {
 } from '@devprotocol/util-ts'
 
 import { getDefaultClient } from '../db/redis'
-import { AchievementIndex, AchievementPrefix, uuidToQuery } from '../utils'
+import {
+  AchievementIndex,
+  AchievementPrefix,
+  getIdFromURL,
+  uuidToQuery,
+} from '../utils'
 import { ACHIEVEMENT_ITEM_SCHEMA, ACHIEVEMENT_INFO_SCHEMA } from '../db/schema'
 import { type AchievementItem, type AchievementInfo } from '../types'
+import type { APIRoute } from 'astro'
 
 const handler =
-  (achievementId: string) =>
-  async ({ request }: { request: Request }) => {
+  (): APIRoute =>
+  async ({ url }) => {
+    const achievementId = getIdFromURL(url)
     if (!achievementId) {
       return new Response(JSON.stringify({ error: 'Missing data' }), {
         status: 400,

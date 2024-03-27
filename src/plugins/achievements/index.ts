@@ -1,7 +1,5 @@
-import type { UndefinedOr } from '@devprotocol/util-ts'
 import { ClubsPluginCategory, SinglePath } from '@devprotocol/clubs-core'
 import type {
-  ClubsApiPath,
   ClubsFunctionGetAdminPaths,
   ClubsFunctionGetApiPaths,
   ClubsFunctionGetPagePaths,
@@ -16,36 +14,23 @@ import addAchievements from './handlers/addAchievement'
 import claimAchievement from './handlers/claimAchievement'
 import checkAchievement from './handlers/checkAchievement'
 import fetchAchievement from './handlers/fetchAchievementId'
-import { PLUGIN_ACHIEVEMENT_IDS_OPTION_KEY } from './utils'
 
 export const getPagePaths = (async (options, config) => {
-  const achievementIds =
-    (options.find((opt) => opt.key === PLUGIN_ACHIEVEMENT_IDS_OPTION_KEY)
-      ?.value as UndefinedOr<string[]>) ?? []
-
   return [
-    ...achievementIds.map((id: string) => ({
-      paths: ['achievement', id],
+    {
+      paths: ['achievement', SinglePath],
       component: Id,
-      props: { id },
-    })),
+    },
   ]
 }) satisfies ClubsFunctionGetPagePaths
 
 export const getApiPaths = (async (options, config, _) => {
-  const achievementIds =
-    (options.find((opt) => opt.key === PLUGIN_ACHIEVEMENT_IDS_OPTION_KEY)
-      ?.value as UndefinedOr<string[]>) ?? []
-
   return [
-    ...achievementIds.map(
-      (id: string) =>
-        ({
-          paths: ['achievement', id],
-          method: 'GET',
-          handler: fetchAchievement(id),
-        }) as ClubsApiPath,
-    ),
+    {
+      paths: ['achievement', SinglePath],
+      method: 'GET',
+      handler: fetchAchievement(),
+    },
     {
       paths: ['achievements', 'check', SinglePath],
       method: 'GET',

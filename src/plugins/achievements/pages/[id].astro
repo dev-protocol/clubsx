@@ -1,7 +1,8 @@
 ---
 import Achievement_ from '../components/Achievement.svelte'
+import { getIdFromURL } from '../utils'
 
-const { id } = Astro.props as { id: string }
+const id = getIdFromURL(Astro.url)
 ---
 
 <Achievement_ client:only="svelte" achievementId={id} />
