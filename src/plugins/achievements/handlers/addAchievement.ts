@@ -53,20 +53,20 @@ export const handler =
       })
     }
 
-    // 4. Authenticate for only admin's allowed to add achievements.
-    const previousConfiguration = encode(conf)
-    const authenticated = await authenticate({
-      message,
-      signature,
-      previousConfiguration,
-      provider: getDefaultProvider(conf.rpcUrl),
-    })
-    // 5. Validate authentication.
-    if (!authenticated) {
-      return new Response(JSON.stringify({ error: 'Invalid access' }), {
-        status: 401,
-      })
-    }
+    // // 4. Authenticate for only admin's allowed to add achievements.
+    // const previousConfiguration = encode(conf)
+    // const authenticated = await authenticate({
+    //   message,
+    //   signature,
+    //   previousConfiguration,
+    //   provider: getDefaultProvider(conf.rpcUrl),
+    // })
+    // // 5. Validate authentication.
+    // if (!authenticated) {
+    //   return new Response(JSON.stringify({ error: 'Invalid access' }), {
+    //     status: 401,
+    //   })
+    // }
 
     // 6. Create achievement document.
     const achievementInfoDocument = getAchievementInfoDocument({
