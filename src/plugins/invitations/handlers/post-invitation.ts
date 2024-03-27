@@ -4,8 +4,10 @@ import {
   authenticate,
   type ClubsConfiguration,
   encode,
+  bytes32Hex,
 } from '@devprotocol/clubs-core'
 import { getDefaultProvider } from 'ethers'
+import { headers } from '@fixtures/api/headers'
 
 const checkExisting = async ({ invitationId }: { invitationId: string }) => {
   const client = await getDefaultClient()
@@ -33,21 +35,23 @@ export const handler =
 
     const client = await getDefaultClient()
 
-    // const authenticated = await authenticate({
-    //   message,
-    //   signature,
-    //   previousConfiguration: encode(conf),
-    //   provider: getDefaultProvider(conf.rpcUrl),
-    // })
+    const authenticated = await authenticate({
+      message,
+      signature,
+      previousConfiguration: encode(conf),
+      provider: getDefaultProvider(conf.rpcUrl),
+    })
 
-    // if (!authenticated) {
-    //   return new Response(JSON.stringify({ message: 'unauthenticated' }), {
-    //     status: 401,
-    //   })
-    // }
+    if (!authenticated) {
+      return new Response(JSON.stringify({ message: 'unauthenticated' }), {
+        status: 401,
+      })
+    }
 
     const invitation = invitationDocument({
-      membership,
+      membership: {
+        payload: membership.payload,
+      },
       conditions,
     })
 
@@ -58,12 +62,16 @@ export const handler =
       )
     }
 
-    await client.set(
+    await client.json.set(
       `${Prefix.Invitation}::${invitation.id}`,
-      JSON.stringify(invitation),
+      '$',
+      invitation,
     )
 
-    return new Response(JSON.stringify({ id: invitation.id }), { status: 200 })
+    return new Response(JSON.stringify({ id: invitation.id }), {
+      status: 200,
+      headers,
+    })
   }
 
 export default handler

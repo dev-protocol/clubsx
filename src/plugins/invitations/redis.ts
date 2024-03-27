@@ -53,14 +53,8 @@ export const withCheckingIndex = async <
   return isScmIIndexed && isScmHIndexed
     ? client
     : Promise.all([
-        client.ft
-          .dropIndex(Index.Invitation)
-          .catch((err) =>
-            console.log('invitation index does not exist: ', err),
-          ),
-        client.ft
-          .dropIndex(Index.History)
-          .catch((err) => console.log('history index does not exist: ', err)),
+        client.ft.dropIndex(Index.Invitation).catch(() => null),
+        client.ft.dropIndex(Index.History).catch(() => null),
       ])
         .then(async () => {
           console.log('creating index!')
@@ -73,14 +67,13 @@ export const withCheckingIndex = async <
               ON,
               PREFIX: Prefix.History,
             }),
-            // client.set(SchemaKey.Invitation, schemaInvitationId),
           ])
-
-          console.log('invitationSchema: ', invitationSchema)
-          console.log('historySchema: ', historySchema)
-          // console.log('invitationId: ', invitationId)
-
-          return client
         })
+        .then(() =>
+          Promise.all([
+            client.set(SchemaKey.Invitation, schemaInvitationId),
+            client.set(SchemaKey.History, schemaHistoryId),
+          ]),
+        )
         .then(() => client)
 }

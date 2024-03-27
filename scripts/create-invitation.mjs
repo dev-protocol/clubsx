@@ -1,14 +1,12 @@
-const KEY = 'pizza'
-const MEMBERSHIP_PAYLOAD = new Uint8Array([
-  47, 255, 181, 254, 85, 225, 124, 168,
-])
+const KEY = ''
+const MEMBERSHIP_PAYLOAD = new Uint8Array([])
 const RECIPIENT = ''
 const SIGNATURE = ''
-const MESSAGE = `Create a new invitation for ${KEY} @ts:${new Date().getTime()}`
+const MESSAGE = `Create a new invitation for 23-12-12--posts-test`
 
 const main = async () => {
   const res = await fetch(
-    `http://localhost:3000/sites_/pizza/api/devprotocol:clubs:plugin:invitations/invitations`,
+    `http://localhost:3000/sites_/${KEY}/api/devprotocol:clubs:plugin:invitations/invitations`,
     {
       method: 'POST',
       body: JSON.stringify({
@@ -35,3 +33,6 @@ const main = async () => {
 }
 
 main()
+
+// FBBXIh-xOF
+// V-Diagh_-G

@@ -58,7 +58,7 @@
   }
 
   onDestroy(() => {
-    connectionSub.unsubscribe()
+    if (connectionSub) connectionSub.unsubscribe()
   })
 </script>
 

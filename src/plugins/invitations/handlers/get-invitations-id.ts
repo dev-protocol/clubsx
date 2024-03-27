@@ -17,6 +17,7 @@ import {
   whenNotErrorAll,
   type UndefinedOr,
 } from '@devprotocol/util-ts'
+import { headers } from '@fixtures/api/headers'
 
 const handler: APIRoute = async (req) => {
   // Detect the passed invitation ID
@@ -58,6 +59,7 @@ const handler: APIRoute = async (req) => {
 
   return new Response(JSON.stringify(res), {
     status: isNotError(res) ? 200 : 400,
+    headers,
   })
 }
 

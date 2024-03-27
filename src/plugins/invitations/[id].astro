@@ -1,5 +1,5 @@
 ---
-import type { Membership } from '@devprotocol/clubs-core'
+import { bytes32Hex, type Membership } from '@devprotocol/clubs-core'
 import ClaimButton from './components/ClaimButton.svelte'
 import type { Invitation } from './redis-schema'
 
@@ -14,9 +14,7 @@ const { memberships, baseUrl } = Astro.props as {
 }
 
 const res = await fetch(
-  // `${baseUrl}/api/devprotocol:clubs:plugin:invitations/invitations/${invitationId}`,
-  // `http://pizza.localhost:3000/api/devprotocol:clubs:plugin:invitations/invitations/${invitationId}`,
-  `http://localhost:3000/sites_/pizza/api/devprotocol:clubs:plugin:invitations/invitations/${invitationId}`,
+  `${baseUrl}/api/devprotocol:clubs:plugin:invitations/invitations/${invitationId}`,
   {
     method: 'GET',
     headers: {
@@ -35,10 +33,10 @@ if (!res.ok) {
   }
 }
 
-const { invitation } = (await res.json()) as { invitation: Invitation }
+const invitation = (await res.json()) as Invitation
 
 const membership = memberships.find(
-  (m) => m.payload === invitation.membership.payload,
+  (m) => bytes32Hex(m.payload) === bytes32Hex(invitation.membership.payload),
 )
 
 if (!membership) {

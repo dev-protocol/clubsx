@@ -130,14 +130,6 @@
 
     connectionSub = connection().signer.subscribe(async (signer) => {
       fetchUserSupply(signer)
-
-      // if (signer) {
-      //   // sign message
-      //   const sig = await signer.signMessage(
-      //     `Create a new invitation for 23-12-12--posts-test @ts:${new Date().getTime()}`,
-      //   )
-      //   console.log('sig', sig)
-      // }
     })
   })
 
