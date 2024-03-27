@@ -46,7 +46,7 @@
     await calculateRewardAmount(provider, propertyAddress).then((res) => {
       whenDefined(res, async (value) => {
         earningsInDev = Math.round((Number(value[0]) / 1e36) * 100) / 100
-        earnings = await usdByDev(earningsInDev)
+        earnings = (await usdByDev(earningsInDev)).price
       })
     })
   }

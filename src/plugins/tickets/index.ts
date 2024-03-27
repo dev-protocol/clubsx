@@ -9,7 +9,6 @@ import { ClubsPluginCategory, ClubsPluginSignal } from '@devprotocol/clubs-core'
 import { default as Index } from './Index.astro'
 import { default as Id } from './Id.astro'
 import Slot from './Slot.astro'
-import { keccak256 } from 'ethers'
 import type { ClubsFunctionGetApiPaths } from '@devprotocol/clubs-core'
 import { getItems } from './utils/get-items'
 import type { UndefinedOr } from '@devprotocol/util-ts'
@@ -32,13 +31,18 @@ export type Slot = {
   end: string
   tz: string
 }
-
-export type Ticket = {
+export type MembershipTicketOptions = {
   payload: string | Uint8Array
   importedFrom: {
     plugin: string
     key: string
   }
+}
+export type NFTTicketOptions = {
+  erc721Enumerable: string
+}
+
+export type BaseTicket = {
   name: string
   uses: {
     id: string
@@ -54,9 +58,18 @@ export type Ticket = {
     used?: { encrypted: string } // Encrypted URL string
   }
 }
+export type MembershipTicket = MembershipTicketOptions & BaseTicket
+export type NFTTicket = NFTTicketOptions & BaseTicket
+export type Ticket = MembershipTicket | NFTTicket
 export type Tickets = Ticket[]
 export type TicketHistory = { datetime: Date }
 export type TicketHistories = Record<string, TicketHistory>
+export const isMembershipTicket = (
+  ticket: Ticket,
+): ticket is MembershipTicket =>
+  ticket.hasOwnProperty('payload') && ticket.hasOwnProperty('importedFrom')
+export const isNFTTicket = (ticket: Ticket): ticket is NFTTicket =>
+  ticket.hasOwnProperty('erc721Enumerable')
 
 export const getPagePaths = (async (
   options,
@@ -66,40 +79,66 @@ export const getPagePaths = (async (
   const tickets = getItems(options)
   const ban = getBanningRules(options)
 
-  const memberships: UndefinedOr<Membership>[] = tickets.map((tk) => {
-    const [plg] = getPluginConfigById(tk.importedFrom.plugin)
-    const options = plg?.options.find((opt) => opt.key === tk.importedFrom.key)
-      ?.value as UndefinedOr<Membership[]>
-    const membership = options?.find(
-      (opt) => JSON.stringify(opt.payload) === JSON.stringify(tk.payload),
-    )
-    return membership
+  const memberships: UndefinedOr<Membership>[] = tickets
+    .filter(isMembershipTicket)
+    .map((tk) => {
+      const [plg] = getPluginConfigById(tk.importedFrom.plugin)
+      const options = plg?.options.find(
+        (opt) => opt.key === tk.importedFrom.key,
+      )?.value as UndefinedOr<Membership[]>
+      const membership = options?.find(
+        (opt) => bytes32Hex(opt.payload) === bytes32Hex(tk.payload),
+      )
+      return membership
+    })
+  const enumerableNFTs: string[] = tickets.filter(isNFTTicket).map((tk) => {
+    return tk.erc721Enumerable
   })
 
   return tickets
     ? [
         {
           paths: ['tickets'],
-          props: { tickets, memberships, propertyAddress, rpcUrl, ban },
-          component: Index,
-        },
-        ...tickets.map((ticket, index) => ({
-          paths: [
-            'tickets',
-            typeof ticket.payload === 'string'
-              ? ticket.payload
-              : keccak256(ticket.payload),
-          ],
           props: {
-            ticket,
-            membership: memberships[index],
+            tickets,
+            memberships,
+            enumerableNFTs,
             propertyAddress,
             rpcUrl,
             ban,
-            signals: [ClubsPluginSignal.DisplayFullPage],
           },
-          component: Id,
-        })),
+          component: Index,
+        },
+        ...tickets.map((ticket) => {
+          const membershipTicket = isMembershipTicket(ticket) && ticket
+          const membership = memberships.find((mem) =>
+            membershipTicket
+              ? mem?.payload &&
+                bytes32Hex(membershipTicket.payload) === bytes32Hex(mem.payload)
+              : false,
+          )
+          const erc721Enumerable =
+            (isNFTTicket(ticket) && ticket.erc721Enumerable) || undefined
+
+          return {
+            paths: [
+              'tickets',
+              membershipTicket
+                ? bytes32Hex(membershipTicket.payload)
+                : ticket.erc721Enumerable,
+            ],
+            props: {
+              ticket,
+              membership,
+              erc721Enumerable,
+              propertyAddress,
+              rpcUrl,
+              ban,
+              signals: [ClubsPluginSignal.DisplayFullPage],
+            },
+            component: Id,
+          }
+        }),
       ]
     : []
 }) satisfies ClubsFunctionGetPagePaths
@@ -113,12 +152,22 @@ export const getApiPaths = (async (options, { propertyAddress, rpcUrl }) => {
 
   return [
     ...tickets.map((ticket) => ({
-      paths: ['history', bytes32Hex(ticket.payload)],
+      paths: [
+        'history',
+        isMembershipTicket(ticket)
+          ? bytes32Hex(ticket.payload)
+          : ticket.erc721Enumerable,
+      ],
       method: 'GET' as 'GET',
       handler: get({ ticket, propertyAddress }),
     })),
     ...tickets.map((ticket) => ({
-      paths: ['redeem', bytes32Hex(ticket.payload)],
+      paths: [
+        'redeem',
+        isMembershipTicket(ticket)
+          ? bytes32Hex(ticket.payload)
+          : ticket.erc721Enumerable,
+      ],
       method: 'POST' as 'POST',
       handler: post({ ticket, propertyAddress, rpcUrl }),
     })),

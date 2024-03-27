@@ -1,9 +1,13 @@
 <script lang="ts">
-  import { whenDefined, type UndefinedOr } from '@devprotocol/util-ts'
+  import {
+    whenDefined,
+    type UndefinedOr,
+    isNotError,
+  } from '@devprotocol/util-ts'
   import type { Ticket, TicketHistories, Tickets } from '.'
   import type { Membership } from '@plugins/memberships'
   import { onMount } from 'svelte'
-  import { meta } from './index'
+  import { isMembershipTicket, isNFTTicket, meta } from './index'
   import { decode } from '@devprotocol/clubs-core'
   import { type TicketStatus, ticketStatus } from './utils/status'
   import Skeleton from '@components/Global/Skeleton.svelte'
@@ -13,9 +17,12 @@
   import PQueue from 'p-queue'
   import { reverse } from 'ramda'
   import type { BanningRules } from './utils/get-banning-rules'
+  import { getAllOwnedTokens } from './utils/nft'
+  import { requestToGetHistory } from './utils/api'
 
   export let tickets: Tickets
   export let memberships: UndefinedOr<Membership[]>
+  export let enumerableNFTs: string[]
   export let propertyAddress: string
   export let rpcUrl: string
   export let ban: BanningRules
@@ -27,6 +34,7 @@
   const queueTickets = new PQueue({ concurrency: 3 })
   const queueStatus = new PQueue({ concurrency: 1 })
   const provider = new JsonRpcProvider(rpcUrl)
+  const UN = undefined
 
   type TicketWithStatus = Ticket & {
     id: number
@@ -38,31 +46,62 @@
     fetchingOwnedTickets = true
     const [s1, s2] = await clientsSTokens(provider)
     const detectSTokens = whenDefined(s1 ?? s2, client.createDetectSTokens)
-    const idList = await whenDefined(detectSTokens, (detector) =>
-      detector(propertyAddress, _account),
+    const idList =
+      (await whenDefined(detectSTokens, (detector) =>
+        detector(propertyAddress, _account),
+      )) ?? []
+    const nftList = (
+      await Promise.all(
+        enumerableNFTs.map((addr) =>
+          getAllOwnedTokens(addr, _account, provider),
+        ),
+      )
+    ).flat()
+
+    const filteredIdList = [...idList, ...nftList].filter(
+      (i) => ban.id.includes(typeof i === 'number' ? i : i.id) === false,
     )
 
-    const filteredIdList = idList?.filter((i) => ban.id.includes(i) === false)
-
-    console.log({ idList, filteredIdList })
+    console.log({ idList, filteredIdList, nftList })
 
     await whenDefined(filteredIdList, async (li) => {
       await Promise.all(
-        reverse(li).map(async (id) =>
+        reverse(li).map(async (token) =>
           queueTickets.add(async () => {
-            const payload = await whenDefined(s1 ?? s2, (sTokens) =>
-              sTokens.payloadOf(id),
-            )
-            const match = tickets.find(
-              (ticket) => payload === bytes32Hex(ticket.payload),
+            const [id, payload, contract, metadata] =
+              typeof token === 'number'
+                ? [
+                    token,
+                    await whenDefined(s1 ?? s2, (sTokens) =>
+                      sTokens.payloadOf(token),
+                    ),
+                    UN,
+                  ]
+                : [token.id, UN, token.contract, token]
+            const match = tickets.find((ticket) =>
+              isMembershipTicket(ticket)
+                ? payload === bytes32Hex(ticket.payload)
+                : contract === ticket.erc721Enumerable,
             )
             const status = whenDefined(match, (x) =>
               fetchTicketStatusThrottle(x, id),
             )
-            const membership = whenDefined(match, (x) =>
-              memberships?.find(
-                (m) => bytes32Hex(m.payload) === bytes32Hex(x.payload),
-              ),
+            const membership = whenDefined(match, (tckt) =>
+              isMembershipTicket(tckt)
+                ? memberships?.find(
+                    (m) => bytes32Hex(m.payload) === bytes32Hex(tckt.payload),
+                  )
+                : whenDefined(
+                    isNotError(metadata?.metadata)
+                      ? metadata?.metadata
+                      : undefined,
+                    ({ image, name, description }) =>
+                      ({
+                        imageSrc: image,
+                        name,
+                        description,
+                      }) as Membership,
+                  ),
             )
             const res = match ? { ...match, id, membership, status } : undefined
             ownedTickets =
@@ -82,13 +121,15 @@
     id: string | number,
   ) => {
     return queueStatus.add(async () => {
-      const res = await fetch(
-        `/api/${meta.id}/history/${bytes32Hex(ticket.payload)}?id=${id}`,
-      )
+      const res = await requestToGetHistory(ticket, id)
       const text = res.ok ? await res.text() : undefined
       const history: TicketHistories =
         whenDefined(text, (txt) => decode<TicketHistories>(txt)) ?? {}
-      return ticketStatus(history, ticket, { tokenId: id, provider })
+      return ticketStatus(history, ticket, {
+        tokenId: id,
+        erc721Enumerable: isNFTTicket(ticket) ? ticket.erc721Enumerable : false,
+        provider,
+      })
     }) as Promise<TicketStatus[]>
   }
 
@@ -138,7 +179,7 @@
   {#if ownedTickets !== undefined}
     {#each ownedTickets as ticket}
       <a
-        href={`/tickets/${bytes32Hex(ticket.payload)}?id=${ticket.id}`}
+        href={`/tickets/${isMembershipTicket(ticket) ? bytes32Hex(ticket.payload) : ticket.erc721Enumerable}?id=${ticket.id}`}
         class="grid items-center gap-16 rounded-lg p-6 transition-colors hover:bg-black/10 md:grid-cols-[auto,1fr]"
       >
         <div
