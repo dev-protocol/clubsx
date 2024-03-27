@@ -10,6 +10,7 @@ import { getDefaultClient } from '../db/redis'
 import { ACHIEVEMENT_ITEM_SCHEMA } from '../db/schema'
 import {
   type Achievement,
+  type AchievementInfo,
   type ClaimAchievementApiHandlerParams,
 } from '../types'
 import {
@@ -73,7 +74,7 @@ export const handler =
         new Error('ID is not found.'),
     )
     // 6. Validate achievement is fetched properly.
-    if (achievementItem instanceof Error) {
+    if (achievementItem instanceof Error || !achievementItem) {
       return new Response(
         JSON.stringify({ error: 'Achievement is not found' }),
         {
@@ -114,10 +115,91 @@ export const handler =
       )
     }
 
-    // TODO: add logic to mint and detect minted SBT via send.devprotocol.xyz
+    // 11. Fetch achievement info document.
+    const achievementInfoDocument = await whenNotErrorAll(
+      [achievementItem, client],
+      ([_achievementItem, _client]) =>
+        _client.json.get(
+          `${AchievementPrefix.AchievementInfo}::${_achievementItem.achievementInfoId}`,
+        ),
+    )
+    const achievementInfo = whenNotError(
+      achievementInfoDocument,
+      (d) =>
+        (d as UndefinedOr<AchievementInfo>) ?? new Error('ID is not found.'),
+    )
+    if (achievementInfo instanceof Error || !achievementInfo) {
+      return new Response(
+        JSON.stringify({ error: 'Achievement is not found' }),
+        {
+          status: 400,
+        },
+      )
+    }
+
+    // 12. Call the mint api (send.devprotocol.xyz)
+    const { SEND_DEV_PROTOCOL_API_KEY } =
+      import.meta.env ||
+      process.env ||
+      ({ SEND_DEV_PROTOCOL_API_KEY: '' } as {
+        SEND_DEV_PROTOCOL_API_KEY: string
+      })
+    const mintApiResponse = await fetch(
+      `http://localhost:3000/api/send-transactions/AchievementsSBT/${achievementInfo.contract}`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${SEND_DEV_PROTOCOL_API_KEY}`,
+        },
+        body: JSON.stringify({
+          requestId: `${achievementItem.id}${account}`, // achievementItem.id + user signing EOA
+          rpcUrl,
+          chainId,
+          metadata: {
+            ...achievementInfo.metadata,
+          },
+          to: achievementItem.account,
+        }),
+      },
+    )
+      .then(
+        (res) => {
+          if (res.ok) {
+            return res
+          }
+          throw Error('Error ' + res.status + ': ' + res.statusText)
+        },
+        (err) => {
+          throw new Error(err.message)
+        },
+      )
+      .then(
+        (res) => res.json(),
+        (err) => {
+          throw new Error(err.message)
+        },
+      )
+      .then(
+        (res) => res as { message: string; claimedSBTTokenId: number },
+        (err) => {
+          throw new Error(err.message)
+        },
+      )
+      .catch((err) => {
+        return err
+      })
+    if (
+      mintApiResponse instanceof Error ||
+      !mintApiResponse ||
+      !mintApiResponse.claimedSBTTokenId
+    ) {
+      return new Response(JSON.stringify({ error: 'Mint api failed' }), {
+        status: 500,
+      })
+    }
 
     // 9. Update the record to mark the achievement as claimed.
-    const claimedSBTTokenId = 1
+    const claimedSBTTokenId = mintApiResponse.claimedSBTTokenId
     await client.json.set(
       `${AchievementPrefix.AchievementItem}::${achievementItemId}`,
       '$',
