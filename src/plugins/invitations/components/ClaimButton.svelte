@@ -64,7 +64,7 @@
 
 <div>
   <button
-    class={`text-white flex justify-between ${signer && isRecipient ? 'bg-black' : 'bg-gray-400'}`}
+    class={`hs-button is-filled w-full ${signer && isRecipient ? 'bg-black' : 'bg-gray-500'} ${isClaiming}`}
     disabled={!signer || !isRecipient}
     on:click|preventDefault={claim}
   >
@@ -99,23 +99,25 @@
     <div></div>
   </button>
 
-  {#if !signer}
-    <span class="text-orange-400">Please Sign In</span>
-  {/if}
+  <div class="text-center">
+    {#if !signer}
+      <span class="text-red-500">Please Sign In</span>
+    {/if}
 
-  {#if signer && !isRecipient}
-    <span class="text-orange-400">Looks like you can't claim this</span>
-  {/if}
+    {#if signer && !isRecipient}
+      <span class="text-red-500">Looks like you can't claim this</span>
+    {/if}
 
-  {#if signer && isRecipient}
-    <span>Sign to claim your membership</span>
-  {/if}
+    {#if signer && isRecipient}
+      <span>Sign to claim your membership</span>
+    {/if}
 
-  {#if errorMsg}
-    <span class="text-orange-400">{errorMsg}</span>
-  {/if}
+    {#if errorMsg}
+      <span class="text-red-500">{errorMsg}</span>
+    {/if}
 
-  {#if isClaimed}
-    <span>Invitation Claimed</span>
-  {/if}
+    {#if isClaimed}
+      <span>Invitation Claimed</span>
+    {/if}
+  </div>
 </div>

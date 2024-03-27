@@ -6,7 +6,6 @@ import type { Invitation } from './redis-schema'
 const fullUrl = Astro.url.pathname
 // get the last value of the url
 const invitationId = fullUrl.split('/').pop()
-console.log('invitation id is: ', invitationId)
 
 const { memberships, baseUrl } = Astro.props as {
   memberships: Membership[]
@@ -15,6 +14,7 @@ const { memberships, baseUrl } = Astro.props as {
 
 const res = await fetch(
   `${baseUrl}/api/devprotocol:clubs:plugin:invitations/invitations/${invitationId}`,
+  // `http://localhost:3000/sites_/pizza/api/devprotocol:clubs:plugin:invitations/invitations/${invitationId}`,
   {
     method: 'GET',
     headers: {
@@ -49,17 +49,20 @@ if (!membership) {
   }
 }
 ---
+<div class="bg-white rounded">
+  <div class="flex flex-col container mx-auto max-w-sm py-8">
+    <div class="p-4 rounded bg-gray-100 mb-4">
+      <img class="rounded" src={membership.imageSrc} alt={membership.name} />
+    </div>
 
-<div class="flex flex-col container mx-auto max-w-sm">
-  <img class="mb-4" src={membership.imageSrc} alt={membership.name} />
+    <div class="mb-4">
+      <ClaimButton {invitation} />
+    </div>
 
-  <div class="mb-4">
-    <ClaimButton {invitation} />
-  </div>
+    <div class="flex flex-col">
+      <h2>{membership.name}</h2>
 
-  <div class="flex flex-col">
-    <h2>{membership.name}</h2>
-
-    <p class="bg-gray-50 rounded p-8">{membership.description}</p>
+      <p class="bg-gray-100 rounded p-8 text-black">{membership.description}</p>
+    </div>
   </div>
 </div>
