@@ -5,8 +5,7 @@ import { encode } from '@devprotocol/clubs-core'
 
 import { getDefaultClient } from './db/redis'
 import type { Achievement, AchievementInfo, AchievementItem } from './types'
-
-export const PLUGIN_ACHIEVEMENT_IDS_OPTION_KEY = 'achievementIds'
+import { aperture } from 'ramda'
 
 export enum AchievementIndex {
   AchievementInfo = 'idx::devprotocol:clubs:achievement:info',
@@ -67,4 +66,10 @@ export const checkForExistingAchievementItem = async (id: string) => {
     `${AchievementPrefix.AchievementItem}::${id}`,
   )
   return keyExists === 1 ? true : false
+}
+
+export const getIdFromURL = (url: URL, prepath: string = 'achievement') => {
+  const [, id] =
+    aperture(2, url.pathname.split('/')).find(([p]) => p === prepath) ?? []
+  return id
 }
