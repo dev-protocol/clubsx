@@ -239,16 +239,14 @@
 </script>
 
 <section
-  class="flex flex-col rounded-2xl p-4 gap-8 items-center shadow bg-dp-white-200 text-dp-white-ink"
+  class="grid gap-8 grid-cols-[minmax(auto,32rem)] rounded-2xl p-6 justify-center shadow bg-dp-white-200 text-dp-white-ink"
 >
   <h2 class="text-4xl font-bold">
     {i18n('Achievement')} #{achievementId}
   </h2>
 
   {#if isAchievementDataNotFetched}
-    <div
-      class="rounded-[19px] p-4 border-[1px] min-w-[41%] w-[41%] max-w-full border-black/20 bg-black/10"
-    >
+    <div class="rounded-md p-4 border border-black/20 bg-black/10">
       <h2 class="text-2xl font-bold">
         {i18n('AchievementDataNotFound')}
       </h2>
@@ -256,24 +254,22 @@
   {/if}
 
   {#if !isAchievementDataNotFetched}
-    <div
-      class="rounded-[19px] p-4 border-[1px] min-w-[41%] w-[41%] max-w-full border-black/20 bg-black/10"
-    >
+    <div class="rounded-md p-4 border border-black/20 bg-black/10">
       {#if isFetchingAchievementData}
-        <Skeleton />
+        <div class="aspect-square">
+          <Skeleton />
+        </div>
       {:else}
         <img
           src={achievement?.metadata?.image || AchievementDefaultIcon.src}
           alt="Achievements UI"
-          class="h-auto w-full rounded-[7px] object-cover object-center sm:h-full sm:w-full"
+          class="h-auto w-full rounded-md object-cover object-center sm:h-full sm:w-full"
         />
       {/if}
     </div>
 
     {#if achievement?.claimed && achievement?.claimedSBTTokenId > 0 && achievement?.account === currentAddress}
-      <div
-        class="flex flex-col items-center min-w-[41%] w-[41%] max-w-full gap-2"
-      >
+      <div class="flex flex-col items-center gap-2">
         <p class="w-full max-w-full text-3xl font-medium text-center">
           {i18n('Congratulations')}
         </p>
@@ -287,7 +283,7 @@
         </div>
       </div>
     {:else}
-      <div class="min-w-[41%] w-[41%] max-w-full">
+      <span class="grid gap-2">
         <button
           on:click|preventDefault={claimAchievement}
           disabled={!achievementId ||
@@ -297,7 +293,7 @@
             !achievement ||
             achievement?.account !== currentAddress ||
             achievement.claimed}
-          class={`w-full px-4 py-3 mb-1 hs-button is-filled cursor-pointer rounded font-bold text-2xl border-[3px]
+          class={`w-full px-4 py-3 hs-button is-filled font-bold text-2xl
             ${isFetchingAchievementData || isClaimingAchievement ? 'animate-pulse bg-gray-500/60' : ''}
             ${
               (achievement && achievement?.claimed) ||
@@ -320,10 +316,10 @@
             {claimBtnFeedbackTxt}
           </p>
         {/if}
-      </div>
+      </span>
     {/if}
 
-    <div class="min-w-[41%] w-[41%] max-w-full text-3xl font-medium">
+    <div class="text-3xl font-medium">
       {#if isFetchingAchievementData}
         <Skeleton />
       {:else}
@@ -331,9 +327,7 @@
       {/if}
     </div>
 
-    <div
-      class="min-w-[41%] w-[41%] max-w-full p-2.5 rounded-md bg-[#F1F1F1] text-base font-normal"
-    >
+    <div class="p-2.5 rounded-md bg-[#F1F1F1] text-base font-normal">
       {#if isFetchingAchievementData}
         <Skeleton />
       {:else}
@@ -341,12 +335,10 @@
       {/if}
     </div>
 
-    <div class="min-w-[41%] w-[41%] max-w-full text-3xl font-medium">
-      Metadata
-    </div>
+    <div class="text-3xl font-medium">Metadata</div>
 
     <section
-      class="min-w-[41%] w-[41%] max-w-full p-2.5 rounded-md bg-[#F1F1F1] text-base font-normal flex flex-col items-start gap-4"
+      class="p-2.5 rounded-md bg-[#F1F1F1] text-base font-normal flex flex-col items-start gap-4"
     >
       {#if isFetchingAchievementData || !achievement?.metadata?.numberAttributes || !achievement?.metadata?.stringAttributes}
         <Skeleton />
