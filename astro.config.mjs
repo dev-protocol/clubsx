@@ -57,6 +57,7 @@ export default defineConfig({
     svelte(),
   ],
   vite: {
+    build: { sourcemap: process.env.VERCEL_ENV === 'preview' },
     plugins: [
       commonjs({
         requireReturnsDefault: (id) => {
