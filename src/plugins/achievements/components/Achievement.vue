@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, type ComputedRef, computed } from 'vue'
+import { onMounted, ref, computed, toRaw } from 'vue'
 import { ZeroAddress, type Signer } from 'ethers'
 
 import { i18nFactory } from '@devprotocol/clubs-core'
@@ -218,10 +218,12 @@ async function claimAchievement() {
   claimBtnFeedbackTxt.value = ''
   isClaimingAchievement.value = true
   const hash = `Claiming Achievement @id${props.achievementId} @ts:${new Date().getTime()}`
-  const signature = await signer.value.signMessage(hash).catch((err: any) => {
-    console.log('Err', err)
-    return new Error(err)
-  })
+  const rawSignerInstance = toRaw(signer.value)
+  const signature = await rawSignerInstance
+    .signMessage(hash)
+    .catch((err: any) => {
+      return new Error(err)
+    })
   if (!signature || !hash || signature instanceof Error) {
     isClaimingAchievement.value = false
     computeClaimBtnTxt(
