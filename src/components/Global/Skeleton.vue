@@ -1,5 +1,5 @@
 <template>
-  <div class="animate-pulse rounded bg-gray-500/60 text-transparent">.</div>
+  <div class="h-full animate-pulse rounded bg-gray-500/60 text-transparent" />
 </template>
 
 <script>
