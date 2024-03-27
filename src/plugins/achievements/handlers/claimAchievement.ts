@@ -145,7 +145,7 @@ export const handler =
         SEND_DEV_PROTOCOL_API_KEY: string
       })
     const mintApiResponse = await fetch(
-      `http://localhost:3000/api/send-transactions/AchievementsSBT/${achievementInfo.contract}`,
+      `https://send.devprotocol.xyz/api/send-transactions/AchievementsSBT/${achievementInfo.contract}`,
       {
         method: 'POST',
         headers: {
