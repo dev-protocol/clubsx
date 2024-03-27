@@ -4,6 +4,7 @@ import type {
   ClubsFunctionGetPagePaths,
   ClubsFunctionPlugin,
   ClubsPluginMeta,
+  Membership,
 } from '@devprotocol/clubs-core'
 import { ClubsPluginCategory, SinglePath } from '@devprotocol/clubs-core'
 import { default as Icon } from './assets/icon.svg' // @todo: replace this icon
@@ -15,9 +16,28 @@ import getInvitationsId from './handlers/get-invitations-id'
 import getInvitationsCheck from './handlers/get-invitations-check'
 import claimInvitation from './handlers/claim-invitation'
 import postInvitation from './handlers/post-invitation'
+import { default as Id } from './[id].astro'
+import type { UndefinedOr } from '@devprotocol/util-ts'
 
-export const getPagePaths = (async (options, config) => {
-  return []
+export const getPagePaths = (async (
+  options,
+  config,
+  { getPluginConfigById },
+) => {
+  const [membershipsPlugin] = getPluginConfigById(
+    'devprotocol:clubs:simple-memberships',
+  )
+  const memberships = membershipsPlugin?.options?.find(
+    ({ key }) => key === 'memberships',
+  )?.value as UndefinedOr<readonly Membership[]>
+
+  return [
+    {
+      paths: ['invitations', SinglePath],
+      component: Id,
+      props: { memberships, baseUrl: config.url },
+    },
+  ]
 }) satisfies ClubsFunctionGetPagePaths
 
 export const getApiPaths = (async (

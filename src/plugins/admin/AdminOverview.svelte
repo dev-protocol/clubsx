@@ -128,7 +128,7 @@
 
     const { connection } = await import('@devprotocol/clubs-core/connection')
 
-    connectionSub = connection().signer.subscribe((signer) => {
+    connectionSub = connection().signer.subscribe(async (signer) => {
       fetchUserSupply(signer)
     })
   })
