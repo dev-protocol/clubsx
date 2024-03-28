@@ -7,7 +7,6 @@
   import type { UndefinedOr } from '@devprotocol/util-ts'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
 
-  import { meta } from '../index'
   import { Strings } from '../i18n'
   import type { Achievement } from '../types'
   import Skeleton from '@components/Global/Skeleton.svelte'
@@ -105,7 +104,7 @@
     isAchievementDataNotFetched = false
 
     const response = await fetch(
-      `/api/${meta.id}/achievement/${achievementId}`,
+      `/api/devprotocol:clubs:plugin:achievements/achievement/${achievementId}`,
       { method: 'GET' },
     )
       .then(
@@ -179,7 +178,7 @@
       return
     }
 
-    const url = `/api/${meta.id}/achievements/claim`
+    const url = `/api/devprotocol:clubs:plugin:achievements/achievements/claim`
     const headers = {
       'Content-Type': 'application/json;charset=UTF-8',
     }

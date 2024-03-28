@@ -10,9 +10,9 @@ import type {
 import Id from './pages/[id].astro'
 import { Content as Readme } from './README.md'
 import { default as Icon } from './assets/icon.svg' // @TODO: replace this.
-import { handler as addAchievements } from './handlers/addAchievement'
-import { handler as claimAchievement } from './handlers/claimAchievement'
-import { handler as fetchAchievement } from './handlers/fetchAchievementId'
+import addAchievements from './handlers/addAchievement'
+import claimAchievement from './handlers/claimAchievement'
+import fetchAchievement from './handlers/fetchAchievementId'
 
 export const getPagePaths = (async (options, config) => {
   return [
