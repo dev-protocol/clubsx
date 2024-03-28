@@ -16,7 +16,7 @@ import { ACHIEVEMENT_ITEM_SCHEMA, ACHIEVEMENT_INFO_SCHEMA } from '../db/schema'
 import { type AchievementItem, type AchievementInfo } from '../types'
 import type { APIRoute } from 'astro'
 
-const handler =
+export const handler =
   (): APIRoute =>
   async ({ url }) => {
     const achievementId = getIdFromURL(url)
@@ -86,5 +86,3 @@ const handler =
       },
     )
   }
-
-export default handler

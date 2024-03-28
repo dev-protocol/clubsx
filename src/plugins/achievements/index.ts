@@ -10,10 +10,9 @@ import type {
 import Id from './pages/[id].astro'
 import { Content as Readme } from './README.md'
 import { default as Icon } from './assets/icon.svg' // @TODO: replace this.
-import addAchievements from './handlers/addAchievement'
-import claimAchievement from './handlers/claimAchievement'
-import checkAchievement from './handlers/checkAchievement'
-import fetchAchievement from './handlers/fetchAchievementId'
+import { handler as addAchievements } from './handlers/addAchievement'
+import { handler as claimAchievement } from './handlers/claimAchievement'
+import { handler as fetchAchievement } from './handlers/fetchAchievementId'
 
 export const getPagePaths = (async (options, config) => {
   return [
@@ -30,11 +29,6 @@ export const getApiPaths = (async (options, config, _) => {
       paths: ['achievement', SinglePath],
       method: 'GET',
       handler: fetchAchievement(),
-    },
-    {
-      paths: ['achievements', 'check', SinglePath],
-      method: 'GET',
-      handler: checkAchievement,
     },
     {
       paths: ['achievements'],

@@ -217,5 +217,3 @@ export const handler =
       { status: 200 },
     )
   }
-
-export default handler
