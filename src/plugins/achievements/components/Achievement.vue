@@ -1,7 +1,7 @@
 <script lang="ts" setup>
+import { ZeroAddress } from 'ethers'
+import type { Signer } from 'ethers'
 import { onMounted, ref, computed, toRaw } from 'vue'
-import { ZeroAddress, type Signer } from 'ethers'
-
 import { i18nFactory } from '@devprotocol/clubs-core'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import { connection as Connection } from '@devprotocol/clubs-core/connection'

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import { ZeroAddress, type Signer } from 'ethers'
+  import { ZeroAddress } from 'ethers'
+  import type { Signer } from 'ethers'
 
   import { i18nFactory } from '@devprotocol/clubs-core'
   import type { UndefinedOr } from '@devprotocol/util-ts'
