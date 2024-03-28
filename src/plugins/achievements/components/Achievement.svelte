@@ -133,10 +133,10 @@
       )
       .catch((err) => {
         isAchievementDataNotFetched = true
-        return undefined
+        return err
       })
 
-    if (response) {
+    if (response && !(response instanceof Error)) {
       achievement = response
       isAchievementDataNotFetched = false
       computeClaimBtnTxt(false, false, currentAddress, signer, achievement)
@@ -349,7 +349,7 @@
             <p class="text-base font-normal">{data.trait_type}</p>
             <p class="text-base font-bold">
               {data.display_type === 'number'
-                ? new Intl.NumberFormat(undefined, {
+                ? new Intl.NumberFormat('en-IN', {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 3,
                   }).format(Number(data.value) || 0)
