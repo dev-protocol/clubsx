@@ -83,10 +83,10 @@
     const _connection = await import('@devprotocol/clubs-core/connection')
     connection = _connection.connection
 
-    connection().signer.subscribe((s) => {
-      computeClaimBtnTxt(false, false, currentAddress, s, achievement)
-      signer = s
-    })
+    // connection().signer.subscribe((s) => {
+    //   computeClaimBtnTxt(false, false, currentAddress, s, achievement)
+    //   signer = s
+    // })
 
     connection().account.subscribe((a) => {
       computeClaimBtnTxt(false, false, a, signer, achievement)
