@@ -45,7 +45,7 @@ export const withCheckingIndex = async <
 
   return isScmIndexed
     ? client
-    : Promise.all([client.ft.dropIndex(Index.Club)])
+    : Promise.all([client.ft.dropIndex(Index.Club).catch(() => null)])
         .then(() =>
           Promise.all([
             client.ft.create(Index.Club, CLUB_SCHEMA, {

@@ -1,4 +1,5 @@
 import { authenticate, decode } from '@devprotocol/clubs-core'
+import { setClubId } from '@fixtures/api/club/redis'
 import { getDefaultProvider } from 'ethers'
 import { createClient } from 'redis'
 
@@ -59,6 +60,10 @@ export const POST = async ({ request }: { request: Request }) => {
 
   try {
     await client.set(site, config)
+    await setClubId(
+      { id: site, propertyAddress: decode(config).propertyAddress },
+      client,
+    )
     await client.quit()
     return new Response(JSON.stringify({}), { status: 200 })
   } catch (error) {
