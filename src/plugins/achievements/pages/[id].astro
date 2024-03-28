@@ -5,4 +5,4 @@ import { getIdFromURL } from '../utils'
 const id = getIdFromURL(Astro.url)
 ---
 
-<Achievement_ client:load achievementId={id || ''} />
+<Achievement_ client:only="vue" achievementId={id || ''} />
