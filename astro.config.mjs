@@ -57,6 +57,7 @@ export default defineConfig({
     svelte(),
   ],
   vite: {
+    build: { sourcemap: true },
     plugins: [
       commonjs({
         requireReturnsDefault: (id) => {

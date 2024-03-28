@@ -33,9 +33,9 @@ export const getPagePaths = (async (
     (membership) => !membership.deprecated,
   )
 
-  const tiers = memberships?.filter(isPriced)?.map((mem) => ({
+  const tiers = memberships?.map((mem) => ({
     ...mem,
-    currency: mem.currency.toLocaleLowerCase(),
+    currency: mem.currency?.toLocaleLowerCase(),
     title: mem.name,
     amount: mem.price,
     badgeImageSrc: mem.imageSrc,

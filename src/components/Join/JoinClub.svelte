@@ -22,21 +22,25 @@
   export let tiers: Tiers
   export let injectedTiers: UndefinedOr<InjectedTiers>
   export let tenantName: string
-  export let preferedCurrency: CurrencyOption = tiers.reduce(
+  export let preferedCurrency: UndefinedOr<CurrencyOption> = tiers.reduce(
     (prev, current) => {
-      const count = counter.get(current.currency) ?? 1
-      counter.set(current.currency, count)
-      return counter.get(prev.currency) ?? 0 < count ? current : prev
+      const currency = current.currency as UndefinedOr<Tier['currency']>
+      const count = currency ? counter.get(currency) ?? 1 : 0
+      currency && counter.set(currency, count)
+      return (currency ? counter.get(currency) ?? 0 : 0) < count
+        ? current
+        : prev
     },
   ).currency
 
-  const currencyList: CurrencyOption[] = Array.from(
+  const currencyList: UndefinedOr<CurrencyOption>[] = Array.from(
     new Set([
       preferedCurrency,
       CurrencyOption.USDC,
       CurrencyOption.MATIC,
       CurrencyOption.ETH,
       CurrencyOption.DEV,
+      undefined,
     ]),
   )
   const compositeTiers: (Tier | InjectedTier)[] = [
@@ -44,7 +48,7 @@
     ...(injectedTiers ?? []),
   ]
 
-  let currency: CurrencyOption = preferedCurrency
+  let currency: UndefinedOr<CurrencyOption> = preferedCurrency
   let currencies = new Set(tiers.map((t) => t.currency))
 
   const switchInputs = async (ev: Event) => {
@@ -85,18 +89,22 @@
             value={currencyOption}
             checked={preferedCurrency === currencyOption}
           />
-          <img
-            src={currencyOption === 'usdc'
-              ? USDC.src
-              : currencyOption === 'matic'
-                ? MATIC.src
-                : currencyOption === 'eth'
-                  ? ETH.src
-                  : DEV.src}
-            alt={currencyOption.toUpperCase()}
-            class="h-8 w-8"
-          />
-          <span class="font-bold">{currencyOption.toUpperCase()}</span>
+          {#if currencyOption !== undefined}
+            <img
+              src={currencyOption === 'usdc'
+                ? USDC.src
+                : currencyOption === 'matic'
+                  ? MATIC.src
+                  : currencyOption === 'eth'
+                    ? ETH.src
+                    : DEV.src}
+              alt={currencyOption?.toUpperCase()}
+              class="h-8 w-8"
+            />
+          {/if}
+          <span class="font-bold"
+            >{currencyOption ? currencyOption.toUpperCase() : 'Unpriced'}</span
+          >
         </label>
       {/if}
     {/each}
@@ -105,7 +113,7 @@
 
   <h3 class="mb-4 text-2xl font-bold">Select a membership</h3>
   <div class="mb-8 grid gap-8 lg:grid-cols-2">
-    {#each compositeTiers.filter((t) => t.currency === currency) as tier, i}
+    {#each compositeTiers.filter((t) => String(t.currency) === String(currency)) as tier, i}
       {#if tier.badgeImageSrc}
         <div>
           <MembershipOption

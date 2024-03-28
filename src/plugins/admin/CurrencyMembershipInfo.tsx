@@ -31,6 +31,10 @@ const CurrencyMembershipInfo = (props: Props) => {
   )
   const [withdrawableInDollars, setWithdrawableInDollars] = useState<string>()
   const [swapAndStakeContract, setSwapAndStakeContract] = useState<Contract>()
+  const [dataOfPriceAPI, setDataOfPriceAPI] = useState<{
+    price: number
+    error?: Error
+  }>()
 
   useEffect(() => {
     const checkConnection = async () => {
@@ -65,17 +69,28 @@ const CurrencyMembershipInfo = (props: Props) => {
 
   useEffect(() => {
     fetchWithdrawable()
-  }, [swapAndStakeContract])
+  }, [
+    swapAndStakeContract,
+    dataOfPriceAPI?.price,
+    signer,
+    props.currency,
+    props.chainId,
+  ])
+
+  useEffect(() => {
+    usdByCurrency(
+      1,
+      tokenInfo[props.currency][props.chainId].coingeckoCurrencyId,
+    ).then(setDataOfPriceAPI)
+  }, [props.currency, props.chainId])
 
   const fetchWithdrawable = async () => {
-    if (!props.chainId || !swapAndStakeContract || !signer) {
+    if (!props.chainId || !swapAndStakeContract || !signer || !dataOfPriceAPI) {
       return
     }
 
     setIsFetchingData(true)
     const tokenAddress = tokenInfo[props.currency][props.chainId].address
-    const coinGeckoCurrencyId =
-      tokenInfo[props.currency][props.chainId].coingeckoCurrencyId
 
     let withdrawableAmt: string = '0'
     let withdrawableAmtInDollars: string = '0'
@@ -90,7 +105,7 @@ const CurrencyMembershipInfo = (props: Props) => {
         tokenInfo[props.currency][props.chainId].decimals,
       )
       withdrawableAmtInDollars = (
-        await usdByCurrency(Number(withdrawableAmt), coinGeckoCurrencyId)
+        Number(withdrawableAmt) * dataOfPriceAPI.price
       ).toString()
     } else {
       let totalWithdrawable: bigint = BigInt('0')
@@ -106,7 +121,7 @@ const CurrencyMembershipInfo = (props: Props) => {
         tokenInfo[props.currency][props.chainId].decimals,
       )
       withdrawableAmtInDollars = (
-        await usdByCurrency(Number(withdrawableAmt), coinGeckoCurrencyId)
+        Number(withdrawableAmt) * dataOfPriceAPI.price
       ).toString()
     }
 
@@ -150,10 +165,12 @@ const CurrencyMembershipInfo = (props: Props) => {
       </p>
       <p className="text-base font-bold opacity-50">
         ≈ $
-        {new Intl.NumberFormat(undefined, {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 3,
-        }).format(Number(withdrawableInDollars) || 0)}
+        {dataOfPriceAPI?.error
+          ? '(N/A)'
+          : new Intl.NumberFormat(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 3,
+            }).format(Number(withdrawableInDollars) || 0)}
       </p>
       <button
         onClick={() => claimWithdrawable(props.currency)}

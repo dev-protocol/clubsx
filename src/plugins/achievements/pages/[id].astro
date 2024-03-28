@@ -1,0 +1,8 @@
+---
+import Achievement_ from '../components/Achievement.vue'
+import { getIdFromURL } from '../utils'
+
+const id = getIdFromURL(Astro.url)
+---
+
+<Achievement_ client:only="vue" achievementId={id || ''} />
