@@ -6,6 +6,10 @@ export const cors = {
   'access-control-allow-origin': '*',
 }
 
+export const cache = ({ maxAge }: { maxAge: number }) => ({
+  'cache-control': `public, max-age=${maxAge}`,
+})
+
 export const headers = {
   ...json,
   ...cors,
