@@ -4,11 +4,8 @@ import {
   authenticate,
   type ClubsConfiguration,
   encode,
-  type ClubsPlugin,
-  type ClubsPluginOption,
 } from '@devprotocol/clubs-core'
 
-import { meta } from '../index'
 import { type Achievement } from '../types'
 import { getDefaultClient } from '../db/redis'
 import {
