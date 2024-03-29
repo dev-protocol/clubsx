@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { UndefinedOr } from '@devprotocol/util-ts'
+  import type { ErrorOr, UndefinedOr } from '@devprotocol/util-ts'
   import type { Signer } from 'ethers'
   import type { Subscription } from 'rxjs'
   import { onDestroy, onMount } from 'svelte'
@@ -21,6 +21,8 @@
       const signerAddress = await signer?.getAddress()
 
       isRecipient = invitation?.conditions?.recipient === signerAddress
+
+      checkAvailability()
     })
   })
 
@@ -57,6 +59,23 @@
     isClaiming = false
   }
 
+  const checkAvailability = async () => {
+    if (!signer || !isRecipient || !invitation) return
+
+    const res = await fetch(
+      `/api/devprotocol:clubs:plugin:invitations/invitations/check/${invitation.id}`,
+    )
+
+    const available = (await res.json()) as ErrorOr<true | Error>
+
+    if (available instanceof Error) {
+      console.error('Failed to check availability', available)
+      errorMsg = 'Failed to check availability'
+    } else {
+      isClaimed = available === true
+    }
+  }
+
   onDestroy(() => {
     if (connectionSub) connectionSub.unsubscribe()
   })
@@ -64,8 +83,8 @@
 
 <div>
   <button
-    class={`hs-button is-filled w-full ${signer && isRecipient ? 'bg-black' : 'bg-gray-500'} ${isClaiming}`}
-    disabled={!signer || !isRecipient}
+    class={`hs-button is-filled w-full ${signer && isRecipient && !isClaiming && !isClaimed ? 'bg-black' : 'bg-gray-500'} ${isClaiming}`}
+    disabled={!signer || !isRecipient || isClaimed || isClaiming}
     on:click|preventDefault={claim}
   >
     <div>
@@ -99,7 +118,7 @@
     <div></div>
   </button>
 
-  <div class="text-center">
+  <div class="text-center text-black">
     {#if !signer}
       <span class="text-red-500">Please Sign In</span>
     {/if}
@@ -108,7 +127,7 @@
       <span class="text-red-500">Looks like you can't claim this</span>
     {/if}
 
-    {#if signer && isRecipient}
+    {#if signer && isRecipient && !isClaimed && !isClaiming}
       <span>Sign to claim your membership</span>
     {/if}
 

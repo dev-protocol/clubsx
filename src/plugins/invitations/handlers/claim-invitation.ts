@@ -15,6 +15,8 @@ import {
   schemaInvitation,
   uuidToQuery,
   type Invitation,
+  Prefix,
+  historyDocument,
 } from '../redis-schema'
 
 type HandlerParams = {
@@ -151,6 +153,14 @@ export const handler =
         }),
       },
     )
+
+    const history = historyDocument({
+      usedId: invitation.id,
+      datetime: Date.now(),
+      account: address,
+    })
+
+    await client.json.set(`${Prefix.History}::${history.id}`, '$', history)
 
     return new Response(JSON.stringify({ id: invitationId }), { status: 200 })
   }
