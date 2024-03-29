@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { type PluginMeta, allTags } from '@constants/plugins'
+  import { type PluginMeta } from '@constants/plugins'
+  import { allTags } from '@constants/plugin-tags'
   import { onMount } from 'svelte'
   import sticky from '../utils/sticky'
 

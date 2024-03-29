@@ -5,6 +5,7 @@ import type {
 import { modules } from '../constants/modules'
 import type { InstallablePlugins, PluginMeta } from '@constants/plugins'
 import { paidBundledItems } from '@constants/plugins'
+import { clone } from 'ramda'
 
 const has = (id: string): id is keyof typeof modules => id in modules
 
@@ -18,7 +19,7 @@ export const createGetPluginMeta =
         : // TODO: supports unexpected situation
           (undefined as never)
 
-    return {
+    const pluginMeta: PluginMeta = {
       ...importedPlugin.meta,
       added: !!config.plugins.find((plg) => plg.id === plugin.id),
       tag: plugin.tag,
@@ -30,4 +31,6 @@ export const createGetPluginMeta =
       require: plugin.require,
       subscriptionNeeded: paidBundledItems.some((i) => i.id === plugin.id),
     }
+
+    return clone(pluginMeta)
   }
