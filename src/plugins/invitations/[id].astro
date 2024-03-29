@@ -1,0 +1,56 @@
+---
+import { bytes32Hex, type Membership } from '@devprotocol/clubs-core'
+import ClaimButton from './components/ClaimButton.svelte'
+import Markdown from '@components/Markdown/Markdown.astro'
+import { getInvitationById } from './handlers/get-invitations-id'
+import { whenDefined, whenNotError } from '@devprotocol/util-ts'
+
+type Props = {
+  memberships: Membership[]
+  baseUrl: string
+}
+
+const fullUrl = Astro.url.pathname
+// get the last value of the url
+const invitationId = fullUrl.split('/').pop()
+
+const { memberships } = Astro.props
+
+const invitation =
+  (await whenDefined(invitationId, (id) => getInvitationById(id))) ??
+  new Error('Invitation ID not found')
+
+const membership = whenNotError(
+  invitation,
+  (inv) =>
+    memberships.find(
+      (m) => bytes32Hex(m.payload) === bytes32Hex(inv.membership.payload ?? []),
+    ) ?? new Error('Membership not found'),
+)
+
+if (membership instanceof Error || invitation instanceof Error) {
+  console.log('no membership!')
+  return new Response(null, {
+    status: 404,
+    statusText: 'Not found',
+  })
+}
+---
+
+<div
+  class="grid gap-8 grid-cols-[minmax(auto,32rem)] rounded-2xl p-6 justify-center shadow bg-dp-white-200 text-dp-white-ink"
+>
+  <div class="rounded-md p-4 border border-black/20 bg-black/10">
+    <img
+      class="rounded-md object-cover"
+      src={membership.imageSrc}
+      alt={membership.name}
+    />
+  </div>
+
+  <ClaimButton client:only="svelte" {invitation} />
+
+  <h2 class="text-3xl font-bold">{membership.name}</h2>
+
+  <Markdown body={membership.description} class="bg-gray-100 rounded p-8" />
+</div>
