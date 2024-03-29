@@ -20,7 +20,10 @@
       signer = _signer
       const signerAddress = await signer?.getAddress()
 
-      isRecipient = invitation?.conditions?.recipient === signerAddress
+      isRecipient = invitation?.conditions?.recipient
+        ? invitation.conditions.recipient.toLowerCase() ===
+          signerAddress?.toLowerCase()
+        : true
 
       checkAvailability()
     })
@@ -81,9 +84,9 @@
   })
 </script>
 
-<div>
+<div class="grid gap-2">
   <button
-    class={`hs-button is-filled w-full ${signer && isRecipient && !isClaiming && !isClaimed ? 'bg-black' : 'bg-gray-500'} ${isClaiming}`}
+    class="hs-button is-large is-filled w-full"
     disabled={!signer || !isRecipient || isClaimed || isClaiming}
     on:click|preventDefault={claim}
   >
@@ -111,7 +114,8 @@
         </div>
       {/if}
     </div>
-    <span class={signer && !isRecipient ? 'line-through' : ''}
+    <span
+      class={`font-bold text-2xl ${signer && !isRecipient ? 'line-through' : ''}`}
       >Claim{#if isClaiming}ing{/if}</span
     >
     <!-- empty div for spacing-->

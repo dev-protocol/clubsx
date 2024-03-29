@@ -2,6 +2,7 @@
 import { bytes32Hex, type Membership } from '@devprotocol/clubs-core'
 import ClaimButton from './components/ClaimButton.svelte'
 import type { Invitation } from './redis-schema'
+import Markdown from '@components/Markdown/Markdown.astro'
 
 const fullUrl = Astro.url.pathname
 // get the last value of the url
@@ -50,20 +51,22 @@ if (!membership) {
 }
 ---
 
-<div class="bg-white rounded">
-  <div class="flex flex-col container mx-auto max-w-sm py-8">
-    <div class="p-4 rounded bg-gray-100 mb-4">
-      <img class="rounded" src={membership.imageSrc} alt={membership.name} />
-    </div>
-
-    <div class="mb-4">
-      <ClaimButton client:only="svelte" {invitation} />
-    </div>
-
-    <div class="flex flex-col">
-      <h2>{membership.name}</h2>
-
-      <p class="bg-gray-100 rounded p-8 text-black">{membership.description}</p>
-    </div>
+<div
+  class="grid gap-8 grid-cols-[minmax(auto,32rem)] rounded-2xl p-6 justify-center shadow bg-dp-white-200 text-dp-white-ink"
+>
+  <div class="rounded-md p-4 border border-black/20 bg-black/10">
+    <img
+      class="rounded-md object-cover"
+      src={membership.imageSrc}
+      alt={membership.name}
+    />
   </div>
+
+  <ClaimButton client:only="svelte" {invitation} />
+  <ClaimButton client:only="svelte" {invitation} />
 </div>
+<ClaimButton client:only="svelte" {invitation} />
+
+<h2 class="text-3xl font-bold">{membership.name}</h2>
+
+<Markdown body={membership.description} class="bg-gray-100 rounded p-8" />
