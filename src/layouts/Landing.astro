@@ -4,9 +4,12 @@ import ConnectButton from '@components/Wallet/ConnectButton.vue'
 
 import '@devprotocol/clubs-core/styles'
 
-const { connectButton = 'hidden' } = Astro.props as {
+type Props = {
   connectButton?: 'show' | 'hidden'
+  theme?: 'light' | 'dark' | 'auto'
 }
+
+const { connectButton = 'hidden', theme = 'dark' } = Astro.props
 
 const title = 'Clubs'
 const name = 'Clubs' // not sure the difference here compared to title
@@ -16,7 +19,7 @@ const ogURL = ''
 const twitterHandle = 'poweredbyClubs'
 ---
 
-<html lang="en" hashi-theme="dark">
+<html lang="en" hashi-theme={theme === 'auto' ? undefined : theme}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -42,7 +45,7 @@ const twitterHandle = 'poweredbyClubs'
     <meta name="twitter:image" content={`${ogURL}`} />
   </head>
 
-  <body class="min-h-screen bg-dp-black-600 font-body text-white">
+  <body class="min-h-screen bg-surface-200 font-body text-white">
     <slot name="before-header" />
     <header class="relative flex items-center justify-between px-6 py-4">
       <a href="/">

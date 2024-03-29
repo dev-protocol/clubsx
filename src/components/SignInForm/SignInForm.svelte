@@ -21,7 +21,7 @@
     }
 
     window.location.href = new URL(
-      `/user/${currentAddress}`,
+      `/passport/${currentAddress}`,
       window.location.origin,
     ).toString()
   }

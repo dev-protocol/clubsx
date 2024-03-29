@@ -1,6 +1,6 @@
 ---
-import UserClubs from '@components/UserClubs/UserClubs.svelte'
-import UserProfile from '@components/UserProfile/UserProfile.svelte'
+import UserClubs from './components/UserClubs.svelte'
+import UserProfile from './components/UserProfile.svelte'
 import Layout from '@layouts/Landing.astro'
 import { isAddress } from 'ethers'
 
@@ -8,7 +8,7 @@ const { id } = Astro.params
 const isEOA = isAddress(id)
 ---
 
-<Layout connectButton="show">
+<Layout connectButton="show" theme="auto">
   <div class="mb-32 mt-44 text-center">
     <h2 class="font-body text-5xl font-bold text-white">Profile</h2>
   </div>

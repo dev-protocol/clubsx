@@ -42,7 +42,7 @@ import Layout from '@layouts/Landing.astro'
         const uid = result.user.uid
 
         window.location.href = new URL(
-          `/user/${uid}`,
+          `/passport/${uid}`,
           `${location.protocol}//${location.host}`,
         ).toString()
       })

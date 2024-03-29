@@ -64,7 +64,7 @@ onMounted(async () => {
   connection().account.subscribe((account) => {
     if (account && props.redirectOnSignin) {
       window.location.href = new URL(
-        `/user/${account}`,
+        `/passport/${account}`,
         window.location.origin,
       ).toString()
     }
