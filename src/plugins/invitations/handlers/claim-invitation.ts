@@ -1,9 +1,18 @@
 import { getDefaultClient } from '../redis'
-import { parseUnits, verifyMessage } from 'ethers'
+import {
+  parseUnits,
+  verifyMessage,
+  MaxUint256,
+  ZeroAddress,
+  JsonRpcProvider,
+  type TransactionResponse,
+} from 'ethers'
 import { check } from './get-invitations-check'
-import type {
-  ClubsFunctionGetPluginConfigById,
-  Membership,
+import {
+  bytes32Hex,
+  getTokenAddress,
+  type ClubsFunctionGetPluginConfigById,
+  type Membership,
 } from '@devprotocol/clubs-core'
 import {
   whenNotErrorAll,
@@ -18,6 +27,7 @@ import {
   Prefix,
   historyDocument,
 } from '../redis-schema'
+import BigNumber from 'bignumber.js'
 
 type HandlerParams = {
   rpcUrl: string
@@ -84,7 +94,8 @@ export const handler =
         ?.value as UndefinedOr<Membership[]>) ?? []
 
     const invitationMembership = memberships.find(
-      (m) => m.payload === invitation.membership.payload,
+      (m) =>
+        bytes32Hex(m.payload) === bytes32Hex(invitation.membership.payload),
     )
 
     // get the ethereum address from the signature
@@ -108,27 +119,47 @@ export const handler =
 
     const sendDevProtocolApiKey = process.env.SEND_DEVPROTOCOL_API_KEY ?? ''
 
-    const membershipPrice = invitationMembership?.price
-
-    if (!membershipPrice) {
-      return new Response(
-        JSON.stringify({ error: 'Membership price not found' }),
-        {
-          status: 500,
-        },
-      )
-    }
-
-    const parsedPrice =
-      invitationMembership?.currency === 'USDC'
+    const isUnpriced = invitationMembership?.price === undefined
+    const parsedPrice = isUnpriced
+      ? MaxUint256
+      : invitationMembership?.currency === 'USDC'
         ? parseUnits(invitationMembership?.price.toString(), 6)
         : parseUnits(invitationMembership?.price.toString(), 18)
 
-    const fee =
-      (parsedPrice * BigInt(invitationMembership.fee?.percentage ?? 0)) /
-      BigInt(10)
+    const fee = isUnpriced
+      ? MaxUint256.toString()
+      : new BigNumber(parsedPrice.toString())
+          .times(invitationMembership?.fee?.percentage ?? 0)
+          .dp(0, 1)
+          .toFixed()
 
-    const res = fetch(
+    const args: {
+      to: string
+      property: string
+      payload: string
+      gatewayAddress: string
+      amounts: {
+        token: string
+        input: string
+        fee: string
+      }
+    } = {
+      to: address,
+      property,
+      payload: bytes32Hex(invitationMembership?.payload ?? []),
+      gatewayAddress: isUnpriced
+        ? ZeroAddress
+        : invitationMembership?.fee?.beneficiary ?? ZeroAddress,
+      amounts: {
+        token: isUnpriced
+          ? ZeroAddress
+          : getTokenAddress(invitationMembership?.currency ?? 'DEV', chainId),
+        input: parsedPrice.toString(),
+        fee,
+      },
+    }
+    console.log(request.url, { args })
+    const res = await fetch(
       'https://send.devprotocol.xyz/api/send-transactions/SwapTokensAndStakeDev',
       {
         method: 'POST',
@@ -136,23 +167,25 @@ export const handler =
           Authorization: `Bearer ${sendDevProtocolApiKey}`,
         },
         body: JSON.stringify({
-          requestId: invitationId,
+          requestId: `${invitationId}:${address}`,
           rpcUrl,
           chainId,
-          args: {
-            to: address,
-            property,
-            payload: invitationMembership?.payload,
-            gatewayAddress: invitationMembership?.fee?.beneficiary,
-            amounts: {
-              token: invitationMembership?.currency,
-              input: parsedPrice,
-              fee,
-            },
-          },
+          args,
         }),
       },
     )
+
+    const resJson = res.ok
+      ? ((await res.json()) as { transaction: TransactionResponse })
+      : new Error('Failed to call send.devprotocol.xyz')
+    console.log('resJson:', resJson)
+
+    const transaction = whenNotError(resJson, (data) => data.transaction)
+
+    await whenNotError(transaction, async (tx) => {
+      await new JsonRpcProvider(rpcUrl).waitForTransaction(tx.hash)
+      console.log(`Transaction ${tx.hash} is mined.`)
+    })
 
     const history = historyDocument({
       usedId: invitation.id,

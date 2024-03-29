@@ -1,53 +1,39 @@
 ---
 import { bytes32Hex, type Membership } from '@devprotocol/clubs-core'
 import ClaimButton from './components/ClaimButton.svelte'
-import type { Invitation } from './redis-schema'
 import Markdown from '@components/Markdown/Markdown.astro'
+import { getInvitationById } from './handlers/get-invitations-id'
+import { whenDefined, whenNotError } from '@devprotocol/util-ts'
+
+type Props = {
+  memberships: Membership[]
+  baseUrl: string
+}
 
 const fullUrl = Astro.url.pathname
 // get the last value of the url
 const invitationId = fullUrl.split('/').pop()
 
-const { memberships, baseUrl } = Astro.props as {
-  memberships: Membership[]
-  baseUrl: string
-}
+const { memberships } = Astro.props
 
-const res = await fetch(
-  `${baseUrl}/api/devprotocol:clubs:plugin:invitations/invitations/${invitationId}`,
-  // `http://localhost:3000/sites_/pizza/api/devprotocol:clubs:plugin:invitations/invitations/${invitationId}`,
-  {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  },
+const invitation =
+  (await whenDefined(invitationId, (id) => getInvitationById(id))) ??
+  new Error('Invitation ID not found')
+
+const membership = whenNotError(
+  invitation,
+  (inv) =>
+    memberships.find(
+      (m) => bytes32Hex(m.payload) === bytes32Hex(inv.membership.payload ?? []),
+    ) ?? new Error('Membership not found'),
 )
 
-if (!res.ok) {
-  console.log('in here!')
-  return {
-    status: 404,
-    headers: {
-      location: '/404',
-    },
-  }
-}
-
-const invitation = (await res.json()) as Invitation
-
-const membership = memberships.find(
-  (m) => bytes32Hex(m.payload) === bytes32Hex(invitation.membership.payload),
-)
-
-if (!membership) {
+if (membership instanceof Error || invitation instanceof Error) {
   console.log('no membership!')
-  return {
+  return new Response(null, {
     status: 404,
-    headers: {
-      location: '/404',
-    },
-  }
+    statusText: 'Not found',
+  })
 }
 ---
 
@@ -63,10 +49,8 @@ if (!membership) {
   </div>
 
   <ClaimButton client:only="svelte" {invitation} />
-  <ClaimButton client:only="svelte" {invitation} />
+
+  <h2 class="text-3xl font-bold">{membership.name}</h2>
+
+  <Markdown body={membership.description} class="bg-gray-100 rounded p-8" />
 </div>
-<ClaimButton client:only="svelte" {invitation} />
-
-<h2 class="text-3xl font-bold">{membership.name}</h2>
-
-<Markdown body={membership.description} class="bg-gray-100 rounded p-8" />
