@@ -32,6 +32,7 @@ import $18 from '@plugins/collections'
 import $19 from '@plugins/invitations'
 import $20 from '@devprotocol/clubs-plugin-posts-voting'
 import $21 from '@plugins/achievements'
+import $22 from '@devprotocol/huddle01-clubs-plugin'
 import * as PostsPlugin from '@devprotocol/clubs-plugin-posts'
 
 export type PluginTag =
@@ -155,6 +156,13 @@ export const installablePlugins: InstallablePlugins[] = [
     repositoryUrl: 'https://github.com/dev-protocol/clubsx',
   },
   {
+    id: $22.meta.id,
+    tag: 'New & Upcoming',
+    pluginOptions: [],
+    developer: 'Dev Protocol',
+    repositoryUrl: 'https://github.com/dev-protocol/clubs-huddle01-plugin'
+  },
+  {
     id: 'devprotocol:clubs:simple-memberships',
     tag: 'Memberships',
     developer: 'Dev Protocol',
@@ -243,6 +251,7 @@ export const plugins = [
   $19,
   $20,
   $21,
+  $22,
 ] satisfies ClubsPlugins
 
 export const paidBundledItems: PaidBundledItem[] = [
