@@ -26,5 +26,8 @@ export const modules = {
     import('@plugins/clubs-payments'),
   'devprotocol:clubs:plugin:achievements': () =>
     import('@plugins/achievements'),
-   'devprotocol:clubs:huddle:plugin': () => import('@devprotocol/huddle01-clubs-plugin') as Promise<ClubsFunctionStandardPlugin>,
+  'devprotocol:clubs:huddle:plugin': () =>
+    import(
+      '@devprotocol/huddle01-clubs-plugin'
+    ) as Promise<ClubsFunctionStandardPlugin>,
 }

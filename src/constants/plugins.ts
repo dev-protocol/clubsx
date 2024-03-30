@@ -160,7 +160,7 @@ export const installablePlugins: InstallablePlugins[] = [
     tag: 'New & Upcoming',
     pluginOptions: [],
     developer: 'Dev Protocol',
-    repositoryUrl: 'https://github.com/dev-protocol/clubs-huddle01-plugin'
+    repositoryUrl: 'https://github.com/dev-protocol/clubs-huddle01-plugin',
   },
   {
     id: 'devprotocol:clubs:simple-memberships',
