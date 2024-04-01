@@ -15,7 +15,7 @@ export const Strings = {
   },
   Activate: {
     en: () => 'Activate',
-    ja: () => '有効にする',
+    ja: () => '表示する',
   },
   ExistingProperty: {
     en: () =>
@@ -29,12 +29,12 @@ export const Strings = {
   },
   ActivateToken: {
     en: () => 'Activate your Club token.',
-    ja: () => 'クラブトークンを有効にする',
+    ja: () => 'クラブトークンを表示する',
   },
   MissingStep: {
     en: () => 'Complete Basic info, Design, Memberships before activation.',
     ja: () =>
-      '有効にする前に、基本情報、デザイン、メンバーシップの設定を完了させましょう',
+      '表示する前に、基本情報、デザイン、メンバーシップの設定を完了させましょう',
   },
   EnableMemberships: {
     en: () => 'Enable a memberships contract to use memberships.',

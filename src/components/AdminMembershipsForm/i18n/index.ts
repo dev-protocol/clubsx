@@ -52,10 +52,10 @@ export const Strings = {
   },
   Delete: {
     en: () => 'Delete',
-    ja: () => '削除する',
+    ja: () => '非表示にする',
   },
   Activate: {
     en: () => 'Activate',
-    ja: () => '有効にする',
+    ja: () => '表示する',
   },
 } satisfies ClubsI18nParts
