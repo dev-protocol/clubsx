@@ -18,16 +18,27 @@ import {
   FeatureFlagValues,
 } from '@fixtures/flags'
 import achievements from '@plugins/achievements'
+import huddle01 from '@devprotocol/huddle01-clubs-plugin'
 
 const { allInstallablePlugins, clubs } = Astro.props as ClubsPropsAdminPages & {
   allInstallablePlugins: InstallablePlugins[]
 }
 
 const flags = getFlagsByParams({ url: new URL(Astro.url) })
-const installablePlugins =
+const isAchievementsEnabled =
   flags.get(FeatureFlags.AchievementsOnMarketplace) === FeatureFlagValues.Enable
-    ? allInstallablePlugins
-    : allInstallablePlugins.filter((plg) => plg.id !== achievements.meta.id)
+const isHuddle01Enabled =
+  flags.get(FeatureFlags.Huddle01onMarketplace) === FeatureFlagValues.Enable
+
+const installablePlugins = allInstallablePlugins.filter((plg) => {
+  if (!isAchievementsEnabled && plg.id === achievements.meta.id) {
+    return false
+  }
+  if (!isHuddle01Enabled && plg.id === huddle01.meta.id) {
+    return false
+  }
+  return true
+})
 
 const getPluginMeta = createGetPluginMeta(
   decode(clubs.encodedClubsConfiguration),
