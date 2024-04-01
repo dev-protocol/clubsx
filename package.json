@@ -75,7 +75,7 @@
     "@kazu80/clubs-plugin-links": "1.0.1",
     "@metamask/detect-provider": "2.0.0",
     "@redis/json": "1.0.6",
-    "@sendgrid/mail": "8.1.1",
+    "@sendgrid/mail": "8.1.2",
     "@tailwindcss/aspect-ratio": "0.4.2",
     "@tailwindcss/typography": "^0.5.10",
     "@vercel/edge": "^1.1.1",
