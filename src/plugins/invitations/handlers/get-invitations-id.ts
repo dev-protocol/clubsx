@@ -17,20 +17,16 @@ import {
   whenNotErrorAll,
   type UndefinedOr,
 } from '@devprotocol/util-ts'
+import { headers } from '@fixtures/api/headers'
 
-const handler: APIRoute = async (req) => {
-  // Detect the passed invitation ID
-  const [, givenId] =
-    aperture(2, req.url.pathname.split('/')).find(
-      ([p]) => p === 'invitations',
-    ) ?? []
-
-  const id = whenDefined(givenId, (_id) => _id) ?? new Error('ID is required')
-
+export const getInvitationById = async (id: string) => {
   // Generate a redis client while checking the latest schema is indexing and create/update index if it's not.
-  const client = await withCheckingIndex(getDefaultClient).catch(
-    (err) => err as Error,
-  )
+  const client = await withCheckingIndex(getDefaultClient).catch((err) => {
+    console.log('err is: ', err)
+    return err as Error
+  })
+
+  // console.log('client is: ', client)
 
   // Try to fetch the mapped invitation.
   const data = await whenNotErrorAll([id, client], ([_id, _client]) =>
@@ -53,8 +49,23 @@ const handler: APIRoute = async (req) => {
       new Error('ID is not found.'),
   )
 
+  return res
+}
+
+const handler: APIRoute = async (req) => {
+  // Detect the passed invitation ID
+  const [, givenId] =
+    aperture(2, req.url.pathname.split('/')).find(
+      ([p]) => p === 'invitations',
+    ) ?? []
+
+  const id = whenDefined(givenId, (_id) => _id) ?? new Error('ID is required')
+
+  const res = await whenNotError(id, (_id) => getInvitationById(_id))
+
   return new Response(JSON.stringify(res), {
     status: isNotError(res) ? 200 : 400,
+    headers,
   })
 }
 

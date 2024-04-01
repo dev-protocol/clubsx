@@ -4,8 +4,10 @@ import {
   authenticate,
   type ClubsConfiguration,
   encode,
+  bytes32Hex,
 } from '@devprotocol/clubs-core'
 import { getDefaultProvider } from 'ethers'
+import { headers } from '@fixtures/api/headers'
 
 const checkExisting = async ({ invitationId }: { invitationId: string }) => {
   const client = await getDefaultClient()
@@ -18,6 +20,7 @@ const checkExisting = async ({ invitationId }: { invitationId: string }) => {
 export const handler =
   (conf: ClubsConfiguration) =>
   async ({ request }: { request: Request }) => {
+    console.log('create invitation hit')
     const { membership, conditions, signature, message } =
       (await request.json()) as {
         membership: {
@@ -40,11 +43,15 @@ export const handler =
     })
 
     if (!authenticated) {
-      return new Response(JSON.stringify({}), { status: 401 })
+      return new Response(JSON.stringify({ message: 'unauthenticated' }), {
+        status: 401,
+      })
     }
 
     const invitation = invitationDocument({
-      membership,
+      membership: {
+        payload: membership.payload,
+      },
       conditions,
     })
 
@@ -55,12 +62,16 @@ export const handler =
       )
     }
 
-    await client.set(
+    await client.json.set(
       `${Prefix.Invitation}::${invitation.id}`,
-      JSON.stringify(invitation),
+      '$',
+      invitation,
     )
 
-    return new Response(JSON.stringify({ id: invitation.id }), { status: 200 })
+    return new Response(JSON.stringify({ id: invitation.id }), {
+      status: 200,
+      headers,
+    })
   }
 
 export default handler

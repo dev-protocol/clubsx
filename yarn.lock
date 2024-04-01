@@ -621,10 +621,10 @@
     sass "1.72.0"
     uuid "^9.0.1"
 
-"@devprotocol/clubs-plugin-posts@0.17.0":
-  version "0.17.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts/-/clubs-plugin-posts-0.17.0.tgz#b9522ffdec21430c0dc410f8745fded706ad47c2"
-  integrity sha512-pWmQFDbhVjD+iNG8n6gb1urjH3N7LEuSfAAe85yJL0SXEKN0zcvoPfVWlYarhn7bZA4BLlDH0UYnIO7yMv58FA==
+"@devprotocol/clubs-plugin-posts@0.17.1":
+  version "0.17.1"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts/-/clubs-plugin-posts-0.17.1.tgz#dbc067068d64fc0aad5e8e07042358456fc94120"
+  integrity sha512-zPshc9bQgue9Gtpuerq7wVvtYtbq7e7qKERf42NXEXq4MehZaMTS4L/Ez9vCbAtpUSUaOtW55b2xzBu9AAD+6g==
   dependencies:
     "@boringer-avatars/vue3" "^0.2.1"
     "@devprotocol/dev-kit" "8.6.0"
@@ -2993,9 +2993,9 @@
     "@types/unist" "^2"
 
 "@types/node@*", "@types/node@>=12.12.47", "@types/node@>=13.7.0", "@types/node@^20.10.3", "@types/node@^20.5.9":
-  version "20.11.30"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.11.30.tgz#9c33467fc23167a347e73834f788f4b9f399d66f"
-  integrity sha512-dHM6ZxwlmuZaRmUPfv1p+KrdD1Dci04FbdEm/9wEMouFqxYoFl5aMkt0VMAUtYRQDyYvD41WJLukhq/ha3YuTw==
+  version "20.12.2"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.12.2.tgz#9facdd11102f38b21b4ebedd9d7999663343d72e"
+  integrity sha512-zQ0NYO87hyN6Xrclcqp7f8ZbXNbRfoGWNcMvHTPQp9UUrwI0mI7XBz+cu7/W6/VClYo2g63B0cjull/srU7LgQ==
   dependencies:
     undici-types "~5.26.4"
 
@@ -3029,12 +3029,12 @@
   resolved "https://registry.yarnpkg.com/@types/qs/-/qs-6.9.14.tgz#169e142bfe493895287bee382af6039795e9b75b"
   integrity sha512-5khscbd3SwWMhFqylJBLQ0zIu7c1K6Vz0uBIt915BI3zV0q1nfjRQD3RqSBcPaO6PHEF4ov/t9y89fSiyThlPA==
 
-"@types/ramda@0.29.11":
-  version "0.29.11"
-  resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.29.11.tgz#86d4ff34320862535fbcef54c9f33d14bdb12951"
-  integrity sha512-jm1+PmNOpE7aPS+mMcuB4a72VkCXUJqPSaQRu2YqR8MbsFfaowYXgKxc7bluYdDpRHNXT5Z+xu+Lgr3/ml6wSA==
+"@types/ramda@0.29.12":
+  version "0.29.12"
+  resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.29.12.tgz#fd8a23849176c6c1b3510243b64084c067e6a48f"
+  integrity sha512-sgIEjpJhdQPB52gDF4aphs9nl0xe54CR22DPdWqT8gQHjZYmVApgA0R3/CpMbl0Y8az2TEZrPNL2zy0EvjbkLA==
   dependencies:
-    types-ramda "^0.29.9"
+    types-ramda "^0.29.10"
 
 "@types/range-parser@*":
   version "1.2.7"
@@ -10298,10 +10298,10 @@ svg-tags@^1.0.0:
   resolved "https://registry.yarnpkg.com/svg-tags/-/svg-tags-1.0.0.tgz#58f71cee3bd519b59d4b2a843b6c7de64ac04764"
   integrity sha512-ovssysQTa+luh7A5Weu3Rta6FJlFBBbInjOh722LIt6klpU2/HtdUbszju/G4devcvk8PGt7FCLv5wftu3THUA==
 
-swiper@11.0.7:
-  version "11.0.7"
-  resolved "https://registry.yarnpkg.com/swiper/-/swiper-11.0.7.tgz#fe51bb64546c2c21a1ec6914e7764af953443ded"
-  integrity sha512-cDfglW1B6uSmB6eB6pNmzDTNLmZtu5bWWa1vak0RU7fOI9qHjMzl7gVBvYSl34b0RU2N11HxxETJqQ5LeqI1cA==
+swiper@11.1.0:
+  version "11.1.0"
+  resolved "https://registry.yarnpkg.com/swiper/-/swiper-11.1.0.tgz#3497b60d65d1320e427cdf11dfaad5c555283826"
+  integrity sha512-Pm78CgU7Wvg+w/MgIL/1NwMSLgx0XqFof25EnVyX8iZFCYJv5CppH7LHkBj43qW2k5Cp3Iz7FcdBxrox7XX2AQ==
 
 symbol-observable@^1.2.0:
   version "1.2.0"
@@ -10666,10 +10666,10 @@ typedarray-to-buffer@3.1.5:
   dependencies:
     is-typedarray "^1.0.0"
 
-types-ramda@^0.29.9:
-  version "0.29.9"
-  resolved "https://registry.yarnpkg.com/types-ramda/-/types-ramda-0.29.9.tgz#b1995d99421a3519cab9e800c6db3c0921816a8e"
-  integrity sha512-B+VbLtW68J4ncG/rccKaYDhlirKlVH/Izh2JZUfaPJv+3Tl2jbbgYsB1pvole1vXKSgaPlAe/wgEdOnMdAu52A==
+types-ramda@^0.29.10:
+  version "0.29.10"
+  resolved "https://registry.yarnpkg.com/types-ramda/-/types-ramda-0.29.10.tgz#820432905b820301c74f6396f07aa2359b41cde4"
+  integrity sha512-5PJiW/eiTPyXXBYGZOYGezMl6qj7keBiZheRwfjJZY26QPHsNrjfJnz0mru6oeqqoTHOni893Jfd6zyUXfQRWg==
   dependencies:
     ts-toolbelt "^9.6.0"
 
