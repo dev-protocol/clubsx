@@ -7,6 +7,14 @@ export type JSON = Readonly<
     | undefined
     | null
     | Readonly<Record<string, string | boolean | number | undefined | null>>
+    | ReadonlyArray<
+        | string
+        | boolean
+        | number
+        | undefined
+        | null
+        | Record<string, string | boolean | number | undefined | null>
+      >
   >
 >
 

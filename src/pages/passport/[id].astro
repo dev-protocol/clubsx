@@ -1,23 +1,51 @@
 ---
-import UserClubs from './components/UserClubs.svelte'
-import UserProfile from './components/UserProfile.svelte'
+import UserProfileEditButton from './components/UserProfileEditButton.svelte'
+import UserAssets from './components/UserAssets.vue'
 import Layout from '@layouts/Landing.astro'
 import { isAddress } from 'ethers'
+import { createClient } from 'redis'
+import { generateProfileId } from '@fixtures/api/keys'
+import type { Profile } from '@pages/api/profile'
 
 const { id } = Astro.params
 const isEOA = isAddress(id)
+
+const client = createClient({
+  url: import.meta.env.REDIS_URL,
+  username: import.meta.env.REDIS_USERNAME ?? '',
+  password: import.meta.env.REDIS_PASSWORD ?? '',
+})
+await client.connect()
+const profile: Profile = JSON.parse(
+  (await client.get(generateProfileId(id ?? ''))) ?? '{}',
+)
+await client.quit()
 ---
 
 <Layout connectButton="show" theme="auto">
-  <div class="mb-32 mt-44 text-center">
-    <h2 class="font-body text-5xl font-bold text-white">Profile</h2>
+  <div class="max-w-screen-lg mx-auto px-4 grid gap-24 pb-24">
+    <div
+      class="grid grid-cols-[auto,1fr,auto] justify-between items-center gap-4"
+    >
+      <span
+        class="block bg-surface-300 w-32 h-32 lg:w-56 lg:h-56 rounded-full overflow-hidden border border-surface-400 p-3"
+      >
+        <img
+          src={profile.avatar}
+          class="rounded-full w-full h-full object-cover"
+          alt=""
+        />
+      </span>
+
+      <span class="font-bold text-2xl lg:text-4xl">
+        {profile.username}
+      </span>
+
+      <UserProfileEditButton client:only="svelte" id={id} />
+    </div>
+
+    {isEOA && <UserAssets client:load account={id ?? ''} />}
+
+    <a href={`/passport/${id}/clubs`} class="hs-link place-self-start">Clubs</a>
   </div>
-
-  {isEOA && <UserProfile client:load id={id ?? ''} />}
-
-  <div class="mb-32 mt-44 text-center">
-    <h2 class="font-body text-5xl font-bold text-white">Clubs</h2>
-  </div>
-
-  <UserClubs client:load id={id ?? ''} />
 </Layout>
