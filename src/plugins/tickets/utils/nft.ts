@@ -3,7 +3,7 @@ import { Contract, type ContractRunner } from 'ethers'
 import { decode } from 'js-base64'
 import { tryCatch } from 'ramda'
 
-type Metadata = {
+export type Metadata = {
   image: string
   name: string
   description: string

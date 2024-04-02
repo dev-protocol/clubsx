@@ -69,12 +69,12 @@
   })
 </script>
 
-<div class="mx-auto mb-5 max-w-5xl px-4">
+<div class="w-full">
   <div class="flex flex-col items-start">
     <label class="hs-form-field w-fit" for="avatarPath">
       <span class="hs-form-field__label"> Avatar </span>
       <div
-        class="relative bg-white/10 w-56 h-56 rounded-full overflow-hidden border border-white/20 p-3 cursor-pointer"
+        class="relative bg-surface-300 w-56 h-56 rounded-full overflow-hidden border border-surface-400 p-3 cursor-pointer"
       >
         {#if avatarUploading}
           <div

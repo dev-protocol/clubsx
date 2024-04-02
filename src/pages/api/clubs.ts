@@ -38,24 +38,25 @@ export const GET: APIRoute = async ({ url }): Promise<Response> => {
   const data = await Promise.all(
     propertyAddresses.map((p) => getClub(p, client)),
   )
-  const res = await whenDefined(data, (allClubs) =>
-    Promise.all(
-      allClubs.map((club) =>
-        whenDefined(
-          club,
-          async ({ id, propertyAddress }): Promise<ClubsData> => {
-            const encoded = await client.get(id)
-            const source = whenDefined(encoded, (src) => src) ?? ''
-            return {
-              id,
-              propertyAddress,
-              config: { source },
-            }
-          },
+  const res =
+    (await whenDefined(data, (allClubs) =>
+      Promise.all(
+        allClubs.map((club) =>
+          whenDefined(
+            club,
+            async ({ id, propertyAddress }): Promise<ClubsData> => {
+              const encoded = await client.get(id)
+              const source = whenDefined(encoded, (src) => src) ?? ''
+              return {
+                id,
+                propertyAddress,
+                config: { source },
+              }
+            },
+          ),
         ),
       ),
-    ),
-  )
+    )) ?? []
 
   return new Response(JSON.stringify(res), {
     status: 200,
