@@ -12,6 +12,7 @@ import {
   type Achievement,
   type AchievementInfo,
   type ClaimAchievementApiHandlerParams,
+  type StringAttribute,
 } from '../types'
 import {
   AchievementIndex,
@@ -137,6 +138,21 @@ export const handler =
       )
     }
 
+    // Add `Property: PROPERTY_VALUE` to the metadata
+    const metadata = ((propertyKey) => {
+      const { stringAttributes } = achievementInfo.metadata
+      const nextStringAttributes: StringAttribute[] = [
+        ...stringAttributes.filter(
+          ({ trait_type }) => trait_type !== propertyKey,
+        ),
+        { trait_type: propertyKey, value: property },
+      ]
+      return {
+        ...achievementInfo.metadata,
+        stringAttributes: nextStringAttributes,
+      }
+    })('Property')
+
     // 12. Call the mint api (send.devprotocol.xyz)
     const { SEND_DEV_PROTOCOL_API_KEY } =
       import.meta.env ||
@@ -155,9 +171,7 @@ export const handler =
           requestId: `${achievementItem.id}${account}`, // achievementItem.id + user signing EOA
           rpcUrl,
           chainId,
-          metadata: {
-            ...achievementInfo.metadata,
-          },
+          metadata,
           to: achievementItem.account,
         }),
       },
