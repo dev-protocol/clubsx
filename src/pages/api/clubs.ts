@@ -1,6 +1,6 @@
 import { whenDefined } from '@devprotocol/util-ts'
 import {
-  getClub,
+  getClubByProperty,
   getDefaultClient,
   withCheckingIndex,
 } from '@fixtures/api/club/redis'
@@ -36,7 +36,7 @@ export const GET: APIRoute = async ({ url }): Promise<Response> => {
 
   const client = await withCheckingIndex(getDefaultClient)
   const data = await Promise.all(
-    propertyAddresses.map((p) => getClub(p, client)),
+    propertyAddresses.map((p) => getClubByProperty(p, client)),
   )
   const res =
     (await whenDefined(data, (allClubs) =>

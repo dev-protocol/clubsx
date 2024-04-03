@@ -6,7 +6,7 @@ import { createClient } from 'redis'
 
 import type { ClubsData } from './fetchClubs'
 import { hasCreationLimitReached } from './hasCreationLimitReached/util'
-import { setClubId } from '@fixtures/api/club/redis'
+import { updateClubId } from '@fixtures/api/club/redis'
 import { decode } from '@devprotocol/clubs-core'
 
 export const POST = async ({ request }: { request: Request }) => {
@@ -140,8 +140,16 @@ export const POST = async ({ request }: { request: Request }) => {
 
   try {
     await client.set(site, config)
-    await setClubId(
-      { id: site, propertyAddress: decode(config).propertyAddress },
+    await updateClubId(
+      {
+        id: site,
+        propertyAddress: decode(config).propertyAddress,
+        created_at: Date.now(),
+        owner: {
+          address: expectedAddress,
+          firebaseUid: uid,
+        },
+      },
       client,
     )
     await client.quit()

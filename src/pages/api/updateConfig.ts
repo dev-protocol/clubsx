@@ -1,5 +1,5 @@
 import { authenticate, decode } from '@devprotocol/clubs-core'
-import { setClubId } from '@fixtures/api/club/redis'
+import { updateClubId } from '@fixtures/api/club/redis'
 import { getDefaultProvider } from 'ethers'
 import { createClient } from 'redis'
 
@@ -60,7 +60,7 @@ export const POST = async ({ request }: { request: Request }) => {
 
   try {
     await client.set(site, config)
-    await setClubId(
+    await updateClubId(
       { id: site, propertyAddress: decode(config).propertyAddress },
       client,
     )
