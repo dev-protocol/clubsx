@@ -64,7 +64,7 @@ const app = async () => {
       const owner = existingData
         ? {
             address: existingData.find((x) => isAddress(x.id))?.id,
-            uid: existingData.find((x) => !isAddress(x.id))?.id,
+            firebaseUid: existingData.find((x) => !isAddress(x.id))?.id,
           }
         : undefined
       const firstRecord = existingData
