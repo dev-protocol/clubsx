@@ -2,6 +2,7 @@ import { createClient } from 'redis'
 import type { AsyncReturnType } from 'type-fest'
 import { CLUB_SCHEMA, CLUB_SCHEMA_ID, type ClubDocument } from './schema'
 import type { UndefinedOr } from '@devprotocol/util-ts'
+import { mergeDeepRight } from 'ramda'
 
 export enum Index {
   Club = 'idx::clubs:club',
@@ -58,7 +59,7 @@ export const withCheckingIndex = async <
         .then(() => client)
 }
 
-export const getClub = async (
+export const getClubByProperty = async (
   propertyAddress: string,
   client: AsyncReturnType<typeof getDefaultClient>,
 ): Promise<UndefinedOr<ClubDocument>> => {
@@ -69,19 +70,31 @@ export const getClub = async (
       LIMIT: { from: 0, size: 1 },
     },
   )
-  const res = search.documents[0]?.value as UndefinedOr<ClubDocument>
-  return res
+  return search.documents[0]?.value as UndefinedOr<ClubDocument>
 }
 
-export const setClubId = async (
+export const getClubById = async (
+  id: string,
+  client: AsyncReturnType<typeof getDefaultClient>,
+): Promise<UndefinedOr<ClubDocument>> => {
+  const search = await client.ft.search(
+    Index.Club,
+    `@${CLUB_SCHEMA['$.id'].AS}:{${id}}`,
+    {
+      LIMIT: { from: 0, size: 1 },
+    },
+  )
+  return search.documents[0]?.value as UndefinedOr<ClubDocument>
+}
+
+export const updateClubId = async (
   doc: ClubDocument,
   client: AsyncReturnType<typeof getDefaultClient>,
 ): Promise<true | Error> => {
-  const set = await client.json.set(
-    `${Prefix.Club}${doc.propertyAddress}`,
-    '$',
-    doc,
-  )
+  const key = `${Prefix.Club}${doc.id}`
+  const old = await getClubById(doc.id, client)
+  const next = mergeDeepRight(old ?? {}, doc)
+  const set = await client.json.set(key, '$', next)
 
   return set === 'OK' ? true : new Error('Error')
 }
