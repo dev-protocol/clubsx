@@ -621,10 +621,10 @@
     sass "1.72.0"
     uuid "^9.0.1"
 
-"@devprotocol/clubs-plugin-posts@0.17.1":
-  version "0.17.1"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts/-/clubs-plugin-posts-0.17.1.tgz#dbc067068d64fc0aad5e8e07042358456fc94120"
-  integrity sha512-zPshc9bQgue9Gtpuerq7wVvtYtbq7e7qKERf42NXEXq4MehZaMTS4L/Ez9vCbAtpUSUaOtW55b2xzBu9AAD+6g==
+"@devprotocol/clubs-plugin-posts@0.18.0":
+  version "0.18.0"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts/-/clubs-plugin-posts-0.18.0.tgz#b32ee4f1af42c67f2d2cde0f8606f096d720d6f3"
+  integrity sha512-9sNL4UwDCUCs72HgUQE52UMZ58P/IgL0Kh/XkE3NO55q8grwArDqcfzkMMfyQ/WeieA1PNuTfWB2xFWgwDXxlg==
   dependencies:
     "@boringer-avatars/vue3" "^0.2.1"
     "@devprotocol/dev-kit" "8.6.0"
