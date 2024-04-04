@@ -55,8 +55,8 @@ export const withCheckingIndex = async <
   return isScmOfInfoIndexed && isScmOfItemIndexed
     ? client
     : Promise.all([
-        client.ft.dropIndex(AchievementIndex.AchievementInfo),
-        client.ft.dropIndex(AchievementIndex.AchievementItem),
+        client.ft.dropIndex(AchievementIndex.AchievementInfo).catch(() => null),
+        client.ft.dropIndex(AchievementIndex.AchievementItem).catch(() => null),
       ])
         .then(() =>
           Promise.all([
@@ -75,6 +75,18 @@ export const withCheckingIndex = async <
                 ON,
                 PREFIX: AchievementPrefix.AchievementItem,
               },
+            ),
+          ]),
+        )
+        .then(() =>
+          Promise.all([
+            client.set(
+              AchievementSchemaKey.AchievementInfo,
+              ACHIEVEMENT_INFO_SCHEMA_ID,
+            ),
+            client.set(
+              AchievementSchemaKey.AchievementItem,
+              ACHIEVEMENT_ITEM_SCHEMA_ID,
             ),
           ]),
         )

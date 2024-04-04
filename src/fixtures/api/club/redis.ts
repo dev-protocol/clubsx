@@ -16,21 +16,23 @@ export enum SchemaKey {
   Club = 'scm::clubs:club',
 }
 
-export const defaultClient = createClient({
-  url: import.meta.env.REDIS_URL,
-  username: import.meta.env.REDIS_USERNAME ?? '',
-  password: import.meta.env.REDIS_PASSWORD ?? '',
-  socket: {
-    keepAlive: 1,
-    reconnectStrategy: 1,
-  },
-})
+export const defaultClient = () =>
+  createClient({
+    url: import.meta.env.REDIS_URL,
+    username: import.meta.env.REDIS_USERNAME ?? '',
+    password: import.meta.env.REDIS_PASSWORD ?? '',
+    socket: {
+      keepAlive: 1,
+      reconnectStrategy: 1,
+    },
+  })
 
 export const getDefaultClient = async () => {
-  if (defaultClient.isOpen === false) {
-    await defaultClient.connect()
+  const redis = defaultClient()
+  if (redis.isOpen === false) {
+    await redis.connect()
   }
-  return defaultClient
+  return redis
 }
 
 export const withCheckingIndex = async <
