@@ -61,6 +61,31 @@ export const withCheckingIndex = async <
         .then(() => client)
 }
 
+const loop = async (
+  start: number,
+  list: readonly ClubDocument[],
+  query: string,
+  client: AsyncReturnType<typeof getDefaultClient>,
+): Promise<readonly ClubDocument[]> => {
+  const limit = 100
+  const result = await client.ft.search(Index.Club, query, {
+    LIMIT: { from: start, size: limit },
+  })
+  const docs: readonly ClubDocument[] = [
+    ...list,
+    ...result.documents.map(({ value }) => {
+      return { ...value } as ClubDocument
+    }),
+  ]
+  const isAll: boolean = result.total <= start + limit
+
+  return isAll ? docs : await loop(start + limit + 1, docs, query, client)
+}
+const getAll = async (
+  query: string,
+  client: AsyncReturnType<typeof getDefaultClient>,
+): Promise<readonly ClubDocument[]> => loop(0, [], query, client)
+
 export const getClubByProperty = async (
   propertyAddress: string,
   client: AsyncReturnType<typeof getDefaultClient>,
@@ -73,6 +98,26 @@ export const getClubByProperty = async (
     },
   )
   return search.documents[0]?.value as UndefinedOr<ClubDocument>
+}
+
+export const getAllClubByOwnerAddress = async (
+  ownerAddress: string,
+  client: AsyncReturnType<typeof getDefaultClient>,
+): Promise<UndefinedOr<ReadonlyArray<ClubDocument>>> => {
+  return getAll(
+    `@${CLUB_SCHEMA['$.owner.address'].AS}:{${ownerAddress}}`,
+    client,
+  )
+}
+
+export const getAllClubByOwnerFirebaseUid = async (
+  firebaseUid: string,
+  client: AsyncReturnType<typeof getDefaultClient>,
+): Promise<UndefinedOr<ReadonlyArray<ClubDocument>>> => {
+  return getAll(
+    `@${CLUB_SCHEMA['$.owner.firebaseUid'].AS}:{${firebaseUid}}`,
+    client,
+  )
 }
 
 export const getClubById = async (

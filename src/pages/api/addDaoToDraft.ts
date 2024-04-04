@@ -118,26 +118,6 @@ export const POST = async ({ request }: { request: Request }) => {
     }
   }
 
-  const keyEnumerable = whenDefined(uid ?? expectedAddress, generateId)
-
-  if (keyEnumerable) {
-    // associate user address with site
-    // first we check if user has other sites associated with their address
-    let existingSites = JSON.parse(
-      (await client.get(keyEnumerable)) ?? '[]',
-    ) as ClubsData[] | null
-    if (!existingSites) {
-      existingSites = []
-    }
-
-    // avoid duplicates
-    if (!existingSites.some((c) => c.name === site)) {
-      existingSites.push({ name: site, created: new Date().toISOString() })
-    }
-
-    await client.set(keyEnumerable, JSON.stringify(existingSites))
-  }
-
   try {
     await client.set(site, config)
     await updateClubId(
