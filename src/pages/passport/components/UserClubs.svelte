@@ -13,10 +13,10 @@
   const fetchUserClubs = async (id: string) => {
     isLoading = true
 
-    const req = await fetch('/api/fetchClubs', {
-      method: 'POST',
-      body: JSON.stringify({ identifier: id }),
-    })
+    const url = new URL('/api/clubs')
+    url.searchParams.append('p', id)
+
+    const req = await fetch(url)
 
     if (req.status !== 200) {
       isLoading = false
