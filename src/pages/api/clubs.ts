@@ -1,11 +1,14 @@
 import { whenDefined } from '@devprotocol/util-ts'
 import {
+  getAllClubByOwnerAddress,
+  getAllClubByOwnerFirebaseUid,
   getClubByProperty,
   getDefaultClient,
   withCheckingIndex,
 } from '@fixtures/api/club/redis'
 import { cache, headers } from '@fixtures/api/headers'
 import type { APIRoute } from 'astro'
+import { isAddress } from 'ethers'
 
 export type ClubsData = {
   id: string
@@ -33,11 +36,18 @@ export type ClubsData = {
  */
 export const GET: APIRoute = async ({ url }): Promise<Response> => {
   const propertyAddresses = url.searchParams.getAll('p')
+  const owner = url.searchParams.get('owner')
 
   const client = await withCheckingIndex(getDefaultClient)
-  const data = await Promise.all(
-    propertyAddresses.map((p) => getClubByProperty(p, client)),
-  )
+  const fromDB = await Promise.all([
+    ...propertyAddresses.map((p) => getClubByProperty(p, client)),
+    owner
+      ? isAddress(owner)
+        ? getAllClubByOwnerAddress(owner, client)
+        : getAllClubByOwnerFirebaseUid(owner, client)
+      : undefined,
+  ])
+  const data = fromDB.flat()
   const res =
     (await whenDefined(data, (allClubs) =>
       Promise.all(

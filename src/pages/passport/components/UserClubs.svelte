@@ -1,8 +1,9 @@
 <script lang="ts">
   import type { DraftOptions } from '@constants/draft'
-  import type { ClubsConfiguration } from '@devprotocol/clubs-core'
+  import { decode, type ClubsConfiguration } from '@devprotocol/clubs-core'
   import { onMount } from 'svelte'
   import UserClubItem from './UserClubItem.svelte'
+  import type { ClubsData } from '@pages/api/clubs'
 
   export let id: string
 
@@ -13,28 +14,26 @@
   const fetchUserClubs = async (id: string) => {
     isLoading = true
 
-    const url = new URL('/api/clubs')
-    url.searchParams.append('p', id)
-
-    const req = await fetch(url)
+    const req = await fetch(`/api/clubs?owner=${id}`)
 
     if (req.status !== 200) {
       isLoading = false
       return
     }
 
-    const clubs = (await req.json()) as ClubsConfiguration[]
+    const clubs = (await req.json()) as ClubsData[]
 
     for (const club of clubs) {
-      const isDraft = club.options?.find(
+      const decoded = decode(club.config.source)
+      const isDraft = decoded.options?.find(
         (option) => option.key === '__draft',
       ) as DraftOptions | undefined
 
       if (isDraft?.value.isInDraft) {
-        draftClubs.push(club)
+        draftClubs.push(decoded)
         draftClubs = draftClubs
       } else {
-        publishedClubs.push(club)
+        publishedClubs.push(decoded)
         publishedClubs = publishedClubs
       }
     }
