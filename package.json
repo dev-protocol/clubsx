@@ -1,6 +1,6 @@
 {
   "name": "clubs",
-  "version": "0.13.0-beta.25",
+  "version": "0.13.0-beta.27",
   "private": true,
   "type": "module",
   "scripts": {
@@ -22,6 +22,7 @@
     "migratePosts": "node ./scripts/upgrade-posts-v2.mjs"
   },
   "devDependencies": {
+    "@repeaterjs/repeater": "^3.0.5",
     "@rollup/plugin-commonjs": "^25.0.4",
     "@types/bad-words": "^3.0.3",
     "@types/dompurify": "^3.0.2",
@@ -48,7 +49,7 @@
     "prettier-plugin-svelte": "3.2.2",
     "prettier-plugin-tailwindcss": "0.5.13",
     "svelte-check": "^3.5.1",
-    "type-fest": "4.14.0",
+    "type-fest": "4.15.0",
     "typescript": "5.4.3",
     "vitest": "^1.0.0",
     "vue-tsc": "^2.0.0"
@@ -59,13 +60,13 @@
     "@astrojs/netlify": "5.2.0",
     "@astrojs/prefetch": "0.4.1",
     "@astrojs/react": "3.1.1",
-    "@astrojs/svelte": "5.2.0",
+    "@astrojs/svelte": "5.3.0",
     "@astrojs/tailwind": "5.1.0",
-    "@astrojs/vercel": "7.5.1",
+    "@astrojs/vercel": "7.5.2",
     "@astrojs/vue": "4.0.10",
     "@crossmint/client-sdk-base": "^1.0.1-alpha.6",
     "@crossmint/client-sdk-react-ui": "^1.0.1-alpha.6",
-    "@devprotocol/clubs-core": "3.10.2",
+    "@devprotocol/clubs-core": "3.10.3",
     "@devprotocol/clubs-plugin-posts": "0.18.0",
     "@devprotocol/clubs-plugin-posts-voting": "^0.6.0",
     "@devprotocol/dev-kit": "8.6.0",
@@ -84,7 +85,7 @@
     "@wagmi/core": "^1.4.1",
     "@web3modal/wagmi": "3.5.7",
     "@webcomponents/template-shadowroot": "^0.2.1",
-    "astro": "4.5.12",
+    "astro": "4.5.15",
     "autoprefixer": "10.4.19",
     "bad-words": "^3.0.4",
     "bignumber.js": "9.1.2",

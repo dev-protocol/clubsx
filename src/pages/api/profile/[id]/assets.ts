@@ -5,18 +5,17 @@ import {
   whenDefined,
   whenNotError,
   whenNotErrorAll,
-  type ErrorOr,
 } from '@devprotocol/util-ts'
 import { JsonRpcProvider } from 'ethers'
 import PQueue from 'p-queue'
-import { getClub, getDefaultClient } from '@fixtures/api/club/redis'
+import { getClubByProperty, getDefaultClient } from '@fixtures/api/club/redis'
 import { AchievementIndex } from '@plugins/achievements/utils'
 import { ACHIEVEMENT_INFO_SCHEMA } from '@plugins/achievements/db/schema'
 import { getAllOwnedTokens, type Metadata } from '@plugins/tickets/utils/nft'
 import { clientsSTokens } from '@devprotocol/dev-kit'
-import type achievements from '@plugins/achievements'
 import { json } from '@fixtures/api/json'
 import type { AsyncReturnType } from 'type-fest'
+import { withCheckingIndex } from '@plugins/achievements/db/redis'
 
 const { PUBLIC_INFURA_KEY } = import.meta.env
 
@@ -154,7 +153,7 @@ export const GET: APIRoute = async ({
         new JsonRpcProvider(`https://polygon-mainnet.infura.io/v3/${key}`),
     ) ?? new Error('INFURA key not found')
 
-  const client = await getDefaultClient()
+  const client = await withCheckingIndex(getDefaultClient)
 
   const allData = await whenNotErrorAll(
     [id, provider, client],
@@ -175,7 +174,7 @@ export const GET: APIRoute = async ({
   const [allClubsMemberships, allClubsAchievements] = await Promise.all([
     whenNotErrorAll([allMemberships, client], async ([memberships, redis]) => {
       const bits = await Promise.all(
-        memberships.map((mem) => getClub(mem.propertyAddress, redis)),
+        memberships.map((mem) => getClubByProperty(mem.propertyAddress, redis)),
       )
       return memberships.filter((_, i) => bits[i] !== undefined)
     }),
@@ -183,7 +182,9 @@ export const GET: APIRoute = async ({
       [allAchievements, client],
       async ([achievements, redis]) => {
         const bits = await Promise.all(
-          achievements.map((ach) => getClub(ach.propertyAddress, redis)),
+          achievements.map((ach) =>
+            getClubByProperty(ach.propertyAddress, redis),
+          ),
         )
         return achievements.filter((_, i) => bits[i] !== undefined)
       },
