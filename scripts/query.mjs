@@ -1,5 +1,6 @@
 import { createClient } from 'redis'
 import dotenv from 'dotenv'
+import { scanOnlyClubs } from './lib.scanOnlyClubs.mjs'
 // import { decode, encode } from '@devprotocol/clubs-core'
 
 dotenv.config()
@@ -13,7 +14,7 @@ const app = async () => {
   await client.connect()
 
   let count = 0
-  for await (const key of client.scanIterator()) {
+  for await (const key of scanOnlyClubs(client)) {
     if (/^[a-z]+::/i.test(key)) {
       // This key is not a tenant.
       continue

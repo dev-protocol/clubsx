@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import { decode, encode } from '@devprotocol/clubs-core'
 import { v5 as uuidv5 } from 'uuid'
 import { toUtf8Bytes } from 'ethers'
+import { scanOnlyClubs } from './lib.scanOnlyClubs.mjs'
 
 dotenv.config()
 
@@ -75,7 +76,7 @@ const main = async () => {
     /**
      * Loop through the redis keys
      */
-    for await (const key of client.scanIterator()) {
+    for await (const key of scanOnlyClubs(client)) {
       if (key.includes(':')) {
         // This is not a ClubsConfiguration
         continue

@@ -1,6 +1,7 @@
 import { createClient } from 'redis'
 import dotenv from 'dotenv'
 import { decode, encode } from '@devprotocol/clubs-core'
+import { scanOnlyClubs } from './lib.scanOnlyClubs.mjs'
 
 dotenv.config()
 
@@ -62,7 +63,7 @@ const app = async () => {
     })
     await client.connect()
 
-    for await (const key of client.scanIterator()) {
+    for await (const key of scanOnlyClubs(client)) {
       if (key.startsWith('id::')) {
         // This is not a ClubsConfiguration
         console.log('Skipped:', key)
