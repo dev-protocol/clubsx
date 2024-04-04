@@ -1,9 +1,24 @@
 import { createClient } from 'redis'
 import dotenv from 'dotenv'
 import { decode } from '@devprotocol/clubs-core'
-import { isAddress } from 'ethers'
+import { Contract, isAddress, JsonRpcProvider, ZeroAddress } from 'ethers'
+import { whenDefined } from '@devprotocol/util-ts'
+import { scanOnlyClubs } from './lib.scanOnlyClubs.mjs'
+import { always, tryCatch } from 'ramda'
 
 dotenv.config()
+
+const author = async (propertyAddress, rpcUrl) => {
+  return tryCatch(
+    (addr, rpc) =>
+      new Contract(
+        addr,
+        ['function author() view returns(string)'],
+        new JsonRpcProvider(rpc),
+      ).author(),
+    always(undefined),
+  )(propertyAddress, rpcUrl)
+}
 
 const app = async () => {
   try {
@@ -18,7 +33,7 @@ const app = async () => {
     // // Remove all existing clubs documents first
     // for await (const key of client.scanIterator({
     //   MATCH: 'doc::clubs:clubs::*',
-    //   COUNT: 100,
+    //   COUNT: 1000,
     // })) {
     //   if (key.startsWith('doc::clubs:clubs::')) {
     //     await client.del(key)
@@ -34,7 +49,7 @@ const app = async () => {
     // Fetch all clubs by existing enumrable key-value pairs
     for await (const key of client.scanIterator({
       MATCH: 'id::*',
-      COUNT: 100,
+      COUNT: 1000,
     })) {
       if (key.startsWith('id::')) {
         const raw = await client.get(key)
@@ -51,7 +66,7 @@ const app = async () => {
 
     console.log({ allClubs })
 
-    for await (const key of client.scanIterator()) {
+    for await (const key of scanOnlyClubs(client)) {
       if (key.includes(':')) {
         // This is not a ClubsConfiguration
         console.log('Skip', key)
@@ -61,9 +76,22 @@ const app = async () => {
       const encodedConfig = await client.get(key)
       const decodedConfig = decode(encodedConfig)
       const existingData = allClubs.filter((club) => club.name === key)
+      const ownerAddress = await (async (club) => {
+        const fromRedis = whenDefined(club, (c) => c.id)
+        const fromOnChain = !fromRedis
+          ? decodedConfig.propertyAddress &&
+            decodedConfig.propertyAddress !== ZeroAddress
+            ? await author(
+                decodedConfig.propertyAddress,
+                decodedConfig.rpcUrl,
+              ).catch(always(undefined))
+            : undefined
+          : undefined
+        return fromRedis || fromOnChain
+      })(existingData.find((x) => isAddress(x.id)))
       const owner = existingData
         ? {
-            address: existingData.find((x) => isAddress(x.id))?.id,
+            address: ownerAddress,
             firebaseUid: existingData.find((x) => !isAddress(x.id))?.id,
           }
         : undefined
