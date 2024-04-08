@@ -540,12 +540,21 @@
     stream-browserify "^3.0.0"
     util "^0.12.4"
 
-"@crossmint/client-sdk-base@1.1.12", "@crossmint/client-sdk-base@^1.0.1-alpha.6":
+"@crossmint/client-sdk-base@1.1.12":
   version "1.1.12"
   resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-base/-/client-sdk-base-1.1.12.tgz#9cb222b22f27bb2c246c0264dd64a1a7b368e8e1"
   integrity sha512-qtpyRfsiTiWp7/Zt4QKND3GsnCl6tx+hySkhtGPEakerj3UHWMNu87pdvv7hQ8fklDTPJiwG3Giv4JUqqRNCFA==
   dependencies:
     "@crossmint/common-sdk-base" "0.0.11"
+    exponential-backoff "3.1.1"
+    uuid "9.0.1"
+
+"@crossmint/client-sdk-base@^1.0.1-alpha.6":
+  version "1.1.13"
+  resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-base/-/client-sdk-base-1.1.13.tgz#ea969d9d9a9c62284cc0af38b745d87112050027"
+  integrity sha512-CKJnZkr7QJad278ZhnregKR9EAzpZVUqZGf9hG0cJcjPNFbYME4hx+V7mJVxeWmRTuVI8aylsrQslzvz6SnO1Q==
+  dependencies:
+    "@crossmint/common-sdk-base" "0.0.12"
     exponential-backoff "3.1.1"
     uuid "9.0.1"
 
@@ -566,6 +575,14 @@
   version "0.0.11"
   resolved "https://registry.yarnpkg.com/@crossmint/common-sdk-base/-/common-sdk-base-0.0.11.tgz#f67a1323e9a805e2bdf0e73c63e529170ca4e502"
   integrity sha512-BhK3H7fXlAQgzu664uFQyLPkC9oX7QcCIwCmFzXaFAh6Nasr0L9T+nkJmrGkhSdfB2KPGmR2VDYuxG+w/xEfZA==
+  dependencies:
+    bs58 "5.0.0"
+    tweetnacl "1.0.3"
+
+"@crossmint/common-sdk-base@0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/@crossmint/common-sdk-base/-/common-sdk-base-0.0.12.tgz#e23c45e89df6758decd02c58725588dc088dfbe2"
+  integrity sha512-KFbUX/HwdtLjh2UHN06Rzu1kla7AExulZinIv43k2U/5JkwI3WB4b0BGV7YZ5DGGPsXTkZs1XVLmsQT7fE3KkA==
   dependencies:
     bs58 "5.0.0"
     tweetnacl "1.0.3"
