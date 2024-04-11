@@ -721,17 +721,17 @@
   dependencies:
     "@matteusan/sentro" "0.1.25"
 
-"@devprotocol/huddle01-clubs-plugin@0.1.4":
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/@devprotocol/huddle01-clubs-plugin/-/huddle01-clubs-plugin-0.1.4.tgz#6528d517f7abf0336bd567262d687d9b797433ef"
-  integrity sha512-wSKI7QCW1yuDh9gJPc49dbuzEVQm9+PQQnJ7z5hod/QnkEkjBljw8eCnsmwzfB8DFL0/EoHvhUjwLPmpYlS72A==
+"@devprotocol/huddle01-clubs-plugin@0.1.5":
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/@devprotocol/huddle01-clubs-plugin/-/huddle01-clubs-plugin-0.1.5.tgz#c32f69a92eb4e1613242b9423dd2809ce5e19009"
+  integrity sha512-h45dDtT3rZluG35nauWT1SII4Qt49zgduMSKIfIDYtFf7Io+BX5VhWCqUw6fmb/BkbzvwLi0Sjn2BX73YQIJQw==
   dependencies:
     "@devprotocol/dev-kit" "8.6.0"
     "@devprotocol/util-ts" "4.0.0"
     bignumber.js "9.1.2"
     ethers "6.11.1"
     ramda "0.29.1"
-    sass "1.72.0"
+    sass "1.74.1"
     uuid "^9.0.1"
 
 "@devprotocol/util-ts@3.0.0":
