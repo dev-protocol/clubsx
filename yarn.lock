@@ -647,10 +647,10 @@
     sass "1.72.0"
     uuid "^9.0.1"
 
-"@devprotocol/clubs-plugin-posts@0.18.0":
-  version "0.18.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts/-/clubs-plugin-posts-0.18.0.tgz#b32ee4f1af42c67f2d2cde0f8606f096d720d6f3"
-  integrity sha512-9sNL4UwDCUCs72HgUQE52UMZ58P/IgL0Kh/XkE3NO55q8grwArDqcfzkMMfyQ/WeieA1PNuTfWB2xFWgwDXxlg==
+"@devprotocol/clubs-plugin-posts@0.19.0":
+  version "0.19.0"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts/-/clubs-plugin-posts-0.19.0.tgz#b04aadea210930e52c3fecab9917c789f0f29e10"
+  integrity sha512-r8nv3Qoy0ezzUu912atpO0XrPRJdLH33iO/fAdBteDeTwapf8gCfbY5wEyCQ2zloaDyoDsyTqs6T7CCjvSXJ8g==
   dependencies:
     "@boringer-avatars/vue3" "^0.2.1"
     "@devprotocol/dev-kit" "8.6.0"
@@ -664,7 +664,7 @@
     photoswipe "5.4.3"
     ramda "0.29.1"
     redis "^4.6.7"
-    sass "1.72.0"
+    sass "1.75.0"
     uuid "^9.0.0"
 
 "@devprotocol/dev-kit@7.3.0":
