@@ -29,6 +29,13 @@ const SlotsPageContentHomeAfterContent = clubs.slots.filter(({ slot }) => {
 
 <article class="grid gap-6">
   {
+    // Display slots of PageContentHomeBeforeContent
+    SlotsPageContentHomeBeforeContent.map((Slot) => (
+      <Slot.component {...Slot.props} />
+    ))
+  }
+
+  {
     sectionsOrderConfig && sectionsOrderConfig === 'about-first' ? (
       <>
         <h2 class="text-center text-xl font-bold lg:text-4xl">About {name}</h2>
@@ -58,13 +65,6 @@ const SlotsPageContentHomeAfterContent = clubs.slots.filter(({ slot }) => {
         )}
       </section>
     )
-  }
-
-  {
-    // Display slots of PageContentHomeBeforeContent
-    SlotsPageContentHomeBeforeContent.map((Slot) => (
-      <Slot.component {...Slot.props} />
-    ))
   }
 
   {
