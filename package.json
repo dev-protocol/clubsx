@@ -30,7 +30,7 @@
     "@types/marked": "^6.0.0",
     "@types/node": "^20.5.9",
     "@types/ramda": "0.29.12",
-    "@types/react": "18.2.78",
+    "@types/react": "18.2.79",
     "@types/three": "0.161.2",
     "@types/uuid": "^9.0.3",
     "dotenv": "16.4.5",
