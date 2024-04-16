@@ -61,10 +61,8 @@ const SlotsConnectButton = path?.props.clubs.slots.filter(
   path && Layout && Content ? (
     <>
       <Layout {...path.props}>
-        {SlotsConnectButton && SlotsConnectButton.length ? (
-          SlotsConnectButton.map((Slot) => (
-            <Slot.component {...Slot.props} slot="clubs:connect-button" />
-          ))
+        {SlotsConnectButton?.length ? (
+          SlotsConnectButton.map((Slot) => <Slot.component {...Slot.props} />)
         ) : (
           <span slot="clubs:connect-button">
             <ConnectButton
