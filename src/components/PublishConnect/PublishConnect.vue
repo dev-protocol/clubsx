@@ -8,7 +8,6 @@
         <img v-if="connected" alt="Status" :src="checkImage" class="h-6 w-6" />
         <h2 v-bind:class="stepTextClasses">{{ i18n('ConnectYourWallet') }}</h2>
       </section>
-      <p class="text-base">{{ i18n('HowToCreate') }}</p>
     </section>
     <ConnectButton
       lable="buttonText"
