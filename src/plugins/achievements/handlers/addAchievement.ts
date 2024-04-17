@@ -121,7 +121,7 @@ export const handler =
     )
 
     // 10. Return the id as response of the new data saved
-    return new Response(JSON.stringify({ id: achievementItemIds.join(', ') }), {
+    return new Response(JSON.stringify({ id: achievementItemIds }), {
       status: 200,
     })
   }
