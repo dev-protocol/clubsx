@@ -6,25 +6,26 @@ import {
   encode,
 } from '@devprotocol/clubs-core'
 
-import { type Achievement } from '../types'
+import type { Achievement, AchievementItem } from '../types'
 import { getDefaultClient } from '../db/redis'
 import {
   AchievementPrefix,
   getAchievementInfoDocument,
-  getAchievementItemDocument,
   checkForExistingAchievementInfo,
   checkForExistingAchievementItem,
+  createAchievementItemId,
 } from '../utils'
 
 export const handler =
   (conf: ClubsConfiguration) =>
   async ({ request }: { request: Request }) => {
     // 1. Get the data.
-    const { site, message, signature, achievement } =
+    const { site, message, signature, achievement, noOfCopies } =
       (await request.json()) as {
         site: string
         message: string
         signature: string
+        noOfCopies: number
         achievement: Omit<
           Achievement,
           | 'id'
@@ -36,7 +37,7 @@ export const handler =
         >
       }
     // 2. Validate all data is present.
-    if (!achievement || !message || !signature || !site) {
+    if (!achievement || !message || !signature || !site || !noOfCopies) {
       return new Response(JSON.stringify({ error: 'Missing data' }), {
         status: 400,
       })
@@ -72,24 +73,8 @@ export const handler =
         ...achievement.metadata,
       },
     })
-    const achievementItemDocument = getAchievementItemDocument({
-      achievementInfoId: achievementInfoDocument.id,
-      account: achievement.account,
-      claimed: false,
-      claimedSBTTokenId: 0,
-      createdOnTimestamp: Date.now(),
-      claimedOnTimestamp: 0,
-    })
 
-    // 7. Check if achivementId is already present.
-    if (await checkForExistingAchievementItem(achievementItemDocument.id)) {
-      return new Response(
-        JSON.stringify({ error: 'Achievement already exists' }),
-        { status: 400 },
-      )
-    }
-
-    // 8. Check if achivement info is already present
+    // 7. Check if achivement info is already present
     if (!(await checkForExistingAchievementInfo(achievementInfoDocument.id))) {
       // We are creating a new type of achievement.
       await client.json.set(
@@ -99,15 +84,44 @@ export const handler =
       )
     }
 
+    // 8. Create a list of all the achievement ids to be created (since no. of achievements >= 1)
+    const achievementItemIds: string[] = []
+    for (let i = 0; i < noOfCopies; i++) {
+      // 8.a. Get the id of newly created achievement item.
+      const achievementId = createAchievementItemId()
+      // 8.b. Check if achivementId is already present.
+      if (await checkForExistingAchievementItem(achievementId)) {
+        return new Response(
+          JSON.stringify({ error: 'Achievement already exists' }),
+          { status: 400 },
+        )
+      }
+      // 8.c Save the achivements ids to save in db and return them as response.
+      achievementItemIds.push(achievementId)
+    }
+
     // 9. Seth the record and update timestamp of record.
-    await client.json.set(
-      `${AchievementPrefix.AchievementItem}::${achievementItemDocument.id}`,
-      '$',
-      achievementItemDocument,
+    await Promise.all(
+      achievementItemIds.map(
+        async (achievementId: string) =>
+          await client.json.set(
+            `${AchievementPrefix.AchievementItem}::${achievementId}`,
+            '$',
+            {
+              id: achievementId,
+              achievementInfoId: achievementInfoDocument.id,
+              account: achievement.account,
+              claimed: false,
+              claimedSBTTokenId: 0,
+              createdOnTimestamp: Date.now(),
+              claimedOnTimestamp: 0,
+            } as AchievementItem,
+          ),
+      ),
     )
 
     // 10. Return the id as response of the new data saved
-    return new Response(JSON.stringify({ id: achievementItemDocument.id }), {
+    return new Response(JSON.stringify({ id: achievementItemIds.join(', ') }), {
       status: 200,
     })
   }

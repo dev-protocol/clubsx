@@ -37,13 +37,19 @@ export const getAchievementInfoDocument = (
 })
 
 /**
+ * Generate a new achievement item id
+ * @returns the generated new achievement item document's id for db.
+ */
+export const createAchievementItemId = () => nanoid(10)
+
+/**
  * Generate a new achievement info document
  * @param base - the achievement info item without ID
  * @returns the generated new achievement info document without ID duplication check
  */
 export const getAchievementItemDocument = (
   base: Omit<AchievementItem, 'id'>,
-): AchievementItem => ({ ...base, id: nanoid(10) }) // Here id will be unique as multiple users might have same achievement unlocked.
+): AchievementItem => ({ ...base, id: createAchievementItemId() }) // Here id will be unique as multiple users might have same achievement unlocked.
 
 /**
  * Returns string that available for searching as TAG
