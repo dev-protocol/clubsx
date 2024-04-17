@@ -14,7 +14,6 @@
         />
         <h2 v-bind:class="step2TextClasses">{{ i18n('ChooseNetwork') }}</h2>
       </section>
-      <p class="text-base">{{ i18n('NetworkDifference') }}</p>
     </section>
     <div>
       <section

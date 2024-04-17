@@ -5,10 +5,6 @@ export const Strings = {
     en: () => 'Choose Network',
     ja: () => 'ネットワークを選択',
   },
-  NetworkDifference: {
-    en: () => 'What is the difference between networks?',
-    ja: () => 'ネットワークの違いについて',
-  },
   Recommended: {
     en: () => 'Recommended',
     ja: () => '推奨',

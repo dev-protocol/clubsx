@@ -17,8 +17,4 @@ export const Strings = {
     en: () => 'Fetching wallet details...',
     ja: () => 'ウォレットを読み込んでいます',
   },
-  HowToCreate: {
-    en: () => 'How do I create a wallet?',
-    ja: () => 'ウォレットの作り方',
-  },
 } satisfies ClubsI18nParts
