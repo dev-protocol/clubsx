@@ -30,4 +30,6 @@ export const modules = {
     import(
       '@devprotocol/huddle01-clubs-plugin'
     ) as Promise<ClubsFunctionStandardPlugin>,
+  'devprotocol:clubs:plugin:awesome-onboarding': () =>
+    import('@devprotocol/clubs-plugin-awesome-onboarding'),
 }

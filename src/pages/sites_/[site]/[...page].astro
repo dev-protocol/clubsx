@@ -51,19 +51,27 @@ const isInDraft = Boolean(draftOptions?.isInDraft)
 const fullPage = (path?.props.signals as undefined | string[])?.includes(
   ClubsPluginSignal.DisplayFullPage,
 )
+
+const SlotsConnectButton = path?.props.clubs.slots.filter(
+  (slot) => slot.slot === 'clubs:connect-button',
+)
 ---
 
 {
   path && Layout && Content ? (
     <>
       <Layout {...path.props}>
-        <span slot="clubs:connect-button">
-          <ConnectButton
-            client:load
-            chainId={decodedConfig.chainId}
-            isDisabled={isInDraft}
-          />
-        </span>
+        {SlotsConnectButton?.length ? (
+          SlotsConnectButton.map((Slot) => <Slot.component {...Slot.props} />)
+        ) : (
+          <span slot="clubs:connect-button">
+            <ConnectButton
+              client:load
+              chainId={decodedConfig.chainId}
+              isDisabled={isInDraft}
+            />
+          </span>
+        )}
 
         <Content {...path.props} />
 
