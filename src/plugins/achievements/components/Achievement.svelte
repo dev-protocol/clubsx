@@ -8,8 +8,8 @@
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
 
   import { Strings } from '../i18n'
-  import type { Achievement } from '../types'
   import Skeleton from '@components/Global/Skeleton.svelte'
+  import type { Achievement, StringAttribute } from '../types'
   import AchievementDefaultIcon from '../assets/achievement.svg'
 
   const i18nBase = i18nFactory(Strings)
@@ -17,7 +17,7 @@
 
   export let achievementId: string = ''
 
-  let achievement: Achievement
+  let achievement: Achievement & { type: string }
   let signer: Signer | undefined
   let connection: typeof Connection
   let currentAddress: string | undefined
@@ -136,7 +136,21 @@
       })
 
     if (response && !(response instanceof Error)) {
-      achievement = response
+      achievement = {
+        ...response,
+        type:
+          response.metadata?.stringAttributes.find(
+            (attr: StringAttribute) =>
+              attr.trait_type.toLowerCase() === 'achievement type',
+          )?.value ?? 'Achievement NFT',
+        metadata: {
+          ...response.metadata,
+          stringAttributes: response.metadata?.stringAttributes.filter(
+            (attr: StringAttribute) =>
+              attr.trait_type.toLowerCase() !== 'achievement type',
+          ),
+        },
+      }
       isAchievementDataNotFetched = false
       computeClaimBtnTxt(false, false, currentAddress, signer, achievement)
     }
@@ -320,6 +334,14 @@
     {/if}
 
     <div class="text-3xl font-medium">
+      {#if isFetchingAchievementData}
+        <Skeleton />
+      {:else}
+        {achievement?.type}
+      {/if}
+    </div>
+
+    <div class="text-2xl font-medium">
       {#if isFetchingAchievementData}
         <Skeleton />
       {:else}
