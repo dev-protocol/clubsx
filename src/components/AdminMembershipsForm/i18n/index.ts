@@ -12,7 +12,7 @@ export const Strings = {
   },
   CreatorExampleName: {
     en: () => 'Example: Dev Protocol',
-    ja: () => 'My Vlog',
+    ja: () => '例：DEVプロトコル',
   },
   Business: {
     en: () => 'Business',
@@ -68,33 +68,33 @@ export const Strings = {
   },
   MaximumPrice: {
     en: () => 'Minimum price allowed is',
-    ja: () => '',
+    ja: () => '許容されている最小価格',
   },
   MinimumFee: {
     en: () => 'Minimum earning model fee allowed is',
-    ja: () => '',
+    ja: () => '許容されている最小の収益モデルの手数料',
   },
   PriceSetMin: {
     en: () => 'Price automatically set to minimum allowed value',
-    ja: () => '',
+    ja: () => '価格は最小許容値に自動で設定されます',
   },
   PriceSetMax: {
     en: () => 'Price automatically set to maximum allowed value',
-    ja: () => '',
+    ja: () => '価格は最大許容値に自動で設定されます',
   },
   FeeSetMin: {
     en: () => 'Fee automatically set to minimum allowed value',
-    ja: () => '',
+    ja: () => '手数料は最小許容値に自動で設定されます',
   },
   FeeSetMax: {
     en: () => 'Fee automatically set to maximum allowed value',
-    ja: () => '',
+    ja: () => '手数料は最大許容値に自動で設定されます',
   },
   MembershipInUse: {
     en: (noOfPositions) =>
       `This membership already has ${noOfPositions} members.`,
     ja: (noOfPositions) =>
-      `このメンバーシップにはすでに${noOfPositions}人のメンバーがいます。`,
+      `すでに${noOfPositions}人のメンバーがこのメンバーシップを持っています。`,
   },
   Image: {
     en: () => 'Image',
@@ -102,7 +102,7 @@ export const Strings = {
   },
   UploadToChangeImage: {
     en: () => 'Upload to change image',
-    ja: () => '画像を変更するにはアップロードしてください',
+    ja: () => 'アップロードして画像を変更する',
   },
   RecommendedImageSize: {
     en: () => 'Recommended image size is 600 x 600 px',
@@ -118,31 +118,31 @@ export const Strings = {
   },
   Priced: {
     en: () => 'Priced',
-    ja: () => '',
+    ja: () => '価格を設定済み',
   },
   Unpriced: {
     en: () => 'Unpriced',
-    ja: () => '',
+    ja: () => '価格が未設定です',
   },
   // note to Kent:
-  // These two form one sentence, but are separated for HTML styling purposes
+  // These two form one sentence, but are separated for HTML styling purposes <- Gotcha!
   UnpricedCannotBeBought: {
     en: () => 'Unpriced memberships cannot be bought,',
-    ja: () => '',
+    ja: () => '価格が未設定のメンバーシップは購入できません',
   },
   AvailableInviteOnly: {
     en: () => 'they are available via invite only.',
-    ja: () => '利用可能（招待のみ）',
+    ja: () => '招待された場合のみ購入可能です',
   },
   // note to Kent:
-  // These two form one sentence, but are separated for HTML styling purposes
+  // These two form one sentence, but are separated for HTML styling purposes <- Gotcha!
   ChoosingUSDC: {
     en: () => 'If you choose USDC, you can activate ',
-    ja: () => '',
+    ja: () => 'クレジットカードプラグインを有効にしたい場合は',
   },
   CreditCardPlugin: {
     en: () => 'the credit card plugin.',
-    ja: () => '',
+    ja: () => 'USDCを選択してください',
   },
   EarningModel: {
     en: () => 'Earning Model',
@@ -150,7 +150,7 @@ export const Strings = {
   },
   DEVEarningModelDisabled: {
     en: () => 'Earning model option is currently disabled for DEV',
-    ja: () => '',
+    ja: () => '収益モデルのオプションは現在利用できません',
   },
   WhatIsStaking: {
     en: () => 'What is staking?',
@@ -162,11 +162,11 @@ export const Strings = {
   },
   MarkdownAvailable: {
     en: () => 'Markdown is available',
-    ja: () => 'Markdownが利用可能',
+    ja: () => 'マークダウンが利用可能',
   },
   WhatIsMarkdown: {
     en: () => 'What is Markdown?',
-    ja: () => 'Markdownとは？',
+    ja: () => 'マークダウンとは',
   },
   Payload: {
     en: () => 'Payload',
@@ -174,24 +174,24 @@ export const Strings = {
   },
   AccessControl: {
     en: () => 'Access Control',
-    ja: () => 'アクセス制御',
+    ja: () => 'アクセスコントロール',
   },
   AccessControlURL: {
     en: () => 'Access Control URL',
-    ja: () => 'アクセス制御URL',
+    ja: () => 'アクセスコントロールURL',
   },
   DescriptionOfVerification: {
     en: () => 'Description of the verification process',
-    ja: () => '認証の説明',
+    ja: () => '認証プロセスの詳細',
   },
   WillEarnAtOnce: {
     // For example: "X USDC will be earned at 1 time"
     en: () => 'will be earned at 1 time.',
-    ja: () => '',
+    ja: () => 'を一度に取得します',
   },
   WillBeStaked: {
     // For example: "X USDC will will be staked to earn dev continuously."
     en: () => 'will be staked to earn dev continuously.',
-    ja: () => '',
+    ja: () => 'をステーキングして継続的にDEVを取得する',
   },
 } satisfies ClubsI18nParts
