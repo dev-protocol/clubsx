@@ -12,7 +12,7 @@ export const Strings = {
   },
   CreatorExampleName: {
     en: () => 'Example: Dev Protocol',
-    ja: () => 'My Vlog',
+    ja: () => '例：DEVプロトコル',
   },
   Business: {
     en: () => 'Business',
@@ -29,6 +29,10 @@ export const Strings = {
   Public: {
     en: () => 'Public',
     ja: () => 'パブリック',
+  },
+  Private: {
+    en: () => 'Private',
+    ja: () => 'プライベート',
   },
   PublicDescription: {
     en: () => 'Start a co-creation project and invite members.',
@@ -57,5 +61,137 @@ export const Strings = {
   Activate: {
     en: () => 'Activate',
     ja: () => '表示する',
+  },
+  Cancel: {
+    en: () => 'Cancel',
+    ja: () => 'キャンセル',
+  },
+  MaximumPrice: {
+    en: () => 'Minimum price allowed is',
+    ja: () => '許容されている最小価格',
+  },
+  MinimumFee: {
+    en: () => 'Minimum earning model fee allowed is',
+    ja: () => '許容されている最小の収益モデルの手数料',
+  },
+  PriceSetMin: {
+    en: () => 'Price automatically set to minimum allowed value',
+    ja: () => '価格は最小許容値に自動で設定されます',
+  },
+  PriceSetMax: {
+    en: () => 'Price automatically set to maximum allowed value',
+    ja: () => '価格は最大許容値に自動で設定されます',
+  },
+  FeeSetMin: {
+    en: () => 'Fee automatically set to minimum allowed value',
+    ja: () => '手数料は最小許容値に自動で設定されます',
+  },
+  FeeSetMax: {
+    en: () => 'Fee automatically set to maximum allowed value',
+    ja: () => '手数料は最大許容値に自動で設定されます',
+  },
+  MembershipInUse: {
+    en: (noOfPositions) =>
+      `This membership already has ${noOfPositions} members.`,
+    ja: (noOfPositions) =>
+      `すでに${noOfPositions}人のメンバーがこのメンバーシップを持っています。`,
+  },
+  Image: {
+    en: () => 'Image',
+    ja: () => '画像',
+  },
+  UploadToChangeImage: {
+    en: () => 'Upload to change image',
+    ja: () => 'アップロードして画像を変更する',
+  },
+  RecommendedImageSize: {
+    en: () => 'Recommended image size is 600 x 600 px',
+    ja: () => '推奨画像サイズ: 600 x 600 px',
+  },
+  UseGoogleSlidesTemplate: {
+    en: () => 'Use Google Slides Template',
+    ja: () => 'Googleスライドテンプレートを使用',
+  },
+  Price: {
+    en: () => 'Price',
+    ja: () => '価格',
+  },
+  Priced: {
+    en: () => 'Priced',
+    ja: () => '価格を設定済み',
+  },
+  Unpriced: {
+    en: () => 'Unpriced',
+    ja: () => '価格が未設定です',
+  },
+  // note to Kent:
+  // These two form one sentence, but are separated for HTML styling purposes <- Gotcha!
+  UnpricedCannotBeBought: {
+    en: () => 'Unpriced memberships cannot be bought,',
+    ja: () => '価格が未設定のメンバーシップは購入できません',
+  },
+  AvailableInviteOnly: {
+    en: () => 'they are available via invite only.',
+    ja: () => '招待された場合のみ購入可能です',
+  },
+  // note to Kent:
+  // These two form one sentence, but are separated for HTML styling purposes <- Gotcha!
+  ChoosingUSDC: {
+    en: () => 'If you choose USDC, you can activate ',
+    ja: () => 'クレジットカードプラグインを有効にしたい場合は',
+  },
+  CreditCardPlugin: {
+    en: () => 'the credit card plugin.',
+    ja: () => 'USDCを選択してください',
+  },
+  EarningModel: {
+    en: () => 'Earning Model',
+    ja: () => '収益モデル',
+  },
+  DEVEarningModelDisabled: {
+    en: () => 'Earning model option is currently disabled for DEV',
+    ja: () => '収益モデルのオプションは現在利用できません',
+  },
+  WhatIsStaking: {
+    en: () => 'What is staking?',
+    ja: () => 'ステーキングとは？',
+  },
+  Description: {
+    en: () => 'Description',
+    ja: () => '説明',
+  },
+  MarkdownAvailable: {
+    en: () => 'Markdown is available',
+    ja: () => 'マークダウンが利用可能',
+  },
+  WhatIsMarkdown: {
+    en: () => 'What is Markdown?',
+    ja: () => 'マークダウンとは',
+  },
+  Payload: {
+    en: () => 'Payload',
+    ja: () => 'ペイロード',
+  },
+  AccessControl: {
+    en: () => 'Access Control',
+    ja: () => 'アクセスコントロール',
+  },
+  AccessControlURL: {
+    en: () => 'Access Control URL',
+    ja: () => 'アクセスコントロールURL',
+  },
+  DescriptionOfVerification: {
+    en: () => 'Description of the verification process',
+    ja: () => '認証プロセスの詳細',
+  },
+  WillEarnAtOnce: {
+    // For example: "X USDC will be earned at 1 time"
+    en: () => 'will be earned at 1 time.',
+    ja: () => 'を一度に取得します',
+  },
+  WillBeStaked: {
+    // For example: "X USDC will will be staked to earn dev continuously."
+    en: () => 'will be staked to earn dev continuously.',
+    ja: () => 'をステーキングして継続的にDEVを取得する',
   },
 } satisfies ClubsI18nParts

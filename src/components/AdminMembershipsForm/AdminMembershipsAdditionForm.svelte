@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ClubsEvents, setOptions } from '@devprotocol/clubs-core'
+  import { ClubsEvents, i18nFactory, setOptions } from '@devprotocol/clubs-core'
   import MembershipOptionCard from './MembershipOption.svelte'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import type { Membership } from '@plugins/memberships/index'
@@ -18,6 +18,7 @@
   import { bytes32Hex } from '@devprotocol/clubs-core'
   import { equals } from 'ramda'
   import { emptyDummyImage } from '@plugins/collections/fixtures'
+  import { Strings } from './i18n'
 
   export let useOnFinishCallback: boolean = false
   export let currentPluginIndex: number
@@ -71,6 +72,8 @@
   const maxPrice = 1e20
   const minCustomFee100 = 0
   const maxCustomFee100 = 95
+  const i18nBase = i18nFactory(Strings)
+  let i18n = i18nBase(['en'])
 
   const beneficiary = () =>
     (originalBeneficiary === ZeroAddress ? undefined : originalBeneficiary) ??
@@ -243,6 +246,7 @@
     fetchPositionsOfProperty()
     update()
     connectOnMount()
+    i18n = i18nBase(navigator.languages)
 
     const membershipDescriptionElement = document.getElementById(
       'membership-description',
@@ -269,9 +273,9 @@
     const value = Number((event.target as HTMLInputElement)?.value || 0)
 
     if (value < minPrice) {
-      invalidPriceMsg = `Minimum price allowed is ${minPrice}`
+      invalidPriceMsg = `${i18n('MaximumPrice')} ${minPrice}`
     } else if (value > maxPrice) {
-      invalidPriceMsg = `Maximum price allowed is ${maxPrice.toExponential(3)}`
+      invalidPriceMsg = `${i18n('MaximumPrice')} ${maxPrice.toExponential(3)}`
     } else {
       invalidPriceMsg = ''
     }
@@ -281,9 +285,9 @@
     const value = Number((event.target as HTMLInputElement)?.value || 0)
 
     if (value < minCustomFee100) {
-      invalidFeeMsg = `Minimum earning model fee allowed is ${minCustomFee100}`
+      invalidFeeMsg = `${i18n('MinimumFee')} ${minCustomFee100}`
     } else if (value > maxCustomFee100) {
-      invalidFeeMsg = `Maximum price allowed is ${maxCustomFee100}`
+      invalidFeeMsg = `${i18n('MaximumPrice')} ${maxCustomFee100}`
     } else {
       invalidFeeMsg = ''
     }
@@ -375,12 +379,10 @@
 
     if (value < minPrice) {
       membership.price = minPrice
-      invalidPriceMsg = `Price automatically set to minimum allowed value- ${minPrice}`
+      invalidPriceMsg = `${i18n('PriceSetMin')} - ${minPrice}`
     } else if (value > maxPrice) {
       membership.price = maxPrice
-      invalidPriceMsg = `Price automatically set to maximum allowed value- ${maxPrice.toExponential(
-        3,
-      )}`
+      invalidPriceMsg = `${i18n('PriceSetMax')} - ${maxPrice.toExponential(3)}`
     } else {
       invalidPriceMsg = ''
     }
@@ -419,10 +421,10 @@
 
     if (value < minCustomFee100) {
       membershipCustomFee100 = minCustomFee100
-      invalidFeeMsg = `Fee automatically set to minimum allowed value- ${minCustomFee100}`
+      invalidFeeMsg = `${i18n('FeeSetMin')} - ${minCustomFee100}`
     } else if (value > maxCustomFee100) {
       membershipCustomFee100 = maxCustomFee100
-      invalidFeeMsg = `Fee automatically set to maximum allowed value- ${maxCustomFee100}`
+      invalidFeeMsg = `${i18n('FeeSetMax')} - ${maxCustomFee100}`
     } else {
       invalidFeeMsg = ''
     }
@@ -542,7 +544,7 @@
   {/if}
   {#if !loading && noOfPositions > 0}
     <p class="text-center bg-dp-yellow-200 rounded text-dp-yellow-ink">
-      ⚠️ This membership already has {noOfPositions} members.
+      ⚠️ {i18n('MembershipInUse')}
     </p>
   {/if}
   <form on:change|preventDefault={(_) => update()} class="grid gap-16">
@@ -563,12 +565,12 @@
 
         <!-- Image -->
         <div class="hs-form-field">
-          <span class="hs-form-field__label">Image</span>
+          <span class="hs-form-field__label">{i18n('Image')}</span>
 
           <label
             class="hs-button is-filled w-fit cursor-pointer rounded-lg px-12 py-4"
           >
-            <span class="hs-button__label">Upload to change image</span>
+            <span class="hs-button__label">{i18n('UploadToChangeImage')}</span>
             <input
               id="avatarPath"
               name="avatarPath"
@@ -582,7 +584,7 @@
             * JPEG, PNG, GIF, TIFF and animated PNG
           </p>
           <span class="hs-form-field__helper"
-            >* Recommended image size is 600 x 600 px</span
+            >* {i18n('RecommendedImageSize')}</span
           >
 
           <p>
@@ -607,14 +609,16 @@
                   />
                 </svg>
               </span>
-              <span class="hs-button__label"> Use Google Slides template </span>
+              <span class="hs-button__label">
+                {i18n('UseGoogleSlidesTemplate')}
+              </span>
             </a>
           </p>
         </div>
 
         <!-- Price -->
         <div class="hs-form-field is-filled is-required">
-          <span class="hs-form-field__label"> Price </span>
+          <span class="hs-form-field__label"> {i18n('Price')} </span>
           <div
             class="flex w-full max-w-full items-center justify-start gap-1 mb-2"
           >
@@ -626,7 +630,7 @@
               id="membership-priced"
               name="membership-priced"
             >
-              Priced
+              {i18n('Priced')}
             </button>
             <button
               on:click|preventDefault={() => updateMembershipPriceType(true)}
@@ -636,7 +640,7 @@
               id="membership-unpriced"
               name="membership-unpriced"
             >
-              Unpriced
+              {i18n('Unpriced')}
             </button>
           </div>
           {#if isUnpriced(membership)}
@@ -644,9 +648,8 @@
               class="flex w-full max-w-full items-center justify-start gap-1"
             >
               <p class="hs-form-field__helper mt-2">
-                * Unpriced memberships can not be bought, <u
-                  >they are available via invite only.</u
-                >
+                * {i18n('UnpricedCannotBeBought')},
+                <u>{i18n('AvailableInviteOnly')}</u>
               </p>
             </div>
           {/if}
@@ -687,9 +690,7 @@
               </select>
             </div>
             <p class="hs-form-field__helper mt-2">
-              * If you choose USDC, you can active <u
-                >the credit card payment plugin.</u
-              >
+              * {i18n('ChoosingUSDC')} <u>{i18n('CreditCardPlugin')}</u>
             </p>
             {#if invalidPriceMsg !== ''}
               <p class="text-danger-300">* {invalidPriceMsg}</p>
@@ -700,7 +701,7 @@
         {#if isPriced(membership)}
           <!-- Earning model -->
           <div class="hs-form-field is-filled is-required">
-            <span class="hs-form-field__label"> Earning model </span>
+            <span class="hs-form-field__label"> {i18n('EarningModel')} </span>
             <div
               class="flex w-full max-w-full items-center justify-start gap-2"
             >
@@ -791,7 +792,7 @@
             </div>
             {#if membership.currency === 'DEV'}
               <p class="hs-form-field__helper mt-2">
-                * Earning model option is currently disabled for DEV
+                * {i18n('DEVEarningModelDisabled')}
               </p>
             {/if}
             {#if invalidFeeMsg !== ''}
@@ -826,9 +827,9 @@
                   .dp(3)
                   .toString()}%)</span
               >
-              will earn at 1 time,
+              {i18n('WillEarnAtOnce')}
               <span class="text-[#43C451]"
-                >and {BigNumber(
+                >{BigNumber(
                   membership.price * (1 - (membership.fee?.percentage || 0)),
                 )
                   .dp(5)
@@ -837,10 +838,11 @@
                 )
                   .dp(3)
                   .toString()}%)
-              </span> will be staked to earn dev continuously.
+              </span>
+              {i18n('WillBeStaked')}
             </p>
             <p class="hs-form-field__helper mt-2">
-              * <u>What is staking?</u>
+              * <u>{i18n('WhatIsStaking')}</u>
             </p>
           </div>
         {/if}
@@ -865,7 +867,7 @@
 
     <!-- Description -->
     <label class="hs-form-field is-filled is-required">
-      <span class="hs-form-field__label"> Description </span>
+      <span class="hs-form-field__label"> {i18n('Description')} </span>
       <textarea
         class="hs-form-field__input"
         bind:value={membership.description}
@@ -873,53 +875,46 @@
         name="membership-description"
       />
       <span class="hs-form-field__helper">
-        Markdown is available <a
+        {i18n('MarkdownAvailable')}
+        <a
           href="https://www.markdownguide.org/basic-syntax"
           target="_blank"
           class="underline [font-size:inherit]"
-          rel="noopener noreferrer">(What is Markdown? ↗)</a
+          rel="noopener noreferrer">({i18n('WhatIsMarkdown')} ↗)</a
         >
       </span>
     </label>
-    <a
-      href="https://openai.com/"
-      target="_blank"
-      class="hs-button is-filled is-small w-fit"
-      rel="noopener noreferrer"
-    >
-      <span class="hs-button__label"> Need help? Try asking an AI </span>
-    </a>
 
     <!-- Display payload as string -->
     <label class="hs-form-field">
-      <span class="hs-form-field__label"> Payload </span>
+      <span class="hs-form-field__label"> {i18n('Payload')} </span>
       <input class="hs-form-field__input" value={metaOfPayload} readonly />
     </label>
 
     <!-- Access control -->
     <div class="hs-form-field is-filled">
-      <span class="hs-form-field__label"> Access control </span>
+      <span class="hs-form-field__label"> {i18n('AccessControl')} </span>
       <div class="grid max-w-md grid-cols-2 items-center justify-start gap-2">
         <button
           on:click|preventDefault={toggleAccessControl(false)}
           data-is-selected={usingAccessControl === false}
           class="hs-button is-large is-filled data-[is-selected=false]:opacity-50"
         >
-          Public
+          {i18n('Public')}
         </button>
         <button
           on:click|preventDefault={toggleAccessControl(true)}
           data-is-selected={usingAccessControl === true}
           class="hs-button is-large is-filled data-[is-selected=false]:opacity-50"
         >
-          Private
+          {i18n('Private')}
         </button>
       </div>
     </div>
 
     {#if usingAccessControl}
       <label class="hs-form-field is-filled is-required">
-        <span class="hs-form-field__label"> Access control URL </span>
+        <span class="hs-form-field__label"> {i18n('AccessControlURL')} </span>
         <input
           class="hs-form-field__input"
           bind:value={accessControl.url}
@@ -927,13 +922,13 @@
         />
         <span class="hs-form-field__helper">
           App requests <pre class="inline">[GET] /?account=0x...</pre>
-          and expected to be returned 1 if verified.
+          are expected to be returned 1 if verified.
         </span>
       </label>
 
       <label class="hs-form-field is-filled is-required">
         <span class="hs-form-field__label">
-          Description of the verification process
+          {i18n('DescriptionOfVerification')}
         </span>
         <textarea
           class="hs-form-field__input"
@@ -941,11 +936,12 @@
           on:change={update}
         />
         <span class="hs-form-field__helper">
-          Markdown is available <a
+          {i18n('MarkdownAvailable')}
+          <a
             href="https://www.markdownguide.org/basic-syntax"
             target="_blank"
             class="underline [font-size:inherit]"
-            rel="noopener noreferrer">(What is Markdown? ↗)</a
+            rel="noopener noreferrer">({i18n('WhatIsMarkdown')} ↗)</a
           >
         </span>
       </label>
@@ -969,14 +965,14 @@
           }`}
           on:click|preventDefault={() => activateMembership(membership)}
         >
-          <span class="hs-button__label"> Activate </span>
+          <span class="hs-button__label"> {i18n('Activate')} </span>
         </button>
       {/if}
       <button
         class="hs-button is-outlined is-error"
         on:click|preventDefault={() => cancel()}
       >
-        <span class="hs-button__label">Cancel</span>
+        <span class="hs-button__label">{i18n('Cancel')}</span>
       </button>
     </div>
   </form>
