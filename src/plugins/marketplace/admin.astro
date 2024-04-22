@@ -29,7 +29,7 @@ const flags = getFlagsByParams({ url: new URL(Astro.url) })
 const isAchievementsEnabled =
   flags.get(FeatureFlags.AchievementsOnMarketplace) === FeatureFlagValues.Enable
 const isDynamicWalletEnabled =
-  flags.get(FeatureFlags.Huddle01onMarketplace) === FeatureFlagValues.Enable
+  flags.get(FeatureFlags.DynamicWalletOnMarketplace) === FeatureFlagValues.Enable
 
 const installablePlugins = allInstallablePlugins.filter((plg) => {
   if (!isAchievementsEnabled && plg.id === achievements.meta.id) {
