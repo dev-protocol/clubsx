@@ -126,7 +126,7 @@ export const getClubById = async (
 ): Promise<UndefinedOr<ClubDocument>> => {
   const search = await client.ft.search(
     Index.Club,
-    `@${CLUB_SCHEMA['$.id'].AS}:{${id}}`,
+    `@${CLUB_SCHEMA['$.id'].AS}:{${id.replaceAll('-', '\\-')}}`,
     {
       LIMIT: { from: 0, size: 1 },
     },
