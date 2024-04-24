@@ -22,7 +22,7 @@ export type Invitation = {
   id: string
   disabled?: boolean
   conditions?: {
-    recipient?: string
+    recipients?: string[]
   }
   membership: {
     payload: string
@@ -50,10 +50,10 @@ export const disabled = {
   },
 } satisfies RediSearchSchema
 
-export const conditionsRecipient = {
-  '$.conditions.recipient': {
+export const conditionsRecipients = {
+  '$.conditions.recipients': {
     type: SchemaFieldTypes.TEXT,
-    AS: 'conditionsRecipient',
+    AS: 'conditionsRecipients',
   },
 } satisfies RediSearchSchema
 
@@ -88,7 +88,7 @@ export const account = {
 export const schemaInvitation = {
   ...id,
   ...disabled,
-  ...conditionsRecipient,
+  ...conditionsRecipients,
   ...membershipPayload,
 }
 
