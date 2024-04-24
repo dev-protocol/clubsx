@@ -160,7 +160,7 @@
 
   const claimAchievement = async () => {
     const splitHostname = window.location.hostname.split('.')
-    const site = splitHostname[0]
+    const site = splitHostname.length > 1 ? splitHostname[0] : ''
 
     if (!achievementId || !site) {
       isClaimingAchievement = false
