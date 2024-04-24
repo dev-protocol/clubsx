@@ -114,6 +114,13 @@ export const claimedSBTTokenId = {
   },
 } satisfies RediSearchSchema
 
+export const clubs = {
+  '$.clubs': {
+    type: SchemaFieldTypes.TAG,
+    AS: 'clubs',
+  },
+} satisfies RediSearchSchema
+
 /// @dev This schema is used to store the achievement given to a user.
 /// The achievement id can be used to fetch metadata and info of what achievement is
 /// unlocked by the user. This way many users can have sample achievements and/or a user
@@ -126,6 +133,7 @@ export const ACHIEVEMENT_ITEM_SCHEMA = {
   ...createdOnTimestamp,
   ...claimedOnTimestamp,
   ...claimedSBTTokenId,
+  ...clubs,
 }
 
 export const ACHIEVEMENT_ITEM_SCHEMA_ID = keccak256(
