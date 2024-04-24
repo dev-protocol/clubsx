@@ -29,6 +29,7 @@ export const handler =
         achievement: Omit<
           Achievement,
           | 'id'
+          | 'clubs'
           | 'achievementInfoId'
           | 'claimed'
           | 'claimedSBTTokenId'
@@ -115,6 +116,7 @@ export const handler =
               claimedSBTTokenId: 0,
               createdOnTimestamp: Date.now(),
               claimedOnTimestamp: 0,
+              clubs: site,
             } as AchievementItem,
           ),
       ),
