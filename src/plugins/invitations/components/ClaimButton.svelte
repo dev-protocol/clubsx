@@ -20,9 +20,11 @@
       signer = _signer
       const signerAddress = await signer?.getAddress()
 
-      isRecipient = invitation?.conditions?.recipient
-        ? invitation.conditions.recipient.toLowerCase() ===
-          signerAddress?.toLowerCase()
+      isRecipient = invitation?.conditions?.recipients
+        ? invitation.conditions.recipients.some(
+            (recipient) =>
+              recipient.toLowerCase() === signerAddress?.toLowerCase(),
+          )
         : true
 
       checkAvailability()
