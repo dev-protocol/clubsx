@@ -19,8 +19,11 @@ import type { APIRoute } from 'astro'
 export const handler =
   (): APIRoute =>
   async ({ url }) => {
+    // 1. Get achievement id and clubs name.
+    const splitHostname = url.hostname.split('.')
+    const site = splitHostname.length > 1 ? splitHostname[0] : ''
     const achievementId = getIdFromURL(url)
-    if (!achievementId) {
+    if (!achievementId || !site) {
       return new Response(JSON.stringify({ error: 'Missing data' }), {
         status: 400,
       })
@@ -40,7 +43,7 @@ export const handler =
       ([_id, _client]) =>
         _client.ft.search(
           AchievementIndex.AchievementItem,
-          `@${ACHIEVEMENT_ITEM_SCHEMA['$.id'].AS}:{${uuidToQuery(_id)}}`,
+          `@${ACHIEVEMENT_ITEM_SCHEMA['$.id'].AS}:{${uuidToQuery(_id)}} @${ACHIEVEMENT_ITEM_SCHEMA['$.clubs'].AS}:{${uuidToQuery(site)}}`,
           {
             LIMIT: {
               from: 0,
