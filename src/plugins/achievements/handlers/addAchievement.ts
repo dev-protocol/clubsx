@@ -20,6 +20,8 @@ export const handler =
   (conf: ClubsConfiguration) =>
   async ({ request }: { request: Request }) => {
     // 1. Get the data.
+    const splitHostname = new URL(request.url).hostname.split('.')
+    const siteFromURL = splitHostname.length > 1 ? splitHostname[0] : ''
     const { site, message, signature, achievement, noOfCopies } =
       (await request.json()) as {
         site: string
@@ -38,8 +40,20 @@ export const handler =
         >
       }
     // 2. Validate all data is present.
-    if (!achievement || !message || !signature || !site || !noOfCopies) {
+    if (
+      !achievement ||
+      !message ||
+      !signature ||
+      !site ||
+      !noOfCopies ||
+      !siteFromURL
+    ) {
       return new Response(JSON.stringify({ error: 'Missing data' }), {
+        status: 400,
+      })
+    }
+    if (site !== siteFromURL) {
+      return new Response(JSON.stringify({ error: 'Bad data' }), {
         status: 400,
       })
     }

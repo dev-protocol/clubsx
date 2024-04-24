@@ -26,14 +26,23 @@ export const handler =
   ({ rpcUrl, chainId, property }: ClaimAchievementApiHandlerParams) =>
   async ({ request }: { readonly request: Request }) => {
     // 1. Get the req data.
-    const { message, signature, achievementItemId } =
+    const splitHostname = new URL(request.url).hostname.split('.')
+    const siteFromURL = splitHostname.length > 1 ? splitHostname[0] : ''
+    const { site, message, signature, achievementItemId } =
       (await request.json()) as {
+        site: string
         message: string
         signature: string
         achievementItemId: string
       }
     // 2. Validated presence of req data.
-    if (!achievementItemId || !message || !signature) {
+    if (
+      !achievementItemId ||
+      !message ||
+      !signature ||
+      !site ||
+      site !== siteFromURL
+    ) {
       return new Response(JSON.stringify({ error: 'Bad data' }), {
         status: 400,
       })
@@ -58,7 +67,7 @@ export const handler =
       ([_id, _client]) =>
         _client.ft.search(
           AchievementIndex.AchievementItem,
-          `@${ACHIEVEMENT_ITEM_SCHEMA['$.id'].AS}:{${uuidToQuery(_id)}}`,
+          `@${ACHIEVEMENT_ITEM_SCHEMA['$.id'].AS}:{${uuidToQuery(_id)}} @${ACHIEVEMENT_ITEM_SCHEMA['$.clubs'].AS}:{${uuidToQuery(site)}}`,
           {
             LIMIT: {
               from: 0,
