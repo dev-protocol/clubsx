@@ -12,15 +12,16 @@ import {
   getIdFromURL,
   uuidToQuery,
 } from '../utils'
-import { ACHIEVEMENT_ITEM_SCHEMA, ACHIEVEMENT_INFO_SCHEMA } from '../db/schema'
+import { ACHIEVEMENT_ITEM_SCHEMA } from '../db/schema'
 import { type AchievementItem, type AchievementInfo } from '../types'
 import type { APIRoute } from 'astro'
 
 export const handler =
-  (): APIRoute =>
+  (clubsUrl: string): APIRoute =>
   async ({ url }) => {
+    // 1. Get achievement id.
     const achievementId = getIdFromURL(url)
-    if (!achievementId) {
+    if (!achievementId || !url || !clubsUrl) {
       return new Response(JSON.stringify({ error: 'Missing data' }), {
         status: 400,
       })
@@ -40,7 +41,7 @@ export const handler =
       ([_id, _client]) =>
         _client.ft.search(
           AchievementIndex.AchievementItem,
-          `@${ACHIEVEMENT_ITEM_SCHEMA['$.id'].AS}:{${uuidToQuery(_id)}}`,
+          `@${ACHIEVEMENT_ITEM_SCHEMA['$.id'].AS}:{${uuidToQuery(_id)}} @${ACHIEVEMENT_ITEM_SCHEMA['$.clubsUrl'].AS}:{${uuidToQuery(clubsUrl)}}`,
           {
             LIMIT: {
               from: 0,
@@ -68,6 +69,8 @@ export const handler =
       (d) =>
         (d as UndefinedOr<AchievementInfo>) ?? new Error('ID is not found.'),
     )
+
+    await client.quit()
 
     return new Response(
       isNotError(achievementInfo) && isNotError(achievementItem)
