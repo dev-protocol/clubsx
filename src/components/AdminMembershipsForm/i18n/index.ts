@@ -118,11 +118,11 @@ export const Strings = {
   },
   Priced: {
     en: () => 'Priced',
-    ja: () => '価格を設定済み',
+    ja: () => '価格を設定する',
   },
   Unpriced: {
     en: () => 'Unpriced',
-    ja: () => '価格が未設定です',
+    ja: () => '無料にする',
   },
   // note to Kent:
   // These two form one sentence, but are separated for HTML styling purposes <- Gotcha!
@@ -187,11 +187,11 @@ export const Strings = {
   WillEarnAtOnce: {
     // For example: "X USDC will be earned at 1 time"
     en: () => 'will be earned at 1 time.',
-    ja: () => 'を一度に取得します',
+    ja: () => 'を収益として一度に得て、',
   },
   WillBeStaked: {
     // For example: "X USDC will will be staked to earn dev continuously."
     en: () => 'will be staked to earn dev continuously.',
-    ja: () => 'をステーキングして継続的にDEVを取得する',
+    ja: () => 'をステーキングして継続的にDEVを取得します',
   },
 } satisfies ClubsI18nParts
