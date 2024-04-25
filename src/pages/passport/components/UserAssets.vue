@@ -16,7 +16,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <section class="grid gap-8">
+  <!-- <section class="grid gap-8">
     <h2 class="font-bold text-3xl flex items-center gap-2">
       Achivements <span v-if="!assets" class="h-full w-12"><Skeleton /></span
       ><span v-if="assets" class="font-inherit text-inherit"
@@ -32,7 +32,7 @@ onMounted(async () => {
         <span class="block h-96"><Skeleton /></span>
       </li>
     </ul>
-  </section>
+  </section> -->
   <section class="grid gap-8">
     <h2 class="font-bold text-3xl flex items-center gap-2">
       Clubs <span v-if="!assets" class="h-full w-12"><Skeleton /></span
