@@ -29,6 +29,7 @@ export type AchievementItem = {
   claimedSBTTokenId: number
   createdOnTimestamp: number
   claimedOnTimestamp: number
+  clubs: string
 }
 
 export type Achievement = AchievementInfo & AchievementItem

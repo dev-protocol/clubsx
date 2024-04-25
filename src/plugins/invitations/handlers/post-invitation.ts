@@ -27,7 +27,7 @@ export const handler =
           payload: string
         }
         conditions?: {
-          recipient?: string
+          recipients?: string[]
         }
         signature: string
         message: string

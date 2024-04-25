@@ -14,7 +14,7 @@ const main = async () => {
           payload: MEMBERSHIP_PAYLOAD.toString(),
         },
         conditions: {
-          recipient: RECIPIENT,
+          recipients: [RECIPIENT],
         },
         signature: SIGNATURE,
         message: MESSAGE,
