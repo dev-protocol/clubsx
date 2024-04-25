@@ -8,7 +8,11 @@ import {
 } from '@devprotocol/util-ts'
 import { JsonRpcProvider } from 'ethers'
 import PQueue from 'p-queue'
-import { getClubByProperty, getDefaultClient } from '@fixtures/api/club/redis'
+import {
+  getClubByProperty,
+  getDefaultClient,
+  withCheckingIndex as withCheckingIndexClubs,
+} from '@fixtures/api/club/redis'
 import { AchievementIndex } from '@plugins/achievements/utils'
 import { ACHIEVEMENT_INFO_SCHEMA } from '@plugins/achievements/db/schema'
 import { getAllOwnedTokens, type Metadata } from '@plugins/tickets/utils/nft'
@@ -153,7 +157,9 @@ export const GET: APIRoute = async ({
         new JsonRpcProvider(`https://polygon-mainnet.infura.io/v3/${key}`),
     ) ?? new Error('INFURA key not found')
 
-  const client = await withCheckingIndex(getDefaultClient)
+  const client = await withCheckingIndexClubs(() =>
+    withCheckingIndex(getDefaultClient),
+  )
 
   const allData = await whenNotErrorAll(
     [id, provider, client],
