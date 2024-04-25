@@ -1,5 +1,9 @@
 import { authenticate, decode } from '@devprotocol/clubs-core'
-import { updateClubId } from '@fixtures/api/club/redis'
+import {
+  updateClubId,
+  withCheckingIndex,
+  getDefaultClient,
+} from '@fixtures/api/club/redis'
 import { getDefaultProvider } from 'ethers'
 import { createClient } from 'redis'
 
@@ -11,16 +15,7 @@ export const POST = async ({ request }: { request: Request }) => {
     sig: string
   }
 
-  const client = createClient({
-    url: process.env.REDIS_URL,
-    username: process.env.REDIS_USERNAME ?? '',
-    password: process.env.REDIS_PASSWORD ?? '',
-    socket: {
-      keepAlive: 1,
-      reconnectStrategy: 1,
-    },
-  })
-  await client.connect()
+  const client = await withCheckingIndex(getDefaultClient)
 
   client.on('error', (e) => {
     console.error('redis connection error: ', e)
