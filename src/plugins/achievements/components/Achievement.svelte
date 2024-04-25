@@ -159,10 +159,7 @@
   }
 
   const claimAchievement = async () => {
-    const splitHostname = window.location.hostname.split('.')
-    const site = splitHostname.length > 1 ? splitHostname[0] : ''
-
-    if (!achievementId || !site) {
+    if (!achievementId) {
       isClaimingAchievement = false
       computeClaimBtnTxt(false, false, currentAddress, signer, achievement)
       return
@@ -200,7 +197,6 @@
       'Content-Type': 'application/json;charset=UTF-8',
     }
     const body = JSON.stringify({
-      site,
       message: hash,
       signature,
       achievementItemId: achievementId,

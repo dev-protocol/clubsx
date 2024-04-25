@@ -23,26 +23,17 @@ import {
 } from '../utils'
 
 export const handler =
-  ({ rpcUrl, chainId, property }: ClaimAchievementApiHandlerParams) =>
+  ({ rpcUrl, chainId, property, url }: ClaimAchievementApiHandlerParams) =>
   async ({ request }: { readonly request: Request }) => {
     // 1. Get the req data.
-    const splitHostname = new URL(request.url).hostname.split('.')
-    const siteFromURL = splitHostname.length > 1 ? splitHostname[0] : ''
-    const { site, message, signature, achievementItemId } =
+    const { message, signature, achievementItemId } =
       (await request.json()) as {
-        site: string
         message: string
         signature: string
         achievementItemId: string
       }
     // 2. Validated presence of req data.
-    if (
-      !achievementItemId ||
-      !message ||
-      !signature ||
-      !site ||
-      site !== siteFromURL
-    ) {
+    if (!achievementItemId || !message || !signature || !url) {
       return new Response(JSON.stringify({ error: 'Bad data' }), {
         status: 400,
       })
@@ -67,7 +58,7 @@ export const handler =
       ([_id, _client]) =>
         _client.ft.search(
           AchievementIndex.AchievementItem,
-          `@${ACHIEVEMENT_ITEM_SCHEMA['$.id'].AS}:{${uuidToQuery(_id)}} @${ACHIEVEMENT_ITEM_SCHEMA['$.clubs'].AS}:{${uuidToQuery(site)}}`,
+          `@${ACHIEVEMENT_ITEM_SCHEMA['$.id'].AS}:{${uuidToQuery(_id)}} @${ACHIEVEMENT_ITEM_SCHEMA['$.clubsUrl'].AS}:{${uuidToQuery(url)}}`,
           {
             LIMIT: {
               from: 0,
@@ -233,6 +224,8 @@ export const handler =
         claimedSBTTokenId: claimedSBTTokenId,
       },
     )
+
+    await client.quit()
 
     // 10. Return response.
     return new Response(

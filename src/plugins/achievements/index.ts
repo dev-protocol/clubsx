@@ -42,6 +42,7 @@ export const getApiPaths = (async (options, config, _) => {
         rpcUrl: config.rpcUrl,
         chainId: config.chainId,
         property: config.propertyAddress,
+        url: config.url,
       }),
     },
   ]

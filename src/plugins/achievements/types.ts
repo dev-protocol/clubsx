@@ -38,4 +38,5 @@ export type ClaimAchievementApiHandlerParams = {
   rpcUrl: string
   chainId: number
   property: string
+  url: string
 }
