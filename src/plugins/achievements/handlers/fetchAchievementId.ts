@@ -1,3 +1,5 @@
+import type { APIRoute } from 'astro'
+
 import {
   isNotError,
   whenNotError,
@@ -6,15 +8,15 @@ import {
 } from '@devprotocol/util-ts'
 
 import { getDefaultClient } from '../db/redis'
+import { ACHIEVEMENT_ITEM_SCHEMA } from '../db/schema'
+import { type AchievementItem, type AchievementInfo } from '../types'
 import {
   AchievementIndex,
   AchievementPrefix,
   getIdFromURL,
   uuidToQuery,
+  clubsUrlToKeccak256Tag,
 } from '../utils'
-import { ACHIEVEMENT_ITEM_SCHEMA } from '../db/schema'
-import { type AchievementItem, type AchievementInfo } from '../types'
-import type { APIRoute } from 'astro'
 
 export const handler =
   (clubsUrl: string): APIRoute =>
@@ -41,7 +43,7 @@ export const handler =
       ([_id, _client]) =>
         _client.ft.search(
           AchievementIndex.AchievementItem,
-          `@${ACHIEVEMENT_ITEM_SCHEMA['$.id'].AS}:{${uuidToQuery(_id)}} @${ACHIEVEMENT_ITEM_SCHEMA['$.clubsUrl'].AS}:{${uuidToQuery(clubsUrl)}}`,
+          `@${ACHIEVEMENT_ITEM_SCHEMA['$.id'].AS}:{${uuidToQuery(_id)}} @${ACHIEVEMENT_ITEM_SCHEMA['$.clubsUrl'].AS}:{${clubsUrlToKeccak256Tag(clubsUrl)}}`,
           {
             LIMIT: {
               from: 0,

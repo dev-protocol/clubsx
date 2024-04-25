@@ -20,6 +20,7 @@ import {
   checkForExistingAchievementInfo,
   checkForExistingAchievementItem,
   uuidToQuery,
+  clubsUrlToKeccak256Tag,
 } from '../utils'
 
 export const handler =
@@ -58,7 +59,7 @@ export const handler =
       ([_id, _client]) =>
         _client.ft.search(
           AchievementIndex.AchievementItem,
-          `@${ACHIEVEMENT_ITEM_SCHEMA['$.id'].AS}:{${uuidToQuery(_id)}} @${ACHIEVEMENT_ITEM_SCHEMA['$.clubsUrl'].AS}:{${uuidToQuery(url)}}`,
+          `@${ACHIEVEMENT_ITEM_SCHEMA['$.id'].AS}:{${uuidToQuery(_id)}} @${ACHIEVEMENT_ITEM_SCHEMA['$.clubsUrl'].AS}:{${clubsUrlToKeccak256Tag(url)}}`,
           {
             LIMIT: {
               from: 0,
