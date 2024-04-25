@@ -23,6 +23,7 @@ export type Invitation = {
   disabled?: boolean
   conditions?: {
     recipients?: string[]
+    maxRedemptions?: number
   }
   membership: {
     payload: string

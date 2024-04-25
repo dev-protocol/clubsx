@@ -50,30 +50,41 @@ export const check = async ({
       new Error('ID is not found.'),
   )
 
-  // Try to fetch the history.
+  // fetch all history items for the invitation
   const history = await client.ft
     .search(
       Index.History,
-      `@${schemaHistory['$.usedId'].AS}:{${uuidToQuery(id)}} @${schemaHistory['$.account'].AS}:{${uuidToQuery(account)}}`,
-      {
-        LIMIT: {
-          from: 0,
-          size: 1,
-        },
-      },
+      `@${schemaHistory['$.usedId'].AS}:{${uuidToQuery(id)}}`,
     )
     .catch((err) => err as Error)
-  const historyItem = whenNotError(
-    history,
-    (d) => d.documents.find((x) => x.value)?.value as UndefinedOr<History>,
-  )
 
   const valid = whenNotErrorAll(
-    [invItem, historyItem],
-    ([_invitation, _history]) => {
-      return typeof _history === 'undefined'
-        ? true
-        : new Error('ID is already used.')
+    [history, invItem],
+    ([_history, _invitation]) => {
+      // Ensure the invitation is retrieved
+      if (!_invitation) {
+        return new Error('Invitation not found.')
+      }
+
+      // Ensure the max redemptions is not reached
+      if (
+        _history.documents.length >=
+        (_invitation?.conditions?.maxRedemptions ?? 0)
+      ) {
+        return new Error('Invitation has reached max redemptions.')
+      }
+
+      // Check if the account is in the recipients list
+      if (!_invitation.conditions?.recipients?.includes(account)) {
+        return new Error('Account is not in the recipients list.')
+      }
+
+      // Make sure the invitation has not already been redeemed by the account
+      if (_history.documents.find((x) => x.value?.account === account)) {
+        return new Error('Invitation has already been redeemed.')
+      }
+
+      return true
     },
   )
 
