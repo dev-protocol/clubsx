@@ -22,16 +22,15 @@ export const handler =
     // 1. Get the data.
     const splitHostname = new URL(request.url).hostname.split('.')
     const siteFromURL = splitHostname.length > 1 ? splitHostname[0] : ''
-    const { site, message, signature, achievement, noOfCopies } =
+    const { message, signature, achievement, noOfCopies } =
       (await request.json()) as {
-        site: string
         message: string
         signature: string
         noOfCopies: number
         achievement: Omit<
           Achievement,
           | 'id'
-          | 'clubs'
+          | 'clubsUrl'
           | 'achievementInfoId'
           | 'claimed'
           | 'claimedSBTTokenId'
@@ -44,7 +43,7 @@ export const handler =
       !achievement ||
       !message ||
       !signature ||
-      !site ||
+      !conf.url ||
       !noOfCopies ||
       !siteFromURL
     ) {
@@ -52,7 +51,7 @@ export const handler =
         status: 400,
       })
     }
-    if (site !== siteFromURL) {
+    if (conf.url !== siteFromURL) {
       return new Response(JSON.stringify({ error: 'Bad data' }), {
         status: 400,
       })
@@ -130,7 +129,7 @@ export const handler =
               claimedSBTTokenId: 0,
               createdOnTimestamp: Date.now(),
               claimedOnTimestamp: 0,
-              clubs: site,
+              clubsUrl: conf.url,
             } as AchievementItem,
           ),
       ),
