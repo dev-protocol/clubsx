@@ -28,7 +28,7 @@ export const getApiPaths = (async (options, config, _) => {
     {
       paths: ['achievement', SinglePath],
       method: 'GET',
-      handler: fetchAchievement(),
+      handler: fetchAchievement(config.url),
     },
     {
       paths: ['achievements'],
