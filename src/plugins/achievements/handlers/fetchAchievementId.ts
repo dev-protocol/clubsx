@@ -70,6 +70,8 @@ export const handler =
         (d as UndefinedOr<AchievementInfo>) ?? new Error('ID is not found.'),
     )
 
+    await client.quit()
+
     return new Response(
       isNotError(achievementInfo) && isNotError(achievementItem)
         ? JSON.stringify({
