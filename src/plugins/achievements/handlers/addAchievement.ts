@@ -6,14 +6,15 @@ import {
   encode,
 } from '@devprotocol/clubs-core'
 
-import type { Achievement, AchievementItem } from '../types'
 import { getDefaultClient } from '../db/redis'
+import type { Achievement, AchievementItem } from '../types'
 import {
   AchievementPrefix,
   getAchievementInfoDocument,
   checkForExistingAchievementInfo,
   checkForExistingAchievementItem,
   createAchievementItemId,
+  clubsUrlToKeccak256Tag,
 } from '../utils'
 
 export const handler =
@@ -115,7 +116,7 @@ export const handler =
               claimedSBTTokenId: 0,
               createdOnTimestamp: Date.now(),
               claimedOnTimestamp: 0,
-              clubsUrl: conf.url,
+              clubsUrl: clubsUrlToKeccak256Tag(conf.url),
             } as AchievementItem,
           ),
       ),
