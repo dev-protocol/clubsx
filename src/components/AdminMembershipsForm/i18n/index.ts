@@ -138,10 +138,10 @@ export const Strings = {
   // These two form one sentence, but are separated for HTML styling purposes <- Gotcha!
   ChoosingUSDC: {
     en: () => 'If you choose USDC, you can activate ',
-    ja: () => 'クレジットカードプラグインを有効にしたい場合は',
+    ja: () => `<u>クレジットカードプラグイン</u>を有効にしたい場合は`,
   },
   CreditCardPlugin: {
-    en: () => 'the credit card plugin.',
+    en: () => `<u>the credit card plugin.</u>`,
     ja: () => 'USDCを選択してください',
   },
   EarningModel: {
