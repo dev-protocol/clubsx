@@ -849,7 +849,12 @@
               {i18n('WillBeStaked')}
             </p>
             <p class="hs-form-field__helper mt-2">
-              * <u>{i18n('WhatIsStaking')}</u>
+              * <a
+                class="hs-form-field__helper"
+                target="”_blank”"
+                href={`${i18n('WhatIsStakingLink')}`}
+                ><u>{i18n('WhatIsStaking')}</u></a
+              >
             </p>
           </div>
         {/if}

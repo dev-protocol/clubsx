@@ -152,6 +152,10 @@ export const Strings = {
     en: () => 'Earning model option is currently disabled for DEV',
     ja: () => '収益モデルのオプションは現在利用できません',
   },
+  WhatIsStakingLink: {
+    en: () => 'https://docs.devprotocol.xyz/concepts/devtoken#devs-tokenomics',
+    ja: () => 'https://note.com/dev_guide/n/nc7ba51f51a13',
+  },
   WhatIsStaking: {
     en: () => 'What is staking?',
     ja: () => 'ステーキングとは？',
