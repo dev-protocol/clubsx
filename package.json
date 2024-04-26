@@ -1,6 +1,6 @@
 {
   "name": "clubs",
-  "version": "0.13.3-beta0.2",
+  "version": "0.13.3-beta0.3",
   "private": true,
   "type": "module",
   "scripts": {
