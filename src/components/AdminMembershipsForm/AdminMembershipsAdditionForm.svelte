@@ -691,12 +691,14 @@
               </select>
             </div>
             <p class="hs-form-field__helper mt-2">
-              * {i18n('ChoosingUSDC')}
-              <a
-                class="hs-form-field__helper"
-                target="”_blank”"
-                href={`http://${site}.clubs.place/admin/marketplace/devprotocol:clubs:plugin:pay-by-card`}
-                ><u>{i18n('CreditCardPlugin')}</u></a
+              <u>
+                * {i18n('ChoosingUSDC')}
+                <a
+                  class="hs-form-field__helper"
+                  target="”_blank”"
+                  href={`http://${site}.clubs.place/admin/marketplace/devprotocol:clubs:plugin:pay-by-card`}
+                  >{i18n('CreditCardPlugin')}</a
+                ></u
               >
             </p>
             {#if invalidPriceMsg !== ''}
