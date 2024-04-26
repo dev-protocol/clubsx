@@ -82,6 +82,7 @@ const siteBaseUrl = ((url) =>
 
         <AdminMembershipsAdditionForm
           client:load
+          site={site}
           clubName={props.name as string}
           currentPluginIndex={props.clubs.currentPluginIndex}
           membership={membership}
