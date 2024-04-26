@@ -64,7 +64,7 @@ export const uuidToQuery = (id: string) => id.replaceAll('-', '\\-')
  * @returns the TAG string
  */
 export const clubsUrlToKeccak256Tag = (url: string) =>
-  uuidToQuery(keccak256(url))
+  uuidToQuery(keccak256(toUtf8Bytes(encode(url))))
 
 /**
  * Returns true if achievement info is present, else false.
