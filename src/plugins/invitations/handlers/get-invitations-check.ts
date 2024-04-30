@@ -76,35 +76,56 @@ export const check = async ({
         return new Error('Invitation has no conditions.')
       }
 
+      const validConditions = whenDefinedAll(
+        [
+          _invitation.conditions?.maxRedemptions,
+          _invitation.conditions.recipients,
+        ],
+        () => {
+          return new Error('Invitation has no conditions.')
+        },
+      )
+
       /**
        * Anonymous invites sent
        * handle max redepemptions
        */
-      if (
-        _invitation.conditions?.maxRedemptions &&
-        _history.documents.length >=
-          (_invitation?.conditions.maxRedemptions ?? 0)
-      ) {
-        return new Error('Invitation has reached max redemptions.')
-      }
+      const validMaxRedemptions = whenDefined(
+        _invitation.conditions?.maxRedemptions,
+        (redemptions) => {
+          if (_history.documents.length >= redemptions) {
+            return new Error('Invitation has reached max redemptions.')
+          }
+
+          return true
+        },
+      )
 
       /**
        * Specified list of addresses for the invitation
        */
-      if (
-        _invitation.conditions?.recipients &&
-        // Check if the account is in the recipients list
-        !_invitation.conditions.recipients?.includes(account)
-      ) {
-        return new Error('Account is not in the recipients list.')
-      }
+      const validRecipients = whenDefined(
+        _invitation.conditions?.recipients,
+        (recipients) => {
+          if (!recipients?.includes(account)) {
+            return new Error('Account is not in the recipients list.')
+          }
+
+          return true
+        },
+      )
 
       // Make sure the invitation has not already been redeemed by the account
-      if (_history.documents.find((x) => x.value?.account === account)) {
-        return new Error('Invitation has already been redeemed.')
-      }
+      const previouslyRedeemed = Boolean(
+        _history.documents.find((x) => x.value?.account === account),
+      )
 
-      return true
+      return (
+        validConditions &&
+        validMaxRedemptions &&
+        validRecipients &&
+        !previouslyRedeemed
+      )
     },
   )
 
