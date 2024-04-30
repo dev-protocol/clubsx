@@ -66,16 +66,36 @@ export const check = async ({
         return new Error('Invitation not found.')
       }
 
-      // Ensure the max redemptions is not reached
+      /**
+       * Missing conditions
+       */
       if (
+        !_invitation.conditions?.maxRedemptions &&
+        !_invitation.conditions?.recipients
+      ) {
+        return new Error('Invitation has no conditions.')
+      }
+
+      /**
+       * Anonymous invites sent
+       * handle max redepemptions
+       */
+      if (
+        _invitation.conditions?.maxRedemptions &&
         _history.documents.length >=
-        (_invitation?.conditions?.maxRedemptions ?? 0)
+          (_invitation?.conditions.maxRedemptions ?? 0)
       ) {
         return new Error('Invitation has reached max redemptions.')
       }
 
-      // Check if the account is in the recipients list
-      if (!_invitation.conditions?.recipients?.includes(account)) {
+      /**
+       * Specified list of addresses for the invitation
+       */
+      if (
+        _invitation.conditions?.recipients &&
+        // Check if the account is in the recipients list
+        !_invitation.conditions.recipients?.includes(account)
+      ) {
         return new Error('Account is not in the recipients list.')
       }
 
