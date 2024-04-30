@@ -79,10 +79,12 @@ export const check = async ({
       const validConditions = whenDefinedAll(
         [
           _invitation.conditions?.maxRedemptions,
-          _invitation.conditions.recipients,
+          _invitation.conditions?.recipients,
         ],
         () => {
-          return new Error('Invitation has no conditions.')
+          return new Error(
+            'Invitation should not have both max redemptions and recipients defined.',
+          )
         },
       )
 
