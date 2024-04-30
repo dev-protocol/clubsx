@@ -648,10 +648,10 @@
     svelte "^3.49.0"
     vue "^3.2.0"
 
-"@devprotocol/clubs-core@3.10.4":
-  version "3.10.4"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-3.10.4.tgz#68eaeb746d1a267e0819f9dfdc0a5b9e9885b985"
-  integrity sha512-7eoq+VB5xF1ersvcOyLJvU1id0RynJWcdRkBpDrwrmnuJGNvPIJFTV8ItcqDhDppHyTOxmUGFFqyXy2UvPCERw==
+"@devprotocol/clubs-core@3.11.0":
+  version "3.11.0"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-3.11.0.tgz#dd8d70dbc0e7e6b5a56423e8fd1e3d6dd74ae1de"
+  integrity sha512-G2l7FTrxBDbTow+rhZDQ5H+LBfBgJeJuwYP5i8Sn7ff7HL2rF7qKajQZjZolcCuOlXQRzAyO3Dh/W8S9paB0bw==
   dependencies:
     "@devprotocol/dev-kit" "8.6.0"
     "@devprotocol/elements" "1.1.0"
@@ -660,14 +660,15 @@
     "@ethersproject/abstract-provider" "^5.7.0"
     "@metamask/detect-provider" "^2.0.0"
     axios "^1.6.7"
+    bignumber.js "^9.1.2"
     dompurify "^3.0.6"
     js-base64 "^3.7.2"
     lit "^3.0.0"
     marked "^10.0.0"
     p-queue "^8.0.1"
-    ramda "^0.29.0"
+    ramda "^0.30.0"
     rxjs "^7.8.1"
-    yaml "2.4.1"
+    yaml "2.4.2"
   optionalDependencies:
     react "^18.0.0"
     react-dom "^18.0.0"
@@ -4663,7 +4664,7 @@ bignumber.js@9.1.1:
   resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-9.1.1.tgz#c4df7dc496bd849d4c9464344c1aa74228b4dac6"
   integrity sha512-pHm4LsMJ6lzgNGVfZHjMoO8sdoRhOzOH4MLmY65Jg70bpxCKu5iOHNJyfF6OyvYw7t8Fpf35RuzUyqnQsj8Vig==
 
-bignumber.js@9.1.2, bignumber.js@^9.0.0:
+bignumber.js@9.1.2, bignumber.js@^9.0.0, bignumber.js@^9.1.2:
   version "9.1.2"
   resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-9.1.2.tgz#b7c4242259c008903b13707983b5f4bbd31eda0c"
   integrity sha512-2/mKyZH9K85bzOEfhXDBFZTGd1CTs+5IHpeFQo9luiBG7hghdC851Pj2WAhb6E3R6b9tZj/XKhbg4fum+Kepug==
@@ -9480,7 +9481,7 @@ ramda@0.29.1, ramda@^0.29.0:
   resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.29.1.tgz#408a6165b9555b7ba2fc62555804b6c5a2eca196"
   integrity sha512-OfxIeWzd4xdUNxlWhgFazxsA/nl3mS4/jGZI5n00uWOoSSFRhC1b6gl6xvmzUamgmqELraWp0J/qqVlXYPDPyA==
 
-ramda@0.30.0:
+ramda@0.30.0, ramda@^0.30.0:
   version "0.30.0"
   resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.30.0.tgz#3cc4f0ddddfa6334dad2f371bd72c33237d92cd0"
   integrity sha512-13Y0iMhIQuAm/wNGBL/9HEqIfRGmNmjKnTPlKWfA9f7dnDkr8d45wQ+S7+ZLh/Pq9PdcGxkqKUEA7ySu1QSd9Q==
@@ -11745,7 +11746,12 @@ yaml@2.2.1:
   resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.2.1.tgz#3014bf0482dcd15147aa8e56109ce8632cd60ce4"
   integrity sha512-e0WHiYql7+9wr4cWMx3TVQrNwejKaEe7/rHNmQmqRjazfOP5W8PB6Jpebb5o6fIapbz9o9+2ipcaTM2ZwDI6lw==
 
-yaml@2.4.1, yaml@^2.3.4:
+yaml@2.4.2:
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.4.2.tgz#7a2b30f2243a5fc299e1f14ca58d475ed4bc5362"
+  integrity sha512-B3VqDZ+JAg1nZpaEmWtTXUlBneoGx6CPM9b0TENK6aoSu5t73dItudwdgmi6tHlIZZId4dZ9skcAQ2UbcyAeVA==
+
+yaml@^2.3.4:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.4.1.tgz#2e57e0b5e995292c25c75d2658f0664765210eed"
   integrity sha512-pIXzoImaqmfOrL7teGUBt/T7ZDnyeGBWyXQBvOVhLkWLN37GXv8NMLK406UY6dS51JfcQHsmcW5cJ441bHg6Lg==
