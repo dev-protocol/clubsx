@@ -74,6 +74,8 @@ export const handler =
       invitation,
     )
 
+    await client.quit()
+
     return new Response(JSON.stringify({ id: invitation.id }), {
       status: 200,
       headers,

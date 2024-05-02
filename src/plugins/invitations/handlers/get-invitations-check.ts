@@ -163,6 +163,8 @@ const handler: APIRoute = async (req) => {
       check({ id: _id, client: _client, account }),
   )
 
+  whenNotError(client, async (c) => await c.quit())
+
   return new Response(JSON.stringify(res), {
     status: isNotError(res) ? 200 : 400,
   })
