@@ -2,7 +2,7 @@
   /**
    * Imports
    */
-  import { bytes32Hex, type ClubsConfiguration } from '@devprotocol/clubs-core'
+  import type { ClubsConfiguration } from '@devprotocol/clubs-core'
   import {
     detectStokensByPropertyAddress,
     calculateRewardAmount,
