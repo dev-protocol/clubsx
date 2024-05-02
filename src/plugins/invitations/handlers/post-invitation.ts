@@ -35,8 +35,6 @@ export const handler =
 
     const client = await getDefaultClient()
 
-    console.log('got default client')
-
     const authenticated = await authenticate({
       message,
       signature,
@@ -56,8 +54,6 @@ export const handler =
       },
       conditions,
     })
-
-    console.log('invitation is: ', invitation)
 
     if (await checkExisting({ invitationId: invitation.id })) {
       return new Response(
