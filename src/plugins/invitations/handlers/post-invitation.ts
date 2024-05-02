@@ -37,20 +37,18 @@ export const handler =
 
     console.log('got default client')
 
-    // const authenticated = await authenticate({
-    //   message,
-    //   signature,
-    //   previousConfiguration: encode(conf),
-    //   provider: getDefaultProvider(conf.rpcUrl),
-    // })
+    const authenticated = await authenticate({
+      message,
+      signature,
+      previousConfiguration: encode(conf),
+      provider: getDefaultProvider(conf.rpcUrl),
+    })
 
-    // console.log('authenticated is: ', authenticated)
-
-    // if (!authenticated) {
-    //   return new Response(JSON.stringify({ message: 'unauthenticated' }), {
-    //     status: 401,
-    //   })
-    // }
+    if (!authenticated) {
+      return new Response(JSON.stringify({ message: 'unauthenticated' }), {
+        status: 401,
+      })
+    }
 
     const invitation = invitationDocument({
       membership: {
