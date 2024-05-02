@@ -194,6 +194,7 @@ export const handler =
     })
 
     await client.json.set(`${Prefix.History}::${history.id}`, '$', history)
+    await client.quit()
 
     return new Response(JSON.stringify({ id: invitationId }), { status: 200 })
   }
