@@ -19,7 +19,7 @@ import {
 } from '@fixtures/flags'
 import achievements from '@plugins/achievements'
 import huddle01 from '@devprotocol/huddle01-clubs-plugin'
-import dynamicWallet from '@devprotocol/clubs-plugin-awesome-onboarding'
+// import dynamicWallet from '@devprotocol/clubs-plugin-awesome-onboarding'
 
 const { allInstallablePlugins, clubs } = Astro.props as ClubsPropsAdminPages & {
   allInstallablePlugins: InstallablePlugins[]
@@ -40,9 +40,9 @@ const installablePlugins = allInstallablePlugins.filter((plg) => {
   if (!isHuddle01Enabled && plg.id === huddle01.meta.id) {
     return false
   }
-  if (!isDynamicWalletEnabled && plg.id === dynamicWallet.meta.id) {
-    return false
-  }
+  // if (!isDynamicWalletEnabled && plg.id === dynamicWallet.meta.id) {
+  //   return false
+  // }
 
   return true
 })

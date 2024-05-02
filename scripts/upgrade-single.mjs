@@ -4,7 +4,7 @@ import { decode, encode } from '@devprotocol/clubs-core'
 
 dotenv.config()
 
-const KEY = 'xxx'
+const KEY = 'test-mizu'
 
 const upgrade = (config) => {
   const deocdedConfig = decode(config)
@@ -13,6 +13,12 @@ const upgrade = (config) => {
   /**
    * Write upgrading script here
    */
+  upgradedConfig.plugins.push({
+    id: 'devprotocol:clubs:plugin:invitations',
+    name: 'invitations',
+    enable: true,
+    options: [],
+  })
 
   return encode(upgradedConfig)
 }
