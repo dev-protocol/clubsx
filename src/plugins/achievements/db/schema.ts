@@ -114,10 +114,10 @@ export const claimedSBTTokenId = {
   },
 } satisfies RediSearchSchema
 
-export const clubs = {
-  '$.clubs': {
+export const clubsUrl = {
+  '$.clubsUrl': {
     type: SchemaFieldTypes.TAG,
-    AS: 'clubs',
+    AS: 'clubsUrl',
   },
 } satisfies RediSearchSchema
 
@@ -133,7 +133,7 @@ export const ACHIEVEMENT_ITEM_SCHEMA = {
   ...createdOnTimestamp,
   ...claimedOnTimestamp,
   ...claimedSBTTokenId,
-  ...clubs,
+  ...clubsUrl,
 }
 
 export const ACHIEVEMENT_ITEM_SCHEMA_ID = keccak256(

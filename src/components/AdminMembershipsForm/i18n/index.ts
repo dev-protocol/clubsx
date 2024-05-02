@@ -118,11 +118,11 @@ export const Strings = {
   },
   Priced: {
     en: () => 'Priced',
-    ja: () => '価格を設定済み',
+    ja: () => '価格を設定する',
   },
   Unpriced: {
     en: () => 'Unpriced',
-    ja: () => '価格が未設定です',
+    ja: () => '無料にする',
   },
   // note to Kent:
   // These two form one sentence, but are separated for HTML styling purposes <- Gotcha!
@@ -138,10 +138,10 @@ export const Strings = {
   // These two form one sentence, but are separated for HTML styling purposes <- Gotcha!
   ChoosingUSDC: {
     en: () => 'If you choose USDC, you can activate ',
-    ja: () => 'クレジットカードプラグインを有効にしたい場合は',
+    ja: () => `<u>クレジットカードプラグイン</u>を有効にしたい場合は`,
   },
   CreditCardPlugin: {
-    en: () => 'the credit card plugin.',
+    en: () => `<u>the credit card plugin.</u>`,
     ja: () => 'USDCを選択してください',
   },
   EarningModel: {
@@ -151,6 +151,10 @@ export const Strings = {
   DEVEarningModelDisabled: {
     en: () => 'Earning model option is currently disabled for DEV',
     ja: () => '収益モデルのオプションは現在利用できません',
+  },
+  WhatIsStakingLink: {
+    en: () => 'https://docs.devprotocol.xyz/concepts/devtoken#devs-tokenomics',
+    ja: () => 'https://note.com/dev_guide/n/nc7ba51f51a13',
   },
   WhatIsStaking: {
     en: () => 'What is staking?',
@@ -187,11 +191,11 @@ export const Strings = {
   WillEarnAtOnce: {
     // For example: "X USDC will be earned at 1 time"
     en: () => 'will be earned at 1 time.',
-    ja: () => 'を一度に取得します',
+    ja: () => 'を収益として一度に得て、',
   },
   WillBeStaked: {
     // For example: "X USDC will will be staked to earn dev continuously."
     en: () => 'will be staked to earn dev continuously.',
-    ja: () => 'をステーキングして継続的にDEVを取得する',
+    ja: () => 'をステーキングして継続的にDEVを取得します',
   },
 } satisfies ClubsI18nParts

@@ -25,9 +25,19 @@ onMounted(async () => {
     </h2>
 
     <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-      <li v-if="assets" v-for="item in assets.achievements">
+      <li
+        v-if="assets?.achievements.length"
+        v-for="item in assets.achievements"
+      >
         <UserAsset :item="item" />
       </li>
+      <div
+        v-if="assets?.achievements.length === 0"
+        class="rounded-md border border-surface-400 p-8 text-accent-200"
+      >
+        Empty :)
+      </div>
+
       <li v-if="!assets" v-for="item in new Array(6)">
         <span class="block h-96"><Skeleton /></span>
       </li>
@@ -42,9 +52,15 @@ onMounted(async () => {
     </h2>
 
     <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-      <li v-if="assets" v-for="item in assets.memberships">
+      <li v-if="assets?.memberships.length" v-for="item in assets.memberships">
         <UserAsset :item="item" />
       </li>
+      <div
+        v-if="assets?.memberships.length === 0"
+        class="rounded-md border border-surface-400 p-8 text-accent-200"
+      >
+        Empty :)
+      </div>
       <li v-if="!assets" v-for="item in new Array(6)">
         <span class="block h-96"><Skeleton /></span>
       </li>

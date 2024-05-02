@@ -29,7 +29,7 @@ export type AchievementItem = {
   claimedSBTTokenId: number
   createdOnTimestamp: number
   claimedOnTimestamp: number
-  clubs: string
+  clubsUrl: string
 }
 
 export type Achievement = AchievementInfo & AchievementItem
@@ -38,4 +38,5 @@ export type ClaimAchievementApiHandlerParams = {
   rpcUrl: string
   chainId: number
   property: string
+  url: string
 }

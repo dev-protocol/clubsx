@@ -20,6 +20,7 @@
   import { emptyDummyImage } from '@plugins/collections/fixtures'
   import { Strings } from './i18n'
 
+  export let site: string = ''
   export let useOnFinishCallback: boolean = false
   export let currentPluginIndex: number
   export let membership: Membership
@@ -690,7 +691,14 @@
               </select>
             </div>
             <p class="hs-form-field__helper mt-2">
-              * {i18n('ChoosingUSDC')} <u>{i18n('CreditCardPlugin')}</u>
+              *
+              <a
+                class="hs-form-field__helper"
+                target="”_blank”"
+                href={`http://${site}.clubs.place/admin/marketplace/devprotocol:clubs:plugin:pay-by-card`}
+                >{@html i18n('ChoosingUSDC')}
+                {@html i18n('CreditCardPlugin')}</a
+              >
             </p>
             {#if invalidPriceMsg !== ''}
               <p class="text-danger-300">* {invalidPriceMsg}</p>
@@ -842,7 +850,12 @@
               {i18n('WillBeStaked')}
             </p>
             <p class="hs-form-field__helper mt-2">
-              * <u>{i18n('WhatIsStaking')}</u>
+              * <a
+                class="hs-form-field__helper"
+                target="”_blank”"
+                href={`${i18n('WhatIsStakingLink')}`}
+                ><u>{i18n('WhatIsStaking')}</u></a
+              >
             </p>
           </div>
         {/if}

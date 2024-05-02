@@ -6,7 +6,11 @@ import { createClient } from 'redis'
 
 import type { ClubsData } from './fetchClubs'
 import { hasCreationLimitReached } from './hasCreationLimitReached/util'
-import { updateClubId } from '@fixtures/api/club/redis'
+import {
+  updateClubId,
+  withCheckingIndex,
+  getDefaultClient,
+} from '@fixtures/api/club/redis'
 import { decode } from '@devprotocol/clubs-core'
 
 export const POST = async ({ request }: { request: Request }) => {
@@ -29,16 +33,7 @@ export const POST = async ({ request }: { request: Request }) => {
     })
   }
 
-  const client = createClient({
-    url: process.env.REDIS_URL,
-    username: process.env.REDIS_USERNAME ?? '',
-    password: process.env.REDIS_PASSWORD ?? '',
-    socket: {
-      keepAlive: 1,
-      reconnectStrategy: 1,
-    },
-  })
-  await client.connect()
+  const client = await withCheckingIndex(getDefaultClient)
 
   client.on('error', (e) => {
     console.error('redis connection error: ', e)

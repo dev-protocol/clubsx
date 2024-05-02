@@ -20,10 +20,11 @@ import {
   checkForExistingAchievementInfo,
   checkForExistingAchievementItem,
   uuidToQuery,
+  clubsUrlToKeccak256Tag,
 } from '../utils'
 
 export const handler =
-  ({ rpcUrl, chainId, property }: ClaimAchievementApiHandlerParams) =>
+  ({ rpcUrl, chainId, property, url }: ClaimAchievementApiHandlerParams) =>
   async ({ request }: { readonly request: Request }) => {
     // 1. Get the req data.
     const { message, signature, achievementItemId } =
@@ -33,7 +34,7 @@ export const handler =
         achievementItemId: string
       }
     // 2. Validated presence of req data.
-    if (!achievementItemId || !message || !signature) {
+    if (!achievementItemId || !message || !signature || !url) {
       return new Response(JSON.stringify({ error: 'Bad data' }), {
         status: 400,
       })
@@ -58,7 +59,7 @@ export const handler =
       ([_id, _client]) =>
         _client.ft.search(
           AchievementIndex.AchievementItem,
-          `@${ACHIEVEMENT_ITEM_SCHEMA['$.id'].AS}:{${uuidToQuery(_id)}}`,
+          `@${ACHIEVEMENT_ITEM_SCHEMA['$.id'].AS}:{${uuidToQuery(_id)}} @${ACHIEVEMENT_ITEM_SCHEMA['$.clubsUrl'].AS}:{${clubsUrlToKeccak256Tag(url)}}`,
           {
             LIMIT: {
               from: 0,
@@ -224,6 +225,8 @@ export const handler =
         claimedSBTTokenId: claimedSBTTokenId,
       },
     )
+
+    await client.quit()
 
     // 10. Return response.
     return new Response(

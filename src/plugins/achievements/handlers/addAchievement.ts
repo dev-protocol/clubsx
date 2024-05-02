@@ -6,30 +6,30 @@ import {
   encode,
 } from '@devprotocol/clubs-core'
 
-import type { Achievement, AchievementItem } from '../types'
 import { getDefaultClient } from '../db/redis'
+import type { Achievement, AchievementItem } from '../types'
 import {
   AchievementPrefix,
   getAchievementInfoDocument,
   checkForExistingAchievementInfo,
   checkForExistingAchievementItem,
   createAchievementItemId,
+  clubsUrlToKeccak256Tag,
 } from '../utils'
 
 export const handler =
   (conf: ClubsConfiguration) =>
   async ({ request }: { request: Request }) => {
     // 1. Get the data.
-    const { site, message, signature, achievement, noOfCopies } =
+    const { message, signature, achievement, noOfCopies } =
       (await request.json()) as {
-        site: string
         message: string
         signature: string
         noOfCopies: number
         achievement: Omit<
           Achievement,
           | 'id'
-          | 'clubs'
+          | 'clubsUrl'
           | 'achievementInfoId'
           | 'claimed'
           | 'claimedSBTTokenId'
@@ -38,7 +38,7 @@ export const handler =
         >
       }
     // 2. Validate all data is present.
-    if (!achievement || !message || !signature || !site || !noOfCopies) {
+    if (!achievement || !message || !signature || !conf.url || !noOfCopies) {
       return new Response(JSON.stringify({ error: 'Missing data' }), {
         status: 400,
       })
@@ -116,11 +116,13 @@ export const handler =
               claimedSBTTokenId: 0,
               createdOnTimestamp: Date.now(),
               claimedOnTimestamp: 0,
-              clubs: site,
+              clubsUrl: clubsUrlToKeccak256Tag(conf.url),
             } as AchievementItem,
           ),
       ),
     )
+
+    await client.quit()
 
     // 10. Return the id as response of the new data saved
     return new Response(JSON.stringify({ ids: achievementItemIds }), {
