@@ -702,16 +702,16 @@
     svelte "^4.0.0"
     vue "^3.2.0"
 
-"@devprotocol/clubs-plugin-awesome-onboarding@^0.1.2":
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-awesome-onboarding/-/clubs-plugin-awesome-onboarding-0.1.2.tgz#2e8d573479cdf9a8bb7c5a0218a95b4387bab17b"
-  integrity sha512-Mug5ySY0pEnxccYiX5QHGgwR7FyFbGn0diBXJkfVsjeytbBoFpXTjQaE15vpztyKKM1wz84hzp5wm1kBIT+/AQ==
+"@devprotocol/clubs-plugin-awesome-onboarding@^0.1.2-beta.1":
+  version "0.1.2-beta.1"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-awesome-onboarding/-/clubs-plugin-awesome-onboarding-0.1.2-beta.1.tgz#c9a93528909f79d9ae8be3394c370ce6802bff60"
+  integrity sha512-FzPbJ2rG5Dusds/hjAwd8GSDbx8ThrcMMuvGHjdk7yHN4033OYdRN5KI4ZGkXmCIpIV3w1jPM0dPMBSxn8ou7w==
   dependencies:
     "@devprotocol/util-ts" "4.0.0"
     "@dynamic-labs/ethereum" "^1.4.0"
     "@dynamic-labs/ethers-v6" "^1.0.0"
     "@dynamic-labs/sdk-react-core" "^1.4.0"
-    ramda "0.29.1"
+    ramda "0.30.0"
     viem "1"
 
 "@devprotocol/clubs-plugin-posts-voting@^0.6.0":
