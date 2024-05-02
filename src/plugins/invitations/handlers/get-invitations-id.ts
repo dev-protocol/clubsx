@@ -42,6 +42,9 @@ export const getInvitationById = async (id: string) => {
     ),
   )
 
+  // quit the client
+  whenNotError(client, async (c) => await c.quit())
+
   const res = whenNotError(
     data,
     (d) =>

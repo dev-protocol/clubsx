@@ -50,30 +50,84 @@ export const check = async ({
       new Error('ID is not found.'),
   )
 
-  // Try to fetch the history.
+  // fetch all history items for the invitation
   const history = await client.ft
     .search(
       Index.History,
-      `@${schemaHistory['$.usedId'].AS}:{${uuidToQuery(id)}} @${schemaHistory['$.account'].AS}:{${uuidToQuery(account)}}`,
-      {
-        LIMIT: {
-          from: 0,
-          size: 1,
-        },
-      },
+      `@${schemaHistory['$.usedId'].AS}:{${uuidToQuery(id)}}`,
     )
     .catch((err) => err as Error)
-  const historyItem = whenNotError(
-    history,
-    (d) => d.documents.find((x) => x.value)?.value as UndefinedOr<History>,
-  )
 
   const valid = whenNotErrorAll(
-    [invItem, historyItem],
-    ([_invitation, _history]) => {
-      return typeof _history === 'undefined'
-        ? true
-        : new Error('ID is already used.')
+    [history, invItem],
+    ([_history, _invitation]) => {
+      // Ensure the invitation is retrieved
+      if (!_invitation) {
+        return new Error('Invitation not found.')
+      }
+
+      /**
+       * Missing conditions
+       */
+      if (
+        !_invitation.conditions?.maxRedemptions &&
+        !_invitation.conditions?.recipients
+      ) {
+        return new Error('Invitation has no conditions.')
+      }
+
+      const validConditions = whenDefinedAll(
+        [
+          _invitation.conditions?.maxRedemptions,
+          _invitation.conditions?.recipients,
+        ],
+        () => {
+          return new Error(
+            'Invitation should not have both max redemptions and recipients defined.',
+          )
+        },
+      )
+
+      /**
+       * Anonymous invites sent
+       * handle max redepemptions
+       */
+      const validMaxRedemptions = whenDefined(
+        _invitation.conditions?.maxRedemptions,
+        (redemptions) => {
+          if (_history.documents.length >= redemptions) {
+            return new Error('Invitation has reached max redemptions.')
+          }
+
+          return true
+        },
+      )
+
+      /**
+       * Specified list of addresses for the invitation
+       */
+      const validRecipients = whenDefined(
+        _invitation.conditions?.recipients,
+        (recipients) => {
+          if (!recipients?.includes(account)) {
+            return new Error('Account is not in the recipients list.')
+          }
+
+          return true
+        },
+      )
+
+      // Make sure the invitation has not already been redeemed by the account
+      const previouslyRedeemed = Boolean(
+        _history.documents.find((x) => x.value?.account === account),
+      )
+
+      return (
+        validConditions &&
+        validMaxRedemptions &&
+        validRecipients &&
+        !previouslyRedeemed
+      )
     },
   )
 
@@ -108,6 +162,8 @@ const handler: APIRoute = async (req) => {
     ([_id, _client, { account }]) =>
       check({ id: _id, client: _client, account }),
   )
+
+  whenNotError(client, async (c) => await c.quit())
 
   return new Response(JSON.stringify(res), {
     status: isNotError(res) ? 200 : 400,
