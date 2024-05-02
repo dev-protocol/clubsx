@@ -128,17 +128,8 @@
 
     const { connection } = await import('@devprotocol/clubs-core/connection')
 
-    const res = bytes32Hex([125, 190, 46, 12, 88, 128, 221, 115])
-    console.log('res is: ', res)
-
     connectionSub = connection().signer.subscribe(async (signer) => {
       fetchUserSupply(signer)
-
-      // sign message
-      // if (signer) {
-      //   const sig = await signer.signMessage('Create a new invitation')
-      //   console.log('signature is: ', sig)
-      // }
     })
   })
 
