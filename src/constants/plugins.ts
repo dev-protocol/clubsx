@@ -34,7 +34,7 @@ import $20 from '@devprotocol/clubs-plugin-posts-voting'
 import $21 from '@plugins/achievements'
 import $22 from '@devprotocol/huddle01-clubs-plugin'
 import * as PostsPlugin from '@devprotocol/clubs-plugin-posts'
-// import $23 from '@devprotocol/clubs-plugin-awesome-onboarding'
+import $23 from '@devprotocol/clubs-plugin-awesome-onboarding'
 
 export type PluginTag =
   | 'New & Upcoming'
@@ -240,17 +240,17 @@ export const installablePlugins: InstallablePlugins[] = [
       invitation: true,
     },
   },
-  // {
-  //   id: $23.meta.id,
-  //   tag: 'New & Upcoming',
-  //   developer: 'Dev Protocol',
-  //   repositoryUrl:
-  //     'https://github.com/dev-protocol/clubs-plugin-awesome-onboarding',
-  //   pluginOptions: [],
-  //   require: {
-  //     invitation: true,
-  //   },
-  // },
+  {
+    id: $23.meta.id,
+    tag: 'New & Upcoming',
+    developer: 'Dev Protocol',
+    repositoryUrl:
+      'https://github.com/dev-protocol/clubs-plugin-awesome-onboarding',
+    pluginOptions: [],
+    require: {
+      invitation: true,
+    },
+  },
 ]
 
 export const plugins = [
@@ -277,7 +277,7 @@ export const plugins = [
   $20,
   $21,
   $22,
-  // $23,
+  $23,
 ] satisfies ClubsPlugins
 
 export const paidBundledItems: PaidBundledItem[] = [
@@ -293,7 +293,7 @@ export const paidBundledItems: PaidBundledItem[] = [
   {
     id: $21.meta.id,
   },
-  // {
-  //   id: $23.meta.id,
-  // },
+  {
+    id: $23.meta.id,
+  },
 ]
