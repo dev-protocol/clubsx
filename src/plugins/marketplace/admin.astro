@@ -17,28 +17,35 @@ import {
   FeatureFlags,
   FeatureFlagValues,
 } from '@fixtures/flags'
+import invitations from '@plugins/invitations'
 import achievements from '@plugins/achievements'
-import huddle01 from '@devprotocol/huddle01-clubs-plugin'
-// import dynamicWallet from '@devprotocol/clubs-plugin-awesome-onboarding'
+import dynamicWallet from '@devprotocol/clubs-plugin-awesome-onboarding'
 
 const { allInstallablePlugins, clubs } = Astro.props as ClubsPropsAdminPages & {
   allInstallablePlugins: InstallablePlugins[]
 }
 
 const flags = getFlagsByParams({ url: new URL(Astro.url) })
+const isInvitationsEnabled =
+  flags.get(FeatureFlags.InvitationsOnMarketplace) === FeatureFlagValues.Enable
 const isAchievementsEnabled =
   flags.get(FeatureFlags.AchievementsOnMarketplace) === FeatureFlagValues.Enable
-// const isDynamicWalletEnabled =
-//   flags.get(FeatureFlags.DynamicWalletOnMarketplace) === FeatureFlagValues.Enable
+const isDynamicWalletEnabled =
+  flags.get(FeatureFlags.DynamicWalletOnMarketplace) ===
+  FeatureFlagValues.Enable
 
 const installablePlugins = allInstallablePlugins.filter((plg) => {
+  if (!isInvitationsEnabled && plg.id === invitations.meta.id) {
+    return false
+  }
+
   if (!isAchievementsEnabled && plg.id === achievements.meta.id) {
     return false
   }
 
-  // if (!isDynamicWalletEnabled && plg.id === dynamicWallet.meta.id) {
-  //   return false
-  // }
+  if (!isDynamicWalletEnabled && plg.id === dynamicWallet.meta.id) {
+    return false
+  }
 
   return true
 })
