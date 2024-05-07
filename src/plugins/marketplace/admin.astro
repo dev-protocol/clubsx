@@ -19,7 +19,7 @@ import {
 } from '@fixtures/flags'
 import invitations from '@plugins/invitations'
 import achievements from '@plugins/achievements'
-import dynamicWallet from '@devprotocol/clubs-plugin-awesome-onboarding'
+// import dynamicWallet from '@devprotocol/clubs-plugin-awesome-onboarding'
 
 const { allInstallablePlugins, clubs } = Astro.props as ClubsPropsAdminPages & {
   allInstallablePlugins: InstallablePlugins[]
@@ -43,9 +43,9 @@ const installablePlugins = allInstallablePlugins.filter((plg) => {
     return false
   }
 
-  if (!isDynamicWalletEnabled && plg.id === dynamicWallet.meta.id) {
-    return false
-  }
+  // if (!isDynamicWalletEnabled && plg.id === dynamicWallet.meta.id) {
+  //   return false
+  // }
 
   return true
 })
