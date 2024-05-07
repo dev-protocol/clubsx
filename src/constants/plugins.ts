@@ -86,7 +86,7 @@ export type ExternalTool = {
 export const installablePlugins: InstallablePlugins[] = [
   {
     id: $16.meta.id,
-    tag: 'New & Upcoming',
+    tag: 'Finance & Payments',
     developer: 'Dev Protocol',
     repositoryUrl: 'https://github.com/dev-protocol/clubsx',
     pluginOptions: [],
@@ -96,14 +96,14 @@ export const installablePlugins: InstallablePlugins[] = [
   },
   {
     id: $4.meta.id,
-    tag: 'New & Upcoming',
+    tag: 'Finance & Payments',
     developer: 'Dev Protocol',
     repositoryUrl: 'https://github.com/dev-protocol/clubsx',
     pluginOptions: [],
   },
   {
     id: $17.meta.id,
-    tag: 'New & Upcoming',
+    tag: 'Commerce & Business',
     developer: 'Dev Protocol',
     repositoryUrl: 'https://github.com/dev-protocol/clubsx',
     pluginOptions: [],
@@ -120,7 +120,7 @@ export const installablePlugins: InstallablePlugins[] = [
   },
   {
     id: PostsPlugin.meta.id,
-    tag: 'New & Upcoming',
+    tag: 'Community',
     pluginOptions: (config) => [
       {
         key: 'feeds',
@@ -155,6 +155,9 @@ export const installablePlugins: InstallablePlugins[] = [
     pluginOptions: [],
     developer: 'Dev Protocol',
     repositoryUrl: 'https://github.com/dev-protocol/clubsx',
+    require: {
+      invitation: true,
+    },
   },
   {
     id: $22.meta.id,
@@ -228,12 +231,25 @@ export const installablePlugins: InstallablePlugins[] = [
     navigationLinks: [{ display: 'Clubs Shop', path: '/collections' }],
   },
   {
+    id: $19.meta.id,
+    tag: 'New & Upcoming',
+    developer: 'Dev Protocol',
+    repositoryUrl: 'https://github.com/dev-protocol/clubsx',
+    pluginOptions: [],
+    require: {
+      invitation: true,
+    },
+  },
+  {
     id: $23.meta.id,
     tag: 'New & Upcoming',
     developer: 'Dev Protocol',
     repositoryUrl:
       'https://github.com/dev-protocol/clubs-plugin-awesome-onboarding',
     pluginOptions: [],
+    require: {
+      invitation: true,
+    },
   },
 ]
 
@@ -270,5 +286,14 @@ export const paidBundledItems: PaidBundledItem[] = [
   },
   {
     id: $17.meta.id,
+  },
+  {
+    id: $19.meta.id,
+  },
+  {
+    id: $21.meta.id,
+  },
+  {
+    id: $23.meta.id,
   },
 ]
