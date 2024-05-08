@@ -86,7 +86,7 @@
       console.error('Failed to check availability', available)
       errorMsg = 'Failed to check availability'
     } else {
-      isClaimed = available === true
+      isClaimed = !available
     }
   }
 
