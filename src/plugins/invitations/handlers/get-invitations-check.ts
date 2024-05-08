@@ -76,32 +76,33 @@ export const check = async ({
         return new Error('Invitation has no conditions.')
       }
 
-      const validConditions = whenDefinedAll(
-        [
-          _invitation.conditions?.maxRedemptions,
-          _invitation.conditions?.recipients,
-        ],
-        () => {
-          return new Error(
-            'Invitation should not have both max redemptions and recipients defined.',
-          )
-        },
-      )
+      const validConditions =
+        whenDefinedAll(
+          [
+            _invitation.conditions?.maxRedemptions,
+            _invitation.conditions?.recipients,
+          ],
+          () => {
+            console.log('invitation has both conditions')
+            return new Error(
+              'Invitation should not have both max redemptions and recipients defined.',
+            )
+          },
+        ) ?? true
 
       /**
        * Anonymous invites sent
        * handle max redepemptions
        */
-      const validMaxRedemptions = whenDefined(
-        _invitation.conditions?.maxRedemptions,
-        (redemptions) => {
+      const validMaxRedemptions =
+        whenDefined(_invitation.conditions?.maxRedemptions, (redemptions) => {
           if (_history.documents.length >= redemptions) {
+            console.log('Invitation has reached max redemptions.')
             return new Error('Invitation has reached max redemptions.')
           }
 
           return true
-        },
-      )
+        }) ?? true
 
       /**
        * Specified list of addresses for the invitation
