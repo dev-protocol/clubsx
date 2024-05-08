@@ -9,7 +9,7 @@
 
   import { Strings } from '../i18n'
   import Skeleton from '@components/Global/Skeleton.svelte'
-  import type { Achievement, StringAttribute } from '../types'
+  import type { Achievement, NumberAttribute, StringAttribute } from '../types'
   import AchievementDefaultIcon from '../assets/achievement.svg'
 
   const i18nBase = i18nFactory(Strings)
@@ -145,9 +145,14 @@
           )?.value ?? 'Achievement NFT',
         metadata: {
           ...response.metadata,
+          numberAttributes: response.metadata?.numberAttributes.filter(
+            (attr: NumberAttribute) => !!attr.value,
+          ),
           stringAttributes: response.metadata?.stringAttributes.filter(
             (attr: StringAttribute) =>
-              attr.trait_type.toLowerCase() !== 'achievement type',
+              attr.trait_type.toLowerCase() !== 'achievement type' &&
+              attr.value !== '-' &&
+              !!attr.value,
           ),
         },
       }
