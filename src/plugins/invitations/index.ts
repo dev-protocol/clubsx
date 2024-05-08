@@ -53,7 +53,7 @@ export const getApiPaths = (async (
     },
     {
       paths: ['invitations', 'check', SinglePath],
-      method: 'GET',
+      method: 'POST',
       handler: getInvitationsCheck,
     },
     {
