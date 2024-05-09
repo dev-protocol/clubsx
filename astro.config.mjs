@@ -57,7 +57,16 @@ export default defineConfig({
     svelte(),
   ],
   vite: {
-    build: { sourcemap: true },
+    build: {
+      sourcemap: true,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            viem: ['viem'],
+          },
+        },
+      },
+    },
     plugins: [commonjs()],
     server: {
       hmr: {
