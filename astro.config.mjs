@@ -61,8 +61,10 @@ export default defineConfig({
       sourcemap: true,
       rollupOptions: {
         output: {
-          manualChunks: {
-            viem: ['viem'],
+          manualChunks: (id) => {
+            if (id.includes('viem')) {
+              return 'viem'
+            }
           },
         },
       },
