@@ -69,6 +69,15 @@
 
     const res = await fetch(
       `/api/devprotocol:clubs:plugin:invitations/invitations/check/${invitation.id}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          account: await signer.getAddress(),
+        }),
+      },
     )
 
     const available = (await res.json()) as ErrorOr<true | Error>
@@ -77,7 +86,7 @@
       console.error('Failed to check availability', available)
       errorMsg = 'Failed to check availability'
     } else {
-      isClaimed = available === true
+      isClaimed = !available
     }
   }
 

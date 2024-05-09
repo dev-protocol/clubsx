@@ -1,6 +1,6 @@
 {
   "name": "clubs",
-  "version": "0.16.0-beta.2",
+  "version": "0.16.0-beta.5",
   "private": true,
   "type": "module",
   "scripts": {
@@ -55,7 +55,7 @@
     "vue-tsc": "^2.0.0"
   },
   "dependencies": {
-    "@astrojs/check": "0.5.10",
+    "@astrojs/check": "0.6.0",
     "@astrojs/lit": "4.0.1",
     "@astrojs/netlify": "5.2.1",
     "@astrojs/prefetch": "0.4.1",
@@ -66,7 +66,7 @@
     "@astrojs/vue": "4.1.0",
     "@crossmint/client-sdk-base": "^1.0.1-alpha.6",
     "@crossmint/client-sdk-react-ui": "^1.0.1-alpha.6",
-    "@devprotocol/clubs-core": "3.12.1",
+    "@devprotocol/clubs-core": "3.12.2",
     "@devprotocol/clubs-plugin-awesome-onboarding": "^0.1.2-beta.1",
     "@devprotocol/clubs-plugin-posts": "0.20.2",
     "@devprotocol/clubs-plugin-posts-voting": "^0.6.0",
