@@ -298,7 +298,7 @@
         <div
           class="w-full max-w-full p-2.5 rounded-md bg-[#F1F1F1] text-base font-normal"
         >
-          {achievement?.metadata?.description}
+          {i18n('ClaimSuccessFeedback')}
         </div>
       </div>
     {:else}
