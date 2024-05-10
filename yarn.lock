@@ -4203,19 +4203,19 @@
     vscode-languageserver-textdocument "^1.0.11"
     vscode-uri "^3.0.8"
 
-"@volar/language-core@2.2.0", "@volar/language-core@~2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@volar/language-core/-/language-core-2.2.0.tgz#f6049ed29d356dac06f85d8b013469d514640baf"
-  integrity sha512-a8WG9+4OdeNDW4ywABZIM6S6UN7em8uIlM/BZ2pWQUYrVmX+m8sj/X+QadvO+Li/t/LjAqbWJQtVgxdpEWLALQ==
-  dependencies:
-    "@volar/source-map" "2.2.0"
-
 "@volar/language-core@2.2.1", "@volar/language-core@~2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@volar/language-core/-/language-core-2.2.1.tgz#bb4a28f93cd8598a2e2ca1c811ae113a848b5529"
   integrity sha512-iHJAZKcYldZgyS8gx6DfIZApViVBeqbf6iPhqoZpG5A6F4zsZiFldKfwaKaBA3/wnOTWE2i8VUbXywI1WywCPg==
   dependencies:
     "@volar/source-map" "2.2.1"
+
+"@volar/language-core@2.2.2", "@volar/language-core@~2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@volar/language-core/-/language-core-2.2.2.tgz#3c0e745a6d279e6f1872ad3de406683e2e92002b"
+  integrity sha512-GuvEL4JdxbnLVhPLICncCGT+tVW4cIz9GxXNeDofNnJ4iNTKhr5suGVsA1GLOne9PbraSjn8PlLt+pvLxuRVeQ==
+  dependencies:
+    "@volar/source-map" "2.2.2"
 
 "@volar/language-server@~2.2.1":
   version "2.2.1"
@@ -4252,17 +4252,17 @@
     vscode-languageserver-protocol "^3.17.5"
     vscode-languageserver-textdocument "^1.0.11"
 
-"@volar/source-map@2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@volar/source-map/-/source-map-2.2.0.tgz#9d9947ce64396290d80a15d692cc35003c5613c3"
-  integrity sha512-HQlPRlHOVqCCHK8wI76ZldHkEwKsjp7E6idUc36Ekni+KJDNrqgSqPvyHQixybXPHNU7CI9Uxd9/IkxO7LuNBw==
-  dependencies:
-    muggle-string "^0.4.0"
-
 "@volar/source-map@2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@volar/source-map/-/source-map-2.2.1.tgz#d75b0c38659d3ea7e780d4251ac2b9436845ab97"
   integrity sha512-w1Bgpguhbp7YTr7VUFu6gb4iAZjeEPsOX4zpgiuvlldbzvIWDWy4t0jVifsIsxZ99HAu+c3swiME7wt+GeNqhA==
+  dependencies:
+    muggle-string "^0.4.0"
+
+"@volar/source-map@2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@volar/source-map/-/source-map-2.2.2.tgz#ec25e8366297b1e9bbd3abcb1636330010d59d59"
+  integrity sha512-vUwvZuSW6iN4JI9QRinh9EjFasx1TUtnaWMKwgWx08xz1PyYuNkLlWlrZXBZ5GGBhML0u230M/7X+AHY2h9yKg==
   dependencies:
     muggle-string "^0.4.0"
 
@@ -4274,12 +4274,12 @@
     "@volar/language-core" "2.2.1"
     path-browserify "^1.0.1"
 
-"@volar/typescript@~2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@volar/typescript/-/typescript-2.2.0.tgz#826a901cefbe9f6c2ca295291eab48ed3eaeef80"
-  integrity sha512-wC6l4zLiiCLxF+FGaHCbWlQYf4vMsnRxYhcI6WgvaNppOD6r1g+Ef1RKRJUApALWU46Yy/JDU/TbdV6w/X6Liw==
+"@volar/typescript@~2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@volar/typescript/-/typescript-2.2.2.tgz#b133919b5d1ef99f882916ddb62297766500843c"
+  integrity sha512-WcwOREz7+uOrpjUrKhOMaOKKmyPdtqF95HWX7SE0d9hhBB1KkfahxhaAex5U9Bn43LfINHlycLoYCNEtfeKm0g==
   dependencies:
-    "@volar/language-core" "2.2.0"
+    "@volar/language-core" "2.2.2"
     path-browserify "^1.0.1"
 
 "@vscode/emmet-helper@^2.9.2":
@@ -4347,17 +4347,6 @@
     estree-walker "^2.0.2"
     source-map-js "^1.0.2"
 
-"@vue/compiler-core@3.4.26":
-  version "3.4.26"
-  resolved "https://registry.yarnpkg.com/@vue/compiler-core/-/compiler-core-3.4.26.tgz#d507886520e83a6f8339ed55ed0b2b5d84b44b73"
-  integrity sha512-N9Vil6Hvw7NaiyFUFBPXrAyETIGlQ8KcFMkyk6hW1Cl6NvoqvP+Y8p1Eqvx+UdqsnrnI9+HMUEJegzia3mhXmQ==
-  dependencies:
-    "@babel/parser" "^7.24.4"
-    "@vue/shared" "3.4.26"
-    entities "^4.5.0"
-    estree-walker "^2.0.2"
-    source-map-js "^1.2.0"
-
 "@vue/compiler-core@3.4.27":
   version "3.4.27"
   resolved "https://registry.yarnpkg.com/@vue/compiler-core/-/compiler-core-3.4.27.tgz#e69060f4b61429fe57976aa5872cfa21389e4d91"
@@ -4377,21 +4366,13 @@
     "@vue/compiler-core" "3.4.21"
     "@vue/shared" "3.4.21"
 
-"@vue/compiler-dom@3.4.27", "@vue/compiler-dom@^3.3.4":
+"@vue/compiler-dom@3.4.27", "@vue/compiler-dom@^3.3.4", "@vue/compiler-dom@^3.4.0":
   version "3.4.27"
   resolved "https://registry.yarnpkg.com/@vue/compiler-dom/-/compiler-dom-3.4.27.tgz#d51d35f40d00ce235d7afc6ad8b09dfd92b1cc1c"
   integrity sha512-kUTvochG/oVgE1w5ViSr3KUBh9X7CWirebA3bezTbB5ZKBQZwR2Mwj9uoSKRMFcz4gSMzzLXBPD6KpCLb9nvWw==
   dependencies:
     "@vue/compiler-core" "3.4.27"
     "@vue/shared" "3.4.27"
-
-"@vue/compiler-dom@^3.4.0":
-  version "3.4.26"
-  resolved "https://registry.yarnpkg.com/@vue/compiler-dom/-/compiler-dom-3.4.26.tgz#acc7b788b48152d087d4bb9e655b795e3dbec554"
-  integrity sha512-4CWbR5vR9fMg23YqFOhr6t6WB1Fjt62d6xdFPyj8pxrYub7d+OgZaObMsoxaF9yBUHPMiPFK303v61PwAuGvZA==
-  dependencies:
-    "@vue/compiler-core" "3.4.26"
-    "@vue/shared" "3.4.26"
 
 "@vue/compiler-sfc@3.4.21", "@vue/compiler-sfc@^3.4.15":
   version "3.4.21"
@@ -4474,12 +4455,12 @@
   dependencies:
     rfdc "^1.3.1"
 
-"@vue/language-core@2.0.16":
-  version "2.0.16"
-  resolved "https://registry.yarnpkg.com/@vue/language-core/-/language-core-2.0.16.tgz#c059228e6a0a17b4505421da0e5747a4a04facbe"
-  integrity sha512-Bc2sexRH99pznOph8mLw2BlRZ9edm7tW51kcBXgx8adAoOcZUWJj3UNSsdQ6H9Y8meGz7BoazVrVo/jUukIsPw==
+"@vue/language-core@2.0.17":
+  version "2.0.17"
+  resolved "https://registry.yarnpkg.com/@vue/language-core/-/language-core-2.0.17.tgz#25ba5c7f4450790cc6cfaccf9805a6b91ada1bd7"
+  integrity sha512-tHw2J6G9yL4kn3jN5MftOHEq86Y6qnuohBQ1OHkJ73fAv3OYgwDI1cfX7ds0OEJEycOMG64BA3ql5bDgDa41zw==
   dependencies:
-    "@volar/language-core" "~2.2.0"
+    "@volar/language-core" "~2.2.2"
     "@vue/compiler-dom" "^3.4.0"
     "@vue/shared" "^3.4.0"
     computeds "^0.0.1"
@@ -4556,12 +4537,7 @@
   resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.4.21.tgz#de526a9059d0a599f0b429af7037cd0c3ed7d5a1"
   integrity sha512-PuJe7vDIi6VYSinuEbUIQgMIRZGgM8e4R+G+/dQTk0X1NEdvgvvgv7m+rfmDH1gZzyA1OjjoWskvHlfRNfQf3g==
 
-"@vue/shared@3.4.26", "@vue/shared@^3.4.0":
-  version "3.4.26"
-  resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.4.26.tgz#f17854fb1faf889854aed4b23b60e86a8cab6403"
-  integrity sha512-Fg4zwR0GNnjzodMt3KRy2AWGMKQXByl56+4HjN87soxLNU9P5xcJkstAlIeEF3cU6UYOzmJl1tV0dVPGIljCnQ==
-
-"@vue/shared@3.4.27":
+"@vue/shared@3.4.27", "@vue/shared@^3.4.0":
   version "3.4.27"
   resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.4.27.tgz#f05e3cd107d157354bb4ae7a7b5fc9cf73c63b50"
   integrity sha512-DL3NmY2OFlqmYYrzp39yi3LDkKxa5vZVwxWdQ3rG0ekuWscHraeIbnI8t+aZK7qhYqEqWKTUdijadunb9pnrgA==
@@ -11392,12 +11368,17 @@ semver@^6.0.0, semver@^6.3.1:
   resolved "https://registry.yarnpkg.com/semver/-/semver-6.3.1.tgz#556d2ef8689146e46dcea4bfdd095f3434dffcb4"
   integrity sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==
 
-semver@^7.3.5, semver@^7.3.8, semver@^7.5.3, semver@^7.5.4, semver@^7.6.0:
+semver@^7.3.5, semver@^7.3.8, semver@^7.5.3, semver@^7.6.0:
   version "7.6.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.6.0.tgz#1a46a4db4bffcccd97b743b5005c8325f23d4e2d"
   integrity sha512-EnwXhrlwXMk9gKu5/flx5sv/an57AkRplG3hTK68W7FRDN+k+OWBj65M7719OkA82XLBxrcX0KSHj+X5COhOVg==
   dependencies:
     lru-cache "^6.0.0"
+
+semver@^7.5.4:
+  version "7.6.2"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-7.6.2.tgz#1e3b34759f896e8f14d6134732ce798aeb0c6e13"
+  integrity sha512-FNAIBWCx9qcRhoHcgcJ0gvU7SN1lYU2ZXuSfl04bSC5OpvDHFyJCjdNHomPXxjQlCBU67YW64PzY7/VIEH7F2w==
 
 semver@^7.6.1:
   version "7.6.1"
@@ -13024,12 +13005,12 @@ vue-template-compiler@^2.7.14:
     he "^1.2.0"
 
 vue-tsc@^2.0.0:
-  version "2.0.16"
-  resolved "https://registry.yarnpkg.com/vue-tsc/-/vue-tsc-2.0.16.tgz#ba82c4cdac283e8e39e30e817c8c1c967e528358"
-  integrity sha512-/gHAWJa216PeEhfxtAToIbxdWgw01wuQzo48ZUqMYVEyNqDp+OYV9xMO5HaPS2P3Ls0+EsjguMZLY4cGobX4Ew==
+  version "2.0.17"
+  resolved "https://registry.yarnpkg.com/vue-tsc/-/vue-tsc-2.0.17.tgz#bd1c7704c454169b3fcb893421226be99ccae4bf"
+  integrity sha512-RRZsiCBD1hvATQb321xV+SkRDKsK5hgFQ4WXy5wuYsyyjz8xAK4DjxHkpH7PFoJKUbZTbeW8KzhejzXZS49Tzw==
   dependencies:
-    "@volar/typescript" "~2.2.0"
-    "@vue/language-core" "2.0.16"
+    "@volar/typescript" "~2.2.2"
+    "@vue/language-core" "2.0.17"
     semver "^7.5.4"
 
 vue@3.4.27:
