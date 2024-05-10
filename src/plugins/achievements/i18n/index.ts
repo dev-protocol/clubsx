@@ -1,6 +1,10 @@
 import type { ClubsI18nParts } from '@devprotocol/clubs-core'
 
 export const Strings = {
+  ClaimSuccessFeedback: {
+    en: 'Your achievement has been successfully claimed.',
+    ja: '実績証明NFTの取得に成功しました',
+  },
   YouAreNowHolding: {
     en: 'You are now holding',
     ja: '今回取得した実績証明NFT：',
