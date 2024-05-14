@@ -67,7 +67,7 @@ export const Strings = {
   },
   ClaimingBtnTxt: {
     en: 'Claiming',
-    ja: '主張中',
+    ja: '取得中',
   },
   AchievementMetadataAttributes: {
     en: ([txt]) => {
@@ -79,7 +79,7 @@ export const Strings = {
         return 'Requester'
       } else if (txt === '事件番号') {
         return 'Case Number'
-      } else if (txt === '褒美') {
+      } else if (txt === '報酬') {
         return 'Reward'
       } else if (txt === '通貨') {
         return 'Currency'
@@ -103,7 +103,7 @@ export const Strings = {
         loweredCaseTxt === 'Reward'.toLowerCase() ||
         loweredCaseTxt === 'Rewards'.toLowerCase()
       ) {
-        return '褒美'
+        return '報酬'
       } else {
         return txt || ''
       }
