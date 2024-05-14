@@ -55,8 +55,18 @@ const main = async () => {
     // client.quit(() => {
     //   process.exit();
     // });
-    const success = await client.quit()
-    console.log('client quit? ', success)
+
+    if (
+      client.status === 'ready' ||
+      client.status === 'connect' ||
+      client.status === 'reconnecting'
+    ) {
+      const success = await client.quit()
+      console.log('client quit? ', success)
+    } else {
+      console.log('client already closed')
+    }
+
     process.exit()
   })
 }
