@@ -76,6 +76,9 @@ export const checkForExistingAchievementInfo = async (id: string) => {
   const keyExists = await client.exists(
     `${AchievementPrefix.AchievementInfo}::${id}`,
   )
+
+  await client.quit()
+
   return keyExists === 1 ? true : false
 }
 
@@ -89,6 +92,7 @@ export const checkForExistingAchievementItem = async (id: string) => {
   const keyExists = await client.exists(
     `${AchievementPrefix.AchievementItem}::${id}`,
   )
+  await client.quit()
   return keyExists === 1 ? true : false
 }
 
