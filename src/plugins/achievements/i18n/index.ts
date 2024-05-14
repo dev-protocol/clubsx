@@ -1,6 +1,10 @@
 import type { ClubsI18nParts } from '@devprotocol/clubs-core'
 
 export const Strings = {
+  ClaimSuccessFeedback: {
+    en: 'Your achievement has been successfully claimed.',
+    ja: '実績証明NFTの取得に成功しました',
+  },
   YouAreNowHolding: {
     en: 'You are now holding',
     ja: '今回取得した実績証明NFT：',
@@ -20,6 +24,10 @@ export const Strings = {
   CantClaimMsg: {
     en: `Looks like you can't claim this achievement.`,
     ja: `この実績証明NFTを取得できないようです`,
+  },
+  ClickClaimMsg: {
+    en: `Click "Claim" to claim your achievement`,
+    ja: `上のボタンをクリックしてください`,
   },
   SignTxMsg: {
     en: 'Sign to claim the achievement.',
@@ -52,5 +60,53 @@ export const Strings = {
   SignInMsg: {
     en: 'Please sign in.',
     ja: 'サインインしてください',
+  },
+  ClaimBtnTxt: {
+    en: 'Claim',
+    ja: '報酬を取得する',
+  },
+  ClaimingBtnTxt: {
+    en: 'Claiming',
+    ja: '取得中',
+  },
+  AchievementMetadataAttributes: {
+    en: ([txt]) => {
+      if (txt === '完了確認日') {
+        return 'Completion Confirmation Date'
+      } else if (txt === '完了報告日') {
+        return 'Completion Report Date'
+      } else if (txt === '案件番号') {
+        return 'Requester'
+      } else if (txt === '事件番号') {
+        return 'Case Number'
+      } else if (txt === '報酬') {
+        return 'Reward'
+      } else if (txt === '通貨') {
+        return 'Currency'
+      } else {
+        return txt || ''
+      }
+    },
+    ja: ([txt]) => {
+      const loweredCaseTxt = txt?.toLowerCase()
+      if (loweredCaseTxt === 'Completion Confirmation Date'.toLowerCase()) {
+        return '完了確認日'
+      } else if (loweredCaseTxt === 'Completion Report Date'.toLowerCase()) {
+        return '完了報告日'
+      } else if (loweredCaseTxt === 'Requester'.toLowerCase()) {
+        return '案件番号'
+      } else if (loweredCaseTxt === 'Case Number'.toLowerCase()) {
+        return '事件番号'
+      } else if (loweredCaseTxt === 'Currency'.toLowerCase()) {
+        return '通貨'
+      } else if (
+        loweredCaseTxt === 'Reward'.toLowerCase() ||
+        loweredCaseTxt === 'Rewards'.toLowerCase()
+      ) {
+        return '報酬'
+      } else {
+        return txt || ''
+      }
+    },
   },
 } satisfies ClubsI18nParts
