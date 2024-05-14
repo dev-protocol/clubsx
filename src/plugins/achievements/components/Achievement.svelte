@@ -26,6 +26,7 @@
   let isFetchingAchievementData = false
   let isAchievementDataNotFetched = false
   let isClaimBtnFeedbackTxtColorRed = false
+  let isClaimBtnFeedbackTxtColorBlue = false
   let claimBtnFeedbackTxt = i18n('SignInMsg')
 
   const computeClaimBtnTxt = (
@@ -38,12 +39,14 @@
     if (_hasTxErrorOccured) {
       claimBtnFeedbackTxt = i18n('TxErrorMsg')
       isClaimBtnFeedbackTxtColorRed = true
+      isClaimBtnFeedbackTxtColorBlue = false
       return
     }
 
     if (_isWalletSigRejected) {
       claimBtnFeedbackTxt = i18n('TxSigRejected')
       isClaimBtnFeedbackTxtColorRed = true
+      isClaimBtnFeedbackTxtColorBlue = false
       return
     }
 
@@ -51,6 +54,7 @@
       if (_achievement.claimed) {
         claimBtnFeedbackTxt = i18n('AlreadyClaimed')
         isClaimBtnFeedbackTxtColorRed = true
+        isClaimBtnFeedbackTxtColorBlue = false
         return
       }
 
@@ -62,12 +66,14 @@
       ) {
         claimBtnFeedbackTxt = i18n('CantClaimMsg')
         isClaimBtnFeedbackTxtColorRed = true
+        isClaimBtnFeedbackTxtColorBlue = false
         return
       }
 
       if (_signer && _currentAddress && _currentAddress !== ZeroAddress) {
-        claimBtnFeedbackTxt = i18n('SignTxMsg')
+        claimBtnFeedbackTxt = i18n('ClickClaimMsg')
         isClaimBtnFeedbackTxtColorRed = false
+        isClaimBtnFeedbackTxtColorBlue = true
         return
       }
     }
@@ -75,6 +81,7 @@
     if (!_currentAddress || !_signer || _currentAddress === ZeroAddress) {
       claimBtnFeedbackTxt = i18n('SignInMsg')
       isClaimBtnFeedbackTxtColorRed = true
+      isClaimBtnFeedbackTxtColorBlue = false
     }
   }
 
@@ -260,10 +267,6 @@
 <section
   class="grid gap-8 grid-cols-[minmax(auto,32rem)] rounded-2xl p-6 justify-center shadow bg-dp-white-200 text-dp-white-ink"
 >
-  <h2 class="text-4xl font-bold">
-    {i18n('Achievement')} #{achievementId}
-  </h2>
-
   {#if isAchievementDataNotFetched}
     <div class="rounded-md p-4 border border-black/20 bg-black/10">
       <h2 class="text-2xl font-bold">
@@ -330,7 +333,7 @@
           <Skeleton />
         {:else}
           <p
-            class={`text-center w-full text-base font-medium ${isClaimBtnFeedbackTxtColorRed ? 'text-[#FF3815]' : 'text-black'}`}
+            class={`text-center w-full text-base font-medium ${isClaimBtnFeedbackTxtColorRed ? 'text-[#FF3815]' : isClaimBtnFeedbackTxtColorBlue ? 'text-blue-600' : 'text-black'}`}
           >
             {claimBtnFeedbackTxt}
           </p>

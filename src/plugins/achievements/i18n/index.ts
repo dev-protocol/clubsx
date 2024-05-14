@@ -25,6 +25,10 @@ export const Strings = {
     en: `Looks like you can't claim this achievement.`,
     ja: `この実績証明NFTを取得できないようです`,
   },
+  ClickClaimMsg: {
+    en: `Click "Claim" to claim your achievement`,
+    ja: `上のボタンをクリックしてください`,
+  },
   SignTxMsg: {
     en: 'Sign to claim the achievement.',
     ja: 'クリックして実績証明NFTを取得する',
