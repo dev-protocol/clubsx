@@ -1,5 +1,5 @@
 import { generateProfileId } from '@fixtures/api/keys'
-import { headers } from '@fixtures/api/headers'
+import { headers, cache } from '@fixtures/api/headers'
 import { createClient } from 'redis'
 
 export const GET = async ({
@@ -31,6 +31,6 @@ export const GET = async ({
 
   return new Response(userProfile, {
     status: 200,
-    headers,
+    headers: { ...headers, ...cache({ maxAge: 30 }) },
   })
 }
