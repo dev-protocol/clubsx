@@ -855,13 +855,13 @@
     sass "1.72.0"
     uuid "^9.0.1"
 
-"@devprotocol/clubs-plugin-posts@0.20.5-beta.1":
-  version "0.20.5-beta.1"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts/-/clubs-plugin-posts-0.20.5-beta.1.tgz#82ce5553407adf119a38601f060afe48107b9eae"
-  integrity sha512-h0M1Ogmkt2c0FIjF3Ni7j1EnXVCaIALcRoImRucILMi+YYSSESGhmqQkVoX6b0qtTFClul7DM6iZfhFMJtUUhg==
+"@devprotocol/clubs-plugin-posts@0.20.5-beta.3":
+  version "0.20.5-beta.3"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts/-/clubs-plugin-posts-0.20.5-beta.3.tgz#60d4f1208fde42dc7ac66cc732097a6b802005bc"
+  integrity sha512-5FhaAJ11Hz0/CX2xwFCLa9h+xDKYXSbL4WIm545gRSOAoJoy6PjdTFOkllNSnZT0E1pBrsMexvl+SAHzuhHSuw==
   dependencies:
     "@boringer-avatars/vue3" "^0.2.1"
-    "@devprotocol/dev-kit" "8.6.0"
+    "@devprotocol/dev-kit" "8.6.1"
     "@devprotocol/util-ts" "4.0.0"
     bignumber.js "9.1.2"
     dayjs "^1.11.8"
@@ -872,7 +872,7 @@
     photoswipe "5.4.3"
     ramda "0.30.0"
     redis "^4.6.7"
-    sass "1.77.0"
+    sass "1.77.1"
     uuid "^9.0.0"
 
 "@devprotocol/dev-kit@7.3.0":
@@ -11468,15 +11468,6 @@ sass@1.75.0:
   version "1.75.0"
   resolved "https://registry.yarnpkg.com/sass/-/sass-1.75.0.tgz#91bbe87fb02dfcc34e052ddd6ab80f60d392be6c"
   integrity sha512-ShMYi3WkrDWxExyxSZPst4/okE9ts46xZmJDSawJQrnte7M1V9fScVB+uNXOVKRBt0PggHOwoZcn8mYX4trnBw==
-  dependencies:
-    chokidar ">=3.0.0 <4.0.0"
-    immutable "^4.0.0"
-    source-map-js ">=0.6.2 <2.0.0"
-
-sass@1.77.0:
-  version "1.77.0"
-  resolved "https://registry.yarnpkg.com/sass/-/sass-1.77.0.tgz#e736c69aff9fae4a4e6dae60a979eee9c942f321"
-  integrity sha512-eGj4HNfXqBWtSnvItNkn7B6icqH14i3CiCGbzMKs3BAPTq62pp9NBYsBgyN4cA+qssqo9r26lW4JSvlaUUWbgw==
   dependencies:
     chokidar ">=3.0.0 <4.0.0"
     immutable "^4.0.0"
