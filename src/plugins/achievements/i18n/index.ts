@@ -61,4 +61,52 @@ export const Strings = {
     en: 'Please sign in.',
     ja: 'サインインしてください',
   },
+  ClaimBtnTxt: {
+    en: 'Claim',
+    ja: '報酬を取得する',
+  },
+  ClaimingBtnTxt: {
+    en: 'Claiming',
+    ja: '主張中',
+  },
+  AchievementMetadataAttributes: {
+    en: ([txt]) => {
+      if (txt === '完了確認日') {
+        return 'Completion Confirmation Date'
+      } else if (txt === '完了報告日') {
+        return 'Completion Report Date'
+      } else if (txt === '案件番号') {
+        return 'Requester'
+      } else if (txt === '事件番号') {
+        return 'Case Number'
+      } else if (txt === '褒美') {
+        return 'Reward'
+      } else if (txt === '通貨') {
+        return 'Currency'
+      } else {
+        return txt || ''
+      }
+    },
+    ja: ([txt]) => {
+      const loweredCaseTxt = txt?.toLowerCase()
+      if (loweredCaseTxt === 'Completion Confirmation Date'.toLowerCase()) {
+        return '完了確認日'
+      } else if (loweredCaseTxt === 'Completion Report Date'.toLowerCase()) {
+        return '完了報告日'
+      } else if (loweredCaseTxt === 'Requester'.toLowerCase()) {
+        return '案件番号'
+      } else if (loweredCaseTxt === 'Case Number'.toLowerCase()) {
+        return '事件番号'
+      } else if (loweredCaseTxt === 'Currency'.toLowerCase()) {
+        return '通貨'
+      } else if (
+        loweredCaseTxt === 'Reward'.toLowerCase() ||
+        loweredCaseTxt === 'Rewards'.toLowerCase()
+      ) {
+        return '褒美'
+      } else {
+        return txt || ''
+      }
+    },
+  },
 } satisfies ClubsI18nParts

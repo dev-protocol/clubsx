@@ -327,7 +327,7 @@
                 : ''
             }`}
         >
-          {isClaimingAchievement ? 'Claiming' : 'Claim'}
+          {isClaimingAchievement ? i18n('ClaimingBtnTxt') : i18n('ClaimBtnTxt')}
         </button>
         {#if isFetchingAchievementData}
           <Skeleton />
@@ -375,7 +375,9 @@
       {:else}
         {#each achievement?.metadata?.numberAttributes as data, i}
           <div class="flex w-full justify-between items-start">
-            <p class="text-base font-normal">{data.trait_type}</p>
+            <p class="text-base font-normal">
+              {i18n('AchievementMetadataAttributes', [data.trait_type])}
+            </p>
             <p class="text-base font-bold">
               {data.display_type === 'number'
                 ? new Intl.NumberFormat('en-IN', {
@@ -388,7 +390,9 @@
         {/each}
         {#each achievement?.metadata?.stringAttributes as data, i}
           <div class="flex w-full justify-between items-start">
-            <p class="text-base font-normal">{data.trait_type}</p>
+            <p class="text-base font-normal">
+              {i18n('AchievementMetadataAttributes', [data.trait_type])}
+            </p>
             <p class="text-base font-bold">{data.value}</p>
           </div>
         {/each}
