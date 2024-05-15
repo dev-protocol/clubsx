@@ -77,7 +77,7 @@ export const Strings = {
         return 'Completion Report Date'
       } else if (txt === '案件番号') {
         return 'Requester'
-      } else if (txt === '事件番号') {
+      } else if (txt === '案件番号') {
         return 'Case Number'
       } else if (txt === '報酬') {
         return 'Reward'
@@ -96,7 +96,7 @@ export const Strings = {
       } else if (loweredCaseTxt === 'Requester'.toLowerCase()) {
         return '案件番号'
       } else if (loweredCaseTxt === 'Case Number'.toLowerCase()) {
-        return '事件番号'
+        return '案件番号'
       } else if (loweredCaseTxt === 'Currency'.toLowerCase()) {
         return '通貨'
       } else if (
