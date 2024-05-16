@@ -19,8 +19,6 @@ const main = async () => {
 
   const clientsList = await client.sendCommand(['CLIENT', 'LIST']) // Use an array of RedisCommandArguments
 
-  console.log('clientsList: ', clientsList)
-
   // // Parse the clients list and get the IDs of all clients
   const clientIds = clientsList
     .split('\n')
