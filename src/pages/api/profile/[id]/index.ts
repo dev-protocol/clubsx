@@ -1,7 +1,6 @@
 import { generateProfileId } from '@fixtures/api/keys'
 import { headers, cache } from '@fixtures/api/headers'
 import { createClient } from 'redis'
-import { stat } from 'fs'
 
 export const GET = async ({
   params: { id },
