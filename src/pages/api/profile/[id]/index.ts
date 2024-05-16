@@ -1,6 +1,7 @@
 import { generateProfileId } from '@fixtures/api/keys'
 import { headers, cache } from '@fixtures/api/headers'
 import { createClient } from 'redis'
+import { stat } from 'fs'
 
 export const GET = async ({
   params: { id },
@@ -26,11 +27,15 @@ export const GET = async ({
 
   const profileId = generateProfileId(id)
 
-  const userProfile = (await client.get(profileId)) ?? '{}'
+  const userProfile = (await client.get(profileId)) ?? undefined
   await client.quit()
 
-  return new Response(userProfile, {
-    status: 200,
-    headers: { ...headers, ...cache({ maxAge: 30 }) },
-  })
+  return userProfile
+    ? new Response(userProfile, {
+        status: 200,
+        headers: { ...headers, ...cache({ maxAge: 30 }) },
+      })
+    : new Response(JSON.stringify({ error: 'Profile not found' }), {
+        status: 404,
+      })
 }
