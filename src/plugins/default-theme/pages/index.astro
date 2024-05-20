@@ -1,9 +1,13 @@
 ---
-import Markdown from '@components/Markdown/Markdown.astro'
-import Memberships from '../components/Memberships/Memberships.astro'
 import type { Membership } from '@plugins/memberships'
+import Markdown from '@components/Markdown/Markdown.astro'
 import { ClubsSlotName, type ClubsPropsPages } from '@devprotocol/clubs-core'
+
 import type { SectionOrderingValue } from '..'
+import About_ from '../components/About.svelte'
+import WaitForLaunch from '../components/WaitForLaunch.svelte'
+import MembershipTitle from '../components/MembershipTitle.svelte'
+import Memberships from '../components/Memberships/Memberships.astro'
 
 const { memberships, homeConfig, name, clubs, sectionsOrderConfig } =
   Astro.props as ClubsPropsPages & {
@@ -38,7 +42,7 @@ const SlotsPageContentHomeAfterContent = clubs.slots.filter(({ slot }) => {
   {
     sectionsOrderConfig && sectionsOrderConfig === 'about-first' ? (
       <>
-        <h2 class="text-center text-xl font-bold lg:text-4xl">About {name}</h2>
+        <About_ client:only="svelte" name={name} />
         <Markdown
           body={homeConfig.body}
           class="mx-auto mt-4 w-full max-w-2xl lg:mt-6"
@@ -49,19 +53,14 @@ const SlotsPageContentHomeAfterContent = clubs.slots.filter(({ slot }) => {
       <section class="grid">
         {memberships ? (
           <>
-            <h2 class="text-center text-2xl font-bold lg:text-4xl">
-              {memberships.length > 1
-                ? 'Select a membership'
-                : 'Become a member'}
-            </h2>
+            <MembershipTitle
+              client:only="svelte"
+              hasSingleMembership={!memberships || memberships?.length <= 1}
+            />
             <Memberships memberships={memberships} name={name} />
           </>
         ) : (
-          <div class="mx-auto my-8 w-full max-w-2xl rounded-lg bg-black/10 p-6 text-center">
-            <h2 class="text-xl font-bold lg:text-4xl">
-              Please wait for the launch.
-            </h2>
-          </div>
+          <WaitForLaunch client:only="svelte" />
         )}
       </section>
     )
@@ -72,24 +71,19 @@ const SlotsPageContentHomeAfterContent = clubs.slots.filter(({ slot }) => {
       <section class="grid">
         {memberships ? (
           <>
-            <h2 class="text-center text-2xl font-bold lg:text-4xl">
-              {memberships.length > 1
-                ? 'Select a membership'
-                : 'Become a member'}
-            </h2>
+            <MembershipTitle
+              client:only="svelte"
+              hasSingleMembership={!memberships || memberships?.length <= 1}
+            />
             <Memberships memberships={memberships} name={name} />
           </>
         ) : (
-          <div class="mx-auto my-8 w-full max-w-2xl rounded-lg bg-black/10 p-6 text-center">
-            <h2 class="text-xl font-bold lg:text-4xl">
-              Please wait for the launch.
-            </h2>
-          </div>
+          <WaitForLaunch client:only="svelte" />
         )}
       </section>
     ) : (
       <>
-        <h2 class="text-center text-xl font-bold lg:text-4xl">About {name}</h2>
+        <About_ client:only="svelte" name={name} />
         <Markdown
           body={homeConfig.body}
           class="mx-auto mt-4 w-full max-w-2xl lg:mt-6"
