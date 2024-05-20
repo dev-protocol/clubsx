@@ -6,10 +6,17 @@
   import { fade } from 'svelte/transition'
   import { ProseTextInherit } from '@devprotocol/clubs-core'
   import { FastAverageColor } from 'fast-average-color'
+  import { i18nFactory } from '@devprotocol/clubs-core'
+
+  import { Strings } from './i18n'
+
   type SlotLeft = {
     left: number
     total: number
   }
+
+  const i18nBase = i18nFactory(Strings)
+  let i18n = i18nBase(['en'])
 
   export let name: string
   export let clubName: string
@@ -73,6 +80,7 @@
 
   onMount(async () => {
     isMounted = true
+    i18n = i18nBase(navigator.languages)
     window.addEventListener('hashchange', handleHashChange)
 
     modalGroup && document.body.appendChild(modalGroup)
@@ -253,7 +261,7 @@
           <a
             class="flex items-center gap-2 rounded-full bg-white/20 px-5 py-2.5"
             href={action}
-            >{actionLabel}<svg
+            >{i18n('ActionLabel', [actionLabel])}<svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"

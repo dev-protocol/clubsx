@@ -198,4 +198,22 @@ export const Strings = {
     en: () => 'will be staked to earn dev continuously.',
     ja: () => 'をステーキングして継続的にDEVを取得します',
   },
+  ActionLabel: {
+    en: ([label]) => {
+      if (label === '購入') {
+        return 'Purchase'
+      }
+
+      // Default return.
+      return 'Purchase'
+    },
+    ja: ([label]) => {
+      if (label?.toLowerCase() === 'purchase') {
+        return '購入'
+      }
+
+      // Default return.
+      return '購入'
+    },
+  },
 } satisfies ClubsI18nParts
