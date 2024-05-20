@@ -381,7 +381,7 @@
             <p class="text-base font-bold">
               {data.display_type === 'number'
                 ? new Intl.NumberFormat('en-IN', {
-                    minimumFractionDigits: 2,
+                    minimumFractionDigits: 0,
                     maximumFractionDigits: 3,
                   }).format(Number(data.value) || 0)
                 : data.value}
