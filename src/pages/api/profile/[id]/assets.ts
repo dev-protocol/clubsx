@@ -3,6 +3,7 @@ import type { APIRoute } from 'astro'
 import {
   isNotError,
   whenDefined,
+  type ErrorOr,
   whenNotError,
   whenNotErrorAll,
 } from '@devprotocol/util-ts'
@@ -13,13 +14,28 @@ import {
   getDefaultClient,
   withCheckingIndex as withCheckingIndexClubs,
 } from '@fixtures/api/club/redis'
-import { AchievementIndex } from '@plugins/achievements/utils'
-import { ACHIEVEMENT_INFO_SCHEMA } from '@plugins/achievements/db/schema'
-import { getAllOwnedTokens, type Metadata } from '@plugins/tickets/utils/nft'
+import {
+  uuidToQuery,
+  AchievementIndex,
+  AchievementPrefix,
+} from '@plugins/achievements/utils'
+import {
+  ACHIEVEMENT_INFO_SCHEMA,
+  ACHIEVEMENT_ITEM_SCHEMA,
+} from '@plugins/achievements/db/schema'
+import {
+  getMetadata,
+  type Metadata,
+  getAllOwnedTokens,
+} from '@plugins/tickets/utils/nft'
 import { clientsSTokens } from '@devprotocol/dev-kit'
 import { json } from '@fixtures/api/json'
 import type { AsyncReturnType } from 'type-fest'
 import { withCheckingIndex } from '@plugins/achievements/db/redis'
+import type {
+  AchievementInfo,
+  AchievementItem,
+} from '@plugins/achievements/types'
 
 const { PUBLIC_INFURA_KEY } = import.meta.env
 
@@ -28,6 +44,31 @@ const onChainQueue = new PQueue({ concurrency: 3 })
 const createFetchAllNFTs =
   (account: string, provider: JsonRpcProvider) => async (contract: string) =>
     getAllOwnedTokens(contract, account, provider)
+
+const createFetchAllAchievementInfo =
+  (
+    provider: JsonRpcProvider,
+    redis: AsyncReturnType<typeof getDefaultClient>,
+  ) =>
+  async (
+    achievementItem: AchievementItem,
+  ): Promise<{ contract: string; id: number; metadata: ErrorOr<Metadata> }> => {
+    const info = await redis.json
+      .get(
+        `${AchievementPrefix.AchievementInfo}::${achievementItem.achievementInfoId}`,
+      )
+      .then((res) => res as AchievementInfo)
+    const metadata = await getMetadata(
+      info.contract,
+      achievementItem.claimedSBTTokenId,
+      provider,
+    )
+    return {
+      contract: info.contract,
+      id: Number(info.id),
+      metadata,
+    }
+  }
 
 export type AssetItem = {
   propertyAddress: string
@@ -142,6 +183,75 @@ const fetchAllAchiements = async ({
   return mapAllAchivements
 }
 
+const fetchAllAchiementsForAddress = async ({
+  id,
+  provider,
+  client,
+}: {
+  id: string
+  provider: JsonRpcProvider
+  client: AsyncReturnType<typeof getDefaultClient>
+}) => {
+  const fetchAchievementInfo = whenNotErrorAll(
+    [client, provider],
+    ([_client, _provider]) => createFetchAllAchievementInfo(_provider, _client),
+  )
+
+  const allAchievementItems = await whenNotError(client, (redis) =>
+    redis.ft
+      .search(
+        AchievementIndex.AchievementItem,
+        `@${ACHIEVEMENT_ITEM_SCHEMA['$.account'].AS}:{${uuidToQuery(id)}}`,
+      )
+      .then(
+        (allAchievementItemDocuments) => allAchievementItemDocuments.documents,
+      )
+      .catch((err: Error) => err),
+  )
+
+  const allAchivements = await whenNotErrorAll(
+    [allAchievementItems, fetchAchievementInfo],
+    ([achievements, fetchInfo]) =>
+      onChainQueue
+        .addAll(
+          achievements
+            .filter(
+              (achievement) =>
+                (achievement.value as unknown as AchievementItem).claimed &&
+                (achievement.value as unknown as AchievementItem)
+                  .claimedSBTTokenId > 0,
+            )
+            .map(
+              (achievement) => () =>
+                fetchInfo(achievement.value as unknown as AchievementItem),
+            ),
+        )
+        .then((all) => all.flat()),
+  )
+
+  const mapAllAchivements = whenNotError(allAchivements, (achievements) =>
+    achievements
+      .filter(
+        (item) =>
+          isNotError(item.metadata) &&
+          item.metadata.attributes.some(
+            ({ trait_type }) => trait_type === 'Property',
+          ),
+      )
+      .map(
+        (item): AssetItem => ({
+          ...(item.metadata as Metadata),
+          propertyAddress:
+            (item.metadata as Metadata).attributes.find(
+              ({ trait_type }) => trait_type === 'Property',
+            )?.value ?? (undefined as never),
+        }),
+      ),
+  )
+
+  return mapAllAchivements
+}
+
 export const GET: APIRoute = async ({
   params,
 }: {
@@ -166,7 +276,11 @@ export const GET: APIRoute = async ({
     ([_id, _provider, _client]) =>
       Promise.all([
         fetchAllMemberships({ id: _id, provider: _provider }),
-        fetchAllAchiements({ id: _id, provider: _provider, client: _client }),
+        fetchAllAchiementsForAddress({
+          id: _id,
+          provider: _provider,
+          client: _client,
+        }),
       ]),
   )
 
