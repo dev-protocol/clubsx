@@ -200,20 +200,20 @@ export const Strings = {
   },
   ActionLabel: {
     en: ([label]) => {
-      if (label === '購入') {
-        return 'Purchase'
+      if (label === '次へ') {
+        return 'Next'
       }
 
       // Default return.
-      return 'Purchase'
+      return 'Next'
     },
     ja: ([label]) => {
-      if (label?.toLowerCase() === 'purchase') {
-        return '購入'
+      if (label?.toLowerCase() === 'next') {
+        return '次へ'
       }
 
       // Default return.
-      return '購入'
+      return '次へ'
     },
   },
 } satisfies ClubsI18nParts
