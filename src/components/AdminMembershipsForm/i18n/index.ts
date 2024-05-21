@@ -44,7 +44,7 @@ export const Strings = {
   },
   Select: {
     en: () => 'Select',
-    ja: () => '選択する',
+    ja: () => '選択',
   },
   Example: {
     en: () => 'Example',
