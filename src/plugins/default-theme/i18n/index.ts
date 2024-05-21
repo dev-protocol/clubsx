@@ -7,11 +7,11 @@ export const Strings = {
   },
   BecomeMember: {
     en: 'Become a member',
-    ja: '会員になる',
+    ja: 'メンバーになる',
   },
   WaitForLaunch: {
     en: 'Please wait for the launch',
-    ja: '発売までお待ちください',
+    ja: 'ローンチまでお待ちください',
   },
   About: {
     en: ([name]) => `About ${name}`,
