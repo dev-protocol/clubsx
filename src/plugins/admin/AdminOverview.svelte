@@ -130,6 +130,13 @@
 
     connectionSub = connection().signer.subscribe(async (signer) => {
       fetchUserSupply(signer)
+
+      if (signer) {
+        const hash = `Metawater Admin Signature: ${new Date().toISOString()}`
+        console.log('hash is: ', hash)
+        const sig = await signer.signMessage(hash)
+        console.log('signature is: ', sig)
+      }
     })
   })
 
