@@ -1,9 +1,10 @@
 ---
-import { bytes32Hex, type Membership } from '@devprotocol/clubs-core'
-import ClaimButton from './components/ClaimButton.svelte'
 import Markdown from '@components/Markdown/Markdown.astro'
-import { getInvitationById } from './handlers/get-invitations-id'
 import { whenDefined, whenNotError } from '@devprotocol/util-ts'
+import { bytes32Hex, type Membership } from '@devprotocol/clubs-core'
+
+import ClaimButton from './components/ClaimButton.svelte'
+import { getInvitationById } from './handlers/get-invitations-id'
 
 type Props = {
   memberships: Membership[]
