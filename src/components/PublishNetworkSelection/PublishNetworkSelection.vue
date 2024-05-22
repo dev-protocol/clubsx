@@ -359,6 +359,7 @@ import {
   type ClubsConfiguration,
   ClubsEvents,
   setConfig,
+  membershipToStruct,
 } from '@devprotocol/clubs-core'
 import {
   buildConfig,
@@ -967,29 +968,17 @@ export default defineComponent({
           : (this.addressFromNiwaOrConfig as string)
         const images: ERC20Image[] =
           this.membershipsPluginOptions?.map((opt) => {
-            const { decimals, address: token } = isPriced(opt)
-              ? tokenInfo[opt.currency][currentChainId]
-              : { decimals: 1, address: ZeroAddress }
+            const { gateway, requiredTokenAmount, token, requiredTokenFee } =
+              membershipToStruct(opt, this.config.chainId)
 
             return {
               src: opt.imageSrc,
               name: opt.name,
               description: opt.description,
-              requiredTokenAmount: parseUnits(
-                String(opt.price),
-                decimals,
-              ).toString(),
-              requiredTokenFee:
-                opt.fee?.percentage && opt.price
-                  ? parseUnits(
-                      new BigNumber(opt.price)
-                        .times(opt.fee.percentage)
-                        .toFixed(),
-                      decimals,
-                    ).toString()
-                  : 0n,
-              gateway: opt.fee?.beneficiary ?? ZeroAddress,
-              token: token,
+              requiredTokenAmount,
+              requiredTokenFee,
+              gateway,
+              token,
             }
           }) || []
         const keys: string[] =
