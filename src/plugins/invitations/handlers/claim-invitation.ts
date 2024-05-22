@@ -11,6 +11,7 @@ import { check } from './get-invitations-check'
 import {
   bytes32Hex,
   getTokenAddress,
+  membershipToStruct,
   type ClubsFunctionGetPluginConfigById,
   type Membership,
 } from '@devprotocol/clubs-core'
@@ -133,6 +134,15 @@ export const handler =
           .dp(0, 1)
           .toFixed()
 
+    if (!invitationMembership) {
+      return new Response(JSON.stringify({ error: 'Membership not found' }), {
+        status: 404,
+      })
+    }
+
+    const { gateway, token, requiredTokenAmount, requiredTokenFee } =
+      membershipToStruct(invitationMembership, chainId)
+
     const args: {
       to: string
       property: string
@@ -140,22 +150,18 @@ export const handler =
       gatewayAddress: string
       amounts: {
         token: string
-        input: string
-        fee: string
+        input: bigint
+        fee: bigint
       }
     } = {
       to: address,
       property,
       payload: bytes32Hex(invitationMembership?.payload ?? []),
-      gatewayAddress: isUnpriced
-        ? ZeroAddress
-        : invitationMembership?.fee?.beneficiary ?? ZeroAddress,
+      gatewayAddress: gateway,
       amounts: {
-        token: isUnpriced
-          ? ZeroAddress
-          : getTokenAddress(invitationMembership?.currency ?? 'DEV', chainId),
-        input: parsedPrice.toString(),
-        fee,
+        token,
+        input: requiredTokenAmount,
+        fee: requiredTokenFee,
       },
     }
     console.log(request.url, { args })
