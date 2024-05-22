@@ -1,19 +1,28 @@
 <script lang="ts">
-  import type { ErrorOr, UndefinedOr } from '@devprotocol/util-ts'
   import type { Signer } from 'ethers'
   import type { Subscription } from 'rxjs'
   import { onDestroy, onMount } from 'svelte'
+  import { i18nFactory } from '@devprotocol/clubs-core'
+  import type { ErrorOr, UndefinedOr } from '@devprotocol/util-ts'
+
+  import { Strings } from '../i18n'
   import type { Invitation } from '../redis-schema'
 
   export let invitation: UndefinedOr<Invitation>
-  let connectionSub: Subscription
-  let signer: UndefinedOr<Signer>
+
+  let isClaimed = false
   let isRecipient = false
   let isClaiming = false
-  let isClaimed = false
+
+  const i18nBase = i18nFactory(Strings)
+  let i18n = i18nBase(['en'])
+  let connectionSub: Subscription
+  let signer: UndefinedOr<Signer>
   let errorMsg: UndefinedOr<string>
 
   onMount(async () => {
+    i18n = i18nBase(navigator.languages)
+
     const { connection } = await import('@devprotocol/clubs-core/connection')
 
     connectionSub = connection().signer.subscribe(async (_signer) => {
@@ -58,7 +67,7 @@
       isClaimed = true
     } else {
       console.error('Failed to claim invitation', res)
-      errorMsg = 'Failed to claim invitation'
+      errorMsg = i18n('FailedToClaimInvitation')
     }
 
     isClaiming = false
@@ -84,7 +93,7 @@
 
     if (available instanceof Error) {
       console.error('Failed to check availability', available)
-      errorMsg = 'Failed to check availability'
+      errorMsg = i18n('FailedToCheckAvailability')
     } else {
       isClaimed = !available
     }
@@ -121,21 +130,26 @@
               fill="currentFill"
             />
           </svg>
-          <span class="sr-only">Loading...</span>
+          <span class="sr-only">{i18n('Loading')}</span>
         </div>
       {/if}
     </div>
     <span
       class={`font-bold text-2xl ${signer && !isRecipient ? 'line-through' : ''}`}
-      >Claim{#if isClaiming}ing{/if}</span
     >
+      {#if isClaiming}
+        {i18n('ClaimingBtnTxt')}
+      {:else}
+        {i18n('ClaimBtnTxt')}
+      {/if}
+    </span>
     <!-- empty div for spacing-->
     <div></div>
   </button>
 
   <div class="text-center text-black">
     {#if !signer}
-      <span class="text-red-500">Please Sign In</span>
+      <span class="text-red-500">{i18n('SignInMsg')}</span>
     {/if}
 
     {#if signer && !isRecipient}
@@ -143,7 +157,7 @@
     {/if}
 
     {#if signer && isRecipient && !isClaimed && !isClaiming}
-      <span>Sign to claim your membership</span>
+      <span>{i18n('SignInToClaimMembership')}</span>
     {/if}
 
     {#if errorMsg}
@@ -151,7 +165,7 @@
     {/if}
 
     {#if isClaimed}
-      <span>Invitation Claimed</span>
+      <span>{i18n('InvitationClaimed')}</span>
     {/if}
   </div>
 </div>
