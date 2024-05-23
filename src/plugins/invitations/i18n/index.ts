@@ -23,7 +23,7 @@ export const Strings = {
   },
   FailedToClaimInvitation: {
     en: 'Failed to claim invitation',
-    ja: '招待状を請求できませんでした',
+    ja: '招待を受けたメンバーシップを取得できませんでした',
   },
   ClaimBtnTxt: {
     en: 'Claim',
