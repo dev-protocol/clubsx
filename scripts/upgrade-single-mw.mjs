@@ -1,6 +1,7 @@
 import { createClient } from 'redis'
 import dotenv from 'dotenv'
 import { decode, encode } from '@devprotocol/clubs-core'
+import jsonwebtoken from 'jsonwebtoken'
 
 dotenv.config()
 
@@ -17,11 +18,12 @@ const createAvailabilities = (startHour, endHour) => {
 }
 
 const ticketWebhook =
-  'https://clubs-userland-mw-test.vercel.app/api/webhooks/tickets/Fbd64p/dest/airtable/{AIRTABLE_TABLE_ID}'
+  'Write a complete endpoint here, like https://[VERCEL_APP_HOSTNAME]/api/webhooks/tickets/[WEBHOOK_TICKETS_KEY]/dest/airtable/[DESTNATION_TABLE_ID]'
 
 const upgrade = (config) => {
   const deocdedConfig = decode(config)
   const upgradedConfig = { ...deocdedConfig }
+  const encryptedWebhook = jsonwebtoken.sign(ticketWebhook, process.env.SALT)
 
   /**
    * Write upgrading script here
@@ -54,17 +56,13 @@ const upgrade = (config) => {
             ],
             webhooks: {
               used: {
-                encrypted: ticketWebhook,
+                encrypted: encryptedWebhook,
               },
             },
           },
           {
             // Proof of service NFT
-            payload: '0xAA821D4397B6253BF5d42a9e6B6AaE6B5C52723d', // this is the achievement NFT address
-            importedFrom: {
-              plugin: 'devprotocol:clubs:simple-memberships',
-              key: 'memberships',
-            },
+            erc721Enumerable: '0xAA821D4397B6253BF5d42a9e6B6AaE6B5C52723d', // this is the achievement NFT address
             name: '役務証明報酬チケット',
             uses: [
               {
@@ -79,7 +77,7 @@ const upgrade = (config) => {
             ],
             webhooks: {
               used: {
-                encrypted: ticketWebhook,
+                encrypted: encryptedWebhook,
               },
             },
           },
