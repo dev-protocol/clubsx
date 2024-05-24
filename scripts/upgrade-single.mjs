@@ -18,7 +18,7 @@ const createAvailabilities = (startHour, endHour) => {
 }
 
 const ticketWebhook =
-  'Write a complete endpoint here, like https://[VERCEL_APP_HOSTNAME]/api/webhooks/tickets/[WEBHOOK_TICKETS_KEY]/dest/airtable/[DESTNATION_TABLE_ID]'
+  'https://test-mizu.prereleaseclubs.place/api/webhooks/tickets/Fbd64p/dest/airtable/tblEq5BuN8cmKOGbj'
 
 const upgrade = (config) => {
   const deocdedConfig = decode(config)
