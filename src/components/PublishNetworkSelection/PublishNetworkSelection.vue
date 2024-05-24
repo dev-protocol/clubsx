@@ -975,8 +975,8 @@ export default defineComponent({
               src: opt.imageSrc,
               name: opt.name,
               description: opt.description,
-              requiredTokenAmount,
-              requiredTokenFee,
+              requiredTokenAmount: requiredTokenAmount.toString(),
+              requiredTokenFee: requiredTokenFee.toString(),
               gateway,
               token,
             }

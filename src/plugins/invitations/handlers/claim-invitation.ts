@@ -143,25 +143,15 @@ export const handler =
     const { gateway, token, requiredTokenAmount, requiredTokenFee } =
       membershipToStruct(invitationMembership, chainId)
 
-    const args: {
-      to: string
-      property: string
-      payload: string
-      gatewayAddress: string
-      amounts: {
-        token: string
-        input: bigint
-        fee: bigint
-      }
-    } = {
+    const args = {
       to: address,
       property,
       payload: bytes32Hex(invitationMembership?.payload ?? []),
       gatewayAddress: gateway,
       amounts: {
         token,
-        input: requiredTokenAmount,
-        fee: requiredTokenFee,
+        input: requiredTokenAmount.toString(),
+        fee: requiredTokenFee.toString(),
       },
     }
     console.log(request.url, { args })
