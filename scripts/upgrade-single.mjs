@@ -5,7 +5,7 @@ import jsonwebtoken from 'jsonwebtoken'
 
 dotenv.config()
 
-const KEY = 'test-mizu'
+const KEY = 'metamizumachi'
 
 const createAvailabilities = (startHour, endHour) => {
   return Array.from({ length: 5 }, (_, i) => ({
@@ -18,7 +18,7 @@ const createAvailabilities = (startHour, endHour) => {
 }
 
 const ticketWebhook =
-  'https://test-mizu.prereleaseclubs.place/api/webhooks/tickets/Fbd64p/dest/airtable/tblEq5BuN8cmKOGbj'
+  'https://metamizumachi.clubs.place/api/webhooks/tickets/abc/dest/airtable/tblTISL8uH5gJHW62'
 
 const upgrade = (config) => {
   const deocdedConfig = decode(config)
@@ -37,7 +37,7 @@ const upgrade = (config) => {
           {
             // Regional Coupon
             payload:
-              '0x4873ac86f0764d57d7e71d276c7341ec9532d1dc6a4fdf6997220723a643ee32',
+              '0xadcc2c9fbaaa13666ae569512023beacbf445c364575a965a525828837950595',
             importedFrom: {
               plugin: 'devprotocol:clubs:simple-memberships',
               key: 'memberships',
@@ -87,6 +87,11 @@ const upgrade = (config) => {
   }
 
   upgradedConfig.plugins = [...upgradedConfig.plugins, metawaterTicketsPlugin]
+
+  // remove plugin where id equals devprotocol:clubs:plugin:tickets
+  // upgradedConfig.plugins = upgradedConfig.plugins.filter((plugin) => {
+  //   return plugin.id !== 'devprotocol:clubs:plugin:tickets'
+  // })
 
   return encode(upgradedConfig)
 }
