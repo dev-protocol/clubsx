@@ -12,21 +12,22 @@ const truncateEthAddress = (address: string) => {
 
 const AVATAR_URL = 'https://source.boringavatars.com/beam'
 
-let cachedSvgDataURL = '';
+let cachedSvgDataURL = ''
 const getBoringAvatar = async () => {
   if (cachedSvgDataURL) {
-    return cachedSvgDataURL;
+    return cachedSvgDataURL
   }
 
   try {
-    const response = await fetch(AVATAR_URL);
-    const body = await response.text();
-    const dataUrl = 'data:image/svg+xml;base64,' + Buffer.from(body).toString('base64');
-    cachedSvgDataURL = dataUrl;
-    return dataUrl;
+    const response = await fetch(AVATAR_URL)
+    const body = await response.text()
+    const dataUrl =
+      'data:image/svg+xml;base64,' + Buffer.from(body).toString('base64')
+    cachedSvgDataURL = dataUrl
+    return dataUrl
   } catch (err) {
-    console.error(err);
-    return '';
+    console.error(err)
+    return ''
   }
 }
 
@@ -58,17 +59,20 @@ export const GET = async ({
   await client.quit()
 
   if (!userProfile) {
-    return new Response(JSON.stringify({
-      username: truncateEthAddress(id),
-      avatar: await getBoringAvatar(),
-    }), {
-      status: 200,
-      headers: { ...headers, ...cache({ maxAge: 30 }) },
-    })
+    return new Response(
+      JSON.stringify({
+        username: truncateEthAddress(id),
+        avatar: await getBoringAvatar(),
+      }),
+      {
+        status: 200,
+        headers: { ...headers, ...cache({ maxAge: 30 }) },
+      },
+    )
   }
 
   return new Response(userProfile, {
-        status: 200,
-        headers: { ...headers, ...cache({ maxAge: 30 }) },
-      })
+    status: 200,
+    headers: { ...headers, ...cache({ maxAge: 30 }) },
+  })
 }
