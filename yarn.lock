@@ -836,10 +836,10 @@
     strip-markdown "^6.0.0"
     uuid "^9.0.1"
 
-"@devprotocol/clubs-plugin-posts@0.20.9":
-  version "0.20.9"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts/-/clubs-plugin-posts-0.20.9.tgz#6517b4b700080d616ef84de842f8252f4571ea55"
-  integrity sha512-Djn+vzxU2S0HJaubTKsYgD1lukiS59ubtq3kspyNcOjYWHPND0ouf8AtswJPrtrAzMbPgj+kj6nzGJWxCB0UTg==
+"@devprotocol/clubs-plugin-posts@0.20.10":
+  version "0.20.10"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts/-/clubs-plugin-posts-0.20.10.tgz#7dc2eccfc9f6390dfc8f1e1b58eaa6e709c4efee"
+  integrity sha512-5mH8N3xiInhzIfzGd/7KQdUIB4nU+8+Hvql468cpUKg1FTxvERjiuHBNopBwwY4dY4am7X3BD57vca+iwQBk8w==
   dependencies:
     "@boringer-avatars/vue3" "^0.2.1"
     "@devprotocol/dev-kit" "8.6.1"
@@ -850,7 +850,7 @@
     ethers "^6.6.4"
     marked "12.0.2"
     nanoid "^5.0.6"
-    photoswipe "5.4.3"
+    photoswipe "5.4.4"
     ramda "0.30.0"
     redis "^4.6.7"
     sass "1.77.2"
@@ -9656,10 +9656,10 @@ periscopic@^3.1.0:
     estree-walker "^3.0.0"
     is-reference "^3.0.0"
 
-photoswipe@5.4.3:
-  version "5.4.3"
-  resolved "https://registry.yarnpkg.com/photoswipe/-/photoswipe-5.4.3.tgz#413670ab08ac062c09f2f8dd645dcd1278afcb4a"
-  integrity sha512-9UC6oJBK4oXFZ5HcdlcvGkfEHsVrmE4csUdCQhEjHYb3PvPLO3PG7UhnPuOgjxwmhq5s17Un5NUdum01LgBDng==
+photoswipe@5.4.4:
+  version "5.4.4"
+  resolved "https://registry.yarnpkg.com/photoswipe/-/photoswipe-5.4.4.tgz#e045dc036453493188d5c8665b0e8f1000ac4d6e"
+  integrity sha512-WNFHoKrkZNnvFFhbHL93WDkW3ifwVOXSW3w1UuZZelSmgXpIGiZSNlZJq37rR8YejqME2rHs9EhH9ZvlvFH2NA==
 
 picocolors@^1.0.0:
   version "1.0.0"
