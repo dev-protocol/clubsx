@@ -66,8 +66,8 @@
 
     await whenDefined(filteredIdList, async (li) => {
       await Promise.all(
-        reverse(li).map(async (token) =>
-          queueTickets.add(async () => {
+        reverse(li).map(async (token) => {
+          return queueTickets.add(async () => {
             const [id, payload, contract, metadata] =
               typeof token === 'number'
                 ? [
@@ -104,16 +104,18 @@
                   ),
             )
             const res = match ? { ...match, id, membership, status } : undefined
-            ownedTickets =
-              whenDefined(res, (x) => [...(ownedTickets ?? []), x]) ??
-              ownedTickets
+            ownedTickets = whenDefined(res, (x) => [
+              ...new Set([...(ownedTickets ?? []), x]),
+            ]) ?? [...new Set(ownedTickets)]
             return res
-          }),
-        ),
+          })
+        }),
       )
       fetchingOwnedTickets = false
       return
     })
+
+    console.log('Owned tickets', ownedTickets)
   }
 
   const fetchTicketStatusThrottle = async (
