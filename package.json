@@ -69,7 +69,7 @@
     "@devprotocol/clubs-core": "3.12.7",
     "@devprotocol/clubs-plugin-awesome-onboarding": "0.1.4",
     "@devprotocol/clubs-plugin-posts": "0.20.9",
-    "@devprotocol/clubs-plugin-posts-voting": "^0.8.1",
+    "@devprotocol/clubs-plugin-posts-voting": "^0.8.2",
     "@devprotocol/dev-kit": "8.6.1",
     "@devprotocol/elements": "1.1.0",
     "@devprotocol/hashi": "2.3.1",
