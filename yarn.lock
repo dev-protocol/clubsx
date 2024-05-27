@@ -820,10 +820,10 @@
   resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-awesome-onboarding/-/clubs-plugin-awesome-onboarding-0.1.6.tgz#df5da502da2a9f98d446fe93ab7fd28fa058fc17"
   integrity sha512-2O0weYywpmGwKYB5W0nHBFOBecX2ePQaCMYMWPV9f9j1aJGvBhdO718yIuGh3aoWZsK4ZtMwx/e8GelQ3D2MvQ==
 
-"@devprotocol/clubs-plugin-posts-voting@^0.8.0":
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts-voting/-/clubs-plugin-posts-voting-0.8.0.tgz#9fd35338bfe35c19c51c07417abce50bc7094e64"
-  integrity sha512-dK7IGlD/q+iE0nI2KdvKCilkzFYzxAJRj2T1eTpZHXAOMTqQh5LEGmX9uX2eLzR3WwQYhXuZP9STWw/SofEK4Q==
+"@devprotocol/clubs-plugin-posts-voting@^0.8.2":
+  version "0.8.2"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts-voting/-/clubs-plugin-posts-voting-0.8.2.tgz#926aa0a732dccdedd301bf542f638897fa2aed47"
+  integrity sha512-XnrlqJkIi27l6XiV4mpTUTPOI8oudU0EJgTjVLPI1m6ryiS6Hkal8245o1aV5+PgUiSfSkq+aRWWs+mRjSj3qw==
   dependencies:
     "@boringer-avatars/vue3" "^0.2.1"
     "@devprotocol/dev-kit" "8.6.1"
@@ -836,7 +836,7 @@
     strip-markdown "^6.0.0"
     uuid "^9.0.1"
 
-"@devprotocol/clubs-plugin-posts@0.20.10":
+"@devprotocol/clubs-plugin-posts@^0.20.10":
   version "0.20.10"
   resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts/-/clubs-plugin-posts-0.20.10.tgz#7dc2eccfc9f6390dfc8f1e1b58eaa6e709c4efee"
   integrity sha512-5mH8N3xiInhzIfzGd/7KQdUIB4nU+8+Hvql468cpUKg1FTxvERjiuHBNopBwwY4dY4am7X3BD57vca+iwQBk8w==
@@ -4905,10 +4905,10 @@ assertion-error@^1.1.0:
   resolved "https://registry.yarnpkg.com/assertion-error/-/assertion-error-1.1.0.tgz#e60b6b0e8f301bd97e5375215bda406c85118c0b"
   integrity sha512-jgsaNduz+ndvGyFt3uSuWqvy4lCnIJiovtouQN5JZHOKCS2QuhEdbcQHFhVksz2N2U9hXJo8odG7ETyWlEeuDw==
 
-astro@4.9.1:
-  version "4.9.1"
-  resolved "https://registry.yarnpkg.com/astro/-/astro-4.9.1.tgz#2883fabd5c4c9f1ba9417236b4fdf70320432a65"
-  integrity sha512-9TsoAu0WBPiqyAIj9H0JW7R+tIjPjFsPKo70Nja6WL3imTTuUJQmnCre4ZVmoNV3oicTTlb+N4zjRYANW0Ty9A==
+astro@4.9.2:
+  version "4.9.2"
+  resolved "https://registry.yarnpkg.com/astro/-/astro-4.9.2.tgz#e48071aaadca1e74be443a4ebc4cda5a72f8f42c"
+  integrity sha512-apzpRoISk6L8g99m3zKIW5SYxw2GhOju/1Gq0Ccf3SH+X2UcFXF+MTdxPOFl5yJUQg7X0qsVQDOIVf8zHRRKFg==
   dependencies:
     "@astrojs/compiler" "^2.8.0"
     "@astrojs/internal-helpers" "0.4.0"
