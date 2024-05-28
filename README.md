@@ -42,6 +42,19 @@ npm version [patch|minor|major]
 git push && git push --tags
 ```
 
+### hotfix
+
+If a bug in the stable release version is fixed in the pre-release version, you may want to apply it to the stable release version immediately.
+
+In such cases, you can `checkout` the stable release version of the git tag, `cherry-pick` specific fix commit(s), and publish the new tag as the new stable release version. This is called a hotfix.
+
+```bash
+git checkout refs/tags/<LATEST_PRODUCTION_TAG_NAME> # ig, refs/tags/0.1.0
+git cherry-pick <COMMIT_SHA1> # ig, 721f2af8ffae1a012317f25521cdaa934a023f4b
+git tag <NEW_TAG_NAME> # ig, 0.1.0-hotfix.1
+git push --tags # Push only the tag
+```
+
 ## setup env file
 
 example:
