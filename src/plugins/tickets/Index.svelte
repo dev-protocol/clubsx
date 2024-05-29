@@ -43,6 +43,8 @@
   }
 
   const detectHavingTickets = async (_account: string): Promise<void> => {
+    if (fetchingOwnedTickets) return
+
     fetchingOwnedTickets = true
     const [s1, s2] = await clientsSTokens(provider)
     const detectSTokens = whenDefined(s1 ?? s2, client.createDetectSTokens)
