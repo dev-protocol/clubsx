@@ -8,8 +8,8 @@ import {
 } from '..'
 import { createClient } from 'redis'
 import { decode, encode } from '@devprotocol/clubs-core'
-import { whenDefined, whenDefinedAll } from '@devprotocol/util-ts'
-import { always } from 'ramda'
+import { whenDefined, whenDefinedAll, whenNotError } from '@devprotocol/util-ts'
+import { always, tryCatch } from 'ramda'
 import { ticketStatus } from '../utils/status'
 import { Contract, JsonRpcProvider, hashMessage, recoverAddress } from 'ethers'
 import { clientsSTokens } from '@devprotocol/dev-kit'
@@ -125,35 +125,42 @@ export const post: (opts: {
       console.log('webhooks.used', 'start', ticket.webhooks?.used)
       const webhook = whenDefinedAll(
         [ticket.webhooks?.used?.encrypted, process.env.SALT],
-        ([encrypted, salt]) => jsonwebtoken.verify(encrypted, salt) as string,
+        ([encrypted, salt]) =>
+          tryCatch(
+            (_encrypted: string) =>
+              jsonwebtoken.verify(_encrypted, salt) as string,
+            (err: Error) => err,
+          )(encrypted),
       )
       console.log('webhooks.used', 'decrypt', typeof webhook)
-      await whenDefined(webhook, (base) =>
-        fetch(base, {
-          method: 'POST',
-          body: JSON.stringify({
-            status: Status.Used,
-            id,
-            account,
-            ticket: {
-              name: beneifit.ticket.name,
-            },
-            benefit: {
-              id: benefitId,
-              name: beneifit.self.use.name,
-              description: beneifit.self.use.description,
-            },
-          }),
-        })
-          .then(async (res) => {
-            console.log('webhooks.used', 'called', {
-              res,
-              body: await res.text().catch((err) => err),
-            })
+      await whenNotError(webhook, (_webhook) =>
+        whenDefined(_webhook, (base) =>
+          fetch(base, {
+            method: 'POST',
+            body: JSON.stringify({
+              status: Status.Used,
+              id,
+              account,
+              ticket: {
+                name: beneifit.ticket.name,
+              },
+              benefit: {
+                id: benefitId,
+                name: beneifit.self.use.name,
+                description: beneifit.self.use.description,
+              },
+            }),
           })
-          .catch((err: Error) => {
-            console.log('webhooks.used', 'error', { err })
-          }),
+            .then(async (res) => {
+              console.log('webhooks.used', 'called', {
+                res,
+                body: await res.text().catch((err) => err),
+              })
+            })
+            .catch((err: Error) => {
+              console.log('webhooks.used', 'error', { err })
+            }),
+        ),
       )
 
       return new Response(null, {
