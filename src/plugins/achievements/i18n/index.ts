@@ -23,7 +23,7 @@ export const Strings = {
   },
   CantClaimMsg: {
     en: `Looks like you can't claim this achievement.`,
-    ja: `この実績証明NFTを取得できないようです`,
+    ja: `この実績証明NFTを取得する権利がありません。正しいウォレットで再度ログインしてください。`,
   },
   ClickClaimMsg: {
     en: `Click "Claim" to claim your achievement`,
