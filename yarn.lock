@@ -788,13 +788,13 @@
     svelte "^3.49.0"
     vue "^3.2.0"
 
-"@devprotocol/clubs-core@3.12.9":
-  version "3.12.9"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-3.12.9.tgz#c179c733e35aa42621a3874bc0f7eeb1d68fdc8e"
-  integrity sha512-VTVGrsIdlntWp8Bhxx/MdanVArOeQO3xYS9YWNWQl7bKuziJn/ZqpjlQ7rG8YDlVO/G664/ZebYDqI1t5xY/ow==
+"@devprotocol/clubs-core@3.12.10":
+  version "3.12.10"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-3.12.10.tgz#e1339826cd37054a7257d34a948d75bfb39beb9d"
+  integrity sha512-VJuA7Yh8SwNmpEXjhq4kb3fE7YgUkStsTTLBmXzp1ztAUSS9RH4QJyAWjwCbZY7cmESbv2fcmfPpjBd6H2Oh9Q==
   dependencies:
     "@devprotocol/dev-kit" "8.6.1"
-    "@devprotocol/elements" "1.1.0"
+    "@devprotocol/elements" "1.2.0"
     "@devprotocol/hashi" "2.3.1"
     "@devprotocol/util-ts" "4.0.0"
     "@ethersproject/abstract-provider" "^5.7.0"
@@ -905,6 +905,11 @@
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@devprotocol/elements/-/elements-1.1.0.tgz#009ed288f2e884356c4c28e7657d70dfa1d5002e"
   integrity sha512-btlwtISEftGl6YT2cvI4eyheeoTyCcwWTaieMMNSCDkV1mhwJhmbGJLSrKSr/H9DHQPm0APK300rGE7XVoWVVg==
+
+"@devprotocol/elements@1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@devprotocol/elements/-/elements-1.2.0.tgz#ba1c362484b63da15bc69fcf3380c584e4b25230"
+  integrity sha512-hgazdebMafKywPWt7tE66Y0QSDBXlxcjcceBm8aYzDnGgRjxO/ELX5YTeRqae94PJyWfBb0uO2ZGF49cJ90s1Q==
 
 "@devprotocol/hashi@1.8.0":
   version "1.8.0"
