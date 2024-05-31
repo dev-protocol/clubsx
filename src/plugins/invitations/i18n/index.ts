@@ -27,7 +27,7 @@ export const Strings = {
   },
   ClaimBtnTxt: {
     en: 'Claim',
-    ja: '報酬を取得する',
+    ja: '取得する',
   },
   ClaimingBtnTxt: {
     en: 'Claiming',
