@@ -13,7 +13,7 @@ const truncateEthAddress = (address: string) => {
 const AVATAR_URL = 'https://source.boringavatars.com/beam/'
 
 let cachedSvgDataURL = ''
-const getBoringAvatar = async (address:string) => {
+const getBoringAvatar = async (address: string) => {
   if (cachedSvgDataURL) {
     return cachedSvgDataURL
   }
