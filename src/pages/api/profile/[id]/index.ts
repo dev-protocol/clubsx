@@ -10,16 +10,16 @@ const truncateEthAddress = (address: string) => {
   return `${match[1]}\u2026${match[2]}`
 }
 
-const AVATAR_URL = 'https://source.boringavatars.com/beam'
+const AVATAR_URL = 'https://source.boringavatars.com/beam/'
 
 let cachedSvgDataURL = ''
-const getBoringAvatar = async () => {
+const getBoringAvatar = async (address:string) => {
   if (cachedSvgDataURL) {
     return cachedSvgDataURL
   }
 
   try {
-    const response = await fetch(AVATAR_URL)
+    const response = await fetch(`${AVATAR_URL}${address}`)
     const body = await response.text()
     const dataUrl =
       'data:image/svg+xml;base64,' + Buffer.from(body).toString('base64')
