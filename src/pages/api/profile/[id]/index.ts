@@ -12,10 +12,11 @@ const truncateEthAddress = (address: string) => {
 
 const AVATAR_URL = 'https://source.boringavatars.com/beam/'
 
-let cachedSvgDataURL = ''
+const cachedSvgDataURL = new Map<string, string>()
 const getBoringAvatar = async (address: string) => {
-  if (cachedSvgDataURL) {
-    return cachedSvgDataURL
+  const fromCache = cachedSvgDataURL.get(address)
+  if (fromCache) {
+    return fromCache
   }
 
   try {
@@ -23,8 +24,7 @@ const getBoringAvatar = async (address: string) => {
     const body = await response.text()
     const dataUrl =
       'data:image/svg+xml;base64,' + Buffer.from(body).toString('base64')
-    cachedSvgDataURL = dataUrl
-    return dataUrl
+    return cachedSvgDataURL.set(address, dataUrl).get(address) as string
   } catch (err) {
     console.error(err)
     return ''
