@@ -906,6 +906,11 @@
   resolved "https://registry.yarnpkg.com/@devprotocol/elements/-/elements-1.2.0.tgz#ba1c362484b63da15bc69fcf3380c584e4b25230"
   integrity sha512-hgazdebMafKywPWt7tE66Y0QSDBXlxcjcceBm8aYzDnGgRjxO/ELX5YTeRqae94PJyWfBb0uO2ZGF49cJ90s1Q==
 
+"@devprotocol/elements@1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@devprotocol/elements/-/elements-1.3.1.tgz#c8343cdcc95a2f40155381d8e1667e201b57acd1"
+  integrity sha512-j4DK1qSWCDsNli0VYDAfc6oR8wT89LB31iKgRy4EOdYJETOm1/grUQUK71J/liVMeA+F+F45na82KScB8A8SSg==
+
 "@devprotocol/hashi@1.8.0":
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/@devprotocol/hashi/-/hashi-1.8.0.tgz#5a00703c92fb6aec5e4f878130107649eded28b2"
