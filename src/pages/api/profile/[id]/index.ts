@@ -62,7 +62,7 @@ export const GET = async ({
     return new Response(
       JSON.stringify({
         username: truncateEthAddress(id),
-        avatar: await getBoringAvatar(),
+        avatar: await getBoringAvatar(id),
       }),
       {
         status: 200,
