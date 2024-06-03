@@ -17,6 +17,14 @@
   resolved "https://registry.yarnpkg.com/@adraffy/ens-normalize/-/ens-normalize-1.10.1.tgz#63430d04bd8c5e74f8d7d049338f1cd9d4f02069"
   integrity sha512-96Z2IP3mYmF1Xg2cDm8f1gWGf/HUVedQ3FMifV4kG/PQ4yEP51xDtRAEfhVNt5f/uzpNkZHwWQuUcu6D6K+Ekw==
 
+"@aggre/ullr@^3.1.5":
+  version "3.1.5"
+  resolved "https://registry.yarnpkg.com/@aggre/ullr/-/ullr-3.1.5.tgz#7e787f81fd1cb5b95dfa2033d6bfd3a4bad50b6b"
+  integrity sha512-aRSlO1zDwCU+y7TG8H4LIPyFW8PgprkG0oxuYReWAtzTYGPPLi/eDlFkrZJmnpjtHo5rUI7q/Q7P4wh+MquTYA==
+  dependencies:
+    ramda "^0.29.0"
+    type-fest "^2.13.0"
+
 "@alloc/quick-lru@^5.2.0":
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/@alloc/quick-lru/-/quick-lru-5.2.0.tgz#7bf68b20c0a350f936915fcae06f58e32007ce30"
@@ -788,13 +796,13 @@
     svelte "^3.49.0"
     vue "^3.2.0"
 
-"@devprotocol/clubs-core@3.12.10":
-  version "3.12.10"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-3.12.10.tgz#e1339826cd37054a7257d34a948d75bfb39beb9d"
-  integrity sha512-VJuA7Yh8SwNmpEXjhq4kb3fE7YgUkStsTTLBmXzp1ztAUSS9RH4QJyAWjwCbZY7cmESbv2fcmfPpjBd6H2Oh9Q==
+"@devprotocol/clubs-core@3.13.2":
+  version "3.13.2"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-3.13.2.tgz#8745593ee63c9025581f43821fd165d1ac14ccf7"
+  integrity sha512-Q3AQUA170VhW2pTOGvZvFLkDD7O/9h7yCvH0t0z2nO3TDJZ6/py6mMmejfiPk0JwPqjfSgarscLrxG+25uL4PA==
   dependencies:
     "@devprotocol/dev-kit" "8.6.1"
-    "@devprotocol/elements" "1.2.0"
+    "@devprotocol/elements" "1.3.3"
     "@devprotocol/hashi" "2.3.1"
     "@devprotocol/util-ts" "4.0.0"
     "@ethersproject/abstract-provider" "^5.7.0"
@@ -808,17 +816,17 @@
     p-queue "^8.0.1"
     ramda "^0.30.0"
     rxjs "^7.8.1"
-    yaml "2.4.2"
+    yaml "2.4.3"
   optionalDependencies:
     react "^18.0.0"
     react-dom "^18.0.0"
     svelte "^4.0.0"
     vue "^3.2.0"
 
-"@devprotocol/clubs-plugin-awesome-onboarding@0.1.8":
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-awesome-onboarding/-/clubs-plugin-awesome-onboarding-0.1.8.tgz#6a4e0a342cb428825fb7918f08bd99149b56965d"
-  integrity sha512-WGIl1pNGXN1NtNkTIX1apc4WU8Jcfbc6YmOyxPi9RDoUlR1PQ1+MrrQ2Gkr2D9AhcljKcp7Ef9Z34TJNz3dd/g==
+"@devprotocol/clubs-plugin-awesome-onboarding@0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-awesome-onboarding/-/clubs-plugin-awesome-onboarding-0.2.0.tgz#923364f4c27a576bb06c6919cbd4621ddb40d2c3"
+  integrity sha512-u/1d4o2S1VVl7VtcLtoQjZwIp4JKr6ik2QQ3CCHrnviDrH0CBfGiYkkyI4s3VzdiL7k+ZVb1DEj64c9lZ/l/Ww==
 
 "@devprotocol/clubs-plugin-posts-voting@^0.8.2":
   version "0.8.2"
@@ -901,10 +909,13 @@
   resolved "https://registry.yarnpkg.com/@devprotocol/elements/-/elements-0.2.2.tgz#7325fb3354f2fb77c08f91634656a9e87ce0fa80"
   integrity sha512-8Kj3hw84GVAIrQnX5gFE0iZSMvzbKqga5Kdo7rHI7ZS6lUBgG1EwxYv78iIz9SwdBki9zyGxfrQb4j3dI4Sv9w==
 
-"@devprotocol/elements@1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/elements/-/elements-1.2.0.tgz#ba1c362484b63da15bc69fcf3380c584e4b25230"
-  integrity sha512-hgazdebMafKywPWt7tE66Y0QSDBXlxcjcceBm8aYzDnGgRjxO/ELX5YTeRqae94PJyWfBb0uO2ZGF49cJ90s1Q==
+"@devprotocol/elements@1.3.3":
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/@devprotocol/elements/-/elements-1.3.3.tgz#0bdfb5b7f494c1567acc77fa763c0fa1160f531f"
+  integrity sha512-mPuV02otrDEkRQW161V7JlbS7SOVF+GKCcPwFfCJ7JaDraiLEsKS0tsm0F0bPSxu4olxwoRvkXJLi3yBEDkw4Q==
+  dependencies:
+    "@aggre/ullr" "^3.1.5"
+    lit "^2.8.0"
 
 "@devprotocol/hashi@1.8.0":
   version "1.8.0"
@@ -8377,7 +8388,7 @@ lit-html@^3.1.0, lit-html@^3.1.2:
   dependencies:
     "@types/trusted-types" "^2.0.2"
 
-lit@2.8.0, lit@^2.3.1:
+lit@2.8.0, lit@^2.3.1, lit@^2.8.0:
   version "2.8.0"
   resolved "https://registry.yarnpkg.com/lit/-/lit-2.8.0.tgz#4d838ae03059bf9cafa06e5c61d8acc0081e974e"
   integrity sha512-4Sc3OFX9QHOJaHbmTMk28SYgVxLN3ePDjg7hofEft2zWlehFL3LiAuapWc4U/kYwMYJSh2hTCPZ6/LIC7ii0MA==
@@ -12481,10 +12492,10 @@ yaml@2.2.1:
   resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.2.1.tgz#3014bf0482dcd15147aa8e56109ce8632cd60ce4"
   integrity sha512-e0WHiYql7+9wr4cWMx3TVQrNwejKaEe7/rHNmQmqRjazfOP5W8PB6Jpebb5o6fIapbz9o9+2ipcaTM2ZwDI6lw==
 
-yaml@2.4.2:
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.4.2.tgz#7a2b30f2243a5fc299e1f14ca58d475ed4bc5362"
-  integrity sha512-B3VqDZ+JAg1nZpaEmWtTXUlBneoGx6CPM9b0TENK6aoSu5t73dItudwdgmi6tHlIZZId4dZ9skcAQ2UbcyAeVA==
+yaml@2.4.3:
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.4.3.tgz#0777516b8c7880bcaa0f426a5410e8d6b0be1f3d"
+  integrity sha512-sntgmxj8o7DE7g/Qi60cqpLBA3HG3STcDA0kO+WfB05jEKhZMbY7umNm2rBpQvsmZ16/lPXCJGW2672dgOUkrg==
 
 yaml@^2.3.4:
   version "2.4.1"
