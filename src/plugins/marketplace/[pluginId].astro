@@ -23,6 +23,14 @@ const plugin = await createGetPluginMeta(config)(installablePlugins)
 const READMEComponent = plugin.readme
 ---
 
+<span>
+  <button
+    onclick="history.back()"
+    class="flex items-center gap-4 text-xl font-bold hover:underline"
+    >← Back
+  </button>
+</span>
+
 <section class="my-16">
   <div class="grid gap-16">
     <div class="flex items-center justify-between">
