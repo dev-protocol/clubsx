@@ -1,35 +1,6 @@
-import { generateProfileId } from '@fixtures/api/keys'
 import { headers, cache } from '@fixtures/api/headers'
-import { createClient } from 'redis'
-
-const truncateEthAddress = (address: string) => {
-  const match = address.match(
-    /^(0x[a-zA-Z0-9]{4})[a-zA-Z0-9]+([a-zA-Z0-9]{4})$/,
-  )
-  if (!match) return address
-  return `${match[1]}\u2026${match[2]}`
-}
-
-const AVATAR_URL = 'https://source.boringavatars.com/beam/'
-
-const cachedSvgDataURL = new Map<string, string>()
-const getBoringAvatar = async (address: string) => {
-  const fromCache = cachedSvgDataURL.get(address)
-  if (fromCache) {
-    return fromCache
-  }
-
-  try {
-    const response = await fetch(`${AVATAR_URL}${address}`)
-    const body = await response.text()
-    const dataUrl =
-      'data:image/svg+xml;base64,' + Buffer.from(body).toString('base64')
-    return cachedSvgDataURL.set(address, dataUrl).get(address) as string
-  } catch (err) {
-    console.error(err)
-    return ''
-  }
-}
+import { getProfile } from '@fixtures/api/profile'
+import { json } from '@fixtures/api/json'
 
 export const GET = async ({
   params: { id },
@@ -42,36 +13,9 @@ export const GET = async ({
     })
   }
 
-  const client = createClient({
-    url: process.env.REDIS_URL,
-    username: process.env.REDIS_USERNAME ?? '',
-    password: process.env.REDIS_PASSWORD ?? '',
-    socket: {
-      keepAlive: 1,
-      reconnectStrategy: 1,
-    },
-  })
-  await client.connect()
+  const profile = await getProfile({ id })
 
-  const profileId = generateProfileId(id)
-
-  const userProfile = (await client.get(profileId)) ?? undefined
-  await client.quit()
-
-  if (!userProfile) {
-    return new Response(
-      JSON.stringify({
-        username: truncateEthAddress(id),
-        avatar: await getBoringAvatar(id),
-      }),
-      {
-        status: 200,
-        headers: { ...headers, ...cache({ maxAge: 30 }) },
-      },
-    )
-  }
-
-  return new Response(userProfile, {
+  return new Response(json(profile), {
     status: 200,
     headers: { ...headers, ...cache({ maxAge: 30 }) },
   })

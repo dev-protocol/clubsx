@@ -4,13 +4,12 @@ import UserAssets from './components/UserAssets.vue'
 import Layout from '@layouts/Landing.astro'
 import { isAddress } from 'ethers'
 import type { Profile } from '@pages/api/profile'
-import { GET } from '@pages/api/profile/[id]'
+import { getProfile } from '@fixtures/api/profile'
 
 const { id } = Astro.params
 const isEOA = isAddress(id)
 
-const res = await GET({ params: { id } })
-const profile = (await res.json()) as Profile
+const profile: Profile = await getProfile({ id: id ?? '' })
 ---
 
 <Layout connectButton="show" theme="auto">
