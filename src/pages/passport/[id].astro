@@ -3,14 +3,23 @@ import UserProfileEditButton from './components/UserProfileEditButton.svelte'
 import UserAssets from './components/UserAssets.vue'
 import Layout from '@layouts/Landing.astro'
 import { isAddress } from 'ethers'
+import { createClient } from 'redis'
+import { generateProfileId } from '@fixtures/api/keys'
 import type { Profile } from '@pages/api/profile'
-import { GET } from '@pages/api/profile/[id]'
 
 const { id } = Astro.params
 const isEOA = isAddress(id)
 
-const res = await GET({ params: { id } })
-const profile = (await res.json()) as Profile
+const client = createClient({
+  url: import.meta.env.REDIS_URL,
+  username: import.meta.env.REDIS_USERNAME ?? '',
+  password: import.meta.env.REDIS_PASSWORD ?? '',
+})
+await client.connect()
+const profile: Profile = JSON.parse(
+  (await client.get(generateProfileId(id ?? ''))) ?? '{}',
+)
+await client.quit()
 ---
 
 <Layout connectButton="show" theme="auto">
