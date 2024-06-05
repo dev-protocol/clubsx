@@ -665,22 +665,22 @@ export default defineComponent({
             : this.networkSelected === 'arbitrum'
               ? 42161
               : this.networkSelected === 'polygon-mumbai'
-                ? 80001
+                ? 80002
                 : null
     },
 
     getRpcUrl() {
       return `https://${
         this.networkSelected === 'ethereum'
-          ? 'mainnet.infura.io'
+          ? 'eth-mainnet.g.alchemy.com'
           : this.networkSelected === 'polygon'
-            ? 'polygon-mainnet.infura.io'
+            ? 'polygon-mainnet.g.alchemy.com'
             : this.networkSelected === 'polygon-mumbai'
-              ? 'polygon-mumbai.infura.io'
+              ? 'polygon-amoy.g.alchemy.com'
               : this.networkSelected === 'arbitrum'
-                ? 'arbitrum-mainnet.infura.io'
-                : 'mainnet.infura.io'
-      }/v3/${import.meta.env.PUBLIC_INFURA_KEY}`
+                ? 'arb-mainnet.g.alchemy.com'
+                : 'eth-mainnet.g.alchemy.com'
+      }/v2/${import.meta.env.PUBLIC_ALCHEMY_KEY}`
     },
 
     async changeNetwork(network: string) {
