@@ -823,10 +823,10 @@
     svelte "^4.0.0"
     vue "^3.2.0"
 
-"@devprotocol/clubs-plugin-awesome-onboarding@0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-awesome-onboarding/-/clubs-plugin-awesome-onboarding-0.2.0.tgz#923364f4c27a576bb06c6919cbd4621ddb40d2c3"
-  integrity sha512-u/1d4o2S1VVl7VtcLtoQjZwIp4JKr6ik2QQ3CCHrnviDrH0CBfGiYkkyI4s3VzdiL7k+ZVb1DEj64c9lZ/l/Ww==
+"@devprotocol/clubs-plugin-awesome-onboarding@0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-awesome-onboarding/-/clubs-plugin-awesome-onboarding-0.2.1.tgz#0c90ae3bb80a02a8310b6e1df41464f9d59c48de"
+  integrity sha512-S6nCYZixvVIYdmFNT88qITalaYriUUs6ZxDDCwluTcRaj18cE/CvcpQsnxefun//1Z60K8XG183OqjG3oHIlEw==
 
 "@devprotocol/clubs-plugin-posts-voting@^0.8.2":
   version "0.8.2"
