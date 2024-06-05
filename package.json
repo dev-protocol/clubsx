@@ -56,7 +56,7 @@
   },
   "dependencies": {
     "@astrojs/check": "0.7.0",
-    "@astrojs/lit": "4.0.1",
+    "@astrojs/lit": "4.1.0",
     "@astrojs/netlify": "5.2.1",
     "@astrojs/prefetch": "0.4.1",
     "@astrojs/react": "3.4.0",
@@ -85,7 +85,7 @@
     "@wagmi/core": "^1.4.1",
     "@web3modal/wagmi": "3.5.7",
     "@webcomponents/template-shadowroot": "^0.2.1",
-    "astro": "4.9.2",
+    "astro": "4.9.3",
     "autoprefixer": "10.4.19",
     "bad-words": "^3.0.4",
     "bignumber.js": "9.1.2",
