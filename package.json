@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@repeaterjs/repeater": "^3.0.5",
-    "@rollup/plugin-commonjs": "^25.0.4",
+    "@rollup/plugin-commonjs": "^26.0.0",
     "@types/bad-words": "^3.0.3",
     "@types/dompurify": "^3.0.2",
     "@types/dotenv": "8.2.0",
