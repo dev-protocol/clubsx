@@ -24,10 +24,7 @@
   import Modal from './Modal.svelte'
   import { Strings } from './i18n'
   import type { BanningRules } from './utils/get-banning-rules'
-  import {
-    getMetadata,
-    type MetadataAttribute,
-  } from './utils/nft'
+  import { getMetadata, type MetadataAttribute } from './utils/nft'
   import { requestToGetHistory, requestToPostRedeem } from './utils/api'
 
   export let ticket: Ticket
