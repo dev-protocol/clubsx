@@ -3,11 +3,17 @@ import { Contract, type ContractRunner } from 'ethers'
 import { decode } from 'js-base64'
 import { tryCatch } from 'ramda'
 
+export type MetadataAttribute = {
+  trait_type: string
+  value: string
+  display_type?: string
+}
+
 export type Metadata = {
   image: string
   name: string
   description: string
-  attributes: { trait_type: string; value: string; display_type?: string }[]
+  attributes: MetadataAttribute[]
 }
 
 export const ABI_NFT = [

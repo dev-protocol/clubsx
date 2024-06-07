@@ -24,7 +24,10 @@
   import Modal from './Modal.svelte'
   import { Strings } from './i18n'
   import type { BanningRules } from './utils/get-banning-rules'
-  import { getMetadata } from './utils/nft'
+  import {
+    getMetadata,
+    type MetadataAttribute,
+  } from './utils/nft'
   import { requestToGetHistory, requestToPostRedeem } from './utils/api'
 
   export let ticket: Ticket
@@ -56,7 +59,53 @@
         attributes: undefined,
       })
     : erc721Enumerable && tokenId
-      ? getMetadata(erc721Enumerable, tokenId, provider)
+      ? getMetadata(erc721Enumerable, tokenId, provider).then((res) => {
+          if (!res || res instanceof Error || !res.attributes) {
+            return res
+          }
+
+          const nftOgAttributes = res.attributes.filter(
+            (attr) =>
+              attr.trait_type.toLowerCase() !== 'Property'.toLowerCase(),
+          )
+          const attributeSequenceKeys: string[] = [
+            'Achievement Type',
+            'Reward',
+            'Currency',
+            'Completion Confirmation Date',
+            'Completion Report Date',
+            'Case Number',
+          ]
+          const finalIndexedAttributesArray: MetadataAttribute[] = []
+          const finalNonIndexedAttributesArray: MetadataAttribute[] = []
+
+          for (const attributeSequenceKey of attributeSequenceKeys) {
+            const index = nftOgAttributes.findIndex(
+              (item) =>
+                item.trait_type.toLowerCase() ===
+                attributeSequenceKey.toLowerCase(),
+            )
+            if (index === -1) {
+              finalNonIndexedAttributesArray.push(nftOgAttributes[index])
+              continue
+            }
+
+            finalIndexedAttributesArray.push(nftOgAttributes[index])
+          }
+
+          return {
+            ...res,
+            attributes:
+              finalIndexedAttributesArray.length &&
+              finalNonIndexedAttributesArray.length
+                ? finalIndexedAttributesArray.concat(
+                    finalNonIndexedAttributesArray,
+                  )
+                : finalIndexedAttributesArray.length
+                  ? finalIndexedAttributesArray
+                  : finalNonIndexedAttributesArray,
+          }
+        })
       : undefined
 
   const onClickABenefit = (benefitId: string) => async () => {
@@ -130,6 +179,7 @@
         closeButton: i18n('ModalCloseNotConnected'),
       })
   }
+
   const onClickBackdrop = () => {
     /**
      * Define the action when clicking the modal backdrop.
