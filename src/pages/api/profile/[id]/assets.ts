@@ -37,7 +37,7 @@ import type {
   AchievementItem,
 } from '@plugins/achievements/types'
 
-const { PUBLIC_INFURA_KEY } = import.meta.env
+const { PUBLIC_ALCHEMY_KEY } = import.meta.env
 
 const onChainQueue = new PQueue({ concurrency: 3 })
 
@@ -262,9 +262,9 @@ export const GET: APIRoute = async ({
 
   const provider =
     whenDefined(
-      PUBLIC_INFURA_KEY,
+      PUBLIC_ALCHEMY_KEY,
       (key) =>
-        new JsonRpcProvider(`https://polygon-mainnet.infura.io/v3/${key}`),
+        new JsonRpcProvider(`https://polygon-mainnet.g.alchemy.com/v2/${key}`),
     ) ?? new Error('INFURA key not found')
 
   const client = await withCheckingIndexClubs(() =>

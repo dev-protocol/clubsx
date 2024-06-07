@@ -1,6 +1,6 @@
-import { generateProfileId } from '@fixtures/api/keys'
 import { headers, cache } from '@fixtures/api/headers'
-import { createClient } from 'redis'
+import { getProfile } from '@fixtures/api/profile'
+import { json } from '@fixtures/api/json'
 
 export const GET = async ({
   params: { id },
@@ -13,28 +13,10 @@ export const GET = async ({
     })
   }
 
-  const client = createClient({
-    url: process.env.REDIS_URL,
-    username: process.env.REDIS_USERNAME ?? '',
-    password: process.env.REDIS_PASSWORD ?? '',
-    socket: {
-      keepAlive: 1,
-      reconnectStrategy: 1,
-    },
+  const profile = await getProfile({ id })
+
+  return new Response(json(profile), {
+    status: 200,
+    headers: { ...headers, ...cache({ maxAge: 30 }) },
   })
-  await client.connect()
-
-  const profileId = generateProfileId(id)
-
-  const userProfile = (await client.get(profileId)) ?? undefined
-  await client.quit()
-
-  return userProfile
-    ? new Response(userProfile, {
-        status: 200,
-        headers: { ...headers, ...cache({ maxAge: 30 }) },
-      })
-    : new Response(JSON.stringify({ error: 'Profile not found' }), {
-        status: 404,
-      })
 }
