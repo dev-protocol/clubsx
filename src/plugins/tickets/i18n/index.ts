@@ -51,4 +51,51 @@ export const Strings = {
     en: `Can't sign with your wallet? Close this confirmation, and disconnect/reconnect your wallet and try again.`,
     ja: 'ウォレットで署名ができませんか? この確認を閉じてからウォレットを再接続してもう一度試してください。',
   },
+  AchievementMetadataAttributes: {
+    en: ([txt]) => {
+      if (txt === 'チケットの種類') {
+        return 'Achievement Type'
+      } else if (txt === '完了日') {
+        return 'Completion Confirmation Date'
+      } else if (txt === '報告日') {
+        return 'Completion Report Date'
+      } else if (txt === '案件番号') {
+        return 'Requester'
+      } else if (txt === '案件番号') {
+        return 'Case Number'
+      } else if (txt === '個数') {
+        return 'Reward'
+      } else if (txt === '単位') {
+        return 'Currency'
+      } else {
+        return txt || ''
+      }
+    },
+
+    ja: ([txt]) => {
+      const loweredCaseTxt = txt?.toLowerCase()
+      if (loweredCaseTxt === 'Achievement Type'.toLowerCase()) {
+        return 'チケットの種類'
+      } else if (
+        loweredCaseTxt === 'Completion Confirmation Date'.toLowerCase()
+      ) {
+        return '完了日'
+      } else if (loweredCaseTxt === 'Completion Report Date'.toLowerCase()) {
+        return '報告日'
+      } else if (loweredCaseTxt === 'Requester'.toLowerCase()) {
+        return '案件番号'
+      } else if (loweredCaseTxt === 'Case Number'.toLowerCase()) {
+        return '案件番号'
+      } else if (loweredCaseTxt === 'Currency'.toLowerCase()) {
+        return '単位'
+      } else if (
+        loweredCaseTxt === 'Reward'.toLowerCase() ||
+        loweredCaseTxt === 'Rewards'.toLowerCase()
+      ) {
+        return '個数'
+      } else {
+        return txt || ''
+      }
+    },
+  },
 } satisfies ClubsI18nParts

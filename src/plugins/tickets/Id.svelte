@@ -214,9 +214,16 @@
             class="rounded-md p-2 bg-surface-300 grid gap-2 gap-y-4 grid-cols-[auto,1fr]"
           >
             {#each _nft.attributes as attr}
-              <dt class="break-all text-accent-200">{attr.trait_type}</dt>
+              <dt class="break-all text-accent-200">
+                {i18n('AchievementMetadataAttributes', [attr.trait_type])}
+              </dt>
               <dd class="font-bold break-all text-right text-surface-ink">
-                {attr.value}
+                {attr.display_type && attr.display_type === 'number'
+                  ? new Intl.NumberFormat('en-IN', {
+                      minimumFractionDigits: 0,
+                      maximumFractionDigits: 3,
+                    }).format(Number(attr.value) || 0)
+                  : attr.value}
               </dd>
             {/each}
           </dl>
