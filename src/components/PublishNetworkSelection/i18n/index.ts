@@ -11,7 +11,7 @@ export const Strings = {
   },
   Activate: {
     en: () => 'Activate',
-    ja: () => '表示する',
+    ja: () => 'Clubsを公開する',
   },
   ExistingProperty: {
     en: () =>
