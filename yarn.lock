@@ -683,9 +683,9 @@
     uuid "^9.0.1"
 
 "@devprotocol/clubs-plugin-posts@^0.20.12":
-  version "0.20.12"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts/-/clubs-plugin-posts-0.20.12.tgz#baa38495f8f310259ee7203c3bee06cef3fcb25b"
-  integrity sha512-Nqmy+x5RLpZY7UWRFJBnVYu8lKcm3nhH2YVgTjeb5D7uLdoK5t0/BCTtT6rW7tqrf3u0rxH9sWtElzjpeOkfnw==
+  version "0.20.13"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts/-/clubs-plugin-posts-0.20.13.tgz#4eccf187d3a2bd676e170debd4b29db1b7a95d13"
+  integrity sha512-b09MeYQNdnUknnFYJdvVtUivLCHxKSQ3wmylGepz1kYiMuZyQxZqihPj2sTyBGtBj7IPhen3YlGD7moN9eq8SQ==
   dependencies:
     "@boringer-avatars/vue3" "^0.2.1"
     "@devprotocol/dev-kit" "8.6.1"
@@ -700,7 +700,7 @@
     ramda "0.30.1"
     redis "^4.6.7"
     sass "1.77.4"
-    uuid "^9.0.0"
+    uuid "^10.0.0"
 
 "@devprotocol/dev-kit@7.3.0":
   version "7.3.0"
