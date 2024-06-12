@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue'
-import type { ClubsData } from '@pages/api/clubs'
-import type { AssetItem } from '@pages/api/profile/[id]/assets'
-import Skeleton from '@components/Global/Skeleton.vue'
-import { whenDefined } from '@devprotocol/util-ts'
 import { decode } from '@devprotocol/clubs-core'
+import { whenDefined } from '@devprotocol/util-ts'
+
+import type { ClubsData } from '@pages/api/clubs'
+import Skeleton from '@components/Global/Skeleton.vue'
+import type { AssetItem } from '@pages/api/profile/[id]/assets'
 
 const props = defineProps<{
   item: AssetItem

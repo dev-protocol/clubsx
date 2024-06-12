@@ -1,12 +1,12 @@
 <script lang="ts">
   import { onMount } from 'svelte'
+
+  import { Strings } from '../i18n'
   import type { Profile } from '@pages/api/profile'
   import { i18nFactory } from '@devprotocol/clubs-core'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import type { UndefinedOr } from '@devprotocol/util-ts'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
-
-  import { Strings } from '../i18n'
 
   export let id: string
 
