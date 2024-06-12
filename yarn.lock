@@ -682,10 +682,10 @@
     strip-markdown "^6.0.0"
     uuid "^9.0.1"
 
-"@devprotocol/clubs-plugin-posts@^0.20.12":
-  version "0.20.13"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts/-/clubs-plugin-posts-0.20.13.tgz#4eccf187d3a2bd676e170debd4b29db1b7a95d13"
-  integrity sha512-b09MeYQNdnUknnFYJdvVtUivLCHxKSQ3wmylGepz1kYiMuZyQxZqihPj2sTyBGtBj7IPhen3YlGD7moN9eq8SQ==
+"@devprotocol/clubs-plugin-posts@^0.20.14-beta.0":
+  version "0.20.14-beta.0"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts/-/clubs-plugin-posts-0.20.14-beta.0.tgz#179e6968d97046fedb8fffcfba92a15ed6600940"
+  integrity sha512-q0pV79KgpSC/48VCpOCOZJBgRQtnrQOWVJuLOwMh71F0dyjDH+qe+LTqL9ES5LgRyDp60NYnDnWQgE5LPxA/Fw==
   dependencies:
     "@boringer-avatars/vue3" "^0.2.1"
     "@devprotocol/dev-kit" "8.6.1"
@@ -9651,10 +9651,10 @@ prettier-plugin-svelte@3.2.4:
   resolved "https://registry.yarnpkg.com/prettier-plugin-svelte/-/prettier-plugin-svelte-3.2.4.tgz#50366d550b2fe64b736ec0c90998805cfc395a2c"
   integrity sha512-tZv+ADfeOWFNQkXkRh6zUXE16w3Vla8x2Ug0B/EnSmjR4EnwdwZbGgL/liSwR1kcEALU5mAAyua98HBxheCxgg==
 
-prettier-plugin-tailwindcss@0.6.3:
-  version "0.6.3"
-  resolved "https://registry.yarnpkg.com/prettier-plugin-tailwindcss/-/prettier-plugin-tailwindcss-0.6.3.tgz#3f44a6656133b1c96455e3d17dd0e45d6220f1be"
-  integrity sha512-GeJ9bqXN4APAP0V5T2a1J/o6a50MWevEUCPWxijpdXFDQkBCoAfz4pQfv+YMXSqZ5GXLMDYio0mUOfrYL7gf4w==
+prettier-plugin-tailwindcss@0.6.4:
+  version "0.6.4"
+  resolved "https://registry.yarnpkg.com/prettier-plugin-tailwindcss/-/prettier-plugin-tailwindcss-0.6.4.tgz#84d42fae70ac6f0846ee9045f33fe9ebb86f2b79"
+  integrity sha512-3vhbIvlKyAWPaw9bUr2cw6M1BGx2Oy9CCLJyv+nxEiBGCTcL69WcAz2IFMGqx8IXSzQCInGSo2ujAByg9poHLQ==
 
 prettier@3.3.2:
   version "3.3.2"
