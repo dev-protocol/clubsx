@@ -55,23 +55,23 @@ export const Strings = {
   },
   PublishDraftClubs: {
     en: 'No published clubs found. You have clubs in drafting phase. Publish them to unlock their full potential and make them accessible.',
-    ja: '公開されたクラブは見つかりませんでした。ドラフト段階にあるクラブがあります。それらを公開して、その可能性を最大限に引き出し、アクセスできるようにします。',
+    ja: '公開されたクラブは見つかりませんでした。作成したクラブを公開して、他のユーザーがアクセスできるようにしましょう',
   },
   NoClubFound: {
     en: 'No clubs found.',
-    ja: 'クラブが見つかりませんでした。',
+    ja: 'クラブが見つかりませんでした',
   },
   Draft: {
     en: 'Draft',
-    ja: '下書き',
+    ja: '作成中のクラブ',
   },
   NoDraftClub: {
     en: 'No draft clubs found. Create clubs now',
-    ja: 'ドラフトクラブが見つかりませんでした。今すぐクラブを作成してください。',
+    ja: '作成中のクラブが見つかりませんでした。クラブを作成してください',
   },
   NoDraftClubFound: {
     en: 'No draft clubs found.',
-    ja: 'ドラフトクラブが見つかりませんでした。',
+    ja: '作成中のクラブが見つかりませんでした',
   },
   CreateClubsNow: {
     en: 'Create clubs now',
