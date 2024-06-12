@@ -99,7 +99,7 @@
     "firebase-admin": "^12.0.0",
     "js-base64": "^3.7.7",
     "jsonwebtoken": "^9.0.2",
-    "marked": "10.0.0",
+    "marked": "12.0.2",
     "nanoid": "^5.0.5",
     "p-queue": "^8.0.0",
     "postcss": "8.4.38",
