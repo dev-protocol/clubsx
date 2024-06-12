@@ -1,11 +1,17 @@
 <script lang="ts">
-  import type { UndefinedOr } from '@devprotocol/util-ts'
-  import { uploadImageAndGetPath } from '@fixtures/imgur'
   import { onMount } from 'svelte'
-  import type { connection as Connection } from '@devprotocol/clubs-core/connection'
+
+  import { Strings } from '../i18n'
   import type { Profile } from '@pages/api/profile'
+  import { i18nFactory } from '@devprotocol/clubs-core'
+  import { uploadImageAndGetPath } from '@fixtures/imgur'
+  import type { UndefinedOr } from '@devprotocol/util-ts'
+  import type { connection as Connection } from '@devprotocol/clubs-core/connection'
 
   export let id: string
+
+  const i18nBase = i18nFactory(Strings)
+  let i18n = i18nBase(['en'])
 
   let connection: UndefinedOr<typeof Connection> = undefined
   let profile: Profile = {}
@@ -51,6 +57,8 @@
   }
 
   onMount(async () => {
+    i18n = i18nBase(navigator.languages)
+
     const { connection: _conn } = await import(
       '@devprotocol/clubs-core/connection'
     )
@@ -72,7 +80,7 @@
 <div class="w-full">
   <div class="flex flex-col items-start">
     <label class="hs-form-field w-fit" for="avatarPath">
-      <span class="hs-form-field__label"> Avatar </span>
+      <span class="hs-form-field__label"> {i18n('Avatar')} </span>
       <div
         class="relative bg-surface-300 w-56 h-56 rounded-full overflow-hidden border border-surface-400 p-3 cursor-pointer"
       >
@@ -84,7 +92,7 @@
           <img
             src={profile.avatar}
             class="rounded-full w-full h-full object-cover"
-            alt=""
+            alt={i18n('Avatar')}
           />
         {/if}
       </div>
@@ -100,7 +108,7 @@
   </div>
 
   <label class="hs-form-field is-filled">
-    <span class="hs-form-field__label"> Username </span>
+    <span class="hs-form-field__label"> {i18n('Username')} </span>
     <input
       class="hs-form-field__input"
       disabled={profileUpdating}
@@ -120,10 +128,10 @@
             : ''
       }`}
       >{updatingStatus === 'success'
-        ? 'Saved'
+        ? i18n('Saved')
         : updatingStatus === 'error'
-          ? 'Error'
-          : 'Save'}</button
+          ? i18n('Error')
+          : i18n('Save')}</button
     >
   {/if}
 </div>

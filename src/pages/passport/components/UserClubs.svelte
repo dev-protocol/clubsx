@@ -1,11 +1,17 @@
 <script lang="ts">
-  import type { DraftOptions } from '@constants/draft'
-  import { decode, type ClubsConfiguration } from '@devprotocol/clubs-core'
   import { onMount } from 'svelte'
+  import { i18nFactory } from '@devprotocol/clubs-core'
+
+  import { Strings } from '../i18n'
   import UserClubItem from './UserClubItem.svelte'
   import type { ClubsData } from '@pages/api/clubs'
+  import type { DraftOptions } from '@constants/draft'
+  import { decode, type ClubsConfiguration } from '@devprotocol/clubs-core'
 
   export let id: string
+
+  const i18nBase = i18nFactory(Strings)
+  let i18n = i18nBase(['en'])
 
   let isLoading = false
   let draftClubs: ClubsConfiguration[] = []
@@ -42,13 +48,17 @@
   }
 
   onMount(async () => {
+    i18n = i18nBase(navigator.languages)
+
     await fetchUserClubs(id)
   })
 </script>
 
 <div class="mx-auto mb-5 max-w-5xl px-4">
   <div class="mb-24">
-    <h3 class="mb-8 font-body text-2xl font-bold text-white">Published</h3>
+    <h3 class="mb-8 font-body text-2xl font-bold text-white">
+      {i18n('Published')}
+    </h3>
     <div class="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-8">
       {#if isLoading}
         <p
@@ -66,19 +76,20 @@
         {/each}
       {:else if draftClubs.length > 0 && publishedClubs.length <= 0}
         <p class="border-0 font-bold text-inherit no-underline">
-          No published clubs found. You have clubs in drafting phase. Publish
-          them to unlock their full potential and make them accessible.
+          {i18n('PublishDraftClubs')}
         </p>
       {:else}
         <p class="border-0 font-bold text-inherit no-underline">
-          {'No clubs found.'}
+          {i18n('NoClubFound')}
         </p>
       {/if}
     </div>
   </div>
 
   <div class="mb-24">
-    <h3 class="mb-8 font-body text-2xl font-bold text-white">Draft</h3>
+    <h3 class="mb-8 font-body text-2xl font-bold text-white">
+      {i18n('Draft')}
+    </h3>
     <div
       class="mb-5 grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-8"
     >
@@ -101,7 +112,7 @@
           href={'/domain'}
           class="hs-button is-filled bg-native-blue-300 w-fit border-0 px-8 py-4 text-inherit no-underline"
         >
-          {'No draft clubs found. Create clubs now'}
+          {i18n('NoDraftClub')}
         </a>
       {:else if draftClubs.length <= 0 && publishedClubs.length <= 0}
         <p class="border-0 font-bold text-inherit no-underline">
@@ -117,7 +128,7 @@
         href={'/domain'}
         class="hs-button is-filled bg-native-blue-300 w-fit border-0 px-8 py-4 text-inherit no-underline"
       >
-        {'Create clubs now'}
+        {i18n('CreateClubsNow')}
       </a>
     {/if}
   </div>

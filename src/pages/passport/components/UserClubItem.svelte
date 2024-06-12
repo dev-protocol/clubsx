@@ -1,8 +1,15 @@
 <script lang="ts">
+  import { onMount } from 'svelte'
+  import { i18nFactory } from '@devprotocol/clubs-core'
+
+  import { Strings } from '../i18n'
   import type { ClubsConfiguration } from '@devprotocol/clubs-core'
 
   export let config: ClubsConfiguration
   export let isDraft: boolean
+
+  const i18nBase = i18nFactory(Strings)
+  let i18n = i18nBase(['en'])
 
   const imagePath =
     (config.options?.find((option) => option.key === 'avatarImgSrc')
@@ -14,6 +21,10 @@
   const path = isDraft
     ? `/${url.hostname.split('.')[0]}/setup/basic`
     : `${url.toString()}admin/theme`
+
+  onMount(async () => {
+    i18n = i18nBase(navigator.languages)
+  })
 </script>
 
 <div
@@ -34,7 +45,7 @@
       <a
         href={path}
         class="bg-native-blue-200 hover:bg-native-blue-300 rounded px-2 py-1 transition"
-        >{isDraft ? 'Edit' : 'Manage'}</a
+        >{isDraft ? i18n('Edit') : i18n('Manage')}</a
       >
     </li>
     {#if isDraft === false}
@@ -42,7 +53,7 @@
         <a
           href={url.toString()}
           class="bg-native-blue-200 hover:bg-native-blue-300 rounded px-2 py-1 transition"
-          >Club page</a
+          >{i18n('ClubPage')}</a
         >
       </li>
     {/if}

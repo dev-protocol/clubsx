@@ -63,9 +63,9 @@ export const Strings = {
         return 'Requester'
       } else if (txt === '案件番号') {
         return 'Case Number'
-      } else if (txt === '個数') {
+      } else if (txt === '金額') {
         return 'Reward'
-      } else if (txt === '単位') {
+      } else if (txt === '通貨') {
         return 'Currency'
       } else {
         return txt || ''
@@ -87,12 +87,12 @@ export const Strings = {
       } else if (loweredCaseTxt === 'Case Number'.toLowerCase()) {
         return '案件番号'
       } else if (loweredCaseTxt === 'Currency'.toLowerCase()) {
-        return '単位'
+        return '通貨'
       } else if (
         loweredCaseTxt === 'Reward'.toLowerCase() ||
         loweredCaseTxt === 'Rewards'.toLowerCase()
       ) {
-        return '個数'
+        return '金額'
       } else {
         return txt || ''
       }
