@@ -7,7 +7,7 @@ const achivementId = ref<string>()
 const pageUrl = computed(() => {
   return whenDefined(
     achivementId.value,
-    (id) => `https://developers.clubs.place/achivement/${id}`,
+    (id) => `https://developers.clubs.place/achievement/${id}`,
   )
 })
 
