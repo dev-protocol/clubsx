@@ -1,9 +1,6 @@
-import {
-  whenDefined,
-  whenNotError,
-} from '@devprotocol/util-ts'
 import { isAddress } from 'ethers'
 import type { APIRoute, Params } from 'astro'
+import { whenDefined, whenNotError } from '@devprotocol/util-ts'
 
 import { json } from '@fixtures/api/json'
 import { headers } from '@fixtures/api/headers'
