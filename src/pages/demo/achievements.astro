@@ -1,20 +1,13 @@
 ---
 import Layout from '@layouts/Landing.astro'
-import {ConnectButton} from '@devprotocol/clubs-plugin-awesome-onboarding'
+import { ConnectButton } from '@devprotocol/clubs-plugin-awesome-onboarding'
 import App from './App.vue'
 ---
 
-<Layout connectButton='hidden' theme='light'>
+<Layout connectButton="hidden" theme="light">
   <div class="max-w-screen-md mx-auto px-4 grid gap-24 py-24">
-
-    <div class="p-8 rounded-3xl bg-black/10 flex flex-col lg:flex-row justify-between items-center gap-5">
-      <h2 class="font-bold text-3xl">Sign in</h2>
-      <ConnectButton  />
-    </div>
-    <div class="p-8 rounded-3xl bg-black/10 flex flex-col lg:flex-row justify-between items-center gap-5">
-      <h2 class="font-bold text-3xl">Your achievement</h2>
-      <App client:load />
-    </div>
-
+      <App client:load >
+        <ConnectButton  />
+      </App>
   </div>
 </Layout>
