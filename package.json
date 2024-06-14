@@ -72,7 +72,7 @@
     "@devprotocol/clubs-plugin-posts-voting": "^0.8.3",
     "@devprotocol/dev-kit": "8.6.1",
     "@devprotocol/hashi": "2.3.1",
-    "@devprotocol/huddle01-clubs-plugin": "0.1.6",
+    "@devprotocol/huddle01-clubs-plugin": "0.1.7",
     "@devprotocol/util-ts": "4.0.0",
     "@kazu80/clubs-plugin-links": "1.0.1",
     "@metamask/detect-provider": "2.0.0",
