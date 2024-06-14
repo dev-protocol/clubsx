@@ -25,7 +25,12 @@ watch(account, async (userAccount) => {
     return
   }
 
-  const apiRes = await fetch(`/api/mock/achivement/${userAccount}`)
+  const apiRes = await fetch(`/api/mock/achievement/${userAccount}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
   const { id } = await apiRes.json()
   achivementId.value = id
 })
