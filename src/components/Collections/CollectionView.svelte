@@ -30,11 +30,15 @@
   let hours = 0
   let minutes = 0
   let seconds = 0
-  let description: string | undefined
+  let description: string = markdownToHtml(collection.description)
 
   let validatingMembership: Boolean = true
   let validationResult: Boolean | 'processing' = 'processing'
-  let isMounted = false
+  let descriptionSection: HTMLElement | undefined
+  let isLongerDescription: boolean = false
+  let isOpenDescription: boolean = true
+  let descriptionHeight: number = 0
+  const maxHeight = 320
 
   const requiredPayload = new Set(
     collection.requiredMemberships?.map((reqMem) => bytes32Hex(reqMem)) || [],
@@ -92,14 +96,8 @@
     console.log({ left, total })
     return { left, total } as SlotLeft
   }
-  const mdToHtml = (str?: string) => markdownToHtml(str ?? '')
-
-  $: {
-    description = isMounted ? mdToHtml(collection.description) : undefined
-  }
 
   onMount(async () => {
-    isMounted = true
     calculateTimeLeft()
     setInterval(calculateTimeLeft, 1000)
     const { connection } = await import('@devprotocol/clubs-core/connection')
@@ -107,6 +105,12 @@
       currentAddress = a
       requiredMembershipValidation()
     })
+    if (descriptionSection) {
+      descriptionHeight = descriptionSection.clientHeight
+      isLongerDescription = descriptionHeight > maxHeight
+      isOpenDescription = !isLongerDescription
+      console.log({ descriptionSection, descriptionHeight, isOpenDescription })
+    }
   })
 </script>
 
@@ -131,7 +135,34 @@
       </div>
     </div>
     <!-- Collection Description -->
-    <div class={ProseTextInherit}>{@html description}</div>
+    <section>
+      <div
+        class={`${ProseTextInherit} transition-[max-height] overflow-hidden`}
+        style={isLongerDescription
+          ? isOpenDescription === false
+            ? `max-height: ${maxHeight}px`
+            : `max-height: ${descriptionHeight * 2}px`
+          : ''}
+        bind:this={descriptionSection}
+      >
+        {@html description}
+      </div>
+      {#if isLongerDescription}
+        <span
+          class={`relative block border-[var(--bodyColor,white)] border-t transition-[margin] ${
+            isOpenDescription ? 'mt-10' : 'mt-0'
+          }`}
+        >
+          <button
+            class="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-black/20 bg-[var(--bodyColor,white)] text-[var(--backgroundColor,black)] px-6 py-2 font-medium"
+            on:click={() => {
+              isOpenDescription = !isOpenDescription
+            }}>{isOpenDescription ? 'Less' : 'More'}</button
+          >
+        </span>
+      {/if}
+    </section>
+
     {#if requiredMemberships.length > 0}
       <!-- Allowlist -->
       <div class="flex flex-col items-start self-stretch">
@@ -246,7 +277,7 @@
     {/if}
     <!-- Memberships -->
     <div
-      class="grid grid-cols-[repeat(auto-fit,_minmax(120px,_1fr))] justify-between gap-4"
+      class="grid grid-cols-[repeat(auto-fit,_minmax(230px,_1fr))] justify-between gap-4"
     >
       {#each collection.memberships as mem, i}
         {#if validationResult === true}
