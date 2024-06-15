@@ -1,5 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte'
+  import { marked } from 'marked'
+  import DOMPurify from 'dompurify'
 
   import { JsonRpcProvider, type Signer } from 'ethers'
 
@@ -7,7 +9,7 @@
   import { checkMemberships } from '@fixtures/utility.ts'
 
   import type { SlotLeft } from './types'
-  import { bytes32Hex } from '@devprotocol/clubs-core'
+  import { ProseTextInherit, bytes32Hex } from '@devprotocol/clubs-core'
   import type { Collection, CollectionMembership } from '@plugins/collections'
   import type { Membership } from '@plugins/memberships'
 
@@ -26,9 +28,11 @@
   let hours = 0
   let minutes = 0
   let seconds = 0
+  let description: string | undefined
 
   let validatingMembership: Boolean = true
   let validationResult: Boolean | 'processing' = 'processing'
+  let isMounted = false
 
   const requiredPayload = new Set(
     collection.requiredMemberships?.map((reqMem) => bytes32Hex(reqMem)) || [],
@@ -86,8 +90,14 @@
     console.log({ left, total })
     return { left, total } as SlotLeft
   }
+  const mdToHtml = (str?: string) => DOMPurify.sanitize(marked.parse(str ?? ''))
+
+  $: {
+    description = isMounted ? mdToHtml(collection.description) : undefined
+  }
 
   onMount(async () => {
+    isMounted = true
     calculateTimeLeft()
     setInterval(calculateTimeLeft, 1000)
     const { connection } = await import('@devprotocol/clubs-core/connection')
@@ -119,9 +129,7 @@
       </div>
     </div>
     <!-- Collection Description -->
-    <p class="text-xl font-normal">
-      {collection.description}
-    </p>
+    <div class={ProseTextInherit}>{@html description}</div>
     {#if requiredMemberships.length > 0}
       <!-- Allowlist -->
       <div class="flex flex-col items-start self-stretch">
