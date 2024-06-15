@@ -1,9 +1,33 @@
 <script lang="ts">
   import type { Collection } from '@plugins/collections'
   import { emptyDummyImage } from '@plugins/collections/fixtures'
+  import { marked, type Tokens } from 'marked'
+
   export let collections: Collection[] = []
   export let base: string = '/admin/collections'
   export let view: 'admin' | 'user' = 'admin'
+
+  const space = ' '
+  const shortDescription = (str?: string) =>
+    marked
+      .parse(str ?? '', {
+        walkTokens: (token) => {
+          if (token.type === 'html') {
+            token.type = 'text'
+            token.text = space
+          }
+          if (token.type === 'text') {
+            token.text = token.text.replace(/\n/g, space)
+          }
+          if (token.type === 'space') {
+            token.type = 'text' as Tokens.Text['type']
+            ;(token as Tokens.Text).text = space
+          }
+          token.type = 'text'
+        },
+      })
+      .replaceAll('<p>', '')
+      .replaceAll('</p>', '')
 </script>
 
 {#if collections.length > 0}
@@ -36,8 +60,8 @@
                 </p>
               </div>
             </div>
-            <p class="text-ellipsis text-base font-normal text-black">
-              {collection.description}
+            <p class="description text-black/40">
+              {shortDescription(collection.description)}
             </p>
             <div class="flex items-start gap-2.5 overflow-hidden">
               {#if collection.memberships.length > 0}
@@ -58,3 +82,12 @@
     {/if}
   {/each}
 {/if}
+
+<style lang="scss">
+  .description {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+</style>
