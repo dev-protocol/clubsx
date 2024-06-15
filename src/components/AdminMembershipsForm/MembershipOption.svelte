@@ -1,8 +1,6 @@
 <script lang="ts">
-  import { marked } from 'marked'
   import { onMount } from 'svelte'
-  import { CurrencyOption } from '@devprotocol/clubs-core'
-  import DOMPurify from 'dompurify'
+  import { CurrencyOption, markdownToHtml } from '@devprotocol/clubs-core'
   import { fade } from 'svelte/transition'
   import { ProseTextInherit } from '@devprotocol/clubs-core'
   import { FastAverageColor } from 'fast-average-color'
@@ -38,7 +36,7 @@
   let isImgDark: boolean | undefined
   let imgColor: string | undefined
 
-  const mdToHtml = (str?: string) => DOMPurify.sanitize(marked.parse(str ?? ''))
+  const mdToHtml = (str?: string) => markdownToHtml(str ?? '')
 
   let content: string | undefined
 

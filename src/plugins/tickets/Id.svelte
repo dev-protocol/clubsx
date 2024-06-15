@@ -12,13 +12,12 @@
     ProseTextInherit,
     decode,
     i18nFactory,
+    markdownToHtml,
   } from '@devprotocol/clubs-core'
   import { type TicketStatus, ticketStatus } from './utils/status'
   import Skeleton from '@components/Global/Skeleton.svelte'
   import Check from './Check.svelte'
   import { type Signer, JsonRpcProvider } from 'ethers'
-  import { marked } from 'marked'
-  import DOMPurify from 'dompurify'
   import { Modals, closeAllModals, closeModal, openModal } from 'svelte-modals'
   import { fade } from 'svelte/transition'
   import Modal from './Modal.svelte'
@@ -46,7 +45,7 @@
   const i18nBase = i18nFactory(Strings)
   let i18n = i18nBase(['en'])
 
-  const mdToHtml = (str?: string) => DOMPurify.sanitize(marked.parse(str ?? ''))
+  const mdToHtml = (str?: string) => markdownToHtml(str ?? '')
   const provider = new JsonRpcProvider(rpcUrl)
 
   const nft = membership
