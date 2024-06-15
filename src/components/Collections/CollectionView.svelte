@@ -1,7 +1,5 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import { marked } from 'marked'
-  import DOMPurify from 'dompurify'
 
   import { JsonRpcProvider, type Signer } from 'ethers'
 
@@ -9,7 +7,11 @@
   import { checkMemberships } from '@fixtures/utility.ts'
 
   import type { SlotLeft } from './types'
-  import { ProseTextInherit, bytes32Hex } from '@devprotocol/clubs-core'
+  import {
+    ProseTextInherit,
+    bytes32Hex,
+    markdownToHtml,
+  } from '@devprotocol/clubs-core'
   import type { Collection, CollectionMembership } from '@plugins/collections'
   import type { Membership } from '@plugins/memberships'
 
@@ -90,7 +92,7 @@
     console.log({ left, total })
     return { left, total } as SlotLeft
   }
-  const mdToHtml = (str?: string) => DOMPurify.sanitize(marked.parse(str ?? ''))
+  const mdToHtml = (str?: string) => markdownToHtml(str ?? '')
 
   $: {
     description = isMounted ? mdToHtml(collection.description) : undefined

@@ -1,6 +1,8 @@
 ---
-import { ProseTextInheritClassNames } from '@devprotocol/clubs-core'
-import { marked } from 'marked'
+import {
+  ProseTextInheritClassNames,
+  markdownToHtml,
+} from '@devprotocol/clubs-core'
 
 interface Props {
   body?: string
@@ -10,21 +12,7 @@ interface Props {
 
 const { body, class: className, size } = Astro.props
 
-const renderer = {
-  link(href: string, _: string | null | undefined, text: string) {
-    const url = new URL(href)
-    const youtube = url.host === 'youtube.com' || url.host === 'www.youtube.com'
-    const v = url.searchParams.get('v')
-
-    return youtube
-      ? `<iframe class="youtube aspect-video mx-auto w-full max-w-2xl rounded" src="https://www.youtube.com/embed/${v}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`
-      : `<a href="${href}">${text}</a>`
-  },
-}
-
-marked.use({ renderer })
-
-const content = body ? marked.parse(body) : undefined
+const content = body ? markdownToHtml(body) : undefined
 
 const classList = [
   className,
