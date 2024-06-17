@@ -973,8 +973,8 @@ export default defineComponent({
 
             return {
               src: opt.imageSrc,
-              name: opt.name,
-              description: opt.description,
+              name: JSON.stringify(opt.name).slice(1, -1),
+              description: JSON.stringify(opt.description).slice(1, -1),
               requiredTokenAmount: requiredTokenAmount.toString(),
               requiredTokenFee: requiredTokenFee.toString(),
               gateway,
