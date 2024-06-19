@@ -51,6 +51,7 @@
       ...collection,
       endTime: 0,
     }
+    update()
   }
   function toggleSaleLimitRow() {
     showSaleLimitRow = !showSaleLimitRow
