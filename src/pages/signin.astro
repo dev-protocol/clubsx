@@ -1,47 +1,41 @@
 ---
 import Layout from '@layouts/Landing.astro'
-import ConnectButton from '@components/Wallet/ConnectButton.vue'
-import EmailConnect from '@components/EmailConnect/EmailConnect.svelte'
+import { ConnectButton } from '@devprotocol/clubs-plugin-awesome-onboarding'
+import EmailConnectControl from '@components/EmailConnect/Control.svelte'
+import SignInRedirection from '@components/SignInForm/SignInRedirection.vue'
 ---
 
 <Layout>
-  <div class="relative grid justify-center p-4 md:p-0">
-    <section class="my-16 grid gap-8 text-center md:my-32">
-      <h1 class="text-2xl font-bold md:text-5xl">Sign in to Clubs</h1>
-    </section>
+  <div
+    class="relative grid gap-16 content-between justify-center p-4 md:p-0 min-h-[calc(100svh-4rem)]"
+  >
+    <span>
+      <section class="my-16 grid gap-8 text-center md:my-32">
+        <h1 class="text-2xl font-bold md:text-5xl">Sign in to Clubs</h1>
+      </section>
 
-    <section class="grid gap-12">
-      <div class="flex flex-col items-center">
-        <span class="mb-4">Signin with your wallet</span>
-        <ConnectButton
-          client:load
-          redirectOnSignin={true}
-          label="Sign with your wallet"
-          overrideClass="hs-button is-filled is-native-blue is-large"
-        />
-      </div>
-      <p
-        role="separator"
-        class="grid grid-cols-[1fr_auto_1fr] items-center gap-4 before:block before:border-b before:border-white/20 before:content-[''] after:block after:border-b after:border-white/20 after:content-['']"
-      >
-        or
-      </p>
-      <div class="flex flex-col items-center">
-        <span class="mb-4">Signin with email</span>
-        <EmailConnect client:load />
-      </div>
-      <p
-        role="separator"
-        class="grid grid-cols-[1fr_auto_1fr] items-center gap-4 before:block before:border-b before:border-white/20 before:content-[''] after:block after:border-b after:border-white/20 after:content-['']"
-      >
-        or maybe...
-      </p>
-      <p class="text-center">
-        <a class="hs-button is-outlined text-native-blue-300" href="/domain"
-          >Don't have an account?</a
+      <section class="grid gap-12">
+        <div class="flex flex-col items-center">
+          <ConnectButton />
+          <SignInRedirection client:only="vue" />
+        </div>
+        <p
+          role="separator"
+          class="grid grid-cols-[1fr_auto_1fr] items-center gap-4 before:block before:border-b before:border-white/20 before:content-[''] after:block after:border-b after:border-white/20 after:content-['']"
         >
-      </p>
-    </section>
+          or maybe...
+        </p>
+        <p class="text-center">
+          <a
+            class="hs-button is-outlined rounded-full px-4 text-native-blue-300"
+            href="/domain">Don't have an account?</a
+          >
+        </p>
+      </section>
+    </span>
+    <span>
+      <EmailConnectControl client:load />
+    </span>
   </div>
 </Layout>
 

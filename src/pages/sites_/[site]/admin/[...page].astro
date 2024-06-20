@@ -18,7 +18,7 @@ import IconGlobe from '@components/Icons/globe-europe-africa.astro'
 import IconBanknotes from '@components/Icons/banknotes.astro'
 import Banner from '@components/Global/Banner.astro'
 import { plugins } from '@constants/plugins'
-import ConnectButton from '@components/Wallet/ConnectButton.vue'
+import { ConnectButton } from '@devprotocol/clubs-plugin-awesome-onboarding'
 import PreviewBanner from '@components/PreviewBanner/PreviewBanner.astro'
 import { replaceWithFwdHost } from '@fixtures/url'
 import type { InferGetStaticPropsType } from 'astro'
@@ -70,11 +70,11 @@ const siteBaseUrl = new URL(replaceWithFwdHost(Astro.request)).origin
     <>
       <Admin {...path.props}>
         <Banner slot={ClubsSlotName.AdminBodyBeforeContents} />
-        <ConnectButton
-          client:load
-          chainId={(config as ClubsConfiguration | undefined)?.chainId}
-          slot="clubs:connect-button"
-        />
+        <span class="flex flex-col" slot="clubs:connect-button">
+          <ConnectButton
+            chainId={(config as ClubsConfiguration | undefined)?.chainId}
+          />
+        </span>
         <a
           slot="admin:sidebar:before-title"
           class="flex items-center gap-2 transition-colors hover:text-native-blue-300"

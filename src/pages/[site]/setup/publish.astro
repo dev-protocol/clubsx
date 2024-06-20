@@ -12,6 +12,7 @@ import type { DraftOptions } from '@constants/draft'
 import NextButton from '@components/Setup/NextButton.astro'
 import PageNotFound from '@pages/404.astro'
 import { replaceWithFwdHost } from '@fixtures/url'
+import { ConnectButton } from '@devprotocol/clubs-plugin-awesome-onboarding'
 
 const { site } = Astro.params
 
@@ -56,7 +57,9 @@ const baseDomainUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
     >
       <section class="grid gap-16">
         <h2 class="font-title text-2xl font-bold">Publish</h2>
-        <PublishConnect client:load checkImage={checkImage.src} />
+        <PublishConnect client:load checkImage={checkImage.src}>
+          <ConnectButton />
+        </PublishConnect>
         <PublishNetworkSelection
           client:load
           checkImage={checkImage.src}

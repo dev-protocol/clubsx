@@ -9,18 +9,15 @@
         <h2 v-bind:class="stepTextClasses">{{ i18n('ConnectYourWallet') }}</h2>
       </section>
     </section>
-    <ConnectButton
-      lable="buttonText"
-      :overrideClass="buttonClasses"
-      :isDisabled="connected || !connection"
-    />
+    <span class="flex flex-col">
+      <slot />
+    </span>
   </section>
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@vue/runtime-core'
 import type { connection as Connection } from '@devprotocol/clubs-core/connection'
-import ConnectButton from '@components/Wallet/ConnectButton.vue'
 import { onMountClient } from '@devprotocol/clubs-core'
 import { watchWalletClient } from '@wagmi/core'
 import { whenDefined } from '@devprotocol/util-ts'
@@ -41,7 +38,6 @@ type Data = {
 
 export default defineComponent({
   name: 'PublishConnect',
-  components: { ConnectButton },
   props: {
     checkImage: String,
   },
