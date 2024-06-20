@@ -9631,10 +9631,10 @@ prettier-plugin-astro@0.14.0:
     prettier "^3.0.0"
     sass-formatter "^0.7.6"
 
-prettier-plugin-svelte@3.2.4:
-  version "3.2.4"
-  resolved "https://registry.yarnpkg.com/prettier-plugin-svelte/-/prettier-plugin-svelte-3.2.4.tgz#50366d550b2fe64b736ec0c90998805cfc395a2c"
-  integrity sha512-tZv+ADfeOWFNQkXkRh6zUXE16w3Vla8x2Ug0B/EnSmjR4EnwdwZbGgL/liSwR1kcEALU5mAAyua98HBxheCxgg==
+prettier-plugin-svelte@3.2.5:
+  version "3.2.5"
+  resolved "https://registry.yarnpkg.com/prettier-plugin-svelte/-/prettier-plugin-svelte-3.2.5.tgz#ec004ed6626f59655cfd3fe88154c7cf41c90a2e"
+  integrity sha512-vP/M/Goc8z4iVIvrwXwbrYVjJgA0Hf8PO1G4LBh/ocSt6vUP6sLvyu9F3ABEGr+dbKyxZjEKLkeFsWy/yYl0HQ==
 
 prettier-plugin-tailwindcss@0.6.5:
   version "0.6.5"
