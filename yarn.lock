@@ -120,10 +120,10 @@
     unist-util-visit-parents "^6.0.0"
     vfile "^6.0.1"
 
-"@astrojs/netlify@5.3.1":
-  version "5.3.1"
-  resolved "https://registry.yarnpkg.com/@astrojs/netlify/-/netlify-5.3.1.tgz#fc412193ea250cb96c0e4b8798656fc1c66ee4c7"
-  integrity sha512-ceYHrZQXWTY0Lnz+wTH1MT6+ZVseu8esFPgMYEkroFGeKBQALg8whnhduqQkehWACcu1ML5zKNduiqbb9iPRyQ==
+"@astrojs/netlify@5.3.2":
+  version "5.3.2"
+  resolved "https://registry.yarnpkg.com/@astrojs/netlify/-/netlify-5.3.2.tgz#d95dcd3626ea840b072a8319f862f24378542468"
+  integrity sha512-0wJMHF7+QUcuZxM3BLIbgApkXX+cKBDqk4NmjeLim8r604ruDyHNLmt+Wyr8ggp+lcIcNG5isjuneM3dL9/RGw==
   dependencies:
     "@astrojs/underscore-redirects" "^0.3.3"
     "@netlify/functions" "^2.0.1"
