@@ -1,4 +1,9 @@
+export const MINIMUM_CUSTOM_FEE100 = 0
+export const MAXIMUM_CUSTOM_FEE100 = 95
+export const PAID_PLAN_STAKING_FEE = 1
 export const PAYMENT_TYPE_STAKE_FEE = 0.1
 export const PAYMENT_TYPE_INSTANT_FEE = 0.9
 export const DEV_TOKEN_PAYMENT_TYPE_FEE = 0
+export const PAID_PLAN_STAKING_FEE100 = 100
+export const DEV_TOKEN_PAYMENT_TYPE_FEE100 = 0
 export const ALL_CURRENCIES = ['USDC', 'DEV', 'ETH', 'MATIC']

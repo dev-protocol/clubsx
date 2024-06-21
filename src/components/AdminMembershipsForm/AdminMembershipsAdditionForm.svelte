@@ -12,6 +12,11 @@
   import { buildConfig } from '@devprotocol/clubs-core'
   import {
     DEV_TOKEN_PAYMENT_TYPE_FEE,
+    DEV_TOKEN_PAYMENT_TYPE_FEE100,
+    MAXIMUM_CUSTOM_FEE100,
+    MINIMUM_CUSTOM_FEE100,
+    PAID_PLAN_STAKING_FEE,
+    PAID_PLAN_STAKING_FEE100,
     PAYMENT_TYPE_INSTANT_FEE,
     PAYMENT_TYPE_STAKE_FEE,
   } from '@constants/memberships'
@@ -71,8 +76,8 @@
 
   const minPrice = 0.000001
   const maxPrice = 1e20
-  const minCustomFee100 = 0
-  const maxCustomFee100 = 95
+  const minCustomFee100 = MINIMUM_CUSTOM_FEE100
+  const maxCustomFee100 = MAXIMUM_CUSTOM_FEE100
   const i18nBase = i18nFactory(Strings)
   let i18n = i18nBase(['en'])
 
@@ -176,7 +181,7 @@
     if (membership.currency === 'DEV') {
       // Update the membership fee in case of currency change to dev token.
       membershipPaymentType = 'custom'
-      membershipCustomFee100 = 0
+      membershipCustomFee100 = DEV_TOKEN_PAYMENT_TYPE_FEE100
       membership = {
         ...membership,
         fee: {
@@ -189,6 +194,21 @@
       update() // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
       return
     }
+
+    // Paid plan.
+    membershipPaymentType = 'custom'
+    membershipCustomFee100 = PAID_PLAN_STAKING_FEE100
+    membership = {
+      ...membership,
+      fee: {
+        percentage: PAID_PLAN_STAKING_FEE,
+        beneficiary: beneficiary(),
+      },
+      paymentType: 'custom',
+    }
+
+    update() // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
+    return
 
     if (type === 'instant') {
       // Update the membership state directly
@@ -284,6 +304,14 @@
 
   const validateCustomMembershipFee = (event: Event) => {
     const value = Number((event.target as HTMLInputElement)?.value || 0)
+
+    // Paid Plan.
+    if (value !== PAID_PLAN_STAKING_FEE100) {
+      invalidFeeMsg = `${i18n('PaidMinimumFee')} ${PAID_PLAN_STAKING_FEE100}`
+    } else {
+      invalidFeeMsg = ''
+    }
+    return
 
     if (value < minCustomFee100) {
       invalidFeeMsg = `${i18n('MinimumFee')} ${minCustomFee100}`
@@ -402,7 +430,7 @@
     if (membership.currency === 'DEV') {
       // Update the membership fee in case of currency change to dev token.
       membershipPaymentType = 'custom'
-      membershipCustomFee100 = 0
+      membershipCustomFee100 = DEV_TOKEN_PAYMENT_TYPE_FEE100
       invalidFeeMsg = ''
       membership = {
         ...membership,
@@ -417,6 +445,22 @@
       update()
       return
     }
+
+    // Paid plan.
+    membershipPaymentType = 'custom'
+    membershipCustomFee100 = PAID_PLAN_STAKING_FEE100
+    invalidFeeMsg = i18n('PaidMinimumFee')
+    membership = {
+      ...membership,
+      fee: {
+        beneficiary: beneficiary(),
+        percentage: PAID_PLAN_STAKING_FEE,
+      },
+      paymentType: 'custom',
+    }
+    // Trigger update manually as this corresponsing field doesn't trigger <form> on change event.
+    update()
+    return
 
     const value = membershipCustomFee100
 
@@ -521,16 +565,31 @@
       return // Futher steps are not allowed for unpriced memberships.
     }
 
-    if (membership.currency !== 'DEV') return
+    if (membership.currency !== 'DEV') {
+      // Paid Plan.
+      membershipCustomFee100 = PAID_PLAN_STAKING_FEE100
+      membershipPaymentType = 'custom'
+      invalidFeeMsg = i18n('PaidMinimumFee')
+      // Update the membership state.
+      membership = {
+        ...membership,
+        fee: {
+          percentage: PAID_PLAN_STAKING_FEE,
+          beneficiary: beneficiary(),
+        },
+        paymentType: 'custom',
+      }
+      return
+    }
 
-    membershipCustomFee100 = 0
+    membershipCustomFee100 = DEV_TOKEN_PAYMENT_TYPE_FEE100
     membershipPaymentType = 'custom'
     invalidFeeMsg = ''
     // Update the membership state.
     membership = {
       ...membership,
       fee: {
-        percentage: membershipCustomFee100,
+        percentage: DEV_TOKEN_PAYMENT_TYPE_FEE,
         beneficiary: beneficiary(),
       },
       paymentType: 'custom',
@@ -721,7 +780,7 @@
                 }`}
                 id="membership-fee-instant"
                 name="membership-fee-instant"
-                disabled={membership.currency === 'DEV'}
+                disabled={/* membership.currency === 'DEV'*/ true}
               >
                 <span class="h-auto w-auto max-w-[48%]">
                   <svg
@@ -750,7 +809,7 @@
                 }`}
                 id="membership-fee-stake"
                 name="membership-fee-stake"
-                disabled={membership.currency === 'DEV'}
+                disabled={/* membership.currency === 'DEV'*/ true}
               >
                 <span class="h-auto w-auto max-w-[48%]">
                   <svg
@@ -779,7 +838,7 @@
                     class="hs-button is-large is-filled w-full max-w-full opacity-50"
                     id="membership-fee-custom"
                     name="membership-fee-custom"
-                    disabled={membership.currency === 'DEV'}
+                    disabled={/*membership.currency === 'DEV'*/ false}
                     >{i18n('Custom')}</button
                   >
                 {/if}
@@ -792,7 +851,7 @@
                     id="membership-fee-value"
                     name="membership-fee-value"
                     type="number"
-                    disabled={membership.currency === 'DEV'}
+                    disabled={/*membership.currency === 'DEV'*/ false}
                     min={minCustomFee100}
                     max={maxCustomFee100}
                   />

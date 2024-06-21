@@ -74,6 +74,10 @@ export const Strings = {
     en: () => 'Minimum earning model fee allowed is',
     ja: () => '許容されている最小の収益モデルの手数料',
   },
+  PaidMinimumFee: {
+    en: () => 'Earning model fee is currently set to',
+    ja: () => 'モデル料金の獲得は現在次のように設定されています',
+  },
   PriceSetMin: {
     en: () => 'Price automatically set to minimum allowed value',
     ja: () => '価格は最小許容値に自動で設定されます',
