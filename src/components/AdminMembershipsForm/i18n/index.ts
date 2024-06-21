@@ -144,6 +144,18 @@ export const Strings = {
     en: () => `<u>the credit card plugin.</u>`,
     ja: () => 'USDCを選択してください',
   },
+  Instant: {
+    en: () => `Instant`,
+    ja: () => `インスタント`,
+  },
+  Stake: {
+    en: () => `Stake`,
+    ja: () => `ステーク`,
+  },
+  Custom: {
+    en: () => `Custom`,
+    ja: () => `カスタム`,
+  },
   EarningModel: {
     en: () => 'Earning Model',
     ja: () => '収益モデル',

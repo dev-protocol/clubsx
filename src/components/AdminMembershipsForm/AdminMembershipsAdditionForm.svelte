@@ -740,7 +740,7 @@
                     />
                   </svg>
                 </span>
-                Instant
+                {i18n('Instant')}
               </button>
               <button
                 on:click|preventDefault={() =>
@@ -769,7 +769,7 @@
                     />
                   </svg>
                 </span>
-                Stake
+                {i18n('Stake')}
               </button>
               <div class="max-w-[33%] grow">
                 {#if membershipPaymentType !== 'custom'}
@@ -779,7 +779,8 @@
                     class="hs-button is-large is-filled w-full max-w-full opacity-50"
                     id="membership-fee-custom"
                     name="membership-fee-custom"
-                    disabled={membership.currency === 'DEV'}>Custom</button
+                    disabled={membership.currency === 'DEV'}
+                    >{i18n('Custom')}</button
                   >
                 {/if}
                 {#if membershipPaymentType === 'custom'}
