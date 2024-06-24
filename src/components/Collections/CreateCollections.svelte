@@ -5,9 +5,10 @@
   import MembershipOption from '@components/AdminMembershipsForm/MembershipOption.svelte'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import {
-    DEV_TOKEN_PAYMENT_TYPE_FEE,
-    PAYMENT_TYPE_INSTANT_FEE,
-    PAYMENT_TYPE_STAKE_FEE,
+    // DEV_TOKEN_PAYMENT_TYPE_FEE,
+    NO_STAKE_FEE,
+    // PAYMENT_TYPE_INSTANT_FEE,
+    // PAYMENT_TYPE_STAKE_FEE,
   } from '@constants/memberships'
 
   import {
@@ -22,7 +23,6 @@
     type Signer,
   } from 'ethers'
   import { onMount } from 'svelte'
-  import BigNumber from 'bignumber.js'
   import { clientsSTokens } from '@devprotocol/dev-kit'
   import { bytes32Hex } from '@devprotocol/clubs-core'
   import type { Membership } from '@plugins/memberships'
@@ -64,8 +64,9 @@
 
   type SaleDurationType = '1week' | '30days' | 'custom' | ''
   type SaleLimitType = '10' | '100' | 'custom' | ''
-  type MembershipPaymentType = 'instant' | 'stake' | 'custom' | ''
-  // note: treat this variable as state variable which stores the state for memberships edits and also for storing in DB
+  // type MembershipPaymentType = 'instant' | 'stake' | 'custom' | ''
+
+  // Note: treat this variable as state variable which stores the state for memberships edits and also for storing in DB
   const defaultMembership: CollectionMembership = {
     id: '',
     name: 'My First Item',
@@ -75,27 +76,27 @@
     imageSrc: '',
     paymentType: 'instant',
     fee: {
-      percentage: PAYMENT_TYPE_INSTANT_FEE,
+      percentage: NO_STAKE_FEE,
       beneficiary: ZeroAddress,
     },
     payload: randomBytes(8),
     memberCount: 0,
   }
+
   export let membership: CollectionMembership = {
     ...defaultMembership,
   }
 
-  let membershipPaymentType: MembershipPaymentType =
-    membership.paymentType ?? (membership.currency === 'DEV' ? 'custom' : '')
+  // let membershipPaymentType: MembershipPaymentType = membership.paymentType ?? (membership.currency === 'DEV' ? 'custom' : '')
 
   let saleDurationType: SaleDurationType = collection.endTime ? 'custom' : ''
   let saleLimitType: SaleLimitType = membership.memberCount ? 'custom' : ''
 
-  let membershipCustomFee100: number = membership.fee
-    ? membership.fee.percentage * 100
-    : membership.currency === 'DEV'
-      ? DEV_TOKEN_PAYMENT_TYPE_FEE * 100
-      : 0
+  // let membershipCustomFee100: number = membership.fee
+  //   ? membership.fee.percentage * 100
+  //   : membership.currency === 'DEV'
+  //     ? DEV_TOKEN_PAYMENT_TYPE_FEE * 100
+  //     : 0
 
   let updatingMembershipsStatus: Set<string> = new Set()
   let globalUpdateState = {
@@ -104,7 +105,7 @@
   let unSavedMemberships: string[] = []
   let noOfPositions: number = 0
   let invalidPriceMsg: string = ''
-  let invalidFeeMsg: string = ''
+  // let invalidFeeMsg: string = ''
   let invalidEndTimeMsg: string = ''
 
   const originaCollectionlId = collection.id
@@ -116,8 +117,8 @@
 
   const minPrice = 0.000001
   const maxPrice = 1e20
-  const minCustomFee100 = 0
-  const maxCustomFee100 = 95
+  // const minCustomFee100 = 0
+  // const maxCustomFee100 = 95
 
   function setLoading(isLoading: boolean) {
     globalUpdateState.isLoading = isLoading
@@ -699,8 +700,8 @@
 
     if (
       membership.price < minPrice ||
-      membership.price > maxPrice ||
-      membershipPaymentType === ''
+      membership.price > maxPrice
+      // || membershipPaymentType === ''
     )
       return
     const searchMembershipId =
