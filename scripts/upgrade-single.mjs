@@ -4,7 +4,7 @@ import { decode, encode } from '@devprotocol/clubs-core'
 
 dotenv.config()
 
-const KEY = 'xxx'
+const KEY = 'aggre-demo-std-2'
 
 const upgrade = (config) => {
   const deocdedConfig = decode(config)
@@ -13,6 +13,10 @@ const upgrade = (config) => {
   /**
    * Write upgrading script here
    */
+
+  upgradedConfig.plugins = [...upgradedConfig.plugins].filter(
+    (plugin) => plugin,
+  )
 
   return encode(upgradedConfig)
 }
