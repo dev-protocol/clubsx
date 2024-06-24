@@ -1,5 +1,6 @@
 import type { Membership } from '@plugins/memberships'
 import type {
+  ClubsFunctionGetAdminPaths,
   ClubsFunctionGetPagePaths,
   ClubsFunctionGetSlots,
   ClubsFunctionPlugin,
@@ -19,6 +20,7 @@ import tickets2 from './assets/tickets-2.jpg'
 import tickets3 from './assets/tickets-3.jpg'
 import readme from './README.md'
 import { getBanningRules } from './utils/get-banning-rules'
+import Admin from './pages/admin.astro'
 
 export enum SlotType {
   WeekdayTime = 'weekday-time',
@@ -143,6 +145,18 @@ export const getPagePaths = (async (
     : []
 }) satisfies ClubsFunctionGetPagePaths
 
+export const getAdminPaths = (async (_, { name }) => {
+  return [
+    {
+      paths: ['tickets'],
+      props: {
+        name,
+      },
+      component: Admin,
+    },
+  ]
+}) satisfies ClubsFunctionGetAdminPaths
+
 export const getApiPaths = (async (options, { propertyAddress, rpcUrl }) => {
   const tickets = getItems(options)
   const [{ get }, { post }] = await Promise.all([
@@ -202,6 +216,7 @@ export const meta = {
 
 export default {
   getPagePaths,
+  getAdminPaths,
   getApiPaths,
   getSlots,
   meta,
