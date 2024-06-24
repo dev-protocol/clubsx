@@ -1345,7 +1345,7 @@
               )
                 .dp(3)
                 .toString()}%)
-            </span> will be staked to earn dev continuously.
+            </span> will be staked to earn DEV continuously.
           </p>
           <p class="hs-form-field__helper mt-2">
             * <u>What is staking?</u>

@@ -195,7 +195,7 @@ export const Strings = {
   },
   WillBeStaked: {
     // For example: "X USDC will will be staked to earn dev continuously."
-    en: () => 'will be staked to earn dev continuously.',
+    en: () => 'will be staked to earn DEV continuously.',
     ja: () => 'をステーキングして継続的にDEVを取得します',
   },
   ActionLabel: {
