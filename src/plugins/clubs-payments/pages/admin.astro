@@ -1,0 +1,16 @@
+---
+import AdminAirtable from '@components/Tmp/AdminAirtable.vue'
+import type { ClubsPropsAdminPages } from '@devprotocol/clubs-core'
+import type { ComposedItem } from '..'
+
+type Props = { items: ComposedItem[]; name: string } & ClubsPropsAdminPages
+const { items, name, clubs } = Astro.props
+---
+
+<AdminAirtable
+  client:load
+  title="Clubs Payments"
+  name={name}
+  config={clubs.encodedClubsConfiguration}
+  airtableForm="https://airtable.com/embed/appDDQjhWoL24A1i3/pagwhb3q0UUIJQoPz/form"
+/>

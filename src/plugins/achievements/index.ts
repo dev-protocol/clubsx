@@ -13,6 +13,7 @@ import { default as Icon } from './assets/icon.svg' // @TODO: replace this.
 import addAchievements from './handlers/addAchievement'
 import claimAchievement from './handlers/claimAchievement'
 import fetchAchievement from './handlers/fetchAchievementId'
+import Admin from './pages/admin.astro'
 
 export const getPagePaths = (async (options, config) => {
   return [
@@ -48,10 +49,17 @@ export const getApiPaths = (async (options, config, _) => {
   ]
 }) satisfies ClubsFunctionGetApiPaths
 
-export const getAdminPaths = (async (
-  options,
-  config,
-) => []) satisfies ClubsFunctionGetAdminPaths
+export const getAdminPaths = (async (_, { name }) => {
+  return [
+    {
+      paths: ['achievements'],
+      props: {
+        name,
+      },
+      component: Admin,
+    },
+  ]
+}) satisfies ClubsFunctionGetAdminPaths
 
 export const meta = {
   id: 'devprotocol:clubs:plugin:achievements',
