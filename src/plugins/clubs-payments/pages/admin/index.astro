@@ -1,0 +1,15 @@
+---
+import App from './app.vue'
+import type { ClubsPropsAdminPages } from '@devprotocol/clubs-core'
+import type { ComposedItem } from '../../'
+
+type Props = { items: ComposedItem[]; name: string } & ClubsPropsAdminPages
+const { items, name, clubs } = Astro.props
+---
+
+<App
+  client:load
+  items={items}
+  name={name}
+  config={clubs.encodedClubsConfiguration}
+/>

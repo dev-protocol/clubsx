@@ -1,5 +1,6 @@
 import type { Membership } from '@plugins/memberships'
 import type {
+  ClubsFunctionGetAdminPaths,
   ClubsFunctionGetPagePaths,
   ClubsFunctionGetSlots,
   ClubsFunctionPlugin,
@@ -21,6 +22,7 @@ import Readme from './readme/index.astro'
 import screenshot1 from './images/clubs-payments-1.jpg'
 import screenshot2 from './images/clubs-payments-2.jpg'
 import screenshot3 from './images/clubs-payments-3.jpg'
+import Admin from './pages/admin/index.astro'
 
 export type Override = {
   id: string
@@ -59,6 +61,20 @@ export const getPagePaths = (async (
       ]
     : []
 }) satisfies ClubsFunctionGetPagePaths
+
+export const getAdminPaths = (async (options, { name }, utils) => {
+  const items = composeItems(options, utils)
+  return [
+    {
+      paths: ['fiat'],
+      props: {
+        items,
+        name,
+      },
+      component: Admin,
+    },
+  ]
+}) satisfies ClubsFunctionGetAdminPaths
 
 export const getApiPaths = (async (
   options,
@@ -142,6 +158,7 @@ export const meta = {
 
 export default {
   getPagePaths,
+  getAdminPaths,
   getApiPaths,
   getSlots,
   meta,
