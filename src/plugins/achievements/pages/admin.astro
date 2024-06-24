@@ -1,0 +1,15 @@
+---
+import AdminAirtable from '@components/Tmp/AdminAirtable.vue'
+import type { ClubsPropsAdminPages } from '@devprotocol/clubs-core'
+
+type Props = { name: string } & ClubsPropsAdminPages
+const { name, clubs } = Astro.props
+---
+
+<AdminAirtable
+  client:load
+  title="Achievements"
+  name={name}
+  config={clubs.encodedClubsConfiguration}
+  airtableForm="https://airtable.com/embed/appDDQjhWoL24A1i3/pagWPcvtMOdIszqHg/form"
+/>

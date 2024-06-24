@@ -18,6 +18,7 @@ import claimInvitation from './handlers/claim-invitation'
 import postInvitation from './handlers/post-invitation'
 import { default as Id } from './[id].astro'
 import type { UndefinedOr } from '@devprotocol/util-ts'
+import Admin from './pages/admin.astro'
 
 export const getPagePaths = (async (
   options,
@@ -74,10 +75,17 @@ export const getApiPaths = (async (
   ]
 }) satisfies ClubsFunctionGetApiPaths
 
-export const getAdminPaths = (async (
-  options,
-  config,
-) => []) satisfies ClubsFunctionGetAdminPaths
+export const getAdminPaths = (async (_, { name }) => {
+  return [
+    {
+      paths: ['invitations'],
+      props: {
+        name,
+      },
+      component: Admin,
+    },
+  ]
+}) satisfies ClubsFunctionGetAdminPaths
 
 export const meta = {
   id: 'devprotocol:clubs:plugin:invitations',
