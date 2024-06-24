@@ -12,6 +12,8 @@
   import { buildConfig } from '@devprotocol/clubs-core'
   import {
     DEV_TOKEN_PAYMENT_TYPE_FEE,
+    MAX_CUSTOM_FEE,
+    MIN_CUSTOM_FEE,
     PAYMENT_TYPE_INSTANT_FEE,
     PAYMENT_TYPE_STAKE_FEE,
   } from '@constants/memberships'
@@ -71,8 +73,8 @@
 
   const minPrice = 0.000001
   const maxPrice = 1e20
-  const minCustomFee100 = 0
-  const maxCustomFee100 = 95
+  const minCustomFee100 = MIN_CUSTOM_FEE
+  const maxCustomFee100 = MAX_CUSTOM_FEE
   const i18nBase = i18nFactory(Strings)
   let i18n = i18nBase(['en'])
 
