@@ -1167,7 +1167,9 @@
               class="hs-form-field__input w-fit"
               id="membership-currency"
               disabled={membershipExists}
-              on:change={() => resetMembershipFee(membership)}
+              on:change={() => {
+                /* resetMembershipFee(membership) */
+              }}
             >
               <option value="USDC">USDC</option>
               <option value="ETH">ETH</option>
