@@ -735,7 +735,19 @@
         (c: Collection) => c.id !== searchCollectionId,
       ),
       collection,
-    ]
+    ].map((colc) => ({
+      /**
+       * Clubs Shop now supports only NO_STAKE_FEE for memberships
+       */
+      ...colc,
+      memberships: colc.memberships.map((mem) => ({
+        ...mem,
+        fee: {
+          ...mem.fee,
+          percentage: NO_STAKE_FEE,
+        },
+      })),
+    }))
     setOptions(
       [{ key: 'collections', value: newCollections }],
       currentPluginIndex,
