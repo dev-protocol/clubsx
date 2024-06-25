@@ -31,7 +31,8 @@ export const composeItems = (
         return 'memberships' in s ||
           'requiredMemberships' in s ||
           'endTime' in s
-          ? !!(s as Collection).memberships.find( // This is a collection, so find the membership and return boolean.
+          ? !!(s as Collection).memberships.find(
+              // This is a collection, so find the membership and return boolean.
               (m) => bytes32Hex(m.payload) === bytes32Hex(ov.payload),
             )
           : bytes32Hex(s.payload) === bytes32Hex(ov.payload) // This is a membership so directly compare payload.
