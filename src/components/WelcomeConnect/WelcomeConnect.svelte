@@ -1,58 +1,39 @@
 <script lang="ts">
-  import type { EthersProviderFrom as TypeEthersProviderFrom } from '@fixtures/wallet'
-  import type Web3Modal from 'web3modal'
-
   import type { ClubsConfiguration } from '@devprotocol/clubs-core'
   import { encode, i18nFactory, setConfig } from '@devprotocol/clubs-core'
-  import { BrowserProvider } from 'ethers'
+  import { type Signer } from 'ethers'
   import { defaultConfig } from '@constants/defaultConfig'
   import { onMount } from 'svelte'
-  import EmailConnect from '../EmailConnect/EmailConnect.svelte'
   import type { DraftOptions } from '@constants/draft'
-  import type { UndefinedOr } from '@devprotocol/util-ts'
   import { Strings } from './i18n'
+  import { combineLatest } from 'rxjs'
 
   export let siteName: string
 
   let walletAwaitingUserConfirmation: boolean = false
   let walletConnectStatusMsg: string = ''
   let disableCreationUsingWallet: boolean = false
-  let GetModalProvider: Web3Modal
-  let EthersProviderFrom: typeof TypeEthersProviderFrom
+  let signer: Signer | undefined
+  let account: string | undefined
+
   const i18nBase = i18nFactory(Strings)
   let i18n = i18nBase(['en'])
 
   onMount(async () => {
-    const wallet = await import('@fixtures/wallet')
-    GetModalProvider = wallet.GetModalProvider()
-    EthersProviderFrom = wallet.EthersProviderFrom
     i18n = i18nBase(navigator.languages)
+    const { connection } = await import('@devprotocol/clubs-core/connection')
+    combineLatest([connection().signer, connection().account]).subscribe(
+      ([_signer, _account]) => {
+        signer = _signer
+        account = _account
+      },
+    )
   })
 
-  const walletConnect = async () => {
-    let provider: UndefinedOr<BrowserProvider>
-    let currentAddress: string | undefined
-
-    try {
-      walletAwaitingUserConfirmation = true
-      walletConnectStatusMsg =
-        'Awaiting wallet connection confirmation on wallet...'
-      const connection = await EthersProviderFrom(GetModalProvider)
-      walletConnectStatusMsg =
-        'Wallet connection confirmed, initiating clubs creation...'
-
-      provider = connection.provider
-      currentAddress = connection.currentAddress
-    } catch (error: any) {
-      walletConnectStatusMsg = 'Wallet connection failed, try again!'
-    } finally {
-      walletAwaitingUserConfirmation = false
-    }
-
-    if (!currentAddress || !provider) {
-      return
-    }
-
+  const walletConnect = async (
+    currentSigner: Signer,
+    currentAddress: string,
+  ) => {
     const siteNameCheckRes = await fetch(`/api/verifySiteName/${siteName}`)
     if (!siteNameCheckRes.ok) {
       return
@@ -94,8 +75,6 @@
     }
 
     // Get the signature ready.
-    const signer = await provider.getSigner()
-    const encodedConfig = encode(config)
     const hash = `Create clubs for ${siteName} @ts:${new Date().getTime()}`
 
     let sig: string | undefined
@@ -103,7 +82,7 @@
       walletAwaitingUserConfirmation = true
       walletConnectStatusMsg =
         'Awaiting clubs creation confirmation on wallet...'
-      sig = await signer.signMessage(hash)
+      sig = await currentSigner.signMessage(hash)
       walletConnectStatusMsg = 'Creating your club...'
     } catch (error: any) {
       walletAwaitingUserConfirmation = false
@@ -165,71 +144,36 @@
   </section>
 
   <section class="grid gap-24">
-    <EmailConnect {siteName} />
-
-    <p
-      role="separator"
-      class="grid grid-cols-[1fr_auto_1fr] items-center gap-4 before:block before:border-b before:border-white/20 before:content-[''] after:block after:border-b after:border-white/20 after:content-['']"
+    <div
+      class={`p-8 rounded-3xl bg-surface-400 flex flex-col lg:flex-row justify-between items-center gap-5 transition-opacity duration-700 ${
+        signer && account ? 'opacity-30' : ''
+      }`}
     >
-      or
-    </p>
-
-    <div class="flex flex-col items-center">
-      <span class="mb-4">{i18n('WalletCheck')}</span>
-
+      <h2 class="font-bold text-3xl">Connect</h2>
+      <slot />
+    </div>
+    <div
+      class={`p-8 rounded-3xl bg-surface-400 flex flex-col lg:flex-row justify-between items-center gap-5 transition-opacity duration-700 ${
+        signer && account ? '' : 'opacity-30'
+      }`}
+    >
+      <h2 class="font-bold text-3xl">Sign</h2>
       <button
-        class={`hs-button is-filled is-native-blue px-8 py-4 text-inherit ${
-          !GetModalProvider ||
-          !EthersProviderFrom ||
-          walletAwaitingUserConfirmation
-            ? 'animate-pulse bg-gray-500/60'
-            : ''
+        class={`hs-button is-filled px-8 py-4 ${
+          walletAwaitingUserConfirmation ? 'animate-pulse bg-gray-500/60' : ''
         } ${disableCreationUsingWallet ? 'bg-gray-500/60' : ''}`}
-        disabled={!GetModalProvider ||
-          !EthersProviderFrom ||
+        disabled={!signer ||
+          !account ||
           walletAwaitingUserConfirmation ||
           disableCreationUsingWallet}
-        on:click|preventDefault={(_) => walletConnect()}
+        on:click|preventDefault={(_) => {
+          signer && account ? walletConnect(signer, account) : null
+        }}
       >
         {walletConnectStatusMsg == ''
-          ? 'Sign with your wallet'
+          ? 'Sign with your account'
           : walletConnectStatusMsg}
       </button>
     </div>
   </section>
 </div>
-
-<style lang="scss">
-  @use '@devprotocol/hashi/hs-button';
-
-  @include hs-button.extend('filled.native-blue') {
-    @include hs-button.color(
-      (
-        fill: 'native-blue.400',
-        ink: 'native-blue.ink',
-        border: 'native-blue.400',
-      )
-    );
-
-    &:hover,
-    &:focus {
-      @include hs-button.color(
-        (
-          fill: 'native-blue.300',
-          ink: 'native-blue.ink',
-          border: 'native-blue.300',
-        )
-      );
-    }
-
-    &:active {
-      @include hs-button.color(
-        (
-          fill: 'native-blue.200',
-          ink: 'native-blue.ink',
-          border: 'native-blue.200',
-        )
-      );
-    }
-  }
-</style>
