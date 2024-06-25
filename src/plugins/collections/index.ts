@@ -47,6 +47,7 @@ export type Collection = {
   memberships: CollectionMembership[]
   requiredMemberships?: string[]
 }
+
 export const getApiPaths = (async (
   options,
   config,

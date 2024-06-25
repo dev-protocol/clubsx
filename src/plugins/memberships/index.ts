@@ -43,6 +43,7 @@ export type Membership = {
     description: string
   }
 }
+
 export type UnpricedMembership = Omit<Membership, 'price' | 'currency'>
 export type PricedMembership = UnpricedMembership & {
   price: NonNullable<Membership['price']>
