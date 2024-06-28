@@ -162,7 +162,7 @@
             class="hs-button is-error is-filled is-large max-w-fit"
             id={`navigationLinks-${i}-remove-btn`}
             name={`navigationLinks-${i}-remove-btn`}
-            on:click={() => removeNavigationLinks(link.display)}
+            on:click|preventDefault={() => removeNavigationLinks(link.display)}
           >
             <i class="hs-button__icon">
               <svg
