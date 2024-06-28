@@ -5,7 +5,7 @@ import Layout from '@layouts/Landing.astro'
 const { id } = Astro.params
 ---
 
-<Layout connectButton="show" theme="auto">
+<Layout connectButton="show" theme="auto" pageTitle="Passport">
   <div class="max-w-screen-lg mx-auto px-4 grid gap-24">
     <UserClubs client:load id={id ?? ''} />
   </div>

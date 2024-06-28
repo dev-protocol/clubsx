@@ -7,9 +7,10 @@ import '@devprotocol/clubs-core/styles'
 type Props = {
   connectButton?: 'show' | 'hidden'
   theme?: 'light' | 'dark' | 'auto'
+  pageTitle?: string
 }
 
-const { connectButton = 'hidden', theme = 'dark' } = Astro.props
+const { connectButton = 'hidden', theme = 'dark', pageTitle } = Astro.props
 
 const title = 'Clubs'
 const name = 'Clubs' // not sure the difference here compared to title
@@ -49,10 +50,11 @@ const twitterHandle = 'poweredbyClubs'
     <slot name="before-header" />
     <header class="relative flex items-center justify-between px-6 py-4">
       <a href="/">
-        <h1
-          class="flex items-center gap-2.5 font-['Poppins'] text-xl font-bold"
-        >
-          <img src={ClubsColor.src} />Clubs
+        <h1 class="flex items-center gap-4">
+          <span class="flex items-center gap-1.5 lg:text-xl font-bold">
+            <img src={ClubsColor.src} />Clubs</span
+          >
+          {pageTitle && <span class="lg:text-xl font-bold">{pageTitle}</span>}
         </h1>
       </a>
       <slot name="right" />
