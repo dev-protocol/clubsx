@@ -1,18 +1,97 @@
 import { createClient } from 'redis'
 import dotenv from 'dotenv'
 import { decode, encode } from '@devprotocol/clubs-core'
+import jsonwebtoken from 'jsonwebtoken'
 
 dotenv.config()
 
-const KEY = 'xxx'
+const KEY = 'metamizumachi'
+
+const createAvailabilities = (startHour, endHour) => {
+  return Array.from({ length: 5 }, (_, i) => ({
+    type: 'weekday-time',
+    weekday: i + 1,
+    start: `${startHour} hour`,
+    end: `${endHour} hour`,
+    tz: 'Asia/Tokyo',
+  }))
+}
+
+const ticketWebhook =
+  'https://metamizumachi.clubs.place/api/webhooks/tickets/abc/dest/airtable/tblTISL8uH5gJHW62'
 
 const upgrade = (config) => {
   const deocdedConfig = decode(config)
   const upgradedConfig = { ...deocdedConfig }
+  const encryptedWebhook = jsonwebtoken.sign(ticketWebhook, process.env.SALT)
 
   /**
    * Write upgrading script here
    */
+  const metawaterTicketsPlugin = {
+    id: 'devprotocol:clubs:plugin:tickets',
+    options: [
+      {
+        key: 'tickets',
+        value: [
+          {
+            // Regional Coupon
+            payload:
+              '0xadcc2c9fbaaa13666ae569512023beacbf445c364575a965a525828837950595',
+            importedFrom: {
+              plugin: 'devprotocol:clubs:simple-memberships',
+              key: 'memberships',
+            },
+            name: '地域クーポン',
+            uses: [
+              {
+                id: '500yen',
+                name: '500円',
+                description: '地域クーポン（500円分）として使用できます',
+                duration: '1 hour',
+                within: '1 year',
+                availability: createAvailabilities(9, 22),
+                refreshCycle: undefined,
+              },
+            ],
+            webhooks: {
+              used: {
+                encrypted: encryptedWebhook,
+              },
+            },
+          },
+          {
+            // Proof of service NFT
+            erc721Enumerable: '0xAA821D4397B6253BF5d42a9e6B6AaE6B5C52723d', // this is the achievement NFT address
+            name: '役務証明報酬チケット',
+            uses: [
+              {
+                id: 'proof-of-service',
+                name: '​報酬引き換え',
+                description: 'NFTに表示されている報酬額と引き換えられます',
+                duration: '1 hour',
+                within: '1 year',
+                availability: createAvailabilities(9, 18),
+                refreshCycle: undefined,
+              },
+            ],
+            webhooks: {
+              used: {
+                encrypted: encryptedWebhook,
+              },
+            },
+          },
+        ],
+      },
+    ],
+  }
+
+  upgradedConfig.plugins = [...upgradedConfig.plugins, metawaterTicketsPlugin]
+
+  // remove plugin where id equals devprotocol:clubs:plugin:tickets
+  // upgradedConfig.plugins = upgradedConfig.plugins.filter((plugin) => {
+  //   return plugin.id !== 'devprotocol:clubs:plugin:tickets'
+  // })
 
   return encode(upgradedConfig)
 }
