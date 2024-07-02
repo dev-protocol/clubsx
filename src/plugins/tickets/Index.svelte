@@ -8,7 +8,7 @@
   import type { Membership } from '@plugins/memberships'
   import { onMount } from 'svelte'
   import { isMembershipTicket, isNFTTicket, meta } from './index'
-  import { decode } from '@devprotocol/clubs-core'
+  import { decode, i18nFactory } from '@devprotocol/clubs-core'
   import { type TicketStatus, ticketStatus } from './utils/status'
   import Skeleton from '@components/Global/Skeleton.svelte'
   import { JsonRpcProvider } from 'ethers'
@@ -19,6 +19,7 @@
   import type { BanningRules } from './utils/get-banning-rules'
   import { getAllOwnedTokens } from './utils/nft'
   import { requestToGetHistory } from './utils/api'
+  import { Strings } from './i18n'
 
   export let tickets: Tickets
   export let memberships: UndefinedOr<Membership[]>
@@ -26,6 +27,9 @@
   export let propertyAddress: string
   export let rpcUrl: string
   export let ban: BanningRules
+
+  const i18nBase = i18nFactory(Strings)
+  let i18n = i18nBase(['en'])
 
   let account: UndefinedOr<string>
   let ownedTickets: UndefinedOr<TicketWithStatus[]>
@@ -147,6 +151,8 @@
     status?.some((t) => t.isTempUnavailable) ?? false
 
   onMount(async () => {
+    i18n = i18nBase(navigator.languages)
+
     const { connection } = await import('@devprotocol/clubs-core/connection')
     connection().account.subscribe(async (acc) => {
       account = acc
@@ -240,11 +246,9 @@
           />
         </svg>
       </span>
-      <p class="font-bold">Become a member and get tickets!</p>
+      <p class="font-bold">{i18n('BecomeMemberGetTickets')}</p>
       <p>
-        <a href="/" class="hs-button is-outlined"
-          >Take me back to the homepage</a
-        >
+        <a href="/" class="hs-button is-outlined">{i18n('BackToHomepage')}</a>
       </p>
     </div>
   {/if}
