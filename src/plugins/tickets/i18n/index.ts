@@ -35,6 +35,14 @@ export const Strings = {
     en: 'Yes',
     ja: 'はい',
   },
+  BecomeMemberGetTickets: {
+    en: 'Become a member and get tickets!',
+    ja: 'メンバーシップを所持していません',
+  },
+  BackToHomepage: {
+    en: 'Take me back to the homepage',
+    ja: 'トップページに戻る',
+  },
   ModalMessageNotConnected: {
     en: 'Please connect a wallet first',
     ja: 'ウォレットに接続してください',
