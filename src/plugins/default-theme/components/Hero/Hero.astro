@@ -127,12 +127,12 @@ const backgroundGradientColorTo = globalConfig?.backgroundGradient?.[1]
     </a>
     {
       membersCountConfig && membersCountConfig !== 'hidden' && (
-      <NumberOfMembers
-        client:load
-        propertyAddress={propertyAddress}
-        rpcUrl={rpcUrl}
-        isInDraft={isInDraft}
-      />
+        <NumberOfMembers
+          client:load
+          propertyAddress={propertyAddress}
+          rpcUrl={rpcUrl}
+          isInDraft={isInDraft}
+        />
       )
     }
     <div class="col-span-2">

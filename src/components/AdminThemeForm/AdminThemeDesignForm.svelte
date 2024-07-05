@@ -12,7 +12,7 @@
     GlobalConfigValue,
     HomeConfigValue,
     SectionOrderingValue,
-    MembersCountVisibilityValue
+    MembersCountVisibilityValue,
   } from '@plugins/default-theme'
   import { equals } from 'ramda'
   import { onMount } from 'svelte'
@@ -34,13 +34,13 @@
       }>
     )?.value ?? 'memberships-first'
 
-  let membersCountConfig: MembersCountVisibilityValue = 
-  (
-    options.find((option) => option.key === 'membersCount') as UndefinedOr<{
-      key: 'membersCount'
-      value: MembersCountVisibilityValue
-    }>
-  )?.value ?? 'visible'
+  let membersCountConfig: MembersCountVisibilityValue =
+    (
+      options.find((option) => option.key === 'membersCount') as UndefinedOr<{
+        key: 'membersCount'
+        value: MembersCountVisibilityValue
+      }>
+    )?.value ?? 'visible'
 
   let homeConfig: HomeConfigValue =
     (
@@ -91,7 +91,7 @@
       {
         key: 'membersCount',
         value: membersCountConfig,
-      }
+      },
     ]
     setOptions(newOptions, currentPluginIndex)
     onUpdate && onUpdate(newOptions)
@@ -102,7 +102,9 @@
     update()
   }
 
-  const onUpdateMembersCountVisibilityValue = async(visibilityValue: MembersCountVisibilityValue) => {
+  const onUpdateMembersCountVisibilityValue = async (
+    visibilityValue: MembersCountVisibilityValue,
+  ) => {
     membersCountConfig = visibilityValue
     update()
   }
@@ -314,16 +316,18 @@
         class="flex flex-row items-center justify-start gap-8 rounded-lg border-[3px] border-surface-ink p-3 bg-[var(--hs-theme-disabled)]"
       >
         <button
-          on:click|preventDefault={() => onUpdateMembersCountVisibilityValue("visible")}
-          class={`hs-button ${membersCountConfig != "hidden" ? 'is-filled' : 'bg-transparent'}`}
+          on:click|preventDefault={() =>
+            onUpdateMembersCountVisibilityValue('visible')}
+          class={`hs-button ${membersCountConfig != 'hidden' ? 'is-filled' : 'bg-transparent'}`}
         >
           {i18n('Show')}
         </button>
         <button
-          on:click|preventDefault={() => onUpdateMembersCountVisibilityValue("hidden")}
-          class={`hs-button ${membersCountConfig == "hidden"
-            ? 'is-filled'
-            : 'bg-transparent'}`}
+          on:click|preventDefault={() =>
+            onUpdateMembersCountVisibilityValue('hidden')}
+          class={`hs-button ${
+            membersCountConfig == 'hidden' ? 'is-filled' : 'bg-transparent'
+          }`}
         >
           {i18n('Hide')}
         </button>

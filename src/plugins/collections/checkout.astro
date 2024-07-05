@@ -12,7 +12,7 @@ interface Props extends ClubsPropsPages {
 const fullUrl = Astro.request.url
 const urlObject = new URL(fullUrl)
 const origin = urlObject.origin
-console.log({ origin})
+console.log({ origin })
 
 const { membership, propertyAddress, rpcUrl, collection, ...other } =
   Astro.props

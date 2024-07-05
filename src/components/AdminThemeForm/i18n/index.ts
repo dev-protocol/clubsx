@@ -69,13 +69,13 @@ export const Strings = {
     en: () => 'Design',
     ja: () => 'デザイン',
   },
-  Show:{
+  Show: {
     en: () => 'Show',
     ja: () => '表示',
   },
   Hide: {
-    en:() => 'Hide',
-    ja:() => '非表示',
+    en: () => 'Hide',
+    ja: () => '非表示',
   },
   MembersCountVisibility: {
     en: () => 'Members count visibility',

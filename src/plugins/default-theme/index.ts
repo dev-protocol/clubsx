@@ -166,7 +166,8 @@ export const getLayout = (async (options, config, { getPluginConfigById }) => {
   const globalConfig = options.find((opt) => opt.key === 'globalConfig')?.value
   const homeConfig = options.find((opt) => opt.key === 'homeConfig')
     ?.value as UndefinedOr<HomeConfigValue>
-  const membersCountConfig: MembersCountVisibilityValue =  (
+  const membersCountConfig: MembersCountVisibilityValue =
+    (
       options.find((option) => option.key === 'membersCount') as UndefinedOr<{
         key: 'membersCount'
         value: MembersCountVisibilityValue
@@ -177,7 +178,14 @@ export const getLayout = (async (options, config, { getPluginConfigById }) => {
   return {
     layout: Layout,
     props: {
-      theme1: { config, homeConfig, globalConfig, membersCountConfig, memberships, description },
+      theme1: {
+        config,
+        homeConfig,
+        globalConfig,
+        membersCountConfig,
+        memberships,
+        description,
+      },
     },
   }
 }) satisfies ClubsFunctionGetLayout
