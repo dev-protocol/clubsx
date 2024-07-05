@@ -69,4 +69,16 @@ export const Strings = {
     en: () => 'Design',
     ja: () => 'デザイン',
   },
+  Show:{
+    en: () => 'Show',
+    ja: () => '表示',
+  },
+  Hide: {
+    en:() => 'Hide',
+    ja:() => '非表示',
+  },
+  MembersCountVisibility: {
+    en: () => 'Members count visibility',
+    ja: () => 'メンバー数の表示',
+  },
 } satisfies ClubsI18nParts

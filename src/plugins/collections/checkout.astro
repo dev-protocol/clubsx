@@ -9,6 +9,10 @@ interface Props extends ClubsPropsPages {
   rpcUrl: string
   collection: Collection
 }
+const fullUrl = Astro.request.url
+const urlObject = new URL(fullUrl)
+const origin = urlObject.origin
+console.log({ origin})
 
 const { membership, propertyAddress, rpcUrl, collection, ...other } =
   Astro.props
@@ -26,6 +30,6 @@ const { membership, propertyAddress, rpcUrl, collection, ...other } =
   feePercentage={membership.fee?.percentage}
   feeBeneficiary={membership.fee?.beneficiary}
   accessControlUrl={`/api/devprotocol:clubs:collections/verification/${collection.id}`}
-  accessControlDescription={`**Membership Purchase Required**\n\nThis transaction requires primary memberships.\n\nVisit [here](/collections/${collection.id}) for more details.`}
+  accessControlDescription={`**Membership Purchase Required**\n\nThis transaction requires primary memberships.\n\nVisit [here](${origin}/collections/${collection.id}) for more details.`}
   {...other}
 />
