@@ -37,7 +37,7 @@ export const Strings = {
   },
   BecomeMemberGetTickets: {
     en: 'Become a member and get tickets!',
-    ja: 'メンバーシップを所持していません',
+    ja: 'チケットを所持していません',
   },
   BackToHomepage: {
     en: 'Take me back to the homepage',
@@ -58,6 +58,22 @@ export const Strings = {
   ModalMessageNotSigned: {
     en: `Can't sign with your wallet? Close this confirmation, and disconnect/reconnect your wallet and try again.`,
     ja: 'ウォレットで署名ができませんか? この確認を閉じてからウォレットを再接続してもう一度試してください。',
+  },
+  Expired: {
+    en: 'Expired',
+    ja: '期限切れ',
+  },
+  UseThis: {
+    en: 'Use this',
+    ja: 'Use this',
+  },
+  Available: {
+    en: 'Available',
+    ja: '利用可能',
+  },
+  NowUnavailable: {
+    en: 'Now Unavailable',
+    ja: `現在は利用できません`,
   },
   AchievementMetadataAttributes: {
     en: ([txt]) => {
