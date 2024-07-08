@@ -215,7 +215,7 @@
               data-is-expired={isExpired(status)}
               data-is-temp-unavailable={isTempUnavailable(status) &&
                 !isEnablable(status)}
-              class="rounded-full px-4 py-1.5 text-white data-[is-available=true]:bg-dp-green-300 data-[is-enablable=true]:bg-native-blue-400 data-[is-expired=true]:bg-dp-white-600 data-[is-temp-unavailable=true]:bg-dp-black-200 data-[is-available=true]:after:content-['Available'] data-[is-enablable=true]:after:content-['Use_this'] data-[is-expired=true]:after:content-['Expired'] data-[is-temp-unavailable=true]:after:content-['Now_unavailable']"
+              class={`rounded-full px-4 py-1.5 text-white data-[is-available=true]:bg-dp-green-300 data-[is-enablable=true]:bg-native-blue-400 data-[is-expired=true]:bg-dp-white-600 data-[is-temp-unavailable=true]:bg-dp-black-200 data-[is-available=true]:after:content-[${i18n('Available').replaceAll(' ', '_')}] data-[is-enablable=true]:after:content-[${i18n('UseThis').replaceAll(' ', '_')}] data-[is-expired=true]:after:content-[${i18n('Expired').replaceAll(' ', '_')}] data-[is-temp-unavailable=true]:after:content-[${i18n('NowUnavailable').replaceAll(' ', '_')}]`}
             >
             </span>
           {/await}
