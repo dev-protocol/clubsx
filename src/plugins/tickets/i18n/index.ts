@@ -37,7 +37,7 @@ export const Strings = {
   },
   BecomeMemberGetTickets: {
     en: 'Become a member and get tickets!',
-    ja: 'メンバーシップを所持していません',
+    ja: 'チケットを所持していません',
   },
   BackToHomepage: {
     en: 'Take me back to the homepage',
