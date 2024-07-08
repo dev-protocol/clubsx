@@ -59,6 +59,14 @@ export const Strings = {
     en: `Can't sign with your wallet? Close this confirmation, and disconnect/reconnect your wallet and try again.`,
     ja: 'ウォレットで署名ができませんか? この確認を閉じてからウォレットを再接続してもう一度試してください。',
   },
+  Expired: {
+    en: 'Expired',
+    ja: '期限切れ'
+  },
+  UseThis: {
+    en: 'Use this',
+    ja: 'Use this'
+  },
   AchievementMetadataAttributes: {
     en: ([txt]) => {
       if (txt === 'チケットの種類') {
