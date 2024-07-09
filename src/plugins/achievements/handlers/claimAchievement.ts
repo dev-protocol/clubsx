@@ -155,18 +155,18 @@ export const handler =
     })('Property')
 
     // 12. Call the mint api (send.devprotocol.xyz)
-    const { SEND_DEV_PROTOCOL_API_KEY } =
+    const { SEND_DEVPROTOCOL_API_KEY } =
       import.meta.env ||
       process.env ||
-      ({ SEND_DEV_PROTOCOL_API_KEY: '' } as {
-        SEND_DEV_PROTOCOL_API_KEY: string
+      ({ SEND_DEVPROTOCOL_API_KEY: '' } as {
+        SEND_DEVPROTOCOL_API_KEY: string
       })
     const mintApiResponse = await fetch(
       `https://send.devprotocol.xyz/api/send-transactions/AchievementsSBT/${achievementInfo.contract}`,
       {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${SEND_DEV_PROTOCOL_API_KEY}`,
+          Authorization: `Bearer ${SEND_DEVPROTOCOL_API_KEY}`,
         },
         body: JSON.stringify({
           requestId: `${achievementItem.id}${account}`, // achievementItem.id + user signing EOA
