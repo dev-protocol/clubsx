@@ -1,6 +1,7 @@
 ---
 import NumberOfMembers from './NumberOfMembers.svelte'
 import Description from './Description.svelte'
+import type { MembersCountVisibilityValue } from './../../index'
 
 const {
   globalConfig,
@@ -12,6 +13,7 @@ const {
   rpcUrl,
   compact,
   isInDraft,
+  membersCountConfig,
 } = Astro.props as {
   globalConfig?: {
     bg: string
@@ -25,6 +27,7 @@ const {
   rpcUrl?: string
   compact?: boolean
   isInDraft?: boolean
+  membersCountConfig?: MembersCountVisibilityValue
 }
 
 const backgroundGradientColorFrom = globalConfig?.backgroundGradient?.[0]
@@ -122,12 +125,16 @@ const backgroundGradientColorTo = globalConfig?.backgroundGradient?.[1]
         >
       </h1>
     </a>
-    <NumberOfMembers
-      client:load
-      propertyAddress={propertyAddress}
-      rpcUrl={rpcUrl}
-      isInDraft={isInDraft}
-    />
+    {
+      membersCountConfig && membersCountConfig !== 'hidden' && (
+        <NumberOfMembers
+          client:load
+          propertyAddress={propertyAddress}
+          rpcUrl={rpcUrl}
+          isInDraft={isInDraft}
+        />
+      )
+    }
     <div class="col-span-2">
       <Description client:load>
         {

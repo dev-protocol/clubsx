@@ -16,7 +16,11 @@ import Twitter from '@components/Icons/Twitter.astro'
 import Discord from '@components/Icons/Discord.astro'
 import Share from '../components/Share/Share.svelte'
 import type { Membership } from '@plugins/memberships'
-import type { GlobalConfigValue, HomeConfigValue } from '..'
+import type {
+  GlobalConfigValue,
+  HomeConfigValue,
+  MembersCountVisibilityValue,
+} from '..'
 import { replaceWithFwdHost } from '@fixtures/url'
 
 const { page } = Astro.params
@@ -28,6 +32,7 @@ const {
     globalConfig,
     memberships,
     description,
+    membersCountConfig,
   },
   signals,
 } = Astro.props as {
@@ -37,6 +42,7 @@ const {
     config: ClubsConfiguration
     globalConfig?: GlobalConfigValue
     homeConfig?: HomeConfigValue
+    membersCountConfig?: MembersCountVisibilityValue
     description?: string
   }
   signals?: string[]
@@ -139,6 +145,7 @@ const truncatedDescription = ((desc) =>
       globalConfig={globalConfig}
       compact={displayFullPage}
       isInDraft={isInDraft}
+      membersCountConfig={membersCountConfig}
     />
     {
       !displayFullPage && (
