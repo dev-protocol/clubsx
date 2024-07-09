@@ -161,6 +161,7 @@ export const handler =
       ({ SEND_DEV_PROTOCOL_API_KEY: '' } as {
         SEND_DEV_PROTOCOL_API_KEY: string
       })
+    console.log('SEND_DEV_PROTOCOL_API_KEY', SEND_DEV_PROTOCOL_API_KEY)
     const mintApiResponse = await fetch(
       `https://send.devprotocol.xyz/api/send-transactions/AchievementsSBT/${achievementInfo.contract}`,
       {
