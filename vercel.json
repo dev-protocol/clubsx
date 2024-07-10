@@ -1,6 +1,10 @@
 {
   "crons": [
     {
+      "path": "/api/cron/assets",
+      "schedule": "*/5 * * * *"
+    },
+    {
       "path": "/api/cron/updateStats",
       "schedule": "0 0 * * *"
     }

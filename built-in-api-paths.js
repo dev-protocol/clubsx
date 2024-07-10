@@ -12,5 +12,7 @@ export default [
   '/api/decrypt',
   '/api/cron',
   '/api/config',
+  '/api/clubs',
+  '/api/assets',
   '/api/addDaoToDraft',
 ]
