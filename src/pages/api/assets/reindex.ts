@@ -26,28 +26,38 @@ export const GET: APIRoute = async () => {
   const index =
     AssetScm === ASSET_SCHEMA_ID && LogScm === LOG_SCHEMA_ID ? true : undefined
 
-  await whenDefined(index, () =>
-    Promise.all([
-      client.ft.dropIndex(Index.Asset).catch(() => null),
-      client.ft.dropIndex(Index.Log).catch(() => null),
-    ]).then(() =>
-      Promise.all([
-        client.ft.create(Index.Asset, ASSET_SCHEMA, {
-          ON: 'JSON',
-          PREFIX: Prefix.Asset,
-        }),
-        client.ft.create(Index.Log, LOG_SCHEMA, {
-          ON: 'JSON',
-          PREFIX: Prefix.Log,
-        }),
-      ]),
-    ),
-  )
+  console.log({ AssetScm, LogScm, index })
 
-  await whenDefined(index, () =>
+  await whenDefined(index ? undefined : true, () =>
     Promise.all([
-      client.set(SchemaKey.Asset, ASSET_SCHEMA_ID),
-      client.set(SchemaKey.Log, LOG_SCHEMA_ID),
+      AssetScm === ASSET_SCHEMA_ID
+        ? Promise.resolve()
+        : client.ft
+            .dropIndex(Index.Asset)
+            .catch(() => null)
+            .then(() =>
+              client.ft
+                .create(Index.Asset, ASSET_SCHEMA, {
+                  ON: 'JSON',
+                  PREFIX: Prefix.Asset,
+                })
+                .then(() => client.set(SchemaKey.Asset, ASSET_SCHEMA_ID))
+                .then(() => console.log('###')),
+            ),
+      LogScm === LOG_SCHEMA_ID
+        ? Promise.resolve()
+        : client.ft
+            .dropIndex(Index.Log)
+            .catch(() => null)
+            .then(() =>
+              client.ft
+                .create(Index.Log, LOG_SCHEMA, {
+                  ON: 'JSON',
+                  PREFIX: Prefix.Log,
+                })
+                .then(() => client.set(SchemaKey.Log, LOG_SCHEMA_ID))
+                .then(() => console.log('@@@')),
+            ),
     ]),
   )
 
