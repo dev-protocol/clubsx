@@ -35,7 +35,7 @@ export const GET: APIRoute = async (req) => {
   const res = whenNotError(data, (_data) => ({
     data: [..._data.documents.map(({ value }) => value)],
     total: _data.total,
-    last: options.from + options.size,
+    last: options.from + options.size - 1,
   }))
 
   return new Response(
