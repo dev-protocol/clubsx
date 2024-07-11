@@ -3,6 +3,7 @@ import type { CheckoutOptions } from '@devprotocol/clubs-core/ui/components'
 import type { ComposedItem } from '.'
 import { bytes32Hex } from '@devprotocol/clubs-core'
 import { whenDefined } from '@devprotocol/util-ts'
+import { createPath } from './utils/create-path'
 
 const { items, checkoutOptions } = Astro.props as {
   items: ComposedItem[]
@@ -13,10 +14,7 @@ const { payload } = checkoutOptions
 const fiatItem = whenDefined(payload, (p) =>
   items.find((item) => bytes32Hex(item.payload) === bytes32Hex(p)),
 )
-const linkTo = whenDefined(
-  fiatItem,
-  (fiat) => `/fiat/yen/${bytes32Hex(fiat.payload)}`,
-)
+const linkTo = whenDefined(fiatItem, (fiat) => createPath(fiat.payload))
 ---
 
 {

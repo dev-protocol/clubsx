@@ -205,7 +205,7 @@ export const Strings = {
       }
 
       // Default return.
-      return 'Next'
+      return 'Purchase'
     },
     ja: ([label]) => {
       if (label?.toLowerCase() === 'next') {
@@ -213,7 +213,7 @@ export const Strings = {
       }
 
       // Default return.
-      return '次へ'
+      return '購入する'
     },
   },
 } satisfies ClubsI18nParts

@@ -7,6 +7,8 @@ import type {
   ClubsThemePluginMeta,
 } from '@devprotocol/clubs-core'
 import { ClubsPluginCategory } from '@devprotocol/clubs-core'
+import { meta as ClubsPaymentsMeta } from '@plugins/clubs-payments'
+import { composeItems as getClubsPaymentsOverrides } from '@plugins/clubs-payments/utils/compose-items'
 import { default as Layout } from './layouts/Default.astro'
 import { default as Index } from './pages/index.astro'
 import { default as Admin } from './admin.astro'
@@ -82,14 +84,10 @@ export type SectionOrderingValue = 'about-first' | 'memberships-first'
 
 export type MembersCountVisibilityValue = 'hidden' | 'visible'
 
-export const getPagePaths = (async (
-  options,
-  config,
-  { getPluginConfigById },
-) => {
+export const getPagePaths = (async (options, config, utils) => {
   const { name, propertyAddress, rpcUrl, chainId } = config
 
-  const [membershipConfig] = getPluginConfigById(
+  const [membershipConfig] = utils.getPluginConfigById(
     'devprotocol:clubs:simple-memberships',
   )
   const allMemberships = membershipConfig?.options.find(
@@ -124,6 +122,12 @@ export const getPagePaths = (async (
     (option) => option.key === 'avatarImgSrc',
   )?.value
 
+  const [clubsPay] = utils.getPluginConfigById(ClubsPaymentsMeta.id)
+  const clubsPaymentsOverrides = getClubsPaymentsOverrides(
+    clubsPay?.options || [],
+    utils,
+  )
+
   return homeConfig
     ? [
         {
@@ -140,6 +144,7 @@ export const getPagePaths = (async (
             sidebarLinks,
             avatarImgSrc,
             sectionsOrderConfig,
+            clubsPaymentsOverrides,
             signals: ['connection-button-hide'],
           },
         },

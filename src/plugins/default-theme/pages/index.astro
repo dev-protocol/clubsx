@@ -8,20 +8,30 @@ import About_ from '../components/About.svelte'
 import WaitForLaunch from '../components/WaitForLaunch.svelte'
 import MembershipTitle from '../components/MembershipTitle.svelte'
 import Memberships from '../components/Memberships/Memberships.astro'
+import type { ComposedItem } from '@plugins/clubs-payments'
 
-const { memberships, homeConfig, name, clubs, sectionsOrderConfig } =
-  Astro.props as ClubsPropsPages & {
-    memberships?: Membership[]
-    homeConfig: {
-      hero: {
-        image: string
-      }
-      description: string
-      body: string
+type Props = ClubsPropsPages & {
+  memberships?: Membership[]
+  homeConfig: {
+    hero: {
+      image: string
     }
-    name: string
-    sectionsOrderConfig: SectionOrderingValue
+    description: string
+    body: string
   }
+  name: string
+  sectionsOrderConfig: SectionOrderingValue
+  clubsPaymentsOverrides: ComposedItem[]
+}
+
+const {
+  memberships,
+  homeConfig,
+  name,
+  clubs,
+  sectionsOrderConfig,
+  clubsPaymentsOverrides,
+} = Astro.props
 
 const SlotsPageContentHomeBeforeContent = clubs.slots.filter(({ slot }) => {
   return slot === ClubsSlotName.PageContentHomeBeforeContent
@@ -57,7 +67,11 @@ const SlotsPageContentHomeAfterContent = clubs.slots.filter(({ slot }) => {
               client:only="svelte"
               hasSingleMembership={!memberships || memberships?.length <= 1}
             />
-            <Memberships memberships={memberships} name={name} />
+            <Memberships
+              memberships={memberships}
+              name={name}
+              overrides={clubsPaymentsOverrides}
+            />
           </>
         ) : (
           <WaitForLaunch client:only="svelte" />
@@ -75,7 +89,11 @@ const SlotsPageContentHomeAfterContent = clubs.slots.filter(({ slot }) => {
               client:only="svelte"
               hasSingleMembership={!memberships || memberships?.length <= 1}
             />
-            <Memberships memberships={memberships} name={name} />
+            <Memberships
+              memberships={memberships}
+              name={name}
+              overrides={clubsPaymentsOverrides}
+            />
           </>
         ) : (
           <WaitForLaunch client:only="svelte" />
