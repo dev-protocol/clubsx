@@ -23,6 +23,7 @@ import PreviewBanner from '@components/PreviewBanner/PreviewBanner.astro'
 import { replaceWithFwdHost } from '@fixtures/url'
 import type { InferGetStaticPropsType } from 'astro'
 import Clarity from '@components/Clarity/Clarity.astro'
+import Resources from '@components/Admin/Resources.astro'
 
 const { site, page } = Astro.params
 
@@ -159,6 +160,7 @@ const siteBaseUrl = new URL(replaceWithFwdHost(Astro.request)).origin
           slot={ClubsSlotName.AdminBodyAfterContents}
         />
         <Clarity />
+        <Resources slot="admin:sidebar:before-footer" />
       </Admin>
     </>
   ) : (

@@ -642,10 +642,10 @@
     svelte "^3.49.0"
     vue "^3.2.0"
 
-"@devprotocol/clubs-core@3.14.4":
-  version "3.14.4"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-3.14.4.tgz#bd2be81ce254db804b646b70eab7b57763d0be97"
-  integrity sha512-X5Aj0yOKtUSU5tZnqGBCmR5cSfaKZdEReGy4fHMcHMRt/c3/5Iwb1HZjNNERnZCecoE8fcVtpAYqMQ50mR3LTw==
+"@devprotocol/clubs-core@3.15.0":
+  version "3.15.0"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-3.15.0.tgz#55fd5c8a8673f342e1042cfcd8a64305864bb73c"
+  integrity sha512-xbL6JLixSbTtx/spLvX/4MO3gmhPk4h/qj94jUpbFCRR6z3EIM/VwA9MQgQrVoVAtbvgGEwgc/slUWnjuYQZIQ==
   dependencies:
     "@devprotocol/dev-kit" "8.6.2"
     "@devprotocol/elements" "1.3.3"
@@ -655,7 +655,7 @@
     "@metamask/detect-provider" "^2.0.0"
     axios "^1.6.7"
     bignumber.js "^9.1.2"
-    isomorphic-dompurify "2.12.0"
+    isomorphic-dompurify "2.13.0"
     js-base64 "^3.7.2"
     lit "^3.0.0"
     marked "^10.0.0"
@@ -5926,7 +5926,7 @@ doctrine@^3.0.0:
   dependencies:
     esutils "^2.0.2"
 
-dompurify@^3.0.5, dompurify@^3.1.5:
+dompurify@^3.0.5, dompurify@^3.1.6:
   version "3.1.6"
   resolved "https://registry.yarnpkg.com/dompurify/-/dompurify-3.1.6.tgz#43c714a94c6a7b8801850f82e756685300a027e2"
   integrity sha512-cTOAhc36AalkjtBpfG6O8JimdTMWNXjiePT2xQH/ppBGi/4uIpmj8eKyIkMJErXWARyINV/sB38yf8JCLF5pbQ==
@@ -7791,13 +7791,13 @@ isexe@^2.0.0:
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
   integrity sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==
 
-isomorphic-dompurify@2.12.0:
-  version "2.12.0"
-  resolved "https://registry.yarnpkg.com/isomorphic-dompurify/-/isomorphic-dompurify-2.12.0.tgz#fd63aa7d1509f6fcf24f824b36cef06e663808b7"
-  integrity sha512-jJm6VgJ9toBLqNUHuLudn+2Q3NBBaoPbsh5SzzO2dp9Zq9+p6fEg4Ffuq9RZsofb8OnqE6FJVVq3MRDLlmBHpA==
+isomorphic-dompurify@2.13.0:
+  version "2.13.0"
+  resolved "https://registry.yarnpkg.com/isomorphic-dompurify/-/isomorphic-dompurify-2.13.0.tgz#0327bef6bcd2101244268d41b5f8d89c753ab2d2"
+  integrity sha512-jVxFnyOiA3fKPkteQjfIogww9T/BIX1Basuwt5D50MB3Sqvki9yBNq96ICLHpbiDY79jc6RC555DeBbTCt6i6A==
   dependencies:
     "@types/dompurify" "^3.0.5"
-    dompurify "^3.1.5"
+    dompurify "^3.1.6"
     jsdom "^24.1.0"
 
 isomorphic-unfetch@3.1.0:

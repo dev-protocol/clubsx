@@ -1,0 +1,60 @@
+---
+import Bell from '@components/Icons/bell-alert.astro'
+import Chat from '@components/Icons/chat-bubble-oval-left-ellipsis.astro'
+import Book from '@components/Icons/book-open.astro'
+import Code from '@components/Icons/code-bracket.astro'
+import Question from '@components/Icons/question-mark-circle.astro'
+
+const data = [
+  {
+    label: `What's new`,
+    link: 'https://developers.clubs.place/posts',
+    icon: Bell,
+  },
+  {
+    label: 'Guide',
+    link: 'https://app.charmverse.io/clubs/page-2822472159980618',
+    icon: Book,
+  },
+  {
+    label: 'News',
+    link: 'https://www.clubs.place/news',
+    icon: Chat,
+  },
+  {
+    label: 'Support',
+    link: 'https://discord.gg/TFBZGM9jf3',
+    icon: Question,
+  },
+  {
+    label: 'Developer',
+    link: 'https://docs.devprotocol.xyz/concepts/',
+    icon: Code,
+  },
+]
+---
+
+<aside
+  class="flex flex-col gap-4 rounded p-2 bg-[rgb(from_var(--hs-theme-surface-400)_r_g_b_/0.3)]"
+>
+  <h3 class="uppercase text-xs text-accent-400">Resources</h3>
+  <nav>
+    <ul class="flex flex-col justify-items-stretch">
+      {
+        data.map((item) => (
+          <li>
+            <a
+              href={item.link}
+              class="flex items-center gap-2 uppercase block p-2 text-sm rounded transition-colors hover:bg-surface-200"
+              target="_blank"
+              rel="noreferer noopener"
+            >
+              <item.icon class="size-4" />
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</aside>
