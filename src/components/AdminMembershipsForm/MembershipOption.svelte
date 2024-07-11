@@ -23,7 +23,7 @@
   export let price: string = '0'
   export let currency: CurrencyOption | Uppercase<CurrencyOption> =
     CurrencyOption.USDC
-  export let nonStandardCurrency: string | undefined
+  export let nonStandardCurrency: string | undefined = undefined
   export let description: string | undefined = undefined
   export let action: string | undefined = undefined
   export let actionLabel: string | undefined = undefined
@@ -258,7 +258,10 @@
         class="grid grid-cols-[1fr_auto] content-baseline items-center gap-3 overflow-hidden px-2.5"
       >
         {#if price && Number(price)}
-          <p class="text-2xl font-bold">{price} {currency.toUpperCase()}</p>
+          <p class="text-2xl font-bold">
+            {price}
+            {(nonStandardCurrency || currency).toUpperCase()}
+          </p>
         {/if}
 
         {#if action && actionLabel}
