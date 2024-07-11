@@ -45,7 +45,7 @@ const find = (
             action={
               override ? createPath(override.payload) : `/join/${membership.id}`
             }
-            actionLabel={'Next'}
+            actionLabel={membership.price ? 'Purchase' : 'Next'}
           />
         </li>
       ))(find(mem)),
