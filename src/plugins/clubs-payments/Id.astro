@@ -42,6 +42,14 @@ const { PUBLIC_POP_CLIENT_KEY } = import.meta.env
       rpcUrl={rpcUrl}
     />
   </div>
+  <div slot="checkout:after:transaction-form" class="p-5">
+    <a
+      href={`/join/${item.source.id}`}
+      class="hs-button is-fullwidth is-outlined"
+    >
+      Pay with {item.source.currency} instead
+    </a>
+  </div>
   <div slot="checkout:result:before:preview">
     <h3 class="text-2xl font-bold">Your membership is now ready</h3>
   </div>

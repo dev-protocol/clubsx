@@ -1,10 +1,27 @@
 ---
 import MembershipOption from '@components/AdminMembershipsForm/MembershipOption.svelte'
+import { bytes32Hex } from '@devprotocol/clubs-core'
+import type { ComposedItem } from '@plugins/clubs-payments'
+import { createPath } from '@plugins/clubs-payments/utils/create-path'
 import type { Membership } from '@plugins/memberships'
 
-const { memberships, name } = Astro.props as {
+type Props = {
   memberships: Membership[]
   name: string
+  overrides?: ComposedItem[]
+}
+
+const { memberships, name, overrides } = Astro.props
+
+const find = (
+  membership: Membership,
+): { membership: Membership; override?: ComposedItem } => {
+  return {
+    membership,
+    override: overrides?.find(
+      (ov) => bytes32Hex(ov.source.payload) === bytes32Hex(membership.payload),
+    ),
+  }
 }
 ---
 
@@ -12,21 +29,26 @@ const { memberships, name } = Astro.props as {
   class="-mx-6 grid grid-cols-[repeat(auto-fit,_minmax(120px,_1fr))] justify-center gap-4 p-6 md:grid-cols-[repeat(auto-fit,_minmax(200px,_1fr))] xl:gap-9"
 >
   {
-    memberships.map((mem) => (
-      <li class="only:mx-auto only:max-w-[360px]">
-        <MembershipOption
-          client:load
-          clubName={name}
-          id={mem.id}
-          name={mem.name}
-          price={String(mem.price)}
-          currency={mem.currency}
-          description={mem.description}
-          imagePath={mem.imageSrc}
-          action={`/join/${mem.id}`}
-          actionLabel={'Next'}
-        />
-      </li>
-    ))
+    memberships.map((mem) =>
+      (({ membership, override }) => (
+        <li class="only:mx-auto only:max-w-[360px]">
+          <MembershipOption
+            client:load
+            clubName={name}
+            id={membership.id}
+            name={membership.name}
+            price={String(override?.price.yen || membership.price)}
+            currency={membership.currency}
+            nonStandardCurrency={override?.price.yen ? 'YEN' : undefined}
+            description={membership.description}
+            imagePath={membership.imageSrc}
+            action={
+              override ? createPath(override.payload) : `/join/${membership.id}`
+            }
+            actionLabel={'Next'}
+          />
+        </li>
+      ))(find(mem)),
+    )
   }
 </ul>

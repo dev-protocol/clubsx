@@ -23,6 +23,7 @@
   export let price: string = '0'
   export let currency: CurrencyOption | Uppercase<CurrencyOption> =
     CurrencyOption.USDC
+  export let nonStandardCurrency: string | undefined
   export let description: string | undefined = undefined
   export let action: string | undefined = undefined
   export let actionLabel: string | undefined = undefined
@@ -142,8 +143,13 @@
         <p
           class="grid grid-cols-[auto_1fr] items-center gap-1 text-sm opacity-70"
         >
-          <span class="truncate">{price}</span>
-          {currency.toUpperCase()}
+          <span class="truncate"
+            >{new Intl.NumberFormat(undefined, {
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 3,
+            }).format(Number(price))}</span
+          >
+          {(nonStandardCurrency || currency).toUpperCase()}
         </p>
       {/if}
     </div>
