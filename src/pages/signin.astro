@@ -19,18 +19,6 @@ import SignInRedirection from '@components/SignInForm/SignInRedirection.vue'
           <ConnectButton />
           <SignInRedirection client:only="vue" />
         </div>
-        <p
-          role="separator"
-          class="grid grid-cols-[1fr_auto_1fr] items-center gap-4 before:block before:border-b before:border-white/20 before:content-[''] after:block after:border-b after:border-white/20 after:content-['']"
-        >
-          or maybe...
-        </p>
-        <p class="text-center">
-          <a
-            class="hs-button is-outlined rounded-full px-4 text-native-blue-300"
-            href="/domain">Don't have an account?</a
-          >
-        </p>
       </section>
     </span>
     <span>
@@ -38,38 +26,3 @@ import SignInRedirection from '@components/SignInForm/SignInRedirection.vue'
     </span>
   </div>
 </Layout>
-
-<style lang="scss">
-  @use '@devprotocol/hashi/hs-button';
-
-  @include hs-button.extend('filled.native-blue') {
-    @include hs-button.color(
-      (
-        fill: 'native-blue.400',
-        ink: 'native-blue.ink',
-        border: 'native-blue.400',
-      )
-    );
-
-    &:hover,
-    &:focus {
-      @include hs-button.color(
-        (
-          fill: 'native-blue.300',
-          ink: 'native-blue.ink',
-          border: 'native-blue.300',
-        )
-      );
-    }
-
-    &:active {
-      @include hs-button.color(
-        (
-          fill: 'native-blue.200',
-          ink: 'native-blue.ink',
-          border: 'native-blue.200',
-        )
-      );
-    }
-  }
-</style>
