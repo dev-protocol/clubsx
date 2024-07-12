@@ -128,12 +128,11 @@ export const Strings = {
   // These two form one sentence, but are separated for HTML styling purposes <- Gotcha!
   UnpricedCannotBeBought: {
     en: () => 'Unpriced memberships cannot be bought,',
-    ja: () =>
-      '招待制のメンバーシップを設定する場合はInvitationのプラグインのインストールが必要です。',
+    ja: () => '招待制のメンバーシップを設定する場合は',
   },
   AvailableInviteOnly: {
     en: () => 'they are available via invite only.',
-    ja: () => '招待された場合のみ購入可能です',
+    ja: () => 'Invitationのプラグインのインストールが必要です。',
   },
   // note to Kent:
   // These two form one sentence, but are separated for HTML styling purposes <- Gotcha!
