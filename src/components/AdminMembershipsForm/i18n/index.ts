@@ -122,13 +122,14 @@ export const Strings = {
   },
   Unpriced: {
     en: () => 'Unpriced',
-    ja: () => '無料にする',
+    ja: () => '価格を設定せず招待制にする',
   },
   // note to Kent:
   // These two form one sentence, but are separated for HTML styling purposes <- Gotcha!
   UnpricedCannotBeBought: {
     en: () => 'Unpriced memberships cannot be bought,',
-    ja: () => '価格が未設定のメンバーシップは購入できません',
+    ja: () =>
+      '招待制のメンバーシップを設定する場合はInvitationのプラグインのインストールが必要です。',
   },
   AvailableInviteOnly: {
     en: () => 'they are available via invite only.',
