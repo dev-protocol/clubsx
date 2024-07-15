@@ -4,6 +4,8 @@ import { bytes32Hex } from '@devprotocol/clubs-core'
 import type { ComposedItem } from '@plugins/clubs-payments'
 import { createPath } from '@plugins/clubs-payments/utils/create-path'
 import type { Membership } from '@plugins/memberships'
+import { i18nFactory } from '@devprotocol/clubs-core'
+import { Strings } from '../../i18n'
 
 type Props = {
   memberships: Membership[]
@@ -12,6 +14,13 @@ type Props = {
 }
 
 const { memberships, name, overrides } = Astro.props
+
+const i18nBase = i18nFactory(Strings)
+const langs = Astro.request.headers
+  .get('accept-language')
+  ?.replace(/;q=[\d\.]+/g, '')
+  .split(',') ?? ['en']
+const i18n = i18nBase(langs)
 
 const find = (
   membership: Membership,
@@ -39,7 +48,7 @@ const find = (
             name={membership.name}
             price={String(override?.price.yen || membership.price)}
             currency={membership.currency}
-            nonStandardCurrency={override?.price.yen ? 'YEN' : undefined}
+            nonStandardCurrency={override?.price.yen ? i18n('JPY') : undefined}
             description={membership.description}
             imagePath={membership.imageSrc}
             action={
