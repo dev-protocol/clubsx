@@ -17,4 +17,8 @@ export const Strings = {
     en: ([name]) => `About ${name}`,
     ja: ([name]) => `${name} について`,
   },
+  JPY: {
+    en: 'JPY',
+    ja: '円',
+  },
 } satisfies ClubsI18nParts
