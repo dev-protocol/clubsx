@@ -2,6 +2,8 @@
 import type { ComposedItem } from '.'
 import TransactionForm from './TransactionForm.svelte'
 import { Checkout } from '@devprotocol/clubs-core/ui/components'
+import { i18nFactory } from '@devprotocol/clubs-core'
+import { Strings } from './i18n'
 
 const { item, propertyAddress, rpcUrl, chainId, ...other } = Astro.props as {
   item: ComposedItem
@@ -9,6 +11,13 @@ const { item, propertyAddress, rpcUrl, chainId, ...other } = Astro.props as {
   rpcUrl: string
   chainId: number
 }
+
+const i18nBase = i18nFactory(Strings)
+const langs = Astro.request.headers
+  .get('accept-language')
+  ?.replace(/;q=[\d\.]+/g, '')
+  .split(',') ?? ['en']
+const i18n = i18nBase(langs)
 
 const { PUBLIC_POP_CLIENT_KEY } = import.meta.env
 ---
@@ -22,7 +31,7 @@ const { PUBLIC_POP_CLIENT_KEY } = import.meta.env
 <Checkout
   amount={item.price.yen}
   destination={propertyAddress}
-  fiatCurrency="YEN"
+  fiatCurrency={i18n('JPY')}
   rpcUrl={rpcUrl}
   payload={item.source.payload}
   description={item.source.description}

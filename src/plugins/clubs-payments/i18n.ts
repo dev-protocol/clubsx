@@ -10,4 +10,8 @@ export const Strings = {
     en: 'Pay with a credit card',
     ja: 'クレジットカードで支払う',
   },
+  JPY: {
+    en: 'JPY',
+    ja: '円',
+  },
 } satisfies ClubsI18nParts
