@@ -9,7 +9,10 @@
         <span v-if="page === 'JOIN'">JOIN</span>
       </h2>
       <div
-        v-if="usedCurrency === currencyOption.DEV || usePolygonWETH"
+        v-if="
+          (usedCurrency === currencyOption.DEV || usePolygonWETH) &&
+          typeof amount === 'number'
+        "
         class="mb-8"
       >
         <h3 class="mb-4 text-2xl">Approval</h3>
@@ -50,7 +53,7 @@
           You've already approved
         </button>
       </div>
-      <div class="mb-8">
+      <div class="mb-8" v-if="typeof amount === 'number'">
         <h3 class="mb-4 text-2xl">Purchase membership</h3>
         <button
           v-if="approveNeeded"
@@ -90,6 +93,7 @@
           <span>Purchase</span>
         </button>
       </div>
+      <div v-if="!amount">Membership is now unavailable.</div>
     </section>
     <div
       class="grid grid-cols-1 content-start overflow-hidden rounded border border-white/30"
