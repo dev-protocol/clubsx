@@ -57,9 +57,9 @@ const addNumMembersFactory =
     const members =
       club.propertyAddress === ZeroAddress
         ? []
-        : (await client
+        : ((await client
             ?.positionsOfProperty(club.propertyAddress)
-            .catch(always([]))) ?? []
+            .catch(always([]))) ?? [])
     return { ...club, stats: { members: members?.length ?? 0 } }
   }
 

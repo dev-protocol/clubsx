@@ -19,7 +19,8 @@ const call = async (id: string, vs: string) => {
   const price =
     data instanceof Error
       ? data
-      : whenDefined(data?.[id]?.[vs], (p) => p) ?? new Error('Price not found')
+      : (whenDefined(data?.[id]?.[vs], (p) => p) ??
+        new Error('Price not found'))
   return price
 }
 

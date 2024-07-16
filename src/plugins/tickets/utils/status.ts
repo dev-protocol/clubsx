@@ -183,7 +183,7 @@ export const factory =
     const inUse = expired
       ? false
       : history
-        ? isNowInAvailableSlot ?? refreshed === false
+        ? (isNowInAvailableSlot ?? refreshed === false)
         : false
 
     /**

@@ -16,7 +16,7 @@ export const replaceWithFwdHost = (base: Request) => {
   return url.href
     .replace(
       url.host,
-      url.host === host ? hostParam ?? url.host : host ?? url.host,
+      url.host === host ? (hostParam ?? url.host) : (host ?? url.host),
     )
     .replace(regParam, '/')
 }

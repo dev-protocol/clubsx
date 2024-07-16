@@ -25,9 +25,9 @@
   export let preferedCurrency: UndefinedOr<CurrencyOption> = tiers.reduce(
     (prev, current) => {
       const currency = current.currency as UndefinedOr<Tier['currency']>
-      const count = currency ? counter.get(currency) ?? 1 : 0
+      const count = currency ? (counter.get(currency) ?? 1) : 0
       currency && counter.set(currency, count)
-      return (currency ? counter.get(currency) ?? 0 : 0) < count
+      return (currency ? (counter.get(currency) ?? 0) : 0) < count
         ? current
         : prev
     },
