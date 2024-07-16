@@ -76,7 +76,7 @@ export const composeTiers = async ({
           await fetchSTokens({
             provider,
             tokenAddress,
-            amount: tier.amount,
+            amount: tier.amount ?? 0,
           })
         ).image
       return { ...tier, badgeImageSrc }
@@ -84,12 +84,14 @@ export const composeTiers = async ({
   )
   const forEth = await Promise.all(
     forDev.map(async ({ ...tier }) => {
-      const amount = await fetchEthForDev({
-        provider,
-        tokenAddress,
-        amount: tier.amount ?? 0,
-      })
-      return { ...tier, amount: formatEther(amount) }
+      const amount = tier.amount
+        ? await fetchEthForDev({
+            provider,
+            tokenAddress,
+            amount: tier.amount,
+          })
+        : undefined
+      return { ...tier, amount: amount ? formatEther(amount) : undefined }
     }),
   )
   return {

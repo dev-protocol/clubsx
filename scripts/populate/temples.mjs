@@ -10,85 +10,22 @@ const tiers = [
   {
     title: 'Tier 3',
     id: 'tier-3',
-    amount: 400,
-    currency: 'dev',
     badgeImageDescription: `"Yasuragi dan Renge (a Buddhist altar, lotus)" embossed gilt lacquer work with inlaid mother-of-pearl`,
   },
   {
     title: 'Tier 2',
     id: 'tier-2',
-    amount: 4000,
-    currency: 'dev',
     badgeImageDescription: `"Yasuragi dan Koki (a Buddhist altar, brightness)" embossed gilt lacquer work`,
   },
   {
     title: 'Tier 1',
     id: 'tier-1',
-    amount: 10000,
-    currency: 'dev',
     badgeImageDescription: `Sojiij Head Monastry : Nioh statue (statues of the two Deva kings)`,
   },
   {
     title: 'Super',
     id: 'super',
-    amount: 15000,
-    currency: 'dev',
     badgeImageDescription: `Gokokuji= Head Monastry : Nyoirin Kannon statue (Cintāmaṇicakra statue)`,
-  },
-]
-
-const perks = [
-  {
-    tier: 'tier-3',
-    descriptions: [
-      {
-        lang: 'en_US',
-        description: `A privilege to enjoy shopping low price products at members-limited EC sites, supporters-only information such as private YouTube videos, participation to the monthly community hour and members-only quests`,
-      },
-      {
-        lang: 'ja_JP',
-        description: `限定ECサイト（低額商品）での購入権、非公開YouTube動画、月1回のコミュニティアワーやメンバー限定クエストへの参加などサポーター限定の情報`,
-      },
-    ],
-  },
-  {
-    tier: 'tier-2',
-    descriptions: [
-      {
-        lang: 'en_US',
-        description: `Tier 3 + a privilege to join auctions, a privilege to purchase luxurious items, etc. (Online Perks)`,
-      },
-      {
-        lang: 'ja_JP',
-        description: `Tier 3 + オークションへの参加権、特級品の購入権など（オンラインでの特典）`,
-      },
-    ],
-  },
-  {
-    tier: 'tier-1',
-    descriptions: [
-      {
-        lang: 'en_US',
-        description: `Tier 2 + a privilege to visit a special place (only once in every six months)`,
-      },
-      {
-        lang: 'ja_JP',
-        description: `Tier 2 + 特別な場所を訪れたり、物理的な体験をすることができる権利（最大年2回まで）`,
-      },
-    ],
-  },
-  {
-    tier: 'super',
-    descriptions: [
-      {
-        lang: 'en_US',
-        description: `Tier 1 + a privilege for ordering custom-made products`,
-      },
-      {
-        lang: 'ja_JP',
-        description: `Tier 1 + オーダーメード権利（通常お寺様からのオーダー依頼で作る職人にご希望の商品を作製して貰える権利。内容は要相談）`,
-      },
-    ],
   },
 ]
 
@@ -96,7 +33,6 @@ const guild = {
   key: 'guildUrl',
   value: 'https://guild.xyz/temples-dao',
 }
-
 const populate = async (client) => {
   await client.set(
     KEY,
@@ -118,35 +54,12 @@ const populate = async (client) => {
           key: 'navigationLinks',
           value: [
             {
-              display: 'Join',
-              path: '/join',
-            },
-            {
               display: 'Kougenji',
               path: 'https://kougenji.clubs.place',
             },
             {
               display: 'Community',
               path: '/community',
-            },
-            {
-              display: 'Perks',
-              path: '/perks',
-            },
-            {
-              display: 'Quests',
-              path: '#',
-              enable: false,
-            },
-            {
-              display: 'Updates',
-              path: '#',
-              enable: false,
-            },
-            {
-              display: 'Vote',
-              path: '#',
-              enable: false,
             },
           ],
         },
@@ -213,41 +126,6 @@ const populate = async (client) => {
           ],
         },
         {
-          id: 'devprotocol:clubs:plugin:me',
-          name: 'me',
-          enable: true,
-          options: [],
-        },
-        {
-          id: 'devprotocol:clubs:clubsx:marketplace',
-          name: 'marketplace',
-          enable: true,
-          options: [],
-        },
-        {
-          id: 'devprotocol:clubs:plugin:members',
-          name: 'members',
-          enable: true,
-          options: [],
-        },
-        {
-          id: 'devprotocol:clubs:plugin:perks',
-          name: 'perks',
-          enable: true,
-          options: [
-            {
-              key: 'perks',
-              value: perks,
-            },
-          ],
-        },
-        {
-          id: 'devprotocol:clubs:plugin:quests',
-          name: 'quests',
-          enable: true,
-          options: [],
-        },
-        {
           id: 'devprotocol:clubs:plugin:community',
           name: 'community',
           enable: true,
@@ -265,8 +143,6 @@ const populate = async (client) => {
                   id: 'tier-3',
                   name: 'Tier 3',
                   description: `蒔絵師による作品/ やすらぎ壇「蓮華」\n\n**特典** - 限定ECサイト(低額商品)での購入権、非公開YouTube動画、月1回のコミュニティアワーやメンバー限定クエストへの参加などサポーター限定の情報`,
-                  price: 400,
-                  currency: 'DEV',
                   imageSrc:
                     'https://bafybeiav46h6zegh4e7zfdcgk6xjpg6if2kdxtvp3ejtyicvpgc2iucpim.ipfs.nftstorage.link',
                   payload: undefined,
@@ -276,8 +152,6 @@ const populate = async (client) => {
                   id: 'tier-2',
                   name: 'Tier 2',
                   description: `蒔絵師による作品/ やすらぎ壇 「光輝」\n\n**特典** - Tier 3 + オークションへの参加権、特級品の購入権など(オンラインでの特典)`,
-                  price: 4000,
-                  currency: 'DEV',
                   imageSrc:
                     'https://bafybeic3d2otapykfdp3ktqbdonn4ylrove5ccs5vv2udydwbgudstrcwu.ipfs.nftstorage.link',
                   payload: undefined,
@@ -287,8 +161,6 @@ const populate = async (client) => {
                   id: 'tier-1',
                   name: 'Tier 1',
                   description: `大本山 總持寺 仁王像（總持寺型仁王像）\n\n**特典** - Tier 2 + 特別な場所を訪れたり、物理的な体験をすることができる権利(最大年2回まで)`,
-                  price: 10000,
-                  currency: 'DEV',
                   imageSrc:
                     'https://bafybeib745w7vjcsh37mepaluvbmqrbjq4gax46oirkmrjeqeh55gjiyzi.ipfs.nftstorage.link',
                   payload: undefined,
@@ -298,8 +170,6 @@ const populate = async (client) => {
                   id: 'super',
                   name: 'Super',
                   description: `大本山護国寺 如意輪観世音菩薩像\n\n**特典** - Tier 1 + オーダーメード権利(通常お寺様からのオーダー依頼で作る職人にご希望の商品を作製して貰える権利。内容は要相談)`,
-                  price: 15000,
-                  currency: 'DEV',
                   imageSrc:
                     'https://bafybeiagvn4exdbwokm4g6t6a2s3xvl2fu7zutvlf6sgwd4fjrdrc23hsu.ipfs.nftstorage.link',
                   payload: undefined,
@@ -309,8 +179,6 @@ const populate = async (client) => {
                   id: 'tier-4-1',
                   name: 'Tier 4 #1',
                   description: `林檎天井絵\n\n**特典** - 寺DAODiscordへの参加権\n月1回のコミュニティアワーやメンバー限定クエストへ参加できます`,
-                  price: 200,
-                  currency: 'DEV',
                   imageSrc:
                     'https://bafybeigis7fdpwizu34v5iwjvc2lcdk4g75keqa3xe72jekldmhjopahnu.ipfs.nftstorage.link',
                   payload: toBytes32('林檎天井絵'),
@@ -320,8 +188,6 @@ const populate = async (client) => {
                   id: 'tier-4-2',
                   name: 'Tier 4 #2',
                   description: `蓮華一本立木華\n\n**特典** - 寺DAODiscordへの参加権\n月1回のコミュニティアワーやメンバー限定クエストへ参加できます`,
-                  price: 200,
-                  currency: 'DEV',
                   imageSrc:
                     'https://bafybeihrh7haq3yadt6nfltynv6ukgovm4hgfhd6o7zpkaf33cjl6tuoau.ipfs.nftstorage.link',
                   payload: toBytes32('蓮華一本立木華'),
