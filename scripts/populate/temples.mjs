@@ -147,6 +147,7 @@ const populate = async (client) => {
                     'https://bafybeiav46h6zegh4e7zfdcgk6xjpg6if2kdxtvp3ejtyicvpgc2iucpim.ipfs.nftstorage.link',
                   payload: undefined,
                   fee: undefined,
+                  deprecated: true,
                 },
                 {
                   id: 'tier-2',
@@ -156,6 +157,7 @@ const populate = async (client) => {
                     'https://bafybeic3d2otapykfdp3ktqbdonn4ylrove5ccs5vv2udydwbgudstrcwu.ipfs.nftstorage.link',
                   payload: undefined,
                   fee: undefined,
+                  deprecated: true,
                 },
                 {
                   id: 'tier-1',
@@ -165,6 +167,7 @@ const populate = async (client) => {
                     'https://bafybeib745w7vjcsh37mepaluvbmqrbjq4gax46oirkmrjeqeh55gjiyzi.ipfs.nftstorage.link',
                   payload: undefined,
                   fee: undefined,
+                  deprecated: true,
                 },
                 {
                   id: 'super',
@@ -174,6 +177,7 @@ const populate = async (client) => {
                     'https://bafybeiagvn4exdbwokm4g6t6a2s3xvl2fu7zutvlf6sgwd4fjrdrc23hsu.ipfs.nftstorage.link',
                   payload: undefined,
                   fee: undefined,
+                  deprecated: true,
                 },
                 {
                   id: 'tier-4-1',
@@ -183,6 +187,7 @@ const populate = async (client) => {
                     'https://bafybeigis7fdpwizu34v5iwjvc2lcdk4g75keqa3xe72jekldmhjopahnu.ipfs.nftstorage.link',
                   payload: toBytes32('林檎天井絵'),
                   fee: undefined,
+                  deprecated: true,
                 },
                 {
                   id: 'tier-4-2',
@@ -192,6 +197,7 @@ const populate = async (client) => {
                     'https://bafybeihrh7haq3yadt6nfltynv6ukgovm4hgfhd6o7zpkaf33cjl6tuoau.ipfs.nftstorage.link',
                   payload: toBytes32('蓮華一本立木華'),
                   fee: undefined,
+                  deprecated: true,
                 },
               ],
             },
