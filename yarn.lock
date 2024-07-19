@@ -797,9 +797,9 @@
     uuid "^10.0.0"
 
 "@devprotocol/clubs-plugin-posts@^0.20.14-beta.1":
-  version "0.20.15"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts/-/clubs-plugin-posts-0.20.15.tgz#d0abf7f009985260410d881213044f27563f4b48"
-  integrity sha512-2YxDtdEggE2DK9wbex5PsYZwRaHSSGsHnwAmOXF7sOeKJAXFglO3mqGtgX/u5ZEsA6KKBSbUQI6aga+MyNVs/g==
+  version "0.20.16"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts/-/clubs-plugin-posts-0.20.16.tgz#b157529420f6c80faee4438f2a8324c243bc1b3a"
+  integrity sha512-kxkGsNE2ckye2U+QQEcVGw7nHMGkwdFIZzOBMuh5hCaDdynEq9DdKuYgmzZDVFUD7SllV7VV2K43xKjIAxpSdg==
   dependencies:
     "@boringer-avatars/vue3" "^0.2.1"
     "@devprotocol/dev-kit" "8.6.2"
@@ -808,12 +808,12 @@
     dayjs "^1.11.8"
     dompurify "^3.0.5"
     ethers "^6.6.4"
-    marked "13.0.1"
+    marked "13.0.2"
     nanoid "^5.0.6"
     photoswipe "5.4.4"
     ramda "0.30.1"
     redis "^4.6.7"
-    sass "1.77.6"
+    sass "1.77.8"
     uuid "^10.0.0"
 
 "@devprotocol/dev-kit@7.3.0":
@@ -8719,10 +8719,10 @@ marked@10.0.0, marked@^10.0.0:
   resolved "https://registry.yarnpkg.com/marked/-/marked-10.0.0.tgz#7fe1805bb908433d760e2de0fcc8841a2b2d745c"
   integrity sha512-YiGcYcWj50YrwBgNzFoYhQ1hT6GmQbFG8SksnYJX1z4BXTHSOrz1GB5/Jm2yQvMg4nN1FHP4M6r03R10KrVUiA==
 
-marked@13.0.1:
-  version "13.0.1"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-13.0.1.tgz#38386e1ebe9c09bb4db72c8ed9759411cb80fd43"
-  integrity sha512-7kBohS6GrZKvCsNXZyVVXSW7/hGBHe49ng99YPkDCckSUrrG7MSFLCexsRxptzOmyW2eT5dySh4Md1V6my52fA==
+marked@13.0.2:
+  version "13.0.2"
+  resolved "https://registry.yarnpkg.com/marked/-/marked-13.0.2.tgz#d5d05bd2683a85cb9cc6afbe5240e3a8bffcb92a"
+  integrity sha512-J6CPjP8pS5sgrRqxVRvkCIkZ6MFdRIjDkwUwgJ9nL2fbmM6qGQeB2C16hi8Cc9BOzj6xXzy0jyi0iPIfnMHYzA==
 
 mdast-util-definitions@^6.0.0:
   version "6.0.0"
@@ -10675,15 +10675,6 @@ sass@1.77.2:
   version "1.77.2"
   resolved "https://registry.yarnpkg.com/sass/-/sass-1.77.2.tgz#18d4ed2eefc260cdc8099c5439ec1303fd5863aa"
   integrity sha512-eb4GZt1C3avsX3heBNlrc7I09nyT00IUuo4eFhAbeXWU2fvA7oXI53SxODVAA+zgZCk9aunAZgO+losjR3fAwA==
-  dependencies:
-    chokidar ">=3.0.0 <4.0.0"
-    immutable "^4.0.0"
-    source-map-js ">=0.6.2 <2.0.0"
-
-sass@1.77.6:
-  version "1.77.6"
-  resolved "https://registry.yarnpkg.com/sass/-/sass-1.77.6.tgz#898845c1348078c2e6d1b64f9ee06b3f8bd489e4"
-  integrity sha512-ByXE1oLD79GVq9Ht1PeHWCPMPB8XHpBuz1r85oByKHjZY6qV6rWnQovQzXJXuQ/XyE1Oj3iPk3lo28uzaRA2/Q==
   dependencies:
     chokidar ">=3.0.0 <4.0.0"
     immutable "^4.0.0"
