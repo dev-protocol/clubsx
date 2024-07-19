@@ -4,12 +4,15 @@ import {
   whenNotErrorAll,
   type UndefinedOr,
   whenNotError,
+  whenDefinedAll,
+  whenDefined,
+  isNotError,
 } from '@devprotocol/util-ts'
 
-import { getDefaultClient } from '../db/redis'
-import { ACHIEVEMENT_ITEM_SCHEMA } from '../db/schema'
+import { getDefaultClient, withCheckingIndex } from '../db/redis'
+import { ACHIEVEMENT_DIST_SCHEMA } from '../db/schema'
 import {
-  type Achievement,
+  type AchievementDist,
   type AchievementInfo,
   type ClaimAchievementApiHandlerParams,
   type StringAttribute,
@@ -18,220 +21,266 @@ import {
   AchievementIndex,
   AchievementPrefix,
   checkForExistingAchievementInfo,
-  checkForExistingAchievementItem,
   uuidToQuery,
   clubsUrlToKeccak256Tag,
+  checkForExistingAchievementDist,
+  claimableOrNot,
+  getAchievementItemDocument,
+  generateKey,
 } from '../utils'
+import { tryCatch } from 'ramda'
+
+const ERROR = {
+  $400: {
+    MISSINGDATA: 'Missing data.',
+    BADID: 'Bad achievement data',
+    IDNOTFOUND: 'ID is not found',
+    BADSENTDATA: 'Bad data sent to api',
+    INFONOTFOUND: 'Achievement metadata is not found',
+  },
+  $500: {
+    MINTERROR: 'Mint api failed',
+  },
+}
 
 export const handler =
   ({ rpcUrl, chainId, property, url }: ClaimAchievementApiHandlerParams) =>
   async ({ request }: { readonly request: Request }) => {
     // 1. Get the req data.
-    const { message, signature, achievementItemId } =
-      (await request.json()) as {
-        message: string
-        signature: string
-        achievementItemId: string
-      }
-    // 2. Validated presence of req data.
-    if (!achievementItemId || !message || !signature || !url) {
-      return new Response(JSON.stringify({ error: 'Bad data' }), {
-        status: 400,
-      })
+    const reqBody = (await request.json().catch((err: Error) => err)) as {
+      message: string
+      signature: string
+      achievementDistId: string
     }
-    if (!(await checkForExistingAchievementItem(achievementItemId))) {
-      return new Response(JSON.stringify({ error: 'Bad achievement data' }), {
-        status: 400,
-      })
-    }
+    const props =
+      whenDefinedAll(
+        [reqBody.message, reqBody.signature, reqBody.achievementDistId],
+        ([message, signature, distId]) => ({
+          message,
+          signature,
+          distId,
+        }),
+      ) ?? new Error(ERROR.$400.MISSINGDATA)
 
-    // 3. Get client and validate it.
-    const client = await getDefaultClient()
-    if (!client) {
-      return new Response(JSON.stringify({ error: 'Client not found' }), {
-        status: 500,
-      })
-    }
+    // 2. Get client and validate it.
+    const client = await withCheckingIndex(getDefaultClient).catch(
+      (err: Error) => err,
+    )
+
+    const testIfAchvDistExists = await whenNotErrorAll(
+      [props, client],
+      ([{ distId }, redis]) =>
+        checkForExistingAchievementDist(distId, redis)
+          .then((x) => (x ? x : new Error(ERROR.$400.BADID)))
+          .catch((err: Error) => err),
+    )
 
     // 4. Fetch the mapped achievement documents.
-    const achievementitemData = await whenNotErrorAll(
-      [achievementItemId, client],
-      ([_id, _client]) =>
-        _client.ft.search(
-          AchievementIndex.AchievementItem,
-          `@${ACHIEVEMENT_ITEM_SCHEMA['$.id'].AS}:{${uuidToQuery(_id)}} @${ACHIEVEMENT_ITEM_SCHEMA['$.clubsUrl'].AS}:{${clubsUrlToKeccak256Tag(url)}}`,
-          {
-            LIMIT: {
-              from: 0,
-              size: 1,
+    const achievementDistData = await whenNotErrorAll(
+      [props, client, testIfAchvDistExists],
+      ([{ distId: _id }, _client]) =>
+        _client.ft
+          .search(
+            AchievementIndex.AchievementDist,
+            `@${ACHIEVEMENT_DIST_SCHEMA['$.id'].AS}:{${uuidToQuery(_id)}} @${ACHIEVEMENT_DIST_SCHEMA['$.clubsUrl'].AS}:{${clubsUrlToKeccak256Tag(url)}}`,
+            {
+              LIMIT: {
+                from: 0,
+                size: 1,
+              },
             },
-          },
-        ),
+          )
+          .catch((err: Error) => err),
     )
     // 5. Fetch achievement from mapped documents.
-    const achievementItem = whenNotError(
-      achievementitemData,
+    const achievementDist = whenNotError(
+      achievementDistData,
       (d) =>
-        (d.documents.find((x) => x.value)?.value as UndefinedOr<Achievement>) ??
-        new Error('ID is not found.'),
+        (d.documents.find((x) => x.value)
+          ?.value as UndefinedOr<AchievementDist>) ??
+        new Error(ERROR.$400.IDNOTFOUND),
     )
-    // 6. Validate achievement is fetched properly.
-    if (achievementItem instanceof Error || !achievementItem) {
-      return new Response(
-        JSON.stringify({ error: 'Achievement is not found' }),
-        {
-          status: 400,
-        },
-      )
-    }
+
     // 7. Validated achievement ids are matched and that achievement info also exists
-    if (
-      achievementItemId !== achievementItem.id ||
-      !(await checkForExistingAchievementInfo(
-        achievementItem.achievementInfoId,
-      ))
-    ) {
-      return new Response(JSON.stringify({ error: 'Bad data sent to api' }), {
-        status: 400,
-      })
-    }
-    // 8. Validate if achievement is already claimed.
-    if (achievementItem.claimed) {
-      return new Response(
-        JSON.stringify({ error: 'Achievement already claimed' }),
-        {
-          status: 400,
-        },
-      )
-    }
-
-    // 9. Get the msg.sender / claimer addr.
-    const account = verifyMessage(message, signature)
-    // 10. Valdiate that claimer address is same as the one who is rewarded with achievement.
-    if (account !== achievementItem.account) {
-      return new Response(
-        JSON.stringify({ error: 'Sender not achievement receiver' }),
-        {
-          status: 400,
-        },
-      )
-    }
-
-    // 11. Fetch achievement info document.
-    const achievementInfoDocument = await whenNotErrorAll(
-      [achievementItem, client],
-      ([_achievementItem, _client]) =>
-        _client.json.get(
-          `${AchievementPrefix.AchievementInfo}::${_achievementItem.achievementInfoId}`,
-        ),
+    const testIfHaveMappedAchvInfo = await whenNotErrorAll(
+      [achievementDist, client],
+      ([data, redis]) =>
+        checkForExistingAchievementInfo(data.achievementInfoId, redis)
+          .then((r) => (r ? r : new Error(ERROR.$400.BADSENTDATA)))
+          .catch((err: Error) => err),
     )
+
+    // 8. Get the msg.sender / claimer addr.
+    const account = whenNotError(props, ({ message, signature }) =>
+      tryCatch(
+        (msg: string, sig: string) => verifyMessage(msg, sig),
+        (err: Error) => err,
+      )(message, signature),
+    )
+
+    // 9. Validate if achievement is claimable.
+    const claimable = await whenNotErrorAll(
+      [props, account, client, testIfHaveMappedAchvInfo],
+      ([{ distId }, address, redis]) =>
+        claimableOrNot(distId, address, redis).catch((err: Error) => err),
+    )
+
+    const testClaimable = whenNotError(claimable, (test) =>
+      test.result ? true : new Error(test.reason),
+    )
+
+    // 10. Fetch achievement info document.
+    const achievementInfoDocument = await whenNotErrorAll(
+      [achievementDist, client, testClaimable],
+      ([_achievementItem, _client]) =>
+        _client.json
+          .get(
+            generateKey(
+              AchievementPrefix.AchievementInfo,
+              _achievementItem.achievementInfoId,
+            ),
+          )
+          .catch((err: Error) => err),
+    )
+
     const achievementInfo = whenNotError(
       achievementInfoDocument,
       (d) =>
-        (d as UndefinedOr<AchievementInfo>) ?? new Error('ID is not found.'),
+        (d as UndefinedOr<AchievementInfo>) ??
+        new Error(ERROR.$400.INFONOTFOUND),
     )
-    if (achievementInfo instanceof Error || !achievementInfo) {
-      return new Response(
-        JSON.stringify({ error: 'Achievement is not found' }),
-        {
-          status: 400,
-        },
-      )
-    }
 
     // Add `Property: PROPERTY_VALUE` to the metadata
-    const metadata = ((propertyKey) => {
-      const { stringAttributes } = achievementInfo.metadata
-      const nextStringAttributes: StringAttribute[] = [
-        ...stringAttributes.filter(
-          ({ trait_type }) => trait_type !== propertyKey,
-        ),
-        { trait_type: propertyKey, value: property },
-      ]
-      return {
-        ...achievementInfo.metadata,
-        stringAttributes: nextStringAttributes,
-      }
-    })('Property')
+    const metadata = whenNotError(achievementInfo, ({ metadata }) =>
+      ((propertyKey) => {
+        const { stringAttributes } = metadata
+        const nextStringAttributes: StringAttribute[] = [
+          ...stringAttributes.filter(
+            ({ trait_type }) => trait_type !== propertyKey,
+          ),
+          { trait_type: propertyKey, value: property },
+        ]
+        return {
+          ...metadata,
+          stringAttributes: nextStringAttributes,
+        }
+      })('Property'),
+    )
 
-    // 12. Call the mint api (send.devprotocol.xyz)
+    // 11. Call the mint api (send.devprotocol.xyz)
     const { SEND_DEVPROTOCOL_API_KEY } =
       import.meta.env ||
       process.env ||
       ({ SEND_DEVPROTOCOL_API_KEY: '' } as {
         SEND_DEVPROTOCOL_API_KEY: string
       })
-    const mintApiResponse = await fetch(
-      `https://send.devprotocol.xyz/api/send-transactions/AchievementsSBT/${achievementInfo.contract}`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${SEND_DEVPROTOCOL_API_KEY}`,
-        },
-        body: JSON.stringify({
-          requestId: `${achievementItem.id}${account}`, // achievementItem.id + user signing EOA
-          rpcUrl,
-          chainId,
-          metadata,
-          to: achievementItem.account,
+    const mintApiResponse = await whenNotErrorAll(
+      [achievementDist, achievementInfo, metadata, account],
+      ([dist, info, _metadata, to]) =>
+        fetch(
+          `https://send.devprotocol.xyz/api/send-transactions/AchievementsSBT/${info.contract}`,
+          {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${SEND_DEVPROTOCOL_API_KEY}`,
+            },
+            body: JSON.stringify({
+              requestId: `${dist.id}${to}`, // achievementItem.id + user signing EOA
+              rpcUrl,
+              chainId,
+              metadata: _metadata,
+              to,
+            }),
+          },
+        )
+          .then(
+            (res) => {
+              if (res.ok) {
+                return res
+              }
+              throw Error('Error ' + res.status + ': ' + res.statusText)
+            },
+            (err) => {
+              throw new Error(err.message)
+            },
+          )
+          .then(
+            (res) => res.json(),
+            (err) => {
+              throw new Error(err.message)
+            },
+          )
+          .then(
+            (res) => res as { message: string; claimedSBTTokenId: number },
+            (err) => {
+              throw new Error(err.message)
+            },
+          )
+          .catch((err: Error) => {
+            return err
+          }),
+    )
+    const testMintApiResult = whenNotError(
+      mintApiResponse,
+      (res) =>
+        whenDefined(res.claimedSBTTokenId, (i) =>
+          i ? true : new Error(ERROR.$500.MINTERROR),
+        ) ?? new Error(ERROR.$500.MINTERROR),
+    )
+
+    // 11. Update the record to mark the achievement as claimed.
+    const achievementItem = whenNotErrorAll(
+      [
+        mintApiResponse,
+        account,
+        achievementDist,
+        achievementInfo,
+        testMintApiResult,
+      ],
+      ([{ claimedSBTTokenId }, _account, dist, info]) =>
+        getAchievementItemDocument({
+          account: _account,
+          achievementInfoId: info.id,
+          achievementDistId: dist.id,
+          claimedOnTimestamp: Date.now(),
+          claimedSBTTokenId: claimedSBTTokenId,
+          clubsUrl: clubsUrlToKeccak256Tag(url),
         }),
-      },
-    )
-      .then(
-        (res) => {
-          if (res.ok) {
-            return res
-          }
-          throw Error('Error ' + res.status + ': ' + res.statusText)
-        },
-        (err) => {
-          throw new Error(err.message)
-        },
-      )
-      .then(
-        (res) => res.json(),
-        (err) => {
-          throw new Error(err.message)
-        },
-      )
-      .then(
-        (res) => res as { message: string; claimedSBTTokenId: number },
-        (err) => {
-          throw new Error(err.message)
-        },
-      )
-      .catch((err) => {
-        return err
-      })
-    if (
-      mintApiResponse instanceof Error ||
-      !mintApiResponse ||
-      !mintApiResponse.claimedSBTTokenId
-    ) {
-      return new Response(JSON.stringify({ error: 'Mint api failed' }), {
-        status: 500,
-      })
-    }
-
-    // 9. Update the record to mark the achievement as claimed.
-    const claimedSBTTokenId = mintApiResponse.claimedSBTTokenId
-    await client.json.set(
-      `${AchievementPrefix.AchievementItem}::${achievementItemId}`,
-      '$',
-      {
-        ...achievementItem,
-        claimedOnTimestamp: Date.now(),
-        claimed: true,
-        claimedSBTTokenId: claimedSBTTokenId,
-      },
     )
 
-    await client.quit()
+    const stored = await whenNotErrorAll(
+      [achievementItem, client],
+      ([item, redis]) =>
+        redis.json
+          .set(
+            generateKey(AchievementPrefix.AchievementItem, item.id),
+            '$',
+            item,
+          )
+          .catch((err: Error) => err),
+    )
 
-    // 10. Return response.
+    await whenNotError(client, (redis) => redis.quit())
+
+    const res = whenNotErrorAll(
+      [stored, achievementItem, achievementDist, mintApiResponse],
+      ([_, item, dist, mintApi]) => ({ item, dist, mintApi }),
+    )
+
     return new Response(
-      JSON.stringify({ id: achievementItemId, claimedSBTTokenId }),
-      { status: 200 },
+      isNotError(res)
+        ? JSON.stringify({
+            id: res.item.id,
+            claimedSBTTokenId: res.mintApi.claimedSBTTokenId,
+          })
+        : JSON.stringify({ error: res.message }),
+      {
+        status: isNotError(res)
+          ? 200
+          : Object.values(ERROR.$400).some((x) => x === res.message)
+            ? 400
+            : 500,
+      },
     )
   }
 

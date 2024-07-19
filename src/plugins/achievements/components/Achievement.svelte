@@ -4,20 +4,21 @@
   import type { Signer } from 'ethers'
 
   import { i18nFactory } from '@devprotocol/clubs-core'
-  import type { UndefinedOr } from '@devprotocol/util-ts'
+  import { isNotError, type UndefinedOr } from '@devprotocol/util-ts'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
 
   import { Strings } from '../i18n'
   import Skeleton from '@components/Global/Skeleton.svelte'
-  import type { Achievement, NumberAttribute, StringAttribute } from '../types'
+  import type { NumberAttribute, StringAttribute } from '../types'
   import AchievementDefaultIcon from '../assets/achievement.svg'
+  import type { FetchAchievementResult } from '../handlers/fetchAchievementId'
 
   const i18nBase = i18nFactory(Strings)
   let i18n = i18nBase(['en'])
 
   export let achievementId: string = ''
 
-  let achievement: Achievement & { type: string }
+  let achievement: FetchAchievementResult & { type: string }
   let signer: Signer | undefined
   let connection: typeof Connection
   let currentAddress: string | undefined
@@ -28,13 +29,14 @@
   let isClaimBtnFeedbackTxtColorRed = false
   let isClaimBtnFeedbackTxtColorBlue = false
   let claimBtnFeedbackTxt = i18n('SignInMsg')
+  let claimedSBTTokenId: UndefinedOr<number | string> = undefined
 
   const computeClaimBtnTxt = (
     _hasTxErrorOccured: boolean = false,
     _isWalletSigRejected: boolean = false,
     _currentAddress: UndefinedOr<string>,
     _signer: UndefinedOr<Signer>,
-    _achievement: UndefinedOr<Achievement>,
+    _achievement: UndefinedOr<FetchAchievementResult>,
   ) => {
     if (_hasTxErrorOccured) {
       claimBtnFeedbackTxt = i18n('TxErrorMsg')
@@ -62,7 +64,7 @@
         _signer &&
         _currentAddress &&
         _currentAddress !== ZeroAddress &&
-        _achievement.account !== _currentAddress
+        _achievement.claimable === false
       ) {
         claimBtnFeedbackTxt = i18n('CantClaimMsg')
         isClaimBtnFeedbackTxtColorRed = true
@@ -96,11 +98,17 @@
 
     connection().account.subscribe((a) => {
       computeClaimBtnTxt(false, false, a, signer, achievement)
+      if (a !== currentAddress) {
+        fetchAchievement(a)
+      }
+      if (a === undefined) {
+        claimedSBTTokenId = undefined
+      }
       currentAddress = a
     })
   }
 
-  const fetchAchievement = async () => {
+  const fetchAchievement = async (account?: string) => {
     if (!achievementId) {
       isFetchingAchievementData = false
       isAchievementDataNotFetched = true
@@ -110,39 +118,19 @@
     isFetchingAchievementData = true
     isAchievementDataNotFetched = false
 
-    const response = await fetch(
-      `/api/devprotocol:clubs:plugin:achievements/achievement/${achievementId}`,
+    const apiRes = await fetch(
+      `/api/devprotocol:clubs:plugin:achievements/achievement/${achievementId}${account ? `?account=${account}` : ''}`,
       { method: 'GET' },
-    )
-      .then(
-        (res) => {
-          if (res.ok) {
-            return res
-          }
-          throw Error('Error ' + res.status + ': ' + res.statusText)
-        },
-        (err) => {
-          throw new Error(err.message)
-        },
-      )
-      .then(
-        (res) => res.json(),
-        (err) => {
-          throw new Error(err.message)
-        },
-      )
-      .then(
-        (res) => res as Achievement,
-        (err) => {
-          throw new Error(err.message)
-        },
-      )
-      .catch((err) => {
-        isAchievementDataNotFetched = true
-        return err
-      })
+    ).catch((err: Error) => {
+      isAchievementDataNotFetched = true
+      return err
+    })
 
-    if (response && !(response instanceof Error)) {
+    const response = isNotError(apiRes)
+      ? ((await apiRes.json()) as FetchAchievementResult)
+      : apiRes
+
+    if (response && isNotError(response)) {
       achievement = {
         ...response,
         type:
@@ -186,7 +174,7 @@
       computeClaimBtnTxt(false, false, currentAddress, signer, achievement)
       return
     }
-    if (achievement.account !== currentAddress) {
+    if (!achievement.claimable) {
       isClaimingAchievement = false
       computeClaimBtnTxt(false, false, currentAddress, signer, achievement)
       return
@@ -211,41 +199,22 @@
     const body = JSON.stringify({
       message: hash,
       signature,
-      achievementItemId: achievementId,
+      achievementDistId: achievementId,
     })
-    const res = await fetch(url, { method: 'POST', headers, body })
-      .then(
-        (res) => {
-          if (res.ok) {
-            return res
-          }
-          throw new Error('Error ' + res.status + ': ' + res.statusText)
-        },
-        (err) => {
-          throw new Error(err.message)
-        },
-      )
-      .then(
-        (res) => res.json(),
-        (err) => {
-          throw new Error(err.message)
-        },
-      )
-      .then(
-        (res) => res as { id: string; claimedSBTTokenId: string },
-        (err) => {
-          throw new Error(err.message)
-        },
-      )
-      .catch((err) => {
+    const apiRes = await fetch(url, { method: 'POST', headers, body }).catch(
+      (err: Error) => {
         computeClaimBtnTxt(true, false, currentAddress, signer, achievement)
         return err
-      })
+      },
+    )
+    const res = isNotError(apiRes)
+      ? ((await apiRes.json()) as { id: string; claimedSBTTokenId: string })
+      : apiRes
 
-    if (!(res instanceof Error)) {
+    if (isNotError(res)) {
       if (res?.id && res?.claimedSBTTokenId) {
         achievement.claimed = true
-        achievement.claimedSBTTokenId = res.claimedSBTTokenId
+        claimedSBTTokenId = res.claimedSBTTokenId
         computeClaimBtnTxt(false, false, currentAddress, signer, achievement)
       } else {
         computeClaimBtnTxt(true, false, currentAddress, signer, achievement)
@@ -259,8 +228,8 @@
 
   onMount(() => {
     i18n = i18nBase(navigator.languages)
-    connectOnMount()
     fetchAchievement()
+    connectOnMount()
   })
 </script>
 
@@ -290,7 +259,7 @@
       {/if}
     </div>
 
-    {#if achievement?.claimed && achievement?.claimedSBTTokenId > 0 && achievement?.account === currentAddress}
+    {#if claimedSBTTokenId}
       <div class="flex flex-col items-center gap-2">
         <p class="w-full max-w-full text-3xl font-medium text-center">
           {i18n('Congratulations')}
@@ -313,14 +282,14 @@
             !currentAddress ||
             currentAddress === ZeroAddress ||
             !achievement ||
-            achievement?.account !== currentAddress ||
+            achievement?.claimable === false ||
             achievement.claimed}
           class={`w-full px-4 py-3 hs-button is-filled font-bold text-2xl
             ${isFetchingAchievementData || isClaimingAchievement ? 'animate-pulse bg-gray-500/60' : ''}
             ${
               (achievement && achievement?.claimed) ||
               (achievement &&
-                achievement?.account !== currentAddress &&
+                achievement?.claimable === false &&
                 currentAddress &&
                 currentAddress !== ZeroAddress)
                 ? 'line-through'

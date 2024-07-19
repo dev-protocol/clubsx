@@ -2,91 +2,119 @@ import type { APIRoute } from 'astro'
 
 import {
   isNotError,
+  whenDefined,
+  whenDefinedAll,
   whenNotError,
   whenNotErrorAll,
   type UndefinedOr,
 } from '@devprotocol/util-ts'
 
-import { getDefaultClient } from '../db/redis'
-import { ACHIEVEMENT_ITEM_SCHEMA } from '../db/schema'
-import { type AchievementItem, type AchievementInfo } from '../types'
+import { getDefaultClient, withCheckingIndex } from '../db/redis'
+import { type AchievementDist, type AchievementInfo } from '../types'
 import {
-  AchievementIndex,
   AchievementPrefix,
   getIdFromURL,
-  uuidToQuery,
-  clubsUrlToKeccak256Tag,
+  claimableOrNot,
+  generateKey,
 } from '../utils'
+import { ZeroAddress } from 'ethers'
+
+const ERROR = {
+  $400: {
+    MISSINGDATA: 'Missing data.',
+    MISSINGDISTID: 'Achievement ID is not found.',
+    MISSINGINFOID: 'Achievement metadata is not found.',
+  },
+  $500: {},
+}
+
+export type FetchAchievementResult = AchievementInfo &
+  AchievementDist & {
+    claimable: boolean
+    claimed: boolean
+    achievementId: string
+    achievementInfoId: string
+  }
 
 export const handler =
   (clubsUrl: string): APIRoute =>
   async ({ url }) => {
     // 1. Get achievement id.
-    const achievementId = getIdFromURL(url)
-    if (!achievementId || !url || !clubsUrl) {
-      return new Response(JSON.stringify({ error: 'Missing data' }), {
-        status: 400,
-      })
-    }
+    const base =
+      whenDefinedAll(
+        [getIdFromURL(url), url, clubsUrl],
+        ([achievementId, _url, _clubsUrl]) => ({
+          achievementId,
+          url,
+          clubsUrl,
+        }),
+      ) ?? new Error(ERROR.$400.MISSINGDATA)
+
+    const account = url.searchParams.get('account')
 
     // 2. Generate a redis client.
-    const client = await getDefaultClient()
-    if (!client) {
-      return new Response(JSON.stringify({ error: 'Missing client' }), {
-        status: 400,
-      })
-    }
-
-    // 3. Try to fetch the mapped achievement.
-    const achievementItemDocuments = await whenNotErrorAll(
-      [achievementId, client],
-      ([_id, _client]) =>
-        _client.ft.search(
-          AchievementIndex.AchievementItem,
-          `@${ACHIEVEMENT_ITEM_SCHEMA['$.id'].AS}:{${uuidToQuery(_id)}} @${ACHIEVEMENT_ITEM_SCHEMA['$.clubsUrl'].AS}:{${clubsUrlToKeccak256Tag(clubsUrl)}}`,
-          {
-            LIMIT: {
-              from: 0,
-              size: 1,
-            },
-          },
-        ),
+    const client = await withCheckingIndex(getDefaultClient).catch(
+      (err: Error) => err,
     )
-    const achievementItem = whenNotError(
-      achievementItemDocuments,
-      (d) =>
-        (d.documents.find((x) => x.value)
-          ?.value as UndefinedOr<AchievementItem>) ??
-        new Error('ID is not found.'),
+
+    // 3. Try to fetch the mapped achievement and check if the user is claimable.
+    const claimable = await whenNotErrorAll(
+      [base, client],
+      ([{ achievementId }, redis]) =>
+        claimableOrNot(achievementId, account ?? ZeroAddress, redis),
+    )
+    const achievementDist = whenNotError(
+      claimable,
+      (_claimable) =>
+        whenDefined(_claimable.distDocument, (distDocument) => distDocument) ??
+        new Error(ERROR.$400.MISSINGDISTID),
     )
     const achievementInfoDocument = await whenNotErrorAll(
-      [achievementItem, client],
-      ([_achievementItem, _client]) =>
-        _client.json.get(
-          `${AchievementPrefix.AchievementInfo}::${_achievementItem.achievementInfoId}`,
-        ),
+      [achievementDist, client],
+      ([dist, _client]) =>
+        _client.json
+          .get(
+            generateKey(
+              AchievementPrefix.AchievementInfo,
+              dist.achievementInfoId,
+            ),
+          )
+          .catch((err: Error) => err),
     )
     const achievementInfo = whenNotError(
       achievementInfoDocument,
       (d) =>
-        (d as UndefinedOr<AchievementInfo>) ?? new Error('ID is not found.'),
+        (d as UndefinedOr<AchievementInfo>) ??
+        new Error(ERROR.$400.MISSINGINFOID),
     )
 
-    await client.quit()
+    await whenNotError(client, (redis) => redis.quit())
+
+    const res = whenNotErrorAll(
+      [achievementInfo, achievementDist, claimable],
+      ([info, dist, _claimable]) => ({
+        info,
+        dist,
+        claimable: _claimable,
+      }),
+    )
 
     return new Response(
-      isNotError(achievementInfo) && isNotError(achievementItem)
+      isNotError(res)
         ? JSON.stringify({
-            ...achievementItem,
-            ...achievementInfo,
-            achievementId: achievementItem.id,
-            achievementInfoId: achievementInfo.id,
-          })
-        : JSON.stringify({ error: 'Invalid data found' }),
+            ...res.info,
+            ...res.dist,
+            achievementId: res.dist.id,
+            achievementInfoId: res.info.id,
+            claimable: res.claimable.result,
+            claimed: res.claimable.claimed,
+          } satisfies FetchAchievementResult)
+        : JSON.stringify({ error: res.message }),
       {
-        status:
-          isNotError(achievementInfoDocument) && isNotError(achievementItem)
-            ? 200
+        status: isNotError(res)
+          ? 200
+          : Object.values(ERROR.$400).some((x) => x === res.message)
+            ? 400
             : 500,
       },
     )

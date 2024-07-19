@@ -217,7 +217,6 @@ const fetchAllAchiementsForAddress = async ({
           achievements
             .filter(
               (achievement) =>
-                (achievement.value as unknown as AchievementItem).claimed &&
                 (achievement.value as unknown as AchievementItem)
                   .claimedSBTTokenId > 0,
             )
