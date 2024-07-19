@@ -24,15 +24,25 @@ export type AchievementInfo = {
 export type AchievementItem = {
   id: string
   achievementInfoId: string
+  achievementDistId: string
   account: string
-  claimed: boolean
   claimedSBTTokenId: number
-  createdOnTimestamp: number
   claimedOnTimestamp: number
   clubsUrl: string
 }
 
-export type Achievement = AchievementInfo & AchievementItem
+export type AchievementDist = {
+  id: string
+  achievementInfoId: string
+  conditions: {
+    recipients?: string[]
+    maxRedemptions?: number
+  }
+  createdOnTimestamp: number
+  clubsUrl: string
+}
+
+export type Achievement = AchievementInfo & AchievementDist
 
 export type ClaimAchievementApiHandlerParams = {
   rpcUrl: string

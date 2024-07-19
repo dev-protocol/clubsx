@@ -2,6 +2,8 @@ import { createClient } from 'redis'
 import type { AsyncReturnType } from 'type-fest'
 
 import {
+  ACHIEVEMENT_DIST_SCHEMA,
+  ACHIEVEMENT_DIST_SCHEMA_ID,
   ACHIEVEMENT_INFO_SCHEMA,
   ACHIEVEMENT_INFO_SCHEMA_ID,
   ACHIEVEMENT_ITEM_SCHEMA,
@@ -32,6 +34,8 @@ export const getDefaultClient = async () => {
   return redis
 }
 
+export type DefaultClient = Awaited<ReturnType<typeof getDefaultClient>>
+
 /**
  * Returns a redis client from the given async function with checking the current schema is indexed.
  * @param getClient - a function that returns redis client
@@ -43,22 +47,24 @@ export const withCheckingIndex = async <
   getClient: T,
 ): Promise<AsyncReturnType<T>> => {
   const client = (await getClient()) as AsyncReturnType<T>
-  const currentScmOfInfo = await client.get(
-    AchievementSchemaKey.AchievementInfo,
-  )
-  const currentScmOfItem = await client.get(
-    AchievementSchemaKey.AchievementItem,
-  )
+  const [currentScmOfInfo, currentScmOfItem, currentScmOfDist] =
+    await Promise.all([
+      client.get(AchievementSchemaKey.AchievementInfo),
+      client.get(AchievementSchemaKey.AchievementItem),
+      client.get(AchievementSchemaKey.AchievementDist),
+    ])
   const isScmOfInfoIndexed = currentScmOfInfo === ACHIEVEMENT_INFO_SCHEMA_ID
   const isScmOfItemIndexed = currentScmOfItem === ACHIEVEMENT_ITEM_SCHEMA_ID
+  const isScmOfDistIndexed = currentScmOfDist === ACHIEVEMENT_DIST_SCHEMA_ID
 
   const ON = 'JSON'
 
-  return isScmOfInfoIndexed && isScmOfItemIndexed
+  return isScmOfInfoIndexed && isScmOfItemIndexed && isScmOfDistIndexed
     ? client
     : Promise.all([
         client.ft.dropIndex(AchievementIndex.AchievementInfo).catch(() => null),
         client.ft.dropIndex(AchievementIndex.AchievementItem).catch(() => null),
+        client.ft.dropIndex(AchievementIndex.AchievementDist).catch(() => null),
       ])
         .then(() =>
           Promise.all([
@@ -78,6 +84,14 @@ export const withCheckingIndex = async <
                 PREFIX: AchievementPrefix.AchievementItem,
               },
             ),
+            client.ft.create(
+              AchievementIndex.AchievementDist,
+              ACHIEVEMENT_DIST_SCHEMA,
+              {
+                ON,
+                PREFIX: AchievementPrefix.AchievementDist,
+              },
+            ),
           ]),
         )
         .then(() =>
@@ -89,6 +103,10 @@ export const withCheckingIndex = async <
             client.set(
               AchievementSchemaKey.AchievementItem,
               ACHIEVEMENT_ITEM_SCHEMA_ID,
+            ),
+            client.set(
+              AchievementSchemaKey.AchievementDist,
+              ACHIEVEMENT_DIST_SCHEMA_ID,
             ),
           ]),
         )

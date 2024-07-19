@@ -10,7 +10,6 @@ export const id = {
   },
 } satisfies RediSearchSchema
 
-/* >>>>> ACHIEVEMENT INFO SCHEMA >>>>> */
 export const contract = {
   '$.contract': {
     type: SchemaFieldTypes.TAG,
@@ -53,25 +52,20 @@ export const metadataStringAttributes = {
   },
 } satisfies RediSearchSchema
 
-/// @dev This schema is used to store info of achievements. There will
-/// be only one achievement info for one kind of achievements. The id will be
-/// derived from payload(fields of object) of info to avoid duplication and easy checking.
-export const ACHIEVEMENT_INFO_SCHEMA = {
-  ...id,
-  ...contract,
-  ...metadataName,
-  ...metadataDescription,
-  ...metadataImage,
-  ...metadataNumberAttributes,
-  ...metadataStringAttributes,
-}
+export const conditionsRecipients = {
+  '$.conditions.recipients': {
+    type: SchemaFieldTypes.TEXT,
+    AS: 'conditionsRecipients',
+  },
+} satisfies RediSearchSchema
 
-export const ACHIEVEMENT_INFO_SCHEMA_ID = keccak256(
-  toUtf8Bytes(encode(ACHIEVEMENT_INFO_SCHEMA)),
-)
-/* <<<<< ACHIEVEMENT INFO SCHEMA <<<<< */
+export const conditionsMaxRedemptions = {
+  '$.conditions.maxRedemptions': {
+    type: SchemaFieldTypes.NUMERIC,
+    AS: 'conditionsMaxRedemptions',
+  },
+} satisfies RediSearchSchema
 
-/* >>>>> ACHIEVEMENT REWARDED SCHEMA >>>>> */
 export const achievementInfoId = {
   '$.achievementInfoId': {
     type: SchemaFieldTypes.TAG,
@@ -79,17 +73,17 @@ export const achievementInfoId = {
   },
 } satisfies RediSearchSchema
 
+export const achievementDistId = {
+  '$.achievementDistId': {
+    type: SchemaFieldTypes.TAG,
+    AS: 'achievementDistId',
+  },
+} satisfies RediSearchSchema
+
 export const account = {
   '$.account': {
     type: SchemaFieldTypes.TAG,
     AS: 'account',
-  },
-} satisfies RediSearchSchema
-
-export const claimed = {
-  '$.claimed': {
-    type: SchemaFieldTypes.TAG,
-    AS: 'claimed',
   },
 } satisfies RediSearchSchema
 
@@ -120,7 +114,28 @@ export const clubsUrl = {
     AS: 'clubsUrl',
   },
 } satisfies RediSearchSchema
+/* <<<<< ACHIEVEMENT REWARDED SCHEMA <<<<< */
 
+/* >>>>> ACHIEVEMENT INFO SCHEMA >>>>> */
+/// @dev This schema is used to store info of achievements. There will
+/// be only one achievement info for one kind of achievements. The id will be
+/// derived from payload(fields of object) of info to avoid duplication and easy checking.
+export const ACHIEVEMENT_INFO_SCHEMA = {
+  ...id,
+  ...contract,
+  ...metadataName,
+  ...metadataDescription,
+  ...metadataImage,
+  ...metadataNumberAttributes,
+  ...metadataStringAttributes,
+}
+
+export const ACHIEVEMENT_INFO_SCHEMA_ID = keccak256(
+  toUtf8Bytes(encode(ACHIEVEMENT_INFO_SCHEMA)),
+)
+/* <<<<< ACHIEVEMENT INFO SCHEMA <<<<< */
+
+/* >>>>> ACHIEVEMENT REWARDED SCHEMA >>>>> */
 /// @dev This schema is used to store the achievement given to a user.
 /// The achievement id can be used to fetch metadata and info of what achievement is
 /// unlocked by the user. This way many users can have sample achievements and/or a user
@@ -128,9 +143,8 @@ export const clubsUrl = {
 export const ACHIEVEMENT_ITEM_SCHEMA = {
   ...id,
   ...achievementInfoId,
+  ...achievementDistId,
   ...account,
-  ...claimed,
-  ...createdOnTimestamp,
   ...claimedOnTimestamp,
   ...claimedSBTTokenId,
   ...clubsUrl,
@@ -140,3 +154,22 @@ export const ACHIEVEMENT_ITEM_SCHEMA_ID = keccak256(
   toUtf8Bytes(encode(ACHIEVEMENT_ITEM_SCHEMA)),
 )
 /* <<<<< ACHIEVEMENT REWARDED SCHEMA <<<<< */
+
+/* >>>>> ACHIEVEMENT DIST SCHEMA >>>>> */
+/// @dev This schema is used to store the achievement given to a user.
+/// The achievement id can be used to fetch metadata and info of what achievement is
+/// unlocked by the user. This way many users can have sample achievements and/or a user
+/// can unlock multiple achievements of same type.
+export const ACHIEVEMENT_DIST_SCHEMA = {
+  ...id,
+  ...achievementInfoId,
+  ...conditionsRecipients,
+  ...conditionsMaxRedemptions,
+  ...createdOnTimestamp,
+  ...clubsUrl,
+}
+
+export const ACHIEVEMENT_DIST_SCHEMA_ID = keccak256(
+  toUtf8Bytes(encode(ACHIEVEMENT_DIST_SCHEMA)),
+)
+/* <<<<< ACHIEVEMENT DIST SCHEMA <<<<< */
