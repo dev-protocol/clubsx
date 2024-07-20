@@ -210,7 +210,7 @@ export const claimableOrNot = async (
           {
             LIMIT: {
               from: 0,
-              size: maxRedemptions,
+              size: 1,
             },
           },
         )
@@ -219,7 +219,7 @@ export const claimableOrNot = async (
 
   const isNotClaimed = claimed.total === 0
   const isNotReachedMaxRedemptions =
-    (noOfclaimedForMaxRedemptions?.total ?? 0) > maxRedemptions
+    (noOfclaimedForMaxRedemptions?.total ?? 0) < maxRedemptions
 
   return isNotClaimed && (isInRecipients || isNotReachedMaxRedemptions)
     ? { result: true, distDocument, claimed: false }
