@@ -210,7 +210,7 @@ export const claimableOrNot = async (
           {
             LIMIT: {
               from: 0,
-              size: maxRedemptions,
+              size: 1,
             },
           },
         )
