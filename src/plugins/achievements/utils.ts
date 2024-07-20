@@ -193,26 +193,14 @@ export const claimableOrNot = async (
   const maxRedemptions = distDocument?.conditions?.maxRedemptions ?? 0
 
   const [claimed, noOfclaimedForMaxRedemptions] = await Promise.all([
-    client.ft.search(
+    client.ft.aggregate(
       AchievementIndex.AchievementItem,
       `@${ACHIEVEMENT_ITEM_SCHEMA['$.achievementDistId'].AS}:{${uuidToQuery(distId)}} @${ACHIEVEMENT_ITEM_SCHEMA['$.account'].AS}:{${uuidToQuery(account)}}`,
-      {
-        LIMIT: {
-          from: 0,
-          size: 1,
-        },
-      },
     ),
     maxRedemptions
-      ? client.ft.search(
+      ? client.ft.aggregate(
           AchievementIndex.AchievementItem,
           `@${ACHIEVEMENT_ITEM_SCHEMA['$.achievementDistId'].AS}:{${uuidToQuery(distId)}}`,
-          {
-            LIMIT: {
-              from: 0,
-              size: 1,
-            },
-          },
         )
       : Promise.resolve(undefined),
   ])
