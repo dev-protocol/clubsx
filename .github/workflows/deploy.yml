@@ -1,14 +1,18 @@
-name: Production Tag Deployment
+name: Deploy - Live
+
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
 on:
   release:
     types: [published]
 
 jobs:
-  Deploy:
+  Check:
     runs-on: ubuntu-latest
+    outputs:
+      isPrerelease: ${{ steps.check.outputs.isPrerelease }}
     steps:
       - uses: actions/checkout@v4
       - name: Install Vercel CLI
@@ -21,21 +25,18 @@ jobs:
             "https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ github.ref_name }}" \
             | jq '.prerelease')
           echo "::set-output name=isPrerelease::$IS_PRERELEASE"
+
+  Deploy:
+    runs-on: ubuntu-latest
+    needs: Check
+    if: needs.Check.outputs.isPrerelease != 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
       - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=${{ steps.check.outputs.isPrerelease == 'true' && 'preview' || 'production' }} --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
       - name: Build Project Artifacts
-        run: vercel build ${{ steps.check.outputs.isPrerelease == 'true' && ' ' || '--prod' }} --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
       - name: Deploy
-        id: deploy
-        run: |
-          output=$(vercel deploy --prebuilt ${{ steps.check.outputs.isPrerelease == 'true' && ' ' || '--prod' }} --token=${{ secrets.VERCEL_TOKEN }})
-          echo "::set-output name=url::$output"
-        shell: bash
-
-      - name: Alias Prerelease
-        if: steps.check.outputs.isPrerelease == 'true'
-        run: vercel alias ${{ steps.deploy.outputs.url }} prerelease.clubs.place --token=${{ secrets.VERCEL_TOKEN }} --scope devprtcl
-
-      - name: Alias Wildcare Prerelease
-        if: steps.check.outputs.isPrerelease == 'true'
-        run: vercel alias ${{ steps.deploy.outputs.url }} *.prerelease.clubs.place --token=${{ secrets.VERCEL_TOKEN }} --scope devprtcl
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
