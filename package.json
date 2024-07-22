@@ -50,7 +50,7 @@
     "prettier-plugin-tailwindcss": "0.6.5",
     "svelte-check": "^3.5.1",
     "type-fest": "4.23.0",
-    "typescript": "5.5.3",
+    "typescript": "5.5.4",
     "vitest": "^1.0.0",
     "vue-tsc": "^2.0.0"
   },
