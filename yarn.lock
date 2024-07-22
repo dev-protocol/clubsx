@@ -779,10 +779,10 @@
     strip-markdown "^6.0.0"
     uuid "^10.0.0"
 
-"@devprotocol/clubs-plugin-posts@^0.20.14-beta.1":
-  version "0.20.16"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts/-/clubs-plugin-posts-0.20.16.tgz#b157529420f6c80faee4438f2a8324c243bc1b3a"
-  integrity sha512-kxkGsNE2ckye2U+QQEcVGw7nHMGkwdFIZzOBMuh5hCaDdynEq9DdKuYgmzZDVFUD7SllV7VV2K43xKjIAxpSdg==
+"@devprotocol/clubs-plugin-posts@0.20.17":
+  version "0.20.17"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts/-/clubs-plugin-posts-0.20.17.tgz#5d1dfcfdca990d49b91943636adcdd6296c918cc"
+  integrity sha512-xwjUuoXaT+MKxhbpVmHhiWVzJdNBh84j+IdnUjBZtXRLb5eUpE5PHnsNq4fEkLL1p5jD3AVU/Uuva0mxkpQlPQ==
   dependencies:
     "@boringer-avatars/vue3" "^0.2.1"
     "@devprotocol/dev-kit" "8.6.2"
