@@ -10,7 +10,6 @@
   import { Strings } from '../i18n'
   import Skeleton from '@components/Global/Skeleton.svelte'
   import type { NumberAttribute, StringAttribute } from '../types'
-  import AchievementDefaultIcon from '../assets/achievement.svg'
   import type { FetchAchievementResult } from '../handlers/fetchAchievementId'
 
   const i18nBase = i18nFactory(Strings)
@@ -127,7 +126,9 @@
     })
 
     const response = isNotError(apiRes)
-      ? ((await apiRes.json()) as FetchAchievementResult)
+      ? apiRes.ok
+        ? ((await apiRes.json()) as FetchAchievementResult)
+        : new Error(((await apiRes.json()) as { error: string }).error)
       : apiRes
 
     if (response && isNotError(response)) {
@@ -153,6 +154,9 @@
       }
       isAchievementDataNotFetched = false
       computeClaimBtnTxt(false, false, currentAddress, signer, achievement)
+    }
+    if (!isNotError(response)) {
+      isAchievementDataNotFetched = true
     }
 
     isFetchingAchievementData = false
@@ -237,7 +241,9 @@
   class="grid gap-8 grid-cols-[minmax(auto,32rem)] rounded-2xl p-6 justify-center shadow bg-dp-white-200 text-dp-white-ink"
 >
   {#if isAchievementDataNotFetched}
-    <div class="rounded-md p-4 border border-black/20 bg-black/10">
+    <div
+      class="rounded-md aspect-square flex items-center p-4 border border-black/20 bg-black/10"
+    >
       <h2 class="text-2xl font-bold">
         {i18n('AchievementDataNotFound')}
       </h2>
@@ -252,8 +258,9 @@
         </div>
       {:else}
         <img
-          src={achievement?.metadata?.image || AchievementDefaultIcon.src}
-          alt="Achievements UI"
+          src={achievement?.metadata?.image ??
+            'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='}
+          alt="Achievement"
           class="h-auto w-full rounded-md object-cover object-center sm:h-full sm:w-full"
         />
       {/if}
