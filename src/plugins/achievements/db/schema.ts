@@ -38,17 +38,45 @@ export const metadataImage = {
   },
 } satisfies RediSearchSchema
 
-export const metadataNumberAttributes = {
-  '$.metadata.numberAttributes': {
-    type: SchemaFieldTypes.TEXT,
-    AS: 'metadataNumberAttributes',
+export const metadataNumberAttributesTraitType = {
+  '$.metadata.numberAttributes[*].trait_type': {
+    type: SchemaFieldTypes.TAG,
+    AS: 'metadataNumberAttributesTraitType',
   },
 } satisfies RediSearchSchema
 
-export const metadataStringAttributes = {
-  '$.metadata.stringAttributes': {
+export const metadataNumberAttributesValue = {
+  '$.metadata.numberAttributes[*].value': {
+    type: SchemaFieldTypes.NUMERIC,
+    AS: 'metadataNumberAttributesValue',
+  },
+} satisfies RediSearchSchema
+
+export const metadataNumberAttributesDisplayType = {
+  '$.metadata.numberAttributes[*].display_type': {
+    type: SchemaFieldTypes.TAG,
+    AS: 'metadataNumberAttributesDisplayType',
+  },
+} satisfies RediSearchSchema
+
+export const metadataStringAttributesTraitType = {
+  '$.metadata.stringAttributes[*].trait_type': {
+    type: SchemaFieldTypes.TAG,
+    AS: 'metadataStringAttributesTraitType',
+  },
+} satisfies RediSearchSchema
+
+export const metadataStringAttributesValue = {
+  '$.metadata.stringAttributes[*].value': {
     type: SchemaFieldTypes.TEXT,
-    AS: 'metadataStringAttributes',
+    AS: 'metadataStringAttributesValue',
+  },
+} satisfies RediSearchSchema
+
+export const metadataStringAttributesDisplayType = {
+  '$.metadata.stringAttributes[*].display_type': {
+    type: SchemaFieldTypes.TAG,
+    AS: 'metadataStringAttributesDisplayType',
   },
 } satisfies RediSearchSchema
 
@@ -126,8 +154,12 @@ export const ACHIEVEMENT_INFO_SCHEMA = {
   ...metadataName,
   ...metadataDescription,
   ...metadataImage,
-  ...metadataNumberAttributes,
-  ...metadataStringAttributes,
+  ...metadataNumberAttributesTraitType,
+  ...metadataNumberAttributesDisplayType,
+  ...metadataNumberAttributesValue,
+  ...metadataStringAttributesTraitType,
+  ...metadataStringAttributesDisplayType,
+  ...metadataStringAttributesValue,
 }
 
 export const ACHIEVEMENT_INFO_SCHEMA_ID = keccak256(

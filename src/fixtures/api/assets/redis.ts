@@ -2,17 +2,17 @@ import { createClient } from 'redis'
 
 export enum Index {
   Asset = 'idx::clubs:asset',
-  Log = 'idx::clubs:asset:log',
+  Log = 'idx::clubs:scanlog:asset',
 }
 
 export enum Prefix {
   Asset = 'doc::clubs:asset',
-  Log = 'doc::clubs:asset:log',
+  Log = 'doc::clubs:scanlog:asset',
 }
 
 export enum SchemaKey {
   Asset = 'scm::clubs:asset',
-  Log = 'scm::clubs:asset:log',
+  Log = 'scm::clubs:scanlog:asset',
 }
 
 export const generateAssetKey = (contract: string, id?: string | number) =>
