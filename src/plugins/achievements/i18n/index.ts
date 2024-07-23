@@ -3,11 +3,11 @@ import type { ClubsI18nParts } from '@devprotocol/clubs-core'
 export const Strings = {
   ClaimSuccessFeedback: {
     en: 'Your achievement has been successfully claimed.',
-    ja: '実績証明NFTの取得に成功しました',
+    ja: 'アチーブメントNFTの取得に成功しました',
   },
   YouAreNowHolding: {
     en: 'You are now holding',
-    ja: '今回取得した実績証明NFT：',
+    ja: '今回取得したアチーブメントNFT：',
   },
   Congratulations: {
     en: 'Congratulation!',
@@ -23,7 +23,7 @@ export const Strings = {
   },
   CantClaimMsg: {
     en: `Looks like you can't claim this achievement.`,
-    ja: `この実績証明NFTを取得する権利がありません。正しいウォレットで再度ログインしてください。`,
+    ja: `このアチーブメントNFTを取得する権利がありません。正しいウォレットで再度ログインしてください。`,
   },
   ClickClaimMsg: {
     en: `Click "Claim" to claim your achievement`,
@@ -31,11 +31,11 @@ export const Strings = {
   },
   SignTxMsg: {
     en: 'Sign to claim the achievement.',
-    ja: 'クリックして実績証明NFTを取得する',
+    ja: 'クリックしてアチーブメントNFTを取得する',
   },
   AlreadyClaimed: {
     en: 'Achievement is already claimed.',
-    ja: '取得済みの実績証明NFTです',
+    ja: '取得済みのアチーブメントNFTです',
   },
   Claiming: {
     en: 'Claiming',
@@ -51,11 +51,11 @@ export const Strings = {
   },
   Achievement: {
     en: 'Achievement',
-    ja: '実績証明NFT',
+    ja: 'アチーブメントNFT',
   },
   AchievementDataNotFound: {
     en: 'We could not find the Achievement, try again or contact the team for support.',
-    ja: '実績証明NFTが見つかりません。もう一度試すか、サポートにお問い合わせください',
+    ja: 'アチーブメントNFTが見つかりません。もう一度試すか、サポートにお問い合わせください',
   },
   SignInMsg: {
     en: 'Please sign in.',
