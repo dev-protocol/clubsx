@@ -10,9 +10,9 @@ import { AchievementIndex } from '@plugins/achievements/utils'
 import PQueue from 'p-queue'
 import { tryCatch } from 'ramda'
 
-const { PUBLIC_INFURA_KEY } = import.meta.env
+const { PUBLIC_ALCHEMY_KEY } = import.meta.env
 
-const queue = new PQueue({ concurrency: 5 })
+const queue = new PQueue({ concurrency: 10 })
 
 const sTokensPropertyAddressFetcher = async (
   contract: Contract,
@@ -53,10 +53,10 @@ const SBTPropertyAddressFetcher = async (contract: Contract, id: string) => {
 export const GET: APIRoute = async () => {
   const rpcProvider =
     whenDefined(
-      PUBLIC_INFURA_KEY,
+      PUBLIC_ALCHEMY_KEY,
       (key) =>
-        new JsonRpcProvider(`https://polygon-mainnet.infura.io/v3/${key}`),
-    ) ?? new Error('INFURA key not found')
+        new JsonRpcProvider(`https://polygon-mainnet.g.alchemy.com/v2/${key}`),
+    ) ?? new Error('Alchemy key not found')
 
   const redis = await getDefaultClient()
 
