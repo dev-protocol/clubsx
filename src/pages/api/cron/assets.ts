@@ -14,8 +14,6 @@ const { PUBLIC_INFURA_KEY } = import.meta.env
 
 const queue = new PQueue({ concurrency: 5 })
 
-export const maxDuration = 30
-
 const sTokensPropertyAddressFetcher = async (
   contract: Contract,
   id: string,

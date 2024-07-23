@@ -82,8 +82,6 @@ export type AssetsResponse = {
   memberships: AssetItem[]
 }
 
-export const maxDuration = 30
-
 const fetchAllMemberships = async ({
   id,
   provider,
