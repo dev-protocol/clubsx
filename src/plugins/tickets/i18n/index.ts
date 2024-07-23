@@ -65,11 +65,11 @@ export const Strings = {
   },
   UseThis: {
     en: 'Use this',
-    ja: 'Use this',
+    ja: '使用する',
   },
   Available: {
     en: 'Available',
-    ja: '利用可能',
+    ja: '使用済',
   },
   NowUnavailable: {
     en: 'Now Unavailable',
