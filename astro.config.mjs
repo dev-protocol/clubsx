@@ -24,7 +24,7 @@ export default defineConfig({
     port: 3000,
   },
   output: 'server',
-  adapter: vercel({ maxDuration: 300 }),
+  adapter: vercel(),
   integrations: [
     clubs(),
     {
