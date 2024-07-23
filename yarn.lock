@@ -747,10 +747,10 @@
   resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-awesome-onboarding/-/clubs-plugin-awesome-onboarding-0.4.4.tgz#2be8571b35e27082f410de20c6a58403c7e11d7d"
   integrity sha512-FCpgUPwPx0ETox74NpCLIDG9UcrbcijsWRAR2UAKZEJ7gu747P7CQ3zwAKu4meqXCnJj0H3R7AXiJ9m4dyjcPg==
 
-"@devprotocol/clubs-plugin-posts-voting@0.8.7":
-  version "0.8.7"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts-voting/-/clubs-plugin-posts-voting-0.8.7.tgz#fc72520a43b8689a5d67725477d87a89b17871c7"
-  integrity sha512-kJqTewhfyA81dpwjj13QPMmkOX683dGkG6+JWEG7YiiYXUQOSQsWYYnDhgJawNDULcb2HkI1t+HSkkSkZWvgWw==
+"@devprotocol/clubs-plugin-posts-voting@0.8.8":
+  version "0.8.8"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-posts-voting/-/clubs-plugin-posts-voting-0.8.8.tgz#fd46591efc22c6b4122541ac408fb9c3f882c2d1"
+  integrity sha512-lONQ7/ZvB4XT+iZIx2CDt/FJh31U4KAhOs+F0oDpsjxhoklKPfWbUl6DOUaB0rZ2mvhdWjTFWHLdLXXhawU4xA==
   dependencies:
     "@boringer-avatars/vue3" "^0.2.1"
     "@devprotocol/dev-kit" "8.6.2"
