@@ -57,7 +57,6 @@
   "dependencies": {
     "@astrojs/check": "0.8.1",
     "@astrojs/lit": "4.3.0",
-    "@astrojs/netlify": "5.4.0",
     "@astrojs/prefetch": "0.4.1",
     "@astrojs/react": "3.6.0",
     "@astrojs/svelte": "5.7.0",

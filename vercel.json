@@ -9,14 +9,6 @@
       "schedule": "0 0 * * *"
     }
   ],
-  "functions": {
-    "src/pages/api/profile/[id]/assets.ts": {
-      "maxDuration": 300
-    },
-    "src/pages/api/cron/**/*": {
-      "maxDuration": 300
-    }
-  },
   "git": {
     "deploymentEnabled": false
   }
