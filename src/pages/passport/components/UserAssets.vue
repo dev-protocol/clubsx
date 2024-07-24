@@ -5,21 +5,35 @@ import { i18nFactory } from '@devprotocol/clubs-core'
 import { Strings } from '../i18n'
 import UserAsset from './UserAsset.vue'
 import Skeleton from '@components/Global/Skeleton.vue'
-import type { AssetsResponse } from '@pages/api/profile/[id]/assets'
+import type { AssetDocument } from '@fixtures/api/assets/schema'
+import { JsonRpcProvider } from 'ethers'
+
+const { PUBLIC_ALCHEMY_KEY } = import.meta.env
 
 const props = defineProps<{ account: string }>()
 
 const i18nBase = i18nFactory(Strings)
 let i18n = ref<ReturnType<typeof i18nBase>>(i18nBase(['en']))
 
-const assets = ref<AssetsResponse>()
+const assetsNft = ref<AssetDocument[]>()
+const assetsSbt = ref<AssetDocument[]>()
+const rpcProvider = new JsonRpcProvider(
+  `https://polygon-mainnet.g.alchemy.com/v2/${PUBLIC_ALCHEMY_KEY}`,
+)
 
 onMounted(async () => {
   i18n.value = i18nBase(navigator.languages)
 
-  assets.value = await fetch(`/api/profile/${props.account}/assets`).then(
-    (res) => res.json(),
-  )
+  const [nfts, sbts] = await Promise.all([
+    fetch(
+      `https://clubs.place/api/asset/related/account/${props.account}/?type=nft&size=999`,
+    ).then((res) => res.json()),
+    fetch(
+      `https://clubs.place/api/asset/related/account/${props.account}/?type=sbt&size=999`,
+    ).then((res) => res.json()),
+  ])
+  assetsNft.value = nfts.data
+  assetsSbt.value = sbts.data
 })
 </script>
 
@@ -27,27 +41,24 @@ onMounted(async () => {
   <section class="grid gap-8">
     <h2 class="font-bold text-3xl flex items-center gap-2">
       {{ i18n('Achievements') }}
-      <span v-if="!assets" class="h-full w-12"><Skeleton /></span
-      ><span v-if="assets" class="font-inherit text-inherit"
-        >({{ assets.achievements.length }})</span
+      <span v-if="!assetsSbt" class="h-full w-12"><Skeleton /></span
+      ><span v-if="assetsSbt" class="font-inherit text-inherit"
+        >({{ assetsSbt.length }})</span
       >
     </h2>
 
     <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-      <li
-        v-if="assets?.achievements.length"
-        v-for="item in assets.achievements"
-      >
-        <UserAsset :item="item" />
+      <li v-if="assetsSbt?.length" v-for="item in assetsSbt">
+        <UserAsset :item="item" :provider="rpcProvider" />
       </li>
       <div
-        v-if="assets?.achievements.length === 0"
+        v-if="assetsSbt?.length === 0"
         class="rounded-md border border-surface-400 p-8 text-accent-200"
       >
         {{ i18n('Empty') }} :)
       </div>
 
-      <li v-if="!assets" v-for="item in new Array(6)">
+      <li v-if="!assetsSbt" v-for="item in new Array(6)">
         <span class="block h-96"><Skeleton /></span>
       </li>
     </ul>
@@ -55,23 +66,23 @@ onMounted(async () => {
   <section class="grid gap-8">
     <h2 class="font-bold text-3xl flex items-center gap-2">
       {{ i18n('Clubs') }}
-      <span v-if="!assets" class="h-full w-12"><Skeleton /></span
-      ><span v-if="assets" class="font-inherit text-inherit"
-        >({{ assets.memberships.length }})</span
+      <span v-if="!assetsNft" class="h-full w-12"><Skeleton /></span
+      ><span v-if="assetsNft" class="font-inherit text-inherit"
+        >({{ assetsNft?.length }})</span
       >
     </h2>
 
     <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-      <li v-if="assets?.memberships.length" v-for="item in assets.memberships">
-        <UserAsset :item="item" />
+      <li v-if="assetsNft?.length" v-for="item in assetsNft">
+        <UserAsset :item="item" :provider="rpcProvider" />
       </li>
       <div
-        v-if="assets?.memberships.length === 0"
+        v-if="assetsNft?.length === 0"
         class="rounded-md border border-surface-400 p-8 text-accent-200"
       >
         {{ i18n('Empty') }} :)
       </div>
-      <li v-if="!assets" v-for="item in new Array(6)">
+      <li v-if="!assetsNft" v-for="item in new Array(6)">
         <span class="block h-96"><Skeleton /></span>
       </li>
     </ul>
