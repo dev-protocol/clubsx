@@ -1,0 +1,22 @@
+---
+import Layout from '@layouts/Landing.astro'
+import Domain_ from '@components/Domain/Domain.vue'
+import { replaceWithFwdHost } from '@fixtures/url'
+
+const name = new URL(replaceWithFwdHost(Astro.request)).searchParams.get('name')
+const namePreset = name
+  ?.toLowerCase()
+  .replace(/[^a-z|0-9|-]/g, '-')
+  .replace(/-{2,}/g, '-')
+  .replace(/(^-|-$)/g, '')
+---
+
+<Layout>
+  <div slot="before-header" id="three-container" class="absolute inset-0 z-0">
+  </div>
+  <Domain_
+    client:visible
+    namePreset={namePreset}
+    containerId="three-container"
+  />
+</Layout>
