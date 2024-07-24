@@ -22,15 +22,15 @@
   <!-- Hero Header -->
   <section class="my-16 grid gap-8 md:my-32 min-w-full w-full max-w-full">
     <h1 class="text-2xl font-bold md:text-5xl text-center">{i18n('Header')}</h1>
-    <!-- <p>{i18n('SubHeader')}</p> -->
     <!-- When want to add this to future we need to add translation and uncomment code of this line. -->
+    <!-- <p>{i18n('SubHeader')}</p> -->
   </section>
 
-  <!-- Inputs -->
+  <!-- Core inputs -->
   <section class="grid gap-8 w-full max-w-full">
     <!-- Clubs name -->
     <label class="hs-form-field is-filled is-required">
-      <span class="hs-form-field__label">Club name</span>
+      <span class="hs-form-field__label">{i18n('ClubNameLabel')}</span>
       <input
         class="hs-form-field__input w-full"
         bind:value={clubsName}
@@ -41,7 +41,7 @@
 
     <!-- Token name -->
     <label class="hs-form-field is-filled is-required">
-      <span class="hs-form-field__label">Token name</span>
+      <span class="hs-form-field__label">{i18n('TokenNameLabel')}</span>
       <input
         class="hs-form-field__input w-full"
         bind:value={tokenName}
@@ -49,13 +49,13 @@
         name="token-name"
       />
       <p class="hs-form-field__helper mt-2">
-        * The full name of the token. Example: Uniswap.
+        * {i18n('TokenNameHelper')}
       </p>
     </label>
 
     <!-- Token symbol -->
     <label class="hs-form-field is-filled is-required">
-      <span class="hs-form-field__label">Token symbol</span>
+      <span class="hs-form-field__label">{i18n('TokenSymbolLabel')}</span>
       <input
         class="hs-form-field__input w-full"
         bind:value={tokenSymbol}
@@ -63,7 +63,7 @@
         name="token-symbol"
       />
       <p class="hs-form-field__helper mt-2">
-        * The abbrevation of the token. Example: UNI.
+        * {i18n('TokenSymbolHelper')}
       </p>
     </label>
   </section>
