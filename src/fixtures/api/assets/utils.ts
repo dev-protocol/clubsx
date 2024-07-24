@@ -95,29 +95,44 @@ export const fetchAssets = async ({
     ([tokens, from, to]) =>
       whenDefinedAll([tokens, from, to], async ([_nft, _from, _to]) => {
         const event = _nft.filters.Transfer()
-        const logs = await _nft.queryFilter(event, _from, _to)
-        const sorted = logs.sort((a, b) => a.index - b.index)
-        const res = sorted.map((log) => {
-          const [from, to, id] = _nft.interface.decodeEventLog(
-            'Transfer',
-            log.data,
-            log.topics,
-          )
-          const data = {
-            from,
-            to,
-            id,
-            block: log.blockNumber,
-            propertyAddress: undefined,
-          } satisfies {
-            from: string
-            to: string
-            id: string
-            block: number
-            propertyAddress: undefined
-          }
-          return data
-        })
+        const logs = await _nft
+          .queryFilter(event, _from, _to)
+          .catch((err: Error) => err)
+        const sorted = whenNotError(logs, (_logs) =>
+          _logs.sort((a, b) => a.index - b.index),
+        )
+        const res = whenNotError(sorted, (_sorted) =>
+          _sorted.map((log) => {
+            const decoded = tryCatch(
+              (_log: typeof log) =>
+                _nft.interface.decodeEventLog('Transfer', log.data, log.topics),
+              (err: Error) => err,
+            )(log)
+            const g = whenNotError(decoded, ([from, to, id]) => ({
+              from,
+              to,
+              id,
+            }))
+            const data = whenNotError(
+              g,
+              ({ from, to, id }) =>
+                ({
+                  from,
+                  to,
+                  id,
+                  block: log.blockNumber,
+                  propertyAddress: undefined,
+                }) satisfies {
+                  from: string
+                  to: string
+                  id: string
+                  block: number
+                  propertyAddress: undefined
+                },
+            )
+            return data
+          }),
+        )
         return res
       }) ?? new Error('Failed to fetch NFT transfer events'),
   )
@@ -127,7 +142,7 @@ export const fetchAssets = async ({
     ([_nft, evs]) =>
       whenDefinedAll([evs, propertyAddressFetcher], ([dataList, fetcher]) =>
         Promise.all(
-          dataList.map(async (ev) => {
+          dataList.filter(isNotError).map(async (ev) => {
             const propertyAddress = await tryCatch(
               (id: string) => fetcher(_nft, id),
               always(undefined),
@@ -139,18 +154,20 @@ export const fetchAssets = async ({
   )
 
   const assetDocs = whenNotError(withProperties, (events) =>
-    events.map(({ id, to: owner, block, propertyAddress }) => {
-      const doc = assetDocument({
-        type,
-        contract: contractAddress,
-        id,
-        owner,
-        block,
-        balance: '1',
-        propertyAddress,
-      })
-      return doc
-    }),
+    events
+      .filter(isNotError)
+      .map(({ id, to: owner, block, propertyAddress }) => {
+        const doc = assetDocument({
+          type,
+          contract: contractAddress,
+          id,
+          owner,
+          block,
+          balance: '1',
+          propertyAddress,
+        })
+        return doc
+      }),
   )
 
   console.log({ contractAddress, assetDocs })
