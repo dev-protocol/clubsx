@@ -10,6 +10,9 @@ const { id } = Astro.params
 const isEOA = isAddress(id)
 
 const profile: Profile = await getProfile({ id: id ?? '' })
+const isLocal =
+  Astro.url.hostname.includes('localhost') ||
+  /^[\d\.]+$/.test(Astro.url.hostname)
 ---
 
 <Layout connectButton="show" theme="auto" pageTitle="Passport">
@@ -34,7 +37,7 @@ const profile: Profile = await getProfile({ id: id ?? '' })
       <UserProfileEditButton client:only="svelte" id={id} />
     </div>
 
-    {isEOA && <UserAssets client:load account={id ?? ''} />}
+    {isEOA && <UserAssets client:load account={id ?? ''} local={isLocal} />}
 
     <a href={`/passport/${id}/clubs`} class="hs-link place-self-start">Clubs</a>
   </div>
