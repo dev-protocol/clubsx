@@ -109,6 +109,12 @@ export const assetDocument = (doc: {
   nBalance: Number(doc.balance),
 })
 
+export const assetDocumentTypes: ReadonlyArray<AssetDocument['type']> = [
+  'nft',
+  'property',
+  'sbt',
+]
+
 export type LogDocument = {
   contract: string
   block: string
