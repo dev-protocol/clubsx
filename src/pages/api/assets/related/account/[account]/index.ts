@@ -10,11 +10,9 @@ import { getDefaultClient, Index } from '@fixtures/api/assets/redis'
 import { isNotError, whenDefined, whenNotError } from '@devprotocol/util-ts'
 
 export const GET: APIRoute = async (req) => {
-  const propertyAddress =
-    whenDefined(
-      req.params.propertyAddress,
-      (propertyAddress) => propertyAddress,
-    ) ?? new Error('No Property Address passed')
+  const accountAddress =
+    whenDefined(req.params.account, (addr) => addr) ??
+    new Error('No Account Address passed')
 
   const options = {
     size: Number(req.url.searchParams.get('size')) || 10,
@@ -30,11 +28,11 @@ export const GET: APIRoute = async (req) => {
 
   const client = await getDefaultClient()
 
-  const data = await whenNotError(propertyAddress, (property) =>
+  const data = await whenNotError(accountAddress, (addr) =>
     client.ft
       .search(
         Index.Asset,
-        `@${ASSET_SCHEMA['$.propertyAddress'].AS}:{${property}}${type ? ` @${ASSET_SCHEMA['$.type'].AS}:{${type}}` : ''}`,
+        `@${ASSET_SCHEMA['$.owner'].AS}:{${addr}}${type ? ` @${ASSET_SCHEMA['$.type'].AS}:{${type}}` : ''}`,
         {
           LIMIT: {
             size: options.size,
