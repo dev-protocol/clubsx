@@ -46,7 +46,7 @@ const lastBlock = async (
   const blockFromDb = isNotError(fromDB)
     ? (fromDB.documents[0]?.value?.nBlock as UndefinedOr<number>)
     : undefined
-  const block = blockFromDb ?? 0
+  const block = blockFromDb
   console.log({ fromDB, blockFromDb })
   return block
   // return 19000000
@@ -74,16 +74,18 @@ export const fetchAssets = async ({
     id: string,
   ) => Promise<string | undefined>
 }) => {
-  const [fromBlock, latestBlock] = await Promise.all([
+  const [fromBlockDb, latestBlock] = await Promise.all([
     lastBlock(contractAddress, redis),
     provider.getBlockNumber(),
   ])
+
+  const fromBlock = fromBlockDb ?? latestBlock - BLOCK_SIZE
 
   const toBlock = whenNotError(fromBlock, (block) =>
     ((v) => (v < latestBlock ? v : latestBlock))(block + BLOCK_SIZE),
   )
 
-  console.log({ contract, fromBlock })
+  console.log({ contract, fromBlockDb, fromBlock })
 
   const nft = whenNotError(
     provider,
