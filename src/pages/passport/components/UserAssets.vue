@@ -10,7 +10,7 @@ import { JsonRpcProvider } from 'ethers'
 
 const { PUBLIC_ALCHEMY_KEY } = import.meta.env
 
-const props = defineProps<{ account: string }>()
+const props = defineProps<{ account: string; local: boolean }>()
 
 const i18nBase = i18nFactory(Strings)
 let i18n = ref<ReturnType<typeof i18nBase>>(i18nBase(['en']))
@@ -26,10 +26,10 @@ onMounted(async () => {
 
   const [nfts, sbts] = await Promise.all([
     fetch(
-      `https://clubs.place/api/asset/related/account/${props.account}/?type=nft&size=999`,
+      `https://clubs.place/api/assets/related/account/${props.account}/?type=nft&size=999`,
     ).then((res) => res.json()),
     fetch(
-      `https://clubs.place/api/asset/related/account/${props.account}/?type=sbt&size=999`,
+      `https://clubs.place/api/assets/related/account/${props.account}/?type=sbt&size=999`,
     ).then((res) => res.json()),
   ])
   assetsNft.value = nfts.data
@@ -48,8 +48,12 @@ onMounted(async () => {
     </h2>
 
     <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-      <li v-if="assetsSbt?.length" v-for="item in assetsSbt">
-        <UserAsset :item="item" :provider="rpcProvider" />
+      <li
+        v-if="assetsSbt?.length"
+        v-for="item in assetsSbt"
+        class="empty:hidden"
+      >
+        <UserAsset :item="item" :provider="rpcProvider" :local="props.local" />
       </li>
       <div
         v-if="assetsSbt?.length === 0"
@@ -73,8 +77,12 @@ onMounted(async () => {
     </h2>
 
     <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-      <li v-if="assetsNft?.length" v-for="item in assetsNft">
-        <UserAsset :item="item" :provider="rpcProvider" />
+      <li
+        v-if="assetsNft?.length"
+        v-for="item in assetsNft"
+        class="empty:hidden"
+      >
+        <UserAsset :item="item" :provider="rpcProvider" :local="props.local" />
       </li>
       <div
         v-if="assetsNft?.length === 0"

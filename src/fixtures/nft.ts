@@ -1,7 +1,11 @@
+import { whenDefined, whenDefinedAll } from '@devprotocol/util-ts'
 import { decodeBase64, toUtf8String } from 'ethers'
 import { tryCatch } from 'ramda'
 
-export const decodeTokenURI = (uri: string) => {
+export const decodeTokenURI = (
+  uri: string,
+  whenIpfs?: (cid: string) => string,
+) => {
   const decoded = uri.startsWith('data')
     ? toUtf8String(
         decodeBase64(
@@ -19,7 +23,8 @@ export const decodeTokenURI = (uri: string) => {
     name?: string
     description?: string
     image?: string
-    attributes: ReadonlyArray<{ [key: string]: any }>
+    attributes?: ReadonlyArray<{ [key: string]: any }>
+    htmlImageSrc?: string
   } = tryCatch(
     (m: string) => JSON.parse(m),
     (err) => {
@@ -28,5 +33,18 @@ export const decodeTokenURI = (uri: string) => {
     },
   )(decoded)
 
-  return metadata
+  const imageUri = whenDefined(metadata.image, (img) => new URL(img))
+
+  const res = whenDefinedAll(
+    [whenIpfs, imageUri?.protocol === 'ipfs:' ? imageUri : undefined],
+    ([transform, ipfs]) => ({
+      ...metadata,
+      htmlImageSrc: transform(ipfs.pathname.replace('//', '')),
+    }),
+  ) ?? {
+    ...metadata,
+    htmlImageSrc: metadata.image,
+  }
+
+  return res
 }
