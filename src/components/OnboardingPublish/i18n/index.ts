@@ -18,8 +18,15 @@ export const Strings = {
     ja: () => `本人確認はどうすればできますか？`,
   },
   VerifiedIdentity: {
-    en: ([platform]) => `${platform} - AUTHENTICATED_CHANNEL_ID`,
-    ja: ([platform]) => `${platform} - 認証されたチャンネルID`,
+    en: ([platform]) => {
+      if (!platform) return `* Add your socials so fans know it’s you!`
+      return `<b>${platform}</b> - AUTHENTICATED_CHANNEL_ID`
+    },
+    ja: ([platform]) => {
+      if (!platform)
+        return '* ソーシャルを追加して、ファンにあなたであることを知らせましょう。'
+      return `<b>${platform}</b> - 認証されたチャンネルID`
+    },
   },
   TokenNameLabel: {
     en: () => 'Token Name',

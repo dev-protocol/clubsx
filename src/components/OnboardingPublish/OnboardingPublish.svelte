@@ -97,8 +97,10 @@
           Discord
         </button>
       </div>
-      <p class="hs-form-field__helper mt-2">
-        * {i18n('VerifiedIdentity', ['Youtube'])}
+      <p
+        class={`${!creatorPlatform && 'hs-form-field__helper'} mt-2 font-body font-bold text-base capitalize`}
+      >
+        {@html i18n('VerifiedIdentity', [creatorPlatform])}
       </p>
     </div>
 
