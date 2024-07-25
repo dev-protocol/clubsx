@@ -51,12 +51,14 @@
     <!-- Verify it's you -->
     <div class="hs-form-field is-filled is-required">
       <span class="hs-form-field__label"> {i18n('VerifyYouLabel')} </span>
-      <div class="flex w-full max-w-full items-center justify-start gap-2">
+      <div
+        class="flex w-full max-w-full h-28 max-h-[28] items-center justify-start gap-2"
+      >
         <button
           on:click|preventDefault={() => changeCreatorPlatform('youtube')}
-          class={`hs-button is-large is-filled flex max-w-[33%] grow items-center justify-center gap-2 ${
+          class={`hs-button is-large is-filled flex flex-col max-w-[33%] grow items-center justify-center gap-2.5 ${
             creatorPlatform !== 'youtube' && 'opacity-50'
-          }`}
+          } self-stretch justify-self-stretch h-full max-h-full min-h-full`}
           id="membership-fee-instant"
           name="membership-fee-instant"
           disabled={creatorPlatform === 'youtube'}
@@ -68,9 +70,9 @@
         </button>
         <button
           on:click|preventDefault={() => changeCreatorPlatform('github')}
-          class={`hs-button is-large is-filled flex max-w-[33%] grow items-center justify-center gap-2 ${
+          class={`hs-button is-large is-filled flex flex-col max-w-[33%] grow items-center justify-center gap-2.5 ${
             creatorPlatform !== 'github' && 'opacity-50'
-          }`}
+          } self-stretch justify-self-stretch h-full max-h-full min-h-full`}
           id="membership-fee-instant"
           name="membership-fee-instant"
           disabled={creatorPlatform === 'github'}
@@ -82,9 +84,9 @@
         </button>
         <button
           on:click|preventDefault={() => changeCreatorPlatform('discord')}
-          class={`hs-button is-large is-filled flex max-w-[33%] grow items-center justify-center gap-2 ${
+          class={`hs-button is-large is-filled flex flex-col max-w-[33%] grow items-center justify-center gap-2.5 ${
             creatorPlatform !== 'discord' && 'opacity-50'
-          }`}
+          } self-stretch justify-self-stretch h-full max-h-full min-h-full`}
           id="membership-fee-instant"
           name="membership-fee-instant"
           disabled={creatorPlatform === 'discord'}
