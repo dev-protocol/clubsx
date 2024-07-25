@@ -663,10 +663,19 @@
     preact "^10.16.0"
     sha.js "^2.4.11"
 
-"@crossmint/client-sdk-base@1.1.14", "@crossmint/client-sdk-base@^1.0.1-alpha.6":
+"@crossmint/client-sdk-base@1.1.14":
   version "1.1.14"
   resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-base/-/client-sdk-base-1.1.14.tgz#de8852f8fbc752111bf93a1b146a1020e5d97994"
   integrity sha512-BZdcCEHpxvLgAFWu/knGw2lGsblgTcddGvEwyernSzKWdoBDMbXajzrHcsXcPGgGilUREs391nfPjzAkQdmS7w==
+  dependencies:
+    "@crossmint/common-sdk-base" "0.0.13"
+    exponential-backoff "3.1.1"
+    uuid "9.0.1"
+
+"@crossmint/client-sdk-base@^1.0.1-alpha.6":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-base/-/client-sdk-base-1.2.0.tgz#5b2430cf58fc034cb9a55d400ef5da2fe855d07a"
+  integrity sha512-k9fcf8hLI87u+U3d2v/nopL1FlmFCryLS4gH+6pJh8OzBUFMWhfK68YxRisccQfebrjkWfOmgMcJ8aHOpaaBag==
   dependencies:
     "@crossmint/common-sdk-base" "0.0.13"
     exponential-backoff "3.1.1"
