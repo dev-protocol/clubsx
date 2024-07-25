@@ -1,0 +1,24 @@
+---
+import Page from '@components/SuperUser/Page.vue'
+import Layout from '@layouts/Landing.astro'
+
+import payments from '@plugins/clubs-payments'
+import tickets from '@plugins/tickets'
+import invitations from '@plugins/invitations'
+import achievements from '@plugins/achievements'
+import onboarding from '@devprotocol/clubs-plugin-awesome-onboarding'
+
+const plugins = [
+  { id: invitations.meta.id, name: invitations.meta.displayName },
+  { id: achievements.meta.id, name: achievements.meta.displayName },
+  { id: onboarding.meta.id, name: onboarding.meta.displayName },
+  { id: payments.meta.id, name: payments.meta.displayName },
+  { id: tickets.meta.id, name: tickets.meta.displayName },
+]
+---
+
+<Layout theme="light" connectButton="show" pageTitle="Superuser">
+  <section class="container mx-auto max-w-screen-lg">
+    <Page client:load plugins={plugins} />
+  </section>
+</Layout>
