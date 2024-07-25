@@ -2,6 +2,7 @@ export default [
   '/api/verifySiteName',
   '/api/updateDraftConfig',
   '/api/updateConfig',
+  '/api/superuser',
   '/api/stats',
   '/api/profile',
   '/api/plugins',
