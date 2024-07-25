@@ -13,6 +13,14 @@ export const Strings = {
     en: () => 'Club Name',
     ja: () => 'クラブ名',
   },
+  VerifyYouLabel: {
+    en: () => `How can we verify it's you?`,
+    ja: () => `本人確認はどうすればできますか？`,
+  },
+  VerifiedIdentity: {
+    en: ([platform]) => `${platform} - AUTHENTICATED_CHANNEL_ID`,
+    ja: ([platform]) => `${platform} - 認証されたチャンネルID`,
+  },
   TokenNameLabel: {
     en: () => 'Token Name',
     ja: () => 'トークン名',

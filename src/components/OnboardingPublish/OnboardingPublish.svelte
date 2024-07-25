@@ -3,6 +3,10 @@
   import { i18nFactory } from '@devprotocol/clubs-core'
 
   import { Strings } from './i18n'
+  import GithubIcon from './GithubIcon.svelte'
+  import YoutubeIcon from './YoutubeIcon.svelte'
+  import DiscordIcon from './DiscordIcon.svelte'
+  import { type CreatorPlatform } from './types'
 
   const i18nBase = i18nFactory(Strings)
   let i18n = i18nBase(['en'])
@@ -10,6 +14,11 @@
   let clubsName: string = ''
   let tokenName: string = ''
   let tokenSymbol: string = ''
+  let creatorPlatform: CreatorPlatform
+
+  const changeCreatorPlatform = async (platform: CreatorPlatform) => {
+    creatorPlatform = platform
+  }
 
   onMount(() => {
     i18n = i18nBase(navigator.languages)
@@ -17,17 +26,17 @@
 </script>
 
 <div
-  class="relative flex flex-col justify-center p-4 md:p-0 w-[36%] max-w-[36%] ml-auto mr-auto"
+  class="relative flex gap-16 flex-col justify-center p-4 md:p-0 w-[36%] max-w-[36%] ml-auto mr-auto"
 >
   <!-- Hero Header -->
-  <section class="my-16 grid gap-8 md:my-32 min-w-full w-full max-w-full">
+  <section class="mt-16 grid gap-8 md:mt-32 min-w-full w-full max-w-full">
     <h1 class="text-2xl font-bold md:text-5xl text-center">{i18n('Header')}</h1>
     <!-- When want to add this to future we need to add translation and uncomment code of this line. -->
     <!-- <p>{i18n('SubHeader')}</p> -->
   </section>
 
   <!-- Core inputs -->
-  <section class="grid gap-8 w-full max-w-full">
+  <section class="grid gap-16 w-full max-w-full mb-16 md:mb-32">
     <!-- Clubs name -->
     <label class="hs-form-field is-filled is-required">
       <span class="hs-form-field__label">{i18n('ClubNameLabel')}</span>
@@ -38,6 +47,58 @@
         name="clubs-name"
       />
     </label>
+
+    <!-- Verify it's you -->
+    <div class="hs-form-field is-filled is-required">
+      <span class="hs-form-field__label"> {i18n('VerifyYouLabel')} </span>
+      <div class="flex w-full max-w-full items-center justify-start gap-2">
+        <button
+          on:click|preventDefault={() => changeCreatorPlatform('youtube')}
+          class={`hs-button is-large is-filled flex max-w-[33%] grow items-center justify-center gap-2 ${
+            creatorPlatform !== 'youtube' && 'opacity-50'
+          }`}
+          id="membership-fee-instant"
+          name="membership-fee-instant"
+          disabled={creatorPlatform === 'youtube'}
+        >
+          <span class="h-auto w-auto max-w-[48%]">
+            <YoutubeIcon />
+          </span>
+          Youtube
+        </button>
+        <button
+          on:click|preventDefault={() => changeCreatorPlatform('github')}
+          class={`hs-button is-large is-filled flex max-w-[33%] grow items-center justify-center gap-2 ${
+            creatorPlatform !== 'github' && 'opacity-50'
+          }`}
+          id="membership-fee-instant"
+          name="membership-fee-instant"
+          disabled={creatorPlatform === 'github'}
+        >
+          <span class="h-auto w-auto max-w-[48%]">
+            <GithubIcon />
+          </span>
+          Github
+        </button>
+        <button
+          on:click|preventDefault={() => changeCreatorPlatform('discord')}
+          class={`hs-button is-large is-filled flex max-w-[33%] grow items-center justify-center gap-2 ${
+            creatorPlatform !== 'discord' && 'opacity-50'
+          }`}
+          id="membership-fee-instant"
+          name="membership-fee-instant"
+          disabled={creatorPlatform === 'discord'}
+        >
+          <span class="h-auto w-auto max-w-[48%]">
+            <DiscordIcon />
+          </span>
+          Discord
+        </button>
+      </div>
+      <p class="hs-form-field__helper mt-2">
+        * {i18n('VerifiedIdentity', ['Youtube'])}
+      </p>
+    </div>
 
     <!-- Token name -->
     <label class="hs-form-field is-filled is-required">
@@ -66,5 +127,16 @@
         * {i18n('TokenSymbolHelper')}
       </p>
     </label>
+
+    <div class="flex w-full justify-end gap-[20px]">
+      <button
+        class={`hs-button is-filled is-error w-fit py-6 px-8 ${
+          false ? 'animate-pulse bg-gray-500/60' : ''
+        }`}
+        on:click|preventDefault={() => {}}
+      >
+        <span class="hs-button__label">Next</span>
+      </button>
+    </div>
   </section>
 </div>
