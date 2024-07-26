@@ -42,7 +42,10 @@ export type ReqBodyAchievement = {
   message: string
   signature: string
   noOfCopies: number
-  achievement: Omit<Achievement, 'id' | 'clubsUrl' | 'achievementInfoId'>
+  achievement: Omit<
+    Achievement,
+    'id' | 'clubsUrl' | 'achievementInfoId' | 'metadata'
+  > & { metadata?: Partial<Achievement['metadata']> }
 }
 
 export const setter = async ({
@@ -55,12 +58,21 @@ export const setter = async ({
   url: string
 }) => {
   // 1. Create achievement document.
+  const {
+    name = '',
+    image = '',
+    description = '',
+    numberAttributes = [],
+    stringAttributes = [],
+  } = data.achievement.metadata ?? {}
   const achievementInfoDocument = getAchievementInfoDocument({
     contract: data.achievement.contract,
     metadata: {
-      ...data.achievement.metadata,
-      numberAttributes: [...(data.achievement.metadata.numberAttributes ?? [])],
-      stringAttributes: [...(data.achievement.metadata.stringAttributes ?? [])],
+      image,
+      description,
+      name,
+      numberAttributes,
+      stringAttributes,
     },
   })
 
