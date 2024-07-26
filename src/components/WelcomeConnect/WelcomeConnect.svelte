@@ -165,7 +165,9 @@
         disabled={!signer ||
           !account ||
           walletAwaitingUserConfirmation ||
-          disableCreationUsingWallet}
+          disableCreationUsingWallet ||
+          walletConnectStatusMsg.toLowerCase() ==
+            'Clubs creation confirmed, loading setup...'.toLowerCase()}
         on:click|preventDefault={(_) => {
           signer && account ? walletConnect(signer, account) : null
         }}
