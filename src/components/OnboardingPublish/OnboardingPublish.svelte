@@ -11,9 +11,9 @@
   const i18nBase = i18nFactory(Strings)
   let i18n = i18nBase(['en'])
 
-  export let config: ClubsConfiguration
+  export let domain: string = ''
 
-  let clubsName: string = config.name
+  let clubsName: string = ''
   let tokenName: string = ''
   let tokenSymbol: string = ''
   let creatorPlatform: CreatorPlatform
@@ -49,7 +49,7 @@
         name="clubs-name"
       />
       <p class="hs-form-field__helper mt-2">
-        * {i18n('TokenSymbolHelper')}
+        * {i18n('ClubNameHelper', [domain])}
       </p>
     </label>
 
@@ -105,7 +105,7 @@
       <p
         class={`${!creatorPlatform && 'hs-form-field__helper'} mt-2 font-body font-bold text-base capitalize`}
       >
-        {@html i18n('VerifiedIdentity', [creatorPlatform])}
+        {@html i18n('VerifiedYouHelper', [creatorPlatform])}
       </p>
     </div>
 
