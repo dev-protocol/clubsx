@@ -11,16 +11,9 @@
   const i18nBase = i18nFactory(Strings)
   let i18n = i18nBase(['en'])
 
-  export let domain: string = ''
-
-  let clubsName: string = ''
-  let tokenName: string = ''
-  let tokenSymbol: string = ''
-  let creatorPlatform: CreatorPlatform
-
-  const changeCreatorPlatform = async (platform: CreatorPlatform) => {
-    creatorPlatform = platform
-  }
+  export let clubsName: string
+  export let tokenName: string
+  export let tokenSymbol: string
 
   onMount(() => {
     i18n = i18nBase(navigator.languages)
@@ -40,108 +33,70 @@
   <!-- Core inputs -->
   <section class="grid gap-16 w-full max-w-full mb-16 md:mb-32">
     <!-- Clubs name -->
-    <label class="hs-form-field is-filled is-required">
-      <span class="hs-form-field__label">{i18n('ClubNameLabel')}</span>
-      <input
-        class="hs-form-field__input w-full"
-        bind:value={clubsName}
-        id="clubs-name"
-        name="clubs-name"
-      />
-    </label>
-
-    <!-- Verify it's you -->
-    <div class="hs-form-field is-filled is-required">
-      <span class="hs-form-field__label"> {i18n('VerifyYouLabel')} </span>
-      <div
-        class="flex w-full max-w-full h-28 max-h-[28] items-center justify-start gap-2"
+    <div class="hs-form-field is-filled !gap-4">
+      <span class="hs-form-field__label !text-[#C4C4C4]"
+        >{i18n('ClubNameLabel')}</span
       >
-        <button
-          on:click|preventDefault={() => changeCreatorPlatform('youtube')}
-          class={`hs-button is-large is-filled flex flex-col max-w-[33%] grow items-center justify-center gap-2.5 ${
-            creatorPlatform !== 'youtube' && 'opacity-50'
-          } self-stretch justify-self-stretch h-full max-h-full min-h-full`}
-          id="youtube-icon"
-          name="youtube-icon"
-          disabled={creatorPlatform === 'youtube'}
-        >
-          <span class="h-auto w-auto">
-            <YoutubeIcon />
-          </span>
-          Youtube
-        </button>
-        <button
-          on:click|preventDefault={() => changeCreatorPlatform('github')}
-          class={`hs-button is-large is-filled flex flex-col max-w-[33%] grow items-center justify-center gap-2.5 ${
-            creatorPlatform !== 'github' && 'opacity-50'
-          } self-stretch justify-self-stretch h-full max-h-full min-h-full`}
-          id="github-icon"
-          name="github-icon"
-          disabled={creatorPlatform === 'github'}
-        >
-          <span class="h-auto w-auto">
-            <GithubIcon />
-          </span>
-          Github
-        </button>
-        <button
-          on:click|preventDefault={() => changeCreatorPlatform('discord')}
-          class={`hs-button is-large is-filled flex flex-col max-w-[33%] grow items-center justify-center gap-2.5 ${
-            creatorPlatform !== 'discord' && 'opacity-50'
-          } self-stretch justify-self-stretch h-full max-h-full min-h-full`}
-          id="discord-icon"
-          name="discord-icon"
-          disabled={creatorPlatform === 'discord'}
-        >
-          <span class="h-auto w-auto">
-            <DiscordIcon />
-          </span>
-          Discord
-        </button>
-      </div>
-      <p
-        class={`${!creatorPlatform && 'hs-form-field__helper'} mt-2 font-body font-bold text-base capitalize`}
-      >
-        {@html i18n('VerifiedYouHelper', [creatorPlatform])}
-      </p>
+      <p class="font-body font-bold text-[32px] !text-[#C4C4C4]">{clubsName}</p>
     </div>
 
     <!-- Token name -->
-    <label class="hs-form-field is-filled is-required">
-      <span class="hs-form-field__label">{i18n('TokenNameLabel')}</span>
-      <input
-        class="hs-form-field__input w-full"
-        bind:value={tokenName}
-        id="token-name"
-        name="token-name"
-      />
-      <p class="hs-form-field__helper mt-2">
-        * {i18n('TokenNameHelper')}
-      </p>
-    </label>
+    <div class="hs-form-field is-filled !gap-4">
+      <span class="hs-form-field__label !text-[#C4C4C4]"
+        >{i18n('TokenNameLabel')}</span
+      >
+      <p class="font-body font-bold text-[32px] !text-[#C4C4C4]">{tokenName}</p>
+    </div>
 
     <!-- Token symbol -->
-    <label class="hs-form-field is-filled is-required">
-      <span class="hs-form-field__label">{i18n('TokenSymbolLabel')}</span>
-      <input
-        class="hs-form-field__input w-full"
-        bind:value={tokenSymbol}
-        id="token-symbol"
-        name="token-symbol"
-      />
-      <p class="hs-form-field__helper mt-2">
-        * {i18n('TokenSymbolHelper')}
-      </p>
-    </label>
-
-    <div class="flex w-full justify-end gap-[20px]">
-      <button
-        class={`hs-button is-filled is-error w-fit py-6 px-8 ${
-          false ? 'animate-pulse bg-gray-500/60' : ''
-        }`}
-        on:click|preventDefault={() => {}}
+    <div class="hs-form-field is-filled !gap-4">
+      <span class="hs-form-field__label !text-[#C4C4C4]"
+        >{i18n('TokenSymbolLabel')}</span
       >
-        <span class="hs-button__label">Next</span>
+      <p class="font-body font-bold text-[32px] !text-[#C4C4C4]">
+        {tokenSymbol}
+      </p>
+    </div>
+
+    <!-- Token supply -->
+    <div class="hs-form-field is-filled !gap-4">
+      <p class="font-body font-bold text-[32px] !text-[#C4C4C4]">
+        10,000,000 {tokenSymbol}
+      </p>
+      <span class="hs-form-field__label !text-[#C4C4C4]"
+        >{i18n('TokenSupply')}</span
+      >
+    </div>
+
+    <div
+      class={`p-8 rounded-3xl bg-surface-400 flex flex-col lg:flex-row justify-between items-center gap-5 transition-opacity duration-700 ${
+        true ? '' : 'opacity-30'
+      }`}
+    >
+      <p class="font-normal text-base text-white">{i18n('CreateASig')}</p>
+      <button
+        class={`hs-button is-filled px-8 py-4 ${
+          false ? 'animate-pulse bg-gray-500/60' : ''
+        } ${false ? 'bg-gray-500/60' : ''}`}
+        on:click|preventDefault={(_) => {}}
+      >
+        {i18n('Sign')}
+      </button>
+    </div>
+
+    <div
+      class={`p-8 rounded-3xl bg-surface-400 flex flex-col lg:flex-row justify-between items-center gap-5 transition-opacity duration-700 ${
+        true ? '' : 'opacity-30'
+      }`}
+    >
+      <p class="font-normal text-base text-white">{i18n('StartClub')}</p>
+      <button
+        class={`hs-button is-filled px-8 py-4 ${
+          false ? 'animate-pulse bg-gray-500/60' : ''
+        } ${false ? 'bg-gray-500/60' : ''}`}
+        on:click|preventDefault={(_) => {}}
+      >
+        {i18n('Tokenize')}
       </button>
     </div>
   </section>

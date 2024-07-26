@@ -25,7 +25,7 @@
   const toConfirm = async () => {
     // TODO: add validations for input field.
     window.location.href = new URL(
-      `${domain}/setup/confirm?clubsName=${clubsName}&tokeName=${tokenName}&tokenSymbol=${tokenSymbol}`,
+      `${domain}/setup/confirm?clubsName=${clubsName}&tokenName=${tokenName}&tokenSymbol=${tokenSymbol}`,
       `${location.protocol}//${location.host}`,
     ).toString()
   }

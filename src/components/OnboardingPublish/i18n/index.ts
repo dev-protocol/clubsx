@@ -48,8 +48,28 @@ export const Strings = {
     en: () => 'The abbrevation of the token. Example: UNI.',
     ja: () => 'トークンの略語。例: UNI。',
   },
+  TokenSupply: {
+    en: () => `will be created.`,
+    ja: () => `が作成されます。`,
+  },
   Next: {
     en: () => 'Next',
     ja: () => `次`,
+  },
+  CreateASig: {
+    en: () => `Create a signature`,
+    ja: () => `署名を作成する`,
+  },
+  Sign: {
+    en: () => `Sign`,
+    ja: () => `サイン`,
+  },
+  Tokenize: {
+    en: () => `Tokenize`,
+    ja: () => `トークン化`,
+  },
+  StartClub: {
+    en: () => `Create a token and start your club`,
+    ja: () => `トークンを作成してクラブを開始する`,
   },
 } satisfies ClubsI18nParts
