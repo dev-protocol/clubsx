@@ -48,4 +48,8 @@ export const Strings = {
     en: () => 'The abbrevation of the token. Example: UNI.',
     ja: () => 'トークンの略語。例: UNI。',
   },
+  Next: {
+    en: () => 'Next',
+    ja: () => `次`,
+  },
 } satisfies ClubsI18nParts

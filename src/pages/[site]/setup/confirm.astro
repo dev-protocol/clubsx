@@ -6,7 +6,7 @@ import { adminFactory } from '@devprotocol/clubs-core'
 
 import PageNotFound from '@pages/404.astro'
 import Layout from '@layouts/Landing.astro'
-import OnboardingPublish_ from '@components/OnboardingPublish/OnboardingPublish.svelte'
+import Confirm_ from '@components/OnboardingPublish/Confirm.svelte'
 
 const { site } = Astro.params
 
@@ -26,7 +26,7 @@ const siteBaseUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
 {
   path ? (
     <Layout connectButton="show">
-      <OnboardingPublish_ client:only="svelte" domain={''} />
+      <Confirm_ client:only="svelte" domain={site || ''} />
     </Layout>
   ) : (
     <PageNotFound

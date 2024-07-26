@@ -22,14 +22,6 @@
     creatorPlatform = platform
   }
 
-  const toConfirm = async () => {
-    // TODO: add validations for input field.
-    window.location.href = new URL(
-      `${domain}/setup/confirm?clubsName=${clubsName}&tokeName=${tokenName}&tokenSymbol=${tokenSymbol}`,
-      `${location.protocol}//${location.host}`,
-    ).toString()
-  }
-
   onMount(() => {
     i18n = i18nBase(navigator.languages)
   })
@@ -56,9 +48,6 @@
         id="clubs-name"
         name="clubs-name"
       />
-      <p class="hs-form-field__helper mt-2">
-        * {i18n('ClubNameHelper', [domain])}
-      </p>
     </label>
 
     <!-- Verify it's you -->
@@ -150,9 +139,9 @@
         class={`hs-button is-filled is-error w-fit py-6 px-8 ${
           false ? 'animate-pulse bg-gray-500/60' : ''
         }`}
-        on:click|preventDefault={toConfirm}
+        on:click|preventDefault={() => {}}
       >
-        <span class="hs-button__label">{i18n('Next')}</span>
+        <span class="hs-button__label">Next</span>
       </button>
     </div>
   </section>
