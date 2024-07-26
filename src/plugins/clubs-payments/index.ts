@@ -124,7 +124,7 @@ export const getSlots = (async (options, __, utils) => {
     checkoutUrl: `/fiat/yen/${bytes32Hex(item.payload)}`,
   }))
 
-  return utils.factory === 'page'
+  return utils.factory === 'page' && items.length > 0
     ? [
         {
           slot: 'checkout:after:transaction-form',
