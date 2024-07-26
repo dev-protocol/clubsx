@@ -1,0 +1,8 @@
+---
+import Layout from '@layouts/Landing.astro'
+import OnboardingPublish_ from '@components/OnboardingPublish/OnboardingPublish.svelte'
+---
+
+<Layout connectButton="show">
+  <OnboardingPublish_ client:only="svelte" />
+</Layout>
