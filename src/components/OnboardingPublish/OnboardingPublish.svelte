@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import { i18nFactory } from '@devprotocol/clubs-core'
+  import { i18nFactory, type ClubsConfiguration } from '@devprotocol/clubs-core'
 
   import { Strings } from './i18n'
   import GithubIcon from './GithubIcon.svelte'
@@ -11,7 +11,9 @@
   const i18nBase = i18nFactory(Strings)
   let i18n = i18nBase(['en'])
 
-  let clubsName: string = ''
+  export let config: ClubsConfiguration
+
+  let clubsName: string = config.name
   let tokenName: string = ''
   let tokenSymbol: string = ''
   let creatorPlatform: CreatorPlatform
@@ -46,6 +48,9 @@
         id="clubs-name"
         name="clubs-name"
       />
+      <p class="hs-form-field__helper mt-2">
+        * {i18n('TokenSymbolHelper')}
+      </p>
     </label>
 
     <!-- Verify it's you -->
@@ -59,11 +64,11 @@
           class={`hs-button is-large is-filled flex flex-col max-w-[33%] grow items-center justify-center gap-2.5 ${
             creatorPlatform !== 'youtube' && 'opacity-50'
           } self-stretch justify-self-stretch h-full max-h-full min-h-full`}
-          id="membership-fee-instant"
-          name="membership-fee-instant"
+          id="youtube-icon"
+          name="youtube-icon"
           disabled={creatorPlatform === 'youtube'}
         >
-          <span class="h-auto w-auto max-w-[48%]">
+          <span class="h-auto w-auto">
             <YoutubeIcon />
           </span>
           Youtube
@@ -73,11 +78,11 @@
           class={`hs-button is-large is-filled flex flex-col max-w-[33%] grow items-center justify-center gap-2.5 ${
             creatorPlatform !== 'github' && 'opacity-50'
           } self-stretch justify-self-stretch h-full max-h-full min-h-full`}
-          id="membership-fee-instant"
-          name="membership-fee-instant"
+          id="github-icon"
+          name="github-icon"
           disabled={creatorPlatform === 'github'}
         >
-          <span class="h-auto w-auto max-w-[48%]">
+          <span class="h-auto w-auto">
             <GithubIcon />
           </span>
           Github
@@ -87,11 +92,11 @@
           class={`hs-button is-large is-filled flex flex-col max-w-[33%] grow items-center justify-center gap-2.5 ${
             creatorPlatform !== 'discord' && 'opacity-50'
           } self-stretch justify-self-stretch h-full max-h-full min-h-full`}
-          id="membership-fee-instant"
-          name="membership-fee-instant"
+          id="discord-icon"
+          name="discord-icon"
           disabled={creatorPlatform === 'discord'}
         >
-          <span class="h-auto w-auto max-w-[48%]">
+          <span class="h-auto w-auto">
             <DiscordIcon />
           </span>
           Discord

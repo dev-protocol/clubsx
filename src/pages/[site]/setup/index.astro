@@ -1,0 +1,37 @@
+---
+import admin from '@plugins/admin'
+import { replaceWithFwdHost } from '@fixtures/url'
+import { config as _config } from '@fixtures/config'
+import { adminFactory } from '@devprotocol/clubs-core'
+
+import PageNotFound from '@pages/404.astro'
+import Layout from '@layouts/Landing.astro'
+import OnboardingPublish_ from '@components/OnboardingPublish/OnboardingPublish.svelte'
+
+const { site } = Astro.params
+
+const { getStaticPaths, getCurrentConfig } = adminFactory({
+  config: async () => await _config(site),
+  plugins: [admin],
+})
+
+const config = await getCurrentConfig()
+const path = (await getStaticPaths()).find(({ props }) => props.clubs)
+
+const siteBaseUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
+  new URL(replaceWithFwdHost(Astro.request)),
+)
+---
+
+{
+  path ? (
+    <Layout connectButton="show">
+      <OnboardingPublish_ client:only="svelte" config={config} />
+    </Layout>
+  ) : (
+    <PageNotFound
+      redirectionCtaText={`Take me to ${site?.toUpperCase()} homepage`}
+      redirectionCtaUrl={siteBaseUrl}
+    />
+  )
+}
