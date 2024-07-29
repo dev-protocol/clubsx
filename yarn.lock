@@ -5341,9 +5341,9 @@ crossws@^0.2.0, crossws@^0.2.2:
   integrity sha512-DAxroI2uSOgUKLz00NX6A8U/8EE3SZHmIND+10jkVSaypvyt57J5JEOxAQOL6lQxyzi/wZbTIwssU1uy69h5Vg==
 
 crypto-hash@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/crypto-hash/-/crypto-hash-3.0.0.tgz#1f217b7134c5e05adc013d1edce67c64fa459f7f"
-  integrity sha512-5l5xGtzuvGTU28GXxGV1JYVFou68buZWpkV1Fx5hIDRPnfbQ8KzabTlNIuDIeSCYGVPFehupzDqlnbXm2IXmdQ==
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/crypto-hash/-/crypto-hash-3.1.0.tgz#8be4497e1feee8e75dfc545aa5348fb11ae167c5"
+  integrity sha512-HR8JlZ+Dn54Lc5gGWZJxJitWbOCUzWb9/AlyONGecBnYZ+n/ONvt0gQnEzDNpJMYeRrYO7KogQ4qwyTPKnWKEw==
 
 css-color-keywords@^1.0.0:
   version "1.0.0"
