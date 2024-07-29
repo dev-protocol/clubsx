@@ -112,7 +112,7 @@
       walletAwaitingUserConfirmation = false
       walletConnectStatusMsg = 'Clubs creation confirmed, loading setup...'
       window.location.href = new URL(
-        `${siteName}/setup/basic`,
+        `${siteName}/setup`,
         `${location.protocol}//${location.host}`,
       ).toString()
     } else {
