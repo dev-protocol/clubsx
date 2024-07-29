@@ -1,23 +1,202 @@
 <script lang="ts">
   import { onMount } from 'svelte'
+  import { sign } from '@devprotocol/khaos-kit'
+  import type { NetworkName } from '@devprotocol/khaos-core'
+  import { addresses, marketAddresses } from '@devprotocol/dev-kit'
+  import { type Signer, type ContractRunner, ZeroAddress } from 'ethers'
   import { i18nFactory, type ClubsConfiguration } from '@devprotocol/clubs-core'
+  import type { connection as Connection } from '@devprotocol/clubs-core/connection'
+  import {
+    createMarketBehaviorContract,
+    createMarketContract,
+    createPropertyFactoryContract,
+  } from '@devprotocol/dev-kit/l2'
 
   import { Strings } from './i18n'
-  import GithubIcon from './GithubIcon.svelte'
-  import YoutubeIcon from './YoutubeIcon.svelte'
-  import DiscordIcon from './DiscordIcon.svelte'
-  import { type CreatorPlatform } from './types'
-
-  const i18nBase = i18nFactory(Strings)
-  let i18n = i18nBase(['en'])
+  import { selectMarketAddressOption } from './utils'
+  import { Market, type CreatorPlatform } from './types'
 
   export let clubsName: string
   export let tokenName: string
   export let tokenSymbol: string
 
+  const I18_BASE = i18nFactory(Strings)
+  const NETWORK_NAME: string = 'polygon-mainnet'
+
+  let i18n = I18_BASE(['en'])
+  let signer: Signer | undefined
+  let connection: typeof Connection
+  let provider: ContractRunner | undefined
+  let khaosPubSign: string | undefined
+  let isCreatingKhaosPubSign: boolean = false
+  let createKhaosPubSignFdTxt: string = ''
+  let propertyAddress: string | undefined
+  let isCreatingPropertyAddr: boolean = false
+  let createProertyAddrFdTxt: string = ''
+
+  const connectOnMount = async () => {
+    const _connection = await import('@devprotocol/clubs-core/connection')
+    connection = _connection.connection
+    connection().signer.subscribe((s) => {
+      signer = s
+    })
+    connection().provider.subscribe((p) => {
+      provider = p
+    })
+  }
+
   onMount(() => {
-    i18n = i18nBase(navigator.languages)
+    i18n = I18_BASE(navigator.languages)
+
+    connectOnMount()
   })
+
+  const setKhaosPubSignStates = async (
+    sign: string | undefined,
+    toggle: boolean,
+    feedback: string,
+  ) => {
+    khaosPubSign = sign
+    isCreatingKhaosPubSign = toggle
+    createKhaosPubSignFdTxt = feedback
+  }
+
+  const createKhaosPubSign = async (
+    personalAccessToken: string,
+    assetName: string,
+    signId: string = 'github-market',
+  ) => {
+    try {
+      isCreatingKhaosPubSign = true
+      if (!provider || !signer) {
+        setKhaosPubSignStates(undefined, false, 'Connect your wallet')
+        return
+      }
+
+      const signMessage = await signer.signMessage(assetName)
+      const signerFn = sign(signId, NETWORK_NAME as NetworkName)
+      const _khaosPubSign = await signerFn({
+        signature: signMessage,
+        secret: personalAccessToken,
+        message: assetName,
+      })
+
+      setKhaosPubSignStates(
+        _khaosPubSign
+          ? (_khaosPubSign?.publicSignature ?? undefined)
+          : undefined,
+        false,
+        _khaosPubSign ? '' : 'Could not create signature',
+      )
+      return
+    } catch (err) {
+      console.log('Err', err)
+      setKhaosPubSignStates(
+        undefined,
+        false,
+        `Failed to sign ${signId} market asset`,
+      )
+      return
+    }
+  }
+
+  const setCreateAndAuthenticateStates = async (
+    addr: string | undefined,
+    toggle: boolean,
+    feedback: string,
+  ) => {
+    propertyAddress = addr
+    isCreatingPropertyAddr = toggle
+    createProertyAddrFdTxt = feedback
+  }
+
+  const createAndAuthenticate = async (
+    selectedMarket: Market,
+    assetName: string,
+  ) => {
+    try {
+      isCreatingPropertyAddr = true
+      if (!provider || !signer) {
+        setKhaosPubSignStates(undefined, false, 'Connect your wallet')
+        setCreateAndAuthenticateStates(undefined, false, 'Connect your wallet')
+        return
+      }
+      if (!khaosPubSign) {
+        setKhaosPubSignStates(undefined, false, 'Sign')
+        setCreateAndAuthenticateStates(undefined, false, 'Sign not found!')
+        return
+      }
+
+      const userAddr: string = await signer.getAddress()
+      const propertyFactoryContract = createPropertyFactoryContract(provider)(
+        addresses.polygon.mainnet.propertyFactory,
+      )
+      if (!propertyFactoryContract) {
+        setCreateAndAuthenticateStates(
+          undefined,
+          false,
+          'Error fetching contract',
+        )
+        return
+      }
+
+      const marketAddr = selectMarketAddressOption(
+        selectedMarket,
+        marketAddresses.polygon.mainnet,
+      )
+      if (!marketAddr) {
+        setCreateAndAuthenticateStates(undefined, false, 'Error setting market')
+        return
+      }
+
+      const marketContract = createMarketContract(provider)(marketAddr)
+      const marketBehavior = createMarketBehaviorContract(provider)(
+        await marketContract.behavior(),
+      )
+      const metricsAddress = await marketBehavior.getMetrics(assetName) // for example github repo name or youtube channel id
+      if (metricsAddress === ZeroAddress) {
+        const created = await propertyFactoryContract.createAndAuthenticate(
+          tokenName,
+          tokenSymbol,
+          marketAddr,
+          [assetName, khaosPubSign],
+          {
+            metricsFactoryAddress: addresses.polygon.mainnet.metricsFactory,
+          },
+          {
+            fallback: {
+              from: userAddr,
+              // value from stake.social createAndAuthenticate
+              // should this be more dynamic based on network?
+              gasLimit: 2000000,
+            },
+          },
+        )
+
+        await created.waitForAuthentication()
+        setCreateAndAuthenticateStates(
+          created.property,
+          false,
+          'Tokenized successfully',
+        )
+        return
+      } else {
+        setCreateAndAuthenticateStates(
+          undefined,
+          false,
+          `Metrics address ${metricsAddress} already exists for id ${assetName}`,
+        )
+        return
+      }
+    } catch (err) {
+      console.log('Err', err)
+      setCreateAndAuthenticateStates(
+        undefined,
+        false,
+        `Failed to create and authenticate asset`,
+      )
+    }
+  }
 </script>
 
 <div
@@ -70,15 +249,24 @@
 
     <div
       class={`p-8 rounded-3xl bg-surface-400 flex flex-col lg:flex-row justify-between items-center gap-5 transition-opacity duration-700 ${
-        true ? '' : 'opacity-30'
+        signer && !khaosPubSign && clubsName && tokenName && tokenSymbol
+          ? ''
+          : 'opacity-30'
       }`}
     >
       <p class="font-normal text-base text-white">{i18n('CreateASig')}</p>
       <button
+        disabled={!signer ||
+          !!khaosPubSign ||
+          isCreatingKhaosPubSign ||
+          isCreatingPropertyAddr ||
+          !clubsName ||
+          !tokenName ||
+          !tokenSymbol}
         class={`hs-button is-filled px-8 py-4 ${
-          false ? 'animate-pulse bg-gray-500/60' : ''
-        } ${false ? 'bg-gray-500/60' : ''}`}
-        on:click|preventDefault={(_) => {}}
+          isCreatingKhaosPubSign ? 'animate-pulse bg-gray-500/60' : ''
+        } ${!signer || !!khaosPubSign || !clubsName || !tokenName || !tokenSymbol ? 'bg-gray-500/60' : ''}`}
+        on:click|preventDefault={(_) => createKhaosPubSign('', tokenName)}
       >
         {i18n('Sign')}
       </button>
@@ -86,15 +274,25 @@
 
     <div
       class={`p-8 rounded-3xl bg-surface-400 flex flex-col lg:flex-row justify-between items-center gap-5 transition-opacity duration-700 ${
-        true ? '' : 'opacity-30'
+        signer && khaosPubSign && clubsName && tokenName && tokenSymbol
+          ? ''
+          : 'opacity-30'
       }`}
     >
       <p class="font-normal text-base text-white">{i18n('StartClub')}</p>
       <button
+        disabled={!signer ||
+          !khaosPubSign ||
+          isCreatingPropertyAddr ||
+          isCreatingKhaosPubSign ||
+          !clubsName ||
+          !tokenName ||
+          !tokenSymbol}
         class={`hs-button is-filled px-8 py-4 ${
-          false ? 'animate-pulse bg-gray-500/60' : ''
-        } ${false ? 'bg-gray-500/60' : ''}`}
-        on:click|preventDefault={(_) => {}}
+          isCreatingPropertyAddr ? 'animate-pulse bg-gray-500/60' : ''
+        } ${!signer || !khaosPubSign || !clubsName || !tokenName || !tokenSymbol ? 'bg-gray-500/60' : ''}`}
+        on:click|preventDefault={(_) =>
+          createAndAuthenticate(Market.GITHUB, '')}
       >
         {i18n('Tokenize')}
       </button>
