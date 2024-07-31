@@ -2,11 +2,11 @@
   import { onMount } from 'svelte'
   import { i18nFactory, type ClubsConfiguration } from '@devprotocol/clubs-core'
 
-  import { Strings } from '../PublishConfirm/i18n'
+  import { Strings } from './i18n'
+  import { Market } from '../PublishMarketForm/types'
   import GithubIcon from '../PublishMarketForm/Github/GithubIcon.svelte'
   import YoutubeIcon from '../PublishMarketForm/Youtube/YoutubeIcon.svelte'
   import DiscordIcon from '../PublishMarketForm/Discord/DiscordIcon.svelte'
-  import { type CreatorPlatform } from '../PublishConfirm/types'
 
   const i18nBase = i18nFactory(Strings)
   let i18n = i18nBase(['en'])
@@ -16,9 +16,9 @@
   let clubsName: string = ''
   let tokenName: string = ''
   let tokenSymbol: string = ''
-  let creatorPlatform: CreatorPlatform
+  let creatorPlatform: Market
 
-  const changeCreatorPlatform = async (platform: CreatorPlatform) => {
+  const changeCreatorPlatform = async (platform: Market) => {
     creatorPlatform = platform
   }
 
@@ -68,13 +68,13 @@
         class="flex w-full max-w-full h-28 max-h-[28] items-center justify-start gap-2"
       >
         <button
-          on:click|preventDefault={() => changeCreatorPlatform('youtube')}
+          on:click|preventDefault={() => changeCreatorPlatform(Market.YOUTUBE)}
           class={`hs-button is-large is-filled flex flex-col max-w-[33%] grow items-center justify-center gap-2.5 ${
-            creatorPlatform !== 'youtube' && 'opacity-50'
+            creatorPlatform !== Market.YOUTUBE && 'opacity-50'
           } self-stretch justify-self-stretch h-full max-h-full min-h-full`}
           id="youtube-icon"
           name="youtube-icon"
-          disabled={creatorPlatform === 'youtube'}
+          disabled={creatorPlatform === Market.YOUTUBE}
         >
           <span class="h-auto w-auto">
             <YoutubeIcon />
@@ -82,13 +82,13 @@
           Youtube
         </button>
         <button
-          on:click|preventDefault={() => changeCreatorPlatform('github')}
+          on:click|preventDefault={() => changeCreatorPlatform(Market.GITHUB)}
           class={`hs-button is-large is-filled flex flex-col max-w-[33%] grow items-center justify-center gap-2.5 ${
-            creatorPlatform !== 'github' && 'opacity-50'
+            creatorPlatform !== Market.GITHUB && 'opacity-50'
           } self-stretch justify-self-stretch h-full max-h-full min-h-full`}
           id="github-icon"
           name="github-icon"
-          disabled={creatorPlatform === 'github'}
+          disabled={creatorPlatform === Market.GITHUB}
         >
           <span class="h-auto w-auto">
             <GithubIcon />
@@ -96,13 +96,13 @@
           Github
         </button>
         <button
-          on:click|preventDefault={() => changeCreatorPlatform('discord')}
+          on:click|preventDefault={() => changeCreatorPlatform(Market.DISCORD)}
           class={`hs-button is-large is-filled flex flex-col max-w-[33%] grow items-center justify-center gap-2.5 ${
-            creatorPlatform !== 'discord' && 'opacity-50'
+            creatorPlatform !== Market.DISCORD && 'opacity-50'
           } self-stretch justify-self-stretch h-full max-h-full min-h-full`}
           id="discord-icon"
           name="discord-icon"
-          disabled={creatorPlatform === 'discord'}
+          disabled={creatorPlatform === Market.DISCORD}
         >
           <span class="h-auto w-auto">
             <DiscordIcon />
