@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import { useStore } from '@nanostores/react'
+import React, { useState, useEffect } from 'react'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import { i18nFactory, type ClubsI18nFunction } from '@devprotocol/clubs-core'
 
 import { Strings } from './i18n'
 import { Market } from '../PublishMarketForm/types'
 import GithubMarketButton from '@components/PublishMarketForm/Github/Github'
+import { clubsName, tokenName, tokenSymbol } from '../../stores/tokenization'
 import DiscordMarketButton from '@components/PublishMarketForm/Discord/Discord'
 import YoutubeMarketButton from '@components/PublishMarketForm/Youtube/Youtube'
 
@@ -16,9 +18,10 @@ const PublishForm = (props: IPublishFormProps) => {
   let i18nBase = i18nFactory(Strings)
   let i18n: ClubsI18nFunction<typeof Strings> = i18nBase(['en'])
 
-  const [clubsName, setClubsName] = useState<String>('')
-  const [tokenName, setTokenName] = useState<String>('')
-  const [tokenSymbol, setTokenSymbol] = useState<String>('')
+  const clubsNameStore = useStore(clubsName)
+  const tokenNameStore = useStore(tokenName)
+  const tokenSymbolStore = useStore(tokenSymbol)
+
   const [market, setMarket] = useState<UndefinedOr<Market>>(undefined)
 
   useEffect(() => {
@@ -26,13 +29,19 @@ const PublishForm = (props: IPublishFormProps) => {
   }, [navigator])
 
   const toPublishConfirm = async () => {
-    if (!props.domain || !clubsName || !market || !tokenName || !tokenSymbol) {
+    if (
+      !props.domain ||
+      !clubsNameStore ||
+      !market ||
+      !tokenNameStore ||
+      !tokenSymbolStore
+    ) {
       return
     }
 
     // TODO: add validations for input field.
     window.location.href = new URL(
-      `${props.domain}/setup/confirm?clubsName=${clubsName}&tokenName=${tokenName}&tokenSymbol=${tokenSymbol}`,
+      `${props.domain}/setup/confirm?clubsName=${clubsNameStore}&tokenName=${tokenNameStore}&tokenSymbol=${tokenSymbolStore}`,
       `${location.protocol}//${location.host}`,
     ).toString()
   }
@@ -55,8 +64,8 @@ const PublishForm = (props: IPublishFormProps) => {
             <input
               className="hs-form-field__input w-full"
               type="text"
-              value={clubsName as string}
-              onChange={(ev) => setClubsName(ev?.target?.value || '')}
+              value={clubsNameStore}
+              onChange={(ev) => clubsName.set(ev?.target?.value || '')}
               id="clubs-name"
               name="clubs-name"
             />
@@ -94,8 +103,8 @@ const PublishForm = (props: IPublishFormProps) => {
             <input
               className="hs-form-field__input w-full"
               type="text"
-              value={tokenName as string}
-              onChange={(ev) => setTokenName(ev?.target?.value || '')}
+              value={tokenNameStore}
+              onChange={(ev) => tokenName.set(ev?.target?.value || '')}
               id="token-name"
               name="token-name"
             />
@@ -111,8 +120,8 @@ const PublishForm = (props: IPublishFormProps) => {
             <input
               className="hs-form-field__input w-full"
               type="text"
-              value={tokenSymbol as string}
-              onChange={(ev) => setTokenSymbol(ev?.target?.value || '')}
+              value={tokenSymbolStore}
+              onChange={(ev) => tokenSymbol.set(ev?.target?.value || '')}
               id="token-symbol"
               name="token-symbol"
             />
@@ -125,10 +134,10 @@ const PublishForm = (props: IPublishFormProps) => {
             <button
               disabled={
                 !props.domain ||
-                !clubsName ||
+                !clubsNameStore ||
                 !market ||
-                !tokenName ||
-                !tokenSymbol
+                !tokenNameStore ||
+                !tokenSymbolStore
               }
               className={`hs-button is-filled is-error w-fit py-6 px-8 ${
                 false ? 'animate-pulse bg-gray-500/60' : ''
