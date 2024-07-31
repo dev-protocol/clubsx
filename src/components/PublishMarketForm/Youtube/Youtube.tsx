@@ -9,9 +9,23 @@ interface IYoutubeButtonProps {
 }
 
 const YoutubeMarketButton = (props: IYoutubeButtonProps) => {
+  const onAuthYoutubeAccount = () => {
+    props.changeMarket(Market.YOUTUBE)
+    const clientId = import.meta.env.PUBLIC_YOUTUBE_CLIENT_ID
+    const redirectUri = encodeURI(
+      (`${window.location.href}?marketPopup=true` as string) || '',
+    )
+    const scope = encodeURI(
+      'https://www.googleapis.com/auth/youtube.readonly https://www.googleapis.com/auth/userinfo.email',
+    )
+    const url = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=token`
+
+    window.location.assign(url)
+  }
+
   return (
     <button
-      onClick={() => props.changeMarket(Market.YOUTUBE)}
+      onClick={onAuthYoutubeAccount}
       className={`hs-button is-large is-filled flex flex-col max-w-[33%] grow items-center justify-center gap-2.5 ${
         props.market !== Market.YOUTUBE && 'opacity-50'
       } self-stretch justify-self-stretch h-full max-h-full min-h-full`}
