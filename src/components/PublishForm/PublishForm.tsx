@@ -4,7 +4,9 @@ import { i18nFactory, type ClubsI18nFunction } from '@devprotocol/clubs-core'
 
 import { Strings } from './i18n'
 import { Market } from '../PublishMarketForm/types'
+import GithubMarketButton from '@components/PublishMarketForm/Github/Github'
 import DiscordMarketButton from '@components/PublishMarketForm/Discord/Discord'
+import YoutubeMarketButton from '@components/PublishMarketForm/Youtube/Youtube'
 
 interface IPublishFormProps {
   domain: string
@@ -69,9 +71,9 @@ const PublishForm = (props: IPublishFormProps) => {
               {i18n('VerifyYouLabel')}{' '}
             </span>
             <div className="flex w-full max-w-full h-28 max-h-[28] items-center justify-start gap-2">
+              <GithubMarketButton market={market} changeMarket={setMarket} />
               <DiscordMarketButton market={market} changeMarket={setMarket} />
-              <DiscordMarketButton market={market} changeMarket={setMarket} />
-              <DiscordMarketButton market={market} changeMarket={setMarket} />
+              <YoutubeMarketButton market={market} changeMarket={setMarket} />
             </div>
             <p
               className={`${!market && 'hs-form-field__helper'} mt-2 font-body font-bold text-base capitalize`}
