@@ -1,10 +1,18 @@
 ---
 import Layout from '@layouts/Landing.astro'
 import { Market as EMarket } from '@components/PublishMarketForm/types'
+import DiscordAuthCallback from '@components/PublishMarketForm/Discord/DiscordAuthCallback'
 
 const { market } = Astro.params
+const eMarket = market?.toUpperCase() as EMarket
 ---
 
 <Layout connectButton="show">
-  {market === EMarket.DISCORD ? 'HI' : 'BYE'}
+  {
+    eMarket === EMarket.DISCORD ? (
+      <DiscordAuthCallback client:only="react" market={eMarket} />
+    ) : (
+      'BYE'
+    )
+  }
 </Layout>

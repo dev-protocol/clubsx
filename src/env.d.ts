@@ -4,6 +4,7 @@
 interface ImportMetaEnv {
   readonly PUBLIC_YOUTUBE_CLIENT_ID: string
   readonly PUBLIC_DISCORD_CLIENT_ID: string
+  readonly PUBLIC_DISCORD_CLIENT_SECRET: string
   readonly PUBLIC_FIREBASE_API_KEY: string
   readonly PUBLIC_FIREBASE_PROJECT_ID: string
   readonly PUBLIC_FIREBASE_MESSAGING_SENDER_ID: string
