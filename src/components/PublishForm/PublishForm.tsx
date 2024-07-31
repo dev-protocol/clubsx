@@ -24,6 +24,10 @@ const PublishForm = (props: IPublishFormProps) => {
   }, [navigator])
 
   const toPublishConfirm = async () => {
+    if (!props.domain || !clubsName || !market || !tokenName || !tokenSymbol) {
+      return
+    }
+
     // TODO: add validations for input field.
     window.location.href = new URL(
       `${props.domain}/setup/confirm?clubsName=${clubsName}&tokenName=${tokenName}&tokenSymbol=${tokenSymbol}`,
@@ -113,6 +117,13 @@ const PublishForm = (props: IPublishFormProps) => {
 
           <div className="flex w-full justify-end gap-[20px]">
             <button
+              disabled={
+                !props.domain ||
+                !clubsName ||
+                !market ||
+                !tokenName ||
+                !tokenSymbol
+              }
               className={`hs-button is-filled is-error w-fit py-6 px-8 ${
                 false ? 'animate-pulse bg-gray-500/60' : ''
               }`}
