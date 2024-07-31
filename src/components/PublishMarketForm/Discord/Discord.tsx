@@ -9,9 +9,20 @@ interface IDiscordButtonProps {
 }
 
 const DiscordMarketButton = (props: IDiscordButtonProps) => {
+  const onAuthDiscordAccount = () => {
+    props.changeMarket(Market.DISCORD)
+    const clientId = import.meta.env.PUBLIC_DISCORD_CLIENT_ID
+    const redirectUri = encodeURI(
+      (`${window.location.href}?marketPopup=true` as string) || '',
+    )
+    const scope = encodeURI('guilds')
+    const url = `https://discord.com/api/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code&prompt=consent`
+    window.location.assign(url)
+  }
+
   return (
     <button
-      onClick={() => props.changeMarket(Market.DISCORD)}
+      onClick={onAuthDiscordAccount}
       className={`hs-button is-large is-filled flex flex-col max-w-[33%] grow items-center justify-center gap-2.5 ${
         props.market !== Market.DISCORD && 'opacity-50'
       } self-stretch justify-self-stretch h-full max-h-full min-h-full`}
