@@ -22,14 +22,14 @@ export const Strings = {
     ja: () => `本人確認はどうすればできますか？`,
   },
   VerifiedYouHelper: {
-    en: ([platform]) => {
-      if (!platform) return `* Add your socials so fans know it’s you!`
-      return `<b>${platform}</b> - AUTHENTICATED_CHANNEL_ID`
+    en: ([market]) => {
+      if (!market) return `* Add your socials so fans know it’s you!`
+      return `<b>${market}</b> - AUTHENTICATED_CHANNEL_ID`
     },
-    ja: ([platform]) => {
-      if (!platform)
+    ja: ([market]) => {
+      if (!market)
         return '* ソーシャルを追加して、ファンにあなたであることを知らせましょう。'
-      return `<b>${platform}</b> - 認証されたチャンネルID`
+      return `<b>${market}</b> - 認証されたチャンネルID`
     },
   },
   TokenNameLabel: {
