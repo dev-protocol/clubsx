@@ -4,6 +4,7 @@ import type { UndefinedOr } from '@devprotocol/util-ts'
 import { Market } from '../types'
 
 interface IDiscordButtonProps {
+  domain: string
   market: UndefinedOr<Market>
   changeMarket: (market: Market) => void
 }
@@ -18,7 +19,14 @@ const DiscordMarketButton = (props: IDiscordButtonProps) => {
         '',
     )
     const scope = encodeURI('guilds')
-    const url = `https://discord.com/api/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code&prompt=consent`
+    const tokenizePageState: { clubsDomain: string } = {
+      clubsDomain: props.domain,
+    }
+    const stateParam = encodeURIComponent(
+      window.btoa(JSON.stringify(tokenizePageState)),
+    )
+
+    const url = `https://discord.com/api/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code&prompt=consent&state=${stateParam}`
 
     window.location.assign(url)
   }
