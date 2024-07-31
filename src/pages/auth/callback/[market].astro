@@ -1,0 +1,10 @@
+---
+import Layout from '@layouts/Landing.astro'
+import { Market as EMarket } from '@components/PublishMarketForm/types'
+
+const { market } = Astro.params
+---
+
+<Layout connectButton="show">
+  {market === EMarket.DISCORD ? 'HI' : 'BYE'}
+</Layout>

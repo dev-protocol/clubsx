@@ -11,12 +11,15 @@ interface IDiscordButtonProps {
 const DiscordMarketButton = (props: IDiscordButtonProps) => {
   const onAuthDiscordAccount = () => {
     props.changeMarket(Market.DISCORD)
+
     const clientId = import.meta.env.PUBLIC_DISCORD_CLIENT_ID
     const redirectUri = encodeURI(
-      (`${window.location.href}?marketPopup=true` as string) || '',
+      (`${location.protocol}//${location.host}/auth/callback/discord` as string) ||
+        '',
     )
     const scope = encodeURI('guilds')
     const url = `https://discord.com/api/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code&prompt=consent`
+
     window.location.assign(url)
   }
 
