@@ -2,11 +2,11 @@
   import { onMount } from 'svelte'
   import { i18nFactory, type ClubsConfiguration } from '@devprotocol/clubs-core'
 
-  import { Strings } from './i18n'
-  import GithubIcon from './GithubIcon.svelte'
-  import YoutubeIcon from './YoutubeIcon.svelte'
-  import DiscordIcon from './DiscordIcon.svelte'
-  import { type CreatorPlatform } from './types'
+  import { Strings } from '../PublishConfirm/i18n'
+  import GithubIcon from '../PublishMarketForm/Github/GithubIcon.svelte'
+  import YoutubeIcon from '../PublishMarketForm/Youtube/YoutubeIcon.svelte'
+  import DiscordIcon from '../PublishMarketForm/Discord/DiscordIcon.svelte'
+  import { type CreatorPlatform } from '../PublishConfirm/types'
 
   const i18nBase = i18nFactory(Strings)
   let i18n = i18nBase(['en'])
