@@ -72,7 +72,7 @@ const PublishForm = (props: IPublishFormProps) => {
             <p
               className={`${!market && 'hs-form-field__helper'} mt-2 font-body font-bold text-base capitalize`}
               dangerouslySetInnerHTML={{
-                __html: `* ${i18n('VerifiedYouHelper', [market])}`,
+                __html: `${i18n('VerifiedYouHelper', [market])}`,
               }}
             ></p>
           </div>

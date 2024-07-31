@@ -11,13 +11,13 @@ interface IDiscordButtonProps {
 const DiscordMarketButton = (props: IDiscordButtonProps) => {
   return (
     <button
-      onClick={() => props.changeMarket(Market.YOUTUBE)}
+      onClick={() => props.changeMarket(Market.DISCORD)}
       className={`hs-button is-large is-filled flex flex-col max-w-[33%] grow items-center justify-center gap-2.5 ${
-        props.market !== Market.YOUTUBE && 'opacity-50'
+        props.market !== Market.DISCORD && 'opacity-50'
       } self-stretch justify-self-stretch h-full max-h-full min-h-full`}
-      id="youtube-icon"
-      name="youtube-icon"
-      disabled={props.market === Market.YOUTUBE}
+      id="discord-icon"
+      name="discord-icon"
+      disabled={props.market === Market.DISCORD}
     >
       <span className="h-auto w-auto">
         <svg

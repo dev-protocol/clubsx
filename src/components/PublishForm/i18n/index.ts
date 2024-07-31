@@ -24,12 +24,12 @@ export const Strings = {
   VerifiedYouHelper: {
     en: ([market]) => {
       if (!market) return `* Add your socials so fans know it’s you!`
-      return `<b>${market}</b> - AUTHENTICATED_CHANNEL_ID`
+      return `* <b>${market}</b> - AUTHENTICATED_CHANNEL_ID`
     },
     ja: ([market]) => {
       if (!market)
         return '* ソーシャルを追加して、ファンにあなたであることを知らせましょう。'
-      return `<b>${market}</b> - 認証されたチャンネルID`
+      return `* <b>${market}</b> - 認証されたチャンネルID`
     },
   },
   TokenNameLabel: {
