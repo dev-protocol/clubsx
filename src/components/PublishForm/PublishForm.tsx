@@ -1,4 +1,3 @@
-import { useStore } from '@nanostores/react'
 import React, { useState, useEffect } from 'react'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import { i18nFactory, type ClubsI18nFunction } from '@devprotocol/clubs-core'
@@ -18,10 +17,9 @@ const PublishForm = (props: IPublishFormProps) => {
   let i18nBase = i18nFactory(Strings)
   let i18n: ClubsI18nFunction<typeof Strings> = i18nBase(['en'])
 
-  const clubsNameStore = useStore(clubsName)
-  const tokenNameStore = useStore(tokenName)
-  const tokenSymbolStore = useStore(tokenSymbol)
-
+  const [clubsName, setClubsName] = useState<string>('')
+  const [tokenName, setTokenName] = useState<string>('')
+  const [tokenSymbol, setTokenSymbol] = useState<string>('')
   const [market, setMarket] = useState<UndefinedOr<Market>>(undefined)
 
   useEffect(() => {
@@ -29,19 +27,13 @@ const PublishForm = (props: IPublishFormProps) => {
   }, [navigator])
 
   const toPublishConfirm = async () => {
-    if (
-      !props.domain ||
-      !clubsNameStore ||
-      !market ||
-      !tokenNameStore ||
-      !tokenSymbolStore
-    ) {
+    if (!props.domain || !clubsName || !market || !tokenName || !tokenSymbol) {
       return
     }
 
     // TODO: add validations for input field.
     window.location.href = new URL(
-      `${props.domain}/setup/confirm?clubsName=${clubsNameStore}&tokenName=${tokenNameStore}&tokenSymbol=${tokenSymbolStore}`,
+      `${props.domain}/setup/confirm?clubsName=${clubsName}&tokenName=${tokenName}&tokenSymbol=${tokenSymbol}`,
       `${location.protocol}//${location.host}`,
     ).toString()
   }
@@ -64,8 +56,8 @@ const PublishForm = (props: IPublishFormProps) => {
             <input
               className="hs-form-field__input w-full"
               type="text"
-              value={clubsNameStore}
-              onChange={(ev) => clubsName.set(ev?.target?.value || '')}
+              value={tokenName}
+              onChange={(ev) => setClubsName(ev?.target?.value || '')}
               id="clubs-name"
               name="clubs-name"
             />
@@ -103,8 +95,8 @@ const PublishForm = (props: IPublishFormProps) => {
             <input
               className="hs-form-field__input w-full"
               type="text"
-              value={tokenNameStore}
-              onChange={(ev) => tokenName.set(ev?.target?.value || '')}
+              value={tokenName}
+              onChange={(ev) => setTokenName(ev?.target?.value || '')}
               id="token-name"
               name="token-name"
             />
@@ -120,8 +112,8 @@ const PublishForm = (props: IPublishFormProps) => {
             <input
               className="hs-form-field__input w-full"
               type="text"
-              value={tokenSymbolStore}
-              onChange={(ev) => tokenSymbol.set(ev?.target?.value || '')}
+              value={tokenSymbol}
+              onChange={(ev) => setTokenSymbol(ev?.target?.value || '')}
               id="token-symbol"
               name="token-symbol"
             />
@@ -134,10 +126,10 @@ const PublishForm = (props: IPublishFormProps) => {
             <button
               disabled={
                 !props.domain ||
-                !clubsNameStore ||
+                !clubsName ||
                 !market ||
-                !tokenNameStore ||
-                !tokenSymbolStore
+                !tokenName ||
+                !tokenSymbol
               }
               className={`hs-button is-filled is-error w-fit py-6 px-8 ${
                 false ? 'animate-pulse bg-gray-500/60' : ''

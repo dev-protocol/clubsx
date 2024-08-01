@@ -1,5 +1,4 @@
 import useSWR from 'swr'
-import { useStore } from '@nanostores/react'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import { i18nFactory, type ClubsI18nFunction } from '@devprotocol/clubs-core'
 import React, {
@@ -13,13 +12,7 @@ import React, {
 import { Strings } from '../i18n'
 import { Market } from '../types'
 import { useQuery } from '../utils'
-import {
-  assetName,
-  personalAccessToken,
-  clubsName,
-  tokenName,
-  tokenSymbol,
-} from '../../../stores/tokenization'
+
 interface IDiscordAuthCallbackProps {
   market: UndefinedOr<Market>
 }
@@ -32,9 +25,8 @@ const DiscordAuthCallbackPage: FunctionComponent<IDiscordAuthCallbackProps> = (
   let i18nBase = i18nFactory(Strings)
   let i18n: ClubsI18nFunction<typeof Strings> = i18nBase(['en'])
 
-  const assetNameStore = useStore(assetName)
-  const tokenSymbolStore = useStore(tokenSymbol)
-  const personalAccessTokenStore = useStore(personalAccessToken)
+  const [assetName, setAssetName] = useState<string>('')
+  const [personalAccessToken, setPersonalAccessToken] = useState<string>('')
 
   const [isVerify, setIsVerify] = useState<boolean>(false)
   const [error, setError] = useState<UndefinedOr<string>>('')
@@ -201,19 +193,19 @@ const DiscordAuthCallbackPage: FunctionComponent<IDiscordAuthCallbackProps> = (
       return setError('Invalid Authentication!')
     }
 
-    personalAccessToken.set(accessTokenData?.data?.accessToken)
+    setPersonalAccessToken(accessTokenData?.data?.accessToken)
   }, [
     setMarket,
     market,
     guildData,
     isVerify,
-    personalAccessTokenStore,
+    personalAccessToken,
     accessTokenData,
-    assetNameStore,
+    assetName,
   ])
 
   const onSubmit = () => {
-    if (!assetNameStore) {
+    if (!assetName) {
       return setError('Please select a guild')
     }
 
@@ -244,7 +236,6 @@ const DiscordAuthCallbackPage: FunctionComponent<IDiscordAuthCallbackProps> = (
           <h1 className="text-2xl font-bold md:text-5xl text-center">
             {i18n('DiscordAuthCallbackHeader')}
           </h1>
-          <p>{tokenSymbolStore}</p>
         </section>
 
         {error && (
@@ -311,7 +302,7 @@ const DiscordAuthCallbackPage: FunctionComponent<IDiscordAuthCallbackProps> = (
 
             <section className="grid gap-16 w-full max-w-full mb-16 md:mb-32 gap-4">
               <button
-                disabled={!assetNameStore}
+                disabled={!assetName || !personalAccessToken}
                 className={`hs-button is-filled is-error w-fit py-6 px-8`}
                 onClick={onSubmit}
               >
