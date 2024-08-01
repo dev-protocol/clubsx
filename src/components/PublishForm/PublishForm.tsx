@@ -5,7 +5,6 @@ import { i18nFactory, type ClubsI18nFunction } from '@devprotocol/clubs-core'
 import { Strings } from './i18n'
 import { Market } from '../PublishMarketForm/types'
 import GithubMarketButton from '@components/PublishMarketForm/Github/Github'
-import { clubsName, tokenName, tokenSymbol } from '../../stores/tokenization'
 import DiscordMarketButton from '@components/PublishMarketForm/Discord/Discord'
 import YoutubeMarketButton from '@components/PublishMarketForm/Youtube/Youtube'
 
@@ -56,7 +55,7 @@ const PublishForm = (props: IPublishFormProps) => {
             <input
               className="hs-form-field__input w-full"
               type="text"
-              value={tokenName}
+              value={clubsName}
               onChange={(ev) => setClubsName(ev?.target?.value || '')}
               id="clubs-name"
               name="clubs-name"
