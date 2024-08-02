@@ -85,7 +85,7 @@
     "@web3modal/wagmi": "3.5.7",
     "@webcomponents/template-shadowroot": "^0.2.1",
     "astro": "4.13.1",
-    "autoprefixer": "10.4.19",
+    "autoprefixer": "10.4.20",
     "bad-words": "^3.0.4",
     "bignumber.js": "9.1.2",
     "cross-fetch": "^4.0.0",
