@@ -138,7 +138,11 @@ const PublishForm = (props: IPublishFormProps) => {
                 changeMarket={setMarket}
                 domain={props.domain}
               />
-              <YoutubeMarketButton market={market} changeMarket={setMarket} />
+              <YoutubeMarketButton
+                market={market}
+                changeMarket={setMarket}
+                domain={props.domain}
+              />
             </div>
             <p
               className={`${!assetName && 'hs-form-field__helper'} mt-2 font-body font-bold text-base capitalize`}

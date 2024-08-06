@@ -4,21 +4,28 @@ import type { UndefinedOr } from '@devprotocol/util-ts'
 import { Market } from '../types'
 
 interface IYoutubeButtonProps {
+  domain: string
   market: UndefinedOr<Market>
   changeMarket: (market: Market) => void
 }
 
 const YoutubeMarketButton = (props: IYoutubeButtonProps) => {
   const onAuthYoutubeAccount = () => {
-    props.changeMarket(Market.YOUTUBE)
-    const clientId = import.meta.env.PUBLIC_YOUTUBE_CLIENT_ID
+    const clientId = import.meta.env.VITE_YOUTUBE_CLIENT_ID
     const redirectUri = encodeURI(
-      (`${window.location.href}?marketPopup=true` as string) || '',
+      (`${location.protocol}//${location.host}/auth/callback/youtube` as string) ||
+        '',
     )
     const scope = encodeURI(
       'https://www.googleapis.com/auth/youtube.readonly https://www.googleapis.com/auth/userinfo.email',
     )
-    const url = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=token`
+    const tokenizePageState: { clubsDomain: string } = {
+      clubsDomain: props.domain,
+    }
+    const stateParam = encodeURIComponent(
+      window.btoa(JSON.stringify(tokenizePageState)),
+    )
+    const url = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=token&state=${stateParam}`
 
     window.location.assign(url)
   }
