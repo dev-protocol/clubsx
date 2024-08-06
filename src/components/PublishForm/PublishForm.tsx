@@ -196,9 +196,7 @@ const PublishForm = (props: IPublishFormProps) => {
                 !tokenSymbol ||
                 !assetName
               }
-              className={`hs-button is-filled is-error w-fit py-6 px-8 ${
-                false ? 'animate-pulse bg-gray-500/60' : ''
-              }`}
+              className={`hs-button is-filled is-error w-fit py-6 px-8`}
               onClick={toPublishConfirm}
             >
               <span className="hs-button__label">{i18n('Next')}</span>

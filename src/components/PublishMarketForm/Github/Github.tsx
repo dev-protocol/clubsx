@@ -33,7 +33,6 @@ const GithubButtonProps = (props: IGithubButtonProps) => {
       } self-stretch justify-self-stretch h-full max-h-full min-h-full`}
       id="github-icon"
       name="github-icon"
-      disabled={props.market === Market.GITHUB}
     >
       <span className="h-auto w-auto">
         <svg

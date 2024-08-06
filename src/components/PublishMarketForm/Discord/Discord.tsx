@@ -39,7 +39,6 @@ const DiscordMarketButton = (props: IDiscordButtonProps) => {
       } self-stretch justify-self-stretch h-full max-h-full min-h-full`}
       id="discord-icon"
       name="discord-icon"
-      disabled={props.market === Market.DISCORD}
     >
       <span className="h-auto w-auto">
         <svg

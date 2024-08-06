@@ -38,7 +38,6 @@ const YoutubeMarketButton = (props: IYoutubeButtonProps) => {
       } self-stretch justify-self-stretch h-full max-h-full min-h-full`}
       id="youtube-icon"
       name="youtube-icon"
-      disabled={props.market === Market.YOUTUBE}
     >
       <span className="h-auto w-auto">
         <svg
