@@ -40,13 +40,11 @@ const YoutubeAuthCallbackPage: FunctionComponent<IDiscordAuthCallbackProps> = (
     i18n = i18nBase(navigator.languages)
   }, [navigator])
 
-  const [queryParams, redirectURI] = useMemo(
-    () => [
+  const queryParams = useMemo(
+    () =>
       useQuery(
         window.location.search ? window.location.search : window.location.hash,
       ),
-      `${location.protocol}//${location.host}/auth/callback/youtube`,
-    ],
     [useQuery, window, location],
   )
 
@@ -180,12 +178,17 @@ const YoutubeAuthCallbackPage: FunctionComponent<IDiscordAuthCallbackProps> = (
       return
     }
 
-    if (!isVerify) {
+    if (!verifyData.isLoading && !youtubeData.isLoading && !isVerify) {
       return setError('Invalid Authentication!')
     }
 
     setAssetName(youtubeData?.data.pop().channelId)
     setPersonalAccessToken(queryParams.access_token)
+
+    window.location.href = new URL(
+      `/${clubsDomain}/setup`,
+      `${location.protocol}//${location.host}`,
+    ).toString()
   }, [
     setMarket,
     market,
@@ -194,6 +197,8 @@ const YoutubeAuthCallbackPage: FunctionComponent<IDiscordAuthCallbackProps> = (
     personalAccessToken,
     youtubeData,
     assetName,
+    location,
+    window,
   ])
 
   return (
@@ -201,23 +206,59 @@ const YoutubeAuthCallbackPage: FunctionComponent<IDiscordAuthCallbackProps> = (
       <div className="relative flex gap-16 flex-col justify-center p-4 md:p-0 w-[36%] max-w-[36%] ml-auto mr-auto">
         <section className="mt-16 grid gap-8 md:mt-32 min-w-full w-full max-w-full">
           <h1 className="text-2xl font-bold md:text-5xl text-center">
-            {i18n('DiscordAuthCallbackHeader')}
+            {i18n('YoutubeAuthCallbackHeader')}
           </h1>
+          <p className="text-center">{i18n('YoutubeAuthCallbackSubHeader')}</p>
         </section>
 
-        {error ? (
-          <section className="grid gap-16 w-full max-w-full mb-16 md:mb-32">
-            <span className="text-base font-normal text-center">
-              {i18n('DiscordAuthCallbackNoGuild')}
-            </span>
-          </section>
-        ) : (
-          <section className="grid gap-16 w-full max-w-full mb-16 md:mb-32">
-            <span className="text-base font-normal text-center">
-              {i18n('DiscordAuthCallbackNoGuild')}
-            </span>
-          </section>
+        {verifyData.isLoading ||
+          (youtubeData.isLoading && (
+            <div
+              className={`p-8 rounded-3xl bg-surface-400 flex flex-col lg:flex-row justify-between items-center gap-5 transition-opacity duration-700 animate-pulse bg-gray-500/60`}
+            >
+              <p className="font-normal text-base text-white">
+                {i18n('FetchingYoutubeChannel')}
+              </p>
+            </div>
+          ))}
+
+        {!verifyData.isLoading && !youtubeData.isLoading && error && (
+          <div
+            className={`p-8 rounded-3xl bg-surface-400 flex flex-col lg:flex-row justify-between items-center gap-5 transition-opacity duration-700 animate-pulse bg-gray-500/60`}
+          >
+            <p className="font-normal text-base text-center">
+              {i18n('YoutubeAuthCallbackError')}
+            </p>
+          </div>
         )}
+
+        {!verifyData.isLoading &&
+          !youtubeData.isLoading &&
+          youtubeData &&
+          youtubeData.data &&
+          !youtubeData.data.length && (
+            <div
+              className={`p-8 rounded-3xl bg-surface-400 flex flex-col lg:flex-row justify-between items-center gap-5 transition-opacity duration-700 animate-pulse bg-gray-500/60`}
+            >
+              <p className="font-normal text-base text-center">
+                {i18n('YoutubeAuthCallbackNoChannel')}
+              </p>
+            </div>
+          )}
+
+        {!verifyData.isLoading &&
+          !youtubeData.isLoading &&
+          youtubeData &&
+          youtubeData.data &&
+          youtubeData.data.length && (
+            <div
+              className={`p-8 rounded-3xl bg-surface-400 flex flex-col lg:flex-row justify-between items-center gap-5 transition-opacity duration-700 animate-pulse bg-gray-500/60`}
+            >
+              <p className="font-normal text-base text-center">
+                {i18n('YoutubeAuthCallbackChannelFound')}
+              </p>
+            </div>
+          )}
       </div>
     </>
   )

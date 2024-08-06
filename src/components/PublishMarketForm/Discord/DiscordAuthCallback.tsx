@@ -265,6 +265,7 @@ const DiscordAuthCallbackPage: FunctionComponent<IDiscordAuthCallbackProps> = (
           <h1 className="text-2xl font-bold md:text-5xl text-center">
             {i18n('DiscordAuthCallbackHeader')}
           </h1>
+          <p className="text-center">{i18n('DiscordAuthCallbackSubHeader')}</p>
         </section>
 
         {accessTokenData.isLoading ||
@@ -279,11 +280,13 @@ const DiscordAuthCallbackPage: FunctionComponent<IDiscordAuthCallbackProps> = (
           ))}
 
         {!accessTokenData.isLoading && !guildData.isLoading && error && (
-          <section className="grid gap-16 w-full max-w-full mb-16 md:mb-32">
-            <span className="text-base font-normal text-center">
+          <div
+            className={`p-8 rounded-3xl bg-surface-400 flex flex-col lg:flex-row justify-between items-center gap-5 transition-opacity duration-700 animate-pulse bg-gray-500/60`}
+          >
+            <p className="font-normal text-base text-center">
               {i18n('DiscordAuthCallbackError')}
-            </span>
-          </section>
+            </p>
+          </div>
         )}
 
         {!accessTokenData.isLoading &&
@@ -291,11 +294,13 @@ const DiscordAuthCallbackPage: FunctionComponent<IDiscordAuthCallbackProps> = (
           guildData &&
           guildData.data &&
           !guildData.data.length && (
-            <section className="grid gap-16 w-full max-w-full mb-16 md:mb-32">
-              <span className="text-base font-normal text-center">
+            <div
+              className={`p-8 rounded-3xl bg-surface-400 flex flex-col lg:flex-row justify-between items-center gap-5 transition-opacity duration-700 animate-pulse bg-gray-500/60`}
+            >
+              <p className="font-normal text-base text-center">
                 {i18n('DiscordAuthCallbackNoGuild')}
-              </span>
-            </section>
+              </p>
+            </div>
           )}
 
         {!accessTokenData.isLoading &&

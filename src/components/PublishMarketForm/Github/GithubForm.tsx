@@ -78,7 +78,7 @@ const GithubProjectForm = () => {
           <h1 className="text-2xl font-bold md:text-5xl text-center">
             {i18n('GithubProjectInfoHeader')}
           </h1>
-          <p>{i18n('GithubProjectInfoSubHeader')}</p>
+          <p className="text-center">{i18n('GithubProjectInfoSubHeader')}</p>
         </section>
 
         <section className="grid gap-16 w-full max-w-full mb-16 md:mb-32">
