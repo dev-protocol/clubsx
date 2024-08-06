@@ -18,16 +18,24 @@ export const Strings = {
     ja: () => '',
   },
   DiscordAuthCallbackError: {
-    en: () => 'Your Discord server (Guild) could not be loaded.',
-    ja: () => `Discord サーバー (ギルド) を読み込むことができませんでした。`,
+    en: () => 'Your Discord Servers (Guilds) could not be loaded.',
+    ja: () => `Discord サーバー (ギルド) をロードできませんでした。`,
   },
   DiscordAuthCallbackNoGuild: {
-    en: () => `You do not have your own discord server (guild).`,
-    ja: () => `独自の Discord サーバー (ギルド) を持っていません。`,
+    en: () => `You do not have your own Discord Server (Guild).`,
+    ja: () => `独自の Discord サーバー (ギルド) をお持ちではありません。`,
   },
   DiscordAuthCallbackGuildName: {
-    en: () => `Guild name`,
-    ja: () => `ギルド名`,
+    en: ([name]) => `Guild: ${name}`,
+    ja: ([name]) => `ギルド: ${name}`,
+  },
+  DiscordGuildId: {
+    en: ([id]) => `(Guild ID: ${id})`,
+    ja: ([id]) => `(ギルドID: ${id})`,
+  },
+  FetchingDiscordGuild: {
+    en: () => `Fetching your Discord Guilds`,
+    ja: () => `Discord ギルドを取得する`,
   },
   Next: {
     en: () => 'Next',
