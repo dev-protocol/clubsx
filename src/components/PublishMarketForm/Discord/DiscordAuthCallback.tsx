@@ -1,6 +1,11 @@
 import useSWR from 'swr'
 import type { UndefinedOr } from '@devprotocol/util-ts'
-import { i18nFactory, type ClubsI18nFunction } from '@devprotocol/clubs-core'
+import {
+  decode,
+  encode,
+  i18nFactory,
+  type ClubsI18nFunction,
+} from '@devprotocol/clubs-core'
 import React, {
   type FunctionComponent,
   useState,
@@ -26,11 +31,10 @@ const DiscordAuthCallbackPage: FunctionComponent<IDiscordAuthCallbackProps> = (
   let i18n: ClubsI18nFunction<typeof Strings> = i18nBase(['en'])
 
   const [assetName, setAssetName] = useState<string>('')
-  const [personalAccessToken, setPersonalAccessToken] = useState<string>('')
-
   const [isVerify, setIsVerify] = useState<boolean>(false)
   const [error, setError] = useState<UndefinedOr<string>>('')
   const [market, setMarket] = useState<UndefinedOr<Market>>(undefined)
+  const [personalAccessToken, setPersonalAccessToken] = useState<string>('')
 
   useEffect(() => {
     i18n = i18nBase(navigator.languages)
@@ -209,6 +213,29 @@ const DiscordAuthCallbackPage: FunctionComponent<IDiscordAuthCallbackProps> = (
       return setError('Please select a guild')
     }
 
+    let onboardingData = undefined
+    const rawData = sessionStorage.getItem(`${clubsDomain}-onboarding-data`)
+    if (rawData) {
+      onboardingData = JSON.parse(
+        window.atob(decodeURIComponent(decode(rawData))),
+      )
+    }
+    const newRawData = encode(
+      encodeURIComponent(
+        window.btoa(
+          JSON.stringify({
+            ...onboardingData,
+            assetName: onboardingData?.assetName || assetName || undefined,
+            personalAccessToken:
+              onboardingData?.personalAccessToken ||
+              encode(accessTokenData?.data?.accessToken) ||
+              undefined,
+          }),
+        ),
+      ),
+    )
+    sessionStorage.setItem(`${clubsDomain}-onboarding-data`, newRawData)
+
     window.location.href = new URL(
       `/${clubsDomain}/setup`,
       `${location.protocol}//${location.host}`,
@@ -266,7 +293,7 @@ const DiscordAuthCallbackPage: FunctionComponent<IDiscordAuthCallbackProps> = (
                     type="radio"
                     name="guild"
                     value={d.id}
-                    onChange={(e) => assetName.set(e?.target?.value || '')}
+                    onChange={(e) => setAssetName(e?.target?.value || '')}
                   />
                   {d.icon === null ? (
                     <div className="max-h-4 max-w-4 h-auto w-auto rounded-full">

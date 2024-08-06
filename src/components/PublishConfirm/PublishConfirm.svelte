@@ -4,7 +4,11 @@
   import type { NetworkName } from '@devprotocol/khaos-core'
   import { addresses, marketAddresses } from '@devprotocol/dev-kit'
   import { type Signer, type ContractRunner, ZeroAddress } from 'ethers'
-  import { i18nFactory, type ClubsConfiguration } from '@devprotocol/clubs-core'
+  import {
+    decode,
+    i18nFactory,
+    type ClubsConfiguration,
+  } from '@devprotocol/clubs-core'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
   import {
     createMarketBehaviorContract,
@@ -16,9 +20,14 @@
   import { selectMarketAddressOption } from './utils'
   import { Market, type CreatorPlatform } from './types'
 
-  export let clubsName: string
-  export let tokenName: string
-  export let tokenSymbol: string
+  export let domain: string
+
+  let market: Market
+  let clubsName: string
+  let tokenName: string
+  let assetName: string
+  let tokenSymbol: string
+  let personalAccessToken: string
 
   const I18_BASE = i18nFactory(Strings)
   const NETWORK_NAME: string = 'polygon-mainnet'
@@ -33,6 +42,28 @@
   let propertyAddress: string | undefined
   let isCreatingPropertyAddr: boolean = false
   let createProertyAddrFdTxt: string = ''
+
+  const fetchPublishDetails = async () => {
+    const rawData = sessionStorage.getItem(`${domain}-onboarding-data`)
+    if (!rawData) {
+      clubsName = ''
+      tokenName = ''
+      assetName = ''
+      tokenSymbol = ''
+      personalAccessToken = ''
+      return
+    }
+
+    const onboardingData = JSON.parse(
+      window.atob(decodeURIComponent(decode(rawData))),
+    )
+    market = onboardingData.market
+    clubsName = onboardingData.clubsName
+    tokenName = onboardingData.tokenName
+    assetName = onboardingData.assetName
+    tokenSymbol = onboardingData.tokenSymbol
+    personalAccessToken = onboardingData.personalAccessToken
+  }
 
   const connectOnMount = async () => {
     const _connection = await import('@devprotocol/clubs-core/connection')
@@ -49,6 +80,7 @@
     i18n = I18_BASE(navigator.languages)
 
     connectOnMount()
+    fetchPublishDetails()
   })
 
   const setKhaosPubSignStates = async (
@@ -77,7 +109,7 @@
       const signerFn = sign(signId, NETWORK_NAME as NetworkName)
       const _khaosPubSign = await signerFn({
         signature: signMessage,
-        secret: personalAccessToken,
+        secret: decode(personalAccessToken),
         message: assetName,
       })
 
@@ -249,8 +281,16 @@
 
     <div
       class={`p-8 rounded-3xl bg-surface-400 flex flex-col lg:flex-row justify-between items-center gap-5 transition-opacity duration-700 ${
-        signer && !khaosPubSign && clubsName && tokenName && tokenSymbol
-          ? ''
+        signer &&
+        !khaosPubSign &&
+        clubsName &&
+        tokenName &&
+        tokenSymbol &&
+        assetName &&
+        personalAccessToken
+          ? isCreatingKhaosPubSign
+            ? 'animate-pulse bg-gray-500/60'
+            : ''
           : 'opacity-30'
       }`}
     >
@@ -262,20 +302,40 @@
           isCreatingPropertyAddr ||
           !clubsName ||
           !tokenName ||
-          !tokenSymbol}
+          !tokenSymbol ||
+          !personalAccessToken ||
+          !assetName ||
+          !market}
         class={`hs-button is-filled px-8 py-4 ${
           isCreatingKhaosPubSign ? 'animate-pulse bg-gray-500/60' : ''
-        } ${!signer || !!khaosPubSign || !clubsName || !tokenName || !tokenSymbol ? 'bg-gray-500/60' : ''}`}
-        on:click|preventDefault={(_) => createKhaosPubSign('', tokenName)}
+        } ${!signer || !!khaosPubSign || !clubsName || !tokenName || !tokenSymbol || !assetName || !personalAccessToken || !market ? 'bg-gray-500/60' : ''}`}
+        on:click|preventDefault={(_) =>
+          createKhaosPubSign(
+            personalAccessToken,
+            assetName,
+            market === Market.YOUTUBE
+              ? 'youtube-market'
+              : market === Market.DISCORD
+                ? 'discord-market'
+                : 'github-market',
+          )}
       >
-        {i18n('Sign')}
+        {i18n('Sign', [khaosPubSign])}
       </button>
     </div>
 
     <div
       class={`p-8 rounded-3xl bg-surface-400 flex flex-col lg:flex-row justify-between items-center gap-5 transition-opacity duration-700 ${
-        signer && khaosPubSign && clubsName && tokenName && tokenSymbol
-          ? ''
+        signer &&
+        khaosPubSign &&
+        clubsName &&
+        tokenName &&
+        tokenSymbol &&
+        assetName &&
+        personalAccessToken
+          ? isCreatingPropertyAddr
+            ? 'animate-pulse bg-gray-500/60'
+            : ''
           : 'opacity-30'
       }`}
     >
@@ -287,14 +347,17 @@
           isCreatingKhaosPubSign ||
           !clubsName ||
           !tokenName ||
-          !tokenSymbol}
+          !tokenSymbol ||
+          !assetName ||
+          !personalAccessToken ||
+          !market}
         class={`hs-button is-filled px-8 py-4 ${
           isCreatingPropertyAddr ? 'animate-pulse bg-gray-500/60' : ''
-        } ${!signer || !khaosPubSign || !clubsName || !tokenName || !tokenSymbol ? 'bg-gray-500/60' : ''}`}
+        } ${!signer || !khaosPubSign || !clubsName || !tokenName || !tokenSymbol || !assetName || !personalAccessToken || !market ? 'bg-gray-500/60' : ''}`}
         on:click|preventDefault={(_) =>
-          createAndAuthenticate(Market.GITHUB, '')}
+          createAndAuthenticate(market, assetName)}
       >
-        {i18n('Tokenize')}
+        {i18n('Tokenize', [''])}
       </button>
     </div>
   </section>

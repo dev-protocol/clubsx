@@ -6,12 +6,9 @@ import { adminFactory } from '@devprotocol/clubs-core'
 
 import PageNotFound from '@pages/404.astro'
 import Layout from '@layouts/Landing.astro'
-import Confirm_ from '@components/OnboardingPublish/Confirm.svelte'
+import PublishConfirm from '@components/PublishConfirm/PublishConfirm.svelte'
 
 const { site } = Astro.params
-const clubsName = Astro.url.searchParams.get('clubsName') || ''
-const tokenName = Astro.url.searchParams.get('tokenName') || ''
-const tokenSymbol = Astro.url.searchParams.get('tokenSymbol') || ''
 
 const { getStaticPaths, getCurrentConfig } = adminFactory({
   config: async () => await _config(site),
@@ -29,12 +26,7 @@ const siteBaseUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
 {
   path ? (
     <Layout connectButton="show">
-      <Confirm_
-        client:only="svelte"
-        clubsName={clubsName}
-        tokenName={tokenName}
-        tokenSymbol={tokenSymbol}
-      />
+      <PublishConfirm client:only="svelte" domain={site} />
     </Layout>
   ) : (
     <PageNotFound

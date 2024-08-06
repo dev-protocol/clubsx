@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import type { UndefinedOr } from '@devprotocol/util-ts'
-import { i18nFactory, type ClubsI18nFunction } from '@devprotocol/clubs-core'
+import {
+  encode,
+  decode,
+  i18nFactory,
+  type ClubsI18nFunction,
+} from '@devprotocol/clubs-core'
 
 import { Strings } from './i18n'
 import { Market } from '../PublishMarketForm/types'
@@ -18,21 +23,73 @@ const PublishForm = (props: IPublishFormProps) => {
 
   const [clubsName, setClubsName] = useState<string>('')
   const [tokenName, setTokenName] = useState<string>('')
+  const [assetName, setAssetName] = useState<string>('')
   const [tokenSymbol, setTokenSymbol] = useState<string>('')
   const [market, setMarket] = useState<UndefinedOr<Market>>(undefined)
+
+  useEffect(() => {
+    const rawData = sessionStorage.getItem(`${props.domain}-onboarding-data`)
+    if (!rawData) {
+      setAssetName('')
+      return
+    }
+
+    const onboardingData = JSON.parse(
+      window.atob(decodeURIComponent(decode(rawData))),
+    )
+    setMarket(onboardingData.market)
+    setClubsName(onboardingData.clubsName)
+    setTokenName(onboardingData.tokenName)
+    setAssetName(onboardingData.assetName)
+    setTokenSymbol(onboardingData.tokenSymbol)
+  }, [window, sessionStorage])
+
+  useEffect(() => {
+    let onboardingData = undefined
+    const rawData = sessionStorage.getItem(`${props.domain}-onboarding-data`)
+    if (rawData) {
+      onboardingData = JSON.parse(
+        window.atob(decodeURIComponent(decode(rawData))),
+      )
+    }
+
+    const newRawData = encode(
+      encodeURIComponent(
+        window.btoa(
+          JSON.stringify({
+            market,
+            clubsName,
+            tokenName,
+            tokenSymbol,
+            assetName: onboardingData?.assetName || undefined,
+            personalAccessToken:
+              onboardingData?.personalAccessToken || undefined,
+          }),
+        ),
+      ),
+    )
+    sessionStorage.setItem(`${props.domain}-onboarding-data`, newRawData)
+  }, [market, clubsName, tokenName, tokenSymbol])
 
   useEffect(() => {
     i18n = i18nBase(navigator.languages)
   }, [navigator])
 
   const toPublishConfirm = async () => {
-    if (!props.domain || !clubsName || !market || !tokenName || !tokenSymbol) {
+    if (
+      !props.domain ||
+      !clubsName ||
+      !market ||
+      !tokenName ||
+      !tokenSymbol ||
+      !assetName
+    ) {
       return
     }
 
     // TODO: add validations for input field.
     window.location.href = new URL(
-      `${props.domain}/setup/confirm?clubsName=${clubsName}&tokenName=${tokenName}&tokenSymbol=${tokenSymbol}`,
+      `${props.domain}/setup/confirm`,
       `${location.protocol}//${location.host}`,
     ).toString()
   }
@@ -82,7 +139,7 @@ const PublishForm = (props: IPublishFormProps) => {
             <p
               className={`${!market && 'hs-form-field__helper'} mt-2 font-body font-bold text-base capitalize`}
               dangerouslySetInnerHTML={{
-                __html: `${i18n('VerifiedYouHelper', [market])}`,
+                __html: `${i18n('VerifiedYouHelper', [market, assetName])}`,
               }}
             ></p>
           </div>
@@ -128,7 +185,8 @@ const PublishForm = (props: IPublishFormProps) => {
                 !clubsName ||
                 !market ||
                 !tokenName ||
-                !tokenSymbol
+                !tokenSymbol ||
+                !assetName
               }
               className={`hs-button is-filled is-error w-fit py-6 px-8 ${
                 false ? 'animate-pulse bg-gray-500/60' : ''

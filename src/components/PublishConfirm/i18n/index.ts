@@ -61,12 +61,12 @@ export const Strings = {
     ja: () => `署名を作成する`,
   },
   Sign: {
-    en: () => `Sign`,
-    ja: () => `サイン`,
+    en: ([isSigned]) => (isSigned ? `Signed` : `Sign`),
+    ja: ([isSigned]) => (isSigned ? `署名済み` : `サイン`),
   },
   Tokenize: {
-    en: () => `Tokenize`,
-    ja: () => `トークン化`,
+    en: ([isTokenized]) => (isTokenized ? `Tokenized` : `Tokenize`),
+    ja: ([isTokenized]) => (isTokenized ? `トークン化された` : `トークン化`),
   },
   StartClub: {
     en: () => `Create a token and start your club`,
