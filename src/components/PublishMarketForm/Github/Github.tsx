@@ -4,14 +4,30 @@ import type { UndefinedOr } from '@devprotocol/util-ts'
 import { Market } from '../types'
 
 interface IGithubButtonProps {
+  domain: string
   market: UndefinedOr<Market>
   changeMarket: (market: Market) => void
 }
 
 const GithubButtonProps = (props: IGithubButtonProps) => {
+  const onClickGithub = () => {
+    props.changeMarket(Market.GITHUB)
+
+    const tokenizePageState: { clubsDomain: string } = {
+      clubsDomain: props.domain,
+    }
+    const stateParam = encodeURIComponent(
+      window.btoa(JSON.stringify(tokenizePageState)),
+    )
+
+    window.location.assign(
+      `${location.protocol}//${location.host}/auth/callback/github?state=${stateParam}` as string,
+    )
+  }
+
   return (
     <button
-      onClick={() => props.changeMarket(Market.GITHUB)}
+      onClick={onClickGithub}
       className={`hs-button is-large is-filled flex flex-col max-w-[33%] grow items-center justify-center gap-2.5 ${
         props.market !== Market.GITHUB && 'opacity-50'
       } self-stretch justify-self-stretch h-full max-h-full min-h-full`}

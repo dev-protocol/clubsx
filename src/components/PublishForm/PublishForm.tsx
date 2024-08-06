@@ -128,7 +128,11 @@ const PublishForm = (props: IPublishFormProps) => {
               {i18n('VerifyYouLabel')}{' '}
             </span>
             <div className="flex w-full max-w-full h-28 max-h-[28] items-center justify-start gap-2">
-              <GithubMarketButton market={market} changeMarket={setMarket} />
+              <GithubMarketButton
+                domain={props.domain}
+                market={market}
+                changeMarket={setMarket}
+              />
               <DiscordMarketButton
                 market={market}
                 changeMarket={setMarket}

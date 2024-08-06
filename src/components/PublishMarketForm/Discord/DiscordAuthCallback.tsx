@@ -225,10 +225,10 @@ const DiscordAuthCallbackPage: FunctionComponent<IDiscordAuthCallbackProps> = (
         window.btoa(
           JSON.stringify({
             ...onboardingData,
-            assetName: onboardingData?.assetName || assetName || undefined,
+            assetName: assetName || onboardingData?.assetName || undefined,
             personalAccessToken:
+              encode(personalAccessToken) ||
               onboardingData?.personalAccessToken ||
-              encode(accessTokenData?.data?.accessToken) ||
               undefined,
           }),
         ),
