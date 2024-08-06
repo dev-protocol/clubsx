@@ -148,6 +148,7 @@
     khaosPubSign = sign
     isCreatingKhaosPubSign = toggle
     createKhaosPubSignFdTxt = feedback
+    console.log('Feedback: ', feedback)
   }
 
   const createKhaosPubSign = async (
@@ -197,6 +198,7 @@
     propertyAddress = addr
     isCreatingPropertyAddr = toggle
     createProertyAddrFdTxt = feedback
+    console.log('Feedback: ', feedback)
   }
 
   const createAndAuthenticate = async (
@@ -268,6 +270,7 @@
           false,
           'Tokenized successfully',
         )
+        updateConfig(created.property)
         return
       } else {
         setCreateAndAuthenticateStates(
