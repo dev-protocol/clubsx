@@ -48,8 +48,8 @@ export const Strings = {
   },
   PersonalAccessTokenHelper: {
     en: () =>
-      `The PAT is confidentially authenticated using the Khaos oracle. <br /><a href='https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens'>Create a Personal Access Token without any scopes.</a>`,
+      `* The PAT is confidentially authenticated using the Khaos oracle.<br />* <a class="hs-form-field__helper" href='https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens'><u>Create a Personal Access Token without any scopes.</u></a>`,
     ja: () =>
-      `PAT は、Khaos oracle を使用して秘密裏に認証されます。<a href='https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens'>スコープなしでパーソナル アクセス トークンを作成します。</a>`,
+      `* PAT は、Khaos oracle を使用して秘密裏に認証されます。<br />* <a class="hs-form-field__helper" href='https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens'><u>スコープなしでパーソナル アクセス トークンを作成します。</u></a>`,
   },
 } satisfies ClubsI18nParts

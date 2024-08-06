@@ -97,6 +97,7 @@ const GithubProjectForm = () => {
               className="hs-form-field__input w-full"
               type="text"
               value={assetName}
+              placeholder="owner-name/repository-name"
               onChange={(ev) => setAssetName(ev?.target?.value || '')}
               id="github-asset-name"
               name="github-asset-name"
@@ -121,9 +122,12 @@ const GithubProjectForm = () => {
               id="github-pat"
               name="github-pat"
             />
-            <p className="hs-form-field__helper mt-2">
-              * {i18n('PersonalAccessTokenHelper')}
-            </p>
+            <p
+              className="hs-form-field__helper mt-2"
+              dangerouslySetInnerHTML={{
+                __html: `${i18n('PersonalAccessTokenHelper')}`,
+              }}
+            ></p>
           </label>
 
           <div className="flex w-full justify-end gap-[20px]">
