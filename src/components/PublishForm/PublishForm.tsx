@@ -137,7 +137,7 @@ const PublishForm = (props: IPublishFormProps) => {
               <YoutubeMarketButton market={market} changeMarket={setMarket} />
             </div>
             <p
-              className={`${!market && 'hs-form-field__helper'} mt-2 font-body font-bold text-base capitalize`}
+              className={`${!assetName && 'hs-form-field__helper'} mt-2 font-body font-bold text-base capitalize`}
               dangerouslySetInnerHTML={{
                 __html: `${i18n('VerifiedYouHelper', [market, assetName])}`,
               }}
