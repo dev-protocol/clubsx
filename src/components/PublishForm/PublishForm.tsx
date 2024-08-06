@@ -84,6 +84,7 @@ const PublishForm = (props: IPublishFormProps) => {
       !tokenSymbol ||
       !assetName
     ) {
+      console.error('Missing required details!')
       return
     }
 

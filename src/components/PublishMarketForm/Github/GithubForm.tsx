@@ -16,13 +16,11 @@ const GithubProjectForm = () => {
   const [assetName, setAssetName] = useState<string>('')
   const [personalAccessToken, setPersonalAccessToken] = useState<string>('')
 
-  const [queryParams, redirectURI] = useMemo(
-    () => [
+  const queryParams = useMemo(
+    () =>
       useQuery(
         window.location.search ? window.location.search : window.location.hash,
       ),
-      `${location.protocol}//${location.host}/auth/callback/discord`,
-    ],
     [useQuery, window, location],
   )
 
@@ -35,13 +33,8 @@ const GithubProjectForm = () => {
   }, [queryParams])
 
   const onSubmit = () => {
-    if (!assetName) {
-      console.error('Missing assetName')
-      return
-    }
-
-    if (!personalAccessToken) {
-      console.error('Missing assetName')
+    if (!assetName || !personalAccessToken) {
+      console.error('Missing required details!')
       return
     }
 
@@ -133,9 +126,7 @@ const GithubProjectForm = () => {
           <div className="flex w-full justify-end gap-[20px]">
             <button
               disabled={!assetName || !personalAccessToken}
-              className={`hs-button is-filled is-error w-fit py-6 px-8 ${
-                false ? 'animate-pulse bg-gray-500/60' : ''
-              }`}
+              className={`hs-button is-filled is-error w-fit py-6 px-8`}
               onClick={onSubmit}
             >
               <span className="hs-button__label">{i18n('Next')}</span>
