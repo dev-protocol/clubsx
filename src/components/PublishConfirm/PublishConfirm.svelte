@@ -1,13 +1,19 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import { sign } from '@devprotocol/khaos-kit'
+  import type { DraftOptions } from '@constants/draft'
   import type { NetworkName } from '@devprotocol/khaos-core'
   import { addresses, marketAddresses } from '@devprotocol/dev-kit'
   import { type Signer, type ContractRunner, ZeroAddress } from 'ethers'
   import {
+    buildConfig,
     decode,
     i18nFactory,
+    onUpdatedConfiguration,
+    setConfig,
     type ClubsConfiguration,
+    type ClubsGeneralUnit,
+    type ClubsPluginOption,
   } from '@devprotocol/clubs-core'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
   import {
@@ -21,6 +27,7 @@
   import { Market, type CreatorPlatform } from './types'
 
   export let domain: string
+  export let config: ClubsConfiguration
 
   let market: Market
   let clubsName: string
@@ -42,6 +49,56 @@
   let propertyAddress: string | undefined
   let isCreatingPropertyAddr: boolean = false
   let createProertyAddrFdTxt: string = ''
+
+  const updateConfig = async (propertyAddress: string) => {
+    if (!propertyAddress || !signer || !provider) {
+      console.error('Property address undefined in updateConfig!')
+      return
+    }
+
+    const __draftOptions: DraftOptions | undefined = config?.options?.find(
+      (op: ClubsPluginOption) => op.key === '__draft',
+    ) as DraftOptions
+    if (!__draftOptions) {
+      console.error('Draft options not found!')
+      return
+    }
+
+    const __updatedDraftOptions: DraftOptions = {
+      ...__draftOptions,
+      value: { ...__draftOptions.value, isInDraft: false },
+    }
+    if (!__updatedDraftOptions) {
+      console.error('Updated draft options not found!')
+      return
+    }
+
+    const nextConfig: ClubsConfiguration = {
+      ...config,
+      propertyAddress,
+      options: [
+        ...(config.options
+          ? [
+              ...config.options.filter((op) => op.key !== '__draft'),
+              __updatedDraftOptions,
+            ]
+          : []),
+      ],
+    }
+
+    onUpdatedConfiguration(
+      () => {
+        try {
+          buildConfig()
+        } catch (error) {
+          console.error('Error while building config!')
+        }
+      },
+      { once: true },
+    )
+
+    setConfig(nextConfig)
+  }
 
   const fetchPublishDetails = async () => {
     const rawData = sessionStorage.getItem(`${domain}-onboarding-data`)

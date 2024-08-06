@@ -24,9 +24,9 @@ const siteBaseUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
 ---
 
 {
-  path ? (
+  path && site ? (
     <Layout connectButton="show">
-      <PublishConfirm client:only="svelte" domain={site} />
+      <PublishConfirm client:only="svelte" domain={site} config={config} />
     </Layout>
   ) : (
     <PageNotFound
