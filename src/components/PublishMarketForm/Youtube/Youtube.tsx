@@ -11,7 +11,7 @@ interface IYoutubeButtonProps {
 
 const YoutubeMarketButton = (props: IYoutubeButtonProps) => {
   const onAuthYoutubeAccount = () => {
-    const clientId = import.meta.env.VITE_YOUTUBE_CLIENT_ID
+    const clientId = import.meta.env.PUBLIC_YOUTUBE_CLIENT_ID
     const redirectUri = encodeURI(
       (`${location.protocol}//${location.host}/auth/callback/youtube` as string) ||
         '',
