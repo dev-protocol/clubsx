@@ -1,0 +1,22 @@
+---
+import Layout from '@layouts/Landing.astro'
+import { Market as EMarket } from '@components/PublishMarketForm/types'
+import GithubProjectForm from '@components/PublishMarketForm/Github/GithubForm'
+import DiscordAuthCallback from '@components/PublishMarketForm/Discord/DiscordAuthCallback'
+import YoutubeAuthCallback from '@components/PublishMarketForm/Youtube/YoutubeAuthCallback'
+
+const { market } = Astro.params
+const eMarket = market?.toUpperCase() as EMarket
+---
+
+<Layout connectButton="show">
+  {
+    eMarket === EMarket.DISCORD ? (
+      <DiscordAuthCallback client:only="react" market={eMarket} />
+    ) : eMarket === EMarket.GITHUB ? (
+      <GithubProjectForm client:only="react" market={eMarket} />
+    ) : (
+      <YoutubeAuthCallback client:only="react" market={eMarket} />
+    )
+  }
+</Layout>
