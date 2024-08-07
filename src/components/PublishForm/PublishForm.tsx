@@ -30,6 +30,7 @@ const PublishForm = (props: IPublishFormProps) => {
   useEffect(() => {
     const rawData = sessionStorage.getItem(`${props.domain}-onboarding-data`)
     if (!rawData) {
+      setMarket(undefined)
       setAssetName('')
       return
     }
@@ -57,10 +58,10 @@ const PublishForm = (props: IPublishFormProps) => {
       encodeURIComponent(
         window.btoa(
           JSON.stringify({
-            market,
             clubsName,
             tokenName,
             tokenSymbol,
+            market: onboardingData?.market || undefined,
             assetName: onboardingData?.assetName || undefined,
             personalAccessToken:
               onboardingData?.personalAccessToken || undefined,
@@ -69,7 +70,7 @@ const PublishForm = (props: IPublishFormProps) => {
       ),
     )
     sessionStorage.setItem(`${props.domain}-onboarding-data`, newRawData)
-  }, [market, clubsName, tokenName, tokenSymbol])
+  }, [clubsName, tokenName, tokenSymbol])
 
   useEffect(() => {
     i18n = i18nBase(navigator.languages)

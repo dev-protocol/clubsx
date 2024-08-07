@@ -1,4 +1,9 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  type FunctionComponent,
+} from 'react'
 import {
   encode,
   decode,
@@ -8,8 +13,11 @@ import {
 
 import { Strings } from '../i18n'
 import { useQuery } from '../utils'
+import { Market, type IAuthCallbackProp } from '../types'
 
-const GithubProjectForm = () => {
+const GithubProjectForm: FunctionComponent<IAuthCallbackProp> = (
+  props: IAuthCallbackProp,
+) => {
   let i18nBase = i18nFactory(Strings)
   let i18n: ClubsI18nFunction<typeof Strings> = i18nBase(['en'])
 
@@ -50,6 +58,7 @@ const GithubProjectForm = () => {
         window.btoa(
           JSON.stringify({
             ...onboardingData,
+            market: Market.GITHUB,
             assetName: assetName || onboardingData?.assetName || undefined,
             personalAccessToken:
               encode(personalAccessToken) ||

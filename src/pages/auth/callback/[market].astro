@@ -14,7 +14,7 @@ const eMarket = market?.toUpperCase() as EMarket
     eMarket === EMarket.DISCORD ? (
       <DiscordAuthCallback client:only="react" market={eMarket} />
     ) : eMarket === EMarket.GITHUB ? (
-      <GithubProjectForm client:only="react" />
+      <GithubProjectForm client:only="react" market={eMarket} />
     ) : (
       <YoutubeAuthCallback client:only="react" market={eMarket} />
     )

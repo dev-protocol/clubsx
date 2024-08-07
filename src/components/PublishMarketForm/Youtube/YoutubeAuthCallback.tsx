@@ -11,21 +11,14 @@ import React, {
   useState,
   useEffect,
   useMemo,
-  type SyntheticEvent,
 } from 'react'
 
 import { Strings } from '../i18n'
-import { Market } from '../types'
 import { useQuery } from '../utils'
+import { Market, type IAuthCallbackProp } from '../types'
 
-interface IDiscordAuthCallbackProps {
-  market: UndefinedOr<Market>
-}
-
-const REQUIRED_PERMISSIONS = 8 // Administrator
-
-const YoutubeAuthCallbackPage: FunctionComponent<IDiscordAuthCallbackProps> = (
-  props: IDiscordAuthCallbackProps,
+const YoutubeAuthCallbackPage: FunctionComponent<IAuthCallbackProp> = (
+  props: IAuthCallbackProp,
 ) => {
   let i18nBase = i18nFactory(Strings)
   let i18n: ClubsI18nFunction<typeof Strings> = i18nBase(['en'])
@@ -33,7 +26,6 @@ const YoutubeAuthCallbackPage: FunctionComponent<IDiscordAuthCallbackProps> = (
   const [assetName, setAssetName] = useState<string>('')
   const [isVerify, setIsVerify] = useState<boolean>(false)
   const [error, setError] = useState<UndefinedOr<string>>('')
-  const [market, setMarket] = useState<UndefinedOr<Market>>(undefined)
   const [personalAccessToken, setPersonalAccessToken] = useState<string>('')
 
   useEffect(() => {
@@ -163,9 +155,7 @@ const YoutubeAuthCallbackPage: FunctionComponent<IDiscordAuthCallbackProps> = (
   )
 
   useEffect(() => {
-    setMarket(Market.DISCORD)
-
-    if (props.market !== Market.DISCORD) {
+    if (props.market !== Market.YOUTUBE) {
       return setError('Invalid verification market!')
     }
 
@@ -184,14 +174,13 @@ const YoutubeAuthCallbackPage: FunctionComponent<IDiscordAuthCallbackProps> = (
 
     setAssetName(youtubeData?.data.pop().channelId)
     setPersonalAccessToken(queryParams.access_token)
+    onSuccessfulAuth()
 
     window.location.href = new URL(
       `/${clubsDomain}/setup`,
       `${location.protocol}//${location.host}`,
     ).toString()
   }, [
-    setMarket,
-    market,
     verifyData,
     isVerify,
     personalAccessToken,
@@ -200,6 +189,41 @@ const YoutubeAuthCallbackPage: FunctionComponent<IDiscordAuthCallbackProps> = (
     location,
     window,
   ])
+
+  const onSuccessfulAuth = () => {
+    if (!assetName) {
+      return setError('Could not find a youtube channel.')
+    }
+
+    let onboardingData = undefined
+    const rawData = sessionStorage.getItem(`${clubsDomain}-onboarding-data`)
+    if (rawData) {
+      onboardingData = JSON.parse(
+        window.atob(decodeURIComponent(decode(rawData))),
+      )
+    }
+    const newRawData = encode(
+      encodeURIComponent(
+        window.btoa(
+          JSON.stringify({
+            ...onboardingData,
+            market: Market.YOUTUBE,
+            assetName: assetName || onboardingData?.assetName || undefined,
+            personalAccessToken:
+              encode(personalAccessToken) ||
+              onboardingData?.personalAccessToken ||
+              undefined,
+          }),
+        ),
+      ),
+    )
+    sessionStorage.setItem(`${clubsDomain}-onboarding-data`, newRawData)
+
+    window.location.href = new URL(
+      `/${clubsDomain}/setup`,
+      `${location.protocol}//${location.host}`,
+    ).toString()
+  }
 
   return (
     <>

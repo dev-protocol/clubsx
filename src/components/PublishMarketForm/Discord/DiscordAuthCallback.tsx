@@ -15,20 +15,16 @@ import React, {
 } from 'react'
 
 import { Strings } from '../i18n'
-import { Market } from '../types'
 import { useQuery } from '../utils'
+import { Market, type IAuthCallbackProp } from '../types'
 
-interface IDiscordAuthCallbackProps {
-  market: UndefinedOr<Market>
-}
-
-const REQUIRED_PERMISSIONS = 8 // Administrator
-
-const DiscordAuthCallbackPage: FunctionComponent<IDiscordAuthCallbackProps> = (
-  props: IDiscordAuthCallbackProps,
+const DiscordAuthCallbackPage: FunctionComponent<IAuthCallbackProp> = (
+  props: IAuthCallbackProp,
 ) => {
+  const REQUIRED_PERMISSIONS = 8 // Discord Administrator.
   let i18nBase = i18nFactory(Strings)
   let i18n: ClubsI18nFunction<typeof Strings> = i18nBase(['en'])
+
   const swrOptions = {
     revalidateOnFocus: false,
     shouldRetryOnError: false,
@@ -38,7 +34,6 @@ const DiscordAuthCallbackPage: FunctionComponent<IDiscordAuthCallbackProps> = (
   const [assetName, setAssetName] = useState<string>('')
   const [isVerify, setIsVerify] = useState<boolean>(false)
   const [error, setError] = useState<UndefinedOr<string>>('')
-  const [market, setMarket] = useState<UndefinedOr<Market>>(undefined)
   const [personalAccessToken, setPersonalAccessToken] = useState<string>('')
 
   useEffect(() => {
@@ -184,31 +179,20 @@ const DiscordAuthCallbackPage: FunctionComponent<IDiscordAuthCallbackProps> = (
   )
 
   useEffect(() => {
-    setMarket(Market.DISCORD)
-
     if (props.market !== Market.DISCORD) {
       return setError('Invalid verification market!')
     }
 
     if (accessTokenData === undefined || guildData === undefined) {
-      return
+      return setError('Invalid data!')
     }
-
     if (!accessTokenData.isLoading && !guildData.isLoading && !isVerify) {
       return setError('Invalid authentication!')
     }
 
     setError('')
     setPersonalAccessToken(accessTokenData?.data?.accessToken)
-  }, [
-    setMarket,
-    market,
-    guildData,
-    isVerify,
-    personalAccessToken,
-    accessTokenData,
-    assetName,
-  ])
+  }, [guildData, isVerify, personalAccessToken, accessTokenData, assetName])
 
   const onSubmit = () => {
     if (!assetName) {
@@ -227,6 +211,7 @@ const DiscordAuthCallbackPage: FunctionComponent<IDiscordAuthCallbackProps> = (
         window.btoa(
           JSON.stringify({
             ...onboardingData,
+            market: Market.DISCORD,
             assetName: assetName || onboardingData?.assetName || undefined,
             personalAccessToken:
               encode(personalAccessToken) ||
