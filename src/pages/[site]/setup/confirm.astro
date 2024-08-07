@@ -18,7 +18,7 @@ const { getStaticPaths, getCurrentConfig } = adminFactory({
 const config = await getCurrentConfig()
 const path = (await getStaticPaths()).find(({ props }) => props.clubs)
 
-const siteBaseUrl = ((url) => `${url.protocol}//${site}.${url.host}/`)(
+const siteBaseUrl = ((url) => `${url.protocol}//${url.host}/${site}/setup`)(
   new URL(replaceWithFwdHost(Astro.request)),
 )
 ---

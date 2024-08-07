@@ -1,10 +1,37 @@
 ---
+import admin from '@plugins/admin'
+import { replaceWithFwdHost } from '@fixtures/url'
+import { config as _config } from '@fixtures/config'
+import { adminFactory } from '@devprotocol/clubs-core'
+
+import PageNotFound from '@pages/404.astro'
 import Layout from '@layouts/Landing.astro'
 import PublishForm from '@components/PublishForm/PublishForm.tsx'
 
 const { site } = Astro.params
+
+const { getStaticPaths, getCurrentConfig } = adminFactory({
+  config: async () => await _config(site),
+  plugins: [admin],
+})
+
+const config = await getCurrentConfig()
+const path = (await getStaticPaths()).find(({ props }) => props.clubs)
+
+const siteBaseUrl = ((url) => `${url.protocol}//${url.host}/`)(
+  new URL(replaceWithFwdHost(Astro.request)),
+)
 ---
 
-<Layout connectButton="show">
-  <PublishForm client:only="react" domain={site ?? ''} />
-</Layout>
+{
+  path && site ? (
+    <Layout connectButton="show">
+      <PublishForm client:only="react" domain={site ?? ''} />
+    </Layout>
+  ) : (
+    <PageNotFound
+      redirectionCtaText={`Take me to ${site?.toUpperCase()} homepage`}
+      redirectionCtaUrl={siteBaseUrl}
+    />
+  )
+}
