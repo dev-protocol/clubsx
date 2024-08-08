@@ -14,6 +14,7 @@ export default [
   '/api/cron',
   '/api/config',
   '/api/clubs',
+  '/api/authenticate',
   '/api/assets',
   '/api/addDaoToDraft',
 ]
