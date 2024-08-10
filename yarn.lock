@@ -140,10 +140,10 @@
   dependencies:
     prismjs "^1.29.0"
 
-"@astrojs/react@3.6.1":
-  version "3.6.1"
-  resolved "https://registry.yarnpkg.com/@astrojs/react/-/react-3.6.1.tgz#c2f7f61b8681a386dc9d7a369a248ea317e2114a"
-  integrity sha512-Mpgu+GYTba1TEzLMshojeLxi7y/FqrTNtpGTCvI366bRbnCkqtvznRj/xPQOTybwXnYXSgxsELyUvqD51iFeiw==
+"@astrojs/react@3.6.2":
+  version "3.6.2"
+  resolved "https://registry.yarnpkg.com/@astrojs/react/-/react-3.6.2.tgz#615d4ab94f8a8700c593ca4812a5c4efb11ff7cb"
+  integrity sha512-fK29lYI7zK/KG4ZBy956x4dmauZcZ18osFkuyGa8r3gmmCQa2NZ9XNu9WaVYEUm0j89f4Gii4tbxLoyM8nk2MA==
   dependencies:
     "@vitejs/plugin-react" "^4.3.1"
     ultrahtml "^1.5.3"
@@ -4677,10 +4677,10 @@ assertion-error@^1.1.0:
   resolved "https://registry.yarnpkg.com/assertion-error/-/assertion-error-1.1.0.tgz#e60b6b0e8f301bd97e5375215bda406c85118c0b"
   integrity sha512-jgsaNduz+ndvGyFt3uSuWqvy4lCnIJiovtouQN5JZHOKCS2QuhEdbcQHFhVksz2N2U9hXJo8odG7ETyWlEeuDw==
 
-astro@4.13.2:
-  version "4.13.2"
-  resolved "https://registry.yarnpkg.com/astro/-/astro-4.13.2.tgz#1a211c0da58781c387df2dc1c194ee2c6b8262b5"
-  integrity sha512-bdfUV6zfOWOV/IbROqVx+1cuAFXY0PZpVxr4JO9YxCKa5AfQRR8RKXJ2k8QUjalA6dmxQ9FgAQw3FRrzHVOGEQ==
+astro@4.13.3:
+  version "4.13.3"
+  resolved "https://registry.yarnpkg.com/astro/-/astro-4.13.3.tgz#0d60eb3174d19a13f153168dab2851e414d85205"
+  integrity sha512-MyhmM0v5sphiVwxAm5jjKxWeuPZijWPJ8Ajdign9QzEmLWSH8vUYIJWx/dWRQ6vF1I0jXrksoj3wtw5nzXt9nw==
   dependencies:
     "@astrojs/compiler" "^2.10.1"
     "@astrojs/internal-helpers" "0.4.1"
