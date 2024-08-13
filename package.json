@@ -69,7 +69,7 @@
     "@devprotocol/clubs-plugin-awesome-onboarding": "0.4.4",
     "@devprotocol/clubs-plugin-posts": "0.20.17",
     "@devprotocol/clubs-plugin-posts-voting": "0.8.8",
-    "@devprotocol/dev-kit": "8.6.2",
+    "@devprotocol/dev-kit": "8.7.0",
     "@devprotocol/hashi": "2.3.1",
     "@devprotocol/huddle01-clubs-plugin": "0.1.7",
     "@devprotocol/util-ts": "4.0.0",
