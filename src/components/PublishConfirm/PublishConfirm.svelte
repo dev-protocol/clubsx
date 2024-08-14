@@ -8,6 +8,7 @@
   import {
     buildConfig,
     decode,
+    encode,
     i18nFactory,
     onUpdatedConfiguration,
     setConfig,
@@ -25,9 +26,13 @@
   import { Strings } from './i18n'
   import { selectMarketAddressOption } from './utils'
   import { Market, type CreatorPlatform } from './types'
+  import type { UndefinedOr } from '@devprotocol/util-ts'
+  import { fade, fly } from 'svelte/transition'
+  import SvgShining from './SvgShining.svelte'
 
   export let domain: string
   export let config: ClubsConfiguration
+  export let previewImgSrc: string
 
   let market: Market
   let clubsName: string
@@ -35,6 +40,8 @@
   let assetName: string
   let tokenSymbol: string
   let personalAccessToken: string
+  let khaosMessage: string
+  let khaosSignature: string
 
   const I18_BASE = i18nFactory(Strings)
   const NETWORK_NAME: string = 'polygon-mainnet'
@@ -49,6 +56,42 @@
   let propertyAddress: string | undefined
   let isCreatingPropertyAddr: boolean = false
   let createProertyAddrFdTxt: string = ''
+  let tokenizationResult: UndefinedOr<true | Error>
+
+  $: {
+    if (tokenizationResult === true) {
+      // If the modal is open, page scrolling should be disabled.
+      document.body.classList.toggle('overflow-hidden')
+    }
+  }
+
+  const saveConfigOnClubs = async ({
+    config: _config,
+    sig,
+    msg,
+  }: {
+    config: ClubsConfiguration
+    sig: string
+    msg: string
+  }) => {
+    const encodedConfig = encode(_config)
+    const body = {
+      sig,
+      hash: msg,
+      config: encodedConfig,
+      site: domain,
+    }
+
+    const res = await fetch('/api/updateDraftConfig', {
+      method: 'POST',
+      body: JSON.stringify(body),
+    })
+
+    const result = res?.ok
+      ? true
+      : new Error(await res.json().then((r) => r.error))
+    return result
+  }
 
   const updateConfig = async (propertyAddress: string) => {
     if (!propertyAddress || !signer || !provider) {
@@ -86,18 +129,11 @@
       ],
     }
 
-    onUpdatedConfiguration(
-      () => {
-        try {
-          buildConfig()
-        } catch (error) {
-          console.error('Error while building config!')
-        }
-      },
-      { once: true },
-    )
-
-    setConfig(nextConfig)
+    tokenizationResult = await saveConfigOnClubs({
+      config: nextConfig,
+      sig: khaosSignature,
+      msg: khaosMessage,
+    })
   }
 
   const fetchPublishDetails = async () => {
@@ -164,6 +200,8 @@
       }
 
       const signMessage = await signer.signMessage(assetName)
+      khaosMessage = assetName
+      khaosSignature = signMessage
       const signerFn = sign(signId, NETWORK_NAME as NetworkName)
       const _khaosPubSign = await signerFn({
         signature: signMessage,
@@ -288,6 +326,11 @@
         `Failed to create and authenticate asset`,
       )
     }
+  }
+
+  const getAdminUrl = () => {
+    const { protocol, host } = new URL(location.href)
+    return `${protocol}//${domain}.${host}/admin/theme`
   }
 </script>
 
@@ -422,3 +465,37 @@
     </div>
   </section>
 </div>
+
+{#if tokenizationResult === true}
+  <div
+    role="dialog"
+    class="fixed inset-0 bg-black/50 flex items-center justify-center backdrop-blur-md"
+    transition:fade={{ duration: 100 }}
+  >
+    <SvgShining
+      className="fixed animate-[spin_15s_linear_infinite] h-full min-h-[200dvh]"
+    />
+    <div
+      class="relative rounded-2xl bg-white container max-w-screen-md flex flex-col justify-center p-8 gap-8 border"
+      transition:fly={{ y: 500 }}
+    >
+      <h1 class="text-2xl font-bold italic text-black text-center">
+        {clubsName} is now live!
+      </h1>
+      <div
+        class="relative rounded-xl flex justify-center items-center overflow-hidden py-20"
+      >
+        <img
+          src={previewImgSrc}
+          alt=""
+          class="w-full h-full object-cover absolute inset-0 opacity-20"
+        />
+        <a
+          href={getAdminUrl()}
+          class="hs-button is-large is-filled relative bg-surface-600 hover:bg-surface-400 text-surface-ink rounded-xl"
+          ><span class="text-2xl font-bold">Open your admin panel</span></a
+        >
+      </div>
+    </div>
+  </div>
+{/if}

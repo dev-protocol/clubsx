@@ -3,6 +3,7 @@ import admin from '@plugins/admin'
 import { replaceWithFwdHost } from '@fixtures/url'
 import { config as _config } from '@fixtures/config'
 import { adminFactory } from '@devprotocol/clubs-core'
+import Preview from '@assets/preview-overview-chart.png'
 
 import PageNotFound from '@pages/404.astro'
 import Layout from '@layouts/Landing.astro'
@@ -26,7 +27,12 @@ const siteBaseUrl = ((url) => `${url.protocol}//${url.host}/${site}/setup`)(
 {
   path && site ? (
     <Layout connectButton="show">
-      <PublishConfirm client:only="svelte" domain={site} config={config} />
+      <PublishConfirm
+        client:only="svelte"
+        domain={site}
+        config={config}
+        previewImgSrc={Preview.src}
+      />
     </Layout>
   ) : (
     <PageNotFound
