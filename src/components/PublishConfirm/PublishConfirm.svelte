@@ -340,7 +340,7 @@
 </script>
 
 <div
-  class="relative flex gap-16 flex-col justify-center p-4 md:p-0 w-[36%] max-w-[36%] ml-auto mr-auto"
+  class="relative flex gap-16 flex-col justify-center p-4 md:p-0 max-w-screen-sm container mx-auto"
 >
   <!-- Hero Header -->
   <section class="mt-16 grid gap-8 md:mt-32 min-w-full w-full max-w-full">
@@ -350,39 +350,43 @@
   </section>
 
   <!-- Core inputs -->
-  <section class="grid gap-16 w-full max-w-full mb-16 md:mb-32">
+  <section class="grid gap-8 md:gap-16 w-full max-w-full mb-16 md:mb-32">
     <!-- Clubs name -->
-    <div class="hs-form-field is-filled !gap-4">
-      <span class="hs-form-field__label !text-[#C4C4C4]"
+    <div class="hs-form-field is-filled">
+      <span class="hs-form-field__label !text-accent-400"
         >{i18n('ClubNameLabel')}</span
       >
-      <p class="font-body font-bold text-[32px] !text-[#C4C4C4]">{clubsName}</p>
+      <p class="font-body font-bold text-[32px] !text-accent-400">
+        {clubsName}
+      </p>
     </div>
 
     <!-- Token name -->
-    <div class="hs-form-field is-filled !gap-4">
-      <span class="hs-form-field__label !text-[#C4C4C4]"
+    <div class="hs-form-field is-filled">
+      <span class="hs-form-field__label !text-accent-400"
         >{i18n('TokenNameLabel')}</span
       >
-      <p class="font-body font-bold text-[32px] !text-[#C4C4C4]">{tokenName}</p>
+      <p class="font-body font-bold text-[32px] !text-accent-400">
+        {tokenName}
+      </p>
     </div>
 
     <!-- Token symbol -->
-    <div class="hs-form-field is-filled !gap-4">
-      <span class="hs-form-field__label !text-[#C4C4C4]"
+    <div class="hs-form-field is-filled">
+      <span class="hs-form-field__label !text-accent-400"
         >{i18n('TokenSymbolLabel')}</span
       >
-      <p class="font-body font-bold text-[32px] !text-[#C4C4C4]">
+      <p class="font-body font-bold text-[32px] !text-accent-400">
         {tokenSymbol}
       </p>
     </div>
 
     <!-- Token supply -->
-    <div class="hs-form-field is-filled !gap-4">
-      <p class="font-body font-bold text-[32px] !text-[#C4C4C4]">
+    <div class="hs-form-field is-filled">
+      <p class="font-body font-bold text-[32px] !text-accent-400">
         10,000,000 {tokenSymbol}
       </p>
-      <span class="hs-form-field__label !text-[#C4C4C4]"
+      <span class="hs-form-field__label !text-accent-400"
         >{i18n('TokenSupply')}</span
       >
     </div>
