@@ -134,6 +134,11 @@
       sig: khaosSignature,
       msg: khaosMessage,
     })
+
+    // Clear session storage (which contains PAT) when tokenization is succesfull.
+    if (tokenizationResult && !(tokenizationResult instanceof Error)) {
+      sessionStorage.removeItem(`${domain}-onboarding-data`)
+    }
   }
 
   const fetchPublishDetails = async () => {
