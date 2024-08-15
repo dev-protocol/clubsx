@@ -5181,10 +5181,10 @@ assign-symbols@^1.0.0:
   resolved "https://registry.yarnpkg.com/assign-symbols/-/assign-symbols-1.0.0.tgz#59667f41fadd4f20ccbc2bb96b8d4f7f78ec0367"
   integrity sha512-Q+JC7Whu8HhmTdBph/Tq59IoRtoy6KAm5zzPv00WdujX82lbAL8K7WVjne7vdCsAmbF4AYaDOPyO3k0kl8qIrw==
 
-astro@4.13.4:
-  version "4.13.4"
-  resolved "https://registry.yarnpkg.com/astro/-/astro-4.13.4.tgz#b03862835860eafcf44a6067e69d55c83fd43f5c"
-  integrity sha512-uoW961qyU5xxCiUzITVX8wYmdWbSH1zeog9UomoWC5uNpnIbH6WxOPv/qYu2m7W4r2PCxdRqfVXoYjZhFyGfTA==
+astro@4.14.2:
+  version "4.14.2"
+  resolved "https://registry.yarnpkg.com/astro/-/astro-4.14.2.tgz#384e2bff8cb75449c9eb13effc5b1fbcd9074a99"
+  integrity sha512-x9VeYx8Ih6kYKBMVwwsfRzsZVq30+SUhiawnYQ6+46qQnEx3zH05KcH24HsJMe6dVpHD8HdH7CWR5C4o7Q/jeg==
   dependencies:
     "@astrojs/compiler" "^2.10.2"
     "@astrojs/internal-helpers" "0.4.1"
@@ -5197,6 +5197,7 @@ astro@4.13.4:
     "@babel/traverse" "^7.25.3"
     "@babel/types" "^7.25.2"
     "@oslojs/encoding" "^0.4.1"
+    "@rollup/pluginutils" "^5.1.0"
     "@types/babel__core" "^7.20.5"
     "@types/cookie" "^0.6.0"
     acorn "^8.12.1"
@@ -5227,7 +5228,9 @@ astro@4.13.4:
     js-yaml "^4.1.0"
     kleur "^4.1.5"
     magic-string "^0.30.11"
+    micromatch "^4.0.7"
     mrmime "^2.0.0"
+    neotraverse "^0.6.9"
     ora "^8.0.1"
     p-limit "^6.1.0"
     p-queue "^8.0.1"
@@ -5245,9 +5248,11 @@ astro@4.13.4:
     vite "^5.4.0"
     vitefu "^0.2.5"
     which-pm "^3.0.0"
+    xxhash-wasm "^1.0.2"
     yargs-parser "^21.1.1"
     zod "^3.23.8"
     zod-to-json-schema "^3.23.2"
+    zod-to-ts "^1.2.0"
   optionalDependencies:
     sharp "^0.33.3"
 
@@ -12360,7 +12365,7 @@ micromatch@^3.1.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.2"
 
-micromatch@^4.0.2, micromatch@^4.0.4, micromatch@^4.0.5:
+micromatch@^4.0.2, micromatch@^4.0.4, micromatch@^4.0.5, micromatch@^4.0.7:
   version "4.0.7"
   resolved "https://registry.yarnpkg.com/micromatch/-/micromatch-4.0.7.tgz#33e8190d9fe474a9895525f5618eee136d46c2e5"
   integrity sha512-LPP/3KorzCwBxfeUuZmaR6bG2kdeHSbe0P2tY3FLRU4vYrjYz5hI4QZwV0njUx3jeuKe67YukQ1LSPZBKDqO/Q==
@@ -12710,6 +12715,11 @@ negotiator@0.6.3:
   version "0.6.3"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.3.tgz#58e323a72fedc0d6f9cd4d31fe49f51479590ccd"
   integrity sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==
+
+neotraverse@^0.6.9:
+  version "0.6.18"
+  resolved "https://registry.yarnpkg.com/neotraverse/-/neotraverse-0.6.18.tgz#abcb33dda2e8e713cf6321b29405e822230cdb30"
+  integrity sha512-Z4SmBUweYa09+o6pG+eASabEpP6QkQ70yHj351pQoEXIs8uHbaU2DWVmzBANKgflPa47A50PtB2+NgRpQvr7vA==
 
 next-tick@^1.1.0:
   version "1.1.0"
@@ -17743,6 +17753,11 @@ xtend@~2.1.1:
   dependencies:
     object-keys "~0.4.0"
 
+xxhash-wasm@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/xxhash-wasm/-/xxhash-wasm-1.0.2.tgz#ecc0f813219b727af4d5f3958ca6becee2f2f1ff"
+  integrity sha512-ibF0Or+FivM9lNrg+HGJfVX8WJqgo+kCLDc4vx6xMeTce7Aj+DLttKbxxRR/gNLSAelRc1omAPlJ77N/Jem07A==
+
 y18n@^3.2.1:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/y18n/-/y18n-3.2.2.tgz#85c901bd6470ce71fc4bb723ad209b70f7f28696"
@@ -17883,6 +17898,11 @@ zod-to-json-schema@^3.23.2:
   version "3.23.2"
   resolved "https://registry.yarnpkg.com/zod-to-json-schema/-/zod-to-json-schema-3.23.2.tgz#bc7e379c8050462538383e382964c03d8fe008f9"
   integrity sha512-uSt90Gzc/tUfyNqxnjlfBs8W6WSGpNBv0rVsNxP/BVSMHMKGdthPYff4xtCHYloJGM0CFxFsb3NbC0eqPhfImw==
+
+zod-to-ts@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/zod-to-ts/-/zod-to-ts-1.2.0.tgz#873a2fd8242d7b649237be97e0c64d7954ae0c51"
+  integrity sha512-x30XE43V+InwGpvTySRNz9kB7qFU8DlyEy7BsSTCHPH1R0QasMmHWZDCzYm6bVXtj/9NNJAZF3jW8rzFvH5OFA==
 
 zod@3.22.4:
   version "3.22.4"
