@@ -245,7 +245,7 @@ const DiscordAuthCallbackPage: FunctionComponent<IAuthCallbackProp> = (
 
   return (
     <>
-      <div className="relative flex gap-16 flex-col justify-center p-4 md:p-0 w-[36%] max-w-[36%] ml-auto mr-auto">
+      <div className="relative flex gap-16 flex-col justify-center p-4 md:p-0 max-w-screen-sm container mx-auto">
         <section className="mt-16 grid gap-8 md:mt-32 min-w-full w-full max-w-full">
           <h1 className="text-2xl font-bold md:text-5xl text-center">
             {i18n('DiscordAuthCallbackHeader')}
