@@ -112,7 +112,7 @@
       walletAwaitingUserConfirmation = false
       walletConnectStatusMsg = 'Clubs creation confirmed, loading setup...'
       window.location.href = new URL(
-        `${siteName}/setup/basic`,
+        `${siteName}/setup`,
         `${location.protocol}//${location.host}`,
       ).toString()
     } else {
@@ -165,7 +165,9 @@
         disabled={!signer ||
           !account ||
           walletAwaitingUserConfirmation ||
-          disableCreationUsingWallet}
+          disableCreationUsingWallet ||
+          walletConnectStatusMsg.toLowerCase() ==
+            'Clubs creation confirmed, loading setup...'.toLowerCase()}
         on:click|preventDefault={(_) => {
           signer && account ? walletConnect(signer, account) : null
         }}
