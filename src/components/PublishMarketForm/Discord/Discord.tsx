@@ -34,7 +34,7 @@ const DiscordMarketButton = (props: IDiscordButtonProps) => {
   return (
     <button
       onClick={onAuthDiscordAccount}
-      className={`hs-button is-large is-filled flex flex-col max-w-[33%] grow items-center justify-center gap-2.5 ${
+      className={`hs-button is-large is-filled flex flex-col items-center justify-center gap-2.5 text-surface-ink border-surface-200 bg-surface-300 hover:bg-surface-400 ${
         props.market !== Market.DISCORD && 'opacity-50'
       } self-stretch justify-self-stretch h-full max-h-full min-h-full`}
       id="discord-icon"
