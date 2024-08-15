@@ -17,6 +17,15 @@ import { Strings } from '../i18n'
 import { useQuery } from '../utils'
 import { Market, type IAuthCallbackProp } from '../types'
 
+type YTChannel = {
+  channelId: string
+  videoCount: string
+  viewCount: string
+  keywords?: string
+  title: string
+  description: string
+}
+
 const YoutubeAuthCallbackPage: FunctionComponent<IAuthCallbackProp> = (
   props: IAuthCallbackProp,
 ) => {
@@ -101,7 +110,7 @@ const YoutubeAuthCallbackPage: FunctionComponent<IAuthCallbackProp> = (
     swrOptions,
   )
 
-  const youtubeData = useSWR(
+  const youtubeData = useSWR<YTChannel>(
     queryParams && queryParams.access_token !== '' ? 'youtube/dataapi' : null,
     async () => {
       const youtubeDataApiUrl = `https://www.googleapis.com/youtube/v3/channels?part=id,snippet,brandingSettings,statistics&mine=true&access_token=${queryParams.access_token}`
@@ -124,8 +133,8 @@ const YoutubeAuthCallbackPage: FunctionComponent<IAuthCallbackProp> = (
           },
         )
         .then(
-          (res) => {
-            return res.items.map((item: any) => {
+          async (res) => {
+            const [data] = res.items.map((item: any) => {
               const channelId = item.id
               const videoCount = item.statistics.videoCount
               const viewCount = item.statistics.viewCount
@@ -139,8 +148,9 @@ const YoutubeAuthCallbackPage: FunctionComponent<IAuthCallbackProp> = (
                 keywords,
                 title,
                 description,
-              }
+              } satisfies YTChannel
             })
+            return data
           },
           (err) => {
             throw new Error(err?.message || 'Error occured')
@@ -172,14 +182,9 @@ const YoutubeAuthCallbackPage: FunctionComponent<IAuthCallbackProp> = (
       return setError('Invalid Authentication!')
     }
 
-    setAssetName(youtubeData?.data.pop().channelId)
+    setAssetName(youtubeData?.data.channelId)
     setPersonalAccessToken(queryParams.access_token)
     onSuccessfulAuth()
-
-    window.location.href = new URL(
-      `/${clubsDomain}/setup`,
-      `${location.protocol}//${location.host}`,
-    ).toString()
   }, [
     verifyData,
     isVerify,
@@ -227,7 +232,7 @@ const YoutubeAuthCallbackPage: FunctionComponent<IAuthCallbackProp> = (
 
   return (
     <>
-      <div className="relative flex gap-16 flex-col justify-center p-4 md:p-0 w-[36%] max-w-[36%] ml-auto mr-auto">
+      <div className="relative flex gap-16 flex-col justify-center p-4 md:p-0 max-w-screen-sm container mx-auto">
         <section className="mt-16 grid gap-8 md:mt-32 min-w-full w-full max-w-full">
           <h1 className="text-2xl font-bold md:text-5xl text-center">
             {i18n('YoutubeAuthCallbackHeader')}
@@ -259,8 +264,7 @@ const YoutubeAuthCallbackPage: FunctionComponent<IAuthCallbackProp> = (
         {!verifyData.isLoading &&
           !youtubeData.isLoading &&
           youtubeData &&
-          youtubeData.data &&
-          !youtubeData.data.length && (
+          !youtubeData.data && (
             <div
               className={`p-8 rounded-3xl bg-surface-400 flex flex-col lg:flex-row justify-between items-center gap-5 transition-opacity duration-700 animate-pulse bg-gray-500/60`}
             >
@@ -273,8 +277,7 @@ const YoutubeAuthCallbackPage: FunctionComponent<IAuthCallbackProp> = (
         {!verifyData.isLoading &&
           !youtubeData.isLoading &&
           youtubeData &&
-          youtubeData.data &&
-          youtubeData.data.length && (
+          youtubeData.data && (
             <div
               className={`p-8 rounded-3xl bg-surface-400 flex flex-col lg:flex-row justify-between items-center gap-5 transition-opacity duration-700 animate-pulse bg-gray-500/60`}
             >
