@@ -704,11 +704,11 @@
     uuid "9.0.1"
 
 "@crossmint/client-sdk-base@^1.0.1-alpha.6":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-base/-/client-sdk-base-1.2.1.tgz#87a5d4d8df95a7b499d5731ab5fe18ba83a386d9"
-  integrity sha512-q/LRQ5XB4DWdnY1Oqt4SxsdGZiqh15o2bEriV6OZ1Eveqckmv1DyuzHODl5BKuJ8E3zcGIPHZoklucq4W5Mqrg==
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-base/-/client-sdk-base-1.2.2.tgz#e98b6fc1a244f473676448c3d539069231a632b9"
+  integrity sha512-iUfpMm7tNIUrsQA1tZM+hthZdJTUMoafbCjkckrINtqSpC8eFU7PI3B+TG+hjfTV2ZkNgGycCh4WvtZ4RpLr7g==
   dependencies:
-    "@crossmint/common-sdk-base" "0.1.0"
+    "@crossmint/common-sdk-base" "0.1.1"
     exponential-backoff "3.1.1"
     uuid "9.0.1"
 
@@ -733,10 +733,10 @@
     bs58 "5.0.0"
     tweetnacl "1.0.3"
 
-"@crossmint/common-sdk-base@0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@crossmint/common-sdk-base/-/common-sdk-base-0.1.0.tgz#d58ea86f904a783d0317d3c80884381f6146ffc9"
-  integrity sha512-MFdeN1zBxB7YjWORDDX2kdAhtK9JbG692twH3gq8nwa7O6UbbAA1yhi54ixXymHs8/Qn9tZP643qUebbWEtqnw==
+"@crossmint/common-sdk-base@0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@crossmint/common-sdk-base/-/common-sdk-base-0.1.1.tgz#8a2b6ae4ddab71d47e7c34638e8710ab429569b5"
+  integrity sha512-yQsIC0uuYzOTTWa76dWPHRr0+5wudn3RNLPd1rD59huP7atF6vpIU0xU+XaLv40Hkb2azqZeS0PrZ/xqO5Egxw==
   dependencies:
     bs58 "5.0.0"
     tweetnacl "1.0.3"
