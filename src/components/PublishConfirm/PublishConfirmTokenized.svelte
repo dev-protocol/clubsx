@@ -3,7 +3,7 @@
   import { fade, fly } from 'svelte/transition'
   import type { DraftOptions } from '@constants/draft'
   import type { UndefinedOr } from '@devprotocol/util-ts'
-  import { type Signer, type ContractRunner } from 'ethers'
+  import { type Signer, type ContractRunner, ZeroAddress, isAddress } from 'ethers'
   import { createPropertyContract } from '@devprotocol/dev-kit'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
   import {
@@ -168,6 +168,21 @@
   }
 
   const fetchPublishDetails = async () => {
+    const __draftOptions: DraftOptions | undefined = config?.options?.find(
+      (op: ClubsPluginOption) => op.key === '__draft',
+    ) as DraftOptions
+    if (
+      __draftOptions &&
+      __draftOptions.value.isInDraft === false &&
+      config.propertyAddress &&
+      config.propertyAddress != ZeroAddress &&
+      isAddress(config.propertyAddress)
+    ) {
+      sessionStorage.removeItem(`${domain}-onboarding-data`)
+      isPublished = true
+      tokenizationResult = true
+    }
+
     const rawData = sessionStorage.getItem(`${domain}-onboarding-data`)
     if (!rawData) {
       clubsName = ''
