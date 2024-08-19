@@ -35,6 +35,12 @@ export const Strings = {
   },
   TokenizeModeInValidAddrHelper: {
     en: () =>
+      `The entered address is invalid or doesn't exist on the blockchain.`,
+    ja: () =>
+      `入力されたアドレスは無効であるか、ブロックチェーン上に存在しません。`,
+  },
+  TokenizeModeInValidPropertyAddrHelper: {
+    en: () =>
       `The entered address is either not deployed by using DEV Protocol (Niwa or Stakes Social) or doesn't exist on the blockchain.`,
     ja: () =>
       `入力されたアドレスは、DEV プロトコル (Niwa または Stakes Social) を使用してデプロイされていないか、ブロックチェーン上に存在しません。`,

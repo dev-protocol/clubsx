@@ -13,7 +13,7 @@ import { Market } from '../PublishMarketForm/types'
 import GithubMarketButton from '@components/PublishMarketForm/Github/Github'
 import DiscordMarketButton from '@components/PublishMarketForm/Discord/Discord'
 import YoutubeMarketButton from '@components/PublishMarketForm/Youtube/Youtube'
-import { useIsValidPropertyAddress } from './isValidHook'
+import { useIsValidPropertyAddress, VALIDITY_STATE } from './isValidHook'
 
 interface IPublishFormProps {
   domain: string
@@ -35,7 +35,7 @@ const PublishForm = (props: IPublishFormProps) => {
   const [provider, setProvider] =
     useState<UndefinedOr<ContractRunner>>(undefined)
 
-  const isValidPropertyAddress = useIsValidPropertyAddress(
+  const propertyAddrValidity = useIsValidPropertyAddress(
     signer,
     tokenizedPropertyAddr,
     provider,
@@ -153,7 +153,10 @@ const PublishForm = (props: IPublishFormProps) => {
       !props.domain ||
       !clubsName ||
       !tokenizedPropertyAddr ||
-      !isValidPropertyAddress
+      propertyAddrValidity === VALIDITY_STATE.UNDEFINED ||
+      propertyAddrValidity === VALIDITY_STATE.INVALID_ADDR ||
+      propertyAddrValidity === VALIDITY_STATE.INVALID_PROPERTY_ADDR ||
+      propertyAddrValidity === VALIDITY_STATE.NOT_PROPERTY_OWNER
     )
   }, [
     props.domain,
@@ -163,7 +166,7 @@ const PublishForm = (props: IPublishFormProps) => {
     tokenSymbol,
     assetName,
     tokenizedPropertyAddr,
-    isValidPropertyAddress,
+    propertyAddrValidity,
   ])
 
   return (
@@ -215,12 +218,18 @@ const PublishForm = (props: IPublishFormProps) => {
                   id="tokenized-property-addr"
                   name="tokenized-property-addr"
                 />
-                {tokenizedPropertyAddr && !isValidPropertyAddress && (
+                {propertyAddrValidity === VALIDITY_STATE.INVALID_ADDR && (
                   <p className="hs-form-field__helper mt-2">
                     * {i18n('TokenizeModeInValidAddrHelper')}
                   </p>
                 )}
-                {tokenizedPropertyAddr && !isValidPropertyAddress && (
+                {propertyAddrValidity ===
+                  VALIDITY_STATE.INVALID_PROPERTY_ADDR && (
+                  <p className="hs-form-field__helper mt-2">
+                    * {i18n('TokenizeModeInValidPropertyAddrHelper')}
+                  </p>
+                )}
+                {propertyAddrValidity === VALIDITY_STATE.NOT_PROPERTY_OWNER && (
                   <p className="hs-form-field__helper mt-2">
                     * {i18n('TokenizeModeNotOwnerHelper')}
                   </p>

@@ -6,24 +6,34 @@ import {
 } from '@devprotocol/dev-kit'
 import { isAddress, type ContractRunner, type Signer } from 'ethers'
 
+export enum VALIDITY_STATE {
+  UNDEFINED,
+  VALID,
+  INVALID_ADDR,
+  INVALID_PROPERTY_ADDR,
+  NOT_PROPERTY_OWNER,
+}
+
 export const useIsValidPropertyAddress = (
   signer: UndefinedOr<Signer>,
   tokenizedPropertyAddr: string,
   provider: UndefinedOr<ContractRunner>,
 ) => {
-  const [isValid, setIsValid] = useState<boolean>(false)
+  const [validity, setValidity] = useState<VALIDITY_STATE>(
+    VALIDITY_STATE.UNDEFINED,
+  )
 
   const fetchValidity = useCallback(async () => {
     if (!provider || !signer) {
       console.log('Provider or signer not found!')
-      setIsValid(false)
+      setValidity(VALIDITY_STATE.UNDEFINED)
       return
     }
 
     const isValidEVMAddr = isAddress(tokenizedPropertyAddr)
     if (!isValidEVMAddr) {
       console.error('Invalid EVM address!')
-      setIsValid(false)
+      setValidity(VALIDITY_STATE.INVALID_ADDR)
       return
     }
 
@@ -34,7 +44,7 @@ export const useIsValidPropertyAddress = (
       ?.isProperty(tokenizedPropertyAddr)
     if (!isProperty) {
       console.error('Invalid proprety address!')
-      setIsValid(false)
+      setValidity(VALIDITY_STATE.INVALID_PROPERTY_ADDR)
       return
     }
 
@@ -46,11 +56,13 @@ export const useIsValidPropertyAddress = (
     const isAuthor = (await propertyContract?.author()) === eoa
     if (!isAuthor) {
       console.error('Connected wallet is not author of the token!')
-      setIsValid(false)
+      setValidity(VALIDITY_STATE.NOT_PROPERTY_OWNER)
       return
     }
 
-    setIsValid(isProperty && isAuthor)
+    setValidity(
+      isProperty && isAuthor ? VALIDITY_STATE.VALID : VALIDITY_STATE.UNDEFINED,
+    )
   }, [provider, tokenizedPropertyAddr])
 
   useEffect(() => {
@@ -59,5 +71,5 @@ export const useIsValidPropertyAddress = (
     )
   }, [provider, tokenizedPropertyAddr])
 
-  return isValid
+  return validity
 }
