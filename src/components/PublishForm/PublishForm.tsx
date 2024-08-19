@@ -13,10 +13,7 @@ import { Market } from '../PublishMarketForm/types'
 import GithubMarketButton from '@components/PublishMarketForm/Github/Github'
 import DiscordMarketButton from '@components/PublishMarketForm/Discord/Discord'
 import YoutubeMarketButton from '@components/PublishMarketForm/Youtube/Youtube'
-import {
-  useIsOwnerOfValidDevProtocolProperty,
-  useIsValidDevProtocolProperty,
-} from './isValidHook'
+import { useIsValidPropertyAddress } from './isValidHook'
 
 interface IPublishFormProps {
   domain: string
@@ -38,15 +35,10 @@ const PublishForm = (props: IPublishFormProps) => {
   const [provider, setProvider] =
     useState<UndefinedOr<ContractRunner>>(undefined)
 
-  const isValidDevProtocolProperty = useIsValidDevProtocolProperty(
-    provider,
-    tokenizedPropertyAddr,
-  )
-  const isOwnerOfProperty = useIsOwnerOfValidDevProtocolProperty(
+  const isValidPropertyAddress = useIsValidPropertyAddress(
     signer,
     tokenizedPropertyAddr,
     provider,
-    isValidDevProtocolProperty,
   )
 
   useEffect(() => {
@@ -161,8 +153,7 @@ const PublishForm = (props: IPublishFormProps) => {
       !props.domain ||
       !clubsName ||
       !tokenizedPropertyAddr ||
-      !isValidDevProtocolProperty ||
-      !isOwnerOfProperty
+      !isValidPropertyAddress
     )
   }, [
     props.domain,
@@ -172,8 +163,7 @@ const PublishForm = (props: IPublishFormProps) => {
     tokenSymbol,
     assetName,
     tokenizedPropertyAddr,
-    isValidDevProtocolProperty,
-    isOwnerOfProperty,
+    isValidPropertyAddress,
   ])
 
   return (
@@ -225,12 +215,12 @@ const PublishForm = (props: IPublishFormProps) => {
                   id="tokenized-property-addr"
                   name="tokenized-property-addr"
                 />
-                {!isValidDevProtocolProperty && (
+                {tokenizedPropertyAddr && !isValidPropertyAddress && (
                   <p className="hs-form-field__helper mt-2">
                     * {i18n('TokenizeModeInValidAddrHelper')}
                   </p>
                 )}
-                {isValidDevProtocolProperty && !isOwnerOfProperty && (
+                {tokenizedPropertyAddr && !isValidPropertyAddress && (
                   <p className="hs-form-field__helper mt-2">
                     * {i18n('TokenizeModeNotOwnerHelper')}
                   </p>
