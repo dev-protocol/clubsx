@@ -131,21 +131,15 @@ const PublishForm = (props: IPublishFormProps) => {
   }, [connection])
 
   const toPublishConfirm = async () => {
-    if (
-      !props.domain ||
-      !clubsName ||
-      !market ||
-      !tokenName ||
-      !tokenSymbol ||
-      !assetName
-    ) {
+    if (isNexBtnDisabled) {
       console.error('Missing required details!')
       return
     }
 
-    // TODO: add validations for input field.
     window.location.href = new URL(
-      `${props.domain}/setup/confirm`,
+      isCreatemode
+        ? `${props.domain}/setup/confirm`
+        : `${props.domain}/setup/confirm/${tokenizedPropertyAddr}`,
       `${location.protocol}//${location.host}`,
     ).toString()
   }
