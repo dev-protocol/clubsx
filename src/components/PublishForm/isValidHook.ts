@@ -58,7 +58,6 @@ export const useIsValidPropertyAddress = (
     const propertyContract = createPropertyContract(provider)(
       tokenizedPropertyAddr,
     )
-    const owner = await propertyContract?.author()
     const isAuthor = (await propertyContract?.author()) === eoa
     if (!isAuthor) {
       console.error('Connected wallet is not author of the token!')

@@ -72,4 +72,22 @@ export const Strings = {
     en: () => `Create a token and start your club`,
     ja: () => `トークンを作成してクラブを開始する`,
   },
+  Publish: {
+    en: ([isPublishing, isErrorInPublished, isPublished]) =>
+      !isPublished && !isErrorInPublished
+        ? 'Publish'
+        : isPublishing
+          ? 'Publishing'
+          : isErrorInPublished
+            ? 'Error, try again!'
+            : 'Published',
+    ja: ([isPublishing, isErrorInPublished, isPublished]) =>
+      !isPublished && !isErrorInPublished
+        ? '公開'
+        : isPublishing
+          ? '出版'
+          : isErrorInPublished
+            ? 'エラーです。もう一度お試しください。'
+            : '発行済み',
+  },
 } satisfies ClubsI18nParts
