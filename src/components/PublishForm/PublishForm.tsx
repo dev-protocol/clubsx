@@ -1,5 +1,5 @@
-import { type ContractRunner } from 'ethers'
 import type { UndefinedOr } from '@devprotocol/util-ts'
+import { type ContractRunner, type Signer } from 'ethers'
 import React, { useState, useEffect, useMemo } from 'react'
 import {
   encode,
@@ -10,10 +10,13 @@ import {
 
 import { Strings } from './i18n'
 import { Market } from '../PublishMarketForm/types'
-import { useIsValidDevProtocolProperty } from './isValidHook'
 import GithubMarketButton from '@components/PublishMarketForm/Github/Github'
 import DiscordMarketButton from '@components/PublishMarketForm/Discord/Discord'
 import YoutubeMarketButton from '@components/PublishMarketForm/Youtube/Youtube'
+import {
+  useIsOwnerOfValidDevProtocolProperty,
+  useIsValidDevProtocolProperty,
+} from './isValidHook'
 
 interface IPublishFormProps {
   domain: string
@@ -27,16 +30,23 @@ const PublishForm = (props: IPublishFormProps) => {
   const [tokenName, setTokenName] = useState<string>('')
   const [assetName, setAssetName] = useState<string>('')
   const [tokenSymbol, setTokenSymbol] = useState<string>('')
+  const [connection, setConnection] = useState<any>(undefined)
   const [isCreatemode, setIsCreateMode] = useState<boolean>(true)
   const [market, setMarket] = useState<UndefinedOr<Market>>(undefined)
+  const [signer, setSigner] = useState<UndefinedOr<Signer>>(undefined)
   const [tokenizedPropertyAddr, setTokenizedPropertyAddr] = useState<string>('')
   const [provider, setProvider] =
     useState<UndefinedOr<ContractRunner>>(undefined)
-  const [connection, setConnection] = useState<any>(undefined)
 
   const isValidDevProtocolProperty = useIsValidDevProtocolProperty(
     provider,
     tokenizedPropertyAddr,
+  )
+  const isOwnerOfProperty = useIsOwnerOfValidDevProtocolProperty(
+    signer,
+    tokenizedPropertyAddr,
+    provider,
+    isValidDevProtocolProperty,
   )
 
   useEffect(() => {
@@ -102,12 +112,22 @@ const PublishForm = (props: IPublishFormProps) => {
       return
     }
 
+    setSigner(connection.connection().signer.getValue())
     setProvider(connection.connection().provider.getValue())
-    const connectionSub = connection
+
+    const signerConnectionSub = connection
+      .connection()
+      .signer.subscribe((s: UndefinedOr<Signer>) => setSigner(s))
+    const provConnectionSub = connection
       .connection()
       .provider.subscribe((p: UndefinedOr<ContractRunner>) => setProvider(p))
 
-    return () => connectionSub.unsubscribe() // Cleanup to remove pervious subscribers.
+    return () => {
+      // Cleanup to remove pervious subscribers.
+      signerConnectionSub.unsubscribe()
+      provConnectionSub.unsubscribe()
+      return
+    }
   }, [connection])
 
   const toPublishConfirm = async () => {
@@ -147,7 +167,8 @@ const PublishForm = (props: IPublishFormProps) => {
       !props.domain ||
       !clubsName ||
       !tokenizedPropertyAddr ||
-      !isValidDevProtocolProperty
+      !isValidDevProtocolProperty ||
+      !isOwnerOfProperty
     )
   }, [
     props.domain,
@@ -158,6 +179,7 @@ const PublishForm = (props: IPublishFormProps) => {
     assetName,
     tokenizedPropertyAddr,
     isValidDevProtocolProperty,
+    isOwnerOfProperty,
   ])
 
   return (
@@ -211,7 +233,12 @@ const PublishForm = (props: IPublishFormProps) => {
                 />
                 {!isValidDevProtocolProperty && (
                   <p className="hs-form-field__helper mt-2">
-                    * {i18n('TokenModeValidAddrHelper')}
+                    * {i18n('TokenizeModeInValidAddrHelper')}
+                  </p>
+                )}
+                {isValidDevProtocolProperty && !isOwnerOfProperty && (
+                  <p className="hs-form-field__helper mt-2">
+                    * {i18n('TokenizeModeNotOwnerHelper')}
                   </p>
                 )}
               </>

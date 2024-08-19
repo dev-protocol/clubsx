@@ -33,11 +33,17 @@ export const Strings = {
       return `クラブのトークンをまだ持っていませんか?ここをクリックして作成してください`
     },
   },
-  TokenModeValidAddrHelper: {
-    en: ([site]) =>
+  TokenizeModeInValidAddrHelper: {
+    en: () =>
       `The entered address is either not deployed by using DEV Protocol (Niwa or Stakes Social) or doesn't exist on the blockchain.`,
-    ja: ([site]) =>
+    ja: () =>
       `入力されたアドレスは、DEV プロトコル (Niwa または Stakes Social) を使用してデプロイされていないか、ブロックチェーン上に存在しません。`,
+  },
+  TokenizeModeNotOwnerHelper: {
+    en: () =>
+      `You are not the author (owner or creator) of the entered token address.`,
+    ja: () =>
+      `あなたは、入力されたトークン アドレスの作成者 (所有者または作成者) ではありません。`,
   },
   VerifyYouLabel: {
     en: () => `How can we verify it's you?`,
