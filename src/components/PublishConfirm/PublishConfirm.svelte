@@ -4,7 +4,12 @@
   import type { DraftOptions } from '@constants/draft'
   import type { NetworkName } from '@devprotocol/khaos-core'
   import { addresses, marketAddresses } from '@devprotocol/dev-kit'
-  import { type Signer, type ContractRunner, ZeroAddress } from 'ethers'
+  import {
+    type Signer,
+    type ContractRunner,
+    ZeroAddress,
+    isAddress,
+  } from 'ethers'
   import {
     buildConfig,
     decode,
@@ -142,6 +147,21 @@
   }
 
   const fetchPublishDetails = async () => {
+    const __draftOptions: DraftOptions | undefined = config?.options?.find(
+      (op: ClubsPluginOption) => op.key === '__draft',
+    ) as DraftOptions
+    if (
+      __draftOptions &&
+      __draftOptions.value.isInDraft === false &&
+      config.propertyAddress &&
+      config.propertyAddress != ZeroAddress &&
+      isAddress(config.propertyAddress)
+    ) {
+      sessionStorage.removeItem(`${domain}-onboarding-data`)
+      tokenizationResult = true
+      return
+    }
+
     const rawData = sessionStorage.getItem(`${domain}-onboarding-data`)
     if (!rawData) {
       clubsName = ''

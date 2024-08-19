@@ -3,7 +3,12 @@
   import { fade, fly } from 'svelte/transition'
   import type { DraftOptions } from '@constants/draft'
   import type { UndefinedOr } from '@devprotocol/util-ts'
-  import { type Signer, type ContractRunner, ZeroAddress, isAddress } from 'ethers'
+  import {
+    type Signer,
+    type ContractRunner,
+    ZeroAddress,
+    isAddress,
+  } from 'ethers'
   import { createPropertyContract } from '@devprotocol/dev-kit'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
   import {
@@ -181,6 +186,7 @@
       sessionStorage.removeItem(`${domain}-onboarding-data`)
       isPublished = true
       tokenizationResult = true
+      return
     }
 
     const rawData = sessionStorage.getItem(`${domain}-onboarding-data`)
