@@ -1,3 +1,4 @@
+import { type ContractRunner } from 'ethers'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import React, { useState, useEffect, useMemo } from 'react'
 import {
@@ -9,6 +10,7 @@ import {
 
 import { Strings } from './i18n'
 import { Market } from '../PublishMarketForm/types'
+import { useIsValidDevProtocolProperty } from './isValidHook'
 import GithubMarketButton from '@components/PublishMarketForm/Github/Github'
 import DiscordMarketButton from '@components/PublishMarketForm/Discord/Discord'
 import YoutubeMarketButton from '@components/PublishMarketForm/Youtube/Youtube'
@@ -28,6 +30,23 @@ const PublishForm = (props: IPublishFormProps) => {
   const [isCreatemode, setIsCreateMode] = useState<boolean>(true)
   const [market, setMarket] = useState<UndefinedOr<Market>>(undefined)
   const [tokenizedPropertyAddr, setTokenizedPropertyAddr] = useState<string>('')
+  const [provider, setProvider] =
+    useState<UndefinedOr<ContractRunner>>(undefined)
+  const [connection, setConnection] = useState<any>(undefined)
+
+  const isValidDevProtocolProperty = useIsValidDevProtocolProperty(
+    provider,
+    tokenizedPropertyAddr,
+  )
+
+  useEffect(() => {
+    const checkConnection = async () => {
+      const _connection = await import('@devprotocol/clubs-core/connection')
+      setConnection(_connection)
+    }
+
+    checkConnection()
+  }, [props])
 
   useEffect(() => {
     const rawData = sessionStorage.getItem(`${props.domain}-onboarding-data`)
@@ -78,6 +97,19 @@ const PublishForm = (props: IPublishFormProps) => {
     i18n = i18nBase(navigator.languages)
   }, [navigator])
 
+  useEffect(() => {
+    if (!connection) {
+      return
+    }
+
+    setProvider(connection.connection().provider.getValue())
+    const connectionSub = connection
+      .connection()
+      .provider.subscribe((p: UndefinedOr<ContractRunner>) => setProvider(p))
+
+    return () => connectionSub.unsubscribe() // Cleanup to remove pervious subscribers.
+  }, [connection])
+
   const toPublishConfirm = async () => {
     if (
       !props.domain ||
@@ -110,7 +142,13 @@ const PublishForm = (props: IPublishFormProps) => {
       )
     }
 
-    return !props.domain || !clubsName || !tokenizedPropertyAddr
+    return (
+      !provider ||
+      !props.domain ||
+      !clubsName ||
+      !tokenizedPropertyAddr ||
+      !isValidDevProtocolProperty
+    )
   }, [
     props.domain,
     clubsName,
@@ -119,6 +157,7 @@ const PublishForm = (props: IPublishFormProps) => {
     tokenSymbol,
     assetName,
     tokenizedPropertyAddr,
+    isValidDevProtocolProperty,
   ])
 
   return (
@@ -170,9 +209,11 @@ const PublishForm = (props: IPublishFormProps) => {
                   id="tokenized-property-addr"
                   name="tokenized-property-addr"
                 />
-                <p className="hs-form-field__helper mt-2">
-                  * {i18n('TokenNameHelper')}
-                </p>
+                {!isValidDevProtocolProperty && (
+                  <p className="hs-form-field__helper mt-2">
+                    * {i18n('TokenModeValidAddrHelper')}
+                  </p>
+                )}
               </>
             )}
           </label>
