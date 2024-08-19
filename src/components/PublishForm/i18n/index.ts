@@ -17,6 +17,22 @@ export const Strings = {
     en: ([site]) => `The registered domain name of your clubs is ${site}.`,
     ja: ([site]) => `あなたのクラブの登録ドメイン名は ${site} です。`,
   },
+  TokenizeModeLabel: {
+    en: ([mode]) => {
+      if (mode === 'create') {
+        return `Already have a token on Niwa or Stakes Social? Click to enter your token address`
+      }
+
+      return `Don't have a token for your Club yet? Click here to create one`
+    },
+    ja: ([mode]) => {
+      if (mode === 'create') {
+        return `すでにNiwaまたはStakes Socialのトークンをお持ちですか?クリックしてトークンアドレスを入力します`
+      }
+
+      return `クラブのトークンをまだ持っていませんか?ここをクリックして作成してください`
+    },
+  },
   VerifyYouLabel: {
     en: () => `How can we verify it's you?`,
     ja: () => `本人確認はどうすればできますか？`,

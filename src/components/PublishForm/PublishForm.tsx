@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
 import type { UndefinedOr } from '@devprotocol/util-ts'
+import React, { useState, useEffect, useMemo } from 'react'
 import {
   encode,
   decode,
@@ -25,7 +25,9 @@ const PublishForm = (props: IPublishFormProps) => {
   const [tokenName, setTokenName] = useState<string>('')
   const [assetName, setAssetName] = useState<string>('')
   const [tokenSymbol, setTokenSymbol] = useState<string>('')
+  const [isCreatemode, setIsCreateMode] = useState<boolean>(true)
   const [market, setMarket] = useState<UndefinedOr<Market>>(undefined)
+  const [tokenizedPropertyAddr, setTokenizedPropertyAddr] = useState<string>('')
 
   useEffect(() => {
     const rawData = sessionStorage.getItem(`${props.domain}-onboarding-data`)
@@ -96,6 +98,29 @@ const PublishForm = (props: IPublishFormProps) => {
     ).toString()
   }
 
+  const isNexBtnDisabled = useMemo(() => {
+    if (isCreatemode) {
+      return (
+        !props.domain ||
+        !clubsName ||
+        !market ||
+        !tokenName ||
+        !tokenSymbol ||
+        !assetName
+      )
+    }
+
+    return !props.domain || !clubsName || !tokenizedPropertyAddr
+  }, [
+    props.domain,
+    clubsName,
+    market,
+    tokenName,
+    tokenSymbol,
+    assetName,
+    tokenizedPropertyAddr,
+  ])
+
   return (
     <>
       <div className="relative flex gap-16 flex-col justify-center p-4 md:p-0 max-w-screen-sm	container mx-auto">
@@ -124,80 +149,107 @@ const PublishForm = (props: IPublishFormProps) => {
             </p>
           </label>
 
-          <div className="hs-form-field is-filled is-required">
-            <span className="hs-form-field__label">
-              {' '}
-              {i18n('VerifyYouLabel')}{' '}
+          <label className="hs-form-field is-filled">
+            <span
+              className="hs-form-field__label underline cursor-pointer"
+              onClick={() => setIsCreateMode((m) => !m)}
+            >
+              {i18n('TokenizeModeLabel', [
+                isCreatemode ? 'create' : 'existing',
+              ])}
             </span>
-            <div className="grid grid-cols-3 w-full max-w-full h-28 max-h-[28] items-center justify-start gap-2">
-              <YoutubeMarketButton
-                market={market}
-                changeMarket={setMarket}
-                domain={props.domain}
-              />
-              <DiscordMarketButton
-                market={market}
-                changeMarket={setMarket}
-                domain={props.domain}
-              />
-              <GithubMarketButton
-                domain={props.domain}
-                market={market}
-                changeMarket={setMarket}
-              />
+            {!isCreatemode && (
+              <>
+                <input
+                  className="hs-form-field__input w-full"
+                  type="text"
+                  value={tokenizedPropertyAddr}
+                  onChange={(ev) =>
+                    setTokenizedPropertyAddr(ev?.target?.value || '')
+                  }
+                  id="tokenized-property-addr"
+                  name="tokenized-property-addr"
+                />
+                <p className="hs-form-field__helper mt-2">
+                  * {i18n('TokenNameHelper')}
+                </p>
+              </>
+            )}
+          </label>
+
+          {isCreatemode && (
+            <div className="hs-form-field is-filled is-required">
+              <span className="hs-form-field__label">
+                {' '}
+                {i18n('VerifyYouLabel')}{' '}
+              </span>
+              <div className="grid grid-cols-3 w-full max-w-full h-28 max-h-[28] items-center justify-start gap-2">
+                <YoutubeMarketButton
+                  market={market}
+                  changeMarket={setMarket}
+                  domain={props.domain}
+                />
+                <DiscordMarketButton
+                  market={market}
+                  changeMarket={setMarket}
+                  domain={props.domain}
+                />
+                <GithubMarketButton
+                  domain={props.domain}
+                  market={market}
+                  changeMarket={setMarket}
+                />
+              </div>
+              <p
+                className={`${!assetName && 'hs-form-field__helper'} mt-2 font-body font-bold text-base capitalize`}
+                dangerouslySetInnerHTML={{
+                  __html: `${i18n('VerifiedYouHelper', [market, assetName])}`,
+                }}
+              ></p>
             </div>
-            <p
-              className={`${!assetName && 'hs-form-field__helper'} mt-2 font-body font-bold text-base capitalize`}
-              dangerouslySetInnerHTML={{
-                __html: `${i18n('VerifiedYouHelper', [market, assetName])}`,
-              }}
-            ></p>
-          </div>
+          )}
 
-          <label className="hs-form-field is-filled is-required">
-            <span className="hs-form-field__label">
-              {i18n('TokenNameLabel')}
-            </span>
-            <input
-              className="hs-form-field__input w-full"
-              type="text"
-              value={tokenName}
-              onChange={(ev) => setTokenName(ev?.target?.value || '')}
-              id="token-name"
-              name="token-name"
-            />
-            <p className="hs-form-field__helper mt-2">
-              * {i18n('TokenNameHelper')}
-            </p>
-          </label>
+          {isCreatemode && (
+            <label className="hs-form-field is-filled is-required">
+              <span className="hs-form-field__label">
+                {i18n('TokenNameLabel')}
+              </span>
+              <input
+                className="hs-form-field__input w-full"
+                type="text"
+                value={tokenName}
+                onChange={(ev) => setTokenName(ev?.target?.value || '')}
+                id="token-name"
+                name="token-name"
+              />
+              <p className="hs-form-field__helper mt-2">
+                * {i18n('TokenNameHelper')}
+              </p>
+            </label>
+          )}
 
-          <label className="hs-form-field is-filled is-required">
-            <span className="hs-form-field__label">
-              {i18n('TokenSymbolLabel')}
-            </span>
-            <input
-              className="hs-form-field__input w-full"
-              type="text"
-              value={tokenSymbol}
-              onChange={(ev) => setTokenSymbol(ev?.target?.value || '')}
-              id="token-symbol"
-              name="token-symbol"
-            />
-            <p className="hs-form-field__helper mt-2">
-              * {i18n('TokenSymbolHelper')}
-            </p>
-          </label>
+          {isCreatemode && (
+            <label className="hs-form-field is-filled is-required">
+              <span className="hs-form-field__label">
+                {i18n('TokenSymbolLabel')}
+              </span>
+              <input
+                className="hs-form-field__input w-full"
+                type="text"
+                value={tokenSymbol}
+                onChange={(ev) => setTokenSymbol(ev?.target?.value || '')}
+                id="token-symbol"
+                name="token-symbol"
+              />
+              <p className="hs-form-field__helper mt-2">
+                * {i18n('TokenSymbolHelper')}
+              </p>
+            </label>
+          )}
 
           <div className="flex w-full justify-end gap-[20px]">
             <button
-              disabled={
-                !props.domain ||
-                !clubsName ||
-                !market ||
-                !tokenName ||
-                !tokenSymbol ||
-                !assetName
-              }
+              disabled={isNexBtnDisabled}
               className={`hs-button is-filled is-error w-fit py-6 px-8`}
               onClick={toPublishConfirm}
             >
