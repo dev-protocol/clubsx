@@ -24,6 +24,12 @@ export const useIsValidPropertyAddress = (
   )
 
   const fetchValidity = useCallback(async () => {
+    if (!tokenizedPropertyAddr) {
+      console.log('Invalid token address or address not entered!')
+      setValidity(VALIDITY_STATE.UNDEFINED)
+      return
+    }
+
     if (!provider || !signer) {
       console.log('Provider or signer not found!')
       setValidity(VALIDITY_STATE.UNDEFINED)
