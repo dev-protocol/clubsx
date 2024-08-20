@@ -1,12 +1,11 @@
 ---
 import admin from '@plugins/admin'
+import PageNotFound from '@pages/404.astro'
+import Layout from '@layouts/Landing.astro'
 import { replaceWithFwdHost } from '@fixtures/url'
 import { config as _config } from '@fixtures/config'
 import { adminFactory } from '@devprotocol/clubs-core'
 import Preview from '@assets/preview-overview-chart.png'
-
-import PageNotFound from '@pages/404.astro'
-import Layout from '@layouts/Landing.astro'
 import PublishConfirm from '@components/PublishConfirm/PublishConfirm.svelte'
 
 const { site } = Astro.params

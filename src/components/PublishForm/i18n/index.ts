@@ -17,6 +17,40 @@ export const Strings = {
     en: ([site]) => `The registered domain name of your clubs is ${site}.`,
     ja: ([site]) => `あなたのクラブの登録ドメイン名は ${site} です。`,
   },
+  TokenizeModeLabel: {
+    en: ([mode]) => {
+      if (mode === 'create') {
+        return `Import my token instead`
+      }
+
+      return `Create new token`
+    },
+    ja: ([mode]) => {
+      if (mode === 'create') {
+        return `トークンをインポートする`
+      }
+
+      return `新規作成する`
+    },
+  },
+  TokenizeModeInValidAddrHelper: {
+    en: () =>
+      `The entered address is invalid or doesn't exist on the blockchain.`,
+    ja: () =>
+      `入力されたアドレスは無効であるか、ブロックチェーン上に存在しません。`,
+  },
+  TokenizeModeInValidPropertyAddrHelper: {
+    en: () =>
+      `The entered address is either not deployed by using DEV Protocol (Niwa or Stakes Social) or doesn't exist on the blockchain.`,
+    ja: () =>
+      `入力されたアドレスは、DEV プロトコル (Niwa または Stakes Social) を使用してデプロイされていないか、ブロックチェーン上に存在しません。`,
+  },
+  TokenizeModeNotOwnerHelper: {
+    en: () =>
+      `You are not the author (owner or creator) of the entered token address.`,
+    ja: () =>
+      `あなたは、入力されたトークン アドレスの作成者 (所有者または作成者) ではありません。`,
+  },
   VerifyYouLabel: {
     en: () => `How can we verify it's you?`,
     ja: () => `本人確認はどうすればできますか？`,

@@ -72,4 +72,32 @@ export const Strings = {
     en: () => `Create a token and start your club`,
     ja: () => `トークンを作成してクラブを開始する`,
   },
+  PublishError: {
+    en: () => 'Error publishing, try again!',
+    ja: () => `公開エラー。もう一度お試しください。`,
+  },
+  TxnRejected: {
+    en: () => `Wallet signature rejected, try again.`,
+    ja: () => `ウォレットの署名が拒否されました。もう一度お試しください`,
+  },
+  Publish: {
+    en: () => 'Publish',
+    ja: () => `公開`,
+  },
+  Publishing: {
+    en: () => `Publishing`,
+    ja: () => `出版`,
+  },
+  Published: {
+    en: () => `Published`,
+    ja: () => `発行済み`,
+  },
+  ConnectWallet: {
+    en: () => `Connect wallet & try again!`,
+    ja: () => `ウォレットを接続してもう一度お試しください!`,
+  },
+  ClubsNotInDraft: {
+    en: () => `Club is already published`,
+    ja: () => `クラブはすでに公開されています`,
+  },
 } satisfies ClubsI18nParts
