@@ -20,17 +20,17 @@ export const Strings = {
   TokenizeModeLabel: {
     en: ([mode]) => {
       if (mode === 'create') {
-        return `Already have a token on Niwa or Stakes Social? Click to enter your token address`
+        return `Import my token instead`
       }
 
-      return `Don't have a token for your Club yet? Click here to create one`
+      return `Create new token`
     },
     ja: ([mode]) => {
       if (mode === 'create') {
-        return `すでにNiwaまたはStakes Socialのトークンをお持ちですか?クリックしてトークンアドレスを入力します`
+        return `トークンをインポートする`
       }
 
-      return `クラブのトークンをまだ持っていませんか?ここをクリックして作成してください`
+      return `新規作成する`
     },
   },
   TokenizeModeInValidAddrHelper: {
