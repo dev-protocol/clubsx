@@ -34,10 +34,10 @@
   const I18_BASE = i18nFactory(Strings)
 
   let isPublished = false
+  let isPublishing = false
   let i18n = I18_BASE(['en'])
   let signer: Signer | undefined
-  let isPublishingClub = false
-  let isErrorInPublishClub = false
+  let errorInPublishClub = ''
   let connection: typeof Connection
   let provider: ContractRunner | undefined
   let tokenizationResult: UndefinedOr<true | Error>
@@ -80,22 +80,22 @@
 
   const updateConfig = async () => {
     isPublished = false
-    isPublishingClub = true
-    isErrorInPublishClub = false
+    isPublishing = true
+    errorInPublishClub = ''
 
     if (!tokenizedPropertyAddress) {
       console.error('Property address undefined in updateConfig!')
       isPublished = false
-      isPublishingClub = false
-      isErrorInPublishClub = true
+      isPublishing = false
+      errorInPublishClub = i18n('PublishError')
       return
     }
 
     if (!signer || !provider) {
       console.error('Signer or provider undefined in updateConfig!')
       isPublished = false
-      isPublishingClub = false
-      isErrorInPublishClub = true
+      isPublishing = false
+      errorInPublishClub = i18n('ConnectWallet')
       return
     }
 
@@ -105,8 +105,8 @@
     if (!__draftOptions) {
       console.error('Draft options not found!')
       isPublished = false
-      isPublishingClub = false
-      isErrorInPublishClub = true
+      isPublishing = false
+      errorInPublishClub = i18n('ClubsNotInDraft')
       return
     }
 
@@ -117,8 +117,8 @@
     if (!__updatedDraftOptions) {
       console.error('Updated draft options not found!')
       isPublished = false
-      isPublishingClub = false
-      isErrorInPublishClub = true
+      isPublishing = false
+      errorInPublishClub = i18n('ClubsNotInDraft')
       return
     }
 
@@ -142,15 +142,15 @@
     } catch (error) {
       console.error('Error', error)
       isPublished = false
-      isPublishingClub = false
-      isErrorInPublishClub = true
+      isPublishing = false
+      errorInPublishClub = i18n('TxnRejected')
       return
     }
     if (!sig) {
       console.error('Sig not found!')
       isPublished = false
-      isPublishingClub = false
-      isErrorInPublishClub = true
+      isPublishing = false
+      errorInPublishClub = i18n('PublishError')
       return
     }
 
@@ -162,13 +162,13 @@
 
     if (tokenizationResult && !(tokenizationResult instanceof Error)) {
       isPublished = true
-      isPublishingClub = false
-      isErrorInPublishClub = false
+      isPublishing = false
+      errorInPublishClub = ''
       sessionStorage.removeItem(`${domain}-onboarding-data`)
     } else {
       isPublished = false
-      isPublishingClub = false
-      isErrorInPublishClub = true
+      isPublishing = false
+      errorInPublishClub = i18n('PublishError')
     }
   }
 
@@ -184,6 +184,7 @@
       isAddress(config.propertyAddress)
     ) {
       sessionStorage.removeItem(`${domain}-onboarding-data`)
+      clubsName = config.name
       isPublished = true
       tokenizationResult = true
       return
@@ -315,8 +316,10 @@
         clubsName &&
         tokenName &&
         tokenSymbol &&
+        !isPublished &&
+        (!tokenizationResult || tokenizationResult instanceof Error) &&
         tokenizedPropertyAddress
-          ? isPublishingClub
+          ? isPublishing
             ? 'animate-pulse bg-gray-500/60'
             : ''
           : 'opacity-30'
@@ -325,20 +328,25 @@
       <p class="font-normal text-base text-white">{i18n('CreateASig')}</p>
       <button
         disabled={!signer ||
-          isPublishingClub ||
           !clubsName ||
           !tokenName ||
           !tokenSymbol ||
-          !tokenizedPropertyAddress}
+          !tokenizedPropertyAddress ||
+          isPublishing ||
+          isPublished ||
+          tokenizationResult === true}
         class={`hs-button is-filled px-8 py-4 ${
-          isPublishingClub ? 'animate-pulse bg-gray-500/60' : ''
+          isPublishing ? 'animate-pulse bg-gray-500/60' : ''
         } ${!signer || !clubsName || !tokenName || !tokenSymbol || !tokenizedPropertyAddress ? 'bg-gray-500/60' : ''}`}
         on:click|preventDefault={(_) => updateConfig()}
       >
-        {i18n('Publish', [
-          isPublishingClub ? 'Yes' : '',
-          isErrorInPublishClub ? 'Yes' : '',
-        ])}
+        {!!errorInPublishClub
+          ? errorInPublishClub
+          : isPublishing
+            ? i18n('Publishing')
+            : isPublished
+              ? i18n('Published')
+              : i18n('Publish')}
       </button>
     </div>
   </section>
