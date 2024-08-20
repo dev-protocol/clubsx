@@ -94,10 +94,10 @@ export const Strings = {
   },
   ConnectWallet: {
     en: () => `Connect wallet & try again!`,
-    ja: () => `ウォレットを接続してもう一度お試しください!`
+    ja: () => `ウォレットを接続してもう一度お試しください!`,
   },
   ClubsNotInDraft: {
     en: () => `Club is already published`,
-    ja: () => `クラブはすでに公開されています`
-  }
+    ja: () => `クラブはすでに公開されています`,
+  },
 } satisfies ClubsI18nParts
