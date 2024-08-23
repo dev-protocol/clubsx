@@ -2,8 +2,10 @@
   import { onMount } from 'svelte'
   import { sign } from '@devprotocol/khaos-kit'
   import type { DraftOptions } from '@constants/draft'
+  import type { UndefinedOr } from '@devprotocol/util-ts'
   import type { NetworkName } from '@devprotocol/khaos-core'
   import { addresses, marketAddresses } from '@devprotocol/dev-kit'
+  import type { connection as Connection } from '@devprotocol/clubs-core/connection'
   import {
     type Signer,
     type ContractRunner,
@@ -11,42 +13,36 @@
     isAddress,
   } from 'ethers'
   import {
-    buildConfig,
     decode,
     encode,
     i18nFactory,
-    onUpdatedConfiguration,
-    setConfig,
     type ClubsConfiguration,
-    type ClubsGeneralUnit,
     type ClubsPluginOption,
   } from '@devprotocol/clubs-core'
-  import type { connection as Connection } from '@devprotocol/clubs-core/connection'
   import {
     createMarketBehaviorContract,
     createMarketContract,
     createPropertyFactoryContract,
   } from '@devprotocol/dev-kit/l2'
 
+  import { Market } from './types'
   import { Strings } from './i18n'
-  import { selectMarketAddressOption } from './utils'
-  import { Market, type CreatorPlatform } from './types'
-  import type { UndefinedOr } from '@devprotocol/util-ts'
-  import { fade, fly } from 'svelte/transition'
   import SvgShining from './SvgShining.svelte'
+  import { fade, fly } from 'svelte/transition'
+  import { selectMarketAddressOption } from './utils'
 
   export let domain: string
-  export let config: ClubsConfiguration
   export let previewImgSrc: string
+  export let config: ClubsConfiguration
 
   let market: Market
   let clubsName: string
   let tokenName: string
   let assetName: string
   let tokenSymbol: string
-  let personalAccessToken: string
   let khaosMessage: string
   let khaosSignature: string
+  let personalAccessToken: string
 
   const I18_BASE = i18nFactory(Strings)
   const NETWORK_NAME: string = 'polygon-mainnet'
@@ -54,14 +50,14 @@
   let i18n = I18_BASE(['en'])
   let signer: Signer | undefined
   let connection: typeof Connection
-  let provider: ContractRunner | undefined
   let khaosPubSign: string | undefined
-  let isCreatingKhaosPubSign: boolean = false
-  let createKhaosPubSignFdTxt: string = ''
   let propertyAddress: string | undefined
+  let provider: ContractRunner | undefined
+  let isCreatingKhaosPubSign: boolean = false
   let isCreatingPropertyAddr: boolean = false
-  let createProertyAddrFdTxt: string = ''
   let tokenizationResult: UndefinedOr<true | Error>
+  let createKhaosPubSignFdTxt: string = i18n('Sign')
+  let createProertyAddrFdTxt: string = i18n('Tokenize')
 
   $: {
     if (tokenizationResult === true) {
@@ -95,12 +91,17 @@
     const result = res?.ok
       ? true
       : new Error(await res.json().then((r) => r.error))
+
     return result
   }
 
   const updateConfig = async (propertyAddress: string) => {
+    isCreatingPropertyAddr = true
+    createProertyAddrFdTxt = i18n('Publishing')
+
     if (!propertyAddress || !signer || !provider) {
-      console.error('Property address undefined in updateConfig!')
+      isCreatingPropertyAddr = false
+      createProertyAddrFdTxt = i18n('ConnectWallet')
       return
     }
 
@@ -108,7 +109,8 @@
       (op: ClubsPluginOption) => op.key === '__draft',
     ) as DraftOptions
     if (!__draftOptions) {
-      console.error('Draft options not found!')
+      isCreatingPropertyAddr = false
+      createProertyAddrFdTxt = i18n('ClubsNotInDraft')
       return
     }
 
@@ -117,7 +119,8 @@
       value: { ...__draftOptions.value, isInDraft: false },
     }
     if (!__updatedDraftOptions) {
-      console.error('Updated draft options not found!')
+      isCreatingPropertyAddr = false
+      createProertyAddrFdTxt = i18n('ClubsNotInDraft')
       return
     }
 
@@ -142,7 +145,12 @@
 
     // Clear session storage (which contains PAT) when tokenization is succesfull.
     if (tokenizationResult && !(tokenizationResult instanceof Error)) {
+      isCreatingPropertyAddr = false
+      createProertyAddrFdTxt = i18n('Published')
       sessionStorage.removeItem(`${domain}-onboarding-data`)
+    } else {
+      isCreatingPropertyAddr = false
+      createProertyAddrFdTxt = i18n('PublishError')
     }
   }
 
@@ -218,13 +226,27 @@
     signId: string = 'github-market',
   ) => {
     try {
-      isCreatingKhaosPubSign = true
+      setKhaosPubSignStates(undefined, true, i18n('Signing'))
+
       if (!provider || !signer) {
-        setKhaosPubSignStates(undefined, false, 'Connect your wallet')
+        setKhaosPubSignStates(undefined, false, i18n('ConnectWallet'))
         return
       }
 
-      const signMessage = await signer.signMessage(assetName)
+      let signMessage: string
+      try {
+        signMessage = await signer.signMessage(assetName)
+      } catch (error) {
+        console.error('Error', error)
+        setKhaosPubSignStates(undefined, false, i18n('TxnRejected'))
+        return
+      }
+      if (!signMessage) {
+        console.error('Sig not found!')
+        setKhaosPubSignStates(undefined, false, i18n('SignError'))
+        return
+      }
+
       khaosMessage = assetName
       khaosSignature = signMessage
       const signerFn = sign(signId, NETWORK_NAME as NetworkName)
@@ -239,16 +261,12 @@
           ? (_khaosPubSign?.publicSignature ?? undefined)
           : undefined,
         false,
-        _khaosPubSign ? '' : 'Could not create signature',
+        _khaosPubSign ? i18n('Signed') : i18n('SignError'),
       )
       return
     } catch (err) {
       console.log('Err', err)
-      setKhaosPubSignStates(
-        undefined,
-        false,
-        `Failed to sign ${signId} market asset`,
-      )
+      setKhaosPubSignStates(undefined, false, i18n('SignError'))
       return
     }
   }
@@ -269,15 +287,15 @@
     assetName: string,
   ) => {
     try {
-      isCreatingPropertyAddr = true
+      setCreateAndAuthenticateStates(undefined, true, i18n('Tokenizing'))
+
       if (!provider || !signer) {
-        setKhaosPubSignStates(undefined, false, 'Connect your wallet')
-        setCreateAndAuthenticateStates(undefined, false, 'Connect your wallet')
+        setCreateAndAuthenticateStates(undefined, false, i18n('ConnectWallet'))
         return
       }
       if (!khaosPubSign) {
-        setKhaosPubSignStates(undefined, false, 'Sign')
-        setCreateAndAuthenticateStates(undefined, false, 'Sign not found!')
+        setKhaosPubSignStates(undefined, false, i18n('Sign'))
+        setCreateAndAuthenticateStates(undefined, false, i18n('TokenizeError'))
         return
       }
 
@@ -286,11 +304,7 @@
         addresses.polygon.mainnet.propertyFactory,
       )
       if (!propertyFactoryContract) {
-        setCreateAndAuthenticateStates(
-          undefined,
-          false,
-          'Error fetching contract',
-        )
+        setCreateAndAuthenticateStates(undefined, false, i18n('TokenizeError'))
         return
       }
 
@@ -299,7 +313,7 @@
         marketAddresses.polygon.mainnet,
       )
       if (!marketAddr) {
-        setCreateAndAuthenticateStates(undefined, false, 'Error setting market')
+        setCreateAndAuthenticateStates(undefined, false, i18n('TokenizeError'))
         return
       }
 
@@ -307,7 +321,7 @@
       const marketBehavior = createMarketBehaviorContract(provider)(
         await marketContract.behavior(),
       )
-      const metricsAddress = await marketBehavior.getMetrics(assetName) // for example github repo name or youtube channel id
+      const metricsAddress = await marketBehavior.getMetrics(assetName) // e.g github repo name or youtube channel id.
       if (metricsAddress === ZeroAddress) {
         const created = await propertyFactoryContract.createAndAuthenticate(
           tokenName,
@@ -326,30 +340,22 @@
             },
           },
         )
-
+        console.log('Property created, waiting for authentication!')
         await created.waitForAuthentication()
         setCreateAndAuthenticateStates(
           created.property,
           false,
-          'Tokenized successfully',
+          i18n('Tokenized'),
         )
         updateConfig(created.property)
         return
       } else {
-        setCreateAndAuthenticateStates(
-          undefined,
-          false,
-          `Metrics address ${metricsAddress} already exists for id ${assetName}`,
-        )
+        setCreateAndAuthenticateStates(undefined, false, i18n('TokenizeError'))
         return
       }
     } catch (err) {
       console.log('Err', err)
-      setCreateAndAuthenticateStates(
-        undefined,
-        false,
-        `Failed to create and authenticate asset`,
-      )
+      setCreateAndAuthenticateStates(undefined, false, i18n('TokenizeError'))
     }
   }
 
@@ -452,7 +458,7 @@
                 : 'github-market',
           )}
       >
-        {i18n('Sign', [khaosPubSign])}
+        {createKhaosPubSignFdTxt}
       </button>
     </div>
 
@@ -489,7 +495,7 @@
         on:click|preventDefault={(_) =>
           createAndAuthenticate(market, assetName)}
       >
-        {i18n('Tokenize', [''])}
+        {createProertyAddrFdTxt}
       </button>
     </div>
   </section>

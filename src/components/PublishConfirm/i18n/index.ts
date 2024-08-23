@@ -9,6 +9,10 @@ export const Strings = {
     en: () => '',
     ja: () => '',
   },
+  StartClub: {
+    en: () => `Create a token and start your club`,
+    ja: () => `トークンを作成してクラブを開始する`,
+  },
   ClubNameLabel: {
     en: () => 'Club Name',
     ja: () => 'クラブ名',
@@ -61,20 +65,36 @@ export const Strings = {
     ja: () => `署名を作成する`,
   },
   Sign: {
-    en: ([isSigned]) => (isSigned ? `Signed` : `Sign`),
-    ja: ([isSigned]) => (isSigned ? `署名済み` : `サイン`),
+    en: () => `Sign`,
+    ja: () => `サイン`,
+  },
+  Signing: {
+    en: () => 'Signing',
+    ja: () => `署名`,
+  },
+  Signed: {
+    en: () => `Signed`,
+    ja: () => `署名済み`,
+  },
+  SignError: {
+    en: () => `Error signing, try again!`,
+    ja: () => `署名エラー。もう一度試してください。`,
   },
   Tokenize: {
-    en: ([isTokenized]) => (isTokenized ? `Tokenized` : `Tokenize`),
-    ja: ([isTokenized]) => (isTokenized ? `トークン化された` : `トークン化`),
+    en: () => `Tokenize`,
+    ja: () => `トークン化`,
   },
-  StartClub: {
-    en: () => `Create a token and start your club`,
-    ja: () => `トークンを作成してクラブを開始する`,
+  Tokenizing: {
+    en: () => `Tokenizing`,
+    ja: () => `トークン化`,
   },
-  PublishError: {
-    en: () => 'Error publishing, try again!',
-    ja: () => `公開エラー。もう一度お試しください。`,
+  Tokenized: {
+    en: () => `Tokenized`,
+    ja: () => `トークン化`,
+  },
+  TokenizeError: {
+    en: () => 'Error tokenizing, try again!',
+    ja: () => `トークン化エラー。もう一度お試しください。`,
   },
   TxnRejected: {
     en: () => `Wallet signature rejected, try again.`,
@@ -91,6 +111,10 @@ export const Strings = {
   Published: {
     en: () => `Published`,
     ja: () => `発行済み`,
+  },
+  PublishError: {
+    en: () => 'Error publishing, try again!',
+    ja: () => `公開エラー。もう一度お試しください。`,
   },
   ConnectWallet: {
     en: () => `Connect wallet & try again!`,
