@@ -30,7 +30,7 @@ export const Strings = {
         return `トークンをインポートする`
       }
 
-      return `新規作成する`
+      return `新規作成`
     },
   },
   TokenizeModeInValidAddrHelper: {
@@ -49,11 +49,11 @@ export const Strings = {
     en: () =>
       `You are not the author (owner or creator) of the entered token address.`,
     ja: () =>
-      `あなたは、入力されたトークン アドレスの作成者 (所有者または作成者) ではありません。`,
+      `あなたは、入力されたトークンアドレスの作成者 (所有者またはクリエイター) ではありません。`,
   },
   VerifyYouLabel: {
     en: () => `How can we verify it's you?`,
-    ja: () => `本人確認はどうすればできますか？`,
+    ja: () => `本人確認の方法`,
   },
   VerifiedYouHelper: {
     en: ([market, assetName]) => {
@@ -63,7 +63,7 @@ export const Strings = {
     },
     ja: ([market, assetName]) => {
       if (!market || !assetName)
-        return '* ソーシャルを追加して、ファンにあなたであることを知らせましょう。'
+        return '* SNSを追加してファンにあなたのクラブを知らせましょう。'
       return `* <b>${market}</b> - 認証された${assetName}`
     },
   },
