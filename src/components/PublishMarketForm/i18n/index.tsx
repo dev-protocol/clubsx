@@ -3,11 +3,11 @@ import type { ClubsI18nParts } from '@devprotocol/clubs-core'
 export const Strings = {
   DiscordAuthCallbackHeader: {
     en: () => 'Discord Guild Information',
-    ja: () => 'Discordギルド情報',
+    ja: () => 'Discordギルドの情報',
   },
   DiscordAuthCallbackSubHeader: {
     en: () => 'Select a Discord Guild',
-    ja: () => 'Discordギルドを選択してください',
+    ja: () => 'Discordギルドを選択',
   },
   DiscordAuthCallbackError: {
     en: () => 'Your Discord Servers (Guilds) could not be loaded.',
@@ -15,7 +15,7 @@ export const Strings = {
   },
   DiscordAuthCallbackNoGuild: {
     en: () => `You do not have your own Discord Server (Guild).`,
-    ja: () => `独自の Discord サーバー (ギルド) をお持ちではありません。`,
+    ja: () => `Discord サーバー (ギルド) を所有していません。`,
   },
   DiscordAuthCallbackGuildName: {
     en: ([name]) => `Guild: ${name}`,
@@ -35,11 +35,11 @@ export const Strings = {
   },
   GithubProjectInfoSubHeader: {
     en: () => 'Enter your Github project and Access Token',
-    ja: () => 'Github プロジェクトとアクセス トークンを入力します',
+    ja: () => 'Githubプロジェクトとアクセストークンを入力',
   },
   GithubAssetNameLabel: {
     en: () => 'Github Repository Name',
-    ja: () => `Github リポジトリ名`,
+    ja: () => `Githubのリポジトリ名`,
   },
   GithubAssetNameHelper: {
     en: () =>
@@ -54,11 +54,11 @@ export const Strings = {
     en: () =>
       `* The PAT is confidentially authenticated using the Khaos oracle.<br />* <a class="hs-form-field__helper" href='https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens'><u>Create a Personal Access Token without any scopes.</u></a>`,
     ja: () =>
-      `* PAT は、Khaos oracle を使用して秘密裏に認証されます。<br />* <a class="hs-form-field__helper" href='https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens'><u>スコープなしでパーソナル アクセス トークンを作成します。</u></a>`,
+      `* PAT はKhaos oracle を使用して内密に認証されます。<br />* <a class="hs-form-field__helper" href='https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens'><u>スコープなしでパーソナル アクセス トークンを作成します。</u></a>`,
   },
   YoutubeAuthCallbackHeader: {
     en: () => 'Youtube Channel Information',
-    ja: () => 'Youtubeチャンネル情報',
+    ja: () => 'Youtubeチャンネルの情報',
   },
   YoutubeAuthCallbackSubHeader: {
     en: () => '',
@@ -66,15 +66,15 @@ export const Strings = {
   },
   YoutubeAuthCallbackNoChannel: {
     en: () => `You do not have your own Youtube Channel.`,
-    ja: () => `あなたは自分の Youtube チャンネルを持っていません。`,
+    ja: () => `Youtubeチャンネルを所有していません。`,
   },
   FetchingYoutubeChannel: {
     en: () => `Fetching your Youtube Channel.`,
-    ja: () => `YouTube チャンネルを取得しています。`,
+    ja: () => `YouTubeチャンネルを取得しています。`,
   },
   YoutubeAuthCallbackError: {
     en: () => 'Your Youtube Channel could not be loaded.',
-    ja: () => `Youtube チャンネルを読み込めませんでした。`,
+    ja: () => `Youtubeチャンネルを読み込めませんでした。`,
   },
   YoutubeAuthCallbackChannelFound: {
     en: () => 'Fetched your Youtube Channel. Redirecting you to setup page.',
