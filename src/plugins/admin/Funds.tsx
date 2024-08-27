@@ -64,9 +64,9 @@ const FundsInfo = (props: {
 
   return (
     <>
-      {/* <!-- Memberships/NFT section --> */}
+      {/* <!-- Direct payments section --> */}
       <div>
-        <p className="text-3xl font-bold">Memberships/NFTs</p>
+        <p className="text-3xl font-bold">Direct payments</p>
 
         {/* <!-- Your withdrawable funds --> */}
         <div className="mt-8 w-full max-w-full rounded-2xl border border-dp-blue-grey-300 p-4 dark:border-dp-blue-grey-200 lg:p-8">
