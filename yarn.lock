@@ -12822,9 +12822,9 @@ nanomatch@^1.2.9:
     to-regex "^3.0.1"
 
 nanostores@^0.11.0:
-  version "0.11.2"
-  resolved "https://registry.yarnpkg.com/nanostores/-/nanostores-0.11.2.tgz#4703bbab7301ebccc0c68828c509fd0994d8241c"
-  integrity sha512-6bucNxMJA5rNV554WQl+MWGng0QVMzlRgpKTHHfIbVLrhQ+yRXBychV9ECGVuuUfCMQPjfIG9bj8oJFZ9hYP/Q==
+  version "0.11.3"
+  resolved "https://registry.yarnpkg.com/nanostores/-/nanostores-0.11.3.tgz#8f66d341011ca97ffc38ba67a80c1a6b78ee63c6"
+  integrity sha512-TUes3xKIX33re4QzdxwZ6tdbodjmn3tWXCEc1uokiEmo14sI1EaGYNs2k3bU2pyyGNmBqFGAVl6jAGWd06AVIg==
 
 napi-wasm@^1.1.0:
   version "1.1.0"
