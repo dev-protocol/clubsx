@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 import KYCInfo from './KYCInfo'
 import FundsInfo from './Funds'
+import type { UndefinedOr } from '@devprotocol/util-ts'
 
 export enum KYCStatuses {
   VERIFIED,
@@ -10,6 +11,7 @@ export enum KYCStatuses {
 }
 
 export const Withdrawal = (props: {
+  vaultAddress: UndefinedOr<string>
   propertyAddress: string
   chainId: number
   uniqueBeneficiaries: string[]
@@ -30,6 +32,7 @@ export const Withdrawal = (props: {
       <FundsInfo
         KYCStatus={KYCStatus}
         chainId={props.chainId}
+        vaultAddress={vaultAddress}
         uniqueBeneficiaries={props.uniqueBeneficiaries}
         propertyAddress={props.propertyAddress}
       />

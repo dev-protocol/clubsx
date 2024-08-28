@@ -15,13 +15,16 @@ import { default as Overview } from './overview.astro'
 
 export const getPagePaths = (async () => []) satisfies ClubsFunctionGetPagePaths
 
-export const getAdminPaths = (async (_, config) => {
+export const getAdminPaths = (async (options, config) => {
   const membersihpPlugin = config.plugins.find(
     (plg) => plg.id === 'devprotocol:clubs:simple-memberships',
   )
   const memberships =
     (membersihpPlugin?.options.find((opt) => opt.key === 'memberships')
       ?.value as UndefinedOr<Membership[]>) ?? []
+
+  const vaultAddress = config.options?.find((option) => option.key === 'vault')
+    ?.value as UndefinedOr<string>
 
   return [
     {
@@ -52,6 +55,7 @@ export const getAdminPaths = (async (_, config) => {
         propertyAddress: config.propertyAddress,
         rpcUrl: config.rpcUrl,
         chainId: config.chainId,
+        vaultAddress,
       },
     },
   ]

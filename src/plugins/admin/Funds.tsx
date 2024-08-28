@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import type { UndefinedOr } from '@devprotocol/util-ts'
 
 import StakeInfo from './StakeInfo'
 import { KYCStatuses } from './Withdrawal'
@@ -6,6 +7,7 @@ import { ALL_CURRENCIES } from '@constants/memberships'
 import CurrencyMembershipInfo from './CurrencyMembershipInfo'
 
 const FundsInfo = (props: {
+  vaultAddress: UndefinedOr<string>
   propertyAddress: string
   chainId: number
   uniqueBeneficiaries: string[]
