@@ -69,88 +69,95 @@ const FundsInfo = (props: {
       {/* <!-- Clubs vault section --> */}
       <div>
         <p className="text-3xl font-bold">Clubs Vault</p>
-        {/* <!-- Create vault button --> */}
-        <div className="mt-8 w-full max-w-full">
-          <CreateClubsVault
-            isKYCVerified={KYCStatuses.VERIFIED === props.KYCStatus}
-          />
-        </div>
 
-        {/* <!-- Your withdrawable funds --> */}
-        <div className="mt-8 w-full max-w-full rounded-2xl border border-dp-blue-grey-300 p-4 dark:border-dp-blue-grey-200 lg:p-8">
-          <p className="w-fit text-base font-bold opacity-50">
-            Your withdrawable funds
-          </p>
-          <section className="mt-5 flex items-center gap-5">
-            <p className="text-4xl">
-              $
-              {new Intl.NumberFormat(undefined, {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 3,
-              }).format(
-                Number(
-                  yourTotalWithdrawableInDollars.reduce(
-                    (prev: string, curr: string) =>
-                      String(Number(prev) + Number(curr)),
-                  ),
-                ) || 0,
-              )}
-            </p>
-            <p className="w-fit text-base font-bold opacity-50">
-              equivalent tokens
-            </p>
-          </section>
-          {ALL_CURRENCIES.map((curr, id) => (
-            <CurrencyMembershipInfo
-              key={`${curr}:=:${id}`}
-              chainId={props.chainId}
-              currency={curr}
-              allCurrencyIndex={id}
-              isYourWithdrawable={true}
-              uniqueBeneficiaries={[]}
-              updateWithdrawableInDollars={updateYourTotalWithdrawable}
+        {/* <!-- Create vault button --> */}
+        {!props.vaultAddress && (
+          <div className="mt-8 w-full max-w-full">
+            <CreateClubsVault
               isKYCVerified={KYCStatuses.VERIFIED === props.KYCStatus}
             />
-          ))}
-        </div>
+          </div>
+        )}
+
+        {/* <!-- Your withdrawable funds --> */}
+        {props.vaultAddress && (
+          <div className="mt-8 w-full max-w-full rounded-2xl border border-dp-blue-grey-300 p-4 dark:border-dp-blue-grey-200 lg:p-8">
+            <p className="w-fit text-base font-bold opacity-50">
+              Your withdrawable funds
+            </p>
+            <section className="mt-5 flex items-center gap-5">
+              <p className="text-4xl">
+                $
+                {new Intl.NumberFormat(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 3,
+                }).format(
+                  Number(
+                    yourTotalWithdrawableInDollars.reduce(
+                      (prev: string, curr: string) =>
+                        String(Number(prev) + Number(curr)),
+                    ),
+                  ) || 0,
+                )}
+              </p>
+              <p className="w-fit text-base font-bold opacity-50">
+                equivalent tokens
+              </p>
+            </section>
+            {ALL_CURRENCIES.map((curr, id) => (
+              <CurrencyMembershipInfo
+                key={`${curr}:=:${id}`}
+                chainId={props.chainId}
+                currency={curr}
+                allCurrencyIndex={id}
+                isYourWithdrawable={true}
+                uniqueBeneficiaries={[]}
+                updateWithdrawableInDollars={updateYourTotalWithdrawable}
+                isKYCVerified={KYCStatuses.VERIFIED === props.KYCStatus}
+              />
+            ))}
+          </div>
+        )}
 
         {/* <!-- Total withdrawable funds --> */}
-        <div className="mt-8 w-full max-w-full rounded-2xl border border-dp-blue-grey-300 p-4 dark:border-dp-blue-grey-200 lg:p-8">
-          <p className="w-fit text-base font-bold opacity-50">
-            Total withdrawable funds
-          </p>
-          <section className="mt-5 flex items-center gap-5">
-            <p className="text-2xl">
-              $
-              {new Intl.NumberFormat(undefined, {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 3,
-              }).format(
-                Number(
-                  totalWithrawableInDollars.reduce(
-                    (prev: string, curr: string) =>
-                      String(Number(prev) + Number(curr)),
-                  ),
-                ) || 0,
-              )}
-            </p>
+        {props.vaultAddress && (
+          <div className="mt-8 w-full max-w-full rounded-2xl border border-dp-blue-grey-300 p-4 dark:border-dp-blue-grey-200 lg:p-8">
             <p className="w-fit text-base font-bold opacity-50">
-              equivalent tokens
+              Total withdrawable funds
             </p>
-          </section>
-          {ALL_CURRENCIES.map((curr, id) => (
-            <CurrencyMembershipInfo
-              key={`${curr}:=:${id}`}
-              chainId={props.chainId}
-              currency={curr}
-              allCurrencyIndex={id}
-              isYourWithdrawable={false}
-              uniqueBeneficiaries={props.uniqueBeneficiaries}
-              updateWithdrawableInDollars={updateTotalWithdrawable}
-              isKYCVerified={false}
-            />
-          ))}
-        </div>
+            <section className="mt-5 flex items-center gap-5">
+              <p className="text-2xl">
+                $
+                {new Intl.NumberFormat(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 3,
+                }).format(
+                  Number(
+                    totalWithrawableInDollars.reduce(
+                      (prev: string, curr: string) =>
+                        String(Number(prev) + Number(curr)),
+                    ),
+                  ) || 0,
+                )}
+              </p>
+              <p className="w-fit text-base font-bold opacity-50">
+                equivalent tokens
+              </p>
+            </section>
+            {ALL_CURRENCIES.map((curr, id) => (
+              <CurrencyMembershipInfo
+                key={`${curr}:=:${id}`}
+                chainId={props.chainId}
+                currency={curr}
+                allCurrencyIndex={id}
+                isYourWithdrawable={false}
+                uniqueBeneficiaries={props.uniqueBeneficiaries}
+                updateWithdrawableInDollars={updateTotalWithdrawable}
+                isKYCVerified={false}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       {/* <!-- Direct payments section --> */}
