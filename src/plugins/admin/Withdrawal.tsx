@@ -32,7 +32,7 @@ export const Withdrawal = (props: {
       <FundsInfo
         KYCStatus={KYCStatus}
         chainId={props.chainId}
-        vaultAddress={vaultAddress}
+        vaultAddress={props.vaultAddress}
         uniqueBeneficiaries={props.uniqueBeneficiaries}
         propertyAddress={props.propertyAddress}
       />
