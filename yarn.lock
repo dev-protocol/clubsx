@@ -742,9 +742,9 @@
     uuid "9.0.1"
 
 "@crossmint/client-sdk-base@^1.0.1-alpha.6":
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-base/-/client-sdk-base-1.2.3.tgz#36f3930dfb4a60f6561f2cd73f442578df8722dd"
-  integrity sha512-lgRp+zKlRN4oon7u7IKwAH2rHI5+ET3hbf9Cngvj1OLkrTjv0RSaLtxPEgIswrZVWhHMdITbWozHGn6moQJXmw==
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/@crossmint/client-sdk-base/-/client-sdk-base-1.2.4.tgz#3e4b02082df242ec70b22c296a921eeb2b76f884"
+  integrity sha512-57fznDckB6hy6lswAp/uD4OtcCRA0VSOmpefVAeEQjid6j4thxyRfVlaqIjLoqi7FnrA4wW4Z9nkJ0K/gizA1w==
   dependencies:
     "@crossmint/common-sdk-base" "0.1.2"
     "@datadog/browser-logs" "4.42.2"
