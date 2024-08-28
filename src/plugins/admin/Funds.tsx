@@ -4,6 +4,7 @@ import type { UndefinedOr } from '@devprotocol/util-ts'
 import StakeInfo from './StakeInfo'
 import { KYCStatuses } from './Withdrawal'
 import { ALL_CURRENCIES } from '@constants/memberships'
+import CreateClubsVault from './components/CreateClubsVault'
 import CurrencyMembershipInfo from './CurrencyMembershipInfo'
 
 const FundsInfo = (props: {
@@ -68,6 +69,12 @@ const FundsInfo = (props: {
       {/* <!-- Clubs vault section --> */}
       <div>
         <p className="text-3xl font-bold">Clubs Vault</p>
+        {/* <!-- Create vault button --> */}
+        <div className="mt-8 w-full max-w-full">
+          <CreateClubsVault
+            isKYCVerified={KYCStatuses.VERIFIED === props.KYCStatus}
+          />
+        </div>
 
         {/* <!-- Your withdrawable funds --> */}
         <div className="mt-8 w-full max-w-full rounded-2xl border border-dp-blue-grey-300 p-4 dark:border-dp-blue-grey-200 lg:p-8">

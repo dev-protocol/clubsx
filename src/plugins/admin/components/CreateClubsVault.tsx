@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 
+import CreateVaultSVG from '../assets/CreateVault.svg'
+
 interface ICreateClubsVaultProps {
   isKYCVerified: boolean
 }
@@ -19,7 +21,7 @@ const CreateClubsVault = (props: ICreateClubsVaultProps) => {
     <button
       onClick={() => createVault()}
       disabled={!props.isKYCVerified}
-      className={`hs-button is-filled col-span-2 ${
+      className={`hs-button is-filled col-span-2 flex justify-center items-center py-4 px-8 ${
         !props.isKYCVerified
           ? 'disabled:cursor-not-allowed disabled:hover:animate-[horizontal-shaking_.06s_5]'
           : ''
@@ -27,7 +29,12 @@ const CreateClubsVault = (props: ICreateClubsVaultProps) => {
         isCreatingVault ? 'animate-pulse bg-dp-blue-grey-600' : ''
       }`}
     >
-      Create Clubs Vault
+      <div className="min-w-6 min-h-6">
+        <img src={CreateVaultSVG.src} alt="Create clubs vault" />
+      </div>
+      <p className="w-fit font-body text-base text-center font-bold text-dp-white-ink">
+        Create Clubs Vault
+      </p>
     </button>
   )
 }
