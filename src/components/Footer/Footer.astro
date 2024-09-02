@@ -1,6 +1,6 @@
 ---
 import '@devprotocol/clubs-core/styles'
-import ClubsColor from '@assets/clubs--color.svg'
+import { ClubsLogo as Clubs } from '@devprotocol/clubs-core/layouts'
 import ETHLogo from '@assets/ETH.svg'
 import DEVLogo from '@assets/devtoken.svg'
 import DevProtocolLogo from '@assets/DevProtocol_b_Brandmark_rgb_01.svg'
@@ -33,8 +33,7 @@ const LegalLinks = clubs.slots.filter(
         <div class="mb-12 grid gap-6 lg:grid-cols-[3fr_2fr] lg:items-center lg:gap-48">
           <a href="/">
             <h1 class="flex items-center gap-2.5 text-5xl font-bold text-black">
-              <img src={ClubsColor.src} class="h-[1em] w-[1em]" />
-              Clubs
+              <Clubs />
             </h1>
           </a>
           <div class="wrap-none flex flex-row items-center">
