@@ -1,5 +1,5 @@
 ---
-import ClubsColor from '@assets/clubs--color.svg'
+import Clubs from '@components/Icons/Clubs.astro'
 import { ConnectButton } from '@devprotocol/clubs-plugin-awesome-onboarding'
 
 import '@devprotocol/clubs-core/styles'
@@ -51,9 +51,7 @@ const twitterHandle = 'poweredbyClubs'
     <header class="relative flex items-center justify-between px-6 py-4">
       <a href="/">
         <h1 class="flex items-center gap-4">
-          <span class="flex items-center gap-1.5 lg:text-xl font-bold">
-            <img src={ClubsColor.src} />Clubs</span
-          >
+          <Clubs />
           {pageTitle && <span class="lg:text-xl font-bold">{pageTitle}</span>}
         </h1>
       </a>

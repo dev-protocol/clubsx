@@ -7,7 +7,7 @@ import type { HomeConfig } from '../../constants/homeConfig'
 import type { NavLink } from '@constants/navLink'
 import Markdown from '@components/Markdown/Markdown.astro'
 import type { Membership } from '@plugins/memberships'
-import ClubsColor from '@assets/clubs--color.svg'
+import Clubs from '@components/Icons/Clubs.astro'
 
 const {
   propertyAddress,
@@ -51,7 +51,7 @@ console.log('hello world server!!!')
         href="https://clubs.place"
         class="absolute bottom-0 right-0 mb-6 mr-12 flex items-center gap-2 font-['Poppins'] font-bold lg:text-xl"
       >
-        <img src={ClubsColor.src} class="w-[1em]" />Clubs
+        <Clubs color="black" class="h-12 w-auto" />
       </a>
     </div>
     <CLBWrapper>
