@@ -1,5 +1,6 @@
 ---
 import '@devprotocol/clubs-core/styles'
+import { ClubsPictogramAdaptable as Favicon } from '@devprotocol/clubs-core/images'
 import WelcomeWizard from '@components/WelcomeWizard/WelcomeWizard.svelte'
 import type {
   ClubsConfiguration,
@@ -67,14 +68,14 @@ const avatarImgSrc: string | undefined = config.options?.find(
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg" href="/favicon.svg" />
+    <link rel="icon" type="image/svg" href={Favicon.src} />
     <title>{title ?? 'Setup Clubs'}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /><link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap"
       rel="stylesheet"
     />
-    <link rel="icon" type="image/svg" href={avatarImgSrc || '/favicon.svg'} />
+    <link rel="icon" type="image/svg" href={avatarImgSrc || Favicon.src} />
   </head>
 
   <body class="bg-dp-blue-grey-300 font-body text-white">

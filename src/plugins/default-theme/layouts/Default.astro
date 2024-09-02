@@ -3,6 +3,7 @@ import {
   type ClubsConfiguration,
   ClubsPluginSignal,
 } from '@devprotocol/clubs-core'
+import { ClubsPictogramAdaptable as Favicon } from '@devprotocol/clubs-core/images'
 import type { UndefinedOr } from '@devprotocol/util-ts'
 import '@devprotocol/clubs-core/styles'
 import Header from '../components/Header/Header.astro'
@@ -103,7 +104,7 @@ const truncatedDescription = ((desc) =>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <title>{title}</title>
-    <link rel="icon" type="image/svg" href={avatarImgSrc || '/favicon.svg'} />
+    <link rel="icon" type="image/svg" href={avatarImgSrc || Favicon.src} />
     <meta name="description" content={`${truncatedDescription}`} />
     <meta property="og:title" content={title} />
     <meta property="og:type" content="website" />

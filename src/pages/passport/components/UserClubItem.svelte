@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import { i18nFactory } from '@devprotocol/clubs-core'
+  import { ClubsPictogramAdaptable as Favicon } from '@devprotocol/clubs-core/images'
 
   import { Strings } from '../i18n'
   import type { ClubsConfiguration } from '@devprotocol/clubs-core'
@@ -33,7 +34,7 @@
   <div class="row-span-2 h-16 w-16 overflow-hidden rounded-full">
     <img
       class="h-full w-full object-cover"
-      src={imagePath || '/favicon.svg'}
+      src={imagePath || Favicon.src}
       alt={config.name}
     />
   </div>

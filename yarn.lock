@@ -786,13 +786,13 @@
     svelte "^3.49.0"
     vue "^3.2.0"
 
-"@devprotocol/clubs-core@3.16.0":
-  version "3.16.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-3.16.0.tgz#4ef9187207fc697f0ebb4e3bcd693f0802aa301f"
-  integrity sha512-54VSFN9TAnUmiyWKL1kgKn5/t2f45/MtAx0YjplD7d+lgDZ4/eL70pdj7gEBxgiHrNnLtdtRaHACcyCEIQ9u8w==
+"@devprotocol/clubs-core@3.17.4":
+  version "3.17.4"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-3.17.4.tgz#2885226cdf98995f95749f147b42ad193b8c78fc"
+  integrity sha512-6rSb4aYw8fzbEUAoGRc7jB06d0C+wALpTqQxfas072/tC+ewXb7AKQHMW7JVvFkeAwFJ3+9q40Amm/cI/U5NHg==
   dependencies:
     "@devprotocol/dev-kit" "8.6.2"
-    "@devprotocol/elements" "1.3.3"
+    "@devprotocol/elements" "1.4.0"
     "@devprotocol/hashi" "2.3.1"
     "@devprotocol/util-ts" "4.0.0"
     "@ethersproject/abstract-provider" "^5.7.0"
@@ -909,10 +909,10 @@
   resolved "https://registry.yarnpkg.com/@devprotocol/elements/-/elements-0.2.2.tgz#7325fb3354f2fb77c08f91634656a9e87ce0fa80"
   integrity sha512-8Kj3hw84GVAIrQnX5gFE0iZSMvzbKqga5Kdo7rHI7ZS6lUBgG1EwxYv78iIz9SwdBki9zyGxfrQb4j3dI4Sv9w==
 
-"@devprotocol/elements@1.3.3":
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/@devprotocol/elements/-/elements-1.3.3.tgz#0bdfb5b7f494c1567acc77fa763c0fa1160f531f"
-  integrity sha512-mPuV02otrDEkRQW161V7JlbS7SOVF+GKCcPwFfCJ7JaDraiLEsKS0tsm0F0bPSxu4olxwoRvkXJLi3yBEDkw4Q==
+"@devprotocol/elements@1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@devprotocol/elements/-/elements-1.4.0.tgz#023e13a8c674f9dc0516cb113ef549d5b3112cb0"
+  integrity sha512-WQDaUKvi/Rmln084tpSFGPxhazv+3S+7sMAGh9N2825A8BO3gfThwuqiql8xWyEJ5WpejgPZqA9ymynIdte6SA==
   dependencies:
     "@aggre/ullr" "^3.1.5"
     lit "^2.8.0"
