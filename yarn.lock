@@ -12,13 +12,13 @@
   resolved "https://registry.yarnpkg.com/@adraffy/ens-normalize/-/ens-normalize-1.10.1.tgz#63430d04bd8c5e74f8d7d049338f1cd9d4f02069"
   integrity sha512-96Z2IP3mYmF1Xg2cDm8f1gWGf/HUVedQ3FMifV4kG/PQ4yEP51xDtRAEfhVNt5f/uzpNkZHwWQuUcu6D6K+Ekw==
 
-"@aggre/ullr@^3.1.5":
-  version "3.1.5"
-  resolved "https://registry.yarnpkg.com/@aggre/ullr/-/ullr-3.1.5.tgz#7e787f81fd1cb5b95dfa2033d6bfd3a4bad50b6b"
-  integrity sha512-aRSlO1zDwCU+y7TG8H4LIPyFW8PgprkG0oxuYReWAtzTYGPPLi/eDlFkrZJmnpjtHo5rUI7q/Q7P4wh+MquTYA==
+"@aggre/ullr@^3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@aggre/ullr/-/ullr-3.2.0.tgz#f3079b3889a4f1cc884acb4a39687b192c99a447"
+  integrity sha512-iBfZFv3xHuARaa9uPIUlxS7fhOZCLNUqMWnj1IJogVvvV8zkPGeL+zPRY/urzk7gMlQhodd8/aPk3OuPSD4MAQ==
   dependencies:
-    ramda "^0.29.0"
-    type-fest "^2.13.0"
+    ramda "^0.30.1"
+    type-fest "^4.26.0"
 
 "@alloc/quick-lru@^5.2.0":
   version "5.2.0"
@@ -793,13 +793,13 @@
     svelte "^3.49.0"
     vue "^3.2.0"
 
-"@devprotocol/clubs-core@3.17.4":
-  version "3.17.4"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-3.17.4.tgz#2885226cdf98995f95749f147b42ad193b8c78fc"
-  integrity sha512-6rSb4aYw8fzbEUAoGRc7jB06d0C+wALpTqQxfas072/tC+ewXb7AKQHMW7JVvFkeAwFJ3+9q40Amm/cI/U5NHg==
+"@devprotocol/clubs-core@3.17.5":
+  version "3.17.5"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-core/-/clubs-core-3.17.5.tgz#0de3093004056d67e15783acf5b2e900b4eb6974"
+  integrity sha512-bQ39Ftw6lgSDdNaOjNgP1BWc3OulC1+Zv06B/6+X/fLx6bMutKXEQGT+VVlPbjI2Ye0QYPxeCIDnMJE290/Dew==
   dependencies:
     "@devprotocol/dev-kit" "8.6.2"
-    "@devprotocol/elements" "1.4.0"
+    "@devprotocol/elements" "1.5.3"
     "@devprotocol/hashi" "2.3.1"
     "@devprotocol/util-ts" "4.0.0"
     "@ethersproject/abstract-provider" "^5.7.0"
@@ -916,13 +916,13 @@
   resolved "https://registry.yarnpkg.com/@devprotocol/elements/-/elements-0.2.2.tgz#7325fb3354f2fb77c08f91634656a9e87ce0fa80"
   integrity sha512-8Kj3hw84GVAIrQnX5gFE0iZSMvzbKqga5Kdo7rHI7ZS6lUBgG1EwxYv78iIz9SwdBki9zyGxfrQb4j3dI4Sv9w==
 
-"@devprotocol/elements@1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@devprotocol/elements/-/elements-1.4.0.tgz#023e13a8c674f9dc0516cb113ef549d5b3112cb0"
-  integrity sha512-WQDaUKvi/Rmln084tpSFGPxhazv+3S+7sMAGh9N2825A8BO3gfThwuqiql8xWyEJ5WpejgPZqA9ymynIdte6SA==
+"@devprotocol/elements@1.5.3":
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/@devprotocol/elements/-/elements-1.5.3.tgz#b06a34ebe57c25004dbc43b382cac38811c089db"
+  integrity sha512-tV3KS8G9mjWwO+G+wxZZKY32EUq7L2ZsCDniAk1RdYPqH1WaqTKYlohk7xng3MWXo/Pn3N4cfPcEcSvG6t7HkQ==
   dependencies:
-    "@aggre/ullr" "^3.1.5"
-    lit "^2.8.0"
+    "@aggre/ullr" "^3.2.0"
+    lit "^3.0.0"
 
 "@devprotocol/hashi@1.8.0":
   version "1.8.0"
@@ -11616,7 +11616,7 @@ lit-html@^3.1.0, lit-html@^3.1.2:
   dependencies:
     "@types/trusted-types" "^2.0.2"
 
-lit@2.8.0, lit@^2.3.1, lit@^2.8.0:
+lit@2.8.0, lit@^2.3.1:
   version "2.8.0"
   resolved "https://registry.yarnpkg.com/lit/-/lit-2.8.0.tgz#4d838ae03059bf9cafa06e5c61d8acc0081e974e"
   integrity sha512-4Sc3OFX9QHOJaHbmTMk28SYgVxLN3ePDjg7hofEft2zWlehFL3LiAuapWc4U/kYwMYJSh2hTCPZ6/LIC7ii0MA==
@@ -14149,7 +14149,7 @@ ramda@0.30.0:
   resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.30.0.tgz#3cc4f0ddddfa6334dad2f371bd72c33237d92cd0"
   integrity sha512-13Y0iMhIQuAm/wNGBL/9HEqIfRGmNmjKnTPlKWfA9f7dnDkr8d45wQ+S7+ZLh/Pq9PdcGxkqKUEA7ySu1QSd9Q==
 
-ramda@0.30.1, ramda@^0.30.0:
+ramda@0.30.1, ramda@^0.30.0, ramda@^0.30.1:
   version "0.30.1"
   resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.30.1.tgz#7108ac95673062b060025052cd5143ae8fc605bf"
   integrity sha512-tEF5I22zJnuclswcZMc8bDIrwRHRzf+NqVEmqg50ShAZMP7MWeR/RGDthfM/p+BlqvF2fXAzpn8i+SJcYD3alw==
@@ -16373,7 +16373,7 @@ type-fest@2.8.0:
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-2.8.0.tgz#39d7c9f9c508df8d6ce1cf5a966b0e6568dcc50d"
   integrity sha512-O+V9pAshf9C6loGaH0idwsmugI2LxVNR7DtS40gVo2EXZVYFgz9OuNtOhgHLdHdapOEWNdvz9Ob/eeuaWwwlxA==
 
-type-fest@4.26.0:
+type-fest@4.26.0, type-fest@^4.26.0:
   version "4.26.0"
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-4.26.0.tgz#703f263af10c093cd6277d079e26b9e17d517c4b"
   integrity sha512-OduNjVJsFbifKb57UqZ2EMP1i4u64Xwow3NYXUtBbD4vIwJdQd4+xl8YDou1dlm4DVrtwT/7Ky8z8WyCULVfxw==
