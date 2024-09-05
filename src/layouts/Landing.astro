@@ -1,5 +1,6 @@
 ---
-import ClubsColor from '@assets/clubs--color.svg'
+import { ClubsLogo as Clubs } from '@devprotocol/clubs-core/layouts'
+import { ClubsPictogramAdaptable as Favicon } from '@devprotocol/clubs-core/images'
 import { ConnectButton } from '@devprotocol/clubs-plugin-awesome-onboarding'
 
 import '@devprotocol/clubs-core/styles'
@@ -25,7 +26,7 @@ const twitterHandle = 'poweredbyClubs'
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <title>{title}</title>
-    <link rel="icon" type="image/svg" href="/favicon.svg" />
+    <link rel="icon" type="image/svg" href={Favicon.src} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /><link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap"
@@ -51,9 +52,7 @@ const twitterHandle = 'poweredbyClubs'
     <header class="relative flex items-center justify-between px-6 py-4">
       <a href="/">
         <h1 class="flex items-center gap-4">
-          <span class="flex items-center gap-1.5 lg:text-xl font-bold">
-            <img src={ClubsColor.src} />Clubs</span
-          >
+          <Clubs />
           {pageTitle && <span class="lg:text-xl font-bold">{pageTitle}</span>}
         </h1>
       </a>

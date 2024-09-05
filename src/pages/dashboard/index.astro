@@ -1,6 +1,7 @@
 ---
 import Layout from '@layouts/Landing.astro'
 import Basic from '@components/Dashboard/Basic.svelte'
+import { ClubsPictogramAdaptable as Favicon } from '@devprotocol/clubs-core/images'
 ---
 
 <html lang="en" hashi-theme="dark">
@@ -8,7 +9,7 @@ import Basic from '@components/Dashboard/Basic.svelte'
     <meta name="robots" content="noindex" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg" href="/favicon.svg" />
+    <link rel="icon" type="image/svg" href={Favicon.src} />
     <title>Dashboard</title>
   </head>
 </html>
