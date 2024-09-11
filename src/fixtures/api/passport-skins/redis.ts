@@ -1,21 +1,19 @@
 import { createClient } from 'redis'
 
 export enum Index {
-  Asset = 'idx::clubs:passportskin',
+  PassportSkin = 'idx::clubs:passportskin',
 }
 
 export enum Prefix {
-  Asset = 'doc::clubs:passportskin',
+  PassportSkin = 'doc::clubs:passportskin',
 }
 
 export enum SchemaKey {
-  Asset = 'scm::clubs:passportskin',
+  PassportSkin = 'scm::clubs:passportskin',
 }
 
-export const generatePassportSkinKey = (
-  payload: string,
-  id?: string | number,
-) => `${Prefix.Asset}::${payload}`
+export const generatePassportSkinKey = (payload: string) =>
+  `${Prefix.PassportSkin}::${payload}`
 
 export const defaultClient = () =>
   createClient({
