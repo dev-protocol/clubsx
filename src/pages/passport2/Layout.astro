@@ -33,7 +33,7 @@ const twitterHandle = 'poweredbyClubs'
       rel="stylesheet"
     />
     <meta name="description" content={`${description}`} />
-    <meta property="og:title" content={title}   />
+    <meta property="og:title" content={title} />
     <meta property="og:url" content={url} />
     <meta property="og:image" content={`${ogURL}`} />
     <meta property="og:description" content={description} />
@@ -46,9 +46,13 @@ const twitterHandle = 'poweredbyClubs'
     <meta name="twitter:image" content={`${ogURL}`} />
   </head>
 
-  <body class="min-h-screen overflow-x-hidden bg-[url('https://ik.imagekit.io/wtlw3wfvu/passport-bg.png?updatedAt=1725990448032')] font-body text-surface-ink bg-cover bg-center">
+  <body
+    class="min-h-screen overflow-x-hidden bg-[url('https://ik.imagekit.io/wtlw3wfvu/passport-bg.png?updatedAt=1725990448032')] font-body text-surface-ink bg-cover bg-center"
+  >
     <div class="fixed inset-0 z-[-1] overflow-hidden">
-      <div class="absolute w-[1280px] h-[1280px] top-[-538px] flex-shrink-0 overflow-hidden bg-center bg-cover bg-no-repeat bg-[url('https://ik.imagekit.io/wtlw3wfvu/sd_amu%202.png?updatedAt=1725988110197')]">
+      <div
+        class="absolute w-[1280px] h-[1280px] top-[-538px] flex-shrink-0 overflow-hidden bg-center bg-cover bg-no-repeat bg-[url('https://ik.imagekit.io/wtlw3wfvu/sd_amu%202.png?updatedAt=1725988110197')]"
+      >
       </div>
     </div>
     <div class="relative z-10 max-w-[1280px] mx-auto">
@@ -69,7 +73,7 @@ const twitterHandle = 'poweredbyClubs'
           )
         }
       </header>
-  
+
       <main>
         <slot />
       </main>
