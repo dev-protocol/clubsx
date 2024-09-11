@@ -1,0 +1,132 @@
+---
+import { ClubsLogo as Clubs } from '@devprotocol/clubs-core/layouts'
+import { ClubsPictogramAdaptable as Favicon } from '@devprotocol/clubs-core/images'
+import { ConnectButton } from '@devprotocol/clubs-plugin-awesome-onboarding'
+
+import '@devprotocol/clubs-core/styles'
+
+type Props = {
+  connectButton?: 'show' | 'hidden'
+  theme?: 'light' | 'dark' | 'auto'
+  pageTitle?: string
+}
+
+const { connectButton = 'hidden', theme = 'dark', pageTitle } = Astro.props
+
+const title = 'Clubs'
+const name = 'Clubs' // not sure the difference here compared to title
+const description = ''
+const url = ''
+const ogURL = ''
+const twitterHandle = 'poweredbyClubs'
+---
+
+<html lang="en" hashi-theme={theme === 'auto' ? undefined : theme}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+    <link rel="icon" type="image/svg" href={Favicon.src} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /><link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="description" content={`${description}`} />
+    <meta property="og:title" content={title}   />
+    <meta property="og:url" content={url} />
+    <meta property="og:image" content={`${ogURL}`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content={name} />
+    <meta name="twitter:site" content={twitterHandle} />
+    <meta name="twitter:creator" content={twitterHandle} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${ogURL}`} />
+  </head>
+
+  <body class="min-h-screen overflow-x-hidden bg-[url('https://ik.imagekit.io/wtlw3wfvu/passport-bg.png?updatedAt=1725990448032')] font-body text-surface-ink bg-cover bg-center">
+    <div class="fixed inset-0 z-[-1] overflow-hidden">
+      <div class="absolute w-[1280px] h-[1280px] top-[-538px] flex-shrink-0 overflow-hidden bg-center bg-cover bg-no-repeat bg-[url('https://ik.imagekit.io/wtlw3wfvu/sd_amu%202.png?updatedAt=1725988110197')]">
+      </div>
+    </div>
+    <div class="relative z-10 max-w-[1280px] mx-auto">
+      <slot name="before-header" />
+      <header class="relative flex items-center justify-between px-6 py-4">
+        <a href="/">
+          <h1 class="flex items-center gap-4">
+            <Clubs />
+            {pageTitle && <span class="lg:text-xl font-bold">{pageTitle}</span>}
+          </h1>
+        </a>
+        <slot name="right" />
+        {
+          connectButton === 'show' && (
+            <nav class="flex justify-between gap-10">
+              <ConnectButton />
+            </nav>
+          )
+        }
+      </header>
+  
+      <main>
+        <slot />
+      </main>
+    </div>
+  </body>
+</html>
+
+<script>
+  import { onSubmitConfig } from '@devprotocol/clubs-core'
+  import { GetModalProvider, ReConnectWallet } from '@fixtures/wallet'
+  import { onAuthStateChanged } from 'firebase/auth'
+  import { instanceStore } from '../../fixtures/firebase/clientInstance'
+
+  const auth = instanceStore.initializedApp
+  let jwtIdToken: string | undefined
+
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      // User is signed in, see docs for a list of available properties
+      // https://firebase.google.com/docs/reference/js/firebase.User
+      jwtIdToken = await user.getIdToken()
+    } else {
+      jwtIdToken = undefined
+    }
+  })
+
+  onSubmitConfig(async (data, onFinish) => {
+    const splitHostname = window.location.hostname.split('.')
+    const site = splitHostname[0]
+
+    const modalProvider = GetModalProvider()
+    const { provider, currentAddress } = await ReConnectWallet(modalProvider)
+    if (!currentAddress || !provider) {
+      return
+    }
+    const signer = await provider.getSigner()
+
+    const hash = `Update clubs config for ${site} @ts:${new Date().getTime()}`
+    const sig = await signer.signMessage(hash)
+    if (!sig) {
+      return
+    }
+
+    const body = {
+      site,
+      config: data,
+      hash,
+      sig,
+      jwtIdToken,
+    }
+
+    const res = await fetch('/api/updateDraftConfig', {
+      method: 'POST',
+      body: JSON.stringify(body),
+    })
+
+    const success = res.ok
+    onFinish({ success })
+  })
+</script>
