@@ -5,8 +5,8 @@ import Layout from './Layout.astro'
 import { isAddress } from 'ethers'
 import type { Profile } from '@pages/api/profile'
 import { getProfile } from '@fixtures/api/profile'
-import Icon  from 'src/pages/passport2/components/Icons.vue'
-import dummyData from './dummyData.json';
+import Icon from 'src/pages/passport2/components/Icons.vue'
+import dummyData from './dummyData.json'
 
 const { id } = Astro.params
 const isEOA = isAddress(id)
@@ -53,10 +53,10 @@ const isLocal =
         class="flex items-center gap-[15px] px-[16px] py-[8px] rounded-lg bg-white"
       >
         <!-- Mute Button -->
-         <Icon icon="muted"/>
+        <Icon icon="muted" />
 
         <!-- Music Waves -->
-         <Icon icon="music_waves"/>
+        <Icon icon="music_waves" />
         <!-- Music Name -->
         <span
           class="text-black truncate font-dm-sans text-[16px] font-bold leading-normal"
@@ -65,33 +65,42 @@ const isLocal =
         </span>
       </div>
     </div>
-    <div class="flex flex-col items-start gap-[10px] p-[16px] rounded-lg bg-white">
+    <div
+      class="flex flex-col items-start gap-[10px] p-[16px] rounded-lg bg-white"
+    >
       <div class="flex items-center gap-[32px] self-stretch">
-        <Icon icon="x"/>
-        <Icon icon="twitch"/>
-        <Icon icon="instagram"/>
-        <Icon icon="tiktok"/>
-        <Icon icon="youtube"/>
+        <Icon icon="x" />
+        <Icon icon="twitch" />
+        <Icon icon="instagram" />
+        <Icon icon="tiktok" />
+        <Icon icon="youtube" />
       </div>
     </div>
     <!-- Description -->
-    <div class="flex justify-center items-center gap-[10px] p-[16px] self-stretch rounded-xl bg-[#B76DD3]">
-      <span class="flex-1 text-white font-hanken text-[24px] font-normal leading-normal">
+    <div
+      class="flex justify-center items-center gap-[10px] p-[16px] self-stretch rounded-xl bg-[#B76DD3]"
+    >
+      <span
+        class="flex-1 text-white font-hanken text-[24px] font-normal leading-normal"
+      >
         {dummyData.description}
-    </div> 
+      </span>
 
-    <!-- Middle Content -->
-    <div class="flex flex-col items-center gap-[96px] self-stretch">
-      <div class="flex flex-col items-start gap-[46px] self-stretch">
-        <img
-          src={dummyData.videoThumbnail}
-          class="h-[577px] self-stretch rounded-sm"
-          alt=""
-        />
+      <!-- Middle Content -->
+      <div class="flex flex-col items-center gap-[96px] self-stretch">
+        <div class="flex flex-col items-start gap-[46px] self-stretch">
+          <img
+            src={dummyData.videoThumbnail}
+            class="h-[577px] self-stretch rounded-sm"
+            alt=""
+          />
+        </div>
       </div>
-    </div>
-    {isEOA && <UserAssets client:load account={id ?? ''} local={isLocal} />}
+      {isEOA && <UserAssets client:load account={id ?? ''} local={isLocal} />}
 
-    <a href={`/passport/${id}/clubs`} class="hs-link place-self-start">Clubs</a>
+      <a href={`/passport/${id}/clubs`} class="hs-link place-self-start"
+        >Clubs</a
+      >
+    </div>
   </div>
 </Layout>
