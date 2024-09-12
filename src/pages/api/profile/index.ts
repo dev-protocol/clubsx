@@ -2,9 +2,19 @@ import { generateProfileId } from '@fixtures/api/keys'
 import { hashMessage, recoverAddress } from 'ethers'
 import { createClient } from 'redis'
 
+type Payload = string
+
+export type Skin = {
+  theme: Payload // Pointing to PassportItem.sTokenPayload
+  clips?: Payload[] // Token payloads of pinned clips
+  videos?: Payload[] // for the future use cases
+  bgm?: Payload // for the future use cases
+}
+
 export type Profile = {
   avatar?: string
   username?: string
+  skins?: Skin[] // the default skin is always the first item
 }
 
 export const POST = async ({ request }: { request: Request }) => {
