@@ -1,30 +1,14 @@
+type Value = string | boolean | number | undefined | null | Array<Value>
+
 export type JSON =
   | Readonly<
       Record<
         string,
-        | string
-        | boolean
-        | number
-        | undefined
-        | null
-        | Readonly<Record<string, string | boolean | number | undefined | null>>
-        | ReadonlyArray<
-            | string
-            | boolean
-            | number
-            | undefined
-            | null
-            | Record<string, string | boolean | number | undefined | null>
-          >
+        | Value
+        | Readonly<Record<string, Value>>
+        | ReadonlyArray<Value | Record<string, Value>>
       >
     >
-  | ReadonlyArray<
-      | string
-      | boolean
-      | number
-      | undefined
-      | null
-      | Record<string, string | boolean | number | undefined | null>
-    >
+  | ReadonlyArray<Value | Record<string, Value>>
 
 export const json = (json: JSON): string => JSON.stringify(json)

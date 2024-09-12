@@ -1,9 +1,8 @@
-import type { Membership } from '@devprotocol/clubs-core'
 import { generateProfileId } from '@fixtures/api/keys'
 import { hashMessage, recoverAddress } from 'ethers'
 import { createClient } from 'redis'
 
-type Payload = Membership['payload']
+type Payload = string
 type TokenId = string | number
 
 export type Skin = {
