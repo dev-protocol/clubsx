@@ -3,13 +3,12 @@ import { hashMessage, recoverAddress } from 'ethers'
 import { createClient } from 'redis'
 
 type Payload = string
-type TokenId = string | number
 
 export type Skin = {
   theme: Payload // Pointing to PassportItem.sTokenPayload
-  clipIds?: TokenId[] // Token IDs of pinned clips
-  videoIds?: TokenId[] // for the future use cases
-  bgmId?: TokenId // for the future use cases
+  clips?: Payload[] // Token payloads of pinned clips
+  videos?: Payload[] // for the future use cases
+  bgm?: Payload // for the future use cases
 }
 
 export type Profile = {
