@@ -1,10 +1,22 @@
+import type { Membership } from '@devprotocol/clubs-core'
 import { generateProfileId } from '@fixtures/api/keys'
 import { hashMessage, recoverAddress } from 'ethers'
 import { createClient } from 'redis'
 
+type Payload = Membership['payload']
+type TokenId = string | number
+
+export type Skin = {
+  theme: Payload // Pointing to PassportItem.sTokenPayload
+  clipIds?: TokenId[] // Token IDs of pinned clips
+  videoIds?: TokenId[] // for the future use cases
+  bgmId?: TokenId // for the future use cases
+}
+
 export type Profile = {
   avatar?: string
   username?: string
+  skins?: Skin[] // the default skin is always the first item
 }
 
 export const POST = async ({ request }: { request: Request }) => {
