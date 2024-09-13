@@ -115,6 +115,13 @@ export const assetDocumentTypes: ReadonlyArray<AssetDocument['type']> = [
   'nft',
   'property',
   'sbt',
+  'passport-item',
+]
+
+export const assetContractTypes: ReadonlyArray<AssetContractType> = [
+  'sTokens',
+  'property',
+  'sbt',
 ]
 
 export type LogDocument = {
