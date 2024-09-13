@@ -75,8 +75,10 @@ export const nBalance = {
   },
 } satisfies RediSearchSchema
 
+export type AssetContractType = 'sTokens' | 'sbt' | 'property'
+
 export type AssetDocument = {
-  type: 'nft' | 'sbt' | 'property'
+  type: 'nft' | 'sbt' | 'property' | 'passport-item'
   id?: string
   nId?: number
   contract: string
