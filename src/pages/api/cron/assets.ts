@@ -9,6 +9,11 @@ import { ABI_NFT, fetchAssets } from '@fixtures/api/assets/utils'
 import { AchievementIndex } from '@plugins/achievements/utils'
 import PQueue from 'p-queue'
 import { tryCatch } from 'ramda'
+import type {
+  AssetContractType,
+  AssetDocument,
+} from '@fixtures/api/assets/schema'
+import type { createClient } from 'redis'
 
 const { PUBLIC_ALCHEMY_KEY } = import.meta.env
 
@@ -21,6 +26,7 @@ const sTokensPropertyAddressFetcher = async (
   const pos = await queue.add(() => contract.positions(id))
   return arrayify(pos)[0] as string
 }
+
 const SBTPropertyAddressFetcher = async (contract: Contract, id: string) => {
   const uri = await queue.add(() => contract.tokenURI(id))
   const decoded = toUtf8String(
@@ -44,6 +50,62 @@ const SBTPropertyAddressFetcher = async (contract: Contract, id: string) => {
     metadata?.attributes.find((elm: any) => elm?.trait_type === 'Property')
       ?.value ?? undefined
   )
+}
+
+const assetTypeFetcher = async (
+  type: AssetContractType,
+  id?: string,
+  contract?: Contract,
+  client?: ReturnType<typeof createClient>,
+): Promise<AssetDocument['type']> => {
+  if (type === 'property') {
+    return 'property'
+  }
+
+  if (type === 'sbt') {
+    return 'sbt'
+  }
+
+  // If type is 'sTokens' but id or contrac or client is not available
+  // then we consider this as nft (membership) for fallback.
+  if (!id || !contract || !client) {
+    return 'nft' // @TODO: maybe we can add type as undefined and later on  for all undefined try fetching them again.
+  }
+
+  const sTokenPayload: string = await queue.add(() =>
+    contract
+      .payloadOf(id)
+      .then((res) => res)
+      .catch(() => ''),
+  )
+  // Backup value as nft (membership).
+  if (!sTokenPayload) {
+    return 'nft' // @TODO: maybe we can add type as undefined and later on  for all undefined try fetching them again.
+  }
+
+  const PassportItemIndex = 'idx::clubs:passportitem' // @TODO: import type from @devprotocol/clubs-plugin-passport once it is published.
+  const sTokenPayloadSchema = {
+    // @TODO: import type from @devprotocol/clubs-plugin-passport once it is published
+    '$.sTokenPayload': {
+      AS: 'sTokenPayload',
+    },
+  }
+  // Check the PassportItem schema, if document/value is present that means it's an passport-item.
+  const isPassportItem: boolean = await client.ft
+    .search(
+      PassportItemIndex,
+      `@${sTokenPayloadSchema['$.sTokenPayload'].AS}:{${sTokenPayload}}`,
+      {
+        LIMIT: {
+          from: 0,
+          size: 1,
+        },
+      },
+    )
+    .then((res) => !!res.total && !!res.documents.length)
+    .catch((err) => false)
+
+  return isPassportItem ? 'passport-item' : 'nft'
 }
 
 /**
@@ -70,7 +132,8 @@ export const GET: APIRoute = async () => {
       redis,
       contractAddress: addresses.polygon.mainnet.sTokens,
       abi: sTokensAbi,
-      type: 'nft',
+      contractType: 'sTokens',
+      assetTypeFetcher,
       propertyAddressFetcher: sTokensPropertyAddressFetcher,
     }),
   )
@@ -90,7 +153,8 @@ export const GET: APIRoute = async () => {
             redis,
             contractAddress: sbt,
             abi: ABI_NFT,
-            type: 'sbt',
+            contractType: 'sbt',
+            assetTypeFetcher,
             propertyAddressFetcher: SBTPropertyAddressFetcher,
           }),
       ),
