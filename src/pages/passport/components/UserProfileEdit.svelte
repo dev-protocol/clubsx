@@ -1,18 +1,22 @@
 <script lang="ts">
   import { onMount } from 'svelte'
+  import { JsonRpcProvider } from 'ethers'
 
   import { Strings } from '../i18n'
+  import UserAsset from './UserAsset.svelte'
   import type { Profile } from '@pages/api/profile'
   import { i18nFactory } from '@devprotocol/clubs-core'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import type { UndefinedOr } from '@devprotocol/util-ts'
+  import Skeleton from '@components/Global/Skeleton.svelte'
+  import type { AssetDocument } from '@fixtures/api/assets/schema'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
 
-  import X from '@assets/x.svg'
+  import X from '@assets/X.svg'
   import Twitch from '@assets/twitch.svg'
-  import Instagram from '@assets/instagram.svg'
   import Tiktok from '@assets/tiktok.svg'
   import Youtube from '@assets/youtube.svg'
+  import Instagram from '@assets/instagram.svg'
 
   export let id: string
 
@@ -25,6 +29,13 @@
   let avatarUploading = false
   let profileUpdating = false
   let updatingStatus: UndefinedOr<'success' | 'error'> = undefined
+  let assetsNft: AssetDocument[] = []
+  let assetsSbt: AssetDocument[] = []
+  let assetsPassportItems: AssetDocument[] = []
+
+  const rpcProvider = new JsonRpcProvider(
+    `https://polygon-mainnet.g.alchemy.com/v2/${import.meta.env.PUBLIC_ALCHEMY_KEY ?? ''}`,
+  )
 
   const onFileSelected = async (
     e: Event & {
@@ -81,6 +92,27 @@
     profile = {
       ...data,
     } as Profile
+
+    const [nfts, sbts, passportItem] = await Promise.all([
+      fetch(
+        `https://clubs.place/api/assets/related/account/${eoa}/?type=nft&size=999`,
+      )
+        .then((res) => res.json())
+        .catch(() => []),
+      fetch(
+        `https://clubs.place/api/assets/related/account/${eoa}/?type=sbt&size=999`,
+      )
+        .then((res) => res.json())
+        .catch(() => []),
+      fetch(
+        `https://clubs.place/api/assets/related/account/${eoa}/?type=passport-item&size=999`,
+      )
+        .then((res) => res.json())
+        .catch(() => []),
+    ])
+    assetsNft = nfts.data
+    assetsSbt = sbts.data
+    assetsPassportItems = passportItem.data
   })
 
   const addProfile = async () => {}
@@ -238,6 +270,93 @@
         />
       </div>
     </div>
+  </label>
+
+  <label class="hs-form-field is-filled mt-[76px]">
+    <div class="hs-form-field__label flex items-center justify-between mb-1">
+      <span class="hs-form-field__label"> {i18n('PassportSkin')} </span>
+      <button
+        on:click|preventDefault={() => {}}
+        class="hs-button is-filled is-large w-fit text-center hs-form-field__label !text-white"
+        >Reset</button
+      >
+    </div>
+
+    <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
+      {#if assetsPassportItems?.length}
+        {#each assetsPassportItems as item, i}
+          <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
+            <UserAsset props={{ item, provider: rpcProvider, local: true }} />
+          </li>
+        {/each}
+      {:else if !assetsPassportItems?.length}
+        <div class="rounded-md border border-surface-400 p-8 text-accent-200">
+          {i18n('Empty')} :)
+        </div>
+      {:else if !assetsPassportItems}
+        {#each new Array(6) as item, i}
+          <li id={i.toString()}>
+            <span class="block h-96"><Skeleton /></span>
+          </li>
+        {/each}
+      {/if}
+    </ul>
+  </label>
+
+  <label class="hs-form-field is-filled mt-[76px]">
+    <div class="hs-form-field__label flex items-center justify-between mb-1">
+      <span class="hs-form-field__label"> {i18n('PinnedItems')} </span>
+      <button
+        on:click|preventDefault={() => {}}
+        class="hs-button is-filled is-large w-fit text-center hs-form-field__label !text-white"
+        >Reset</button
+      >
+    </div>
+
+    <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
+      {#if assetsPassportItems?.length}
+        {#each assetsPassportItems as item, i}
+          <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
+            <UserAsset props={{ item, provider: rpcProvider, local: true }} />
+          </li>
+        {/each}
+      {:else if !assetsPassportItems?.length}
+        <div class="rounded-md border border-surface-400 p-8 text-accent-200">
+          {i18n('Empty')} :)
+        </div>
+      {:else if !assetsPassportItems}
+        {#each new Array(6) as item, i}
+          <li id={i.toString()}>
+            <span class="block h-96"><Skeleton /></span>
+          </li>
+        {/each}
+      {/if}
+    </ul>
+  </label>
+
+  <label class="hs-form-field is-filled mt-[76px]">
+    <span class="hs-form-field__label">
+      {i18n('MemebershipsAndAchievements')}
+    </span>
+    <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
+      {#if [...assetsNft, ...assetsSbt]?.length}
+        {#each [...assetsNft, ...assetsSbt] as item, i}
+          <li id={`assets-${i.toString()}`} class="empty:hidden">
+            <UserAsset props={{ item, provider: rpcProvider, local: true }} />
+          </li>
+        {/each}
+      {:else if ![...assetsNft, ...assetsSbt]?.length}
+        <div class="rounded-md border border-surface-400 p-8 text-accent-200">
+          {i18n('Empty')} :)
+        </div>
+      {:else if !assetsNft && !assetsSbt}
+        {#each new Array(6) as item, i}
+          <li id={i.toString()}>
+            <span class="block h-96"><Skeleton /></span>
+          </li>
+        {/each}
+      {/if}
+    </ul>
   </label>
 
   {#if eoa === id}

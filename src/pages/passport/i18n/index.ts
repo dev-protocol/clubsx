@@ -1,6 +1,18 @@
 import type { ClubsI18nParts } from '@devprotocol/clubs-core'
 
 export const Strings = {
+  PassportSkin: {
+    en: 'Passport Skin',
+    ja: 'パスポートスキン',
+  },
+  PinnedItems: {
+    en: 'Pinned items',
+    ja: 'ピン留めされたアイテム',
+  },
+  MemebershipsAndAchievements: {
+    en: 'Memberships and Achievements',
+    ja: 'メンバーシップと実績',
+  },
   Profile: {
     en: 'Profile',
     ja: 'プロフィール',
