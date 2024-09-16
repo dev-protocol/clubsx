@@ -6,7 +6,7 @@ export const Strings = {
     ja: 'パスポートスキン',
   },
   PinnedItems: {
-    en: 'Pinned items',
+    en: 'Pinned Items',
     ja: 'ピン留めされたアイテム',
   },
   MemebershipsAndAchievements: {
