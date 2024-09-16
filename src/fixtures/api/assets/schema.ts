@@ -95,7 +95,7 @@ export type AssetDocument = {
   nBlock: number
   balance: string
   nBalance: number
-  payload: string | undefined
+  payload?: string
 }
 
 export const assetDocument = (doc: {
@@ -106,7 +106,7 @@ export const assetDocument = (doc: {
   owner: string
   block: string | bigint | number
   balance: string | bigint | number
-  payload: string | undefined
+  payload?: string
 }): AssetDocument => ({
   type: doc.type,
   id: doc.id ? doc.id.toString() : undefined,
