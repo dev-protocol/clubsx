@@ -193,7 +193,7 @@
         />
       </div>
 
-      <div class="w-fit max-w-full flex items-center justify-start gap-5">
+      <div class="w-full max-w-full flex items-center justify-start gap-5">
         <div class="relative w-6 h-6 overflow-hidden">
           <img
             src={Instagram.src}
@@ -208,7 +208,7 @@
         />
       </div>
 
-      <div class="w-fit max-w-full flex items-center justify-start gap-5">
+      <div class="w-full max-w-full flex items-center justify-start gap-5">
         <div class="relative w-6 h-6 overflow-hidden">
           <img
             src={Tiktok.src}
@@ -223,7 +223,7 @@
         />
       </div>
 
-      <div class="w-fit max-w-full flex items-center justify-start gap-5">
+      <div class="w-full max-w-full flex items-center justify-start gap-5">
         <div class="relative w-6 h-6 overflow-hidden">
           <img
             src={Youtube.src}
