@@ -13,6 +13,18 @@ export const Strings = {
     en: 'Username',
     ja: 'ユーザー名',
   },
+  Description: {
+    en: 'Description',
+    ja: '説明',
+  },
+  MarkdownAvailable: {
+    en: () => 'Markdown is available',
+    ja: () => 'マークダウンが利用可能',
+  },
+  WhatIsMarkdown: {
+    en: () => 'What is Markdown?',
+    ja: () => 'マークダウンとは',
+  },
   Save: {
     en: 'Save',
     ja: '保存',

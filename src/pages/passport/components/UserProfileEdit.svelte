@@ -8,13 +8,19 @@
   import type { UndefinedOr } from '@devprotocol/util-ts'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
 
+  import X from '@assets/x.svg'
+  import Twitch from '@assets/twitch.svg'
+  import Instagram from '@assets/instagram.svg'
+  import Tiktok from '@assets/tiktok.svg'
+  import Youtube from '@assets/youtube.svg'
+
   export let id: string
 
   const i18nBase = i18nFactory(Strings)
   let i18n = i18nBase(['en'])
 
   let connection: UndefinedOr<typeof Connection> = undefined
-  let profile: Profile = {}
+  let profile: Profile = {} as Profile
   let eoa: UndefinedOr<string> = undefined
   let avatarUploading = false
   let profileUpdating = false
@@ -42,6 +48,7 @@
     if (!signer) {
       return
     }
+
     const hash = `Update profile: ${profile.username} @ts:${new Date().getTime()}`
     const sig = await signer.signMessage(hash)
     const req = await fetch('/api/profile', {
@@ -70,15 +77,31 @@
 
   onMount(async () => {
     const req = await fetch(`/api/profile/${id}`)
-    const data = await req.json()
+    const data: Profile = await req.json()
     profile = {
       ...data,
-    }
+    } as Profile
   })
+
+  const addProfile = async () => {}
 </script>
 
 <div class="w-full">
-  <div class="flex flex-col items-start">
+  <div
+    class="w-fit max-w-full flex gap-[15px] py-[8px] px-[16px] items-center justify-start"
+  >
+    <p class="font-body font-bold text-base text-[#000000] text-center">
+      Default profile
+    </p>
+    <button
+      on:click|preventDefault={addProfile}
+      disabled={true}
+      class="hs-button is-filled is-large w-fit text-center line-through text-white"
+      >Add profile</button
+    >
+  </div>
+
+  <div class="flex flex-col items-start mt-[76px]">
     <label class="hs-form-field w-fit" for="avatarPath">
       <span class="hs-form-field__label"> {i18n('Avatar')} </span>
       <div
@@ -107,7 +130,7 @@
     </label>
   </div>
 
-  <label class="hs-form-field is-filled">
+  <label class="hs-form-field is-filled mt-[76px]">
     <span class="hs-form-field__label"> {i18n('Username')} </span>
     <input
       class="hs-form-field__input"
@@ -116,11 +139,112 @@
     />
   </label>
 
+  <label class="hs-form-field is-filled mt-[76px]">
+    <span class="hs-form-field__label"> {i18n('Description')} </span>
+    <textarea
+      class="hs-form-field__input"
+      bind:value={profile.description}
+      id="profile-description"
+      name="profile-description"
+    />
+    <span class="hs-form-field__helper">
+      * {i18n('MarkdownAvailable')}
+      <a
+        href="https://www.markdownguide.org/basic-syntax"
+        target="_blank"
+        class="underline [font-size:inherit]"
+        rel="noopener noreferrer">({i18n('WhatIsMarkdown')} ↗)</a
+      >
+    </span>
+  </label>
+
+  <label class="hs-form-field is-filled mt-[76px]">
+    <span class="hs-form-field__label">SNS</span>
+    <div
+      class="w-[55%] max-w-full flex flex-col gap-2.5 items-start justify-center"
+    >
+      <div class="w-full max-w-full flex items-center justify-start gap-5">
+        <div class="relative w-6 h-6 overflow-hidden">
+          <img
+            src={X.src}
+            class="rounded-full w-full h-full object-cover"
+            alt={'SNS'}
+          />
+        </div>
+        <input
+          class="hs-form-field__input w-fit grow"
+          disabled={profileUpdating}
+          bind:value={profile.xProfile}
+        />
+      </div>
+
+      <div class="w-full max-w-full flex items-center justify-start gap-5">
+        <div class="relative w-6 h-6 overflow-hidden">
+          <img
+            src={Twitch.src}
+            class="rounded-full w-full h-full object-cover"
+            alt={'SNS'}
+          />
+        </div>
+        <input
+          class="hs-form-field__input w-fit grow"
+          disabled={profileUpdating}
+          bind:value={profile.twitchProfile}
+        />
+      </div>
+
+      <div class="w-fit max-w-full flex items-center justify-start gap-5">
+        <div class="relative w-6 h-6 overflow-hidden">
+          <img
+            src={Instagram.src}
+            class="rounded-full w-full h-full object-cover"
+            alt={'SNS'}
+          />
+        </div>
+        <input
+          class="hs-form-field__input w-fit grow"
+          disabled={profileUpdating}
+          bind:value={profile.instagramProfile}
+        />
+      </div>
+
+      <div class="w-fit max-w-full flex items-center justify-start gap-5">
+        <div class="relative w-6 h-6 overflow-hidden">
+          <img
+            src={Tiktok.src}
+            class="rounded-full w-full h-full object-cover"
+            alt={'SNS'}
+          />
+        </div>
+        <input
+          class="hs-form-field__input w-fit grow"
+          disabled={profileUpdating}
+          bind:value={profile.tiktokProfile}
+        />
+      </div>
+
+      <div class="w-fit max-w-full flex items-center justify-start gap-5">
+        <div class="relative w-6 h-6 overflow-hidden">
+          <img
+            src={Youtube.src}
+            class="rounded-full w-full h-full object-cover"
+            alt={'SNS'}
+          />
+        </div>
+        <input
+          class="hs-form-field__input w-fit grow"
+          disabled={profileUpdating}
+          bind:value={profile.youtubeProfile}
+        />
+      </div>
+    </div>
+  </label>
+
   {#if eoa === id}
     <button
       on:click={onSubmit}
       disabled={profileUpdating}
-      class={`hs-button is-filled is-large w-fit ${
+      class={`mt-[76px] hs-button is-filled is-large w-fit ${
         updatingStatus === 'success'
           ? 'is-success'
           : updatingStatus === 'error'
