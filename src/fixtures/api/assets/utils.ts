@@ -71,7 +71,10 @@ export const fetchAssets = async ({
     id?: string,
     contract?: Contract,
     client?: AsyncReturnType<typeof getDefaultClient>,
-  ) => Promise<AssetDocument['type']>
+  ) => Promise<{
+    assetType: AssetDocument['type']
+    assetPayload: string | undefined
+  }>
   propertyAddressFetcher?: (
     contract: Contract,
     id: string,
@@ -165,14 +168,21 @@ export const fetchAssets = async ({
         events
           .filter(isNotError)
           .map(async ({ id, to: owner, block, propertyAddress }) => {
+            const assetTypeAndPayload = await assetTypeFetcher(
+              contractType,
+              id,
+              _nft,
+              redis,
+            )
             const doc = assetDocument({
-              type: await assetTypeFetcher(contractType, id, _nft, redis),
+              type: assetTypeAndPayload.assetType,
               contract: contractAddress,
               id,
               owner,
               block,
               balance: '1',
               propertyAddress,
+              payload: assetTypeAndPayload.assetPayload,
             })
             return doc
           }),

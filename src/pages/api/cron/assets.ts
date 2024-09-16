@@ -57,19 +57,22 @@ const assetTypeFetcher = async (
   id?: string,
   contract?: Contract,
   client?: ReturnType<typeof createClient>,
-): Promise<AssetDocument['type']> => {
+): Promise<{
+  assetType: AssetDocument['type']
+  assetPayload: string | undefined
+}> => {
   if (type === 'property') {
-    return 'property'
+    return { assetType: 'property', assetPayload: undefined }
   }
 
   if (type === 'sbt') {
-    return 'sbt'
+    return { assetType: 'sbt', assetPayload: undefined }
   }
 
   // If type is 'sTokens' but id or contrac or client is not available
   // then we consider this as nft (membership) for fallback.
   if (!id || !contract || !client) {
-    return 'nft' // @TODO: maybe we can add type as undefined and later on  for all undefined try fetching them again.
+    return { assetType: 'nft', assetPayload: undefined } // @TODO: maybe we can add type as undefined and later on  for all undefined try fetching them again.
   }
 
   const sTokenPayload: string = await queue.add(() =>
@@ -80,7 +83,7 @@ const assetTypeFetcher = async (
   )
   // Backup value as nft (membership).
   if (!sTokenPayload) {
-    return 'nft' // @TODO: maybe we can add type as undefined and later on  for all undefined try fetching them again.
+    return { assetType: 'nft', assetPayload: undefined } // @TODO: maybe we can add type as undefined and later on  for all undefined try fetching them again.
   }
 
   const PassportItemIndex = 'idx::clubs:passportitem' // @TODO: import type from @devprotocol/clubs-plugin-passport once it is published.
@@ -105,7 +108,10 @@ const assetTypeFetcher = async (
     .then((res) => !!res.total && !!res.documents.length)
     .catch((err) => false)
 
-  return isPassportItem ? 'passport-item' : 'nft'
+  return {
+    assetType: isPassportItem ? 'passport-item' : 'nft',
+    assetPayload: sTokenPayload,
+  }
 }
 
 /**
