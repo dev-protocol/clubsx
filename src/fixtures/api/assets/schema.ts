@@ -85,7 +85,7 @@ export const payload = {
 export type AssetContractType = 'sTokens' | 'sbt' | 'property'
 
 export type AssetDocument = {
-  type: 'nft' | 'sbt' | 'property' | 'passport-item'
+  type: 'nft' | 'sbt' | 'property' | 'passportItem'
   id?: string
   nId?: number
   contract: string
@@ -125,7 +125,7 @@ export const assetDocumentTypes: ReadonlyArray<AssetDocument['type']> = [
   'nft',
   'property',
   'sbt',
-  'passport-item',
+  'passportItem',
 ]
 
 export const assetContractTypes: ReadonlyArray<AssetContractType> = [
