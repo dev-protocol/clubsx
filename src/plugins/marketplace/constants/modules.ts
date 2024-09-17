@@ -33,4 +33,6 @@ export const modules = {
     ) as Promise<ClubsFunctionStandardPlugin>,
   'devprotocol:clubs:plugin:awesome-onboarding': () =>
     import('@devprotocol/clubs-plugin-awesome-onboarding'),
+  'devprotocol:clubs:plugin:passport': () =>
+    import('@devprotocol/clubs-plugin-passport'),
 }
