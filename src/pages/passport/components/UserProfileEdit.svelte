@@ -17,7 +17,6 @@
   import Tiktok from '@assets/tiktok.svg'
   import Youtube from '@assets/youtube.svg'
   import Instagram from '@assets/instagram.svg'
-  import { find } from 'ramda'
 
   export let id: string
 
@@ -151,7 +150,7 @@
     }
   }
 
-  const pinMembership = (item: AssetDocument) => {
+  const pinItems = (item: AssetDocument) => {
     profile = {
       ...profile,
       pinnedItems: profile.pinnedItems?.includes(
@@ -176,7 +175,7 @@
       '@devprotocol/clubs-core/connection'
     )
     connection = _conn
-    connection().account.subscribe((acc) => {
+    connection().account.subscribe((acc: string) => {
       if (eoa !== acc) {
         // Wallet is connected or addrress has changed so update the data again.
         fetchData()
@@ -396,7 +395,9 @@
                   item,
                   provider: rpcProvider,
                   local: true,
-                  isSelected: item.isInProfileSkin,
+                  classNames: item.isInProfileSkin
+                    ? 'border-2 border-black'
+                    : 'border border-surface-300',
                 }}
               />
             </button>
@@ -466,7 +467,7 @@
     <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
       {#if [...assetsNft]?.length}
         {#each [...assetsNft] as item, i}
-          <button on:click={() => pinMembership(item)}>
+          <button on:click={() => pinItems(item)}>
             <li id={`assets-${i.toString()}`} class="empty:hidden">
               <UserAsset props={{ item, provider: rpcProvider, local: true }} />
             </li>
@@ -494,9 +495,11 @@
     <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
       {#if [...assetsSbt]?.length}
         {#each [...assetsSbt] as item, i}
-          <li id={`assets-${i.toString()}`} class="empty:hidden">
-            <UserAsset props={{ item, provider: rpcProvider, local: true }} />
-          </li>
+          <button on:click={() => pinItems(item)}>
+            <li id={`assets-${i.toString()}`} class="empty:hidden">
+              <UserAsset props={{ item, provider: rpcProvider, local: true }} />
+            </li>
+          </button>
         {/each}
       {:else if ![...assetsSbt]?.length}
         <div class="rounded-md border border-surface-400 p-8 text-accent-200">

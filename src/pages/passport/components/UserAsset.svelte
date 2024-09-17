@@ -18,10 +18,10 @@
   }
 
   export let props: {
-    item: AssetDocument
+    item: AssetDocument | undefined
     provider: ContractRunner
     local: boolean
-    isSelected?: boolean
+    classNames: ''
   }
 
   const ABI_NFT = [
@@ -33,13 +33,24 @@
   let notFound: boolean = false
   let club: ClubsData | undefined
   let assetImage: ImageData | undefined
-  let clubUrl = whenDefined(club, ({ config }) => decode(config.source).url)
-  let clubName = whenDefined(club, ({ config }) => decode(config.source).name)
 
-  let contract = new Contract(props.item.contract, ABI_NFT, props.provider)
+  let clubUrl = whenDefined(
+    club,
+    ({ config }: { config: ClubsData['config'] }) => decode(config.source).url,
+  )
+  let clubName = whenDefined(
+    club,
+    ({ config }: { config: ClubsData['config'] }) => decode(config.source).name,
+  )
+
+  let contract = new Contract(
+    props.item?.contract ?? '',
+    ABI_NFT,
+    props.provider,
+  )
   let clubApiAlt = props.local
-    ? `https://prerelease.clubs.place/api/clubs?p=${props.item.propertyAddress}`
-    : `https://clubs.place/api/clubs?p=${props.item.propertyAddress}`
+    ? `https://prerelease.clubs.place/api/clubs?p=${props.item?.propertyAddress}`
+    : `https://clubs.place/api/clubs?p=${props.item?.propertyAddress}`
 
   const loadImage = async (src: string): Promise<ImageData> => {
     const img = await new Promise<ImageData>((res) => {
@@ -53,12 +64,12 @@
 
   onMount(async () => {
     const [clubApiPri, uri] = await Promise.all([
-      fetch(`/api/clubs?p=${props.item.propertyAddress}`)
+      fetch(`/api/clubs?p=${props.item?.propertyAddress}`)
         .then((res) => res.json())
         .then((res) => res[0] as null | ClubsData)
         .catch(always(null)),
 
-      whenDefined(props.item.id, async (id) =>
+      whenDefined(props.item?.id, async (id: string | number) =>
         decodeTokenURI(
           await contract.tokenURI(id),
           (cid) => `https://${cid}.ipfs.nftstorage.link`,
@@ -74,8 +85,17 @@
           .catch(always(null))
 
     club = clubApi ? clubApi : undefined
-    clubUrl = whenDefined(club, ({ config }) => decode(config.source).url)
-    clubName = whenDefined(club, ({ config }) => decode(config.source).name)
+
+    clubUrl = whenDefined(
+      club,
+      ({ config }: { config: ClubsData['config'] }) =>
+        decode(config.source).url,
+    )
+    clubName = whenDefined(
+      club,
+      ({ config }: { config: ClubsData['config'] }) =>
+        decode(config.source).name,
+    )
 
     notFound = !clubApi
     assetName = uri?.name ?? ''
@@ -85,9 +105,9 @@
   })
 </script>
 
-{#if !notFound}
+{#if !notFound || !props.item}
   <div
-    class={`shadow-md rounded-md p-4 grid gap-4 bg-surface-200 ${props.isSelected ? 'border-2 border-black' : 'border border-surface-300'}`}
+    class={`shadow-md rounded-md p-4 grid gap-4 bg-surface-200 ${props.classNames}`}
   >
     {#if assetImage}
       <img
