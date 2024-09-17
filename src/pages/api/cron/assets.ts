@@ -14,8 +14,10 @@ import type {
   AssetDocument,
 } from '@fixtures/api/assets/schema'
 import type { createClient } from 'redis'
-import { sTokenPayload as sTokenPayloadSchema } from '@devprotocol/clubs-plugin-passport/src/db/schema'
-import { Index } from '@devprotocol/clubs-plugin-passport/src/db/redis'
+import {
+  Index,
+  sTokenPayload as sTokenPayloadSchema,
+} from '@devprotocol/clubs-plugin-passport'
 
 const { PUBLIC_ALCHEMY_KEY } = import.meta.env
 
@@ -88,7 +90,7 @@ const assetTypeAndPayloadFetcher = async (
     return { assetType: 'nft', assetPayload: undefined } // @TODO: maybe we can add type as undefined and later on  for all undefined try fetching them again.
   }
 
-  // Check the PassportItem schema, if document/value is present that means it's an passport-item.
+  // Check the PassportItem schema, if document/value is present that means it's an passportItem.
   const isPassportItem: boolean = await client.ft
     .search(
       Index.PassportItem,
@@ -104,7 +106,7 @@ const assetTypeAndPayloadFetcher = async (
     .catch((err) => false)
 
   return {
-    assetType: isPassportItem ? 'passport-item' : 'nft',
+    assetType: isPassportItem ? 'passportItem' : 'nft',
     assetPayload: sTokenPayload,
   }
 }
