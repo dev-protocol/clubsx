@@ -6,12 +6,7 @@ import {
   type UndefinedOr,
   whenDefinedAll,
 } from '@devprotocol/util-ts'
-import {
-  Contract,
-  type ContractRunner,
-  type InterfaceAbi,
-  type Provider,
-} from 'ethers'
+import { Contract, type InterfaceAbi, type Provider } from 'ethers'
 import {
   getDefaultClient,
   Index,
@@ -22,6 +17,7 @@ import type { AsyncReturnType } from 'type-fest'
 import {
   assetDocument,
   contract,
+  type AssetContractType,
   type AssetDocument,
   type LogDocument,
 } from '@fixtures/api/assets/schema'
@@ -61,14 +57,24 @@ export const fetchAssets = async ({
   redis,
   contractAddress,
   abi,
-  type,
+  contractType,
+  assetTypeFetcher,
   propertyAddressFetcher,
 }: {
   provider: Provider
   redis: AsyncReturnType<typeof getDefaultClient>
   contractAddress: string
   abi: InterfaceAbi
-  type: AssetDocument['type']
+  contractType: AssetContractType
+  assetTypeFetcher: (
+    type: AssetContractType,
+    id?: string,
+    contract?: Contract,
+    client?: AsyncReturnType<typeof getDefaultClient>,
+  ) => Promise<{
+    assetType: AssetDocument['type']
+    assetPayload: string | undefined
+  }>
   propertyAddressFetcher?: (
     contract: Contract,
     id: string,
@@ -155,21 +161,32 @@ export const fetchAssets = async ({
       ) ?? evs,
   )
 
-  const assetDocs = whenNotError(withProperties, (events) =>
-    events
-      .filter(isNotError)
-      .map(({ id, to: owner, block, propertyAddress }) => {
-        const doc = assetDocument({
-          type,
-          contract: contractAddress,
-          id,
-          owner,
-          block,
-          balance: '1',
-          propertyAddress,
-        })
-        return doc
-      }),
+  const assetDocs = await whenNotErrorAll(
+    [nft, withProperties],
+    ([_nft, events]) =>
+      Promise.all(
+        events
+          .filter(isNotError)
+          .map(async ({ id, to: owner, block, propertyAddress }) => {
+            const assetTypeAndPayload = await assetTypeFetcher(
+              contractType,
+              id,
+              _nft,
+              redis,
+            )
+            const doc = assetDocument({
+              type: assetTypeAndPayload.assetType,
+              contract: contractAddress,
+              id,
+              owner,
+              block,
+              balance: '1',
+              propertyAddress,
+              payload: assetTypeAndPayload.assetPayload,
+            })
+            return doc
+          }),
+      ),
   )
 
   console.log({ contractAddress, assetDocs })

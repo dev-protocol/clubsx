@@ -75,8 +75,17 @@ export const nBalance = {
   },
 } satisfies RediSearchSchema
 
+export const payload = {
+  '$.payload': {
+    type: SchemaFieldTypes.TEXT,
+    AS: 'payload',
+  },
+} satisfies RediSearchSchema
+
+export type AssetContractType = 'sTokens' | 'sbt' | 'property'
+
 export type AssetDocument = {
-  type: 'nft' | 'sbt' | 'property'
+  type: 'nft' | 'sbt' | 'property' | 'passport-item'
   id?: string
   nId?: number
   contract: string
@@ -86,6 +95,7 @@ export type AssetDocument = {
   nBlock: number
   balance: string
   nBalance: number
+  payload?: string
 }
 
 export const assetDocument = (doc: {
@@ -96,6 +106,7 @@ export const assetDocument = (doc: {
   owner: string
   block: string | bigint | number
   balance: string | bigint | number
+  payload?: string
 }): AssetDocument => ({
   type: doc.type,
   id: doc.id ? doc.id.toString() : undefined,
@@ -107,10 +118,18 @@ export const assetDocument = (doc: {
   nId: doc.id ? Number(doc.id) : undefined,
   nBlock: Number(doc.block),
   nBalance: Number(doc.balance),
+  payload: doc.payload ?? undefined,
 })
 
 export const assetDocumentTypes: ReadonlyArray<AssetDocument['type']> = [
   'nft',
+  'property',
+  'sbt',
+  'passport-item',
+]
+
+export const assetContractTypes: ReadonlyArray<AssetContractType> = [
+  'sTokens',
   'property',
   'sbt',
 ]
@@ -132,6 +151,7 @@ export const ASSET_SCHEMA = {
   ...nId,
   ...nBlock,
   ...nBalance,
+  ...payload,
 }
 
 export const LOG_SCHEMA = {
