@@ -22,7 +22,7 @@
     provider: ContractRunner
     local: boolean
     isSelected?: boolean
-    toggleItemSelection: (payload: string | undefined) => {}
+    toggleItemSelection: (payload: string | undefined) => void
   }
 
   const ABI_NFT = [
