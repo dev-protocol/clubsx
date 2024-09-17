@@ -289,6 +289,7 @@ export const plugins = [
   $21,
   $22,
   $23,
+  $24,
 ] satisfies ClubsPlugins
 
 export const paidBundledItems: PaidBundledItem[] = [
