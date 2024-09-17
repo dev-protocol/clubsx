@@ -155,7 +155,7 @@
               `${item.id}-${item.payload}-${item.contract}-${item.type}`,
           )
         : [
-            ...profile.pinnedItems ?? [],
+            ...(profile.pinnedItems ?? []),
             `${item.id}-${item.payload}-${item.contract}-${item.type}`,
           ],
     }
@@ -418,11 +418,20 @@
     <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
       {#if profile.pinnedItems?.length}
         {#each profile.pinnedItems as item, i}
-        {#if [...assetsNft, ...assetsSbt].find((i) => `${i.id}-${i.payload}-${i.contract}-${i.type}` === item) !== undefined}
-          <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
-            <UserAsset props={{ item: [...assetsNft, ...assetsSbt].find((i) => `${i.id}-${i.payload}-${i.contract}-${i.type}` === item), provider: rpcProvider, local: true }} />
-          </li>
-        {/if}
+          {#if [...assetsNft, ...assetsSbt].find((i) => `${i.id}-${i.payload}-${i.contract}-${i.type}` === item) !== undefined}
+            <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
+              <UserAsset
+                props={{
+                  item: [...assetsNft, ...assetsSbt].find(
+                    (i) =>
+                      `${i.id}-${i.payload}-${i.contract}-${i.type}` === item,
+                  ),
+                  provider: rpcProvider,
+                  local: true,
+                }}
+              />
+            </li>
+          {/if}
         {/each}
       {:else if !assetsPassportItems?.length}
         <div class="rounded-md border border-surface-400 p-8 text-accent-200">
@@ -446,13 +455,11 @@
     <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
       {#if [...assetsNft]?.length}
         {#each [...assetsNft] as item, i}
-        <button 
-        on:click={() => pinMembership(item)}
-        >
-          <li id={`assets-${i.toString()}`} class="empty:hidden">
-            <UserAsset props={{ item, provider: rpcProvider, local: true}} />
-          </li>
-        </button>
+          <button on:click={() => pinMembership(item)}>
+            <li id={`assets-${i.toString()}`} class="empty:hidden">
+              <UserAsset props={{ item, provider: rpcProvider, local: true }} />
+            </li>
+          </button>
         {/each}
       {:else if ![...assetsNft]?.length}
         <div class="rounded-md border border-surface-400 p-8 text-accent-200">
