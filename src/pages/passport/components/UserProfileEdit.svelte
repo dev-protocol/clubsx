@@ -17,6 +17,7 @@
   import Tiktok from '@assets/tiktok.svg'
   import Youtube from '@assets/youtube.svg'
   import Instagram from '@assets/instagram.svg'
+  import { find } from 'ramda'
 
   export let id: string
 
@@ -31,6 +32,7 @@
   let updatingStatus: UndefinedOr<'success' | 'error'> = undefined
   let assetsNft: AssetDocument[] = []
   let assetsSbt: AssetDocument[] = []
+  let pinnedItems: string[] = profile.pinnedItems ?? []
 
   let SKIN_PASSPORT_ITMES: AssetDocument[] = []
   let assetsPassportItems: (AssetDocument & { isInProfileSkin: boolean })[] = []
@@ -119,6 +121,7 @@
     profile = {
       ...data,
     } as Profile
+    pinnedItems = profile.pinnedItems ?? []
 
     const [nfts, sbts, passportItem] = await Promise.all([
       fetch(`/api/assets/related/account/${eoa}/?type=nft&size=999`)
@@ -138,6 +141,25 @@
     assetsPassportItems = (passportItem.data as AssetDocument[]).map((item) =>
       fetchPassportItemSelectionStatus(item),
     )
+  }
+  const pinMembership = (item: AssetDocument) => {
+    console.log('before', profile.pinnedItems)
+    profile = {
+      ...profile,
+      pinnedItems: profile.pinnedItems?.includes(
+        `${item.id}-${item.payload}-${item.contract}-${item.type}`,
+      )
+        ? profile.pinnedItems?.filter(
+            (pinnedItem) =>
+              pinnedItem !==
+              `${item.id}-${item.payload}-${item.contract}-${item.type}`,
+          )
+        : [
+            ...(profile.pinnedItems ?? []),
+            `${item.id}-${item.payload}-${item.contract}-${item.type}`,
+          ],
+    }
+    console.log('after', profile.pinnedItems)
   }
 
   onMount(async () => {
@@ -394,11 +416,22 @@
     </div>
 
     <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-      {#if assetsPassportItems?.length}
-        {#each assetsPassportItems as item, i}
-          <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
-            <UserAsset props={{ item, provider: rpcProvider, local: true }} />
-          </li>
+      {#if profile.pinnedItems?.length}
+        {#each profile.pinnedItems as item, i}
+          {#if [...assetsNft, ...assetsSbt].find((i) => `${i.id}-${i.payload}-${i.contract}-${i.type}` === item) !== undefined}
+            <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
+              <UserAsset
+                props={{
+                  item: [...assetsNft, ...assetsSbt].find(
+                    (i) =>
+                      `${i.id}-${i.payload}-${i.contract}-${i.type}` === item,
+                  ),
+                  provider: rpcProvider,
+                  local: true,
+                }}
+              />
+            </li>
+          {/if}
         {/each}
       {:else if !assetsPassportItems?.length}
         <div class="rounded-md border border-surface-400 p-8 text-accent-200">
@@ -414,22 +447,51 @@
     </ul>
   </label>
 
+  <!-- Memberships -->
   <label class="hs-form-field is-filled mt-[76px]">
     <span class="hs-form-field__label">
-      {i18n('MemebershipsAndAchievements')}
+      {i18n('Memeberships')}
     </span>
     <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-      {#if [...assetsNft, ...assetsSbt]?.length}
-        {#each [...assetsNft, ...assetsSbt] as item, i}
+      {#if [...assetsNft]?.length}
+        {#each [...assetsNft] as item, i}
+          <button on:click={() => pinMembership(item)}>
+            <li id={`assets-${i.toString()}`} class="empty:hidden">
+              <UserAsset props={{ item, provider: rpcProvider, local: true }} />
+            </li>
+          </button>
+        {/each}
+      {:else if ![...assetsNft]?.length}
+        <div class="rounded-md border border-surface-400 p-8 text-accent-200">
+          {i18n('Empty')} :)
+        </div>
+      {:else if !assetsNft}
+        {#each new Array(6) as item, i}
+          <li id={i.toString()}>
+            <span class="block h-96"><Skeleton /></span>
+          </li>
+        {/each}
+      {/if}
+    </ul>
+  </label>
+
+  <!-- Achievements -->
+  <label class="hs-form-field is-filled mt-[76px]">
+    <span class="hs-form-field__label">
+      {i18n('Achievements')}
+    </span>
+    <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
+      {#if [...assetsSbt]?.length}
+        {#each [...assetsSbt] as item, i}
           <li id={`assets-${i.toString()}`} class="empty:hidden">
             <UserAsset props={{ item, provider: rpcProvider, local: true }} />
           </li>
         {/each}
-      {:else if ![...assetsNft, ...assetsSbt]?.length}
+      {:else if ![...assetsSbt]?.length}
         <div class="rounded-md border border-surface-400 p-8 text-accent-200">
           {i18n('Empty')} :)
         </div>
-      {:else if !assetsNft && !assetsSbt}
+      {:else if !assetsSbt}
         {#each new Array(6) as item, i}
           <li id={i.toString()}>
             <span class="block h-96"><Skeleton /></span>
