@@ -1,4 +1,5 @@
 import type { ClubsI18nParts } from '@devprotocol/clubs-core'
+import Achievement from '@plugins/achievements/components/Achievement.svelte'
 
 export const Strings = {
   PassportSkin: {
@@ -9,9 +10,13 @@ export const Strings = {
     en: 'Pinned Items',
     ja: 'ピン留めされたアイテム',
   },
-  MemebershipsAndAchievements: {
-    en: 'Memberships and Achievements',
+  Memeberships: {
+    en: 'Memberships',
     ja: 'メンバーシップと実績',
+  },
+  Achievements: {
+    en: 'Achievements',
+    ja: 'アチーブメント',
   },
   Profile: {
     en: 'Profile',

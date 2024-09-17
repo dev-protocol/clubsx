@@ -1,3 +1,4 @@
+import type { AssetDocument } from '@fixtures/api/assets/schema'
 import { generateProfileId } from '@fixtures/api/keys'
 import { hashMessage, recoverAddress } from 'ethers'
 import { createClient } from 'redis'
@@ -11,12 +12,18 @@ export type Skin = {
   bgm?: Payload // for the future use cases
 }
 
+// export type PinnedItem = {
+//   type: AssetDocument['type']
+//   id: AssetDocument['id']
+//   contract: AssetDocument['contract']
+// }
+
 export type Profile = {
   skins?: Skin[] // the default skin is always the first item
   avatar?: string
   username?: string
   description?: string
-  pinnedItems?: []
+  pinnedItems?: string[]
   xProfile?: string
   twitchProfile?: string
   tiktokProfile?: string
