@@ -95,17 +95,17 @@
 
     const [nfts, sbts, passportItem] = await Promise.all([
       fetch(
-        `https://clubs.place/api/assets/related/account/${eoa}/?type=nft&size=999`,
+        `/api/assets/related/account/${eoa}/?type=nft&size=999`,
       )
         .then((res) => res.json())
         .catch(() => []),
       fetch(
-        `https://clubs.place/api/assets/related/account/${eoa}/?type=sbt&size=999`,
+        `/api/assets/related/account/${eoa}/?type=sbt&size=999`,
       )
         .then((res) => res.json())
         .catch(() => []),
       fetch(
-        `https://clubs.place/api/assets/related/account/${eoa}/?type=passport-item&size=999`,
+        `/api/assets/related/account/${eoa}/?type=passport-item&size=999`,
       )
         .then((res) => res.json())
         .catch(() => []),
