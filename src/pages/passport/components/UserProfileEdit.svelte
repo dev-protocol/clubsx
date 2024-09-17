@@ -94,19 +94,13 @@
     } as Profile
 
     const [nfts, sbts, passportItem] = await Promise.all([
-      fetch(
-        `/api/assets/related/account/${eoa}/?type=nft&size=999`,
-      )
+      fetch(`/api/assets/related/account/${eoa}/?type=nft&size=999`)
         .then((res) => res.json())
         .catch(() => []),
-      fetch(
-        `/api/assets/related/account/${eoa}/?type=sbt&size=999`,
-      )
+      fetch(`/api/assets/related/account/${eoa}/?type=sbt&size=999`)
         .then((res) => res.json())
         .catch(() => []),
-      fetch(
-        `/api/assets/related/account/${eoa}/?type=passport-item&size=999`,
-      )
+      fetch(`/api/assets/related/account/${eoa}/?type=passport-item&size=999`)
         .then((res) => res.json())
         .catch(() => []),
     ])
