@@ -76,6 +76,43 @@
     }, 3000)
   }
 
+  const fetchPassportItemSelectionStatus = (item: AssetDocument) => {
+    const skin = profile?.skins?.at(0)
+    if (!skin) {
+      return {
+        ...item,
+        isInProfileSkin: false,
+      }
+    }
+
+    const isSkinInProfile = Object.keys(skin)
+      .map((k: string) => {
+        const skinProperty = skin[k as keyof Skin]
+        if (!skinProperty) {
+          return false
+        }
+
+        if (
+          typeof skinProperty === typeof '' &&
+          skinProperty === item.payload
+        ) {
+          return true
+        }
+
+        if (Array.isArray(skinProperty)) {
+          return skinProperty.some((property) => property === item.payload)
+        }
+
+        return false
+      })
+      .some((k) => k)
+
+    return {
+      ...item,
+      isInProfileSkin: isSkinInProfile,
+    }
+  }
+
   const fetchData = async () => {
     const req = await fetch(`/api/profile/${id}`)
     const data: Profile = await req.json()
@@ -98,42 +135,9 @@
     assetsNft = nfts.data
     assetsSbt = sbts.data
     SKIN_PASSPORT_ITMES = passportItem.data
-    assetsPassportItems = (passportItem.data as AssetDocument[]).map((item) => {
-      const skin = profile?.skins?.at(0)
-      if (!skin) {
-        return {
-          ...item,
-          isInProfileSkin: false,
-        }
-      }
-
-      const isSkinInProfile = Object.keys(skin)
-        .map((k: string) => {
-          const skinProperty = skin[k as keyof Skin]
-          if (!skinProperty) {
-            return false
-          }
-
-          if (
-            typeof skinProperty === typeof '' &&
-            skinProperty === item.payload
-          ) {
-            return true
-          }
-
-          if (Array.isArray(skinProperty)) {
-            return skinProperty.some((property) => property === item.payload)
-          }
-
-          return false
-        })
-        .some((k) => k)
-
-      return {
-        ...item,
-        isInProfileSkin: isSkinInProfile,
-      }
-    })
+    assetsPassportItems = (passportItem.data as AssetDocument[]).map((item) =>
+      fetchPassportItemSelectionStatus(item),
+    )
   }
 
   onMount(async () => {
@@ -153,6 +157,35 @@
 
     fetchData()
   })
+
+  const togglePassportItemToProfile = (payload: string | undefined) => {
+    console.log('Hit')
+    if (!payload) {
+      return
+    }
+
+    const passportItem =
+      assetsPassportItems.find((item) => item.payload === payload) ?? undefined
+    if (!passportItem) {
+      return
+    }
+
+    assetsPassportItems = [
+      ...assetsPassportItems.filter(
+        (item) => passportItem?.payload !== payload,
+      ),
+      {
+        ...passportItem,
+        isInProfileSkin: !passportItem?.isInProfileSkin,
+      },
+    ]
+  }
+
+  const resetProfileSelectedPassportItem = () => {
+    assetsPassportItems = SKIN_PASSPORT_ITMES.map((item) =>
+      fetchPassportItemSelectionStatus(item),
+    )
+  }
 
   const addProfile = async () => {}
 </script>
@@ -315,7 +348,7 @@
     <div class="hs-form-field__label flex items-center justify-between mb-1">
       <span class="hs-form-field__label"> {i18n('PassportSkin')} </span>
       <button
-        on:click|preventDefault={() => {}}
+        on:click|preventDefault={resetProfileSelectedPassportItem}
         class="hs-button is-filled is-large w-fit text-center hs-form-field__label !text-white"
         >Reset</button
       >
@@ -331,6 +364,7 @@
                 provider: rpcProvider,
                 local: true,
                 isSelected: item.isInProfileSkin,
+                toggleItemSelection: togglePassportItemToProfile,
               }}
             />
           </li>

@@ -22,6 +22,7 @@
     provider: ContractRunner
     local: boolean
     isSelected?: boolean
+    toggleItemSelection: (payload: string | undefined) => {}
   }
 
   const ABI_NFT = [
@@ -86,7 +87,9 @@
 </script>
 
 {#if !notFound}
-  <div
+  <button
+    on:click|preventDefault={() =>
+      props.toggleItemSelection(props.item.payload)}
     class={`shadow-md rounded-md p-4 grid gap-4 bg-surface-200 ${props.isSelected ? 'border-2 border-black' : 'border border-surface-300'}`}
   >
     {#if assetImage}
@@ -107,5 +110,5 @@
         <a href="clubUrl"><span class="opacity-50">{clubName}</span></a>
       {/if}
     </span>
-  </div>
+  </button>
 {/if}
