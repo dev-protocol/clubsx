@@ -21,7 +21,7 @@
     item: AssetDocument | undefined
     provider: ContractRunner
     local: boolean
-    classNames: ''
+    classNames?: string
   }
 
   const ABI_NFT = [
@@ -107,7 +107,7 @@
 
 {#if !notFound || !props.item}
   <div
-    class={`shadow-md rounded-md p-4 grid gap-4 bg-surface-200 ${props.classNames}`}
+    class={`shadow-md rounded-md p-4 grid gap-4 bg-surface-200 ${props.classNames ?? ''}`}
   >
     {#if assetImage}
       <img

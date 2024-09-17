@@ -176,7 +176,7 @@
       '@devprotocol/clubs-core/connection'
     )
     connection = _conn
-    connection().account.subscribe((acc: string) => {
+    connection().account.subscribe((acc: UndefinedOr<string>) => {
       if (eoa !== acc) {
         // Wallet is connected or addrress has changed so update the data again.
         fetchData()
