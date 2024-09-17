@@ -74,19 +74,7 @@
     }, 3000)
   }
 
-  onMount(async () => {
-    i18n = i18nBase(navigator.languages)
-
-    const { connection: _conn } = await import(
-      '@devprotocol/clubs-core/connection'
-    )
-    connection = _conn
-    connection().account.subscribe((acc) => {
-      eoa = acc
-    })
-  })
-
-  onMount(async () => {
+  const fetchData = async () => {
     const req = await fetch(`/api/profile/${id}`)
     const data: Profile = await req.json()
     profile = {
@@ -104,9 +92,28 @@
         .then((res) => res.json())
         .catch(() => []),
     ])
+
     assetsNft = nfts.data
     assetsSbt = sbts.data
     assetsPassportItems = passportItem.data
+  }
+
+  onMount(async () => {
+    i18n = i18nBase(navigator.languages)
+
+    const { connection: _conn } = await import(
+      '@devprotocol/clubs-core/connection'
+    )
+    connection = _conn
+    connection().account.subscribe((acc) => {
+      if (eoa !== acc) {
+        // Wallet is connected or addrress has changed so update the data again.
+        fetchData()
+      }
+      eoa = acc
+    })
+
+    fetchData()
   })
 
   const addProfile = async () => {}

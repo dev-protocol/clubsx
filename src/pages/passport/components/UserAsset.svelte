@@ -32,12 +32,13 @@
   let notFound: boolean = false
   let club: ClubsData | undefined
   let assetImage: ImageData | undefined
+  let clubUrl = whenDefined(club, ({ config }) => decode(config.source).url)
+  let clubName = whenDefined(club, ({ config }) => decode(config.source).name)
 
-  const clubUrl = whenDefined(club, ({ config }) => decode(config.source).url)
-  const clubName = whenDefined(club, ({ config }) => decode(config.source).name)
-  const clubApiAlt = `${props.local ? 'https://clubs.place' : 'https://prerelease.clubs.place'}/api/clubs?p=${props.item.propertyAddress}`
-
-  const contract = new Contract(props.item.contract, ABI_NFT, props.provider)
+  let contract = new Contract(props.item.contract, ABI_NFT, props.provider)
+  let clubApiAlt = props.local
+    ? `https://prerelease.clubs.place/api/clubs?p=${props.item.propertyAddress}`
+    : `https://clubs.place/api/clubs?p=${props.item.propertyAddress}`
 
   const loadImage = async (src: string): Promise<ImageData> => {
     const img = await new Promise<ImageData>((res) => {
@@ -55,6 +56,7 @@
         .then((res) => res.json())
         .then((res) => res[0] as null | ClubsData)
         .catch(always(null)),
+
       whenDefined(props.item.id, async (id) =>
         decodeTokenURI(
           await contract.tokenURI(id),
@@ -71,6 +73,9 @@
           .catch(always(null))
 
     club = clubApi ? clubApi : undefined
+    clubUrl = whenDefined(club, ({ config }) => decode(config.source).url)
+    clubName = whenDefined(club, ({ config }) => decode(config.source).name)
+
     notFound = !clubApi
     assetName = uri?.name ?? ''
     assetImage = notFound
@@ -94,11 +99,11 @@
     {/if}
 
     <span class="grid gap-1.5">
-      <span>{{ assetName }}</span>
+      <span>{assetName}</span>
       {#if !clubUrl || !clubName}
         <span class="w-full h-3"><Skeleton /></span>
       {:else}
-        <a href="clubUrl"><span class="opacity-50">{{ clubName }}</span></a>
+        <a href="clubUrl"><span class="opacity-50">{clubName}</span></a>
       {/if}
     </span>
   </div>
