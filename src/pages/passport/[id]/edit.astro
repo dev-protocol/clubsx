@@ -5,6 +5,10 @@ import { isAddress } from 'ethers'
 
 const { id } = Astro.params
 const isEOA = isAddress(id)
+
+const isLocal =
+  Astro.url.hostname.includes('localhost') ||
+  /^[\d\.]+$/.test(Astro.url.hostname)
 ---
 
 <Layout connectButton="show" theme="auto" pageTitle="Passport">
@@ -25,6 +29,6 @@ const isEOA = isAddress(id)
       </svg>
       Profile
     </a>
-    {isEOA && <UserProfileEdit client:load id={id ?? ''} />}
+    {isEOA && <UserProfileEdit client:load id={id ?? ''} isLocal={isLocal} />}
   </div>
 </Layout>

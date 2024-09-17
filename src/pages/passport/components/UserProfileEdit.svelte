@@ -19,6 +19,7 @@
   import Instagram from '@assets/instagram.svg'
 
   export let id: string
+  export let isLocal: boolean
 
   const i18nBase = i18nFactory(Strings)
   let i18n = i18nBase(['en'])
@@ -394,7 +395,7 @@
                 props={{
                   item,
                   provider: rpcProvider,
-                  local: true,
+                  local: isLocal,
                   classNames: item.isInProfileSkin
                     ? 'border-2 border-black'
                     : 'border border-surface-300',
@@ -439,7 +440,7 @@
                       `${i.id}-${i.payload}-${i.contract}-${i.type}` === item,
                   ),
                   provider: rpcProvider,
-                  local: true,
+                  local: isLocal,
                 }}
               />
             </li>
@@ -469,7 +470,9 @@
         {#each [...assetsNft] as item, i}
           <button on:click={() => pinItems(item)}>
             <li id={`assets-${i.toString()}`} class="empty:hidden">
-              <UserAsset props={{ item, provider: rpcProvider, local: true }} />
+              <UserAsset
+                props={{ item, provider: rpcProvider, local: isLocal }}
+              />
             </li>
           </button>
         {/each}
@@ -497,7 +500,9 @@
         {#each [...assetsSbt] as item, i}
           <button on:click={() => pinItems(item)}>
             <li id={`assets-${i.toString()}`} class="empty:hidden">
-              <UserAsset props={{ item, provider: rpcProvider, local: true }} />
+              <UserAsset
+                props={{ item, provider: rpcProvider, local: isLocal }}
+              />
             </li>
           </button>
         {/each}
