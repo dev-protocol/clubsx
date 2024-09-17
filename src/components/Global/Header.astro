@@ -1,0 +1,31 @@
+---
+import { ClubsLogo as Clubs } from '@devprotocol/clubs-core/layouts'
+import { ConnectButton } from '@devprotocol/clubs-plugin-awesome-onboarding'
+
+import '@devprotocol/clubs-core/styles'
+import { passportClass } from '@fixtures/ui/passport'
+
+type Props = {
+  connectButton?: 'show' | 'hidden'
+  pageTitle?: string
+}
+
+const { connectButton = 'hidden', pageTitle } = Astro.props
+---
+
+<header class="relative flex items-center justify-between px-6 py-4">
+  <a href="/">
+    <h1 class="flex items-center gap-4" class:list={passportClass('heading')}>
+      <Clubs />
+      {pageTitle && <span class="lg:text-xl font-bold">{pageTitle}</span>}
+    </h1>
+  </a>
+  <slot name="right" />
+  {
+    connectButton === 'show' && (
+      <nav class="flex justify-between gap-10">
+        <ConnectButton />
+      </nav>
+    )
+  }
+</header>
