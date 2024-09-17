@@ -7,6 +7,8 @@ import type { Profile } from '@pages/api/profile'
 import { getProfile } from '@fixtures/api/profile'
 import Icon from 'src/pages/passport2/components/Icons.vue'
 import dummyData from './dummyData.json'
+import { passportClass } from '@fixtures/ui/passport'
+import { markdownToHtml, ProseTextInherit } from '@devprotocol/clubs-core'
 
 const { id } = Astro.params
 const isEOA = isAddress(id)
@@ -15,39 +17,46 @@ const profile: Profile = await getProfile({ id: id ?? '' })
 const isLocal =
   Astro.url.hostname.includes('localhost') ||
   /^[\d\.]+$/.test(Astro.url.hostname)
+const htmlDescription = markdownToHtml(dummyData.description)
 ---
 
-<Layout connectButton="show" theme="auto" pageTitle="Passport">
-  <div class="max-w-screen-lg mx-auto px-4 grid gap-24 pb-24">
+<Layout theme="auto">
+  <div
+    class="grid justify-items-start max-w-screen-lg mx-auto px-4 grid gap-24 pb-24"
+  >
     <div class="flex justify-between items-center self-stretch">
       <!-- Left side -->
-      <div class="flex items-center gap-4.5">
+      <div
+        class="flex items-center gap-6"
+        class:list={passportClass('user-info')}
+      >
         <!-- Avatar  -->
         <span
-          class="flex flex-col items-center gap-[32px] p-[8px] rounded-full border border-[#C4C4C4] bg-[#F1F1F1]"
+          class="flex flex-col items-center p-2 rounded-full bg-white"
+          class:list={passportClass('avatar-container')}
         >
           <img
             src={profile.avatar}
-            class="rounded-full w-full h-full object-cover w-[176px] h-[176px] rounded-full bg-lightgray bg-cover bg-center bg-no-repeat"
+            class="rounded-full object-cover w-40 h-40 bg-lightgray bg-cover bg-center bg-no-repeat"
+            class:list={passportClass('avatar')}
             alt=""
           />
         </span>
         <!-- Username -->
         <span
-          class="flex justify-center items-center gap-[10px] px-[16px] py-[6px] rounded-xl bg-white"
+          class="flex justify-center items-center gap-6 px-6 py-3 rounded-xl bg-white"
+          class:list={passportClass('username-container')}
         >
           <span
-            class="text-black text-center font-dm-sans text-[48px] font-bold leading-none"
+            class="text-black text-center font-dm-sans text-4xl font-bold leading-none"
+            class:list={passportClass('username')}
           >
             {profile.username}
           </span>
-          <img
-            src={dummyData.achivementBadge}
-            class="w-[49px] h-[49px]"
-            alt=""
-          />
         </span>
       </div>
+      {
+        /*
       <!-- Right side BGM-->
       <div
         class="flex items-center gap-[15px] px-[16px] py-[8px] rounded-lg bg-white"
@@ -64,43 +73,46 @@ const isLocal =
           {dummyData.musicName}
         </span>
       </div>
+      */
+      }
     </div>
     <div
-      class="flex flex-col items-start gap-[10px] p-[16px] rounded-lg bg-white"
+      class="grid grid-cols-5 items-start gap-6 p-3 rounded-lg bg-white"
+      class:list={passportClass('links-container')}
     >
-      <div class="flex items-center gap-[32px] self-stretch">
-        <Icon icon="x" />
-        <Icon icon="twitch" />
-        <Icon icon="instagram" />
-        <Icon icon="tiktok" />
-        <Icon icon="youtube" />
-      </div>
+      <Icon icon="x" />
+      <Icon icon="twitch" />
+      <Icon icon="instagram" />
+      <Icon icon="tiktok" />
+      <Icon icon="youtube" />
     </div>
     <!-- Description -->
     <div
-      class="flex justify-center items-center gap-[10px] p-[16px] self-stretch rounded-xl bg-[#B76DD3]"
+      class="flex w-full justify-center items-center gap-2.5 p-4 self-stretch rounded-xl"
+      class:list={[passportClass('description-container')]}
     >
-      <span
-        class="flex-1 text-white font-hanken text-[24px] font-normal leading-normal"
-      >
-        {dummyData.description}
-      </span>
-
-      <!-- Middle Content -->
-      <div class="flex flex-col items-center gap-[96px] self-stretch">
-        <div class="flex flex-col items-start gap-[46px] self-stretch">
-          <img
-            src={dummyData.videoThumbnail}
-            class="h-[577px] self-stretch rounded-sm"
-            alt=""
-          />
-        </div>
-      </div>
-      {isEOA && <UserAssets client:load account={id ?? ''} local={isLocal} />}
-
-      <a href={`/passport/${id}/clubs`} class="hs-link place-self-start"
-        >Clubs</a
-      >
+      <div
+        class:list={[ProseTextInherit, passportClass('description')]}
+        set:html={htmlDescription}
+      />
     </div>
+
+    <!-- Middle Content -->
+    <div class="flex flex-col items-center gap-[96px] self-stretch">
+      <div
+        class="flex flex-col items-start gap-[46px] self-stretch"
+        class:list={passportClass('video-container')}
+      >
+        <img
+          src={dummyData.videoThumbnail}
+          class="h-[577px] self-stretch rounded-sm"
+          class:list={passportClass('video')}
+          alt=""
+        />
+      </div>
+    </div>
+    {isEOA && <UserAssets client:load account={id ?? ''} local={isLocal} />}
+
+    <a href={`/passport/${id}/clubs`} class="hs-link place-self-start">Clubs</a>
   </div>
 </Layout>

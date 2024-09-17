@@ -1,9 +1,8 @@
 ---
-import { ClubsLogo as Clubs } from '@devprotocol/clubs-core/layouts'
 import { ClubsPictogramAdaptable as Favicon } from '@devprotocol/clubs-core/images'
-import { ConnectButton } from '@devprotocol/clubs-plugin-awesome-onboarding'
 
 import '@devprotocol/clubs-core/styles'
+import Header from '@components/Global/Header.astro'
 
 type Props = {
   connectButton?: 'show' | 'hidden'
@@ -49,22 +48,7 @@ const twitterHandle = 'poweredbyClubs'
 
   <body class="min-h-screen bg-background font-body text-surface-ink">
     <slot name="before-header" />
-    <header class="relative flex items-center justify-between px-6 py-4">
-      <a href="/">
-        <h1 class="flex items-center gap-4">
-          <Clubs />
-          {pageTitle && <span class="lg:text-xl font-bold">{pageTitle}</span>}
-        </h1>
-      </a>
-      <slot name="right" />
-      {
-        connectButton === 'show' && (
-          <nav class="flex justify-between gap-10">
-            <ConnectButton />
-          </nav>
-        )
-      }
-    </header>
+    <Header connectButton={connectButton} pageTitle={pageTitle} />
 
     <main>
       <slot />
