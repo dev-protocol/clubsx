@@ -58,7 +58,7 @@ export const fetchAssets = async ({
   contractAddress,
   abi,
   contractType,
-  assetTypeFetcher,
+  assetTypeAndPayloadFetcher,
   propertyAddressFetcher,
 }: {
   provider: Provider
@@ -66,7 +66,7 @@ export const fetchAssets = async ({
   contractAddress: string
   abi: InterfaceAbi
   contractType: AssetContractType
-  assetTypeFetcher: (
+  assetTypeAndPayloadFetcher: (
     type: AssetContractType,
     id?: string,
     contract?: Contract,
@@ -168,7 +168,7 @@ export const fetchAssets = async ({
         events
           .filter(isNotError)
           .map(async ({ id, to: owner, block, propertyAddress }) => {
-            const assetTypeAndPayload = await assetTypeFetcher(
+            const assetTypeAndPayload = await assetTypeAndPayloadFetcher(
               contractType,
               id,
               _nft,

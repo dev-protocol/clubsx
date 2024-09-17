@@ -14,6 +14,8 @@ import type {
   AssetDocument,
 } from '@fixtures/api/assets/schema'
 import type { createClient } from 'redis'
+import { sTokenPayload as sTokenPayloadSchema } from '@devprotocol/clubs-plugin-passport/src/db/schema'
+import { Index } from '@devprotocol/clubs-plugin-passport/src/db/redis'
 
 const { PUBLIC_ALCHEMY_KEY } = import.meta.env
 
@@ -52,7 +54,7 @@ const SBTPropertyAddressFetcher = async (contract: Contract, id: string) => {
   )
 }
 
-const assetTypeFetcher = async (
+const assetTypeAndPayloadFetcher = async (
   type: AssetContractType,
   id?: string,
   contract?: Contract,
@@ -86,17 +88,10 @@ const assetTypeFetcher = async (
     return { assetType: 'nft', assetPayload: undefined } // @TODO: maybe we can add type as undefined and later on  for all undefined try fetching them again.
   }
 
-  const PassportItemIndex = 'idx::clubs:passportitem' // @TODO: import type from @devprotocol/clubs-plugin-passport once it is published.
-  const sTokenPayloadSchema = {
-    // @TODO: import type from @devprotocol/clubs-plugin-passport once it is published
-    '$.sTokenPayload': {
-      AS: 'sTokenPayload',
-    },
-  }
   // Check the PassportItem schema, if document/value is present that means it's an passport-item.
   const isPassportItem: boolean = await client.ft
     .search(
-      PassportItemIndex,
+      Index.PassportItem,
       `@${sTokenPayloadSchema['$.sTokenPayload'].AS}:{${sTokenPayload}}`,
       {
         LIMIT: {
@@ -139,7 +134,7 @@ export const GET: APIRoute = async () => {
       contractAddress: addresses.polygon.mainnet.sTokens,
       abi: sTokensAbi,
       contractType: 'sTokens',
-      assetTypeFetcher,
+      assetTypeAndPayloadFetcher,
       propertyAddressFetcher: sTokensPropertyAddressFetcher,
     }),
   )
@@ -160,7 +155,7 @@ export const GET: APIRoute = async () => {
             contractAddress: sbt,
             abi: ABI_NFT,
             contractType: 'sbt',
-            assetTypeFetcher,
+            assetTypeAndPayloadFetcher,
             propertyAddressFetcher: SBTPropertyAddressFetcher,
           }),
       ),
