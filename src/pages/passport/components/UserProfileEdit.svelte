@@ -4,7 +4,7 @@
 
   import { Strings } from '../i18n'
   import UserAsset from './UserAsset.svelte'
-  import type { Profile } from '@pages/api/profile'
+  import type { Profile, Skin } from '@pages/api/profile'
   import { i18nFactory } from '@devprotocol/clubs-core'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import type { UndefinedOr } from '@devprotocol/util-ts'
@@ -31,7 +31,9 @@
   let updatingStatus: UndefinedOr<'success' | 'error'> = undefined
   let assetsNft: AssetDocument[] = []
   let assetsSbt: AssetDocument[] = []
-  let assetsPassportItems: AssetDocument[] = []
+
+  let SKIN_PASSPORT_ITMES: AssetDocument[] = []
+  let assetsPassportItems: (AssetDocument & { isInProfileSkin: boolean })[] = []
 
   const rpcProvider = new JsonRpcProvider(
     `https://polygon-mainnet.g.alchemy.com/v2/${import.meta.env.PUBLIC_ALCHEMY_KEY ?? ''}`,
@@ -95,7 +97,43 @@
 
     assetsNft = nfts.data
     assetsSbt = sbts.data
-    assetsPassportItems = passportItem.data
+    SKIN_PASSPORT_ITMES = passportItem.data
+    assetsPassportItems = (passportItem.data as AssetDocument[]).map((item) => {
+      const skin = profile?.skins?.at(0)
+      if (!skin) {
+        return {
+          ...item,
+          isInProfileSkin: false,
+        }
+      }
+
+      const isSkinInProfile = Object.keys(skin)
+        .map((k: string) => {
+          const skinProperty = skin[k as keyof Skin]
+          if (!skinProperty) {
+            return false
+          }
+
+          if (
+            typeof skinProperty === typeof '' &&
+            skinProperty === item.payload
+          ) {
+            return true
+          }
+
+          if (Array.isArray(skinProperty)) {
+            return skinProperty.some((property) => property === item.payload)
+          }
+
+          return false
+        })
+        .some((k) => k)
+
+      return {
+        ...item,
+        isInProfileSkin: isSkinInProfile,
+      }
+    })
   }
 
   onMount(async () => {
@@ -287,7 +325,14 @@
       {#if assetsPassportItems?.length}
         {#each assetsPassportItems as item, i}
           <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
-            <UserAsset props={{ item, provider: rpcProvider, local: true }} />
+            <UserAsset
+              props={{
+                item,
+                provider: rpcProvider,
+                local: true,
+                isSelected: item.isInProfileSkin,
+              }}
+            />
           </li>
         {/each}
       {:else if !assetsPassportItems?.length}

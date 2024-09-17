@@ -21,6 +21,7 @@
     item: AssetDocument
     provider: ContractRunner
     local: boolean
+    isSelected?: boolean
   }
 
   const ABI_NFT = [
@@ -86,7 +87,7 @@
 
 {#if !notFound}
   <div
-    class="shadow-md rounded-md p-4 grid gap-4 bg-surface-200 border border-surface-300"
+    class={`shadow-md rounded-md p-4 grid gap-4 bg-surface-200 ${props.isSelected ? 'border-2 border-black' : 'border border-surface-300'}`}
   >
     {#if assetImage}
       <img
