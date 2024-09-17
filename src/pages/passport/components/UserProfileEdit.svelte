@@ -32,9 +32,10 @@
   let updatingStatus: UndefinedOr<'success' | 'error'> = undefined
   let assetsNft: AssetDocument[] = []
   let assetsSbt: AssetDocument[] = []
-  let pinnedItems: string[] = profile.pinnedItems ?? []
 
+  let PINNED_ITEMS: string[] = profile.pinnedItems ?? []
   let SKIN_PASSPORT_ITMES: AssetDocument[] = []
+
   let assetsPassportItems: (AssetDocument & { isInProfileSkin: boolean })[] = []
 
   const rpcProvider = new JsonRpcProvider(
@@ -121,7 +122,7 @@
     profile = {
       ...data,
     } as Profile
-    pinnedItems = profile.pinnedItems ?? []
+    PINNED_ITEMS = profile.pinnedItems ?? []
 
     const [nfts, sbts, passportItem] = await Promise.all([
       fetch(`/api/assets/related/account/${eoa}/?type=nft&size=999`)
@@ -142,8 +143,15 @@
       fetchPassportItemSelectionStatus(item),
     )
   }
+
+  const resetPinnedItem = () => {
+    profile = {
+      ...profile,
+      pinnedItems: PINNED_ITEMS,
+    }
+  }
+
   const pinMembership = (item: AssetDocument) => {
-    console.log('before', profile.pinnedItems)
     profile = {
       ...profile,
       pinnedItems: profile.pinnedItems?.includes(
@@ -159,7 +167,6 @@
             `${item.id}-${item.payload}-${item.contract}-${item.type}`,
           ],
     }
-    console.log('after', profile.pinnedItems)
   }
 
   onMount(async () => {
@@ -380,15 +387,19 @@
       {#if assetsPassportItems?.length}
         {#each assetsPassportItems as item, i}
           <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
-            <UserAsset
-              props={{
-                item,
-                provider: rpcProvider,
-                local: true,
-                isSelected: item.isInProfileSkin,
-                toggleItemSelection: togglePassportItemToProfile,
-              }}
-            />
+            <button
+              on:click|preventDefault={() =>
+                togglePassportItemToProfile(item.payload)}
+            >
+              <UserAsset
+                props={{
+                  item,
+                  provider: rpcProvider,
+                  local: true,
+                  isSelected: item.isInProfileSkin,
+                }}
+              />
+            </button>
           </li>
         {/each}
       {:else if !assetsPassportItems?.length}
@@ -409,7 +420,7 @@
     <div class="hs-form-field__label flex items-center justify-between mb-1">
       <span class="hs-form-field__label"> {i18n('PinnedItems')} </span>
       <button
-        on:click|preventDefault={() => {}}
+        on:click|preventDefault={resetPinnedItem}
         class="hs-button is-filled is-large w-fit text-center hs-form-field__label !text-white"
         >Reset</button
       >
@@ -433,11 +444,11 @@
             </li>
           {/if}
         {/each}
-      {:else if !assetsPassportItems?.length}
+      {:else if !profile.pinnedItems?.length}
         <div class="rounded-md border border-surface-400 p-8 text-accent-200">
           {i18n('Empty')} :)
         </div>
-      {:else if !assetsPassportItems}
+      {:else if !profile.pinnedItems}
         {#each new Array(6) as item, i}
           <li id={i.toString()}>
             <span class="block h-96"><Skeleton /></span>
