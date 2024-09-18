@@ -24,9 +24,11 @@
   export let id: string
   export let isLocal: boolean
 
+  let profileFetching = true
   let i18n = i18nBase(['en'])
   let avatarUploading = false
   let profileUpdating = false
+  let passportItemFetching = true
   let profile: Profile = {} as Profile
   let profileFromAPI: Profile = profile
   let passportSkinItems: PassportItem[] = []
@@ -60,24 +62,56 @@
     profileUpdating = true
     const signer = connection ? connection().signer.getValue() : undefined
     if (!signer) {
+      profileUpdating = false
+      updatingStatus = 'error'
       return
     }
 
     const hash = `Update profile: ${profile.username} @ts:${new Date().getTime()}`
-    const sig = await signer.signMessage(hash)
-    const req = await fetch('/api/profile', {
+    const sig = await signer
+      .signMessage(hash)
+      .then((sign) => sign)
+      .catch(() => undefined)
+    if (!sig) {
+      profileUpdating = false
+      updatingStatus = 'error'
+      return
+    }
+
+    await fetch('/api/profile', {
       method: 'POST',
       body: JSON.stringify({ profile, hash, sig }),
     })
+      .then(
+        (res) => {
+          if (res.status === 200) {
+            updatingStatus = 'success'
+            return
+          }
 
-    profileUpdating = false
-    updatingStatus = req.status === 200 ? 'success' : 'error'
+          throw Error('Could not update profile')
+        },
+        (err) => {
+          throw new Error(err)
+        },
+      )
+      .catch((err) => {
+        console.log('Error occured while updating profile')
+        updatingStatus = 'error'
+        return
+      })
+      .finally(() => {
+        profileUpdating = false
+      })
+
     setTimeout(() => {
       updatingStatus = undefined
     }, 3000)
   }
 
   const _fetchProfile = async () => {
+    profileFetching = true
+
     const fetchedProfile = await fetch(`/api/profile/${id}`)
       .then(
         (res) => {
@@ -105,6 +139,9 @@
         console.log('Error fetching profile', err)
         return {} as Profile
       })
+      .finally(() => {
+        profileFetching = false
+      })
 
     profile = {
       ...fetchedProfile,
@@ -118,6 +155,8 @@
   }
 
   const _fetchPassportItems = async () => {
+    passportItemFetching = true
+
     const fetchedPassportItems = await fetch(
       `/api/assets/related/account/${eoa}/passportItems?&size=999`,
     )
@@ -162,6 +201,9 @@
         console.log('Error fetching passport items', err)
         return []
       })
+      .finally(() => {
+        passportItemFetching = false
+      })
 
     passportItemsFromAPI = fetchedPassportItems
     passportSkinItems = passportItemsFromAPI.filter(
@@ -176,7 +218,7 @@
     )
   }
 
-  const connectOnMount = async () => {
+  const _connectOnMount = async () => {
     const { connection: _conn } = await import(
       '@devprotocol/clubs-core/connection'
     )
@@ -199,7 +241,7 @@
 
   onMount(async () => {
     i18n = i18nBase(navigator.languages)
-    connectOnMount()
+    _connectOnMount()
     _fetchProfile()
   })
 
@@ -453,31 +495,32 @@
 
   <label class="hs-form-field is-filled mt-[76px]">
     <div class="hs-form-field__label flex items-center justify-between mb-1">
-      <span class="hs-form-field__label"> {i18n('PassportSkin')} </span>
+      <span class="hs-form-field__label">
+        {i18n('PassportSkin')} ({passportSkinItems?.length ?? 0})
+      </span>
       <button
-        disabled={!eoa}
+        disabled={!eoa ||
+          !passportSkinItems.length ||
+          profileFetching ||
+          passportItemFetching ||
+          profileUpdating}
         on:click|preventDefault={() => resetPassportSkinSelectedItems()}
-        class="hs-button is-filled is-large w-fit text-center hs-form-field__input"
-        >Reset</button
+        class="hs-button is-filled is-large w-fit text-center">Reset</button
       >
     </div>
 
-    <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-      {#if !eoa}
-        <div class="rounded-md border border-surface-400 p-8 text-accent-200">
-          {i18n('ConnectWalletTryAgain')} :)
-        </div>
-      {:else if !passportSkinItems?.length}
-        <div class="rounded-md border border-surface-400 p-8 text-accent-200">
-          {i18n('Empty')} :)
-        </div>
-      {:else if eoa && !passportSkinItems}
-        {#each new Array(6) as item, i}
-          <li id={i.toString()}>
-            <span class="block h-96"><Skeleton /></span>
-          </li>
-        {/each}
-      {:else if passportSkinItems?.length}
+    {#if !eoa}
+      <div class="rounded-md border border-surface-400 p-8 text-accent-200">
+        {i18n('ConnectWalletTryAgain')} :)
+      </div>
+    {:else if passportItemFetching}
+      <Skeleton />
+    {:else if !passportItemFetching && !passportSkinItems?.length}
+      <div class="rounded-md border border-surface-400 p-8 text-accent-200">
+        {i18n('Empty')} :) <br />{@html i18n('PurchasePassportSkin')}
+      </div>
+    {:else if !passportItemFetching && passportSkinItems?.length}
+      <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
         {#each passportSkinItems as item, i}
           <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
             <button
@@ -498,25 +541,39 @@
             </button>
           </li>
         {/each}
-      {/if}
-    </ul>
+      </ul>
+    {/if}
   </label>
 
   <label class="hs-form-field is-filled mt-[76px]">
     <div class="hs-form-field__label flex items-center justify-between mb-1">
       <span class="hs-form-field__label">
-        {i18n('SelectedPassportClips')}
+        {i18n('SelectedPassportClips')} ({profile?.skins?.at(0)?.clips
+          ?.length ?? 0})
       </span>
       <button
-        disabled={!eoa}
+        disabled={!eoa ||
+          !passportSkinItems.length ||
+          profileFetching ||
+          passportItemFetching ||
+          profileUpdating}
         on:click|preventDefault={() => resetPinnedNonSkinItems()}
-        class="hs-button is-filled is-large w-fit text-center hs-form-field__input"
-        >Reset</button
+        class="hs-button is-filled is-large w-fit text-center">Reset</button
       >
     </div>
 
-    <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-      {#if profile.skins?.at(0)?.clips?.length && passportNonSkinItems?.length}
+    {#if !eoa}
+      <div class="rounded-md border border-surface-400 p-8 text-accent-200">
+        {i18n('ConnectWalletTryAgain')} :)
+      </div>
+    {:else if passportItemFetching || profileFetching}
+      <Skeleton />
+    {:else if !passportItemFetching && !profileFetching && !profile.skins?.at(0)?.clips?.length}
+      <div class="rounded-md border border-surface-400 p-8 text-accent-200">
+        {i18n('Empty')} :) <br />{@html i18n('PinnPassportItems')}
+      </div>
+    {:else if !passportItemFetching && !profileFetching && profile.skins?.at(0)?.clips?.length && passportNonSkinItems?.length}
+      <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
         {#each profile.skins?.at(0)?.clips ?? [] as clip, i}
           <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
             <UserAsset
@@ -530,27 +587,28 @@
             />
           </li>
         {/each}
-      {:else if !profile.skins?.at(0)?.clips?.length}
-        <div class="rounded-md border border-surface-400 p-8 text-accent-200">
-          {i18n('Empty')} :)
-        </div>
-      {:else if !profile.skins?.at(0)?.clips || !passportNonSkinItems?.length}
-        {#each new Array(6) as item, i}
-          <li id={i.toString()}>
-            <span class="block h-96"><Skeleton /></span>
-          </li>
-        {/each}
-      {/if}
-    </ul>
+      </ul>
+    {/if}
   </label>
 
   <!-- Passport items other than type: css | stylesheet-link -->
   <label class="hs-form-field is-filled mt-[76px]">
     <span class="hs-form-field__label">
-      {i18n('PassportAssets')}
+      {i18n('PassportAssets')} ({passportNonSkinItems?.length ?? 0})
     </span>
-    <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-      {#if passportNonSkinItems?.length}
+
+    {#if !eoa}
+      <div class="rounded-md border border-surface-400 p-8 text-accent-200">
+        {i18n('ConnectWalletTryAgain')} :)
+      </div>
+    {:else if passportItemFetching || profileFetching}
+      <Skeleton />
+    {:else if !passportItemFetching && !profileFetching && !profile.skins?.at(0)?.clips?.length}
+      <div class="rounded-md border border-surface-400 p-8 text-accent-200">
+        {i18n('Empty')} :) <br />{@html i18n('PinnPassportItems')}
+      </div>
+    {:else if passportNonSkinItems?.length}
+      <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
         {#each passportNonSkinItems as item, i}
           <button
             on:click={() => togglePinnnedPassortNonSkinItem(item)}
@@ -572,18 +630,8 @@
             </li>
           </button>
         {/each}
-      {:else if !passportNonSkinItems?.length}
-        <div class="rounded-md border border-surface-400 p-8 text-accent-200">
-          {i18n('Empty')} :)
-        </div>
-      {:else if !passportNonSkinItems}
-        {#each new Array(6) as item, i}
-          <li id={i.toString()}>
-            <span class="block h-96"><Skeleton /></span>
-          </li>
-        {/each}
-      {/if}
-    </ul>
+      </ul>
+    {/if}
   </label>
 
   {#if eoa === id}

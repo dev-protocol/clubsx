@@ -5,6 +5,24 @@ export const Strings = {
     en: () => `Connect wallet & try again!`,
     ja: () => `ウォレットを接続してもう一度お試しください!`,
   },
+  PurchasePassportSkin: {
+    en: () =>
+      `You have not purchased <b>Passport Skins</b>.<br /><u>To configure</u> your creative and unique passport page <b>purchase Passport Skins now</b>.`,
+    ja: () =>
+      `<b>パスポート スキン</b>を購入していません。<br />クリエイティブでユニークなパスポート ページを<u>設定</u>するには、<b>今すぐパスポート スキンを購入</b>してください。`,
+  },
+  PinnPassportItems: {
+    en: () =>
+      `You have not purchased <b>Passport Assets</b>.<br /><u>To configure</u> your creative and unique passport page <b>purchase Passport Assets now</b>.`,
+    ja: () =>
+      `<b>パスポート アセット</b>を購入していません。<br />クリエイティブでユニークなパスポート ページを<u>設定</u>するには、<b>今すぐパスポート アセットを購入</b>してください。`,
+  },
+  PurchasePassportAssets: {
+    en: () =>
+      `You have not <b>pinned your Passport Assets</b>.<br /><u>To configure</u> your creative and unique passport page <b>pin</b> them or <b>purchase passport assets if you do not already have them</b>.`,
+    ja: () =>
+      `パスポート アセットを<b>固定</b>していません。<br />クリエイティブでユニークなパスポート ページを<u>設定</u>するには、パスポート アセットを<b>固定</b>するか、<b>パスポート アセットを購入してください。まだお持ちでない場合</b>。`,
+  },
   PassportAssets: {
     en: () => `Passport Assets`,
     ja: () => `パスポート資産`,
@@ -14,8 +32,8 @@ export const Strings = {
     ja: 'パスポートスキン',
   },
   SelectedPassportClips: {
-    en: 'Selected Passport Clips (Pinned passport assets)',
-    ja: '選択されたパスポート クリップ (ピン留めされたパスポート アセット)',
+    en: 'Selected Passport Clips- Pinned passport assets',
+    ja: '選択されたパスポート クリップ - ピン留めされたパスポート アセット',
   },
   Profile: {
     en: 'Profile',
