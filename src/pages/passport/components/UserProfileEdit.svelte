@@ -501,7 +501,7 @@
     </div>
 
     <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-      {#if profile.skins?.at(0)?.clips?.length}
+      {#if profile.skins?.at(0)?.clips?.length && passportNonSkinItems?.length}
         {#each profile.skins?.at(0)?.clips ?? [] as clip, i}
           <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
             <UserAsset
@@ -519,7 +519,7 @@
         <div class="rounded-md border border-surface-400 p-8 text-accent-200">
           {i18n('Empty')} :)
         </div>
-      {:else if !profile.skins?.at(0)?.clips}
+      {:else if !profile.skins?.at(0)?.clips || !passportNonSkinItems?.length}
         {#each new Array(6) as item, i}
           <li id={i.toString()}>
             <span class="block h-96"><Skeleton /></span>
