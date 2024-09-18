@@ -1,17 +1,21 @@
 import type { ClubsI18nParts } from '@devprotocol/clubs-core'
 
 export const Strings = {
+  ConnectWalletTryAgain: {
+    en: () => `Connect wallet & try again!`,
+    ja: () => `ウォレットを接続してもう一度お試しください!`,
+  },
+  PassportAssets: {
+    en: () => `Passport Assets`,
+    ja: () => `パスポート資産`,
+  },
   PassportSkin: {
     en: 'Passport Skin',
     ja: 'パスポートスキン',
   },
-  PinnedItems: {
-    en: 'Pinned Items',
-    ja: 'ピン留めされたアイテム',
-  },
-  Memeberships: {
-    en: 'Memberships',
-    ja: 'メンバーシップ',
+  SelectedPassportClips: {
+    en: 'Selected Passport Clips (Pinned passport assets)',
+    ja: '選択されたパスポート クリップ (ピン留めされたパスポート アセット)',
   },
   Profile: {
     en: 'Profile',

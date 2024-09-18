@@ -171,18 +171,22 @@
     )
     passportNonSkinItems = passportItemsFromAPI.filter(
       (item) =>
-        item.itemAssetType === 'css' ||
-        item.itemAssetType === 'stylesheet-link',
+        item.itemAssetType !== 'css' &&
+        item.itemAssetType !== 'stylesheet-link',
     )
   }
 
-  onMount(async () => {
-    i18n = i18nBase(navigator.languages)
-
+  const connectOnMount = async () => {
     const { connection: _conn } = await import(
       '@devprotocol/clubs-core/connection'
     )
+
     connection = _conn
+    eoa = connection()?.account?.getValue()
+    if (eoa) {
+      _fetchPassportItems()
+    }
+
     connection().account.subscribe((acc: UndefinedOr<string>) => {
       if (eoa !== acc) {
         // Wallet is connected or addrress has changed so update the data again.
@@ -191,9 +195,12 @@
       }
       eoa = acc
     })
+  }
 
+  onMount(async () => {
+    i18n = i18nBase(navigator.languages)
+    connectOnMount()
     _fetchProfile()
-    _fetchPassportItems()
   })
 
   const addProfile = async () => {}
@@ -296,6 +303,7 @@
     class="w-fit max-w-full flex gap-[15px] py-[8px] px-[16px] items-center justify-start"
   >
     <p class="font-body font-bold text-base text-center">Default profile</p>
+    <!-- Todo: <button> element replace disabled when button is added -->
     <button
       on:click|preventDefault={addProfile}
       disabled={true}
@@ -327,7 +335,7 @@
         name="avatarPath"
         style="display:none"
         type="file"
-        disabled={profileUpdating}
+        disabled={profileUpdating || !eoa}
         on:change={onFileSelected}
       />
     </label>
@@ -337,7 +345,7 @@
     <span class="hs-form-field__label"> {i18n('Username')} </span>
     <input
       class="hs-form-field__input"
-      disabled={profileUpdating}
+      disabled={profileUpdating || !eoa}
       bind:value={profile.username}
     />
   </label>
@@ -376,7 +384,7 @@
         </div>
         <input
           class="hs-form-field__input w-fit grow"
-          disabled={profileUpdating}
+          disabled={profileUpdating || !eoa}
           bind:value={profile.xProfile}
         />
       </div>
@@ -391,7 +399,7 @@
         </div>
         <input
           class="hs-form-field__input w-fit grow"
-          disabled={profileUpdating}
+          disabled={profileUpdating || !eoa}
           bind:value={profile.twitchProfile}
         />
       </div>
@@ -406,7 +414,7 @@
         </div>
         <input
           class="hs-form-field__input w-fit grow"
-          disabled={profileUpdating}
+          disabled={profileUpdating || !eoa}
           bind:value={profile.instagramProfile}
         />
       </div>
@@ -421,7 +429,7 @@
         </div>
         <input
           class="hs-form-field__input w-fit grow"
-          disabled={profileUpdating}
+          disabled={profileUpdating || !eoa}
           bind:value={profile.tiktokProfile}
         />
       </div>
@@ -436,7 +444,7 @@
         </div>
         <input
           class="hs-form-field__input w-fit grow"
-          disabled={profileUpdating}
+          disabled={profileUpdating || !eoa}
           bind:value={profile.youtubeProfile}
         />
       </div>
@@ -447,17 +455,33 @@
     <div class="hs-form-field__label flex items-center justify-between mb-1">
       <span class="hs-form-field__label"> {i18n('PassportSkin')} </span>
       <button
+        disabled={!eoa}
         on:click|preventDefault={() => resetPassportSkinSelectedItems()}
-        class="hs-button is-filled is-large w-fit text-center hs-form-field__label"
+        class="hs-button is-filled is-large w-fit text-center hs-form-field__input"
         >Reset</button
       >
     </div>
 
     <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-      {#if passportSkinItems?.length}
+      {#if !eoa}
+        <div class="rounded-md border border-surface-400 p-8 text-accent-200">
+          {i18n('ConnectWalletTryAgain')} :)
+        </div>
+      {:else if !passportSkinItems?.length}
+        <div class="rounded-md border border-surface-400 p-8 text-accent-200">
+          {i18n('Empty')} :)
+        </div>
+      {:else if eoa && !passportSkinItems}
+        {#each new Array(6) as item, i}
+          <li id={i.toString()}>
+            <span class="block h-96"><Skeleton /></span>
+          </li>
+        {/each}
+      {:else if passportSkinItems?.length}
         {#each passportSkinItems as item, i}
           <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
             <button
+              disabled={!eoa}
               on:click|preventDefault={() => selectPassportSkinItem(item)}
             >
               <UserAsset
@@ -467,21 +491,11 @@
                   local: isLocal,
                   classNames:
                     profile.skins?.at(0)?.theme === item.payload
-                      ? 'border-2 border-black'
+                      ? 'border-2 border-surface-ink'
                       : 'border border-surface-300',
                 }}
               />
             </button>
-          </li>
-        {/each}
-      {:else if !passportSkinItems?.length}
-        <div class="rounded-md border border-surface-400 p-8 text-accent-200">
-          {i18n('Empty')} :)
-        </div>
-      {:else if !passportSkinItems}
-        {#each new Array(6) as item, i}
-          <li id={i.toString()}>
-            <span class="block h-96"><Skeleton /></span>
           </li>
         {/each}
       {/if}
@@ -490,10 +504,13 @@
 
   <label class="hs-form-field is-filled mt-[76px]">
     <div class="hs-form-field__label flex items-center justify-between mb-1">
-      <span class="hs-form-field__label"> {i18n('PinnedItems')} </span>
+      <span class="hs-form-field__label">
+        {i18n('SelectedPassportClips')}
+      </span>
       <button
+        disabled={!eoa}
         on:click|preventDefault={() => resetPinnedNonSkinItems()}
-        class="hs-button is-filled is-large w-fit text-center hs-form-field__label"
+        class="hs-button is-filled is-large w-fit text-center hs-form-field__input"
         >Reset</button
       >
     </div>
@@ -530,12 +547,15 @@
   <!-- Passport items other than type: css | stylesheet-link -->
   <label class="hs-form-field is-filled mt-[76px]">
     <span class="hs-form-field__label">
-      {i18n('Memeberships')}
+      {i18n('PassportAssets')}
     </span>
     <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
       {#if passportNonSkinItems?.length}
         {#each passportNonSkinItems as item, i}
-          <button on:click={() => togglePinnnedPassortNonSkinItem(item)}>
+          <button
+            on:click={() => togglePinnnedPassortNonSkinItem(item)}
+            disabled={!eoa}
+          >
             <li id={`assets-${i.toString()}`} class="empty:hidden">
               <UserAsset
                 props={{
@@ -569,7 +589,7 @@
   {#if eoa === id}
     <button
       on:click={onSubmit}
-      disabled={profileUpdating}
+      disabled={profileUpdating || !eoa}
       class={`mt-[76px] hs-button is-filled is-large w-fit ${
         updatingStatus === 'success'
           ? 'is-success'
