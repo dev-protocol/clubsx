@@ -60,9 +60,11 @@ const twitterHandle = 'poweredbyClubs'
       <slot name="before-header" />
       <Header connectButton="show" pageTitle="Passport" />
 
-      <main class:list={passportClass('main')}>
-        <slot />
-      </main>
+      <div class:list={passportClass('main-content')}>
+        <main class:list={passportClass('main')}>
+          <slot />
+        </main>
+      </div>
     </div>
   </body>
 </html>
