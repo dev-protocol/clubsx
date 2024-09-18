@@ -14,6 +14,7 @@
       '@devprotocol/clubs-core/connection'
     )
     connection = _conn
+    eoa = connection()?.account?.getValue()
     connection().account.subscribe((acc) => {
       eoa = acc
     })

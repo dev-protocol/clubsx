@@ -5,7 +5,6 @@
 
   import type { ClubsData } from '@pages/api/clubs'
   import Skeleton from '@components/Global/Skeleton.svelte'
-  import type { AssetDocument } from '@fixtures/api/assets/schema'
   import { decodeTokenURI } from '@fixtures/nft'
   import { Contract, type ContractRunner } from 'ethers'
   import { always } from 'ramda'
@@ -121,11 +120,11 @@
     {/if}
 
     <span class="grid gap-1.5">
-      <span>{assetName}</span>
+      <span>{assetName ?? ''}</span>
       {#if !clubUrl || !clubName}
         <span class="w-full h-3"><Skeleton /></span>
       {:else}
-        <a href="clubUrl"><span class="opacity-50">{clubName}</span></a>
+        <a href="clubUrl"><span class="opacity-50">{clubName ?? ''}</span></a>
       {/if}
     </span>
   </div>
