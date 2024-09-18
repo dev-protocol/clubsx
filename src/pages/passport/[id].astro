@@ -14,17 +14,23 @@ const { id } = Astro.params
 const isEOA = isAddress(id)
 
 const profile: Profile = await getProfile({ id: id ?? '' })
+
 const isLocal =
   Astro.url.hostname.includes('localhost') ||
   /^[\d\.]+$/.test(Astro.url.hostname)
-const htmlDescription = markdownToHtml(dummyData.description)
+
+const htmlDescription = markdownToHtml(profile.description)
+
+const passportSkinBGMs = profile?.skins?.at(0)?.bgm
+const passportSkinClips = profile?.skins?.at(0)?.clips
+const passportSkinVideos = profile?.skins?.at(0)?.videos
 ---
 
-<Layout theme="auto">
+<Layout theme="auto" sTokenPayload={profile?.skins?.at(0)?.theme}>
   <div class="grid gap-24">
     <section class:list={passportClass('account-container')}>
       <span
-        class="grid grid-cols-[6rem_1fr] lg:grid-cols-[10rem_1fr_auto] justify-items-start max-w-screen-lg mx-auto px-4 grid gap-6 lg:gap-y-8"
+        class="grid grid-cols-[6rem_1fr] lg:grid-cols-[10rem_1fr_auto] justify-items-start max-w-screen-lg mx-auto px-4 gap-6 lg:gap-y-8"
         class:list={passportClass('account-content')}
       >
         <span
@@ -39,7 +45,7 @@ const htmlDescription = markdownToHtml(dummyData.description)
               src={profile.avatar}
               class="rounded-full object-cover w-full aspect-square bg-lightgray bg-cover bg-center bg-no-repeat"
               class:list={passportClass('avatar')}
-              alt=""
+              alt="Profile"
             />
           </span>
         </span>
@@ -60,29 +66,34 @@ const htmlDescription = markdownToHtml(dummyData.description)
           </span>
         </span>
 
-        <span
-          class="col-start-1 row-start-2 lg:col-start-3 lg:row-start-1 col-span-1 row-span-1 content-center"
-          class:list={passportClass('music-container')}
-        >
+        {
+          passportSkinBGMs?.length && (
           <span
-            class="flex items-center gap-[15px] px-[16px] py-[8px] rounded-lg bg-surface-200"
-            class:list={passportClass('music-content')}
+            class="col-start-1 row-start-2 lg:col-start-3 lg:row-start-1 col-span-1 row-span-1 content-center"
+            class:list={passportClass('music-container')}
           >
-            <!-- Mute Button -->
-            <span class="opacity-50">
-              <Icon icon="muted" />
-            </span>
+            <span
+              class="flex items-center gap-[15px] px-[16px] py-[8px] rounded-lg bg-surface-200"
+              class:list={passportClass('music-content')}
+            >
+              <!-- Mute Button -->
+              <span class="opacity-50">
+                <Icon icon="muted" />
+              </span>
 
-            <!-- Music Waves -->
-            <span>
-              <Icon icon="music_waves" />
-            </span>
-            <!-- Music Name -->
-            <span class="truncate font-bold">
-              {dummyData.musicName}
+              <!-- Music Waves -->
+              <span>
+                <Icon icon="music_waves" />
+              </span>
+
+              <!-- Music Name -->
+              <span class="truncate font-bold">
+                {dummyData.musicName}
+              </span>
             </span>
           </span>
-        </span>
+          )
+        }
 
         <span
           class="col-start-1 col-span-2 lg:col-span-3 row-start-3 row-span-1 lg:row-start-2"
@@ -117,7 +128,7 @@ const htmlDescription = markdownToHtml(dummyData.description)
     </section>
 
     <section
-      class="grid justify-items-start max-w-screen-lg mx-auto px-4 grid gap-24"
+      class="grid justify-items-start max-w-screen-lg mx-auto px-4 gap-24 mb-10"
     >
       <span class:list={passportClass('video-container')}>
         <span class:list={passportClass('video-content')}>
