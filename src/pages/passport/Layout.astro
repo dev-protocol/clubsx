@@ -1,23 +1,32 @@
 ---
 import { ClubsPictogramAdaptable as Favicon } from '@devprotocol/clubs-core/images'
 import { passportClass } from '@fixtures/ui/passport'
-import './dummyData.css'
 
 import '@devprotocol/clubs-core/styles'
 import Header from '@components/Global/Header.astro'
+import { getPassportItemForPayload } from '@fixtures/api/passportItem'
 
 type Props = {
+  sTokenPayload?: string
   theme?: 'light' | 'dark' | 'auto'
 }
 
-const { theme = 'dark' } = Astro.props
+const { theme = 'dark', sTokenPayload } = Astro.props
 
-const title = 'Clubs'
-const name = 'Clubs' // not sure the difference here compared to title
-const description = ''
-const url = ''
-const ogURL = ''
+const name = 'Clubs'
+const url = 'https://www.clubs.place/'
 const twitterHandle = 'poweredbyClubs'
+const title = 'Clubs | All-in-One Space for Creators'
+const ogURL =
+  'https://cdn.prod.website-files.com/63ddf59d6f6edd36e251c76f/6678cd54f0f0cfe31677b681_og.png'
+const description =
+  'Create your own space with Clubs and collect your favorites with Passport. Memberships, tickets, merch, and more, all easily manage and sell in one place.'
+
+const passportSkinTheme = await getPassportItemForPayload({
+  sTokenPayload: sTokenPayload ?? '',
+})
+  .then((item) => (item instanceof Error ? undefined : item))
+  .catch((err) => undefined)
 ---
 
 <html
@@ -29,12 +38,26 @@ const twitterHandle = 'poweredbyClubs'
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <title>{title}</title>
+
     <link rel="icon" type="image/svg" href={Favicon.src} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /><link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap"
       rel="stylesheet"
     />
+
+    {
+      passportSkinTheme?.itemAssetType === 'stylesheet-link' && (
+        <link rel="stylesheet" href={`${passportSkinTheme.itemAssetValue}`} />
+      )
+    }
+
+    {
+      passportSkinTheme?.itemAssetType === 'css' && (
+        <style set:html={passportSkinTheme?.itemAssetValue ?? ''} />
+      )
+    }
+
     <meta name="description" content={`${description}`} />
     <meta property="og:title" content={title} />
     <meta property="og:url" content={url} />
