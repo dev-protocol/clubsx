@@ -8,8 +8,8 @@
   import type { Profile, Skin } from '@pages/api/profile'
   import { i18nFactory } from '@devprotocol/clubs-core'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
-  import type { UndefinedOr } from '@devprotocol/util-ts'
   import Skeleton from '@components/Global/Skeleton.svelte'
+  import { type UndefinedOr } from '@devprotocol/util-ts'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
 
   import X from '@assets/X.svg'
@@ -17,7 +17,6 @@
   import Tiktok from '@assets/tiktok.svg'
   import Youtube from '@assets/youtube.svg'
   import Instagram from '@assets/instagram.svg'
-  import { payload } from '@fixtures/api/assets/schema'
 
   const i18nBase = i18nFactory(Strings)
 
@@ -171,8 +170,8 @@
     )
     passportNonSkinItems = passportItemsFromAPI.filter(
       (item) =>
-        item.itemAssetType !== 'css' &&
-        item.itemAssetType !== 'stylesheet-link',
+        item.itemAssetType === 'css' ||
+        item.itemAssetType === 'stylesheet-link',
     )
   }
 
@@ -208,33 +207,86 @@
     }
 
     profile = {
-      ...profile, // Retain other modified fields
+      ...profile, // Retain other modified fields.
       skins: [
-        // Reset skins to the value fetched from API.
+        // Set skins to the updated value or append new value of theme.
         {
           ...(profile.skins?.at(0) ?? ({} as Skin)),
           theme: item.payload,
         },
-        ...(profile.skins ?? []).slice(1),
       ],
     }
 
-    console.log('Profile at selecting passport skin item', profile)
+    console.log(
+      'Passport item and profile at selecting passport skin item',
+      item,
+      profile,
+    )
   }
 
   const resetPassportSkinSelectedItems = () => {
     profile = {
-      ...profile, // Retain other modified fields
-      skins: [
-        // Reset skins to the value fetched from API.
-        {
-          ...(profileFromAPI.skins?.at(0) ?? ({} as Skin)),
-        },
-        ...(profileFromAPI.skins ?? []).slice(1),
-      ],
+      ...profile, // Retain other modified fields.
+      skins:
+        !profileFromAPI.skins || !profileFromAPI.skins?.at(0)
+          ? ([] as Skin[])
+          : [profileFromAPI.skins[0]],
     }
 
     console.log('Profile at reseting passport skin item', profile)
+  }
+
+  const togglePinnnedPassortNonSkinItem = async (item: PassportItem) => {
+    if (!item.payload) {
+      console.log(
+        `Passport non skin item not pinned as clips since item.paylaod missing`,
+        item.id,
+      )
+      return
+    }
+
+    profile = {
+      ...profile, // Retain other modified fields.
+      skins: [
+        // Set skins to the updated value or append new value of theme.
+        {
+          ...(profile.skins?.at(0) ?? ({} as Skin)),
+          clips: profile.skins?.at(0)?.clips?.includes(item.payload)
+            ? [
+                ...(profile.skins
+                  ?.at(0)
+                  ?.clips?.filter((clip) => clip !== item.payload) ?? []),
+              ]
+            : [...(profile.skins?.at(0)?.clips ?? []), item.payload],
+        },
+      ],
+    }
+
+    console.log(
+      'Passort item and profile at pinning passport non skin item',
+      item,
+      profile,
+    )
+  }
+
+  const resetPinnedNonSkinItems = async () => {
+    profile = {
+      ...profile, // Retain other modified fields.
+      skins:
+        !profileFromAPI.skins ||
+        !profileFromAPI.skins?.at(0) ||
+        !profile.skins ||
+        !profile.skins?.at(0)
+          ? ([] as Skin[])
+          : [
+              {
+                ...(profile.skins?.at(0) ?? ({} as Skin)),
+                clips: profileFromAPI.skins?.at(0)?.clips ?? [],
+              },
+            ], // Retain other field reset clips from response from API.
+    }
+
+    console.log('Profile at resetting pinned non skin item', profile)
   }
 </script>
 
@@ -441,14 +493,14 @@
     <div class="hs-form-field__label flex items-center justify-between mb-1">
       <span class="hs-form-field__label"> {i18n('PinnedItems')} </span>
       <button
-        on:click|preventDefault={() => {}}
+        on:click|preventDefault={() => resetPinnedNonSkinItems()}
         class="hs-button is-filled is-large w-fit text-center hs-form-field__label !text-white"
         >Reset</button
       >
     </div>
 
     <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-      {#if passportSkinItems?.length}
+      {#if profile.skins?.at(0)?.clips?.length}
         {#each passportSkinItems as item, i}
           <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
             <UserAsset
@@ -460,11 +512,11 @@
             />
           </li>
         {/each}
-      {:else if !passportSkinItems.length}
+      {:else if !profile.skins?.at(0)?.clips?.length}
         <div class="rounded-md border border-surface-400 p-8 text-accent-200">
           {i18n('Empty')} :)
         </div>
-      {:else if !passportSkinItems}
+      {:else if !profile.skins?.at(0)?.clips}
         {#each new Array(6) as item, i}
           <li id={i.toString()}>
             <span class="block h-96"><Skeleton /></span>
@@ -482,10 +534,19 @@
     <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
       {#if passportNonSkinItems?.length}
         {#each passportNonSkinItems as item, i}
-          <button on:click={() => {}}>
+          <button on:click={() => togglePinnnedPassortNonSkinItem(item)}>
             <li id={`assets-${i.toString()}`} class="empty:hidden">
               <UserAsset
-                props={{ item, provider: rpcProvider, local: isLocal }}
+                props={{
+                  item,
+                  provider: rpcProvider,
+                  local: isLocal,
+                  classNames: profile.skins
+                    ?.at(0)
+                    ?.clips?.includes(item.payload ?? '', 0)
+                    ? 'border-2 border-black'
+                    : 'border border-surface-300',
+                }}
               />
             </li>
           </button>
