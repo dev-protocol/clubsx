@@ -27,8 +27,6 @@ const passportSkinTheme = await getPassportItemForPayload({
 })
   .then((item) => (item instanceof Error ? undefined : item))
   .catch((err) => undefined)
-
-console.log('passportSkinTheme', passportSkinTheme)
 ---
 
 <html
@@ -56,9 +54,7 @@ console.log('passportSkinTheme', passportSkinTheme)
 
     {
       passportSkinTheme?.itemAssetType === 'css' && (
-        <style>
-          { passportSkinTheme?.itemAssetValue }
-        </style>
+        <style set:html={passportSkinTheme?.itemAssetValue ?? ''} />
       )
     }
 
