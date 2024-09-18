@@ -295,13 +295,11 @@
   <div
     class="w-fit max-w-full flex gap-[15px] py-[8px] px-[16px] items-center justify-start"
   >
-    <p class="font-body font-bold text-base text-[#000000] text-center">
-      Default profile
-    </p>
+    <p class="font-body font-bold text-base text-center">Default profile</p>
     <button
       on:click|preventDefault={addProfile}
       disabled={true}
-      class="hs-button is-filled is-large w-fit text-center line-through text-white"
+      class="hs-button is-filled is-large w-fit text-center line-through"
       >Add profile</button
     >
   </div>
@@ -450,7 +448,7 @@
       <span class="hs-form-field__label"> {i18n('PassportSkin')} </span>
       <button
         on:click|preventDefault={() => resetPassportSkinSelectedItems()}
-        class="hs-button is-filled is-large w-fit text-center hs-form-field__label !text-white"
+        class="hs-button is-filled is-large w-fit text-center hs-form-field__label"
         >Reset</button
       >
     </div>
@@ -495,7 +493,7 @@
       <span class="hs-form-field__label"> {i18n('PinnedItems')} </span>
       <button
         on:click|preventDefault={() => resetPinnedNonSkinItems()}
-        class="hs-button is-filled is-large w-fit text-center hs-form-field__label !text-white"
+        class="hs-button is-filled is-large w-fit text-center hs-form-field__label"
         >Reset</button
       >
     </div>
