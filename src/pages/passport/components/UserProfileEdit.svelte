@@ -19,6 +19,7 @@
   import Instagram from '@assets/instagram.svg'
 
   const i18nBase = i18nFactory(Strings)
+  const emptyPassportItem = {} as PassportItem
 
   export let id: string
   export let isLocal: boolean
@@ -501,11 +502,13 @@
 
     <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
       {#if profile.skins?.at(0)?.clips?.length}
-        {#each passportSkinItems as item, i}
+        {#each profile.skins?.at(0)?.clips ?? [] as clip, i}
           <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
             <UserAsset
               props={{
-                item: item,
+                item:
+                  passportNonSkinItems.find((item) => item.payload === clip) ??
+                  emptyPassportItem,
                 provider: rpcProvider,
                 local: isLocal,
               }}
