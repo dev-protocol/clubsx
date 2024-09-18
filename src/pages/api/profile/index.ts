@@ -1,3 +1,4 @@
+import type { AssetDocument } from '@fixtures/api/assets/schema'
 import { generateProfileId } from '@fixtures/api/keys'
 import { hashMessage, recoverAddress } from 'ethers'
 import { createClient } from 'redis'
@@ -12,9 +13,15 @@ export type Skin = {
 }
 
 export type Profile = {
+  skins?: Skin[] // the default skin is always the first item
   avatar?: string
   username?: string
-  skins?: Skin[] // the default skin is always the first item
+  description?: string
+  xProfile?: string
+  twitchProfile?: string
+  tiktokProfile?: string
+  instagramProfile?: string
+  youtubeProfile?: string
 }
 
 export const POST = async ({ request }: { request: Request }) => {

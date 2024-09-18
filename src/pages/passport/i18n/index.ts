@@ -1,6 +1,18 @@
 import type { ClubsI18nParts } from '@devprotocol/clubs-core'
 
 export const Strings = {
+  PassportSkin: {
+    en: 'Passport Skin',
+    ja: 'パスポートスキン',
+  },
+  PinnedItems: {
+    en: 'Pinned Items',
+    ja: 'ピン留めされたアイテム',
+  },
+  Memeberships: {
+    en: 'Memberships',
+    ja: 'メンバーシップ',
+  },
   Profile: {
     en: 'Profile',
     ja: 'プロフィール',
@@ -12,6 +24,18 @@ export const Strings = {
   Username: {
     en: 'Username',
     ja: 'ユーザー名',
+  },
+  Description: {
+    en: 'Description',
+    ja: '説明',
+  },
+  MarkdownAvailable: {
+    en: () => 'Markdown is available',
+    ja: () => 'マークダウンが利用可能',
+  },
+  WhatIsMarkdown: {
+    en: () => 'What is Markdown?',
+    ja: () => 'マークダウンとは',
   },
   Save: {
     en: 'Save',

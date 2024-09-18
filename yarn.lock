@@ -826,10 +826,10 @@
   resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-awesome-onboarding/-/clubs-plugin-awesome-onboarding-0.4.4.tgz#2be8571b35e27082f410de20c6a58403c7e11d7d"
   integrity sha512-FCpgUPwPx0ETox74NpCLIDG9UcrbcijsWRAR2UAKZEJ7gu747P7CQ3zwAKu4meqXCnJj0H3R7AXiJ9m4dyjcPg==
 
-"@devprotocol/clubs-plugin-passport@^0.1.0-beta.3":
-  version "0.1.0-beta.3"
-  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-passport/-/clubs-plugin-passport-0.1.0-beta.3.tgz#44462d407fcf280491accd30a084a4551a9ae6f6"
-  integrity sha512-T3XmV6Cy9mjiQSps0jhMWMwKdw5YaewKCLWnTPaVF+9U59FUkYZXpKw6WSUvNdR7DaBlYb8u6z814PBtLvC5Aw==
+"@devprotocol/clubs-plugin-passport@^0.1.0-beta.10":
+  version "0.1.0-beta.10"
+  resolved "https://registry.yarnpkg.com/@devprotocol/clubs-plugin-passport/-/clubs-plugin-passport-0.1.0-beta.10.tgz#a15badd22b5b66770ba24e18af3f6801468eb4bb"
+  integrity sha512-erWzubaf4FnULUEFifr4MtiDbG3rifkB0mwWn3Bb7oMYTkTQODjnWfABhrwuZTN9Ab/olOJEibB/CsCh/dz/FQ==
   dependencies:
     "@devprotocol/clubs-core" "^3.18.0"
     "@devprotocol/dev-kit" "8.7.0"

@@ -77,7 +77,7 @@ export const nBalance = {
 
 export const payload = {
   '$.payload': {
-    type: SchemaFieldTypes.TEXT,
+    type: SchemaFieldTypes.TAG,
     AS: 'payload',
   },
 } satisfies RediSearchSchema

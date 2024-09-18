@@ -85,6 +85,7 @@ const assetTypeAndPayloadFetcher = async (
       .then((res) => res)
       .catch(() => ''),
   )
+
   // Backup value as nft (membership).
   if (!sTokenPayload) {
     return { assetType: 'nft', assetPayload: undefined } // @TODO: maybe we can add type as undefined and later on  for all undefined try fetching them again.
@@ -128,6 +129,7 @@ export const GET: APIRoute = async () => {
   const sTokensAbi = [
     ...ABI_NFT,
     'function positions(uint256) view returns (tuple(address property, uint256 amount, uint256 price, uint256 cumulativeReward, uint256 pendingReward))',
+    'function payloadOf(uint256) view returns (bytes32)',
   ]
   const sTokensAssets = await whenNotError(rpcProvider, (provider) =>
     fetchAssets({
