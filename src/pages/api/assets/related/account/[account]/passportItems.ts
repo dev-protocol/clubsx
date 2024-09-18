@@ -56,13 +56,19 @@ export const GET: APIRoute = async (req) => {
 
   const passportItems = await whenNotErrorAll(
     [accountAddress, passportItemAssets, client],
-    ([,assets, redis]) =>
+    ([, assets, redis]) =>
       Promise.all(
         assets.map((asset) =>
           redis.json
             .get(generatePassportItemKey(asset.payload ?? ''))
             .then((res) => res as PassportItemDocument)
-            .then((doc) => ({ ...asset, ...doc, assetId: asset.id, passportDocId: doc.id, id: `${asset.id}-${doc.id}` }))
+            .then((doc) => ({
+              ...asset,
+              ...doc,
+              assetId: asset.id,
+              passportDocId: doc.id,
+              id: `${asset.id}-${doc.id}`,
+            }))
             .catch(() => null),
         ),
       ),
@@ -71,12 +77,12 @@ export const GET: APIRoute = async (req) => {
   await whenNotError(client, (redis) => redis.quit())
 
   const res = whenNotError(passportItems, (items) => {
-    const validItems = items.filter(item => !!item)
-    return ({
+    const validItems = items.filter((item) => !!item)
+    return {
       data: validItems,
       total: validItems.length,
       last: options.from + options.size - 1,
-    })
+    }
   })
 
   return new Response(
