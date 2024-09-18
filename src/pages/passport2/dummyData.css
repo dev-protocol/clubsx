@@ -16,7 +16,7 @@
   background-image: url('https://ik.imagekit.io/wtlw3wfvu/sd_amu%202.png?updatedAt=1725988110197');
   width: 100%;
   max-width: 990px;
-  background-size: cover;
+  background-size: contain;
   background-repeat: no-repeat;
 }
 
