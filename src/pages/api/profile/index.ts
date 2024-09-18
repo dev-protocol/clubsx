@@ -12,18 +12,11 @@ export type Skin = {
   bgm?: Payload // for the future use cases
 }
 
-// export type PinnedItem = {
-//   type: AssetDocument['type']
-//   id: AssetDocument['id']
-//   contract: AssetDocument['contract']
-// }
-
 export type Profile = {
   skins?: Skin[] // the default skin is always the first item
   avatar?: string
   username?: string
   description?: string
-  pinnedItems?: string[]
   xProfile?: string
   twitchProfile?: string
   tiktokProfile?: string

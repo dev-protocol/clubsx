@@ -9,6 +9,7 @@
   import { decodeTokenURI } from '@fixtures/nft'
   import { Contract, type ContractRunner } from 'ethers'
   import { always } from 'ramda'
+  import type { PassportItem } from '../types'
 
   type ImageData = {
     src: string
@@ -18,7 +19,7 @@
   }
 
   export let props: {
-    item: AssetDocument | undefined
+    item: PassportItem
     provider: ContractRunner
     local: boolean
     classNames?: string
@@ -69,7 +70,7 @@
         .then((res) => res[0] as null | ClubsData)
         .catch(always(null)),
 
-      whenDefined(props.item?.id, async (id: string | number) =>
+      whenDefined(props.item?.assetId, async (id: string | number) =>
         decodeTokenURI(
           await contract.tokenURI(id),
           (cid) => `https://${cid}.ipfs.nftstorage.link`,

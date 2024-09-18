@@ -4,12 +4,12 @@
 
   import { Strings } from '../i18n'
   import UserAsset from './UserAsset.svelte'
+  import type { PassportItem } from '../types'
   import type { Profile, Skin } from '@pages/api/profile'
   import { i18nFactory } from '@devprotocol/clubs-core'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import type { UndefinedOr } from '@devprotocol/util-ts'
   import Skeleton from '@components/Global/Skeleton.svelte'
-  import type { AssetDocument } from '@fixtures/api/assets/schema'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
 
   import X from '@assets/X.svg'
@@ -17,24 +17,24 @@
   import Tiktok from '@assets/tiktok.svg'
   import Youtube from '@assets/youtube.svg'
   import Instagram from '@assets/instagram.svg'
+  import { payload } from '@fixtures/api/assets/schema'
+
+  const i18nBase = i18nFactory(Strings)
 
   export let id: string
   export let isLocal: boolean
 
-  const i18nBase = i18nFactory(Strings)
   let i18n = i18nBase(['en'])
-
-  let connection: UndefinedOr<typeof Connection> = undefined
-  let profile: Profile = {} as Profile
-  let eoa: UndefinedOr<string> = undefined
   let avatarUploading = false
   let profileUpdating = false
+  let profile: Profile = {} as Profile
+  let profileFromAPI: Profile = profile
+  let passportSkinItems: PassportItem[] = []
+  let passportNonSkinItems: PassportItem[] = []
+  let passportItemsFromAPI: PassportItem[] = []
+  let eoa: UndefinedOr<string> = undefined
+  let connection: UndefinedOr<typeof Connection> = undefined
   let updatingStatus: UndefinedOr<'success' | 'error'> = undefined
-
-  let PINNED_ITEMS: string[] = profile.pinnedItems ?? []
-  let SKIN_PASSPORT_ITMES: AssetDocument[] = []
-
-  let assetsPassportItems: (AssetDocument & { isInProfileSkin: boolean })[] = []
 
   const rpcProvider = new JsonRpcProvider(
     `https://polygon-mainnet.g.alchemy.com/v2/${import.meta.env.PUBLIC_ALCHEMY_KEY ?? ''}`,
@@ -77,86 +77,103 @@
     }, 3000)
   }
 
-  const fetchPassportItemSelectionStatus = (item: AssetDocument) => {
-    const skin = profile?.skins?.at(0)
-    if (!skin) {
-      return {
-        ...item,
-        isInProfileSkin: false,
-      }
-    }
-
-    const isSkinInProfile = Object.keys(skin)
-      .map((k: string) => {
-        const skinProperty = skin[k as keyof Skin]
-        if (!skinProperty) {
-          return false
-        }
-
-        if (
-          typeof skinProperty === typeof '' &&
-          skinProperty === item.payload
-        ) {
-          return true
-        }
-
-        if (Array.isArray(skinProperty)) {
-          return skinProperty.some((property) => property === item.payload)
-        }
-
-        return false
-      })
-      .some((k) => k)
-
-    return {
-      ...item,
-      isInProfileSkin: isSkinInProfile,
-    }
-  }
-
-  const fetchData = async () => {
-    const req = await fetch(`/api/profile/${id}`)
-    const data: Profile = await req.json()
-    profile = {
-      ...data,
-    } as Profile
-    PINNED_ITEMS = profile.pinnedItems ?? []
-
-    const [passportItem] = await Promise.all([
-      fetch(`/api/assets/related/account/${eoa}/?type=passportItem&size=999`)
-        .then((res) => res.json())
-        .catch(() => []),
-    ])
-
-    SKIN_PASSPORT_ITMES = passportItem.data
-    assetsPassportItems = (passportItem.data as AssetDocument[]).map((item) =>
-      fetchPassportItemSelectionStatus(item),
-    )
-  }
-
-  const resetPinnedItem = () => {
-    profile = {
-      ...profile,
-      pinnedItems: PINNED_ITEMS,
-    }
-  }
-
-  const pinItems = (item: AssetDocument) => {
-    profile = {
-      ...profile,
-      pinnedItems: profile.pinnedItems?.includes(
-        `${item.id}-${item.payload}-${item.contract}-${item.type}`,
+  const _fetchProfile = async () => {
+    const fetchedProfile = await fetch(`/api/profile/${id}`)
+      .then(
+        (res) => {
+          if (res.ok) {
+            return res.json()
+          }
+          throw new Error('Profile data not found')
+        },
+        (err) => {
+          throw new Error(err)
+        },
       )
-        ? profile.pinnedItems?.filter(
-            (pinnedItem) =>
-              pinnedItem !==
-              `${item.id}-${item.payload}-${item.contract}-${item.type}`,
-          )
-        : [
-            ...(profile.pinnedItems ?? []),
-            `${item.id}-${item.payload}-${item.contract}-${item.type}`,
-          ],
+      .then(
+        (_profile) => {
+          if (_profile) {
+            return _profile as Profile
+          }
+          throw new Error('Profile data not found')
+        },
+        (err) => {
+          throw new Error(err)
+        },
+      )
+      .catch((err) => {
+        console.log('Error fetching profile', err)
+        return {} as Profile
+      })
+
+    profile = {
+      ...fetchedProfile,
     }
+    // To preserve state before making changes to profile.
+    profileFromAPI = {
+      ...fetchedProfile,
+    }
+
+    console.log('Profile at fetching', profile)
+  }
+
+  const _fetchPassportItems = async () => {
+    const fetchedPassportItems = await fetch(
+      `/api/assets/related/account/${eoa}/passportItems?&size=999`,
+    )
+      .then(
+        (res) => {
+          if (res.ok) {
+            return res.json()
+          }
+          throw new Error('Passport items data not found')
+        },
+        (err) => {
+          throw new Error(err)
+        },
+      )
+      .then(
+        (res) => {
+          if (res) {
+            return res as {
+              data: Array<PassportItem>
+              last: string | number
+              total: string | number
+            }
+          }
+          throw new Error('Passport items data not found')
+        },
+        (err) => {
+          throw new Error(err)
+        },
+      )
+      .then(
+        (res) => {
+          if (res) {
+            return res.data
+          }
+          throw new Error('Passport items data not found')
+        },
+        (err) => {
+          throw new Error(err)
+        },
+      )
+      .catch((err) => {
+        console.log('Error fetching passport items', err)
+        return []
+      })
+
+    passportItemsFromAPI = fetchedPassportItems
+    passportSkinItems = passportItemsFromAPI.filter(
+      (item) =>
+        item.itemAssetType === 'css' ||
+        item.itemAssetType === 'stylesheet-link',
+    )
+    passportNonSkinItems = passportItemsFromAPI.filter(
+      (item) =>
+        item.itemAssetType !== 'css' &&
+        item.itemAssetType !== 'stylesheet-link',
+    )
   }
 
   onMount(async () => {
@@ -169,44 +186,56 @@
     connection().account.subscribe((acc: UndefinedOr<string>) => {
       if (eoa !== acc) {
         // Wallet is connected or addrress has changed so update the data again.
-        fetchData()
+        _fetchProfile()
+        _fetchPassportItems()
       }
       eoa = acc
     })
 
-    fetchData()
+    _fetchProfile()
+    _fetchPassportItems()
   })
 
-  const togglePassportItemToProfile = (payload: string | undefined) => {
-    console.log('Hit')
-    if (!payload) {
-      return
-    }
-
-    const passportItem =
-      assetsPassportItems.find((item) => item.payload === payload) ?? undefined
-    if (!passportItem) {
-      return
-    }
-
-    assetsPassportItems = [
-      ...assetsPassportItems.filter(
-        (item) => passportItem?.payload !== payload,
-      ),
-      {
-        ...passportItem,
-        isInProfileSkin: !passportItem?.isInProfileSkin,
-      },
-    ]
-  }
-
-  const resetProfileSelectedPassportItem = () => {
-    assetsPassportItems = SKIN_PASSPORT_ITMES.map((item) =>
-      fetchPassportItemSelectionStatus(item),
-    )
-  }
-
   const addProfile = async () => {}
+
+  const selectPassportSkinItem = (item: PassportItem) => {
+    if (!item.payload) {
+      console.log(
+        `Passport skin item not selected as theme since item.paylaod missing`,
+        item.id,
+      )
+      return
+    }
+
+    profile = {
+      ...profile, // Retain other modified fields
+      skins: [
+        // Reset skins to the value fetched from API.
+        {
+          ...(profile.skins?.at(0) ?? ({} as Skin)),
+          theme: item.payload,
+        },
+        ...(profile.skins ?? []).slice(1),
+      ],
+    }
+
+    console.log('Profile at selecting passport skin item', profile)
+  }
+
+  const resetPassportSkinSelectedItems = () => {
+    profile = {
+      ...profile, // Retain other modified fields
+      skins: [
+        // Reset skins to the value fetched from API.
+        {
+          ...(profileFromAPI.skins?.at(0) ?? ({} as Skin)),
+        },
+        ...(profileFromAPI.skins ?? []).slice(1),
+      ],
+    }
+
+    console.log('Profile at reseting passport skin item', profile)
+  }
 </script>
 
 <div class="w-full">
@@ -367,38 +396,38 @@
     <div class="hs-form-field__label flex items-center justify-between mb-1">
       <span class="hs-form-field__label"> {i18n('PassportSkin')} </span>
       <button
-        on:click|preventDefault={resetProfileSelectedPassportItem}
+        on:click|preventDefault={() => resetPassportSkinSelectedItems()}
         class="hs-button is-filled is-large w-fit text-center hs-form-field__label !text-white"
         >Reset</button
       >
     </div>
 
     <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-      {#if assetsPassportItems?.length}
-        {#each assetsPassportItems as item, i}
+      {#if passportSkinItems?.length}
+        {#each passportSkinItems as item, i}
           <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
             <button
-              on:click|preventDefault={() =>
-                togglePassportItemToProfile(item.payload)}
+              on:click|preventDefault={() => selectPassportSkinItem(item)}
             >
               <UserAsset
                 props={{
                   item,
                   provider: rpcProvider,
                   local: isLocal,
-                  classNames: item.isInProfileSkin
-                    ? 'border-2 border-black'
-                    : 'border border-surface-300',
+                  classNames:
+                    profile.skins?.at(0)?.theme === item.payload
+                      ? 'border-2 border-black'
+                      : 'border border-surface-300',
                 }}
               />
             </button>
           </li>
         {/each}
-      {:else if !assetsPassportItems?.length}
+      {:else if !passportSkinItems?.length}
         <div class="rounded-md border border-surface-400 p-8 text-accent-200">
           {i18n('Empty')} :)
         </div>
-      {:else if !assetsPassportItems}
+      {:else if !passportSkinItems}
         {#each new Array(6) as item, i}
           <li id={i.toString()}>
             <span class="block h-96"><Skeleton /></span>
@@ -412,35 +441,30 @@
     <div class="hs-form-field__label flex items-center justify-between mb-1">
       <span class="hs-form-field__label"> {i18n('PinnedItems')} </span>
       <button
-        on:click|preventDefault={resetPinnedItem}
+        on:click|preventDefault={() => {}}
         class="hs-button is-filled is-large w-fit text-center hs-form-field__label !text-white"
         >Reset</button
       >
     </div>
 
     <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-      {#if profile.pinnedItems?.length}
-        {#each profile.pinnedItems as item, i}
-          {#if assetsPassportItems.find((i) => `${i.id}-${i.payload}-${i.contract}-${i.type}` === item) !== undefined}
-            <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
-              <UserAsset
-                props={{
-                  item: assetsPassportItems.find(
-                    (i) =>
-                      `${i.id}-${i.payload}-${i.contract}-${i.type}` === item,
-                  ),
-                  provider: rpcProvider,
-                  local: isLocal,
-                }}
-              />
-            </li>
-          {/if}
+      {#if passportSkinItems?.length}
+        {#each passportSkinItems as item, i}
+          <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
+            <UserAsset
+              props={{
+                item: item,
+                provider: rpcProvider,
+                local: isLocal,
+              }}
+            />
+          </li>
         {/each}
-      {:else if !profile.pinnedItems?.length}
+      {:else if !passportSkinItems.length}
         <div class="rounded-md border border-surface-400 p-8 text-accent-200">
           {i18n('Empty')} :)
         </div>
-      {:else if !profile.pinnedItems}
+      {:else if !passportSkinItems}
         {#each new Array(6) as item, i}
           <li id={i.toString()}>
             <span class="block h-96"><Skeleton /></span>
@@ -450,15 +474,15 @@
     </ul>
   </label>
 
-  <!-- Memberships -->
+  <!-- Passport items other than type: css | stylesheet-link -->
   <label class="hs-form-field is-filled mt-[76px]">
     <span class="hs-form-field__label">
       {i18n('Memeberships')}
     </span>
     <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-      {#if assetsPassportItems?.length}
-        {#each [...assetsPassportItems] as item, i}
-          <button on:click={() => pinItems(item)}>
+      {#if passportNonSkinItems?.length}
+        {#each passportNonSkinItems as item, i}
+          <button on:click={() => {}}>
             <li id={`assets-${i.toString()}`} class="empty:hidden">
               <UserAsset
                 props={{ item, provider: rpcProvider, local: isLocal }}
@@ -466,11 +490,11 @@
             </li>
           </button>
         {/each}
-      {:else if !assetsPassportItems?.length}
+      {:else if !passportNonSkinItems?.length}
         <div class="rounded-md border border-surface-400 p-8 text-accent-200">
           {i18n('Empty')} :)
         </div>
-      {:else if !assetsPassportItems}
+      {:else if !passportNonSkinItems}
         {#each new Array(6) as item, i}
           <li id={i.toString()}>
             <span class="block h-96"><Skeleton /></span>
