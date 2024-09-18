@@ -16,11 +16,23 @@
   background-image: url('https://ik.imagekit.io/wtlw3wfvu/sd_amu%202.png?updatedAt=1725988110197');
   width: 100%;
   max-width: 990px;
-  background-size: cover;
+  background-size: contain;
   background-repeat: no-repeat;
 }
 
-._p ._p-heading {
+._p ._p-avatar-content,
+._p ._p-username-content,
+._p ._p-music-content {
+  background: white;
+}
+
+._p ._p-username,
+._p ._p-music-content {
+  color: black;
+}
+
+._p ._p-heading,
+._p ._p-description-content {
   color: white;
 }
 
@@ -28,6 +40,6 @@
   margin-top: 420px;
 }
 
-._p ._p-description-container {
+._p ._p-description-content {
   background-color: #b76dd3;
 }

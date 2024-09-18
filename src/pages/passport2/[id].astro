@@ -21,98 +21,120 @@ const htmlDescription = markdownToHtml(dummyData.description)
 ---
 
 <Layout theme="auto">
-  <div
-    class="grid justify-items-start max-w-screen-lg mx-auto px-4 grid gap-24 pb-24"
-  >
-    <div class="flex justify-between items-center self-stretch">
-      <!-- Left side -->
-      <div
-        class="flex items-center gap-6"
-        class:list={passportClass('user-info')}
+  <div class="grid gap-24">
+    <section class:list={passportClass('account-container')}>
+      <span
+        class="grid grid-cols-[6rem_1fr] lg:grid-cols-[10rem_1fr_auto] justify-items-start max-w-screen-lg mx-auto px-4 grid gap-6 lg:gap-y-8"
+        class:list={passportClass('account-content')}
       >
-        <!-- Avatar  -->
         <span
-          class="flex flex-col items-center p-2 rounded-full bg-white"
+          class="col-start-1 col-span-1"
           class:list={passportClass('avatar-container')}
         >
-          <img
-            src={profile.avatar}
-            class="rounded-full object-cover w-40 h-40 bg-lightgray bg-cover bg-center bg-no-repeat"
-            class:list={passportClass('avatar')}
-            alt=""
-          />
+          <span
+            class="flex flex-col items-center p-1.5 lg:p-2 rounded-full bg-surface-300"
+            class:list={passportClass('avatar-content')}
+          >
+            <img
+              src={profile.avatar}
+              class="rounded-full object-cover w-full aspect-square bg-lightgray bg-cover bg-center bg-no-repeat"
+              class:list={passportClass('avatar')}
+              alt=""
+            />
+          </span>
         </span>
-        <!-- Username -->
         <span
-          class="flex justify-center items-center gap-6 px-6 py-3 rounded-xl bg-white"
+          class="col-start-2 col-span-1 content-center"
           class:list={passportClass('username-container')}
         >
           <span
-            class="text-black text-center font-dm-sans text-4xl font-bold leading-none"
-            class:list={passportClass('username')}
+            class="flex justify-center items-center gap-6 px-3 py-1.5 lg:px-6 lg:py-3 rounded-xl bg-surface-200"
+            class:list={passportClass('username-content')}
           >
-            {profile.username}
+            <span
+              class="text-2xl lg:text-4xl font-bold"
+              class:list={passportClass('username')}
+            >
+              {profile.username}
+            </span>
           </span>
         </span>
-      </div>
-      {
-        /*
-      <!-- Right side BGM-->
-      <div
-        class="flex items-center gap-[15px] px-[16px] py-[8px] rounded-lg bg-white"
-      >
-        <!-- Mute Button -->
-        <Icon icon="muted" />
 
-        <!-- Music Waves -->
-        <Icon icon="music_waves" />
-        <!-- Music Name -->
         <span
-          class="text-black truncate font-dm-sans text-[16px] font-bold leading-normal"
+          class="col-start-1 row-start-2 lg:col-start-3 lg:row-start-1 col-span-1 row-span-1 content-center"
+          class:list={passportClass('music-container')}
         >
-          {dummyData.musicName}
+          <span
+            class="flex items-center gap-[15px] px-[16px] py-[8px] rounded-lg bg-surface-200"
+            class:list={passportClass('music-content')}
+          >
+            <!-- Mute Button -->
+            <span class="opacity-50">
+              <Icon icon="muted" />
+            </span>
+
+            <!-- Music Waves -->
+            <span>
+              <Icon icon="music_waves" />
+            </span>
+            <!-- Music Name -->
+            <span class="truncate font-bold">
+              {dummyData.musicName}
+            </span>
+          </span>
         </span>
-      </div>
-      */
-      }
-    </div>
-    <div
-      class="grid grid-cols-5 items-start gap-6 p-3 rounded-lg bg-white"
-      class:list={passportClass('links-container')}
-    >
-      <Icon icon="x" />
-      <Icon icon="twitch" />
-      <Icon icon="instagram" />
-      <Icon icon="tiktok" />
-      <Icon icon="youtube" />
-    </div>
-    <!-- Description -->
-    <div
-      class="flex w-full justify-center items-center gap-2.5 p-4 self-stretch rounded-xl"
-      class:list={[passportClass('description-container')]}
-    >
-      <div
-        class:list={[ProseTextInherit, passportClass('description')]}
-        set:html={htmlDescription}
-      />
-    </div>
 
-    <!-- Middle Content -->
-    <div class="flex flex-col items-center gap-[96px] self-stretch">
-      <div
-        class="flex flex-col items-start gap-[46px] self-stretch"
-        class:list={passportClass('video-container')}
+        <span
+          class="col-start-1 col-span-2 lg:col-span-3 row-start-3 row-span-1 lg:row-start-2"
+          class:list={passportClass('links-container')}
+        >
+          <span
+            class="grid grid-cols-5 items-start gap-6 p-3 rounded-lg bg-white"
+            class:list={passportClass('links-content')}
+          >
+            <Icon icon="x" />
+            <Icon icon="twitch" />
+            <Icon icon="instagram" />
+            <Icon icon="tiktok" />
+            <Icon icon="youtube" />
+          </span>
+        </span>
+        <span
+          class="col-start-1 col-span-2 lg:col-span-3 row-start-4 lg:row-start-3 row-span-1 w-full"
+          class:list={[passportClass('description-container')]}
+        >
+          <span
+            class="flex w-full justify-center items-center gap-2.5 p-4 self-stretch block rounded-xl"
+            class:list={[passportClass('description-content')]}
+          >
+            <div
+              class:list={[ProseTextInherit, passportClass('description')]}
+              set:html={htmlDescription}
+            />
+          </span>
+        </span>
+      </span>
+    </section>
+
+    <section
+      class="grid justify-items-start max-w-screen-lg mx-auto px-4 grid gap-24"
+    >
+      <span class:list={passportClass('video-container')}>
+        <span class:list={passportClass('video-content')}>
+          <img
+            src={dummyData.videoThumbnail}
+            class="w-full h-auto aspect-video rounded-sm"
+            class:list={passportClass('video')}
+            alt=""
+          />
+        </span>
+      </span>
+
+      {isEOA && <UserAssets client:load account={id ?? ''} local={isLocal} />}
+
+      <a href={`/passport/${id}/clubs`} class="hs-link place-self-start"
+        >Clubs</a
       >
-        <img
-          src={dummyData.videoThumbnail}
-          class="h-[577px] self-stretch rounded-sm"
-          class:list={passportClass('video')}
-          alt=""
-        />
-      </div>
-    </div>
-    {isEOA && <UserAssets client:load account={id ?? ''} local={isLocal} />}
-
-    <a href={`/passport/${id}/clubs`} class="hs-link place-self-start">Clubs</a>
+    </section>
   </div>
 </Layout>
