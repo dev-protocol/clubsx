@@ -184,7 +184,7 @@ const props = defineProps<{
   >
     <path
       d="M17.25 9.75001L19.5 12M19.5 12L21.75 14.25M19.5 12L21.75 9.75001M19.5 12L17.25 14.25M6.75 8.25001L11.47 3.53001C11.5749 3.42525 11.7085 3.35393 11.8539 3.32504C11.9993 3.29616 12.15 3.31101 12.2869 3.36772C12.4239 3.42443 12.541 3.52046 12.6234 3.64368C12.7058 3.76689 12.7499 3.91177 12.75 4.06001V19.94C12.7499 20.0883 12.7058 20.2331 12.6234 20.3563C12.541 20.4796 12.4239 20.5756 12.2869 20.6323C12.15 20.689 11.9993 20.7039 11.8539 20.675C11.7085 20.6461 11.5749 20.5748 11.47 20.47L6.75 15.75H4.51C3.63 15.75 2.806 15.243 2.572 14.396C2.35751 13.6154 2.2492 12.8095 2.25 12C2.25 11.17 2.362 10.367 2.572 9.60401C2.806 8.75601 3.63 8.25001 4.51 8.25001H6.75Z"
-      stroke="#DADADA"
+      stroke="currentColor"
       stroke-width="1.5"
       stroke-linecap="round"
       stroke-linejoin="round"
@@ -200,7 +200,7 @@ const props = defineProps<{
     >
       <path
         d="M2 2.5L2 11.5"
-        stroke="#000"
+        stroke="currentColor"
         stroke-width="4"
         stroke-linecap="round"
       ></path>
@@ -213,7 +213,7 @@ const props = defineProps<{
     >
       <path
         d="M2 2L2 24"
-        stroke="#000"
+        stroke="currentColor"
         stroke-width="4"
         stroke-linecap="round"
       ></path>
@@ -226,7 +226,7 @@ const props = defineProps<{
     >
       <path
         d="M2 2.5L2 11.5"
-        stroke="#000"
+        stroke="currentColor"
         stroke-width="4"
         stroke-linecap="round"
       ></path>
@@ -239,7 +239,7 @@ const props = defineProps<{
     >
       <path
         d="M2 2L2 20"
-        stroke="#000"
+        stroke="currentColor"
         stroke-width="4"
         stroke-linecap="round"
       ></path>
