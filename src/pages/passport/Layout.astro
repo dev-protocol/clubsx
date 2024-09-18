@@ -1,0 +1,70 @@
+---
+import { ClubsPictogramAdaptable as Favicon } from '@devprotocol/clubs-core/images'
+import { passportClass } from '@fixtures/ui/passport'
+import './dummyData.css'
+
+import '@devprotocol/clubs-core/styles'
+import Header from '@components/Global/Header.astro'
+
+type Props = {
+  theme?: 'light' | 'dark' | 'auto'
+}
+
+const { theme = 'dark' } = Astro.props
+
+const title = 'Clubs'
+const name = 'Clubs' // not sure the difference here compared to title
+const description = ''
+const url = ''
+const ogURL = ''
+const twitterHandle = 'poweredbyClubs'
+---
+
+<html
+  lang="en"
+  hashi-theme={theme === 'auto' ? undefined : theme}
+  class:list={passportClass()}
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+    <link rel="icon" type="image/svg" href={Favicon.src} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /><link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="description" content={`${description}`} />
+    <meta property="og:title" content={title} />
+    <meta property="og:url" content={url} />
+    <meta property="og:image" content={`${ogURL}`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content={name} />
+    <meta name="twitter:site" content={twitterHandle} />
+    <meta name="twitter:creator" content={twitterHandle} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${ogURL}`} />
+  </head>
+
+  <body
+    class="min-h-screen bg-background font-body text-surface-ink"
+    class:list={passportClass('body')}
+  >
+    <div class:list={passportClass('hero-container')}>
+      <div class:list={passportClass('hero')}></div>
+    </div>
+    <div class="relative z-10" class:list={passportClass('main-container')}>
+      <slot name="before-header" />
+      <Header connectButton="show" pageTitle="Passport" />
+
+      <div class:list={passportClass('main-content')}>
+        <main class:list={passportClass('main')}>
+          <slot />
+        </main>
+      </div>
+    </div>
+  </body>
+</html>
