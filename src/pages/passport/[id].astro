@@ -68,30 +68,25 @@ const passportSkinVideos = profile?.skins?.at(0)?.videos
 
         {
           passportSkinBGMs?.length && (
-          <span
-            class="col-start-1 row-start-2 lg:col-start-3 lg:row-start-1 col-span-1 row-span-1 content-center"
-            class:list={passportClass('music-container')}
-          >
             <span
-              class="flex items-center gap-[15px] px-[16px] py-[8px] rounded-lg bg-surface-200"
-              class:list={passportClass('music-content')}
+              class="col-start-1 row-start-2 lg:col-start-3 lg:row-start-1 col-span-1 row-span-1 content-center"
+              class:list={passportClass('music-container')}
             >
-              <!-- Mute Button -->
-              <span class="opacity-50">
-                <Icon icon="muted" />
-              </span>
+              <span
+                class="flex items-center gap-[15px] px-[16px] py-[8px] rounded-lg bg-surface-200"
+                class:list={passportClass('music-content')}
+              >
+                <span class="opacity-50">
+                  <Icon icon="muted" />
+                </span>
 
-              <!-- Music Waves -->
-              <span>
-                <Icon icon="music_waves" />
-              </span>
+                <span>
+                  <Icon icon="music_waves" />
+                </span>
 
-              <!-- Music Name -->
-              <span class="truncate font-bold">
-                {dummyData.musicName}
+                <span class="truncate font-bold">{dummyData.musicName}</span>
               </span>
             </span>
-          </span>
           )
         }
 
