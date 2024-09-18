@@ -230,12 +230,13 @@
     }
 
     connection().account.subscribe((acc: UndefinedOr<string>) => {
-      if (eoa !== acc) {
+      const oldEOA = eoa
+      eoa = acc
+      if (eoa !== oldEOA) {
         // Wallet is connected or addrress has changed so update the data again.
         _fetchProfile()
         _fetchPassportItems()
       }
-      eoa = acc
     })
   }
 
@@ -524,7 +525,11 @@
         {#each passportSkinItems as item, i}
           <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
             <button
-              disabled={!eoa}
+              disabled={!eoa ||
+                !passportSkinItems.length ||
+                profileFetching ||
+                passportItemFetching ||
+                profileUpdating}
               on:click|preventDefault={() => selectPassportSkinItem(item)}
             >
               <UserAsset
@@ -553,7 +558,7 @@
       </span>
       <button
         disabled={!eoa ||
-          !passportSkinItems.length ||
+          !passportNonSkinItems.length ||
           profileFetching ||
           passportItemFetching ||
           profileUpdating}
@@ -612,7 +617,11 @@
         {#each passportNonSkinItems as item, i}
           <button
             on:click={() => togglePinnnedPassortNonSkinItem(item)}
-            disabled={!eoa}
+            disabled={!eoa ||
+              !passportNonSkinItems.length ||
+              profileFetching ||
+              passportItemFetching ||
+              profileUpdating}
           >
             <li id={`assets-${i.toString()}`} class="empty:hidden">
               <UserAsset
@@ -637,7 +646,7 @@
   {#if eoa === id}
     <button
       on:click={onSubmit}
-      disabled={profileUpdating || !eoa}
+      disabled={profileUpdating || !eoa || profileFetching}
       class={`mt-[76px] hs-button is-filled is-large w-fit ${
         updatingStatus === 'success'
           ? 'is-success'
