@@ -4,7 +4,7 @@
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
 
   export let id: string | undefined
-  export let iconColor: string
+  export let additionalClasses: string = ''
 
   let connection: UndefinedOr<typeof Connection> = undefined
   let eoa: UndefinedOr<string> = undefined
@@ -22,7 +22,7 @@
 </script>
 
 {#if eoa === id}
-  <a href={`/passport/${id}/edit`} class={iconColor}
+  <a href={`/passport/${id}/edit`} class={additionalClasses}
     ><svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
