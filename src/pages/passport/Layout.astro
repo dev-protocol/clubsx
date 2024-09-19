@@ -1,6 +1,7 @@
 ---
-import { ClubsPictogramAdaptable as Favicon } from '@devprotocol/clubs-core/images'
+import { whenDefined } from '@devprotocol/util-ts'
 import { passportClass } from '@fixtures/ui/passport'
+import { ClubsPictogramAdaptable as Favicon } from '@devprotocol/clubs-core/images'
 
 import '@devprotocol/clubs-core/styles'
 import Header from '@components/Global/Header.astro'
@@ -22,11 +23,13 @@ const ogURL =
 const description =
   'Create your own space with Clubs and collect your favorites with Passport. Memberships, tickets, merch, and more, all easily manage and sell in one place.'
 
-const passportSkinTheme = await getPassportItemForPayload({
-  sTokenPayload: sTokenPayload ?? '',
-})
-  .then((item) => (item instanceof Error ? undefined : item))
-  .catch((err) => undefined)
+const passportSkinTheme = await whenDefined(sTokenPayload, (payload: string) =>
+  getPassportItemForPayload({
+    sTokenPayload: payload ?? '',
+  })
+    .then((item) => (item instanceof Error ? undefined : item))
+    .catch(() => undefined)
+)
 ---
 
 <html
