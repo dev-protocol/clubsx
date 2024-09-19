@@ -72,6 +72,7 @@
       .signMessage(hash)
       .then((sign) => sign)
       .catch(() => undefined)
+
     if (!sig) {
       profileUpdating = false
       updatingStatus = 'error'
@@ -260,10 +261,9 @@
     profile = {
       ...profile, // Retain other modified fields.
       skins: [
-        // Set skins to the updated value or append new value of theme.
         {
-          ...(profile.skins?.at(0) ?? ({} as Skin)),
-          theme: item.payload,
+          ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties ir-respective of whether the skin is modified or not.
+          theme: item.payload, // Update only theme value.
         },
       ],
     }
@@ -278,10 +278,17 @@
   const resetPassportSkinSelectedItems = () => {
     profile = {
       ...profile, // Retain other modified fields.
-      skins:
-        !profileFromAPI.skins || !profileFromAPI.skins?.at(0)
-          ? ([] as Skin[])
-          : [profileFromAPI.skins[0]],
+      skins: [
+        {
+          ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties ir-respective of whether the skin is modified or not.
+
+          // Reset only theme value below.
+          ...(profileFromAPI?.skins?.length && // If profileFromAPI, skins, skins.length, skins.at, thme any return falsy we get empty value.
+          profileFromAPI?.skins?.at(0)?.theme
+            ? { theme: profileFromAPI.skins[0].theme } // Since we have validated all- profileFromAPI, skins, skins.length > 0, skins.at(0), theme
+            : {}), // Otherwise set it to empty
+        },
+      ],
     }
 
     console.log('Profile at reseting passport skin item', profile)
@@ -323,18 +330,12 @@
   const resetPinnedNonSkinItems = async () => {
     profile = {
       ...profile, // Retain other modified fields.
-      skins:
-        !profileFromAPI.skins ||
-        !profileFromAPI.skins?.at(0) ||
-        !profile.skins ||
-        !profile.skins?.at(0)
-          ? ([] as Skin[])
-          : [
-              {
-                ...(profile.skins?.at(0) ?? ({} as Skin)),
-                clips: profileFromAPI.skins?.at(0)?.clips ?? [],
-              },
-            ], // Retain other field reset clips from response from API.
+      skins: [
+        {
+          ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties ir-respective of whether the skin is modified or not.
+          clips: profileFromAPI?.skins?.at(0)?.clips ?? [], // Retain clips from profileFromAPI if present otherwise empty array.
+        },
+      ],
     }
 
     console.log('Profile at resetting pinned non skin item', profile)
@@ -587,18 +588,20 @@
       </div>
     {:else if !passportItemFetching && !profileFetching && profile.skins?.at(0)?.clips?.length && passportNonSkinItems?.length}
       <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-        {#each profile.skins?.at(0)?.clips ?? [] as clip, i}
-          <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
-            <PassportAsset
-              props={{
-                item:
-                  passportNonSkinItems.find((item) => item.payload === clip) ??
-                  emptyPassportItem,
-                provider: rpcProvider,
-                local: isLocal,
-              }}
-            />
-          </li>
+        {#each passportNonSkinItems as item, i}
+          {#if item.payload && profile?.skins
+              ?.at(0)
+              ?.clips?.includes(item.payload)}
+            <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
+              <PassportAsset
+                props={{
+                  item: item,
+                  provider: rpcProvider,
+                  local: isLocal,
+                }}
+              />
+            </li>
+          {/if}
         {/each}
       </ul>
     {/if}
@@ -642,10 +645,10 @@
                   item,
                   provider: rpcProvider,
                   local: isLocal,
-                  classNames: profile.skins
+                  classNames: profile?.skins
                     ?.at(0)
                     ?.clips?.includes(item.payload ?? '', 0)
-                    ? 'border-2 border-black'
+                    ? 'border-2 border-surface-ink'
                     : 'border border-surface-300',
                 }}
               />
