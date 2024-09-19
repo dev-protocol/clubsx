@@ -148,21 +148,55 @@ const passportSkinClips = await whenDefined(
           )
         }
 
-        <span
-          class="col-start-1 col-span-2 lg:col-span-3 row-start-3 row-span-1 lg:row-start-2"
-          class:list={passportClass('links-container')}
-        >
-          <span
-            class="grid grid-cols-5 items-start gap-6 p-3 rounded-lg bg-white"
-            class:list={passportClass('links-content')}
-          >
-            <Icon icon="x" />
-            <Icon icon="twitch" />
-            <Icon icon="instagram" />
-            <Icon icon="tiktok" />
-            <Icon icon="youtube" />
-          </span>
-        </span>
+        {
+          profile?.sns && (
+            <span
+              class="col-start-1 col-span-2 lg:col-span-3 row-start-3 row-span-1 lg:row-start-2"
+              class:list={passportClass('links-container')}
+            >
+              <span
+                class="grid grid-cols-5 items-start gap-6 p-3 rounded-lg bg-white"
+                class:list={passportClass('links-content')}
+              >
+                <a
+                  href={`https://x.com/${profile?.sns?.x}`}
+                  target="_blank"
+                  class={`${profile?.sns?.x ? 'cursor-pointer' : 'cursor-not-allowed'}`}
+                >
+                  <Icon icon="x" />
+                </a>
+                <a
+                  href={`https://twitch.tv/${profile?.sns?.twitch}`}
+                  target="_blank"
+                  class={`${profile?.sns?.twitch ? 'cursor-pointer' : 'cursor-not-allowed'}`}
+                >
+                  <Icon icon="twitch" />
+                </a>
+                <a
+                  href={`https://instagram.com/${profile?.sns?.instagram}`}
+                  target="_blank"
+                  class={`${profile?.sns?.instagram ? 'cursor-pointer' : 'cursor-not-allowed'}`}
+                >
+                  <Icon icon="instagram" />
+                </a>
+                <a
+                  href={`https://tiktok.com/${profile?.sns?.tiktok}`}
+                  target="_blank"
+                  class={`${profile?.sns?.tiktok ? 'cursor-pointer' : 'cursor-not-allowed'}`}
+                >
+                  <Icon icon="tiktok" />
+                </a>
+                <a
+                  href={`https://youtube.com/${profile?.sns?.youtube}`}
+                  target="_blank"
+                  class={`${profile?.sns?.youtube ? 'cursor-pointer' : 'cursor-not-allowed'}`}
+                >
+                  <Icon icon="youtube" />
+                </a>
+              </span>
+            </span>
+          )
+        }
 
         <span
           class="col-start-1 col-span-2 lg:col-span-3 row-start-4 lg:row-start-3 row-span-1 w-full"

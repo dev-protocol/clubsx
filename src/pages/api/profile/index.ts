@@ -1,4 +1,3 @@
-import type { AssetDocument } from '@fixtures/api/assets/schema'
 import { generateProfileId } from '@fixtures/api/keys'
 import { hashMessage, recoverAddress } from 'ethers'
 import { createClient } from 'redis'
@@ -17,11 +16,9 @@ export type Profile = {
   avatar?: string
   username?: string
   description?: string
-  xProfile?: string
-  twitchProfile?: string
-  tiktokProfile?: string
-  instagramProfile?: string
-  youtubeProfile?: string
+  sns?: {
+    [platform: string]: string
+  }
 }
 
 export const POST = async ({ request }: { request: Request }) => {
