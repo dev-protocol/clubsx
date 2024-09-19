@@ -515,7 +515,11 @@
         {i18n('ConnectWalletTryAgain')} :)
       </div>
     {:else if passportItemFetching}
-      <Skeleton />
+      <div
+        class="rounded-md border border-surface-400 p-8 text-accent-200 h-48"
+      >
+        <Skeleton />
+      </div>
     {:else if !passportItemFetching && !passportSkinItems?.length}
       <div class="rounded-md border border-surface-400 p-8 text-accent-200">
         {i18n('Empty')} :) <br />{@html i18n('PurchasePassportSkin')}
@@ -572,7 +576,11 @@
         {i18n('ConnectWalletTryAgain')} :)
       </div>
     {:else if passportItemFetching || profileFetching}
-      <Skeleton />
+      <div
+        class="rounded-md border border-surface-400 p-8 text-accent-200 h-48"
+      >
+        <Skeleton />
+      </div>
     {:else if !passportItemFetching && !profileFetching && !profile.skins?.at(0)?.clips?.length}
       <div class="rounded-md border border-surface-400 p-8 text-accent-200">
         {i18n('Empty')} :) <br />{@html i18n('PinnPassportItems')}
@@ -607,7 +615,11 @@
         {i18n('ConnectWalletTryAgain')} :)
       </div>
     {:else if passportItemFetching || profileFetching}
-      <Skeleton />
+      <div
+        class="rounded-md border border-surface-400 p-8 text-accent-200 h-48"
+      >
+        <Skeleton />
+      </div>
     {:else if !passportItemFetching && !profileFetching && !passportNonSkinItems?.length}
       <div class="rounded-md border border-surface-400 p-8 text-accent-200">
         {i18n('Empty')} :) <br />{@html i18n('PurchasePassportAssets')}
