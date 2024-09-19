@@ -588,18 +588,20 @@
       </div>
     {:else if !passportItemFetching && !profileFetching && profile.skins?.at(0)?.clips?.length && passportNonSkinItems?.length}
       <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-        {#each profile.skins?.at(0)?.clips ?? [] as clip, i}
-          <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
-            <PassportAsset
-              props={{
-                item:
-                  passportNonSkinItems.find((item) => item.payload === clip) ??
-                  emptyPassportItem,
-                provider: rpcProvider,
-                local: isLocal,
-              }}
-            />
-          </li>
+        {#each passportNonSkinItems as item, i}
+          {#if item.payload && profile?.skins
+              ?.at(0)
+              ?.clips?.includes(item.payload)}
+            <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
+              <PassportAsset
+                props={{
+                  item: item,
+                  provider: rpcProvider,
+                  local: isLocal,
+                }}
+              />
+            </li>
+          {/if}
         {/each}
       </ul>
     {/if}
