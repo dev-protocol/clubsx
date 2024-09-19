@@ -222,6 +222,26 @@
     }
   }
 
+  const onChangeX = (ev: Event) => {
+    updateSNS('x', (event?.target as HTMLInputElement)?.value ?? '')
+  }
+
+  const onChangeTwitch = (ev: Event) => {
+    updateSNS('twitch', (event?.target as HTMLInputElement)?.value ?? '')
+  }
+
+  const onChangeInstagram = (ev: Event) => {
+    updateSNS('instagram', (event?.target as HTMLInputElement)?.value ?? '')
+  }
+
+  const onChangeTikTok = (ev: Event) => {
+    updateSNS('tiktok', (event?.target as HTMLInputElement)?.value ?? '')
+  }
+
+  const onChangeYoutube = (ev: Event) => {
+    updateSNS('youtube', (event?.target as HTMLInputElement)?.value ?? '')
+  }
+
   const _connectOnMount = async () => {
     const { connection: _conn } = await import(
       '@devprotocol/clubs-core/connection'
@@ -456,7 +476,7 @@
           class="hs-form-field__input w-fit grow"
           disabled={profileUpdating || !eoa}
           value={profile?.sns?.x ?? ''}
-          on:change={(e) => updateSNS('x', e?.target?.value ?? '')}
+          on:change|preventDefault={onChangeX}
           placeholder={i18n('SNSPlaceholder', ['X'])}
         />
       </div>
@@ -502,7 +522,7 @@
           class="hs-form-field__input w-fit grow"
           disabled={profileUpdating || !eoa}
           value={profile?.sns?.twitch ?? ''}
-          on:change={(e) => updateSNS('twitch', e?.target?.value ?? '')}
+          on:change|preventDefault={onChangeTwitch}
           placeholder={i18n('SNSPlaceholder', ['Twitch'])}
         />
       </div>
@@ -573,7 +593,7 @@
           class="hs-form-field__input w-fit grow"
           disabled={profileUpdating || !eoa}
           value={profile?.sns?.instagram ?? ''}
-          on:change={(e) => updateSNS('instagram', e?.target?.value ?? '')}
+          on:change|preventDefault={onChangeInstagram}
           placeholder={i18n('SNSPlaceholder', ['Instagram'])}
         />
       </div>
@@ -611,7 +631,7 @@
           class="hs-form-field__input w-fit grow"
           disabled={profileUpdating || !eoa}
           value={profile?.sns?.tiktok ?? ''}
-          on:change={(e) => updateSNS('tiktok', e?.target?.value ?? '')}
+          on:change|preventDefault={onChangeTikTok}
           placeholder={i18n('SNSPlaceholder', ['TikTok'])}
         />
       </div>
@@ -651,7 +671,7 @@
           class="hs-form-field__input w-fit grow"
           disabled={profileUpdating || !eoa}
           value={profile?.sns?.youtube ?? ''}
-          on:change={(e) => updateSNS('youtube', e?.target?.value ?? '')}
+          on:change|preventDefault={onChangeYoutube}
           placeholder={i18n('SNSPlaceholder', ['Youtube'])}
         />
       </div>
