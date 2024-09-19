@@ -7,21 +7,21 @@ export const Strings = {
   },
   PurchasePassportSkin: {
     en: () =>
-      `You have not purchased <b>Passport Skins</b>.<br /><u>To configure</u> your creative and unique passport page <b>purchase Passport Skins now</b>.`,
+      `You have not purchased <b>Passport Skins</b>.<br /><i>To configure</i> your creative and unique passport page <b>purchase Passport Skins now</b>.`,
     ja: () =>
-      `<b>パスポートスキン</b>を購入していません。<br />クリエイティブでユニークなパスポートページを<u>設定</u>するには、<b>今すぐパスポートスキンを購入</b>してください。`,
+      `<b>パスポートスキン</b>を購入していません。<br />クリエイティブでユニークなパスポートページを<i>設定</i>するには、<b>今すぐパスポートスキンを購入</b>してください。`,
   },
   PinnPassportItems: {
     en: () =>
-      `You have not purchased <b>Passport Assets</b>.<br /><u>To configure</u> your creative and unique passport page <b>purchase Passport Assets now</b>.`,
+      `You have not purchased <b>Passport Assets</b>.<br /><i>To configure</i> your creative and unique passport page <b>purchase Passport Assets now</b>.`,
     ja: () =>
-      `<b>パスポートアセット</b>を購入していません。<br />クリエイティブでユニークなパスポートページを<u>設定</u>するには、<b>今すぐパスポートアセットを購入</b>してください。`,
+      `<b>パスポートアセット</b>を購入していません。<br />クリエイティブでユニークなパスポートページを<i>設定</i>するには、<b>今すぐパスポートアセットを購入</b>してください。`,
   },
   PurchasePassportAssets: {
     en: () =>
-      `You have not <b>pinned your Passport Assets</b>.<br /><u>To configure</u> your creative and unique passport page <b>pin</b> them or <b>purchase passport assets if you do not already have them</b>.`,
+      `You have not <b>pinned your Passport Assets</b>.<br /><i>To configure</i> your creative and unique passport page <b>pin</b> them or <b>purchase passport assets if you do not already have them</b>.`,
     ja: () =>
-      `パスポートアセットを<b>ピン留め</b>していません。<br />クリエイティブでユニークなパスポートページを<u>設定</u>するには、パスポートアセットを<b>ピン留め</b>するか、<b>まだお持ちでない場合はパスポートアセットを購入してください。</b>。`,
+      `パスポートアセットを<b>ピン留め</b>していません。<br />クリエイティブでユニークなパスポートページを<i>設定</i>するには、パスポートアセットを<b>ピン留め</b>するか、<b>まだお持ちでない場合はパスポートアセットを購入してください。</b>。`,
   },
   PassportAssets: {
     en: () => `Passport Assets`,
