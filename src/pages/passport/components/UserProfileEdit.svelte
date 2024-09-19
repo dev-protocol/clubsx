@@ -261,10 +261,9 @@
     profile = {
       ...profile, // Retain other modified fields.
       skins: [
-        // Set skins to the updated value or append new value of theme.
         {
-          ...(profile.skins?.at(0) ?? ({} as Skin)),
-          theme: item.payload,
+          ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties ir-respective of whether the skin is modified or not.
+          theme: item.payload, // Update only theme value.
         },
       ],
     }
@@ -281,8 +280,13 @@
       ...profile, // Retain other modified fields.
       skins: [
         {
-          ...(profile.skins?.at(0) ?? ({} as Skin)),
-          ...({ theme: profileFromAPI?.skins?.at(0)?.theme ?? {} } as Skin),
+          ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties ir-respective of whether the skin is modified or not.
+
+          // Reset only theme value below.
+          ...(profileFromAPI?.skins?.length && // If profileFromAPI, skins, skins.length, skins.at, thme any return falsy we get empty value.
+          profileFromAPI?.skins?.at(0)?.theme
+            ? { theme: profileFromAPI.skins[0].theme } // Since we have validated all- profileFromAPI, skins, skins.length > 0, skins.at(0), theme
+            : {}), // Otherwise set it to empty
         },
       ],
     }
