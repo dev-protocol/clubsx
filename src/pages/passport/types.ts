@@ -1,8 +1,13 @@
 import type { AssetDocument } from '@fixtures/api/assets/schema'
 
-export type PassportItem = AssetDocument & {
-  assetId: string
-  passportDocId: string
+export type ImageData = {
+  h: number
+  w: number
+  src: string
+  alt: string
+}
+
+export type PassportItemIndexDoc = {
   id: string
   sTokenId?: string
   sTokenPayload: string
@@ -18,3 +23,9 @@ export type PassportItem = AssetDocument & {
     | 'bgm-link'
   itemAssetValue: string
 }
+
+export type PassportItem = AssetDocument &
+  PassportItemIndexDoc & {
+    assetId: string
+    passportDocId: string
+  }
