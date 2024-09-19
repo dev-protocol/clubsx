@@ -72,6 +72,7 @@
       .signMessage(hash)
       .then((sign) => sign)
       .catch(() => undefined)
+
     if (!sig) {
       profileUpdating = false
       updatingStatus = 'error'
@@ -642,10 +643,10 @@
                   item,
                   provider: rpcProvider,
                   local: isLocal,
-                  classNames: profile.skins
+                  classNames: profile?.skins
                     ?.at(0)
                     ?.clips?.includes(item.payload ?? '', 0)
-                    ? 'border-2 border-black'
+                    ? 'border-2 border-surface-ink'
                     : 'border border-surface-300',
                 }}
               />
