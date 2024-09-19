@@ -608,15 +608,16 @@
       </div>
     {:else if passportItemFetching || profileFetching}
       <Skeleton />
-    {:else if !passportItemFetching && !profileFetching && !profile.skins?.at(0)?.clips?.length}
+    {:else if !passportItemFetching && !profileFetching && !passportNonSkinItems?.length}
       <div class="rounded-md border border-surface-400 p-8 text-accent-200">
-        {i18n('Empty')} :) <br />{@html i18n('PinnPassportItems')}
+        {i18n('Empty')} :) <br />{@html i18n('PurchasePassportAssets')}
       </div>
     {:else if passportNonSkinItems?.length}
       <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
         {#each passportNonSkinItems as item, i}
           <button
-            on:click={() => togglePinnnedPassortNonSkinItem(item)}
+            on:click|preventDefault={() =>
+              togglePinnnedPassortNonSkinItem(item)}
             disabled={!eoa ||
               !passportNonSkinItems.length ||
               profileFetching ||
