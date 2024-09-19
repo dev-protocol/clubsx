@@ -3,29 +3,29 @@ import type { ClubsI18nParts } from '@devprotocol/clubs-core'
 export const Strings = {
   ConnectWalletTryAgain: {
     en: () => `Connect wallet & try again!`,
-    ja: () => `ウォレットを接続してもう一度お試しください!`,
+    ja: () => `ウォレットを接続してもう一度お試しください`,
   },
   PurchasePassportSkin: {
     en: () =>
       `You have not purchased <b>Passport Skins</b>.<br /><u>To configure</u> your creative and unique passport page <b>purchase Passport Skins now</b>.`,
     ja: () =>
-      `<b>パスポート スキン</b>を購入していません。<br />クリエイティブでユニークなパスポート ページを<u>設定</u>するには、<b>今すぐパスポート スキンを購入</b>してください。`,
+      `<b>パスポートスキン</b>を購入していません。<br />クリエイティブでユニークなパスポートページを<u>設定</u>するには、<b>今すぐパスポートスキンを購入</b>してください。`,
   },
   PinnPassportItems: {
     en: () =>
       `You have not purchased <b>Passport Assets</b>.<br /><u>To configure</u> your creative and unique passport page <b>purchase Passport Assets now</b>.`,
     ja: () =>
-      `<b>パスポート アセット</b>を購入していません。<br />クリエイティブでユニークなパスポート ページを<u>設定</u>するには、<b>今すぐパスポート アセットを購入</b>してください。`,
+      `<b>パスポートアセット</b>を購入していません。<br />クリエイティブでユニークなパスポートページを<u>設定</u>するには、<b>今すぐパスポートアセットを購入</b>してください。`,
   },
   PurchasePassportAssets: {
     en: () =>
       `You have not <b>pinned your Passport Assets</b>.<br /><u>To configure</u> your creative and unique passport page <b>pin</b> them or <b>purchase passport assets if you do not already have them</b>.`,
     ja: () =>
-      `パスポート アセットを<b>固定</b>していません。<br />クリエイティブでユニークなパスポート ページを<u>設定</u>するには、パスポート アセットを<b>固定</b>するか、<b>パスポート アセットを購入してください。まだお持ちでない場合</b>。`,
+      `パスポートアセットを<b>ピン留め</b>していません。<br />クリエイティブでユニークなパスポートページを<u>設定</u>するには、パスポートアセットを<b>ピン留め</b>するか、<b>まだお持ちでない場合はパスポートアセットを購入してください。</b>。`,
   },
   PassportAssets: {
     en: () => `Passport Assets`,
-    ja: () => `パスポート資産`,
+    ja: () => `パスポートアセット`,
   },
   PassportSkin: {
     en: 'Passport Skin',
@@ -33,7 +33,7 @@ export const Strings = {
   },
   SelectedPassportClips: {
     en: 'Selected Passport Clips- Pinned passport assets',
-    ja: '選択されたパスポート クリップ - ピン留めされたパスポート アセット',
+    ja: '選択されたパスポートクリップ - ピン留めされたパスポートアセット',
   },
   Profile: {
     en: 'Profile',
@@ -65,7 +65,7 @@ export const Strings = {
   },
   Saved: {
     en: 'Saved',
-    ja: '保存されました',
+    ja: '保存しました',
   },
   Error: {
     en: 'Error',
@@ -77,7 +77,7 @@ export const Strings = {
   },
   Clubs: {
     en: `Clubs`,
-    ja: `Clubsのメンバーシップ`,
+    ja: `Clubs`,
   },
   Empty: {
     en: `Empty`,
@@ -97,11 +97,11 @@ export const Strings = {
   },
   Published: {
     en: 'Published',
-    ja: '発行済み',
+    ja: '公開済み',
   },
   PublishDraftClubs: {
     en: 'No published clubs found. You have clubs in drafting phase. Publish them to unlock their full potential and make them accessible.',
-    ja: '公開されたクラブは見つかりませんでした。作成したクラブを公開して、他のユーザーがアクセスできるようにしましょう',
+    ja: '公開済みのクラブは見つかりませんでした。作成中のクラブを公開して、他のユーザーがアクセスできるようにしましょう',
   },
   NoClubFound: {
     en: 'No clubs found.',
@@ -121,6 +121,6 @@ export const Strings = {
   },
   CreateClubsNow: {
     en: 'Create clubs now',
-    ja: '今すぐクラブを作成する',
+    ja: 'クラブを作成する',
   },
 } satisfies ClubsI18nParts
