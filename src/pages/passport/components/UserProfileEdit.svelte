@@ -3,7 +3,7 @@
   import { JsonRpcProvider } from 'ethers'
 
   import { Strings } from '../i18n'
-  import UserAsset from './UserAsset.svelte'
+  import PassportAsset from './PassportAsset.svelte'
   import type { PassportItem } from '../types'
   import type { Profile, Skin } from '@pages/api/profile'
   import { i18nFactory } from '@devprotocol/clubs-core'
@@ -536,7 +536,7 @@
                 profileUpdating}
               on:click|preventDefault={() => selectPassportSkinItem(item)}
             >
-              <UserAsset
+              <PassportAsset
                 props={{
                   item,
                   provider: rpcProvider,
@@ -589,7 +589,7 @@
       <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
         {#each profile.skins?.at(0)?.clips ?? [] as clip, i}
           <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
-            <UserAsset
+            <PassportAsset
               props={{
                 item:
                   passportNonSkinItems.find((item) => item.payload === clip) ??
@@ -637,7 +637,7 @@
               profileUpdating}
           >
             <li id={`assets-${i.toString()}`} class="empty:hidden">
-              <UserAsset
+              <PassportAsset
                 props={{
                   item,
                   provider: rpcProvider,

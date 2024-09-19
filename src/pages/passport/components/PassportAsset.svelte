@@ -8,14 +8,8 @@
   import { decodeTokenURI } from '@fixtures/nft'
   import { Contract, type ContractRunner } from 'ethers'
   import { always } from 'ramda'
-  import type { PassportItem } from '../types'
-
-  type ImageData = {
-    src: string
-    w: number
-    h: number
-    alt: string
-  }
+  import type { PassportItem, ImageData } from '../types'
+  import { loadImage } from '../utils'
 
   export let props: {
     item: PassportItem
@@ -51,16 +45,6 @@
   let clubApiAlt = props.local
     ? `https://prerelease.clubs.place/api/clubs?p=${props.item?.propertyAddress}`
     : `https://clubs.place/api/clubs?p=${props.item?.propertyAddress}`
-
-  const loadImage = async (src: string): Promise<ImageData> => {
-    const img = await new Promise<ImageData>((res) => {
-      const _img = new Image()
-      _img.onload = () =>
-        res({ src: _img.src, w: _img.width, h: _img.height, alt: _img.alt })
-      _img.src = src
-    })
-    return img
-  }
 
   onMount(async () => {
     const [clubApiPri, uri] = await Promise.all([

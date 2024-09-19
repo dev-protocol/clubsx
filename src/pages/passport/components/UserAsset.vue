@@ -9,19 +9,14 @@ import type { AssetDocument } from '@fixtures/api/assets/schema'
 import { decodeTokenURI } from '@fixtures/nft'
 import { Contract, type ContractRunner } from 'ethers'
 import { always } from 'ramda'
+import type { ImageData } from '../types'
+import { loadImage } from '../utils'
 
 const props = defineProps<{
   item: AssetDocument
   provider: ContractRunner
   local: boolean
 }>()
-
-type ImageData = {
-  src: string
-  w: number
-  h: number
-  alt: string
-}
 
 const ABI_NFT = [
   'event Transfer(address indexed from, address indexed to, uint256 indexed tokenId)',
@@ -44,16 +39,6 @@ const clubApiAlt = computed(
 )
 
 const contract = new Contract(props.item.contract, ABI_NFT, props.provider)
-
-const loadImage = async (src: string): Promise<ImageData> => {
-  const img = await new Promise<ImageData>((res) => {
-    const _img = new Image()
-    _img.onload = () =>
-      res({ src: _img.src, w: _img.width, h: _img.height, alt: _img.alt })
-    _img.src = src
-  })
-  return img
-}
 
 onMounted(async () => {
   const [clubApiPri, uri] = await Promise.all([
