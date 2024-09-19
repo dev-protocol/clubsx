@@ -1,16 +1,16 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import { JsonRpcProvider } from 'ethers'
-
-  import { Strings } from '../i18n'
-  import PassportAsset from './PassportAsset.svelte'
-  import type { PassportItem } from '../types'
-  import type { Profile, Skin } from '@pages/api/profile'
   import { i18nFactory } from '@devprotocol/clubs-core'
+  import { type UndefinedOr } from '@devprotocol/util-ts'
+  import type { Profile, Skin } from '@pages/api/profile'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import Skeleton from '@components/Global/Skeleton.svelte'
-  import { type UndefinedOr } from '@devprotocol/util-ts'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
+
+  import { Strings } from '../i18n'
+  import type { PassportItem } from '../types'
+  import PassportAsset from './PassportAsset.svelte'
 
   import X from '@assets/X.svg'
   import Twitch from '@assets/twitch.svg'

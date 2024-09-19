@@ -10,3 +10,8 @@ export const loadImage = async (src: string): Promise<ImageData> => {
 
   return img
 }
+
+export const ABI_NFT = [
+  'event Transfer(address indexed from, address indexed to, uint256 indexed tokenId)',
+  'function tokenURI(uint256) view returns(string)',
+]

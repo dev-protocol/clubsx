@@ -1,6 +1,5 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-
   import type { UndefinedOr } from '@devprotocol/util-ts'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
 

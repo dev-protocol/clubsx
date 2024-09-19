@@ -1,25 +1,25 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
+import { JsonRpcProvider } from 'ethers'
 import { i18nFactory } from '@devprotocol/clubs-core'
+import Skeleton from '@components/Global/Skeleton.vue'
+import type { AssetDocument } from '@fixtures/api/assets/schema'
 
 import { Strings } from '../i18n'
 import UserAsset from './UserAsset.vue'
-import Skeleton from '@components/Global/Skeleton.vue'
-import type { AssetDocument } from '@fixtures/api/assets/schema'
-import { JsonRpcProvider } from 'ethers'
 
 const { PUBLIC_ALCHEMY_KEY } = import.meta.env
+const i18nBase = i18nFactory(Strings)
+const rpcProvider = new JsonRpcProvider(
+  `https://polygon-mainnet.g.alchemy.com/v2/${PUBLIC_ALCHEMY_KEY}`,
+)
 
 const props = defineProps<{ account: string; local: boolean }>()
 
-const i18nBase = i18nFactory(Strings)
 let i18n = ref<ReturnType<typeof i18nBase>>(i18nBase(['en']))
 
 const assetsNft = ref<AssetDocument[]>()
 const assetsSbt = ref<AssetDocument[]>()
-const rpcProvider = new JsonRpcProvider(
-  `https://polygon-mainnet.g.alchemy.com/v2/${PUBLIC_ALCHEMY_KEY}`,
-)
 
 onMounted(async () => {
   i18n.value = i18nBase(navigator.languages)
@@ -32,6 +32,7 @@ onMounted(async () => {
       `https://clubs.place/api/assets/related/account/${props.account}/?type=sbt&size=999`,
     ).then((res) => res.json()),
   ])
+
   assetsNft.value = nfts.data
   assetsSbt.value = sbts.data
 })

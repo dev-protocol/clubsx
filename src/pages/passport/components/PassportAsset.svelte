@@ -1,15 +1,15 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
-  import { decode } from '@devprotocol/clubs-core'
-  import { whenDefined } from '@devprotocol/util-ts'
-
-  import type { ClubsData } from '@pages/api/clubs'
-  import Skeleton from '@components/Global/Skeleton.svelte'
-  import { decodeTokenURI } from '@fixtures/nft'
-  import { Contract, type ContractRunner } from 'ethers'
   import { always } from 'ramda'
+  import { onMount } from 'svelte'
+  import { decodeTokenURI } from '@fixtures/nft'
+  import { decode } from '@devprotocol/clubs-core'
+  import type { ClubsData } from '@pages/api/clubs'
+  import { whenDefined } from '@devprotocol/util-ts'
+  import { Contract, type ContractRunner } from 'ethers'
+  import Skeleton from '@components/Global/Skeleton.svelte'
+
+  import { loadImage, ABI_NFT } from '../utils'
   import type { PassportItem, ImageData } from '../types'
-  import { loadImage } from '../utils'
 
   export let props: {
     item: PassportItem
@@ -17,11 +17,6 @@
     local: boolean
     classNames?: string
   }
-
-  const ABI_NFT = [
-    'event Transfer(address indexed from, address indexed to, uint256 indexed tokenId)',
-    'function tokenURI(uint256) view returns(string)',
-  ]
 
   let assetName: string
   let notFound: boolean = false

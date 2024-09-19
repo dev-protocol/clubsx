@@ -1,8 +1,9 @@
 <script lang="ts" setup>
-import { loadImage } from '../utils'
 import { onMounted, ref } from 'vue'
-import type { ImageData, PassportItemIndexDoc } from '../types'
 import Skeleton from '@components/Global/Skeleton.vue'
+
+import { loadImage } from '../utils'
+import type { ImageData, PassportItemIndexDoc } from '../types'
 
 const props = defineProps<{
   img: string
