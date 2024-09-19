@@ -279,10 +279,12 @@
   const resetPassportSkinSelectedItems = () => {
     profile = {
       ...profile, // Retain other modified fields.
-      skins:
-        !profileFromAPI.skins || !profileFromAPI.skins?.at(0)
-          ? ([] as Skin[])
-          : [profileFromAPI.skins[0]],
+      skins: [
+        {
+          ...(profile.skins?.at(0) ?? ({} as Skin)),
+          ...({ theme: profileFromAPI?.skins?.at(0)?.theme ?? {} } as Skin),
+        },
+      ],
     }
 
     console.log('Profile at reseting passport skin item', profile)
