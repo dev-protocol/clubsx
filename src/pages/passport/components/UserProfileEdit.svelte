@@ -330,18 +330,12 @@
   const resetPinnedNonSkinItems = async () => {
     profile = {
       ...profile, // Retain other modified fields.
-      skins:
-        !profileFromAPI.skins ||
-        !profileFromAPI.skins?.at(0) ||
-        !profile.skins ||
-        !profile.skins?.at(0)
-          ? ([] as Skin[])
-          : [
-              {
-                ...(profile.skins?.at(0) ?? ({} as Skin)),
-                clips: profileFromAPI.skins?.at(0)?.clips ?? [],
-              },
-            ], // Retain other field reset clips from response from API.
+      skins: [
+        {
+          ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties ir-respective of whether the skin is modified or not.
+          clips: profileFromAPI?.skins?.at(0)?.clips ?? [], // Retain clips from profileFromAPI if present otherwise empty array.
+        },
+      ],
     }
 
     console.log('Profile at resetting pinned non skin item', profile)
