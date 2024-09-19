@@ -28,7 +28,7 @@ const passportSkinTheme = await whenDefined(sTokenPayload, (payload: string) =>
     sTokenPayload: payload ?? '',
   })
     .then((item) => (item instanceof Error ? undefined : item))
-    .catch(() => undefined)
+    .catch(() => undefined),
 )
 ---
 
