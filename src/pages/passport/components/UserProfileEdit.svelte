@@ -1,16 +1,16 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import { JsonRpcProvider } from 'ethers'
-
-  import { Strings } from '../i18n'
-  import UserAsset from './UserAsset.svelte'
-  import type { PassportItem } from '../types'
-  import type { Profile, Skin } from '@pages/api/profile'
   import { i18nFactory } from '@devprotocol/clubs-core'
+  import { type UndefinedOr } from '@devprotocol/util-ts'
+  import type { Profile, Skin } from '@pages/api/profile'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import Skeleton from '@components/Global/Skeleton.svelte'
-  import { type UndefinedOr } from '@devprotocol/util-ts'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
+
+  import { Strings } from '../i18n'
+  import type { PassportItem } from '../types'
+  import PassportAsset from './PassportAsset.svelte'
 
   import X from '@assets/X.svg'
   import Twitch from '@assets/twitch.svg'
@@ -515,7 +515,11 @@
         {i18n('ConnectWalletTryAgain')} :)
       </div>
     {:else if passportItemFetching}
-      <Skeleton />
+      <div
+        class="rounded-md border border-surface-400 p-8 text-accent-200 h-48"
+      >
+        <Skeleton />
+      </div>
     {:else if !passportItemFetching && !passportSkinItems?.length}
       <div class="rounded-md border border-surface-400 p-8 text-accent-200">
         {i18n('Empty')} :) <br />{@html i18n('PurchasePassportSkin')}
@@ -532,7 +536,7 @@
                 profileUpdating}
               on:click|preventDefault={() => selectPassportSkinItem(item)}
             >
-              <UserAsset
+              <PassportAsset
                 props={{
                   item,
                   provider: rpcProvider,
@@ -572,7 +576,11 @@
         {i18n('ConnectWalletTryAgain')} :)
       </div>
     {:else if passportItemFetching || profileFetching}
-      <Skeleton />
+      <div
+        class="rounded-md border border-surface-400 p-8 text-accent-200 h-48"
+      >
+        <Skeleton />
+      </div>
     {:else if !passportItemFetching && !profileFetching && !profile.skins?.at(0)?.clips?.length}
       <div class="rounded-md border border-surface-400 p-8 text-accent-200">
         {i18n('Empty')} :) <br />{@html i18n('PinnPassportItems')}
@@ -581,7 +589,7 @@
       <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
         {#each profile.skins?.at(0)?.clips ?? [] as clip, i}
           <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
-            <UserAsset
+            <PassportAsset
               props={{
                 item:
                   passportNonSkinItems.find((item) => item.payload === clip) ??
@@ -607,16 +615,21 @@
         {i18n('ConnectWalletTryAgain')} :)
       </div>
     {:else if passportItemFetching || profileFetching}
-      <Skeleton />
-    {:else if !passportItemFetching && !profileFetching && !profile.skins?.at(0)?.clips?.length}
+      <div
+        class="rounded-md border border-surface-400 p-8 text-accent-200 h-48"
+      >
+        <Skeleton />
+      </div>
+    {:else if !passportItemFetching && !profileFetching && !passportNonSkinItems?.length}
       <div class="rounded-md border border-surface-400 p-8 text-accent-200">
-        {i18n('Empty')} :) <br />{@html i18n('PinnPassportItems')}
+        {i18n('Empty')} :) <br />{@html i18n('PurchasePassportAssets')}
       </div>
     {:else if passportNonSkinItems?.length}
       <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
         {#each passportNonSkinItems as item, i}
           <button
-            on:click={() => togglePinnnedPassortNonSkinItem(item)}
+            on:click|preventDefault={() =>
+              togglePinnnedPassortNonSkinItem(item)}
             disabled={!eoa ||
               !passportNonSkinItems.length ||
               profileFetching ||
@@ -624,7 +637,7 @@
               profileUpdating}
           >
             <li id={`assets-${i.toString()}`} class="empty:hidden">
-              <UserAsset
+              <PassportAsset
                 props={{
                   item,
                   provider: rpcProvider,

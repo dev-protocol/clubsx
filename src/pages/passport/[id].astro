@@ -1,14 +1,18 @@
 ---
-import UserProfileEditButton from './components/UserProfileEditButton.svelte'
-import UserAssets from './components/UserAssets.vue'
-import Layout from './Layout.astro'
 import { isAddress } from 'ethers'
 import type { Profile } from '@pages/api/profile'
 import { getProfile } from '@fixtures/api/profile'
-import Icon from './components/Icons.vue'
-import dummyData from './dummyData.json'
+import { whenDefined } from '@devprotocol/util-ts'
 import { passportClass } from '@fixtures/ui/passport'
+import { getPassportItemForPayload } from '@fixtures/api/passportItem'
 import { markdownToHtml, ProseTextInherit } from '@devprotocol/clubs-core'
+
+import Layout from './Layout.astro'
+import dummyData from './dummyData.json'
+import Icon from './components/Icons.vue'
+import UserAssets from './components/UserAssets.vue'
+import PassportClips from './components/PassportClips.vue'
+import UserProfileEditButton from './components/UserProfileEditButton.svelte'
 
 const { id } = Astro.params
 const isEOA = isAddress(id)
@@ -21,9 +25,57 @@ const isLocal =
 
 const htmlDescription = markdownToHtml(profile.description)
 
-const passportSkinBGMs = profile?.skins?.at(0)?.bgm
-const passportSkinClips = profile?.skins?.at(0)?.clips
-const passportSkinVideos = profile?.skins?.at(0)?.videos
+const _passportSkinBGMs = profile?.skins?.at(0)?.bgm
+const _passportSkinClips = profile?.skins?.at(0)?.clips
+const _passportSkinVideos = profile?.skins?.at(0)?.videos
+
+const passportSkinBGMs = await whenDefined(_passportSkinBGMs, () =>
+  getPassportItemForPayload({
+    sTokenPayload: _passportSkinBGMs ?? '',
+  })
+    .then((item) => (item instanceof Error ? undefined : item))
+    .catch(() => undefined),
+)
+
+const passportSkinVideos = await whenDefined(
+  _passportSkinVideos,
+  async (videos) => {
+    if (!videos.length) {
+      return undefined
+    }
+
+    return Promise.all(
+      videos.map((item) =>
+        getPassportItemForPayload({ sTokenPayload: item ?? '' })
+          .then((item) => (item instanceof Error ? undefined : item))
+          .catch(() => undefined),
+      ) ?? [],
+    )
+      .then((items) => items.filter((items) => !!items))
+      .then((items) => (items.length ? items : undefined))
+      .catch(() => undefined)
+  },
+)
+
+const passportSkinClips = await whenDefined(
+  _passportSkinClips,
+  async (clips) => {
+    if (!clips.length) {
+      return undefined
+    }
+
+    return Promise.all(
+      clips.map((item) =>
+        getPassportItemForPayload({ sTokenPayload: item ?? '' })
+          .then((item) => (item instanceof Error ? undefined : item))
+          .catch(() => undefined),
+      ) ?? [],
+    )
+      .then((items) => items.filter((items) => !!items))
+      .then((items) => (items.length ? items : undefined))
+      .catch(() => undefined)
+  },
+)
 ---
 
 <Layout theme="auto" sTokenPayload={profile?.skins?.at(0)?.theme}>
@@ -63,11 +115,17 @@ const passportSkinVideos = profile?.skins?.at(0)?.videos
             >
               {profile.username}
             </span>
+
+            <UserProfileEditButton
+              client:only="svelte"
+              id={id}
+              iconColor={passportClass('edit-button-color')}
+            />
           </span>
         </span>
 
         {
-          passportSkinBGMs?.length && (
+          passportSkinBGMs && (
             <span
               class="col-start-1 row-start-2 lg:col-start-3 lg:row-start-1 col-span-1 row-span-1 content-center"
               class:list={passportClass('music-container')}
@@ -105,6 +163,7 @@ const passportSkinVideos = profile?.skins?.at(0)?.videos
             <Icon icon="youtube" />
           </span>
         </span>
+
         <span
           class="col-start-1 col-span-2 lg:col-span-3 row-start-4 lg:row-start-3 row-span-1 w-full"
           class:list={[passportClass('description-container')]}
@@ -122,19 +181,35 @@ const passportSkinVideos = profile?.skins?.at(0)?.videos
       </span>
     </section>
 
+    {
+      passportSkinVideos && (
+        <section class="grid justify-items-start max-w-screen-lg mx-auto px-4 gap-24 mb-10">
+          <span class:list={passportClass('video-container')}>
+            <span class:list={passportClass('video-content')}>
+              <img
+                src={dummyData.videoThumbnail}
+                class="w-full h-auto aspect-video rounded-sm"
+                class:list={passportClass('video')}
+                alt="Video"
+              />
+            </span>
+          </span>
+        </section>
+      )
+    }
+
     <section
       class="grid justify-items-start max-w-screen-lg mx-auto px-4 gap-24 mb-10"
     >
-      <span class:list={passportClass('video-container')}>
-        <span class:list={passportClass('video-content')}>
-          <img
-            src={dummyData.videoThumbnail}
-            class="w-full h-auto aspect-video rounded-sm"
-            class:list={passportClass('video')}
-            alt=""
-          />
-        </span>
-      </span>
+      {
+        passportSkinClips?.length && (
+          <div class:list={passportClass('clips-container')}>
+            <div class:list={passportClass('clips-content')}>
+              <PassportClips client:load clips={passportSkinClips} />
+            </div>
+          </div>
+        )
+      }
 
       {isEOA && <UserAssets client:load account={id ?? ''} local={isLocal} />}
 

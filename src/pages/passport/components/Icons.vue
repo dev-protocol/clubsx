@@ -126,7 +126,7 @@ const props = defineProps<{
     </defs>
   </svg>
 
-  <!-- Fourth social         -->
+  <!-- Fourth social -->
   <svg
     v-if="props.icon === 'tiktok'"
     xmlns="http://www.w3.org/2000/svg"
@@ -212,6 +212,7 @@ const props = defineProps<{
         stroke-linecap="round"
       ></path>
     </svg>
+
     <svg
       xmlns="http://www.w3.org/2000/svg"
       class="w-[9px] h-[26px]"
@@ -225,6 +226,7 @@ const props = defineProps<{
         stroke-linecap="round"
       ></path>
     </svg>
+
     <svg
       xmlns="http://www.w3.org/2000/svg"
       class="w-[9px] h-[14px]"
@@ -238,6 +240,7 @@ const props = defineProps<{
         stroke-linecap="round"
       ></path>
     </svg>
+
     <svg
       xmlns="http://www.w3.org/2000/svg"
       class="w-[9px] h-[22px]"

@@ -1,14 +1,16 @@
 <script lang="ts" setup>
+import { always } from 'ramda'
+import { decodeTokenURI } from '@fixtures/nft'
 import { computed, onMounted, ref } from 'vue'
 import { decode } from '@devprotocol/clubs-core'
-import { whenDefined } from '@devprotocol/util-ts'
-
 import type { ClubsData } from '@pages/api/clubs'
+import { whenDefined } from '@devprotocol/util-ts'
 import Skeleton from '@components/Global/Skeleton.vue'
-import type { AssetDocument } from '@fixtures/api/assets/schema'
-import { decodeTokenURI } from '@fixtures/nft'
 import { Contract, type ContractRunner } from 'ethers'
-import { always } from 'ramda'
+import type { AssetDocument } from '@fixtures/api/assets/schema'
+
+import type { ImageData } from '../types'
+import { loadImage, ABI_NFT } from '../utils'
 
 const props = defineProps<{
   item: AssetDocument
@@ -16,44 +18,25 @@ const props = defineProps<{
   local: boolean
 }>()
 
-type ImageData = {
-  src: string
-  w: number
-  h: number
-  alt: string
-}
-
-const ABI_NFT = [
-  'event Transfer(address indexed from, address indexed to, uint256 indexed tokenId)',
-  'function tokenURI(uint256) view returns(string)',
-]
-
 const club = ref<ClubsData>()
 const assetName = ref<string>()
 const assetImage = ref<ImageData>()
 const notFound = ref<boolean>(false)
+
 const clubUrl = computed(() => {
   return whenDefined(club.value, ({ config }) => decode(config.source).url)
 })
+
 const clubName = computed(() => {
   return whenDefined(club.value, ({ config }) => decode(config.source).name)
 })
+
 const clubApiAlt = computed(
   () =>
     `${props.local ? 'https://clubs.place' : 'https://prerelease.clubs.place'}/api/clubs?p=${props.item.propertyAddress}`,
 )
 
 const contract = new Contract(props.item.contract, ABI_NFT, props.provider)
-
-const loadImage = async (src: string): Promise<ImageData> => {
-  const img = await new Promise<ImageData>((res) => {
-    const _img = new Image()
-    _img.onload = () =>
-      res({ src: _img.src, w: _img.width, h: _img.height, alt: _img.alt })
-    _img.src = src
-  })
-  return img
-}
 
 onMounted(async () => {
   const [clubApiPri, uri] = await Promise.all([
@@ -68,12 +51,14 @@ onMounted(async () => {
       ),
     ),
   ])
+
   const clubApi = clubApiPri
     ? clubApiPri
     : await fetch(clubApiAlt.value)
         .then((res) => res.json())
         .then((res) => res[0] as null | ClubsData)
         .catch(always(null))
+
   club.value = clubApi ? clubApi : undefined
   notFound.value = !clubApi
   assetName.value = uri?.name

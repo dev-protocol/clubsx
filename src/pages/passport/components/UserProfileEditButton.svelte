@@ -1,10 +1,10 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-
   import type { UndefinedOr } from '@devprotocol/util-ts'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
 
   export let id: string | undefined
+  export let iconColor: string
 
   let connection: UndefinedOr<typeof Connection> = undefined
   let eoa: UndefinedOr<string> = undefined
@@ -22,7 +22,7 @@
 </script>
 
 {#if eoa === id}
-  <a href={`/passport/${id}/edit`}
+  <a href={`/passport/${id}/edit`} class={iconColor}
     ><svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
