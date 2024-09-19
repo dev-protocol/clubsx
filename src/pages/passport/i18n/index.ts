@@ -1,6 +1,18 @@
 import type { ClubsI18nParts } from '@devprotocol/clubs-core'
 
 export const Strings = {
+  SNSPlaceholder: {
+    en: ([sns]) => `Enter your ${sns} username.`,
+    ja: ([sns]) => `${sns}のユーザー名を入力します。`,
+  },
+  DescriptionPlaceholder: {
+    en: `Describe yourself here.`,
+    ja: `ここに自分自身について説明してください。`,
+  },
+  UsernamePlaceholder: {
+    en: `Enter your username.`,
+    ja: `ユーザー名を入力してください。`,
+  },
   ConnectWalletTryAgain: {
     en: () => `Connect wallet & try again!`,
     ja: () => `ウォレットを接続してもう一度お試しください`,

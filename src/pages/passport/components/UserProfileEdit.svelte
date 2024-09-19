@@ -384,6 +384,7 @@
       class="hs-form-field__input"
       disabled={profileUpdating || !eoa}
       bind:value={profile.username}
+      placeholder={i18n('UsernamePlaceholder')}
     />
   </label>
 
@@ -394,6 +395,7 @@
       bind:value={profile.description}
       id="profile-description"
       name="profile-description"
+      placeholder={i18n('DescriptionPlaceholder')}
     />
     <span class="hs-form-field__helper">
       * {i18n('MarkdownAvailable')}
@@ -444,6 +446,7 @@
           class="hs-form-field__input w-fit grow"
           disabled={profileUpdating || !eoa}
           bind:value={profile.xProfile}
+          placeholder={i18n('SNSPlaceholder', ['X'])}
         />
       </div>
 
@@ -488,6 +491,7 @@
           class="hs-form-field__input w-fit grow"
           disabled={profileUpdating || !eoa}
           bind:value={profile.twitchProfile}
+          placeholder={i18n('SNSPlaceholder', ['Twitch'])}
         />
       </div>
 
@@ -557,6 +561,7 @@
           class="hs-form-field__input w-fit grow"
           disabled={profileUpdating || !eoa}
           bind:value={profile.instagramProfile}
+          placeholder={i18n('SNSPlaceholder', ['Instagram'])}
         />
       </div>
 
@@ -593,6 +598,7 @@
           class="hs-form-field__input w-fit grow"
           disabled={profileUpdating || !eoa}
           bind:value={profile.tiktokProfile}
+          placeholder={i18n('SNSPlaceholder', ['TikTok'])}
         />
       </div>
 
@@ -631,6 +637,7 @@
           class="hs-form-field__input w-fit grow"
           disabled={profileUpdating || !eoa}
           bind:value={profile.youtubeProfile}
+          placeholder={i18n('SNSPlaceholder', ['Youtube'])}
         />
       </div>
     </div>
