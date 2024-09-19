@@ -212,6 +212,16 @@
     )
   }
 
+  const updateSNS = async (platform: string, username: string) => {
+    profile = {
+      ...profile,
+      sns: {
+        ...(profile?.sns ?? ({} as Profile['sns'])),
+        [platform]: username,
+      },
+    }
+  }
+
   const _connectOnMount = async () => {
     const { connection: _conn } = await import(
       '@devprotocol/clubs-core/connection'
@@ -445,7 +455,8 @@
         <input
           class="hs-form-field__input w-fit grow"
           disabled={profileUpdating || !eoa}
-          bind:value={profile.xProfile}
+          value={profile?.sns?.x ?? ''}
+          on:change={(e) => updateSNS('x', e?.target?.value ?? '')}
           placeholder={i18n('SNSPlaceholder', ['X'])}
         />
       </div>
@@ -490,7 +501,8 @@
         <input
           class="hs-form-field__input w-fit grow"
           disabled={profileUpdating || !eoa}
-          bind:value={profile.twitchProfile}
+          value={profile?.sns?.twitch ?? ''}
+          on:change={(e) => updateSNS('twitch', e?.target?.value ?? '')}
           placeholder={i18n('SNSPlaceholder', ['Twitch'])}
         />
       </div>
@@ -560,7 +572,8 @@
         <input
           class="hs-form-field__input w-fit grow"
           disabled={profileUpdating || !eoa}
-          bind:value={profile.instagramProfile}
+          value={profile?.sns?.instagram ?? ''}
+          on:change={(e) => updateSNS('instagram', e?.target?.value ?? '')}
           placeholder={i18n('SNSPlaceholder', ['Instagram'])}
         />
       </div>
@@ -597,7 +610,8 @@
         <input
           class="hs-form-field__input w-fit grow"
           disabled={profileUpdating || !eoa}
-          bind:value={profile.tiktokProfile}
+          value={profile?.sns?.tiktok ?? ''}
+          on:change={(e) => updateSNS('tiktok', e?.target?.value ?? '')}
           placeholder={i18n('SNSPlaceholder', ['TikTok'])}
         />
       </div>
@@ -636,7 +650,8 @@
         <input
           class="hs-form-field__input w-fit grow"
           disabled={profileUpdating || !eoa}
-          bind:value={profile.youtubeProfile}
+          value={profile?.sns?.youtube ?? ''}
+          on:change={(e) => updateSNS('youtube', e?.target?.value ?? '')}
           placeholder={i18n('SNSPlaceholder', ['Youtube'])}
         />
       </div>
