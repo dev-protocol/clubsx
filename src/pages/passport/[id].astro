@@ -82,7 +82,7 @@ const passportSkinClips = await whenDefined(
   <div class="grid gap-24">
     <section class:list={passportClass('account-container')}>
       <span
-        class="grid grid-cols-[6rem_1fr] lg:grid-cols-[10rem_1fr_auto] justify-items-start max-w-screen-lg mx-auto px-4 gap-6 lg:gap-y-8"
+        class="grid grid-cols-[6rem_1fr] lg:grid-cols-[6rem_1fr_auto] justify-items-start max-w-screen-lg mx-auto px-4 gap-4 lg:gap-y-4"
         class:list={passportClass('account-content')}
       >
         <span
@@ -90,7 +90,7 @@ const passportSkinClips = await whenDefined(
           class:list={passportClass('avatar-container')}
         >
           <span
-            class="flex flex-col items-center p-1.5 lg:p-2 rounded-full bg-surface-300"
+            class="flex flex-col items-center p-1.5 lg:p-1.5 w-24 h-24 rounded-full bg-surface-300"
             class:list={passportClass('avatar-content')}
           >
             <img
@@ -101,16 +101,17 @@ const passportSkinClips = await whenDefined(
             />
           </span>
         </span>
+
         <span
           class="col-start-2 col-span-1 content-center"
           class:list={passportClass('username-container')}
         >
           <span
-            class="flex justify-center items-center gap-6 px-3 py-1.5 lg:px-6 lg:py-3 rounded-xl bg-surface-200"
+            class="flex justify-center items-center gap-6 px-3 py-1.5 lg:px-4 lg:py-2 rounded-xl bg-surface-200"
             class:list={passportClass('username-content')}
           >
             <span
-              class="text-2xl lg:text-4xl font-bold"
+              class="font-bold"
               class:list={passportClass('username')}
             >
               {profile.username}
@@ -131,7 +132,7 @@ const passportSkinClips = await whenDefined(
               class:list={passportClass('music-container')}
             >
               <span
-                class="flex items-center gap-[15px] px-[16px] py-[8px] rounded-lg bg-surface-200"
+                class="flex items-center gap-[15px] px-4 py-2 rounded-lg bg-surface-200"
                 class:list={passportClass('music-content')}
               >
                 <span class="opacity-50">
@@ -155,7 +156,7 @@ const passportSkinClips = await whenDefined(
               class:list={passportClass('links-container')}
             >
               <span
-                class="grid grid-cols-5 items-start gap-6 p-3 rounded-lg bg-white"
+                class="grid grid-cols-5 items-start gap-4 px-4 py-2 rounded-lg bg-white"
                 class:list={passportClass('links-content')}
               >
                 <a
@@ -199,14 +200,15 @@ const passportSkinClips = await whenDefined(
         }
 
         <span
-          class="col-start-1 col-span-2 lg:col-span-3 row-start-4 lg:row-start-3 row-span-1 w-full"
+          class="flex justify-center col-start-1 col-span-2 lg:col-span-3 row-start-4 lg:row-start-3 row-span-1 w-full"
           class:list={[passportClass('description-container')]}
         >
           <span
-            class="flex w-full justify-center items-center gap-2.5 p-4 self-stretch block rounded-xl"
+            class="flex w-full justify-center items-center gap-2.5 px-4 py-2 self-stretch rounded-xl bg-white"
             class:list={[passportClass('description-content')]}
           >
             <div
+              class="text-2xl"
               class:list={[ProseTextInherit, passportClass('description')]}
               set:html={htmlDescription}
             />
@@ -231,6 +233,208 @@ const passportSkinClips = await whenDefined(
         </section>
       )
     }
+
+    <!-- demo
+    <section
+      class="relative flex flex-col items-center gap-4 mx-auto mb-10 px-4 max-w-screen-lg"
+    >
+      <ul class="flex items-end gap-6">
+        <li class="flex flex-col gap-2 p-2 w-[9.357rem] bg-white rounded">
+          <div class="rounded object-contain">
+            <img src={dummyData.passportSkinsImage} alt="Clip" />
+          </div>
+          <div class="flex flex-col gap-1">
+            <h3
+              class="overflow-hidden text-ellipsis text-nowrap text-base font-bold"
+            >
+              Clip Title #1
+            </h3>
+            <p
+              class="overflow-hidden text-ellipsis text-nowrap text-sm"
+              style="--tw-text-opacity: 1"
+            >
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </p>
+          </div>
+        </li>
+        <li class="flex flex-col gap-2 p-2 w-[10.9375rem] bg-white rounded">
+          <div class="rounded object-contain">
+            <img src={dummyData.passportSkinsImage} alt="Clip" />
+          </div>
+          <div class="flex flex-col gap-1">
+            <h3
+              class="overflow-hidden text-ellipsis text-nowrap text-base font-bold"
+            >
+              Clip Title #2
+            </h3>
+            <p
+              class="overflow-hidden text-ellipsis text-nowrap text-sm"
+              style="--tw-text-opacity: 1"
+            >
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </p>
+          </div>
+        </li>
+        <li class="flex flex-col gap-2 p-2 w-[12.5rem] bg-white rounded">
+          <div class="rounded object-contain">
+            <img class="w-full" src={dummyData.passportSkinsImage} alt="Clip" />
+          </div>
+          <div class="flex flex-col gap-1">
+            <h3
+              class="overflow-hidden text-ellipsis text-nowrap text-base font-bold"
+            >
+              Clip Title #3
+            </h3>
+            <p
+              class="overflow-hidden text-ellipsis text-nowrap text-sm"
+              style="--tw-text-opacity: 1"
+            >
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </p>
+          </div>
+        </li>
+        <li class="flex flex-col gap-2 p-2 w-[10.9375rem] bg-white rounded">
+          <div class="rounded object-contain">
+            <img src={dummyData.passportSkinsImage} alt="Clip" />
+          </div>
+          <div class="flex flex-col gap-1">
+            <h3
+              class="overflow-hidden text-ellipsis text-nowrap text-base font-bold"
+            >
+              Clip Title #4
+            </h3>
+            <p
+              class="overflow-hidden text-ellipsis text-nowrap text-sm"
+              style="--tw-text-opacity: 1"
+            >
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </p>
+          </div>
+        </li>
+        <li class="flex flex-col gap-2 p-2 w-[9.357rem] bg-white rounded">
+          <div class="rounded object-contain">
+            <img src={dummyData.passportSkinsImage} alt="Clip" />
+          </div>
+          <div class="flex flex-col gap-1">
+            <h3
+              class="overflow-hidden text-ellipsis text-nowrap text-base font-bold"
+            >
+              Clip Title #5
+            </h3>
+            <p
+              class="overflow-hidden text-ellipsis text-nowrap text-sm"
+              style="--tw-text-opacity: 1"
+            >
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </p>
+          </div>
+        </li>
+      </ul>
+
+      <ul class="passport-skins flex items-end gap-2">
+        <li class="passport-skins-content flex flex-col gap-2 p-2 w-[9.357rem] bg-white rounded">
+          <div class="rounded object-contain">
+            <img src={dummyData.passportSkinsImage} alt="Clip" />
+          </div>
+          <div class="flex flex-col gap-1">
+            <h3
+              class="overflow-hidden text-ellipsis text-nowrap text-base font-bold"
+            >
+              Clip Title #1
+            </h3>
+            <p
+              class="overflow-hidden text-ellipsis text-nowrap text-sm"
+              style="--tw-text-opacity: 1"
+            >
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </p>
+          </div>
+        </li>
+        <li class="passport-skins-content flex flex-col gap-2 p-2 w-[9.357rem] bg-white rounded">
+          <div class="rounded object-contain">
+            <img src={dummyData.passportSkinsImage} alt="Clip" />
+          </div>
+          <div class="flex flex-col gap-1">
+            <h3
+              class="overflow-hidden text-ellipsis text-nowrap text-base font-bold"
+            >
+              Clip Title #2
+            </h3>
+            <p
+              class="overflow-hidden text-ellipsis text-nowrap text-sm"
+              style="--tw-text-opacity: 1"
+            >
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </p>
+          </div>
+        </li>
+        <li class="passport-skins-content flex flex-col gap-2 p-2 w-[9.357rem] bg-white rounded">
+          <div class="rounded object-contain">
+            <img class="w-full" src={dummyData.passportSkinsImage} alt="Clip" />
+          </div>
+          <div class="flex flex-col gap-1">
+            <h3
+              class="overflow-hidden text-ellipsis text-nowrap text-base font-bold"
+            >
+              Clip Title #3
+            </h3>
+            <p
+              class="overflow-hidden text-ellipsis text-nowrap text-sm"
+              style="--tw-text-opacity: 1"
+            >
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </p>
+          </div>
+        </li>
+        <li class="passport-skins-content flex flex-col gap-2 p-2 w-[9.357rem] bg-white rounded">
+          <div class="rounded object-contain">
+            <img src={dummyData.passportSkinsImage} alt="Clip" />
+          </div>
+          <div class="flex flex-col gap-1">
+            <h3
+              class="overflow-hidden text-ellipsis text-nowrap text-base font-bold"
+            >
+              Clip Title #4
+            </h3>
+            <p
+              class="overflow-hidden text-ellipsis text-nowrap text-sm"
+              style="--tw-text-opacity: 1"
+            >
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </p>
+          </div>
+        </li>
+        <li class="passport-skins-content flex flex-col gap-2 p-2 w-[9.357rem] bg-white rounded">
+          <div class="rounded object-contain">
+            <img src={dummyData.passportSkinsImage} alt="Clip" />
+          </div>
+          <div class="flex flex-col gap-1">
+            <h3
+              class="overflow-hidden text-ellipsis text-nowrap text-base font-bold"
+            >
+              Clip Title #5
+            </h3>
+            <p
+              class="overflow-hidden text-ellipsis text-nowrap text-sm"
+              style="--tw-text-opacity: 1"
+            >
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </p>
+          </div>
+        </li>
+      </ul>
+    </section>
+    -->
 
     <section
       class="grid justify-items-start max-w-screen-lg mx-auto px-4 gap-24 mb-10"
