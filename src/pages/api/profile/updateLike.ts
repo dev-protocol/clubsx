@@ -23,10 +23,7 @@ export const POST = async ({ request }: { request: Request }) => {
   const newProfile = {
     ...profile,
     skins: profile?.skins?.map((skin, index) => {
-      console.log('Index', index)
-      console.log('SkinIndex', skinIndex)
-      console.log('Skin inside', skin)
-      if (index === skinIndex) {
+      if (Number(index) === Number(skinIndex)) {
         return {
           ...skin,
           likes: (skin?.likes ? skin.likes : 0) + 1,
