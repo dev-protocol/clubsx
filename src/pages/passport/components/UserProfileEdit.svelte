@@ -781,6 +781,7 @@
                   item: item,
                   provider: rpcProvider,
                   local: isLocal,
+                  isEditable: true
                 }}
               />
             </li>
