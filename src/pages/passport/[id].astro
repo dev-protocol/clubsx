@@ -13,6 +13,7 @@ import Icon from './components/Icons.vue'
 import UserAssets from './components/UserAssets.vue'
 import PassportClips from './components/PassportClips.vue'
 import UserProfileEditButton from './components/UserProfileEditButton.svelte'
+import Like from './components/Like.svelte'
 
 const { id } = Astro.params
 const isEOA = isAddress(id)
@@ -28,6 +29,7 @@ const htmlDescription = markdownToHtml(profile.description)
 const _passportSkinBGMs = profile?.skins?.at(0)?.bgm
 const _passportSkinClips = profile?.skins?.at(0)?.clips
 const _passportSkinVideos = profile?.skins?.at(0)?.videos
+const _currentLikes = profile?.skins?.at(0)?.likes
 
 const passportSkinBGMs = await whenDefined(_passportSkinBGMs, () =>
   getPassportItemForPayload({
@@ -251,5 +253,19 @@ const passportSkinClips = await whenDefined(
         >Clubs</a
       >
     </section>
+    <div class="items-center gap-[10px] p-[16px]">
+      <div
+        class="flex w-[84px] h-[84px] p-[8px] flex-col justify-center items-center"
+      >
+        <Like
+          client:load
+          props={{
+            profileId: id ? id : '',
+            currentLikes: _currentLikes ? _currentLikes : 0,
+            skinIndex: 0,
+          }}
+        />
+      </div>
+    </div>
   </div>
 </Layout>
