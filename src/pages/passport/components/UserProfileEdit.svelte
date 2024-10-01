@@ -1,16 +1,19 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import { JsonRpcProvider } from 'ethers'
+  import { fade } from 'svelte/transition'
   import { i18nFactory } from '@devprotocol/clubs-core'
   import { type UndefinedOr } from '@devprotocol/util-ts'
   import type { Profile, Skin } from '@pages/api/profile'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import Skeleton from '@components/Global/Skeleton.svelte'
+  import { Modals, closeAllModals, closeModal, openModal } from 'svelte-modals'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
 
   import { Strings } from '../i18n'
   import type { PassportItem } from '../types'
   import PassportAsset from './PassportAsset.svelte'
+  import PassportClipEditModal from './PassportClipEditModal.svelte'
 
   const i18nBase = i18nFactory(Strings)
 
@@ -30,6 +33,8 @@
   let eoa: UndefinedOr<string> = undefined
   let connection: UndefinedOr<typeof Connection> = undefined
   let updatingStatus: UndefinedOr<'success' | 'error'> = undefined
+  let isDisplayingHint: boolean = false
+  let timeoutToHint: UndefinedOr<NodeJS.Timeout> = undefined
 
   const rpcProvider = new JsonRpcProvider(
     `https://polygon-mainnet.g.alchemy.com/v2/${import.meta.env.PUBLIC_ALCHEMY_KEY ?? ''}`,
@@ -362,6 +367,33 @@
     }
 
     console.log('Profile at resetting pinned non skin item', profile)
+  }
+
+  const onEditClip = (item: PassportItem) => {
+    openModal(PassportClipEditModal, {
+      item: item,
+      onClose: async () => {
+        closeAllModals()
+      },
+    })
+  }
+
+  const onClickBackdrop = () => {
+    /**
+     * Define the action when clicking the modal backdrop.
+     */
+    if (timeoutToHint !== undefined) {
+      clearTimeout(timeoutToHint)
+      timeoutToHint = undefined
+    }
+
+    if (isDisplayingHint) {
+      closeModal()
+      isDisplayingHint = false
+      return
+    }
+
+    closeAllModals()
   }
 </script>
 
@@ -782,6 +814,7 @@
                   provider: rpcProvider,
                   local: isLocal,
                   isEditable: true,
+                  editAction: () => onEditClip(item),
                 }}
               />
             </li>
@@ -862,3 +895,12 @@
     >
   {/if}
 </div>
+
+<Modals>
+  <div
+    slot="backdrop"
+    class="fixed inset-0 bg-black/50"
+    transition:fade={{ duration: 100 }}
+    on:click={onClickBackdrop}
+  />
+</Modals>

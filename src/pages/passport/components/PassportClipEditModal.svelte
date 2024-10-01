@@ -1,24 +1,37 @@
 <script lang="ts">
+  import { onMount } from 'svelte'
+  import { fly } from 'svelte/transition'
+  import ColorPicker, { ChromeVariant } from 'svelte-awesome-color-picker'
+  import { i18nFactory } from '@devprotocol/clubs-core'
   import type { UndefinedOr } from '@devprotocol/util-ts'
   import { closeModal, closeAllModals } from 'svelte-modals'
-  import { fly } from 'svelte/transition'
+
+  import { Strings } from '../i18n'
+  import type { PassportItem } from '../types'
 
   export let isOpen: boolean
-  export let message: string
-  export let closeButton: string
+  export let item: PassportItem
   export let action: UndefinedOr<() => Promise<void>> = undefined
-  export let actionButton: UndefinedOr<string> = undefined
   export let closeAllOnFinished: boolean = false
-  export let spinner: boolean = false
   export let onClose: UndefinedOr<() => Promise<void>> = undefined
 
+  const i18nBase = i18nFactory(Strings)
   let loading = false
+  let i18n = i18nBase(['en'])
+  let description: string = ''
+  let hex: string = '#FFFF00'
+
+  onMount(async () => {
+    i18n = i18nBase(navigator.languages)
+  })
+
   const onClickAction = async () => {
     loading = true
     action && (await action())
     loading = false
     closeAllOnFinished ? closeAllModals() : closeModal()
   }
+
   const onClickClose = async () => {
     onClose && (await onClose())
     closeModal()
@@ -29,14 +42,14 @@
   <!-- on:introstart and on:outroend are required to transition 1 at a time between modals -->
   <div
     role="dialog"
-    class="fixed bottom-[50%] left-[50%] flex flex-col w-full max-w-2xl -translate-x-[50%] items-center justify-center rounded-t-3xl border-x border-t border-dp-blue-grey-300 bg-dp-blue-grey-400 p-12 text-white subpixel-antialiased shadow-xl lg:pb-32 gap-4"
+    class="fixed bottom-0 left-[50%] flex flex-col w-full max-w-2xl -translate-x-[50%] items-center justify-center rounded-t-3xl border-x border-t border-dp-blue-grey-300 bg-dp-blue-grey-400 p-12 text-white subpixel-antialiased shadow-xl lg:pb-32 gap-6 overflow-y-scroll"
     transition:fly={{ y: 500 }}
     on:introstart
     on:outroend
     on:close={onClose}
   >
     <div class="w-full flex items-center justify-between">
-      <div class="w-6 h-6">
+      <button on:click|preventDefault={() => onClose()} class="w-6 h-6">
         <svg
           width="24"
           height="24"
@@ -52,9 +65,9 @@
             stroke-linejoin="round"
           />
         </svg>
-      </div>
+      </button>
 
-      <p class="font-DMSan font-bold text-base">Edit item</p>
+      <p class="font-DMSan font-bold text-base">{i18n('EditItem')}</p>
 
       <button
         on:click|preventDefault={() => onClose()}
@@ -62,25 +75,46 @@
       >
     </div>
 
-    <div class="grid gap-5 max-w-screen-sm">
-      <p class="text-xl font-bold">{message}</p>
-      {#if spinner}
-        <div
-          role="presentation"
-          class="mx-auto h-14 w-14 animate-spin rounded-full border-l border-r border-t border-native-blue-300"
+    <div class="grid gap-8 max-w-screen-sm">
+      <div class="w-[30%] h-auto aspect-square">
+        <img
+          src={item.itemAssetValue}
+          alt="Passport item"
+          class="w-full h-full rounded-[5px]"
         />
-      {/if}
-      {#if action && actionButton}
-        <button
-          on:click={onClickAction}
-          disabled={loading}
-          class="hs-button is-filled is-fullwidth is-large bg-dp-green-400 text-dp-green-ink disabled:animate-pulse"
-          >{actionButton}</button
-        >
-      {/if}
-      <button on:click={onClickClose} class="hs-button is-filled is-fullwidth"
-        >{closeButton}</button
-      >
+      </div>
+
+      <label class="hs-form-field is-filled">
+        <span class="hs-form-field__label"> {i18n('Description')} </span>
+        <textarea
+          class="hs-form-field__input"
+          bind:value={description}
+          id="passport-item-description"
+          name="passort-item-description"
+          placeholder={i18n('DescriptionPlaceholder')}
+        />
+        <span class="hs-form-field__helper">
+          * {i18n('MarkdownAvailable')}
+          <a
+            href="https://www.markdownguide.org/basic-syntax"
+            target="_blank"
+            class="underline [font-size:inherit]"
+            rel="noopener noreferrer">({i18n('WhatIsMarkdown')} ↗)</a
+          >
+        </span>
+      </label>
+
+      <label class="hs-form-field is-filled">
+        <span class="hs-form-field__label"> {i18n('FrameColor')} </span>
+        <ColorPicker
+          bind:hex
+          position="responsive"
+          class="bg-transparent"
+          sliderDirection="vertical"
+          isTextInput={false}
+          label="Click here to choose a color"
+        />
+      </label>
     </div>
   </div>
 {/if}

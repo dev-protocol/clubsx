@@ -1,6 +1,14 @@
 import type { ClubsI18nParts } from '@devprotocol/clubs-core'
 
 export const Strings = {
+  FrameColor: {
+    en: `Frame color`,
+    ja: `フレームカラー`,
+  },
+  EditItem: {
+    en: `Edit item`,
+    ja: `項目を編集する`,
+  },
   SNSPlaceholder: {
     en: ([sns]) => `Enter your ${sns} username.`,
     ja: ([sns]) => `${sns}のユーザー名を入力します。`,

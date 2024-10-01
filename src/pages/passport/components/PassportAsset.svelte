@@ -1,14 +1,12 @@
 <script lang="ts">
   import { always } from 'ramda'
   import { onMount } from 'svelte'
-  import { fade } from 'svelte/transition'
   import { decodeTokenURI } from '@fixtures/nft'
   import { decode } from '@devprotocol/clubs-core'
   import type { ClubsData } from '@pages/api/clubs'
   import { whenDefined } from '@devprotocol/util-ts'
   import { Contract, type ContractRunner } from 'ethers'
   import Skeleton from '@components/Global/Skeleton.svelte'
-  import { Modals, closeAllModals, closeModal, openModal } from 'svelte-modals'
 
   import { loadImage, ABI_NFT } from '../utils'
   import type { PassportItem, ImageData } from '../types'
@@ -20,6 +18,7 @@
     local: boolean
     classNames?: string
     isEditable?: boolean
+    editAction?: (item: PassportItem) => void
   }
 
   let assetName: string
@@ -90,28 +89,8 @@
       : await whenDefined(uri?.htmlImageSrc, loadImage)
   })
 
-  const onEditClip = (payload: string) => {
-    openModal(PassportClipEditModal, {
-      onClose: async () => {
-        closeAllModals()
-      },
-    })
-  }
-
-  const onClickBackdrop = () => {
-    /**
-     * Define the action when clicking the modal backdrop.
-     */
-    if (timeoutToHint !== undefined) {
-      clearTimeout(timeoutToHint)
-      timeoutToHint = undefined
-    }
-    if (isDisplayingHint) {
-      closeModal()
-      isDisplayingHint = false
-      return
-    }
-    closeAllModals()
+  const onEditClip = (item: PassportItem) => {
+    props.editAction && props.editAction(item)
   }
 </script>
 
@@ -140,9 +119,9 @@
       </div>
 
       {#if props.isEditable}
-        <div
+        <button
           class="relative w-6 h-6 justify-self-end cursor-pointer"
-          on:click|preventDefault={() => onEditClip(props.item.payload)}
+          on:click|preventDefault={() => onEditClip(props.item)}
         >
           <svg
             class="h-6 w-6"
@@ -157,19 +136,8 @@
               fill="currentColor"
             />
           </svg>
-        </div>
+        </button>
       {/if}
     </div>
   </div>
 {/if}
-
-<div class="clear-both mt-1">
-  <Modals>
-    <div
-      slot="backdrop"
-      class="fixed inset-0 bg-black/50"
-      transition:fade={{ duration: 100 }}
-      on:click={onClickBackdrop}
-    />
-  </Modals>
-</div>
