@@ -1,6 +1,5 @@
 import { generateProfileId } from '@fixtures/api/keys'
 import { getProfile } from '@fixtures/api/profile'
-import { hashMessage, recoverAddress } from 'ethers'
 import { createClient } from 'redis'
 import { type Profile } from '.'
 
