@@ -109,7 +109,6 @@
         <ColorPicker
           bind:hex
           position="responsive"
-          class="bg-transparent"
           sliderDirection="vertical"
           isTextInput={false}
           label="Click here to choose a color"
