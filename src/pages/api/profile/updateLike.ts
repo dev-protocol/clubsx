@@ -48,8 +48,10 @@ export const POST = async ({ request }: { request: Request }) => {
     console.error('redis connection error: ', e)
   })
 
+  const profileIdForDB = generateProfileId(profileId)
+
   try {
-    await client.set(profileId, JSON.stringify(newProfile))
+    await client.set(profileIdForDB, JSON.stringify(newProfile))
     await client.quit()
     return new Response(JSON.stringify({}), { status: 200 })
   } catch (error) {
