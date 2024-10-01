@@ -46,10 +46,10 @@
     transition:fly={{ y: 500 }}
     on:introstart
     on:outroend
-    on:close={onClose}
+    on:close={onClickClose}
   >
     <div class="w-full flex items-center justify-between">
-      <button on:click|preventDefault={() => onClose()} class="w-6 h-6">
+      <button on:click|preventDefault={onClickClose} class="w-6 h-6">
         <svg
           width="24"
           height="24"
