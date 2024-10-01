@@ -33,7 +33,7 @@
 <div>
   <button on:click={() => like()}>
     <span>
-        {localLikeState}
+      {localLikeState}
     </span>
     <svg
       width="106"
