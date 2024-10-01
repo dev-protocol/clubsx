@@ -70,7 +70,7 @@
       <p class="font-DMSan font-bold text-base">{i18n('EditItem')}</p>
 
       <button
-        on:click|preventDefault={() => onClose()}
+        on:click|preventDefault={() => onClickClose()}
         class="hs-button is-filled is-large w-fit text-center">Done</button
       >
     </div>
