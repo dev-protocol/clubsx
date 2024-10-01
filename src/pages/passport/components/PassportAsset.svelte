@@ -10,7 +10,6 @@
 
   import { loadImage, ABI_NFT } from '../utils'
   import type { PassportItem, ImageData } from '../types'
-  import PassportClipEditModal from './PassportClipEditModal.svelte'
 
   export let props: {
     item: PassportItem
@@ -25,8 +24,6 @@
   let notFound: boolean = false
   let club: ClubsData | undefined
   let assetImage: ImageData | undefined
-  let isDisplayingHint: boolean = false
-  let timeoutToHint: UndefinedOr<NodeJS.Timeout> = undefined
 
   let clubUrl = whenDefined(
     club,
