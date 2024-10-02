@@ -16,39 +16,38 @@ const props = defineProps<{
   item: PassportClip
 }>()
 
-const club = ref<ClubsData>()
+const clubConfig = ref<string>()
 
-const clubUrl = computed(() => {
-  return whenDefined(club.value, ({ config }) => decode(config.source).url)
+const SITE_NAME =
+  new URL(props.item.clubsUrl)?.hostname?.split('.')?.at(0) ?? 'developers'
+const API_PATH = `api/config/${SITE_NAME}`
+
+const clubApiAlt = computed(() => {
+  return window.location.hostname.includes('prerelease.clubs.place')
+    ? `https://prerelease.clubs.place/${API_PATH}`
+    : window.location.hostname.includes('clubs.place')
+      ? `https://clubs.place/${API_PATH}`
+      : `http://localhost:${window.location.port}/${API_PATH}`
 })
 
 const clubName = computed(() => {
-  return whenDefined(club.value, ({ config }) => decode(config.source).name)
-})
-
-const clubApiAlt = computed(() => {
-  const path = `api/clubs?p=${props.item.propertyAddress}`
-  return window.location.hostname.includes('prerelease.clubs.place')
-    ? `https://prerelease.clubs.place/${path}`
-    : window.location.hostname.includes('clubs.place')
-      ? `https://clubs.place/${path}`
-      : `http://localhost:${window.location.port}/${path}`
+  return whenDefined(
+    clubConfig.value,
+    ({ config }) => decode(clubConfig.value).name,
+  )
 })
 
 const fetchClub = async (api: string) => {
   return await fetch(api)
     .then((res) => res.json())
-    .then((res) => res[0] as null | ClubsData)
+    .then((res) => res as null | ClubsData)
     .catch(always(null))
 }
 
 onMounted(async () => {
-  const clubApiPri = await fetchClub(
-    `/api/clubs?p=${props.item.propertyAddress}`,
-  )
+  const clubApiPri = await fetchClub(`/${API_PATH}`)
   const clubApi = clubApiPri ? clubApiPri : await fetchClub(clubApiAlt.value)
-
-  club.value = clubApi ? clubApi : undefined
+  clubConfig.value = clubApi?.content ?? undefined
 })
 </script>
 
@@ -68,6 +67,6 @@ onMounted(async () => {
       :frame-color-hex="item.frameColorHex"
     />
     <p v-html="item.description"></p>
-    <a v-if="clubName" :href="clubUrl">{{ clubName }}</a>
+    <a v-if="clubName" :href="props.item.clubsUrl">{{ clubName }}</a>
   </div>
 </template>
