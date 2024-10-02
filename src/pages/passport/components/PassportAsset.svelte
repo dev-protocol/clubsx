@@ -18,7 +18,7 @@
     classNames?: string
     isEditable?: boolean
     provider: ContractRunner
-    description: UndefinedOr<string>
+    description?: UndefinedOr<string>
     editAction?: (item: PassportItem) => void
   }
 

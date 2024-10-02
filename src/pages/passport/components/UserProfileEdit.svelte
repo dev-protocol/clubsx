@@ -4,7 +4,7 @@
   import { fade } from 'svelte/transition'
   import { i18nFactory } from '@devprotocol/clubs-core'
   import { type UndefinedOr } from '@devprotocol/util-ts'
-  import type { Profile, Skin } from '@pages/api/profile'
+  import type { Clip, Profile, Skin } from '@pages/api/profile'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import Skeleton from '@components/Global/Skeleton.svelte'
   import { Modals, closeAllModals, closeModal, openModal } from 'svelte-modals'
@@ -441,7 +441,7 @@
                     ?.clips?.filter((clip) => clip.payload !== item.payload) ??
                     ([] as Clip[])),
                   {
-                    payload: item.payload,
+                    payload: item.payload!,
                     description,
                     frameColorHex,
                   },
