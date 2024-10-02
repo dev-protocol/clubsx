@@ -36,7 +36,7 @@ const clubName = computed(() => {
 const fetchClub = async (api: string) => {
   return await fetch(api)
     .then((res) => res.json())
-    .then((res) => res as null | string)
+    .then((res) => res as null | { content: string | null; message: string })
     .catch(always(null))
 }
 
