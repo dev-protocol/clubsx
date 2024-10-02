@@ -290,7 +290,7 @@
       ...profile, // Retain other modified fields.
       skins: [
         {
-          ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties ir-respective of whether the skin is modified or not.
+          ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
           theme: item.payload, // Update only theme value.
         },
       ],
@@ -308,7 +308,7 @@
       ...profile, // Retain other modified fields.
       skins: [
         {
-          ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties ir-respective of whether the skin is modified or not.
+          ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
 
           // Reset only theme value below.
           ...(profileFromAPI?.skins?.length && // If profileFromAPI, skins, skins.length, skins.at, thme any return falsy we get empty value.
@@ -336,14 +336,20 @@
       skins: [
         // Set skins to the updated value or append new value of theme.
         {
-          ...(profile.skins?.at(0) ?? ({} as Skin)),
-          clips: profile.skins?.at(0)?.clips?.includes(item.payload)
+          ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
+          clips: profile?.skins
+            ?.at(0)
+            ?.clips?.find((clip) => clip.payload === item.payload)
             ? [
                 ...(profile.skins
                   ?.at(0)
-                  ?.clips?.filter((clip) => clip !== item.payload) ?? []),
+                  ?.clips?.filter((clip) => clip.payload !== item.payload) ??
+                  []),
               ]
-            : [...(profile.skins?.at(0)?.clips ?? []), item.payload],
+            : [
+                ...(profile.skins?.at(0)?.clips ?? []),
+                { payload: item.payload, description: '', frameColorHex: '' },
+              ],
         },
       ],
     }
@@ -370,8 +376,11 @@
   }
 
   const onEditClip = (item: PassportItem) => {
+    console.log('Item is', item)
     openModal(PassportClipEditModal, {
       item: item,
+      action: async () => {},
+      closeAllOnFinished: true,
       onClose: async () => {
         closeAllModals()
       },
@@ -806,7 +815,7 @@
         {#each passportNonSkinItems as item, i}
           {#if item.payload && profile?.skins
               ?.at(0)
-              ?.clips?.includes(item.payload)}
+              ?.clips?.find((clip) => clip.payload === item.payload)}
             <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
               <PassportAsset
                 props={{
