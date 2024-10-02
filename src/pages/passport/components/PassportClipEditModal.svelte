@@ -14,7 +14,11 @@
   export let hex: string = '#FFFF00'
   export let description: string = ''
   export let action: UndefinedOr<
-    (description: string, frameColorHex: string) => Promise<boolean>
+    (
+      clip: PassportItem,
+      description: string,
+      frameColorHex: string,
+    ) => Promise<boolean>
   > = undefined
   export let closeAllOnFinished: boolean = false
   export let onClose: UndefinedOr<() => Promise<void>> = undefined
@@ -29,7 +33,7 @@
 
   const onClickAction = async () => {
     loading = true
-    const isSuccess = action && (await action(description, hex))
+    const isSuccess = action && (await action(item, description, hex))
     loading = false
 
     if (isSuccess) {

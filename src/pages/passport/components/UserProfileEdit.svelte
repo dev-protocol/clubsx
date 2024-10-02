@@ -403,6 +403,7 @@
       },
       closeAllOnFinished: true,
       action: async (
+        clip: PassportItem,
         description: string,
         frameColorHex: string,
       ): Promise<boolean> => {
@@ -414,6 +415,15 @@
           console.error(
             'Clip not found in profile when trying to edit it.',
             item.id,
+          )
+          return false
+        }
+
+        if (clip.payload !== item.payload) {
+          console.error(
+            'Clip mismatch when trying to edit it.',
+            item.id,
+            clip.id,
           )
           return false
         }
