@@ -4,9 +4,9 @@ import { i18nFactory } from '@devprotocol/clubs-core'
 
 import { Strings } from '../i18n'
 import ImageCard from './ImageCard.vue'
-import type { PassportItemIndexDoc } from '../types'
+import type { PassportClip } from '../types'
 
-defineProps<{ clips: PassportItemIndexDoc[] }>()
+defineProps<{ clips: PassportClip[] }>()
 
 const i18nBase = i18nFactory(Strings)
 let i18n = ref<ReturnType<typeof i18nBase>>(i18nBase(['en']))
@@ -25,6 +25,7 @@ onMounted(async () => {
           :img="item.itemAssetValue"
           :type="item.itemAssetType"
           :classes="'aspect-square'"
+          :frame-color-hex="item.frameColorHex"
         />
       </li>
     </ul>

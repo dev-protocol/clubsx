@@ -8,8 +8,9 @@ import type { ImageData, PassportItemIndexDoc } from '../types'
 const props = defineProps<{
   img: string
   found: boolean
-  type: PassportItemIndexDoc['itemAssetType']
   classes?: string
+  frameColorHex?: string
+  type: PassportItemIndexDoc['itemAssetType']
 }>()
 
 const image = ref<ImageData>()
@@ -36,7 +37,8 @@ onMounted(async () => {
 <template>
   <div
     v-if="found"
-    class="shadow-md rounded-md p-4 grid gap-4 bg-surface-200 border border-surface-300"
+    :class="`shadow-md rounded-md p-4 grid gap-4 border border-surface-300 ${props.frameColorHex ? '' : 'bg-surface-200'}`"
+    :style="{ backgroundColor: props.frameColorHex }"
   >
     <img
       v-if="image"
