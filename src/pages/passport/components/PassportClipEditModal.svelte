@@ -11,15 +11,17 @@
 
   export let isOpen: boolean
   export let item: PassportItem
-  export let action: UndefinedOr<() => Promise<void>> = undefined
+  export let hex: string = '#FFFF00'
+  export let description: string = ''
+  export let action: UndefinedOr<
+    (description: string, frameColorHex: string) => Promise<boolean>
+  > = undefined
   export let closeAllOnFinished: boolean = false
   export let onClose: UndefinedOr<() => Promise<void>> = undefined
 
   const i18nBase = i18nFactory(Strings)
   let loading = false
   let i18n = i18nBase(['en'])
-  let description: string = ''
-  let hex: string = '#FFFF00'
 
   onMount(async () => {
     i18n = i18nBase(navigator.languages)
@@ -27,9 +29,12 @@
 
   const onClickAction = async () => {
     loading = true
-    action && (await action())
+    const isSuccess = action && (await action(description, hex))
     loading = false
-    closeAllOnFinished ? closeAllModals() : closeModal()
+
+    if (isSuccess) {
+      closeAllOnFinished ? closeAllModals() : closeModal()
+    }
   }
 
   const onClickClose = async () => {

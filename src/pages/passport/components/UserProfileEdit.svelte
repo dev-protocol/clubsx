@@ -376,13 +376,73 @@
   }
 
   const onEditClip = (item: PassportItem) => {
-    console.log('Item is', item)
+    if (
+      !profile?.skins
+        ?.at(0)
+        ?.clips?.find((clip) => clip.payload === item.payload)
+    ) {
+      console.error(
+        'Clip not found in profile when trying to edit it.',
+        item.id,
+      )
+      return
+    }
+
     openModal(PassportClipEditModal, {
       item: item,
-      action: async () => {},
-      closeAllOnFinished: true,
+      hex: profile?.skins
+        ?.at(0)
+        ?.clips?.find((clip) => clip.payload === item.payload)?.frameColorHex,
+      description:
+        profile?.skins
+          ?.at(0)
+          ?.clips?.find((clip) => clip.payload === item.payload)?.description ??
+        '',
       onClose: async () => {
         closeAllModals()
+      },
+      closeAllOnFinished: true,
+      action: async (
+        description: string,
+        frameColorHex: string,
+      ): Promise<boolean> => {
+        if (
+          !profile?.skins
+            ?.at(0)
+            ?.clips?.find((clip) => clip.payload === item.payload)
+        ) {
+          console.error(
+            'Clip not found in profile when trying to edit it.',
+            item.id,
+          )
+          return false
+        }
+
+        try {
+          profile = {
+            ...profile, // Retain other modified fields.
+            skins: [
+              // Set skins to the updated value or append new value of theme.
+              {
+                ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
+                clips: [
+                  ...(profile?.skins
+                    ?.at(0)
+                    ?.clips?.filter((clip) => clip.payload !== item.payload) ??
+                    ([] as Clip[])),
+                  {
+                    payload: item.payload,
+                    description,
+                    frameColorHex,
+                  },
+                ],
+              },
+            ],
+          }
+          return true
+        } catch (e) {
+          return false
+        }
       },
     })
   }
