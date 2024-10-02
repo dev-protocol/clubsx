@@ -1,4 +1,11 @@
-type Value = string | boolean | number | undefined | null | Array<Value>
+type Value =
+  | string
+  | boolean
+  | number
+  | undefined
+  | null
+  | Array<Value>
+  | { [property: string]: Value }
 
 export type JSON =
   | Readonly<
