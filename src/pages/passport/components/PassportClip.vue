@@ -3,7 +3,6 @@ import { always } from 'ramda'
 import { decodeTokenURI } from '@fixtures/nft'
 import { computed, onMounted, ref } from 'vue'
 import { decode } from '@devprotocol/clubs-core'
-import type { ClubsData } from '@pages/api/clubs'
 import { whenDefined } from '@devprotocol/util-ts'
 import Skeleton from '@components/Global/Skeleton.vue'
 import type { AssetDocument } from '@fixtures/api/assets/schema'
@@ -37,7 +36,7 @@ const clubName = computed(() => {
 const fetchClub = async (api: string) => {
   return await fetch(api)
     .then((res) => res.json())
-    .then((res) => res as null | ClubsData)
+    .then((res) => res as null | string)
     .catch(always(null))
 }
 
