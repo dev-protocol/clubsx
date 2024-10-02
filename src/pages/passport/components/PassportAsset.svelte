@@ -6,17 +6,19 @@
   import type { ClubsData } from '@pages/api/clubs'
   import { whenDefined } from '@devprotocol/util-ts'
   import { Contract, type ContractRunner } from 'ethers'
+  import type { UndefinedOr } from '@devprotocol/util-ts'
   import Skeleton from '@components/Global/Skeleton.svelte'
 
   import { loadImage, ABI_NFT } from '../utils'
   import type { PassportItem, ImageData } from '../types'
 
   export let props: {
-    item: PassportItem
-    provider: ContractRunner
     local: boolean
+    item: PassportItem
     classNames?: string
     isEditable?: boolean
+    provider: ContractRunner
+    description: UndefinedOr<string>
     editAction?: (item: PassportItem) => void
   }
 
@@ -136,5 +138,9 @@
         </button>
       {/if}
     </div>
+
+    {#if props.description}
+      <p>{@html props.description ?? ''}</p>
+    {/if}
   </div>
 {/if}

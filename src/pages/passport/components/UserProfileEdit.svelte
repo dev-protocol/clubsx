@@ -894,6 +894,11 @@
                   local: isLocal,
                   isEditable: true,
                   editAction: () => onEditClip(item),
+                  description:
+                    profile?.skins
+                      ?.at(0)
+                      ?.clips?.find((clip) => clip.payload === item.payload)
+                      ?.description ?? undefined,
                 }}
               />
             </li>
