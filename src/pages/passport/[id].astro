@@ -66,7 +66,7 @@ const passportSkinClips = await whenDefined(
 
     return Promise.all(
       clips.map((item) =>
-        getPassportItemForPayload({ sTokenPayload: item ?? '' })
+        getPassportItemForPayload({ sTokenPayload: item.payload ?? '' })
           .then((item) => (item instanceof Error ? undefined : item))
           .catch(() => undefined),
       ) ?? [],
