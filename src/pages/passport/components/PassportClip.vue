@@ -31,10 +31,7 @@ const clubApiAlt = computed(() => {
 })
 
 const clubName = computed(() => {
-  return whenDefined(
-    clubConfig.value,
-    ({ config }) => decode(clubConfig.value).name,
-  )
+  return whenDefined(clubConfig.value, (config) => decode(config).name)
 })
 
 const fetchClub = async (api: string) => {
