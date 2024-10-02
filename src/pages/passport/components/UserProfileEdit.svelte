@@ -933,7 +933,7 @@
                   local: isLocal,
                   classNames: profile?.skins
                     ?.at(0)
-                    ?.clips?.includes(item.payload ?? '', 0)
+                    ?.clips?.find((clip) => clip.payload === item.payload)
                     ? 'border-2 border-surface-ink'
                     : 'border border-surface-300',
                 }}
