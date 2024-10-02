@@ -4,8 +4,8 @@ type Value =
   | number
   | undefined
   | null
-  | Array<Value>
   | { [property: string]: Value }
+  | Array<Value>
 
 export type JSON =
   | Readonly<
