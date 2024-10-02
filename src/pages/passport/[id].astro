@@ -81,7 +81,7 @@ const passportSkinClips = await whenDefined(
 ---
 
 <Layout theme="auto" sTokenPayload={profile?.skins?.at(0)?.theme}>
-  <div class="grid gap-24">
+  <div class="grid gap-24 clear-right">
     <section class:list={passportClass('account-container')}>
       <span
         class="grid grid-cols-[6rem_1fr] lg:grid-cols-[10rem_1fr_auto] justify-items-start max-w-screen-lg mx-auto px-4 gap-6 lg:gap-y-8"
@@ -253,19 +253,15 @@ const passportSkinClips = await whenDefined(
         >Clubs</a
       >
     </section>
-    <div class="items-center gap-[10px] p-[16px]">
-      <div
-        class="flex w-[84px] h-[84px] p-[8px] flex-col justify-center items-center"
-      >
-        <Like
-          client:load
-          props={{
-            profileId: id ? id : '',
-            currentLikes: _currentLikes ? _currentLikes : 0,
-            skinIndex: 0,
-          }}
-        />
-      </div>
-    </div>
+  </div>
+  <div class="sticky float-right bottom-0 p-2 lg:p-6">
+    <Like
+      client:load
+      props={{
+        profileId: id ? id : '',
+        currentLikes: _currentLikes ? _currentLikes : 0,
+        skinIndex: 0,
+      }}
+    />
   </div>
 </Layout>

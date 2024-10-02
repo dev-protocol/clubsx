@@ -1,4 +1,6 @@
 <script lang="ts">
+  import humanNumber from 'human-number'
+
   import PQueue from 'p-queue'
   export let props: {
     profileId: string
@@ -10,9 +12,21 @@
 
   const { profileId, skinIndex, currentLikes } = props
   let localLikeState = currentLikes
+  let clicks: number[] = []
+
+  $: {
+    if (clicks.length !== 0) {
+      setTimeout(() => {
+        const [_, ...next] = clicks
+        clicks = next
+      }, 1100)
+    }
+  }
+
   const like = () => {
     // / Optimistically update local like state for better UX
     localLikeState = localLikeState + 1
+    clicks = [...clicks, localLikeState]
     //  Add the request to the queue
     queue.add(async () => {
       const res = await fetch(`/api/profile/updateLike`, {
@@ -31,65 +45,54 @@
 </script>
 
 <div>
-  <button on:click={() => like()}>
-    <span>
-      {localLikeState}
-    </span>
+  <button
+    on:click={() => like()}
+    class="flex justify-items-center items-center flex-col rounded-full size-16 lg:size-20 bg-white text-black transition active:scale-110"
+    title={`${BigInt(localLikeState).toString()} Likes`}
+  >
+    {#each clicks as click}
+      <span
+        class="absolute rounded p-1 bg-white animate-[wiggle_1s_ease-in-out_forwards]"
+      >
+        {click}
+      </span>
+    {/each}
     <svg
-      width="106"
-      height="106"
-      viewBox="0 0 106 106"
-      fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1"
+      stroke="currentColor"
+      class="size-10 lg:size-12"
     >
-      <g filter="url(#filter0_d_3007_3750)">
-        <rect x="11" y="7" width="84" height="84" rx="42" fill="white" />
-        <path
-          d="M72.5 32.375C72.5 26.9908 67.9522 22.625 62.3427 22.625C58.1502 22.625 54.5492 25.0647 53 28.5465C51.4508 25.0647 47.8498 22.625 43.6552 22.625C38.05 22.625 33.5 26.9908 33.5 32.375C33.5 48.0183 53 58.375 53 58.375C53 58.375 72.5 48.0183 72.5 32.375Z"
-          stroke="black"
-          stroke-width="2.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-        <path d="M52.12 79.5V70.4H53.875V79.5H52.12Z" fill="white" />
-      </g>
-      <defs>
-        <filter
-          id="filter0_d_3007_3750"
-          x="0"
-          y="0"
-          width="106"
-          height="106"
-          filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
-        >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
-          <feColorMatrix
-            in="SourceAlpha"
-            type="matrix"
-            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-            result="hardAlpha"
-          />
-          <feOffset dy="4" />
-          <feGaussianBlur stdDeviation="5.5" />
-          <feComposite in2="hardAlpha" operator="out" />
-          <feColorMatrix
-            type="matrix"
-            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
-          />
-          <feBlend
-            mode="normal"
-            in2="BackgroundImageFix"
-            result="effect1_dropShadow_3007_3750"
-          />
-          <feBlend
-            mode="normal"
-            in="SourceGraphic"
-            in2="effect1_dropShadow_3007_3750"
-            result="shape"
-          />
-        </filter>
-      </defs>
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+      />
     </svg>
+    <span>
+      {humanNumber(localLikeState)}
+    </span>
   </button>
 </div>
+
+<style>
+  @keyframes -global-wiggle {
+    0% {
+      transform: translateY(0);
+      opacity: 100%;
+    }
+    0% {
+      transform: translateY(0);
+      opacity: 100%;
+    }
+    80% {
+      transform: translateY(-50%);
+    }
+    100% {
+      transform: translateY(-52%);
+      opacity: 0%;
+    }
+  }
+</style>
