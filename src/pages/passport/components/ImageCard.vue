@@ -9,7 +9,6 @@ const props = defineProps<{
   img: string
   found: boolean
   classes?: string
-  frameColorHex?: string
   type: PassportItemIndexDoc['itemAssetType']
 }>()
 
@@ -35,20 +34,14 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div
-    v-if="found"
-    :class="`shadow-md rounded-md p-4 grid gap-4 border border-surface-300 ${props.frameColorHex ? '' : 'bg-surface-200'}`"
-    :style="{ backgroundColor: props.frameColorHex }"
-  >
-    <img
-      v-if="image"
-      :src="image.src"
-      class="rounded-md w-full max-w-full h-full max-h-full"
-      :class="classes"
-    />
+  <img
+    v-if="image"
+    :src="image.src"
+    class="rounded-md w-full max-w-full h-full max-h-full"
+    :class="classes"
+  />
 
-    <div v-if="!image" class="w-full aspect-square">
-      <Skeleton />
-    </div>
+  <div v-if="!image" class="w-full aspect-square">
+    <Skeleton />
   </div>
 </template>
