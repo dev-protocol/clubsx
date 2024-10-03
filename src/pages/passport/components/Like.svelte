@@ -1,5 +1,6 @@
 <script lang="ts">
   import humanNumber from 'human-number'
+  import FlyingHeart from './FlyingHeart.svelte'
 
   import PQueue from 'p-queue'
   export let props: {
@@ -19,7 +20,7 @@
       setTimeout(() => {
         const [_, ...next] = clicks
         clicks = next
-      }, 1100)
+      }, 2100)
     }
   }
 
@@ -45,15 +46,20 @@
 </script>
 
 <div>
+  {#each clicks as click (`key-${click}`)}
+    <FlyingHeart />
+    {#if Math.random() > 0.8}
+      <FlyingHeart />
+    {/if}
+  {/each}
+
   <button
     on:click={() => like()}
-    class="flex justify-items-center items-center flex-col rounded-full size-16 lg:size-20 bg-white text-black transition active:scale-110"
+    class="flex shadow border border-black/10 justify-items-center items-center flex-col rounded-full size-16 lg:size-20 bg-white text-black transition active:scale-110"
     title={`${BigInt(localLikeState).toString()} Likes`}
   >
-    {#each clicks as click}
-      <span
-        class="absolute rounded p-1 bg-white animate-[wiggle_1s_ease-in-out_forwards]"
-      >
+    {#each clicks as click (`key-${click}`)}
+      <span class="absolute font-bold animate-[up_1s_ease-in-out_forwards]">
         {click}
       </span>
     {/each}
@@ -78,11 +84,7 @@
 </div>
 
 <style>
-  @keyframes -global-wiggle {
-    0% {
-      transform: translateY(0);
-      opacity: 100%;
-    }
+  @keyframes -global-up {
     0% {
       transform: translateY(0);
       opacity: 100%;
