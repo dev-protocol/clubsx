@@ -2,15 +2,23 @@
   import { always } from 'ramda'
   import { onMount } from 'svelte'
   import { decodeTokenURI } from '@fixtures/nft'
-  import { decode } from '@devprotocol/clubs-core'
+  import { decode, markdownToHtml } from '@devprotocol/clubs-core'
   import type { ClubsData } from '@pages/api/clubs'
   import { whenDefined } from '@devprotocol/util-ts'
   import { Contract, type ContractRunner } from 'ethers'
   import type { UndefinedOr } from '@devprotocol/util-ts'
   import Skeleton from '@components/Global/Skeleton.svelte'
-
+  import hexRgb from 'hex-rgb'
   import { loadImage, ABI_NFT } from '../utils'
   import type { PassportItem, ImageData } from '../types'
+
+  const RGBToLightness = (r: number, g: number, b: number) => {
+    r /= 255
+    g /= 255
+    b /= 255
+    const l = Math.max(r, g, b)
+    return l
+  }
 
   export let props: {
     local: boolean
@@ -19,6 +27,7 @@
     isEditable?: boolean
     provider: ContractRunner
     description?: UndefinedOr<string>
+    frameColorHex?: UndefinedOr<string>
     editAction?: (item: PassportItem) => void
   }
 
@@ -26,6 +35,20 @@
   let notFound: boolean = false
   let club: ClubsData | undefined
   let assetImage: ImageData | undefined
+  let htmlDescription: UndefinedOr<string>
+  let isFrameDark: UndefinedOr<boolean>
+
+  $: {
+    htmlDescription = whenDefined(props.description, markdownToHtml)
+    isFrameDark = whenDefined(
+      props.frameColorHex?.startsWith('#') ? props.frameColorHex : undefined,
+      (hex) => {
+        const [r, g, b] = hexRgb(hex, { format: 'array' })
+        const l = RGBToLightness(r, g, b)
+        return l < 0.75
+      },
+    )
+  }
 
   let clubUrl = whenDefined(
     club,
@@ -95,7 +118,10 @@
 
 {#if !notFound || !props.item}
   <div
-    class={`shadow-md rounded-md p-4 grid gap-4 bg-surface-200 ${props.classNames ?? ''}`}
+    class={`shadow-md rounded-md p-4 grid gap-4 ${props.classNames ?? ''} ${props.frameColorHex ? 'bg-[var(--frameColor)]' : 'bg-surface-200'} ${isFrameDark ? 'text-white' : 'text-black'}`}
+    style={props.frameColorHex
+      ? `--frameColor: ${props.frameColorHex}`
+      : undefined}
   >
     {#if assetImage}
       <img
@@ -109,7 +135,11 @@
 
     <div class="flex gap-1.5 items-start justify-between">
       <div class="justify-self-start text-left">
-        <p>{assetName ?? ''}</p>
+        {#if htmlDescription}
+          {@html htmlDescription}
+        {:else}
+          <p>{assetName ?? ''}</p>
+        {/if}
         {#if !clubUrl || !clubName}
           <span class="w-full h-3"><Skeleton /></span>
         {:else}
@@ -138,9 +168,5 @@
         </button>
       {/if}
     </div>
-
-    {#if props.description}
-      <p>{@html props.description ?? ''}</p>
-    {/if}
   </div>
 {/if}

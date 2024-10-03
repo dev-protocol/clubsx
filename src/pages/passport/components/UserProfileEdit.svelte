@@ -849,7 +849,7 @@
     {/if}
   </label>
 
-  <label class="hs-form-field is-filled mt-[76px]">
+  <span class="hs-form-field is-filled mt-[76px]">
     <div class="hs-form-field__label flex items-center justify-between mb-1">
       <span class="hs-form-field__label">
         {i18n('SelectedPassportClips')} ({profile?.skins?.at(0)?.clips
@@ -888,28 +888,29 @@
               ?.clips?.find((clip) => clip.payload === item.payload)}
             <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
               <PassportAsset
-                props={{
+                props={((clip) => ({
                   item: item,
                   provider: rpcProvider,
                   local: isLocal,
                   isEditable: true,
                   editAction: () => onEditClip(item),
-                  description:
-                    profile?.skins
-                      ?.at(0)
-                      ?.clips?.find((clip) => clip.payload === item.payload)
-                      ?.description ?? undefined,
-                }}
+                  description: clip?.description,
+                  frameColorHex: clip?.frameColorHex,
+                }))(
+                  profile?.skins
+                    ?.at(0)
+                    ?.clips?.find((clip) => clip.payload === item.payload),
+                )}
               />
             </li>
           {/if}
         {/each}
       </ul>
     {/if}
-  </label>
+  </span>
 
   <!-- Passport items other than type: css | stylesheet-link -->
-  <label class="hs-form-field is-filled mt-[76px]">
+  <span class="hs-form-field is-filled mt-[76px]">
     <span class="hs-form-field__label">
       {i18n('PassportAssets')} ({passportNonSkinItems?.length ?? 0})
     </span>
@@ -958,7 +959,7 @@
         {/each}
       </ul>
     {/if}
-  </label>
+  </span>
 
   {#if eoa === id}
     <button

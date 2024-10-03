@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import { fly } from 'svelte/transition'
-  import ColorPicker, { ChromeVariant } from 'svelte-awesome-color-picker'
+  import ColorPicker from 'svelte-awesome-color-picker'
   import { i18nFactory } from '@devprotocol/clubs-core'
   import type { UndefinedOr } from '@devprotocol/util-ts'
   import { closeModal, closeAllModals } from 'svelte-modals'
@@ -51,7 +51,7 @@
   <!-- on:introstart and on:outroend are required to transition 1 at a time between modals -->
   <div
     role="dialog"
-    class="fixed bottom-0 left-[50%] flex flex-col w-full max-w-2xl -translate-x-[50%] items-center justify-center rounded-t-3xl border-x border-t border-dp-blue-grey-300 bg-dp-blue-grey-400 p-12 text-white subpixel-antialiased shadow-xl lg:pb-32 gap-6 overflow-y-scroll"
+    class="fixed bottom-0 max-h-screen lg:bottom-1/2 lg:translate-y-1/2 left-1/2 flex flex-col w-full max-w-2xl -translate-x-1/2 items-center justify-center rounded-t-3xl lg:rounded-b-3xl border-x border-t border-surface-200 bg-surface-600 p-12 text-surface-ink subpixel-antialiased shadow-xl lg:pb-32 gap-6"
     transition:fly={{ y: 500 }}
     on:introstart
     on:outroend
@@ -84,14 +84,12 @@
       >
     </div>
 
-    <div class="grid gap-8 max-w-screen-sm">
-      <div class="w-[30%] h-auto aspect-square">
-        <img
-          src={item.itemAssetValue}
-          alt="Passport item"
-          class="w-full h-full rounded-[5px]"
-        />
-      </div>
+    <div class="grid gap-8 w-full max-w-screen-sm overflow-y-scroll">
+      <img
+        src={item.itemAssetValue}
+        alt="Passport item"
+        class="w-full h-auto max-w-44 max-h-44 rounded-md"
+      />
 
       <label class="hs-form-field is-filled">
         <span class="hs-form-field__label"> {i18n('Description')} </span>
@@ -113,16 +111,18 @@
         </span>
       </label>
 
-      <label class="hs-form-field is-filled">
+      <span class="hs-form-field is-filled">
         <span class="hs-form-field__label"> {i18n('FrameColor')} </span>
         <ColorPicker
           bind:hex
           position="responsive"
           sliderDirection="vertical"
-          isTextInput={false}
+          isTextInput={true}
+          isAlpha={false}
           label="Click here to choose a color"
+          --cp-text-color="#000"
         />
-      </label>
+      </span>
     </div>
   </div>
 {/if}
