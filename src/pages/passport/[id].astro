@@ -14,6 +14,7 @@ import type { PassportClip } from './types'
 import UserAssets from './components/UserAssets.vue'
 import PassportClips from './components/PassportClips.vue'
 import UserProfileEditButton from './components/UserProfileEditButton.svelte'
+import Like from './components/Like.svelte'
 
 const { id } = Astro.params
 const isEOA = isAddress(id)
@@ -29,6 +30,7 @@ const htmlDescription = markdownToHtml(profile.description)
 const _passportSkinBGMs = profile?.skins?.at(0)?.bgm
 const _passportSkinClips = profile?.skins?.at(0)?.clips
 const _passportSkinVideos = profile?.skins?.at(0)?.videos
+const _currentLikes = profile?.skins?.at(0)?.likes
 
 const passportSkinBGMs = await whenDefined(_passportSkinBGMs, () =>
   getPassportItemForPayload({
@@ -89,7 +91,7 @@ const passportSkinClips = await whenDefined(
 ---
 
 <Layout theme="auto" sTokenPayload={profile?.skins?.at(0)?.theme}>
-  <div class="grid gap-24">
+  <div class="grid gap-24 clear-right">
     <section class:list={passportClass('account-container')}>
       <span
         class="grid grid-cols-[6rem_1fr] lg:grid-cols-[10rem_1fr_auto] justify-items-start max-w-screen-lg mx-auto px-4 gap-6 lg:gap-y-8"
@@ -261,5 +263,15 @@ const passportSkinClips = await whenDefined(
         >Clubs</a
       >
     </section>
+  </div>
+  <div class="sticky float-right bottom-0 p-2 lg:p-6">
+    <Like
+      client:load
+      props={{
+        profileId: id ? id : '',
+        currentLikes: _currentLikes ? _currentLikes : 0,
+        skinIndex: 0,
+      }}
+    />
   </div>
 </Layout>

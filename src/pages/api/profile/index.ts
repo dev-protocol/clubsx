@@ -15,6 +15,7 @@ export type Skin = {
   clips?: Clip[] // Token payloads of pinned clips
   videos?: Payload[] // for the future use cases
   bgm?: Payload // for the future use cases
+  likes?: number
 }
 
 export type Profile = {
