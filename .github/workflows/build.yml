@@ -18,6 +18,11 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: corepack enable
 
+      - name: yarnrc
+        run: |
+          echo 'nodeLinker: node-modules' >> .yarnrc.yml
+          cat .yarnrc.yml
+
       - name: install deps
         run: yarn
 
