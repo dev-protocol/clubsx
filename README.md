@@ -3,13 +3,13 @@
 Install Dependencies:
 
 ```bash
-pnpm i
+yarn install
 ```
 
 Start the app:
 
 ```bash
-pnpm dev
+yarn dev
 ```
 
 ## releases

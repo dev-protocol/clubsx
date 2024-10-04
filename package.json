@@ -9,7 +9,7 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "lint": "pnpm lint:eslint && pnpm lint:prettier",
+    "lint": "yarn lint:eslint && yarn lint:prettier",
     "lint:eslint": "eslint --fix \"**/*.{js,mjs,cjs}\"",
     "lint:prettier": "prettier --cache -w \"**/*.{js,mjs,cjs,ts,tsx,tsm,astro,vue,svelte}\"",
     "typecheck": "astro check && tsc --noEmit && svelte-check && vue-tsc --noEmit --p tsconfig.vue.json",

@@ -16,16 +16,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-      - run: corepack enable
 
       - name: install deps
-        run: pnpm i
+        run: yarn
 
       - name: lint
-        run: pnpm lint
+        run: yarn lint
 
       - name: astro check
-        run: pnpm typecheck
+        run: yarn typecheck
 
       - name: test
-        run: pnpm test
+        run: yarn test
