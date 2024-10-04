@@ -29,3 +29,9 @@ export type PassportItem = AssetDocument &
     assetId: string
     passportDocId: string
   }
+
+export type PassportClip = AssetDocument &
+  PassportItemIndexDoc & {
+    description: string
+    frameColorHex: string
+  }

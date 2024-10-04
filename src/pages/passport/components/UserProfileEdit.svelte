@@ -1,16 +1,19 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import { JsonRpcProvider } from 'ethers'
+  import { fade } from 'svelte/transition'
   import { i18nFactory } from '@devprotocol/clubs-core'
   import { type UndefinedOr } from '@devprotocol/util-ts'
-  import type { Profile, Skin } from '@pages/api/profile'
+  import type { Clip, Profile, Skin } from '@pages/api/profile'
   import { uploadImageAndGetPath } from '@fixtures/imgur'
   import Skeleton from '@components/Global/Skeleton.svelte'
+  import { Modals, closeAllModals, closeModal, openModal } from 'svelte-modals'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
 
   import { Strings } from '../i18n'
   import type { PassportItem } from '../types'
   import PassportAsset from './PassportAsset.svelte'
+  import PassportClipEditModal from './PassportClipEditModal.svelte'
 
   const i18nBase = i18nFactory(Strings)
 
@@ -30,6 +33,8 @@
   let eoa: UndefinedOr<string> = undefined
   let connection: UndefinedOr<typeof Connection> = undefined
   let updatingStatus: UndefinedOr<'success' | 'error'> = undefined
+  let isDisplayingHint: boolean = false
+  let timeoutToHint: UndefinedOr<NodeJS.Timeout> = undefined
 
   const rpcProvider = new JsonRpcProvider(
     `https://polygon-mainnet.g.alchemy.com/v2/${import.meta.env.PUBLIC_ALCHEMY_KEY ?? ''}`,
@@ -285,7 +290,7 @@
       ...profile, // Retain other modified fields.
       skins: [
         {
-          ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties ir-respective of whether the skin is modified or not.
+          ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
           theme: item.payload, // Update only theme value.
         },
       ],
@@ -303,7 +308,7 @@
       ...profile, // Retain other modified fields.
       skins: [
         {
-          ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties ir-respective of whether the skin is modified or not.
+          ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
 
           // Reset only theme value below.
           ...(profileFromAPI?.skins?.length && // If profileFromAPI, skins, skins.length, skins.at, thme any return falsy we get empty value.
@@ -331,14 +336,20 @@
       skins: [
         // Set skins to the updated value or append new value of theme.
         {
-          ...(profile.skins?.at(0) ?? ({} as Skin)),
-          clips: profile.skins?.at(0)?.clips?.includes(item.payload)
+          ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
+          clips: profile?.skins
+            ?.at(0)
+            ?.clips?.find((clip) => clip.payload === item.payload)
             ? [
                 ...(profile.skins
                   ?.at(0)
-                  ?.clips?.filter((clip) => clip !== item.payload) ?? []),
+                  ?.clips?.filter((clip) => clip.payload !== item.payload) ??
+                  []),
               ]
-            : [...(profile.skins?.at(0)?.clips ?? []), item.payload],
+            : [
+                ...(profile.skins?.at(0)?.clips ?? []),
+                { payload: item.payload, description: '', frameColorHex: '' },
+              ],
         },
       ],
     }
@@ -362,6 +373,106 @@
     }
 
     console.log('Profile at resetting pinned non skin item', profile)
+  }
+
+  const onEditClip = (item: PassportItem) => {
+    if (
+      !profile?.skins
+        ?.at(0)
+        ?.clips?.find((clip) => clip.payload === item.payload)
+    ) {
+      console.error(
+        'Clip not found in profile when trying to edit it.',
+        item.id,
+      )
+      return
+    }
+
+    openModal(PassportClipEditModal, {
+      item: item,
+      hex: profile?.skins
+        ?.at(0)
+        ?.clips?.find((clip) => clip.payload === item.payload)?.frameColorHex,
+      description:
+        profile?.skins
+          ?.at(0)
+          ?.clips?.find((clip) => clip.payload === item.payload)?.description ??
+        '',
+      onClose: async () => {
+        closeAllModals()
+      },
+      closeAllOnFinished: true,
+      action: async (
+        clip: PassportItem,
+        description: string,
+        frameColorHex: string,
+      ): Promise<boolean> => {
+        if (
+          !profile?.skins
+            ?.at(0)
+            ?.clips?.find((clip) => clip.payload === item.payload)
+        ) {
+          console.error(
+            'Clip not found in profile when trying to edit it.',
+            item.id,
+          )
+          return false
+        }
+
+        if (clip.payload !== item.payload) {
+          console.error(
+            'Clip mismatch when trying to edit it.',
+            item.id,
+            clip.id,
+          )
+          return false
+        }
+
+        try {
+          profile = {
+            ...profile, // Retain other modified fields.
+            skins: [
+              // Set skins to the updated value or append new value of theme.
+              {
+                ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
+                clips: [
+                  ...(profile?.skins
+                    ?.at(0)
+                    ?.clips?.filter((clip) => clip.payload !== item.payload) ??
+                    ([] as Clip[])),
+                  {
+                    payload: item.payload!,
+                    description,
+                    frameColorHex,
+                  },
+                ],
+              },
+            ],
+          }
+          return true
+        } catch (e) {
+          return false
+        }
+      },
+    })
+  }
+
+  const onClickBackdrop = () => {
+    /**
+     * Define the action when clicking the modal backdrop.
+     */
+    if (timeoutToHint !== undefined) {
+      clearTimeout(timeoutToHint)
+      timeoutToHint = undefined
+    }
+
+    if (isDisplayingHint) {
+      closeModal()
+      isDisplayingHint = false
+      return
+    }
+
+    closeAllModals()
   }
 </script>
 
@@ -738,7 +849,7 @@
     {/if}
   </label>
 
-  <label class="hs-form-field is-filled mt-[76px]">
+  <span class="hs-form-field is-filled mt-[76px]">
     <div class="hs-form-field__label flex items-center justify-between mb-1">
       <span class="hs-form-field__label">
         {i18n('SelectedPassportClips')} ({profile?.skins?.at(0)?.clips
@@ -774,24 +885,32 @@
         {#each passportNonSkinItems as item, i}
           {#if item.payload && profile?.skins
               ?.at(0)
-              ?.clips?.includes(item.payload)}
+              ?.clips?.find((clip) => clip.payload === item.payload)}
             <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
               <PassportAsset
-                props={{
+                props={((clip) => ({
                   item: item,
                   provider: rpcProvider,
                   local: isLocal,
-                }}
+                  isEditable: true,
+                  editAction: () => onEditClip(item),
+                  description: clip?.description,
+                  frameColorHex: clip?.frameColorHex,
+                }))(
+                  profile?.skins
+                    ?.at(0)
+                    ?.clips?.find((clip) => clip.payload === item.payload),
+                )}
               />
             </li>
           {/if}
         {/each}
       </ul>
     {/if}
-  </label>
+  </span>
 
   <!-- Passport items other than type: css | stylesheet-link -->
-  <label class="hs-form-field is-filled mt-[76px]">
+  <span class="hs-form-field is-filled mt-[76px]">
     <span class="hs-form-field__label">
       {i18n('PassportAssets')} ({passportNonSkinItems?.length ?? 0})
     </span>
@@ -830,7 +949,7 @@
                   local: isLocal,
                   classNames: profile?.skins
                     ?.at(0)
-                    ?.clips?.includes(item.payload ?? '', 0)
+                    ?.clips?.find((clip) => clip.payload === item.payload)
                     ? 'border-2 border-surface-ink'
                     : 'border border-surface-300',
                 }}
@@ -840,7 +959,7 @@
         {/each}
       </ul>
     {/if}
-  </label>
+  </span>
 
   {#if eoa === id}
     <button
@@ -861,3 +980,12 @@
     >
   {/if}
 </div>
+
+<Modals>
+  <div
+    slot="backdrop"
+    class="fixed inset-0 bg-black/50"
+    transition:fade={{ duration: 100 }}
+    on:click={onClickBackdrop}
+  />
+</Modals>

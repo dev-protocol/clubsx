@@ -10,6 +10,7 @@ import { markdownToHtml, ProseTextInherit } from '@devprotocol/clubs-core'
 import Layout from './Layout.astro'
 import dummyData from './dummyData.json'
 import Icon from './components/Icons.vue'
+import type { PassportClip } from './types'
 import UserAssets from './components/UserAssets.vue'
 import PassportClips from './components/PassportClips.vue'
 import UserProfileEditButton from './components/UserProfileEditButton.svelte'
@@ -68,8 +69,17 @@ const passportSkinClips = await whenDefined(
 
     return Promise.all(
       clips.map((item) =>
-        getPassportItemForPayload({ sTokenPayload: item ?? '' })
-          .then((item) => (item instanceof Error ? undefined : item))
+        getPassportItemForPayload({ sTokenPayload: item.payload ?? '' })
+          .then(
+            (clip) =>
+              (clip instanceof Error
+                ? undefined
+                : {
+                    ...clip,
+                    description: item.description,
+                    frameColorHex: item.frameColorHex,
+                  }) as PassportClip,
+          )
           .catch(() => undefined),
       ) ?? [],
     )
@@ -241,7 +251,7 @@ const passportSkinClips = await whenDefined(
         passportSkinClips?.length && (
           <div class:list={passportClass('clips-container')}>
             <div class:list={passportClass('clips-content')}>
-              <PassportClips client:load clips={passportSkinClips} />
+              <PassportClips client:only="vue" clips={passportSkinClips} />
             </div>
           </div>
         )

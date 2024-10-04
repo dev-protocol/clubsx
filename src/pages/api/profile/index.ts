@@ -4,9 +4,15 @@ import { createClient } from 'redis'
 
 type Payload = string
 
+export type Clip = {
+  payload: Payload
+  description: string
+  frameColorHex: string
+}
+
 export type Skin = {
   theme: Payload // Pointing to PassportItem.sTokenPayload
-  clips?: Payload[] // Token payloads of pinned clips
+  clips?: Clip[] // Token payloads of pinned clips
   videos?: Payload[] // for the future use cases
   bgm?: Payload // for the future use cases
   likes?: number

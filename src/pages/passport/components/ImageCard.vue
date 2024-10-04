@@ -8,8 +8,8 @@ import type { ImageData, PassportItemIndexDoc } from '../types'
 const props = defineProps<{
   img: string
   found: boolean
-  type: PassportItemIndexDoc['itemAssetType']
   classes?: string
+  type: PassportItemIndexDoc['itemAssetType']
 }>()
 
 const image = ref<ImageData>()
@@ -34,19 +34,14 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div
-    v-if="found"
-    class="shadow-md rounded-md p-4 grid gap-4 bg-surface-200 border border-surface-300"
-  >
-    <img
-      v-if="image"
-      :src="image.src"
-      class="rounded-md w-full max-w-full h-full max-h-full"
-      :class="classes"
-    />
+  <img
+    v-if="image"
+    :src="image.src"
+    class="rounded-md w-full max-w-full h-full max-h-full"
+    :class="classes"
+  />
 
-    <div v-if="!image" class="w-full aspect-square">
-      <Skeleton />
-    </div>
+  <div v-if="!image" class="w-full aspect-square">
+    <Skeleton />
   </div>
 </template>
