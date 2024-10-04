@@ -24,10 +24,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: use yarn
-        run: |
-          corepack enable
-          echo 'nodeLinker: node-modules' >> .yarnrc.yml
-          cat .yarnrc.yml
+        run: corepack enable
 
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
@@ -55,10 +52,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: use yarn
-        run: |
-          corepack enable
-          echo 'nodeLinker: node-modules' >> .yarnrc.yml
-          cat .yarnrc.yml
+        run: corepack enable
 
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
