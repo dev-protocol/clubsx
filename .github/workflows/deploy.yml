@@ -22,6 +22,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+
+      - name: use yarn
+        run: |
+          corepack enable
+          echo 'nodeLinker: node-modules' >> .yarnrc.yml
+          cat .yarnrc.yml
+
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
       - name: Check if pre-release
@@ -46,6 +53,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+
+      - name: use yarn
+        run: |
+          corepack enable
+          echo 'nodeLinker: node-modules' >> .yarnrc.yml
+          cat .yarnrc.yml
+
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
       - name: Pull Vercel Environment Information
