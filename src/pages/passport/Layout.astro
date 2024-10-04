@@ -82,7 +82,10 @@ const passportSkinTheme = await whenDefined(sTokenPayload, (payload: string) =>
     <div class:list={passportClass('hero-container')}>
       <div class:list={passportClass('hero')}></div>
     </div>
-    <div class="relative z-10" class:list={passportClass('main-container')}>
+    <div
+      class="relative z-10 overflow-x-clip"
+      class:list={passportClass('main-container')}
+    >
       <slot name="before-header" />
       <Header connectButton="show" pageTitle="Passport" />
 
