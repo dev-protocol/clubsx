@@ -24,10 +24,15 @@ yarn-error.log*
 .idea/
 .vscode/
 
-# use yarn
+# use yarn zero-installs (ref. https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored)
 package-lock.json
-.yarn
-.yarnrc.yml
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
 
 # Astro
 .astro
