@@ -56,6 +56,7 @@ export default defineConfig({
     svelte(),
   ],
   vite: {
+    ssr: { noExternal: ['path-to-regexp'] },
     build: { sourcemap: true },
     plugins: [
       // commonjs({
