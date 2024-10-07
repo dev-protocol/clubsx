@@ -1,16 +1,18 @@
 ---
 import type { ComposedItem } from '.'
 import TransactionForm from './TransactionForm.svelte'
+import type { ClubsPropsPages } from '@devprotocol/clubs-core'
 import { Checkout } from '@devprotocol/clubs-core/ui/components'
 import { i18nFactory } from '@devprotocol/clubs-core'
 import { Strings } from './i18n'
 
-const { item, propertyAddress, rpcUrl, chainId, ...other } = Astro.props as {
-  item: ComposedItem
-  propertyAddress: string
-  rpcUrl: string
-  chainId: number
-}
+const { item, propertyAddress, rpcUrl, chainId, ...other } =
+  Astro.props as ClubsPropsPages & {
+    item: ComposedItem
+    propertyAddress: string
+    rpcUrl: string
+    chainId: number
+  }
 
 const i18nBase = i18nFactory(Strings)
 const langs = Astro.request.headers
@@ -30,7 +32,7 @@ const { PUBLIC_POP_CLIENT_KEY } = import.meta.env
 
 <Checkout
   amount={item.price.yen}
-  destination={propertyAddress}
+  propertyAddress={propertyAddress}
   fiatCurrency={i18n('JPY')}
   rpcUrl={rpcUrl}
   payload={item.source.payload}
