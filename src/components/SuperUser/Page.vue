@@ -7,6 +7,8 @@ import { onMounted, ref } from 'vue'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import type { ReqBodyAchievement } from '@plugins/achievements/handlers/addAchievement'
+import type { CreatePassportItemReq } from '@devprotocol/clubs-plugin-passport'
+
 import {
   callAddAchievement,
   changeMaxRedemptions,
@@ -18,6 +20,7 @@ import {
   resetRecipients,
 } from './utils/achievements'
 import type { RefApiCalling } from './utils'
+import { callAddPassportItem } from './utils/passportItem'
 
 dayjs.extend(utc)
 
@@ -39,6 +42,7 @@ const plugins = ref(
   })),
 )
 const achievement = ref<Partial<ReqBodyAchievement['achievement']>>({})
+const passportItem = ref<Partial<CreatePassportItemReq['passportItem']>>({})
 
 const sign = async () => {
   const msg = message()
@@ -105,6 +109,15 @@ const onChangeDesc = changeMetaDescription(achievement)
 const onResetRecipients = resetRecipients(achievement)
 const onResetMaxRedemptions = resetMaxRedemptions(achievement)
 
+const addPassportItem = async () => {
+  const { signature: sig, message: msg } = await sign()
+  callAddPassportItem(passportItem, apiCalling, {
+    site: club.value ?? '',
+    signature: sig ?? '',
+    message: msg,
+  })
+}
+
 onMounted(async () => {
   const { connection } = await import('@devprotocol/clubs-core/connection')
   combineLatest([connection().signer, connection().account]).subscribe(
@@ -115,6 +128,7 @@ onMounted(async () => {
   )
 })
 </script>
+
 <template>
   <div class="grid gap-8 grid-cols-2">
     <div class="grid gap-8 justify-start justify-items-start">
@@ -209,6 +223,61 @@ onMounted(async () => {
           />
         </label>
       </div>
+
+      <h2 class="font-mono text-xl mt-8">Add Passport Item</h2>
+      <div class="w-full grid gap-2">
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">Id</span>
+          <input
+            type="text"
+            class="w-full hs-form-field__input"
+            v-model="passportItem.sTokenId"
+          />
+        </label>
+      </div>
+
+      <div class="w-full grid gap-2">
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">Payload</span>
+          <input
+            type="text"
+            class="w-full hs-form-field__input"
+            v-model="passportItem.sTokenPayload"
+          />
+        </label>
+      </div>
+
+      <div class="w-full grid gap-2">
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">ItemAssetValue</span>
+          <select
+            id="select-item-asset"
+            v-model="passportItem.itemAssetType"
+            class="w-full hs-form-field__input"
+          >
+            <option disabled value="">Select option</option>
+            <option value="css">css</option>
+            <option value="stylesheet-link">stylesheet-link</option>
+            <option value="image">image</option>
+            <option value="image-link">image-link</option>
+            <option value="video">video</option>
+            <option value="video-link">video-link</option>
+            <option value="bgm">bgm</option>
+            <option value="bgm-link">bgm-link</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="w-full grid gap-2">
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">ItemAssetValue</span>
+          <input
+            type="text"
+            class="w-full hs-form-field__input"
+            v-model="passportItem.itemAssetValue"
+          />
+        </label>
+      </div>
     </div>
 
     <aside class="grid gap-2">
@@ -227,6 +296,7 @@ onMounted(async () => {
               </button>
             </p>
           </dd>
+
           <dt class="font-bold">Add Achievement</dt>
           <dd>
             <pre class="text-sm">{{
@@ -236,6 +306,21 @@ onMounted(async () => {
               <button
                 class="hs-button is-small is-filled"
                 @click="addAchievement"
+              >
+                Add
+              </button>
+            </p>
+          </dd>
+
+          <dt class="font-bold">Add Passport Item</dt>
+          <dd>
+            <pre class="text-sm">{{
+              passportItem ? JSON.stringify(passportItem, null, 2) : ''
+            }}</pre>
+            <p>
+              <button
+                class="hs-button is-small is-filled"
+                @click="addPassportItem"
               >
                 Add
               </button>
