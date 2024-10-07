@@ -2,10 +2,10 @@
 import { always } from 'ramda'
 import { decodeTokenURI } from '@fixtures/nft'
 import { computed, onMounted, ref } from 'vue'
-import { decode } from '@devprotocol/clubs-core'
 import { whenDefined } from '@devprotocol/util-ts'
 import Skeleton from '@components/Global/Skeleton.vue'
 import type { AssetDocument } from '@fixtures/api/assets/schema'
+import { decode, markdownToHtml } from '@devprotocol/clubs-core'
 
 import ImageCard from './ImageCard.vue'
 import { loadImage, ABI_NFT } from '../utils'
@@ -31,6 +31,10 @@ const clubApiAlt = computed(() => {
 
 const clubName = computed(() => {
   return whenDefined(clubConfig.value, (config) => decode(config).name)
+})
+
+const description = computed(() => {
+  return markdownToHtml(props.item.description ?? '')
 })
 
 const fetchClub = async (api: string) => {
@@ -62,7 +66,7 @@ onMounted(async () => {
       :classes="'aspect-square'"
       :frame-color-hex="item.frameColorHex"
     />
-    <p v-html="item.description"></p>
+    <p v-html="description"></p>
     <a v-if="clubName" :href="props.item.clubsUrl">{{ clubName }}</a>
   </div>
 </template>
