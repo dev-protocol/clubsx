@@ -13,8 +13,7 @@ export const callAddPassportItem = async (
   options: { site: string; signature: string; message: string },
 ) => {
   call.value = { progress: true }
-  console.log('Data', ref)
-  const api = await whenDefined(ref, (data) =>
+  const api = await whenDefined(ref.value, (data) =>
     fetch('/api/superuser/passportItem', {
       method: 'POST',
       body: JSON.stringify({
@@ -25,6 +24,6 @@ export const callAddPassportItem = async (
       }),
     }),
   )
-  const res = (await api?.json()) as { ids?: string[]; error?: string }
-  call.value = { progress: false, result: res.ids, error: res.error }
+  const res = (await api?.json()) as { res?: string | null; error?: string }
+  call.value = { progress: false, result: res, error: res.error }
 }
