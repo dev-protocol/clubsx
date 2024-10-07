@@ -57,7 +57,7 @@
     "vue-tsc": "^2.0.0"
   },
   "dependencies": {
-    "@astrojs/check": "0.8.1",
+    "@astrojs/check": "0.9.4",
     "@astrojs/lit": "4.3.0",
     "@astrojs/prefetch": "0.4.1",
     "@astrojs/react": "3.6.2",
