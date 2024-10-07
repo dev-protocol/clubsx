@@ -1221,9 +1221,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@devprotocol/clubs-plugin-passport@npm:^0.1.0-beta.10":
-  version: 0.1.0-beta.10
-  resolution: "@devprotocol/clubs-plugin-passport@npm:0.1.0-beta.10"
+"@devprotocol/clubs-plugin-passport@npm:^0.1.0-beta.17":
+  version: 0.1.0-beta.17
+  resolution: "@devprotocol/clubs-plugin-passport@npm:0.1.0-beta.17"
   dependencies:
     "@devprotocol/clubs-core": "npm:^3.18.0"
     "@devprotocol/dev-kit": "npm:8.7.0"
@@ -1232,11 +1232,11 @@ __metadata:
     nanoid: "npm:^5.0.7"
     ramda: "npm:0.30.1"
     redis: "npm:^4.7.0"
-    sass: "npm:1.78.0"
+    sass: "npm:1.79.4"
   peerDependencies:
     "@devprotocol/clubs-core": ^3.18.0
     ethers: ^6.0.0
-  checksum: 10c0/d65982b99a8513e11c0a40baf4fb513364c81a5d407e038055916c9eaaa188e00a4613cd96b74046fc8b752d68643a0ab987a39c782049c4311c9c9b24bf2bbf
+  checksum: 10c0/f0c418d67f4b157c9071f4d57527902b3e9ae8986cc1c77f9d2711bf0ada4043c41357f1bb778c59fb670b9a7e3bcfc99639ecf774729cbdc5bb55ecd18977c9
   languageName: node
   linkType: hard
 
@@ -9026,6 +9026,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"chokidar@npm:^4.0.0":
+  version: 4.0.1
+  resolution: "chokidar@npm:4.0.1"
+  dependencies:
+    readdirp: "npm:^4.0.1"
+  checksum: 10c0/4bb7a3adc304059810bb6c420c43261a15bb44f610d77c35547addc84faa0374265c3adc67f25d06f363d9a4571962b02679268c40de07676d260de1986efea9
+  languageName: node
+  linkType: hard
+
 "chownr@npm:^1.1.4":
   version: 1.1.4
   resolution: "chownr@npm:1.1.4"
@@ -9232,7 +9241,7 @@ __metadata:
     "@crossmint/client-sdk-react-ui": "npm:^1.0.1-alpha.6"
     "@devprotocol/clubs-core": "npm:^3.19.3"
     "@devprotocol/clubs-plugin-awesome-onboarding": "npm:0.4.4"
-    "@devprotocol/clubs-plugin-passport": "npm:^0.1.0-beta.10"
+    "@devprotocol/clubs-plugin-passport": "npm:^0.1.0-beta.17"
     "@devprotocol/clubs-plugin-posts": "npm:0.20.17"
     "@devprotocol/clubs-plugin-posts-voting": "npm:0.8.8"
     "@devprotocol/dev-kit": "npm:8.7.0"
@@ -19394,6 +19403,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"readdirp@npm:^4.0.1":
+  version: 4.0.2
+  resolution: "readdirp@npm:4.0.2"
+  checksum: 10c0/a16ecd8ef3286dcd90648c3b103e3826db2b766cdb4a988752c43a83f683d01c7059158d623cbcd8bdfb39e65d302d285be2d208e7d9f34d022d912b929217dd
+  languageName: node
+  linkType: hard
+
 "readdirp@npm:~3.6.0":
   version: 3.6.0
   resolution: "readdirp@npm:3.6.0"
@@ -20293,16 +20309,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass@npm:1.78.0":
-  version: 1.78.0
-  resolution: "sass@npm:1.78.0"
+"sass@npm:1.79.4":
+  version: 1.79.4
+  resolution: "sass@npm:1.79.4"
   dependencies:
-    chokidar: "npm:>=3.0.0 <4.0.0"
+    chokidar: "npm:^4.0.0"
     immutable: "npm:^4.0.0"
     source-map-js: "npm:>=0.6.2 <2.0.0"
   bin:
     sass: sass.js
-  checksum: 10c0/6577a87c00b03a5a50f3a11b4b6592f28abce34e61812e381535a3b712151bd94db3ca06467d20395431e0f38a23f99e616d6859d771fb6d4617c359f590c48c
+  checksum: 10c0/505ff0d9267d0fb990971e617acfeabf7c060c55d4cef68fe8a4bc693e7ea88ae7d7caeca3975e4b453459ba4a707b6e5b6979fc9395a7e08f0a43ca6aed06b8
   languageName: node
   linkType: hard
 
