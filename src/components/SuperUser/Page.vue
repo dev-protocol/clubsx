@@ -169,7 +169,7 @@ const addPassportdOfferingInConfig = async () => {
     offerings: [
       ...(base?.offerings ?? []),
       {
-        ...passportOffering,
+        ...passportOffering.value,
         id: bytes32Hex(randomBytes(8)),
         managedBy: 'devprotocol:clubs:plugin:passport',
       },
