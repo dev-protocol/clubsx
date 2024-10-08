@@ -7,7 +7,7 @@ import {
   encode,
 } from '@devprotocol/clubs-core'
 import { whenDefined, type UndefinedOr } from '@devprotocol/util-ts'
-import type { Signer } from 'ethers'
+import type { ContractRunner, Signer } from 'ethers'
 import { combineLatest } from 'rxjs'
 import { onMounted, ref } from 'vue'
 import dayjs from 'dayjs'
@@ -27,6 +27,8 @@ import {
 import type { RefApiCalling } from './utils'
 import { callAddPassportItem } from './utils/passportItem'
 import {
+  setTokenURIDescriptor,
+  setImage,
   changePassportOfferingBeneficiary,
   changePassportOfferingFee,
 } from './utils/passportOffering'
@@ -34,11 +36,15 @@ import type { CreatePassportItemReq } from '@devprotocol/clubs-plugin-passport'
 
 dayjs.extend(utc)
 
+let chainId: UndefinedOr<number>
 let signerObj: UndefinedOr<Signer>
+let providerObj: UndefinedOr<ContractRunner>
+const message = () => `I'm a superuser @ts:${dayjs().utc().toDate().getTime()}`
+
 const props = defineProps<{ plugins: { id: string; name: string }[] }>()
+
 const account = ref<string>()
 const club = ref<string>()
-const message = () => `I'm a superuser @ts:${dayjs().utc().toDate().getTime()}`
 const apiCalling: RefApiCalling = ref<{
   result?: any
   error?: string
@@ -51,7 +57,6 @@ const plugins = ref(
     willUninstall: false,
   })),
 )
-
 const passportPayload = ref<Uint8Array>()
 const passportOffering = ref<Partial<ClubsOffering>>({})
 const achievement = ref<Partial<ReqBodyAchievement['achievement']>>({})
@@ -140,7 +145,7 @@ onMounted(async () => {
 
   passportOffering.value = {
     ...passportOffering.value,
-    payload: bytes32Hex(passportPayload.value),
+    payload: passportPayload.value,
   }
   passportItem.value = {
     ...passportItem.value,
@@ -148,12 +153,17 @@ onMounted(async () => {
   }
 
   const { connection } = await import('@devprotocol/clubs-core/connection')
-  combineLatest([connection().signer, connection().account]).subscribe(
-    ([_signer, _account]) => {
-      signerObj = _signer
-      account.value = _account
-    },
-  )
+  combineLatest([
+    connection().signer,
+    connection().account,
+    connection().provider,
+    connection().chain,
+  ]).subscribe(([_signer, _account, _provider, _chain]) => {
+    signerObj = _signer
+    account.value = _account
+    providerObj = _provider
+    chainId = _chain
+  })
 })
 
 const addPassportdOfferingInConfig = async () => {
@@ -190,6 +200,66 @@ const addPassportdOfferingInConfig = async () => {
 
   const res = (await api?.json()) as { result: string; error?: string }
   apiCalling.value = { progress: false, result: res.result, error: res.error }
+}
+
+const updatePassportOfferingOnChain = async () => {
+  if (!providerObj || !signerObj) {
+    return
+  }
+
+  apiCalling.value = { progress: true }
+
+  const currentConfig = whenDefined(
+    (await whenDefined(club.value, fetchClubs))?.content,
+    decode,
+  )
+
+  const isDescriptorSet = await setTokenURIDescriptor(
+    signerObj,
+    chainId,
+    passportOffering,
+    providerObj,
+    currentConfig,
+  )
+  if (!isDescriptorSet || isDescriptorSet instanceof Error) {
+    apiCalling.value = {
+      progress: false,
+      result: isDescriptorSet,
+      error: 'Failed in setting setTokenURIDescriptor for item',
+    }
+
+    return
+  }
+
+  apiCalling.value = {
+    progress: true,
+  }
+
+  const isImageSet = await setImage(
+    signerObj,
+    chainId,
+    passportOffering,
+    providerObj,
+    currentConfig,
+  )
+  if (!isImageSet || isImageSet instanceof Error) {
+    apiCalling.value = {
+      progress: false,
+      result: isImageSet,
+      error: 'Failed in setting setImage for item',
+    }
+
+    return
+  }
+
+  apiCalling.value = {
+    result: {
+      isImageSet,
+      isDescriptorSet,
+    },
+    progress: false,
+    error: '',
+  }
 }
 </script>
 
@@ -384,8 +454,9 @@ const addPassportdOfferingInConfig = async () => {
           <span class="w-full hs-form-field__label">Payload</span>
           <input
             type="text"
+            disabled="true"
             class="w-full hs-form-field__input"
-            v-model="passportOffering.payload"
+            :value="bytes32Hex(passportOffering.payload ?? [])"
           />
         </label>
       </div>
@@ -483,6 +554,14 @@ const addPassportdOfferingInConfig = async () => {
                 @click="addPassportdOfferingInConfig"
               >
                 Add in config
+              </button>
+            </p>
+            <p>
+              <button
+                class="hs-button is-small is-filled mt-2"
+                @click="updatePassportOfferingOnChain"
+              >
+                Add onchain (might be msg.sender restricted)
               </button>
             </p>
           </dd>
