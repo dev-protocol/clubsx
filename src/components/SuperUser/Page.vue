@@ -13,7 +13,6 @@ import { onMounted, ref } from 'vue'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import type { ReqBodyAchievement } from '@plugins/achievements/handlers/addAchievement'
-import type { CreatePassportItemReq } from '@devprotocol/clubs-plugin-passport'
 
 import {
   callAddAchievement,
@@ -27,7 +26,11 @@ import {
 } from './utils/achievements'
 import type { RefApiCalling } from './utils'
 import { callAddPassportItem } from './utils/passportItem'
-import { changePassportOfferingFee } from './utils/passportOffering'
+import {
+  changePassportOfferingBeneficiary,
+  changePassportOfferingFee,
+} from './utils/passportOffering'
+import type { CreatePassportItemReq } from '@devprotocol/clubs-plugin-passport'
 
 dayjs.extend(utc)
 
@@ -128,10 +131,9 @@ const addPassportItem = async () => {
   })
 }
 
-const onChangePassportOfferingFee = changePassportOfferingFee(
-  passportOffering,
-  account.value,
-)
+const onChangePassportOfferingFee = changePassportOfferingFee(passportOffering)
+const onChangePassportOfferingBeneficiary =
+  changePassportOfferingBeneficiary(passportOffering)
 
 onMounted(async () => {
   passportPayload.value = randomBytes(8)
@@ -153,6 +155,42 @@ onMounted(async () => {
     },
   )
 })
+
+const addPassportdOfferingInConfig = async () => {
+  const { signature: sig, message: msg } = await sign()
+  apiCalling.value = { progress: true }
+
+  const currentConfig = whenDefined(
+    (await whenDefined(club.value, fetchClubs))?.content,
+    decode,
+  )
+  const nextConfig = whenDefined(currentConfig, (base) => ({
+    ...base,
+    offerings: [
+      ...(base?.offerings ?? []),
+      {
+        ...passportOffering,
+        id: bytes32Hex(randomBytes(8)),
+        managedBy: 'devprotocol:clubs:plugin:passport',
+      },
+    ],
+  }))
+
+  const api = await whenDefined(nextConfig, (conf) =>
+    fetch('/api/superuser/config', {
+      method: 'POST',
+      body: JSON.stringify({
+        site: club.value,
+        message: msg,
+        signature: sig,
+        config: encode(conf),
+      }),
+    }),
+  )
+
+  const res = (await api?.json()) as { result: string; error?: string }
+  apiCalling.value = { progress: false, result: res.result, error: res.error }
+}
 </script>
 
 <template>
@@ -311,11 +349,9 @@ onMounted(async () => {
             type="number"
             min="0"
             max="1"
-            :disabled="!passportOffering.currency"
             :value="passportOffering.fee?.percentage"
             class="w-full hs-form-field__input"
             @change="onChangePassportOfferingFee"
-            @keyup="onChangePassportOfferingFee"
           />
           <p class="hs-form-field__helper mt-2">
             * MINIMUM fee is <b>0</b> and MAXIMUM fee is <b>1</b>
@@ -323,6 +359,16 @@ onMounted(async () => {
           <p class="hs-form-field__helper mt-2">
             * Fee has to be <b>0</b> when currency is <b>DEV</b>
           </p>
+        </label>
+
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">Beneficiary</span>
+          <input
+            type="text"
+            class="w-full hs-form-field__input"
+            :value="passportOffering.fee?.beneficiary"
+            @change="onChangePassportOfferingBeneficiary"
+          />
         </label>
 
         <label class="w-full hs-form-field">
@@ -434,9 +480,9 @@ onMounted(async () => {
             <p>
               <button
                 class="hs-button is-small is-filled"
-                @click="addPassportItem"
+                @click="addPassportdOfferingInConfig"
               >
-                Add
+                Add in config
               </button>
             </p>
           </dd>
