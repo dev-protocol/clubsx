@@ -1,5 +1,11 @@
 <script lang="ts" setup>
-import { decode, encode } from '@devprotocol/clubs-core'
+import { randomBytes } from 'ethers'
+import {
+  bytes32Hex,
+  type ClubsOffering,
+  decode,
+  encode,
+} from '@devprotocol/clubs-core'
 import { whenDefined, type UndefinedOr } from '@devprotocol/util-ts'
 import type { Signer } from 'ethers'
 import { combineLatest } from 'rxjs'
@@ -21,6 +27,7 @@ import {
 } from './utils/achievements'
 import type { RefApiCalling } from './utils'
 import { callAddPassportItem } from './utils/passportItem'
+import { changePassportOfferingFee } from './utils/passportOffering'
 
 dayjs.extend(utc)
 
@@ -41,6 +48,9 @@ const plugins = ref(
     willUninstall: false,
   })),
 )
+
+const passportPayload = ref<Uint8Array>()
+const passportOffering = ref<Partial<ClubsOffering>>({})
 const achievement = ref<Partial<ReqBodyAchievement['achievement']>>({})
 const passportItem = ref<Partial<CreatePassportItemReq['passportItem']>>({})
 
@@ -118,7 +128,23 @@ const addPassportItem = async () => {
   })
 }
 
+const onChangePassportOfferingFee = changePassportOfferingFee(
+  passportOffering,
+  account.value,
+)
+
 onMounted(async () => {
+  passportPayload.value = randomBytes(8)
+
+  passportOffering.value = {
+    ...passportOffering.value,
+    payload: bytes32Hex(passportPayload.value),
+  }
+  passportItem.value = {
+    ...passportItem.value,
+    sTokenPayload: bytes32Hex(passportPayload.value),
+  }
+
   const { connection } = await import('@devprotocol/clubs-core/connection')
   combineLatest([connection().signer, connection().account]).subscribe(
     ([_signer, _account]) => {
@@ -224,6 +250,100 @@ onMounted(async () => {
         </label>
       </div>
 
+      <h2 class="font-mono text-xl mt-8">Add Passport Offering</h2>
+      <div class="w-full grid gap-2">
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">Name</span>
+          <input
+            type="text"
+            class="w-full hs-form-field__input"
+            v-model="passportOffering.name"
+          />
+        </label>
+
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">Image URL</span>
+          <input
+            type="text"
+            class="w-full hs-form-field__input"
+            v-model="passportOffering.imageSrc"
+          />
+        </label>
+
+        // TODO: keep price constant depending on assets.
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">Price</span>
+          <input
+            type="number"
+            min="0.000001"
+            max="1.000e+20"
+            class="w-full hs-form-field__input"
+            v-model="passportOffering.price"
+          />
+        </label>
+
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">Currency</span>
+          <select
+            id="select-offering-currency"
+            v-model="passportOffering.currency"
+            class="w-full hs-form-field__input"
+          >
+            <option disabled value="">Select option</option>
+            <option value="USDC" class="bg-primary-200 text-primary-ink">
+              USDC
+            </option>
+            <option value="ETH" class="bg-primary-200 text-primary-ink">
+              ETH
+            </option>
+            <option value="MATIC" class="bg-primary-200 text-primary-ink">
+              MATIC
+            </option>
+            <option value="DEV" class="bg-primary-200 text-primary-ink">
+              DEV
+            </option>
+          </select>
+        </label>
+
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">Fee</span>
+          <input
+            type="number"
+            min="0"
+            max="1"
+            :disabled="!passportOffering.currency"
+            :value="passportOffering.fee?.percentage"
+            class="w-full hs-form-field__input"
+            @change="onChangePassportOfferingFee"
+            @keyup="onChangePassportOfferingFee"
+          />
+          <p class="hs-form-field__helper mt-2">
+            * MINIMUM fee is <b>0</b> and MAXIMUM fee is <b>1</b>
+          </p>
+          <p class="hs-form-field__helper mt-2">
+            * Fee has to be <b>0</b> when currency is <b>DEV</b>
+          </p>
+        </label>
+
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">Description</span>
+          <input
+            type="text"
+            class="w-full hs-form-field__input"
+            v-model="passportOffering.description"
+          />
+        </label>
+
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">Payload</span>
+          <input
+            type="text"
+            class="w-full hs-form-field__input"
+            v-model="passportOffering.payload"
+          />
+        </label>
+      </div>
+
       <h2 class="font-mono text-xl mt-8">Add Passport Item</h2>
       <div class="w-full grid gap-2">
         <label class="w-full hs-form-field">
@@ -234,9 +354,7 @@ onMounted(async () => {
             v-model="passportItem.sTokenId"
           />
         </label>
-      </div>
 
-      <div class="w-full grid gap-2">
         <label class="w-full hs-form-field">
           <span class="w-full hs-form-field__label">Payload</span>
           <input
@@ -245,9 +363,7 @@ onMounted(async () => {
             v-model="passportItem.sTokenPayload"
           />
         </label>
-      </div>
 
-      <div class="w-full grid gap-2">
         <label class="w-full hs-form-field">
           <span class="w-full hs-form-field__label">ItemAssetValue</span>
           <select
@@ -266,9 +382,7 @@ onMounted(async () => {
             <option value="bgm-link">bgm-link</option>
           </select>
         </label>
-      </div>
 
-      <div class="w-full grid gap-2">
         <label class="w-full hs-form-field">
           <span class="w-full hs-form-field__label">ItemAssetValue</span>
           <input
@@ -306,6 +420,21 @@ onMounted(async () => {
               <button
                 class="hs-button is-small is-filled"
                 @click="addAchievement"
+              >
+                Add
+              </button>
+            </p>
+          </dd>
+
+          <dt class="font-bold">Add Passport Offering</dt>
+          <dd>
+            <pre class="text-sm">{{
+              passportOffering ? JSON.stringify(passportOffering, null, 2) : ''
+            }}</pre>
+            <p>
+              <button
+                class="hs-button is-small is-filled"
+                @click="addPassportItem"
               >
                 Add
               </button>
