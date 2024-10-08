@@ -1,12 +1,19 @@
 <script lang="ts" setup>
-import { decode, encode } from '@devprotocol/clubs-core'
+import { randomBytes } from 'ethers'
+import {
+  bytes32Hex,
+  type ClubsOffering,
+  decode,
+  encode,
+} from '@devprotocol/clubs-core'
 import { whenDefined, type UndefinedOr } from '@devprotocol/util-ts'
-import type { Signer } from 'ethers'
+import type { ContractRunner, Signer } from 'ethers'
 import { combineLatest } from 'rxjs'
 import { onMounted, ref } from 'vue'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import type { ReqBodyAchievement } from '@plugins/achievements/handlers/addAchievement'
+
 import {
   callAddAchievement,
   changeMaxRedemptions,
@@ -18,14 +25,26 @@ import {
   resetRecipients,
 } from './utils/achievements'
 import type { RefApiCalling } from './utils'
+import { callAddPassportItem } from './utils/passportItem'
+import {
+  setTokenURIDescriptor,
+  setImage,
+  changePassportOfferingBeneficiary,
+  changePassportOfferingFee,
+} from './utils/passportOffering'
+import type { CreatePassportItemReq } from '@devprotocol/clubs-plugin-passport'
 
 dayjs.extend(utc)
 
+let chainId: UndefinedOr<number>
 let signerObj: UndefinedOr<Signer>
+let providerObj: UndefinedOr<ContractRunner>
+const message = () => `I'm a superuser @ts:${dayjs().utc().toDate().getTime()}`
+
 const props = defineProps<{ plugins: { id: string; name: string }[] }>()
+
 const account = ref<string>()
 const club = ref<string>()
-const message = () => `I'm a superuser @ts:${dayjs().utc().toDate().getTime()}`
 const apiCalling: RefApiCalling = ref<{
   result?: any
   error?: string
@@ -38,7 +57,10 @@ const plugins = ref(
     willUninstall: false,
   })),
 )
+const passportPayload = ref<Uint8Array>()
+const passportOffering = ref<Partial<ClubsOffering>>({})
 const achievement = ref<Partial<ReqBodyAchievement['achievement']>>({})
+const passportItem = ref<Partial<CreatePassportItemReq['passportItem']>>({})
 
 const sign = async () => {
   const msg = message()
@@ -105,16 +127,142 @@ const onChangeDesc = changeMetaDescription(achievement)
 const onResetRecipients = resetRecipients(achievement)
 const onResetMaxRedemptions = resetMaxRedemptions(achievement)
 
+const addPassportItem = async () => {
+  const { signature: sig, message: msg } = await sign()
+  callAddPassportItem(passportItem, apiCalling, {
+    site: club.value ?? '',
+    signature: sig ?? '',
+    message: msg,
+  })
+}
+
+const onChangePassportOfferingFee = changePassportOfferingFee(passportOffering)
+const onChangePassportOfferingBeneficiary =
+  changePassportOfferingBeneficiary(passportOffering)
+
 onMounted(async () => {
+  passportPayload.value = randomBytes(8)
+
+  passportOffering.value = {
+    ...passportOffering.value,
+    payload: passportPayload.value,
+  }
+  passportItem.value = {
+    ...passportItem.value,
+    sTokenPayload: bytes32Hex(passportPayload.value),
+  }
+
   const { connection } = await import('@devprotocol/clubs-core/connection')
-  combineLatest([connection().signer, connection().account]).subscribe(
-    ([_signer, _account]) => {
-      signerObj = _signer
-      account.value = _account
-    },
-  )
+  combineLatest([
+    connection().signer,
+    connection().account,
+    connection().provider,
+    connection().chain,
+  ]).subscribe(([_signer, _account, _provider, _chain]) => {
+    signerObj = _signer
+    account.value = _account
+    providerObj = _provider
+    chainId = _chain
+  })
 })
+
+const addPassportdOfferingInConfig = async () => {
+  const { signature: sig, message: msg } = await sign()
+  apiCalling.value = { progress: true }
+
+  const currentConfig = whenDefined(
+    (await whenDefined(club.value, fetchClubs))?.content,
+    decode,
+  )
+  const nextConfig = whenDefined(currentConfig, (base) => ({
+    ...base,
+    offerings: [
+      ...(base?.offerings ?? []),
+      {
+        ...passportOffering.value,
+        id: bytes32Hex(randomBytes(8)),
+        managedBy: 'devprotocol:clubs:plugin:passport',
+      },
+    ],
+  }))
+
+  const api = await whenDefined(nextConfig, (conf) =>
+    fetch('/api/superuser/config', {
+      method: 'POST',
+      body: JSON.stringify({
+        site: club.value,
+        message: msg,
+        signature: sig,
+        config: encode(conf),
+      }),
+    }),
+  )
+
+  const res = (await api?.json()) as { result: string; error?: string }
+  apiCalling.value = { progress: false, result: res.result, error: res.error }
+}
+
+const updatePassportOfferingOnChain = async () => {
+  if (!providerObj || !signerObj) {
+    return
+  }
+
+  apiCalling.value = { progress: true }
+
+  const currentConfig = whenDefined(
+    (await whenDefined(club.value, fetchClubs))?.content,
+    decode,
+  )
+
+  const isDescriptorSet = await setTokenURIDescriptor(
+    signerObj,
+    chainId,
+    passportOffering,
+    providerObj,
+    currentConfig,
+  )
+  if (!isDescriptorSet || isDescriptorSet instanceof Error) {
+    apiCalling.value = {
+      progress: false,
+      result: isDescriptorSet,
+      error: 'Failed in setting setTokenURIDescriptor for item',
+    }
+
+    return
+  }
+
+  apiCalling.value = {
+    progress: true,
+  }
+
+  const isImageSet = await setImage(
+    signerObj,
+    chainId,
+    passportOffering,
+    providerObj,
+    currentConfig,
+  )
+  if (!isImageSet || isImageSet instanceof Error) {
+    apiCalling.value = {
+      progress: false,
+      result: isImageSet,
+      error: 'Failed in setting setImage for item',
+    }
+
+    return
+  }
+
+  apiCalling.value = {
+    result: {
+      isImageSet,
+      isDescriptorSet,
+    },
+    progress: false,
+    error: '',
+  }
+}
 </script>
+
 <template>
   <div class="grid gap-8 grid-cols-2">
     <div class="grid gap-8 justify-start justify-items-start">
@@ -209,6 +357,158 @@ onMounted(async () => {
           />
         </label>
       </div>
+
+      <h2 class="font-mono text-xl mt-8">Add Passport Offering</h2>
+      <div class="w-full grid gap-2">
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">Name</span>
+          <input
+            type="text"
+            class="w-full hs-form-field__input"
+            v-model="passportOffering.name"
+          />
+        </label>
+
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">Image URL</span>
+          <input
+            type="text"
+            class="w-full hs-form-field__input"
+            v-model="passportOffering.imageSrc"
+          />
+        </label>
+
+        // TODO: keep price constant depending on assets.
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">Price</span>
+          <input
+            type="number"
+            min="0.000001"
+            max="1.000e+20"
+            class="w-full hs-form-field__input"
+            v-model="passportOffering.price"
+          />
+        </label>
+
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">Currency</span>
+          <select
+            id="select-offering-currency"
+            v-model="passportOffering.currency"
+            class="w-full hs-form-field__input"
+          >
+            <option disabled value="">Select option</option>
+            <option value="USDC" class="bg-primary-200 text-primary-ink">
+              USDC
+            </option>
+            <option value="ETH" class="bg-primary-200 text-primary-ink">
+              ETH
+            </option>
+            <option value="MATIC" class="bg-primary-200 text-primary-ink">
+              MATIC
+            </option>
+            <option value="DEV" class="bg-primary-200 text-primary-ink">
+              DEV
+            </option>
+          </select>
+        </label>
+
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">Fee</span>
+          <input
+            type="number"
+            min="0"
+            max="1"
+            :value="passportOffering.fee?.percentage"
+            class="w-full hs-form-field__input"
+            @change="onChangePassportOfferingFee"
+          />
+          <p class="hs-form-field__helper mt-2">
+            * MINIMUM fee is <b>0</b> and MAXIMUM fee is <b>1</b>
+          </p>
+          <p class="hs-form-field__helper mt-2">
+            * Fee has to be <b>0</b> when currency is <b>DEV</b>
+          </p>
+        </label>
+
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">Beneficiary</span>
+          <input
+            type="text"
+            class="w-full hs-form-field__input"
+            :value="passportOffering.fee?.beneficiary"
+            @change="onChangePassportOfferingBeneficiary"
+          />
+        </label>
+
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">Description</span>
+          <input
+            type="text"
+            class="w-full hs-form-field__input"
+            v-model="passportOffering.description"
+          />
+        </label>
+
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">Payload</span>
+          <input
+            type="text"
+            disabled="true"
+            class="w-full hs-form-field__input"
+            :value="bytes32Hex(passportOffering.payload ?? [])"
+          />
+        </label>
+      </div>
+
+      <h2 class="font-mono text-xl mt-8">Add Passport Item</h2>
+      <div class="w-full grid gap-2">
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">Id</span>
+          <input
+            type="text"
+            class="w-full hs-form-field__input"
+            v-model="passportItem.sTokenId"
+          />
+        </label>
+
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">Payload</span>
+          <input
+            type="text"
+            class="w-full hs-form-field__input"
+            v-model="passportItem.sTokenPayload"
+          />
+        </label>
+
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">ItemAssetValue</span>
+          <select
+            id="select-item-asset"
+            v-model="passportItem.itemAssetType"
+            class="w-full hs-form-field__input"
+          >
+            <option disabled value="">Select option</option>
+            <option value="css">css</option>
+            <option value="stylesheet-link">stylesheet-link</option>
+            <option value="image">image</option>
+            <option value="image-link">image-link</option>
+            <option value="video">video</option>
+            <option value="video-link">video-link</option>
+            <option value="bgm">bgm</option>
+            <option value="bgm-link">bgm-link</option>
+          </select>
+        </label>
+
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">ItemAssetValue</span>
+          <input
+            type="text"
+            class="w-full hs-form-field__input"
+            v-model="passportItem.itemAssetValue"
+          />
+        </label>
+      </div>
     </div>
 
     <aside class="grid gap-2">
@@ -227,6 +527,7 @@ onMounted(async () => {
               </button>
             </p>
           </dd>
+
           <dt class="font-bold">Add Achievement</dt>
           <dd>
             <pre class="text-sm">{{
@@ -236,6 +537,44 @@ onMounted(async () => {
               <button
                 class="hs-button is-small is-filled"
                 @click="addAchievement"
+              >
+                Add
+              </button>
+            </p>
+          </dd>
+
+          <dt class="font-bold">Add Passport Offering</dt>
+          <dd>
+            <pre class="text-sm">{{
+              passportOffering ? JSON.stringify(passportOffering, null, 2) : ''
+            }}</pre>
+            <p>
+              <button
+                class="hs-button is-small is-filled"
+                @click="addPassportdOfferingInConfig"
+              >
+                Add in config
+              </button>
+            </p>
+            <p>
+              <button
+                class="hs-button is-small is-filled mt-2"
+                @click="updatePassportOfferingOnChain"
+              >
+                Add onchain (might be msg.sender restricted)
+              </button>
+            </p>
+          </dd>
+
+          <dt class="font-bold">Add Passport Item</dt>
+          <dd>
+            <pre class="text-sm">{{
+              passportItem ? JSON.stringify(passportItem, null, 2) : ''
+            }}</pre>
+            <p>
+              <button
+                class="hs-button is-small is-filled"
+                @click="addPassportItem"
               >
                 Add
               </button>
