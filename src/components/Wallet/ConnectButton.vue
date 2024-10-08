@@ -6,6 +6,7 @@ import { useWeb3Modal } from '@web3modal/wagmi/vue'
 import { watchWalletClient } from '@wagmi/core'
 import { whenDefined } from '@devprotocol/util-ts'
 import { BrowserProvider } from 'ethers'
+import { ClubsConnectionSignal } from '@devprotocol/clubs-core'
 
 const props = defineProps<{
   projectId?: string
@@ -76,6 +77,11 @@ onMounted(async () => {
         ? new Error(`Wrong chain: Please switch it to ${defaultChain.name}`)
         : undefined,
     )
+  })
+  connection().signal.subscribe((signal) => {
+    if (signal === ClubsConnectionSignal.SignInRequest) {
+      modal.open()
+    }
   })
 })
 </script>

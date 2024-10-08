@@ -45,7 +45,7 @@ const { PUBLIC_POP_CLIENT_KEY } = import.meta.env
   accessControlDescription={item.source.accessControl?.description}
   {...other}
 >
-  <div slot="checkout:main:transaction-form" class="p-5">
+  <div slot="checkout:main:transaction-form" class="p-3">
     <TransactionForm
       client:load
       item={item}
@@ -53,7 +53,7 @@ const { PUBLIC_POP_CLIENT_KEY } = import.meta.env
       rpcUrl={rpcUrl}
     />
   </div>
-  <div slot="checkout:after:transaction-form" class="p-5">
+  <div slot="checkout:after:transaction-form" class="p-3">
     <a
       href={`/join/${item.source.id}`}
       class="hs-button is-fullwidth is-outlined"

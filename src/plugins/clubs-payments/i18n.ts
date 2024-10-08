@@ -11,7 +11,7 @@ export const Strings = {
     ja: 'クレジットカードで支払う',
   },
   JPY: {
-    en: 'JPY',
+    en: 'YEN',
     ja: '円',
   },
 } satisfies ClubsI18nParts
