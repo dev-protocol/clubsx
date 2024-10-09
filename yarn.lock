@@ -9492,7 +9492,7 @@ __metadata:
     "@devprotocol/clubs-plugin-posts": "npm:0.20.17"
     "@devprotocol/clubs-plugin-posts-voting": "npm:0.8.8"
     "@devprotocol/dev-kit": "npm:8.7.0"
-    "@devprotocol/hashi": "npm:2.3.1"
+    "@devprotocol/hashi": "npm:2.3.4"
     "@devprotocol/huddle01-clubs-plugin": "npm:0.1.7"
     "@devprotocol/khaos-core": "npm:^1.6.0"
     "@devprotocol/khaos-kit": "npm:^1.4.0"
