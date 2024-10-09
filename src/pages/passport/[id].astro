@@ -13,6 +13,7 @@ import Icon from './components/Icons.vue'
 import UserAssets from './components/UserAssets.vue'
 import PassportClips from './components/PassportClips.vue'
 import UserProfileEditButton from './components/UserProfileEditButton.svelte'
+import Skins from './components/Skins.vue'
 
 const { id } = Astro.params
 const isEOA = isAddress(id)
@@ -79,7 +80,7 @@ const passportSkinClips = await whenDefined(
 ---
 
 <Layout theme="auto" sTokenPayload={profile?.skins?.at(0)?.theme}>
-  <div class="grid gap-24">
+  <div class="grid gap-10 lg:gap-20">
     <section class:list={passportClass('account-container')}>
       <span
         class="grid grid-cols-[6rem_1fr] lg:grid-cols-[6rem_1fr_auto] justify-items-start max-w-screen-lg mx-auto px-4 gap-4 lg:gap-y-4"
@@ -216,7 +217,7 @@ const passportSkinClips = await whenDefined(
 
     {
       passportSkinVideos && (
-        <section class="grid justify-items-start max-w-screen-lg mx-auto px-4 gap-24 mb-10">
+        <section class="grid justify-items-start max-w-screen-lg mx-auto px-4 gap-24">
           <span class:list={passportClass('video-container')}>
             <span class:list={passportClass('video-content')}>
               <img
@@ -231,226 +232,16 @@ const passportSkinClips = await whenDefined(
       )
     }
 
-    <!-- demo
     <section
-      class="relative flex flex-col items-center gap-4 mx-auto mb-10 px-4 max-w-screen-lg"
+      class="mx-auto px-4 w-full max-w-screen-lg"
     >
-      <ul class="flex items-end gap-6">
-        <li class="flex flex-col gap-2 p-2 w-[9.357rem] bg-white rounded">
-          <div class="rounded object-contain">
-            <img src={dummyData.passportSkinsImage} alt="Clip" />
-          </div>
-          <div class="flex flex-col gap-1">
-            <h3
-              class="overflow-hidden text-ellipsis text-nowrap text-base font-bold"
-            >
-              Clip Title #1
-            </h3>
-            <p
-              class="overflow-hidden text-ellipsis text-nowrap text-sm"
-              style="--tw-text-opacity: 1"
-            >
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </p>
-          </div>
-        </li>
-        <li class="flex flex-col gap-2 p-2 w-[10.9375rem] bg-white rounded">
-          <div class="rounded object-contain">
-            <img src={dummyData.passportSkinsImage} alt="Clip" />
-          </div>
-          <div class="flex flex-col gap-1">
-            <h3
-              class="overflow-hidden text-ellipsis text-nowrap text-base font-bold"
-            >
-              Clip Title #2
-            </h3>
-            <p
-              class="overflow-hidden text-ellipsis text-nowrap text-sm"
-              style="--tw-text-opacity: 1"
-            >
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </p>
-          </div>
-        </li>
-        <li class="flex flex-col gap-2 p-2 w-[12.5rem] bg-white rounded">
-          <div class="rounded object-contain">
-            <img class="w-full" src={dummyData.passportSkinsImage} alt="Clip" />
-          </div>
-          <div class="flex flex-col gap-1">
-            <h3
-              class="overflow-hidden text-ellipsis text-nowrap text-base font-bold"
-            >
-              Clip Title #3
-            </h3>
-            <p
-              class="overflow-hidden text-ellipsis text-nowrap text-sm"
-              style="--tw-text-opacity: 1"
-            >
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </p>
-          </div>
-        </li>
-        <li class="flex flex-col gap-2 p-2 w-[10.9375rem] bg-white rounded">
-          <div class="rounded object-contain">
-            <img src={dummyData.passportSkinsImage} alt="Clip" />
-          </div>
-          <div class="flex flex-col gap-1">
-            <h3
-              class="overflow-hidden text-ellipsis text-nowrap text-base font-bold"
-            >
-              Clip Title #4
-            </h3>
-            <p
-              class="overflow-hidden text-ellipsis text-nowrap text-sm"
-              style="--tw-text-opacity: 1"
-            >
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </p>
-          </div>
-        </li>
-        <li class="flex flex-col gap-2 p-2 w-[9.357rem] bg-white rounded">
-          <div class="rounded object-contain">
-            <img src={dummyData.passportSkinsImage} alt="Clip" />
-          </div>
-          <div class="flex flex-col gap-1">
-            <h3
-              class="overflow-hidden text-ellipsis text-nowrap text-base font-bold"
-            >
-              Clip Title #5
-            </h3>
-            <p
-              class="overflow-hidden text-ellipsis text-nowrap text-sm"
-              style="--tw-text-opacity: 1"
-            >
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </p>
-          </div>
-        </li>
-      </ul>
-
-      <ul class="passport-skins flex items-end gap-2">
-        <li class="passport-skins-content flex flex-col gap-2 p-2 w-[9.357rem] bg-white rounded">
-          <div class="rounded object-contain">
-            <img src={dummyData.passportSkinsImage} alt="Clip" />
-          </div>
-          <div class="flex flex-col gap-1">
-            <h3
-              class="overflow-hidden text-ellipsis text-nowrap text-base font-bold"
-            >
-              Clip Title #1
-            </h3>
-            <p
-              class="overflow-hidden text-ellipsis text-nowrap text-sm"
-              style="--tw-text-opacity: 1"
-            >
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </p>
-          </div>
-        </li>
-        <li class="passport-skins-content flex flex-col gap-2 p-2 w-[9.357rem] bg-white rounded">
-          <div class="rounded object-contain">
-            <img src={dummyData.passportSkinsImage} alt="Clip" />
-          </div>
-          <div class="flex flex-col gap-1">
-            <h3
-              class="overflow-hidden text-ellipsis text-nowrap text-base font-bold"
-            >
-              Clip Title #2
-            </h3>
-            <p
-              class="overflow-hidden text-ellipsis text-nowrap text-sm"
-              style="--tw-text-opacity: 1"
-            >
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </p>
-          </div>
-        </li>
-        <li class="passport-skins-content flex flex-col gap-2 p-2 w-[9.357rem] bg-white rounded">
-          <div class="rounded object-contain">
-            <img class="w-full" src={dummyData.passportSkinsImage} alt="Clip" />
-          </div>
-          <div class="flex flex-col gap-1">
-            <h3
-              class="overflow-hidden text-ellipsis text-nowrap text-base font-bold"
-            >
-              Clip Title #3
-            </h3>
-            <p
-              class="overflow-hidden text-ellipsis text-nowrap text-sm"
-              style="--tw-text-opacity: 1"
-            >
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </p>
-          </div>
-        </li>
-        <li class="passport-skins-content flex flex-col gap-2 p-2 w-[9.357rem] bg-white rounded">
-          <div class="rounded object-contain">
-            <img src={dummyData.passportSkinsImage} alt="Clip" />
-          </div>
-          <div class="flex flex-col gap-1">
-            <h3
-              class="overflow-hidden text-ellipsis text-nowrap text-base font-bold"
-            >
-              Clip Title #4
-            </h3>
-            <p
-              class="overflow-hidden text-ellipsis text-nowrap text-sm"
-              style="--tw-text-opacity: 1"
-            >
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </p>
-          </div>
-        </li>
-        <li class="passport-skins-content flex flex-col gap-2 p-2 w-[9.357rem] bg-white rounded">
-          <div class="rounded object-contain">
-            <img src={dummyData.passportSkinsImage} alt="Clip" />
-          </div>
-          <div class="flex flex-col gap-1">
-            <h3
-              class="overflow-hidden text-ellipsis text-nowrap text-base font-bold"
-            >
-              Clip Title #5
-            </h3>
-            <p
-              class="overflow-hidden text-ellipsis text-nowrap text-sm"
-              style="--tw-text-opacity: 1"
-            >
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </p>
-          </div>
-        </li>
-      </ul>
+      <Skins client:load />
     </section>
-    -->
 
     <section
-      class="grid justify-items-start max-w-screen-lg mx-auto px-4 gap-24 mb-10"
+      class="mx-auto px-4 w-full max-w-screen-lg"
     >
-      {
-        passportSkinClips?.length && (
-          <div class:list={passportClass('clips-container')}>
-            <div class:list={passportClass('clips-content')}>
-              <PassportClips client:load clips={passportSkinClips} />
-            </div>
-          </div>
-        )
-      }
-
-      {isEOA && <UserAssets client:load account={id ?? ''} local={isLocal} />}
-
-      <a href={`/passport/${id}/clubs`} class="hs-link place-self-start"
-        >Clubs</a
-      >
+      <PassportClips client:load />
     </section>
   </div>
 </Layout>

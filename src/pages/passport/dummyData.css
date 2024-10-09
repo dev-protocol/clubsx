@@ -1,4 +1,6 @@
 ._p ._p-body {
+  background-size: cover;
+  background-repeat: no-repeat;
   background-image: url('https://ik.imagekit.io/wtlw3wfvu/passport-bg.png?updatedAt=1725990448032');
 }
 ._p ._p-hero-container {
@@ -13,11 +15,24 @@
 }
 
 ._p ._p-hero {
-  background-image: url('https://ik.imagekit.io/wtlw3wfvu/sd_amu%202.png?updatedAt=1725988110197');
+  position: relative;
   width: 100%;
   max-width: 990px;
+  mask-image: linear-gradient(to bottom,transparent,white 15%,white,white 25%,transparent);
+}
+
+._p ._p-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  background-image: url('https://ik.imagekit.io/wtlw3wfvu/sd_amu%202.png?updatedAt=1725988110197');
   background-size: contain;
   background-repeat: no-repeat;
+  mask-image: linear-gradient(to right,transparent,white 20%,white,white 60%,transparent);
 }
 
 ._p ._p-avatar-content,
@@ -31,8 +46,7 @@
   color: black;
 }
 
-._p ._p-heading,
-._p ._p-description-content {
+._p ._p-heading {
   color: white;
 }
 
@@ -41,5 +55,34 @@
 }
 
 ._p ._p-description-content {
-  background-color: #b76dd3;
+}
+
+._p ._p-description p {
+}
+
+.passport-skins {
+  position: absolute;
+  top: 300px;
+  align-items: baseline;
+  transition: gap 0.2s ease-out;
+}
+
+.passport-skins:hover {
+  gap: 1.5rem;
+}
+
+.passport-skins-content {
+  transition: width 0.7s ease-out;
+}
+
+.passport-skins-content:hover {
+  width: 200px;
+}
+
+.passport-skins-content:hover + .passport-skins-content {
+  width: 175px;
+}
+
+.passport-skins-content:has(+ .passport-skins-content:hover) {
+  width: 175px;
 }

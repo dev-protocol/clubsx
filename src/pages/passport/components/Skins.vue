@@ -1,15 +1,10 @@
-<script lang="ts" setup>
-import { onMounted, ref } from 'vue'
-import { i18nFactory } from '@devprotocol/clubs-core'
-import { MasonryInfiniteGrid } from "@egjs/vue3-infinitegrid";
-import Modal from '@pages/passport/components/Modal.vue'
-import PassportClipsModal from '@pages/passport/components/PassportClipsModal.vue'
-
-import { Strings } from '../i18n'
-
+<script setup lang="ts">
 import Image01 from '../../../assets/sample/image01.png'
 import Image02 from '../../../assets/sample/image02.png'
 import Image03 from '../../../assets/sample/image03.png'
+import SkinsModal from '@pages/passport/components/SkinsModal.vue'
+import Modal from '@pages/passport/components/Modal.vue'
+import { onMounted, ref } from 'vue'
 
 // for modal
 const modalVisible = ref(false)
@@ -17,7 +12,11 @@ const modalTitle = ref('')
 const modalDescription = ref('')
 const modalImage = ref('')
 
-const handleOnClick = (item: any) => {
+const handleOnClick = (item : {
+  title: string
+  description: string
+  image: string
+}) => {
   modalVisible.value = true
   modalTitle.value = item.title
   modalDescription.value = item.description
@@ -28,9 +27,6 @@ const modalClose = () => {
   modalVisible.value = false
 }
 
-const i18nBase = i18nFactory(Strings)
-let i18n = ref<ReturnType<typeof i18nBase>>(i18nBase(['en']))
-
 const items = ref<
   {
     key: number
@@ -38,7 +34,7 @@ const items = ref<
     title: string
     description: string
   }[]
- | []>([])
+  | []>([])
 
 const getItems = (nextGroupKey: number, count: number) => {
   const nextItems = [];
@@ -47,7 +43,7 @@ const getItems = (nextGroupKey: number, count: number) => {
     const nextKey = nextGroupKey * count + i;
 
     // ランダムな長さのタイトルを作成する
-    const titleLength = Math.floor(Math.random() * 30) + 1;
+    const titleLength = Math.floor(Math.random() * 100) + 1;
     const title = Array.from({ length: titleLength }, () => 'foo is bar.').join('');
 
     // ランダムな長さのdescriptionを作成する
@@ -65,41 +61,43 @@ const getItems = (nextGroupKey: number, count: number) => {
 }
 
 onMounted(async () => {
-  i18n.value = i18nBase(navigator.languages)
-
-  items.value = getItems(0, 10)
+  items.value = getItems(0, 3)
 })
 
 </script>
 
 <template>
-  <MasonryInfiniteGrid class="container" :outline-length="3" :gap="{
-    horizontal: 5,
-    vertical: 20
-  }">
+  <div class="items items-end"
+  :class="[items.length === 3 ? 'justify-between gap-4' : 'justify-start gap-4']"
+  >
     <div
-      class="item flex flex-col gap-2 p-1 border border-gray-200 rounded shadow-lg"
       v-for="item in items"
       :key="item.key"
+      class="p-1 border border-gray-200 rounded shadow-lg"
+      :class="[
+        items.length < 3 || items.length === 3 && item.key === 0 ? 'w-96' : 'w-72',
+        items.length < 3 ? 'below-three-item' : 'above-three-item',
+        ]"
       @click="() => {
-        handleOnClick(item)
+        handleOnClick({
+          title: 'Mystic Horizon',
+          description: 'Mystic Horizon',
+          image: Image01.src,
+        })
       }"
     >
-      <div class="thumbnail">
-        <img
-          :src="item.image"
-          alt=""
-        />
+      <div>
+        <img class="w-full" :src="item.image" alt="" />
       </div>
       <div class="text-sm text-left break-words">
         <div class="item-title font-bold">{{ item.title }}</div>
         <div class="text-gray-400">{{ item.description }}</div>
       </div>
     </div>
-  </MasonryInfiniteGrid>
+  </div>
   <Modal
     :is-visible="modalVisible"
-    :modal-content="PassportClipsModal"
+    :modal-content="SkinsModal"
     :handle-modal-close="modalClose"
     :attrs="{
       title: modalTitle,
@@ -108,14 +106,35 @@ onMounted(async () => {
     }" />
 </template>
 
-<style scoped>
-.container {
-  width: 100%;
-  margin: 0 auto;
+<style scoped lang="scss">
+.items {
+  display: grid;
+  grid-template: repeat(1, auto) / repeat(3, auto);
 }
 
-.item {
-  width: 30%;
+.above-three-item:nth-child(1) {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+}
+
+.above-three-item:nth-child(2) {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+}
+
+.above-three-item:nth-child(3) {
+  grid-column: 3 / 4;
+  grid-row: 1 / 2;
+}
+
+.below-three-item:nth-child(1) {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+}
+
+.below-three-item:nth-child(2) {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
 }
 
 .item-title {
@@ -123,7 +142,6 @@ onMounted(async () => {
   display: -webkit-box;
   text-overflow: ellipsis;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 5;
+  -webkit-line-clamp: 1;
 }
-
 </style>
