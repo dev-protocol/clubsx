@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const {title, description, imageSrc} = defineProps<{
+const { title, description, imageSrc } = defineProps<{
   title: string | undefined
   description: string | undefined
   imageSrc: string | undefined
@@ -20,6 +20,4 @@ const {title, description, imageSrc} = defineProps<{
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

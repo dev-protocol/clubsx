@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import { i18nFactory } from '@devprotocol/clubs-core'
-import { MasonryInfiniteGrid } from "@egjs/vue3-infinitegrid";
+import { MasonryInfiniteGrid } from '@egjs/vue3-infinitegrid'
 import Modal from '@pages/passport/components/Modal.vue'
 import PassportClipsModal from '@pages/passport/components/PassportClipsModal.vue'
 
@@ -32,36 +32,47 @@ const i18nBase = i18nFactory(Strings)
 let i18n = ref<ReturnType<typeof i18nBase>>(i18nBase(['en']))
 
 const items = ref<
-  {
-    key: number
-    image: string
-    title: string
-    description: string
-  }[]
- | []>([])
+  | {
+      key: number
+      image: string
+      title: string
+      description: string
+    }[]
+  | []
+>([])
 
 const getItems = (nextGroupKey: number, count: number) => {
-  const nextItems = [];
+  const nextItems = []
 
   for (let i = 0; i < count; ++i) {
-    const nextKey = nextGroupKey * count + i;
+    const nextKey = nextGroupKey * count + i
 
     // ランダムな長さのタイトルを作成する
-    const titleLength = Math.floor(Math.random() * 30) + 1;
-    const title = Array.from({ length: titleLength }, () => 'foo is bar.').join('');
+    const titleLength = Math.floor(Math.random() * 30) + 1
+    const title = Array.from({ length: titleLength }, () => 'foo is bar.').join(
+      '',
+    )
 
     // ランダムな長さのdescriptionを作成する
-    const descriptionLength = Math.floor(Math.random() * 10) + 1;
-    const description = Array.from({ length: descriptionLength }, () => 'bar').join('');
+    const descriptionLength = Math.floor(Math.random() * 10) + 1
+    const description = Array.from(
+      { length: descriptionLength },
+      () => 'bar',
+    ).join('')
 
     nextItems.push({
       key: nextKey,
-      image: nextKey % 3 === 0 ? Image01.src : nextKey % 3 === 1 ? Image02.src : Image03.src,
+      image:
+        nextKey % 3 === 0
+          ? Image01.src
+          : nextKey % 3 === 1
+            ? Image02.src
+            : Image03.src,
       title: `PV - ${title}`,
       description: description,
-    });
+    })
   }
-  return nextItems;
+  return nextItems
 }
 
 onMounted(async () => {
@@ -69,27 +80,29 @@ onMounted(async () => {
 
   items.value = getItems(0, 10)
 })
-
 </script>
 
 <template>
-  <MasonryInfiniteGrid class="container" :outline-length="3" :gap="{
-    horizontal: 5,
-    vertical: 20
-  }">
+  <MasonryInfiniteGrid
+    class="container"
+    :outline-length="3"
+    :gap="{
+      horizontal: 5,
+      vertical: 20,
+    }"
+  >
     <div
       class="item flex flex-col gap-2 p-1 border border-gray-200 rounded shadow-lg"
       v-for="item in items"
       :key="item.key"
-      @click="() => {
-        handleOnClick(item)
-      }"
+      @click="
+        () => {
+          handleOnClick(item)
+        }
+      "
     >
       <div class="thumbnail">
-        <img
-          :src="item.image"
-          alt=""
-        />
+        <img :src="item.image" alt="" />
       </div>
       <div class="text-sm text-left break-words">
         <div class="item-title font-bold">{{ item.title }}</div>
@@ -105,7 +118,8 @@ onMounted(async () => {
       title: modalTitle,
       description: modalDescription,
       imageSrc: modalImage,
-    }" />
+    }"
+  />
 </template>
 
 <style scoped>
@@ -125,5 +139,4 @@ onMounted(async () => {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 5;
 }
-
 </style>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const {title, description, imageSrc} = defineProps<{
+const { title, description, imageSrc } = defineProps<{
   title: string | undefined
   description: string | undefined
   imageSrc: string | undefined
@@ -20,6 +20,4 @@ const {title, description, imageSrc} = defineProps<{
   </div>
 </template>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>
