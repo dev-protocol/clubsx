@@ -14,11 +14,10 @@ import { default as Icon } from './assets/icon.svg'
 import { Content as Readme } from './README.md'
 import Preview1 from './assets/join-1.jpg'
 import Preview2 from './assets/join-2.jpg'
-import { isPriced } from '@plugins/memberships/utils/is'
 
 export const getPagePaths = (async (
   _,
-  { propertyAddress, name, rpcUrl },
+  { propertyAddress, name, rpcUrl, offerings },
   { getPluginConfigById },
 ) => {
   const [membershipConfig] = getPluginConfigById(
@@ -27,21 +26,31 @@ export const getPagePaths = (async (
   const allMemberships = membershipConfig?.options.find(
     (opt) => opt.key === 'memberships',
   )?.value as UndefinedOr<Membership[]>
-
   // Filter out deprecated memberships.
   const memberships = allMemberships?.filter(
     (membership) => !membership.deprecated,
   )
-
-  const tiers = memberships?.map((mem) => ({
+  const membershipTiers = memberships?.map((mem) => ({
     ...mem,
     currency: mem.currency?.toLocaleLowerCase(),
     title: mem.name,
     amount: mem.price,
     badgeImageSrc: mem.imageSrc,
     badgeImageDescription: mem.description,
+    managedBy: 'devprotocol:clubs:simple-memberships',
   }))
 
+  const offeringTiers = offerings?.map((mem) => ({
+    ...mem,
+    currency: mem.currency?.toLocaleLowerCase(),
+    title: mem.name,
+    amount: mem.price,
+    badgeImageSrc: mem.imageSrc,
+    badgeImageDescription: mem.description,
+    managedBy: mem.managedBy,
+  }))
+
+  const tiers = [...(membershipTiers ?? []), ...(offeringTiers ?? [])]
   return tiers
     ? [
         {
