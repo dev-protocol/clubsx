@@ -10,6 +10,10 @@
   import { JsonRpcProvider } from 'ethers'
   import { clientsSTokens } from '@devprotocol/dev-kit'
   import { i18nFactory, mintedIdByLogs } from '@devprotocol/clubs-core'
+  import {
+    IconBouncingArrowRight,
+    IconSpinner,
+  } from '@devprotocol/clubs-core/ui/svelte'
   import { Strings } from './i18n'
 
   export let item: ComposedItem
@@ -173,18 +177,10 @@
   }
 </script>
 
-<span class="grid gap-12" bind:this={component}>
-  <label class="hs-form-field is-filled is-large">
-    <span class="hs-form-field__label">{i18n('Account')}</span>
-    <input
-      class="hs-form-field__input"
-      placeholder="Please connect a wallet"
-      data-is-filled={Boolean(account)}
-      value={account ?? ''}
-      disabled
-    />
-  </label>
-
+<span
+  class="grid gap-6 animate-[fadeIn_.7s_ease-in-out_forwards]"
+  bind:this={component}
+>
   <label class="hs-form-field is-filled is-large">
     <span class="hs-form-field__label">{i18n('Email')}</span>
     <input
@@ -220,8 +216,15 @@
         Boolean(error)}
       data-is-progress={loading}
       data-on-error={Boolean(error)}
-      class="hs-button is-large is-filled data-[is-progress=true]:animate-pulse data-[on-error=true]:bg-red-600"
+      class="hs-button relative group is-large is-filled data-[is-progress=true]:animate-pulse data-[on-error=true]:bg-red-600"
     >
+      <IconBouncingArrowRight
+        justifyLeft={true}
+        class="group-disabled:hidden"
+      />
+      {#if loading}
+        <IconSpinner class="absolute left-5 size-5" />
+      {/if}
       {i18n('PayWithACreditCard')}
     </button>
 
@@ -230,18 +233,21 @@
     {/if}
   </span>
 
-  {#if loading || waitingForMinted}
-    <span class="grid justify-center gap-6">
-      <div
-        role="presentation"
-        class="mx-auto h-16 w-16 animate-spin rounded-full border-l border-r border-t border-native-blue-300"
-      />
-      {#if loading}
-        <p>Awaiting payment complete...</p>
-      {/if}
-      {#if waitingForMinted}
-        <p>Just a few minutes until your item is minted...</p>
-      {/if}
+  {#if waitingForMinted}
+    <span class="flex items-center justify-center gap-6">
+      <IconSpinner />
+      <p>Just a few minutes until your item is minted...</p>
     </span>
   {/if}
 </span>
+
+<style>
+  @keyframes -global-fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 100;
+    }
+  }
+</style>
