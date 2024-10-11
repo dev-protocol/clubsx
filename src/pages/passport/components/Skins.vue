@@ -2,8 +2,8 @@
 import Image01 from '../../../assets/sample/image01.png'
 import Image02 from '../../../assets/sample/image02.png'
 import Image03 from '../../../assets/sample/image03.png'
-import SkinsModal from '@pages/passport/components/SkinsModal.vue'
 import Modal from '@pages/passport/components/Modal.vue'
+import ModalContent from '@pages/passport/components/ModalContent.vue'
 import { onMounted, ref } from 'vue'
 
 // for modal
@@ -95,11 +95,7 @@ onMounted(async () => {
       ]"
       @click="
         () => {
-          handleOnClick({
-            title: 'Mystic Horizon',
-            description: 'Mystic Horizon',
-            image: Image01.src,
-          })
+          handleOnClick(item)
         }
       "
     >
@@ -114,7 +110,7 @@ onMounted(async () => {
   </div>
   <Modal
     :is-visible="modalVisible"
-    :modal-content="SkinsModal"
+    :modal-content="ModalContent"
     :handle-modal-close="modalClose"
     :attrs="{
       title: modalTitle,

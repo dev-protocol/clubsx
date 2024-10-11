@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue'
 import { i18nFactory } from '@devprotocol/clubs-core'
 import { MasonryInfiniteGrid } from '@egjs/vue3-infinitegrid'
 import Modal from '@pages/passport/components/Modal.vue'
-import PassportClipsModal from '@pages/passport/components/PassportClipsModal.vue'
+import ModalContent from '@pages/passport/components/ModalContent.vue'
 
 import { Strings } from '../i18n'
 
@@ -112,7 +112,7 @@ onMounted(async () => {
   </MasonryInfiniteGrid>
   <Modal
     :is-visible="modalVisible"
-    :modal-content="PassportClipsModal"
+    :modal-content="ModalContent"
     :handle-modal-close="modalClose"
     :attrs="{
       title: modalTitle,
