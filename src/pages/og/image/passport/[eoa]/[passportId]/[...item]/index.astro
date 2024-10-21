@@ -1,0 +1,21 @@
+---
+import { whenDefined, whenDefinedAll } from '@devprotocol/util-ts'
+import { getProfile } from '@fixtures/api/profile'
+import { Debug } from 'astro:components'
+
+const { eoa, passportId, item } = Astro.params
+
+const profile = await whenDefined(eoa, (_eoa) => getProfile({ id: _eoa }))
+const skin = whenDefinedAll([passportId, profile], ([id, prof]) =>
+  prof.skins?.find((skin) => (skin as any).id === id),
+)
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+  </head>
+
+  <body><Debug profile={profile} skin={skin} /> </body>
+</html>
