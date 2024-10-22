@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { nanoid } from 'nanoid'
   import { onMount } from 'svelte'
   import { JsonRpcProvider } from 'ethers'
   import { fade } from 'svelte/transition'
@@ -277,6 +278,24 @@
 
   const addProfile = async () => {}
 
+  const onChangePassportSkinName = (ev: Event) => {
+    const newName =
+      (event?.target as HTMLInputElement)?.value ??
+      profile?.skins?.at(0)?.name ??
+      profileFromAPI?.skins?.at(0)?.name ??
+      ''
+
+    profile = {
+      ...profile,
+      skins: [
+        {
+          ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
+          name: newName,
+        },
+      ],
+    }
+  }
+
   const selectPassportSkinItem = (item: PassportItem) => {
     if (!item.payload) {
       console.log(
@@ -473,6 +492,21 @@
     }
 
     closeAllModals()
+  }
+
+  $: {
+    // generate id only once (i.e when profile or skins or skins(0) or skins(0).id is not present)
+    if (!profileFromAPI?.skins?.at(0)?.id) {
+      profile = {
+        ...profile,
+        skins: [
+          {
+            ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
+            id: nanoid(),
+          },
+        ],
+      }
+    }
   }
 </script>
 
@@ -787,6 +821,17 @@
         />
       </div>
     </div>
+  </label>
+
+  <label class="hs-form-field is-filled mt-[76px]">
+    <span class="hs-form-field__label"> {i18n('PassportSkinName')} </span>
+    <input
+      class="hs-form-field__input"
+      disabled={profileUpdating || !eoa}
+      value={profile?.skins?.at(0)?.name ?? ''}
+      on:change|preventDefault={onChangePassportSkinName}
+      placeholder={i18n('PassportSkinNamePlaceholder')}
+    />
   </label>
 
   <label class="hs-form-field is-filled mt-[76px]">

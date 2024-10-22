@@ -8,11 +8,7 @@ export const POST = async ({ request }: { request: Request }) => {
     profileId: string
     skinIndex: number
   }
-  console.log('ProfileId', profileId)
-  console.log('SkinIndex', skinIndex)
   const profile: Profile = await getProfile({ id: profileId })
-
-  console.log('Old profile skins', profile.skins)
 
   if (!profile) {
     return new Response(JSON.stringify({ error: 'No profile found' }), {
@@ -31,7 +27,7 @@ export const POST = async ({ request }: { request: Request }) => {
       return skin
     }),
   }
-  console.log('Skins', newProfile.skins)
+
   const client = createClient({
     url: process.env.REDIS_URL,
     username: process.env.REDIS_USERNAME ?? '',
