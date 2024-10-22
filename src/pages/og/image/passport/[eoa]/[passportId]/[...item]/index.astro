@@ -3,12 +3,28 @@ import { whenDefined, whenDefinedAll } from '@devprotocol/util-ts'
 import { getProfile } from '@fixtures/api/profile'
 import { Debug } from 'astro:components'
 
-const { eoa, passportId, item } = Astro.params
+const { eoa, passportId, item: itemPath } = Astro.params
+
+/*
+ * `itemPath` = t[number]:i[number]
+ * i[number] shows the index number
+ * t1 means the item in `clips`
+ * t2 means the item in `videos`
+ */
 
 const profile = await whenDefined(eoa, (_eoa) => getProfile({ id: _eoa }))
 const skin = whenDefinedAll([passportId, profile], ([id, prof]) =>
   prof.skins?.find((skin) => (skin as any).id === id),
 )
+const itemType = whenDefined(itemPath, (_item) => {
+  const [type] = _item.split(':')
+  return type === 't1' ? 'spotlight' : type === 't2' ? 'clips' : undefined
+})
+const itemIndex = whenDefined(itemPath, (_item) => {
+  const [, indexValue] = _item.split(':')
+  const index = Number(indexValue.replace(/^i([0-9]+).*/, '$1'))
+  return index
+})
 ---
 
 <html lang="en">
