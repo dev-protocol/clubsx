@@ -28,7 +28,8 @@ const isLocal =
 
 const htmlDescription = markdownToHtml(profile.description)
 
-const skin = profile?.skins?.find((skin) => skin.id === id)
+const skin =
+  profile?.skins?.find((skin) => skin.id === id) ?? profile?.skins?.at(0)
 const _passportSkinBGMs = skin?.bgm
 const _passportSkinClips = skin?.clips
 const _passportSkinVideos = skin?.videos
