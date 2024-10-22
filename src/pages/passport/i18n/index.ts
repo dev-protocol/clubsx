@@ -1,6 +1,10 @@
 import type { ClubsI18nParts } from '@devprotocol/clubs-core'
 
 export const Strings = {
+  PassportSkinName: {
+    en: 'Passport name',
+    ja: `パスポート名`,
+  },
   FrameColor: {
     en: `Frame color`,
     ja: `フレームカラー`,
@@ -16,6 +20,10 @@ export const Strings = {
   DescriptionPlaceholder: {
     en: `Describe yourself here.`,
     ja: `ここに自分自身について説明してください。`,
+  },
+  PassportSkinNamePlaceholder: {
+    en: `Enter a name that you would like to give to this passport`,
+    ja: `このパスポートに付けたい名前を入力してください`,
   },
   UsernamePlaceholder: {
     en: `Enter your username.`,
