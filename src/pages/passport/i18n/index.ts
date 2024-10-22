@@ -39,17 +39,17 @@ export const Strings = {
     ja: () =>
       `<b>パスポートスキン</b>を購入していません。<br />クリエイティブでユニークなパスポートページを<i>設定</i>するには、<b>今すぐパスポートスキンを購入</b>してください。`,
   },
-  PinnPassportItems: {
+  PinClips: {
     en: () =>
-      `You have not purchased <b>Passport Assets</b>.<br /><i>To configure</i> your creative and unique passport page <b>purchase Passport Assets now</b>.`,
+      `You have not pinned your <b>Passport Clips</b>.<br /><i>To configure</i> your creative and unique passport page <b>pin Passport Clips now</b>.`,
     ja: () =>
-      `<b>パスポートアセット</b>を購入していません。<br />クリエイティブでユニークなパスポートページを<i>設定</i>するには、<b>今すぐパスポートアセットを購入</b>してください。`,
+      `<b>パスポート クリップ</b> を固定していません。<br /><i>クリエイティブでユニークなパスポート ページを設定</i>するには、<b>今すぐパスポート クリップを固定</b>してください。`,
   },
   PurchasePassportAssets: {
     en: () =>
-      `You have not <b>pinned your Passport Assets</b>.<br /><i>To configure</i> your creative and unique passport page <b>pin</b> them or <b>purchase passport assets if you do not already have them</b>.`,
+      `You have not purchased <b>Passport Assets</b>.<br /><i>To configure</i> your creative and unique passport page <b>purchase Passport Assets now</b>.`,
     ja: () =>
-      `パスポートアセットを<b>ピン留め</b>していません。<br />クリエイティブでユニークなパスポートページを<i>設定</i>するには、パスポートアセットを<b>ピン留め</b>するか、<b>まだお持ちでない場合はパスポートアセットを購入してください。</b>。`,
+      `<b>パスポート アセット</b>を購入していません。<br />クリエイティブでユニークなパスポート ページを<i>設定</i>するには、<b>今すぐパスポート アセットを購入</b>してください。`,
   },
   PassportAssets: {
     en: () => `Passport Assets`,
@@ -59,9 +59,13 @@ export const Strings = {
     en: 'Passport Skin',
     ja: 'パスポートスキン',
   },
-  SelectedPassportClips: {
-    en: 'Selected Passport Clips- Pinned passport assets',
-    ja: '選択されたパスポートクリップ - ピン留めされたパスポートアセット',
+  PassportClips: {
+    en: 'Pinned clips',
+    ja: '固定されたクリップ',
+  },
+  PassportSpotlight: {
+    en: 'Spotlight clips',
+    ja: 'スポットライトクリップ',
   },
   Profile: {
     en: 'Profile',
