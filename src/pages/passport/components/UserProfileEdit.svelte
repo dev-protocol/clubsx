@@ -341,6 +341,46 @@
     console.log('Profile at reseting passport skin item', profile)
   }
 
+  const toggleClipInSpotlight = async (item: PassportItem) => {
+    if (!item.payload) {
+      console.log(
+        `Passport clip not pinned to spotlight since item.payload missing`,
+        item.id,
+      )
+      return
+    }
+
+    profile = {
+      ...profile, // Retain other modified fields.
+      skins: [
+        // Set skins to the updated value or append new value of theme.
+        {
+          ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
+          spotlight: profile?.skins
+            ?.at(0)
+            ?.spotlight?.find((clip) => clip.payload === item.payload)
+            ? [
+                ...(profile.skins
+                  ?.at(0)
+                  ?.spotlight?.filter(
+                    (clip) => clip.payload !== item.payload,
+                  ) ?? []),
+              ]
+            : [
+                ...(profile.skins?.at(0)?.spotlight ?? []),
+                { payload: item.payload, description: '', frameColorHex: '' },
+              ],
+        },
+      ],
+    }
+
+    console.log(
+      'Passort item and profile at pinning passport clips to spotlight',
+      item,
+      profile,
+    )
+  }
+
   const togglePinnnedPassortNonSkinItem = async (item: PassportItem) => {
     if (!item.payload) {
       console.log(
@@ -378,6 +418,20 @@
       item,
       profile,
     )
+  }
+
+  const resetSpotlightClips = async () => {
+    profile = {
+      ...profile, // Retain other modified fields.
+      skins: [
+        {
+          ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties ir-respective of whether the skin is modified or not.
+          spotlight: profileFromAPI?.skins?.at(0)?.spotlight ?? [], // Retain clips from profileFromAPI if present otherwise empty array.
+        },
+      ],
+    }
+
+    console.log('Profile at resetting spotlight', profile)
   }
 
   const resetPinnedNonSkinItems = async () => {
@@ -908,7 +962,7 @@
           profileFetching ||
           passportItemFetching ||
           profileUpdating}
-        on:click|preventDefault={() => resetPinnedNonSkinItems()}
+        on:click|preventDefault={() => resetSpotlightClips()}
         class="hs-button is-filled is-large w-fit text-center">Reset</button
       >
     </div>
@@ -1039,30 +1093,50 @@
     {:else if passportNonSkinItems?.length}
       <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
         {#each passportNonSkinItems as item, i}
-          <button
-            on:click|preventDefault={() =>
-              togglePinnnedPassortNonSkinItem(item)}
-            disabled={!eoa ||
-              !passportNonSkinItems.length ||
-              profileFetching ||
-              passportItemFetching ||
-              profileUpdating}
-          >
-            <li id={`assets-${i.toString()}`} class="empty:hidden">
-              <PassportAsset
-                props={{
-                  item,
-                  provider: rpcProvider,
-                  local: isLocal,
-                  classNames: profile?.skins
-                    ?.at(0)
-                    ?.clips?.find((clip) => clip.payload === item.payload)
-                    ? 'border-2 border-surface-ink'
-                    : 'border border-surface-300',
-                }}
-              />
-            </li>
-          </button>
+          <li id={`assets-${i.toString()}`} class="relative group empty:hidden">
+            <div
+              class="h-fit w-full max-w-full absolute left-0 right-0 top-0 hidden group-hover:flex flex-row items-center justify-end bg-surface-300 rounded-md p-4 gap-4 opacity-90"
+            >
+              <!-- Add to spotlight -->
+              <button
+                class="w-6 h-6 cursor-pointer"
+                on:click|preventDefault={() => toggleClipInSpotlight(item)}
+                disabled={!eoa ||
+                  !passportNonSkinItems.length ||
+                  profileFetching ||
+                  passportItemFetching ||
+                  profileUpdating}
+              >
+                S
+              </button>
+
+              <!-- Add to showcase/pinned clips -->
+              <button
+                class="w-6 h-6 cursor-pointer"
+                on:click|preventDefault={() =>
+                  togglePinnnedPassortNonSkinItem(item)}
+                disabled={!eoa ||
+                  !passportNonSkinItems.length ||
+                  profileFetching ||
+                  passportItemFetching ||
+                  profileUpdating}
+              >
+                C
+              </button>
+            </div>
+            <PassportAsset
+              props={{
+                item,
+                provider: rpcProvider,
+                local: isLocal,
+                classNames: profile?.skins
+                  ?.at(0)
+                  ?.clips?.find((clip) => clip.payload === item.payload)
+                  ? 'border-2 border-surface-ink'
+                  : 'border border-surface-300',
+              }}
+            />
+          </li>
         {/each}
       </ul>
     {/if}
