@@ -5251,6 +5251,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/jquery@npm:*":
+  version: 3.5.32
+  resolution: "@types/jquery@npm:3.5.32"
+  dependencies:
+    "@types/sizzle": "npm:*"
+  checksum: 10c0/4a17ad6819b89026c21323656ab01b0b263f9d470910a87c8740920ff98319d503c7352b85b50134a39724ecbfccabc73aa4c741dfdd460cf8bbe714f9259054
+  languageName: node
+  linkType: hard
+
 "@types/json5@npm:^0.0.29":
   version: 0.0.29
   resolution: "@types/json5@npm:0.0.29"
@@ -5517,10 +5526,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/sizzle@npm:*":
+  version: 2.3.9
+  resolution: "@types/sizzle@npm:2.3.9"
+  checksum: 10c0/db0277ff62e8ebe6cdae2020fd045fd7fd19f29a3a2ce13c555b14fb00e105e79004883732118b9f2e8b943cb302645e9eddb4e7bdeef1a171da679cd4c32b72
+  languageName: node
+  linkType: hard
+
 "@types/stats.js@npm:*":
   version: 0.17.3
   resolution: "@types/stats.js@npm:0.17.3"
   checksum: 10c0/ccccc992c6dfe08fb85049aa3ce44ca7e428db8da4a3edd20298f1c8b72768021fa8bacdfbe8e9735a7552ee5d57f667c6f557050ad2d9a87b699b3566a6177a
+  languageName: node
+  linkType: hard
+
+"@types/textfit@npm:^2.4.5":
+  version: 2.4.5
+  resolution: "@types/textfit@npm:2.4.5"
+  dependencies:
+    "@types/jquery": "npm:*"
+  checksum: 10c0/807adeb37e906dcd2ec92adca279623d694586fe77c07563e7006540baca343d0687568701c7df33aad4ce13fdddbe295438863461d43a4bda1f5684aa29413a
   languageName: node
   linkType: hard
 
@@ -9526,6 +9551,7 @@ __metadata:
     "@types/ramda": "npm:0.30.2"
     "@types/react": "npm:18.3.11"
     "@types/react-dom": "npm:18.3.0"
+    "@types/textfit": "npm:^2.4.5"
     "@types/three": "npm:0.161.2"
     "@types/uuid": "npm:^10.0.0"
     "@vercel/edge": "npm:^1.1.1"
@@ -9583,6 +9609,7 @@ __metadata:
     swiper: "npm:11.1.14"
     swr: "npm:^2.2.5"
     tailwindcss: "npm:^3.3.3"
+    textfit: "npm:^2.4.0"
     three: "npm:0.161.0"
     truncate-eth-address: "npm:1.0.2"
     type-fest: "npm:4.26.1"
@@ -22279,6 +22306,13 @@ __metadata:
   version: 0.2.0
   resolution: "text-table@npm:0.2.0"
   checksum: 10c0/02805740c12851ea5982686810702e2f14369a5f4c5c40a836821e3eefc65ffeec3131ba324692a37608294b0fd8c1e55a2dd571ffed4909822787668ddbee5c
+  languageName: node
+  linkType: hard
+
+"textfit@npm:^2.4.0":
+  version: 2.4.0
+  resolution: "textfit@npm:2.4.0"
+  checksum: 10c0/f7cf5f5595dcad7f7c7bdc8b32c980f46b22689907f36acae8021b2b2ea8968d45260f4f73e42bfef77d374276794d4a6835d589f30d1fcd26fc4173f7c6b799
   languageName: node
   linkType: hard
 
