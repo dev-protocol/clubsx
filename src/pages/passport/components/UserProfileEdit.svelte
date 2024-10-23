@@ -878,7 +878,7 @@
   </label>
 
   <label class="hs-form-field is-filled mt-[76px]">
-    <span class="hs-form-field__label"> {i18n('PassportSkinName')} </span>
+    <span class="hs-form-field__label"> {i18n('PassportName')} </span>
     <input
       class="hs-form-field__input"
       disabled={profileUpdating || !eoa}
@@ -886,6 +886,9 @@
       on:change|preventDefault={onChangePassportSkinName}
       placeholder={i18n('PassportSkinNamePlaceholder')}
     />
+    <span class="hs-form-field__helper">
+      {i18n('PassportNameHelper')}
+    </span>
   </label>
 
   <!-- Passport skins -->
@@ -1010,11 +1013,12 @@
     {/if}
   </span>
 
-  <!-- Pinned clips -->
+  <!-- Showcase/pinned clips -->
   <span class="hs-form-field is-filled mt-[76px]">
     <div class="hs-form-field__label flex items-center justify-between mb-1">
       <span class="hs-form-field__label">
-        {i18n('PassportClips')} ({profile?.skins?.at(0)?.clips?.length ?? 0})
+        {i18n('PassportShowcaseClips')} ({profile?.skins?.at(0)?.clips
+          ?.length ?? 0})
       </span>
       <button
         disabled={!eoa ||
@@ -1039,7 +1043,7 @@
       </div>
     {:else if !passportItemFetching && !profileFetching && !profile.skins?.at(0)?.clips?.length}
       <div class="rounded-md border border-surface-400 p-8 text-accent-200">
-        {i18n('Empty')} :) <br />{@html i18n('PinClips')}
+        {i18n('Empty')} :) <br />{@html i18n('PinClipsToShowcase')}
       </div>
     {:else if !passportItemFetching && !profileFetching && profile.skins?.at(0)?.clips?.length && passportNonSkinItems?.length}
       <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
@@ -1073,7 +1077,7 @@
   <!-- Passport items other than type: css | stylesheet-link -->
   <span class="hs-form-field is-filled mt-[76px]">
     <span class="hs-form-field__label">
-      {i18n('PassportAssets')} ({passportNonSkinItems?.length ?? 0})
+      {i18n('PassportClips')} ({passportNonSkinItems?.length ?? 0})
     </span>
 
     {#if !eoa}
@@ -1088,7 +1092,7 @@
       </div>
     {:else if !passportItemFetching && !profileFetching && !passportNonSkinItems?.length}
       <div class="rounded-md border border-surface-400 p-8 text-accent-200">
-        {i18n('Empty')} :) <br />{@html i18n('PurchasePassportAssets')}
+        {i18n('Empty')} :) <br />{@html i18n('PurchasePassportClips')}
       </div>
     {:else if passportNonSkinItems?.length}
       <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">

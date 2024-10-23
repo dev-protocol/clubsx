@@ -1,7 +1,7 @@
 import type { ClubsI18nParts } from '@devprotocol/clubs-core'
 
 export const Strings = {
-  PassportSkinName: {
+  PassportName: {
     en: 'Passport name',
     ja: `パスポート名`,
   },
@@ -39,7 +39,7 @@ export const Strings = {
     ja: () =>
       `<b>パスポートスキン</b>を購入していません。<br />クリエイティブでユニークなパスポートページを<i>設定</i>するには、<b>今すぐパスポートスキンを購入</b>してください。`,
   },
-  PinClips: {
+  PinClipsToShowcase: {
     en: () =>
       `You have not pinned your <b>Passport Clips</b>.<br /><i>To configure</i> your creative and unique passport page <b>pin Passport Clips now</b>.`,
     ja: () =>
@@ -51,22 +51,22 @@ export const Strings = {
     ja: () =>
       `<b>パスポート クリップ</b> をスポットライトに固定していません。<br /><i>クリエイティブでユニークなパスポート ページを設定</i>するには、<b>今すぐパスポート クリップをスポットライトに固定</b>してください。`,
   },
-  PurchasePassportAssets: {
+  PurchasePassportClips: {
     en: () =>
       `You have not purchased <b>Passport Assets</b>.<br /><i>To configure</i> your creative and unique passport page <b>purchase Passport Assets now</b>.`,
     ja: () =>
       `<b>パスポート アセット</b>を購入していません。<br />クリエイティブでユニークなパスポート ページを<i>設定</i>するには、<b>今すぐパスポート アセットを購入</b>してください。`,
   },
-  PassportAssets: {
-    en: () => `Passport Assets`,
+  PassportClips: {
+    en: () => `Purchased Passport Clips`,
     ja: () => `パスポートアセット`,
   },
   PassportSkin: {
-    en: 'Passport Skin',
+    en: 'Purchased Passport Skins',
     ja: 'パスポートスキン',
   },
-  PassportClips: {
-    en: 'Pinned Clips',
+  PassportShowcaseClips: {
+    en: 'Showcase Clips',
     ja: '固定されたクリップ',
   },
   PassportSpotlightClips: {
@@ -88,6 +88,10 @@ export const Strings = {
   Description: {
     en: 'Description',
     ja: '説明',
+  },
+  PassportNameHelper: {
+    en: 'Give a name to your passport to make it easy to distinguish them',
+    ja: 'パスポートに名前を付けて区別しやすくする',
   },
   MarkdownAvailable: {
     en: () => 'Markdown is available',
