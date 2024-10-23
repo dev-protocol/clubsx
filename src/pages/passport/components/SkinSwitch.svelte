@@ -1,5 +1,4 @@
 <script lang="ts">
-  console.log({ jsonData })
   let dropdownVisible: boolean = false
 
   const toggleSelectedPassportSkins = () => {
