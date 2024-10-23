@@ -45,6 +45,12 @@ export const Strings = {
     ja: () =>
       `<b>パスポート クリップ</b> を固定していません。<br /><i>クリエイティブでユニークなパスポート ページを設定</i>するには、<b>今すぐパスポート クリップを固定</b>してください。`,
   },
+  PinClipsToSpotlight: {
+    en: () =>
+      `You have not pinned your <b>Passport Clips</b> to spotlight.<br /><i>To configure</i> your creative and unique passport page <b>pin Passport Clips to Spotlight now</b>.`,
+    ja: () =>
+      `<b>パスポート クリップ</b> をスポットライトに固定していません。<br /><i>クリエイティブでユニークなパスポート ページを設定</i>するには、<b>今すぐパスポート クリップをスポットライトに固定</b>してください。`,
+  },
   PurchasePassportAssets: {
     en: () =>
       `You have not purchased <b>Passport Assets</b>.<br /><i>To configure</i> your creative and unique passport page <b>purchase Passport Assets now</b>.`,
