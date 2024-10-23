@@ -350,6 +350,17 @@
       return
     }
 
+    const isClipInSpotlight = !!profile?.skins
+      ?.at(0)
+      ?.spotlight?.find((clip) => clip.payload === item.payload)
+
+    if (
+      isClipInSpotlight &&
+      (profile?.skins?.at(0)?.spotlight?.length ?? 0) > 2
+    ) {
+      return
+    }
+
     profile = {
       ...profile, // Retain other modified fields.
       skins: [
@@ -1109,7 +1120,8 @@
                   !passportNonSkinItems.length ||
                   profileFetching ||
                   passportItemFetching ||
-                  profileUpdating}
+                  profileUpdating ||
+                  (profile?.skins?.at(0)?.spotlight?.length ?? 0) > 2}
               >
                 S
               </button>
