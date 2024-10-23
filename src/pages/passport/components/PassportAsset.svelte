@@ -11,14 +11,7 @@
   import hexRgb from 'hex-rgb'
   import { loadImage, ABI_NFT } from '../utils'
   import type { PassportItem, ImageData } from '../types'
-
-  const RGBToLightness = (r: number, g: number, b: number) => {
-    r /= 255
-    g /= 255
-    b /= 255
-    const l = Math.max(r, g, b)
-    return l
-  }
+  import { isDark } from '@fixtures/color'
 
   export let props: {
     local: boolean
@@ -42,11 +35,7 @@
     htmlDescription = whenDefined(props.description, markdownToHtml)
     isFrameDark = whenDefined(
       props.frameColorHex?.startsWith('#') ? props.frameColorHex : undefined,
-      (hex) => {
-        const [r, g, b] = hexRgb(hex, { format: 'array' })
-        const l = RGBToLightness(r, g, b)
-        return l < 0.75
-      },
+      isDark,
     )
   }
 

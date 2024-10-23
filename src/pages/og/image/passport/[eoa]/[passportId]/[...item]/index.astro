@@ -1,0 +1,115 @@
+---
+import {
+  whenDefined,
+  whenDefinedAll,
+  whenNotError,
+  isNotError,
+} from '@devprotocol/util-ts'
+import { getPassportItemForPayload } from '@fixtures/api/passportItem'
+import { getProfile } from '@fixtures/api/profile'
+import { hashToItem } from '@fixtures/router/passportItem'
+import { Debug } from 'astro:components'
+import '@devprotocol/clubs-core/styles'
+import { isDark } from '@fixtures/color'
+import { ClubsLogo } from '@devprotocol/clubs-core/layouts'
+import Description from './components/Description.vue'
+
+const { eoa, passportId, item: itemPath } = Astro.params
+
+const profile = await whenDefined(eoa, (_eoa) => getProfile({ id: _eoa }))
+const skin = whenDefinedAll([passportId, profile], ([id, prof]) =>
+  prof.skins?.find((skin) => (skin as any).id === id),
+)
+const itemFromPath = whenDefined(itemPath, hashToItem)
+const item = whenDefinedAll([skin, itemFromPath], ([_skin, _item]) =>
+  whenNotError(_item, ({ type, index }) => _skin[type]?.[index]),
+)
+const itemPayload = whenDefined(item, (_item) =>
+  whenNotError(_item, (__item) =>
+    typeof __item === 'string' ? __item : __item.payload,
+  ),
+)
+const [passportItemData, userProfile] = await Promise.all([
+  whenDefined(itemPayload, (_payload) =>
+    whenNotError(_payload, (__payload) =>
+      getPassportItemForPayload({ sTokenPayload: __payload }),
+    ),
+  ),
+  whenDefined(eoa, (id) => getProfile({ id })),
+])
+
+const data = {
+  user: userProfile,
+  item: isNotError(item) ? item : undefined,
+  passportItem: isNotError(passportItemData) ? passportItemData : undefined,
+  isFrameDark:
+    isNotError(item) && typeof item === 'object'
+      ? isDark(item.frameColorHex)
+      : false,
+}
+---
+
+<html lang="en" hashi-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+  </head>
+
+  <body
+    style={typeof data.item === 'object' && data.item.frameColorHex
+      ? `background-color: ${data.item.frameColorHex}`
+      : undefined}
+    class:list={{
+      'text-white': data.isFrameDark,
+      'text-black': !data.isFrameDark,
+    }}
+  >
+    <main class="h-screen w-screen p-6 grid grid-cols-2 gap-6">
+      <span>
+        {
+          data.passportItem?.itemAssetValue ? (
+            <img
+              src={data.passportItem.itemAssetValue}
+              class="w-full h-full object-cover rounded-xl"
+            />
+          ) : null
+        }
+      </span>
+      <span class="grid grid-cols-1 grid-rows-[1fr_auto]">
+        {
+          typeof data.item === 'object' ? (
+            <Description client:load text={data.item.description} />
+          ) : (
+            <span />
+          )
+        }
+        <div>
+          <p>Owned by</p>
+          <p class="flex items-center gap-2">
+            <span class="font-bold text-2xl grow">{data.user?.username}</span>
+            <img
+              src={data.user?.avatar}
+              class="rounded-full h-[43px] aspect-square"
+            />
+
+            <ClubsLogo />
+          </p>
+        </div>
+      </span>
+    </main>
+  </body>
+
+  <div class="mt-24">
+    <Debug
+      data={{
+        'Astro.params': Astro.params,
+        profile,
+        skin,
+        itemFromPath,
+        item,
+        itemPayload,
+        passportItemData,
+      }}
+    />
+  </div>
+</html>
