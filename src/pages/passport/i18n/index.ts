@@ -60,11 +60,11 @@ export const Strings = {
     ja: 'パスポートスキン',
   },
   PassportClips: {
-    en: 'Pinned clips',
+    en: 'Pinned Clips',
     ja: '固定されたクリップ',
   },
-  PassportSpotlight: {
-    en: 'Spotlight clips',
+  PassportSpotlightClips: {
+    en: 'Spotlight Clips',
     ja: 'スポットライトクリップ',
   },
   Profile: {
