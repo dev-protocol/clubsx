@@ -20,7 +20,7 @@ const { connectButton = 'hidden', pageTitle } = Astro.props
       {pageTitle && <span class="lg:text-xl font-bold">{pageTitle}</span>}
     </h1>
   </a>
-  <slot name="right:to:right"/>
+  <slot name="right:to:right" />
   <slot name="right" />
   {
     connectButton === 'show' && (
