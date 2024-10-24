@@ -6,6 +6,7 @@ import { whenDefined } from '@devprotocol/util-ts'
 import Skeleton from '@components/Global/Skeleton.vue'
 import type { AssetDocument } from '@fixtures/api/assets/schema'
 import { decode, markdownToHtml } from '@devprotocol/clubs-core'
+import {itemToHash} from '@fixtures/router/passportItem'
 
 import ImageCard from './ImageCard.vue'
 import { loadImage, ABI_NFT } from '../utils'
@@ -13,6 +14,8 @@ import type { ImageData, PassportClip } from '../types'
 
 const props = defineProps<{
   item: PassportClip
+  id: string
+  index: number
 }>()
 
 const clubConfig = ref<string>()
@@ -49,7 +52,7 @@ const shareClip = () => {
     // please replace the title and text with the actual values
     title: props.item.description,
     text: props.item.description,
-    url: window.location.href,
+    url: window.location.href+`#${itemToHash(`clips`, props.index)}`,
   })
 }
 
