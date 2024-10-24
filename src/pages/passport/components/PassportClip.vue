@@ -44,6 +44,15 @@ const fetchClub = async (api: string) => {
     .catch(always(null))
 }
 
+const shareClip = () => {
+  navigator.share({
+    // please replace the title and text with the actual values
+    title: props.item.description,
+    text: props.item.description,
+    url: window.location.href,
+  })
+}
+
 onMounted(async () => {
   const clubApiPri = await fetchClub(`/${API_PATH}`)
   const clubApi = clubApiPri ? clubApiPri : await fetchClub(clubApiAlt.value)
@@ -68,5 +77,55 @@ onMounted(async () => {
     />
     <p v-html="description"></p>
     <a v-if="clubName" :href="props.item.clubsUrl">{{ clubName }}</a>
+    <button
+      @click="shareClip"
+      class="flex items-center justify-end w-full h-12 bg-primary-500 text-white rounded-md"
+    >
+      <div
+        class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-800"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          width="24"
+          height="24"
+          class="text-white"
+        >
+          <circle
+            cx="19.64"
+            cy="4.36"
+            r="2.86"
+            class="fill-none stroke-current stroke-miterlimit-10"
+          ></circle>
+          <circle
+            cx="4.36"
+            cy="12"
+            r="2.86"
+            class="fill-none stroke-current stroke-miterlimit-10"
+          ></circle>
+          <circle
+            cx="19.64"
+            cy="19.64"
+            r="2.86"
+            class="fill-none stroke-current stroke-miterlimit-10"
+          ></circle>
+          <line
+            x1="17.08"
+            y1="5.64"
+            x2="6.92"
+            y2="10.72"
+            class="fill-none stroke-current stroke-miterlimit-10"
+          ></line>
+          <line
+            x1="17.08"
+            y1="18.36"
+            x2="6.92"
+            y2="13.28"
+            class="fill-none stroke-current stroke-miterlimit-10"
+          ></line>
+        </svg>
+      </div>
+    </button>
   </div>
 </template>
