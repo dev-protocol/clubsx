@@ -1239,11 +1239,15 @@
                 item,
                 provider: rpcProvider,
                 local: isLocal,
-                classNames: profile?.skins
-                  ?.at(0)
-                  ?.clips?.find((clip) => clip.payload === item.payload)
-                  ? 'border-2 border-surface-ink'
-                  : 'border border-surface-300',
+                classNames:
+                  profile?.skins
+                    ?.at(0)
+                    ?.clips?.find((clip) => clip.payload === item.payload) ||
+                  profile?.skins
+                    ?.at(0)
+                    ?.spotlight?.find((clip) => clip.payload === item.payload)
+                    ? 'border-2 border-surface-ink'
+                    : 'border border-surface-300',
               }}
             />
           </li>
