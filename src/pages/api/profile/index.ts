@@ -18,6 +18,7 @@ export type Skin = {
   videos?: Payload[] // for the future use cases
   bgm?: Payload // for the future use cases
   likes?: number
+  spotlight: Clip[]
 }
 
 export type Profile = {
