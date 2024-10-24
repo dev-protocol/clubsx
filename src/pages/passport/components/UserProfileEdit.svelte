@@ -1033,11 +1033,6 @@
     >
       * {@html i18n('PinClipsToSpotlightHelper')}
     </span>
-    {#if hasSpotlightLimitReadched}
-      <span class="hs-form-field__helper">
-        * {@html i18n('PinClipsToSpotlightHelper')}
-      </span>
-    {/if}
   </span>
 
   <!-- Showcase/pinned clips -->
@@ -1136,8 +1131,7 @@
                   !passportNonSkinItems.length ||
                   profileFetching ||
                   passportItemFetching ||
-                  profileUpdating ||
-                  (profile?.skins?.at(0)?.spotlight?.length ?? 0) > 2}
+                  profileUpdating}
               >
                 S
               </button>
