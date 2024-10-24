@@ -464,14 +464,14 @@
     console.log('Profile at resetting pinned non skin item', profile)
   }
 
-  const onEditClip = (item: PassportItem) => {
+  const onEditShowcaseClip = (item: PassportItem) => {
     if (
       !profile?.skins
         ?.at(0)
         ?.clips?.find((clip) => clip.payload === item.payload)
     ) {
       console.error(
-        'Clip not found in profile when trying to edit it.',
+        'Clip not found in profile showcase when trying to edit it.',
         item.id,
       )
       return
@@ -502,7 +502,7 @@
             ?.clips?.find((clip) => clip.payload === item.payload)
         ) {
           console.error(
-            'Clip not found in profile when trying to edit it.',
+            'Clip not found in profile showcase when trying to edit it.',
             item.id,
           )
           return false
@@ -529,6 +529,90 @@
                     ?.at(0)
                     ?.clips?.filter((clip) => clip.payload !== item.payload) ??
                     ([] as Clip[])),
+                  {
+                    payload: item.payload!,
+                    description,
+                    frameColorHex,
+                  },
+                ],
+              },
+            ],
+          }
+          return true
+        } catch (e) {
+          return false
+        }
+      },
+    })
+  }
+
+  const onEditSpotlightClip = (item: PassportItem) => {
+    if (
+      !profile?.skins
+        ?.at(0)
+        ?.spotlight?.find((clip) => clip.payload === item.payload)
+    ) {
+      console.error(
+        'Clip not found in profile spotlight when trying to edit it.',
+        item.id,
+      )
+      return
+    }
+
+    openModal(PassportClipEditModal, {
+      item: item,
+      hex: profile?.skins
+        ?.at(0)
+        ?.spotlight?.find((clip) => clip.payload === item.payload)
+        ?.frameColorHex,
+      description:
+        profile?.skins
+          ?.at(0)
+          ?.spotlight?.find((clip) => clip.payload === item.payload)
+          ?.description ?? '',
+      onClose: async () => {
+        closeAllModals()
+      },
+      closeAllOnFinished: true,
+      action: async (
+        clip: PassportItem,
+        description: string,
+        frameColorHex: string,
+      ): Promise<boolean> => {
+        if (
+          !profile?.skins
+            ?.at(0)
+            ?.spotlight?.find((clip) => clip.payload === item.payload)
+        ) {
+          console.error(
+            'Clip not found in profile spotlight when trying to edit it.',
+            item.id,
+          )
+          return false
+        }
+
+        if (clip.payload !== item.payload) {
+          console.error(
+            'Clip mismatch when trying to edit it.',
+            item.id,
+            clip.id,
+          )
+          return false
+        }
+
+        try {
+          profile = {
+            ...profile, // Retain other modified fields.
+            skins: [
+              // Set skins to the updated value or append new value of theme.
+              {
+                ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
+                spotlight: [
+                  ...(profile?.skins
+                    ?.at(0)
+                    ?.spotlight?.filter(
+                      (clip) => clip.payload !== item.payload,
+                    ) ?? ([] as Clip[])),
                   {
                     payload: item.payload!,
                     description,
@@ -1013,7 +1097,7 @@
                   provider: rpcProvider,
                   local: isLocal,
                   isEditable: true,
-                  editAction: () => onEditClip(item),
+                  editAction: () => onEditSpotlightClip(item),
                   description: clip?.description,
                   frameColorHex: clip?.frameColorHex,
                 }))(
@@ -1080,7 +1164,7 @@
                   provider: rpcProvider,
                   local: isLocal,
                   isEditable: true,
-                  editAction: () => onEditClip(item),
+                  editAction: () => onEditShowcaseClip(item),
                   description: clip?.description,
                   frameColorHex: clip?.frameColorHex,
                 }))(
