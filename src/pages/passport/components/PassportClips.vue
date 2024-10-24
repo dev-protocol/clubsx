@@ -7,9 +7,9 @@ import ImageCard from './ImageCard.vue'
 import type { PassportClip } from '../types'
 import PassportClipCard from './PassportClip.vue'
 
-const props = defineProps<{ 
-  clips: PassportClip[],
-  id: string,
+const props = defineProps<{
+  clips: PassportClip[]
+  id: string
 }>()
 
 const i18nBase = i18nFactory(Strings)
@@ -24,7 +24,12 @@ onMounted(async () => {
 <template>
   <section class="grid gap-8">
     <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-      <li v-if="clips?.length" v-for="(clip, index) in clips" :key="index" class="empty:hidden">
+      <li
+        v-if="clips?.length"
+        v-for="(clip, index) in clips"
+        :key="index"
+        class="empty:hidden"
+      >
         <PassportClipCard :item="clip" :id="id" :index="index" />
       </li>
     </ul>
