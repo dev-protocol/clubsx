@@ -36,6 +36,7 @@
   let updatingStatus: UndefinedOr<'success' | 'error'> = undefined
   let isDisplayingHint: boolean = false
   let timeoutToHint: UndefinedOr<NodeJS.Timeout> = undefined
+  let hasSpotlightLimitReadched: boolean = false
 
   const rpcProvider = new JsonRpcProvider(
     `https://polygon-mainnet.g.alchemy.com/v2/${import.meta.env.PUBLIC_ALCHEMY_KEY ?? ''}`,
@@ -354,12 +355,16 @@
       ?.at(0)
       ?.spotlight?.find((clip) => clip.payload === item.payload)
 
+    // If the clip is not already present in the spotlight, that means we are adding it, so we need
+    // to check for spotlight?.length <= 3.
     if (
-      isClipInSpotlight &&
-      (profile?.skins?.at(0)?.spotlight?.length ?? 0) > 2
+      !isClipInSpotlight && // not in spotlight
+      (profile?.skins?.at(0)?.spotlight?.length ?? 0) > 2 // spotlight?.length <= 3.
     ) {
+      hasSpotlightLimitReadched = true
       return
     }
+    hasSpotlightLimitReadched = false
 
     profile = {
       ...profile, // Retain other modified fields.
@@ -1021,6 +1026,17 @@
           {/if}
         {/each}
       </ul>
+    {/if}
+
+    <span
+      class={`hs-form-field__helper mt-1 ${hasSpotlightLimitReadched ? 'underline text-error-600' : ''}`}
+    >
+      * {@html i18n('PinClipsToSpotlightHelper')}
+    </span>
+    {#if hasSpotlightLimitReadched}
+      <span class="hs-form-field__helper">
+        * {@html i18n('PinClipsToSpotlightHelper')}
+      </span>
     {/if}
   </span>
 

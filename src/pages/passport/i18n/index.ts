@@ -51,6 +51,11 @@ export const Strings = {
     ja: () =>
       `<b>パスポート クリップ</b> をスポットライトに固定していません。<br /><i>クリエイティブでユニークなパスポート ページを設定</i>するには、<b>今すぐパスポート クリップをスポットライトに固定</b>してください。`,
   },
+  PinClipsToSpotlightHelper: {
+    en: () => `<b>NOTE</b>: You can pin 3 clips to your spotlight.`,
+    ja: () =>
+      `<b>注</b>: スポットライトには 3 つのクリップをピン留めできます。`,
+  },
   PurchasePassportClips: {
     en: () =>
       `You have not purchased <b>Passport Assets</b>.<br /><i>To configure</i> your creative and unique passport page <b>purchase Passport Assets now</b>.`,
