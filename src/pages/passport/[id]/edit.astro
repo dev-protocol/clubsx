@@ -6,6 +6,7 @@ import UserProfileEdit from '../components/UserProfileEdit.svelte'
 
 const { id } = Astro.params
 const isEOA = isAddress(id)
+const skinId = Astro.url.searchParams.get('skinId') || ''
 
 const isLocal =
   Astro.url.hostname.includes('localhost') ||
@@ -30,6 +31,15 @@ const isLocal =
       </svg>
       Profile
     </a>
-    {isEOA && <UserProfileEdit client:load id={id ?? ''} isLocal={isLocal} />}
+    {
+      isEOA && (
+        <UserProfileEdit
+          client:load
+          id={id ?? ''}
+          skinId={skinId ?? ''}
+          isLocal={isLocal}
+        />
+      )
+    }
   </div>
 </Layout>

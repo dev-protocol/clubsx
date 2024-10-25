@@ -18,6 +18,7 @@
 
   const i18nBase = i18nFactory(Strings)
 
+  export let skinId: string
   export let id: string
   export let isLocal: boolean
 
