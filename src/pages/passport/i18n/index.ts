@@ -1,7 +1,7 @@
 import type { ClubsI18nParts } from '@devprotocol/clubs-core'
 
 export const Strings = {
-  PassportSkinName: {
+  PassportName: {
     en: 'Passport name',
     ja: `パスポート名`,
   },
@@ -39,29 +39,44 @@ export const Strings = {
     ja: () =>
       `<b>パスポートスキン</b>を購入していません。<br />クリエイティブでユニークなパスポートページを<i>設定</i>するには、<b>今すぐパスポートスキンを購入</b>してください。`,
   },
-  PinnPassportItems: {
+  PinClipsToShowcase: {
+    en: () =>
+      `You have not pinned your <b>Passport Clips</b>.<br /><i>To configure</i> your creative and unique passport page <b>pin Passport Clips now</b>.`,
+    ja: () =>
+      `<b>パスポート クリップ</b> を固定していません。<br /><i>クリエイティブでユニークなパスポート ページを設定</i>するには、<b>今すぐパスポート クリップを固定</b>してください。`,
+  },
+  PinClipsToSpotlight: {
+    en: () =>
+      `You have not pinned your <b>Passport Clips</b> to spotlight.<br /><i>To configure</i> your creative and unique passport page <b>pin Passport Clips to Spotlight now</b>.`,
+    ja: () =>
+      `<b>パスポート クリップ</b> をスポットライトに固定していません。<br /><i>クリエイティブでユニークなパスポート ページを設定</i>するには、<b>今すぐパスポート クリップをスポットライトに固定</b>してください。`,
+  },
+  PinClipsToSpotlightHelper: {
+    en: () => `<b>NOTE</b>: You can pin 3 clips to your spotlight.`,
+    ja: () =>
+      `<b>注</b>: スポットライトには 3 つのクリップをピン留めできます。`,
+  },
+  PurchasePassportClips: {
     en: () =>
       `You have not purchased <b>Passport Assets</b>.<br /><i>To configure</i> your creative and unique passport page <b>purchase Passport Assets now</b>.`,
     ja: () =>
-      `<b>パスポートアセット</b>を購入していません。<br />クリエイティブでユニークなパスポートページを<i>設定</i>するには、<b>今すぐパスポートアセットを購入</b>してください。`,
+      `<b>パスポート アセット</b>を購入していません。<br />クリエイティブでユニークなパスポート ページを<i>設定</i>するには、<b>今すぐパスポート アセットを購入</b>してください。`,
   },
-  PurchasePassportAssets: {
-    en: () =>
-      `You have not <b>pinned your Passport Assets</b>.<br /><i>To configure</i> your creative and unique passport page <b>pin</b> them or <b>purchase passport assets if you do not already have them</b>.`,
-    ja: () =>
-      `パスポートアセットを<b>ピン留め</b>していません。<br />クリエイティブでユニークなパスポートページを<i>設定</i>するには、パスポートアセットを<b>ピン留め</b>するか、<b>まだお持ちでない場合はパスポートアセットを購入してください。</b>。`,
-  },
-  PassportAssets: {
-    en: () => `Passport Assets`,
+  PassportClips: {
+    en: () => `Purchased Passport Clips`,
     ja: () => `パスポートアセット`,
   },
   PassportSkin: {
-    en: 'Passport Skin',
+    en: 'Purchased Passport Skins',
     ja: 'パスポートスキン',
   },
-  SelectedPassportClips: {
-    en: 'Selected Passport Clips- Pinned passport assets',
-    ja: '選択されたパスポートクリップ - ピン留めされたパスポートアセット',
+  PassportShowcaseClips: {
+    en: 'Showcase Clips',
+    ja: '固定されたクリップ',
+  },
+  PassportSpotlightClips: {
+    en: 'Spotlight Clips',
+    ja: 'スポットライトクリップ',
   },
   Profile: {
     en: 'Profile',
@@ -78,6 +93,10 @@ export const Strings = {
   Description: {
     en: 'Description',
     ja: '説明',
+  },
+  PassportNameHelper: {
+    en: 'Give a name to your passport to make it easy to distinguish them',
+    ja: 'パスポートに名前を付けて区別しやすくする',
   },
   MarkdownAvailable: {
     en: () => 'Markdown is available',
