@@ -254,11 +254,7 @@ const passportSkinClips = await whenDefined(
         passportSkinClips?.length && (
           <div class:list={passportClass('clips-container')}>
             <div class:list={passportClass('clips-content')}>
-              <PassportClips
-                client:load
-                clips={passportSkinClips}
-                id={id}
-              />
+              <PassportClips client:load clips={passportSkinClips} id={id} />
             </div>
           </div>
         )
