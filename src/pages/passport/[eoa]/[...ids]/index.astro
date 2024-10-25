@@ -134,6 +134,7 @@ const passportSkinClips = await whenDefined(
             <UserProfileEditButton
               client:only="svelte"
               address={eoa}
+              skinId={skin?.id ?? ''}
               additionalClasses={passportClass('edit-button')}
             />
           </span>
