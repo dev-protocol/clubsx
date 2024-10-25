@@ -23,13 +23,8 @@ const props = defineProps<{
 const clubConfig = ref<string>()
 const elementId = ref<string>()
 
-
 const SITE_NAME =
-  new URL(
-    props.item.clubsUrl,
-  )?.hostname
-    ?.split('.')
-    ?.at(0) ?? 'developers'
+  new URL(props.item.clubsUrl)?.hostname?.split('.')?.at(0) ?? 'developers'
 const API_PATH = `api/config/${SITE_NAME}`
 
 const clubApiAlt = computed(() => {
