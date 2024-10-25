@@ -16,12 +16,17 @@ const props = defineProps<{
   item: PassportClip
   id: string
   index: number
+  truncate?: boolean
+  classes?: string
 }>()
 
 const clubConfig = ref<string>()
+const elementId = ref<string>()
+
+console.log("clubs url",{props})
 
 const SITE_NAME =
-  new URL(props.item.clubsUrl)?.hostname?.split('.')?.at(0) ?? 'developers'
+  new URL(props.item.clubsUrl ? props.item.clubsUrl : `https://---.clubs.place`)?.hostname?.split('.')?.at(0) ?? 'developers'
 const API_PATH = `api/config/${SITE_NAME}`
 
 const clubApiAlt = computed(() => {
@@ -60,14 +65,23 @@ onMounted(async () => {
   const clubApiPri = await fetchClub(`/${API_PATH}`)
   const clubApi = clubApiPri ? clubApiPri : await fetchClub(clubApiAlt.value)
   clubConfig.value = clubApi?.content ?? undefined
+  const _elementId = itemToHash('clips', props.index)
+  elementId.value = _elementId instanceof Error
+    ? ''
+    : _elementId ?? ''
+
 })
 </script>
 
 <template>
   <div
-    :id="itemToHash(`clips`, props.index)"
+    :id="elementId"
     v-if="!!item"
-    :class="`shadow-md rounded-md p-4 grid gap-4 border border-surface-300 ${item.frameColorHex ? '' : 'bg-surface-200'}`"
+    class="shadow-md rounded-md h-fit p-4 grid gap-4 border border-surface-300 content-between"
+    :class="{
+      'bg-surface-200': !item.frameColorHex,
+      [props.classes ?? '']: Boolean(props.classes),
+    }"
     :style="{
       backgroundColor: item.frameColorHex,
     }"
@@ -76,10 +90,12 @@ onMounted(async () => {
       :found="!!item"
       :img="item.itemAssetValue"
       :type="item.itemAssetType"
-      :classes="'aspect-square'"
       :frame-color-hex="item.frameColorHex"
     />
-    <p v-html="description"></p>
+    <article
+      v-html="description"
+      :class="{ 'overflow-hidden': props.truncate ?? true }"
+    ></article>
     <a v-if="clubName" :href="props.item.clubsUrl">{{ clubName }}</a>
     <button
       @click="shareClip"
@@ -133,3 +149,11 @@ onMounted(async () => {
     </button>
   </div>
 </template>
+
+<style lang="scss">
+article {
+  &.overflow-hidden p {
+    @apply truncate;
+  }
+}
+</style>
