@@ -37,7 +37,7 @@ onMounted(async () => {
   <img
     v-if="image"
     :src="image.src"
-    class="rounded-md w-full max-w-full h-full max-h-full"
+    class="rounded-md w-full max-w-full h-full object-cover aspect-square max-h-full"
     :class="classes"
   />
 

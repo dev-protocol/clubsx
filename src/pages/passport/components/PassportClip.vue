@@ -13,6 +13,8 @@ import type { ImageData, PassportClip } from '../types'
 
 const props = defineProps<{
   item: PassportClip
+  truncate?: boolean
+  classes?: string
 }>()
 
 const clubConfig = ref<string>()
@@ -54,7 +56,11 @@ onMounted(async () => {
 <template>
   <div
     v-if="!!item"
-    :class="`shadow-md rounded-md p-4 grid gap-4 border border-surface-300 ${item.frameColorHex ? '' : 'bg-surface-200'}`"
+    class="shadow-md rounded-md h-fit p-4 grid gap-4 border border-surface-300 content-between"
+    :class="{
+      'bg-surface-200': !item.frameColorHex,
+      [props.classes ?? '']: Boolean(props.classes),
+    }"
     :style="{
       backgroundColor: item.frameColorHex,
     }"
@@ -63,10 +69,20 @@ onMounted(async () => {
       :found="!!item"
       :img="item.itemAssetValue"
       :type="item.itemAssetType"
-      :classes="'aspect-square'"
       :frame-color-hex="item.frameColorHex"
     />
-    <p v-html="description"></p>
+    <article
+      v-html="description"
+      :class="{ 'overflow-hidden': props.truncate ?? true }"
+    ></article>
     <a v-if="clubName" :href="props.item.clubsUrl">{{ clubName }}</a>
   </div>
 </template>
+
+<style lang="scss">
+article {
+  &.overflow-hidden p {
+    @apply truncate;
+  }
+}
+</style>
