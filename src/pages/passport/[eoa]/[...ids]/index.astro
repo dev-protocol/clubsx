@@ -255,7 +255,7 @@ const passportSkinClips = await whenDefined(
           <div class:list={passportClass('clips-container')}>
             <div class:list={passportClass('clips-content')}>
               <PassportClips
-                client:only="vue"
+                client:load
                 clips={passportSkinClips}
                 id={id}
               />

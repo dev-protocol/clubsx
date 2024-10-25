@@ -65,6 +65,7 @@ onMounted(async () => {
 
 <template>
   <div
+    :id="itemToHash(`clips`, props.index)"
     v-if="!!item"
     :class="`shadow-md rounded-md p-4 grid gap-4 border border-surface-300 ${item.frameColorHex ? '' : 'bg-surface-200'}`"
     :style="{
