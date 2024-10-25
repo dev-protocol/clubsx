@@ -50,7 +50,7 @@ const fetchClub = async (api: string) => {
 const shareClip = () => {
   navigator.share({
     // please replace the title and text with the actual values
-    title: props.item.description,
+    title: 'Check out this clip!',
     text: props.item.description,
     url: window.location.href + `#${itemToHash(`clips`, props.index)}`,
   })
