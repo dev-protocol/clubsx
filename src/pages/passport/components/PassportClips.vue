@@ -8,7 +8,10 @@ import type { PassportClip } from '../types'
 import PassportClipCard from './PassportClip.vue'
 import Modal from '@pages/passport/components/Modal.vue'
 
-const props = defineProps<{ clips: PassportClip[] }>()
+const props = defineProps<{
+  clips: PassportClip[]
+  id: string
+}>()
 
 const i18nBase = i18nFactory(Strings)
 
@@ -33,10 +36,17 @@ onMounted(async () => {
     <ul
       class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))] content-stretch"
     >
-      <li v-if="clips?.length" v-for="clip in clips" class="empty:hidden">
+      <li
+        v-if="clips?.length"
+        v-for="(clip, index) in clips"
+        :key="index"
+        class="empty:hidden"
+      >
         <PassportClipCard
           :item="clip"
           :truncate="true"
+          :id="id"
+          :index="index"
           class="h-full"
           @click="
             () => {
