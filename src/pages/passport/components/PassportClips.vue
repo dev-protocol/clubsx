@@ -36,11 +36,16 @@ onMounted(async () => {
     <ul
       class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))] content-stretch"
     >
-      <li v-if="clips?.length" v-for="(clip, index) in clips" :key="index" class="empty:hidden">
+      <li
+        v-if="clips?.length"
+        v-for="(clip, index) in clips"
+        :key="index"
+        class="empty:hidden"
+      >
         <PassportClipCard
           :item="clip"
           :truncate="true"
-          :id="id" 
+          :id="id"
           :index="index"
           class="h-full"
           @click="

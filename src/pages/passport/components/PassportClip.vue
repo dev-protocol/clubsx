@@ -23,10 +23,13 @@ const props = defineProps<{
 const clubConfig = ref<string>()
 const elementId = ref<string>()
 
-console.log("clubs url",{props})
 
 const SITE_NAME =
-  new URL(props.item.clubsUrl ? props.item.clubsUrl : `https://---.clubs.place`)?.hostname?.split('.')?.at(0) ?? 'developers'
+  new URL(
+    props.item.clubsUrl,
+  )?.hostname
+    ?.split('.')
+    ?.at(0) ?? 'developers'
 const API_PATH = `api/config/${SITE_NAME}`
 
 const clubApiAlt = computed(() => {
@@ -66,10 +69,7 @@ onMounted(async () => {
   const clubApi = clubApiPri ? clubApiPri : await fetchClub(clubApiAlt.value)
   clubConfig.value = clubApi?.content ?? undefined
   const _elementId = itemToHash('clips', props.index)
-  elementId.value = _elementId instanceof Error
-    ? ''
-    : _elementId ?? ''
-
+  elementId.value = _elementId instanceof Error ? '' : (_elementId ?? '')
 })
 </script>
 
