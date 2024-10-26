@@ -255,7 +255,11 @@ const passportSkinClips = await whenDefined(
         passportSkinClips?.length && (
           <div class:list={passportClass('clips-container')}>
             <div class:list={passportClass('clips-content')}>
-              <PassportClips client:only="vue" clips={passportSkinClips} />
+              <PassportClips
+                client:only="vue"
+                clips={passportSkinClips}
+                id={id}
+              />
             </div>
           </div>
         )

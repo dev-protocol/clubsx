@@ -6,6 +6,7 @@ import { whenDefined } from '@devprotocol/util-ts'
 import Skeleton from '@components/Global/Skeleton.vue'
 import type { AssetDocument } from '@fixtures/api/assets/schema'
 import { decode, markdownToHtml } from '@devprotocol/clubs-core'
+import { itemToHash } from '@fixtures/router/passportItem'
 
 import ImageCard from './ImageCard.vue'
 import { loadImage, ABI_NFT } from '../utils'
@@ -13,11 +14,14 @@ import type { ImageData, PassportClip } from '../types'
 
 const props = defineProps<{
   item: PassportClip
+  id: string
+  index: number
   truncate?: boolean
   classes?: string
 }>()
 
 const clubConfig = ref<string>()
+const elementId = ref<string>()
 
 const SITE_NAME =
   new URL(props.item.clubsUrl)?.hostname?.split('.')?.at(0) ?? 'developers'
@@ -46,15 +50,27 @@ const fetchClub = async (api: string) => {
     .catch(always(null))
 }
 
+const shareClip = () => {
+  navigator.share({
+    // please replace the title and text with the actual values
+    title: 'Check out this clip!',
+    text: props.item.description,
+    url: window.location.href + `#${itemToHash(`clips`, props.index)}`,
+  })
+}
+
 onMounted(async () => {
   const clubApiPri = await fetchClub(`/${API_PATH}`)
   const clubApi = clubApiPri ? clubApiPri : await fetchClub(clubApiAlt.value)
   clubConfig.value = clubApi?.content ?? undefined
+  const _elementId = itemToHash('clips', props.index)
+  elementId.value = _elementId instanceof Error ? '' : (_elementId ?? '')
 })
 </script>
 
 <template>
   <div
+    :id="elementId"
     v-if="!!item"
     class="shadow-md rounded-md h-fit p-4 grid gap-4 border border-surface-300 content-between"
     :class="{
@@ -76,6 +92,56 @@ onMounted(async () => {
       :class="{ 'overflow-hidden': props.truncate ?? true }"
     ></article>
     <a v-if="clubName" :href="props.item.clubsUrl">{{ clubName }}</a>
+    <button
+      @click="shareClip"
+      class="flex items-center justify-end w-full h-12 bg-primary-500 text-white rounded-md"
+    >
+      <div
+        class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-800"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          width="24"
+          height="24"
+          class="text-white"
+        >
+          <circle
+            cx="19.64"
+            cy="4.36"
+            r="2.86"
+            class="fill-none stroke-current stroke-miterlimit-10"
+          ></circle>
+          <circle
+            cx="4.36"
+            cy="12"
+            r="2.86"
+            class="fill-none stroke-current stroke-miterlimit-10"
+          ></circle>
+          <circle
+            cx="19.64"
+            cy="19.64"
+            r="2.86"
+            class="fill-none stroke-current stroke-miterlimit-10"
+          ></circle>
+          <line
+            x1="17.08"
+            y1="5.64"
+            x2="6.92"
+            y2="10.72"
+            class="fill-none stroke-current stroke-miterlimit-10"
+          ></line>
+          <line
+            x1="17.08"
+            y1="18.36"
+            x2="6.92"
+            y2="13.28"
+            class="fill-none stroke-current stroke-miterlimit-10"
+          ></line>
+        </svg>
+      </div>
+    </button>
   </div>
 </template>
 
