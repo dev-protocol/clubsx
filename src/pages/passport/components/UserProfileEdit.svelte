@@ -279,7 +279,24 @@
     _fetchProfile()
   })
 
-  const addProfile = async () => {}
+  const addProfile = async () => {
+    const newProfile = {
+      id: nanoid(),
+      name: `Profile no: ${(profileFromAPI?.skins?.length ?? 0) + 1}`,
+      theme: '',
+      clips: [],
+      spotlight: [],
+    }
+
+    profile = {
+      ...profileFromAPI,
+      skins: [...(profileFromAPI.skins ?? []), newProfile],
+    }
+
+    await onSubmit()
+
+    window.location.href = `/passport/${eoa}/edit?skinId=${newProfile.id}`
+  }
 
   const onChangePassportSkinName = (ev: Event) => {
     const newName =
@@ -716,8 +733,8 @@
     <!-- Todo: <button> element replace disabled when button is added -->
     <button
       on:click|preventDefault={addProfile}
-      disabled={true}
-      class="hs-button is-filled is-large w-fit text-center line-through"
+      disabled={profileFetching || profileUpdating}
+      class="hs-button is-filled is-large w-fit text-center"
       >Add new profile</button
     >
   </div>
