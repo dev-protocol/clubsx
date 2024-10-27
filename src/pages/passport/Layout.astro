@@ -102,7 +102,7 @@ const passportSkinTheme = await whenDefined(sTokenPayload, (payload: string) =>
       <Header connectButton="show" pageTitle="Passport">
         <SkinSwitch
           client:load
-          slot="right:to:right"
+          slot="passport:profile:switcher"
           skins={skins ?? []}
           eoa={eoa ?? ''}
           selectedSkinId={selectedSkinId}
