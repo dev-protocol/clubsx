@@ -33,6 +33,7 @@ const skin =
 const _passportSkinBGMs = skin?.bgm
 const _passportSkinClips = skin?.clips
 const _passportSkinVideos = skin?.videos
+const _passportSpotlight = skin?.spotlight
 const _currentLikes = skin?.likes
 
 const passportSkinBGMs = await whenDefined(_passportSkinBGMs, () =>
@@ -88,6 +89,35 @@ const passportSkinClips = await whenDefined(
     )
       .then((items) => items.filter((items) => !!items))
       .then((items) => (items.length ? items : undefined))
+      .catch(() => undefined)
+  },
+)
+
+const passportSpotlight = await whenDefined(
+  _passportSpotlight,
+  async (spotLights) => {
+    if (!spotLights.length) {
+      return undefined
+    }
+
+    return Promise.all(
+      spotLights.map((item) =>
+        getPassportItemForPayload({ sTokenPayload: item.payload ?? '' })
+          .then(
+            (spotlight) =>
+              (spotlight instanceof Error
+                ? undefined
+                : {
+                    ...spotlight,
+                    description: item.description,
+                    frameColorHex: item.frameColorHex,
+                  }) as PassportClip,
+          )
+          .catch(() => undefined),
+      ) ?? [],
+    )
+      .then((items) => items.filter((items) => !!items))
+      .then((items) => (items.length ? items.slice(0, 3) : undefined))
       .catch(() => undefined)
   },
 )
@@ -251,6 +281,19 @@ const passportSkinClips = await whenDefined(
     <section
       class="grid justify-items-start max-w-screen-lg mx-auto px-4 gap-24 mb-10"
     >
+      {
+        passportSpotlight?.length && (
+          <div class:list={passportClass('spotlight-container')}>
+            <div class:list={passportClass('spotlight-container')}>
+              <PassportClips
+                client:only="vue"
+                clips={passportSpotlight}
+                id={id}
+              />
+            </div>
+          </div>
+        )
+      }
       {
         passportSkinClips?.length && (
           <div class:list={passportClass('clips-container')}>
