@@ -25,6 +25,7 @@ const handleOnClick = (item: PassportClip) => {
 
 const modalClose = () => {
   modalVisible.value = false
+  modalItem.value = {} as PassportClip
 }
 
 onMounted(async () => {
