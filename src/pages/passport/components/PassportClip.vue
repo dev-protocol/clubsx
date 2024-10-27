@@ -87,61 +87,67 @@ onMounted(async () => {
       :type="item.itemAssetType"
       :frame-color-hex="item.frameColorHex"
     />
+
     <article
+      v-if="!!description"
       v-html="description"
       :class="{ 'overflow-hidden': props.truncate ?? true }"
     ></article>
-    <a v-if="clubName" :href="props.item.clubsUrl">{{ clubName }}</a>
-    <button
-      @click="shareClip"
-      class="flex items-center justify-end w-full h-12 bg-primary-500 text-white rounded-md"
-    >
-      <div
-        class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-800"
-      >
+
+    <div class="flex w-full max-w-full items-center justify-between">
+      <a v-if="clubName" :href="props.item.clubsUrl">{{ clubName }}</a>
+      <button @click="shareClip" class="w-6 h-6 rounded-full">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           stroke-width="1.5"
           width="24"
           height="24"
-          class="text-white"
+          stroke="currentColor"
         >
           <circle
             cx="19.64"
             cy="4.36"
             r="2.86"
-            class="fill-none stroke-current stroke-miterlimit-10"
+            class="stroke-miterlimit-10"
+            stroke="currentColor"
+            fill="currentColor"
           ></circle>
           <circle
             cx="4.36"
             cy="12"
             r="2.86"
-            class="fill-none stroke-current stroke-miterlimit-10"
+            class="stroke-miterlimit-10"
+            stroke="currentColor"
+            fill="currentColor"
           ></circle>
           <circle
             cx="19.64"
             cy="19.64"
             r="2.86"
-            class="fill-none stroke-current stroke-miterlimit-10"
+            class="stroke-miterlimit-10"
+            stroke="currentColor"
+            fill="currentColor"
           ></circle>
           <line
             x1="17.08"
             y1="5.64"
             x2="6.92"
             y2="10.72"
-            class="fill-none stroke-current stroke-miterlimit-10"
+            class="stroke-miterlimit-10"
+            stroke="currentColor"
           ></line>
           <line
             x1="17.08"
             y1="18.36"
             x2="6.92"
             y2="13.28"
-            class="fill-none stroke-current stroke-miterlimit-10"
+            class="stroke-miterlimit-10"
+            stroke="currentColor"
           ></line>
         </svg>
-      </div>
-    </button>
+      </button>
+    </div>
   </div>
 </template>
 
