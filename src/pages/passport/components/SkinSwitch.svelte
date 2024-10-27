@@ -1,10 +1,13 @@
 <script lang="ts">
+  import type { Skin } from '@pages/api/profile'
+
+  export let eoa: string = ''
+  export let skins: Skin[] = []
+
   let dropdownVisible: boolean = false
 
   const toggleSelectedPassportSkins = () => {
-    console.log('Button Clicked!')
     dropdownVisible = !dropdownVisible
-    console.log(dropdownVisible)
   }
 </script>
 
@@ -36,27 +39,15 @@
       </div>
       {#if dropdownVisible}
         <ul class="">
-          <li>
-            <a
-              href="#item1"
-              class="overflow-hidden text-black truncate font-sans text-base font-bold leading-normal line-clamp-1"
-              >Menu Item 1</a
-            >
-          </li>
-          <li>
-            <a
-              href="#item2"
-              class="overflow-hidden text-black truncate font-sans text-base font-bold leading-normal line-clamp-1"
-              >Menu Item 2</a
-            >
-          </li>
-          <li>
-            <a
-              href="#item3"
-              class="overflow-hidden text-black truncate font-sans text-base font-bold leading-normal line-clamp-1"
-              >Menu Item 3</a
-            >
-          </li>
+          {#each skins as skin, i}
+            <li>
+              <a
+                href={`/passport/${eoa}/${skin?.id}`}
+                class="overflow-hidden text-black truncate font-sans text-base font-bold leading-normal line-clamp-1"
+                >{skin?.name ?? `Profile ${i}`}</a
+              >
+            </li>
+          {/each}
         </ul>
       {/if}
     </div>
