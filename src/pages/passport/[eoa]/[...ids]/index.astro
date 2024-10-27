@@ -128,7 +128,7 @@ const passportSpotlight = await whenDefined(
   sTokenPayload={skin?.theme}
   skins={profile?.skins ?? []}
   eoa={eoa ?? ''}
-  selectedSkinId={id ?? ''}
+  selectedSkinId={skin?.id ?? ''}
 >
   <div class="grid gap-24 clear-right">
     <section class:list={passportClass('account-container')}>
