@@ -282,8 +282,8 @@ const passportSpotlight = await whenDefined(
     >
       {
         passportSpotlight?.length && (
-          <div class:list={passportClass('clips-container')}>
-            <div class:list={passportClass('clips-content')}>
+          <div class:list={passportClass('spotlight-container')}>
+            <div class:list={passportClass('spotlight-container')}>
               <PassportClips
                 client:only="vue"
                 clips={passportSpotlight}
