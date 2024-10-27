@@ -22,6 +22,7 @@
   export let id: string
   export let isLocal: boolean
 
+  let skinIndex = 0
   let profileFetching = true
   let i18n = i18nBase(['en'])
   let avatarUploading = false
@@ -283,17 +284,21 @@
   const onChangePassportSkinName = (ev: Event) => {
     const newName =
       (event?.target as HTMLInputElement)?.value ??
-      profile?.skins?.at(0)?.name ??
-      profileFromAPI?.skins?.at(0)?.name ??
+      profile?.skins?.at(skinIndex)?.name ??
+      profileFromAPI?.skins?.at(skinIndex)?.name ??
       ''
 
     profile = {
       ...profile,
       skins: [
+        ...(profile?.skins?.slice(0, skinIndex) ?? []), // keep all the other skins before skinIndex.
+
         {
-          ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
+          ...(profile?.skins?.at(skinIndex) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
           name: newName,
         },
+
+        ...(profile?.skins?.slice(skinIndex + 1) ?? []), // keep all the other skins after skinIndex.
       ],
     }
   }
@@ -310,10 +315,14 @@
     profile = {
       ...profile, // Retain other modified fields.
       skins: [
+        ...(profile?.skins?.slice(0, skinIndex) ?? []), // keep all the other skins before skinIndex.
+
         {
-          ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
+          ...(profile?.skins?.at(skinIndex) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
           theme: item.payload, // Update only theme value.
         },
+
+        ...(profile?.skins?.slice(skinIndex + 1) ?? []), // keep all the other skins after skinIndex.
       ],
     }
 
@@ -328,15 +337,19 @@
     profile = {
       ...profile, // Retain other modified fields.
       skins: [
+        ...(profile?.skins?.slice(0, skinIndex) ?? []), // keep all the other skins before skinIndex.
+
         {
-          ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
+          ...(profile?.skins?.at(skinIndex) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
 
           // Reset only theme value below.
           ...(profileFromAPI?.skins?.length && // If profileFromAPI, skins, skins.length, skins.at, thme any return falsy we get empty value.
-          profileFromAPI?.skins?.at(0)?.theme
-            ? { theme: profileFromAPI.skins[0].theme } // Since we have validated all- profileFromAPI, skins, skins.length > 0, skins.at(0), theme
+          profileFromAPI?.skins?.at(skinIndex)?.theme
+            ? { theme: profileFromAPI.skins[skinIndex].theme } // Since we have validated all- profileFromAPI, skins, skins.length > 0, skins.at(0), theme
             : {}), // Otherwise set it to empty
         },
+
+        ...(profile?.skins?.slice(skinIndex + 1) ?? []), // keep all the other skins after skinIndex.
       ],
     }
 
@@ -353,14 +366,14 @@
     }
 
     const isClipInSpotlight = !!profile?.skins
-      ?.at(0)
+      ?.at(skinIndex)
       ?.spotlight?.find((clip) => clip.payload === item.payload)
 
     // If the clip is not already present in the spotlight, that means we are adding it, so we need
     // to check for spotlight?.length <= 3.
     if (
       !isClipInSpotlight && // not in spotlight
-      (profile?.skins?.at(0)?.spotlight?.length ?? 0) > 2 // spotlight?.length <= 3.
+      (profile?.skins?.at(skinIndex)?.spotlight?.length ?? 0) > 2 // spotlight?.length <= 3.
     ) {
       hasSpotlightLimitReadched = true
       return
@@ -370,24 +383,28 @@
     profile = {
       ...profile, // Retain other modified fields.
       skins: [
+        ...(profile?.skins?.slice(0, skinIndex) ?? []), // keep all the other skins before skinIndex.
+
         // Set skins to the updated value or append new value of theme.
         {
-          ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
+          ...(profile?.skins?.at(skinIndex) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
           spotlight: profile?.skins
-            ?.at(0)
+            ?.at(skinIndex)
             ?.spotlight?.find((clip) => clip.payload === item.payload)
             ? [
                 ...(profile.skins
-                  ?.at(0)
+                  ?.at(skinIndex)
                   ?.spotlight?.filter(
                     (clip) => clip.payload !== item.payload,
                   ) ?? []),
               ]
             : [
-                ...(profile.skins?.at(0)?.spotlight ?? []),
+                ...(profile.skins?.at(skinIndex)?.spotlight ?? []),
                 { payload: item.payload, description: '', frameColorHex: '' },
               ],
         },
+
+        ...(profile?.skins?.slice(skinIndex + 1) ?? []), // keep all the other skins after skinIndex.
       ],
     }
 
@@ -410,23 +427,27 @@
     profile = {
       ...profile, // Retain other modified fields.
       skins: [
+        ...(profile?.skins?.slice(0, skinIndex) ?? []), // keep all the other skins before skinIndex.
+
         // Set skins to the updated value or append new value of theme.
         {
-          ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
+          ...(profile?.skins?.at(skinIndex) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
           clips: profile?.skins
-            ?.at(0)
+            ?.at(skinIndex)
             ?.clips?.find((clip) => clip.payload === item.payload)
             ? [
                 ...(profile.skins
-                  ?.at(0)
+                  ?.at(skinIndex)
                   ?.clips?.filter((clip) => clip.payload !== item.payload) ??
                   []),
               ]
             : [
-                ...(profile.skins?.at(0)?.clips ?? []),
+                ...(profile.skins?.at(skinIndex)?.clips ?? []),
                 { payload: item.payload, description: '', frameColorHex: '' },
               ],
         },
+
+        ...(profile?.skins?.slice(skinIndex + 1) ?? []), // keep all the other skins after skinIndex.
       ],
     }
 
@@ -441,10 +462,14 @@
     profile = {
       ...profile, // Retain other modified fields.
       skins: [
+        ...(profile?.skins?.slice(0, skinIndex) ?? []), // keep all the other skins before skinIndex.
+
         {
-          ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties ir-respective of whether the skin is modified or not.
-          spotlight: profileFromAPI?.skins?.at(0)?.spotlight ?? [], // Retain clips from profileFromAPI if present otherwise empty array.
+          ...(profile?.skins?.at(skinIndex) ?? ({} as Skin)), // Retain other skin properties ir-respective of whether the skin is modified or not.
+          spotlight: profileFromAPI?.skins?.at(skinIndex)?.spotlight ?? [], // Retain clips from profileFromAPI if present otherwise empty array.
         },
+
+        ...(profile?.skins?.slice(skinIndex + 1) ?? []), // keep all the other skins after skinIndex.
       ],
     }
 
@@ -455,10 +480,14 @@
     profile = {
       ...profile, // Retain other modified fields.
       skins: [
+        ...(profile?.skins?.slice(0, skinIndex) ?? []), // keep all the other skins before skinIndex.
+
         {
-          ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties ir-respective of whether the skin is modified or not.
-          clips: profileFromAPI?.skins?.at(0)?.clips ?? [], // Retain clips from profileFromAPI if present otherwise empty array.
+          ...(profile?.skins?.at(skinIndex) ?? ({} as Skin)), // Retain other skin properties ir-respective of whether the skin is modified or not.
+          clips: profileFromAPI?.skins?.at(skinIndex)?.clips ?? [], // Retain clips from profileFromAPI if present otherwise empty array.
         },
+
+        ...(profile?.skins?.slice(skinIndex + 1) ?? []), // keep all the other skins after skinIndex.
       ],
     }
 
@@ -468,7 +497,7 @@
   const onEditShowcaseClip = (item: PassportItem) => {
     if (
       !profile?.skins
-        ?.at(0)
+        ?.at(skinIndex)
         ?.clips?.find((clip) => clip.payload === item.payload)
     ) {
       console.error(
@@ -481,11 +510,11 @@
     openModal(PassportClipEditModal, {
       item: item,
       hex: profile?.skins
-        ?.at(0)
+        ?.at(skinIndex)
         ?.clips?.find((clip) => clip.payload === item.payload)?.frameColorHex,
       description:
         profile?.skins
-          ?.at(0)
+          ?.at(skinIndex)
           ?.clips?.find((clip) => clip.payload === item.payload)?.description ??
         '',
       onClose: async () => {
@@ -499,7 +528,7 @@
       ): Promise<boolean> => {
         if (
           !profile?.skins
-            ?.at(0)
+            ?.at(skinIndex)
             ?.clips?.find((clip) => clip.payload === item.payload)
         ) {
           console.error(
@@ -522,12 +551,14 @@
           profile = {
             ...profile, // Retain other modified fields.
             skins: [
+              ...(profile?.skins?.slice(0, skinIndex) ?? []), // keep all the other skins before skinIndex.
+
               // Set skins to the updated value or append new value of theme.
               {
-                ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
+                ...(profile?.skins?.at(skinIndex) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
                 clips: [
                   ...(profile?.skins
-                    ?.at(0)
+                    ?.at(skinIndex)
                     ?.clips?.filter((clip) => clip.payload !== item.payload) ??
                     ([] as Clip[])),
                   {
@@ -537,6 +568,8 @@
                   },
                 ],
               },
+
+              ...(profile?.skins?.slice(skinIndex + 1) ?? []), // keep all the other skins after skinIndex.
             ],
           }
           return true
@@ -550,7 +583,7 @@
   const onEditSpotlightClip = (item: PassportItem) => {
     if (
       !profile?.skins
-        ?.at(0)
+        ?.at(skinIndex)
         ?.spotlight?.find((clip) => clip.payload === item.payload)
     ) {
       console.error(
@@ -563,12 +596,12 @@
     openModal(PassportClipEditModal, {
       item: item,
       hex: profile?.skins
-        ?.at(0)
+        ?.at(skinIndex)
         ?.spotlight?.find((clip) => clip.payload === item.payload)
         ?.frameColorHex,
       description:
         profile?.skins
-          ?.at(0)
+          ?.at(skinIndex)
           ?.spotlight?.find((clip) => clip.payload === item.payload)
           ?.description ?? '',
       onClose: async () => {
@@ -582,7 +615,7 @@
       ): Promise<boolean> => {
         if (
           !profile?.skins
-            ?.at(0)
+            ?.at(skinIndex)
             ?.spotlight?.find((clip) => clip.payload === item.payload)
         ) {
           console.error(
@@ -605,12 +638,14 @@
           profile = {
             ...profile, // Retain other modified fields.
             skins: [
+              ...(profile?.skins?.slice(0, skinIndex) ?? []), // keep all the other skins before skinIndex.
+
               // Set skins to the updated value or append new value of theme.
               {
-                ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
+                ...(profile?.skins?.at(skinIndex) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
                 spotlight: [
                   ...(profile?.skins
-                    ?.at(0)
+                    ?.at(skinIndex)
                     ?.spotlight?.filter(
                       (clip) => clip.payload !== item.payload,
                     ) ?? ([] as Clip[])),
@@ -621,6 +656,8 @@
                   },
                 ],
               },
+
+              ...(profile?.skins?.slice(skinIndex + 1) ?? []), // keep all the other skins after skinIndex.
             ],
           }
           return true
@@ -663,19 +700,25 @@
       }
     }
   }
+
+  $: {
+    skinIndex = profile?.skins?.findIndex((skin) => skin.id === skinId) ?? 0
+  }
 </script>
 
 <div class="w-full">
   <div
     class="w-fit max-w-full flex gap-[15px] py-[8px] px-[16px] items-center justify-start"
   >
-    <p class="font-body font-bold text-base text-center">Default profile</p>
+    <p class="font-body font-bold text-base text-center">
+      {profile?.skins?.find((skin) => skin.id === skinId)?.name}
+    </p>
     <!-- Todo: <button> element replace disabled when button is added -->
     <button
       on:click|preventDefault={addProfile}
       disabled={true}
       class="hs-button is-filled is-large w-fit text-center line-through"
-      >Add profile</button
+      >Add new profile</button
     >
   </div>
 
@@ -983,7 +1026,7 @@
     <input
       class="hs-form-field__input"
       disabled={profileUpdating || !eoa}
-      value={profile?.skins?.at(0)?.name ?? ''}
+      value={profile?.skins?.at(skinIndex)?.name ?? ''}
       on:change|preventDefault={onChangePassportSkinName}
       placeholder={i18n('PassportSkinNamePlaceholder')}
     />
@@ -1081,15 +1124,15 @@
       >
         <Skeleton />
       </div>
-    {:else if !passportItemFetching && !profileFetching && !profile.skins?.at(0)?.spotlight?.length}
+    {:else if !passportItemFetching && !profileFetching && !profile.skins?.at(skinIndex)?.spotlight?.length}
       <div class="rounded-md border border-surface-400 p-8 text-accent-200">
         {i18n('Empty')} :) <br />{@html i18n('PinClipsToSpotlight')}
       </div>
-    {:else if !passportItemFetching && !profileFetching && profile.skins?.at(0)?.spotlight?.length && passportNonSkinItems?.length}
+    {:else if !passportItemFetching && !profileFetching && profile.skins?.at(skinIndex)?.spotlight?.length && passportNonSkinItems?.length}
       <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
         {#each passportNonSkinItems as item, i}
           {#if item.payload && profile?.skins
-              ?.at(0)
+              ?.at(skinIndex)
               ?.spotlight?.find((clip) => clip.payload === item.payload)}
             <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
               <PassportAsset
@@ -1103,7 +1146,7 @@
                   frameColorHex: clip?.frameColorHex,
                 }))(
                   profile?.skins
-                    ?.at(0)
+                    ?.at(skinIndex)
                     ?.spotlight?.find((clip) => clip.payload === item.payload),
                 )}
               />
@@ -1124,7 +1167,7 @@
   <span class="hs-form-field is-filled mt-[76px]">
     <div class="hs-form-field__label flex items-center justify-between mb-1">
       <span class="hs-form-field__label">
-        {i18n('PassportShowcaseClips')} ({profile?.skins?.at(0)?.clips
+        {i18n('PassportShowcaseClips')} ({profile?.skins?.at(skinIndex)?.clips
           ?.length ?? 0})
       </span>
       <button
@@ -1148,15 +1191,15 @@
       >
         <Skeleton />
       </div>
-    {:else if !passportItemFetching && !profileFetching && !profile.skins?.at(0)?.clips?.length}
+    {:else if !passportItemFetching && !profileFetching && !profile.skins?.at(skinIndex)?.clips?.length}
       <div class="rounded-md border border-surface-400 p-8 text-accent-200">
         {i18n('Empty')} :) <br />{@html i18n('PinClipsToShowcase')}
       </div>
-    {:else if !passportItemFetching && !profileFetching && profile.skins?.at(0)?.clips?.length && passportNonSkinItems?.length}
+    {:else if !passportItemFetching && !profileFetching && profile.skins?.at(skinIndex)?.clips?.length && passportNonSkinItems?.length}
       <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
         {#each passportNonSkinItems as item, i}
           {#if item.payload && profile?.skins
-              ?.at(0)
+              ?.at(skinIndex)
               ?.clips?.find((clip) => clip.payload === item.payload)}
             <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
               <PassportAsset
@@ -1170,7 +1213,7 @@
                   frameColorHex: clip?.frameColorHex,
                 }))(
                   profile?.skins
-                    ?.at(0)
+                    ?.at(skinIndex)
                     ?.clips?.find((clip) => clip.payload === item.payload),
                 )}
               />
@@ -1242,10 +1285,10 @@
                 local: isLocal,
                 classNames:
                   profile?.skins
-                    ?.at(0)
+                    ?.at(skinIndex)
                     ?.clips?.find((clip) => clip.payload === item.payload) ||
                   profile?.skins
-                    ?.at(0)
+                    ?.at(skinIndex)
                     ?.spotlight?.find((clip) => clip.payload === item.payload)
                     ? 'border-2 border-surface-ink'
                     : 'border border-surface-300',
