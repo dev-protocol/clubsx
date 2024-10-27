@@ -704,21 +704,6 @@
   }
 
   $: {
-    // generate id only once (i.e when profile or skins or skins(0) or skins(0).id is not present)
-    if (!profileFromAPI?.skins?.at(0)?.id) {
-      profile = {
-        ...profile,
-        skins: [
-          {
-            ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
-            id: nanoid(),
-          },
-        ],
-      }
-    }
-  }
-
-  $: {
     skinIndex = profile?.skins?.findIndex((skin) => skin.id === skinId) ?? 0
   }
 </script>
@@ -728,7 +713,7 @@
     class="w-fit max-w-full flex gap-[15px] py-[8px] px-[16px] items-center justify-start"
   >
     <p class="font-body font-bold text-base text-center">
-      {profile?.skins?.find((skin) => skin.id === skinId)?.name}
+      {profile?.skins?.find((skin) => skin.id === skinId)?.name ?? ''}
     </p>
     <!-- Todo: <button> element replace disabled when button is added -->
     <button
@@ -1101,7 +1086,7 @@
                   provider: rpcProvider,
                   local: isLocal,
                   classNames:
-                    profile.skins?.at(0)?.theme === item.payload
+                    profile.skins?.at(skinIndex)?.theme === item.payload
                       ? 'border-2 border-surface-ink'
                       : 'border border-surface-300',
                 }}
@@ -1117,8 +1102,8 @@
   <span class="hs-form-field is-filled mt-[76px]">
     <div class="hs-form-field__label flex items-center justify-between mb-1">
       <span class="hs-form-field__label">
-        {i18n('PassportSpotlightClips')} ({profile?.skins?.at(0)?.spotlight
-          ?.length ?? 0})
+        {i18n('PassportSpotlightClips')} ({profile?.skins?.at(skinIndex)
+          ?.spotlight?.length ?? 0})
       </span>
       <button
         disabled={!eoa ||
