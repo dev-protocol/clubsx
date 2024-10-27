@@ -12,11 +12,18 @@ import SkinSwitch from 'src/pages/passport/components/SkinSwitch.svelte'
 type Props = {
   eoa: string
   skins: Skin[]
+  selectedSkinId: string
   sTokenPayload?: string
   theme?: 'light' | 'dark' | 'auto'
 }
 
-const { theme = 'dark', sTokenPayload, skins = [], eoa = '' } = Astro.props
+const {
+  theme = 'dark',
+  sTokenPayload,
+  skins = [],
+  eoa = '',
+  selectedSkinId = '',
+} = Astro.props
 
 const name = 'Clubs'
 const url = 'https://www.clubs.place/'
@@ -98,6 +105,7 @@ const passportSkinTheme = await whenDefined(sTokenPayload, (payload: string) =>
           slot="right:to:right"
           skins={skins ?? []}
           eoa={eoa ?? ''}
+          selectedSkinId={selectedSkinId}
         />
       </Header>
 

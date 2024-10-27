@@ -3,6 +3,7 @@
 
   export let eoa: string = ''
   export let skins: Skin[] = []
+  export let selectedSkinId: string = ''
 
   let dropdownVisible: boolean = false
 
@@ -35,7 +36,7 @@
       <div
         class="overflow-hidden text-black truncate font-sans text-base font-bold leading-normal line-clamp-1"
       >
-        Main Passport (Mystic Horizon)
+        {skins?.find((item) => item.id === selectedSkinId)?.name ?? 'Default'}
       </div>
       {#if dropdownVisible}
         <ul class="">
