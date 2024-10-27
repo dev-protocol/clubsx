@@ -3,7 +3,6 @@ import { onMounted, ref } from 'vue'
 import { i18nFactory } from '@devprotocol/clubs-core'
 
 import { Strings } from '../i18n'
-import ImageCard from './ImageCard.vue'
 import type { PassportClip } from '../types'
 import PassportClipCard from './PassportClip.vue'
 import Modal from '@pages/passport/components/Modal.vue'
@@ -23,9 +22,11 @@ const handleOnClick = (item: PassportClip) => {
   modalVisible.value = true
   modalItem.value = item
 }
+
 const modalClose = () => {
   modalVisible.value = false
 }
+
 onMounted(async () => {
   i18n.value = i18nBase(navigator.languages)
 })
@@ -57,6 +58,7 @@ onMounted(async () => {
       </li>
     </ul>
   </section>
+
   <Modal
     :is-visible="modalVisible"
     :modal-content="PassportClipCard"
