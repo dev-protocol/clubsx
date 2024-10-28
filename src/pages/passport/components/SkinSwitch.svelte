@@ -13,7 +13,9 @@
 </script>
 
 <div class="relative">
-  <div class="flex py-2 px-4 items-center gap-[15px] rounded-lg bg-surface-200">
+  <div
+    class="flex items-center gap-[15px] hs-button is-filled is-large w-fit text-center"
+  >
     <button on:click={() => toggleSelectedPassportSkins()}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -40,7 +42,7 @@
       {#each skins as skin, i}
         <a
           href={`/passport/${eoa}/${skin?.id}`}
-          class="py-2 px-4 rounded-lg font-sans text-base font-bold leading-normal line-clamp-1 bg-surface-200 hover:bg-surface-400"
+          class="hs-button is-filled is-large w-full text-center leading-normal line-clamp-1 z-50"
           >{skin?.name ?? `Profile ${i}`}</a
         >
       {/each}

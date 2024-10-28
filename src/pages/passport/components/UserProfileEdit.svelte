@@ -12,6 +12,7 @@
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
 
   import { Strings } from '../i18n'
+  import SkinSwitch from './SkinSwitch.svelte'
   import type { PassportItem } from '../types'
   import PassportAsset from './PassportAsset.svelte'
   import PassportClipEditModal from './PassportClipEditModal.svelte'
@@ -715,9 +716,12 @@
   <div
     class="w-fit max-w-full flex gap-[15px] py-[8px] px-[16px] items-center justify-start"
   >
-    <p class="font-body font-bold text-base text-center">
-      {profile?.skins?.find((skin) => skin.id === skinId)?.name ?? ''}
-    </p>
+    <SkinSwitch
+      {eoa}
+      skins={profile?.skins ?? []}
+      selectedSkinId={skinId ?? ''}
+      }
+    />
     <!-- Todo: <button> element replace disabled when button is added -->
     <button
       on:click|preventDefault={addProfile}
