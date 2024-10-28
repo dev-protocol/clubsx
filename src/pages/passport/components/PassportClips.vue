@@ -17,15 +17,18 @@ const i18nBase = i18nFactory(Strings)
 const i18n = ref<ReturnType<typeof i18nBase>>(i18nBase(['en']))
 const modalVisible = ref(false)
 const modalItem = ref<PassportClip>()
+const modalItemIndex = ref<number>()
 
-const handleOnClick = (item: PassportClip) => {
+const handleOnClick = (item: PassportClip, index: number) => {
   modalVisible.value = true
   modalItem.value = item
+  modalItemIndex.value = index
 }
 
 const modalClose = () => {
   modalVisible.value = false
   modalItem.value = {} as PassportClip
+  modalItemIndex.value = -1
 }
 
 onMounted(async () => {
@@ -47,12 +50,11 @@ onMounted(async () => {
         <PassportClipCard
           :item="clip"
           :truncate="true"
-          :id="id"
           :index="index"
           class="h-full"
           @click="
             () => {
-              handleOnClick(clip)
+              handleOnClick(clip, index)
             }
           "
         />
@@ -66,6 +68,7 @@ onMounted(async () => {
     :handle-modal-close="modalClose"
     :attrs="{
       item: modalItem,
+      index: modalItemIndex,
       truncate: false,
       classes: 'max-w-screen-md',
     }"

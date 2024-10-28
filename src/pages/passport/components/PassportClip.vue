@@ -10,7 +10,6 @@ import type { PassportClip } from '../types'
 
 const props = defineProps<{
   item: PassportClip
-  id: string
   index: number
   truncate?: boolean
   classes?: string
@@ -85,7 +84,7 @@ onMounted(async () => {
     />
 
     <article
-      v-if="!!description"
+      v-if="description"
       v-html="description"
       :class="{ 'overflow-hidden': props.truncate ?? true }"
     ></article>
