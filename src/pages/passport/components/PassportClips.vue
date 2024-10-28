@@ -63,6 +63,7 @@ onMounted(async () => {
   </section>
 
   <Modal
+    v-if="modalVisible"
     :is-visible="modalVisible"
     :modal-content="PassportClipCard"
     :handle-modal-close="modalClose"
