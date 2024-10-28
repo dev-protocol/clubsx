@@ -721,7 +721,6 @@
       {eoa}
       skins={profile?.skins ?? []}
       selectedSkinId={skinId ?? ''}
-      }
     />
     <!-- Todo: <button> element replace disabled when button is added -->
     <button
