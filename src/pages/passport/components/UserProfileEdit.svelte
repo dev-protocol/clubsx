@@ -299,7 +299,9 @@
     await onSubmit()
     isAddingProfile = false
 
-    window.location.href = `/passport/${eoa}/edit?skinId=${newProfile.id}`
+    setTimeout(() => {
+      window.location.href = `/passport/${eoa}/edit?skinId=${newProfile.id}`
+    }, 3000)
   }
 
   const onChangePassportSkinName = (ev: Event) => {
