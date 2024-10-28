@@ -403,26 +403,6 @@
     }
     hasSpotlightLimitReadched = false
 
-    console.log('Skin index', skinIndex)
-    console.log('Before skin index', profile?.skins?.slice(0, skinIndex) ?? [])
-    console.log('After skin index', profile?.skins?.slice(skinIndex + 1) ?? [])
-    console.log('At skin index', {
-      ...(profile?.skins?.at(skinIndex) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
-      spotlight: profile?.skins
-        ?.at(skinIndex)
-        ?.spotlight?.find((clip) => clip.payload === item.payload)
-        ? [
-            ...(profile.skins
-              ?.at(skinIndex)
-              ?.spotlight?.filter((clip) => clip.payload !== item.payload) ??
-              []),
-          ]
-        : [
-            ...(profile.skins?.at(skinIndex)?.spotlight ?? []),
-            { payload: item.payload, description: '', frameColorHex: '' },
-          ],
-    })
-
     profile = {
       ...profile, // Retain other modified fields.
       skins: [
@@ -732,6 +712,20 @@
   }
 
   $: {
+    // generate id only once (i.e when profile or skins or skins(0) or skins(0).id is not present)
+    if (!profile?.skins?.at(0)?.id) {
+      profile = {
+        ...profile,
+        skins: [
+          {
+            ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
+            id: nanoid(),
+          },
+          ...(profile?.skins?.slice(1) ?? []), // Retain all the other skins.
+        ],
+      }
+    }
+
     const index = profile?.skins?.findIndex((skin) => skin.id === skinId) ?? 0
     skinIndex = index === -1 ? 0 : index
   }
