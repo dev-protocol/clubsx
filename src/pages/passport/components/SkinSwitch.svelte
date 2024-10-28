@@ -3,6 +3,7 @@
 
   export let eoa: string = ''
   export let skins: Skin[] = []
+  export let isEditing: boolean = false
   export let selectedSkinId: string = ''
 
   let dropdownVisible: boolean = false
@@ -41,7 +42,9 @@
     <div class="absolute left-0 mt-2 grid gap-[1px] w-full max-w-full">
       {#each skins as skin, i}
         <a
-          href={`/passport/${eoa}/${skin?.id}`}
+          href={isEditing
+            ? `/passport/${eoa}/edit?skinId=${skin?.id}`
+            : `/passport/${eoa}/${skin?.id}`}
           class="hs-button is-filled is-large w-full text-center leading-normal line-clamp-1 z-50"
           >{skin?.name ?? `Profile ${i}`}</a
         >

@@ -717,6 +717,7 @@
     class="w-fit max-w-full flex gap-[15px] py-[8px] px-[16px] items-center justify-start"
   >
     <SkinSwitch
+      isEditing={true}
       {eoa}
       skins={profile?.skins ?? []}
       selectedSkinId={skinId ?? ''}
