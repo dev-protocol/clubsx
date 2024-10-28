@@ -39,7 +39,9 @@
       </button>
     {/if}
     <p class="font-sans text-base font-bold leading-normal line-clamp-1">
-      {skins?.find((item) => item.id === selectedSkinId)?.name ?? 'Default'}
+      {selectedSkinId
+        ? (skins?.find((item) => item.id === selectedSkinId)?.name ?? 'Default')
+        : (skins?.at(0)?.name ?? 'Default')}
     </p>
   </div>
 
