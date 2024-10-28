@@ -292,6 +292,7 @@ const passportSpotlight = await whenDefined(
           <div class:list={passportClass('spotlight-container')}>
             <div class:list={passportClass('spotlight-container')}>
               <PassportClips
+                skinSection="spotlight"
                 client:only="vue"
                 clips={passportSpotlight}
                 id={id}
@@ -306,6 +307,7 @@ const passportSpotlight = await whenDefined(
           <div class:list={passportClass('clips-container')}>
             <div class:list={passportClass('clips-content')}>
               <PassportClips
+                skinSection="clips"
                 client:only="vue"
                 clips={passportSkinClips}
                 id={id}

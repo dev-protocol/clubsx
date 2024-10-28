@@ -8,6 +8,7 @@ import PassportClipCard from './PassportClip.vue'
 import Modal from '@pages/passport/components/Modal.vue'
 
 const props = defineProps<{
+  skinSection: 'spotlight' | 'clips'
   clips: PassportClip[]
   id: string
 }>()
@@ -48,6 +49,7 @@ onMounted(async () => {
         class="empty:hidden"
       >
         <PassportClipCard
+          :skinSection="skinSection"
           :item="clip"
           :truncate="true"
           :index="index"

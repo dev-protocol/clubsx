@@ -9,6 +9,7 @@ import ImageCard from './ImageCard.vue'
 import type { PassportClip } from '../types'
 
 const props = defineProps<{
+  skinSection: 'spotlight' | 'clips'
   item: PassportClip
   index: number
   truncate?: boolean
@@ -50,7 +51,9 @@ const shareClip = () => {
     // please replace the title and text with the actual values
     title: 'Check out this clip!',
     text: props.item.description,
-    url: window.location.href + `#${itemToHash(`clips`, props.index)}`,
+    url:
+      window.location.href +
+      `#${itemToHash(props.skinSection ?? 'clips', props.index)}`,
   })
 }
 
@@ -58,7 +61,7 @@ onMounted(async () => {
   const clubApiPri = await fetchClub(`/${API_PATH}`)
   const clubApi = clubApiPri ? clubApiPri : await fetchClub(clubApiAlt.value)
   clubConfig.value = clubApi?.content ?? undefined
-  const _elementId = itemToHash('clips', props.index)
+  const _elementId = itemToHash(props.skinSection ?? 'clips', props.index)
   elementId.value = _elementId instanceof Error ? '' : (_elementId ?? '')
 })
 </script>
