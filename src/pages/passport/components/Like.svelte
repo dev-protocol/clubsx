@@ -42,10 +42,14 @@
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ profileId: profileId, skinIndex: skinIndex, likesCount: pendingLikes }),
+        body: JSON.stringify({
+          profileId: profileId,
+          skinIndex: skinIndex,
+          likesCount: pendingLikes,
+        }),
       })
       if (res.ok) {
-        pendingLikes = 0  // Reset the pending likes on successful submission
+        pendingLikes = 0 // Reset the pending likes on successful submission
       } else {
         console.error('Failed to update likes:', res.statusText)
       }
