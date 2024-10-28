@@ -52,7 +52,7 @@ const shareClip = () => {
     title: 'Check out this clip!',
     text: props.item.description,
     url:
-      window.location.href +
+      window.location.href.split('#').at(0) +
       `#${itemToHash(props.skinSection ?? 'clips', props.index)}`,
   })
 }
