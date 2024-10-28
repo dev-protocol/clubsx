@@ -123,7 +123,13 @@ const passportSpotlight = await whenDefined(
 )
 ---
 
-<Layout theme="auto" sTokenPayload={profile?.skins?.at(0)?.theme}>
+<Layout
+  theme="auto"
+  sTokenPayload={skin?.theme}
+  skins={profile?.skins ?? []}
+  eoa={eoa ?? ''}
+  selectedSkinId={skin?.id ?? ''}
+>
   <div class="grid gap-24 clear-right">
     <section class:list={passportClass('account-container')}>
       <span
@@ -163,7 +169,8 @@ const passportSpotlight = await whenDefined(
 
             <UserProfileEditButton
               client:only="svelte"
-              id={eoa}
+              address={eoa}
+              skinId={skin?.id ?? ''}
               additionalClasses={passportClass('edit-button')}
             />
           </span>
@@ -285,6 +292,7 @@ const passportSpotlight = await whenDefined(
           <div class:list={passportClass('spotlight-container')}>
             <div class:list={passportClass('spotlight-container')}>
               <PassportClips
+                skinSection="spotlight"
                 client:only="vue"
                 clips={passportSpotlight}
                 id={id}
@@ -293,11 +301,13 @@ const passportSpotlight = await whenDefined(
           </div>
         )
       }
+
       {
         passportSkinClips?.length && (
           <div class:list={passportClass('clips-container')}>
             <div class:list={passportClass('clips-content')}>
               <PassportClips
+                skinSection="clips"
                 client:only="vue"
                 clips={passportSkinClips}
                 id={id}

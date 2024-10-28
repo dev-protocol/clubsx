@@ -3,7 +3,8 @@
   import type { UndefinedOr } from '@devprotocol/util-ts'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
 
-  export let id: string | undefined
+  export let skinId: string = ''
+  export let address: string | undefined
   export let additionalClasses: string = ''
 
   let connection: UndefinedOr<typeof Connection> = undefined
@@ -21,8 +22,10 @@
   })
 </script>
 
-{#if eoa === id}
-  <a href={`/passport/${id}/edit`} class={additionalClasses}
+{#if eoa === address}
+  <a
+    href={`/passport/${address}/edit?skinId=${skinId}`}
+    class={additionalClasses}
     ><svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"

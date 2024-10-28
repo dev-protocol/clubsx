@@ -1,66 +1,63 @@
 <script lang="ts">
+  import type { Skin } from '@pages/api/profile'
+
+  export let eoa: string = ''
+  export let skins: Skin[] = []
+  export let isEditing: boolean = false
+  export let selectedSkinId: string = ''
+
   let dropdownVisible: boolean = false
 
   const toggleSelectedPassportSkins = () => {
-    console.log('Button Clicked!')
     dropdownVisible = !dropdownVisible
-    console.log(dropdownVisible)
   }
 </script>
 
-<div class="grow">
-  <div class="ml-4">
-    <div class="flex py-2 px-4 items-center gap-[15px] rounded-md bg-white">
-      <div class="relative">
-        <button on:click={() => toggleSelectedPassportSkins()}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="w-6 h-6"
-            viewBox="0 0 24 24"
-            fill="none"
-          >
-            <path
-              d="M3.75 6.75H20.25M3.75 12H20.25M3.75 17.25H20.25"
-              stroke="black"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </button>
-      </div>
-      <div
-        class="overflow-hidden text-black truncate font-sans text-base font-bold leading-normal line-clamp-1"
+<div class="relative">
+  <div
+    class="flex items-center gap-[15px] hs-button is-filled w-fit text-center"
+  >
+    {#if skins.length > 1}
+      <button
+        disabled={!skins?.length}
+        on:click={() => toggleSelectedPassportSkins()}
       >
-        Main Passport (Mystic Horizon)
-      </div>
-      {#if dropdownVisible}
-        <ul class="">
-          <li>
-            <a
-              href="#item1"
-              class="overflow-hidden text-black truncate font-sans text-base font-bold leading-normal line-clamp-1"
-              >Menu Item 1</a
-            >
-          </li>
-          <li>
-            <a
-              href="#item2"
-              class="overflow-hidden text-black truncate font-sans text-base font-bold leading-normal line-clamp-1"
-              >Menu Item 2</a
-            >
-          </li>
-          <li>
-            <a
-              href="#item3"
-              class="overflow-hidden text-black truncate font-sans text-base font-bold leading-normal line-clamp-1"
-              >Menu Item 3</a
-            >
-          </li>
-        </ul>
-      {/if}
-    </div>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-6 h-6"
+          viewBox="0 0 24 24"
+          fill="none"
+        >
+          <path
+            d="M3.75 6.75H20.25M3.75 12H20.25M3.75 17.25H20.25"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+    {/if}
+    <p class="font-sans text-base font-bold leading-normal line-clamp-1">
+      {selectedSkinId
+        ? (skins?.find((item) => item.id === selectedSkinId)?.name ?? 'Default')
+        : (skins?.at(0)?.name ?? 'Default')}
+    </p>
   </div>
+
+  {#if dropdownVisible}
+    <div class="absolute left-0 mt-2 grid gap-[1px] w-full max-w-full">
+      {#each skins as skin, i}
+        <a
+          href={isEditing
+            ? `/passport/${eoa}/edit?skinId=${skin?.id}`
+            : `/passport/${eoa}/${skin?.id}`}
+          class="hs-button is-filled w-full text-center leading-normal line-clamp-1 z-50"
+          >{skin?.name ?? `Profile ${i}`}</a
+        >
+      {/each}
+    </div>
+  {/if}
 </div>
 
 <style>
