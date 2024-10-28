@@ -23,6 +23,7 @@
   export let isLocal: boolean
 
   let skinIndex = 0
+  let isAddingProfile = false
   let profileFetching = true
   let i18n = i18nBase(['en'])
   let avatarUploading = false
@@ -280,6 +281,8 @@
   })
 
   const addProfile = async () => {
+    isAddingProfile = true
+
     const newProfile = {
       id: nanoid(),
       name: `Profile no: ${(profileFromAPI?.skins?.length ?? 0) + 1}`,
@@ -287,13 +290,13 @@
       clips: [],
       spotlight: [],
     }
-
     profile = {
       ...profileFromAPI,
       skins: [...(profileFromAPI.skins ?? []), newProfile],
     }
 
     await onSubmit()
+    isAddingProfile = false
 
     window.location.href = `/passport/${eoa}/edit?skinId=${newProfile.id}`
   }
@@ -718,8 +721,8 @@
     <!-- Todo: <button> element replace disabled when button is added -->
     <button
       on:click|preventDefault={addProfile}
-      disabled={profileFetching || profileUpdating}
-      class="hs-button is-filled is-large w-fit text-center"
+      disabled={profileFetching || profileUpdating || isAddingProfile}
+      class={`hs-button is-filled is-large w-fit text-center ${isAddingProfile ? 'animate-pulse' : ''}`}
       >Add new profile</button
     >
   </div>
