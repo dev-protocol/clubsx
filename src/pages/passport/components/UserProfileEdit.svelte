@@ -401,6 +401,26 @@
     }
     hasSpotlightLimitReadched = false
 
+    console.log('Skin index', skinIndex)
+    console.log('Before skin index', profile?.skins?.slice(0, skinIndex) ?? [])
+    console.log('After skin index', profile?.skins?.slice(skinIndex + 1) ?? [])
+    console.log('At skin index', {
+      ...(profile?.skins?.at(skinIndex) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
+      spotlight: profile?.skins
+        ?.at(skinIndex)
+        ?.spotlight?.find((clip) => clip.payload === item.payload)
+        ? [
+            ...(profile.skins
+              ?.at(skinIndex)
+              ?.spotlight?.filter((clip) => clip.payload !== item.payload) ??
+              []),
+          ]
+        : [
+            ...(profile.skins?.at(skinIndex)?.spotlight ?? []),
+            { payload: item.payload, description: '', frameColorHex: '' },
+          ],
+    })
+
     profile = {
       ...profile, // Retain other modified fields.
       skins: [
@@ -428,6 +448,8 @@
         ...(profile?.skins?.slice(skinIndex + 1) ?? []), // keep all the other skins after skinIndex.
       ],
     }
+
+    console.log('Profile', profile)
 
     console.log(
       'Passort item and profile at pinning passport clips to spotlight',
@@ -708,7 +730,8 @@
   }
 
   $: {
-    skinIndex = profile?.skins?.findIndex((skin) => skin.id === skinId) ?? 0
+    const index = profile?.skins?.findIndex((skin) => skin.id === skinId) ?? 0
+    skinIndex = index === -1 ? 0 : index
   }
 </script>
 
