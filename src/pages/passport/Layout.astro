@@ -105,7 +105,7 @@ const passportSkinTheme = await whenDefined(sTokenPayload, (payload: string) =>
           slot="passport:profile:switcher"
           skins={skins ?? []}
           eoa={eoa ?? ''}
-          selectedSkinId={selectedSkinId}
+          selectedSkinId={selectedSkinId ?? skins?.at(0)?.id ?? ''}
         />
       </Header>
 

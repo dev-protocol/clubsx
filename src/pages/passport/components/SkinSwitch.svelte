@@ -17,7 +17,7 @@
   <div
     class="flex items-center gap-[15px] hs-button is-filled w-fit text-center"
   >
-    {#if skins.length}
+    {#if skins.length > 1}
       <button
         disabled={!skins?.length}
         on:click={() => toggleSelectedPassportSkins()}

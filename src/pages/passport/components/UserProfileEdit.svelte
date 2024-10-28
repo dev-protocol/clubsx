@@ -743,7 +743,7 @@
       isEditing={true}
       {eoa}
       skins={profile?.skins ?? []}
-      selectedSkinId={skinId ?? ''}
+      selectedSkinId={skinId ?? profile?.skins?.at(0)?.id ?? ''}
     />
     <!-- Todo: <button> element replace disabled when button is added -->
     <button
