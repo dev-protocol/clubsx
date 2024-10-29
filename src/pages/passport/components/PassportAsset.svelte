@@ -133,11 +133,11 @@
         class="rounded-md w-full max-w-full"
         alt="Asset"
       />
-    {:else if assetImage && (props.item.itemAssetType === 'short-video' || props.item.itemAssetType === 'short-video-link')}
+    {:else if props.item.itemAssetType === 'short-video' || props.item.itemAssetType === 'short-video-link'}
       <video
         autoplay
         muted
-        poster={assetImage.src}
+        poster={assetImage?.src}
         class="rounded-md w-full max-w-full pointer-events-none"
         src={props?.item?.itemAssetValue}
       >
