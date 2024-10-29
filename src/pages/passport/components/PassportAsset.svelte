@@ -137,9 +137,8 @@
       <video
         autoplay
         muted
-        controls
         poster={assetImage.src}
-        class="rounded-md w-full max-w-full"
+        class="rounded-md w-full max-w-full pointer-events-none"
         src={props?.item?.itemAssetValue}
       >
         <track kind="captions" />
