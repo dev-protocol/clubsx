@@ -19,7 +19,7 @@ const linkTo = whenDefined(fiatItem, (fiat) => createPath(fiat.payload))
 
 {
   linkTo && !Astro.url.pathname.includes(linkTo) && (
-    <div class="p-5">
+    <div class="p-3">
       <a
         href={linkTo}
         class="hs-button is-large is-fullwidth is-filled is-native-blue"

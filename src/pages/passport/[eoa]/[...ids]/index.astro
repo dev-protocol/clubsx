@@ -7,19 +7,20 @@ import { passportClass } from '@fixtures/ui/passport'
 import { getPassportItemForPayload } from '@fixtures/api/passportItem'
 import { markdownToHtml, ProseTextInherit } from '@devprotocol/clubs-core'
 
-import Layout from './Layout.astro'
-import dummyData from './dummyData.json'
-import Icon from './components/Icons.vue'
-import type { PassportClip } from './types'
-import UserAssets from './components/UserAssets.vue'
-import PassportClips from './components/PassportClips.vue'
-import UserProfileEditButton from './components/UserProfileEditButton.svelte'
-import Like from './components/Like.svelte'
+import Layout from '../../Layout.astro'
+import dummyData from '../../dummyData.json'
+import Icon from '../../components/Icons.vue'
+import type { PassportClip } from '../../types'
+import Like from '../../components/Like.svelte'
+import UserAssets from '../../components/UserAssets.vue'
+import PassportClips from '../../components/PassportClips.vue'
+import UserProfileEditButton from '../../components/UserProfileEditButton.svelte'
 
-const { id } = Astro.params
-const isEOA = isAddress(id)
+const { eoa, ids } = Astro.params
+const isEOA = isAddress(eoa)
 
-const profile: Profile = await getProfile({ id: id ?? '' })
+const id = ids?.split('/')?.at(0) ?? '' // Get the skin id from the URL.
+const profile: Profile = await getProfile({ id: eoa ?? '' })
 
 const isLocal =
   Astro.url.hostname.includes('localhost') ||
@@ -27,10 +28,13 @@ const isLocal =
 
 const htmlDescription = markdownToHtml(profile.description)
 
-const _passportSkinBGMs = profile?.skins?.at(0)?.bgm
-const _passportSkinClips = profile?.skins?.at(0)?.clips
-const _passportSkinVideos = profile?.skins?.at(0)?.videos
-const _currentLikes = profile?.skins?.at(0)?.likes
+const skin =
+  profile?.skins?.find((skin) => skin.id === id) ?? profile?.skins?.at(0)
+const _passportSkinBGMs = skin?.bgm
+const _passportSkinClips = skin?.clips
+const _passportSkinVideos = skin?.videos
+const _passportSpotlight = skin?.spotlight
+const _currentLikes = skin?.likes
 
 const passportSkinBGMs = await whenDefined(_passportSkinBGMs, () =>
   getPassportItemForPayload({
@@ -88,9 +92,44 @@ const passportSkinClips = await whenDefined(
       .catch(() => undefined)
   },
 )
+
+const passportSpotlight = await whenDefined(
+  _passportSpotlight,
+  async (spotLights) => {
+    if (!spotLights.length) {
+      return undefined
+    }
+
+    return Promise.all(
+      spotLights.map((item) =>
+        getPassportItemForPayload({ sTokenPayload: item.payload ?? '' })
+          .then(
+            (spotlight) =>
+              (spotlight instanceof Error
+                ? undefined
+                : {
+                    ...spotlight,
+                    description: item.description,
+                    frameColorHex: item.frameColorHex,
+                  }) as PassportClip,
+          )
+          .catch(() => undefined),
+      ) ?? [],
+    )
+      .then((items) => items.filter((items) => !!items))
+      .then((items) => (items.length ? items.slice(0, 3) : undefined))
+      .catch(() => undefined)
+  },
+)
 ---
 
-<Layout theme="auto" sTokenPayload={profile?.skins?.at(0)?.theme}>
+<Layout
+  theme="auto"
+  sTokenPayload={skin?.theme}
+  skins={profile?.skins ?? []}
+  eoa={eoa ?? ''}
+  selectedSkinId={skin?.id ?? ''}
+>
   <div class="grid gap-24 clear-right">
     <section class:list={passportClass('account-container')}>
       <span
@@ -130,7 +169,8 @@ const passportSkinClips = await whenDefined(
 
             <UserProfileEditButton
               client:only="svelte"
-              id={id}
+              address={eoa}
+              skinId={skin?.id ?? ''}
               additionalClasses={passportClass('edit-button')}
             />
           </span>
@@ -248,18 +288,38 @@ const passportSkinClips = await whenDefined(
       class="grid justify-items-start max-w-screen-lg mx-auto px-4 gap-24 mb-10"
     >
       {
-        passportSkinClips?.length && (
-          <div class:list={passportClass('clips-container')}>
-            <div class:list={passportClass('clips-content')}>
-              <PassportClips client:only="vue" clips={passportSkinClips} />
+        passportSpotlight?.length && (
+          <div class:list={passportClass('spotlight-container')}>
+            <div class:list={passportClass('spotlight-container')}>
+              <PassportClips
+                skinSection="spotlight"
+                client:only="vue"
+                clips={passportSpotlight}
+                id={id}
+              />
             </div>
           </div>
         )
       }
 
-      {isEOA && <UserAssets client:load account={id ?? ''} local={isLocal} />}
+      {
+        passportSkinClips?.length && (
+          <div class:list={passportClass('clips-container')}>
+            <div class:list={passportClass('clips-content')}>
+              <PassportClips
+                skinSection="clips"
+                client:only="vue"
+                clips={passportSkinClips}
+                id={id}
+              />
+            </div>
+          </div>
+        )
+      }
 
-      <a href={`/passport/${id}/clubs`} class="hs-link place-self-start"
+      {isEOA && <UserAssets client:load account={eoa ?? ''} local={isLocal} />}
+
+      <a href={`/passport/${eoa}/clubs`} class="hs-link place-self-start"
         >Clubs</a
       >
     </section>
@@ -268,7 +328,7 @@ const passportSkinClips = await whenDefined(
     <Like
       client:load
       props={{
-        profileId: id ? id : '',
+        profileId: eoa ? eoa : '',
         currentLikes: _currentLikes ? _currentLikes : 0,
         skinIndex: 0,
       }}

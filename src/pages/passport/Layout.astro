@@ -4,15 +4,26 @@ import { passportClass } from '@fixtures/ui/passport'
 import { ClubsPictogramAdaptable as Favicon } from '@devprotocol/clubs-core/images'
 
 import '@devprotocol/clubs-core/styles'
+import type { Skin } from '@pages/api/profile'
 import Header from '@components/Global/Header.astro'
 import { getPassportItemForPayload } from '@fixtures/api/passportItem'
+import SkinSwitch from 'src/pages/passport/components/SkinSwitch.svelte'
 
 type Props = {
+  eoa: string
+  skins: Skin[]
+  selectedSkinId: string
   sTokenPayload?: string
   theme?: 'light' | 'dark' | 'auto'
 }
 
-const { theme = 'dark', sTokenPayload } = Astro.props
+const {
+  theme = 'dark',
+  sTokenPayload,
+  skins = [],
+  eoa = '',
+  selectedSkinId = '',
+} = Astro.props
 
 const name = 'Clubs'
 const url = 'https://www.clubs.place/'
@@ -87,7 +98,16 @@ const passportSkinTheme = await whenDefined(sTokenPayload, (payload: string) =>
       class:list={passportClass('main-container')}
     >
       <slot name="before-header" />
-      <Header connectButton="show" pageTitle="Passport" />
+
+      <Header connectButton="show" pageTitle="Passport">
+        <SkinSwitch
+          client:load
+          slot="passport:profile:switcher"
+          skins={skins ?? []}
+          eoa={eoa ?? ''}
+          selectedSkinId={selectedSkinId ?? skins?.at(0)?.id ?? ''}
+        />
+      </Header>
 
       <div class:list={passportClass('main-content')}>
         <main class:list={passportClass('main')}>

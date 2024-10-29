@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { nanoid } from 'nanoid'
   import { onMount } from 'svelte'
   import { JsonRpcProvider } from 'ethers'
   import { fade } from 'svelte/transition'
@@ -11,15 +12,19 @@
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
 
   import { Strings } from '../i18n'
+  import SkinSwitch from './SkinSwitch.svelte'
   import type { PassportItem } from '../types'
   import PassportAsset from './PassportAsset.svelte'
   import PassportClipEditModal from './PassportClipEditModal.svelte'
 
   const i18nBase = i18nFactory(Strings)
 
+  export let skinId: string
   export let id: string
   export let isLocal: boolean
 
+  let skinIndex = 0
+  let isAddingProfile = false
   let profileFetching = true
   let i18n = i18nBase(['en'])
   let avatarUploading = false
@@ -35,6 +40,7 @@
   let updatingStatus: UndefinedOr<'success' | 'error'> = undefined
   let isDisplayingHint: boolean = false
   let timeoutToHint: UndefinedOr<NodeJS.Timeout> = undefined
+  let hasSpotlightLimitReadched: boolean = false
 
   const rpcProvider = new JsonRpcProvider(
     `https://polygon-mainnet.g.alchemy.com/v2/${import.meta.env.PUBLIC_ALCHEMY_KEY ?? ''}`,
@@ -275,7 +281,50 @@
     _fetchProfile()
   })
 
-  const addProfile = async () => {}
+  const addProfile = async () => {
+    isAddingProfile = true
+
+    const newProfile = {
+      id: nanoid(),
+      name: `Profile no: ${(profileFromAPI?.skins?.length ?? 0) + 1}`,
+      theme: '',
+      clips: [],
+      spotlight: [],
+    }
+    profile = {
+      ...profileFromAPI,
+      skins: [...(profileFromAPI.skins ?? []), newProfile],
+    }
+
+    await onSubmit()
+    isAddingProfile = false
+
+    setTimeout(() => {
+      window.location.href = `/passport/${eoa}/edit?skinId=${newProfile.id}`
+    }, 3000)
+  }
+
+  const onChangePassportSkinName = (ev: Event) => {
+    const newName =
+      (event?.target as HTMLInputElement)?.value ??
+      profile?.skins?.at(skinIndex)?.name ??
+      profileFromAPI?.skins?.at(skinIndex)?.name ??
+      ''
+
+    profile = {
+      ...profile,
+      skins: [
+        ...(profile?.skins?.slice(0, skinIndex) ?? []), // keep all the other skins before skinIndex.
+
+        {
+          ...(profile?.skins?.at(skinIndex) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
+          name: newName,
+        },
+
+        ...(profile?.skins?.slice(skinIndex + 1) ?? []), // keep all the other skins after skinIndex.
+      ],
+    }
+  }
 
   const selectPassportSkinItem = (item: PassportItem) => {
     if (!item.payload) {
@@ -289,10 +338,14 @@
     profile = {
       ...profile, // Retain other modified fields.
       skins: [
+        ...(profile?.skins?.slice(0, skinIndex) ?? []), // keep all the other skins before skinIndex.
+
         {
-          ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
+          ...(profile?.skins?.at(skinIndex) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
           theme: item.payload, // Update only theme value.
         },
+
+        ...(profile?.skins?.slice(skinIndex + 1) ?? []), // keep all the other skins after skinIndex.
       ],
     }
 
@@ -307,19 +360,84 @@
     profile = {
       ...profile, // Retain other modified fields.
       skins: [
+        ...(profile?.skins?.slice(0, skinIndex) ?? []), // keep all the other skins before skinIndex.
+
         {
-          ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
+          ...(profile?.skins?.at(skinIndex) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
 
           // Reset only theme value below.
           ...(profileFromAPI?.skins?.length && // If profileFromAPI, skins, skins.length, skins.at, thme any return falsy we get empty value.
-          profileFromAPI?.skins?.at(0)?.theme
-            ? { theme: profileFromAPI.skins[0].theme } // Since we have validated all- profileFromAPI, skins, skins.length > 0, skins.at(0), theme
+          profileFromAPI?.skins?.at(skinIndex)?.theme
+            ? { theme: profileFromAPI.skins[skinIndex].theme } // Since we have validated all- profileFromAPI, skins, skins.length > 0, skins.at(0), theme
             : {}), // Otherwise set it to empty
         },
+
+        ...(profile?.skins?.slice(skinIndex + 1) ?? []), // keep all the other skins after skinIndex.
       ],
     }
 
     console.log('Profile at reseting passport skin item', profile)
+  }
+
+  const toggleClipInSpotlight = async (item: PassportItem) => {
+    if (!item.payload) {
+      console.log(
+        `Passport clip not pinned to spotlight since item.payload missing`,
+        item.id,
+      )
+      return
+    }
+
+    const isClipInSpotlight = !!profile?.skins
+      ?.at(skinIndex)
+      ?.spotlight?.find((clip) => clip.payload === item.payload)
+
+    // If the clip is not already present in the spotlight, that means we are adding it, so we need
+    // to check for spotlight?.length <= 3.
+    if (
+      !isClipInSpotlight && // not in spotlight
+      (profile?.skins?.at(skinIndex)?.spotlight?.length ?? 0) > 2 // spotlight?.length <= 3.
+    ) {
+      hasSpotlightLimitReadched = true
+      return
+    }
+    hasSpotlightLimitReadched = false
+
+    profile = {
+      ...profile, // Retain other modified fields.
+      skins: [
+        ...(profile?.skins?.slice(0, skinIndex) ?? []), // keep all the other skins before skinIndex.
+
+        // Set skins to the updated value or append new value of theme.
+        {
+          ...(profile?.skins?.at(skinIndex) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
+          spotlight: profile?.skins
+            ?.at(skinIndex)
+            ?.spotlight?.find((clip) => clip.payload === item.payload)
+            ? [
+                ...(profile.skins
+                  ?.at(skinIndex)
+                  ?.spotlight?.filter(
+                    (clip) => clip.payload !== item.payload,
+                  ) ?? []),
+              ]
+            : [
+                ...(profile.skins?.at(skinIndex)?.spotlight ?? []),
+                { payload: item.payload, description: '', frameColorHex: '' },
+              ],
+        },
+
+        ...(profile?.skins?.slice(skinIndex + 1) ?? []), // keep all the other skins after skinIndex.
+      ],
+    }
+
+    console.log('Profile', profile)
+
+    console.log(
+      'Passort item and profile at pinning passport clips to spotlight',
+      item,
+      profile,
+    )
   }
 
   const togglePinnnedPassortNonSkinItem = async (item: PassportItem) => {
@@ -334,23 +452,27 @@
     profile = {
       ...profile, // Retain other modified fields.
       skins: [
+        ...(profile?.skins?.slice(0, skinIndex) ?? []), // keep all the other skins before skinIndex.
+
         // Set skins to the updated value or append new value of theme.
         {
-          ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
+          ...(profile?.skins?.at(skinIndex) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
           clips: profile?.skins
-            ?.at(0)
+            ?.at(skinIndex)
             ?.clips?.find((clip) => clip.payload === item.payload)
             ? [
                 ...(profile.skins
-                  ?.at(0)
+                  ?.at(skinIndex)
                   ?.clips?.filter((clip) => clip.payload !== item.payload) ??
                   []),
               ]
             : [
-                ...(profile.skins?.at(0)?.clips ?? []),
+                ...(profile.skins?.at(skinIndex)?.clips ?? []),
                 { payload: item.payload, description: '', frameColorHex: '' },
               ],
         },
+
+        ...(profile?.skins?.slice(skinIndex + 1) ?? []), // keep all the other skins after skinIndex.
       ],
     }
 
@@ -361,28 +483,50 @@
     )
   }
 
+  const resetSpotlightClips = async () => {
+    profile = {
+      ...profile, // Retain other modified fields.
+      skins: [
+        ...(profile?.skins?.slice(0, skinIndex) ?? []), // keep all the other skins before skinIndex.
+
+        {
+          ...(profile?.skins?.at(skinIndex) ?? ({} as Skin)), // Retain other skin properties ir-respective of whether the skin is modified or not.
+          spotlight: profileFromAPI?.skins?.at(skinIndex)?.spotlight ?? [], // Retain clips from profileFromAPI if present otherwise empty array.
+        },
+
+        ...(profile?.skins?.slice(skinIndex + 1) ?? []), // keep all the other skins after skinIndex.
+      ],
+    }
+
+    console.log('Profile at resetting spotlight', profile)
+  }
+
   const resetPinnedNonSkinItems = async () => {
     profile = {
       ...profile, // Retain other modified fields.
       skins: [
+        ...(profile?.skins?.slice(0, skinIndex) ?? []), // keep all the other skins before skinIndex.
+
         {
-          ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties ir-respective of whether the skin is modified or not.
-          clips: profileFromAPI?.skins?.at(0)?.clips ?? [], // Retain clips from profileFromAPI if present otherwise empty array.
+          ...(profile?.skins?.at(skinIndex) ?? ({} as Skin)), // Retain other skin properties ir-respective of whether the skin is modified or not.
+          clips: profileFromAPI?.skins?.at(skinIndex)?.clips ?? [], // Retain clips from profileFromAPI if present otherwise empty array.
         },
+
+        ...(profile?.skins?.slice(skinIndex + 1) ?? []), // keep all the other skins after skinIndex.
       ],
     }
 
     console.log('Profile at resetting pinned non skin item', profile)
   }
 
-  const onEditClip = (item: PassportItem) => {
+  const onEditShowcaseClip = (item: PassportItem) => {
     if (
       !profile?.skins
-        ?.at(0)
+        ?.at(skinIndex)
         ?.clips?.find((clip) => clip.payload === item.payload)
     ) {
       console.error(
-        'Clip not found in profile when trying to edit it.',
+        'Clip not found in profile showcase when trying to edit it.',
         item.id,
       )
       return
@@ -391,11 +535,11 @@
     openModal(PassportClipEditModal, {
       item: item,
       hex: profile?.skins
-        ?.at(0)
+        ?.at(skinIndex)
         ?.clips?.find((clip) => clip.payload === item.payload)?.frameColorHex,
       description:
         profile?.skins
-          ?.at(0)
+          ?.at(skinIndex)
           ?.clips?.find((clip) => clip.payload === item.payload)?.description ??
         '',
       onClose: async () => {
@@ -409,11 +553,11 @@
       ): Promise<boolean> => {
         if (
           !profile?.skins
-            ?.at(0)
+            ?.at(skinIndex)
             ?.clips?.find((clip) => clip.payload === item.payload)
         ) {
           console.error(
-            'Clip not found in profile when trying to edit it.',
+            'Clip not found in profile showcase when trying to edit it.',
             item.id,
           )
           return false
@@ -432,12 +576,14 @@
           profile = {
             ...profile, // Retain other modified fields.
             skins: [
+              ...(profile?.skins?.slice(0, skinIndex) ?? []), // keep all the other skins before skinIndex.
+
               // Set skins to the updated value or append new value of theme.
               {
-                ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
+                ...(profile?.skins?.at(skinIndex) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
                 clips: [
                   ...(profile?.skins
-                    ?.at(0)
+                    ?.at(skinIndex)
                     ?.clips?.filter((clip) => clip.payload !== item.payload) ??
                     ([] as Clip[])),
                   {
@@ -447,6 +593,96 @@
                   },
                 ],
               },
+
+              ...(profile?.skins?.slice(skinIndex + 1) ?? []), // keep all the other skins after skinIndex.
+            ],
+          }
+          return true
+        } catch (e) {
+          return false
+        }
+      },
+    })
+  }
+
+  const onEditSpotlightClip = (item: PassportItem) => {
+    if (
+      !profile?.skins
+        ?.at(skinIndex)
+        ?.spotlight?.find((clip) => clip.payload === item.payload)
+    ) {
+      console.error(
+        'Clip not found in profile spotlight when trying to edit it.',
+        item.id,
+      )
+      return
+    }
+
+    openModal(PassportClipEditModal, {
+      item: item,
+      hex: profile?.skins
+        ?.at(skinIndex)
+        ?.spotlight?.find((clip) => clip.payload === item.payload)
+        ?.frameColorHex,
+      description:
+        profile?.skins
+          ?.at(skinIndex)
+          ?.spotlight?.find((clip) => clip.payload === item.payload)
+          ?.description ?? '',
+      onClose: async () => {
+        closeAllModals()
+      },
+      closeAllOnFinished: true,
+      action: async (
+        clip: PassportItem,
+        description: string,
+        frameColorHex: string,
+      ): Promise<boolean> => {
+        if (
+          !profile?.skins
+            ?.at(skinIndex)
+            ?.spotlight?.find((clip) => clip.payload === item.payload)
+        ) {
+          console.error(
+            'Clip not found in profile spotlight when trying to edit it.',
+            item.id,
+          )
+          return false
+        }
+
+        if (clip.payload !== item.payload) {
+          console.error(
+            'Clip mismatch when trying to edit it.',
+            item.id,
+            clip.id,
+          )
+          return false
+        }
+
+        try {
+          profile = {
+            ...profile, // Retain other modified fields.
+            skins: [
+              ...(profile?.skins?.slice(0, skinIndex) ?? []), // keep all the other skins before skinIndex.
+
+              // Set skins to the updated value or append new value of theme.
+              {
+                ...(profile?.skins?.at(skinIndex) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
+                spotlight: [
+                  ...(profile?.skins
+                    ?.at(skinIndex)
+                    ?.spotlight?.filter(
+                      (clip) => clip.payload !== item.payload,
+                    ) ?? ([] as Clip[])),
+                  {
+                    payload: item.payload!,
+                    description,
+                    frameColorHex,
+                  },
+                ],
+              },
+
+              ...(profile?.skins?.slice(skinIndex + 1) ?? []), // keep all the other skins after skinIndex.
             ],
           }
           return true
@@ -474,19 +710,43 @@
 
     closeAllModals()
   }
+
+  $: {
+    // generate id only once (i.e when profile or skins or skins(0) or skins(0).id is not present)
+    if (!profile?.skins?.at(0)?.id) {
+      profile = {
+        ...profile,
+        skins: [
+          {
+            ...(profile?.skins?.at(0) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
+            id: nanoid(),
+          },
+          ...(profile?.skins?.slice(1) ?? []), // Retain all the other skins.
+        ],
+      }
+    }
+
+    const index = profile?.skins?.findIndex((skin) => skin.id === skinId) ?? 0
+    skinIndex = index === -1 ? 0 : index
+  }
 </script>
 
 <div class="w-full">
   <div
     class="w-fit max-w-full flex gap-[15px] py-[8px] px-[16px] items-center justify-start"
   >
-    <p class="font-body font-bold text-base text-center">Default profile</p>
+    <SkinSwitch
+      isEditing={true}
+      {eoa}
+      skins={profile?.skins ?? []}
+      selectedSkinId={skinId ?? profile?.skins?.at(0)?.id ?? ''}
+    />
     <!-- Todo: <button> element replace disabled when button is added -->
     <button
       on:click|preventDefault={addProfile}
-      disabled={true}
-      class="hs-button is-filled is-large w-fit text-center line-through"
-      >Add profile</button
+      disabled={profileFetching || profileUpdating || isAddingProfile}
+      class={`hs-button is-filled is-large w-fit text-center ${isAddingProfile ? 'animate-pulse' : ''}`}
+      >Add new profile</button
     >
   </div>
 
@@ -790,6 +1050,21 @@
   </label>
 
   <label class="hs-form-field is-filled mt-[76px]">
+    <span class="hs-form-field__label"> {i18n('PassportName')} </span>
+    <input
+      class="hs-form-field__input"
+      disabled={profileUpdating || !eoa}
+      value={profile?.skins?.at(skinIndex)?.name ?? ''}
+      on:change|preventDefault={onChangePassportSkinName}
+      placeholder={i18n('PassportSkinNamePlaceholder')}
+    />
+    <span class="hs-form-field__helper">
+      {i18n('PassportNameHelper')}
+    </span>
+  </label>
+
+  <!-- Passport skins -->
+  <label class="hs-form-field is-filled mt-[76px]">
     <div class="hs-form-field__label flex items-center justify-between mb-1">
       <span class="hs-form-field__label">
         {i18n('PassportSkin')} ({passportSkinItems?.length ?? 0})
@@ -837,7 +1112,7 @@
                   provider: rpcProvider,
                   local: isLocal,
                   classNames:
-                    profile.skins?.at(0)?.theme === item.payload
+                    profile.skins?.at(skinIndex)?.theme === item.payload
                       ? 'border-2 border-surface-ink'
                       : 'border border-surface-300',
                 }}
@@ -849,10 +1124,78 @@
     {/if}
   </label>
 
+  <!-- Spotlight clips -->
   <span class="hs-form-field is-filled mt-[76px]">
     <div class="hs-form-field__label flex items-center justify-between mb-1">
       <span class="hs-form-field__label">
-        {i18n('SelectedPassportClips')} ({profile?.skins?.at(0)?.clips
+        {i18n('PassportSpotlightClips')} ({profile?.skins?.at(skinIndex)
+          ?.spotlight?.length ?? 0})
+      </span>
+      <button
+        disabled={!eoa ||
+          !passportNonSkinItems.length ||
+          profileFetching ||
+          passportItemFetching ||
+          profileUpdating}
+        on:click|preventDefault={() => resetSpotlightClips()}
+        class="hs-button is-filled is-large w-fit text-center">Reset</button
+      >
+    </div>
+
+    {#if !eoa}
+      <div class="rounded-md border border-surface-400 p-8 text-accent-200">
+        {i18n('ConnectWalletTryAgain')} :)
+      </div>
+    {:else if passportItemFetching || profileFetching}
+      <div
+        class="rounded-md border border-surface-400 p-8 text-accent-200 h-48"
+      >
+        <Skeleton />
+      </div>
+    {:else if !passportItemFetching && !profileFetching && !profile.skins?.at(skinIndex)?.spotlight?.length}
+      <div class="rounded-md border border-surface-400 p-8 text-accent-200">
+        {i18n('Empty')} :) <br />{@html i18n('PinClipsToSpotlight')}
+      </div>
+    {:else if !passportItemFetching && !profileFetching && profile.skins?.at(skinIndex)?.spotlight?.length && passportNonSkinItems?.length}
+      <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
+        {#each passportNonSkinItems as item, i}
+          {#if item.payload && profile?.skins
+              ?.at(skinIndex)
+              ?.spotlight?.find((clip) => clip.payload === item.payload)}
+            <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
+              <PassportAsset
+                props={((clip) => ({
+                  item: item,
+                  provider: rpcProvider,
+                  local: isLocal,
+                  isEditable: true,
+                  editAction: () => onEditSpotlightClip(item),
+                  description: clip?.description,
+                  frameColorHex: clip?.frameColorHex,
+                }))(
+                  profile?.skins
+                    ?.at(skinIndex)
+                    ?.spotlight?.find((clip) => clip.payload === item.payload),
+                )}
+              />
+            </li>
+          {/if}
+        {/each}
+      </ul>
+    {/if}
+
+    <span
+      class={`hs-form-field__helper mt-1 ${hasSpotlightLimitReadched ? 'underline text-error-600' : ''}`}
+    >
+      * {@html i18n('PinClipsToSpotlightHelper')}
+    </span>
+  </span>
+
+  <!-- Showcase/pinned clips -->
+  <span class="hs-form-field is-filled mt-[76px]">
+    <div class="hs-form-field__label flex items-center justify-between mb-1">
+      <span class="hs-form-field__label">
+        {i18n('PassportShowcaseClips')} ({profile?.skins?.at(skinIndex)?.clips
           ?.length ?? 0})
       </span>
       <button
@@ -876,15 +1219,15 @@
       >
         <Skeleton />
       </div>
-    {:else if !passportItemFetching && !profileFetching && !profile.skins?.at(0)?.clips?.length}
+    {:else if !passportItemFetching && !profileFetching && !profile.skins?.at(skinIndex)?.clips?.length}
       <div class="rounded-md border border-surface-400 p-8 text-accent-200">
-        {i18n('Empty')} :) <br />{@html i18n('PinnPassportItems')}
+        {i18n('Empty')} :) <br />{@html i18n('PinClipsToShowcase')}
       </div>
-    {:else if !passportItemFetching && !profileFetching && profile.skins?.at(0)?.clips?.length && passportNonSkinItems?.length}
+    {:else if !passportItemFetching && !profileFetching && profile.skins?.at(skinIndex)?.clips?.length && passportNonSkinItems?.length}
       <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
         {#each passportNonSkinItems as item, i}
           {#if item.payload && profile?.skins
-              ?.at(0)
+              ?.at(skinIndex)
               ?.clips?.find((clip) => clip.payload === item.payload)}
             <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
               <PassportAsset
@@ -893,12 +1236,12 @@
                   provider: rpcProvider,
                   local: isLocal,
                   isEditable: true,
-                  editAction: () => onEditClip(item),
+                  editAction: () => onEditShowcaseClip(item),
                   description: clip?.description,
                   frameColorHex: clip?.frameColorHex,
                 }))(
                   profile?.skins
-                    ?.at(0)
+                    ?.at(skinIndex)
                     ?.clips?.find((clip) => clip.payload === item.payload),
                 )}
               />
@@ -912,7 +1255,7 @@
   <!-- Passport items other than type: css | stylesheet-link -->
   <span class="hs-form-field is-filled mt-[76px]">
     <span class="hs-form-field__label">
-      {i18n('PassportAssets')} ({passportNonSkinItems?.length ?? 0})
+      {i18n('PassportClips')} ({passportNonSkinItems?.length ?? 0})
     </span>
 
     {#if !eoa}
@@ -927,35 +1270,59 @@
       </div>
     {:else if !passportItemFetching && !profileFetching && !passportNonSkinItems?.length}
       <div class="rounded-md border border-surface-400 p-8 text-accent-200">
-        {i18n('Empty')} :) <br />{@html i18n('PurchasePassportAssets')}
+        {i18n('Empty')} :) <br />{@html i18n('PurchasePassportClips')}
       </div>
     {:else if passportNonSkinItems?.length}
       <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
         {#each passportNonSkinItems as item, i}
-          <button
-            on:click|preventDefault={() =>
-              togglePinnnedPassortNonSkinItem(item)}
-            disabled={!eoa ||
-              !passportNonSkinItems.length ||
-              profileFetching ||
-              passportItemFetching ||
-              profileUpdating}
-          >
-            <li id={`assets-${i.toString()}`} class="empty:hidden">
-              <PassportAsset
-                props={{
-                  item,
-                  provider: rpcProvider,
-                  local: isLocal,
-                  classNames: profile?.skins
-                    ?.at(0)
-                    ?.clips?.find((clip) => clip.payload === item.payload)
+          <li id={`assets-${i.toString()}`} class="relative group empty:hidden">
+            <div
+              class="h-fit w-full max-w-full absolute left-0 right-0 top-0 hidden group-hover:flex flex-row items-center justify-end bg-surface-300 rounded-md p-4 gap-4 opacity-90"
+            >
+              <!-- Add to spotlight -->
+              <button
+                class="w-6 h-6 cursor-pointer"
+                on:click|preventDefault={() => toggleClipInSpotlight(item)}
+                disabled={!eoa ||
+                  !passportNonSkinItems.length ||
+                  profileFetching ||
+                  passportItemFetching ||
+                  profileUpdating}
+              >
+                S
+              </button>
+
+              <!-- Add to showcase/pinned clips -->
+              <button
+                class="w-6 h-6 cursor-pointer"
+                on:click|preventDefault={() =>
+                  togglePinnnedPassortNonSkinItem(item)}
+                disabled={!eoa ||
+                  !passportNonSkinItems.length ||
+                  profileFetching ||
+                  passportItemFetching ||
+                  profileUpdating}
+              >
+                C
+              </button>
+            </div>
+            <PassportAsset
+              props={{
+                item,
+                provider: rpcProvider,
+                local: isLocal,
+                classNames:
+                  profile?.skins
+                    ?.at(skinIndex)
+                    ?.clips?.find((clip) => clip.payload === item.payload) ||
+                  profile?.skins
+                    ?.at(skinIndex)
+                    ?.spotlight?.find((clip) => clip.payload === item.payload)
                     ? 'border-2 border-surface-ink'
                     : 'border border-surface-300',
-                }}
-              />
-            </li>
-          </button>
+              }}
+            />
+          </li>
         {/each}
       </ul>
     {/if}
