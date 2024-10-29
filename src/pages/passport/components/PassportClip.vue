@@ -5,7 +5,7 @@ import { whenDefined } from '@devprotocol/util-ts'
 import { decode, markdownToHtml } from '@devprotocol/clubs-core'
 import { itemToHash } from '@fixtures/router/passportItem'
 
-import ImageCard from './ImageCard.vue'
+import MediaCard from './MediaCard.vue'
 import type { PassportClip } from '../types'
 
 const props = defineProps<{
@@ -79,7 +79,7 @@ onMounted(async () => {
       backgroundColor: item.frameColorHex,
     }"
   >
-    <ImageCard
+    <MediaCard
       :found="!!item"
       :src="item.itemAssetValue"
       :type="item.itemAssetType"
