@@ -33,13 +33,13 @@
     localLikeState = localLikeState + 1
     clicks = [...clicks, localLikeState]
     pendingLikes += 1
-    
+
     // clear the previous interval and set a new one
     clearTimeout(timeoutId)
-    timeoutId = setTimeout(async() => {
+    timeoutId = setTimeout(async () => {
       if (pendingLikes === 0) return clearInterval(intervalId)
       await submitLikes()
-   }, 1000)
+    }, 1000)
   }
 
   const submitLikes = async () => {
