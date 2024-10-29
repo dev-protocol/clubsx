@@ -81,7 +81,7 @@ onMounted(async () => {
   >
     <ImageCard
       :found="!!item"
-      :img="item.itemAssetValue"
+      :src="item.itemAssetValue"
       :type="item.itemAssetType"
       :frame-color-hex="item.frameColorHex"
     />

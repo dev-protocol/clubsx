@@ -6,7 +6,7 @@ import { loadImage } from '../utils'
 import type { ImageData, PassportItemIndexDoc } from '../types'
 
 const props = defineProps<{
-  img: string
+  src: string
   found: boolean
   classes?: string
   type: PassportItemIndexDoc['itemAssetType']
@@ -17,14 +17,14 @@ const image = ref<ImageData>()
 const processImage = async () => {
   if (props.type === 'image-link') {
     image.value = {
-      src: props.img,
+      src: props.src,
       w: 324,
       h: 324,
       alt: props.type ?? 'Image',
     } as ImageData
   }
 
-  const loadedImage = await loadImage(props.img)
+  const loadedImage = await loadImage(props.src)
   image.value = loadedImage
 }
 
