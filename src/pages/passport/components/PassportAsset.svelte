@@ -8,7 +8,7 @@
   import { Contract, type ContractRunner } from 'ethers'
   import type { UndefinedOr } from '@devprotocol/util-ts'
   import Skeleton from '@components/Global/Skeleton.svelte'
-  import hexRgb from 'hex-rgb'
+
   import { loadImage, ABI_NFT } from '../utils'
   import type { PassportItem, ImageData } from '../types'
   import { isDark } from '@fixtures/color'
@@ -65,12 +65,27 @@
         .then((res) => res[0] as null | ClubsData)
         .catch(always(null)),
 
-      whenDefined(props.item?.assetId, async (id: string | number) =>
-        decodeTokenURI(
+      whenDefined(props.item?.assetId, async (id: string | number) => {
+        let sTokenURI = decodeTokenURI(
           await contract.tokenURI(id),
           (cid) => `https://${cid}.ipfs.nftstorage.link`,
-        ),
-      ),
+        )
+
+        // If item is clips or spotlight then we use itemAssetValue.
+        // else we use sToken property for it.
+        if (
+          props.item.itemAssetType === 'image' ||
+          props.item.itemAssetType === 'image-link'
+        ) {
+          sTokenURI = {
+            ...sTokenURI,
+            image: props.item.itemAssetValue,
+            htmlImageSrc: props.item.itemAssetValue,
+          }
+        }
+
+        return sTokenURI
+      }),
     ])
 
     const clubApi = clubApiPri
