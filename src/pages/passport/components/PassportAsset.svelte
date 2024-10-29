@@ -129,12 +129,22 @@
       ? `--frameColor: ${props.frameColorHex}`
       : undefined}
   >
-    {#if assetImage}
+    {#if assetImage && props.item.itemAssetType !== 'short-video' && props.item.itemAssetType !== 'short-video-link'}
       <img
         src={assetImage.src}
         class="rounded-md w-full max-w-full"
         alt="Asset"
       />
+    {:else if !assetImage && (props.item.itemAssetType === 'short-video' || props.item.itemAssetType === 'short-video-link')}
+      <video
+        autoplay
+        muted
+        controls
+        poster="https://sveltejs.github.io/assets/caminandes-llamigos.jpg"
+        src="https://sveltejs.github.io/assets/caminandes-llamigos.mp4"
+      >
+        <track kind="captions" />
+      </video>
     {:else}
       <Skeleton />
     {/if}
