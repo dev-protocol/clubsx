@@ -1,7 +1,6 @@
 <script lang="ts">
   import humanNumber from 'human-number'
   import FlyingHeart from './FlyingHeart.svelte'
-  import { onDestroy } from 'svelte'
 
   import PQueue from 'p-queue'
   export let props: {
@@ -16,7 +15,9 @@
   let localLikeState = currentLikes
   let pendingLikes = 0
   let clicks: number[] = []
-  const submitInterval = 5000
+
+  let intervalId: NodeJS.Timeout
+  let timeoutId: NodeJS.Timeout
 
   $: {
     if (clicks.length !== 0) {
@@ -32,6 +33,13 @@
     localLikeState = localLikeState + 1
     clicks = [...clicks, localLikeState]
     pendingLikes += 1
+    
+    // clear the previous interval and set a new one
+    clearTimeout(timeoutId)
+    timeoutId = setTimeout(async() => {
+      if (pendingLikes === 0) return clearInterval(intervalId)
+      await submitLikes()
+   }, 1000)
   }
 
   const submitLikes = async () => {
@@ -57,9 +65,6 @@
       console.error('Network error while updating likes:', error)
     }
   }
-  // Periodically call submitLikes to send pending likes
-  const intervalId = setInterval(submitLikes, submitInterval)
-  onDestroy(() => clearInterval(intervalId))
 </script>
 
 <div>

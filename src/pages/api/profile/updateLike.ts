@@ -16,13 +16,14 @@ export const POST = async ({ request }: { request: Request }) => {
       status: 401,
     })
   }
+  const unSignedLikesCount = Math.abs(likesCount)
   const newProfile = {
     ...profile,
     skins: (profile?.skins ?? [{ likes: 0 }]).map((skin, index) => {
       if (Number(index) === Number(skinIndex)) {
         return {
           ...skin,
-          likes: (skin?.likes ? skin.likes : 0) + likesCount,
+          likes: (skin?.likes ? skin.likes : 0) + unSignedLikesCount,
         }
       }
       return skin
