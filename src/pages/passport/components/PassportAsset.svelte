@@ -75,9 +75,7 @@
         // else we use sToken property for it.
         if (
           props.item.itemAssetType === 'image' ||
-          props.item.itemAssetType === 'image-link' ||
-          props.item.itemAssetType === 'short-video' ||
-          props.item.itemAssetType === 'short-video-link'
+          props.item.itemAssetType === 'image-link'
         ) {
           sTokenURI = {
             ...sTokenURI,
@@ -135,12 +133,13 @@
         class="rounded-md w-full max-w-full"
         alt="Asset"
       />
-    {:else if !assetImage && (props.item.itemAssetType === 'short-video' || props.item.itemAssetType === 'short-video-link')}
+    {:else if assetImage && (props.item.itemAssetType === 'short-video' || props.item.itemAssetType === 'short-video-link')}
       <video
         autoplay
         muted
         controls
-        poster="https://sveltejs.github.io/assets/caminandes-llamigos.jpg"
+        poster={assetImage.src}
+        class="rounded-md w-full max-w-full"
         src="https://sveltejs.github.io/assets/caminandes-llamigos.mp4"
       >
         <track kind="captions" />
