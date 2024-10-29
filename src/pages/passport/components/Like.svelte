@@ -13,7 +13,11 @@
 
   const { profileId, skinIndex, currentLikes } = props
   let localLikeState = currentLikes
+  let pendingLikes = 0
   let clicks: number[] = []
+
+  let intervalId: NodeJS.Timeout
+  let timeoutId: NodeJS.Timeout
 
   $: {
     if (clicks.length !== 0) {
@@ -28,20 +32,38 @@
     // / Optimistically update local like state for better UX
     localLikeState = localLikeState + 1
     clicks = [...clicks, localLikeState]
-    //  Add the request to the queue
-    queue.add(async () => {
+    pendingLikes += 1
+
+    // clear the previous interval and set a new one
+    clearTimeout(timeoutId)
+    timeoutId = setTimeout(async () => {
+      if (pendingLikes === 0) return clearInterval(intervalId)
+      await submitLikes()
+    }, 1000)
+  }
+
+  const submitLikes = async () => {
+    if (pendingLikes === 0) return // Only proceed if there are pending likes
+    try {
       const res = await fetch(`/api/profile/updateLike`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ profileId: profileId, skinIndex: skinIndex }),
+        body: JSON.stringify({
+          profileId: profileId,
+          skinIndex: skinIndex,
+          likesCount: pendingLikes,
+        }),
       })
-      // revert the local like state if the request fails
-      if (res.status !== 200) {
-        localLikeState = localLikeState - 1
+      if (res.ok) {
+        pendingLikes = 0 // Reset the pending likes on successful submission
+      } else {
+        console.error('Failed to update likes:', res.statusText)
       }
-    })
+    } catch (error) {
+      console.error('Network error while updating likes:', error)
+    }
   }
 </script>
 
