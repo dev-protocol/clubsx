@@ -29,6 +29,7 @@ export type Profile = {
   sns?: {
     [platform: string]: string
   }
+  likes?: number
 }
 
 export const POST = async ({ request }: { request: Request }) => {
