@@ -4,9 +4,10 @@ import { createClient } from 'redis'
 import { type Profile } from '.'
 
 export const POST = async ({ request }: { request: Request }) => {
-  const { profileId, skinIndex } = (await request.json()) as {
+  const { profileId, skinIndex, likesCount } = (await request.json()) as {
     profileId: string
     skinIndex: number
+    likesCount: number
   }
   const profile: Profile = await getProfile({ id: profileId })
 
@@ -15,13 +16,14 @@ export const POST = async ({ request }: { request: Request }) => {
       status: 401,
     })
   }
+  const unSignedLikesCount = Math.abs(likesCount)
   const newProfile = {
     ...profile,
     skins: (profile?.skins ?? [{ likes: 0 }]).map((skin, index) => {
       if (Number(index) === Number(skinIndex)) {
         return {
           ...skin,
-          likes: (skin?.likes ? skin.likes : 0) + 1,
+          likes: (skin?.likes ? skin.likes : 0) + unSignedLikesCount,
         }
       }
       return skin
