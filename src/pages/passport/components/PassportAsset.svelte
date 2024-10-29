@@ -140,7 +140,7 @@
         controls
         poster={assetImage.src}
         class="rounded-md w-full max-w-full"
-        src="https://sveltejs.github.io/assets/caminandes-llamigos.mp4"
+        src={props?.item?.itemAssetValue}
       >
         <track kind="captions" />
       </video>
