@@ -493,6 +493,8 @@ const updatePassportOfferingOnChain = async () => {
             <option value="stylesheet-link">stylesheet-link</option>
             <option value="image">image</option>
             <option value="image-link">image-link</option>
+            <option value="short-video">short-video</option>
+            <option value="short-video-link">short-video-link</option>
             <option value="video">video</option>
             <option value="video-link">video-link</option>
             <option value="bgm">bgm</option>
