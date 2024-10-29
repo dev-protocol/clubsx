@@ -1,17 +1,17 @@
 <script lang="ts">
   import humanNumber from 'human-number'
+  import type { UndefinedOr } from '@devprotocol/util-ts'
+
   import FlyingHeart from './FlyingHeart.svelte'
 
-  import PQueue from 'p-queue'
   export let props: {
     profileId: string
-    skinIndex: number
     currentLikes: number
+    skinId: UndefinedOr<string>
   }
 
-  const queue = new PQueue({ concurrency: 1 })
+  const { profileId, skinId, currentLikes } = props
 
-  const { profileId, skinIndex, currentLikes } = props
   let localLikeState = currentLikes
   let pendingLikes = 0
   let clicks: number[] = []
@@ -29,13 +29,14 @@
   }
 
   const like = () => {
-    // / Optimistically update local like state for better UX
+    // Optimistically update local like state for better UX.
     localLikeState = localLikeState + 1
     clicks = [...clicks, localLikeState]
     pendingLikes += 1
 
-    // clear the previous interval and set a new one
+    // Clear the previous interval and set a new one.
     clearTimeout(timeoutId)
+
     timeoutId = setTimeout(async () => {
       if (pendingLikes === 0) return clearInterval(intervalId)
       await submitLikes()
@@ -43,7 +44,11 @@
   }
 
   const submitLikes = async () => {
-    if (pendingLikes === 0) return // Only proceed if there are pending likes
+    if (pendingLikes === 0) {
+      // Only proceed if there are pending likes.
+      return
+    }
+
     try {
       const res = await fetch(`/api/profile/updateLike`, {
         method: 'POST',
@@ -52,12 +57,13 @@
         },
         body: JSON.stringify({
           profileId: profileId,
-          skinIndex: skinIndex,
+          skinId: skinId,
           likesCount: pendingLikes,
         }),
       })
+
       if (res.ok) {
-        pendingLikes = 0 // Reset the pending likes on successful submission
+        pendingLikes = 0 // Reset the pending likes on successful submission.
       } else {
         console.error('Failed to update likes:', res.statusText)
       }

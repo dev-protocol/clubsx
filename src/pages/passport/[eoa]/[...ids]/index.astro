@@ -34,7 +34,9 @@ const _passportSkinBGMs = skin?.bgm
 const _passportSkinClips = skin?.clips
 const _passportSkinVideos = skin?.videos
 const _passportSpotlight = skin?.spotlight
-const _currentLikes = skin?.likes
+const _currentLikes = id
+  ? skin?.likes
+  : (profile?.skins?.at(0)?.likes ?? profile?.likes)
 
 const passportSkinBGMs = await whenDefined(_passportSkinBGMs, () =>
   getPassportItemForPayload({
@@ -330,7 +332,7 @@ const passportSpotlight = await whenDefined(
       props={{
         profileId: eoa ? eoa : '',
         currentLikes: _currentLikes ? _currentLikes : 0,
-        skinIndex: 0,
+        skinId: id ?? profile?.skins?.at(0)?.id ?? undefined,
       }}
     />
   </div>
