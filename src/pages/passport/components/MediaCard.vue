@@ -9,6 +9,7 @@ const props = defineProps<{
   src: string
   found: boolean
   classes?: string
+  posterSrc?: string
   type: PassportItemIndexDoc['itemAssetType']
 }>()
 
@@ -29,19 +30,33 @@ const processImage = async () => {
 }
 
 onMounted(async () => {
-  await processImage()
+  if (props.type === 'image' || props.type === 'image-link') {
+    await processImage()
+  }
 })
 </script>
 
 <template>
   <img
-    v-if="image"
+    v-if="image && (type === 'image' || type === 'image-link')"
     :src="image.src"
     class="rounded-md w-full max-w-full h-full object-cover aspect-square max-h-full"
     :class="classes"
   />
 
-  <div v-if="!image" class="w-full aspect-square">
+  <video
+    v-if="props.src && (type === 'short-video' || type === 'short-video-link')"
+    autoplay
+    muted
+    loop
+    :poster="props.posterSrc ?? ''"
+    class="rounded-md w-full max-w-full h-full object-fill aspect-square max-h-full pointer-events-none"
+    :src="props.src"
+  >
+    <track kind="captions" />
+  </video>
+
+  <div v-if="!image && !props.src" class="w-full aspect-square">
     <Skeleton />
   </div>
 </template>
