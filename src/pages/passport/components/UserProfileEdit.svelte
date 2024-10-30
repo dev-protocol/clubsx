@@ -16,6 +16,7 @@
   import type { PassportItem } from '../types'
   import PassportAsset from './PassportAsset.svelte'
   import PassportClipEditModal from './PassportClipEditModal.svelte'
+  import About from '@plugins/default-theme/components/About.svelte'
 
   const i18nBase = i18nFactory(Strings)
 
@@ -30,6 +31,7 @@
   let avatarUploading = false
   let profileUpdating = false
   let passportItemFetching = true
+  let isMakingDeafultProfile = false
   let profile: Profile = {} as Profile
   let profileFromAPI: Profile = profile
   let passportSkinItems: PassportItem[] = []
@@ -297,11 +299,34 @@
     }
 
     await onSubmit()
-    isAddingProfile = false
 
     setTimeout(() => {
+      isAddingProfile = false
       window.location.href = `/passport/${eoa}/edit?skinId=${newProfile.id}`
     }, 3000)
+  }
+
+  const makeDefaultProfile = async () => {
+    isMakingDeafultProfile = true
+
+    const skin = profile?.skins?.find((skin) => skinId === skin.id)
+    if (!skin) {
+      isMakingDeafultProfile = false
+      return
+    }
+
+    profile = {
+      ...profileFromAPI,
+      skins: [
+        {
+          ...skin,
+        },
+        ...(profile?.skins?.filter((skin) => skin.id !== skinId) ?? []),
+      ],
+    }
+
+    await onSubmit()
+    isMakingDeafultProfile = false
   }
 
   const onChangePassportSkinName = (ev: Event) => {
@@ -741,12 +766,21 @@
       skins={profile?.skins ?? []}
       selectedSkinId={skinId ?? profile?.skins?.at(0)?.id ?? ''}
     />
-    <!-- Todo: <button> element replace disabled when button is added -->
+
+    <!-- Add new profile -->
     <button
       on:click|preventDefault={addProfile}
       disabled={profileFetching || profileUpdating || isAddingProfile}
       class={`hs-button is-filled is-large w-fit text-center ${isAddingProfile ? 'animate-pulse' : ''}`}
-      >Add new profile</button
+      >{i18n('AddNewProfile')}</button
+    >
+
+    <!-- Make this profile default -->
+    <button
+      on:click|preventDefault={makeDefaultProfile}
+      disabled={profileFetching || profileUpdating || isMakingDeafultProfile}
+      class={`hs-button is-filled is-large w-fit text-center ${isAddingProfile ? 'animate-pulse' : ''}`}
+      >{i18n('MakeDefaultProfile')}</button
     >
   </div>
 
