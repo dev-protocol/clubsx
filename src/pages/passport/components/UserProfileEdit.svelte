@@ -1301,14 +1301,17 @@
                   fill={profile?.skins
                     ?.at(skinIndex)
                     ?.spotlight?.find((clip) => clip.payload === item.payload)
-                    ? 'currentColor'
+                    ? '#FFB602'
                     : 'none'}
-                  stroke="currentColor"
+                  stroke={profile?.skins
+                    ?.at(skinIndex)
+                    ?.spotlight?.find((clip) => clip.payload === item.payload)
+                    ? '#FFB602'
+                    : 'currentColor'}
                   color="currentColor"
                   ><defs
                     ><style>
                       .cls-63762d3cc3a86d32eae6efea-1 {
-                        stroke: currentColor;
                         stroke-miterlimit: 10;
                       }
                     </style></defs
@@ -1343,9 +1346,13 @@
                   fill={profile?.skins
                     ?.at(skinIndex)
                     ?.clips?.find((clip) => clip.payload === item.payload)
-                    ? 'currentColor'
+                    ? '#DB0125'
                     : 'none'}
-                  stroke="currentColor"
+                  stroke={profile?.skins
+                    ?.at(skinIndex)
+                    ?.clips?.find((clip) => clip.payload === item.payload)
+                    ? '#DB0125'
+                    : 'currentColor'}
                   color="currentColor"
                   ><defs
                     ><style>
@@ -1353,7 +1360,6 @@
                         fill: currentColor;
                       }
                       .cls-637b83faf95e86b59c57a0f7-2 {
-                        stroke: currentColor;
                         stroke-miterlimit: 10;
                       }
                     </style></defs
