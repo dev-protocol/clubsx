@@ -332,7 +332,7 @@ const passportSpotlight = await whenDefined(
       props={{
         profileId: eoa ? eoa : '',
         currentLikes: _currentLikes ? _currentLikes : 0,
-        skinId: id ?? profile?.skins?.at(0)?.id ?? undefined,
+        skinId: id || skin?.id || undefined,
       }}
     />
   </div>
