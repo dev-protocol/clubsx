@@ -712,8 +712,8 @@
   }
 
   $: {
-    // generate id only once (i.e when profile or skins or skins(0) or skins(0).id is not present)
-    if (!profile?.skins?.at(0)?.id) {
+    // Generate an id for skins.at(0) only if it is present but without an id.
+    if (profile?.skins?.length && !profile.skins.at(0)?.id) {
       profile = {
         ...profile,
         skins: [
@@ -1289,6 +1289,7 @@
                   passportItemFetching ||
                   profileUpdating}
               >
+                <!-- Spotlight -->
                 <svg
                   id="Layer_1"
                   data-name="Layer 1"
@@ -1297,58 +1298,29 @@
                   stroke-width="1.5"
                   width="24"
                   height="24"
-                  fill="currentColor"
-                  stroke="currentColor"
+                  fill={profile?.skins
+                    ?.at(skinIndex)
+                    ?.spotlight?.find((clip) => clip.payload === item.payload)
+                    ? '#FFB602'
+                    : 'none'}
+                  stroke={profile?.skins
+                    ?.at(skinIndex)
+                    ?.spotlight?.find((clip) => clip.payload === item.payload)
+                    ? '#FFB602'
+                    : 'currentColor'}
                   color="currentColor"
                   ><defs
                     ><style>
                       .cls-63762d3cc3a86d32eae6efea-1 {
-                        fill: none;
-                        stroke: currentColor;
                         stroke-miterlimit: 10;
                       }
                     </style></defs
-                  ><polygon
+                  >
+                  <polygon
                     class="cls-63762d3cc3a86d32eae6efea-1"
                     points="12 2.49 15.51 8.17 22 9.76 17.68 14.85 18.18 21.51 12 18.98 5.82 21.51 6.32 14.85 2 9.76 8.49 8.17 12 2.49"
-                  ></polygon><line
-                    class="cls-63762d3cc3a86d32eae6efea-1"
-                    x1="12"
-                    y1="19"
-                    x2="12"
-                    y2="18.98"
-                  ></line><line
-                    class="cls-63762d3cc3a86d32eae6efea-1"
-                    x1="12"
-                    y1="13"
-                    x2="12"
-                    y2="2.49"
-                  ></line><line
-                    class="cls-63762d3cc3a86d32eae6efea-1"
-                    x1="18.18"
-                    y1="21.51"
-                    x2="12"
-                    y2="13"
-                  ></line><line
-                    class="cls-63762d3cc3a86d32eae6efea-1"
-                    x1="12"
-                    y1="13"
-                    x2="5.82"
-                    y2="21.51"
-                  ></line><line
-                    class="cls-63762d3cc3a86d32eae6efea-1"
-                    x1="22"
-                    y1="9.75"
-                    x2="12"
-                    y2="13"
-                  ></line><line
-                    class="cls-63762d3cc3a86d32eae6efea-1"
-                    x1="12"
-                    y1="13"
-                    x2="2"
-                    y2="9.75"
-                  ></line></svg
-                >
+                  ></polygon>
+                </svg>
               </button>
 
               <!-- Add to showcase/pinned clips -->
@@ -1362,6 +1334,7 @@
                   passportItemFetching ||
                   profileUpdating}
               >
+                <!-- Showcase -->
                 <svg
                   id="Layer_1"
                   data-name="Layer 1"
@@ -1370,8 +1343,16 @@
                   stroke-width="1.5"
                   width="24"
                   height="24"
-                  fill="currentColor"
-                  stroke="currentColor"
+                  fill={profile?.skins
+                    ?.at(skinIndex)
+                    ?.clips?.find((clip) => clip.payload === item.payload)
+                    ? '#DB0125'
+                    : 'none'}
+                  stroke={profile?.skins
+                    ?.at(skinIndex)
+                    ?.clips?.find((clip) => clip.payload === item.payload)
+                    ? '#DB0125'
+                    : 'currentColor'}
                   color="currentColor"
                   ><defs
                     ><style>
@@ -1379,8 +1360,6 @@
                         fill: currentColor;
                       }
                       .cls-637b83faf95e86b59c57a0f7-2 {
-                        fill: none;
-                        stroke: currentColor;
                         stroke-miterlimit: 10;
                       }
                     </style></defs
