@@ -21,6 +21,8 @@ export type PassportItemIndexDoc = {
     | 'video-link'
     | 'bgm'
     | 'bgm-link'
+    | 'short-video'
+    | 'short-video-link'
   itemAssetValue: string
 }
 
