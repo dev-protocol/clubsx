@@ -53,8 +53,7 @@ export const Strings = {
   },
   PinClipsToSpotlightHelper: {
     en: () => `<b>NOTE</b>: You can pin 3 clips to your spotlight.`,
-    ja: () =>
-      `<b>注</b>:スポットライトには3つのクリップをピン留めできます。`,
+    ja: () => `<b>注</b>:スポットライトには3つのクリップをピン留めできます。`,
   },
   PurchasePassportClips: {
     en: () =>
