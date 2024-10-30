@@ -712,8 +712,8 @@
   }
 
   $: {
-    // generate id only once (i.e when profile or skins or skins(0) or skins(0).id is not present)
-    if (!profile?.skins?.at(0)?.id) {
+    // Generate an id for skins.at(0) only if it is present but without an id.
+    if (profile?.skins?.length && !profile.skins.at(0)?.id) {
       profile = {
         ...profile,
         skins: [
