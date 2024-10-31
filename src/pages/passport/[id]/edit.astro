@@ -5,8 +5,9 @@ import Layout from '@layouts/Landing.astro'
 import UserProfileEdit from '../components/UserProfileEdit.svelte'
 
 const { id } = Astro.params
-const isEOA = isAddress(id)
 const skinId = Astro.url.searchParams.get('skinId') || ''
+
+const isEOA = isAddress(id)
 
 const isLocal =
   Astro.url.hostname.includes('localhost') ||
@@ -31,6 +32,7 @@ const isLocal =
       </svg>
       Profile
     </a>
+
     {
       isEOA && (
         <UserProfileEdit
