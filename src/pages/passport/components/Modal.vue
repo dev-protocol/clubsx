@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineProps<{
-  isVisible: boolean
   modalContent: any
+  isVisible: boolean
   handleModalClose: () => void
   attrs: { [key: string]: any }
 }>()
@@ -72,18 +72,18 @@ html:has(#modal-container[data-active='true']) {
 
 <template>
   <div
-    id="modal-container"
     v-show="isVisible"
-    class="modal-container z-50"
+    id="modal-container"
     :data-active="isVisible"
+    class="modal-container z-50"
   >
     <div
-      class="modal-overlay overflow-y-auto py-6 flex justify-center"
       @click="
         () => {
           handleModalClose()
         }
       "
+      class="modal-overlay overflow-y-auto py-6 flex justify-center"
     >
       <Transition>
         <component v-show="isVisible" :is="modalContent" v-bind="attrs">

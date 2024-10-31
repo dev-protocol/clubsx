@@ -129,6 +129,10 @@ export const Strings = {
     en: 'Saved',
     ja: '保存しました',
   },
+  Saving: {
+    en: 'Saving',
+    ja: '保存',
+  },
   Error: {
     en: 'Error',
     ja: 'エラー',
