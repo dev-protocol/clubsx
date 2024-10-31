@@ -27,7 +27,7 @@
   let isCreatingNewSkin = false
   let profileFetching = true
   let profileUpdating = false
-  let passportItemsFetching = true
+  let purchasedPassportIAssetsFetching = true
   let isSelectingAsDefaultSkin = false
   let isTogglingSkinVisibility = false
   let profile: Profile = {} as Profile
@@ -164,7 +164,7 @@
   }
 
   const _fetchPassportItems = async () => {
-    passportItemsFetching = true
+    purchasedPassportIAssetsFetching = true
 
     const fetchedPassportItems = await fetch(
       `/api/assets/related/account/${eoa}/passportItems?&size=999`,
@@ -211,7 +211,7 @@
         return []
       })
       .finally(() => {
-        passportItemsFetching = false
+        purchasedPassportIAssetsFetching = false
       })
 
     purchasedSkinThemes = fetchedPassportItems.filter(
@@ -377,7 +377,7 @@
     {profileFetching}
     {profileUpdating}
     {purchasedSkinThemes}
-    purchasedSkinThemesFetching={passportItemsFetching}
+    purchasedSkinThemesFetching={purchasedPassportIAssetsFetching}
   />
 
   <!-- Passport skin spotlight -->
@@ -390,7 +390,7 @@
     {profileFetching}
     {profileUpdating}
     purchasedClips={purchasedSkinClips}
-    isFetchingPurchasedClips={passportItemsFetching}
+    isFetchingPurchasedClips={purchasedPassportIAssetsFetching}
   />
 
   <!-- Passport skin showcase -->
@@ -403,7 +403,7 @@
     {profileFetching}
     {profileUpdating}
     purchasedClips={purchasedSkinClips}
-    isFetchingPurchasedClips={passportItemsFetching}
+    isFetchingPurchasedClips={purchasedPassportIAssetsFetching}
   />
 
   <!-- Edit page purchased clips -->
@@ -415,7 +415,7 @@
     {profileFetching}
     {profileUpdating}
     purchasedClips={purchasedSkinClips}
-    isFetchingPurchasedClips={passportItemsFetching}
+    isFetchingPurchasedClips={purchasedPassportIAssetsFetching}
   />
 
   {#if eoa === id}
