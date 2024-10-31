@@ -20,7 +20,12 @@ const { eoa, ids } = Astro.params
 const isEOA = isAddress(eoa)
 
 const id = ids?.split('/')?.at(0) ?? '' // Get the skin id from the URL.
-const profile: Profile = await getProfile({ id: eoa ?? '' })
+const _profile: Profile = await getProfile({ id: eoa ?? '' })
+
+const profile = {
+  ..._profile,
+  skins: _profile?.skins?.filter((skin) => !skin.isHidden) ?? [], // Filter out hidden skins.
+}
 
 const isLocal =
   Astro.url.hostname.includes('localhost') ||

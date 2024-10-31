@@ -30,6 +30,8 @@
   let avatarUploading = false
   let profileUpdating = false
   let passportItemFetching = true
+  let isMakingDefaultSkin = false
+  let isTogglingSkinVisibility = false
   let profile: Profile = {} as Profile
   let profileFromAPI: Profile = profile
   let passportSkinItems: PassportItem[] = []
@@ -297,11 +299,65 @@
     }
 
     await onSubmit()
-    isAddingProfile = false
 
     setTimeout(() => {
+      isAddingProfile = false
       window.location.href = `/passport/${eoa}/edit?skinId=${newProfile.id}`
     }, 3000)
+  }
+
+  const makeDefaultSkin = async () => {
+    isMakingDefaultSkin = true
+
+    if (skinIndex === -1) {
+      isMakingDefaultSkin = false
+      return
+    }
+
+    profile = {
+      ...profileFromAPI,
+      skins: [
+        {
+          ...profile.skins!.at(skinIndex)!,
+        },
+        ...(profile?.skins?.filter((skin) => skin.id !== skinId) ?? []),
+      ],
+    }
+
+    await onSubmit()
+    isMakingDefaultSkin = false
+  }
+
+  const toggleSkinVisibility = async () => {
+    isTogglingSkinVisibility = true
+
+    if (skinIndex === -1 || !profile?.skins?.at(skinIndex)) {
+      isTogglingSkinVisibility = false
+      return
+    }
+
+    if (skinIndex === 0) {
+      // TODO: add error saying cannot toggle default skin.
+      isTogglingSkinVisibility = false
+      return
+    }
+
+    profile = {
+      ...profileFromAPI,
+      skins: [
+        ...(profile?.skins?.slice(0, skinIndex) ?? []), // keep all the other skins before skinIndex.
+
+        {
+          ...profile.skins!.at(skinIndex)!,
+          isHidden: !profile.skins?.at(skinIndex)?.isHidden,
+        },
+
+        ...(profile?.skins?.slice(skinIndex + 1) ?? []), // keep all the other skins after skinIndex.
+      ],
+    }
+
+    await onSubmit()
+    isTogglingSkinVisibility = false
   }
 
   const onChangePassportSkinName = (ev: Event) => {
@@ -741,12 +797,13 @@
       skins={profile?.skins ?? []}
       selectedSkinId={skinId ?? profile?.skins?.at(0)?.id ?? ''}
     />
-    <!-- Todo: <button> element replace disabled when button is added -->
+
+    <!-- Add new profile -->
     <button
       on:click|preventDefault={addProfile}
       disabled={profileFetching || profileUpdating || isAddingProfile}
       class={`hs-button is-filled is-large w-fit text-center ${isAddingProfile ? 'animate-pulse' : ''}`}
-      >Add new profile</button
+      >{i18n('AddNewProfile')}</button
     >
   </div>
 
@@ -1396,22 +1453,46 @@
   </span>
 
   {#if eoa === id}
-    <button
-      on:click={onSubmit}
-      disabled={profileUpdating || !eoa || profileFetching}
-      class={`mt-[76px] hs-button is-filled is-large w-fit ${
-        updatingStatus === 'success'
-          ? 'is-success'
-          : updatingStatus === 'error'
-            ? 'is-error'
-            : ''
-      }`}
-      >{updatingStatus === 'success'
-        ? i18n('Saved')
-        : updatingStatus === 'error'
-          ? i18n('Error')
-          : i18n('Save')}</button
+    <div
+      class="my-[76px] flex w-full max-w-full items-center justify-start gap-2"
     >
+      <button
+        on:click={onSubmit}
+        disabled={profileUpdating || !eoa || profileFetching}
+        class={`hs-button is-filled is-large w-fit ${
+          updatingStatus === 'success'
+            ? 'is-success'
+            : updatingStatus === 'error'
+              ? 'is-error'
+              : ''
+        }`}
+        >{updatingStatus === 'success'
+          ? i18n('Saved')
+          : updatingStatus === 'error'
+            ? i18n('Error')
+            : i18n('Save')}</button
+      >
+
+      <!-- Make this profile default -->
+      <button
+        on:click|preventDefault={makeDefaultSkin}
+        disabled={profileFetching || profileUpdating || isMakingDefaultSkin}
+        class={`hs-button is-filled is-large w-fit text-center ${isAddingProfile ? 'animate-pulse' : ''}`}
+        >{i18n('MakeDefaultProfile')}</button
+      >
+
+      <!-- Toggle profile visibility -->
+      <button
+        on:click|preventDefault={toggleSkinVisibility}
+        disabled={profileFetching ||
+          profileUpdating ||
+          isTogglingSkinVisibility}
+        class={`hs-button is-filled is-large w-fit text-center ${isAddingProfile ? 'animate-pulse' : ''}`}
+        >{profile?.skins?.at(skinIndex)?.isHidden
+          ? i18n('ShowProfile')
+          : i18n('HideProfile')}</button
+      >
+    </div>
   {/if}
 </div>
 

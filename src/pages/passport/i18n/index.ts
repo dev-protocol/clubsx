@@ -1,6 +1,22 @@
 import type { ClubsI18nParts } from '@devprotocol/clubs-core'
 
 export const Strings = {
+  HideProfile: {
+    en: `Hide this profile`,
+    ja: `このプロフィールを非表示にする`,
+  },
+  ShowProfile: {
+    en: `Unhide this profile`,
+    ja: `このプロフィールを再表示する`,
+  },
+  MakeDefaultProfile: {
+    en: `Make this profile default`,
+    ja: `このプロファイルをデフォルトにする`,
+  },
+  AddNewProfile: {
+    en: `Add new profile`,
+    ja: `新しいプロフィールを追加`,
+  },
   PassportName: {
     en: 'Passport name',
     ja: `パスポート名`,
