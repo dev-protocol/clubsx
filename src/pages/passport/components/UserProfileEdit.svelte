@@ -16,8 +16,10 @@
   import type { PassportItem } from '../types'
   import PassportAsset from './PassportAsset.svelte'
   import EditUserProfileInfo from './EditUserProfileInfo.svelte'
+  import EditPassportSkinName from './EditPassportSkinName.svelte'
   import EditPassportSkinTheme from './EditPassportSkinTheme.svelte'
   import PassportClipEditModal from './PassportClipEditModal.svelte'
+  import EditPassportSkinSpotlight from './EditPassportSkinSpotlight.svelte'
 
   const i18nBase = i18nFactory(Strings)
 
@@ -809,23 +811,20 @@
     >
   </div>
 
+  <!-- Profile info edit -->
   <EditUserProfileInfo {eoa} bind:profile {profileUpdating} />
 
-  <label class="hs-form-field is-filled mt-[76px]">
-    <span class="hs-form-field__label"> {i18n('PassportName')} </span>
-    <input
-      class="hs-form-field__input"
-      disabled={profileUpdating || !eoa}
-      value={profile?.skins?.at(skinIndex)?.name ?? ''}
-      on:change|preventDefault={onChangePassportSkinName}
-      placeholder={i18n('PassportSkinNamePlaceholder')}
-    />
-    <span class="hs-form-field__helper">
-      {i18n('PassportNameHelper')}
-    </span>
-  </label>
+  <!-- Passport skin name -->
+  <EditPassportSkinName
+    {eoa}
+    bind:profile
+    bind:skinIndex
+    {profileFromAPI}
+    {profileFetching}
+    {profileUpdating}
+  />
 
-  <!-- Passport skins theme -->
+  <!-- Passport skin theme -->
   <EditPassportSkinTheme
     {eoa}
     {isLocal}
@@ -838,72 +837,18 @@
     passportItemsFetching={passportItemFetching}
   />
 
-  <!-- Spotlight clips -->
-  <span class="hs-form-field is-filled mt-[76px]">
-    <div class="hs-form-field__label flex items-center justify-between mb-1">
-      <span class="hs-form-field__label">
-        {i18n('PassportSpotlightClips')} ({profile?.skins?.at(skinIndex)
-          ?.spotlight?.length ?? 0})
-      </span>
-      <button
-        disabled={!eoa ||
-          !passportNonSkinItems.length ||
-          profileFetching ||
-          passportItemFetching ||
-          profileUpdating}
-        on:click|preventDefault={() => resetSpotlightClips()}
-        class="hs-button is-filled is-large w-fit text-center">Reset</button
-      >
-    </div>
-
-    {#if !eoa}
-      <div class="rounded-md border border-surface-400 p-8 text-accent-200">
-        {i18n('ConnectWalletTryAgain')} :)
-      </div>
-    {:else if passportItemFetching || profileFetching}
-      <div
-        class="rounded-md border border-surface-400 p-8 text-accent-200 h-48"
-      >
-        <Skeleton />
-      </div>
-    {:else if !passportItemFetching && !profileFetching && !profile.skins?.at(skinIndex)?.spotlight?.length}
-      <div class="rounded-md border border-surface-400 p-8 text-accent-200">
-        {i18n('Empty')} :) <br />{@html i18n('PinClipsToSpotlight')}
-      </div>
-    {:else if !passportItemFetching && !profileFetching && profile.skins?.at(skinIndex)?.spotlight?.length && passportNonSkinItems?.length}
-      <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-        {#each passportNonSkinItems as item, i}
-          {#if item.payload && profile?.skins
-              ?.at(skinIndex)
-              ?.spotlight?.find((clip) => clip.payload === item.payload)}
-            <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
-              <PassportAsset
-                props={((clip) => ({
-                  item: item,
-                  provider: rpcProvider,
-                  local: isLocal,
-                  isEditable: true,
-                  editAction: () => onEditSpotlightClip(item),
-                  description: clip?.description,
-                  frameColorHex: clip?.frameColorHex,
-                }))(
-                  profile?.skins
-                    ?.at(skinIndex)
-                    ?.spotlight?.find((clip) => clip.payload === item.payload),
-                )}
-              />
-            </li>
-          {/if}
-        {/each}
-      </ul>
-    {/if}
-
-    <span
-      class={`hs-form-field__helper mt-1 ${hasSpotlightLimitReadched ? 'underline text-error-600' : ''}`}
-    >
-      * {@html i18n('PinClipsToSpotlightHelper')}
-    </span>
-  </span>
+  <!-- Passport skin spotlight -->
+  <EditPassportSkinSpotlight
+    {eoa}
+    {isLocal}
+    bind:profile
+    bind:skinIndex
+    {profileFromAPI}
+    {profileFetching}
+    {profileUpdating}
+    {passportNonSkinItems}
+    passportItemsFetching={passportItemFetching}
+  />
 
   <!-- Showcase/pinned clips -->
   <span class="hs-form-field is-filled mt-[76px]">
