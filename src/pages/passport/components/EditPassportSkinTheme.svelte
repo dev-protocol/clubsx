@@ -31,12 +31,8 @@
     i18n = i18nBase(navigator.languages)
   })
 
-  const selectPassportSkinItem = (item: PassportItem) => {
+  const selectSkinTheme = (item: PassportItem) => {
     if (!item.payload) {
-      console.log(
-        `Passport skin item not selected as theme since item.paylaod missing`,
-        item.id,
-      )
       return
     }
 
@@ -53,15 +49,9 @@
         ...(profile?.skins?.slice(skinIndex + 1) ?? []), // keep all the other skins after skinIndex.
       ],
     }
-
-    console.log(
-      'Passport item and profile at selecting passport skin item',
-      item,
-      profile,
-    )
   }
 
-  const resetPassportSkinSelectedItems = () => {
+  const undoSkinThemeUpdate = () => {
     profile = {
       ...profile, // Retain other modified fields.
       skins: [
@@ -80,12 +70,10 @@
         ...(profile?.skins?.slice(skinIndex + 1) ?? []), // keep all the other skins after skinIndex.
       ],
     }
-
-    console.log('Profile at reseting passport skin item', profile)
   }
 </script>
 
-<!-- Passport skins -->
+<!-- Passport skin theme -->
 <div class="w-full">
   <label class="hs-form-field is-filled mt-[76px]">
     <div class="hs-form-field__label flex items-center justify-between mb-1">
@@ -99,7 +87,7 @@
           profileFetching ||
           passportItemsFetching ||
           profileUpdating}
-        on:click|preventDefault={() => resetPassportSkinSelectedItems()}
+        on:click|preventDefault={() => undoSkinThemeUpdate()}
         class="hs-button is-filled is-large w-fit text-center">Reset</button
       >
     </div>
@@ -128,7 +116,7 @@
                 profileFetching ||
                 passportItemsFetching ||
                 profileUpdating}
-              on:click|preventDefault={() => selectPassportSkinItem(item)}
+              on:click|preventDefault={() => selectSkinTheme(item)}
             >
               <PassportAsset
                 props={{
