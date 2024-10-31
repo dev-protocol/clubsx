@@ -24,9 +24,9 @@
   export let isLocal: boolean
 
   let skinIndex = 0
-  let isCreatingNewSkin = false
   let profileFetching = true
   let profileUpdating = false
+  let isCreatingNewSkin = false
   let purchasedPassportIAssetsFetching = true
   let isSelectingAsDefaultSkin = false
   let isTogglingSkinVisibility = false
@@ -37,6 +37,9 @@
   let purchasedSkinThemes: PassportItem[] = []
   let connection: UndefinedOr<typeof Connection> = undefined
   let updatingStatus: UndefinedOr<'success' | 'error'> = undefined
+  let createNewSkinStatus: UndefinedOr<'success' | 'error'> = undefined
+  let selectAsDefaultSkinStatus: UndefinedOr<'success' | 'error'> = undefined
+  let toggleSkinVisibilityStatus: UndefinedOr<'success' | 'error'> = undefined
 
   onMount(async () => {
     i18n = i18nBase(navigator.languages)
@@ -64,59 +67,6 @@
         _fetchPassportItems()
       }
     })
-  }
-
-  const onSubmit = async () => {
-    profileUpdating = true
-
-    const signer = connection ? connection().signer.getValue() : undefined
-    if (!signer) {
-      profileUpdating = false
-      updatingStatus = 'error'
-      return
-    }
-
-    const hash = `Update profile: ${profile.username} @ts:${new Date().getTime()}`
-    const sig = await signer
-      .signMessage(hash)
-      .then((sign) => sign)
-      .catch(() => undefined)
-    if (!sig) {
-      profileUpdating = false
-      updatingStatus = 'error'
-      return
-    }
-
-    await fetch('/api/profile', {
-      method: 'POST',
-      body: JSON.stringify({ profile, hash, sig }),
-    })
-      .then(
-        (res) => {
-          if (res.status === 200) {
-            updatingStatus = 'success'
-            return
-          }
-
-          throw Error('Could not update profile')
-        },
-        (err) => {
-          throw new Error(err)
-        },
-      )
-      .catch((err) => {
-        console.error('Error occured while updating profile', err)
-        updatingStatus = 'error'
-        return
-      })
-      .finally(() => {
-        profileUpdating = false
-      })
-
-    setTimeout(() => {
-      window.location.reload(true)
-      updatingStatus = undefined
-    }, 3000)
   }
 
   const _fetchProfile = async () => {
@@ -228,37 +178,91 @@
     )
   }
 
-  const createNewSkin = async () => {
-    isCreatingNewSkin = true
-
-    const newSkin: Skin = {
-      id: nanoid(),
-      name: `Profile no: ${(profileFromAPI?.skins?.length ?? 0) + 1}`,
-      theme: '',
-      clips: [],
-      spotlight: [],
+  const submit = async (): Promise<'success' | 'error'> => {
+    const signer = connection ? connection().signer.getValue() : undefined
+    if (!signer) {
+      return 'error'
     }
 
+    const hash = `Update profile: ${profile.username} @ts:${new Date().getTime()}`
+    const sig = await signer
+      .signMessage(hash)
+      .then((sign) => sign)
+      .catch(() => undefined)
+    if (!sig) {
+      return 'error'
+    }
+
+    const status: 'success' | 'error' = await fetch('/api/profile', {
+      method: 'POST',
+      body: JSON.stringify({ profile, hash, sig }),
+    })
+      .then(
+        (res) => {
+          if (res.status === 200) {
+            return 'success'
+          }
+
+          throw Error('Could not update profile')
+        },
+        (err) => {
+          throw new Error(err)
+        },
+      )
+      .catch((err) => {
+        console.error('Error occured while updating profile', err)
+        return 'error'
+      })
+
+    return status
+  }
+
+  const saveProfile = async () => {
+    profileUpdating = true
+    updatingStatus = await submit()
+    profileUpdating = false
+
+    setTimeout(() => {
+      const isReqSuccessful = updatingStatus === 'success'
+      updatingStatus = undefined
+      if (isReqSuccessful) {
+        window.location.reload(true)
+      }
+    }, 3000)
+  }
+
+  const createNewSkin = async () => {
+    isCreatingNewSkin = true
+    const newSkin: Skin = {
+      theme: '',
+      clips: [],
+      id: nanoid(),
+      spotlight: [],
+      name: `Profile no: ${(profileFromAPI?.skins?.length ?? 0) + 1}`,
+    }
     profile = {
       ...profileFromAPI,
       skins: [...(profileFromAPI.skins ?? []), newSkin],
     }
-    await onSubmit()
+    createNewSkinStatus = await submit()
+    isCreatingNewSkin = false
 
     setTimeout(() => {
-      window.location.href = `/passport/${eoa}/edit?skinId=${newSkin.id}`
-      isCreatingNewSkin = false
+      const isReqSuccessful = createNewSkinStatus === 'success'
+      createNewSkinStatus = undefined
+      if (isReqSuccessful) {
+        window.location.href = `/passport/${eoa}/edit?skinId=${newSkin.id}`
+      }
     }, 3000)
   }
 
   const selectAsDefaultSkin = async () => {
     isSelectingAsDefaultSkin = true
-
     if (skinIndex === -1 || !profile?.skins?.at(skinIndex)) {
       isSelectingAsDefaultSkin = false
+      selectAsDefaultSkinStatus = 'error'
       return
     }
-
     profile = {
       ...profileFromAPI,
       skins: [
@@ -268,30 +272,30 @@
         ...(profile?.skins?.filter((skin) => skin.id !== skinId) ?? []),
       ],
     }
-
-    await onSubmit()
+    selectAsDefaultSkinStatus = await submit()
+    isSelectingAsDefaultSkin = false
 
     setTimeout(() => {
-      window.location.reload(true)
-      isSelectingAsDefaultSkin = false
+      const isReqSuccessful = selectAsDefaultSkinStatus === 'success'
+      selectAsDefaultSkinStatus = undefined
+      if (isReqSuccessful) {
+        window.location.reload(true)
+      }
     }, 3000)
   }
 
   const toggleSkinVisibility = async () => {
     isTogglingSkinVisibility = true
-
     if (skinIndex === -1 || !profile?.skins?.at(skinIndex)) {
       isTogglingSkinVisibility = false
+      toggleSkinVisibilityStatus = 'error'
       return
     }
-
     if (skinIndex === 0) {
-      // TODO: add error saying cannot toggle default skin.
-
       isTogglingSkinVisibility = false
+      toggleSkinVisibilityStatus = 'error'
       return
     }
-
     profile = {
       ...profileFromAPI,
       skins: [
@@ -305,12 +309,15 @@
         ...(profile?.skins?.slice(skinIndex + 1) ?? []), // keep all the other skins after skinIndex.
       ],
     }
-
-    await onSubmit()
+    toggleSkinVisibilityStatus = await submit()
+    isTogglingSkinVisibility = false
 
     setTimeout(() => {
-      window.location.reload(true)
-      isTogglingSkinVisibility = false
+      const isReqSuccessful = toggleSkinVisibilityStatus === 'success'
+      toggleSkinVisibilityStatus = undefined
+      if (isReqSuccessful) {
+        window.location.reload(true)
+      }
     }, 3000)
   }
 
@@ -349,9 +356,22 @@
     <button
       on:click|preventDefault={createNewSkin}
       disabled={profileFetching || profileUpdating || isCreatingNewSkin}
-      class={`hs-button is-filled w-fit text-center ${isCreatingNewSkin ? 'animate-pulse' : ''}`}
-      >{i18n('AddNewProfile')}</button
+      class={`hs-button is-filled w-fit text-center ${isCreatingNewSkin ? 'animate-pulse' : ''} ${
+        createNewSkinStatus === 'success'
+          ? 'is-success'
+          : createNewSkinStatus === 'error'
+            ? 'is-error'
+            : ''
+      }`}
     >
+      {isCreatingNewSkin
+        ? i18n('Saving')
+        : createNewSkinStatus === 'success'
+          ? i18n('Saved')
+          : createNewSkinStatus === 'error'
+            ? i18n('Error')
+            : i18n('AddNewProfile')}
+    </button>
   </div>
 
   <!-- Profile info edit -->
@@ -423,20 +443,22 @@
       class="my-[76px] flex w-full max-w-full items-center justify-start gap-2"
     >
       <button
-        on:click={onSubmit}
+        on:click={saveProfile}
         disabled={profileUpdating || !eoa || profileFetching}
-        class={`hs-button is-filled is-large w-fit ${
+        class={`hs-button is-filled is-large w-fit ${profileUpdating ? 'animate-pulse' : ''} ${
           updatingStatus === 'success'
             ? 'is-success'
             : updatingStatus === 'error'
               ? 'is-error'
               : ''
         }`}
-        >{updatingStatus === 'success'
-          ? i18n('Saved')
-          : updatingStatus === 'error'
-            ? i18n('Error')
-            : i18n('Save')}</button
+        >{profileUpdating
+          ? i18n('Saving')
+          : updatingStatus === 'success'
+            ? i18n('Saved')
+            : updatingStatus === 'error'
+              ? i18n('Error')
+              : i18n('Save')}</button
       >
 
       <!-- Make this profile default -->
@@ -445,8 +467,20 @@
         disabled={profileFetching ||
           profileUpdating ||
           isSelectingAsDefaultSkin}
-        class={`hs-button is-filled is-large w-fit text-center ${isCreatingNewSkin ? 'animate-pulse' : ''}`}
-        >{i18n('MakeDefaultProfile')}</button
+        class={`hs-button is-filled is-large w-fit text-center ${isSelectingAsDefaultSkin ? 'animate-pulse' : ''} ${
+          selectAsDefaultSkinStatus === 'success'
+            ? 'is-success'
+            : selectAsDefaultSkinStatus === 'error'
+              ? 'is-error'
+              : ''
+        }`}
+        >{isSelectingAsDefaultSkin
+          ? i18n('Saving')
+          : selectAsDefaultSkinStatus === 'success'
+            ? i18n('Saved')
+            : selectAsDefaultSkinStatus === 'error'
+              ? i18n('Error')
+              : i18n('MakeDefaultProfile')}</button
       >
 
       <!-- Toggle profile visibility -->
@@ -455,11 +489,24 @@
         disabled={profileFetching ||
           profileUpdating ||
           isTogglingSkinVisibility}
-        class={`hs-button is-filled is-large w-fit text-center ${isCreatingNewSkin ? 'animate-pulse' : ''}`}
-        >{profile?.skins?.at(skinIndex)?.isHidden
-          ? i18n('ShowProfile')
-          : i18n('HideProfile')}</button
+        class={`hs-button is-filled is-large w-fit text-center ${isTogglingSkinVisibility ? 'animate-pulse' : ''} ${
+          toggleSkinVisibilityStatus === 'success'
+            ? 'is-success'
+            : toggleSkinVisibilityStatus === 'error'
+              ? 'is-error'
+              : ''
+        }`}
       >
+        {isTogglingSkinVisibility
+          ? i18n('Saving')
+          : toggleSkinVisibilityStatus === 'success'
+            ? i18n('Saved')
+            : toggleSkinVisibilityStatus === 'error'
+              ? i18n('Error')
+              : profile?.skins?.at(skinIndex)?.isHidden
+                ? i18n('ShowProfile')
+                : i18n('HideProfile')}
+      </button>
     </div>
   {/if}
 </div>
