@@ -21,7 +21,6 @@ const isEOA = isAddress(eoa)
 
 const id = ids?.split('/')?.at(0) ?? '' // Get the skin id from the URL.
 const _profile: Profile = await getProfile({ id: eoa ?? '' })
-
 const profile = {
   ..._profile,
   skins: _profile?.skins?.filter((skin) => !skin.isHidden) ?? [], // Filter out hidden skins.
@@ -132,9 +131,9 @@ const passportSpotlight = await whenDefined(
 
 <Layout
   theme="auto"
+  eoa={eoa ?? ''}
   sTokenPayload={skin?.theme}
   skins={profile?.skins ?? []}
-  eoa={eoa ?? ''}
   selectedSkinId={skin?.id ?? ''}
 >
   <div class="grid gap-24 clear-right">
@@ -299,10 +298,10 @@ const passportSpotlight = await whenDefined(
           <div class:list={passportClass('spotlight-container')}>
             <div class:list={passportClass('spotlight-container')}>
               <PassportClips
-                skinSection="spotlight"
-                client:only="vue"
-                clips={passportSpotlight}
                 id={id}
+                client:only="vue"
+                skinSection="spotlight"
+                clips={passportSpotlight}
               />
             </div>
           </div>
@@ -314,10 +313,10 @@ const passportSpotlight = await whenDefined(
           <div class:list={passportClass('clips-container')}>
             <div class:list={passportClass('clips-content')}>
               <PassportClips
-                skinSection="clips"
-                client:only="vue"
-                clips={passportSkinClips}
                 id={id}
+                client:only="vue"
+                skinSection="clips"
+                clips={passportSkinClips}
               />
             </div>
           </div>
@@ -331,6 +330,7 @@ const passportSpotlight = await whenDefined(
       >
     </section>
   </div>
+
   <div class="sticky float-right bottom-0 p-2 lg:p-6">
     <Like
       client:load
