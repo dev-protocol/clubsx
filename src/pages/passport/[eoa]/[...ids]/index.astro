@@ -24,7 +24,7 @@ const _profile: Profile = await getProfile({ id: eoa ?? '' })
 
 const profile = {
   ..._profile,
-  skins: _profile?.skins?.filter((skin) => !skin.isHidden), // Filter out hidden skins.
+  skins: _profile?.skins?.filter((skin) => !skin.isHidden) ?? [], // Filter out hidden skins.
 }
 
 const isLocal =
