@@ -38,49 +38,6 @@
     i18n = i18nBase(navigator.languages)
   })
 
-  const toggleClipsInShowcase = async (item: PassportItem) => {
-    if (!item.payload) {
-      console.log(
-        `Passport non skin item not pinned as clips since item.paylaod missing`,
-        item.id,
-      )
-      return
-    }
-
-    profile = {
-      ...profile, // Retain other modified fields.
-      skins: [
-        ...(profile?.skins?.slice(0, skinIndex) ?? []), // keep all the other skins before skinIndex.
-
-        // Set skins to the updated value or append new value of theme.
-        {
-          ...(profile?.skins?.at(skinIndex) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
-          clips: profile?.skins
-            ?.at(skinIndex)
-            ?.clips?.find((clip) => clip.payload === item.payload)
-            ? [
-                ...(profile.skins
-                  ?.at(skinIndex)
-                  ?.clips?.filter((clip) => clip.payload !== item.payload) ??
-                  []),
-              ]
-            : [
-                ...(profile.skins?.at(skinIndex)?.clips ?? []),
-                { payload: item.payload, description: '', frameColorHex: '' },
-              ],
-        },
-
-        ...(profile?.skins?.slice(skinIndex + 1) ?? []), // keep all the other skins after skinIndex.
-      ],
-    }
-
-    console.log(
-      'Passort item and profile at pinning passport non skin item',
-      item,
-      profile,
-    )
-  }
-
   const undoSkinShowcaseUpdate = async () => {
     profile = {
       ...profile, // Retain other modified fields.

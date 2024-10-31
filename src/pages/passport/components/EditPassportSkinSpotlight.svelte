@@ -38,55 +38,6 @@
     i18n = i18nBase(navigator.languages)
   })
 
-  const toggleClipInSpotlight = async (item: PassportItem) => {
-    if (!item.payload) {
-      return
-    }
-
-    const isClipInSpotlight = !!profile?.skins
-      ?.at(skinIndex)
-      ?.spotlight?.find((clip) => clip.payload === item.payload)
-
-    // If the clip is not already present in the spotlight, that means we are adding it, so we need
-    // to check for spotlight?.length <= 3.
-    if (
-      !isClipInSpotlight && // not in spotlight
-      (profile?.skins?.at(skinIndex)?.spotlight?.length ?? 0) > 2 // spotlight?.length <= 3.
-    ) {
-      hasSpotlightLimitReadched = true
-      return
-    }
-    hasSpotlightLimitReadched = false
-
-    profile = {
-      ...profile, // Retain other modified fields.
-      skins: [
-        ...(profile?.skins?.slice(0, skinIndex) ?? []), // keep all the other skins before skinIndex.
-
-        // Set skins to the updated value or append new value of theme.
-        {
-          ...(profile?.skins?.at(skinIndex) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
-          spotlight: profile?.skins
-            ?.at(skinIndex)
-            ?.spotlight?.find((clip) => clip.payload === item.payload)
-            ? [
-                ...(profile.skins
-                  ?.at(skinIndex)
-                  ?.spotlight?.filter(
-                    (clip) => clip.payload !== item.payload,
-                  ) ?? []),
-              ]
-            : [
-                ...(profile.skins?.at(skinIndex)?.spotlight ?? []),
-                { payload: item.payload, description: '', frameColorHex: '' },
-              ],
-        },
-
-        ...(profile?.skins?.slice(skinIndex + 1) ?? []), // keep all the other skins after skinIndex.
-      ],
-    }
-  }
-
   const undoSkinSpotlightUpdate = async () => {
     profile = {
       ...profile, // Retain other modified fields.
