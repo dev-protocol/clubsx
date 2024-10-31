@@ -27,8 +27,8 @@
   let isCreatingNewSkin = false
   let profileFetching = true
   let profileUpdating = false
-  let isSelectingAsDefaultSkin = false
   let passportItemsFetching = true
+  let isSelectingAsDefaultSkin = false
   let isTogglingSkinVisibility = false
   let profile: Profile = {} as Profile
   let profileFromAPI: Profile = profile
@@ -339,8 +339,8 @@
     class="w-fit max-w-full flex gap-[15px] py-[8px] px-[16px] items-center justify-start"
   >
     <SkinSwitch
-      isEditing={true}
       {eoa}
+      isEditing={true}
       skins={profile?.skins ?? []}
       selectedSkinId={skinId ?? profile?.skins?.at(0)?.id ?? ''}
     />
@@ -349,7 +349,7 @@
     <button
       on:click|preventDefault={createNewSkin}
       disabled={profileFetching || profileUpdating || isCreatingNewSkin}
-      class={`hs-button is-filled is-large w-fit text-center ${isCreatingNewSkin ? 'animate-pulse' : ''}`}
+      class={`hs-button is-filled w-fit text-center ${isCreatingNewSkin ? 'animate-pulse' : ''}`}
       >{i18n('AddNewProfile')}</button
     >
   </div>
