@@ -86,60 +86,65 @@
 </script>
 
 <!-- Passport skins -->
-<label class="hs-form-field is-filled mt-[76px]">
-  <div class="hs-form-field__label flex items-center justify-between mb-1">
-    <span class="hs-form-field__label">
-      {i18n('PassportSkin')} ({passportSkinItems?.length ?? 0})
-    </span>
-    <button
-      disabled={!eoa ||
-        !passportSkinItems.length ||
-        profileFetching ||
-        passportItemsFetching ||
-        profileUpdating}
-      on:click|preventDefault={() => resetPassportSkinSelectedItems()}
-      class="hs-button is-filled is-large w-fit text-center">Reset</button
-    >
-  </div>
+<div class="w-full">
+  <label class="hs-form-field is-filled mt-[76px]">
+    <div class="hs-form-field__label flex items-center justify-between mb-1">
+      <span class="hs-form-field__label">
+        {i18n('PassportSkin')} ({passportSkinItems?.length ?? 0})
+      </span>
 
-  {#if !eoa}
-    <div class="rounded-md border border-surface-400 p-8 text-accent-200">
-      {i18n('ConnectWalletTryAgain')} :)
+      <button
+        disabled={!eoa ||
+          !passportSkinItems.length ||
+          profileFetching ||
+          passportItemsFetching ||
+          profileUpdating}
+        on:click|preventDefault={() => resetPassportSkinSelectedItems()}
+        class="hs-button is-filled is-large w-fit text-center">Reset</button
+      >
     </div>
-  {:else if passportItemsFetching}
-    <div class="rounded-md border border-surface-400 p-8 text-accent-200 h-48">
-      <Skeleton />
-    </div>
-  {:else if !passportItemsFetching && !passportSkinItems?.length}
-    <div class="rounded-md border border-surface-400 p-8 text-accent-200">
-      {i18n('Empty')} :) <br />{@html i18n('PurchasePassportSkin')}
-    </div>
-  {:else if !passportItemsFetching && passportSkinItems?.length}
-    <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-      {#each passportSkinItems as item, i}
-        <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
-          <button
-            disabled={!eoa ||
-              !passportSkinItems.length ||
-              profileFetching ||
-              passportItemsFetching ||
-              profileUpdating}
-            on:click|preventDefault={() => selectPassportSkinItem(item)}
-          >
-            <PassportAsset
-              props={{
-                item,
-                provider: rpcProvider,
-                local: isLocal,
-                classNames:
-                  profile.skins?.at(skinIndex)?.theme === item.payload
-                    ? 'border-2 border-surface-ink'
-                    : 'border border-surface-300',
-              }}
-            />
-          </button>
-        </li>
-      {/each}
-    </ul>
-  {/if}
-</label>
+
+    {#if !eoa}
+      <div class="rounded-md border border-surface-400 p-8 text-accent-200">
+        {i18n('ConnectWalletTryAgain')} :)
+      </div>
+    {:else if passportItemsFetching}
+      <div
+        class="rounded-md border border-surface-400 p-8 text-accent-200 h-48"
+      >
+        <Skeleton />
+      </div>
+    {:else if !passportItemsFetching && !passportSkinItems?.length}
+      <div class="rounded-md border border-surface-400 p-8 text-accent-200">
+        {i18n('Empty')} :) <br />{@html i18n('PurchasePassportSkin')}
+      </div>
+    {:else if !passportItemsFetching && passportSkinItems?.length}
+      <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
+        {#each passportSkinItems as item, i}
+          <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
+            <button
+              disabled={!eoa ||
+                !passportSkinItems.length ||
+                profileFetching ||
+                passportItemsFetching ||
+                profileUpdating}
+              on:click|preventDefault={() => selectPassportSkinItem(item)}
+            >
+              <PassportAsset
+                props={{
+                  item,
+                  provider: rpcProvider,
+                  local: isLocal,
+                  classNames:
+                    profile.skins?.at(skinIndex)?.theme === item.payload
+                      ? 'border-2 border-surface-ink'
+                      : 'border border-surface-300',
+                }}
+              />
+            </button>
+          </li>
+        {/each}
+      </ul>
+    {/if}
+  </label>
+</div>
