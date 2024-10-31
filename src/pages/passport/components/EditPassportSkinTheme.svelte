@@ -17,11 +17,11 @@
   export let isLocal: boolean
   export let profileFetching = true
   export let profileUpdating = false
-  export let passportItemsFetching = true
   export let profile: Profile = {} as Profile
   export let profileFromAPI: Profile = profile
+  export let purchasedSkinThemesFetching = true
   export let eoa: UndefinedOr<string> = undefined
-  export let passportSkinItems: PassportItem[] = []
+  export let purchasedSkinThemes: PassportItem[] = []
 
   const rpcProvider = new JsonRpcProvider(
     `https://polygon-mainnet.g.alchemy.com/v2/${import.meta.env.PUBLIC_ALCHEMY_KEY ?? ''}`,
@@ -78,14 +78,14 @@
   <label class="hs-form-field is-filled mt-[76px]">
     <div class="hs-form-field__label flex items-center justify-between mb-1">
       <span class="hs-form-field__label">
-        {i18n('PassportSkin')} ({passportSkinItems?.length ?? 0})
+        {i18n('PassportSkin')} ({purchasedSkinThemes?.length ?? 0})
       </span>
 
       <button
         disabled={!eoa ||
-          !passportSkinItems.length ||
+          !purchasedSkinThemes.length ||
           profileFetching ||
-          passportItemsFetching ||
+          purchasedSkinThemesFetching ||
           profileUpdating}
         on:click|preventDefault={() => undoSkinThemeUpdate()}
         class="hs-button is-filled is-large w-fit text-center">Reset</button
@@ -96,25 +96,25 @@
       <div class="rounded-md border border-surface-400 p-8 text-accent-200">
         {i18n('ConnectWalletTryAgain')} :)
       </div>
-    {:else if passportItemsFetching}
+    {:else if purchasedSkinThemesFetching}
       <div
         class="rounded-md border border-surface-400 p-8 text-accent-200 h-48"
       >
         <Skeleton />
       </div>
-    {:else if !passportItemsFetching && !passportSkinItems?.length}
+    {:else if !purchasedSkinThemesFetching && !purchasedSkinThemes?.length}
       <div class="rounded-md border border-surface-400 p-8 text-accent-200">
         {i18n('Empty')} :) <br />{@html i18n('PurchasePassportSkin')}
       </div>
-    {:else if !passportItemsFetching && passportSkinItems?.length}
+    {:else if !purchasedSkinThemesFetching && purchasedSkinThemes?.length}
       <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-        {#each passportSkinItems as item, i}
+        {#each purchasedSkinThemes as item, i}
           <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
             <button
               disabled={!eoa ||
-                !passportSkinItems.length ||
+                !purchasedSkinThemes.length ||
                 profileFetching ||
-                passportItemsFetching ||
+                purchasedSkinThemesFetching ||
                 profileUpdating}
               on:click|preventDefault={() => selectSkinTheme(item)}
             >

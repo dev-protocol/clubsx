@@ -186,16 +186,17 @@
         passportItemsFetching = false
       })
 
-    passportItemsFromAPI = fetchedPassportItems
-    purchasedSkinThemes = passportItemsFromAPI.filter(
+    purchasedSkinThemes = fetchedPassportItems.filter(
       (item) =>
         item.itemAssetType === 'css' ||
         item.itemAssetType === 'stylesheet-link',
     )
-    purchasedSkinClips = passportItemsFromAPI.filter(
+    purchasedSkinClips = fetchedPassportItems.filter(
       (item) =>
-        item.itemAssetType !== 'css' &&
-        item.itemAssetType !== 'stylesheet-link',
+        item.itemAssetType === 'image' ||
+        item.itemAssetType === 'image-link' ||
+        item.itemAssetType === 'short-video' ||
+        item.itemAssetType === 'short-video-link',
     )
   }
 
@@ -367,7 +368,7 @@
     {profileFetching}
     {profileUpdating}
     {purchasedSkinThemes}
-    {passportItemsFetching}
+    purchasedSkinThemesFetching={passportItemsFetching}
   />
 
   <!-- Passport skin spotlight -->
