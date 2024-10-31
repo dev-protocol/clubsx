@@ -19,6 +19,7 @@
   import EditPassportSkinName from './EditPassportSkinName.svelte'
   import EditPassportSkinTheme from './EditPassportSkinTheme.svelte'
   import PassportClipEditModal from './PassportClipEditModal.svelte'
+  import EditPassportSkinShowcase from './EditPassportSkinShowcase.svelte'
   import EditPassportSkinSpotlight from './EditPassportSkinSpotlight.svelte'
 
   const i18nBase = i18nFactory(Strings)
@@ -850,66 +851,18 @@
     passportItemsFetching={passportItemFetching}
   />
 
-  <!-- Showcase/pinned clips -->
-  <span class="hs-form-field is-filled mt-[76px]">
-    <div class="hs-form-field__label flex items-center justify-between mb-1">
-      <span class="hs-form-field__label">
-        {i18n('PassportShowcaseClips')} ({profile?.skins?.at(skinIndex)?.clips
-          ?.length ?? 0})
-      </span>
-      <button
-        disabled={!eoa ||
-          !passportNonSkinItems.length ||
-          profileFetching ||
-          passportItemFetching ||
-          profileUpdating}
-        on:click|preventDefault={() => resetPinnedNonSkinItems()}
-        class="hs-button is-filled is-large w-fit text-center">Reset</button
-      >
-    </div>
-
-    {#if !eoa}
-      <div class="rounded-md border border-surface-400 p-8 text-accent-200">
-        {i18n('ConnectWalletTryAgain')} :)
-      </div>
-    {:else if passportItemFetching || profileFetching}
-      <div
-        class="rounded-md border border-surface-400 p-8 text-accent-200 h-48"
-      >
-        <Skeleton />
-      </div>
-    {:else if !passportItemFetching && !profileFetching && !profile.skins?.at(skinIndex)?.clips?.length}
-      <div class="rounded-md border border-surface-400 p-8 text-accent-200">
-        {i18n('Empty')} :) <br />{@html i18n('PinClipsToShowcase')}
-      </div>
-    {:else if !passportItemFetching && !profileFetching && profile.skins?.at(skinIndex)?.clips?.length && passportNonSkinItems?.length}
-      <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-        {#each passportNonSkinItems as item, i}
-          {#if item.payload && profile?.skins
-              ?.at(skinIndex)
-              ?.clips?.find((clip) => clip.payload === item.payload)}
-            <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
-              <PassportAsset
-                props={((clip) => ({
-                  item: item,
-                  provider: rpcProvider,
-                  local: isLocal,
-                  isEditable: true,
-                  editAction: () => onEditShowcaseClip(item),
-                  description: clip?.description,
-                  frameColorHex: clip?.frameColorHex,
-                }))(
-                  profile?.skins
-                    ?.at(skinIndex)
-                    ?.clips?.find((clip) => clip.payload === item.payload),
-                )}
-              />
-            </li>
-          {/if}
-        {/each}
-      </ul>
-    {/if}
-  </span>
+  <!-- Passport skin showcase -->
+  <EditPassportSkinShowcase
+    {eoa}
+    {isLocal}
+    bind:profile
+    bind:skinIndex
+    {profileFromAPI}
+    {profileFetching}
+    {profileUpdating}
+    {passportNonSkinItems}
+    passportItemsFetching={passportItemFetching}
+  />
 
   <!-- Passport items other than type: css | stylesheet-link -->
   <span class="hs-form-field is-filled mt-[76px]">
