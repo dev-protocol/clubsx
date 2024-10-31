@@ -12,12 +12,12 @@
 
   const { profileId, skinId, currentLikes } = props
 
-  let localLikeState = currentLikes
   let pendingLikes = 0
   let clicks: number[] = []
+  let localLikeState = currentLikes
 
-  let intervalId: NodeJS.Timeout
   let timeoutId: NodeJS.Timeout
+  let intervalId: NodeJS.Timeout
 
   $: {
     if (clicks.length !== 0) {
