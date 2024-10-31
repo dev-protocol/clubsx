@@ -262,6 +262,9 @@
     if (skinIndex === -1 || !profile?.skins?.at(skinIndex)) {
       isSelectingAsDefaultSkin = false
       selectAsDefaultSkinStatus = 'error'
+      setTimeout(() => {
+        selectAsDefaultSkinStatus = undefined
+      }, 3000)
       return
     }
     profile = {
@@ -290,11 +293,17 @@
     if (skinIndex === -1 || !profile?.skins?.at(skinIndex)) {
       isTogglingSkinVisibility = false
       toggleSkinVisibilityStatus = 'error'
+      setTimeout(() => {
+        selectAsDefaultSkinStatus = undefined
+      }, 3000)
       return
     }
     if (skinIndex === 0) {
       isTogglingSkinVisibility = false
       toggleSkinVisibilityStatus = 'error'
+      setTimeout(() => {
+        selectAsDefaultSkinStatus = undefined
+      }, 3000)
       return
     }
     profile = {
@@ -491,7 +500,8 @@
         on:click|preventDefault={toggleSkinVisibility}
         disabled={profileFetching ||
           profileUpdating ||
-          isTogglingSkinVisibility}
+          isTogglingSkinVisibility ||
+          skinIndex === 0}
         class={`hs-button is-filled is-large w-fit text-center ${isTogglingSkinVisibility ? 'animate-pulse' : ''} ${
           toggleSkinVisibilityStatus === 'success'
             ? 'is-success'
