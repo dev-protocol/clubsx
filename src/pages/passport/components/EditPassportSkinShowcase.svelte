@@ -27,7 +27,6 @@
   export let eoa: UndefinedOr<string> = undefined
 
   let isDisplayingHint: boolean = false
-  let hasSpotlightLimitReadched: boolean = false
   let timeoutToHint: UndefinedOr<NodeJS.Timeout> = undefined
 
   const rpcProvider = new JsonRpcProvider(

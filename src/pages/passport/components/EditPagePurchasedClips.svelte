@@ -3,8 +3,8 @@
   import { JsonRpcProvider } from 'ethers'
   import { i18nFactory } from '@devprotocol/clubs-core'
   import { type UndefinedOr } from '@devprotocol/util-ts'
+  import type { Profile, Skin } from '@pages/api/profile'
   import Skeleton from '@components/Global/Skeleton.svelte'
-  import type { Clip, Profile, Skin } from '@pages/api/profile'
 
   import { Strings } from '../i18n'
   import type { PassportItem } from '../types'
@@ -25,6 +25,7 @@
   export let profile: Profile = {} as Profile
   export let purchasedClips: PassportItem[] = []
   export let eoa: UndefinedOr<string> = undefined
+  export let hasSpotlightLimitReadched: boolean = false
 
   onMount(async () => {
     i18n = i18nBase(navigator.languages)

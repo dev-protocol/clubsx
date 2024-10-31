@@ -25,9 +25,9 @@
   export let profileFromAPI: Profile = profile
   export let purchasedClips: PassportItem[] = []
   export let eoa: UndefinedOr<string> = undefined
+  export let hasSpotlightLimitReadched: boolean = false
 
   let isDisplayingHint: boolean = false
-  let hasSpotlightLimitReadched: boolean = false
   let timeoutToHint: UndefinedOr<NodeJS.Timeout> = undefined
 
   const rpcProvider = new JsonRpcProvider(

@@ -35,11 +35,12 @@
   let eoa: UndefinedOr<string> = undefined
   let purchasedSkinClips: PassportItem[] = []
   let purchasedSkinThemes: PassportItem[] = []
+  let hasSpotlightLimitReadched: boolean = false
+  let updatingStatus: UndefinedOr<string> = undefined
+  let createNewSkinStatus: UndefinedOr<string> = undefined
   let connection: UndefinedOr<typeof Connection> = undefined
-  let updatingStatus: UndefinedOr<'success' | 'error'> = undefined
-  let createNewSkinStatus: UndefinedOr<'success' | 'error'> = undefined
-  let selectAsDefaultSkinStatus: UndefinedOr<'success' | 'error'> = undefined
-  let toggleSkinVisibilityStatus: UndefinedOr<'success' | 'error'> = undefined
+  let selectAsDefaultSkinStatus: UndefinedOr<string> = undefined
+  let toggleSkinVisibilityStatus: UndefinedOr<string> = undefined
 
   onMount(async () => {
     i18n = i18nBase(navigator.languages)
@@ -178,7 +179,7 @@
     )
   }
 
-  const submit = async (): Promise<'success' | 'error'> => {
+  const submit = async (): Promise<string> => {
     const signer = connection ? connection().signer.getValue() : undefined
     if (!signer) {
       return 'error'
@@ -193,7 +194,7 @@
       return 'error'
     }
 
-    const status: 'success' | 'error' = await fetch('/api/profile', {
+    const status: string = await fetch('/api/profile', {
       method: 'POST',
       body: JSON.stringify({ profile, hash, sig }),
     })
@@ -226,7 +227,7 @@
       const isReqSuccessful = updatingStatus === 'success'
       updatingStatus = undefined
       if (isReqSuccessful) {
-        window.location.reload(true)
+        location.reload()
       }
     }, 3000)
   }
@@ -279,7 +280,7 @@
       const isReqSuccessful = selectAsDefaultSkinStatus === 'success'
       selectAsDefaultSkinStatus = undefined
       if (isReqSuccessful) {
-        window.location.reload(true)
+        window.location.reload()
       }
     }, 3000)
   }
@@ -316,7 +317,7 @@
       const isReqSuccessful = toggleSkinVisibilityStatus === 'success'
       toggleSkinVisibilityStatus = undefined
       if (isReqSuccessful) {
-        window.location.reload(true)
+        window.location.reload()
       }
     }, 3000)
   }
@@ -409,6 +410,7 @@
     {profileFromAPI}
     {profileFetching}
     {profileUpdating}
+    {hasSpotlightLimitReadched}
     purchasedClips={purchasedSkinClips}
     isFetchingPurchasedClips={purchasedPassportIAssetsFetching}
   />
@@ -434,6 +436,7 @@
     bind:skinIndex
     {profileFetching}
     {profileUpdating}
+    {hasSpotlightLimitReadched}
     purchasedClips={purchasedSkinClips}
     isFetchingPurchasedClips={purchasedPassportIAssetsFetching}
   />
