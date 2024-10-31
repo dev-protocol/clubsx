@@ -389,8 +389,8 @@
     {profileFromAPI}
     {profileFetching}
     {profileUpdating}
-    {purchasedSkinClips}
-    {passportItemsFetching}
+    purchasedClips={purchasedSkinClips}
+    isFetchingPurchasedClips={passportItemsFetching}
   />
 
   <!-- Passport skin showcase -->
@@ -402,8 +402,8 @@
     {profileFromAPI}
     {profileFetching}
     {profileUpdating}
-    {purchasedSkinClips}
-    {passportItemsFetching}
+    purchasedClips={purchasedSkinClips}
+    isFetchingPurchasedClips={passportItemsFetching}
   />
 
   <!-- Edit page purchased clips -->

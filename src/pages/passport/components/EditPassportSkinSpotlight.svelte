@@ -20,11 +20,11 @@
   export let isLocal: boolean
   export let profileFetching = true
   export let profileUpdating = false
-  export let passportItemsFetching = true
+  export let isFetchingPurchasedClips = true
   export let profile: Profile = {} as Profile
   export let profileFromAPI: Profile = profile
+  export let purchasedClips: PassportItem[] = []
   export let eoa: UndefinedOr<string> = undefined
-  export let passportNonSkinItems: PassportItem[] = []
 
   let isDisplayingHint: boolean = false
   let hasSpotlightLimitReadched: boolean = false
@@ -159,9 +159,9 @@
 
       <button
         disabled={!eoa ||
-          !passportNonSkinItems.length ||
+          !purchasedClips.length ||
           profileFetching ||
-          passportItemsFetching ||
+          isFetchingPurchasedClips ||
           profileUpdating}
         on:click|preventDefault={() => undoSkinSpotlightUpdate()}
         class="hs-button is-filled is-large w-fit text-center">Reset</button
@@ -172,19 +172,19 @@
       <div class="rounded-md border border-surface-400 p-8 text-accent-200">
         {i18n('ConnectWalletTryAgain')} :)
       </div>
-    {:else if passportItemsFetching || profileFetching}
+    {:else if isFetchingPurchasedClips || profileFetching}
       <div
         class="rounded-md border border-surface-400 p-8 text-accent-200 h-48"
       >
         <Skeleton />
       </div>
-    {:else if !passportItemsFetching && !profileFetching && !profile.skins?.at(skinIndex)?.spotlight?.length}
+    {:else if !isFetchingPurchasedClips && !profileFetching && !profile.skins?.at(skinIndex)?.spotlight?.length}
       <div class="rounded-md border border-surface-400 p-8 text-accent-200">
         {i18n('Empty')} :) <br />{@html i18n('PinClipsToSpotlight')}
       </div>
-    {:else if !passportItemsFetching && !profileFetching && profile.skins?.at(skinIndex)?.spotlight?.length && passportNonSkinItems?.length}
+    {:else if !isFetchingPurchasedClips && !profileFetching && profile.skins?.at(skinIndex)?.spotlight?.length && purchasedClips?.length}
       <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-        {#each passportNonSkinItems as item, i}
+        {#each purchasedClips as item, i}
           {#if item.payload && profile?.skins
               ?.at(skinIndex)
               ?.spotlight?.find((clip) => clip.payload === item.payload)}
