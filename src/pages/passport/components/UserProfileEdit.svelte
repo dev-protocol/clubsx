@@ -24,10 +24,10 @@
   export let isLocal: boolean
 
   let skinIndex = 0
-  let isAddingProfile = false
+  let isCreatingNewSkin = false
   let profileFetching = true
   let profileUpdating = false
-  let isMakingDefaultSkin = false
+  let isSelectingAsDefaultSkin = false
   let passportItemsFetching = true
   let isTogglingSkinVisibility = false
   let profile: Profile = {} as Profile
@@ -38,8 +38,37 @@
   let connection: UndefinedOr<typeof Connection> = undefined
   let updatingStatus: UndefinedOr<'success' | 'error'> = undefined
 
+  onMount(async () => {
+    i18n = i18nBase(navigator.languages)
+    _connectOnMount()
+    _fetchProfile()
+  })
+
+  const _connectOnMount = async () => {
+    const { connection: _conn } = await import(
+      '@devprotocol/clubs-core/connection'
+    )
+
+    connection = _conn
+    eoa = connection()?.account?.getValue()
+    if (eoa) {
+      _fetchPassportItems()
+    }
+
+    connection().account.subscribe((acc: UndefinedOr<string>) => {
+      const oldEOA = eoa
+      eoa = acc
+      if (eoa !== oldEOA) {
+        // Wallet is connected or addrress has changed so update the data again.
+        _fetchProfile()
+        _fetchPassportItems()
+      }
+    })
+  }
+
   const onSubmit = async () => {
     profileUpdating = true
+
     const signer = connection ? connection().signer.getValue() : undefined
     if (!signer) {
       profileUpdating = false
@@ -52,7 +81,6 @@
       .signMessage(hash)
       .then((sign) => sign)
       .catch(() => undefined)
-
     if (!sig) {
       profileUpdating = false
       updatingStatus = 'error'
@@ -77,7 +105,7 @@
         },
       )
       .catch((err) => {
-        console.log('Error occured while updating profile')
+        console.error('Error occured while updating profile', err)
         updatingStatus = 'error'
         return
       })
@@ -86,6 +114,7 @@
       })
 
     setTimeout(() => {
+      window.location.reload(true)
       updatingStatus = undefined
     }, 3000)
   }
@@ -117,7 +146,7 @@
         },
       )
       .catch((err) => {
-        console.log('Error fetching profile', err)
+        console.error('Error fetching profile', err)
         return {} as Profile
       })
       .finally(() => {
@@ -127,12 +156,11 @@
     profile = {
       ...fetchedProfile,
     }
+
     // To preserve state before making changes to profile.
     profileFromAPI = {
       ...fetchedProfile,
     }
-
-    console.log('Profile at fetching', profile)
   }
 
   const _fetchPassportItems = async () => {
@@ -179,7 +207,7 @@
         },
       )
       .catch((err) => {
-        console.log('Error fetching passport items', err)
+        console.error('Error fetching passport items', err)
         return []
       })
       .finally(() => {
@@ -200,62 +228,34 @@
     )
   }
 
-  const _connectOnMount = async () => {
-    const { connection: _conn } = await import(
-      '@devprotocol/clubs-core/connection'
-    )
+  const createNewSkin = async () => {
+    isCreatingNewSkin = true
 
-    connection = _conn
-    eoa = connection()?.account?.getValue()
-    if (eoa) {
-      _fetchPassportItems()
-    }
-
-    connection().account.subscribe((acc: UndefinedOr<string>) => {
-      const oldEOA = eoa
-      eoa = acc
-      if (eoa !== oldEOA) {
-        // Wallet is connected or addrress has changed so update the data again.
-        _fetchProfile()
-        _fetchPassportItems()
-      }
-    })
-  }
-
-  onMount(async () => {
-    i18n = i18nBase(navigator.languages)
-    _connectOnMount()
-    _fetchProfile()
-  })
-
-  const addProfile = async () => {
-    isAddingProfile = true
-
-    const newProfile = {
+    const newSkin: Skin = {
       id: nanoid(),
       name: `Profile no: ${(profileFromAPI?.skins?.length ?? 0) + 1}`,
       theme: '',
       clips: [],
       spotlight: [],
     }
+
     profile = {
       ...profileFromAPI,
-      skins: [...(profileFromAPI.skins ?? []), newProfile],
+      skins: [...(profileFromAPI.skins ?? []), newSkin],
     }
-
     await onSubmit()
 
     setTimeout(() => {
-      isAddingProfile = false
-      window.location.href = `/passport/${eoa}/edit?skinId=${newProfile.id}`
+      window.location.href = `/passport/${eoa}/edit?skinId=${newSkin.id}`
+      isCreatingNewSkin = false
     }, 3000)
   }
 
-  const makeDefaultSkin = async () => {
-    isMakingDefaultSkin = true
+  const selectAsDefaultSkin = async () => {
+    isSelectingAsDefaultSkin = true
 
-    if (skinIndex === -1) {
-      isMakingDefaultSkin = false
+    if (skinIndex === -1 || !profile?.skins?.at(skinIndex)) {
+      isSelectingAsDefaultSkin = false
       return
     }
 
@@ -270,7 +270,11 @@
     }
 
     await onSubmit()
-    isMakingDefaultSkin = false
+
+    setTimeout(() => {
+      window.location.reload(true)
+      isSelectingAsDefaultSkin = false
+    }, 3000)
   }
 
   const toggleSkinVisibility = async () => {
@@ -283,6 +287,7 @@
 
     if (skinIndex === 0) {
       // TODO: add error saying cannot toggle default skin.
+
       isTogglingSkinVisibility = false
       return
     }
@@ -302,7 +307,11 @@
     }
 
     await onSubmit()
-    isTogglingSkinVisibility = false
+
+    setTimeout(() => {
+      window.location.reload(true)
+      isTogglingSkinVisibility = false
+    }, 3000)
   }
 
   $: {
@@ -338,9 +347,9 @@
 
     <!-- Add new profile -->
     <button
-      on:click|preventDefault={addProfile}
-      disabled={profileFetching || profileUpdating || isAddingProfile}
-      class={`hs-button is-filled is-large w-fit text-center ${isAddingProfile ? 'animate-pulse' : ''}`}
+      on:click|preventDefault={createNewSkin}
+      disabled={profileFetching || profileUpdating || isCreatingNewSkin}
+      class={`hs-button is-filled is-large w-fit text-center ${isCreatingNewSkin ? 'animate-pulse' : ''}`}
       >{i18n('AddNewProfile')}</button
     >
   </div>
@@ -405,8 +414,8 @@
     bind:skinIndex
     {profileFetching}
     {profileUpdating}
-    {purchasedSkinClips}
-    {passportItemsFetching}
+    purchasedClips={purchasedSkinClips}
+    isFetchingPurchasedClips={passportItemsFetching}
   />
 
   {#if eoa === id}
@@ -432,9 +441,11 @@
 
       <!-- Make this profile default -->
       <button
-        on:click|preventDefault={makeDefaultSkin}
-        disabled={profileFetching || profileUpdating || isMakingDefaultSkin}
-        class={`hs-button is-filled is-large w-fit text-center ${isAddingProfile ? 'animate-pulse' : ''}`}
+        on:click|preventDefault={selectAsDefaultSkin}
+        disabled={profileFetching ||
+          profileUpdating ||
+          isSelectingAsDefaultSkin}
+        class={`hs-button is-filled is-large w-fit text-center ${isCreatingNewSkin ? 'animate-pulse' : ''}`}
         >{i18n('MakeDefaultProfile')}</button
       >
 
@@ -444,7 +455,7 @@
         disabled={profileFetching ||
           profileUpdating ||
           isTogglingSkinVisibility}
-        class={`hs-button is-filled is-large w-fit text-center ${isAddingProfile ? 'animate-pulse' : ''}`}
+        class={`hs-button is-filled is-large w-fit text-center ${isCreatingNewSkin ? 'animate-pulse' : ''}`}
         >{profile?.skins?.at(skinIndex)?.isHidden
           ? i18n('ShowProfile')
           : i18n('HideProfile')}</button

@@ -21,10 +21,10 @@
   export let isLocal: boolean
   export let profileFetching = true
   export let profileUpdating = false
-  export let passportItemsFetching = true
+  export let isFetchingPurchasedClips = true
   export let profile: Profile = {} as Profile
+  export let purchasedClips: PassportItem[] = []
   export let eoa: UndefinedOr<string> = undefined
-  export let passportNonSkinItems: PassportItem[] = []
 
   onMount(async () => {
     i18n = i18nBase(navigator.languages)
@@ -127,26 +127,26 @@
   <!-- Passport items other than type: css | stylesheet-link -->
   <span class="hs-form-field is-filled mt-[76px]">
     <span class="hs-form-field__label">
-      {i18n('PassportClips')} ({passportNonSkinItems?.length ?? 0})
+      {i18n('PassportClips')} ({purchasedClips?.length ?? 0})
     </span>
 
     {#if !eoa}
       <div class="rounded-md border border-surface-400 p-8 text-accent-200">
         {i18n('ConnectWalletTryAgain')} :)
       </div>
-    {:else if passportItemsFetching || profileFetching}
+    {:else if isFetchingPurchasedClips || profileFetching}
       <div
         class="rounded-md border border-surface-400 p-8 text-accent-200 h-48"
       >
         <Skeleton />
       </div>
-    {:else if !passportItemsFetching && !profileFetching && !passportNonSkinItems?.length}
+    {:else if !isFetchingPurchasedClips && !profileFetching && !purchasedClips?.length}
       <div class="rounded-md border border-surface-400 p-8 text-accent-200">
         {i18n('Empty')} :) <br />{@html i18n('PurchasePassportClips')}
       </div>
-    {:else if passportNonSkinItems?.length}
+    {:else if purchasedClips?.length}
       <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-        {#each passportNonSkinItems as item, i}
+        {#each purchasedClips as item, i}
           <li id={`assets-${i.toString()}`} class="relative group empty:hidden">
             <div
               class="h-fit w-full max-w-full absolute left-0 right-0 top-0 hidden group-hover:flex flex-row items-center justify-end bg-surface-300 rounded-md p-4 gap-4 opacity-90"
@@ -156,9 +156,9 @@
                 class="w-6 h-6 cursor-pointer"
                 on:click|preventDefault={() => toggleClipInSpotlight(item)}
                 disabled={!eoa ||
-                  !passportNonSkinItems.length ||
+                  !purchasedClips.length ||
                   profileFetching ||
-                  passportItemsFetching ||
+                  isFetchingPurchasedClips ||
                   profileUpdating}
               >
                 <!-- Spotlight -->
@@ -200,9 +200,9 @@
                 class="w-6 h-6 cursor-pointer"
                 on:click|preventDefault={() => toggleClipsInShowcase(item)}
                 disabled={!eoa ||
-                  !passportNonSkinItems.length ||
+                  !purchasedClips.length ||
                   profileFetching ||
-                  passportItemsFetching ||
+                  isFetchingPurchasedClips ||
                   profileUpdating}
               >
                 <!-- Showcase SVG -->
