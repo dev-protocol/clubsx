@@ -271,6 +271,7 @@ const props = defineProps<{
       ></path>
     </svg>
   </div>
+
   <!-- Likes Button -->
   <div v-if="props.icon === 'likes'">
     <svg
