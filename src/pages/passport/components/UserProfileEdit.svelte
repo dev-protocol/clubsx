@@ -784,8 +784,6 @@
 
     const index = profile?.skins?.findIndex((skin) => skin.id === skinId) ?? 0
     skinIndex = index === -1 ? 0 : index
-
-    console.log('Skin index changed', skinIndex)
   }
 </script>
 
