@@ -784,6 +784,8 @@
 
     const index = profile?.skins?.findIndex((skin) => skin.id === skinId) ?? 0
     skinIndex = index === -1 ? 0 : index
+
+    console.log('Skin index changed', skinIndex)
   }
 </script>
 
@@ -1454,7 +1456,7 @@
 
   {#if eoa === id}
     <div
-      class="mt-[76px] flex w-full max-w-full items-center justify-start gap-2"
+      class="my-[76px] flex w-full max-w-full items-center justify-start gap-2"
     >
       <button
         on:click={onSubmit}
