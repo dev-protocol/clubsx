@@ -1,62 +1,39 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
 import Skeleton from '@components/Global/Skeleton.vue'
 
-import { loadImage } from '../utils'
-import type { ImageData, PassportItemIndexDoc } from '../types'
+import type { PassportItemIndexDoc } from '../types'
 
 const props = defineProps<{
   src: string
   found: boolean
-  classes?: string
   posterSrc?: string
   type: PassportItemIndexDoc['itemAssetType']
 }>()
-
-const image = ref<ImageData>()
-
-const processImage = async () => {
-  if (props.type === 'image-link') {
-    image.value = {
-      src: props.src,
-      w: 324,
-      h: 324,
-      alt: props.type ?? 'Image',
-    } as ImageData
-  }
-
-  const loadedImage = await loadImage(props.src)
-  image.value = loadedImage
-}
-
-onMounted(async () => {
-  if (props.type === 'image' || props.type === 'image-link') {
-    await processImage()
-  }
-})
 </script>
 
 <template>
+  <!-- Image type clip -->
   <img
-    v-if="image && (type === 'image' || type === 'image-link')"
-    :src="image.src"
+    alt="Passport clip"
+    :src="src ?? posterSrc"
+    v-if="found && (type === 'image' || type === 'image-link')"
     class="rounded-md w-full max-w-full h-full object-cover aspect-square max-h-full"
-    :class="classes"
   />
 
+  <!-- Short video type clip -->
   <video
-    v-if="props.src && (type === 'short-video' || type === 'short-video-link')"
-    autoplay
-    muted
     loop
-    :poster="props.posterSrc ?? ''"
+    muted
+    autoplay
+    :src="src"
+    :poster="posterSrc ?? ''"
+    v-if="found && (type === 'short-video' || type === 'short-video-link')"
     class="rounded-md w-full max-w-full h-full object-fill aspect-square max-h-full pointer-events-none"
-    :src="props.src"
   >
     <track kind="captions" />
   </video>
 
-  <div v-if="!image && !props.src" class="w-full aspect-square">
+  <div v-if="!found || !props.src" class="w-full aspect-square">
     <Skeleton />
   </div>
 </template>
