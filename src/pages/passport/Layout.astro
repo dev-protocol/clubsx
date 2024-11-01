@@ -1,13 +1,13 @@
 ---
-import { whenDefined } from '@devprotocol/util-ts'
-import { passportClass } from '@fixtures/ui/passport'
-import { ClubsPictogramAdaptable as Favicon } from '@devprotocol/clubs-core/images'
-
 import '@devprotocol/clubs-core/styles'
 import type { Skin } from '@pages/api/profile'
+import { whenDefined } from '@devprotocol/util-ts'
 import Header from '@components/Global/Header.astro'
+import { passportClass } from '@fixtures/ui/passport'
 import { getPassportItemForPayload } from '@fixtures/api/passportItem'
-import SkinSwitch from 'src/pages/passport/components/SkinSwitch.svelte'
+import { ClubsPictogramAdaptable as Favicon } from '@devprotocol/clubs-core/images'
+
+import SkinSwitch from './components/SkinSwitch.svelte'
 
 type Props = {
   eoa: string
@@ -18,10 +18,10 @@ type Props = {
 }
 
 const {
-  theme = 'dark',
-  sTokenPayload,
-  skins = [],
   eoa = '',
+  skins = [],
+  sTokenPayload,
+  theme = 'dark',
   selectedSkinId = '',
 } = Astro.props
 
