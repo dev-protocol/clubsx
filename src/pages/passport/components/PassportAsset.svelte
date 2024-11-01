@@ -2,16 +2,16 @@
   import { always } from 'ramda'
   import { onMount } from 'svelte'
   import { decodeTokenURI } from '@fixtures/nft'
-  import { decode, markdownToHtml } from '@devprotocol/clubs-core'
   import type { ClubsData } from '@pages/api/clubs'
   import { whenDefined } from '@devprotocol/util-ts'
   import { Contract, type ContractRunner } from 'ethers'
   import type { UndefinedOr } from '@devprotocol/util-ts'
   import Skeleton from '@components/Global/Skeleton.svelte'
+  import { decode, markdownToHtml } from '@devprotocol/clubs-core'
 
+  import { isDark } from '@fixtures/color'
   import { loadImage, ABI_NFT } from '../utils'
   import type { PassportItem, ImageData } from '../types'
-  import { isDark } from '@fixtures/color'
 
   export let props: {
     local: boolean
@@ -27,9 +27,11 @@
   let assetName: string
   let notFound: boolean = false
   let club: ClubsData | undefined
+  let isFrameDark: UndefinedOr<boolean>
   let assetImage: ImageData | undefined
   let htmlDescription: UndefinedOr<string>
-  let isFrameDark: UndefinedOr<boolean>
+
+  const API_PATH = `api/clubs?p=${props.item?.propertyAddress}`
 
   $: {
     htmlDescription = whenDefined(props.description, markdownToHtml)
@@ -47,16 +49,17 @@
     club,
     ({ config }: { config: ClubsData['config'] }) => decode(config.source).name,
   )
-
   let contract = new Contract(
     props.item?.contract ?? '',
     ABI_NFT,
     props.provider,
   )
 
-  let clubApiAlt = props.local
-    ? `https://prerelease.clubs.place/api/clubs?p=${props.item?.propertyAddress}`
-    : `https://clubs.place/api/clubs?p=${props.item?.propertyAddress}`
+  let clubApiAlt = window.location.hostname.includes('prerelease.clubs.place')
+    ? `https://prerelease.clubs.place/${API_PATH}`
+    : window.location.hostname.includes('clubs.place')
+      ? `https://clubs.place/${API_PATH}`
+      : `http://localhost:${window.location.port}/${API_PATH}`
 
   onMount(async () => {
     const [clubApiPri, uri] = await Promise.all([

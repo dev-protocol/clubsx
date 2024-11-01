@@ -51,7 +51,7 @@
   <!-- on:introstart and on:outroend are required to transition 1 at a time between modals -->
   <div
     role="dialog"
-    class="fixed bottom-0 max-h-screen lg:bottom-1/2 lg:translate-y-1/2 left-1/2 flex flex-col w-full max-w-2xl -translate-x-1/2 items-center justify-center rounded-t-3xl lg:rounded-b-3xl border-x border-t border-surface-200 bg-surface-600 p-12 text-surface-ink subpixel-antialiased shadow-xl lg:pb-32 gap-6"
+    class="z-50 fixed bottom-0 max-h-screen lg:bottom-1/2 lg:translate-y-1/2 left-1/2 flex flex-col w-full max-w-2xl -translate-x-1/2 items-center justify-center rounded-t-3xl lg:rounded-b-3xl border-x border-t border-surface-200 bg-surface-600 p-12 text-surface-ink subpixel-antialiased shadow-xl lg:pb-32 gap-6"
     transition:fly={{ y: 500 }}
     on:introstart
     on:outroend
