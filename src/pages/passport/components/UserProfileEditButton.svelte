@@ -7,15 +7,17 @@
   export let address: string | undefined
   export let additionalClasses: string = ''
 
-  let connection: UndefinedOr<typeof Connection> = undefined
   let eoa: UndefinedOr<string> = undefined
+  let connection: UndefinedOr<typeof Connection> = undefined
 
   onMount(async () => {
     const { connection: _conn } = await import(
       '@devprotocol/clubs-core/connection'
     )
+
     connection = _conn
     eoa = connection()?.account?.getValue()
+
     connection().account.subscribe((acc) => {
       eoa = acc
     })

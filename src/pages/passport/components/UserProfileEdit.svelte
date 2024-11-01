@@ -27,12 +27,12 @@
   let profileFetching = true
   let profileUpdating = false
   let isCreatingNewSkin = false
-  let purchasedPassportIAssetsFetching = true
   let isSelectingAsDefaultSkin = false
   let isTogglingSkinVisibility = false
   let profile: Profile = {} as Profile
   let profileFromAPI: Profile = profile
   let eoa: UndefinedOr<string> = undefined
+  let purchasedPassportIAssetsFetching = true
   let purchasedSkinClips: PassportItem[] = []
   let purchasedSkinThemes: PassportItem[] = []
   let hasSpotlightLimitReadched: boolean = false
