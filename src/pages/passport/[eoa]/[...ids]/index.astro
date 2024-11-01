@@ -325,8 +325,9 @@ const passportSpotlight = await whenDefined(
 
       {isEOA && <UserAssets client:load account={eoa ?? ''} local={isLocal} />}
 
-      <a href={`/passport/${eoa}/clubs`} class="hs-link place-self-start"
-        >Clubs</a
+      <a
+        href={`/passport/${eoa}/clubs`}
+        class="hs-link px-3 py-2 rounded-md place-self-start">Clubs</a
       >
     </section>
   </div>
