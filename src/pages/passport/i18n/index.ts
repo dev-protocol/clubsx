@@ -1,6 +1,18 @@
 import type { ClubsI18nParts } from '@devprotocol/clubs-core'
 
 export const Strings = {
+  Show: {
+    en: 'Show',
+    ja: '見せる',
+  },
+  Hide: {
+    en: 'Hide',
+    ja: `隠れる`,
+  },
+  PurchasedMemberships: {
+    en: `Purchased Memberships`,
+    ja: `購入したメンバーシップ`,
+  },
   HideProfile: {
     en: `Hide this profile`,
     ja: `このプロフィールを非表示にする`,

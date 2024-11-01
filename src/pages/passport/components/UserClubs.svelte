@@ -1,12 +1,12 @@
 <script lang="ts">
   import { onMount } from 'svelte'
+  import type { ClubsData } from '@pages/api/clubs'
+  import type { DraftOptions } from '@constants/draft'
   import { i18nFactory } from '@devprotocol/clubs-core'
+  import { decode, type ClubsConfiguration } from '@devprotocol/clubs-core'
 
   import { Strings } from '../i18n'
   import UserClubItem from './UserClubItem.svelte'
-  import type { ClubsData } from '@pages/api/clubs'
-  import type { DraftOptions } from '@constants/draft'
-  import { decode, type ClubsConfiguration } from '@devprotocol/clubs-core'
 
   export let id: string
 
@@ -21,14 +21,12 @@
     isLoading = true
 
     const req = await fetch(`/api/clubs?owner=${id}`)
-
     if (req.status !== 200) {
       isLoading = false
       return
     }
 
     const clubs = (await req.json()) as ClubsData[]
-
     for (const club of clubs) {
       const decoded = decode(club.config.source)
       const isDraft = decoded.options?.find(
