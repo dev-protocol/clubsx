@@ -85,11 +85,22 @@
     </div>
 
     <div class="grid gap-8 w-full max-w-screen-sm overflow-y-scroll">
-      <img
-        src={item.itemAssetValue}
-        alt="Passport item"
-        class="w-full h-auto max-w-44 max-h-44 rounded-md"
-      />
+      {#if item.itemAssetType === 'short-video' || item.itemAssetType === 'short-video-link'}
+        <video
+          autoplay
+          muted
+          class="rounded-md w-full max-w-full pointer-events-none"
+          src={item.itemAssetValue}
+        >
+          <track kind="captions" />
+        </video>
+      {:else}
+        <img
+          src={item.itemAssetValue}
+          alt="Passport item"
+          class="w-full h-auto max-w-44 max-h-44 rounded-md"
+        />
+      {/if}
 
       <label class="hs-form-field is-filled">
         <span class="hs-form-field__label"> {i18n('Description')} </span>
