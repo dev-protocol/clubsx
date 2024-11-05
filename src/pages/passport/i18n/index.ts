@@ -1,6 +1,22 @@
 import type { ClubsI18nParts } from '@devprotocol/clubs-core'
 
 export const Strings = {
+  HideProfile: {
+    en: `Hide this profile`,
+    ja: `このプロフィールを非表示にする`,
+  },
+  ShowProfile: {
+    en: `Unhide this profile`,
+    ja: `このプロフィールを再表示する`,
+  },
+  MakeDefaultProfile: {
+    en: `Make this profile default`,
+    ja: `このプロファイルをデフォルトにする`,
+  },
+  AddNewProfile: {
+    en: `Add new profile`,
+    ja: `新しいプロフィールを追加`,
+  },
   PassportName: {
     en: 'Passport name',
     ja: `パスポート名`,
@@ -11,19 +27,19 @@ export const Strings = {
   },
   EditItem: {
     en: `Edit item`,
-    ja: `項目を編集する`,
+    ja: `アイテムを編集する`,
   },
   SNSPlaceholder: {
     en: ([sns]) => `Enter your ${sns} username.`,
-    ja: ([sns]) => `${sns}のユーザー名を入力します。`,
+    ja: ([sns]) => `${sns}のユーザー名を入力してください。`,
   },
   DescriptionPlaceholder: {
     en: `Describe yourself here.`,
-    ja: `ここに自分自身について説明してください。`,
+    ja: `自己紹介を入力してください`,
   },
   PassportSkinNamePlaceholder: {
     en: `Enter a name that you would like to give to this passport`,
-    ja: `このパスポートに付けたい名前を入力してください`,
+    ja: `パスポートにつけたい名前を入力してください`,
   },
   UsernamePlaceholder: {
     en: `Enter your username.`,
@@ -31,7 +47,7 @@ export const Strings = {
   },
   ConnectWalletTryAgain: {
     en: () => `Connect wallet & try again!`,
-    ja: () => `ウォレットを接続してもう一度お試しください`,
+    ja: () => `ウォレットを接続してもう一度試してください`,
   },
   PurchasePassportSkin: {
     en: () =>
@@ -43,36 +59,35 @@ export const Strings = {
     en: () =>
       `You have not pinned your <b>Passport Clips</b>.<br /><i>To configure</i> your creative and unique passport page <b>pin Passport Clips now</b>.`,
     ja: () =>
-      `<b>パスポート クリップ</b> を固定していません。<br /><i>クリエイティブでユニークなパスポート ページを設定</i>するには、<b>今すぐパスポート クリップを固定</b>してください。`,
+      `<b>パスポートクリップ</b> をピン留めしていません。<br /><i>クリエイティブでユニークなパスポートページを設定</i>するには、<b>今すぐパスポートクリップを固定</b>してください。`,
   },
   PinClipsToSpotlight: {
     en: () =>
       `You have not pinned your <b>Passport Clips</b> to spotlight.<br /><i>To configure</i> your creative and unique passport page <b>pin Passport Clips to Spotlight now</b>.`,
     ja: () =>
-      `<b>パスポート クリップ</b> をスポットライトに固定していません。<br /><i>クリエイティブでユニークなパスポート ページを設定</i>するには、<b>今すぐパスポート クリップをスポットライトに固定</b>してください。`,
+      `<b>パスポートクリップ</b> をスポットライトにピン留めしていません。<br /><i>クリエイティブでユニークなパスポートページを設定</i>するには、<b>今すぐパスポートクリップをスポットライトに固定</b>してください。`,
   },
   PinClipsToSpotlightHelper: {
     en: () => `<b>NOTE</b>: You can pin 3 clips to your spotlight.`,
-    ja: () =>
-      `<b>注</b>: スポットライトには 3 つのクリップをピン留めできます。`,
+    ja: () => `<b>注</b>:スポットライトには3つのクリップをピン留めできます。`,
   },
   PurchasePassportClips: {
     en: () =>
       `You have not purchased <b>Passport Assets</b>.<br /><i>To configure</i> your creative and unique passport page <b>purchase Passport Assets now</b>.`,
     ja: () =>
-      `<b>パスポート アセット</b>を購入していません。<br />クリエイティブでユニークなパスポート ページを<i>設定</i>するには、<b>今すぐパスポート アセットを購入</b>してください。`,
+      `<b>パスポートアセット</b>を購入していません。<br />クリエイティブでユニークなパスポートページを<i>設定</i>するには、<b>今すぐパスポートアセットを購入</b>してください。`,
   },
   PassportClips: {
     en: () => `Purchased Passport Clips`,
-    ja: () => `パスポートアセット`,
+    ja: () => `購入済みのパスポートクリップ`,
   },
   PassportSkin: {
     en: 'Purchased Passport Skins',
-    ja: 'パスポートスキン',
+    ja: '購入済みのパスポートスキン',
   },
   PassportShowcaseClips: {
     en: 'Showcase Clips',
-    ja: '固定されたクリップ',
+    ja: 'ショーケースクリップ',
   },
   PassportSpotlightClips: {
     en: 'Spotlight Clips',
@@ -96,7 +111,7 @@ export const Strings = {
   },
   PassportNameHelper: {
     en: 'Give a name to your passport to make it easy to distinguish them',
-    ja: 'パスポートに名前を付けて区別しやすくする',
+    ja: 'パスポートに名前を付けると区別がしやすくなります',
   },
   MarkdownAvailable: {
     en: () => 'Markdown is available',
@@ -113,6 +128,10 @@ export const Strings = {
   Saved: {
     en: 'Saved',
     ja: '保存しました',
+  },
+  Saving: {
+    en: 'Saving',
+    ja: '保存',
   },
   Error: {
     en: 'Error',

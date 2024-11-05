@@ -6,21 +6,21 @@
   export let isEditing: boolean = false
   export let selectedSkinId: string = ''
 
-  let dropdownVisible: boolean = false
+  let isDropdownVisible: boolean = false
 
-  const toggleSelectedPassportSkins = () => {
-    dropdownVisible = !dropdownVisible
+  const toggleDropdownVisibility = () => {
+    isDropdownVisible = !isDropdownVisible
   }
 </script>
 
 <div class="relative">
   <div
-    class="flex items-center gap-[15px] hs-button is-filled w-fit text-center"
+    class="flex items-center justify-center gap-[15px] hs-button is-filled w-fit text-center"
   >
     {#if skins.length > 1}
       <button
         disabled={!skins?.length}
-        on:click={() => toggleSelectedPassportSkins()}
+        on:click={() => toggleDropdownVisibility()}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -45,7 +45,7 @@
     </p>
   </div>
 
-  {#if dropdownVisible}
+  {#if isDropdownVisible}
     <div class="absolute left-0 mt-2 grid gap-[1px] w-full max-w-full">
       {#each skins as skin, i}
         <a

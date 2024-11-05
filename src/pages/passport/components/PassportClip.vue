@@ -2,26 +2,25 @@
 import { always } from 'ramda'
 import { computed, onMounted, ref } from 'vue'
 import { whenDefined } from '@devprotocol/util-ts'
-import { decode, markdownToHtml } from '@devprotocol/clubs-core'
 import { itemToHash } from '@fixtures/router/passportItem'
+import { decode, markdownToHtml } from '@devprotocol/clubs-core'
 
-import ImageCard from './ImageCard.vue'
+import MediaCard from './MediaCard.vue'
 import type { PassportClip } from '../types'
 
 const props = defineProps<{
-  skinSection: 'spotlight' | 'clips'
-  item: PassportClip
   index: number
+  item: PassportClip
   truncate?: boolean
-  classes?: string
+  skinSection: 'spotlight' | 'clips'
 }>()
-
-const clubConfig = ref<string>()
-const elementId = ref<string>()
 
 const SITE_NAME =
   new URL(props.item.clubsUrl)?.hostname?.split('.')?.at(0) ?? 'developers'
 const API_PATH = `api/config/${SITE_NAME}`
+
+const elementId = ref<string>()
+const clubConfig = ref<string>()
 
 const clubApiAlt = computed(() => {
   return window.location.hostname.includes('prerelease.clubs.place')
@@ -47,8 +46,8 @@ const fetchClub = async (api: string) => {
 }
 
 const shareClip = () => {
+  // Please replace the title and text with the actual values.
   navigator.share({
-    // please replace the title and text with the actual values
     title: 'Check out this clip!',
     text: props.item.description,
     url:
@@ -61,6 +60,7 @@ onMounted(async () => {
   const clubApiPri = await fetchClub(`/${API_PATH}`)
   const clubApi = clubApiPri ? clubApiPri : await fetchClub(clubApiAlt.value)
   clubConfig.value = clubApi?.content ?? undefined
+
   const _elementId = itemToHash(props.skinSection ?? 'clips', props.index)
   elementId.value = _elementId instanceof Error ? '' : (_elementId ?? '')
 })
@@ -68,22 +68,20 @@ onMounted(async () => {
 
 <template>
   <div
-    :id="elementId"
     v-if="!!item"
-    class="shadow-md rounded-md h-fit p-4 grid gap-4 border border-surface-300 content-between"
+    :id="elementId"
     :class="{
       'bg-surface-200': !item.frameColorHex,
-      [props.classes ?? '']: Boolean(props.classes),
     }"
     :style="{
       backgroundColor: item.frameColorHex,
     }"
+    class="shadow-md rounded-md h-full p-4 grid gap-4 border border-surface-300 content-between"
   >
-    <ImageCard
+    <MediaCard
       :found="!!item"
-      :img="item.itemAssetValue"
+      :src="item.itemAssetValue"
       :type="item.itemAssetType"
-      :frame-color-hex="item.frameColorHex"
     />
 
     <article
@@ -94,6 +92,7 @@ onMounted(async () => {
 
     <div class="flex w-full max-w-full items-center justify-between">
       <a v-if="clubName" :href="props.item.clubsUrl">{{ clubName }}</a>
+
       <button @click="shareClip" class="w-6 h-6 rounded-full">
         <svg
           xmlns="http://www.w3.org/2000/svg"

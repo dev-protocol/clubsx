@@ -1382,9 +1382,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@devprotocol/clubs-plugin-passport@npm:^0.1.0-beta.17":
-  version: 0.1.0-beta.17
-  resolution: "@devprotocol/clubs-plugin-passport@npm:0.1.0-beta.17"
+"@devprotocol/clubs-plugin-passport@npm:^0.1.0-beta.18":
+  version: 0.1.0-beta.18
+  resolution: "@devprotocol/clubs-plugin-passport@npm:0.1.0-beta.18"
   dependencies:
     "@devprotocol/clubs-core": "npm:^3.18.0"
     "@devprotocol/dev-kit": "npm:8.7.0"
@@ -1393,11 +1393,11 @@ __metadata:
     nanoid: "npm:^5.0.7"
     ramda: "npm:0.30.1"
     redis: "npm:^4.7.0"
-    sass: "npm:1.79.4"
+    sass: "npm:1.80.4"
   peerDependencies:
     "@devprotocol/clubs-core": ^3.18.0
     ethers: ^6.0.0
-  checksum: 10c0/f0c418d67f4b157c9071f4d57527902b3e9ae8986cc1c77f9d2711bf0ada4043c41357f1bb778c59fb670b9a7e3bcfc99639ecf774729cbdc5bb55ecd18977c9
+  checksum: 10c0/14af676742e62316496e1f38e4e3ff3f8f7550bc3c1113acf99daea58b5e196575746261a9b0f25eab1eb589a3174b1c353241f4019460de693cd2a79261cd8a
   languageName: node
   linkType: hard
 
@@ -9524,7 +9524,7 @@ __metadata:
     "@crossmint/client-sdk-react-ui": "npm:^1.0.1-alpha.6"
     "@devprotocol/clubs-core": "npm:3.21.1"
     "@devprotocol/clubs-plugin-awesome-onboarding": "npm:0.5.1"
-    "@devprotocol/clubs-plugin-passport": "npm:^0.1.0-beta.17"
+    "@devprotocol/clubs-plugin-passport": "npm:^0.1.0-beta.18"
     "@devprotocol/clubs-plugin-posts": "npm:0.20.17"
     "@devprotocol/clubs-plugin-posts-voting": "npm:0.8.8"
     "@devprotocol/dev-kit": "npm:8.7.0"
@@ -20781,16 +20781,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass@npm:1.79.4":
-  version: 1.79.4
-  resolution: "sass@npm:1.79.4"
+"sass@npm:1.80.4":
+  version: 1.80.4
+  resolution: "sass@npm:1.80.4"
   dependencies:
+    "@parcel/watcher": "npm:^2.4.1"
     chokidar: "npm:^4.0.0"
     immutable: "npm:^4.0.0"
     source-map-js: "npm:>=0.6.2 <2.0.0"
   bin:
     sass: sass.js
-  checksum: 10c0/505ff0d9267d0fb990971e617acfeabf7c060c55d4cef68fe8a4bc693e7ea88ae7d7caeca3975e4b453459ba4a707b6e5b6979fc9395a7e08f0a43ca6aed06b8
+  checksum: 10c0/58ca0f2d10720cde6621ee62f4bdbb537ea2ac572c565d5f02309f8271a5e1e880ad8c163b933e52b22b3dc0550973fb5a6033a500248e6a0d89dd050c1743cf
   languageName: node
   linkType: hard
 

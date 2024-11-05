@@ -1,35 +1,35 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import { i18nFactory } from '@devprotocol/clubs-core'
+import Modal from '@pages/passport/components/Modal.vue'
 
 import { Strings } from '../i18n'
 import type { PassportClip } from '../types'
 import PassportClipCard from './PassportClip.vue'
-import Modal from '@pages/passport/components/Modal.vue'
 
 const props = defineProps<{
-  skinSection: 'spotlight' | 'clips'
-  clips: PassportClip[]
   id: string
+  clips: PassportClip[]
+  skinSection: 'spotlight' | 'clips'
 }>()
 
 const i18nBase = i18nFactory(Strings)
-
 const i18n = ref<ReturnType<typeof i18nBase>>(i18nBase(['en']))
+
 const modalVisible = ref(false)
-const modalItem = ref<PassportClip>()
 const modalItemIndex = ref<number>()
+const modalItem = ref<PassportClip>()
 
 const handleOnClick = (item: PassportClip, index: number) => {
-  modalVisible.value = true
   modalItem.value = item
+  modalVisible.value = true
   modalItemIndex.value = index
 }
 
 const modalClose = () => {
+  modalItemIndex.value = -1
   modalVisible.value = false
   modalItem.value = {} as PassportClip
-  modalItemIndex.value = -1
 }
 
 onMounted(async () => {
@@ -43,17 +43,16 @@ onMounted(async () => {
       class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))] content-stretch"
     >
       <li
-        v-if="clips?.length"
-        v-for="(clip, index) in clips"
         :key="index"
         class="empty:hidden"
+        v-if="clips?.length"
+        v-for="(clip, index) in clips"
       >
         <PassportClipCard
-          :skinSection="skinSection"
           :item="clip"
-          :truncate="true"
           :index="index"
-          class="h-full"
+          :truncate="true"
+          :skinSection="skinSection"
           @click="
             () => {
               handleOnClick(clip, index)
@@ -67,8 +66,8 @@ onMounted(async () => {
   <Modal
     v-if="modalVisible"
     :is-visible="modalVisible"
-    :modal-content="PassportClipCard"
     :handle-modal-close="modalClose"
+    :modal-content="PassportClipCard"
     :attrs="{
       item: modalItem,
       index: modalItemIndex,
