@@ -122,7 +122,7 @@
 
 {#if !notFound || !props.item}
   <div
-    class={`shadow-md rounded-md p-4 grid gap-4 ${props.classNames ?? ''} ${props.frameColorHex ? 'bg-[var(--frameColor)]' : 'bg-surface-200'} ${isFrameDark ? 'text-white' : 'text-black'}`}
+    class={`shadow-md rounded-md p-4 grid gap-4 border border-black/20 ${props.classNames ?? ''} ${props.frameColorHex ? 'bg-[var(--frameColor)]' : 'bg-surface-200'} ${isFrameDark ? 'text-white' : 'text-black'}`}
     style={props.frameColorHex
       ? `--frameColor: ${props.frameColorHex}`
       : undefined}
@@ -130,7 +130,7 @@
     {#if assetImage && props.item.itemAssetType !== 'short-video' && props.item.itemAssetType !== 'short-video-link'}
       <img
         src={assetImage.src}
-        class="rounded-md w-full max-w-full"
+        class="rounded-md w-full max-w-full object-cover aspect-square"
         alt="Asset"
       />
     {:else if props.item.itemAssetType === 'short-video' || props.item.itemAssetType === 'short-video-link'}
@@ -138,7 +138,7 @@
         autoplay
         muted
         poster={assetImage?.src}
-        class="rounded-md w-full max-w-full pointer-events-none"
+        class="rounded-md w-full max-w-full pointer-events-none object-cover aspect-square"
         src={props?.item?.itemAssetValue}
       >
         <track kind="captions" />

@@ -5,6 +5,7 @@ import { createClient } from 'redis'
 type Payload = string
 
 export type Clip = {
+  sTokenId: string
   payload: Payload
   description: string
   frameColorHex: string

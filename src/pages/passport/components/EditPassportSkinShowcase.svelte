@@ -12,6 +12,7 @@
   import type { PassportItem } from '../types'
   import PassportAsset from './PassportAsset.svelte'
   import PassportClipEditModal from './PassportClipEditModal.svelte'
+  import IconShowcase from './IconShowcase.svelte'
 
   const i18nBase = i18nFactory(Strings)
   let i18n = i18nBase(['en'])
@@ -120,12 +121,13 @@
                 clips: [
                   ...(profile?.skins
                     ?.at(skinIndex)
-                    ?.clips?.filter((clip) => clip.payload !== item.payload) ??
+                    ?.clips?.filter((clip) => clip.sTokenId !== item.assetId) ??
                     ([] as Clip[])),
                   {
                     payload: item.payload!,
                     description,
                     frameColorHex,
+                    sTokenId: item.assetId,
                   },
                 ],
               },
@@ -163,9 +165,9 @@
 <!-- Edit passport skin showcase clips -->
 <span class="hs-form-field is-filled mt-[76px]">
   <div class="hs-form-field__label flex items-center justify-between mb-1">
-    <span class="hs-form-field__label">
-      {i18n('PassportShowcaseClips')} ({profile?.skins?.at(skinIndex)?.clips
-        ?.length ?? 0})
+    <span class="hs-form-field__label flex gap-2 items-center">
+      {i18n('PassportShowcaseClips')}
+      <IconShowcase /> ({profile?.skins?.at(skinIndex)?.clips?.length ?? 0})
     </span>
     <button
       disabled={!eoa ||
@@ -193,9 +195,9 @@
   {:else if !isFetchingPurchasedClips && !profileFetching && profile.skins?.at(skinIndex)?.clips?.length && purchasedClips?.length}
     <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
       {#each purchasedClips as item, i}
-        {#if item.payload && profile?.skins
+        {#if item.assetId && profile?.skins
             ?.at(skinIndex)
-            ?.clips?.find((clip) => clip.payload === item.payload)}
+            ?.clips?.find((clip) => clip.sTokenId === item.assetId)}
           <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
             <PassportAsset
               props={((clip) => ({
@@ -215,6 +217,23 @@
           </li>
         {/if}
       {/each}
+    </ul>
+  {:else}
+    <p class="text-center text-xl font-bold mb-6">
+      {i18n('PinClipsToShowcaseHelper')}
+    </p>
+    <ul
+      class="grid gap-16 justify-between items-center grid-cols-3 grid-rows-3"
+    >
+      <li class="rounded bg-surface-400 aspect-square"></li>
+      <li class="rounded bg-surface-400 aspect-square"></li>
+      <li class="rounded bg-surface-400 aspect-square"></li>
+      <li class="rounded bg-surface-400 aspect-square"></li>
+      <li class="rounded bg-surface-400 aspect-square"></li>
+      <li class="rounded bg-surface-400 aspect-square"></li>
+      <li class="rounded bg-surface-400 aspect-square"></li>
+      <li class="rounded bg-surface-400 aspect-square"></li>
+      <li class="rounded bg-surface-400 aspect-square"></li>
     </ul>
   {/if}
 </span>

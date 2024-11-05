@@ -7,6 +7,7 @@
   import Skeleton from '@components/Global/Skeleton.svelte'
   import type { Clip, Profile, Skin } from '@pages/api/profile'
   import { Modals, closeAllModals, closeModal, openModal } from 'svelte-modals'
+  import IconSpotlight from './IconSpotlight.svelte'
 
   import { Strings } from '../i18n'
   import type { PassportItem } from '../types'
@@ -108,12 +109,13 @@
                   ...(profile?.skins
                     ?.at(skinIndex)
                     ?.spotlight?.filter(
-                      (clip) => clip.payload !== item.payload,
+                      (clip) => clip.sTokenId !== item.assetId,
                     ) ?? ([] as Clip[])),
                   {
                     payload: item.payload!,
                     description,
                     frameColorHex,
+                    sTokenId: item.assetId,
                   },
                 ],
               },
@@ -152,9 +154,10 @@
 <div class="w-full">
   <span class="hs-form-field is-filled mt-[76px]">
     <div class="hs-form-field__label flex items-center justify-between mb-1">
-      <span class="hs-form-field__label">
-        {i18n('PassportSpotlightClips')} ({profile?.skins?.at(skinIndex)
-          ?.spotlight?.length ?? 0})
+      <span class="hs-form-field__label flex items-center gap-2">
+        {i18n('PassportSpotlightClips')}
+        <IconSpotlight />
+        ({profile?.skins?.at(skinIndex)?.spotlight?.length ?? 0})
       </span>
 
       <button
@@ -185,9 +188,9 @@
     {:else if !isFetchingPurchasedClips && !profileFetching && profile.skins?.at(skinIndex)?.spotlight?.length && purchasedClips?.length}
       <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
         {#each purchasedClips as item, i}
-          {#if item.payload && profile?.skins
+          {#if item.assetId && profile?.skins
               ?.at(skinIndex)
-              ?.spotlight?.find((clip) => clip.payload === item.payload)}
+              ?.spotlight?.find((clip) => clip.sTokenId === item.assetId)}
             <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
               <PassportAsset
                 props={((clip) => ({
@@ -208,13 +211,16 @@
           {/if}
         {/each}
       </ul>
+    {:else}
+      <p class="text-center text-xl font-bold mb-6">
+        {i18n('PinClipsToSpotlightHelper')}
+      </p>
+      <ul class="flex gap-16 justify-between items-center">
+        <li class="rounded bg-surface-400 w-[25%] aspect-[11/16]"></li>
+        <li class="rounded bg-surface-400 grow aspect-[11/16]"></li>
+        <li class="rounded bg-surface-400 w-[25%] aspect-[11/16]"></li>
+      </ul>
     {/if}
-
-    <span
-      class={`hs-form-field__helper mt-1 ${hasSpotlightLimitReadched ? 'underline text-error-600' : ''}`}
-    >
-      * {@html i18n('PinClipsToSpotlightHelper')}
-    </span>
   </span>
 </div>
 

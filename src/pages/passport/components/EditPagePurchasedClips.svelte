@@ -9,6 +9,9 @@
   import { Strings } from '../i18n'
   import type { PassportItem } from '../types'
   import PassportAsset from './PassportAsset.svelte'
+  import IconShowcase from './IconShowcase.svelte'
+  import IconSpotlight from './IconSpotlight.svelte'
+  import { filter } from 'ramda'
 
   const i18nBase = i18nFactory(Strings)
   let i18n = i18nBase(['en'])
@@ -26,6 +29,10 @@
   export let purchasedClips: PassportItem[] = []
   export let eoa: UndefinedOr<string> = undefined
   export let hasSpotlightLimitReadched: boolean = false
+
+  $: {
+    console.log({ profile, skinIndex })
+  }
 
   onMount(async () => {
     i18n = i18nBase(navigator.languages)
@@ -54,28 +61,31 @@
     profile = {
       ...profile, // Retain other modified fields.
       skins: [
-        ...(profile?.skins?.slice(0, skinIndex) ?? []), // keep all the other skins before skinIndex.
-
-        // Set skins to the updated value or append new value of theme.
-        {
-          ...(profile?.skins?.at(skinIndex) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
-          spotlight: profile?.skins
-            ?.at(skinIndex)
-            ?.spotlight?.find((clip) => clip.payload === item.payload)
-            ? [
-                ...(profile.skins
-                  ?.at(skinIndex)
-                  ?.spotlight?.filter(
-                    (clip) => clip.payload !== item.payload,
-                  ) ?? []),
-              ]
-            : [
-                ...(profile.skins?.at(skinIndex)?.spotlight ?? []),
-                { payload: item.payload, description: '', frameColorHex: '' },
-              ],
-        },
-
-        ...(profile?.skins?.slice(skinIndex + 1) ?? []), // keep all the other skins after skinIndex.
+        ...(profile?.skins?.map((skin, index) =>
+          index === skinIndex
+            ? {
+                ...skin,
+                spotlight: skin.spotlight?.some(
+                  (clip) => clip.sTokenId === item.assetId,
+                )
+                  ? [
+                      ...(skin.spotlight?.filter(
+                        (clip) =>
+                          clip.sTokenId && clip.sTokenId !== item.assetId,
+                      ) ?? []),
+                    ]
+                  : [
+                      ...(skin.spotlight?.filter((x) => x.sTokenId) ?? []),
+                      {
+                        payload: item.payload!,
+                        description: '',
+                        frameColorHex: '',
+                        sTokenId: item.assetId,
+                      },
+                    ],
+              }
+            : skin,
+        ) ?? []), // keep all the other skins before skinIndex.
       ],
     }
   }
@@ -92,27 +102,31 @@
     profile = {
       ...profile, // Retain other modified fields.
       skins: [
-        ...(profile?.skins?.slice(0, skinIndex) ?? []), // keep all the other skins before skinIndex.
-
-        // Set skins to the updated value or append new value of theme.
-        {
-          ...(profile?.skins?.at(skinIndex) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
-          clips: profile?.skins
-            ?.at(skinIndex)
-            ?.clips?.find((clip) => clip.payload === item.payload)
-            ? [
-                ...(profile.skins
-                  ?.at(skinIndex)
-                  ?.clips?.filter((clip) => clip.payload !== item.payload) ??
-                  []),
-              ]
-            : [
-                ...(profile.skins?.at(skinIndex)?.clips ?? []),
-                { payload: item.payload, description: '', frameColorHex: '' },
-              ],
-        },
-
-        ...(profile?.skins?.slice(skinIndex + 1) ?? []), // keep all the other skins after skinIndex.
+        ...(profile?.skins?.map((skin, index) =>
+          index === skinIndex
+            ? {
+                ...skin,
+                clips: skin.clips?.some(
+                  (clip) => clip.sTokenId === item.assetId,
+                )
+                  ? [
+                      ...(skin.clips?.filter(
+                        (clip) =>
+                          clip.sTokenId && clip.sTokenId !== item.assetId,
+                      ) ?? []),
+                    ]
+                  : [
+                      ...(skin.clips?.filter((x) => x.sTokenId) ?? []),
+                      {
+                        payload: item.payload!,
+                        description: '',
+                        frameColorHex: '',
+                        sTokenId: item.assetId,
+                      },
+                    ],
+              }
+            : skin,
+        ) ?? []), // keep all the other skins before skinIndex.
       ],
     }
 
@@ -124,9 +138,9 @@
   }
 </script>
 
-<div class="w-full">
+<div class="">
   <!-- Passport items other than type: css | stylesheet-link -->
-  <span class="hs-form-field is-filled mt-[76px]">
+  <span class="hs-form-field is-filled">
     <span class="hs-form-field__label">
       {i18n('PassportClips')} ({purchasedClips?.length ?? 0})
     </span>
@@ -146,121 +160,56 @@
         {i18n('Empty')} :) <br />{@html i18n('PurchasePassportClips')}
       </div>
     {:else if purchasedClips?.length}
-      <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
+      <ul class="grid gap-2 grid-cols-[repeat(auto-fill,minmax(180px,1fr))]">
         {#each purchasedClips as item, i}
-          <li id={`assets-${i.toString()}`} class="relative group empty:hidden">
-            <div
-              class="h-fit w-full max-w-full absolute left-0 right-0 top-0 hidden group-hover:flex flex-row items-center justify-end bg-surface-300 rounded-md p-4 gap-4 opacity-90"
-            >
+          <li id={`assets-${i.toString()}`} class="relative empty:hidden">
+            <div class="p-1 flex flex-col gap-2 bg-surface-300 rounded-md">
               <!-- Add to spotlight -->
-              <button
-                class="w-6 h-6 cursor-pointer"
-                on:click|preventDefault={() => toggleClipInSpotlight(item)}
-                disabled={!eoa ||
-                  !purchasedClips.length ||
-                  profileFetching ||
-                  isFetchingPurchasedClips ||
-                  profileUpdating}
+              <div
+                class="flex place-self-start rounded border border-primary-200 overflow-hidden"
               >
-                <!-- Spotlight -->
-                <svg
-                  id="Layer_1"
-                  data-name="Layer 1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  width="24"
-                  height="24"
-                  fill={profile?.skins
+                <button
+                  data-is-added={profile?.skins
                     ?.at(skinIndex)
-                    ?.spotlight?.find((clip) => clip.payload === item.payload)
-                    ? '#FFB602'
-                    : 'none'}
-                  stroke={profile?.skins
-                    ?.at(skinIndex)
-                    ?.spotlight?.find((clip) => clip.payload === item.payload)
-                    ? '#FFB602'
-                    : 'currentColor'}
-                  color="currentColor"
-                  ><defs
-                    ><style>
-                      .cls-63762d3cc3a86d32eae6efea-1 {
-                        stroke-miterlimit: 10;
-                      }
-                    </style></defs
-                  >
-                  <polygon
-                    class="cls-63762d3cc3a86d32eae6efea-1"
-                    points="12 2.49 15.51 8.17 22 9.76 17.68 14.85 18.18 21.51 12 18.98 5.82 21.51 6.32 14.85 2 9.76 8.49 8.17 12 2.49"
-                  ></polygon>
-                </svg>
-              </button>
-
-              <!-- Add to showcase/pinned clips -->
-              <button
-                class="w-6 h-6 cursor-pointer"
-                on:click|preventDefault={() => toggleClipsInShowcase(item)}
-                disabled={!eoa ||
-                  !purchasedClips.length ||
-                  profileFetching ||
-                  isFetchingPurchasedClips ||
-                  profileUpdating}
-              >
-                <!-- Showcase SVG -->
-                <svg
-                  id="Layer_1"
-                  data-name="Layer 1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  width="24"
-                  height="24"
-                  fill={profile?.skins
-                    ?.at(skinIndex)
-                    ?.clips?.find((clip) => clip.payload === item.payload)
-                    ? '#DB0125'
-                    : 'none'}
-                  stroke={profile?.skins
-                    ?.at(skinIndex)
-                    ?.clips?.find((clip) => clip.payload === item.payload)
-                    ? '#DB0125'
-                    : 'currentColor'}
-                  color="currentColor"
-                  ><defs
-                    ><style>
-                      .cls-637b83faf95e86b59c57a0f7-1 {
-                        fill: currentColor;
-                      }
-                      .cls-637b83faf95e86b59c57a0f7-2 {
-                        stroke-miterlimit: 10;
-                      }
-                    </style></defs
-                  ><polygon
-                    class="cls-637b83faf95e86b59c57a0f7-1"
-                    points="2.77 20.53 8.78 13.81 10.19 15.22 3.47 21.23 2.77 20.53 2.77 20.53"
-                  ></polygon><path
-                    class="cls-637b83faf95e86b59c57a0f7-2"
-                    d="M13.73,18.76,5.24,10.27A5.94,5.94,0,0,1,9.48,8.52,5.42,5.42,0,0,1,11,8.73L14.5,5.26a1.49,1.49,0,0,1,2-2,1.32,1.32,0,0,1,.42.29l3.53,3.53a1.32,1.32,0,0,1,.29.42,1.49,1.49,0,0,1-2,2L15.27,13a5.42,5.42,0,0,1,.21,1.55A5.94,5.94,0,0,1,13.73,18.76Z"
-                  ></path></svg
+                    ?.spotlight?.some((clip) => clip.sTokenId === item.assetId)}
+                  class="p-2 box-content w-7 h-7 cursor-pointer block border-r border-primary-200 transition text-accent-600 hover:text-accent-200 data-[is-added=true]:bg-accent-200 data-[is-added=true]:text-primary-600"
+                  on:click|preventDefault={() => toggleClipInSpotlight(item)}
+                  disabled={!eoa ||
+                    !purchasedClips.length ||
+                    profileFetching ||
+                    isFetchingPurchasedClips ||
+                    profileUpdating}
                 >
-              </button>
+                  <!-- Spotlight -->
+                  <IconSpotlight classNames="w-full h-full" />
+                </button>
+
+                <!-- Add to showcase/pinned clips -->
+                <button
+                  data-is-added={profile?.skins
+                    ?.at(skinIndex)
+                    ?.clips?.some((clip) => clip.sTokenId === item.assetId)}
+                  class="p-2 box-content w-7 h-7 cursor-pointer block transition text-accent-600 hover:text-accent-200 data-[is-added=true]:bg-accent-200 data-[is-added=true]:bg-accent-200 data-[is-added=true]:text-primary-600"
+                  on:click|preventDefault={() => toggleClipsInShowcase(item)}
+                  disabled={!eoa ||
+                    !purchasedClips.length ||
+                    profileFetching ||
+                    isFetchingPurchasedClips ||
+                    profileUpdating}
+                >
+                  <!-- Showcase SVG -->
+                  <IconShowcase classNames="w-full h-full" />
+                </button>
+              </div>
+              <PassportAsset
+                props={{
+                  item,
+                  provider: rpcProvider,
+                  local: isLocal,
+                  classNames: 'xxxs',
+                }}
+              />
             </div>
-            <PassportAsset
-              props={{
-                item,
-                provider: rpcProvider,
-                local: isLocal,
-                classNames:
-                  profile?.skins
-                    ?.at(skinIndex)
-                    ?.clips?.find((clip) => clip.payload === item.payload) ||
-                  profile?.skins
-                    ?.at(skinIndex)
-                    ?.spotlight?.find((clip) => clip.payload === item.payload)
-                    ? 'border-2 border-surface-ink'
-                    : 'border border-surface-300',
-              }}
-            />
           </li>
         {/each}
       </ul>
