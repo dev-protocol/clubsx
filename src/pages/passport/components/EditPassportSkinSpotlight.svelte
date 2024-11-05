@@ -43,14 +43,21 @@
     profile = {
       ...profile, // Retain other modified fields.
       skins: [
-        ...(profile?.skins?.slice(0, skinIndex) ?? []), // keep all the other skins before skinIndex.
-
-        {
-          ...(profile?.skins?.at(skinIndex) ?? ({} as Skin)), // Retain other skin properties ir-respective of whether the skin is modified or not.
-          spotlight: profileFromAPI?.skins?.at(skinIndex)?.spotlight ?? [], // Retain clips from profileFromAPI if present otherwise empty array.
-        },
-
-        ...(profile?.skins?.slice(skinIndex + 1) ?? []), // keep all the other skins after skinIndex.
+        ...(profile?.skins?.map((skin, index) =>
+          index === skinIndex
+            ? {
+                ...skin,
+                spotlight:
+                  // if all the stored spotlight have correct data, reset to the stored data.
+                  // if not, reset to `[]`.
+                  (profileFromAPI?.skins
+                    ?.at(skinIndex)
+                    ?.spotlight?.every((x) => x.sTokenId)
+                    ? profileFromAPI?.skins?.at(skinIndex)?.spotlight
+                    : undefined) ?? [],
+              }
+            : skin,
+        ) ?? []), // keep all the other skins before skinIndex.
       ],
     }
   }
@@ -100,27 +107,25 @@
           profile = {
             ...profile, // Retain other modified fields.
             skins: [
-              ...(profile?.skins?.slice(0, skinIndex) ?? []), // keep all the other skins before skinIndex.
-
-              // Set skins to the updated value or append new value of theme.
-              {
-                ...(profile?.skins?.at(skinIndex) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
-                spotlight: [
-                  ...(profile?.skins
-                    ?.at(skinIndex)
-                    ?.spotlight?.filter(
-                      (clip) => clip.sTokenId !== item.assetId,
-                    ) ?? ([] as Clip[])),
-                  {
-                    payload: item.payload!,
-                    description,
-                    frameColorHex,
-                    sTokenId: item.assetId,
-                  },
-                ],
-              },
-
-              ...(profile?.skins?.slice(skinIndex + 1) ?? []), // keep all the other skins after skinIndex.
+              ...(profile?.skins?.map((skin, index) =>
+                index === skinIndex
+                  ? {
+                      ...skin, // Retain other skin properties irrespective of whether the skin is modified or not.
+                      spotlight: [
+                        ...(skin.spotlight?.map((clip) =>
+                          clip.sTokenId === item.assetId
+                            ? {
+                                payload: item.payload!,
+                                sTokenId: item.assetId,
+                                description,
+                                frameColorHex,
+                              }
+                            : clip,
+                        ) ?? ([] as Clip[])),
+                      ],
+                    }
+                  : skin,
+              ) ?? []), // keep all the other skins before skinIndex.
             ],
           }
           return true
@@ -182,9 +187,14 @@
         <Skeleton />
       </div>
     {:else if !isFetchingPurchasedClips && !profileFetching && !profile.skins?.at(skinIndex)?.spotlight?.length}
-      <div class="rounded-md border border-surface-400 p-8 text-accent-200">
-        {i18n('Empty')} :) <br />{@html i18n('PinClipsToSpotlight')}
-      </div>
+      <p class="text-center text-xl font-bold mb-6">
+        {i18n('PinClipsToSpotlightHelper')}
+      </p>
+      <ul class="flex gap-16 justify-between items-center">
+        <li class="rounded bg-surface-400 w-[25%] aspect-[11/16]"></li>
+        <li class="rounded bg-surface-400 grow aspect-[11/16]"></li>
+        <li class="rounded bg-surface-400 w-[25%] aspect-[11/16]"></li>
+      </ul>
     {:else if !isFetchingPurchasedClips && !profileFetching && profile.skins?.at(skinIndex)?.spotlight?.length && purchasedClips?.length}
       <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
         {#each purchasedClips as item, i}
@@ -210,15 +220,6 @@
             </li>
           {/if}
         {/each}
-      </ul>
-    {:else}
-      <p class="text-center text-xl font-bold mb-6">
-        {i18n('PinClipsToSpotlightHelper')}
-      </p>
-      <ul class="flex gap-16 justify-between items-center">
-        <li class="rounded bg-surface-400 w-[25%] aspect-[11/16]"></li>
-        <li class="rounded bg-surface-400 grow aspect-[11/16]"></li>
-        <li class="rounded bg-surface-400 w-[25%] aspect-[11/16]"></li>
       </ul>
     {/if}
   </span>

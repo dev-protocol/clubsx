@@ -5,6 +5,7 @@
   import { type UndefinedOr } from '@devprotocol/util-ts'
   import type { Profile, Skin } from '@pages/api/profile'
   import Skeleton from '@components/Global/Skeleton.svelte'
+  import '@plugins/admin/assets/animation.css'
 
   import { Strings } from '../i18n'
   import type { PassportItem } from '../types'
@@ -31,7 +32,8 @@
   export let hasSpotlightLimitReadched: boolean = false
 
   $: {
-    console.log({ profile, skinIndex })
+    hasSpotlightLimitReadched =
+      (profile?.skins?.at(skinIndex)?.spotlight?.length ?? 0) > 2
   }
 
   onMount(async () => {
@@ -172,16 +174,23 @@
                   data-is-added={profile?.skins
                     ?.at(skinIndex)
                     ?.spotlight?.some((clip) => clip.sTokenId === item.assetId)}
-                  class="p-2 box-content w-7 h-7 cursor-pointer block border-r border-primary-200 transition text-accent-600 hover:text-accent-200 data-[is-added=true]:bg-accent-200 data-[is-added=true]:text-primary-600"
+                  class="p-2 box-content w-9 cursor-pointer block border-r border-primary-200 transition text-accent-600 hover:text-accent-200 data-[is-added=true]:bg-accent-200 data-[is-added=true]:text-primary-600 disabled:cursor-not-allowed disabled:hover:animate-[horizontal-shaking_.06s_5]"
                   on:click|preventDefault={() => toggleClipInSpotlight(item)}
                   disabled={!eoa ||
                     !purchasedClips.length ||
                     profileFetching ||
                     isFetchingPurchasedClips ||
-                    profileUpdating}
+                    profileUpdating ||
+                    (profile?.skins
+                      ?.at(skinIndex)
+                      ?.spotlight?.every(
+                        (clip) => clip.sTokenId !== item.assetId,
+                      ) &&
+                      hasSpotlightLimitReadched)}
                 >
                   <!-- Spotlight -->
-                  <IconSpotlight classNames="w-full h-full" />
+                  <IconSpotlight classNames="w-full aspect-square" />
+                  <span class="text-[.5rem]">Spotlight</span>
                 </button>
 
                 <!-- Add to showcase/pinned clips -->
@@ -189,7 +198,7 @@
                   data-is-added={profile?.skins
                     ?.at(skinIndex)
                     ?.clips?.some((clip) => clip.sTokenId === item.assetId)}
-                  class="p-2 box-content w-7 h-7 cursor-pointer block transition text-accent-600 hover:text-accent-200 data-[is-added=true]:bg-accent-200 data-[is-added=true]:bg-accent-200 data-[is-added=true]:text-primary-600"
+                  class="p-2 box-content w-9 cursor-pointer block transition text-accent-600 hover:text-accent-200 data-[is-added=true]:bg-accent-200 data-[is-added=true]:bg-accent-200 data-[is-added=true]:text-primary-600"
                   on:click|preventDefault={() => toggleClipsInShowcase(item)}
                   disabled={!eoa ||
                     !purchasedClips.length ||
@@ -198,7 +207,8 @@
                     profileUpdating}
                 >
                   <!-- Showcase SVG -->
-                  <IconShowcase classNames="w-full h-full" />
+                  <IconShowcase classNames="w-full aspect-square" />
+                  <span class="text-[.5rem]">Showcase</span>
                 </button>
               </div>
               <PassportAsset

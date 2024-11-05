@@ -42,14 +42,21 @@
     profile = {
       ...profile, // Retain other modified fields.
       skins: [
-        ...(profile?.skins?.slice(0, skinIndex) ?? []), // keep all the other skins before skinIndex.
-
-        {
-          ...(profile?.skins?.at(skinIndex) ?? ({} as Skin)), // Retain other skin properties ir-respective of whether the skin is modified or not.
-          clips: profileFromAPI?.skins?.at(skinIndex)?.clips ?? [], // Retain clips from profileFromAPI if present otherwise empty array.
-        },
-
-        ...(profile?.skins?.slice(skinIndex + 1) ?? []), // keep all the other skins after skinIndex.
+        ...(profile?.skins?.map((skin, index) =>
+          index === skinIndex
+            ? {
+                ...skin, // Retain other skin properties ir-respective of whether the skin is modified or not.
+                clips:
+                  // if all the stored showcase have correct data, reset to the stored data.
+                  // if not, reset to `[]`.
+                  (profileFromAPI?.skins
+                    ?.at(skinIndex)
+                    ?.clips?.every((x) => x.sTokenId)
+                    ? profileFromAPI?.skins?.at(skinIndex)?.clips
+                    : undefined) ?? [],
+              }
+            : skin,
+        ) ?? []), // keep all the other skins before skinIndex.
       ],
     }
 
@@ -189,9 +196,22 @@
       <Skeleton />
     </div>
   {:else if !isFetchingPurchasedClips && !profileFetching && !profile.skins?.at(skinIndex)?.clips?.length}
-    <div class="rounded-md border border-surface-400 p-8 text-accent-200">
-      {i18n('Empty')} :) <br />{@html i18n('PinClipsToShowcase')}
-    </div>
+    <p class="text-center text-xl font-bold mb-6">
+      {i18n('PinClipsToShowcaseHelper')}
+    </p>
+    <ul
+      class="grid gap-16 justify-between items-center grid-cols-3 grid-rows-3"
+    >
+      <li class="rounded bg-surface-400 aspect-square"></li>
+      <li class="rounded bg-surface-400 aspect-square"></li>
+      <li class="rounded bg-surface-400 aspect-square"></li>
+      <li class="rounded bg-surface-400 aspect-square"></li>
+      <li class="rounded bg-surface-400 aspect-square"></li>
+      <li class="rounded bg-surface-400 aspect-square"></li>
+      <li class="rounded bg-surface-400 aspect-square"></li>
+      <li class="rounded bg-surface-400 aspect-square"></li>
+      <li class="rounded bg-surface-400 aspect-square"></li>
+    </ul>
   {:else if !isFetchingPurchasedClips && !profileFetching && profile.skins?.at(skinIndex)?.clips?.length && purchasedClips?.length}
     <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
       {#each purchasedClips as item, i}
@@ -217,23 +237,6 @@
           </li>
         {/if}
       {/each}
-    </ul>
-  {:else}
-    <p class="text-center text-xl font-bold mb-6">
-      {i18n('PinClipsToShowcaseHelper')}
-    </p>
-    <ul
-      class="grid gap-16 justify-between items-center grid-cols-3 grid-rows-3"
-    >
-      <li class="rounded bg-surface-400 aspect-square"></li>
-      <li class="rounded bg-surface-400 aspect-square"></li>
-      <li class="rounded bg-surface-400 aspect-square"></li>
-      <li class="rounded bg-surface-400 aspect-square"></li>
-      <li class="rounded bg-surface-400 aspect-square"></li>
-      <li class="rounded bg-surface-400 aspect-square"></li>
-      <li class="rounded bg-surface-400 aspect-square"></li>
-      <li class="rounded bg-surface-400 aspect-square"></li>
-      <li class="rounded bg-surface-400 aspect-square"></li>
     </ul>
   {/if}
 </span>
