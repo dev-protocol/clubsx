@@ -41,25 +41,15 @@
   let connection: UndefinedOr<typeof Connection> = undefined
   let selectAsDefaultSkinStatus: UndefinedOr<string> = undefined
   let toggleSkinVisibilityStatus: UndefinedOr<string> = undefined
-  let ListSection: HTMLDivElement
-  let isListSectionInViewPort: boolean = false
+  let isInAddMode: UndefinedOr<'showcase' | 'spotlight'> = undefined
+  let self: HTMLElement
+  let transformYOrigin: UndefinedOr<number> = undefined
 
   onMount(async () => {
     i18n = i18nBase(navigator.languages)
     _connectOnMount()
     _fetchProfile()
-    _intersectionObserve()
   })
-
-  const _intersectionObserve = () => {
-    new IntersectionObserver(
-      ([entry]) => {
-        const { isIntersecting } = entry
-        isListSectionInViewPort = isIntersecting
-      },
-      { threshold: 0.25 },
-    ).observe(ListSection)
-  }
 
   const _connectOnMount = async () => {
     const { connection: _conn } = await import(
@@ -346,7 +336,32 @@
     }, 3000)
   }
 
+  const toggleBodyClassList = () => {
+    document.body.classList.toggle('overflow-hidden')
+    const rect = self.getBoundingClientRect()
+    const scroll = window.scrollY
+    transformYOrigin =
+      typeof isInAddMode === 'string'
+        ? rect.height - rect.bottom + window.innerHeight * 0.5
+        : transformYOrigin
+  }
+  const clickAddSpotlight = () => {
+    isInAddMode = 'spotlight'
+    toggleBodyClassList()
+  }
+  const clickAddShowcase = () => {
+    isInAddMode = 'showcase'
+    toggleBodyClassList()
+  }
+
   $: {
+    if (
+      typeof document !== 'undefined' &&
+      document.body.classList.contains('overflow-hidden') &&
+      isInAddMode === undefined
+    ) {
+      toggleBodyClassList()
+    }
     // Generate an id for skins.at(0) only if it is present but without an id.
     if (profile?.skins?.length && !profile.skins.at(0)?.id) {
       profile = {
@@ -366,7 +381,15 @@
   }
 </script>
 
-<div class="">
+<div
+  bind:this={self}
+  class={`${
+    typeof isInAddMode === 'string'
+      ? 'animate-[fadeOutFitToGrow_.5s_ease-in-out_forwards]'
+      : 'animate-[fadeInGrowToShrink_.5s_ease-in-out_forwards]'
+  }`}
+  style={`transform-origin: center ${transformYOrigin}px`}
+>
   <div class="p-2 w-full max-w-screen-lg mx-auto">
     <div
       class="w-fit max-w-full flex gap-[15px] py-[8px] px-[16px] items-center justify-start"
@@ -425,63 +448,35 @@
       {purchasedSkinThemes}
       purchasedSkinThemesFetching={purchasedPassportIAssetsFetching}
     />
-  </div>
 
-  <div
-    class="grid grid-cols-1 gap-4 @3xl/main:grid-cols-[auto_25%] relative overflow-x-clip transition duration-700"
-    class:translate-x-[12.5%]={!isListSectionInViewPort}
-    class:translate-x-0={isListSectionInViewPort}
-  >
-    <div bind:this={ListSection} class="p-2 w-full max-w-screen-lg mx-auto">
-      <!-- Passport skin spotlight -->
-      <EditPassportSkinSpotlight
-        {eoa}
-        {isLocal}
-        bind:profile
-        bind:skinIndex
-        {profileFromAPI}
-        {profileFetching}
-        {profileUpdating}
-        {hasSpotlightLimitReadched}
-        purchasedClips={purchasedSkinClips}
-        isFetchingPurchasedClips={purchasedPassportIAssetsFetching}
-      />
+    <!-- Passport skin spotlight -->
+    <EditPassportSkinSpotlight
+      {eoa}
+      {isLocal}
+      bind:profile
+      bind:skinIndex
+      {profileFromAPI}
+      {profileFetching}
+      {profileUpdating}
+      {hasSpotlightLimitReadched}
+      purchasedClips={purchasedSkinClips}
+      isFetchingPurchasedClips={purchasedPassportIAssetsFetching}
+      onClickCreateButton={clickAddSpotlight}
+    />
 
-      <!-- Passport skin showcase -->
-      <EditPassportSkinShowcase
-        {eoa}
-        {isLocal}
-        bind:profile
-        bind:skinIndex
-        {profileFromAPI}
-        {profileFetching}
-        {profileUpdating}
-        purchasedClips={purchasedSkinClips}
-        isFetchingPurchasedClips={purchasedPassportIAssetsFetching}
-      />
-    </div>
-    <!-- Edit page purchased clips -->
-    <div
-      class="py-2 transition duration-700 top-0 @3xl/main:sticky @3xl/main:max-h-screen"
-      class:translate-x-full={!isListSectionInViewPort}
-      class:translate-x-0={isListSectionInViewPort}
-    >
-      <div
-        class="p-2 border border-2 border-surface-400 max-h-full overflow-y-scroll shadow-[0_0_25px_-12px_rgb(0_0_0_/_0.10)] @3xl/main:rounded-l-lg @3xl/main:border-r-0"
-      >
-        <EditPagePurchasedClips
-          {eoa}
-          {isLocal}
-          bind:profile
-          bind:skinIndex
-          {profileFetching}
-          {profileUpdating}
-          {hasSpotlightLimitReadched}
-          purchasedClips={purchasedSkinClips}
-          isFetchingPurchasedClips={purchasedPassportIAssetsFetching}
-        />
-      </div>
-    </div>
+    <!-- Passport skin showcase -->
+    <EditPassportSkinShowcase
+      {eoa}
+      {isLocal}
+      bind:profile
+      bind:skinIndex
+      {profileFromAPI}
+      {profileFetching}
+      {profileUpdating}
+      purchasedClips={purchasedSkinClips}
+      isFetchingPurchasedClips={purchasedPassportIAssetsFetching}
+      onClickCreateButton={clickAddShowcase}
+    />
   </div>
 
   {#if eoa === id}
@@ -557,3 +552,52 @@
     </div>
   {/if}
 </div>
+
+<!-- Edit page purchased clips -->
+{#if isInAddMode}
+  <EditPagePurchasedClips
+    {eoa}
+    {isLocal}
+    bind:profile
+    bind:skinIndex
+    {profileFetching}
+    {profileUpdating}
+    {hasSpotlightLimitReadched}
+    purchasedClips={purchasedSkinClips}
+    isFetchingPurchasedClips={purchasedPassportIAssetsFetching}
+    bind:target={isInAddMode}
+  />
+{/if}
+
+<style>
+  @keyframes -global-fadeInShrinkToFit {
+    0% {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+    100% {
+      opacity: 100;
+      transform: scale(1);
+    }
+  }
+  @keyframes -global-fadeOutFitToGrow {
+    0% {
+      opacity: 100;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.5);
+    }
+  }
+  @keyframes -global-fadeInGrowToShrink {
+    0% {
+      opacity: 0;
+      transform: scale(1.5);
+    }
+    100% {
+      opacity: 100;
+      transform: scale(1);
+    }
+  }
+</style>

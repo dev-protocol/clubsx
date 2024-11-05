@@ -13,6 +13,7 @@
   import PassportAsset from './PassportAsset.svelte'
   import PassportClipEditModal from './PassportClipEditModal.svelte'
   import IconShowcase from './IconShowcase.svelte'
+  import IconPlus from './IconPlus.svelte'
 
   const i18nBase = i18nFactory(Strings)
   let i18n = i18nBase(['en'])
@@ -26,6 +27,7 @@
   export let profileFromAPI: Profile = profile
   export let purchasedClips: PassportItem[] = []
   export let eoa: UndefinedOr<string> = undefined
+  export let onClickCreateButton: () => void
 
   let isDisplayingHint: boolean = false
   let timeoutToHint: UndefinedOr<NodeJS.Timeout> = undefined
@@ -202,15 +204,19 @@
     <ul
       class="grid gap-16 justify-between items-center grid-cols-3 grid-rows-3"
     >
-      <li class="rounded bg-surface-400 aspect-square"></li>
-      <li class="rounded bg-surface-400 aspect-square"></li>
-      <li class="rounded bg-surface-400 aspect-square"></li>
-      <li class="rounded bg-surface-400 aspect-square"></li>
-      <li class="rounded bg-surface-400 aspect-square"></li>
-      <li class="rounded bg-surface-400 aspect-square"></li>
-      <li class="rounded bg-surface-400 aspect-square"></li>
-      <li class="rounded bg-surface-400 aspect-square"></li>
-      <li class="rounded bg-surface-400 aspect-square"></li>
+      <button
+        class="rounded bg-surface-400 aspect-square flex items-center justify-center"
+        on:click={onClickCreateButton}
+        ><IconPlus classNames="size-12" />
+      </button>
+      <li class="rounded bg-surface-400 aspect-square opacity-50"></li>
+      <li class="rounded bg-surface-400 aspect-square opacity-50"></li>
+      <li class="rounded bg-surface-400 aspect-square opacity-50"></li>
+      <li class="rounded bg-surface-400 aspect-square opacity-50"></li>
+      <li class="rounded bg-surface-400 aspect-square opacity-50"></li>
+      <li class="rounded bg-surface-400 aspect-square opacity-50"></li>
+      <li class="rounded bg-surface-400 aspect-square opacity-50"></li>
+      <li class="rounded bg-surface-400 aspect-square opacity-50"></li>
     </ul>
   {:else if !isFetchingPurchasedClips && !profileFetching && profile.skins?.at(skinIndex)?.clips?.length && purchasedClips?.length}
     <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
@@ -237,6 +243,11 @@
           </li>
         {/if}
       {/each}
+      <button
+        class="rounded bg-surface-400 aspect-square flex items-center justify-center"
+        on:click={onClickCreateButton}
+        ><IconPlus classNames="size-12" />
+      </button>
     </ul>
   {/if}
 </span>

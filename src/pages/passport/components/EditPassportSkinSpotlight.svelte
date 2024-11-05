@@ -13,6 +13,7 @@
   import type { PassportItem } from '../types'
   import PassportAsset from './PassportAsset.svelte'
   import PassportClipEditModal from './PassportClipEditModal.svelte'
+  import IconPlus from './IconPlus.svelte'
 
   const i18nBase = i18nFactory(Strings)
   let i18n = i18nBase(['en'])
@@ -27,6 +28,7 @@
   export let purchasedClips: PassportItem[] = []
   export let eoa: UndefinedOr<string> = undefined
   export let hasSpotlightLimitReadched: boolean = false
+  export let onClickCreateButton: () => void
 
   let isDisplayingHint: boolean = false
   let timeoutToHint: UndefinedOr<NodeJS.Timeout> = undefined
@@ -191,9 +193,17 @@
         {i18n('PinClipsToSpotlightHelper')}
       </p>
       <ul class="flex gap-16 justify-between items-center">
-        <li class="rounded bg-surface-400 w-[25%] aspect-[11/16]"></li>
-        <li class="rounded bg-surface-400 grow aspect-[11/16]"></li>
-        <li class="rounded bg-surface-400 w-[25%] aspect-[11/16]"></li>
+        <li
+          class="rounded bg-surface-400 w-[25%] aspect-[11/16] opacity-50"
+        ></li>
+        <button
+          class="rounded bg-surface-400 grow aspect-[11/16] flex items-center justify-center"
+          on:click={onClickCreateButton}
+          ><IconPlus classNames="size-12" />
+        </button>
+        <li
+          class="rounded bg-surface-400 w-[25%] aspect-[11/16] opacity-50"
+        ></li>
       </ul>
     {:else if !isFetchingPurchasedClips && !profileFetching && profile.skins?.at(skinIndex)?.spotlight?.length && purchasedClips?.length}
       <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
