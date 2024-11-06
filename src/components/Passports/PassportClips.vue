@@ -3,8 +3,8 @@ import { onMounted, ref } from 'vue'
 import { i18nFactory } from '@devprotocol/clubs-core'
 import Modal from '@pages/passport/components/Modal.vue'
 
-import { Strings } from '../i18n'
-import type { PassportClip } from '../types'
+import { Strings } from '../../pages/passport/i18n'
+import type { PassportClip } from '../../pages/passport/types'
 import PassportClipCard from './PassportClip.vue'
 
 const props = defineProps<{

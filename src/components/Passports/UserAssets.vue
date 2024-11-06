@@ -5,7 +5,7 @@ import { i18nFactory } from '@devprotocol/clubs-core'
 import Skeleton from '@components/Global/Skeleton.vue'
 import type { AssetDocument } from '@fixtures/api/assets/schema'
 
-import { Strings } from '../i18n'
+import { Strings } from '../../pages/passport/i18n'
 import UserAsset from './UserAsset.vue'
 
 const { PUBLIC_ALCHEMY_KEY } = import.meta.env

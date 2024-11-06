@@ -2,7 +2,7 @@
 import { isAddress } from 'ethers'
 import Layout from '@layouts/Landing.astro'
 
-import UserProfileEdit from '../components/UserProfileEdit.svelte'
+import UserProfileEdit from '@components/Passports/UserProfileEdit.svelte'
 
 const { id } = Astro.params
 const skinId = Astro.url.searchParams.get('skinId') || ''
