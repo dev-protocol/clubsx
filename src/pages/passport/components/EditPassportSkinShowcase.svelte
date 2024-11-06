@@ -1,12 +1,11 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import { JsonRpcProvider } from 'ethers'
-  import { fade } from 'svelte/transition'
   import { i18nFactory } from '@devprotocol/clubs-core'
   import { type UndefinedOr } from '@devprotocol/util-ts'
   import Skeleton from '@components/Global/Skeleton.svelte'
-  import type { Clip, Profile, Skin } from '@pages/api/profile'
-  import { Modals, closeAllModals, closeModal, openModal } from 'svelte-modals'
+  import type { Clip, Profile } from '@pages/api/profile'
+  import { closeAllModals, openModal } from 'svelte-modals'
 
   import { Strings } from '../i18n'
   import type { PassportItem } from '../types'
@@ -28,9 +27,6 @@
   export let purchasedClips: PassportItem[] = []
   export let eoa: UndefinedOr<string> = undefined
   export let onClickCreateButton: () => void
-
-  let isDisplayingHint: boolean = false
-  let timeoutToHint: UndefinedOr<NodeJS.Timeout> = undefined
 
   const rpcProvider = new JsonRpcProvider(
     `https://polygon-mainnet.g.alchemy.com/v2/${import.meta.env.PUBLIC_ALCHEMY_KEY ?? ''}`,
@@ -65,19 +61,21 @@
     console.log('Profile at resetting pinned non skin item', profile)
   }
 
-  const onClickEditShowcaseClip = (item: PassportItem) => {
+  const onClickEditShowcaseClip = (item?: PassportItem) => {
     if (
+      !item ||
       !profile?.skins
         ?.at(skinIndex)
         ?.clips?.find((clip) => clip.payload === item.payload)
     ) {
       console.error(
         'Clip not found in profile showcase when trying to edit it.',
-        item.id,
+        item?.id,
       )
       return
     }
 
+    document.body.classList.add('overflow-hidden')
     openModal(PassportClipEditModal, {
       item: item,
       hex: profile?.skins
@@ -89,6 +87,7 @@
           ?.clips?.find((clip) => clip.payload === item.payload)?.description ??
         '',
       onClose: async () => {
+        document.body.classList.remove('overflow-hidden')
         closeAllModals()
       },
       closeAllOnFinished: true,
@@ -96,6 +95,7 @@
         clip: PassportItem,
         description: string,
         frameColorHex: string,
+        method,
       ): Promise<boolean> => {
         if (
           !profile?.skins
@@ -122,26 +122,30 @@
           profile = {
             ...profile, // Retain other modified fields.
             skins: [
-              ...(profile?.skins?.slice(0, skinIndex) ?? []), // keep all the other skins before skinIndex.
-
-              // Set skins to the updated value or append new value of theme.
-              {
-                ...(profile?.skins?.at(skinIndex) ?? ({} as Skin)), // Retain other skin properties irrespective of whether the skin is modified or not.
-                clips: [
-                  ...(profile?.skins
-                    ?.at(skinIndex)
-                    ?.clips?.filter((clip) => clip.sTokenId !== item.assetId) ??
-                    ([] as Clip[])),
-                  {
-                    payload: item.payload!,
-                    description,
-                    frameColorHex,
-                    sTokenId: item.assetId,
-                  },
-                ],
-              },
-
-              ...(profile?.skins?.slice(skinIndex + 1) ?? []), // keep all the other skins after skinIndex.
+              ...(profile?.skins?.map((skin, index) =>
+                index === skinIndex
+                  ? {
+                      ...skin, // Retain other skin properties irrespective of whether the skin is modified or not.
+                      clips:
+                        method === 'patch'
+                          ? [
+                              ...(skin.clips?.map((clip) =>
+                                clip.sTokenId === item.assetId
+                                  ? {
+                                      payload: item.payload!,
+                                      sTokenId: item.assetId,
+                                      description,
+                                      frameColorHex,
+                                    }
+                                  : clip,
+                              ) ?? ([] as Clip[])),
+                            ]
+                          : skin.clips?.filter(
+                              (x) => x.sTokenId !== item.assetId,
+                            ),
+                    }
+                  : skin,
+              ) ?? []), // keep all the other skins before skinIndex.
             ],
           }
           return true
@@ -152,23 +156,9 @@
     })
   }
 
-  const onClickEditModalBackdrop = () => {
-    /**
-     * Define the action when clicking the modal backdrop.
-     */
-    if (timeoutToHint !== undefined) {
-      clearTimeout(timeoutToHint)
-      timeoutToHint = undefined
-    }
-
-    if (isDisplayingHint) {
-      closeModal()
-      isDisplayingHint = false
-      return
-    }
-
-    closeAllModals()
-  }
+  const clips = (prof: Profile) => prof.skins?.at(skinIndex)?.clips
+  const purchasedClipsBySkinClip = (clip: Clip, items: PassportItem[]) =>
+    items.find((x) => x.assetId === clip.sTokenId)
 </script>
 
 <!-- Edit passport skin showcase clips -->
@@ -202,7 +192,7 @@
       {i18n('PinClipsToShowcaseHelper')}
     </p>
     <ul
-      class="grid gap-16 justify-between items-center grid-cols-3 grid-rows-3"
+      class="grid gap-2 lg:gap-4 justify-between items-center grid-cols-3 grid-rows-3"
     >
       <button
         class="rounded bg-surface-400 aspect-square flex items-center justify-center"
@@ -219,29 +209,21 @@
       <li class="rounded bg-surface-400 aspect-square opacity-50"></li>
     </ul>
   {:else if !isFetchingPurchasedClips && !profileFetching && profile.skins?.at(skinIndex)?.clips?.length && purchasedClips?.length}
-    <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-      {#each purchasedClips as item, i}
-        {#if item.assetId && profile?.skins
-            ?.at(skinIndex)
-            ?.clips?.find((clip) => clip.sTokenId === item.assetId)}
-          <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
-            <PassportAsset
-              props={((clip) => ({
-                item: item,
-                provider: rpcProvider,
-                local: isLocal,
-                isEditable: true,
-                editAction: () => onClickEditShowcaseClip(item),
-                description: clip?.description,
-                frameColorHex: clip?.frameColorHex,
-              }))(
-                profile?.skins
-                  ?.at(skinIndex)
-                  ?.clips?.find((clip) => clip.payload === item.payload),
-              )}
-            />
-          </li>
-        {/if}
+    <ul class="grid gap-2 lg:gap-4 grid-cols-3">
+      {#each clips(profile) ?? [] as clip, i}
+        <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
+          <PassportAsset
+            props={((item) => ({
+              item: item,
+              provider: rpcProvider,
+              local: isLocal,
+              isEditable: true,
+              editAction: () => onClickEditShowcaseClip(item),
+              description: clip.description,
+              frameColorHex: clip.frameColorHex,
+            }))(purchasedClipsBySkinClip(clip, purchasedClips))}
+          />
+        </li>
       {/each}
       <button
         class="rounded bg-surface-400 aspect-square flex items-center justify-center"
@@ -251,12 +233,3 @@
     </ul>
   {/if}
 </span>
-
-<Modals>
-  <div
-    slot="backdrop"
-    on:click={onClickEditModalBackdrop}
-    class="fixed inset-0 bg-black/50"
-    transition:fade={{ duration: 100 }}
-  />
-</Modals>

@@ -5,6 +5,8 @@
   import { type UndefinedOr } from '@devprotocol/util-ts'
   import type { Profile, Skin } from '@pages/api/profile'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
+  import { fade } from 'svelte/transition'
+  import { Modals, closeAllModals } from 'svelte-modals'
 
   import { Strings } from '../i18n'
   import SkinSwitch from './SkinSwitch.svelte'
@@ -42,6 +44,7 @@
   let selectAsDefaultSkinStatus: UndefinedOr<string> = undefined
   let toggleSkinVisibilityStatus: UndefinedOr<string> = undefined
   let isInAddMode: UndefinedOr<'showcase' | 'spotlight'> = undefined
+  let clicked = false
   let self: HTMLElement
   let transformYOrigin: UndefinedOr<number> = undefined
 
@@ -66,7 +69,7 @@
       const oldEOA = eoa
       eoa = acc
       // :TODO: DELETE THE LINE
-      eoa = '0xfc4a9e2B406C515415BBcF502A632aefB185A875'
+      // eoa = '0xfc4a9e2B406C515415BBcF502A632aefB185A875'
       if (eoa !== oldEOA) {
         // Wallet is connected or addrress has changed so update the data again.
         _fetchProfile()
@@ -337,9 +340,9 @@
   }
 
   const toggleBodyClassList = () => {
+    clicked = true
     document.body.classList.toggle('overflow-hidden')
     const rect = self.getBoundingClientRect()
-    const scroll = window.scrollY
     transformYOrigin =
       typeof isInAddMode === 'string'
         ? rect.height - rect.bottom + window.innerHeight * 0.5
@@ -352,6 +355,11 @@
   const clickAddShowcase = () => {
     isInAddMode = 'showcase'
     toggleBodyClassList()
+  }
+
+  const closeModals = () => {
+    document.body.classList.remove('overflow-hidden')
+    closeAllModals()
   }
 
   $: {
@@ -386,7 +394,9 @@
   class={`${
     typeof isInAddMode === 'string'
       ? 'animate-[fadeOutFitToGrow_.5s_ease-in-out_forwards]'
-      : 'animate-[fadeInGrowToShrink_.5s_ease-in-out_forwards]'
+      : clicked
+        ? 'animate-[fadeInGrowToShrink_.5s_ease-in-out_forwards]'
+        : ''
   }`}
   style={`transform-origin: center ${transformYOrigin}px`}
 >
@@ -561,13 +571,21 @@
     bind:profile
     bind:skinIndex
     {profileFetching}
-    {profileUpdating}
     {hasSpotlightLimitReadched}
     purchasedClips={purchasedSkinClips}
     isFetchingPurchasedClips={purchasedPassportIAssetsFetching}
     bind:target={isInAddMode}
   />
 {/if}
+
+<Modals>
+  <div
+    slot="backdrop"
+    on:click={closeModals}
+    class="fixed top-0 bottom-0 left-0 right-0 z-30 bg-black/50"
+    transition:fade={{ duration: 100 }}
+  />
+</Modals>
 
 <style>
   @keyframes -global-fadeInShrinkToFit {

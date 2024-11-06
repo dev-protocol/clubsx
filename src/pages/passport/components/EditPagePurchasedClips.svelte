@@ -24,7 +24,6 @@
   export let skinIndex = 0
   export let isLocal: boolean
   export let profileFetching = true
-  export let profileUpdating = false
   export let isFetchingPurchasedClips = true
   export let profile: Profile = {} as Profile
   export let purchasedClips: PassportItem[] = []
@@ -129,11 +128,11 @@
 </script>
 
 <div
-  class="fixed z-[999] inset-0 p-2 gap-2 grid grid-rows-[auto_1fr] items-stretch bg-surface-600 overflow-y-scroll opacity-0 animate-[fadeInShrinkToFit_.5s_ease-in-out_forwards]"
+  class="fixed z-[999] inset-0 p-2 gap-2 grid grid-rows-[auto_1fr] items-stretch bg-surface-300 overflow-y-scroll opacity-0 animate-[fadeInShrinkToFit_.5s_ease-in-out_forwards]"
 >
   <button
     on:click={() => (target = undefined)}
-    class="size-12 bg-accent-200 flex justify-center items-center rounded-full text-surface-600 sticky top-0 justify-self-end"
+    class="size-12 bg-accent-200 flex justify-center items-center rounded-full text-surface-600 sticky top-0 justify-self-end z-20"
     ><IconXMark classNames="size-6" />
   </button>
   <!-- Passport items other than type: css | stylesheet-link -->
@@ -153,12 +152,12 @@
         {i18n('Empty')} :) <br />{@html i18n('PurchasePassportClips')}
       </div>
     {:else if purchasedClips?.length}
-      <ul class="grid gap-2 grid-cols-[repeat(auto-fill,minmax(180px,1fr))]">
+      <ul class="grid gap-2 grid-cols-[repeat(auto-fill,minmax(160px,1fr))]">
         {#each purchasedClips as item, i}
           <li id={`assets-${i.toString()}`} class="relative empty:hidden">
             <button
               on:click={() => (selectedItem = item)}
-              class="h-full disabled:opacity-30"
+              class="w-full h-full disabled:opacity-30"
               disabled={profile?.skins?.[skinIndex]?.[
                 target === 'showcase' ? 'clips' : 'spotlight'
               ]?.some((x) => x.sTokenId === item.assetId)}
@@ -168,9 +167,10 @@
                   item,
                   provider: rpcProvider,
                   local: isLocal,
+                  linkToClub: false,
                   classNames:
                     selectedItem?.assetId === item.assetId
-                      ? 'h-full border border-2 !border-accent-200'
+                      ? 'h-full outline outline-2 outline-accent-200 !border-transparent'
                       : 'h-full',
                 }}
               />
@@ -186,7 +186,7 @@
         target === 'showcase'
           ? toggleClipsInShowcase(selectedItem)
           : toggleClipInSpotlight(selectedItem)}
-      class="bg-accent-200 p-6 text-2xl font-bold flex justify-center items-center rounded-full text-surface-600 sticky bottom-6 shadow justify-self-center"
+      class="bg-primary-ink px-8 py-6 text-2xl font-bold flex justify-center items-center rounded-full text-accent-ink sticky bottom-6 shadow justify-self-center"
       >Done
     </button>
   {/if}
