@@ -102,23 +102,22 @@ const app = async () => {
   const formatedData = (
     await Promise.all(
       jsonList.map(
-        async (item) =>
-          await clubsVerifiedData(item),
-          //     {
-          //     id: item.value.id,
-          //     propertyAddress: item.value.propertyAddress,
-          //     owner: item.value.owner?.address,
-          //     firebase_id: item.value.owner?.firebaseUid,
-          //     created_at: new Intl.DateTimeFormat('ja-JP', {
-          //         timeZone: 'Asia/Tokyo',
-          //         year: 'numeric',
-          //         month: '2-digit',
-          //         day: '2-digit',
-          //         hour: '2-digit',
-          //         minute: '2-digit',
-          //         second: '2-digit'
-          //     }).format(new Date(item.value.created_at))
-          // }
+        async (item) => await clubsVerifiedData(item),
+        //     {
+        //     id: item.value.id,
+        //     propertyAddress: item.value.propertyAddress,
+        //     owner: item.value.owner?.address,
+        //     firebase_id: item.value.owner?.firebaseUid,
+        //     created_at: new Intl.DateTimeFormat('ja-JP', {
+        //         timeZone: 'Asia/Tokyo',
+        //         year: 'numeric',
+        //         month: '2-digit',
+        //         day: '2-digit',
+        //         hour: '2-digit',
+        //         minute: '2-digit',
+        //         second: '2-digit'
+        //     }).format(new Date(item.value.created_at))
+        // }
       ),
     )
   ).filter((item) => item !== undefined)
