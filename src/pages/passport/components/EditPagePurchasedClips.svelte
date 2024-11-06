@@ -184,8 +184,8 @@
     <button
       on:click={() =>
         target === 'showcase'
-          ? toggleClipsInShowcase(selectedItem)
-          : toggleClipInSpotlight(selectedItem)}
+          ? selectedItem && toggleClipsInShowcase(selectedItem)
+          : selectedItem && toggleClipInSpotlight(selectedItem)}
       class="bg-primary-ink px-8 py-6 text-2xl font-bold flex justify-center items-center rounded-full text-accent-ink sticky bottom-6 shadow justify-self-center"
       >Done
     </button>
