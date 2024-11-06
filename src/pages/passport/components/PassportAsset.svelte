@@ -15,13 +15,14 @@
 
   export let props: {
     local: boolean
-    item: PassportItem
+    item?: PassportItem
     classNames?: string
     isEditable?: boolean
     provider: ContractRunner
     description?: UndefinedOr<string>
     frameColorHex?: UndefinedOr<string>
-    editAction?: (item: PassportItem) => void
+    editAction?: (item?: PassportItem) => void
+    linkToClub?: boolean
   }
 
   let assetName: string
@@ -74,8 +75,8 @@
         // If item is clips or spotlight then we use itemAssetValue.
         // else we use sToken property for it.
         if (
-          props.item.itemAssetType === 'image' ||
-          props.item.itemAssetType === 'image-link'
+          props.item?.itemAssetType === 'image' ||
+          props.item?.itemAssetType === 'image-link'
         ) {
           sTokenURI = {
             ...sTokenURI,
@@ -115,72 +116,93 @@
       : await whenDefined(uri?.htmlImageSrc, loadImage)
   })
 
-  const onEditClip = (item: PassportItem) => {
+  const onEditClip = (item?: PassportItem) => {
     props.editAction && props.editAction(item)
   }
 </script>
 
-{#if !notFound || !props.item}
-  <div
-    class={`shadow-md rounded-md p-4 grid gap-4 ${props.classNames ?? ''} ${props.frameColorHex ? 'bg-[var(--frameColor)]' : 'bg-surface-200'} ${isFrameDark ? 'text-white' : 'text-black'}`}
-    style={props.frameColorHex
-      ? `--frameColor: ${props.frameColorHex}`
-      : undefined}
-  >
-    {#if assetImage && props.item.itemAssetType !== 'short-video' && props.item.itemAssetType !== 'short-video-link'}
-      <img
-        src={assetImage.src}
-        class="rounded-md w-full max-w-full"
-        alt="Asset"
-      />
-    {:else if props.item.itemAssetType === 'short-video' || props.item.itemAssetType === 'short-video-link'}
-      <video
-        autoplay
-        muted
-        poster={assetImage?.src}
-        class="rounded-md w-full max-w-full pointer-events-none"
-        src={props?.item?.itemAssetValue}
-      >
-        <track kind="captions" />
-      </video>
-    {:else}
-      <Skeleton />
-    {/if}
+<div class="@container/passport-asset w-full h-full">
+  {#if !notFound && props.item}
+    <div
+      class={`w-full h-full shadow-md rounded-md p-2 grid gap-4 border border-black/20 @[16rem]/passport-asset:p-4 ${props.classNames ?? ''} ${props.frameColorHex ? 'bg-[var(--frameColor)]' : 'bg-surface-200'} ${isFrameDark ? 'text-white' : 'text-black'}`}
+      style={props.frameColorHex
+        ? `--frameColor: ${props.frameColorHex}`
+        : undefined}
+    >
+      {#if assetImage && props.item.itemAssetType !== 'short-video' && props.item.itemAssetType !== 'short-video-link'}
+        <img
+          src={assetImage.src}
+          class="rounded-md w-full object-cover aspect-square"
+          alt="Asset"
+        />
+      {:else if props.item.itemAssetType === 'short-video' || props.item.itemAssetType === 'short-video-link'}
+        <video
+          autoplay
+          muted
+          poster={assetImage?.src}
+          class="rounded-md w-full max-w-full pointer-events-none object-cover aspect-square"
+          src={props?.item?.itemAssetValue}
+        >
+          <track kind="captions" />
+        </video>
+      {:else}
+        <Skeleton />
+      {/if}
 
-    <div class="flex gap-1.5 items-start justify-between">
-      <div class="justify-self-start text-left">
-        {#if htmlDescription}
-          {@html htmlDescription}
-        {:else}
-          <p>{assetName ?? ''}</p>
-        {/if}
-        {#if !clubUrl || !clubName}
-          <span class="w-full h-3"><Skeleton /></span>
-        {:else}
-          <a href="clubUrl"><span class="opacity-50">{clubName ?? ''}</span></a>
+      <div
+        class="flex gap-1.5 items-start justify-between flex-col @[16rem]/passport-asset:flex-row"
+      >
+        <div
+          class="description justify-self-start text-left text-sm @[16rem]/passport-asset:text-base"
+        >
+          {#if htmlDescription}
+            {@html htmlDescription}
+          {:else}
+            <p>{assetName ?? ''}</p>
+          {/if}
+          {#if !clubUrl || !clubName}
+            <span class="w-full h-3"><Skeleton /></span>
+          {:else if props.linkToClub === true || props.linkToClub === undefined}
+            <a href="clubUrl"
+              ><span
+                class="opacity-50 text-xs text-ellipsis @[16rem]/passport-asset:text-base"
+                >{clubName ?? ''}</span
+              ></a
+            >
+          {:else}
+            <span class="opacity-50 text-xs @[16rem]/passport-asset:text-base"
+              >{clubName ?? ''}</span
+            >
+          {/if}
+        </div>
+
+        {#if props.isEditable}
+          <button
+            class="relative w-6 h-6 justify-self-end cursor-pointer"
+            on:click|preventDefault={() => onEditClip(props.item)}
+          >
+            <svg
+              class="h-6 w-6"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M19.4143 5.54907C19.0393 5.1975 18.5306 5 18.0002 5C17.4699 5 16.9612 5.1975 16.5861 5.54907L15.7046 6.3755L18.5328 9.02693L19.4143 8.2005C19.7893 7.84888 20 7.37201 20 6.87478C20 6.37756 19.7893 5.90069 19.4143 5.54907ZM17.7244 9.78479L14.8962 7.13336L5.63906 15.8119C5.16885 16.2525 4.82319 16.7961 4.63334 17.3934L4.02381 19.3112C3.99439 19.4038 3.99219 19.5021 4.01746 19.5957C4.04273 19.6893 4.09453 19.7748 4.16737 19.8431C4.24021 19.9114 4.33139 19.9599 4.43125 19.9836C4.53111 20.0073 4.63595 20.0053 4.73467 19.9777L6.78039 19.4062C7.41752 19.2283 7.99728 18.9042 8.46725 18.4634L17.7244 9.78479Z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
         {/if}
       </div>
-
-      {#if props.isEditable}
-        <button
-          class="relative w-6 h-6 justify-self-end cursor-pointer"
-          on:click|preventDefault={() => onEditClip(props.item)}
-        >
-          <svg
-            class="h-6 w-6"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M19.4143 5.54907C19.0393 5.1975 18.5306 5 18.0002 5C17.4699 5 16.9612 5.1975 16.5861 5.54907L15.7046 6.3755L18.5328 9.02693L19.4143 8.2005C19.7893 7.84888 20 7.37201 20 6.87478C20 6.37756 19.7893 5.90069 19.4143 5.54907ZM17.7244 9.78479L14.8962 7.13336L5.63906 15.8119C5.16885 16.2525 4.82319 16.7961 4.63334 17.3934L4.02381 19.3112C3.99439 19.4038 3.99219 19.5021 4.01746 19.5957C4.04273 19.6893 4.09453 19.7748 4.16737 19.8431C4.24021 19.9114 4.33139 19.9599 4.43125 19.9836C4.53111 20.0073 4.63595 20.0053 4.73467 19.9777L6.78039 19.4062C7.41752 19.2283 7.99728 18.9042 8.46725 18.4634L17.7244 9.78479Z"
-              fill="currentColor"
-            />
-          </svg>
-        </button>
-      {/if}
     </div>
-  </div>
-{/if}
+  {/if}
+</div>
+
+<style scoped>
+  .description p {
+    font-size: inherit;
+  }
+</style>

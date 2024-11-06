@@ -18,6 +18,7 @@
       clip: PassportItem,
       description: string,
       frameColorHex: string,
+      method: 'patch' | 'del',
     ) => Promise<boolean>
   > = undefined
   export let closeAllOnFinished: boolean = false
@@ -31,9 +32,9 @@
     i18n = i18nBase(navigator.languages)
   })
 
-  const onClickAction = async () => {
+  const onClickAction = async (method: 'patch' | 'del') => {
     loading = true
-    const isSuccess = action && (await action(item, description, hex))
+    const isSuccess = action && (await action(item, description, hex, method))
     loading = false
 
     if (isSuccess) {
@@ -51,78 +52,91 @@
   <!-- on:introstart and on:outroend are required to transition 1 at a time between modals -->
   <div
     role="dialog"
-    class="fixed bottom-0 max-h-screen lg:bottom-1/2 lg:translate-y-1/2 left-1/2 flex flex-col w-full max-w-2xl -translate-x-1/2 items-center justify-center rounded-t-3xl lg:rounded-b-3xl border-x border-t border-surface-200 bg-surface-600 p-12 text-surface-ink subpixel-antialiased shadow-xl lg:pb-32 gap-6"
+    class="fixed left-1/2 -translate-x-1/2 bottom-0 lg:top-12 lg:bottom-auto flex justify-center items-end lg:items-start z-50 overflow-y-scroll max-h-full w-full max-w-2xl"
     transition:fly={{ y: 500 }}
     on:introstart
     on:outroend
     on:close={onClickClose}
   >
-    <div class="w-full flex items-center justify-between">
-      <button on:click|preventDefault={onClickClose} class="w-6 h-6">
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M6 18L18 6M6 6L18 18"
-            stroke="currentColor"
-            stroke-width="3.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-      </button>
-
-      <p class="font-DMSan font-bold text-base">{i18n('EditItem')}</p>
-
-      <button
-        on:click|preventDefault={() => onClickAction()}
-        class="hs-button is-filled is-large w-fit text-center">Done</button
-      >
-    </div>
-
-    <div class="grid gap-8 w-full max-w-screen-sm overflow-y-scroll">
-      <img
-        src={item.itemAssetValue}
-        alt="Passport item"
-        class="w-full h-auto max-w-44 max-h-44 rounded-md"
-      />
-
-      <label class="hs-form-field is-filled">
-        <span class="hs-form-field__label"> {i18n('Description')} </span>
-        <textarea
-          class="hs-form-field__input"
-          bind:value={description}
-          id="passport-item-description"
-          name="passort-item-description"
-          placeholder={i18n('DescriptionPlaceholder')}
-        />
-        <span class="hs-form-field__helper">
-          * {i18n('MarkdownAvailable')}
-          <a
-            href="https://www.markdownguide.org/basic-syntax"
-            target="_blank"
-            class="underline [font-size:inherit]"
-            rel="noopener noreferrer">({i18n('WhatIsMarkdown')} ↗)</a
+    <div
+      class="flex flex-col w-full max-w-2xl items-center justify-center rounded-t-3xl lg:rounded-b-3xl border-x border-t border-surface-200 bg-surface-600 p-12 text-surface-ink subpixel-antialiased shadow-xl lg:pb-32 gap-6"
+    >
+      <div class="w-full flex items-center justify-between">
+        <button on:click|preventDefault={onClickClose} class="w-6 h-6">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
           >
-        </span>
-      </label>
+            <path
+              d="M6 18L18 6M6 6L18 18"
+              stroke="currentColor"
+              stroke-width="3.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
 
-      <span class="hs-form-field is-filled">
-        <span class="hs-form-field__label"> {i18n('FrameColor')} </span>
-        <ColorPicker
-          bind:hex
-          position="responsive"
-          sliderDirection="vertical"
-          isTextInput={true}
-          isAlpha={false}
-          label="Click here to choose a color"
-          --cp-text-color="#000"
-        />
-      </span>
+        <p class="font-DMSan font-bold text-base">{i18n('EditItem')}</p>
+
+        <button
+          on:click|preventDefault={() => onClickAction('patch')}
+          class="hs-button is-filled is-large w-fit text-center">Done</button
+        >
+      </div>
+
+      <div class="grid gap-8 w-full max-w-screen-sm overflow-y-scroll">
+        {#if item.itemAssetType !== 'short-video' && item.itemAssetType !== 'short-video-link'}
+          <img
+            src={item.itemAssetValue}
+            class="max-w-44 max-h-44 rounded-md w-full max-w-full object-cover aspect-square"
+            alt="Asset"
+          />
+        {:else if item.itemAssetType === 'short-video' || item.itemAssetType === 'short-video-link'}
+          <video
+            autoplay
+            muted
+            poster={item.itemAssetValue}
+            class="max-w-44 max-h-44 rounded-md w-full object-cover aspect-square"
+            src={item.itemAssetValue}
+          >
+            <track kind="captions" />
+          </video>
+        {/if}
+
+        <label class="hs-form-field is-filled">
+          <span class="hs-form-field__label"> {i18n('Description')} </span>
+          <textarea
+            class="hs-form-field__input"
+            bind:value={description}
+            id="passport-item-description"
+            name="passort-item-description"
+            placeholder={i18n('DescriptionPlaceholder')}
+          />
+        </label>
+
+        <span class="hs-form-field is-filled">
+          <span class="hs-form-field__label"> {i18n('FrameColor')} </span>
+          <ColorPicker
+            bind:hex
+            position="responsive"
+            sliderDirection="vertical"
+            isTextInput={true}
+            isAlpha={false}
+            label="Click here to choose a color"
+            --cp-text-color="#000"
+          />
+        </span>
+
+        <button
+          on:click|preventDefault={() => onClickAction('del')}
+          class="hs-button is-filled is-error justify-self-end w-fit text-center"
+          >Unlist</button
+        >
+      </div>
     </div>
   </div>
 {/if}

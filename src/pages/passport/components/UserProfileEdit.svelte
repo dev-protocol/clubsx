@@ -5,6 +5,8 @@
   import { type UndefinedOr } from '@devprotocol/util-ts'
   import type { Profile, Skin } from '@pages/api/profile'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
+  import { fade } from 'svelte/transition'
+  import { Modals, closeAllModals } from 'svelte-modals'
 
   import { Strings } from '../i18n'
   import SkinSwitch from './SkinSwitch.svelte'
@@ -41,6 +43,10 @@
   let connection: UndefinedOr<typeof Connection> = undefined
   let selectAsDefaultSkinStatus: UndefinedOr<string> = undefined
   let toggleSkinVisibilityStatus: UndefinedOr<string> = undefined
+  let isInAddMode: UndefinedOr<'showcase' | 'spotlight'> = undefined
+  let clicked = false
+  let self: HTMLElement
+  let transformYOrigin: UndefinedOr<number> = undefined
 
   onMount(async () => {
     i18n = i18nBase(navigator.languages)
@@ -62,6 +68,8 @@
     connection().account.subscribe((acc: UndefinedOr<string>) => {
       const oldEOA = eoa
       eoa = acc
+      // :TODO: DELETE THE LINE
+      // eoa = '0xfc4a9e2B406C515415BBcF502A632aefB185A875'
       if (eoa !== oldEOA) {
         // Wallet is connected or addrress has changed so update the data again.
         _fetchProfile()
@@ -331,7 +339,37 @@
     }, 3000)
   }
 
+  const toggleBodyClassList = () => {
+    clicked = true
+    document.body.classList.toggle('overflow-hidden')
+    const rect = self.getBoundingClientRect()
+    transformYOrigin =
+      typeof isInAddMode === 'string'
+        ? rect.height - rect.bottom + window.innerHeight * 0.5
+        : transformYOrigin
+  }
+  const clickAddSpotlight = () => {
+    isInAddMode = 'spotlight'
+    toggleBodyClassList()
+  }
+  const clickAddShowcase = () => {
+    isInAddMode = 'showcase'
+    toggleBodyClassList()
+  }
+
+  const closeModals = () => {
+    document.body.classList.remove('overflow-hidden')
+    closeAllModals()
+  }
+
   $: {
+    if (
+      typeof document !== 'undefined' &&
+      document.body.classList.contains('overflow-hidden') &&
+      isInAddMode === undefined
+    ) {
+      toggleBodyClassList()
+    }
     // Generate an id for skins.at(0) only if it is present but without an id.
     if (profile?.skins?.length && !profile.skins.at(0)?.id) {
       profile = {
@@ -351,108 +389,109 @@
   }
 </script>
 
-<div class="w-full">
-  <div
-    class="w-fit max-w-full flex gap-[15px] py-[8px] px-[16px] items-center justify-start"
-  >
-    <SkinSwitch
+<div
+  bind:this={self}
+  class={`${
+    typeof isInAddMode === 'string'
+      ? 'animate-[fadeOutFitToGrow_.5s_ease-in-out_forwards]'
+      : clicked
+        ? 'animate-[fadeInGrowToShrink_.5s_ease-in-out_forwards]'
+        : ''
+  }`}
+  style={`transform-origin: center ${transformYOrigin}px`}
+>
+  <div class="p-2 w-full max-w-screen-lg mx-auto">
+    <div
+      class="w-fit max-w-full flex gap-[15px] py-[8px] px-[16px] items-center justify-start"
+    >
+      <SkinSwitch
+        {eoa}
+        isEditing={true}
+        skins={profile?.skins ?? []}
+        selectedSkinId={skinId ?? profile?.skins?.at(0)?.id ?? ''}
+      />
+
+      <!-- Add new profile -->
+      <button
+        on:click|preventDefault={createNewSkin}
+        disabled={profileFetching || profileUpdating || isCreatingNewSkin}
+        class={`hs-button is-filled w-fit text-center ${isCreatingNewSkin ? 'animate-pulse' : ''} ${
+          createNewSkinStatus === 'success'
+            ? 'is-success'
+            : createNewSkinStatus === 'error'
+              ? 'is-error'
+              : ''
+        }`}
+      >
+        {isCreatingNewSkin
+          ? i18n('Saving')
+          : createNewSkinStatus === 'success'
+            ? i18n('Saved')
+            : createNewSkinStatus === 'error'
+              ? i18n('Error')
+              : i18n('AddNewProfile')}
+      </button>
+    </div>
+
+    <!-- Profile info edit -->
+    <EditUserProfileInfo {eoa} bind:profile {profileUpdating} />
+
+    <!-- Passport skin name -->
+    <EditPassportSkinName
       {eoa}
-      isEditing={true}
-      skins={profile?.skins ?? []}
-      selectedSkinId={skinId ?? profile?.skins?.at(0)?.id ?? ''}
+      bind:profile
+      bind:skinIndex
+      {profileFromAPI}
+      {profileFetching}
+      {profileUpdating}
     />
 
-    <!-- Add new profile -->
-    <button
-      on:click|preventDefault={createNewSkin}
-      disabled={profileFetching || profileUpdating || isCreatingNewSkin}
-      class={`hs-button is-filled w-fit text-center ${isCreatingNewSkin ? 'animate-pulse' : ''} ${
-        createNewSkinStatus === 'success'
-          ? 'is-success'
-          : createNewSkinStatus === 'error'
-            ? 'is-error'
-            : ''
-      }`}
-    >
-      {isCreatingNewSkin
-        ? i18n('Saving')
-        : createNewSkinStatus === 'success'
-          ? i18n('Saved')
-          : createNewSkinStatus === 'error'
-            ? i18n('Error')
-            : i18n('AddNewProfile')}
-    </button>
+    <!-- Passport skin theme -->
+    <EditPassportSkinTheme
+      {eoa}
+      {isLocal}
+      bind:profile
+      bind:skinIndex
+      {profileFromAPI}
+      {profileFetching}
+      {profileUpdating}
+      {purchasedSkinThemes}
+      purchasedSkinThemesFetching={purchasedPassportIAssetsFetching}
+    />
+
+    <!-- Passport skin spotlight -->
+    <EditPassportSkinSpotlight
+      {eoa}
+      {isLocal}
+      bind:profile
+      bind:skinIndex
+      {profileFromAPI}
+      {profileFetching}
+      {profileUpdating}
+      {hasSpotlightLimitReadched}
+      purchasedClips={purchasedSkinClips}
+      isFetchingPurchasedClips={purchasedPassportIAssetsFetching}
+      onClickCreateButton={clickAddSpotlight}
+    />
+
+    <!-- Passport skin showcase -->
+    <EditPassportSkinShowcase
+      {eoa}
+      {isLocal}
+      bind:profile
+      bind:skinIndex
+      {profileFromAPI}
+      {profileFetching}
+      {profileUpdating}
+      purchasedClips={purchasedSkinClips}
+      isFetchingPurchasedClips={purchasedPassportIAssetsFetching}
+      onClickCreateButton={clickAddShowcase}
+    />
   </div>
-
-  <!-- Profile info edit -->
-  <EditUserProfileInfo {eoa} bind:profile {profileUpdating} />
-
-  <!-- Passport skin name -->
-  <EditPassportSkinName
-    {eoa}
-    bind:profile
-    bind:skinIndex
-    {profileFromAPI}
-    {profileFetching}
-    {profileUpdating}
-  />
-
-  <!-- Passport skin theme -->
-  <EditPassportSkinTheme
-    {eoa}
-    {isLocal}
-    bind:profile
-    bind:skinIndex
-    {profileFromAPI}
-    {profileFetching}
-    {profileUpdating}
-    {purchasedSkinThemes}
-    purchasedSkinThemesFetching={purchasedPassportIAssetsFetching}
-  />
-
-  <!-- Passport skin spotlight -->
-  <EditPassportSkinSpotlight
-    {eoa}
-    {isLocal}
-    bind:profile
-    bind:skinIndex
-    {profileFromAPI}
-    {profileFetching}
-    {profileUpdating}
-    {hasSpotlightLimitReadched}
-    purchasedClips={purchasedSkinClips}
-    isFetchingPurchasedClips={purchasedPassportIAssetsFetching}
-  />
-
-  <!-- Passport skin showcase -->
-  <EditPassportSkinShowcase
-    {eoa}
-    {isLocal}
-    bind:profile
-    bind:skinIndex
-    {profileFromAPI}
-    {profileFetching}
-    {profileUpdating}
-    purchasedClips={purchasedSkinClips}
-    isFetchingPurchasedClips={purchasedPassportIAssetsFetching}
-  />
-
-  <!-- Edit page purchased clips -->
-  <EditPagePurchasedClips
-    {eoa}
-    {isLocal}
-    bind:profile
-    bind:skinIndex
-    {profileFetching}
-    {profileUpdating}
-    {hasSpotlightLimitReadched}
-    purchasedClips={purchasedSkinClips}
-    isFetchingPurchasedClips={purchasedPassportIAssetsFetching}
-  />
 
   {#if eoa === id}
     <div
-      class="my-[76px] flex w-full max-w-full items-center justify-start gap-2"
+      class="my-[76px] flex w-full p-2 max-w-screen-lg mx-auto items-center justify-start gap-2"
     >
       <button
         on:click={saveProfile}
@@ -523,3 +562,60 @@
     </div>
   {/if}
 </div>
+
+<!-- Edit page purchased clips -->
+{#if isInAddMode}
+  <EditPagePurchasedClips
+    {eoa}
+    {isLocal}
+    bind:profile
+    bind:skinIndex
+    {profileFetching}
+    {hasSpotlightLimitReadched}
+    purchasedClips={purchasedSkinClips}
+    isFetchingPurchasedClips={purchasedPassportIAssetsFetching}
+    bind:target={isInAddMode}
+  />
+{/if}
+
+<Modals>
+  <div
+    slot="backdrop"
+    on:click={closeModals}
+    class="fixed top-0 bottom-0 left-0 right-0 z-30 bg-black/50"
+    transition:fade={{ duration: 100 }}
+  />
+</Modals>
+
+<style>
+  @keyframes -global-fadeInShrinkToFit {
+    0% {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+    100% {
+      opacity: 100;
+      transform: scale(1);
+    }
+  }
+  @keyframes -global-fadeOutFitToGrow {
+    0% {
+      opacity: 100;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.5);
+    }
+  }
+  @keyframes -global-fadeInGrowToShrink {
+    0% {
+      opacity: 0;
+      transform: scale(1.5);
+    }
+    100% {
+      opacity: 100;
+      transform: scale(1);
+    }
+  }
+</style>

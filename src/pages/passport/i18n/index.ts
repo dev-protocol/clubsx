@@ -68,8 +68,12 @@ export const Strings = {
       `<b>パスポートクリップ</b> をスポットライトにピン留めしていません。<br /><i>クリエイティブでユニークなパスポートページを設定</i>するには、<b>今すぐパスポートクリップをスポットライトに固定</b>してください。`,
   },
   PinClipsToSpotlightHelper: {
-    en: () => `<b>NOTE</b>: You can pin 3 clips to your spotlight.`,
-    ja: () => `<b>注</b>:スポットライトには3つのクリップをピン留めできます。`,
+    en: () => `You can pin 3 clips to your spotlight.`,
+    ja: () => `スポットライトには3つのクリップをピン留めできます。`,
+  },
+  PinClipsToShowcaseHelper: {
+    en: () => `You can pin as many clips as you like to your showcase.`,
+    ja: () => `ショーケースにはいくつでもクリップをピン留めできます。`,
   },
   PurchasePassportClips: {
     en: () =>
