@@ -55,7 +55,8 @@
     "type-fest": "4.26.1",
     "typescript": "5.5.4",
     "vitest": "^1.0.0",
-    "vue-tsc": "^2.0.0"
+    "vue-tsc": "^2.0.0",
+    "xlsx": "^0.18.5"
   },
   "dependencies": {
     "@astrojs/check": "0.9.4",
@@ -131,8 +132,7 @@
     "uuid": "^10.0.0",
     "viem": "1.21.4",
     "vue": "3.4.38",
-    "web3modal": "1.9.12",
-    "xlsx": "^0.18.5"
+    "web3modal": "1.9.12"
   },
   "repository": "https://github.com/dev-protocol/clubs.git",
   "author": "",
