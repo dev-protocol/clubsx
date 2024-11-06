@@ -9,8 +9,8 @@ import Skeleton from '@components/Global/Skeleton.vue'
 import { Contract, type ContractRunner } from 'ethers'
 import type { AssetDocument } from '@fixtures/api/assets/schema'
 
-import type { ImageData } from '../../pages/passport/types'
-import { loadImage, ABI_NFT } from '../../pages/passport/utils'
+import type { ImageData } from '../types'
+import { loadImage, ABI_NFT } from '../utils'
 
 const props = defineProps<{
   item: AssetDocument

@@ -9,12 +9,12 @@ import { markdownToHtml, ProseTextInherit } from '@devprotocol/clubs-core'
 
 import Layout from '../../Layout.astro'
 import dummyData from '../../dummyData.json'
-import Icon from '@components/Passports/Icons.vue'
+import Icon from '../../components/Icons.vue'
 import type { PassportClip } from '../../types'
-import Like from '@components/Like.svelte'
-import UserAssets from '@components/Passports/UserAssets.vue'
-import PassportClips from '@components/Passports/PassportClips.vue'
-import UserProfileEditButton from '@components/UserProfileEditButton.svelte'
+import Like from '../../components/Like.svelte'
+import UserAssets from '../../components/UserAssets.vue'
+import PassportClips from '../../components/PassportClips.vue'
+import UserProfileEditButton from '../../components/UserProfileEditButton.svelte'
 
 const { eoa, ids } = Astro.params
 const isEOA = isAddress(eoa)
