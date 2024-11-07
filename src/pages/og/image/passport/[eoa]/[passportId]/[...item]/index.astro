@@ -18,32 +18,34 @@ import type { Clip } from '@pages/api/profile'
 import { clientsSTokens } from '@devprotocol/dev-kit'
 import { JsonRpcProvider } from 'ethers'
 
-const { default: playIconInnerHTML } = await import("./assets/play-icon.svg?raw")
+const { default: playIconInnerHTML } = await import(
+  './assets/play-icon.svg?raw'
+)
 
 const { eoa, passportId, item: itemPath } = Astro.params
 
 const profile = await whenDefined(eoa, (_eoa) => getProfile({ id: _eoa }))
 const skin = whenDefinedAll([passportId, profile], ([id, prof]) =>
-  prof.skins?.find((skin) => (skin as any).id === id)
+  prof.skins?.find((skin) => (skin as any).id === id),
 )
 const itemFromPath = whenDefined(itemPath, hashToItem)
 const item = whenDefinedAll([skin, itemFromPath], ([_skin, _item]) =>
   whenNotError(_item, ({ type, id }) =>
     _skin[type] instanceof Array
       ? (_skin[type].find((x: Clip) => x.sTokenId === id) as UndefinedOr<Clip>)
-      : _skin[type]
-  )
+      : _skin[type],
+  ),
 )
 const itemPayload = whenDefined(item, (_item) =>
   whenNotError(_item, (__item) =>
-    typeof __item === 'string' ? __item : __item.payload
-  )
+    typeof __item === 'string' ? __item : __item.payload,
+  ),
 )
 const [passportItemData, userProfile] = await Promise.all([
   whenDefined(itemPayload, (_payload) =>
     whenNotError(_payload, (__payload) =>
-      getPassportItemForPayload({ sTokenPayload: __payload })
-    )
+      getPassportItemForPayload({ sTokenPayload: __payload }),
+    ),
   ),
   whenDefined(eoa, (id) => getProfile({ id })),
 ])
@@ -59,7 +61,7 @@ const data = {
 }
 
 const provider = new JsonRpcProvider(
-  `https://polygon-mainnet.g.alchemy.com/v2/${import.meta.env.PUBLIC_ALCHEMY_KEY ?? ''}`
+  `https://polygon-mainnet.g.alchemy.com/v2/${import.meta.env.PUBLIC_ALCHEMY_KEY ?? ''}`,
 )
 // @ts-ignore
 const [l1, l2] = await clientsSTokens(provider)
@@ -110,22 +112,26 @@ const tokenURI =
           }
           {
             data?.passportItem?.itemAssetType === 'short-video' ||
-              data?.passportItem?.itemAssetType === 'short-video-link'
+            data?.passportItem?.itemAssetType === 'short-video-link' ? (
               // || // @TODO: uncomment this when the type is updated.
               // data?.passportItem?.itemAssetType === 'image-playable' ||
               // data?.passportItem?.itemAssetType === 'image-playable-link'
-                ? (
-                  <div
-                    class="absolute top-0 bottom-0 left-0 right-0 m-auto h-[7.5vw] w-[7.5vw]"
-                    class:list={{
-                      'text-white': data.isFrameDark,
-                      'text-black': !data.isFrameDark,
-                    }}
-                  >
-                    <Fragment set:html={playIconInnerHTML} className="w-full h-full" name="video-play"/>
-                  </div>
-                )
-                : <></>
+              <div
+                class="absolute top-0 bottom-0 left-0 right-0 m-auto h-[7.5vw] w-[7.5vw]"
+                class:list={{
+                  'text-white': data.isFrameDark,
+                  'text-black': !data.isFrameDark,
+                }}
+              >
+                <Fragment
+                  set:html={playIconInnerHTML}
+                  className="w-full h-full"
+                  name="video-play"
+                />
+              </div>
+            ) : (
+              <span />
+            )
           }
         </>
       </span>
@@ -171,7 +177,11 @@ const tokenURI =
 </html>
 
 <script>
-  document.getElementById("og-video-element")?.addEventListener("loadedmetadata", function() {
-    (this as HTMLVideoElement).currentTime = 5; // Start the video from 5th second.
-  }, false);
+  document.getElementById('og-video-element')?.addEventListener(
+    'loadedmetadata',
+    function () {
+      ;(this as HTMLVideoElement).currentTime = 5 // Start the video from 5th second.
+    },
+    false,
+  )
 </script>
