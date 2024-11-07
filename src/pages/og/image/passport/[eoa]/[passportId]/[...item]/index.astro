@@ -89,51 +89,49 @@ const tokenURI =
   >
     <main class="h-screen w-screen p-6 grid grid-cols-2 gap-6">
       <span class="relative cursor-pointer">
-        <>
-          {
-            data?.passportItem?.itemAssetType === 'short-video' ||
-            data?.passportItem?.itemAssetType === 'short-video-link' ? (
-              <video
-                loop
-                muted
-                autoplay
-                id="og-video-element"
-                poster={tokenURI ? tokenURI.image : ''}
-                src={data.passportItem.itemAssetValue || ''}
-                class="w-full h-full object-cover rounded-xl"
+        {
+          data?.passportItem?.itemAssetType === 'short-video' ||
+          data?.passportItem?.itemAssetType === 'short-video-link' ? (
+            <video
+              loop
+              muted
+              autoplay
+              id="og-video-element"
+              poster={tokenURI ? tokenURI.image : ''}
+              src={data.passportItem.itemAssetValue || ''}
+              class="w-full h-full object-cover rounded-xl"
+            />
+          ) : (
+            <img
+              id="og-image-element"
+              src={data.passportItem?.itemAssetValue}
+              class="w-full h-full object-cover rounded-xl"
+            />
+          )
+        }
+        {
+          data?.passportItem?.itemAssetType === 'short-video' ||
+          data?.passportItem?.itemAssetType === 'short-video-link' ? (
+            // || // @TODO: uncomment this when the type is updated.
+            // data?.passportItem?.itemAssetType === 'image-playable' ||
+            // data?.passportItem?.itemAssetType === 'image-playable-link'
+            <div
+              class="absolute top-0 bottom-0 left-0 right-0 m-auto h-[7.5vw] w-[7.5vw]"
+              class:list={{
+                'text-white': data.isFrameDark,
+                'text-black': !data.isFrameDark,
+              }}
+            >
+              <Fragment
+                set:html={playIconInnerHTML}
+                className="w-full h-full"
+                name="video-play"
               />
-            ) : (
-              <img
-                id="og-image-element"
-                src={data.passportItem?.itemAssetValue}
-                class="w-full h-full object-cover rounded-xl"
-              />
-            )
-          }
-          {
-            data?.passportItem?.itemAssetType === 'short-video' ||
-            data?.passportItem?.itemAssetType === 'short-video-link' ? (
-              // || // @TODO: uncomment this when the type is updated.
-              // data?.passportItem?.itemAssetType === 'image-playable' ||
-              // data?.passportItem?.itemAssetType === 'image-playable-link'
-              <div
-                class="absolute top-0 bottom-0 left-0 right-0 m-auto h-[7.5vw] w-[7.5vw]"
-                class:list={{
-                  'text-white': data.isFrameDark,
-                  'text-black': !data.isFrameDark,
-                }}
-              >
-                <Fragment
-                  set:html={playIconInnerHTML}
-                  className="w-full h-full"
-                  name="video-play"
-                />
-              </div>
-            ) : (
-              <span />
-            )
-          }
-        </>
+            </div>
+          ) : (
+            <span />
+          )
+        }
       </span>
 
       <span class="grid grid-cols-1 grid-rows-[1fr_auto]">
