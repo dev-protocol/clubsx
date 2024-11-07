@@ -126,7 +126,7 @@ onMounted(async () => {
           </div>
           <button
             v-if="props.share"
-            @click="shareClip"
+            @click.stop.prevent="shareClip"
             class="size-6 rounded-full"
           >
             <Icons icon="share" />
