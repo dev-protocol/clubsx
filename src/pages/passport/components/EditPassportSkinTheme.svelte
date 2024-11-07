@@ -107,10 +107,11 @@
         {i18n('Empty')} :) <br />{@html i18n('PurchasePassportSkin')}
       </div>
     {:else if !purchasedSkinThemesFetching && purchasedSkinThemes?.length}
-      <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
+      <ul class="grid gap-4 grid-cols-[repeat(auto-fill,minmax(160px,1fr))]">
         {#each purchasedSkinThemes as item, i}
           <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
             <button
+              class="w-full"
               disabled={!eoa ||
                 !purchasedSkinThemes.length ||
                 profileFetching ||
@@ -126,7 +127,7 @@
                   classNames:
                     profile.skins?.at(skinIndex)?.theme === item.payload
                       ? 'border-2 border-surface-ink'
-                      : 'border border-surface-300',
+                      : '',
                 }}
               />
             </button>
