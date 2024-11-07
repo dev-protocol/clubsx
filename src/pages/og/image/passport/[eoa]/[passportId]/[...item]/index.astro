@@ -6,6 +6,7 @@ import {
   isNotError,
   type UndefinedOr,
 } from '@devprotocol/util-ts'
+import { JsonRpcProvider } from 'ethers'
 import { getPassportItemForPayload } from '@fixtures/api/passportItem'
 import { getProfile } from '@fixtures/api/profile'
 import { hashToItem } from '@fixtures/router/passportItem'
@@ -15,6 +16,7 @@ import { isDark } from '@fixtures/color'
 import { ClubsLogo } from '@devprotocol/clubs-core/layouts'
 import Description from './components/Description.vue'
 import type { Clip } from '@pages/api/profile'
+import { clientsSTokens } from '@devprotocol/dev-kit'
 
 const { eoa, passportId, item: itemPath } = Astro.params
 
@@ -22,6 +24,7 @@ const profile = await whenDefined(eoa, (_eoa) => getProfile({ id: _eoa }))
 const skin = whenDefinedAll([passportId, profile], ([id, prof]) =>
   prof.skins?.find((skin) => (skin as any).id === id),
 )
+
 const itemFromPath = whenDefined(itemPath, hashToItem)
 const item = whenDefinedAll([skin, itemFromPath], ([_skin, _item]) =>
   whenNotError(_item, ({ type, id }) =>
@@ -35,6 +38,7 @@ const itemPayload = whenDefined(item, (_item) =>
     typeof __item === 'string' ? __item : __item.payload,
   ),
 )
+
 const [passportItemData, userProfile] = await Promise.all([
   whenDefined(itemPayload, (_payload) =>
     whenNotError(_payload, (__payload) =>
@@ -53,6 +57,17 @@ const data = {
       ? isDark(item.frameColorHex)
       : false,
 }
+
+const provider = new JsonRpcProvider(
+  `https://polygon-mainnet.g.alchemy.com/v2/${import.meta.env.PUBLIC_ALCHEMY_KEY ?? ''}`,
+)
+// @ts-ignore
+const [l1, l2] = await clientsSTokens(provider)
+const contract = l1 ?? l2
+const tokenURI =
+  item && !(item instanceof Error)
+    ? await contract?.tokenURI(Number(item.sTokenId))
+    : undefined
 ---
 
 <html lang="en" hashi-theme="light">
@@ -73,7 +88,18 @@ const data = {
     <main class="h-screen w-screen p-6 grid grid-cols-2 gap-6">
       <span>
         {
-          data.passportItem?.itemAssetValue ? (
+          data.passportItem?.itemAssetType === 'short-video' ||
+          data.passportItem?.itemAssetType === 'short-video-link' ? (
+            <video
+              loop
+              muted
+              controls
+              autoplay
+              src={data.passportItem.itemAssetValue}
+              poster={tokenURI ? tokenURI.image : ''}
+              class="w-full h-full object-cover rounded-xl"
+            />
+          ) : data.passportItem?.itemAssetValue ? (
             <img
               src={data.passportItem.itemAssetValue}
               class="w-full h-full object-cover rounded-xl"
@@ -115,6 +141,7 @@ const data = {
         item,
         itemPayload,
         passportItemData,
+        tokenURI,
       }}
     />
   </div>
