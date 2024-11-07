@@ -86,19 +86,57 @@ const tokenURI =
     }}
   >
     <main class="h-screen w-screen p-6 grid grid-cols-2 gap-6">
-      <span>
+      <span class="relative cursor-pointer">
         {
           data.passportItem?.itemAssetType === 'short-video' ||
           data.passportItem?.itemAssetType === 'short-video-link' ? (
-            <video
-              loop
-              muted
-              controls
-              autoplay
-              src={data.passportItem.itemAssetValue}
-              poster={tokenURI ? tokenURI.image : ''}
-              class="w-full h-full object-cover rounded-xl"
-            />
+            <>
+              <video
+                loop
+                muted
+                controls
+                autoplay
+                src={data.passportItem.itemAssetValue || ''}
+                poster={tokenURI ? tokenURI.image : ''}
+                class="w-full h-full object-cover rounded-xl"
+              />
+              <div
+                class="absolute top-0 bottom-0 left-0 right-0 m-auto h-[7.5vw] w-[7.5vw]"
+                class:list={{
+                  'text-white': data.isFrameDark,
+                  'text-black': !data.isFrameDark,
+                }}
+              >
+                <svg
+                  class="w-full h-full"
+                  id="Layer_1"
+                  data-name="Layer 1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  width="24"
+                  height="24"
+                  color="#000000"
+                  stroke="currentColor"
+                  class:list={{
+                    'text-white': data.isFrameDark,
+                    'text-black': !data.isFrameDark,
+                  }}
+                >
+                  <defs>
+                    <style>
+                      .cls-6374f543b67f094e4896c5e6-1 {
+                        fill: none;
+                        stroke: currentColor;
+                        stroke-miterlimit: 10;
+                      }
+                    </style>
+                  </defs>
+                  <circle class="cls-6374f543b67f094e4896c5e6-1" cx="12" cy="12" r="10.5"></circle>
+                  <polygon class="cls-6374f543b67f094e4896c5e6-1" points="17.73 12 9.14 16.77 9.14 7.23 17.73 12"></polygon>
+                </svg>
+              </div>
+            </>
           ) : data.passportItem?.itemAssetValue ? (
             <img
               src={data.passportItem.itemAssetValue}
