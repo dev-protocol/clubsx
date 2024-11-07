@@ -4,10 +4,16 @@ import {
   type ErrorOr,
 } from '@devprotocol/util-ts'
 import type { Skin } from '@pages/api/profile'
+import { tryCatch } from 'ramda'
 
-export const itemTypeToKey = (type: keyof Skin) => {
+export type ClipTypes = Exclude<
+  keyof Skin,
+  'id' | 'name' | 'theme' | 'likes' | 'isHidden'
+>
+
+export const itemTypeToKey = (type: ClipTypes) => {
   const t =
-    (type as string) === 'spotlight'
+    type === 'spotlight'
       ? 't1'
       : type === 'clips'
         ? 't2'
@@ -30,23 +36,23 @@ export const itemKeyToType = (type: string) => {
 }
 
 export const itemToHash = (
-  type: keyof Skin,
-  index: number,
+  type: ClipTypes,
+  sTokenId: number | string,
 ): ErrorOr<string> => {
   const t = itemTypeToKey(type)
-  return whenNotError(t, (_t) => `${_t}:${index}`)
+  return whenNotError(t, (_t) => `${_t}-i${sTokenId}`)
 }
 
 export const hashToItem = (value: string) => {
-  const [typeStr, indexStr] = value.split(':')
+  const [typeStr, indexStr] = value.split('-')
   const type = itemKeyToType(typeStr)
-  const index = ((num) =>
-    isNaN(num) ? new Error('Unexpected index is passed') : num)(
-    Number(indexStr.replace(/^i([0-9]+).*/, '$1')),
-  )
+  const id = tryCatch(
+    (num: string) => BigInt(num),
+    () => new Error('Unexpected index is passed'),
+  )(indexStr.replace(/^i([0-9]+).*/, '$1'))
 
-  return whenNotErrorAll([type, index], ([_type, _index]) => ({
-    type: _type as 'clips' | 'videos',
-    index: _index,
+  return whenNotErrorAll([type, id], ([_type, _id]) => ({
+    type: _type as ClipTypes,
+    id: _id.toString(),
   }))
 }

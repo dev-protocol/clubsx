@@ -52,14 +52,14 @@
   <!-- on:introstart and on:outroend are required to transition 1 at a time between modals -->
   <div
     role="dialog"
-    class="fixed left-1/2 -translate-x-1/2 bottom-0 lg:top-12 lg:bottom-auto flex justify-center items-end lg:items-start z-50 overflow-y-scroll max-h-full w-full max-w-2xl"
+    class="fixed pointer-events-none fixed top-0 bottom-0 left-0 right-0 overflow-y-auto flex justify-center items-end lg:items-center lg:py-6 backdrop-blur-md bg-black/30 z-50"
     transition:fly={{ y: 500 }}
     on:introstart
     on:outroend
     on:close={onClickClose}
   >
     <div
-      class="flex flex-col w-full max-w-2xl items-center justify-center rounded-t-3xl lg:rounded-b-3xl border-x border-t border-surface-200 bg-surface-600 p-12 text-surface-ink subpixel-antialiased shadow-xl lg:pb-32 gap-6"
+      class="flex pointer-events-auto mx-auto mb-0 lg:m-auto flex-col w-full max-w-2xl items-center justify-center rounded-t-3xl lg:rounded-b-3xl border-x border-t border-surface-200 bg-surface-600 p-12 text-surface-ink subpixel-antialiased shadow-xl lg:pb-32 gap-6"
     >
       <div class="w-full flex items-center justify-between">
         <button on:click|preventDefault={onClickClose} class="w-6 h-6">
