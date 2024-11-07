@@ -183,7 +183,9 @@
         item.itemAssetType === 'image' ||
         item.itemAssetType === 'image-link' ||
         item.itemAssetType === 'short-video' ||
-        item.itemAssetType === 'short-video-link',
+        item.itemAssetType === 'short-video-link' ||
+        item.itemAssetType === 'image-playable' ||
+        item.itemAssetType === 'image-playable-link',
     )
   }
 
