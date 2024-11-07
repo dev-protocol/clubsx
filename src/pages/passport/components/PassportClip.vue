@@ -1,34 +1,35 @@
 <script lang="ts" setup>
 import { always } from 'ramda'
 import { computed, onMounted, ref } from 'vue'
-import { whenDefined } from '@devprotocol/util-ts'
+import { isNotError, whenDefined, type UndefinedOr } from '@devprotocol/util-ts'
 import { itemToHash } from '@fixtures/router/passportItem'
 import { decode, markdownToHtml } from '@devprotocol/clubs-core'
 
 import MediaCard from './MediaCard.vue'
 import type { PassportClip } from '../types'
+import Skeleton from '@components/Global/Skeleton.vue'
+import Icons from './Icons.vue'
 
 const props = defineProps<{
   index: number
   item: PassportClip
   truncate?: boolean
   skinSection: 'spotlight' | 'clips'
+  share?: boolean
+  clubsLink?: boolean
 }>()
 
 const SITE_NAME =
   new URL(props.item.clubsUrl)?.hostname?.split('.')?.at(0) ?? 'developers'
-const API_PATH = `api/config/${SITE_NAME}`
+const API_PATH = `/api/clubs/?id=${SITE_NAME}`
 
-const elementId = ref<string>()
-const clubConfig = ref<string>()
-
-const clubApiAlt = computed(() => {
-  return window.location.hostname.includes('prerelease.clubs.place')
-    ? `https://prerelease.clubs.place/${API_PATH}`
-    : window.location.hostname.includes('clubs.place')
-      ? `https://clubs.place/${API_PATH}`
-      : `http://localhost:${window.location.port}/${API_PATH}`
+const elementId = computed<UndefinedOr<string>>(() => {
+  const id = whenDefined(props.item.sTokenId, (id) =>
+    itemToHash(props.skinSection ?? 'clips', id),
+  )
+  return isNotError(id) ? id : ''
 })
+const clubConfig = ref<string>()
 
 const clubName = computed(() => {
   return whenDefined(clubConfig.value, (config) => decode(config).name)
@@ -41,7 +42,18 @@ const description = computed(() => {
 const fetchClub = async (api: string) => {
   return await fetch(api)
     .then((res) => res.json())
-    .then((res) => res as null | { content: string | null; message: string })
+    .then(
+      (res) =>
+        res as
+          | null
+          | [
+              {
+                id: string
+                propertyAddress: string
+                config: { source: string }
+              },
+            ],
+    )
     .catch(always(null))
 }
 
@@ -52,98 +64,75 @@ const shareClip = () => {
     text: props.item.description,
     url:
       window.location.href.split('#').at(0) +
-      `#${itemToHash(props.skinSection ?? 'clips', props.index)}`,
+      (whenDefined(
+        props.item.sTokenId,
+        (id) => `#${itemToHash(props.skinSection ?? 'clips', id)}`,
+      ) ?? ''),
   })
 }
 
 onMounted(async () => {
   const clubApiPri = await fetchClub(`/${API_PATH}`)
-  const clubApi = clubApiPri ? clubApiPri : await fetchClub(clubApiAlt.value)
-  clubConfig.value = clubApi?.content ?? undefined
-
-  const _elementId = itemToHash(props.skinSection ?? 'clips', props.index)
-  elementId.value = _elementId instanceof Error ? '' : (_elementId ?? '')
+  const clubApi = clubApiPri ? clubApiPri : await fetchClub(API_PATH)
+  clubConfig.value = clubApi?.[0].config.source ?? undefined
 })
 </script>
 
 <template>
-  <div
-    v-if="!!item"
-    :id="elementId"
-    :class="{
-      'bg-surface-200': !item.frameColorHex,
-    }"
-    :style="{
-      backgroundColor: item.frameColorHex,
-    }"
-    class="shadow-md rounded-md h-full p-4 grid gap-4 border border-surface-300 content-between"
-  >
-    <MediaCard
-      :found="!!item"
-      :src="item.itemAssetValue"
-      :type="item.itemAssetType"
-    />
+  <div class="@container/passport-asset w-full h-full">
+    <div
+      v-if="!!item"
+      :id="elementId"
+      :class="{
+        'bg-surface-200': !item.frameColorHex,
+      }"
+      :style="{
+        backgroundColor: item.frameColorHex,
+      }"
+      class="shadow-md rounded-md h-fit grid gap-1 content-start w-full overflow-hidden border border-black/20"
+    >
+      <span class="p-0.5 @[16rem]/passport-asset:p-4">
+        <MediaCard
+          :found="!!item"
+          :src="item.itemAssetValue"
+          :type="item.itemAssetType"
+        />
+      </span>
 
-    <article
-      v-if="description"
-      v-html="description"
-      :class="{ 'overflow-hidden': props.truncate ?? true }"
-    ></article>
+      <span class="p-1 @[16rem]/passport-asset:p-4">
+        <article
+          v-if="description"
+          v-html="description"
+          class="description text-sm @[16rem]/passport-asset:text-base"
+          :class="{ 'line-clamp-1': props.truncate ?? true }"
+        ></article>
 
-    <div class="flex w-full max-w-full items-center justify-between">
-      <a v-if="clubName" :href="props.item.clubsUrl">{{ clubName }}</a>
+        <div class="flex w-full max-w-full items-center justify-between">
+          <span
+            v-if="clubName && !props.clubsLink"
+            class="line-clamp-1 opacity-50 text-sm @[16rem]/passport-asset:text-base"
+            >{{ clubName }}</span
+          >
+          <a
+            v-if="clubName && props.clubsLink"
+            :href="props.item.clubsUrl"
+            target="_blank"
+            class="line-clamp-1 opacity-50 text-sm @[16rem]/passport-asset:text-base"
+            >{{ clubName }}</a
+          >
 
-      <button @click="shareClip" class="w-6 h-6 rounded-full">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          width="24"
-          height="24"
-          stroke="currentColor"
-        >
-          <circle
-            cx="19.64"
-            cy="4.36"
-            r="2.86"
-            class="stroke-miterlimit-10"
-            stroke="currentColor"
-            fill="currentColor"
-          ></circle>
-          <circle
-            cx="4.36"
-            cy="12"
-            r="2.86"
-            class="stroke-miterlimit-10"
-            stroke="currentColor"
-            fill="currentColor"
-          ></circle>
-          <circle
-            cx="19.64"
-            cy="19.64"
-            r="2.86"
-            class="stroke-miterlimit-10"
-            stroke="currentColor"
-            fill="currentColor"
-          ></circle>
-          <line
-            x1="17.08"
-            y1="5.64"
-            x2="6.92"
-            y2="10.72"
-            class="stroke-miterlimit-10"
-            stroke="currentColor"
-          ></line>
-          <line
-            x1="17.08"
-            y1="18.36"
-            x2="6.92"
-            y2="13.28"
-            class="stroke-miterlimit-10"
-            stroke="currentColor"
-          ></line>
-        </svg>
-      </button>
+          <div v-if="!clubName" class="h-4 w-1/2">
+            <Skeleton />
+          </div>
+          <button
+            v-if="props.share"
+            @click="shareClip"
+            class="size-6 rounded-full"
+          >
+            <Icons icon="share" />
+          </button>
+        </div>
+      </span>
     </div>
   </div>
 </template>
@@ -153,5 +142,8 @@ article {
   &.overflow-hidden p {
     @apply truncate;
   }
+}
+.description p {
+  font-size: inherit;
 }
 </style>

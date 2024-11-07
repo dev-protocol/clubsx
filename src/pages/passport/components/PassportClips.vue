@@ -6,6 +6,8 @@ import Modal from '@pages/passport/components/Modal.vue'
 import { Strings } from '../i18n'
 import type { PassportClip } from '../types'
 import PassportClipCard from './PassportClip.vue'
+import { passportSpotlightClass } from '@fixtures/ui/passport'
+import PassportClipModal from './PassportClipModal.vue'
 
 const props = defineProps<{
   id: string
@@ -40,19 +42,34 @@ onMounted(async () => {
 <template>
   <section class="grid gap-8">
     <ul
-      class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))] content-stretch"
+      :class="[
+        {
+          [passportSpotlightClass(clips.length).container]:
+            skinSection === 'spotlight',
+        },
+        {
+          ['grid gap-1 lg:gap-4 grid-cols-3 content-stretch']:
+            skinSection === 'clips',
+        },
+      ]"
     >
       <li
-        :key="index"
-        class="empty:hidden"
         v-if="clips?.length"
         v-for="(clip, index) in clips"
+        :key="index"
+        :class="[
+          {
+            [passportSpotlightClass(clips.length).child[index]]:
+              skinSection === 'spotlight',
+          },
+        ]"
       >
         <PassportClipCard
           :item="clip"
           :index="index"
           :truncate="true"
           :skinSection="skinSection"
+          class="cursor-pointer"
           @click="
             () => {
               handleOnClick(clip, index)
@@ -67,12 +84,14 @@ onMounted(async () => {
     v-if="modalVisible"
     :is-visible="modalVisible"
     :handle-modal-close="modalClose"
-    :modal-content="PassportClipCard"
+    :modal-content="PassportClipModal"
     :attrs="{
       item: modalItem,
       index: modalItemIndex,
       truncate: false,
       classes: 'max-w-screen-md',
+      share: true,
+      clubsLink: true,
     }"
   />
 </template>

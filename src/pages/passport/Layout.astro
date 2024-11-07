@@ -15,6 +15,7 @@ type Props = {
   selectedSkinId: string
   sTokenPayload?: string
   theme?: 'light' | 'dark' | 'auto'
+  preload?: { as: string; href: string }[]
 }
 
 const {
@@ -23,7 +24,8 @@ const {
   skins = [],
   eoa = '',
   selectedSkinId = '',
-} = Astro.props
+  preload = [],
+} = Astro.props as Props
 
 const name = 'Clubs'
 const url = 'https://www.clubs.place/'
@@ -59,6 +61,12 @@ const passportSkinTheme = await whenDefined(sTokenPayload, (payload: string) =>
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap"
       rel="stylesheet"
     />
+
+    {
+      preload.map((item) => (
+        <link rel="preload" as={item.as} href={item.href} />
+      ))
+    }
 
     {
       passportSkinTheme?.itemAssetType === 'stylesheet-link' && (

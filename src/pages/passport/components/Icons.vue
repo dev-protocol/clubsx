@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { computed } from 'vue'
+
 const props = defineProps<{
   icon:
     | 'x'
@@ -9,14 +11,17 @@ const props = defineProps<{
     | 'muted'
     | 'music_waves'
     | 'likes'
+    | 'share'
+  class?: string
 }>()
+const classNames = computed(() => props.class ?? 'size-6')
 </script>
 
 <template>
   <!-- First social -->
   <svg
     v-if="props.icon === 'x'"
-    class="h-6 w-6"
+    :class="classNames"
     width="25"
     height="23"
     viewBox="0 0 25 23"
@@ -44,7 +49,7 @@ const props = defineProps<{
   <!-- Second social -->
   <svg
     v-if="props.icon === 'twitch'"
-    class="w-6 h-6"
+    :class="classNames"
     width="19"
     height="23"
     viewBox="0 0 19 23"
@@ -80,7 +85,7 @@ const props = defineProps<{
   <!-- Third social -->
   <svg
     v-if="props.icon === 'instagram'"
-    class="w-6 h-6"
+    :class="classNames"
     width="22"
     height="23"
     viewBox="0 0 22 23"
@@ -141,7 +146,7 @@ const props = defineProps<{
   <!-- Fourth social -->
   <svg
     v-if="props.icon === 'tiktok'"
-    class="w-6 h-6"
+    :class="classNames"
     width="20"
     height="23"
     viewBox="0 0 20 23"
@@ -169,7 +174,7 @@ const props = defineProps<{
   <!-- Fifth Social -->
   <svg
     v-if="props.icon === 'youtube'"
-    class="w-6 h-6"
+    :class="classNames"
     width="22"
     height="23"
     viewBox="0 0 22 23"
@@ -200,7 +205,7 @@ const props = defineProps<{
   <svg
     v-if="props.icon === 'muted'"
     xmlns="http://www.w3.org/2000/svg"
-    class="w-6 h-6"
+    :class="classNames"
     viewBox="0 0 24 24"
     fill="none"
   >
@@ -277,6 +282,7 @@ const props = defineProps<{
     <svg
       width="106"
       height="106"
+      :class="classNames"
       viewBox="0 0 106 106"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -331,4 +337,19 @@ const props = defineProps<{
       </defs>
     </svg>
   </div>
+
+  <!-- Share Button -->
+  <svg
+    v-if="props.icon === 'share'"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    :class="classNames"
+  >
+    <path
+      fill-rule="evenodd"
+      d="M15.75 4.5a3 3 0 1 1 .825 2.066l-8.421 4.679a3.002 3.002 0 0 1 0 1.51l8.421 4.679a3 3 0 1 1-.729 1.31l-8.421-4.678a3 3 0 1 1 0-4.132l8.421-4.679a3 3 0 0 1-.096-.755Z"
+      clip-rule="evenodd"
+    />
+  </svg>
 </template>

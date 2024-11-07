@@ -16,8 +16,8 @@ export type Skin = {
   name?: string // identifier for passport config
   theme?: Payload // Pointing to PassportItem.sTokenPayload
   clips?: Clip[] // Token payloads of pinned clips
-  videos?: Payload[] // for the future use cases
-  bgm?: Payload // for the future use cases
+  videos?: Clip[] // for the future use cases
+  bgm?: Clip // for the future use cases
   likes?: number
   spotlight?: Clip[]
   isHidden?: boolean

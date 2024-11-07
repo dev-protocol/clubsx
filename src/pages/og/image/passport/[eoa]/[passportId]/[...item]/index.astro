@@ -4,6 +4,7 @@ import {
   whenDefinedAll,
   whenNotError,
   isNotError,
+  type UndefinedOr,
 } from '@devprotocol/util-ts'
 import { getPassportItemForPayload } from '@fixtures/api/passportItem'
 import { getProfile } from '@fixtures/api/profile'
@@ -13,6 +14,7 @@ import '@devprotocol/clubs-core/styles'
 import { isDark } from '@fixtures/color'
 import { ClubsLogo } from '@devprotocol/clubs-core/layouts'
 import Description from './components/Description.vue'
+import type { Clip } from '@pages/api/profile'
 
 const { eoa, passportId, item: itemPath } = Astro.params
 
@@ -22,7 +24,11 @@ const skin = whenDefinedAll([passportId, profile], ([id, prof]) =>
 )
 const itemFromPath = whenDefined(itemPath, hashToItem)
 const item = whenDefinedAll([skin, itemFromPath], ([_skin, _item]) =>
-  whenNotError(_item, ({ type, index }) => _skin[type]?.[index]),
+  whenNotError(_item, ({ type, id }) =>
+    _skin[type] instanceof Array
+      ? (_skin[type].find((x: Clip) => x.sTokenId === id) as UndefinedOr<Clip>)
+      : _skin[type],
+  ),
 )
 const itemPayload = whenDefined(item, (_item) =>
   whenNotError(_item, (__item) =>

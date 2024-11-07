@@ -6,6 +6,7 @@ import { whenDefined } from '@devprotocol/util-ts'
 import { passportClass } from '@fixtures/ui/passport'
 import { getPassportItemForPayload } from '@fixtures/api/passportItem'
 import { markdownToHtml, ProseTextInherit } from '@devprotocol/clubs-core'
+import RedHeart from '@assets/emoji-red-heart.png'
 
 import Layout from '../../Layout.astro'
 import dummyData from '../../dummyData.json'
@@ -44,9 +45,11 @@ const _currentLikes = id
 
 const passportSkinBGMs = await whenDefined(_passportSkinBGMs, () =>
   getPassportItemForPayload({
-    sTokenPayload: _passportSkinBGMs ?? '',
+    sTokenPayload: _passportSkinBGMs?.payload ?? '',
   })
-    .then((item) => (item instanceof Error ? undefined : item))
+    .then((item) =>
+      item instanceof Error ? undefined : { ..._passportSkinBGMs, ...item },
+    )
     .catch(() => undefined),
 )
 
@@ -59,8 +62,10 @@ const passportSkinVideos = await whenDefined(
 
     return Promise.all(
       videos.map((item) =>
-        getPassportItemForPayload({ sTokenPayload: item ?? '' })
-          .then((item) => (item instanceof Error ? undefined : item))
+        getPassportItemForPayload({ sTokenPayload: item?.payload ?? '' })
+          .then((clip) =>
+            clip instanceof Error ? undefined : { ...item, ...clip },
+          )
           .catch(() => undefined),
       ) ?? [],
     )
@@ -85,6 +90,7 @@ const passportSkinClips = await whenDefined(
               (clip instanceof Error
                 ? undefined
                 : {
+                    ...item,
                     ...clip,
                     description: item.description,
                     frameColorHex: item.frameColorHex,
@@ -114,6 +120,7 @@ const passportSpotlight = await whenDefined(
               (spotlight instanceof Error
                 ? undefined
                 : {
+                    ...item,
                     ...spotlight,
                     description: item.description,
                     frameColorHex: item.frameColorHex,
@@ -135,12 +142,20 @@ const passportSpotlight = await whenDefined(
   sTokenPayload={skin?.theme}
   skins={profile?.skins ?? []}
   selectedSkinId={skin?.id ?? ''}
+  preload={[{ as: 'image', href: RedHeart.src }]}
 >
-  <div class="grid gap-24 clear-right">
+  <div class="grid gap-6 lg:gap-24">
     <section class:list={passportClass('account-container')}>
       <span
-        class="grid grid-cols-[6rem_1fr] lg:grid-cols-[10rem_1fr_auto] justify-items-start max-w-screen-lg mx-auto px-4 gap-6 lg:gap-y-8"
-        class:list={passportClass('account-content')}
+        class="grid grid-cols-[3rem_1fr] lg:grid-cols-[10rem_1fr_auto] justify-items-start max-w-screen-lg mx-auto px-2 gap-6 lg:gap-y-8"
+        class:list={[
+          passportClass('account-content'),
+          {
+            'grid-rows-[auto_auto_auto_auto] lg:grid-rows-[auto_auto_auto]':
+              passportSkinBGMs,
+          },
+          { 'grid-rows-[auto_auto_auto]': !passportSkinBGMs },
+        ]}
       >
         <span
           class="col-start-1 col-span-1"
@@ -163,22 +178,24 @@ const passportSpotlight = await whenDefined(
           class:list={passportClass('username-container')}
         >
           <span
-            class="flex justify-center items-center gap-6 px-3 py-1.5 lg:px-6 lg:py-3 rounded-xl bg-surface-200"
+            class="grid grid-flow-col justify-center items-center gap-6 px-3 py-1.5 lg:px-6 lg:py-3 rounded-xl bg-surface-200"
             class:list={passportClass('username-content')}
           >
             <span
-              class="text-2xl lg:text-4xl font-bold"
+              class="text-xl lg:text-4xl font-bold text-ellipsis overflow-hidden line-clamp-1"
               class:list={passportClass('username')}
             >
               {profile.username}
             </span>
 
-            <UserProfileEditButton
-              client:only="svelte"
-              address={eoa}
-              skinId={skin?.id ?? ''}
-              additionalClasses={passportClass('edit-button')}
-            />
+            <span class="empty:hidden">
+              <UserProfileEditButton
+                client:only="svelte"
+                address={eoa}
+                skinId={skin?.id ?? ''}
+                additionalClasses={passportClass('edit-button')}
+              />
+            </span>
           </span>
         </span>
 
@@ -209,7 +226,7 @@ const passportSpotlight = await whenDefined(
         {
           profile?.sns && (
             <span
-              class="col-start-1 col-span-2 lg:col-span-3 row-start-3 row-span-1 lg:row-start-2"
+              class="col-start-1 col-span-2 lg:col-span-3 lg:row-start-2"
               class:list={passportClass('links-container')}
             >
               <span
@@ -257,7 +274,7 @@ const passportSpotlight = await whenDefined(
         }
 
         <span
-          class="col-start-1 col-span-2 lg:col-span-3 row-start-4 lg:row-start-3 row-span-1 w-full"
+          class="col-start-1 col-span-2 lg:col-span-3 lg:row-start-3 w-full"
           class:list={[passportClass('description-container')]}
         >
           <span
@@ -275,7 +292,7 @@ const passportSpotlight = await whenDefined(
 
     {
       passportSkinVideos && (
-        <section class="grid justify-items-start max-w-screen-lg mx-auto px-4 gap-24 mb-10">
+        <section class="grid justify-items-start w-full max-w-screen-lg mx-auto px-4 gap-6 lg:gap-24 mb-10">
           <span class:list={passportClass('video-container')}>
             <span class:list={passportClass('video-content')}>
               <img
@@ -291,7 +308,7 @@ const passportSpotlight = await whenDefined(
     }
 
     <section
-      class="grid justify-items-start max-w-screen-lg mx-auto px-4 gap-24 mb-10"
+      class="grid w-full max-w-screen-lg mx-auto px-2 gap-6 lg:gap-24 mb-10"
     >
       {
         passportSpotlight?.length && (
@@ -299,7 +316,7 @@ const passportSpotlight = await whenDefined(
             <div class:list={passportClass('spotlight-content')}>
               <PassportClips
                 id={id}
-                client:only="vue"
+                client:load
                 skinSection="spotlight"
                 clips={passportSpotlight}
               />
@@ -314,7 +331,7 @@ const passportSpotlight = await whenDefined(
             <div class:list={passportClass('clips-content')}>
               <PassportClips
                 id={id}
-                client:only="vue"
+                client:load
                 skinSection="clips"
                 clips={passportSkinClips}
               />
@@ -323,15 +340,31 @@ const passportSpotlight = await whenDefined(
         )
       }
 
-      {isEOA && <UserAssets client:load account={eoa ?? ''} local={isLocal} />}
+      {
+        isEOA && (
+          <div class:list={passportClass('all-assets-container')}>
+            <details class:list={passportClass('all-assets-content')}>
+              <summary class="hs-button is-filled is-small mb-8">
+                All assets
+              </summary>
+              <UserAssets client:load account={eoa ?? ''} local={isLocal} />
+            </details>
+          </div>
+        )
+      }
 
-      <a href={`/passport/${eoa}/clubs`} class="hs-link place-self-start"
-        >Clubs</a
-      >
+      {
+        /**
+         * Hidden now
+        <a href={`/passport/${eoa}/clubs`} class="hs-link place-self-start"
+          >Clubs</a
+        >
+         */
+      }
     </section>
   </div>
 
-  <div class="sticky float-right bottom-0 p-2 lg:p-6">
+  <div class="fixed bottom-0 right-0 p-2 lg:p-6">
     <Like
       client:load
       props={{
