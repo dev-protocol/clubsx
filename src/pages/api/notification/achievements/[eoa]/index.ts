@@ -26,67 +26,72 @@ export const GET: APIRoute = async (req) => {
 
   const client = await getDefaultClient()
 
-  const allAchievementToEOA : AchievementDist[] = await whenNotError(eoa, (addr) =>
-    client.ft
-      .search(
-        AchievementIndex.AchievementDist,
-        `@${ACHIEVEMENT_DIST_SCHEMA['$.conditions.recipients'].AS}:${addr}`,
-        {
-          SORTBY: {
-            BY: ACHIEVEMENT_DIST_SCHEMA['$.createdOnTimestamp'].AS,
-            DIRECTION: 'DESC',
+  const allAchievementToEOA: AchievementDist[] = await whenNotError(
+    eoa,
+    (addr) =>
+      client.ft
+        .search(
+          AchievementIndex.AchievementDist,
+          `@${ACHIEVEMENT_DIST_SCHEMA['$.conditions.recipients'].AS}:${addr}`,
+          {
+            SORTBY: {
+              BY: ACHIEVEMENT_DIST_SCHEMA['$.createdOnTimestamp'].AS,
+              DIRECTION: 'DESC',
+            },
           },
+        )
+        .then((res) => {
+          return JSON.parse(
+            JSON.stringify(res.documents.map(({ value }) => value)),
+          )
+        })
+        .catch((err: Error) => err),
+  )
+
+  const searchClubsURLFromHash = async (ClubsURLHash: string) => {
+    const search = await client.ft
+      .search(
+        ClubIndex.Club,
+        `@${CLUB_SCHEMA['$.clubsUrlHash'].AS}:{${ClubsURLHash}}`,
+        {
+          LIMIT: { from: 0, size: 1 },
+          RETURN: ['clubsUrl'],
         },
       )
       .then((res) => {
-        return JSON.parse(JSON.stringify(res.documents.map(({ value }) => value)))
+        return JSON.parse(
+          JSON.stringify(res.documents.map(({ value }) => value)),
+        )
       })
-      .catch((err: Error) => err),
-  )
-
-  const searchClubsURLFromHash = async(ClubsURLHash: string) =>{
-    const search = await client.ft
-    .search(
-      ClubIndex.Club,
-      `@${CLUB_SCHEMA['$.clubsUrlHash'].AS}:{${ClubsURLHash}}`,
-      {
-        LIMIT: { from: 0, size: 1 },
-        RETURN: ['clubsUrl'],
-      },
-    )
-    .then((res) => {
-      return JSON.parse(JSON.stringify(res.documents.map(({ value }) => value)))
-    })
     return search[0].clubsUrl
   }
 
-  const claimableAchievement = async(achievement: AchievementDist) => {
-    const  {result, distDocument, claimed} = await claimableOrNot(
+  const claimableAchievement = async (achievement: AchievementDist) => {
+    const { result, distDocument, claimed } = await claimableOrNot(
       achievement.id,
       eoa.toString(),
       client,
     )
     const clubsUrl = await searchClubsURLFromHash(achievement.clubsUrl)
-    if(result && !claimed && distDocument?.id === achievement.id) {
-      return  clubsUrl + '/achievement/' + achievement.id
-    }
-    else{
+    if (result && !claimed && distDocument?.id === achievement.id) {
+      return clubsUrl + '/achievement/' + achievement.id
+    } else {
       return undefined
     }
   }
 
   const claimableAchievements = (
     await Promise.all(
-      allAchievementToEOA.map(
-        async (achievement) => {
+      allAchievementToEOA.map(async (achievement) => {
         return await claimableAchievement(achievement)
-      })
-    )).filter((achievement) => achievement !== undefined)
+      }),
+    )
+  ).filter((achievement) => achievement !== undefined)
 
   await client.quit()
 
-  const res =  whenNotError(claimableAchievements, (claimableAchievements) => ({
-    achievementUrl: claimableAchievements.slice(0,5)
+  const res = whenNotError(claimableAchievements, (claimableAchievements) => ({
+    achievementUrl: claimableAchievements.slice(0, 5),
   }))
 
   return new Response(
