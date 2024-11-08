@@ -8,6 +8,7 @@ import {
 import { verifiedAccount } from '@fixtures/api/superuser'
 import { headers } from '@fixtures/api/headers'
 import { getDefaultClient, updateClubId } from '@fixtures/api/club/redis'
+import { clubsUrlToKeccak256Tag  } from '@plugins/achievements/utils'
 
 export const POST = async ({ request }: { request: Request }) => {
   const reqBody = (await request.json().catch((err: Error) => err)) as {
@@ -42,7 +43,11 @@ export const POST = async ({ request }: { request: Request }) => {
     [client, props, set],
     ([redis, { site, config }]) =>
       updateClubId(
-        { id: site, propertyAddress: decode(config).propertyAddress },
+        { 
+          id: site, 
+          propertyAddress: decode(config).propertyAddress,
+          clubsUrlHash: clubsUrlToKeccak256Tag(decode(config).url)
+        },
         redis,
       ),
   )

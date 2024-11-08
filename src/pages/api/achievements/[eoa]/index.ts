@@ -2,6 +2,8 @@ import { headers } from '@fixtures/api/headers'
 import { json, type JSON } from '@fixtures/api/json'
 import type { APIRoute } from 'astro'
 import { getDefaultClient, Index } from '@fixtures/api/assets/redis'
+import { CLUB_SCHEMA } from '@fixtures/api/club/schema'
+import { Index as ClubIndex } from '@fixtures/api/club/redis'
 import {
   isNotError,
   whenDefined,
@@ -15,6 +17,8 @@ import {
   AchievementIndex,
 } from '@plugins/achievements/utils'
 import { ACHIEVEMENT_DIST_SCHEMA } from '@plugins/achievements/db/schema'
+import { ZeroAddress, keccak256, toUtf8Bytes } from 'ethers'
+import { encode } from '@devprotocol/clubs-core'
 import { type AchievementDist } from '@plugins/achievements/types'
 
 export const GET: APIRoute = async (req) => {
@@ -75,6 +79,7 @@ export const GET: APIRoute = async (req) => {
       })
       .catch((err: Error) => err),
   )
+  
   let test1
   if (Array.isArray(test)) {
     test1 = test[0]
@@ -82,8 +87,22 @@ export const GET: APIRoute = async (req) => {
     console.error(test)
   }
   console.log({ test1 })
-  console.log('Clubs URL', JSON.parse(JSON.stringify(test1)))
+  const ClubsURLHash = JSON.parse(JSON.stringify(test1)).clubsUrl
+  console.log('Clubs URL', JSON.parse(JSON.stringify(test1)).clubsUrl)
   console.log({ test })
+
+
+
+  const search = await client.ft.search(
+    ClubIndex.Club,
+    `@${CLUB_SCHEMA['$.clubsUrlHash'].AS}:${ClubsURLHash}`,
+    {
+      LIMIT: { from: 0, size: 1 },
+    },
+  ).then((res) => {
+    return res.documents.map(({ value }) => value)
+  })
+  console.log({ search })
 
   await client.quit()
 
