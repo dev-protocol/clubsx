@@ -109,10 +109,9 @@ const tokenURI =
         }
         {
           data?.passportItem?.itemAssetType === 'short-video' ||
-          data?.passportItem?.itemAssetType === 'short-video-link' ? (
-            // || // @TODO: uncomment this when the type is updated.
-            // data?.passportItem?.itemAssetType === 'image-playable' ||
-            // data?.passportItem?.itemAssetType === 'image-playable-link'
+          data?.passportItem?.itemAssetType === 'short-video-link' ||
+          data?.passportItem?.itemAssetType === 'image-playable' ||
+          data?.passportItem?.itemAssetType === 'image-playable-link' ? (
             <div class="absolute inset-0 m-auto size-1/2 text-white flex items-center justify-center opacity-60">
               <Fragment
                 set:html={playIconInnerHTML}
