@@ -19,7 +19,10 @@ import {
 } from '@plugins/achievements/utils'
 import { ACHIEVEMENT_DIST_SCHEMA } from '@plugins/achievements/db/schema'
 import { claimableOrNot } from '@plugins/achievements/utils'
-import { type AchievementDist, type AchievementInfo } from '@plugins/achievements/types'
+import {
+  type AchievementDist,
+  type AchievementInfo,
+} from '@plugins/achievements/types'
 
 export const GET: APIRoute = async (req) => {
   const eoa =
