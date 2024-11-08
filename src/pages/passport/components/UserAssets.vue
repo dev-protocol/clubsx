@@ -39,8 +39,8 @@ onMounted(async () => {
 </script>
 
 <template>
-  <section class="grid gap-8">
-    <h2 class="font-bold text-3xl flex items-center gap-2">
+  <section class="grid gap-6">
+    <h2 class="font-bold text-xl text-3xl flex items-center gap-2">
       {{ i18n('Achievements') }}
       <span v-if="!assetsSbt" class="h-full w-12"><Skeleton /></span
       ><span v-if="assetsSbt" class="font-inherit text-inherit"
@@ -48,7 +48,7 @@ onMounted(async () => {
       >
     </h2>
 
-    <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
+    <ul class="grid gap-1 grid-cols-4 lg:gap-2 lg:grid-cols-6">
       <li
         v-if="assetsSbt?.length"
         v-for="item in assetsSbt"
@@ -58,7 +58,7 @@ onMounted(async () => {
       </li>
       <div
         v-if="assetsSbt?.length === 0"
-        class="rounded-md border border-surface-400 p-8 text-accent-200"
+        class="rounded-md border col-span-full border-surface-400 p-8 text-accent-200"
       >
         {{ i18n('Empty') }} :)
       </div>
@@ -68,8 +68,8 @@ onMounted(async () => {
       </li>
     </ul>
   </section>
-  <section class="grid gap-8">
-    <h2 class="font-bold text-3xl flex items-center gap-2">
+  <section class="grid gap-6 mt-8">
+    <h2 class="font-bold text-xl text-3xl flex items-center gap-2">
       {{ i18n('Clubs') }}
       <span v-if="!assetsNft" class="h-full w-12"><Skeleton /></span
       ><span v-if="assetsNft" class="font-inherit text-inherit"
@@ -77,7 +77,7 @@ onMounted(async () => {
       >
     </h2>
 
-    <ul class="grid gap-16 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
+    <ul class="grid gap-1 grid-cols-4 lg:gap-2 lg:grid-cols-6">
       <li
         v-if="assetsNft?.length"
         v-for="item in assetsNft"
@@ -87,7 +87,7 @@ onMounted(async () => {
       </li>
       <div
         v-if="assetsNft?.length === 0"
-        class="rounded-md border border-surface-400 p-8 text-accent-200"
+        class="rounded-md border col-span-full border-surface-400 p-8 text-accent-200"
       >
         {{ i18n('Empty') }} :)
       </div>

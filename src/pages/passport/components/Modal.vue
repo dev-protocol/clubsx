@@ -9,12 +9,6 @@ defineProps<{
 
 <style>
 .modal-container {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  display: flex;
   justify-content: center;
   align-items: center;
 }
@@ -23,16 +17,6 @@ defineProps<{
   .modal-container {
     align-items: center;
   }
-}
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0.6);
-  z-index: -1;
 }
 
 .modal-content {
@@ -50,19 +34,19 @@ defineProps<{
 }
 
 .v-enter-active {
-  transition: opacity 0.2s ease;
+  transition: transform 600ms cubic-bezier(0.07, 1.28, 0.5, 1);
 }
 
 .v-leave-active {
-  transition: opacity 0.2s ease;
+  transition: transform 600ms linear;
 }
 
 .v-enter-from {
-  opacity: 0;
+  transform: translate(0, 100%);
 }
 
 .v-leave-to {
-  opacity: 0;
+  transform: translate(0, 0);
 }
 
 html:has(#modal-container[data-active='true']) {
@@ -71,27 +55,29 @@ html:has(#modal-container[data-active='true']) {
 </style>
 
 <template>
-  <div
-    v-show="isVisible"
-    id="modal-container"
-    :data-active="isVisible"
-    class="modal-container z-50"
-  >
+  <Teleport to="body">
     <div
-      @click="
-        () => {
-          handleModalClose()
-        }
-      "
-      class="modal-overlay overflow-y-auto py-6 flex justify-center"
+      v-show="isVisible"
+      id="modal-container"
+      :data-active="isVisible"
+      class="modal-container z-30"
     >
-      <Transition>
-        <component v-show="isVisible" :is="modalContent" v-bind="attrs">
-          <template #after:description>
-            <slot name="after:description" />
-          </template>
-        </component>
-      </Transition>
+      <div
+        @click="
+          () => {
+            handleModalClose()
+          }
+        "
+        class="fixed top-0 bottom-0 left-0 right-0 overflow-y-auto py-6 flex justify-center items-center backdrop-blur-md bg-black/30 z-50"
+      >
+        <Transition>
+          <component v-show="isVisible" :is="modalContent" v-bind="attrs">
+            <template #after:description>
+              <slot name="after:description" />
+            </template>
+          </component>
+        </Transition>
+      </div>
     </div>
-  </div>
+  </Teleport>
 </template>

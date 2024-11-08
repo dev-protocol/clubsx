@@ -4,6 +4,7 @@ import { ConnectButton } from '@devprotocol/clubs-plugin-awesome-onboarding'
 
 import '@devprotocol/clubs-core/styles'
 import { passportClass } from '@fixtures/ui/passport'
+import NavbarResponsive from './NavbarResponsive.vue'
 
 type Props = {
   connectButton?: 'show' | 'hidden'
@@ -13,24 +14,28 @@ type Props = {
 const { connectButton = 'hidden', pageTitle } = Astro.props
 ---
 
-<header class="relative flex items-center justify-between px-6 py-4">
-  <div class="relative w-fit flex items-center justify-between gap-[18px]">
-    <a href="/">
-      <h1 class="flex items-center gap-4" class:list={passportClass('heading')}>
-        <Clubs />
-        {pageTitle && <span class="lg:text-xl font-bold">{pageTitle}</span>}
-      </h1>
-    </a>
-    <slot name="passport:profile:switcher" />
-  </div>
+<header>
+  <span class:list={passportClass('heading-container')}>
+    <div class:list={passportClass('heading-content')}>
+      <NavbarResponsive
+        client:load
+        {pageTitle}
+        showConnectButton={connectButton === 'show'}
+      >
+        <Clubs slot="clubs-logo" class="h-5 lg:h-6 w-auto" />
 
-  <slot name="right" />
+        <span slot="before:connect-button" class="w-full lg:w-fit">
+          <p class="text-xs font-bold lg:hidden">Switch Passports</p>
+          <slot name="passport:profile:switcher" />
+        </span>
 
-  {
-    connectButton === 'show' && (
-      <nav class="flex justify-between gap-10">
-        <ConnectButton />
-      </nav>
-    )
-  }
+        <nav slot="connect-button" class="w-full lg:w-fit">
+          <p class="text-xs font-bold lg:hidden">Sign In</p>
+          <ConnectButton />
+        </nav>
+
+        <slot name="right" slot="after:connect-button" />
+      </NavbarResponsive>
+    </div>
+  </span>
 </header>

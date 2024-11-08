@@ -2,6 +2,7 @@ import { whenDefined } from '@devprotocol/util-ts'
 import {
   getAllClubByOwnerAddress,
   getAllClubByOwnerFirebaseUid,
+  getClubById,
   getClubByProperty,
   getDefaultClient,
   withCheckingIndex,
@@ -37,6 +38,7 @@ export type ClubsData = {
 export const GET: APIRoute = async ({ url }): Promise<Response> => {
   const propertyAddresses = url.searchParams.getAll('p')
   const owner = url.searchParams.get('owner')
+  const id = url.searchParams.get('id')
 
   const client = await withCheckingIndex(getDefaultClient)
   const fromDB = await Promise.all([
@@ -45,7 +47,9 @@ export const GET: APIRoute = async ({ url }): Promise<Response> => {
       ? isAddress(owner)
         ? getAllClubByOwnerAddress(owner, client)
         : getAllClubByOwnerFirebaseUid(owner, client)
-      : undefined,
+      : id
+        ? getClubById(id, client)
+        : undefined,
   ])
   const data = fromDB.flat()
   const res =

@@ -71,21 +71,21 @@ onMounted(async () => {
 <template>
   <div
     v-if="!notFound"
-    class="shadow-md rounded-md p-4 grid gap-4 bg-surface-200 border border-surface-300"
+    class="shadow-md rounded-md p-1 grid gap-1 bg-surface-200 border border-surface-300"
   >
     <img
       v-if="assetImage"
       :src="assetImage.src"
-      class="rounded-md w-full max-w-full"
+      class="rounded-md w-full max-w-full object-cover aspect-square"
     />
     <div v-if="!assetImage" class="w-full aspect-square">
       <Skeleton />
     </div>
-    <span class="grid gap-1.5">
-      <span>{{ assetName }}</span>
+    <span class="grid gap-1.5 overflow-hidden">
+      <span class="text-xs line-clamp-1">{{ assetName }}</span>
       <span v-if="!clubUrl" class="w-full h-3"><Skeleton /></span>
       <a v-if="clubUrl && clubName" :href="clubUrl"
-        ><span class="opacity-50">{{ clubName }}</span></a
+        ><span class="text-xs opacity-50 line-clamp-1">{{ clubName }}</span></a
       >
     </span>
   </div>
