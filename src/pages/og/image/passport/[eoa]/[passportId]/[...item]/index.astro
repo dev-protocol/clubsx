@@ -15,6 +15,10 @@ import { isDark } from '@fixtures/color'
 import { ClubsLogo } from '@devprotocol/clubs-core/layouts'
 import Description from './components/Description.vue'
 import type { Clip } from '@pages/api/profile'
+import { clientsSTokens } from '@devprotocol/dev-kit'
+import { JsonRpcProvider } from 'ethers'
+
+import playIconInnerHTML from './assets/play-icon.svg?raw'
 
 const { eoa, passportId, item: itemPath } = Astro.params
 
@@ -53,6 +57,17 @@ const data = {
       ? isDark(item.frameColorHex)
       : false,
 }
+
+const provider = new JsonRpcProvider(
+  `https://polygon-mainnet.g.alchemy.com/v2/${import.meta.env.PUBLIC_ALCHEMY_KEY ?? ''}`,
+)
+// @ts-ignore
+const [l1, l2] = await clientsSTokens(provider)
+const contract = l1 ?? l2
+const tokenURI =
+  item && !(item instanceof Error)
+    ? await contract?.tokenURI(Number(item.sTokenId))
+    : undefined
 ---
 
 <html lang="en" hashi-theme="light">
@@ -71,16 +86,46 @@ const data = {
     }}
   >
     <main class="h-screen w-screen p-6 grid grid-cols-2 gap-6">
-      <span>
+      <span class="relative">
         {
-          data.passportItem?.itemAssetValue ? (
-            <img
-              src={data.passportItem.itemAssetValue}
+          data?.passportItem?.itemAssetType === 'short-video' ||
+          data?.passportItem?.itemAssetType === 'short-video-link' ? (
+            <video
+              loop
+              muted
+              autoplay
+              id="og-video-element"
+              poster={tokenURI ? tokenURI.image : ''}
+              src={data.passportItem.itemAssetValue || ''}
               class="w-full h-full object-cover rounded-xl"
             />
-          ) : null
+          ) : (
+            <img
+              id="og-image-element"
+              src={data.passportItem?.itemAssetValue}
+              class="w-full h-full object-cover rounded-xl"
+            />
+          )
+        }
+        {
+          data?.passportItem?.itemAssetType === 'short-video' ||
+          data?.passportItem?.itemAssetType === 'short-video-link' ? (
+            // || // @TODO: uncomment this when the type is updated.
+            // data?.passportItem?.itemAssetType === 'image-playable' ||
+            // data?.passportItem?.itemAssetType === 'image-playable-link'
+            <div class="absolute inset-0 m-auto size-1/2 text-white flex items-center justify-center opacity-60">
+              <Fragment
+                set:html={playIconInnerHTML}
+                className="w-full h-full"
+                name="video-play"
+              />
+            </div>
+          ) : (
+            <span />
+          )
         }
       </span>
+
       <span class="grid grid-cols-1 grid-rows-[1fr_auto]">
         {
           typeof data.item === 'object' ? (
@@ -115,7 +160,18 @@ const data = {
         item,
         itemPayload,
         passportItemData,
+        tokenURI,
       }}
     />
   </div>
 </html>
+
+<script>
+  document.getElementById('og-video-element')?.addEventListener(
+    'loadedmetadata',
+    function () {
+      ;(this as HTMLVideoElement).currentTime = 5 // Start the video from 5th second.
+    },
+    false,
+  )
+</script>

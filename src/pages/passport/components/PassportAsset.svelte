@@ -76,7 +76,9 @@
         // else we use sToken property for it.
         if (
           props.item?.itemAssetType === 'image' ||
-          props.item?.itemAssetType === 'image-link'
+          props.item?.itemAssetType === 'image-link' ||
+          props.item?.itemAssetType === 'image-playable' ||
+          props.item?.itemAssetType === 'image-playable-link'
         ) {
           sTokenURI = {
             ...sTokenURI,
