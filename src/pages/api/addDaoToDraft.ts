@@ -12,7 +12,7 @@ import {
   getDefaultClient,
 } from '@fixtures/api/club/redis'
 import { decode } from '@devprotocol/clubs-core'
-import { clubsUrlToKeccak256Tag  } from '@plugins/achievements/utils'
+import { clubsUrlToKeccak256Tag } from '@plugins/achievements/utils'
 
 export const POST = async ({ request }: { request: Request }) => {
   const { site, config, sig, hash, expectedAddress, uid } =

@@ -79,7 +79,7 @@ export const GET: APIRoute = async (req) => {
       })
       .catch((err: Error) => err),
   )
-  
+
   let test1
   if (Array.isArray(test)) {
     test1 = test[0]
@@ -91,17 +91,17 @@ export const GET: APIRoute = async (req) => {
   console.log('Clubs URL', JSON.parse(JSON.stringify(test1)).clubsUrl)
   console.log({ test })
 
-
-
-  const search = await client.ft.search(
-    ClubIndex.Club,
-    `@${CLUB_SCHEMA['$.clubsUrlHash'].AS}:${ClubsURLHash}`,
-    {
-      LIMIT: { from: 0, size: 1 },
-    },
-  ).then((res) => {
-    return res.documents.map(({ value }) => value)
-  })
+  const search = await client.ft
+    .search(
+      ClubIndex.Club,
+      `@${CLUB_SCHEMA['$.clubsUrlHash'].AS}:${ClubsURLHash}`,
+      {
+        LIMIT: { from: 0, size: 1 },
+      },
+    )
+    .then((res) => {
+      return res.documents.map(({ value }) => value)
+    })
   console.log({ search })
 
   await client.quit()
