@@ -61,6 +61,7 @@ export const POST = async ({ request }: { request: Request }) => {
         id: site,
         propertyAddress: decode(config).propertyAddress,
         clubsUrlHash: clubsUrlToKeccak256Tag(decode(config).url),
+        clubsUrl: decode(config).url,
       },
       client,
     )

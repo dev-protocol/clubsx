@@ -126,6 +126,7 @@ export const POST = async ({ request }: { request: Request }) => {
           firebaseUid: uid,
         },
         clubsUrlHash: clubsUrlToKeccak256Tag(decode(config).url),
+        clubsUrl: decode(config).url,
       },
       client,
     )

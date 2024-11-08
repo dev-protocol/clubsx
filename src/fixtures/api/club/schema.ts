@@ -44,6 +44,13 @@ export const clubsUrlHash = {
   },
 } satisfies RediSearchSchema
 
+export const clubsUrl = {
+  '$.clubsUrl': {
+    type: SchemaFieldTypes.TAG,
+    AS: 'clubsUrl',
+  },
+} satisfies RediSearchSchema
+
 export type ClubDocument = {
   id: string
   propertyAddress: string
@@ -53,6 +60,7 @@ export type ClubDocument = {
     firebaseUid?: string
   }
   clubsUrlHash?: string
+  clubsUrl?: string
 }
 
 export const CLUB_SCHEMA = {
@@ -62,6 +70,7 @@ export const CLUB_SCHEMA = {
   ...ownerAddress,
   ...ownerFirebaseUID,
   ...clubsUrlHash,
+  ...clubsUrl,
 }
 
 export const CLUB_SCHEMA_ID = keccak256(toUtf8Bytes(encode(CLUB_SCHEMA)))
