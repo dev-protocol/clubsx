@@ -1,6 +1,22 @@
 import type { ClubsI18nParts } from '@devprotocol/clubs-core'
 
 export const Strings = {
+  HideProfile: {
+    en: `Hide this profile`,
+    ja: `このプロフィールを非表示にする`,
+  },
+  ShowProfile: {
+    en: `Unhide this profile`,
+    ja: `このプロフィールを再表示する`,
+  },
+  MakeDefaultProfile: {
+    en: `Make this profile default`,
+    ja: `このプロフィールをデフォルトにする`,
+  },
+  AddNewProfile: {
+    en: `Add new profile`,
+    ja: `新しいプロフィールを追加`,
+  },
   PassportName: {
     en: 'Passport name',
     ja: `パスポート名`,
@@ -23,7 +39,7 @@ export const Strings = {
   },
   PassportSkinNamePlaceholder: {
     en: `Enter a name that you would like to give to this passport`,
-    ja: `パスポートにつけたい名前を入力してください`,
+    ja: `パスポートにつける名前を入力してください`,
   },
   UsernamePlaceholder: {
     en: `Enter your username.`,
@@ -43,17 +59,21 @@ export const Strings = {
     en: () =>
       `You have not pinned your <b>Passport Clips</b>.<br /><i>To configure</i> your creative and unique passport page <b>pin Passport Clips now</b>.`,
     ja: () =>
-      `<b>パスポートクリップ</b> をピン留めしていません。<br /><i>クリエイティブでユニークなパスポートページを設定</i>するには、<b>今すぐパスポートクリップを固定</b>してください。`,
+      `<b>パスポートクリップ</b> をピン留めしていません。<br /><i>クリエイティブでユニークなパスポートページを設定</i>するには、<b>今すぐパスポートクリップをピン留め</b>してください。`,
   },
   PinClipsToSpotlight: {
     en: () =>
       `You have not pinned your <b>Passport Clips</b> to spotlight.<br /><i>To configure</i> your creative and unique passport page <b>pin Passport Clips to Spotlight now</b>.`,
     ja: () =>
-      `<b>パスポートクリップ</b> をスポットライトにピン留めしていません。<br /><i>クリエイティブでユニークなパスポートページを設定</i>するには、<b>今すぐパスポートクリップをスポットライトに固定</b>してください。`,
+      `<b>パスポートクリップ</b> をスポットライトにピン留めしていません。<br /><i>クリエイティブでユニークなパスポートページを設定</i>するには、<b>今すぐパスポートクリップをスポットライトにピン留め</b>してください。`,
   },
   PinClipsToSpotlightHelper: {
-    en: () => `<b>NOTE</b>: You can pin 3 clips to your spotlight.`,
-    ja: () => `<b>注</b>:スポットライトには3つのクリップをピン留めできます。`,
+    en: () => `You can pin 3 clips to your spotlight.`,
+    ja: () => `スポットライトには3つのクリップをピン留めできます。`,
+  },
+  PinClipsToShowcaseHelper: {
+    en: () => `You can pin as many clips as you like to your showcase.`,
+    ja: () => `ショーケースには好きな数のクリップをピン留めできます。`,
   },
   PurchasePassportClips: {
     en: () =>
@@ -112,6 +132,10 @@ export const Strings = {
   Saved: {
     en: 'Saved',
     ja: '保存しました',
+  },
+  Saving: {
+    en: 'Saving',
+    ja: '保存中',
   },
   Error: {
     en: 'Error',

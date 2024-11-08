@@ -5,6 +5,7 @@ import { createClient } from 'redis'
 type Payload = string
 
 export type Clip = {
+  sTokenId: string
   payload: Payload
   description: string
   frameColorHex: string
@@ -12,13 +13,14 @@ export type Clip = {
 
 export type Skin = {
   id: string // Nano id
-  name: string // identifier for passport config
-  theme: Payload // Pointing to PassportItem.sTokenPayload
+  name?: string // identifier for passport config
+  theme?: Payload // Pointing to PassportItem.sTokenPayload
   clips?: Clip[] // Token payloads of pinned clips
-  videos?: Payload[] // for the future use cases
-  bgm?: Payload // for the future use cases
+  videos?: Clip[] // for the future use cases
+  bgm?: Clip // for the future use cases
   likes?: number
-  spotlight: Clip[]
+  spotlight?: Clip[]
+  isHidden?: boolean
 }
 
 export type Profile = {
@@ -29,6 +31,7 @@ export type Profile = {
   sns?: {
     [platform: string]: string
   }
+  likes?: number
 }
 
 export const POST = async ({ request }: { request: Request }) => {

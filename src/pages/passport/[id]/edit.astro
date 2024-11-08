@@ -5,8 +5,9 @@ import Layout from '@layouts/Landing.astro'
 import UserProfileEdit from '../components/UserProfileEdit.svelte'
 
 const { id } = Astro.params
-const isEOA = isAddress(id)
 const skinId = Astro.url.searchParams.get('skinId') || ''
+
+const isEOA = isAddress(id)
 
 const isLocal =
   Astro.url.hostname.includes('localhost') ||
@@ -14,23 +15,26 @@ const isLocal =
 ---
 
 <Layout connectButton="show" theme="auto" pageTitle="Passport">
-  <div class="max-w-screen-lg mx-auto px-4 grid gap-24">
-    <a href="./" class="flex gap-4 font-bold place-self-start"
-      ><svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-        class="w-6 h-6"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"></path>
-      </svg>
-      Profile
-    </a>
+  <div class="@container/main">
+    <div class="mx-auto container">
+      <a href="./" class="flex gap-4 font-bold place-self-start"
+        ><svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="w-6 h-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"></path>
+        </svg>
+        Profile
+      </a>
+    </div>
+
     {
       isEOA && (
         <UserProfileEdit

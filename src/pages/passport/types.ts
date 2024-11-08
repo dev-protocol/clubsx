@@ -17,10 +17,14 @@ export type PassportItemIndexDoc = {
     | 'stylesheet-link'
     | 'image'
     | 'image-link'
+    | 'image-playable'
+    | 'image-playable-link'
     | 'video'
     | 'video-link'
     | 'bgm'
     | 'bgm-link'
+    | 'short-video'
+    | 'short-video-link'
   itemAssetValue: string
 }
 
