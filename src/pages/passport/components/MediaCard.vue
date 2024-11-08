@@ -17,7 +17,13 @@ const props = defineProps<{
   <img
     alt="Passport clip"
     :src="src ?? posterSrc"
-    v-if="found && (type === 'image' || type === 'image-link')"
+    v-if="
+      found &&
+      (type === 'image' ||
+        type === 'image-link' ||
+        type === 'image-playable' ||
+        type === 'image-playable-link')
+    "
     class="rounded-md w-full max-w-full object-cover aspect-square"
     :class="props.class"
   />
