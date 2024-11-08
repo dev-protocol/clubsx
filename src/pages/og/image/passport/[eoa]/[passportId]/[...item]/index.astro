@@ -18,9 +18,7 @@ import type { Clip } from '@pages/api/profile'
 import { clientsSTokens } from '@devprotocol/dev-kit'
 import { JsonRpcProvider } from 'ethers'
 
-const { default: playIconInnerHTML } = await import(
-  './assets/play-icon.svg?raw'
-)
+import playIconInnerHTML from './assets/play-icon.svg?raw'
 
 const { eoa, passportId, item: itemPath } = Astro.params
 
@@ -88,7 +86,7 @@ const tokenURI =
     }}
   >
     <main class="h-screen w-screen p-6 grid grid-cols-2 gap-6">
-      <span class="relative cursor-pointer">
+      <span class="relative">
         {
           data?.passportItem?.itemAssetType === 'short-video' ||
           data?.passportItem?.itemAssetType === 'short-video-link' ? (
@@ -115,13 +113,7 @@ const tokenURI =
             // || // @TODO: uncomment this when the type is updated.
             // data?.passportItem?.itemAssetType === 'image-playable' ||
             // data?.passportItem?.itemAssetType === 'image-playable-link'
-            <div
-              class="absolute top-0 bottom-0 left-0 right-0 m-auto h-[7.5vw] w-[7.5vw]"
-              class:list={{
-                'text-white': data.isFrameDark,
-                'text-black': !data.isFrameDark,
-              }}
-            >
+            <div class="absolute inset-0 m-auto size-1/2 text-white flex items-center justify-center opacity-60">
               <Fragment
                 set:html={playIconInnerHTML}
                 className="w-full h-full"
