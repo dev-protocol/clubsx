@@ -9,6 +9,7 @@ import {
   whenDefined,
   whenNotError,
   whenNotErrorAll,
+  type UndefinedOr,
 } from '@devprotocol/util-ts'
 
 import {
@@ -18,7 +19,7 @@ import {
 } from '@plugins/achievements/utils'
 import { ACHIEVEMENT_DIST_SCHEMA } from '@plugins/achievements/db/schema'
 import { claimableOrNot } from '@plugins/achievements/utils'
-import { type AchievementDist } from '@plugins/achievements/types'
+import { type AchievementDist, type AchievementInfo } from '@plugins/achievements/types'
 
 export const GET: APIRoute = async (req) => {
   const eoa =
@@ -66,6 +67,31 @@ export const GET: APIRoute = async (req) => {
     return search[0].clubsUrl
   }
 
+  const getAchievementName = async (achievement: AchievementDist) => {
+    const achievementInfoDocument = await whenNotErrorAll(
+      [achievement, client],
+      ([dist, _client]) =>
+        _client.json
+          .get(
+            generateKey(
+              AchievementPrefix.AchievementInfo,
+              dist.achievementInfoId,
+            ),
+          )
+          .catch((err: Error) => err),
+    )
+    const info = whenNotError(
+      achievementInfoDocument,
+      (d) =>
+        (d as UndefinedOr<AchievementInfo>) ??
+        new Error('Achievement metadata is not found.'),
+    )
+    if (info instanceof Error) {
+      throw info
+    }
+    return info.metadata.name
+  }
+
   const claimableAchievement = async (achievement: AchievementDist) => {
     const { result, distDocument, claimed } = await claimableOrNot(
       achievement.id,
@@ -73,8 +99,13 @@ export const GET: APIRoute = async (req) => {
       client,
     )
     const clubsUrl = await searchClubsURLFromHash(achievement.clubsUrl)
+    const achievementUrl = `${clubsUrl}/achievement/${achievement.id}`
+    const achievementName = await getAchievementName(achievement)
     if (result && !claimed && distDocument?.id === achievement.id) {
-      return clubsUrl + '/achievement/' + achievement.id
+      return {
+        achievementName,
+        achievementUrl,
+      }
     } else {
       return undefined
     }
@@ -91,7 +122,7 @@ export const GET: APIRoute = async (req) => {
   await client.quit()
 
   const res = whenNotError(claimableAchievements, (claimableAchievements) => ({
-    achievementUrl: claimableAchievements.slice(0, 5),
+    achievements: claimableAchievements.slice(0, 5),
   }))
 
   return new Response(
