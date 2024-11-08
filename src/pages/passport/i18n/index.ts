@@ -11,7 +11,7 @@ export const Strings = {
   },
   MakeDefaultProfile: {
     en: `Make this profile default`,
-    ja: `このプロファイルをデフォルトにする`,
+    ja: `このプロフィールをデフォルトにする`,
   },
   AddNewProfile: {
     en: `Add new profile`,
@@ -39,7 +39,7 @@ export const Strings = {
   },
   PassportSkinNamePlaceholder: {
     en: `Enter a name that you would like to give to this passport`,
-    ja: `パスポートにつけたい名前を入力してください`,
+    ja: `パスポートにつける名前を入力してください`,
   },
   UsernamePlaceholder: {
     en: `Enter your username.`,
@@ -59,13 +59,13 @@ export const Strings = {
     en: () =>
       `You have not pinned your <b>Passport Clips</b>.<br /><i>To configure</i> your creative and unique passport page <b>pin Passport Clips now</b>.`,
     ja: () =>
-      `<b>パスポートクリップ</b> をピン留めしていません。<br /><i>クリエイティブでユニークなパスポートページを設定</i>するには、<b>今すぐパスポートクリップを固定</b>してください。`,
+      `<b>パスポートクリップ</b> をピン留めしていません。<br /><i>クリエイティブでユニークなパスポートページを設定</i>するには、<b>今すぐパスポートクリップをピン留め</b>してください。`,
   },
   PinClipsToSpotlight: {
     en: () =>
       `You have not pinned your <b>Passport Clips</b> to spotlight.<br /><i>To configure</i> your creative and unique passport page <b>pin Passport Clips to Spotlight now</b>.`,
     ja: () =>
-      `<b>パスポートクリップ</b> をスポットライトにピン留めしていません。<br /><i>クリエイティブでユニークなパスポートページを設定</i>するには、<b>今すぐパスポートクリップをスポットライトに固定</b>してください。`,
+      `<b>パスポートクリップ</b> をスポットライトにピン留めしていません。<br /><i>クリエイティブでユニークなパスポートページを設定</i>するには、<b>今すぐパスポートクリップをスポットライトにピン留め</b>してください。`,
   },
   PinClipsToSpotlightHelper: {
     en: () => `You can pin 3 clips to your spotlight.`,
@@ -73,7 +73,7 @@ export const Strings = {
   },
   PinClipsToShowcaseHelper: {
     en: () => `You can pin as many clips as you like to your showcase.`,
-    ja: () => `ショーケースにはいくつでもクリップをピン留めできます。`,
+    ja: () => `ショーケースには好きな数のクリップをピン留めできます。`,
   },
   PurchasePassportClips: {
     en: () =>
@@ -135,7 +135,7 @@ export const Strings = {
   },
   Saving: {
     en: 'Saving',
-    ja: '保存',
+    ja: '保存中',
   },
   Error: {
     en: 'Error',
