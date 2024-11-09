@@ -6,6 +6,7 @@ import {
 } from '@fixtures/api/club/redis'
 import { getDefaultProvider } from 'ethers'
 import { createClient } from 'redis'
+import { clubsUrlToKeccak256Tag } from '@plugins/achievements/utils'
 
 export const POST = async ({ request }: { request: Request }) => {
   const { site, config, sig, hash } = (await request.json()) as {
@@ -56,7 +57,12 @@ export const POST = async ({ request }: { request: Request }) => {
   try {
     await client.set(site, config)
     await updateClubId(
-      { id: site, propertyAddress: decode(config).propertyAddress },
+      {
+        id: site,
+        propertyAddress: decode(config).propertyAddress,
+        clubsUrlHash: clubsUrlToKeccak256Tag(decode(config).url),
+        clubsUrl: decode(config).url,
+      },
       client,
     )
     await client.quit()
