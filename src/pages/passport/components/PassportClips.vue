@@ -88,6 +88,7 @@ onMounted(async () => {
     :attrs="{
       item: modalItem,
       index: modalItemIndex,
+      skinSection: props.skinSection,
       truncate: false,
       classes: 'max-w-screen-md',
       share: true,
