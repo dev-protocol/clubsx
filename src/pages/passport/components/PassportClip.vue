@@ -17,6 +17,7 @@ const props = defineProps<{
   skinSection: 'spotlight' | 'clips'
   share?: boolean
   clubsLink?: boolean
+  skinId: string
 }>()
 
 const SITE_NAME =
@@ -58,16 +59,14 @@ const fetchClub = async (api: string) => {
 }
 
 const shareClip = () => {
+  const url = new URL(window.location.href)
+  const eoa = url.pathname.split('/').at(2) || '' // The expected pathname is /passport/eoa/id/...
+  url.pathname = `/passport/${eoa}/${props.skinId || ''}/${itemToHash(props.skinSection || 'clips', props.item.sTokenId || '')}`
   // Please replace the title and text with the actual values.
   navigator.share({
     title: 'Check out this clip!',
     text: props.item.description,
-    url:
-      window.location.href.split('#').at(0) +
-      (whenDefined(
-        props.item.sTokenId,
-        (id) => `#${itemToHash(props.skinSection ?? 'clips', id)}`,
-      ) ?? ''),
+    url: url.href,
   })
 }
 

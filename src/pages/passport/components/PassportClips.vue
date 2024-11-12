@@ -13,6 +13,7 @@ const props = defineProps<{
   id: string
   clips: PassportClip[]
   skinSection: 'spotlight' | 'clips'
+  skinId: string
 }>()
 
 const i18nBase = i18nFactory(Strings)
@@ -69,6 +70,7 @@ onMounted(async () => {
           :index="index"
           :truncate="true"
           :skinSection="skinSection"
+          :skinId="skinId"
           class="cursor-pointer"
           @click="
             () => {
@@ -90,6 +92,7 @@ onMounted(async () => {
       index: modalItemIndex,
       skinSection: props.skinSection,
       truncate: false,
+      skinId: props.skinId,
       classes: 'max-w-screen-md',
       share: true,
       clubsLink: true,
