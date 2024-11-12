@@ -45,7 +45,12 @@ const passportSkinTheme = await whenDefined(sTokenPayload, (payload: string) =>
 )
 
 const requestURL = new URL(Astro.url)
-const ogpImageURL = `${requestURL.protocol}//${requestURL.hostname}:${requestURL.port}/og/image${requestURL.pathname}`
+const ogImageURLHost = requestURL.origin.includes('prerelease.clubs.place')
+  ? 'prerelease.clubs.place'
+  : requestURL.origin.includes('clubs.place')
+    ? 'clubs.place'
+    : `${requestURL.hostname}:${requestURL.port}`
+const ogpImageURL = `${requestURL.protocol}//${ogImageURLHost}/og/image${requestURL.pathname}`
 const image = `https://capture.clubs.place/api/generate?src=${ogpImageURL}`
 ---
 
