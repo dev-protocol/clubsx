@@ -113,9 +113,11 @@ const description =
       <slot name="before-header" />
 
       <Header connectButton="show" pageTitle="Passport">
-        <AchivementNotification 
+        <AchivementNotification
           address={eoa}
-        client:only="svelte" slot="before:heading" />
+          client:only="svelte"
+          slot="before:heading"
+        />
         <SkinSwitch
           client:load
           slot="passport:profile:switcher"
