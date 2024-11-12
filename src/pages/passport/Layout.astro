@@ -27,15 +27,6 @@ const {
   preload = [],
 } = Astro.props as Props
 
-const name = 'Clubs'
-const url = 'https://www.clubs.place/'
-const twitterHandle = 'poweredbyClubs'
-const title = 'Clubs | All-in-One Space for Creators'
-const ogURL =
-  'https://cdn.prod.website-files.com/63ddf59d6f6edd36e251c76f/6678cd54f0f0cfe31677b681_og.png'
-const description =
-  'Create your own space with Clubs and collect your favorites with Passport. Memberships, tickets, merch, and more, all easily manage and sell in one place.'
-
 const passportSkinTheme = await whenDefined(sTokenPayload, (payload: string) =>
   getPassportItemForPayload({
     sTokenPayload: payload ?? '',
@@ -52,6 +43,12 @@ const ogImageURLHost = requestURL.origin.includes('prerelease.clubs.place')
     : `${requestURL.hostname}:${requestURL.port}`
 const ogpImageURL = `${requestURL.protocol}//${ogImageURLHost}/og/image${requestURL.pathname}`
 const image = `https://capture.clubs.place/api/generate?src=${ogpImageURL}`
+const name = 'Clubs'
+const url = 'https://www.clubs.place/'
+const twitterHandle = 'poweredbyClubs'
+const title = 'Clubs | All-in-One Space for Creators'
+const description =
+  'Clubs is an all-in-one space for creators to manage their NFTs, DAOs, and more.'
 ---
 
 <html
@@ -60,10 +57,6 @@ const image = `https://capture.clubs.place/api/generate?src=${ogpImageURL}`
   class:list={passportClass()}
 >
   <head>
-    <meta charset="UTF-8" />
-    <meta property="og:image" content={`${image}`} />
-    <meta name="viewport" content="width=device-width" />
-
     <title>{title}</title>
 
     <link rel="icon" type="image/svg" href={Favicon.src} />
@@ -91,6 +84,8 @@ const image = `https://capture.clubs.place/api/generate?src=${ogpImageURL}`
       )
     }
 
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
     <meta name="description" content={`${description}`} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -100,7 +95,7 @@ const image = `https://capture.clubs.place/api/generate?src=${ogpImageURL}`
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={`${ogURL}`} />
+    <meta name="twitter:image" content={`${image}`} />
   </head>
 
   <body
