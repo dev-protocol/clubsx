@@ -4796,13 +4796,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sendgrid/client@npm:^8.1.3":
-  version: 8.1.3
-  resolution: "@sendgrid/client@npm:8.1.3"
+"@sendgrid/client@npm:^8.1.4":
+  version: 8.1.4
+  resolution: "@sendgrid/client@npm:8.1.4"
   dependencies:
     "@sendgrid/helpers": "npm:^8.0.0"
-    axios: "npm:^1.6.8"
-  checksum: 10c0/1977e9e541d1277a0d8a29eff7f63d4580d2fc2c5e7d9d2adbaee46a471350b1967d6f03dac6adab63522f1775ee5a9e8eddb5502039d3ac8ae98acfedf190cf
+    axios: "npm:^1.7.4"
+  checksum: 10c0/c958f9820d4ead29990b85274c18d0b5b769b17e06f27cbe76815bbb931bc20a44c16b9105186f544445c0c7063575698f4c703073363638e40a268c5a463612
   languageName: node
   linkType: hard
 
@@ -4815,13 +4815,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sendgrid/mail@npm:8.1.3":
-  version: 8.1.3
-  resolution: "@sendgrid/mail@npm:8.1.3"
+"@sendgrid/mail@npm:8.1.4":
+  version: 8.1.4
+  resolution: "@sendgrid/mail@npm:8.1.4"
   dependencies:
-    "@sendgrid/client": "npm:^8.1.3"
+    "@sendgrid/client": "npm:^8.1.4"
     "@sendgrid/helpers": "npm:^8.0.0"
-  checksum: 10c0/180d4609710dd22e60ecfcfcc7aaf37d8936872c3b7f9413b86d32e55e9d20f21842c4d81fff35d0906ca3750262a6df95b6c96eae5c48fe6c260d8214bd54b8
+  checksum: 10c0/d1ea601975e5641774f0c90892ac958dcbaee30b66f701e71cfe8ac220517dfa557cdbf38c6c7021698d6dce17c87d7ff3593af7095679c98366178dcc2750a3
   languageName: node
   linkType: hard
 
@@ -8025,7 +8025,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.6.7, axios@npm:^1.6.8":
+"axios@npm:^1.6.7":
   version: 1.7.2
   resolution: "axios@npm:1.7.2"
   dependencies:
@@ -8033,6 +8033,17 @@ __metadata:
     form-data: "npm:^4.0.0"
     proxy-from-env: "npm:^1.1.0"
   checksum: 10c0/cbd47ce380fe045313364e740bb03b936420b8b5558c7ea36a4563db1258c658f05e40feb5ddd41f6633fdd96d37ac2a76f884dad599c5b0224b4c451b3fa7ae
+  languageName: node
+  linkType: hard
+
+"axios@npm:^1.7.4":
+  version: 1.7.7
+  resolution: "axios@npm:1.7.7"
+  dependencies:
+    follow-redirects: "npm:^1.15.6"
+    form-data: "npm:^4.0.0"
+    proxy-from-env: "npm:^1.1.0"
+  checksum: 10c0/4499efc89e86b0b49ffddc018798de05fab26e3bf57913818266be73279a6418c3ce8f9e934c7d2d707ab8c095e837fc6c90608fb7715b94d357720b5f568af7
   languageName: node
   linkType: hard
 
@@ -9805,7 +9816,7 @@ __metadata:
     "@redis/json": "npm:1.0.7"
     "@repeaterjs/repeater": "npm:^3.0.5"
     "@rollup/plugin-commonjs": "npm:^26.0.0"
-    "@sendgrid/mail": "npm:8.1.3"
+    "@sendgrid/mail": "npm:8.1.4"
     "@tailwindcss/aspect-ratio": "npm:0.4.2"
     "@tailwindcss/typography": "npm:^0.5.10"
     "@types/bad-words": "npm:^3.0.3"
