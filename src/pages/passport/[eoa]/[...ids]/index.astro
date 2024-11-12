@@ -22,6 +22,7 @@ const isEOA = isAddress(eoa)
 
 const id = ids?.split('/')?.at(0) ?? '' // Get the skin id from the URL.
 const passportElementId = ids?.split('/')?.at(1) ?? '' // Get the element id from the URL.
+
 const _profile: Profile = await getProfile({ id: eoa ?? '' })
 const profile = {
   ..._profile,
@@ -320,6 +321,7 @@ const passportSpotlight = await whenDefined(
                 client:load
                 skinSection="spotlight"
                 clips={passportSpotlight}
+                skinId={skin?.id ?? ''}
               />
             </div>
           </div>
@@ -335,6 +337,7 @@ const passportSpotlight = await whenDefined(
                 client:load
                 skinSection="clips"
                 clips={passportSkinClips}
+                skinId={skin?.id ?? ''}
               />
             </div>
           </div>
@@ -385,17 +388,30 @@ const passportSpotlight = await whenDefined(
 </Layout>
 
 <script>
-  const elementId = (
-    document.getElementById('passportElementIdValue') as HTMLInputElement
-  )?.value
+  let observer: MutationObserver
+  const targetElement = document
+  const observationConfig = { attributes: true, childList: true, subtree: true }
+  const observationCallback: MutationCallback = (mutationList, observer) => {
+    const elementId = (
+      document.getElementById('passportElementIdValue') as HTMLInputElement
+    )?.value
 
-  if (elementId) {
-    const element = document.getElementById(elementId)
+    console.log('Element id in observer', elementId)
 
-    if (element) {
-      element.addEventListener('loadedmetadata', () => {
-        element.scrollIntoView()
-      })
+    if (elementId) {
+      const element = document.getElementById(elementId)
+      console.log('Element', element)
+      if (element) {
+        element.scrollIntoView({
+          behavior: 'smooth',
+          block: 'end',
+          inline: 'nearest',
+        })
+        observer?.disconnect() // Disconnect after scrolling
+      }
     }
   }
+
+  observer = new MutationObserver(observationCallback)
+  observer.observe(targetElement, observationConfig) // Start observing.
 </script>
