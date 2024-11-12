@@ -58,6 +58,7 @@ const fetchClub = async (api: string) => {
 }
 
 const shareClip = () => {
+  console.log('Window', window.location.href, window.location.pathname)
   // Please replace the title and text with the actual values.
   navigator.share({
     title: 'Check out this clip!',
