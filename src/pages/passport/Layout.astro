@@ -8,6 +8,7 @@ import type { Skin } from '@pages/api/profile'
 import Header from '@components/Global/Header.astro'
 import { getPassportItemForPayload } from '@fixtures/api/passportItem'
 import SkinSwitch from 'src/pages/passport/components/SkinSwitch.svelte'
+import AchivementNotification from '../../pages/passport/components/AchivementNotification.svelte'
 
 type Props = {
   eoa: string
@@ -112,6 +113,9 @@ const description =
       <slot name="before-header" />
 
       <Header connectButton="show" pageTitle="Passport">
+        <AchivementNotification 
+          address={eoa}
+        client:only="svelte" slot="before:heading" />
         <SkinSwitch
           client:load
           slot="passport:profile:switcher"

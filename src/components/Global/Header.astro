@@ -16,6 +16,7 @@ const { connectButton = 'hidden', pageTitle } = Astro.props
 
 <header>
   <span class:list={passportClass('heading-container')}>
+    <slot name="before:heading" />
     <div class:list={passportClass('heading-content')}>
       <NavbarResponsive
         client:load
