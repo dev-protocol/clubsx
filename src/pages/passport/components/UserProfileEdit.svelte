@@ -68,8 +68,6 @@
     connection().account.subscribe((acc: UndefinedOr<string>) => {
       const oldEOA = eoa
       eoa = acc
-      // :TODO: DELETE THE LINE
-      // eoa = '0xfc4a9e2B406C515415BBcF502A632aefB185A875'
       if (eoa !== oldEOA) {
         // Wallet is connected or addrress has changed so update the data again.
         _fetchProfile()
@@ -81,7 +79,8 @@
   const _fetchProfile = async () => {
     profileFetching = true
 
-    const fetchedProfile = await fetch(`/api/profile/${id}`)
+    // Avoid caching to get results of state update in all calls.
+    const fetchedProfile = await fetch(`/api/profile/${id}?nocache=true`)
       .then(
         (res) => {
           if (res.ok) {
@@ -237,7 +236,7 @@
       const isReqSuccessful = updatingStatus === 'success'
       updatingStatus = undefined
       if (isReqSuccessful) {
-        location.reload()
+        _fetchProfile()
       }
     }, 3000)
   }
@@ -258,7 +257,7 @@
     createNewSkinStatus = await submit()
     isCreatingNewSkin = false
 
-    setTimeout(() => {
+    setTimeout(async () => {
       const isReqSuccessful = createNewSkinStatus === 'success'
       createNewSkinStatus = undefined
       if (isReqSuccessful) {
@@ -293,7 +292,7 @@
       const isReqSuccessful = selectAsDefaultSkinStatus === 'success'
       selectAsDefaultSkinStatus = undefined
       if (isReqSuccessful) {
-        window.location.reload()
+        _fetchProfile()
       }
     }, 3000)
   }
@@ -336,7 +335,7 @@
       const isReqSuccessful = toggleSkinVisibilityStatus === 'success'
       toggleSkinVisibilityStatus = undefined
       if (isReqSuccessful) {
-        window.location.reload()
+        _fetchProfile()
       }
     }, 3000)
   }
