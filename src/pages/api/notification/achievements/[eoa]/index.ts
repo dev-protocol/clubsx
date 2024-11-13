@@ -142,7 +142,7 @@ export const GET: APIRoute = async (req) => {
   return new Response(
     isNotError(res)
       ? json(res as JSON)
-      : json({ achievementUrl: [], error: res.message }),
+      : json({ achievements: [], error: res.message }),
     {
       status: isNotError(res) ? 200 : 400,
       headers,

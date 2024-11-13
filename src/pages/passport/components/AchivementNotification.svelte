@@ -5,11 +5,16 @@
 
   export let address: string | undefined
 
+  type AchievementClaimable = {
+    clubsName: string
+    achievementName: string
+    achievementUrl: string
+  }
   let connection: UndefinedOr<typeof Connection> = undefined
-  let achievements
+  let achievements: AchievementClaimable[] = []
   let eoa: UndefinedOr<string> = undefined
 
-  const fetchAchievement = async (eoa) => {
+  const fetchAchievement = async (eoa: string) => {
     const achievementResults = await fetch(
       `/api/notification/achievements/${eoa}`,
     ).then((res) => res.json())
@@ -25,8 +30,10 @@
     connection = _conn
     eoa = connection()?.account?.getValue()
     connection().account.subscribe((acc) => {
-      fetchAchievement(acc)
       eoa = acc
+      if (eoa) {
+        fetchAchievement(eoa)
+      }
     })
   })
 </script>
