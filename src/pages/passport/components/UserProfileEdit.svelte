@@ -68,8 +68,6 @@
     connection().account.subscribe((acc: UndefinedOr<string>) => {
       const oldEOA = eoa
       eoa = acc
-      // :TODO: DELETE THE LINE
-      // eoa = '0xfc4a9e2B406C515415BBcF502A632aefB185A875'
       if (eoa !== oldEOA) {
         // Wallet is connected or addrress has changed so update the data again.
         _fetchProfile()
@@ -238,7 +236,6 @@
       updatingStatus = undefined
       if (isReqSuccessful) {
         _fetchProfile()
-        // location.reload()
       }
     }, 3000)
   }
@@ -263,7 +260,6 @@
       const isReqSuccessful = createNewSkinStatus === 'success'
       createNewSkinStatus = undefined
       if (isReqSuccessful) {
-        await _fetchProfile()
         window.location.href = `/passport/${eoa}/edit?skinId=${newSkin.id}`
       }
     }, 3000)
@@ -296,7 +292,6 @@
       selectAsDefaultSkinStatus = undefined
       if (isReqSuccessful) {
         _fetchProfile()
-        // window.location.reload()
       }
     }, 3000)
   }
@@ -340,7 +335,6 @@
       toggleSkinVisibilityStatus = undefined
       if (isReqSuccessful) {
         _fetchProfile()
-        // window.location.reload()
       }
     }, 3000)
   }
