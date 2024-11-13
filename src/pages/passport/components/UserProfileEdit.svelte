@@ -237,7 +237,8 @@
       const isReqSuccessful = updatingStatus === 'success'
       updatingStatus = undefined
       if (isReqSuccessful) {
-        location.reload()
+        _fetchProfile()
+        // location.reload()
       }
     }, 3000)
   }
@@ -258,10 +259,11 @@
     createNewSkinStatus = await submit()
     isCreatingNewSkin = false
 
-    setTimeout(() => {
+    setTimeout(async () => {
       const isReqSuccessful = createNewSkinStatus === 'success'
       createNewSkinStatus = undefined
       if (isReqSuccessful) {
+        await _fetchProfile()
         window.location.href = `/passport/${eoa}/edit?skinId=${newSkin.id}`
       }
     }, 3000)
@@ -293,7 +295,8 @@
       const isReqSuccessful = selectAsDefaultSkinStatus === 'success'
       selectAsDefaultSkinStatus = undefined
       if (isReqSuccessful) {
-        window.location.reload()
+        _fetchProfile()
+        // window.location.reload()
       }
     }, 3000)
   }
@@ -336,7 +339,8 @@
       const isReqSuccessful = toggleSkinVisibilityStatus === 'success'
       toggleSkinVisibilityStatus = undefined
       if (isReqSuccessful) {
-        window.location.reload()
+        _fetchProfile()
+        // window.location.reload()
       }
     }, 3000)
   }
