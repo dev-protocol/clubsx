@@ -79,7 +79,8 @@
   const _fetchProfile = async () => {
     profileFetching = true
 
-    const fetchedProfile = await fetch(`/api/profile/${id}`)
+    // Avoid caching to get results of state update in all calls.
+    const fetchedProfile = await fetch(`/api/profile/${id}?nocache=true`)
       .then(
         (res) => {
           if (res.ok) {
