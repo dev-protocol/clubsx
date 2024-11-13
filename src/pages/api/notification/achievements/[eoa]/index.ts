@@ -23,12 +23,21 @@ import {
   type AchievementDist,
   type AchievementInfo,
 } from '@plugins/achievements/types'
+import { decode } from '@devprotocol/clubs-core'
 
 export const GET: APIRoute = async (req) => {
   const eoa =
     whenDefined(req.params.eoa, (addr) => addr) ?? new Error('No EOA passed')
 
   const client = await getDefaultClient()
+
+  const getClubsNameByURL = async (url: string) => {
+    const key = url.replace(/^https?:\/\//, '').split('.')[0]
+    const config = await client.get(key)
+    const decoded = config ? decode(config) : new Error('Config is null')
+    const { name } = decoded
+    return name
+  }
 
   const allAchievementToEOA: AchievementDist[] = await whenNotError(
     eoa,
@@ -102,10 +111,12 @@ export const GET: APIRoute = async (req) => {
       client,
     )
     const clubsUrl = await searchClubsURLFromHash(achievement.clubsUrl)
+    const clubsName = await getClubsNameByURL(clubsUrl)
     const achievementUrl = `${clubsUrl}/achievement/${achievement.id}`
     const achievementName = await getAchievementName(achievement)
     if (result && !claimed && distDocument?.id === achievement.id) {
       return {
+        clubsName,
         achievementName,
         achievementUrl,
       }
@@ -131,7 +142,7 @@ export const GET: APIRoute = async (req) => {
   return new Response(
     isNotError(res)
       ? json(res as JSON)
-      : json({ achievementUrl: [], error: res.message }),
+      : json({ achievements: [], error: res.message }),
     {
       status: isNotError(res) ? 200 : 400,
       headers,
