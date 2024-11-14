@@ -28,7 +28,7 @@ export const POST = async ({ request }: { request: Request }) => {
   const res = whenNotError(authenticated, (_auth) =>
     _auth ? _auth : new Error('Unauthorized'),
   )
-
+  await client.quit()
   return isNotError(res)
     ? new Response(
         json({
