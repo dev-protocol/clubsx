@@ -59,7 +59,7 @@ export const POST = async ({ request }: { request: Request }) => {
     configs.push(decode(config))
   }
 
-  await client.disconnect()
+  await client.quit()
 
   return new Response(JSON.stringify(configs), { status: 200 })
 }

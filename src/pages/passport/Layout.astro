@@ -8,6 +8,7 @@ import type { Skin } from '@pages/api/profile'
 import Header from '@components/Global/Header.astro'
 import { getPassportItemForPayload } from '@fixtures/api/passportItem'
 import SkinSwitch from 'src/pages/passport/components/SkinSwitch.svelte'
+import AchivementNotification from '../../pages/passport/components/AchivementNotification.svelte'
 
 type Props = {
   eoa: string
@@ -27,15 +28,6 @@ const {
   preload = [],
 } = Astro.props as Props
 
-const name = 'Clubs'
-const url = 'https://www.clubs.place/'
-const twitterHandle = 'poweredbyClubs'
-const title = 'Clubs | All-in-One Space for Creators'
-const ogURL =
-  'https://cdn.prod.website-files.com/63ddf59d6f6edd36e251c76f/6678cd54f0f0cfe31677b681_og.png'
-const description =
-  'Create your own space with Clubs and collect your favorites with Passport. Memberships, tickets, merch, and more, all easily manage and sell in one place.'
-
 const passportSkinTheme = await whenDefined(sTokenPayload, (payload: string) =>
   getPassportItemForPayload({
     sTokenPayload: payload ?? '',
@@ -43,6 +35,21 @@ const passportSkinTheme = await whenDefined(sTokenPayload, (payload: string) =>
     .then((item) => (item instanceof Error ? undefined : item))
     .catch(() => undefined),
 )
+
+const requestURL = new URL(Astro.url)
+const ogImageURLHost = requestURL.origin.includes('prerelease.clubs.place')
+  ? 'prerelease.clubs.place'
+  : requestURL.origin.includes('clubs.place')
+    ? 'clubs.place'
+    : `${requestURL.hostname}:${requestURL.port}`
+const ogpImageURL = `${requestURL.protocol}//${ogImageURLHost}/og/image${requestURL.pathname}`
+const image = `https://capture.clubs.place/api/generate?src=${ogpImageURL}`
+const name = 'Clubs'
+const url = 'https://www.clubs.place/'
+const twitterHandle = 'poweredbyClubs'
+const title = 'Clubs | All-in-One Space for Creators'
+const description =
+  'Clubs is an all-in-one space for creators to manage their NFTs, DAOs, and more.'
 ---
 
 <html
@@ -51,8 +58,6 @@ const passportSkinTheme = await whenDefined(sTokenPayload, (payload: string) =>
   class:list={passportClass()}
 >
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
     <title>{title}</title>
 
     <link rel="icon" type="image/svg" href={Favicon.src} />
@@ -80,10 +85,11 @@ const passportSkinTheme = await whenDefined(sTokenPayload, (payload: string) =>
       )
     }
 
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta property="og:image" content={`${image}`} />
     <meta name="description" content={`${description}`} />
     <meta property="og:title" content={title} />
-    <meta property="og:url" content={url} />
-    <meta property="og:image" content={`${ogURL}`} />
     <meta property="og:description" content={description} />
     <meta property="og:site_name" content={name} />
     <meta name="twitter:site" content={twitterHandle} />
@@ -91,7 +97,7 @@ const passportSkinTheme = await whenDefined(sTokenPayload, (payload: string) =>
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={`${ogURL}`} />
+    <meta name="twitter:image" content={`${image}`} />
   </head>
 
   <body
@@ -108,6 +114,11 @@ const passportSkinTheme = await whenDefined(sTokenPayload, (payload: string) =>
       <slot name="before-header" />
 
       <Header connectButton="show" pageTitle="Passport">
+        <AchivementNotification
+          address={eoa}
+          client:only="svelte"
+          slot="before:heading"
+        />
         <SkinSwitch
           client:load
           slot="passport:profile:switcher"

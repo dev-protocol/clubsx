@@ -17,4 +17,5 @@ export default [
   '/api/authenticate',
   '/api/assets',
   '/api/addDaoToDraft',
+  '/api/notification',
 ]

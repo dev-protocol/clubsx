@@ -12,6 +12,7 @@ import {
   getDefaultClient,
 } from '@fixtures/api/club/redis'
 import { decode } from '@devprotocol/clubs-core'
+import { clubsUrlToKeccak256Tag } from '@plugins/achievements/utils'
 
 export const POST = async ({ request }: { request: Request }) => {
   const { site, config, sig, hash, expectedAddress, uid } =
@@ -124,6 +125,8 @@ export const POST = async ({ request }: { request: Request }) => {
           address: expectedAddress,
           firebaseUid: uid,
         },
+        clubsUrlHash: clubsUrlToKeccak256Tag(decode(config).url),
+        clubsUrl: decode(config).url,
       },
       client,
     )

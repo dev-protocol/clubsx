@@ -53,7 +53,7 @@ export const POST = async ({ request }: { request: Request }) => {
   }
 
   let decoded = jsonwebtoken.verify(encryptedText, process.env.SALT ?? '')
-
+  await client.quit()
   return new Response(
     JSON.stringify({
       decoded,
