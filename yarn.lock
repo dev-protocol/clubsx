@@ -39,7 +39,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ampproject/remapping@npm:^2.2.0, @ampproject/remapping@npm:^2.2.1":
+"@ampproject/remapping@npm:^2.2.0, @ampproject/remapping@npm:^2.2.1, @ampproject/remapping@npm:^2.3.0":
   version: 2.3.0
   resolution: "@ampproject/remapping@npm:2.3.0"
   dependencies:
@@ -1461,9 +1461,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@devprotocol/clubs-core@npm:3.21.1":
-  version: 3.21.1
-  resolution: "@devprotocol/clubs-core@npm:3.21.1"
+"@devprotocol/clubs-core@npm:3.22.2":
+  version: 3.22.2
+  resolution: "@devprotocol/clubs-core@npm:3.22.2"
   dependencies:
     "@devprotocol/dev-kit": "npm:8.7.0"
     "@devprotocol/elements": "npm:1.5.3"
@@ -1472,7 +1472,7 @@ __metadata:
     "@ethersproject/abstract-provider": "npm:^5.7.0"
     "@metamask/detect-provider": "npm:^2.0.0"
     "@tailwindcss/container-queries": "npm:^0.1.1"
-    "@vercel/blob": "npm:^0.25.0"
+    "@vercel/blob": "npm:^0.26.0"
     axios: "npm:^1.6.7"
     bignumber.js: "npm:^9.1.2"
     isomorphic-dompurify: "npm:2.16.0"
@@ -1484,9 +1484,9 @@ __metadata:
     react: "npm:^18.0.0"
     react-dom: "npm:^18.0.0"
     rxjs: "npm:^7.8.1"
-    svelte: "npm:^4.0.0"
+    svelte: "npm:^5.0.0"
     vue: "npm:^3.2.0"
-    yaml: "npm:2.5.1"
+    yaml: "npm:2.6.0"
   peerDependencies:
     "@astrojs/lit": ^1.0.1 || ^2.0.0 || ^3.0.0 || ^4.0.0
     "@astrojs/react": ^1.2.2 || ^2.0.0 || ^3.0.0
@@ -1498,7 +1498,7 @@ __metadata:
     lit: ^2.3.1 || ^3.0.0
     react: ^18.0.0
     react-dom: ^18.0.0
-    svelte: ^3.49.0 || ^4.0.0
+    svelte: ^3.49.0 || ^4.0.0 || ^5.0.0
     tailwindcss: ^3.2.4
     vue: ^3.2.0
   dependenciesMeta:
@@ -1510,7 +1510,7 @@ __metadata:
       optional: true
     vue:
       optional: true
-  checksum: 10c0/3731ded2e6a1a99fdbf1b24fb383675f1a71ae530d73b618ee30c5dbb856f7550e6efd81a978169cccca561882a70d0bf41f0a278a99ad12fff0a1472dca990a
+  checksum: 10c0/c18f40197bcfa55f2f31b43437f3046ff77e1ac5376d67bb686a5e093c0aa08bd3c214ea8586ce00f6a9a4a2d99d8a7210d3a141841098491b6af195096f5676
   languageName: node
   linkType: hard
 
@@ -5456,6 +5456,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/estree@npm:^1.0.5, @types/estree@npm:^1.0.6":
+  version: 1.0.6
+  resolution: "@types/estree@npm:1.0.6"
+  checksum: 10c0/cdfd751f6f9065442cd40957c07fd80361c962869aa853c1c2fd03e101af8b9389d8ff4955a43a6fcfa223dd387a089937f95be0f3eec21ca527039fd2d9859a
+  languageName: node
+  linkType: hard
+
 "@types/express-serve-static-core@npm:^4.17.33":
   version: 4.19.5
   resolution: "@types/express-serve-static-core@npm:4.19.5"
@@ -5910,15 +5917,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vercel/blob@npm:^0.25.0":
-  version: 0.25.0
-  resolution: "@vercel/blob@npm:0.25.0"
+"@vercel/blob@npm:^0.26.0":
+  version: 0.26.0
+  resolution: "@vercel/blob@npm:0.26.0"
   dependencies:
     async-retry: "npm:^1.3.3"
     bytes: "npm:^3.1.2"
     is-buffer: "npm:^2.0.5"
+    is-node-process: "npm:^1.2.0"
+    throttleit: "npm:^2.1.0"
     undici: "npm:^5.28.4"
-  checksum: 10c0/8913d949d7f13725a8f26fadbac7e790ba2d1365902896bce8d83623448987b06e59a4cceb11ef650258a5497538cabde721e302f7aa3d857891e30180ee5dd1
+  checksum: 10c0/14cf72801548169f58b23e1abda6849b6f5e98b588f64b8863b06b4b44f8515aaa6727cbe1cf97d7fb5a8ba434fad23f2698dddb39e3ebfc78d6f044283a1a50
   languageName: node
   linkType: hard
 
@@ -7383,6 +7392,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"acorn-typescript@npm:^1.4.13":
+  version: 1.4.13
+  resolution: "acorn-typescript@npm:1.4.13"
+  peerDependencies:
+    acorn: ">=8.9.0"
+  checksum: 10c0/f2f17cf03379d63beeb007f0feea02cebbd9af261f6b5619ea7345b177bd7a5f99752927cbf652baa3fc97962ae4561592093ab0a1c3e00ca4f354ba23c557ae
+  languageName: node
+  linkType: hard
+
 "acorn-walk@npm:^8.3.2":
   version: 8.3.3
   resolution: "acorn-walk@npm:8.3.3"
@@ -7401,7 +7419,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"acorn@npm:^8.14.0":
+"acorn@npm:^8.12.1, acorn@npm:^8.14.0":
   version: 8.14.0
   resolution: "acorn@npm:8.14.0"
   bin:
@@ -7634,7 +7652,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"aria-query@npm:^5.3.2":
+"aria-query@npm:^5.3.1, aria-query@npm:^5.3.2":
   version: 5.3.2
   resolution: "aria-query@npm:5.3.2"
   checksum: 10c0/003c7e3e2cff5540bf7a7893775fc614de82b0c5dde8ae823d47b7a28a9d4da1f7ed85f340bdb93d5649caa927755f0e31ecc7ab63edfdfc00c8ef07e505e03e
@@ -9838,7 +9856,7 @@ __metadata:
     "@astrojs/vue": "npm:4.5.2"
     "@crossmint/client-sdk-base": "npm:^1.0.1-alpha.6"
     "@crossmint/client-sdk-react-ui": "npm:^1.0.1-alpha.6"
-    "@devprotocol/clubs-core": "npm:3.21.1"
+    "@devprotocol/clubs-core": "npm:3.22.2"
     "@devprotocol/clubs-plugin-awesome-onboarding": "npm:0.5.1"
     "@devprotocol/clubs-plugin-passport": "npm:^0.1.0-beta.19"
     "@devprotocol/clubs-plugin-posts": "npm:0.20.17"
@@ -11860,6 +11878,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"esm-env@npm:^1.0.0":
+  version: 1.1.4
+  resolution: "esm-env@npm:1.1.4"
+  checksum: 10c0/bc6f24faf0022e0ec98a4747616f4d38f7db371609edc081f584b711d55167b0d9aa2e068badc49621a16df73488786a36bc67f2fbcfb319cc002f908e8eda0f
+  languageName: node
+  linkType: hard
+
 "esniff@npm:^2.0.1":
   version: 2.0.1
   resolution: "esniff@npm:2.0.1"
@@ -11899,6 +11924,16 @@ __metadata:
   dependencies:
     estraverse: "npm:^5.1.0"
   checksum: 10c0/a084bd049d954cc88ac69df30534043fb2aee5555b56246493f42f27d1e168f00d9e5d4192e46f10290d312dc30dc7d58994d61a609c579c1219d636996f9213
+  languageName: node
+  linkType: hard
+
+"esrap@npm:^1.2.2":
+  version: 1.2.2
+  resolution: "esrap@npm:1.2.2"
+  dependencies:
+    "@jridgewell/sourcemap-codec": "npm:^1.4.15"
+    "@types/estree": "npm:^1.0.1"
+  checksum: 10c0/a3a0b665c034f604a162b910346309c64c42635c5d2e8704a27afcdf4e6d4c529e05475d1875d6b3e0d550f8470986116414097230ab3a7c565b85091ca5e177
   languageName: node
   linkType: hard
 
@@ -14956,6 +14991,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"is-node-process@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "is-node-process@npm:1.2.0"
+  checksum: 10c0/5b24fda6776d00e42431d7bcd86bce81cb0b6cabeb944142fe7b077a54ada2e155066ad06dbe790abdb397884bdc3151e04a9707b8cd185099efbc79780573ed
+  languageName: node
+  linkType: hard
+
 "is-number-object@npm:^1.0.4":
   version: 1.0.7
   resolution: "is-number-object@npm:1.0.7"
@@ -15033,6 +15075,15 @@ __metadata:
   dependencies:
     "@types/estree": "npm:*"
   checksum: 10c0/652d31b405e8e8269071cee78fe874b072745012eba202c6dc86880fd603a65ae043e3160990ab4a0a4b33567cbf662eecf3bc6b3c2c1550e6c2b6cf885ce5aa
+  languageName: node
+  linkType: hard
+
+"is-reference@npm:^3.0.2":
+  version: 3.0.3
+  resolution: "is-reference@npm:3.0.3"
+  dependencies:
+    "@types/estree": "npm:^1.0.6"
+  checksum: 10c0/35edd284cfb4cd9e9f08973f20e276ec517eaca31f5f049598e97dbb2d05544973dde212dac30fddee5b420930bff365e2e67dcd1293d0866c6720377382e3e5
   languageName: node
   linkType: hard
 
@@ -22481,6 +22532,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"svelte@npm:^5.0.0":
+  version: 5.1.16
+  resolution: "svelte@npm:5.1.16"
+  dependencies:
+    "@ampproject/remapping": "npm:^2.3.0"
+    "@jridgewell/sourcemap-codec": "npm:^1.5.0"
+    "@types/estree": "npm:^1.0.5"
+    acorn: "npm:^8.12.1"
+    acorn-typescript: "npm:^1.4.13"
+    aria-query: "npm:^5.3.1"
+    axobject-query: "npm:^4.1.0"
+    esm-env: "npm:^1.0.0"
+    esrap: "npm:^1.2.2"
+    is-reference: "npm:^3.0.2"
+    locate-character: "npm:^3.0.0"
+    magic-string: "npm:^0.30.11"
+    zimmerframe: "npm:^1.1.2"
+  checksum: 10c0/8bb9d12e7b9184032ffe6efe59399e0c867deed83a1b4a15350add2f05427428112f997e3e1d320c5bed1e910319d09e87af18c495be65a1cd6304ec4d204694
+  languageName: node
+  linkType: hard
+
 "svg-tags@npm:^1.0.0":
   version: 1.0.0
   resolution: "svg-tags@npm:1.0.0"
@@ -22748,6 +22820,13 @@ __metadata:
   version: 0.161.0
   resolution: "three@npm:0.161.0"
   checksum: 10c0/0314e0b11c717042cc6cec983d6e2832ed416e4ab996b1340ff25335bbf71c529415856ae2de42952faeae284202368e7f1c6e3fd5a7c73d2b68108e5fb3c057
+  languageName: node
+  linkType: hard
+
+"throttleit@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "throttleit@npm:2.1.0"
+  checksum: 10c0/1696ae849522cea6ba4f4f3beac1f6655d335e51b42d99215e196a718adced0069e48deaaf77f7e89f526ab31de5b5c91016027da182438e6f9280be2f3d5265
   languageName: node
   linkType: hard
 
@@ -25580,12 +25659,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yaml@npm:2.5.1, yaml@npm:^2.5.0":
-  version: 2.5.1
-  resolution: "yaml@npm:2.5.1"
+"yaml@npm:2.6.0":
+  version: 2.6.0
+  resolution: "yaml@npm:2.6.0"
   bin:
     yaml: bin.mjs
-  checksum: 10c0/40fba5682898dbeeb3319e358a968fe886509fab6f58725732a15f8dda3abac509f91e76817c708c9959a15f786f38ff863c1b88062d7c1162c5334a7d09cb4a
+  checksum: 10c0/9e74cdb91cc35512a1c41f5ce509b0e93cc1d00eff0901e4ba831ee75a71ddf0845702adcd6f4ee6c811319eb9b59653248462ab94fa021ab855543a75396ceb
   languageName: node
   linkType: hard
 
@@ -25593,6 +25672,15 @@ __metadata:
   version: 1.10.2
   resolution: "yaml@npm:1.10.2"
   checksum: 10c0/5c28b9eb7adc46544f28d9a8d20c5b3cb1215a886609a2fd41f51628d8aaa5878ccd628b755dbcd29f6bb4921bd04ffbc6dcc370689bb96e594e2f9813d2605f
+  languageName: node
+  linkType: hard
+
+"yaml@npm:^2.5.0":
+  version: 2.5.1
+  resolution: "yaml@npm:2.5.1"
+  bin:
+    yaml: bin.mjs
+  checksum: 10c0/40fba5682898dbeeb3319e358a968fe886509fab6f58725732a15f8dda3abac509f91e76817c708c9959a15f786f38ff863c1b88062d7c1162c5334a7d09cb4a
   languageName: node
   linkType: hard
 
@@ -25697,6 +25785,13 @@ __metadata:
   version: 1.1.1
   resolution: "yocto-queue@npm:1.1.1"
   checksum: 10c0/cb287fe5e6acfa82690acb43c283de34e945c571a78a939774f6eaba7c285bacdf6c90fbc16ce530060863984c906d2b4c6ceb069c94d1e0a06d5f2b458e2a92
+  languageName: node
+  linkType: hard
+
+"zimmerframe@npm:^1.1.2":
+  version: 1.1.2
+  resolution: "zimmerframe@npm:1.1.2"
+  checksum: 10c0/8f693609c31cbb4449db223acd61661bc93b73e615f9db6fb8c86d4ceea84ca54cbbeebcf53cf74c22a1f923b92abd18e97988a5e175c76b6ab17238e5593a9d
   languageName: node
   linkType: hard
 
