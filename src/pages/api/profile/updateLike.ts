@@ -83,6 +83,7 @@ export const POST = async ({ request }: { request: Request }) => {
   try {
     await client.set(profileIdForDB, JSON.stringify(newProfile))
   } catch (error) {
+    await client.quit()
     return new Response(JSON.stringify({ error }), { status: 500 })
   }
 
