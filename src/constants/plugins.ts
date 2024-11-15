@@ -35,7 +35,7 @@ import $21 from '@plugins/achievements'
 import $22 from '@devprotocol/huddle01-clubs-plugin'
 import * as PostsPlugin from '@devprotocol/clubs-plugin-posts'
 import $23 from '@devprotocol/clubs-plugin-awesome-onboarding'
-import $24 from '@devprotocol/clubs-plugin-passport'
+import $24 from '@devprotocol/clubs-plugin-passports'
 
 export type PluginTag =
   | 'New & Upcoming'
@@ -256,7 +256,7 @@ export const installablePlugins: InstallablePlugins[] = [
     id: $24.meta.id,
     tag: 'New & Upcoming',
     developer: 'Dev Protocol',
-    repositoryUrl: 'https://github.com/dev-protocol/clubs-plugin-passport',
+    repositoryUrl: 'https://github.com/dev-protocol/clubs-plugin-passports',
     pluginOptions: [],
     require: {
       invitation: true,

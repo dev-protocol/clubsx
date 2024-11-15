@@ -17,7 +17,7 @@ import type { createClient } from 'redis'
 import {
   Index,
   sTokenPayload as sTokenPayloadSchema,
-} from '@devprotocol/clubs-plugin-passport'
+} from '@devprotocol/clubs-plugin-passports'
 
 const { PUBLIC_ALCHEMY_KEY } = import.meta.env
 

@@ -5,7 +5,7 @@ import {
   Index,
   sTokenPayload as sTokenPayloadSchema,
   type PassportItemDocument,
-} from '@devprotocol/clubs-plugin-passport'
+} from '@devprotocol/clubs-plugin-passports'
 
 const { REDIS_URL, REDIS_USERNAME, REDIS_PASSWORD } = import.meta.env
 
