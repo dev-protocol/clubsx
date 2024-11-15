@@ -22385,8 +22385,8 @@ __metadata:
   linkType: hard
 
 "svelte-check@npm:^4.0.0":
-  version: 4.0.7
-  resolution: "svelte-check@npm:4.0.7"
+  version: 4.0.8
+  resolution: "svelte-check@npm:4.0.8"
   dependencies:
     "@jridgewell/trace-mapping": "npm:^0.3.25"
     chokidar: "npm:^4.0.1"
@@ -22398,7 +22398,7 @@ __metadata:
     typescript: ">=5.0.0"
   bin:
     svelte-check: bin/svelte-check
-  checksum: 10c0/edd477910ede13d6a05d30ba073a69145bab02e37ed0fea65b1d5c46abb164fb2e7f06b3233a21f00882fe03e4666b1d1303abe303762c14993b7eaec3363739
+  checksum: 10c0/a671f44c60431a4128b891d94907aba6db74d1f9a5eda9d6ed0fe0bcbbea05b00c4eb488d4b0463c114289c5c7eadb03a17313938f378131224b303bb2ad8956
   languageName: node
   linkType: hard
 
