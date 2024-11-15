@@ -1546,8 +1546,8 @@ __metadata:
   linkType: hard
 
 "@devprotocol/clubs-plugin-passports@npm:^0.1.0-beta.22":
-  version: 0.1.0-beta.22
-  resolution: "@devprotocol/clubs-plugin-passports@npm:0.1.0-beta.22"
+  version: 0.1.0-beta.23
+  resolution: "@devprotocol/clubs-plugin-passports@npm:0.1.0-beta.23"
   dependencies:
     "@devprotocol/dev-kit": "npm:8.7.0"
     "@devprotocol/util-ts": "npm:4.0.0"
@@ -1561,7 +1561,7 @@ __metadata:
     "@devprotocol/clubs-core": ^3.18.0
     "@devprotocol/clubs-plugin-payments": 0.1.1
     ethers: ^6.0.0
-  checksum: 10c0/4d6ad7ed8f29766e0ad45694cb6abef3be57885f263245809b0d3cfa01f2519cedb08ad5edb1ec4102fa72da433a8506433099c4f25985df8a69ffc32a1242e1
+  checksum: 10c0/f42b800f992ffe06e5b8c16275110091f42698a30f1a22027ca3e37765825bcedaa41e5e402e5787244d444d11871a222e3046412a0e02438ed787097451cfd6
   languageName: node
   linkType: hard
 
