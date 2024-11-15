@@ -1526,9 +1526,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@devprotocol/clubs-plugin-passports@npm:^0.1.0-beta.21":
-  version: 0.1.0-beta.21
-  resolution: "@devprotocol/clubs-plugin-passports@npm:0.1.0-beta.21"
+"@devprotocol/clubs-plugin-passports@npm:^0.1.0-beta.22":
+  version: 0.1.0-beta.22
+  resolution: "@devprotocol/clubs-plugin-passports@npm:0.1.0-beta.22"
   dependencies:
     "@devprotocol/dev-kit": "npm:8.7.0"
     "@devprotocol/util-ts": "npm:4.0.0"
@@ -1542,7 +1542,7 @@ __metadata:
     "@devprotocol/clubs-core": ^3.18.0
     "@devprotocol/clubs-plugin-payments": 0.1.1
     ethers: ^6.0.0
-  checksum: 10c0/1cb47cee2e0cb98890d82216a6b1017893df70bd1cdbd217c7499371ece13593bec4ad1dc3538fe2fffbb3bb93bb2536c947303e557ba135744e35f9d680d68b
+  checksum: 10c0/4d6ad7ed8f29766e0ad45694cb6abef3be57885f263245809b0d3cfa01f2519cedb08ad5edb1ec4102fa72da433a8506433099c4f25985df8a69ffc32a1242e1
   languageName: node
   linkType: hard
 
@@ -9800,7 +9800,7 @@ __metadata:
     "@crossmint/client-sdk-react-ui": "npm:^1.0.1-alpha.6"
     "@devprotocol/clubs-core": "npm:3.22.2"
     "@devprotocol/clubs-plugin-awesome-onboarding": "npm:0.5.1"
-    "@devprotocol/clubs-plugin-passports": "npm:^0.1.0-beta.21"
+    "@devprotocol/clubs-plugin-passports": "npm:^0.1.0-beta.22"
     "@devprotocol/clubs-plugin-posts": "npm:0.20.17"
     "@devprotocol/clubs-plugin-posts-voting": "npm:0.8.8"
     "@devprotocol/dev-kit": "npm:8.7.0"
