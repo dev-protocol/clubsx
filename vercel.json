@@ -8,5 +8,8 @@
       "path": "/api/cron/updateStats",
       "schedule": "0 0 * * *"
     }
-  ]
+  ],
+  "git": {
+    "deploymentEnabled": false
+  }
 }
