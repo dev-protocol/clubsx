@@ -57,7 +57,6 @@ export default defineConfig({
   ],
   vite: {
     ssr: { noExternal: ['path-to-regexp'] },
-    optimizeDeps: { include: ['yaml'] },
     build: { sourcemap: true },
     plugins: [
       // commonjs({
@@ -77,6 +76,7 @@ export default defineConfig({
           '/node_modules/three/examples/jsm/controls/OrbitControls',
         '@crossmint/client-sdk-react-ui/package.json':
           '/node_modules/@crossmint/client-sdk-react-ui/package.json',
+        yaml: '/node_modules/yaml/browser/index.js',
       },
     },
   },
