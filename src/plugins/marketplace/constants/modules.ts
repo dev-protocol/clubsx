@@ -35,4 +35,6 @@ export const modules = {
     import('@devprotocol/clubs-plugin-awesome-onboarding'),
   'devprotocol:clubs:plugin:passports': () =>
     import('@devprotocol/clubs-plugin-passports'),
+  'devprotocol:clubs:plugin:akiba': () =>
+    import('@devprotocol/clubs-plugin-akiba'),
 }
