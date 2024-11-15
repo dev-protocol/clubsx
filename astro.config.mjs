@@ -57,6 +57,7 @@ export default defineConfig({
   ],
   vite: {
     ssr: { noExternal: ['path-to-regexp'] },
+    optimizeDeps: { include: ['yaml'] },
     build: { sourcemap: true },
     plugins: [
       // commonjs({
