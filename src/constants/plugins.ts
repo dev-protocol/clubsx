@@ -36,6 +36,7 @@ import $22 from '@devprotocol/huddle01-clubs-plugin'
 import * as PostsPlugin from '@devprotocol/clubs-plugin-posts'
 import $23 from '@devprotocol/clubs-plugin-awesome-onboarding'
 import $24 from '@devprotocol/clubs-plugin-passports'
+import $25 from '@devprotocol/clubs-plugin-akiba'
 
 export type PluginTag =
   | 'New & Upcoming'
@@ -262,6 +263,16 @@ export const installablePlugins: InstallablePlugins[] = [
       invitation: true,
     },
   },
+  {
+    id: $25.meta.id,
+    tag: 'New & Upcoming',
+    developer: 'Dev Protocol',
+    repositoryUrl: 'https://github.com/dev-protocol/clubs-plugin-akiba',
+    pluginOptions: [],
+    require: {
+      invitation: true,
+    },
+  },
 ]
 
 export const plugins = [
@@ -290,6 +301,7 @@ export const plugins = [
   $22,
   $23,
   $24,
+  $25,
 ] satisfies ClubsPlugins
 
 export const paidBundledItems: PaidBundledItem[] = [
@@ -310,5 +322,8 @@ export const paidBundledItems: PaidBundledItem[] = [
   },
   {
     id: $24.meta.id,
+  },
+  {
+    id: $25.meta.id,
   },
 ]

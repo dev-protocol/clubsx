@@ -1514,6 +1514,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@devprotocol/clubs-plugin-akiba@npm:^0.1.0-beta.1":
+  version: 0.1.0-beta.1
+  resolution: "@devprotocol/clubs-plugin-akiba@npm:0.1.0-beta.1"
+  dependencies:
+    "@devprotocol/clubs-plugin-passports": "npm:^0.1.0-beta.22"
+    "@devprotocol/dev-kit": "npm:8.7.0"
+    "@devprotocol/util-ts": "npm:4.0.0"
+    bignumber.js: "npm:9.1.2"
+    fast-average-color: "npm:^9.4.0"
+    ramda: "npm:0.30.1"
+    sass: "npm:1.81.0"
+    vue3-carousel: "npm:^0.5.0"
+  peerDependencies:
+    "@devprotocol/clubs-core": ^2.1.1 || ^3.0.0
+    ethers: ^6.0.0
+  checksum: 10c0/fbfd726a1f72cc6faa5b4f31da9fae7b02463df1debfb83016ab93d53d9ecf360f18a1dea033b04b43f6dec177df372728fa4faf21634a0d0ca520ff904b236b
+  languageName: node
+  linkType: hard
+
 "@devprotocol/clubs-plugin-awesome-onboarding@npm:0.5.1":
   version: 0.5.1
   resolution: "@devprotocol/clubs-plugin-awesome-onboarding@npm:0.5.1"
@@ -9800,6 +9819,7 @@ __metadata:
     "@crossmint/client-sdk-base": "npm:^1.0.1-alpha.6"
     "@crossmint/client-sdk-react-ui": "npm:^1.0.1-alpha.6"
     "@devprotocol/clubs-core": "npm:3.22.2"
+    "@devprotocol/clubs-plugin-akiba": "npm:^0.1.0-beta.1"
     "@devprotocol/clubs-plugin-awesome-onboarding": "npm:0.5.1"
     "@devprotocol/clubs-plugin-passports": "npm:^0.1.0-beta.22"
     "@devprotocol/clubs-plugin-posts": "npm:0.20.17"
@@ -24485,6 +24505,15 @@ __metadata:
   bin:
     vue-tsc: ./bin/vue-tsc.js
   checksum: 10c0/6367db8b36e59fcea432b1f9f53ac36f0389b26278cd8f1f7cc914a26ba82dda7db5a4407e8e159f33a9a788821f6e6f69037bc3db0f9f2be9fe700123032282
+  languageName: node
+  linkType: hard
+
+"vue3-carousel@npm:^0.5.0":
+  version: 0.5.1
+  resolution: "vue3-carousel@npm:0.5.1"
+  peerDependencies:
+    vue: ^3.2.0
+  checksum: 10c0/b8bedfddd8292e4fde5f03b63cc5dae4915b2b2731ef81df36d5392f264c1448481627ed5aff7a27b429ae4b7221b93d1cd302f04b88c888a63e2a7b943a1bd4
   languageName: node
   linkType: hard
 
