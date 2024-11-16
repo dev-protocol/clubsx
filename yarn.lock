@@ -1565,9 +1565,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@devprotocol/clubs-plugin-payments@npm:^0.1.1":
-  version: 0.1.1
-  resolution: "@devprotocol/clubs-plugin-payments@npm:0.1.1"
+"@devprotocol/clubs-plugin-payments@npm:^0.1.2":
+  version: 0.1.2
+  resolution: "@devprotocol/clubs-plugin-payments@npm:0.1.2"
   dependencies:
     "@devprotocol/dev-kit": "npm:8.7.0"
     "@devprotocol/util-ts": "npm:4.0.0"
@@ -1579,10 +1579,11 @@ __metadata:
     jsonwebtoken: "npm:^9.0.2"
     ramda: "npm:0.30.1"
     redis: "npm:4.7.0"
+    rimraf: "npm:^6.0.1"
   peerDependencies:
     "@devprotocol/clubs-core": ^3.22.1
     ethers: ^6.0.0
-  checksum: 10c0/9e309413aec460040f05de836028e9db4ac094de58daf2291dcb075ddde333e96ecfd2ac819743ce143d0f43fd9793ac2a5b7f9f5b4441bd30d7e134afafec36
+  checksum: 10c0/d9c16913d060804112eaaf5098d8d0804b25ff6316132df6f268b55c1a3d7bcea7174da76bbb7ed841c905ae9e5376af7f6e6d9040d85a2c1da5eda1e95772db
   languageName: node
   linkType: hard
 
@@ -9845,7 +9846,7 @@ __metadata:
     "@devprotocol/clubs-plugin-akiba": "npm:^0.1.0-beta.1"
     "@devprotocol/clubs-plugin-awesome-onboarding": "npm:0.5.1"
     "@devprotocol/clubs-plugin-passports": "npm:^0.1.0-beta.22"
-    "@devprotocol/clubs-plugin-payments": "npm:^0.1.1"
+    "@devprotocol/clubs-plugin-payments": "npm:^0.1.2"
     "@devprotocol/clubs-plugin-posts": "npm:0.20.17"
     "@devprotocol/clubs-plugin-posts-voting": "npm:0.8.8"
     "@devprotocol/dev-kit": "npm:8.7.0"
@@ -20771,6 +20772,18 @@ __metadata:
   bin:
     rimraf: bin.js
   checksum: 10c0/9cb7757acb489bd83757ba1a274ab545eafd75598a9d817e0c3f8b164238dd90eba50d6b848bd4dcc5f3040912e882dc7ba71653e35af660d77b25c381d402e8
+  languageName: node
+  linkType: hard
+
+"rimraf@npm:^6.0.1":
+  version: 6.0.1
+  resolution: "rimraf@npm:6.0.1"
+  dependencies:
+    glob: "npm:^11.0.0"
+    package-json-from-dist: "npm:^1.0.0"
+  bin:
+    rimraf: dist/esm/bin.mjs
+  checksum: 10c0/b30b6b072771f0d1e73b4ca5f37bb2944ee09375be9db5f558fcd3310000d29dfcfa93cf7734d75295ad5a7486dc8e40f63089ced1722a664539ffc0c3ece8c6
   languageName: node
   linkType: hard
 

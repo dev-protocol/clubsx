@@ -8,7 +8,7 @@ import type {
 } from '@devprotocol/clubs-core'
 import { ClubsPluginCategory } from '@devprotocol/clubs-core'
 import { meta as ClubsPaymentsMeta } from '@devprotocol/clubs-plugin-payments'
-import { composeItems as getClubsPaymentsOverrides } from '@plugins/clubs-payments/utils/compose-items'
+import { composeItems as getClubsPaymentsOverrides } from '@devprotocol/clubs-plugin-payments/utils'
 import { default as Layout } from './layouts/Default.astro'
 import { default as Index } from './pages/index.astro'
 import { default as Admin } from './admin.astro'
