@@ -1565,6 +1565,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@devprotocol/clubs-plugin-payments@npm:^0.1.1":
+  version: 0.1.1
+  resolution: "@devprotocol/clubs-plugin-payments@npm:0.1.1"
+  dependencies:
+    "@devprotocol/dev-kit": "npm:8.7.0"
+    "@devprotocol/util-ts": "npm:4.0.0"
+    "@types/jsonwebtoken": "npm:^9.0.7"
+    "@types/ramda": "npm:^0.30.2"
+    bignumber.js: "npm:9.1.2"
+    cross-fetch: "npm:^4.0.0"
+    crypto-hash: "npm:^3.0.0"
+    jsonwebtoken: "npm:^9.0.2"
+    ramda: "npm:0.30.1"
+    redis: "npm:4.7.0"
+  peerDependencies:
+    "@devprotocol/clubs-core": ^3.22.1
+    ethers: ^6.0.0
+  checksum: 10c0/9e309413aec460040f05de836028e9db4ac094de58daf2291dcb075ddde333e96ecfd2ac819743ce143d0f43fd9793ac2a5b7f9f5b4441bd30d7e134afafec36
+  languageName: node
+  linkType: hard
+
 "@devprotocol/clubs-plugin-posts-voting@npm:0.8.8":
   version: 0.8.8
   resolution: "@devprotocol/clubs-plugin-posts-voting@npm:0.8.8"
@@ -5519,6 +5540,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/jsonwebtoken@npm:^9.0.7":
+  version: 9.0.7
+  resolution: "@types/jsonwebtoken@npm:9.0.7"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: 10c0/e1cd0e48fcae21b1d4378887a23453bd7212b480a131b11bcda2cdeb0687d03c9646ee5ba592e04cfaf76f7cc80f179950e627cdb3ebc90a5923bce49a35631a
+  languageName: node
+  linkType: hard
+
 "@types/keyv@npm:^3.1.1, @types/keyv@npm:^3.1.4":
   version: 3.1.4
   resolution: "@types/keyv@npm:3.1.4"
@@ -5664,7 +5694,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/ramda@npm:0.30.2":
+"@types/ramda@npm:0.30.2, @types/ramda@npm:^0.30.2":
   version: 0.30.2
   resolution: "@types/ramda@npm:0.30.2"
   dependencies:
@@ -9815,6 +9845,7 @@ __metadata:
     "@devprotocol/clubs-plugin-akiba": "npm:^0.1.0-beta.1"
     "@devprotocol/clubs-plugin-awesome-onboarding": "npm:0.5.1"
     "@devprotocol/clubs-plugin-passports": "npm:^0.1.0-beta.22"
+    "@devprotocol/clubs-plugin-payments": "npm:^0.1.1"
     "@devprotocol/clubs-plugin-posts": "npm:0.20.17"
     "@devprotocol/clubs-plugin-posts-voting": "npm:0.8.8"
     "@devprotocol/dev-kit": "npm:8.7.0"
