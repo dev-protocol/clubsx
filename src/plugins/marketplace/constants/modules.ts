@@ -23,7 +23,7 @@ export const modules = {
     import('@devprotocol/clubs-plugin-posts-voting'),
   'devprotocol:clubs:plugin:pay-by-card': () => import('@plugins/pay-by-card'),
   'devprotocol:clubs:plugin:clubs-payments': () =>
-    import('@plugins/clubs-payments'),
+    import('@devprotocol/clubs-plugin-payments'),
   'devprotocol:clubs:plugin:achievements': () =>
     import('@plugins/achievements'),
   'devprotocol:clubs:plugin:invitations': () => import('@plugins/invitations'),
