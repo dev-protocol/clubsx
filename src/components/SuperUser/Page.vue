@@ -32,7 +32,7 @@ import {
   changePassportOfferingBeneficiary,
   changePassportOfferingFee,
 } from './utils/passportOffering'
-import type { CreatePassportItemReq } from '@devprotocol/clubs-plugin-passport'
+import type { CreatePassportItemReq } from '@devprotocol/clubs-plugin-passports'
 
 dayjs.extend(utc)
 

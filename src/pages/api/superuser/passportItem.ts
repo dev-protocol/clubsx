@@ -4,7 +4,7 @@ import { verifiedAccount } from '@fixtures/api/superuser'
 import {
   addPassportItemSetter,
   type CreatePassportItemReq,
-} from '@devprotocol/clubs-plugin-passport'
+} from '@devprotocol/clubs-plugin-passports'
 import {
   isNotError,
   whenDefinedAll,

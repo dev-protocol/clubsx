@@ -1,7 +1,7 @@
 import { whenDefined } from '@devprotocol/util-ts'
 import type { RefApiCalling } from '.'
 import type { Ref } from 'vue'
-import type { CreatePassportItemReq } from '@devprotocol/clubs-plugin-passport'
+import type { CreatePassportItemReq } from '@devprotocol/clubs-plugin-passports'
 
 export type RefPassportItem = Ref<
   Partial<CreatePassportItemReq['passportItem']>
