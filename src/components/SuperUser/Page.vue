@@ -473,16 +473,6 @@ const updatePassportOfferingPrice = (ev: Event) => {
         </label>
 
         <label class="w-full hs-form-field">
-          <span class="w-full hs-form-field__label">Currency</span>
-          <span
-            id="select-offering-currency"
-            class="w-full hs-form-field__input"
-          >
-            {{ passportOffering?.currency || 'USDC' }}
-          </span>
-        </label>
-
-        <label class="w-full hs-form-field">
           <span class="w-full hs-form-field__label">Fee</span>
           <input
             type="number"
@@ -493,10 +483,7 @@ const updatePassportOfferingPrice = (ev: Event) => {
             @change="onChangePassportOfferingFee"
           />
           <p class="hs-form-field__helper mt-2">
-            * MINIMUM fee is <b>0</b> and MAXIMUM fee is <b>1</b>
-          </p>
-          <p class="hs-form-field__helper mt-2">
-            * Fee has to be <b>0</b> when currency is <b>DEV</b>
+            * MINIMUM fee is <b>0 (0%)</b> and MAXIMUM fee is <b>1 (100%)</b>
           </p>
         </label>
 
