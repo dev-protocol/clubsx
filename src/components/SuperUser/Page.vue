@@ -1,11 +1,6 @@
 <script lang="ts" setup>
 import { randomBytes } from 'ethers'
-import {
-  bytes32Hex,
-  type ClubsOffering,
-  decode,
-  encode,
-} from '@devprotocol/clubs-core'
+import { bytes32Hex, decode, encode } from '@devprotocol/clubs-core'
 import { whenDefined, type UndefinedOr } from '@devprotocol/util-ts'
 import type { ContractRunner, Signer } from 'ethers'
 import { combineLatest } from 'rxjs'
@@ -33,6 +28,7 @@ import {
   changePassportOfferingFee,
 } from './utils/passportOffering'
 import type { CreatePassportItemReq } from '@devprotocol/clubs-plugin-passports'
+import type { PassportOffering } from '@devprotocol/clubs-plugin-passports/src/types'
 
 dayjs.extend(utc)
 
@@ -58,7 +54,7 @@ const plugins = ref(
   })),
 )
 const passportPayload = ref<Uint8Array>()
-const passportOffering = ref<Partial<ClubsOffering>>({})
+const passportOffering = ref<Partial<PassportOffering>>({})
 const achievement = ref<Partial<ReqBodyAchievement['achievement']>>({})
 const passportItem = ref<Partial<CreatePassportItemReq['passportItem']>>({})
 
@@ -375,6 +371,15 @@ const updatePassportOfferingOnChain = async () => {
             type="text"
             class="w-full hs-form-field__input"
             v-model="passportOffering.imageSrc"
+          />
+        </label>
+
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">Preview Image URL</span>
+          <input
+            type="text"
+            class="w-full hs-form-field__input"
+            v-model="passportOffering.previewImageSrc"
           />
         </label>
 

@@ -6,16 +6,16 @@ import {
   bytes32Hex,
   membershipToStruct,
   type ClubsConfiguration,
-  type ClubsOffering,
   type Membership,
 } from '@devprotocol/clubs-core'
+import type { PassportOffering } from '@devprotocol/clubs-plugin-passports/src/types'
 
 import {
   address,
   callSimpleCollections,
 } from '@plugins/memberships/utils/simpleCollections'
 
-export type RefPassportOffering = Ref<Partial<ClubsOffering>>
+export type RefPassportOffering = Ref<Partial<PassportOffering>>
 
 export const changePassportOfferingFee =
   (ref: RefPassportOffering) => (ev: Event) => {
