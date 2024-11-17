@@ -27,7 +27,11 @@ import {
   changePassportOfferingBeneficiary,
   changePassportOfferingFee,
 } from './utils/passportOffering'
-import type { CreatePassportItemReq } from '@devprotocol/clubs-plugin-passports'
+import {
+  Prices,
+  type CreatePassportItemReq,
+  type PassportItemAssetType,
+} from '@devprotocol/clubs-plugin-passports'
 import type { PassportOffering } from '@devprotocol/clubs-plugin-passports/src/types'
 
 dayjs.extend(utc)
@@ -257,6 +261,24 @@ const updatePassportOfferingOnChain = async () => {
     error: '',
   }
 }
+
+const updatePassportOfferingPrice = (ev: Event) => {
+  const value = (ev.target as HTMLInputElement).value
+  if (!value) {
+    return
+  }
+
+  passportItem.value = {
+    ...passportItem.value,
+    itemAssetType: value as PassportItemAssetType,
+  }
+
+  passportOffering.value = {
+    ...passportOffering.value,
+    price: Prices[value as PassportItemAssetType].usdc,
+    currency: 'USDC',
+  }
+}
 </script>
 
 <template>
@@ -354,6 +376,60 @@ const updatePassportOfferingOnChain = async () => {
         </label>
       </div>
 
+      <h2 class="font-mono text-xl mt-8">Add Passport Item</h2>
+      <div class="w-full grid gap-2">
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">sToken Id</span>
+          <input
+            type="text"
+            class="w-full hs-form-field__input"
+            v-model="passportItem.sTokenId"
+          />
+        </label>
+
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">Payload</span>
+          <input
+            type="text"
+            class="w-full hs-form-field__input"
+            v-model="passportItem.sTokenPayload"
+          />
+        </label>
+
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">ItemAssetType</span>
+          <select
+            id="select-item-asset"
+            :value="passportItem.itemAssetType"
+            class="w-full hs-form-field__input"
+            @change="updatePassportOfferingPrice"
+          >
+            <option disabled value="">Select option</option>
+            <option value="css">css</option>
+            <option value="stylesheet-link">stylesheet-link</option>
+            <option value="image">image</option>
+            <option value="image-link">image-link</option>
+            <option value="image-playable">image-playable</option>
+            <option value="image-playable-link">image-playable-link</option>
+            <option value="short-video">short-video</option>
+            <option value="short-video-link">short-video-link</option>
+            <option value="video">video</option>
+            <option value="video-link">video-link</option>
+            <option value="bgm">bgm</option>
+            <option value="bgm-link">bgm-link</option>
+          </select>
+        </label>
+
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">ItemAssetValue</span>
+          <input
+            type="text"
+            class="w-full hs-form-field__input"
+            v-model="passportItem.itemAssetValue"
+          />
+        </label>
+      </div>
+
       <h2 class="font-mono text-xl mt-8">Add Passport Offering</h2>
       <div class="w-full grid gap-2">
         <label class="w-full hs-form-field">
@@ -383,39 +459,21 @@ const updatePassportOfferingOnChain = async () => {
           />
         </label>
 
-        // TODO: keep price constant depending on assets.
         <label class="w-full hs-form-field">
           <span class="w-full hs-form-field__label">Price</span>
-          <input
-            type="number"
-            min="0.000001"
-            max="1.000e+20"
-            class="w-full hs-form-field__input"
-            v-model="passportOffering.price"
-          />
+          <span class="w-full hs-form-field__input">
+            {{ passportOffering?.price || 0.0 }} USDC
+          </span>
         </label>
 
         <label class="w-full hs-form-field">
           <span class="w-full hs-form-field__label">Currency</span>
-          <select
+          <span
             id="select-offering-currency"
-            v-model="passportOffering.currency"
             class="w-full hs-form-field__input"
           >
-            <option disabled value="">Select option</option>
-            <option value="USDC" class="bg-primary-200 text-primary-ink">
-              USDC
-            </option>
-            <option value="ETH" class="bg-primary-200 text-primary-ink">
-              ETH
-            </option>
-            <option value="MATIC" class="bg-primary-200 text-primary-ink">
-              MATIC
-            </option>
-            <option value="DEV" class="bg-primary-200 text-primary-ink">
-              DEV
-            </option>
-          </select>
+            {{ passportOffering?.currency || 'USDC' }}
+          </span>
         </label>
 
         <label class="w-full hs-form-field">
@@ -462,59 +520,6 @@ const updatePassportOfferingOnChain = async () => {
             disabled="true"
             class="w-full hs-form-field__input"
             :value="bytes32Hex(passportOffering.payload ?? [])"
-          />
-        </label>
-      </div>
-
-      <h2 class="font-mono text-xl mt-8">Add Passport Item</h2>
-      <div class="w-full grid gap-2">
-        <label class="w-full hs-form-field">
-          <span class="w-full hs-form-field__label">Id</span>
-          <input
-            type="text"
-            class="w-full hs-form-field__input"
-            v-model="passportItem.sTokenId"
-          />
-        </label>
-
-        <label class="w-full hs-form-field">
-          <span class="w-full hs-form-field__label">Payload</span>
-          <input
-            type="text"
-            class="w-full hs-form-field__input"
-            v-model="passportItem.sTokenPayload"
-          />
-        </label>
-
-        <label class="w-full hs-form-field">
-          <span class="w-full hs-form-field__label">ItemAssetValue</span>
-          <select
-            id="select-item-asset"
-            v-model="passportItem.itemAssetType"
-            class="w-full hs-form-field__input"
-          >
-            <option disabled value="">Select option</option>
-            <option value="css">css</option>
-            <option value="stylesheet-link">stylesheet-link</option>
-            <option value="image">image</option>
-            <option value="image-link">image-link</option>
-            <option value="image-playable">image-playable</option>
-            <option value="image-playable-link">image-playable-link</option>
-            <option value="short-video">short-video</option>
-            <option value="short-video-link">short-video-link</option>
-            <option value="video">video</option>
-            <option value="video-link">video-link</option>
-            <option value="bgm">bgm</option>
-            <option value="bgm-link">bgm-link</option>
-          </select>
-        </label>
-
-        <label class="w-full hs-form-field">
-          <span class="w-full hs-form-field__label">ItemAssetValue</span>
-          <input
-            type="text"
-            class="w-full hs-form-field__input"
-            v-model="passportItem.itemAssetValue"
           />
         </label>
       </div>
