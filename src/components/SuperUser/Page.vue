@@ -464,6 +464,12 @@ const updatePassportOfferingPrice = (ev: Event) => {
           <span class="w-full hs-form-field__input">
             {{ passportOffering?.price || 0.0 }} USDC
           </span>
+          <p
+            v-if="passportItem.itemAssetType"
+            class="hs-form-field__helper mt-2"
+          >
+            * ~ {{ Prices[passportItem?.itemAssetType].yen }} YEN
+          </p>
         </label>
 
         <label class="w-full hs-form-field">
