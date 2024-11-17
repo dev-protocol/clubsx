@@ -77,7 +77,7 @@ export default defineConfig({
         '@crossmint/client-sdk-react-ui/package.json':
           '/node_modules/@crossmint/client-sdk-react-ui/package.json',
         // TODO: workaround for until closed this -> https://github.com/eemeli/yaml/pull/560
-        yaml: '/node_modules/yaml/browser/index.js',
+        // yaml: '/node_modules/yaml/browser/index.js',
       },
     },
   },
