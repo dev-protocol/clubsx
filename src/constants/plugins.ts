@@ -26,7 +26,7 @@ import $12 from '@plugins/message'
 import $13 from '@plugins/memberships'
 import $14 from '@kazu80/clubs-plugin-links'
 import $15 from '@plugins/join-legacy'
-import $16 from '@plugins/clubs-payments'
+import $16 from '@devprotocol/clubs-plugin-payments'
 import $17 from '@plugins/tickets'
 import $18 from '@plugins/collections'
 import $19 from '@plugins/invitations'
@@ -35,7 +35,8 @@ import $21 from '@plugins/achievements'
 import $22 from '@devprotocol/huddle01-clubs-plugin'
 import * as PostsPlugin from '@devprotocol/clubs-plugin-posts'
 import $23 from '@devprotocol/clubs-plugin-awesome-onboarding'
-import $24 from '@devprotocol/clubs-plugin-passport'
+import $24 from '@devprotocol/clubs-plugin-passports'
+import $25 from '@devprotocol/clubs-plugin-akiba'
 
 export type PluginTag =
   | 'New & Upcoming'
@@ -256,7 +257,17 @@ export const installablePlugins: InstallablePlugins[] = [
     id: $24.meta.id,
     tag: 'New & Upcoming',
     developer: 'Dev Protocol',
-    repositoryUrl: 'https://github.com/dev-protocol/clubs-plugin-passport',
+    repositoryUrl: 'https://github.com/dev-protocol/clubs-plugin-passports',
+    pluginOptions: [],
+    require: {
+      invitation: true,
+    },
+  },
+  {
+    id: $25.meta.id,
+    tag: 'New & Upcoming',
+    developer: 'Dev Protocol',
+    repositoryUrl: 'https://github.com/dev-protocol/clubs-plugin-akiba',
     pluginOptions: [],
     require: {
       invitation: true,
@@ -290,6 +301,7 @@ export const plugins = [
   $22,
   $23,
   $24,
+  $25,
 ] satisfies ClubsPlugins
 
 export const paidBundledItems: PaidBundledItem[] = [
@@ -310,5 +322,8 @@ export const paidBundledItems: PaidBundledItem[] = [
   },
   {
     id: $24.meta.id,
+  },
+  {
+    id: $25.meta.id,
   },
 ]

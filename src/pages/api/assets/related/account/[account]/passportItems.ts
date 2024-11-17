@@ -8,7 +8,7 @@ import {
 import {
   generatePassportItemKey,
   type PassportItemDocument,
-} from '@devprotocol/clubs-plugin-passport'
+} from '@devprotocol/clubs-plugin-passports'
 
 import { headers } from '@fixtures/api/headers'
 import { json, type JSON } from '@fixtures/api/json'
