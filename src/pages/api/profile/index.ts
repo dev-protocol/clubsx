@@ -74,6 +74,7 @@ export const POST = async ({ request }: { request: Request }) => {
     await client.quit()
     return new Response(JSON.stringify({}), { status: 200 })
   } catch (error) {
+    await client.quit()
     return new Response(JSON.stringify({ error }), { status: 500 })
   }
 }

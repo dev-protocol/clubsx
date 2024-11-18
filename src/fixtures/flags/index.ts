@@ -5,6 +5,7 @@ export enum FeatureFlags {
   AchievementsOnMarketplace = 'achievements-on-marketplace',
   DynamicWalletOnMarketplace = 'dynamic-wallet-on-marketplace',
   PassportPluginOnMarketplace = 'passport-plugin-on-marketplace',
+  AkibaPluginOnMarketplace = 'akiba-plugin-on-marketplace',
 }
 
 export enum FeatureFlagValues {
@@ -16,6 +17,7 @@ export const flags: Map<FeatureFlags, FeatureFlagValues[]> = new Map([
   [FeatureFlags.AchievementsOnMarketplace, [FeatureFlagValues.Enable]],
   [FeatureFlags.DynamicWalletOnMarketplace, [FeatureFlagValues.Enable]],
   [FeatureFlags.PassportPluginOnMarketplace, [FeatureFlagValues.Enable]],
+  [FeatureFlags.AkibaPluginOnMarketplace, [FeatureFlagValues.Enable]],
 ])
 
 export const getFlagsByParams = ({

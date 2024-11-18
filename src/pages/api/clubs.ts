@@ -71,7 +71,7 @@ export const GET: APIRoute = async ({ url }): Promise<Response> => {
         ),
       ),
     )) ?? []
-
+  await client.quit()
   return new Response(JSON.stringify(res), {
     status: 200,
     headers: { ...headers, ...cache({ maxAge: 604800 }) },

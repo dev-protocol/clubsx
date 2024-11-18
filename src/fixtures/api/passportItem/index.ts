@@ -5,7 +5,7 @@ import {
   Index,
   sTokenPayload as sTokenPayloadSchema,
   type PassportItemDocument,
-} from '@devprotocol/clubs-plugin-passport'
+} from '@devprotocol/clubs-plugin-passports'
 import { getDefaultClient } from '@fixtures/api/assets/redis'
 import { ACHIEVEMENT_ITEM_SCHEMA } from '@plugins/achievements/db/schema'
 import {
