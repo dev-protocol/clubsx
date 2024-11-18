@@ -333,6 +333,74 @@ const addPassportdDiscountInConfig = async () => {
   apiCalling.value = { progress: false, result: res.result, error: res.error }
 }
 
+const addPassportdOverrideInConfig = async () => {
+  const { signature: sig, message: msg } = await sign()
+  apiCalling.value = { progress: true }
+
+  if (
+    !passportItem.value.itemAssetType ||
+    !passportItem.value.itemAssetValue ||
+    !passportOffering.value.price
+  ) {
+    apiCalling.value = {
+      progress: false,
+      result: null,
+      error: 'missing itemAssetType or itemAssetValue or price',
+    }
+  }
+
+  const currentConfig = whenDefined(
+    (await whenDefined(club.value, fetchClubs))?.content,
+    decode,
+  )
+  const passportPlugin = currentConfig?.plugins?.find(
+    (plgn) => plgn.id === PASSPORT_PLUGIN_ID,
+  )
+  const nextConfig = whenDefinedAll(
+    [currentConfig, passportPlugin],
+    ([base, _passportPlugin]) => ({
+      ...base,
+      plugins: [
+        ...base.plugins.filter((plgn) => plgn.id !== PASSPORT_PLUGIN_ID),
+        {
+          ..._passportPlugin,
+          options: [
+            ...(_passportPlugin?.options?.filter(
+              (option) => option.key !== 'override',
+            ) || []),
+            {
+              key: 'override',
+              value: [
+                {
+                  ...passportOverride.value,
+                },
+                ...((_passportPlugin?.options?.find(
+                  (option) => option.key === 'override',
+                )?.value || []) as Override[]),
+              ],
+            },
+          ],
+        },
+      ],
+    }),
+  )
+
+  const api = await whenDefined(nextConfig, (conf) =>
+    fetch('/api/superuser/config', {
+      method: 'POST',
+      body: JSON.stringify({
+        site: club.value,
+        message: msg,
+        signature: sig,
+        config: encode(conf),
+      }),
+    }),
+  )
+
+  const res = (await api?.json()) as { result: string; error?: string }
+  apiCalling.value = { progress: false, result: res.result, error: res.error }
+}
+
 const updatePassportOfferingOnChain = async () => {
   if (!providerObj || !signerObj) {
     return
@@ -790,7 +858,7 @@ const updatePassportOfferingOnChain = async () => {
             <p>
               <button
                 class="hs-button is-small is-filled"
-                @click="addPassportdOfferingInConfig"
+                @click="addPassportdOverrideInConfig"
               >
                 Add in override
               </button>
