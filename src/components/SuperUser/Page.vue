@@ -325,6 +325,17 @@ const updatePassportOfferingOnChain = async () => {
   }
 
   apiCalling.value = { progress: true }
+  if (
+    !passportItem.value.itemAssetType ||
+    !passportItem.value.itemAssetValue ||
+    !passportOffering.value.price
+  ) {
+    apiCalling.value = {
+      progress: false,
+      result: null,
+      error: 'missing itemAssetType or itemAssetValue or price',
+    }
+  }
 
   const currentConfig = whenDefined(
     (await whenDefined(club.value, fetchClubs))?.content,
