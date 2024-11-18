@@ -22,6 +22,7 @@ import {
   type CreatePassportItemReq,
 } from '@devprotocol/clubs-plugin-passports'
 import type { RefPassportItem } from './passportItem'
+import type { RefPassportDiscount } from './passportDiscount'
 
 export type RefPassportOffering = Ref<Partial<PassportOffering>>
 
@@ -118,6 +119,7 @@ export const setTokenURIDescriptor = async (
 export const setImage = async (
   signer: UndefinedOr<Signer>,
   chainId: UndefinedOr<number>,
+  passportDiscount: RefPassportDiscount,
   passportOffering: RefPassportOffering,
   provider: UndefinedOr<ContractRunner>,
   currentConfig: UndefinedOr<ClubsConfiguration>,
@@ -141,6 +143,10 @@ export const setImage = async (
             membershipToStruct(
               {
                 ...passportOffering.value,
+                currency: 'USDC',
+                price:
+                  passportDiscount?.value?.price?.usdc ||
+                  passportOffering.value.price, // if discount is available use it, else use the price.
               } as Membership,
               chainId as number,
             ),

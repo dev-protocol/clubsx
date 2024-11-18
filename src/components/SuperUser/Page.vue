@@ -264,6 +264,7 @@ const updatePassportOfferingOnChain = async () => {
   const isImageSet = await setImage(
     signerObj,
     chainId,
+    passportDiscount,
     passportOffering,
     providerObj,
     currentConfig,
