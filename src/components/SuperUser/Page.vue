@@ -26,13 +26,16 @@ import {
   setImage,
   changePassportOfferingBeneficiary,
   changePassportOfferingFee,
+  changePassportItemAssetType,
 } from './utils/passportOffering'
 import {
   Prices,
   type CreatePassportItemReq,
-  type PassportItemAssetType,
 } from '@devprotocol/clubs-plugin-passports'
-import type { PassportOffering } from '@devprotocol/clubs-plugin-passports/src/types'
+import type {
+  PassportOffering,
+  PassportOptionsDiscount,
+} from '@devprotocol/clubs-plugin-passports/src/types'
 
 dayjs.extend(utc)
 
@@ -61,6 +64,7 @@ const passportPayload = ref<Uint8Array>()
 const passportOffering = ref<Partial<PassportOffering>>({})
 const achievement = ref<Partial<ReqBodyAchievement['achievement']>>({})
 const passportItem = ref<Partial<CreatePassportItemReq['passportItem']>>({})
+const passportDiscount = ref<Partial<PassportOptionsDiscount>>({})
 
 const sign = async () => {
   const msg = message()
@@ -139,6 +143,10 @@ const addPassportItem = async () => {
 const onChangePassportOfferingFee = changePassportOfferingFee(passportOffering)
 const onChangePassportOfferingBeneficiary =
   changePassportOfferingBeneficiary(passportOffering)
+const onChangePassportItemAssetType = changePassportItemAssetType(
+  passportItem,
+  passportOffering,
+)
 
 onMounted(async () => {
   passportPayload.value = randomBytes(8)
@@ -259,24 +267,6 @@ const updatePassportOfferingOnChain = async () => {
     },
     progress: false,
     error: '',
-  }
-}
-
-const updatePassportOfferingPrice = (ev: Event) => {
-  const value = (ev.target as HTMLInputElement).value
-  if (!value) {
-    return
-  }
-
-  passportItem.value = {
-    ...passportItem.value,
-    itemAssetType: value as PassportItemAssetType,
-  }
-
-  passportOffering.value = {
-    ...passportOffering.value,
-    price: Prices[value as PassportItemAssetType].usdc,
-    currency: 'USDC',
   }
 }
 </script>
@@ -402,7 +392,7 @@ const updatePassportOfferingPrice = (ev: Event) => {
             id="select-item-asset"
             :value="passportItem.itemAssetType"
             class="w-full hs-form-field__input"
-            @change="updatePassportOfferingPrice"
+            @change="onChangePassportItemAssetType"
           >
             <option disabled value="">Select option</option>
             <option value="css">css</option>
@@ -516,6 +506,36 @@ const updatePassportOfferingPrice = (ev: Event) => {
           />
         </label>
       </div>
+
+      <h2 class="font-mono text-xl mt-8">Add Passport Discount</h2>
+      <div class="w-full grid gap-2">
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">Start UTC</span>
+          <input
+            type="datetime-local"
+            class="w-full hs-form-field__input"
+            v-model="passportDiscount.start_utc"
+          />
+        </label>
+
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">End UTC</span>
+          <input
+            type="datetime-local"
+            class="w-full hs-form-field__input"
+            v-model="passportDiscount.end_utc"
+          />
+        </label>
+
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">Discount</span>
+          <input
+            type="number"
+            class="w-full hs-form-field__input"
+            v-model="passportDiscount.end_utc"
+          />
+        </label>
+      </div>
     </div>
 
     <aside class="grid gap-2">
@@ -584,6 +604,21 @@ const updatePassportOfferingPrice = (ev: Event) => {
                 @click="addPassportItem"
               >
                 Add
+              </button>
+            </p>
+          </dd>
+
+          <dt class="font-bold">Add Passport Discount</dt>
+          <dd>
+            <pre class="text-sm">{{
+              passportDiscount ? JSON.stringify(passportDiscount, null, 2) : ''
+            }}</pre>
+            <p>
+              <button
+                class="hs-button is-small is-filled"
+                @click="addPassportdOfferingInConfig"
+              >
+                Add in passport plugin options
               </button>
             </p>
           </dd>

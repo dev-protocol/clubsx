@@ -8,14 +8,24 @@ import {
   type ClubsConfiguration,
   type Membership,
 } from '@devprotocol/clubs-core'
-import type { PassportOffering } from '@devprotocol/clubs-plugin-passports/src/types'
+import type {
+  PassportItemAssetType,
+  PassportOffering,
+} from '@devprotocol/clubs-plugin-passports/src/types'
 
 import {
   address,
   callSimpleCollections,
 } from '@plugins/memberships/utils/simpleCollections'
+import {
+  Prices,
+  type CreatePassportItemReq,
+} from '@devprotocol/clubs-plugin-passports'
 
 export type RefPassportOffering = Ref<Partial<PassportOffering>>
+export type RefPassportItem = Ref<
+  Partial<CreatePassportItemReq['passportItem']>
+>
 
 export const changePassportOfferingFee =
   (ref: RefPassportOffering) => (ev: Event) => {
@@ -31,6 +41,26 @@ export const changePassportOfferingFee =
         percentage: value < 0 ? 0 : value > 1 ? 1 : value,
         beneficiary: ref.value?.fee?.beneficiary as string,
       },
+    }
+  }
+
+export const changePassportItemAssetType =
+  (itemRef: RefPassportItem, offeringRef: RefPassportOffering) =>
+  (ev: Event) => {
+    const value = (ev.target as HTMLInputElement).value
+    if (!value) {
+      return
+    }
+
+    itemRef.value = {
+      ...itemRef.value,
+      itemAssetType: value as PassportItemAssetType,
+    }
+
+    offeringRef.value = {
+      ...offeringRef.value,
+      price: Prices[value as PassportItemAssetType].usdc,
+      currency: 'USDC',
     }
   }
 
