@@ -37,6 +37,7 @@ import type {
   PassportOptionsDiscount,
 } from '@devprotocol/clubs-plugin-passports/src/types'
 import {
+  changePassportDiscount,
   changePassportDiscountEnd,
   changePassportDiscountStart,
 } from './utils/passportDiscount'
@@ -155,6 +156,11 @@ const onChangePassportItemAssetType = changePassportItemAssetType(
 const onChangePassportDiscountEnd = changePassportDiscountEnd(passportDiscount)
 const onChangePassportDiscountStart =
   changePassportDiscountStart(passportDiscount)
+const onChangePassportDiscountRate = changePassportDiscount(
+  passportDiscount,
+  passportOffering,
+  passportItem,
+)
 
 onMounted(async () => {
   passportPayload.value = randomBytes(8)
@@ -553,9 +559,22 @@ const updatePassportOfferingOnChain = async () => {
           <span class="w-full hs-form-field__label">Discount</span>
           <input
             type="number"
+            min="0"
+            max="1"
             class="w-full hs-form-field__input"
-            v-model="passportDiscount.end_utc"
+            @change="onChangePassportDiscountRate"
           />
+          <p class="hs-form-field__helper mt-2">
+            * New price on smart-contract is:
+            <b>{{ passportDiscount.price?.usdc || 0 }} USDC</b>
+          </p>
+          <p class="hs-form-field__helper mt-2">
+            * New fiat price is:
+            <b>{{ passportDiscount.price?.yen || 0 }} YEN</b>
+          </p>
+          <p class="hs-form-field__helper mt-2">
+            * MINIMUM fee is <b>0 (0%)</b> and MAXIMUM fee is <b>1 (100%)</b>
+          </p>
         </label>
       </div>
     </div>
