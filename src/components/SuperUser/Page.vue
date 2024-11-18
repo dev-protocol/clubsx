@@ -201,11 +201,15 @@ const addPassportdOfferingInConfig = async () => {
   const { signature: sig, message: msg } = await sign()
   apiCalling.value = { progress: true }
 
-  if (!passportItem.value.itemAssetType || !passportItem.value.itemAssetValue) {
+  if (
+    !passportItem.value.itemAssetType ||
+    !passportItem.value.itemAssetValue ||
+    !passportOffering.value.price
+  ) {
     apiCalling.value = {
       progress: false,
       result: null,
-      error: 'missing itemAssetType or itemAssetValue',
+      error: 'missing itemAssetType or itemAssetValue or price',
     }
   }
 
