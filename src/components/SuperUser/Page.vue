@@ -75,6 +75,7 @@ const passportOffering = ref<Partial<PassportOffering>>({})
 const achievement = ref<Partial<ReqBodyAchievement['achievement']>>({})
 const passportItem = ref<Partial<CreatePassportItemReq['passportItem']>>({})
 const passportDiscount = ref<Partial<PassportOptionsDiscount>>({})
+const passportDiscountRate = ref<number>(0)
 
 const sign = async () => {
   const msg = message()
@@ -157,6 +158,8 @@ const onChangePassportOfferingBeneficiary =
 const onChangePassportItemAssetType = changePassportItemAssetType(
   passportItem,
   passportOffering,
+  passportDiscount,
+  passportDiscountRate,
 )
 const onChangePassportDiscountEnd = changePassportDiscountEnd(passportDiscount)
 const onChangePassportDiscountStart =
@@ -165,6 +168,7 @@ const onChangePassportDiscountRate = changePassportDiscount(
   passportDiscount,
   passportOffering,
   passportItem,
+  passportDiscountRate,
 )
 
 onMounted(async () => {
@@ -664,6 +668,7 @@ const updatePassportOfferingOnChain = async () => {
             type="number"
             min="0"
             max="1"
+            :value="passportDiscountRate"
             class="w-full hs-form-field__input"
             @change="onChangePassportDiscountRate"
           />
