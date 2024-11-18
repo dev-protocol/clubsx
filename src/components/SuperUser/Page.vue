@@ -1,7 +1,11 @@
 <script lang="ts" setup>
 import { randomBytes } from 'ethers'
 import { bytes32Hex, decode, encode } from '@devprotocol/clubs-core'
-import { whenDefined, type UndefinedOr } from '@devprotocol/util-ts'
+import {
+  whenDefined,
+  whenDefinedAll,
+  type UndefinedOr,
+} from '@devprotocol/util-ts'
 import type { ContractRunner, Signer } from 'ethers'
 import { combineLatest } from 'rxjs'
 import { onMounted, ref } from 'vue'
@@ -31,6 +35,7 @@ import {
 import {
   Prices,
   type CreatePassportItemReq,
+  PLUGIN_ID as PASSPORT_PLUGIN_ID,
 } from '@devprotocol/clubs-plugin-passports'
 import type {
   PassportOffering,
@@ -212,6 +217,68 @@ const addPassportdOfferingInConfig = async () => {
     ],
   }))
 
+  const api = await whenDefined(nextConfig, (conf) =>
+    fetch('/api/superuser/config', {
+      method: 'POST',
+      body: JSON.stringify({
+        site: club.value,
+        message: msg,
+        signature: sig,
+        config: encode(conf),
+      }),
+    }),
+  )
+
+  const res = (await api?.json()) as { result: string; error?: string }
+  apiCalling.value = { progress: false, result: res.result, error: res.error }
+}
+
+const addPassportdDiscountInConfig = async () => {
+  const { signature: sig, message: msg } = await sign()
+  apiCalling.value = { progress: true }
+
+  const currentConfig = whenDefined(
+    (await whenDefined(club.value, fetchClubs))?.content,
+    decode,
+  )
+  const passportPlugin = currentConfig?.plugins?.find(
+    (plgn) => plgn.id === PASSPORT_PLUGIN_ID,
+  )
+  const nextConfig = whenDefinedAll(
+    [currentConfig, passportPlugin],
+    ([base, _passportPlugin]) => ({
+      ...base,
+      plugins: [
+        ...base.plugins.filter((plgn) => plgn.id !== PASSPORT_PLUGIN_ID),
+        {
+          ..._passportPlugin,
+          options: [
+            ...(_passportPlugin?.options?.filter(
+              (option) => option.key !== 'discounts',
+            ) || []),
+            {
+              key: 'discounts',
+              value: [
+                {
+                  ...passportDiscount.value,
+                  start_utc: passportDiscount.value.start_utc || 0,
+                  end_utc: passportDiscount.value.end_utc || 8640000000000000,
+                  price: {
+                    yen: passportDiscount.value?.price?.yen || 0,
+                    usdc: passportDiscount.value?.price?.usdc || 0,
+                  },
+                },
+                ...((_passportPlugin?.options?.find(
+                  (option) => option.key === 'discounts',
+                )?.value || []) as PassportOptionsDiscount[]),
+              ],
+            },
+          ],
+        },
+      ],
+    }),
+  )
+  console.log('Next config', currentConfig, passportPlugin, nextConfig)
   const api = await whenDefined(nextConfig, (conf) =>
     fetch('/api/superuser/config', {
       method: 'POST',
@@ -658,7 +725,7 @@ const updatePassportOfferingOnChain = async () => {
             <p>
               <button
                 class="hs-button is-small is-filled"
-                @click="addPassportdOfferingInConfig"
+                @click="addPassportdDiscountInConfig"
               >
                 Add in passport plugin options
               </button>
