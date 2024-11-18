@@ -36,6 +36,10 @@ import type {
   PassportOffering,
   PassportOptionsDiscount,
 } from '@devprotocol/clubs-plugin-passports/src/types'
+import {
+  changePassportDiscountEnd,
+  changePassportDiscountStart,
+} from './utils/passportDiscount'
 
 dayjs.extend(utc)
 
@@ -71,6 +75,7 @@ const sign = async () => {
   const sig = await signerObj?.signMessage(msg)
   return { signature: sig, message: msg }
 }
+
 const fetchClubs = async (
   site: string,
 ): Promise<{ content: string | null; message: string }> =>
@@ -147,6 +152,9 @@ const onChangePassportItemAssetType = changePassportItemAssetType(
   passportItem,
   passportOffering,
 )
+const onChangePassportDiscountEnd = changePassportDiscountEnd(passportDiscount)
+const onChangePassportDiscountStart =
+  changePassportDiscountStart(passportDiscount)
 
 onMounted(async () => {
   passportPayload.value = randomBytes(8)
@@ -158,6 +166,10 @@ onMounted(async () => {
   passportItem.value = {
     ...passportItem.value,
     sTokenPayload: bytes32Hex(passportPayload.value),
+  }
+  passportDiscount.value = {
+    ...passportDiscount.value,
+    payload: bytes32Hex(passportPayload.value),
   }
 
   const { connection } = await import('@devprotocol/clubs-core/connection')
@@ -514,8 +526,14 @@ const updatePassportOfferingOnChain = async () => {
           <input
             type="datetime-local"
             class="w-full hs-form-field__input"
-            v-model="passportDiscount.start_utc"
+            @change="onChangePassportDiscountStart"
           />
+          <span class="w-full hs-form-field__helper"
+            >Start date is:
+            {{
+              new Date(passportDiscount.start_utc || 0).toLocaleString()
+            }}</span
+          >
         </label>
 
         <label class="w-full hs-form-field">
@@ -523,8 +541,12 @@ const updatePassportOfferingOnChain = async () => {
           <input
             type="datetime-local"
             class="w-full hs-form-field__input"
-            v-model="passportDiscount.end_utc"
+            @change="onChangePassportDiscountEnd"
           />
+          <span class="w-full hs-form-field__helper"
+            >Start date is:
+            {{ new Date(passportDiscount.end_utc || 0).toLocaleString() }}</span
+          >
         </label>
 
         <label class="w-full hs-form-field">

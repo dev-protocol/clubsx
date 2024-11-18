@@ -21,11 +21,9 @@ import {
   Prices,
   type CreatePassportItemReq,
 } from '@devprotocol/clubs-plugin-passports'
+import type { RefPassportItem } from './passportItem'
 
 export type RefPassportOffering = Ref<Partial<PassportOffering>>
-export type RefPassportItem = Ref<
-  Partial<CreatePassportItemReq['passportItem']>
->
 
 export const changePassportOfferingFee =
   (ref: RefPassportOffering) => (ev: Event) => {
