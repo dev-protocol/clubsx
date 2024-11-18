@@ -4,7 +4,10 @@ import type { Profile } from '@pages/api/profile'
 import { getProfile } from '@fixtures/api/profile'
 import { whenDefined } from '@devprotocol/util-ts'
 import { passportClass } from '@fixtures/ui/passport'
-import { getPassportItemForPayload } from '@fixtures/api/passportItem'
+import {
+  getPassportItemForPayload,
+  getSBTsForEOAFromClubsUrlHash,
+} from '@fixtures/api/passportItem'
 import { markdownToHtml, ProseTextInherit } from '@devprotocol/clubs-core'
 import RedHeart from '@assets/emoji-red-heart.png'
 
@@ -16,6 +19,7 @@ import Like from '../../components/Like.svelte'
 import UserAssets from '../../components/UserAssets.vue'
 import PassportClips from '../../components/PassportClips.vue'
 import UserProfileEditButton from '../../components/UserProfileEditButton.svelte'
+import { clubsUrlToKeccak256Tag } from '@plugins/achievements/utils'
 
 const { eoa, ids } = Astro.params
 const isEOA = isAddress(eoa)
@@ -44,6 +48,28 @@ const _passportSpotlight = skin?.spotlight
 const _currentLikes = id
   ? skin?.likes
   : (profile?.skins?.at(0)?.likes ?? profile?.likes)
+
+const _currentTheme = skin?.theme
+
+const passportTheme = await whenDefined(_currentTheme, () =>
+  getPassportItemForPayload({
+    sTokenPayload: _currentTheme ?? '',
+  })
+    .then((item) => (item instanceof Error ? undefined : item))
+    .catch(() => undefined),
+)
+
+const clubsUrl = passportTheme?.clubsUrl
+const clubsUrlHash = clubsUrlToKeccak256Tag(clubsUrl ?? '')
+const _clubsSBTs = await whenDefined(clubsUrlHash, () =>
+  getSBTsForEOAFromClubsUrlHash(
+    clubsUrlHash,
+    clubsUrl ? clubsUrl : '',
+    isEOA ? eoa : '',
+  )
+    .then((sbt) => (sbt instanceof Error ? undefined : sbt))
+    .catch(() => undefined),
+)
 
 const passportSkinBGMs = await whenDefined(_passportSkinBGMs, () =>
   getPassportItemForPayload({
@@ -189,6 +215,29 @@ const passportSpotlight = await whenDefined(
             >
               {profile.username}
             </span>
+
+            {
+              _clubsSBTs && (
+                <div class="grid grid-cols-3">
+                  {_clubsSBTs.map((sbt) => (
+                    <a
+                      href={sbt.url}
+                      target="_blank"
+                      class="relative group flex items-center justify-center gap-2 p-2 rounded-lg"
+                    >
+                      <img
+                        src={sbt.image}
+                        class="w-8 h-8 rounded-lg"
+                        alt={sbt.name}
+                      />
+                      <span class="absolute text-sm font-bold opacity-0 group-hover:opacity-100">
+                        {sbt.name}
+                      </span>
+                    </a>
+                  ))}
+                </div>
+              )
+            }
 
             <span class="empty:hidden">
               <UserProfileEditButton
