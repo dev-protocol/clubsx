@@ -9943,6 +9943,7 @@ __metadata:
     vue: "npm:3.4.38"
     vue-tsc: "npm:^2.0.0"
     web3modal: "npm:1.9.12"
+    yaml: "npm:2.5.0"
   languageName: unknown
   linkType: soft
 
@@ -25548,6 +25549,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"yaml@npm:2.5.0, yaml@npm:^2.3.4":
+  version: 2.5.0
+  resolution: "yaml@npm:2.5.0"
+  bin:
+    yaml: bin.mjs
+  checksum: 10c0/771a1df083c8217cf04ef49f87244ae2dd7d7457094425e793b8f056159f167602ce172aa32d6bca21f787d24ec724aee3cecde938f6643564117bd151452631
+  languageName: node
+  linkType: hard
+
 "yaml@npm:2.6.0":
   version: 2.6.0
   resolution: "yaml@npm:2.6.0"
@@ -25561,15 +25571,6 @@ __metadata:
   version: 1.10.2
   resolution: "yaml@npm:1.10.2"
   checksum: 10c0/5c28b9eb7adc46544f28d9a8d20c5b3cb1215a886609a2fd41f51628d8aaa5878ccd628b755dbcd29f6bb4921bd04ffbc6dcc370689bb96e594e2f9813d2605f
-  languageName: node
-  linkType: hard
-
-"yaml@npm:^2.3.4":
-  version: 2.5.0
-  resolution: "yaml@npm:2.5.0"
-  bin:
-    yaml: bin.mjs
-  checksum: 10c0/771a1df083c8217cf04ef49f87244ae2dd7d7457094425e793b8f056159f167602ce172aa32d6bca21f787d24ec724aee3cecde938f6643564117bd151452631
   languageName: node
   linkType: hard
 
