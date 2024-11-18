@@ -46,6 +46,7 @@ import {
   changePassportDiscountEnd,
   changePassportDiscountStart,
 } from './utils/passportDiscount'
+import type { Override } from '@devprotocol/clubs-plugin-payments'
 
 dayjs.extend(utc)
 
@@ -76,6 +77,7 @@ const achievement = ref<Partial<ReqBodyAchievement['achievement']>>({})
 const passportItem = ref<Partial<CreatePassportItemReq['passportItem']>>({})
 const passportDiscount = ref<Partial<PassportOptionsDiscount>>({})
 const passportDiscountRate = ref<number>(0)
+const passportOverride = ref<Partial<Override>>({})
 
 const sign = async () => {
   const msg = message()
@@ -160,6 +162,7 @@ const onChangePassportItemAssetType = changePassportItemAssetType(
   passportOffering,
   passportDiscount,
   passportDiscountRate,
+  passportOverride,
 )
 const onChangePassportDiscountEnd = changePassportDiscountEnd(passportDiscount)
 const onChangePassportDiscountStart =
@@ -169,13 +172,16 @@ const onChangePassportDiscountRate = changePassportDiscount(
   passportOffering,
   passportItem,
   passportDiscountRate,
+  passportOverride,
 )
 
 onMounted(async () => {
   passportPayload.value = randomBytes(8)
 
+  const id = bytes32Hex(randomBytes(8))
   passportOffering.value = {
     ...passportOffering.value,
+    id,
     payload: passportPayload.value,
   }
   passportItem.value = {
@@ -184,6 +190,11 @@ onMounted(async () => {
   }
   passportDiscount.value = {
     ...passportDiscount.value,
+    payload: bytes32Hex(passportPayload.value),
+  }
+  passportOverride.value = {
+    ...passportOverride.value,
+    id,
     payload: bytes32Hex(passportPayload.value),
   }
 
@@ -227,7 +238,6 @@ const addPassportdOfferingInConfig = async () => {
       ...(base?.offerings ?? []),
       {
         ...passportOffering.value,
-        id: bytes32Hex(randomBytes(8)),
         managedBy: PASSPORT_PLUGIN_ID,
       },
     ],
@@ -692,7 +702,7 @@ const updatePassportOfferingOnChain = async () => {
         <dl class="grid grid-cols-[auto,1fr] gap-2 gap-y-4">
           <dt class="font-bold">Club</dt>
           <dd>{{ club }}</dd>
-          <dt class="font-bold">Install Plugins</dt>
+          <dt class="font-bold mb-8">Install Plugins</dt>
           <dd>
             <p v-for="plugin of plugins.filter((x) => x.willInstall)">
               {{ plugin.name }}
@@ -705,7 +715,7 @@ const updatePassportOfferingOnChain = async () => {
           </dd>
 
           <dt class="font-bold">Add Achievement</dt>
-          <dd>
+          <dd class="mb-16">
             <pre class="text-sm">{{
               achievement ? JSON.stringify(achievement, null, 2) : ''
             }}</pre>
@@ -768,6 +778,21 @@ const updatePassportOfferingOnChain = async () => {
                 @click="addPassportdDiscountInConfig"
               >
                 Add in passport plugin options
+              </button>
+            </p>
+          </dd>
+
+          <dt class="font-bold">Add Passport Override</dt>
+          <dd>
+            <pre class="text-sm">{{
+              passportOverride ? JSON.stringify(passportOverride, null, 2) : ''
+            }}</pre>
+            <p>
+              <button
+                class="hs-button is-small is-filled"
+                @click="addPassportdOfferingInConfig"
+              >
+                Add in override
               </button>
             </p>
           </dd>

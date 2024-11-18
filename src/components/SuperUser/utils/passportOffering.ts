@@ -23,6 +23,7 @@ import type {
   RefPassportDiscount,
   RefPassportDiscountRate,
 } from './passportDiscount'
+import type { RefPassportOverride } from '.'
 
 export type RefPassportOffering = Ref<Partial<PassportOffering>>
 
@@ -49,6 +50,7 @@ export const changePassportItemAssetType =
     offeringRef: RefPassportOffering,
     discountRef: RefPassportDiscount,
     discountRateRef: RefPassportDiscountRate,
+    overrideRef: RefPassportOverride,
   ) =>
   (ev: Event) => {
     const value = (ev.target as HTMLInputElement).value
@@ -73,6 +75,13 @@ export const changePassportItemAssetType =
       ...discountRef.value,
       price: {
         usdc: usdcPrice - usdcPrice * discountRateRef.value,
+        yen: yenPrice - yenPrice * discountRateRef.value,
+      },
+    }
+
+    overrideRef.value = {
+      ...overrideRef.value,
+      price: {
         yen: yenPrice - yenPrice * discountRateRef.value,
       },
     }
