@@ -71,7 +71,7 @@
     "@devprotocol/clubs-core": "3.22.2",
     "@devprotocol/clubs-plugin-akiba": "^0.1.0-beta.1",
     "@devprotocol/clubs-plugin-awesome-onboarding": "0.5.1",
-    "@devprotocol/clubs-plugin-passports": "^0.1.0-beta.27",
+    "@devprotocol/clubs-plugin-passports": "^0.1.0-beta.28",
     "@devprotocol/clubs-plugin-payments": "^0.1.2",
     "@devprotocol/clubs-plugin-posts": "0.20.17",
     "@devprotocol/clubs-plugin-posts-voting": "0.8.8",
