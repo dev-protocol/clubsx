@@ -302,7 +302,7 @@ const addPassportdDiscountInConfig = async () => {
       ],
     }),
   )
-  console.log('Next config', currentConfig, passportPlugin, nextConfig)
+
   const api = await whenDefined(nextConfig, (conf) =>
     fetch('/api/superuser/config', {
       method: 'POST',
