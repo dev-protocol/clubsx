@@ -133,7 +133,8 @@
     "uuid": "^10.0.0",
     "viem": "1.21.4",
     "vue": "3.4.38",
-    "web3modal": "1.9.12"
+    "web3modal": "1.9.12",
+    "yaml": "2.5.0"
   },
   "repository": "https://github.com/dev-protocol/clubs.git",
   "author": "",
