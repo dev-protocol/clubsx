@@ -20,7 +20,7 @@ export const changePassportDiscount =
   ) =>
   (ev: Event) => {
     const value = Number((ev.target as HTMLInputElement).value)
-    if (!value || !offeringRef?.value?.price || !itemRef.value.itemAssetType) {
+    if (!offeringRef?.value?.price || !itemRef.value.itemAssetType) {
       return
     }
 
