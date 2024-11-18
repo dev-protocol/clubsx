@@ -201,6 +201,14 @@ const addPassportdOfferingInConfig = async () => {
   const { signature: sig, message: msg } = await sign()
   apiCalling.value = { progress: true }
 
+  if (!passportItem.value.itemAssetType || !passportItem.value.itemAssetValue) {
+    apiCalling.value = {
+      progress: false,
+      result: null,
+      error: 'missing itemAssetType or itemAssetValue',
+    }
+  }
+
   const currentConfig = whenDefined(
     (await whenDefined(club.value, fetchClubs))?.content,
     decode,
