@@ -6,7 +6,9 @@ import type {
 } from '@devprotocol/clubs-plugin-passports/src/types'
 
 import type { RefPassportItem } from './passportItem'
+import type { RefPassportOverride } from '.'
 
+export type RefPassportDiscountRate = Ref<number>
 export type RefPassportOffering = Ref<Partial<PassportOffering>>
 export type RefPassportDiscount = Ref<Partial<PassportOptionsDiscount>>
 
@@ -15,18 +17,29 @@ export const changePassportDiscount =
     discountRef: RefPassportDiscount,
     offeringRef: RefPassportOffering,
     itemRef: RefPassportItem,
+    discountRateRef: RefPassportDiscountRate,
+    overrideRef: RefPassportOverride,
   ) =>
   (ev: Event) => {
     const value = Number((ev.target as HTMLInputElement).value)
-    if (!value || !offeringRef?.value?.price || !itemRef.value.itemAssetType) {
+    if (!offeringRef?.value?.price || !itemRef.value.itemAssetType) {
       return
     }
+
+    discountRateRef.value = value
 
     const yenPrice = Prices[itemRef.value.itemAssetType].yen
     discountRef.value = {
       ...discountRef.value,
       price: {
         usdc: offeringRef.value.price - offeringRef.value.price * value,
+        yen: yenPrice - yenPrice * value,
+      },
+    }
+
+    overrideRef.value = {
+      ...overrideRef.value,
+      price: {
         yen: yenPrice - yenPrice * value,
       },
     }

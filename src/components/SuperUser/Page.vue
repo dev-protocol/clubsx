@@ -46,6 +46,7 @@ import {
   changePassportDiscountEnd,
   changePassportDiscountStart,
 } from './utils/passportDiscount'
+import type { Override } from '@devprotocol/clubs-plugin-payments'
 
 dayjs.extend(utc)
 
@@ -75,6 +76,8 @@ const passportOffering = ref<Partial<PassportOffering>>({})
 const achievement = ref<Partial<ReqBodyAchievement['achievement']>>({})
 const passportItem = ref<Partial<CreatePassportItemReq['passportItem']>>({})
 const passportDiscount = ref<Partial<PassportOptionsDiscount>>({})
+const passportDiscountRate = ref<number>(0)
+const passportOverride = ref<Partial<Override>>({})
 
 const sign = async () => {
   const msg = message()
@@ -157,6 +160,9 @@ const onChangePassportOfferingBeneficiary =
 const onChangePassportItemAssetType = changePassportItemAssetType(
   passportItem,
   passportOffering,
+  passportDiscount,
+  passportDiscountRate,
+  passportOverride,
 )
 const onChangePassportDiscountEnd = changePassportDiscountEnd(passportDiscount)
 const onChangePassportDiscountStart =
@@ -165,13 +171,17 @@ const onChangePassportDiscountRate = changePassportDiscount(
   passportDiscount,
   passportOffering,
   passportItem,
+  passportDiscountRate,
+  passportOverride,
 )
 
 onMounted(async () => {
   passportPayload.value = randomBytes(8)
 
+  const id = bytes32Hex(randomBytes(8))
   passportOffering.value = {
     ...passportOffering.value,
+    id,
     payload: passportPayload.value,
   }
   passportItem.value = {
@@ -180,6 +190,11 @@ onMounted(async () => {
   }
   passportDiscount.value = {
     ...passportDiscount.value,
+    payload: bytes32Hex(passportPayload.value),
+  }
+  passportOverride.value = {
+    ...passportOverride.value,
+    id,
     payload: bytes32Hex(passportPayload.value),
   }
 
@@ -201,6 +216,18 @@ const addPassportdOfferingInConfig = async () => {
   const { signature: sig, message: msg } = await sign()
   apiCalling.value = { progress: true }
 
+  if (
+    !passportItem.value.itemAssetType ||
+    !passportItem.value.itemAssetValue ||
+    !passportOffering.value.price
+  ) {
+    apiCalling.value = {
+      progress: false,
+      result: null,
+      error: 'missing itemAssetType or itemAssetValue or price',
+    }
+  }
+
   const currentConfig = whenDefined(
     (await whenDefined(club.value, fetchClubs))?.content,
     decode,
@@ -211,7 +238,6 @@ const addPassportdOfferingInConfig = async () => {
       ...(base?.offerings ?? []),
       {
         ...passportOffering.value,
-        id: bytes32Hex(randomBytes(8)),
         managedBy: PASSPORT_PLUGIN_ID,
       },
     ],
@@ -236,6 +262,18 @@ const addPassportdOfferingInConfig = async () => {
 const addPassportdDiscountInConfig = async () => {
   const { signature: sig, message: msg } = await sign()
   apiCalling.value = { progress: true }
+
+  if (
+    !passportItem.value.itemAssetType ||
+    !passportItem.value.itemAssetValue ||
+    !passportOffering.value.price
+  ) {
+    apiCalling.value = {
+      progress: false,
+      result: null,
+      error: 'missing itemAssetType or itemAssetValue or price',
+    }
+  }
 
   const currentConfig = whenDefined(
     (await whenDefined(club.value, fetchClubs))?.content,
@@ -278,7 +316,75 @@ const addPassportdDiscountInConfig = async () => {
       ],
     }),
   )
-  console.log('Next config', currentConfig, passportPlugin, nextConfig)
+
+  const api = await whenDefined(nextConfig, (conf) =>
+    fetch('/api/superuser/config', {
+      method: 'POST',
+      body: JSON.stringify({
+        site: club.value,
+        message: msg,
+        signature: sig,
+        config: encode(conf),
+      }),
+    }),
+  )
+
+  const res = (await api?.json()) as { result: string; error?: string }
+  apiCalling.value = { progress: false, result: res.result, error: res.error }
+}
+
+const addPassportdOverrideInConfig = async () => {
+  const { signature: sig, message: msg } = await sign()
+  apiCalling.value = { progress: true }
+
+  if (
+    !passportItem.value.itemAssetType ||
+    !passportItem.value.itemAssetValue ||
+    !passportOffering.value.price
+  ) {
+    apiCalling.value = {
+      progress: false,
+      result: null,
+      error: 'missing itemAssetType or itemAssetValue or price',
+    }
+  }
+
+  const currentConfig = whenDefined(
+    (await whenDefined(club.value, fetchClubs))?.content,
+    decode,
+  )
+  const passportPlugin = currentConfig?.plugins?.find(
+    (plgn) => plgn.id === PASSPORT_PLUGIN_ID,
+  )
+  const nextConfig = whenDefinedAll(
+    [currentConfig, passportPlugin],
+    ([base, _passportPlugin]) => ({
+      ...base,
+      plugins: [
+        ...base.plugins.filter((plgn) => plgn.id !== PASSPORT_PLUGIN_ID),
+        {
+          ..._passportPlugin,
+          options: [
+            ...(_passportPlugin?.options?.filter(
+              (option) => option.key !== 'override',
+            ) || []),
+            {
+              key: 'override',
+              value: [
+                {
+                  ...passportOverride.value,
+                },
+                ...((_passportPlugin?.options?.find(
+                  (option) => option.key === 'override',
+                )?.value || []) as Override[]),
+              ],
+            },
+          ],
+        },
+      ],
+    }),
+  )
+
   const api = await whenDefined(nextConfig, (conf) =>
     fetch('/api/superuser/config', {
       method: 'POST',
@@ -301,6 +407,17 @@ const updatePassportOfferingOnChain = async () => {
   }
 
   apiCalling.value = { progress: true }
+  if (
+    !passportItem.value.itemAssetType ||
+    !passportItem.value.itemAssetValue ||
+    !passportOffering.value.price
+  ) {
+    apiCalling.value = {
+      progress: false,
+      result: null,
+      error: 'missing itemAssetType or itemAssetValue or price',
+    }
+  }
 
   const currentConfig = whenDefined(
     (await whenDefined(club.value, fetchClubs))?.content,
@@ -629,6 +746,7 @@ const updatePassportOfferingOnChain = async () => {
             type="number"
             min="0"
             max="1"
+            :value="passportDiscountRate"
             class="w-full hs-form-field__input"
             @change="onChangePassportDiscountRate"
           />
@@ -652,7 +770,7 @@ const updatePassportOfferingOnChain = async () => {
         <dl class="grid grid-cols-[auto,1fr] gap-2 gap-y-4">
           <dt class="font-bold">Club</dt>
           <dd>{{ club }}</dd>
-          <dt class="font-bold">Install Plugins</dt>
+          <dt class="font-bold mb-8">Install Plugins</dt>
           <dd>
             <p v-for="plugin of plugins.filter((x) => x.willInstall)">
               {{ plugin.name }}
@@ -665,7 +783,7 @@ const updatePassportOfferingOnChain = async () => {
           </dd>
 
           <dt class="font-bold">Add Achievement</dt>
-          <dd>
+          <dd class="mb-16">
             <pre class="text-sm">{{
               achievement ? JSON.stringify(achievement, null, 2) : ''
             }}</pre>
@@ -728,6 +846,21 @@ const updatePassportOfferingOnChain = async () => {
                 @click="addPassportdDiscountInConfig"
               >
                 Add in passport plugin options
+              </button>
+            </p>
+          </dd>
+
+          <dt class="font-bold">Add Passport Override</dt>
+          <dd>
+            <pre class="text-sm">{{
+              passportOverride ? JSON.stringify(passportOverride, null, 2) : ''
+            }}</pre>
+            <p>
+              <button
+                class="hs-button is-small is-filled"
+                @click="addPassportdOverrideInConfig"
+              >
+                Add in override
               </button>
             </p>
           </dd>

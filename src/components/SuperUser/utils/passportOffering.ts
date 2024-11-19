@@ -17,12 +17,13 @@ import {
   address,
   callSimpleCollections,
 } from '@plugins/memberships/utils/simpleCollections'
-import {
-  Prices,
-  type CreatePassportItemReq,
-} from '@devprotocol/clubs-plugin-passports'
+import { Prices } from '@devprotocol/clubs-plugin-passports'
 import type { RefPassportItem } from './passportItem'
-import type { RefPassportDiscount } from './passportDiscount'
+import type {
+  RefPassportDiscount,
+  RefPassportDiscountRate,
+} from './passportDiscount'
+import type { RefPassportOverride } from '.'
 
 export type RefPassportOffering = Ref<Partial<PassportOffering>>
 
@@ -44,7 +45,13 @@ export const changePassportOfferingFee =
   }
 
 export const changePassportItemAssetType =
-  (itemRef: RefPassportItem, offeringRef: RefPassportOffering) =>
+  (
+    itemRef: RefPassportItem,
+    offeringRef: RefPassportOffering,
+    discountRef: RefPassportDiscount,
+    discountRateRef: RefPassportDiscountRate,
+    overrideRef: RefPassportOverride,
+  ) =>
   (ev: Event) => {
     const value = (ev.target as HTMLInputElement).value
     if (!value) {
@@ -60,6 +67,23 @@ export const changePassportItemAssetType =
       ...offeringRef.value,
       price: Prices[value as PassportItemAssetType].usdc,
       currency: 'USDC',
+    }
+
+    const usdcPrice = Prices[value as PassportItemAssetType].usdc
+    const yenPrice = Prices[value as PassportItemAssetType].yen
+    discountRef.value = {
+      ...discountRef.value,
+      price: {
+        usdc: usdcPrice - usdcPrice * discountRateRef.value,
+        yen: yenPrice - yenPrice * discountRateRef.value,
+      },
+    }
+
+    overrideRef.value = {
+      ...overrideRef.value,
+      price: {
+        yen: yenPrice - yenPrice * discountRateRef.value,
+      },
     }
   }
 
