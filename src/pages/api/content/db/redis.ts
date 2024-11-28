@@ -1,6 +1,10 @@
 import { createClient } from 'redis'
 import type { AsyncReturnType } from 'type-fest'
-import { CONTENT_INFO_SCHEMA, CONTENT_INFO_SCHEMA_ID, type ContentDocument } from './schema'
+import {
+  CONTENT_INFO_SCHEMA,
+  CONTENT_INFO_SCHEMA_ID,
+  type ContentDocument,
+} from './schema'
 import { ContentIndex, ContentPrefix, ContentSchemaKey } from '../utils'
 import { mergeDeepRight } from 'ramda'
 import type { UndefinedOr } from '@devprotocol/util-ts'
@@ -93,7 +97,7 @@ export const getContentByPayloadLatest = async (
       },
     },
   )
-  console.log({search})
+  console.log({ search })
   return search.documents[0]?.value as UndefinedOr<ContentDocument>
 }
 

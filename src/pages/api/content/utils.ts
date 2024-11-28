@@ -9,4 +9,3 @@ export enum ContentPrefix {
 export enum ContentSchemaKey {
   ContentInfo = 'scm::devprotocol:clubs:content:info',
 }
-
