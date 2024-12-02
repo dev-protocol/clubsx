@@ -1,0 +1,102 @@
+---
+import Layout from '@layouts/BaseClubs.astro'
+---
+
+<Layout>
+  <h1>Hello</h1>
+  <video
+    id="videoElement"
+    controls
+    autoplay
+    style="width: 100%; max-width: 600px;"></video>
+</Layout>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.MediaSource) {
+        console.error('MediaSource API is not supported in this browser.');
+        alert('MediaSource API is not supported in this browser.');
+        return;
+      }
+  
+      const video = document.getElementById('videoElement');
+      const assetURL = 'https://e54a8car3bcq7q8h.public.blob.vercel-storage.com/frag_bunny-ZJaX6ShbMi5ciqThXkW4zyuynptZcT.mp4';
+      const mimeCodec = 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"';
+      let totalSegments = 5;
+  
+      let mediaSource = new MediaSource();
+      let sourceBuffer;
+      let segmentLength;
+      let currentSegment = 0;
+      let bytesFetched = 0;
+  
+      video.src = URL.createObjectURL(mediaSource);
+  
+      mediaSource.addEventListener('sourceopen', () => {
+        console.log('MediaSource opened.');
+        sourceBuffer = mediaSource.addSourceBuffer(mimeCodec);
+  
+        sourceBuffer.addEventListener('updateend', () => {
+          console.log('SourceBuffer updated.');
+          logBufferedRanges();
+          if (video.buffered.length > 0) {
+            console.log('Starting playback.');
+            video.currentTime = video.buffered.start(0);
+            video.play().catch((err) => console.error('Playback error:', err));
+          }
+        });
+  
+        sourceBuffer.addEventListener('error', (e) => {
+          console.error('SourceBuffer error:', e);
+        });
+  
+        fetchFileLength(assetURL, (fileLength) => {
+          console.log('File size:', (fileLength / (1024 * 1024)).toFixed(2), 'MB');
+          segmentLength = Math.ceil(fileLength / totalSegments);
+  
+          fetchSegment(assetURL, 0, segmentLength - 1, (chunk) => {
+            console.log('Appending segment of size:', chunk.byteLength);
+            sourceBuffer.appendBuffer(chunk);
+          });
+        });
+      });
+  
+      function fetchFileLength(url, callback) {
+        const xhr = new XMLHttpRequest();
+        xhr.open('HEAD', url);
+        xhr.onload = () => {
+          const contentLength = xhr.getResponseHeader('content-length');
+          if (contentLength) {
+            callback(parseInt(contentLength, 10));
+          } else {
+            console.error('Failed to get file length.');
+          }
+        };
+        xhr.send();
+      }
+  
+      function fetchSegment(url, start, end, callback) {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', url);
+        xhr.responseType = 'arraybuffer';
+        xhr.setRequestHeader('Range', `bytes=${start}-${end}`);
+        xhr.onload = () => {
+          if (xhr.status === 206) {
+            console.log(`Fetched bytes: ${start}-${end}`);
+            callback(xhr.response);
+          } else {
+            console.error('Server does not support range requests.');
+          }
+        };
+        xhr.send();
+      }
+  
+      function logBufferedRanges() {
+        console.log('Buffered ranges:', video.buffered);
+        for (let i = 0; i < video.buffered.length; i++) {
+          console.log(`Buffered range ${i}: ${video.buffered.start(i)} - ${video.buffered.end(i)}`);
+        }
+      }
+    });
+  </script>
+  
