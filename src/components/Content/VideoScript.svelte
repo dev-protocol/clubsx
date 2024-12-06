@@ -16,15 +16,36 @@
 
     const video = document.getElementById('videoElement') as HTMLVideoElement
     const assetURL =
-      'https://e54a8car3bcq7q8h.public.blob.vercel-storage.com/frag_bunny-ZJaX6ShbMi5ciqThXkW4zyuynptZcT.mp4'
+      'https://cors-anywhere.herokuapp.com/woolyss.com/f/av1-opus-sita.webm'
     // Need to be specific for Blink regarding codecs
     // ./mp4info frag_bunny.mp4 | grep Codec
-    MIME_CODEC = 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"'
+    MIME_CODEC = 'video/webm; codecs="av01.0.04M.08,opus"'
     TOTAL_SEGMENTS = 5
     let segmentLength = 0
     segmentDuration = 0
     let bytesFetched = 0
     let requestedSegments: boolean[] = []
+    function determineTotalSegments(fileLength: number) {
+      const TARGET_CHUNK_SIZE = 5 * 1024 * 1024 // 5 MB
+      const TARGET_CHUNK_DURATION = 10 // 10s
+      const MIN_SEGMENTS = 5
+      const MAX_SEGMENTS = 50
+      const videoDuration = video.duration || 60 // Default to 60s if duration unavailable
+
+      const estimatedByFileSize = Math.ceil(fileLength / TARGET_CHUNK_SIZE)
+      const estimatedByDuration = Math.ceil(
+        videoDuration / TARGET_CHUNK_DURATION,
+      ) // Target 10s chunks
+      TOTAL_SEGMENTS = Math.max(
+        MIN_SEGMENTS,
+        Math.min(
+          MAX_SEGMENTS,
+          Math.max(estimatedByFileSize, estimatedByDuration),
+        ),
+      )
+
+      console.log(`Dynamic TOTAL_SEGMENTS calculated: ${TOTAL_SEGMENTS}`)
+    }
 
     for (let i = 0; i < TOTAL_SEGMENTS; ++i) requestedSegments[i] = false
 
@@ -46,6 +67,7 @@
       }
       getFileLength(assetURL, function (fileLength: number) {
         console.log((fileLength / 1024 / 1024).toFixed(2), 'MB')
+        determineTotalSegments(fileLength)
         //totalLength = fileLength;
         segmentLength = Math.round(fileLength / TOTAL_SEGMENTS)
         //console.log(totalLength, segmentLength);
@@ -151,6 +173,7 @@
     }
 
     function shouldFetchNextSegment(currentSegment: number) {
+      // This checks if the current playback time (video.currentTime) has progressed beyond 80%
       return (
         video.currentTime > segmentDuration * currentSegment * 0.8 &&
         !requestedSegments[currentSegment]
