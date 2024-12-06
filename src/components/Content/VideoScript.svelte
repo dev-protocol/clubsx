@@ -39,7 +39,7 @@
     }
 
     let sourceBuffer: SourceBuffer | null = null
-    
+
     function sourceOpen(_: Event) {
       if (mediaSource) {
         sourceBuffer = mediaSource.addSourceBuffer(MIME_CODEC)
@@ -64,13 +64,18 @@
       let xhr = new XMLHttpRequest()
       xhr.open('head', url)
       xhr.onload = function () {
-        const length = xhr.getResponseHeader('content-length');
-        cb(length ? parseInt(length, 10) : 0);
+        const length = xhr.getResponseHeader('content-length')
+        cb(length ? parseInt(length, 10) : 0)
       }
       xhr.send()
     }
 
-    function fetchRange(url: string, start: number, end: number, cb: (response: ArrayBuffer) => void) {
+    function fetchRange(
+      url: string,
+      start: number,
+      end: number,
+      cb: (response: ArrayBuffer) => void,
+    ) {
       let xhr = new XMLHttpRequest()
       xhr.open('get', url)
       xhr.responseType = 'arraybuffer'
@@ -98,7 +103,11 @@
 
     function checkBuffer(_: Event) {
       let currentSegment = getCurrentSegment()
-      if (currentSegment === TOTAL_SEGMENTS && haveAllSegments() && mediaSource) {
+      if (
+        currentSegment === TOTAL_SEGMENTS &&
+        haveAllSegments() &&
+        mediaSource
+      ) {
         console.log('last segment', mediaSource.readyState)
         mediaSource.endOfStream()
         video.removeEventListener('timeupdate', checkBuffer)
@@ -116,15 +125,15 @@
     }
 
     function seek(e: Event) {
-      if(sourceBuffer && mediaSource) {
+      if (sourceBuffer && mediaSource) {
         console.log(e)
-      if (mediaSource.readyState === 'open') {
-        sourceBuffer.abort()
-        console.log(mediaSource.readyState)
-      } else {
-        console.log('seek but not open?')
-        console.log(mediaSource.readyState)
-      }
+        if (mediaSource.readyState === 'open') {
+          sourceBuffer.abort()
+          console.log(mediaSource.readyState)
+        } else {
+          console.log('seek but not open?')
+          console.log(mediaSource.readyState)
+        }
       } else {
         console.error('sourceBuffer is null')
       }
@@ -164,6 +173,10 @@
     <p>Current Segment: <span id="currentSegment">{CURRENT_SEGMENT}</span></p>
     <p>Segment Duration: <span id="segmentDuration">{segmentDuration}</span></p>
     <p>Bytes Fetched: <span id="bytesFetched">{BYTES_FETCHED}</span></p>
-    <p>Requested Segments: <span id="requestedSegments">{REQUESTED_SEGMENTS}</span></p>
+    <p>
+      Requested Segments: <span id="requestedSegments"
+        >{REQUESTED_SEGMENTS}</span
+      >
+    </p>
   </div>
 </div>
