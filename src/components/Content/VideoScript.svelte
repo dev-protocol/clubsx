@@ -59,16 +59,15 @@
       console.error('Unsupported MIME type or codec: ', MIME_CODEC)
     }
 
-
     let sourceBuffer: SourceBuffer | null = null
 
     function sourceOpen(_: Event) {
       if (mediaSource) {
         sourceBuffer = mediaSource.addSourceBuffer(MIME_CODEC)
       }
-      video.addEventListener("error", function(e) {
-				console.error("MSE SourceBuffer #",e);
-			})
+      video.addEventListener('error', function (e) {
+        console.error('MSE SourceBuffer #', e)
+      })
       getFileLength(assetURL, function (fileLength: number) {
         console.log((fileLength / 1024 / 1024).toFixed(2), 'MB')
         determineTotalSegments(fileLength)
@@ -81,7 +80,7 @@
         video.addEventListener('timeupdate', checkBuffer)
         video.addEventListener('canplay', function () {
           segmentDuration = video.duration / TOTAL_SEGMENTS
-          console.log({videoDuration: video.duration, segmentDuration})
+          console.log({ videoDuration: video.duration, segmentDuration })
           video.play()
         })
         video.addEventListener('seeking', seek)
@@ -139,7 +138,11 @@
       } else if (shouldFetchNextSegment(currentSegment)) {
         requestedSegments[currentSegment] = true
         console.log('time to fetch next chunk', video.currentTime)
-        console.log({assetURL, start: bytesFetched, end: bytesFetched + segmentLength})
+        console.log({
+          assetURL,
+          start: bytesFetched,
+          end: bytesFetched + segmentLength,
+        })
         fetchRange(
           assetURL,
           bytesFetched,
@@ -191,7 +194,9 @@
   <video
     id="videoElement"
     controls
-    loop muted playsinline
+    loop
+    muted
+    playsinline
     class="w-full max-w-2xl mx-auto rounded-lg border border-gray-700 shadow-lg"
   >
   </video>
