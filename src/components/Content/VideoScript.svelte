@@ -16,10 +16,10 @@
 
     const video = document.getElementById('videoElement') as HTMLVideoElement
     const assetURL =
-      'https://cors-anywhere.herokuapp.com/woolyss.com/f/av1-opus-sita.webm'
+      'https://e54a8car3bcq7q8h.public.blob.vercel-storage.com/frag_bunny-ZJaX6ShbMi5ciqThXkW4zyuynptZcT.mp4'
     // Need to be specific for Blink regarding codecs
     // ./mp4info frag_bunny.mp4 | grep Codec
-    MIME_CODEC = 'video/webm; codecs="av01.0.04M.08,opus"'
+    MIME_CODEC = 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"'
     TOTAL_SEGMENTS = 5
     let segmentLength = 0
     segmentDuration = 0
@@ -59,23 +59,29 @@
       console.error('Unsupported MIME type or codec: ', MIME_CODEC)
     }
 
+
     let sourceBuffer: SourceBuffer | null = null
 
     function sourceOpen(_: Event) {
       if (mediaSource) {
         sourceBuffer = mediaSource.addSourceBuffer(MIME_CODEC)
       }
+      video.addEventListener("error", function(e) {
+				console.error("MSE SourceBuffer #",e);
+			})
       getFileLength(assetURL, function (fileLength: number) {
         console.log((fileLength / 1024 / 1024).toFixed(2), 'MB')
         determineTotalSegments(fileLength)
         //totalLength = fileLength;
         segmentLength = Math.round(fileLength / TOTAL_SEGMENTS)
+        console.log({ totalLegnth: fileLength, segmentLength })
         //console.log(totalLength, segmentLength);
         fetchRange(assetURL, 0, segmentLength, appendSegment)
         requestedSegments[0] = true
         video.addEventListener('timeupdate', checkBuffer)
         video.addEventListener('canplay', function () {
           segmentDuration = video.duration / TOTAL_SEGMENTS
+          console.log({videoDuration: video.duration, segmentDuration})
           video.play()
         })
         video.addEventListener('seeking', seek)
@@ -113,9 +119,6 @@
     }
 
     async function appendSegment(chunk: ArrayBuffer) {
-      // await getMIME_CODEC(chunk).then((MIME_CODEC) => {
-      //   console.log(`MIME codec: ${MIME_CODEC}`);
-      // });
       if (sourceBuffer) {
         sourceBuffer.appendBuffer(chunk)
       } else {
@@ -136,6 +139,7 @@
       } else if (shouldFetchNextSegment(currentSegment)) {
         requestedSegments[currentSegment] = true
         console.log('time to fetch next chunk', video.currentTime)
+        console.log({assetURL, start: bytesFetched, end: bytesFetched + segmentLength})
         fetchRange(
           assetURL,
           bytesFetched,
@@ -187,6 +191,7 @@
   <video
     id="videoElement"
     controls
+    loop muted playsinline
     class="w-full max-w-2xl mx-auto rounded-lg border border-gray-700 shadow-lg"
   >
   </video>
