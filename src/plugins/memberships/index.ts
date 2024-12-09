@@ -99,7 +99,7 @@ export const getPagePaths = (async () => []) satisfies ClubsFunctionGetPagePaths
 
 export const getAdminPaths = (async (
   options,
-  { name, rpcUrl, propertyAddress },
+  { name, rpcUrl, propertyAddress, offerings },
 ) => {
   const memberships =
     (options.find((opt) => opt.key === 'memberships')?.value as UndefinedOr<
@@ -110,15 +110,16 @@ export const getAdminPaths = (async (
   const draftOptionsValue =
     draftOptions && (draftOptions.value as DraftOptions['value'])
 
+  console.log('Offerings', offerings)
+
   return [
     {
       paths: ['memberships'],
       component: Admin,
       props: { memberships, presets, name, draftOptions: draftOptionsValue },
     },
-    ...(memberships?.map((membership) => ({
+    ...([...memberships, ...(offerings || [])]?.map((membership) => ({
       paths: ['memberships', membership.id],
-
       component: AdminEdit,
       props: {
         membership,
