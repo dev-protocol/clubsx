@@ -62,11 +62,11 @@
 
   onMount(async () => {
     try {
-      if (props?.item?.itemAssetValue && video) {
+      if (props?.item?.itemAssetValue && videoElement) {
         const response = await fetch(props?.item?.itemAssetValue)
         const blob = await response.blob()
         const blobDataUrl = URL.createObjectURL(blob)
-        video.src = blobDataUrl
+        videoElement.src = blobDataUrl
       }
     } catch (error) {
       console.error('Error loading video:', error)
