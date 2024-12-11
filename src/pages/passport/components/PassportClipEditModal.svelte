@@ -29,7 +29,6 @@
   let loading = false
   let i18n = i18nBase(['en'])
 
-
   onMount(async () => {
     if (
       item.itemAssetType === 'short-video' ||
