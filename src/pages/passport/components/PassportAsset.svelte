@@ -31,6 +31,7 @@
   let assetImage: ImageData | undefined
   let htmlDescription: UndefinedOr<string>
   let isFrameDark: UndefinedOr<boolean>
+  let video: HTMLVideoElement | null = null
 
   $: {
     htmlDescription = whenDefined(props.description, markdownToHtml)
@@ -60,6 +61,17 @@
     : `https://clubs.place/api/clubs?p=${props.item?.propertyAddress}`
 
   onMount(async () => {
+    video = document.querySelector('video')
+    try {
+        if (props?.item?.itemAssetValue && video) {
+          const response = await fetch(props?.item?.itemAssetValue);
+          const blob = await response.blob();
+          const blobDataUrl = URL.createObjectURL(blob);
+          video.src = blobDataUrl;
+        }
+      } catch (error) {
+        console.error('Error loading video:', error);
+      }
     const [clubApiPri, uri] = await Promise.all([
       fetch(`/api/clubs?p=${props.item?.propertyAddress}`)
         .then((res) => res.json())
@@ -143,7 +155,6 @@
           muted
           poster={assetImage?.src}
           class="rounded-md w-full max-w-full pointer-events-none object-cover aspect-square"
-          src={props?.item?.itemAssetValue}
         >
           <track kind="captions" />
         </video>

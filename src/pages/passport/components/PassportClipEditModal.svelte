@@ -27,8 +27,20 @@
   const i18nBase = i18nFactory(Strings)
   let loading = false
   let i18n = i18nBase(['en'])
+  let video: HTMLVideoElement | null = null
 
   onMount(async () => {
+    if (item.itemAssetType === 'short-video' || item.itemAssetType === 'short-video-link'){
+      video = document.querySelector('video') as HTMLVideoElement
+      try {
+          const response = await fetch(item.itemAssetType);
+          const blob = await response.blob();
+          const blobDataUrl = URL.createObjectURL(blob);
+          video.src = blobDataUrl;
+      } catch (error) {
+        console.error('Error loading video:', error);
+      }
+    }
     i18n = i18nBase(navigator.languages)
   })
 
@@ -101,7 +113,6 @@
             muted
             poster={item.itemAssetValue}
             class="max-w-44 max-h-44 rounded-md w-full object-cover aspect-square"
-            src={item.itemAssetValue}
           >
             <track kind="captions" />
           </video>
