@@ -63,15 +63,15 @@
   onMount(async () => {
     video = document.querySelector('video')
     try {
-        if (props?.item?.itemAssetValue && video) {
-          const response = await fetch(props?.item?.itemAssetValue);
-          const blob = await response.blob();
-          const blobDataUrl = URL.createObjectURL(blob);
-          video.src = blobDataUrl;
-        }
-      } catch (error) {
-        console.error('Error loading video:', error);
+      if (props?.item?.itemAssetValue && video) {
+        const response = await fetch(props?.item?.itemAssetValue)
+        const blob = await response.blob()
+        const blobDataUrl = URL.createObjectURL(blob)
+        video.src = blobDataUrl
       }
+    } catch (error) {
+      console.error('Error loading video:', error)
+    }
     const [clubApiPri, uri] = await Promise.all([
       fetch(`/api/clubs?p=${props.item?.propertyAddress}`)
         .then((res) => res.json())

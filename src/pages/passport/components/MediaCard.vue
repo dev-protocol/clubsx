@@ -13,17 +13,17 @@ const props = defineProps<{
 }>()
 let video: HTMLVideoElement | null = null
 if (props.type === 'short-video' || props.type === 'short-video-link') {
-  onMounted(async() => {
+  onMounted(async () => {
     video = document.querySelector('video')
 
     try {
-        const response = await fetch(props.src);
-        const blob = await response.blob();
-        const blobDataUrl = URL.createObjectURL(blob);
-        video.src = blobDataUrl;
-      } catch (error) {
-        console.error('Error loading video:', error);
-      }
+      const response = await fetch(props.src)
+      const blob = await response.blob()
+      const blobDataUrl = URL.createObjectURL(blob)
+      video.src = blobDataUrl
+    } catch (error) {
+      console.error('Error loading video:', error)
+    }
   })
 }
 </script>

@@ -30,15 +30,18 @@
   let video: HTMLVideoElement | null = null
 
   onMount(async () => {
-    if (item.itemAssetType === 'short-video' || item.itemAssetType === 'short-video-link'){
+    if (
+      item.itemAssetType === 'short-video' ||
+      item.itemAssetType === 'short-video-link'
+    ) {
       video = document.querySelector('video') as HTMLVideoElement
       try {
-          const response = await fetch(item.itemAssetType);
-          const blob = await response.blob();
-          const blobDataUrl = URL.createObjectURL(blob);
-          video.src = blobDataUrl;
+        const response = await fetch(item.itemAssetType)
+        const blob = await response.blob()
+        const blobDataUrl = URL.createObjectURL(blob)
+        video.src = blobDataUrl
       } catch (error) {
-        console.error('Error loading video:', error);
+        console.error('Error loading video:', error)
       }
     }
     i18n = i18nBase(navigator.languages)
