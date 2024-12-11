@@ -113,6 +113,7 @@
         {:else if item.itemAssetType === 'short-video' || item.itemAssetType === 'short-video-link'}
           <video
             bind:this={videoElement}
+            controlsList="nodownload"
             autoplay
             muted
             poster={item.itemAssetValue}

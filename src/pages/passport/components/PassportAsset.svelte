@@ -31,7 +31,7 @@
   let assetImage: ImageData | undefined
   let htmlDescription: UndefinedOr<string>
   let isFrameDark: UndefinedOr<boolean>
-  let video: HTMLVideoElement | null = null
+  let videoElement: HTMLVideoElement | null = null
 
   $: {
     htmlDescription = whenDefined(props.description, markdownToHtml)
@@ -61,7 +61,6 @@
     : `https://clubs.place/api/clubs?p=${props.item?.propertyAddress}`
 
   onMount(async () => {
-    video = document.querySelector('video')
     try {
       if (props?.item?.itemAssetValue && video) {
         const response = await fetch(props?.item?.itemAssetValue)
@@ -151,6 +150,8 @@
         />
       {:else if props.item.itemAssetType === 'short-video' || props.item.itemAssetType === 'short-video-link'}
         <video
+          bind:this={videoElement}
+          controlsList="nodownload"
           autoplay
           muted
           poster={assetImage?.src}

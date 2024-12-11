@@ -52,6 +52,7 @@ if (props.type === 'short-video' || props.type === 'short-video-link') {
     loop
     muted
     autoplay
+    controlsList="nodownload"
     :poster="posterSrc ?? ''"
     v-if="found && (type === 'short-video' || type === 'short-video-link')"
     class="rounded-md w-full max-w-full object-cover aspect-square pointer-events-none"
