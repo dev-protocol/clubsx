@@ -1,6 +1,6 @@
 <script lang="ts" setup>
+import { defineProps, onMounted, ref } from 'vue'
 import Skeleton from '@components/Global/Skeleton.vue'
-import { defineProps, onMounted } from 'vue'
 
 import type { PassportItemIndexDoc } from '../types'
 
@@ -11,16 +11,17 @@ const props = defineProps<{
   type: PassportItemIndexDoc['itemAssetType']
   class?: string
 }>()
-let video: HTMLVideoElement | null = null
+
+const videoRef = ref<HTMLVideoElement | null>(null)
+
 if (props.type === 'short-video' || props.type === 'short-video-link') {
   onMounted(async () => {
-    video = document.querySelector('video')
-    if (video) {
+    if (videoRef.value) {
       try {
         const response = await fetch(props.src)
         const blob = await response.blob()
         const blobDataUrl = URL.createObjectURL(blob)
-        video.src = blobDataUrl
+        videoRef.value.src = blobDataUrl
       } catch (error) {
         console.error('Error loading video:', error)
       }
@@ -47,6 +48,7 @@ if (props.type === 'short-video' || props.type === 'short-video-link') {
 
   <!-- Short video type clip -->
   <video
+    ref="videoRef"
     loop
     muted
     autoplay

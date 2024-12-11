@@ -23,23 +23,23 @@
   > = undefined
   export let closeAllOnFinished: boolean = false
   export let onClose: UndefinedOr<() => Promise<void>> = undefined
+  let videoElement: HTMLVideoElement | null = null
 
   const i18nBase = i18nFactory(Strings)
   let loading = false
   let i18n = i18nBase(['en'])
-  let video: HTMLVideoElement | null = null
+
 
   onMount(async () => {
     if (
       item.itemAssetType === 'short-video' ||
       item.itemAssetType === 'short-video-link'
     ) {
-      video = document.querySelector('video') as HTMLVideoElement
       try {
-        const response = await fetch(item.itemAssetType)
+        const response = await fetch(item.itemAssetValue)
         const blob = await response.blob()
         const blobDataUrl = URL.createObjectURL(blob)
-        video.src = blobDataUrl
+        videoElement.src = blobDataUrl
       } catch (error) {
         console.error('Error loading video:', error)
       }
@@ -112,6 +112,7 @@
           />
         {:else if item.itemAssetType === 'short-video' || item.itemAssetType === 'short-video-link'}
           <video
+            bind:this={videoElement}
             autoplay
             muted
             poster={item.itemAssetValue}
