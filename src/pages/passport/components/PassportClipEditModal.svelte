@@ -32,7 +32,8 @@
   onMount(async () => {
     if (
       (item.itemAssetType === 'short-video' ||
-      item.itemAssetType === 'short-video-link') && videoElement
+        item.itemAssetType === 'short-video-link') &&
+      videoElement
     ) {
       try {
         const response = await fetch(item.itemAssetValue)
