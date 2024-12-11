@@ -15,7 +15,7 @@ let video: HTMLVideoElement | null = null
 if (props.type === 'short-video' || props.type === 'short-video-link') {
   onMounted(async () => {
     video = document.querySelector('video')
-    if(video) {
+    if (video) {
       try {
         const response = await fetch(props.src)
         const blob = await response.blob()
