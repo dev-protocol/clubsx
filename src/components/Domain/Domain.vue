@@ -138,7 +138,7 @@ export default {
         <HSButton
           v-if="fetching || !valid"
           type="filled large fullwidth"
-          isDisabled="true"
+          :isDisabled="true"
           >{{ i18n('Continue') }}</HSButton
         >
       </section>
