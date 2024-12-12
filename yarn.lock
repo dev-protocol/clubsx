@@ -9973,7 +9973,7 @@ __metadata:
     textfit: "npm:^2.4.0"
     three: "npm:0.161.0"
     truncate-eth-address: "npm:1.0.2"
-    type-fest: "npm:4.27.0"
+    type-fest: "npm:4.30.0"
     typescript: "npm:5.5.4"
     uuid: "npm:^10.0.0"
     viem: "npm:1.21.4"
@@ -23341,10 +23341,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-fest@npm:4.27.0":
-  version: 4.27.0
-  resolution: "type-fest@npm:4.27.0"
-  checksum: 10c0/30c8ebe1219725021f5b5006081bd828c4e915de0de65e9a87065f566a96ece706846b2c874ac04c0dcfdfe6b4ae47ad15d3285c9aab162cb79c026dfb2e7556
+"type-fest@npm:4.30.0":
+  version: 4.30.0
+  resolution: "type-fest@npm:4.30.0"
+  checksum: 10c0/9441fbbc971f92a53d7dfdb0db3f9c71a5a33ac3e021ca605cba8ad0b5c0a1e191cc778b4980c534b098ccb4e3322809100baf763be125510c993c9b8361f60e
   languageName: node
   linkType: hard
 
