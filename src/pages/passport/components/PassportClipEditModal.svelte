@@ -49,7 +49,7 @@
         if (isShortVideo && videoElement) {
           videoElement.src = blobDataUrl
         }
-        if(isImage && imageElement) {
+        if (isImage && imageElement) {
           imageElement.src = blobDataUrl
         }
       } catch (error) {
