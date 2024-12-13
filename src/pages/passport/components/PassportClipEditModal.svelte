@@ -24,22 +24,34 @@
   export let closeAllOnFinished: boolean = false
   export let onClose: UndefinedOr<() => Promise<void>> = undefined
   let videoElement: HTMLVideoElement | null = null
+  let imageElement: HTMLImageElement | null = null
 
   const i18nBase = i18nFactory(Strings)
   let loading = false
   let i18n = i18nBase(['en'])
 
   onMount(async () => {
-    if (
-      (item.itemAssetType === 'short-video' ||
-        item.itemAssetType === 'short-video-link') &&
-      videoElement
-    ) {
+    const { itemAssetType, itemAssetValue } = item || {}
+    const isShortVideo = ['short-video', 'short-video-link'].includes(
+      itemAssetType,
+    )
+    const isImage = [
+      'image',
+      'image-link',
+      'image-playable',
+      'image-playable-link',
+    ].includes(itemAssetType)
+    if (isShortVideo || isImage) {
+      const response = await fetch(item.itemAssetValue)
+      const blob = await response.blob()
+      const blobDataUrl = URL.createObjectURL(blob)
       try {
-        const response = await fetch(item.itemAssetValue)
-        const blob = await response.blob()
-        const blobDataUrl = URL.createObjectURL(blob)
-        videoElement.src = blobDataUrl
+        if (isShortVideo && videoElement) {
+          videoElement.src = blobDataUrl
+        }
+        if(isImage && imageElement) {
+          imageElement.src = blobDataUrl
+        }
       } catch (error) {
         console.error('Error loading video:', error)
       }
@@ -106,7 +118,7 @@
       <div class="grid gap-8 w-full max-w-screen-sm overflow-y-scroll">
         {#if item.itemAssetType !== 'short-video' && item.itemAssetType !== 'short-video-link'}
           <img
-            src={item.itemAssetValue}
+            bind:this={imageElement}
             class="max-w-44 max-h-44 rounded-md w-full max-w-full object-cover aspect-square"
             alt="Asset"
           />

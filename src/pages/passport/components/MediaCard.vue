@@ -13,28 +13,40 @@ const props = defineProps<{
 }>()
 
 const videoRef = ref<HTMLVideoElement | null>(null)
+const imageRef = ref<HTMLImageElement | null>(null)
 
-if (props.type === 'short-video' || props.type === 'short-video-link') {
-  onMounted(async () => {
-    if (videoRef.value) {
-      try {
-        const response = await fetch(props.src)
-        const blob = await response.blob()
-        const blobDataUrl = URL.createObjectURL(blob)
-        videoRef.value.src = blobDataUrl
-      } catch (error) {
-        console.error('Error loading video:', error)
-      }
+console.log('props.src', props.src)
+onMounted(async () => {
+  try {
+    const response = await fetch(props.src)
+    const blob = await response.blob()
+    const blobDataUrl = URL.createObjectURL(blob)
+    if (
+      (props.type === 'short-video' || props.type === 'short-video-link') &&
+      videoRef.value
+    ) {
+      videoRef.value.src = blobDataUrl
     }
-  })
-}
+    if (
+      (props.type === 'image' ||
+        props.type === 'image-link' ||
+        props.type === 'image-playable' ||
+        props.type === 'image-playable-link') &&
+      imageRef.value
+    ) {
+      imageRef.value.src = blobDataUrl ? blobDataUrl : posterSrc
+    }
+  } catch (error) {
+    console.error('Error loading video:', error)
+  }
+})
 </script>
 
 <template>
   <!-- Image type clip -->
   <img
     alt="Passport clip"
-    :src="src ?? posterSrc"
+    ref="imageRef"
     v-if="
       found &&
       (type === 'image' ||
