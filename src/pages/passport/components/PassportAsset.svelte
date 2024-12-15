@@ -62,20 +62,19 @@
     : `https://clubs.place/api/clubs?p=${props.item?.propertyAddress}`
 
   onMount(async () => {
-    try {
-      const { itemAssetType, itemAssetValue } = props.item || {}
-      const isShortVideo = ['short-video', 'short-video-link'].includes(
-        itemAssetType,
-      )
-      const isImage = [
-        'image',
-        'image-link',
-        'image-playable',
-        'image-playable-link',
-      ].includes(itemAssetType)
-
-      if (isShortVideo || isImage) {
-        const response = await fetch(itemAssetValue)
+    const { itemAssetType, itemAssetValue } = props.item || {}
+    const isShortVideo = ['short-video', 'short-video-link'].includes(
+      itemAssetType ?? '',
+    )
+    const isImage = [
+      'image',
+      'image-link',
+      'image-playable',
+      'image-playable-link',
+    ].includes(itemAssetType ?? '')
+    if (isShortVideo || isImage) {
+      try {
+        const response = await fetch(itemAssetValue ?? '')
         const blob = await response.blob()
         const blobDataUrl = URL.createObjectURL(blob)
 
@@ -86,9 +85,9 @@
         if (isImage && imageElement) {
           imageElement.src = blobDataUrl
         }
+      } catch (error) {
+        console.error('Error loading video or image:', error)
       }
-    } catch (error) {
-      console.error('Error loading video or image:', error)
     }
 
     const [clubApiPri, uri] = await Promise.all([

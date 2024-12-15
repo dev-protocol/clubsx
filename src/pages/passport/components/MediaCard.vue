@@ -15,7 +15,6 @@ const props = defineProps<{
 const videoRef = ref<HTMLVideoElement | null>(null)
 const imageRef = ref<HTMLImageElement | null>(null)
 
-console.log('props.src', props.src)
 onMounted(async () => {
   try {
     const response = await fetch(props.src)
@@ -34,7 +33,7 @@ onMounted(async () => {
         props.type === 'image-playable-link') &&
       imageRef.value
     ) {
-      imageRef.value.src = blobDataUrl ? blobDataUrl : posterSrc
+      imageRef.value.src = blobDataUrl ? blobDataUrl : (props.posterSrc ?? '' )
     }
   } catch (error) {
     console.error('Error loading video:', error)
