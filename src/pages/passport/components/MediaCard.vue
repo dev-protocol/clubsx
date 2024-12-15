@@ -33,7 +33,7 @@ onMounted(async () => {
         props.type === 'image-playable-link') &&
       imageRef.value
     ) {
-      imageRef.value.src = blobDataUrl ? blobDataUrl : (props.posterSrc ?? '' )
+      imageRef.value.src = blobDataUrl ? blobDataUrl : (props.posterSrc ?? '')
     }
   } catch (error) {
     console.error('Error loading video:', error)
