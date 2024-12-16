@@ -9,6 +9,8 @@
   import { Strings } from '../i18n'
   import type { PassportItem } from '../types'
 
+  import VideoFetch from './VideoFetch.svelte'
+
   export let isOpen: boolean
   export let item: PassportItem
   export let hex: string = '#FFFF00'
@@ -23,7 +25,6 @@
   > = undefined
   export let closeAllOnFinished: boolean = false
   export let onClose: UndefinedOr<() => Promise<void>> = undefined
-  let videoElement: HTMLVideoElement | null = null
   let imageElement: HTMLImageElement | null = null
 
   const i18nBase = i18nFactory(Strings)
@@ -32,23 +33,17 @@
 
   onMount(async () => {
     const { itemAssetType, itemAssetValue } = item || {}
-    const isShortVideo = ['short-video', 'short-video-link'].includes(
-      itemAssetType,
-    )
     const isImage = [
       'image',
       'image-link',
       'image-playable',
       'image-playable-link',
     ].includes(itemAssetType)
-    if (isShortVideo || isImage) {
+    if (isImage) {
       const response = await fetch(item.itemAssetValue)
       const blob = await response.blob()
       const blobDataUrl = URL.createObjectURL(blob)
       try {
-        if (isShortVideo && videoElement) {
-          videoElement.src = blobDataUrl
-        }
         if (isImage && imageElement) {
           imageElement.src = blobDataUrl
         }
@@ -123,16 +118,11 @@
             alt="Asset"
           />
         {:else if item.itemAssetType === 'short-video' || item.itemAssetType === 'short-video-link'}
-          <video
-            bind:this={videoElement}
-            controlsList="nodownload"
-            autoplay
-            muted
-            poster={item.itemAssetValue}
-            class="max-w-44 max-h-44 rounded-md w-full object-cover aspect-square"
-          >
-            <track kind="captions" />
-          </video>
+          <VideoFetch
+            url={item.itemAssetValue}
+            posterUrl={item.itemAssetValue}
+            videoClass={`max-w-44 max-h-44 rounded-md w-full object-cover aspect-square`}
+          />
         {/if}
 
         <label class="hs-form-field is-filled">
