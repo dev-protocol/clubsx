@@ -2,6 +2,8 @@
 import { defineProps, onMounted, ref } from 'vue'
 import Skeleton from '@components/Global/Skeleton.vue'
 
+import VideoFetch from './VideoFetch.vue'
+
 import type { PassportItemIndexDoc } from '../types'
 
 const props = defineProps<{
@@ -12,7 +14,6 @@ const props = defineProps<{
   class?: string
 }>()
 
-const videoRef = ref<HTMLVideoElement | null>(null)
 const imageRef = ref<HTMLImageElement | null>(null)
 
 onMounted(async () => {
@@ -20,12 +21,6 @@ onMounted(async () => {
     const response = await fetch(props.src)
     const blob = await response.blob()
     const blobDataUrl = URL.createObjectURL(blob)
-    if (
-      (props.type === 'short-video' || props.type === 'short-video-link') &&
-      videoRef.value
-    ) {
-      videoRef.value.src = blobDataUrl
-    }
     if (
       (props.type === 'image' ||
         props.type === 'image-link' ||
@@ -58,19 +53,14 @@ onMounted(async () => {
   />
 
   <!-- Short video type clip -->
-  <video
-    ref="videoRef"
-    loop
-    muted
-    autoplay
-    controlsList="nodownload"
-    :poster="posterSrc ?? ''"
+
+  <VideoFetch
     v-if="found && (type === 'short-video' || type === 'short-video-link')"
-    class="rounded-md w-full max-w-full object-cover aspect-square pointer-events-none"
-    :class="props.class"
-  >
-    <track kind="captions" />
-  </video>
+    :url="src"
+    :posterUrl="posterSrc ?? ''"
+    :class="class"
+    :videoClass="`rounded-md w-full max-w-full object-cover aspect-square pointer-events-none`"
+  />
 
   <div v-if="!found || !props.src" class="w-full aspect-square">
     <Skeleton />
