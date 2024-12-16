@@ -76,6 +76,7 @@
 
       // Start MP4Box file processing
       mp4boxfile.start()
+      videoElement.value?.play().catch((e) => console.error('Play error:', e))
     }
 
     // Fired when a media segment is ready
@@ -209,7 +210,6 @@
   }
 </script>
 
-<!-- Mute, autoplay, and loop are for demonstration. Consider user controls for production. -->
 <video
   bind:this={videoElement}
   controlsList="nodownload"
