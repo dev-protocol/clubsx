@@ -209,10 +209,13 @@
 </script>
 
 <!-- Mute, autoplay, and loop are for demonstration. Consider user controls for production. -->
-  <video 
-    bind:this={videoElement} controlsList="nodownload" autoplay muted
-    poster={posterUrl}
-    class="rounded-md w-full max-w-full pointer-events-none object-cover aspect-square"
-    >
-    <track kind="captions" />
-  </video>
+<video
+  bind:this={videoElement}
+  controlsList="nodownload"
+  autoplay
+  muted
+  poster={posterUrl}
+  class="rounded-md w-full max-w-full pointer-events-none object-cover aspect-square"
+>
+  <track kind="captions" />
+</video>
