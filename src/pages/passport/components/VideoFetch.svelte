@@ -5,6 +5,7 @@
 
   export let url
   export let posterUrl
+  export let videoClass
 
   let videoElement
   let mediaSource
@@ -215,7 +216,7 @@
   autoplay
   muted
   poster={posterUrl}
-  class="rounded-md w-full max-w-full pointer-events-none object-cover aspect-square"
+  class={videoClass}
 >
   <track kind="captions" />
 </video>
