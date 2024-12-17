@@ -10101,6 +10101,7 @@ __metadata:
     js-base64: "npm:^3.7.7"
     jsonwebtoken: "npm:^9.0.2"
     marked: "npm:10.0.0"
+    mp4box: "npm:^0.5.3"
     nanoid: "npm:^5.0.5"
     nanostores: "npm:^0.11.0"
     p-queue: "npm:^8.0.0"
@@ -18219,6 +18220,13 @@ __metadata:
     "@motionone/utils": "npm:^10.15.1"
     "@motionone/vue": "npm:^10.16.2"
   checksum: 10c0/ea3fa2c7ce881824bcefa39b96b5e2b802d4b664b8a64644cded11197c9262e2a5b14b2e9516940e06cec37d3c39e4c79b26825c447f71ba1cfd7e3370efbe61
+  languageName: node
+  linkType: hard
+
+"mp4box@npm:^0.5.3":
+  version: 0.5.3
+  resolution: "mp4box@npm:0.5.3"
+  checksum: 10c0/901d39813b3ea792bce34b7c111013304de4ea14376d4e42f70a96659e94a4eb00f22923619d045c96c6d27336f107456f00b2bfb05db015b872c7db0aecf53f
   languageName: node
   linkType: hard
 

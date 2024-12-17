@@ -13,6 +13,7 @@
   import type { PassportItem, ImageData } from '../types'
   import { isDark } from '@fixtures/color'
 
+  import VideoFetch from './VideoFetch.svelte'
   export let props: {
     local: boolean
     item?: PassportItem
@@ -31,7 +32,6 @@
   let assetImage: ImageData | undefined
   let htmlDescription: UndefinedOr<string>
   let isFrameDark: UndefinedOr<boolean>
-  let videoElement: HTMLVideoElement | null = null
   let imageElement: HTMLImageElement | null = null
 
   $: {
@@ -63,25 +63,17 @@
 
   onMount(async () => {
     const { itemAssetType, itemAssetValue } = props.item || {}
-    const isShortVideo = ['short-video', 'short-video-link'].includes(
-      itemAssetType ?? '',
-    )
     const isImage = [
       'image',
       'image-link',
       'image-playable',
       'image-playable-link',
     ].includes(itemAssetType ?? '')
-    if (isShortVideo || isImage) {
+    if (isImage) {
       try {
         const response = await fetch(itemAssetValue ?? '')
         const blob = await response.blob()
         const blobDataUrl = URL.createObjectURL(blob)
-
-        if (isShortVideo && videoElement) {
-          videoElement.src = blobDataUrl
-        }
-
         if (isImage && imageElement) {
           imageElement.src = blobDataUrl
         }
@@ -174,16 +166,11 @@
           alt="Asset"
         />
       {:else if props.item.itemAssetType === 'short-video' || props.item.itemAssetType === 'short-video-link'}
-        <video
-          bind:this={videoElement}
-          controlsList="nodownload"
-          autoplay
-          muted
-          poster={assetImage?.src}
-          class="rounded-md w-full max-w-full pointer-events-none object-cover aspect-square"
-        >
-          <track kind="captions" />
-        </video>
+        <VideoFetch
+          url={props?.item?.itemAssetValue}
+          posterUrl={assetImage?.src}
+          videoClass={`rounded-md w-full max-w-full pointer-events-none object-cover aspect-square`}
+        />
       {:else}
         <Skeleton />
       {/if}
