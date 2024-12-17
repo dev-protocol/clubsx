@@ -7,7 +7,7 @@ import lit from '@astrojs/lit'
 import vue from '@astrojs/vue'
 import react from '@astrojs/react'
 import svelte from '@astrojs/svelte'
-import commonjs from '@rollup/plugin-commonjs'
+// import commonjs from '@rollup/plugin-commonjs'
 
 import builtInApiPaths from './built-in-api-paths'
 
@@ -56,10 +56,14 @@ export default defineConfig({
     svelte(),
   ],
   vite: {
-    ssr: { noExternal: ['path-to-regexp'] },
+    ssr: { noExternal: ['path-to-regexp'], external: ['keen-slider'] },
     build: { sourcemap: true },
     plugins: [
-      commonjs({}),
+      // commonjs({
+      //   requireReturnsDefault: (id) => {
+      //     return id.includes('qrcode')
+      //   },
+      // }),
     ],
     server: {
       hmr: {
