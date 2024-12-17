@@ -56,8 +56,16 @@ export default defineConfig({
     svelte(),
   ],
   vite: {
-    ssr: { noExternal: ['path-to-regexp'], external: ['keen-slider'] },
-    build: { sourcemap: true },
+    optimizeDeps: {
+      include: ['keen-slider/vue.es.js'],
+    },
+    ssr: { noExternal: ['path-to-regexp'] },
+    build: {
+      sourcemap: true,
+      rollupOptions: {
+        external: ['keen-slider'], // Ensure Rollup processes it correctly
+      },
+    },
     plugins: [
       // commonjs({
       //   requireReturnsDefault: (id) => {
