@@ -62,9 +62,6 @@ export default defineConfig({
     ssr: { noExternal: ['path-to-regexp'] },
     build: {
       sourcemap: true,
-      rollupOptions: {
-        external: ['keen-slider'], // Ensure Rollup processes it correctly
-      },
     },
     plugins: [
       // commonjs({
