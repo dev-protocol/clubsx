@@ -14,6 +14,7 @@ import '@devprotocol/clubs-core/styles'
 import { isDark } from '@fixtures/color'
 import { ClubsLogo } from '@devprotocol/clubs-core/layouts'
 import Description from './components/Description.vue'
+import VideoElement from './components/VideoElement.vue'
 import type { Clip } from '@pages/api/profile'
 import { clientsSTokens } from '@devprotocol/dev-kit'
 import { JsonRpcProvider } from 'ethers'
@@ -90,14 +91,10 @@ const tokenURI =
         {
           data?.passportItem?.itemAssetType === 'short-video' ||
           data?.passportItem?.itemAssetType === 'short-video-link' ? (
-            <video
-              loop
-              muted
-              autoplay
-              id="og-video-element"
+            <VideoElement
+              client:load
               poster={tokenURI ? tokenURI.image : ''}
               src={data.passportItem.itemAssetValue || ''}
-              class="w-full h-full object-cover rounded-xl"
             />
           ) : (
             <img
@@ -164,7 +161,7 @@ const tokenURI =
     />
   </div>
 </html>
-
+<!-- 
 <script>
   document.getElementById('og-video-element')?.addEventListener(
     'loadedmetadata',
@@ -173,4 +170,4 @@ const tokenURI =
     },
     false,
   )
-</script>
+</script> -->
