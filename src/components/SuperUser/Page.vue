@@ -194,7 +194,6 @@ onMounted(async () => {
   }
   passportOverride.value = {
     ...passportOverride.value,
-    id,
     payload: bytes32Hex(passportPayload.value),
   }
 
