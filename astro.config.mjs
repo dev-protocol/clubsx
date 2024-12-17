@@ -7,6 +7,7 @@ import lit from '@astrojs/lit'
 import vue from '@astrojs/vue'
 import react from '@astrojs/react'
 import svelte from '@astrojs/svelte'
+import vitejsVue from '@vitejs/plugin-vue'
 // import commonjs from '@rollup/plugin-commonjs'
 
 import builtInApiPaths from './built-in-api-paths'
@@ -64,6 +65,7 @@ export default defineConfig({
       sourcemap: true,
     },
     plugins: [
+      vitejsVue(),
       // commonjs({
       //   requireReturnsDefault: (id) => {
       //     return id.includes('qrcode')
