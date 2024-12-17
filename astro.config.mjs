@@ -7,7 +7,7 @@ import lit from '@astrojs/lit'
 import vue from '@astrojs/vue'
 import react from '@astrojs/react'
 import svelte from '@astrojs/svelte'
-// import commonjs from '@rollup/plugin-commonjs'
+import commonjs from '@rollup/plugin-commonjs'
 
 import builtInApiPaths from './built-in-api-paths'
 
@@ -59,11 +59,7 @@ export default defineConfig({
     ssr: { noExternal: ['path-to-regexp'] },
     build: { sourcemap: true },
     plugins: [
-      // commonjs({
-      //   requireReturnsDefault: (id) => {
-      //     return id.includes('qrcode')
-      //   },
-      // }),
+      commonjs({}),
     ],
     server: {
       hmr: {
