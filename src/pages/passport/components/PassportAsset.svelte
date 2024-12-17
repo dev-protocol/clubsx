@@ -13,6 +13,7 @@
   import type { PassportItem, ImageData } from '../types'
   import { isDark } from '@fixtures/color'
 
+  import VideoFetch from './VideoFetch.svelte'
   export let props: {
     local: boolean
     item?: PassportItem
@@ -31,6 +32,7 @@
   let assetImage: ImageData | undefined
   let htmlDescription: UndefinedOr<string>
   let isFrameDark: UndefinedOr<boolean>
+  let imageElement: HTMLImageElement | null = null
 
   $: {
     htmlDescription = whenDefined(props.description, markdownToHtml)
@@ -60,6 +62,26 @@
     : `https://clubs.place/api/clubs?p=${props.item?.propertyAddress}`
 
   onMount(async () => {
+    const { itemAssetType, itemAssetValue } = props.item || {}
+    const isImage = [
+      'image',
+      'image-link',
+      'image-playable',
+      'image-playable-link',
+    ].includes(itemAssetType ?? '')
+    if (isImage) {
+      try {
+        const response = await fetch(itemAssetValue ?? '')
+        const blob = await response.blob()
+        const blobDataUrl = URL.createObjectURL(blob)
+        if (isImage && imageElement) {
+          imageElement.src = blobDataUrl
+        }
+      } catch (error) {
+        console.error('Error loading video or image:', error)
+      }
+    }
+
     const [clubApiPri, uri] = await Promise.all([
       fetch(`/api/clubs?p=${props.item?.propertyAddress}`)
         .then((res) => res.json())
@@ -137,16 +159,18 @@
           class="rounded-md w-full object-cover aspect-square"
           alt="Asset"
         />
+      {:else if props.item?.itemAssetType === 'image' || props.item?.itemAssetType === 'image-link' || props.item?.itemAssetType === 'image-playable' || props.item?.itemAssetType === 'image-playable-link'}
+        <img
+          bind:this={imageElement}
+          class="rounded-md w-full object-cover aspect-square"
+          alt="Asset"
+        />
       {:else if props.item.itemAssetType === 'short-video' || props.item.itemAssetType === 'short-video-link'}
-        <video
-          autoplay
-          muted
-          poster={assetImage?.src}
-          class="rounded-md w-full max-w-full pointer-events-none object-cover aspect-square"
-          src={props?.item?.itemAssetValue}
-        >
-          <track kind="captions" />
-        </video>
+        <VideoFetch
+          url={props?.item?.itemAssetValue}
+          posterUrl={assetImage?.src}
+          videoClass={`rounded-md w-full max-w-full pointer-events-none object-cover aspect-square`}
+        />
       {:else}
         <Skeleton />
       {/if}

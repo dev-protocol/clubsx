@@ -1,5 +1,8 @@
 <script lang="ts" setup>
+import { defineProps, onMounted, ref } from 'vue'
 import Skeleton from '@components/Global/Skeleton.vue'
+
+import VideoFetch from './VideoFetch.vue'
 
 import type { PassportItemIndexDoc } from '../types'
 
@@ -10,13 +13,34 @@ const props = defineProps<{
   type: PassportItemIndexDoc['itemAssetType']
   class?: string
 }>()
+
+const imageRef = ref<HTMLImageElement | null>(null)
+
+onMounted(async () => {
+  try {
+    const response = await fetch(props.src)
+    const blob = await response.blob()
+    const blobDataUrl = URL.createObjectURL(blob)
+    if (
+      (props.type === 'image' ||
+        props.type === 'image-link' ||
+        props.type === 'image-playable' ||
+        props.type === 'image-playable-link') &&
+      imageRef.value
+    ) {
+      imageRef.value.src = blobDataUrl ? blobDataUrl : (props.posterSrc ?? '')
+    }
+  } catch (error) {
+    console.error('Error loading video:', error)
+  }
+})
 </script>
 
 <template>
   <!-- Image type clip -->
   <img
     alt="Passport clip"
-    :src="src ?? posterSrc"
+    ref="imageRef"
     v-if="
       found &&
       (type === 'image' ||
@@ -29,18 +53,14 @@ const props = defineProps<{
   />
 
   <!-- Short video type clip -->
-  <video
-    loop
-    muted
-    autoplay
-    :src="src"
-    :poster="posterSrc ?? ''"
+
+  <VideoFetch
     v-if="found && (type === 'short-video' || type === 'short-video-link')"
-    class="rounded-md w-full max-w-full object-cover aspect-square pointer-events-none"
-    :class="props.class"
-  >
-    <track kind="captions" />
-  </video>
+    :url="src"
+    :posterUrl="posterSrc ?? ''"
+    :class="class"
+    :videoClass="`rounded-md w-full max-w-full object-cover aspect-square pointer-events-none`"
+  />
 
   <div v-if="!found || !props.src" class="w-full aspect-square">
     <Skeleton />
