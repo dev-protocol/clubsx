@@ -32,6 +32,7 @@
   let htmlDescription: UndefinedOr<string>
   let isFrameDark: UndefinedOr<boolean>
   let videoElement: HTMLVideoElement | null = null
+  let imageElement: HTMLImageElement | null = null
 
   $: {
     htmlDescription = whenDefined(props.description, markdownToHtml)
@@ -61,16 +62,34 @@
     : `https://clubs.place/api/clubs?p=${props.item?.propertyAddress}`
 
   onMount(async () => {
-    try {
-      if (props?.item?.itemAssetValue && videoElement) {
-        const response = await fetch(props?.item?.itemAssetValue)
+    const { itemAssetType, itemAssetValue } = props.item || {}
+    const isShortVideo = ['short-video', 'short-video-link'].includes(
+      itemAssetType ?? '',
+    )
+    const isImage = [
+      'image',
+      'image-link',
+      'image-playable',
+      'image-playable-link',
+    ].includes(itemAssetType ?? '')
+    if (isShortVideo || isImage) {
+      try {
+        const response = await fetch(itemAssetValue ?? '')
         const blob = await response.blob()
         const blobDataUrl = URL.createObjectURL(blob)
-        videoElement.src = blobDataUrl
+
+        if (isShortVideo && videoElement) {
+          videoElement.src = blobDataUrl
+        }
+
+        if (isImage && imageElement) {
+          imageElement.src = blobDataUrl
+        }
+      } catch (error) {
+        console.error('Error loading video or image:', error)
       }
-    } catch (error) {
-      console.error('Error loading video:', error)
     }
+
     const [clubApiPri, uri] = await Promise.all([
       fetch(`/api/clubs?p=${props.item?.propertyAddress}`)
         .then((res) => res.json())
@@ -145,6 +164,12 @@
       {#if assetImage && props.item.itemAssetType !== 'short-video' && props.item.itemAssetType !== 'short-video-link'}
         <img
           src={assetImage.src}
+          class="rounded-md w-full object-cover aspect-square"
+          alt="Asset"
+        />
+      {:else if props.item?.itemAssetType === 'image' || props.item?.itemAssetType === 'image-link' || props.item?.itemAssetType === 'image-playable' || props.item?.itemAssetType === 'image-playable-link'}
+        <img
+          bind:this={imageElement}
           class="rounded-md w-full object-cover aspect-square"
           alt="Asset"
         />
