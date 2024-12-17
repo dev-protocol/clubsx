@@ -7,7 +7,6 @@ import lit from '@astrojs/lit'
 import vue from '@astrojs/vue'
 import react from '@astrojs/react'
 import svelte from '@astrojs/svelte'
-import vitejsVue from '@vitejs/plugin-vue'
 // import commonjs from '@rollup/plugin-commonjs'
 
 import builtInApiPaths from './built-in-api-paths'
@@ -57,15 +56,11 @@ export default defineConfig({
     svelte(),
   ],
   vite: {
-    optimizeDeps: {
-      include: ['keen-slider/vue.es.js'],
-    },
     ssr: { noExternal: ['path-to-regexp'] },
     build: {
       sourcemap: true,
     },
     plugins: [
-      vitejsVue(),
       // commonjs({
       //   requireReturnsDefault: (id) => {
       //     return id.includes('qrcode')
@@ -78,7 +73,9 @@ export default defineConfig({
       },
     },
     resolve: {
+      conditions: ['module'], // Prioritize "module" field in package.json
       alias: {
+        'keen-slider/vue.es': 'keen-slider/vue.es.js',
         'three/examples/jsm/controls/OrbitControls':
           '/node_modules/three/examples/jsm/controls/OrbitControls',
         '@crossmint/client-sdk-react-ui/package.json':
@@ -86,6 +83,9 @@ export default defineConfig({
         // TODO: workaround for until closed this -> https://github.com/eemeli/yaml/pull/560
         // yaml: '/node_modules/yaml/browser/index.js',
       },
+    },
+    optimizeDeps: {
+      include: ['keen-slider/vue.es.js'], // Pre-bundle to avoid reparsing
     },
   },
 })
