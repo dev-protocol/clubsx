@@ -1549,9 +1549,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@devprotocol/clubs-plugin-passports@npm:^0.1.0-beta.28":
-  version: 0.1.0-beta.31
-  resolution: "@devprotocol/clubs-plugin-passports@npm:0.1.0-beta.31"
+"@devprotocol/clubs-plugin-passports@npm:^0.1.0-beta.32":
+  version: 0.1.0-beta.32
+  resolution: "@devprotocol/clubs-plugin-passports@npm:0.1.0-beta.32"
   dependencies:
     "@devprotocol/dev-kit": "npm:8.7.0"
     "@devprotocol/util-ts": "npm:4.0.0"
@@ -1560,12 +1560,12 @@ __metadata:
     nanoid: "npm:^5.0.7"
     ramda: "npm:0.30.1"
     redis: "npm:^4.7.0"
-    sass: "npm:1.82.0"
+    sass: "npm:1.83.0"
   peerDependencies:
     "@devprotocol/clubs-core": ^3.18.0
-    "@devprotocol/clubs-plugin-payments": 0.2.1
+    "@devprotocol/clubs-plugin-payments": ^0.2.3
     ethers: ^6.0.0
-  checksum: 10c0/de5b312b9d23e97aed16ad9f6f770a68e169403a7088a1fda050a96c0d7840c1dcbd4b1d44c9339fcd42fb4f3829a806387913956356c250693f41c0e76965df
+  checksum: 10c0/5ab02b064d233207785f9165728ec7ccbe9ab4887f4ce0022604b49321e476e33f021168ed80113b6b2690ac52366d180b6d03db72bd5a8875e1e1f187b24506
   languageName: node
   linkType: hard
 
@@ -9957,7 +9957,7 @@ __metadata:
     "@devprotocol/clubs-core": "npm:3.22.2"
     "@devprotocol/clubs-plugin-akiba": "npm:^0.1.0-beta.13"
     "@devprotocol/clubs-plugin-awesome-onboarding": "npm:0.5.1"
-    "@devprotocol/clubs-plugin-passports": "npm:^0.1.0-beta.28"
+    "@devprotocol/clubs-plugin-passports": "npm:^0.1.0-beta.32"
     "@devprotocol/clubs-plugin-payments": "npm:^0.2.3"
     "@devprotocol/clubs-plugin-posts": "npm:0.20.19"
     "@devprotocol/clubs-plugin-posts-voting": "npm:0.8.8"
