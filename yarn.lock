@@ -1463,9 +1463,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@devprotocol/clubs-core@npm:3.22.3":
-  version: 3.22.3
-  resolution: "@devprotocol/clubs-core@npm:3.22.3"
+"@devprotocol/clubs-core@npm:3.22.4":
+  version: 3.22.4
+  resolution: "@devprotocol/clubs-core@npm:3.22.4"
   dependencies:
     "@devprotocol/dev-kit": "npm:8.7.0"
     "@devprotocol/elements": "npm:1.5.3"
@@ -1512,7 +1512,7 @@ __metadata:
       optional: true
     vue:
       optional: true
-  checksum: 10c0/aee7f123fa73ccc746c01818284ba3caf3b90b512ac534baf35537e387d19c85d3a6c939da164764d6739017b140129df81e3618aecf8e91b6a09c3b4ba954e5
+  checksum: 10c0/0d73d621ede91b169509729ab5632e8fd4a7a6a05f6b1f77c7b135c8e71bf77d55dd9662f43c7fa690e548cf37da188acf596a08f676037146c8841f1e27c7af
   languageName: node
   linkType: hard
 
@@ -9788,7 +9788,7 @@ __metadata:
     "@astrojs/vue": "npm:4.5.3"
     "@crossmint/client-sdk-base": "npm:^1.0.1-alpha.6"
     "@crossmint/client-sdk-react-ui": "npm:^1.0.1-alpha.6"
-    "@devprotocol/clubs-core": "npm:3.22.3"
+    "@devprotocol/clubs-core": "npm:3.22.4"
     "@devprotocol/clubs-plugin-akiba": "npm:^0.1.0-beta.16"
     "@devprotocol/clubs-plugin-awesome-onboarding": "npm:0.5.1"
     "@devprotocol/clubs-plugin-passports": "npm:0.1.0-beta.36"
@@ -9882,7 +9882,7 @@ __metadata:
     three: "npm:0.161.0"
     truncate-eth-address: "npm:1.0.2"
     type-fest: "npm:4.30.2"
-    typescript: "npm:5.5.4"
+    typescript: "npm:5.7.2"
     uuid: "npm:^10.0.0"
     viem: "npm:1.21.4"
     vitest: "npm:^1.0.0"
@@ -23384,23 +23384,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:5.5.4":
-  version: 5.5.4
-  resolution: "typescript@npm:5.5.4"
+"typescript@npm:5.7.2":
+  version: 5.7.2
+  resolution: "typescript@npm:5.7.2"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10c0/422be60f89e661eab29ac488c974b6cc0a660fb2228003b297c3d10c32c90f3bcffc1009b43876a082515a3c376b1eefcce823d6e78982e6878408b9a923199c
+  checksum: 10c0/a873118b5201b2ef332127ef5c63fb9d9c155e6fdbe211cbd9d8e65877283797cca76546bad742eea36ed7efbe3424a30376818f79c7318512064e8625d61622
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A5.5.4#optional!builtin<compat/typescript>":
-  version: 5.5.4
-  resolution: "typescript@patch:typescript@npm%3A5.5.4#optional!builtin<compat/typescript>::version=5.5.4&hash=379a07"
+"typescript@patch:typescript@npm%3A5.7.2#optional!builtin<compat/typescript>":
+  version: 5.7.2
+  resolution: "typescript@patch:typescript@npm%3A5.7.2#optional!builtin<compat/typescript>::version=5.7.2&hash=5786d5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10c0/73409d7b9196a5a1217b3aaad929bf76294d3ce7d6e9766dd880ece296ee91cf7d7db6b16c6c6c630ee5096eccde726c0ef17c7dfa52b01a243e57ae1f09ef07
+  checksum: 10c0/f3b8082c9d1d1629a215245c9087df56cb784f9fb6f27b5d55577a20e68afe2a889c040aacff6d27e35be165ecf9dca66e694c42eb9a50b3b2c451b36b5675cb
   languageName: node
   linkType: hard
 
