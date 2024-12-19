@@ -1463,9 +1463,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@devprotocol/clubs-core@npm:3.22.4":
-  version: 3.22.4
-  resolution: "@devprotocol/clubs-core@npm:3.22.4"
+"@devprotocol/clubs-core@npm:3.22.5":
+  version: 3.22.5
+  resolution: "@devprotocol/clubs-core@npm:3.22.5"
   dependencies:
     "@devprotocol/dev-kit": "npm:8.7.0"
     "@devprotocol/elements": "npm:1.5.3"
@@ -1512,13 +1512,13 @@ __metadata:
       optional: true
     vue:
       optional: true
-  checksum: 10c0/0d73d621ede91b169509729ab5632e8fd4a7a6a05f6b1f77c7b135c8e71bf77d55dd9662f43c7fa690e548cf37da188acf596a08f676037146c8841f1e27c7af
+  checksum: 10c0/fca24c3e35462a4a99f887e2c23cefe369b0171073b611ff844df5fcfd51c4d5bc6e83f69ba019b016eea9bdb800386aa12e23970f99cbaddab0aaa70e86fa35
   languageName: node
   linkType: hard
 
-"@devprotocol/clubs-plugin-akiba@npm:^0.1.0-beta.16":
-  version: 0.1.0-beta.16
-  resolution: "@devprotocol/clubs-plugin-akiba@npm:0.1.0-beta.16"
+"@devprotocol/clubs-plugin-akiba@npm:0.1.0":
+  version: 0.1.0
+  resolution: "@devprotocol/clubs-plugin-akiba@npm:0.1.0"
   dependencies:
     "@devprotocol/dev-kit": "npm:8.7.0"
     "@devprotocol/util-ts": "npm:4.0.0"
@@ -1534,7 +1534,7 @@ __metadata:
     "@devprotocol/clubs-plugin-passports": ^0.1.0-beta.35
     "@devprotocol/clubs-plugin-payments": ^0.3.0
     ethers: ^6.0.0
-  checksum: 10c0/39671435244140b4285571c726c5b695aa0fecd87953f3e51b8bbb9e0273cbe27880bc3fa424706551d9d0763310508ffddc10dc9c1a5095e1093dab48f4d410
+  checksum: 10c0/65b8bdff1b46881c2d7881dc6e6650f945bf6d9f1d28bc64f3f002fc5adcca3580e99b51745c68983e44733fcd8e04c9f2d24a94795ea796ad1f390b2c1d4464
   languageName: node
   linkType: hard
 
@@ -9788,8 +9788,8 @@ __metadata:
     "@astrojs/vue": "npm:4.5.3"
     "@crossmint/client-sdk-base": "npm:^1.0.1-alpha.6"
     "@crossmint/client-sdk-react-ui": "npm:^1.0.1-alpha.6"
-    "@devprotocol/clubs-core": "npm:3.22.4"
-    "@devprotocol/clubs-plugin-akiba": "npm:^0.1.0-beta.16"
+    "@devprotocol/clubs-core": "npm:3.22.5"
+    "@devprotocol/clubs-plugin-akiba": "npm:0.1.0"
     "@devprotocol/clubs-plugin-awesome-onboarding": "npm:0.5.1"
     "@devprotocol/clubs-plugin-passports": "npm:0.1.0-beta.36"
     "@devprotocol/clubs-plugin-payments": "npm:0.3.4"
