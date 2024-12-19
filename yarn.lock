@@ -1463,9 +1463,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@devprotocol/clubs-core@npm:3.22.2":
-  version: 3.22.2
-  resolution: "@devprotocol/clubs-core@npm:3.22.2"
+"@devprotocol/clubs-core@npm:3.22.3":
+  version: 3.22.3
+  resolution: "@devprotocol/clubs-core@npm:3.22.3"
   dependencies:
     "@devprotocol/dev-kit": "npm:8.7.0"
     "@devprotocol/elements": "npm:1.5.3"
@@ -1477,7 +1477,7 @@ __metadata:
     "@vercel/blob": "npm:^0.26.0"
     axios: "npm:^1.6.7"
     bignumber.js: "npm:^9.1.2"
-    isomorphic-dompurify: "npm:2.16.0"
+    isomorphic-dompurify: "npm:2.18.0"
     js-base64: "npm:^3.7.2"
     lit: "npm:^3.0.0"
     marked: "npm:^10.0.0"
@@ -1488,11 +1488,11 @@ __metadata:
     rxjs: "npm:^7.8.1"
     svelte: "npm:^5.0.0"
     vue: "npm:^3.2.0"
-    yaml: "npm:2.6.0"
+    yaml: "npm:2.6.1"
   peerDependencies:
     "@astrojs/lit": ^1.0.1 || ^2.0.0 || ^3.0.0 || ^4.0.0
     "@astrojs/react": ^1.2.2 || ^2.0.0 || ^3.0.0
-    "@astrojs/svelte": ^1.0.2 || ^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0
+    "@astrojs/svelte": ^1.0.2 || ^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0
     "@astrojs/tailwind": ^2.1.3 || ^3.0.0 || ^4.0.0 || ^5.0.0
     "@astrojs/vue": ^1.2.2 || ^2.0.0 || ^3.0.0 || ^4.0.0
     astro: ^3.0.0 || ^4.0.0
@@ -1512,7 +1512,7 @@ __metadata:
       optional: true
     vue:
       optional: true
-  checksum: 10c0/c18f40197bcfa55f2f31b43437f3046ff77e1ac5376d67bb686a5e093c0aa08bd3c214ea8586ce00f6a9a4a2d99d8a7210d3a141841098491b6af195096f5676
+  checksum: 10c0/aee7f123fa73ccc746c01818284ba3caf3b90b512ac534baf35537e387d19c85d3a6c939da164764d6739017b140129df81e3618aecf8e91b6a09c3b4ba954e5
   languageName: node
   linkType: hard
 
@@ -1570,9 +1570,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@devprotocol/clubs-plugin-payments@npm:0.3.3":
-  version: 0.3.3
-  resolution: "@devprotocol/clubs-plugin-payments@npm:0.3.3"
+"@devprotocol/clubs-plugin-payments@npm:0.3.4":
+  version: 0.3.4
+  resolution: "@devprotocol/clubs-plugin-payments@npm:0.3.4"
   dependencies:
     "@devprotocol/dev-kit": "npm:8.7.0"
     "@devprotocol/util-ts": "npm:4.0.0"
@@ -1589,7 +1589,7 @@ __metadata:
     "@devprotocol/clubs-core": ^3.22.1
     "@devprotocol/clubs-plugin-passports": ^0.1.0-beta.36
     ethers: ^6.0.0
-  checksum: 10c0/6a9f30237054129efdf4ee27ee238c11c73792949e74d18fd2f922d2b7216c1119643596e3d9e58611d737b6583e9befb4c2c2ca14b1cdbd6267c4097c9a5c91
+  checksum: 10c0/e36b6b248953c1abaa1bb6beb384f179a9d4deb0c5cfb8ce0a02bd5cb7a78a94ac903b59fd3837a2131b01f886ddb60abfdddd9ff6d56dd2bdf020c2e981ccc7
   languageName: node
   linkType: hard
 
@@ -5448,7 +5448,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/dompurify@npm:^3.0.2, @types/dompurify@npm:^3.0.5":
+"@types/dompurify@npm:^3.0.2":
   version: 3.0.5
   resolution: "@types/dompurify@npm:3.0.5"
   dependencies:
@@ -9788,11 +9788,11 @@ __metadata:
     "@astrojs/vue": "npm:4.5.3"
     "@crossmint/client-sdk-base": "npm:^1.0.1-alpha.6"
     "@crossmint/client-sdk-react-ui": "npm:^1.0.1-alpha.6"
-    "@devprotocol/clubs-core": "npm:3.22.2"
+    "@devprotocol/clubs-core": "npm:3.22.3"
     "@devprotocol/clubs-plugin-akiba": "npm:^0.1.0-beta.16"
     "@devprotocol/clubs-plugin-awesome-onboarding": "npm:0.5.1"
     "@devprotocol/clubs-plugin-passports": "npm:0.1.0-beta.36"
-    "@devprotocol/clubs-plugin-payments": "npm:0.3.3"
+    "@devprotocol/clubs-plugin-payments": "npm:0.3.4"
     "@devprotocol/clubs-plugin-posts": "npm:0.20.19"
     "@devprotocol/clubs-plugin-posts-voting": "npm:0.8.8"
     "@devprotocol/dev-kit": "npm:8.7.0"
@@ -10990,7 +10990,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dompurify@npm:^3.0.5, dompurify@npm:^3.1.7":
+"dompurify@npm:^3.0.5, dompurify@npm:^3.2.2":
   version: 3.2.3
   resolution: "dompurify@npm:3.2.3"
   dependencies:
@@ -15260,14 +15260,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isomorphic-dompurify@npm:2.16.0":
-  version: 2.16.0
-  resolution: "isomorphic-dompurify@npm:2.16.0"
+"isomorphic-dompurify@npm:2.18.0":
+  version: 2.18.0
+  resolution: "isomorphic-dompurify@npm:2.18.0"
   dependencies:
-    "@types/dompurify": "npm:^3.0.5"
-    dompurify: "npm:^3.1.7"
+    dompurify: "npm:^3.2.2"
     jsdom: "npm:^25.0.1"
-  checksum: 10c0/fe667c4e418a3c4cb4e44804db6d93cc087952039b51e2e21ea82ee536d3e3e20f96677d0edfeb7e927cccb4cd02d8c00c52adf52a9e289d514369e0f1d7f51d
+  checksum: 10c0/8befe0ffb64b21e20c0ee1bc27321f9d3db5d952318e93532a151c353ec282987a773a8230938c172b3033cfc9e792118b978e7936c025b641ad67bf5124819c
   languageName: node
   linkType: hard
 
@@ -25629,15 +25628,6 @@ __metadata:
   version: 2.2.2
   resolution: "yaml@npm:2.2.2"
   checksum: 10c0/a95bed9205a1f1cac11b315cb3f7ddf6b9979b85a478a18c86abf3066fd8d32c88f8de128c1ea97c2ac5f05de3268ff64e8286c241fd956851f1308044a50a9d
-  languageName: node
-  linkType: hard
-
-"yaml@npm:2.6.0":
-  version: 2.6.0
-  resolution: "yaml@npm:2.6.0"
-  bin:
-    yaml: bin.mjs
-  checksum: 10c0/9e74cdb91cc35512a1c41f5ce509b0e93cc1d00eff0901e4ba831ee75a71ddf0845702adcd6f4ee6c811319eb9b59653248462ab94fa021ab855543a75396ceb
   languageName: node
   linkType: hard
 
