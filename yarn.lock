@@ -1463,13 +1463,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@devprotocol/clubs-core@npm:3.22.5":
-  version: 3.22.5
-  resolution: "@devprotocol/clubs-core@npm:3.22.5"
+"@devprotocol/clubs-core@npm:3.22.7":
+  version: 3.22.7
+  resolution: "@devprotocol/clubs-core@npm:3.22.7"
   dependencies:
     "@devprotocol/dev-kit": "npm:8.7.0"
     "@devprotocol/elements": "npm:1.5.3"
-    "@devprotocol/hashi": "npm:2.3.4"
+    "@devprotocol/hashi": "npm:2.4.0-beta.0"
     "@devprotocol/util-ts": "npm:4.0.0"
     "@ethersproject/abstract-provider": "npm:^5.7.0"
     "@metamask/detect-provider": "npm:^2.0.0"
@@ -1512,7 +1512,7 @@ __metadata:
       optional: true
     vue:
       optional: true
-  checksum: 10c0/fca24c3e35462a4a99f887e2c23cefe369b0171073b611ff844df5fcfd51c4d5bc6e83f69ba019b016eea9bdb800386aa12e23970f99cbaddab0aaa70e86fa35
+  checksum: 10c0/efad384b2de66394b0e3b231db1b335d99b575aff07baf56dba0801b7851797b327bbe52896f850f024f4c5a01100ee3d93f40374f2208a71b87562ebe627ca8
   languageName: node
   linkType: hard
 
@@ -1550,9 +1550,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@devprotocol/clubs-plugin-passports@npm:0.1.0-beta.36":
-  version: 0.1.0-beta.36
-  resolution: "@devprotocol/clubs-plugin-passports@npm:0.1.0-beta.36"
+"@devprotocol/clubs-plugin-passports@npm:0.1.0-beta.37":
+  version: 0.1.0-beta.37
+  resolution: "@devprotocol/clubs-plugin-passports@npm:0.1.0-beta.37"
   dependencies:
     "@devprotocol/dev-kit": "npm:8.7.0"
     "@devprotocol/util-ts": "npm:4.0.0"
@@ -1566,13 +1566,13 @@ __metadata:
     "@devprotocol/clubs-core": ^3.18.0
     "@devprotocol/clubs-plugin-payments": ^0.2.3 || ^0.3.0
     ethers: ^6.0.0
-  checksum: 10c0/3b7f211268fdb78441e5fc1c154a6c49adeafddeba10f324fe11f59f25f559cb3ce8efbdaf11db8ba413ab832ad1fb4d6479abcbecfac4d64e2a60415ba48549
+  checksum: 10c0/869de8c4af4a30d95a4e0059cbeba345c0ae7b6bccc978383021d16676b204696d7250417bbe9d86dea0695949ea1687bbad7b812187a9ece3b6a39e5d3fe2ec
   languageName: node
   linkType: hard
 
-"@devprotocol/clubs-plugin-payments@npm:0.3.4":
-  version: 0.3.4
-  resolution: "@devprotocol/clubs-plugin-payments@npm:0.3.4"
+"@devprotocol/clubs-plugin-payments@npm:0.3.5":
+  version: 0.3.5
+  resolution: "@devprotocol/clubs-plugin-payments@npm:0.3.5"
   dependencies:
     "@devprotocol/dev-kit": "npm:8.7.0"
     "@devprotocol/util-ts": "npm:4.0.0"
@@ -1589,7 +1589,7 @@ __metadata:
     "@devprotocol/clubs-core": ^3.22.1
     "@devprotocol/clubs-plugin-passports": ^0.1.0-beta.36
     ethers: ^6.0.0
-  checksum: 10c0/e36b6b248953c1abaa1bb6beb384f179a9d4deb0c5cfb8ce0a02bd5cb7a78a94ac903b59fd3837a2131b01f886ddb60abfdddd9ff6d56dd2bdf020c2e981ccc7
+  checksum: 10c0/2f8e24ea28f7e23c6640a1442f92a680193732d6d6d323fe4c7fec427a9f3cfb3e1b41dedc96d099b56efe8f150a45434d2b927ff8b9ae170e2512d7e5413661
   languageName: node
   linkType: hard
 
@@ -1740,6 +1740,15 @@ __metadata:
   dependencies:
     "@matteusan/sentro": "npm:0.1.25"
   checksum: 10c0/d3b6aed1b770e487a7afe83e38f0835ed19f827333dba75f7bcb535ac1f736f545cb68ebd7548fb1358e67c2d2bba1cd55fad58dae486ee25c1b710d95b3cef8
+  languageName: node
+  linkType: hard
+
+"@devprotocol/hashi@npm:2.4.0-beta.0":
+  version: 2.4.0-beta.0
+  resolution: "@devprotocol/hashi@npm:2.4.0-beta.0"
+  dependencies:
+    "@matteusan/sentro": "npm:0.1.25"
+  checksum: 10c0/3b7b99b0c010b27d734f2cfb2553c7e790b2e500032f4659fb8313a8d1fd5190d4e20f4db5d890286cc564deb4e5964f7c096044d3885f69267901e7acd95d17
   languageName: node
   linkType: hard
 
@@ -9788,11 +9797,11 @@ __metadata:
     "@astrojs/vue": "npm:4.5.3"
     "@crossmint/client-sdk-base": "npm:^1.0.1-alpha.6"
     "@crossmint/client-sdk-react-ui": "npm:^1.0.1-alpha.6"
-    "@devprotocol/clubs-core": "npm:3.22.5"
+    "@devprotocol/clubs-core": "npm:3.22.7"
     "@devprotocol/clubs-plugin-akiba": "npm:0.1.0"
     "@devprotocol/clubs-plugin-awesome-onboarding": "npm:0.5.1"
-    "@devprotocol/clubs-plugin-passports": "npm:0.1.0-beta.36"
-    "@devprotocol/clubs-plugin-payments": "npm:0.3.4"
+    "@devprotocol/clubs-plugin-passports": "npm:0.1.0-beta.37"
+    "@devprotocol/clubs-plugin-payments": "npm:0.3.5"
     "@devprotocol/clubs-plugin-posts": "npm:0.20.19"
     "@devprotocol/clubs-plugin-posts-voting": "npm:0.8.8"
     "@devprotocol/dev-kit": "npm:8.7.0"
