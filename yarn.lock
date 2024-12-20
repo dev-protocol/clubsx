@@ -1463,9 +1463,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@devprotocol/clubs-core@npm:3.22.7":
-  version: 3.22.7
-  resolution: "@devprotocol/clubs-core@npm:3.22.7"
+"@devprotocol/clubs-core@npm:3.22.8":
+  version: 3.22.8
+  resolution: "@devprotocol/clubs-core@npm:3.22.8"
   dependencies:
     "@devprotocol/dev-kit": "npm:8.7.0"
     "@devprotocol/elements": "npm:1.5.3"
@@ -1512,7 +1512,7 @@ __metadata:
       optional: true
     vue:
       optional: true
-  checksum: 10c0/efad384b2de66394b0e3b231db1b335d99b575aff07baf56dba0801b7851797b327bbe52896f850f024f4c5a01100ee3d93f40374f2208a71b87562ebe627ca8
+  checksum: 10c0/72c25a14018396e073369e63b94881634d69c439b8430ea13e1a9ed56913fe014ad8392835ebc05f5d2dbae5c189968720711f3b4dcbbd74743f420eb453fb8d
   languageName: node
   linkType: hard
 
@@ -9796,7 +9796,7 @@ __metadata:
     "@astrojs/vue": "npm:4.5.3"
     "@crossmint/client-sdk-base": "npm:^1.0.1-alpha.6"
     "@crossmint/client-sdk-react-ui": "npm:^1.0.1-alpha.6"
-    "@devprotocol/clubs-core": "npm:3.22.7"
+    "@devprotocol/clubs-core": "npm:3.22.8"
     "@devprotocol/clubs-plugin-akiba": "npm:0.1.2"
     "@devprotocol/clubs-plugin-awesome-onboarding": "npm:0.5.1"
     "@devprotocol/clubs-plugin-passports": "npm:0.1.0-beta.37"
