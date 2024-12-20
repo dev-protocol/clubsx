@@ -1516,14 +1516,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@devprotocol/clubs-plugin-akiba@npm:0.1.0":
-  version: 0.1.0
-  resolution: "@devprotocol/clubs-plugin-akiba@npm:0.1.0"
+"@devprotocol/clubs-plugin-akiba@npm:0.1.1":
+  version: 0.1.1
+  resolution: "@devprotocol/clubs-plugin-akiba@npm:0.1.1"
   dependencies:
     "@devprotocol/dev-kit": "npm:8.7.0"
     "@devprotocol/util-ts": "npm:4.0.0"
-    "@wagmi/core": "npm:^1.4.1"
-    "@web3modal/wagmi": "npm:^3.5.7"
     bignumber.js: "npm:9.1.2"
     fast-average-color: "npm:^9.4.0"
     ramda: "npm:0.30.1"
@@ -1534,7 +1532,7 @@ __metadata:
     "@devprotocol/clubs-plugin-passports": ^0.1.0-beta.35
     "@devprotocol/clubs-plugin-payments": ^0.3.0
     ethers: ^6.0.0
-  checksum: 10c0/65b8bdff1b46881c2d7881dc6e6650f945bf6d9f1d28bc64f3f002fc5adcca3580e99b51745c68983e44733fcd8e04c9f2d24a94795ea796ad1f390b2c1d4464
+  checksum: 10c0/810de5a3787719e4842429b5a9a0389ad03f93df168211bb730094821f42c8c6bc966bf5e3b61908ca70e7d911e46c3985d691cc88f00193863f10b47168c7fe
   languageName: node
   linkType: hard
 
@@ -7136,7 +7134,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@web3modal/wagmi@npm:3.5.7, @web3modal/wagmi@npm:^3.5.7":
+"@web3modal/wagmi@npm:3.5.7":
   version: 3.5.7
   resolution: "@web3modal/wagmi@npm:3.5.7"
   dependencies:
@@ -9798,7 +9796,7 @@ __metadata:
     "@crossmint/client-sdk-base": "npm:^1.0.1-alpha.6"
     "@crossmint/client-sdk-react-ui": "npm:^1.0.1-alpha.6"
     "@devprotocol/clubs-core": "npm:3.22.7"
-    "@devprotocol/clubs-plugin-akiba": "npm:0.1.0"
+    "@devprotocol/clubs-plugin-akiba": "npm:0.1.1"
     "@devprotocol/clubs-plugin-awesome-onboarding": "npm:0.5.1"
     "@devprotocol/clubs-plugin-passports": "npm:0.1.0-beta.37"
     "@devprotocol/clubs-plugin-payments": "npm:0.3.5"
