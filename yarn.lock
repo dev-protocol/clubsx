@@ -1463,9 +1463,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@devprotocol/clubs-core@npm:3.22.8":
-  version: 3.22.8
-  resolution: "@devprotocol/clubs-core@npm:3.22.8"
+"@devprotocol/clubs-core@npm:3.22.7":
+  version: 3.22.7
+  resolution: "@devprotocol/clubs-core@npm:3.22.7"
   dependencies:
     "@devprotocol/dev-kit": "npm:8.7.0"
     "@devprotocol/elements": "npm:1.5.3"
@@ -1512,7 +1512,7 @@ __metadata:
       optional: true
     vue:
       optional: true
-  checksum: 10c0/72c25a14018396e073369e63b94881634d69c439b8430ea13e1a9ed56913fe014ad8392835ebc05f5d2dbae5c189968720711f3b4dcbbd74743f420eb453fb8d
+  checksum: 10c0/efad384b2de66394b0e3b231db1b335d99b575aff07baf56dba0801b7851797b327bbe52896f850f024f4c5a01100ee3d93f40374f2208a71b87562ebe627ca8
   languageName: node
   linkType: hard
 
@@ -5737,32 +5737,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:18.0.6":
-  version: 18.0.6
-  resolution: "@types/react-dom@npm:18.0.6"
-  dependencies:
-    "@types/react": "npm:*"
-  checksum: 10c0/8ea6e001b741cced20781b3e5e8704c2597815adf1dc22d6b4d24616f24db93364a7163543cb0690082201a351cbfcb6bb0f8ce44ee5ad76ccabacbfe0fb2dd3
+"@types/react-dom@npm:18.3.3":
+  version: 18.3.3
+  resolution: "@types/react-dom@npm:18.3.3"
+  peerDependencies:
+    "@types/react": ^18.0.0
+  checksum: 10c0/f0bc467e09bfd1212bc350826de0faa155e1d77c5e3d8fbed3b172187173baeb90161474d2ef40df59204974a9712827baa3c46ffa7c66ba433b696f7715cb15
   languageName: node
   linkType: hard
 
-"@types/react@npm:*":
-  version: 19.0.2
-  resolution: "@types/react@npm:19.0.2"
-  dependencies:
-    csstype: "npm:^3.0.2"
-  checksum: 10c0/8992f39701fcf1bf893ef8f94a56196445667baf08fe4f6050a14e229a17aad3265ad3efc01595ff3b4d5d5c69da885f9aa4ff80f164a613018734efcff1eb8f
-  languageName: node
-  linkType: hard
-
-"@types/react@npm:18.0.21":
-  version: 18.0.21
-  resolution: "@types/react@npm:18.0.21"
+"@types/react@npm:18.3.14":
+  version: 18.3.14
+  resolution: "@types/react@npm:18.3.14"
   dependencies:
     "@types/prop-types": "npm:*"
-    "@types/scheduler": "npm:*"
     csstype: "npm:^3.0.2"
-  checksum: 10c0/cfe65f3291a62c86b342935df70943c222a4a70b3c74bfb45c1acb7bec47a583c9832b4628313baf0c312447c08baa6353a6f39313b0624b6eb7c1251cf5a0a0
+  checksum: 10c0/d925fbfcf084238b93d1a0b5406d4cf9aeb37c4a1191559aa4ee107c2e55cc15327989140f03eddda4d471f5b935d4673fd74a86f451860edea18eae48ca44f8
   languageName: node
   linkType: hard
 
@@ -5793,13 +5783,6 @@ __metadata:
   dependencies:
     "@types/node": "npm:*"
   checksum: 10c0/a58ba341cb9e7d74f71810a88862da7b2a6fa42e2a1fc0ce40498f6ea1d44382f0640117057da779f74c47039f7166bf48fad02dc876f94e005c7afa50f5e129
-  languageName: node
-  linkType: hard
-
-"@types/scheduler@npm:*":
-  version: 0.23.0
-  resolution: "@types/scheduler@npm:0.23.0"
-  checksum: 10c0/5cf7f2ba3732b74877559eb20b19f95fcd0a20c17dcb20e75a7ca7c7369cd455aeb2d406b3ff5a38168a9750da3bad78dd20d96d11118468b78f4959b8e56090
   languageName: node
   linkType: hard
 
@@ -9821,7 +9804,7 @@ __metadata:
     "@astrojs/vue": "npm:4.5.3"
     "@crossmint/client-sdk-base": "npm:^1.0.1-alpha.6"
     "@crossmint/client-sdk-react-ui": "npm:^1.0.1-alpha.6"
-    "@devprotocol/clubs-core": "npm:3.22.8"
+    "@devprotocol/clubs-core": "npm:3.22.7"
     "@devprotocol/clubs-plugin-akiba": "npm:0.1.2"
     "@devprotocol/clubs-plugin-awesome-onboarding": "npm:0.5.1"
     "@devprotocol/clubs-plugin-passports": "npm:0.1.0-beta.37"
@@ -9850,8 +9833,8 @@ __metadata:
     "@types/marked": "npm:^6.0.0"
     "@types/node": "npm:^22.0.0"
     "@types/ramda": "npm:0.30.2"
-    "@types/react": "npm:18.0.21"
-    "@types/react-dom": "npm:18.0.6"
+    "@types/react": "npm:18.3.14"
+    "@types/react-dom": "npm:18.3.3"
     "@types/textfit": "npm:^2.4.5"
     "@types/three": "npm:0.161.2"
     "@types/uuid": "npm:^10.0.0"
@@ -9899,8 +9882,8 @@ __metadata:
     prettier-plugin-svelte: "npm:3.3.2"
     prettier-plugin-tailwindcss: "npm:0.6.9"
     ramda: "npm:0.30.1"
-    react: "npm:^18.0.0"
-    react-dom: "npm:^18.0.0"
+    react: "npm:18.3.1"
+    react-dom: "npm:18.3.1"
     redis: "npm:4.7.0"
     rxjs: "npm:7.8.1"
     sass: "npm:1.82.0"
@@ -20063,7 +20046,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:>=17, react-dom@npm:^18.0.0":
+"react-dom@npm:18.3.1, react-dom@npm:>=17, react-dom@npm:^18.0.0":
   version: 18.3.1
   resolution: "react-dom@npm:18.3.1"
   dependencies:
@@ -20131,7 +20114,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:>=17, react@npm:^18.0.0":
+"react@npm:18.3.1, react@npm:>=17, react@npm:^18.0.0":
   version: 18.3.1
   resolution: "react@npm:18.3.1"
   dependencies:
