@@ -54,7 +54,10 @@ let providerObj: UndefinedOr<ContractRunner>
 const message = () => `I'm a superuser @ts:${dayjs().utc().toDate().getTime()}`
 
 const PASSPORT_PLUGIN_ID = 'devprotocol:clubs:plugin:passports'
-const props = defineProps<{ plugins: { id: string; name: string }[], Prices: Record<PassportItemAssetType, Price> }>()
+const props = defineProps<{
+  plugins: { id: string; name: string }[]
+  Prices: Record<PassportItemAssetType, Price>
+}>()
 
 const account = ref<string>()
 const club = ref<string>()
