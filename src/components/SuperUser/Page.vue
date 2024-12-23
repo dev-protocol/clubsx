@@ -33,9 +33,7 @@ import {
   changePassportItemAssetType,
 } from './utils/passportOffering'
 import { Prices } from '@devprotocol/clubs-plugin-passports/constants'
-import type {
-  CreatePassportItemReq,
-} from '@devprotocol/clubs-plugin-passports'
+import type { CreatePassportItemReq } from '@devprotocol/clubs-plugin-passports'
 import type {
   PassportOffering,
   PassportOptionsDiscount,
