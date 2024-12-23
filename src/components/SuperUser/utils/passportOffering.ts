@@ -17,7 +17,7 @@ import {
   address,
   callSimpleCollections,
 } from '@plugins/memberships/utils/simpleCollections'
-import { Prices } from '@devprotocol/clubs-plugin-passports'
+import { Prices } from '@devprotocol/clubs-plugin-passports/constants'
 import type { RefPassportItem } from './passportItem'
 import type {
   RefPassportDiscount,

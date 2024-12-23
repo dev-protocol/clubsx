@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import { Prices } from '@devprotocol/clubs-plugin-passports'
+import { Prices } from '@devprotocol/clubs-plugin-passports/constants'
 import type {
   PassportOffering,
   PassportOptionsDiscount,
