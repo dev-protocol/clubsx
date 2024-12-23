@@ -1463,9 +1463,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@devprotocol/clubs-core@npm:3.22.7":
-  version: 3.22.7
-  resolution: "@devprotocol/clubs-core@npm:3.22.7"
+"@devprotocol/clubs-core@npm:3.22.9":
+  version: 3.22.9
+  resolution: "@devprotocol/clubs-core@npm:3.22.9"
   dependencies:
     "@devprotocol/dev-kit": "npm:8.7.0"
     "@devprotocol/elements": "npm:1.5.3"
@@ -1512,16 +1512,17 @@ __metadata:
       optional: true
     vue:
       optional: true
-  checksum: 10c0/efad384b2de66394b0e3b231db1b335d99b575aff07baf56dba0801b7851797b327bbe52896f850f024f4c5a01100ee3d93f40374f2208a71b87562ebe627ca8
+  checksum: 10c0/4a354992d4764e905dd9576f6b810411cdd8e1a1746fade28813713796137839152c6cbf9b408cce9fb553fcf6099b28957f203b1f0dab6cebd53b559fc3d753
   languageName: node
   linkType: hard
 
-"@devprotocol/clubs-plugin-akiba@npm:0.1.2":
-  version: 0.1.2
-  resolution: "@devprotocol/clubs-plugin-akiba@npm:0.1.2"
+"@devprotocol/clubs-plugin-akiba@npm:0.1.3":
+  version: 0.1.3
+  resolution: "@devprotocol/clubs-plugin-akiba@npm:0.1.3"
   dependencies:
     "@devprotocol/dev-kit": "npm:8.7.0"
     "@devprotocol/util-ts": "npm:4.0.0"
+    "@types/swiper": "npm:^6.0.0"
     bignumber.js: "npm:9.1.2"
     fast-average-color: "npm:^9.4.0"
     mp4box: "npm:^0.5.3"
@@ -1533,7 +1534,7 @@ __metadata:
     "@devprotocol/clubs-plugin-passports": ^0.1.0-beta.35
     "@devprotocol/clubs-plugin-payments": ^0.3.0
     ethers: ^6.0.0
-  checksum: 10c0/c848bdc541143394482efba719e35e796836e5ad78b78bd52e40e8e29625bdbf066afde4891fa1439a8c5e00ca358cfd2b7567b55e2a4c984b3ca7abac2054cf
+  checksum: 10c0/b94306820075f582060ef0846ceb6cd5f00b381cd17a9a43abad9fe3f56fcfa1d055fc286b24c0b29cc1ed96096abb80e83e557985aa13db21fd879760cfacca
   languageName: node
   linkType: hard
 
@@ -5830,6 +5831,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/swiper@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "@types/swiper@npm:6.0.0"
+  dependencies:
+    swiper: "npm:*"
+  checksum: 10c0/096a4a8017b296752d5a72bf5da07e2507eed0ae32603ce560060c9aee6134431c2d34fcde42bde3f4790ec498aa6e697d0e02d2b6a3e58d99c72a4794d3e9ba
+  languageName: node
+  linkType: hard
+
 "@types/textfit@npm:^2.4.5":
   version: 2.4.5
   resolution: "@types/textfit@npm:2.4.5"
@@ -9804,8 +9814,8 @@ __metadata:
     "@astrojs/vue": "npm:4.5.3"
     "@crossmint/client-sdk-base": "npm:^1.0.1-alpha.6"
     "@crossmint/client-sdk-react-ui": "npm:^1.0.1-alpha.6"
-    "@devprotocol/clubs-core": "npm:3.22.7"
-    "@devprotocol/clubs-plugin-akiba": "npm:0.1.2"
+    "@devprotocol/clubs-core": "npm:3.22.9"
+    "@devprotocol/clubs-plugin-akiba": "npm:0.1.3"
     "@devprotocol/clubs-plugin-awesome-onboarding": "npm:0.5.1"
     "@devprotocol/clubs-plugin-passports": "npm:0.1.0-beta.37"
     "@devprotocol/clubs-plugin-payments": "npm:0.3.5"
@@ -22545,7 +22555,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swiper@npm:11.1.15, swiper@npm:^11.1.15":
+"swiper@npm:*, swiper@npm:11.1.15, swiper@npm:^11.1.15":
   version: 11.1.15
   resolution: "swiper@npm:11.1.15"
   checksum: 10c0/3faabc5b33c0663513e8e41c4ef7920d4c9a1ca6b988848f2e51e1db0d01471a1bae22fce3177b9d3ab2c128fc6df23074415ae7957bd0f8542fd7387fa5263d
