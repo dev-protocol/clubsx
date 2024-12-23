@@ -644,6 +644,9 @@ const updatePassportOfferingOnChain = async () => {
 
         <label class="w-full hs-form-field">
           <span class="w-full hs-form-field__label">Preview Image URL</span>
+          <span class="w-full hs-form-field__helper"
+            >* Use this only for CSS/stylesheet assets.</span
+          >
           <input
             type="text"
             class="w-full hs-form-field__input"
