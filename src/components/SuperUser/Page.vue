@@ -32,11 +32,12 @@ import {
   changePassportOfferingFee,
   changePassportItemAssetType,
 } from './utils/passportOffering'
-import { Prices } from '@devprotocol/clubs-plugin-passports/constants'
 import type {
   CreatePassportItemReq,
+  PassportItemAssetType,
   PassportOffering,
   PassportOptionsDiscount,
+  Price,
 } from '@devprotocol/clubs-plugin-passports/types'
 import {
   changePassportDiscount,
@@ -53,7 +54,7 @@ let providerObj: UndefinedOr<ContractRunner>
 const message = () => `I'm a superuser @ts:${dayjs().utc().toDate().getTime()}`
 
 const PASSPORT_PLUGIN_ID = 'devprotocol:clubs:plugin:passports'
-const props = defineProps<{ plugins: { id: string; name: string }[] }>()
+const props = defineProps<{ plugins: { id: string; name: string }[], Prices: Record<PassportItemAssetType, Price> }>()
 
 const account = ref<string>()
 const club = ref<string>()
