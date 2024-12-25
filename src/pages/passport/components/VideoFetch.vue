@@ -217,6 +217,7 @@ function maybeEndOfStream() {
   <video
     ref="videoElement"
     controlsList="nodownload"
+    loop
     autoplay
     muted
     :poster="posterUrl"
