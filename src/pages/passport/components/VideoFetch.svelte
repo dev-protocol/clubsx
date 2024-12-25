@@ -213,6 +213,7 @@
 <video
   bind:this={videoElement}
   controlsList="nodownload"
+  loop
   autoplay
   muted
   poster={posterUrl}
