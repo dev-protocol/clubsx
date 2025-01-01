@@ -3956,12 +3956,12 @@ __metadata:
   linkType: hard
 
 "@nanostores/react@npm:^0.8.0":
-  version: 0.8.2
-  resolution: "@nanostores/react@npm:0.8.2"
+  version: 0.8.4
+  resolution: "@nanostores/react@npm:0.8.4"
   peerDependencies:
     nanostores: ^0.9.0 || ^0.10.0 || ^0.11.0
-    react: ">=18.0.0 || >=19.0.0-rc"
-  checksum: 10c0/c11ec6a1e8de2cbd029edf626632b070acee6418127ff0ab6b246863da54836fb71e5b1765e314630cd30ae005cbb55ecd48cbd4dc4b2868aa4c5f3e200fb634
+    react: ">=18.0.0"
+  checksum: 10c0/eea8b6934b9c6b79fc14c0217e83c51f7075849f5423f01326040937f8cfa5975e637b4e22ece20942b30d87d33af705de0a3ee34efdb07ee8fab25b0cef3552
   languageName: node
   linkType: hard
 
