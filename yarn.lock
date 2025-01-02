@@ -1336,16 +1336,16 @@ __metadata:
   linkType: hard
 
 "@crossmint/client-sdk-base@npm:^1.0.1-alpha.6":
-  version: 1.3.2
-  resolution: "@crossmint/client-sdk-base@npm:1.3.2"
+  version: 1.4.4
+  resolution: "@crossmint/client-sdk-base@npm:1.4.4"
   dependencies:
-    "@crossmint/client-sdk-window": "npm:0.1.0"
-    "@crossmint/common-sdk-base": "npm:0.3.0"
+    "@crossmint/client-sdk-window": "npm:0.2.2"
+    "@crossmint/common-sdk-base": "npm:0.3.1"
     "@datadog/browser-logs": "npm:4.42.2"
     exponential-backoff: "npm:3.1.1"
     uuid: "npm:9.0.1"
     zod: "npm:3.22.4"
-  checksum: 10c0/516cf76b306ba8cb3c7f372f27f36de39c2428ac92948aadeff36a457e8729b11bf81de75cae65eab221f7f472a5ae246ea649176ec15e7fc6eef1e2d1740f38
+  checksum: 10c0/c7c5a446a3510be30b6fa455e75def61c6b9b62c62a0f9a991f470c218b48473220a1b9364621123273b4b78dab7b2ade53b10ea774433a2e22077bc5caad080
   languageName: node
   linkType: hard
 
@@ -1367,13 +1367,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@crossmint/client-sdk-window@npm:0.1.0":
-  version: 0.1.0
-  resolution: "@crossmint/client-sdk-window@npm:0.1.0"
+"@crossmint/client-sdk-window@npm:0.2.2":
+  version: 0.2.2
+  resolution: "@crossmint/client-sdk-window@npm:0.2.2"
   dependencies:
     nanoid: "npm:5.0.4"
     zod: "npm:3.22.4"
-  checksum: 10c0/e1a0c3f652f6a1fa6e16a560efbe8c9feb36b2ff4a721cab43a7665deb4f2bd4cb1328a048d389b191d57421408716bfc27e65d5355c859ae7a717826f0e6c7a
+  checksum: 10c0/ccb950a58d20a0e3973bc52514b37afd8d3d285a9c400058a1b0136c47efa6ad0e018e0a1f94b3ba0b1124fbfda916fbb05d49224540519b7a1c30ac5b3449a1
   languageName: node
   linkType: hard
 
@@ -1387,13 +1387,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@crossmint/common-sdk-base@npm:0.3.0":
-  version: 0.3.0
-  resolution: "@crossmint/common-sdk-base@npm:0.3.0"
+"@crossmint/common-sdk-base@npm:0.3.1":
+  version: 0.3.1
+  resolution: "@crossmint/common-sdk-base@npm:0.3.1"
   dependencies:
     bs58: "npm:5.0.0"
     tweetnacl: "npm:1.0.3"
-  checksum: 10c0/c8fce89803f35617bb33d2d7672ba0e11a688cdad908f89d522533d70790b3aa428a8ea6ba3e6dc7a469c099288b3509591a0b0a9a7852c7e09da081c81c8183
+  checksum: 10c0/0ccc3e1304a6590eda2df5095f24d6c4ff9b8ff0d0056baa0133df9cbf3df1ca7132656abfda3a8d75fd39130e32952ba4bb31d2df48567604311284ce60294f
   languageName: node
   linkType: hard
 
