@@ -1,13 +1,10 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-  </head>
-  <body
-    ><p>
-      This page is not using because the middleware
-      (https://github.com/dev-protocol/clubsx-proxy) redirects the requests to
-      www.clubs.place 🍣🍶
-    </p>
-  </body>
-</html>
+---
+import Layout from '@layouts/LandingWithFooter.astro'
+import FeedPageContent from '@components/Feed/FeedPageContent.vue'
+---
+
+<Layout connectButton="show" theme="auto" pageTitle="Feed">
+  <div class="@container/main h-full">
+    <FeedPageContent />
+  </div>
+</Layout>
