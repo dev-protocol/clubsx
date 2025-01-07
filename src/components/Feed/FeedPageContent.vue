@@ -5,8 +5,6 @@ import iconMe from '@assets/footer/icon-me.png'
 </script>
 <template>
   <div class="flex flex-col h-full">
-    <div class="flex flex-col flex-grow items-center gap-4">
-      Feed Contents
-    </div>
+    <div class="flex flex-col flex-grow items-center gap-4">Feed Contents</div>
   </div>
 </template>
