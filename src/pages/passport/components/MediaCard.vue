@@ -53,13 +53,16 @@ onMounted(async () => {
   />
 
   <!-- Short video type clip -->
-
   <VideoFetch
-    v-if="found && (type === 'short-video' || type === 'short-video-link')"
+    v-if="found && type.includes('short-video')"
     :url="src"
     :posterUrl="posterSrc ?? ''"
     :class="class"
     :videoClass="`rounded-md w-full max-w-full object-cover aspect-square pointer-events-none`"
+    :isControlled="
+      type === 'short-video-controlled' ||
+      type === 'short-video-controlled-link'
+    "
   />
 
   <div v-if="!found || !props.src" class="w-full aspect-square">

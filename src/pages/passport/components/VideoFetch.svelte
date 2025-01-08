@@ -6,7 +6,9 @@
   export let url
   export let posterUrl
   export let videoClass
+  export let isControlled = false
 
+  let isPaused = true
   let videoElement
   let mediaSource
   let sourceBuffers = {}
@@ -22,6 +24,7 @@
   onMount(() => {
     if (!url) return
 
+    isPaused = true
     mediaSource = new MediaSource()
     videoElement.src = URL.createObjectURL(mediaSource)
     mediaSource.addEventListener('sourceopen', onSourceOpen)
@@ -76,7 +79,11 @@
 
       // Start MP4Box file processing
       mp4boxfile.start()
-      videoElement.value?.play().catch((e) => console.error('Play error:', e))
+
+      if (!isControlled) {
+        // If controlled, then it will play when clicked.
+        togglePlay()
+      }
     }
 
     // Fired when a media segment is ready
@@ -158,7 +165,9 @@
       mp4boxfile.flush()
       maybeEndOfStream()
       // Start playback after all data is processed
-      videoElement.play().catch((e) => console.error('Play error:', e))
+      if (!isControlled) {
+        togglePlay()
+      }
       return
     }
 
@@ -208,16 +217,96 @@
       }
     }
   }
+
+  function togglePlay() {
+    if (!videoElement) {
+      return
+    }
+
+    if (videoElement?.paused) {
+      videoElement
+        ?.play()
+        .then(() => {
+          isPaused = false
+        })
+        .catch((e) => console.error('Play error:', e))
+    } else {
+      videoElement?.pause()
+      isPaused = true
+    }
+  }
 </script>
 
-<video
-  bind:this={videoElement}
-  controlsList="nodownload"
-  loop
-  autoplay
-  muted
-  poster={posterUrl}
-  class={videoClass}
->
-  <track kind="captions" />
-</video>
+<!-- svelte-ignore a11y_no_static_element_interactions -->
+<div class="relative m-0 h-full w-full cursor-pointer p-0">
+  <video
+    bind:this={videoElement}
+    controlsList="nodownload"
+    autoplay={!isControlled}
+    muted
+    loop
+    poster={posterUrl}
+    class={videoClass}
+  >
+    <track kind="captions" />
+  </video>
+  <!-- svelte-ignore a11y_consider_explicit_label -->
+  <!-- svelte-ignore a11y_click_events_have_key_events -->
+  {#if isControlled}
+    <button
+      type="button"
+      class="absolute inset-0 m-auto flex size-1/2 items-center justify-center text-white opacity-60"
+      on:click|preventDefault={togglePlay}
+    >
+      {#if isPaused}
+        <svg
+          class="h-full w-full"
+          viewBox="0 0 49 56"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M44.5 27.134C45.1667 27.5189 45.1667 28.4811 44.5 28.866L5.5 51.3827C4.83333 51.7676 4 51.2865 4 50.5167L4 5.48334C4 4.71354 4.83333 4.23241 5.5 4.61731L44.5 27.134Z"
+            fill="white"
+          />
+          <path
+            d="M6.5 53.1147L45.5 30.5981C47.5 29.4434 47.5 26.5566 45.5 25.4019L6.5 2.88526C4.5 1.73056 2 3.17393 2 5.48334L2 50.5167C2 52.8261 4.49999 54.2694 6.5 53.1147Z"
+            stroke="black"
+            stroke-opacity="0.1"
+            stroke-width="4"
+          />
+        </svg>
+      {:else}
+        <svg
+          class="h-full w-full"
+          viewBox="0 0 56 56"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect x="17" y="15" width="6" height="25" rx="1" fill="white" />
+          <rect
+            x="15"
+            y="13"
+            width="10"
+            height="29"
+            rx="3"
+            stroke="black"
+            stroke-opacity="0.1"
+            stroke-width="4"
+          />
+          <rect x="33" y="15" width="6" height="25" rx="1" fill="white" />
+          <rect
+            x="31"
+            y="13"
+            width="10"
+            height="29"
+            rx="3"
+            stroke="black"
+            stroke-opacity="0.1"
+            stroke-width="4"
+          />
+        </svg>
+      {/if}
+    </button>
+  {/if}
+</div>
