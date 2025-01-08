@@ -173,8 +173,10 @@ function downloadChunk() {
   if (nextRangeStart >= totalFileSize) {
     mp4boxfile.flush()
     maybeEndOfStream()
-    // Start playback after all data is processed
-    videoElement.value?.play().catch((e) => console.error('Play error:', e))
+    if (!props.isControlled) {
+      // If controlled, then it will play when clicked.
+      togglePlay()
+    }
     return
   }
 
@@ -224,6 +226,10 @@ function maybeEndOfStream() {
 }
 
 function togglePlay() {
+  if (!videoElement.value) {
+    return
+  }
+
   if (videoElement.value?.paused) {
     videoElement.value
       ?.play()

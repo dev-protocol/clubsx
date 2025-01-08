@@ -165,7 +165,9 @@
       mp4boxfile.flush()
       maybeEndOfStream()
       // Start playback after all data is processed
-      videoElement.play().catch((e) => console.error('Play error:', e))
+      if (!isControlled) {
+        togglePlay()
+      }
       return
     }
 
@@ -217,15 +219,19 @@
   }
 
   function togglePlay() {
-    if (videoElement.value?.paused) {
-      videoElement.value
+    if (!videoElement) {
+      return
+    }
+
+    if (videoElement?.paused) {
+      videoElement
         ?.play()
         .then(() => {
           isPaused = false
         })
         .catch((e) => console.error('Play error:', e))
     } else {
-      videoElement.value?.pause()
+      videoElement?.pause()
       isPaused = true
     }
   }
