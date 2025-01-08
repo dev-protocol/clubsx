@@ -5,15 +5,17 @@ import asset01 from '@assets/feed/asset01.png'
 import Feed from '@components/Feed/Feed.vue'
 import type { PassportItemAssetType } from '@devprotocol/clubs-plugin-passports/types'
 
-const feeds = <{
-  avatarSrc: string,
-  badgeSrc: string,
-  assetSrc: string,
-  tag: PassportItemAssetType,
-  name: string,
-  badgeName: string,
-  description?: string
-}[]>[
+const feeds = <
+  {
+    avatarSrc: string
+    badgeSrc: string
+    assetSrc: string
+    tag: PassportItemAssetType
+    name: string
+    badgeName: string
+    description?: string
+  }[]
+>[
   {
     avatarSrc: avatar01.src,
     badgeSrc: image01.src,
@@ -21,7 +23,7 @@ const feeds = <{
     tag: 'video',
     name: 'Longname_Longname',
     badgeName: 'GiruGuru',
-    description: 'Wishing for the release of a new season…🙏⭐✨'
+    description: 'Wishing for the release of a new season…🙏⭐✨',
   },
   {
     avatarSrc: avatar01.src,
@@ -46,7 +48,7 @@ const feeds = <{
     tag: 'css',
     name: 'Longname_Longname',
     badgeName: 'GiruGuru',
-    description: 'Getting Kawaii energy from this clip🤤🤤🤤'
+    description: 'Getting Kawaii energy from this clip🤤🤤🤤',
   },
   {
     avatarSrc: avatar01.src,
@@ -55,7 +57,7 @@ const feeds = <{
     tag: 'bgm',
     name: 'Longname_Longname',
     badgeName: 'Bravo!',
-    description: 'Oh no, Azami-chan is scared 😂'
+    description: 'Oh no, Azami-chan is scared 😂',
   },
   {
     avatarSrc: avatar01.src,
@@ -72,7 +74,7 @@ const feeds = <{
     tag: '',
     name: 'Longname_Longname',
     badgeName: 'GiruGuru',
-    description: 'Wishing for the release of a new season…🙏⭐✨'
+    description: 'Wishing for the release of a new season…🙏⭐✨',
   },
   {
     avatarSrc: avatar01.src,
@@ -81,7 +83,7 @@ const feeds = <{
     tag: '',
     name: 'Longname_Longname',
     badgeName: 'GiruGuru',
-    description: 'Wishing for the release of a new season…🙏⭐✨'
+    description: 'Wishing for the release of a new season…🙏⭐✨',
   },
   {
     avatarSrc: avatar01.src,
@@ -90,10 +92,9 @@ const feeds = <{
     tag: '',
     name: 'Longname_Longname',
     badgeName: 'GiruGuru',
-    description: 'Wishing for the release of a new season…🙏⭐✨'
+    description: 'Wishing for the release of a new season…🙏⭐✨',
   },
 ]
-
 </script>
 <template>
   <div class="flex flex-col px-2 h-full">

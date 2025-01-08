@@ -2,12 +2,12 @@
 import type { PassportItemAssetType } from '@devprotocol/clubs-plugin-passports/types'
 
 const props = defineProps<{
-  avatarSrc: string,
-  badgeSrc: string,
-  assetSrc: string,
-  tag: PassportItemAssetType,
-  name: string,
-  badgeName: string,
+  avatarSrc: string
+  badgeSrc: string
+  assetSrc: string
+  tag: PassportItemAssetType
+  name: string
+  badgeName: string
   description?: string
 }>()
 
@@ -25,26 +25,21 @@ const VIDEO: PassportItemAssetType[] = [
   'short-video',
   'short-video-link',
 ]
-
 </script>
 
 <template>
   <div
     class="flex gap-3 p-2 rounded-xl"
     :class="{
-					'bg-indigo-600': CLIP.includes(tag),
-					'bg-fuchsia-500': SKIN.includes(tag),
-					'bg-orange-500': BGM.includes(tag),
-					'bg-yellow-500': VIDEO.includes(tag),
-				}"
+      'bg-indigo-600': CLIP.includes(tag),
+      'bg-fuchsia-500': SKIN.includes(tag),
+      'bg-orange-500': BGM.includes(tag),
+      'bg-yellow-500': VIDEO.includes(tag),
+    }"
   >
     <div class="flex flex-col flex-grow">
       <div class="flex items-center gap-3">
-        <img
-          class="rounded-full w-14 h-14"
-          :src="avatarSrc"
-          alt="avatar"
-        />
+        <img class="rounded-full w-14 h-14" :src="avatarSrc" alt="avatar" />
         <div class="flex flex-col flex-grow gap-0">
           <div class="text-xs font-bold">
             {{ name }}
@@ -63,7 +58,9 @@ const VIDEO: PassportItemAssetType[] = [
           </div>
         </div>
       </div>
-      <div v-if="description" class="w-full text-2xl font-bold">{{ description }}</div>
+      <div v-if="description" class="w-full text-2xl font-bold">
+        {{ description }}
+      </div>
     </div>
     <div class="flex items-end max-w-16 min-w-16">
       <img
@@ -76,6 +73,4 @@ const VIDEO: PassportItemAssetType[] = [
   </div>
 </template>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

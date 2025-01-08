@@ -47,7 +47,10 @@ const twitterHandle = 'poweredbyClubs'
     <meta name="twitter:image" content={`${ogURL}`} />
   </head>
 
-  <body class="flex flex-col bg-background font-body text-surface-ink" style="height: 100dvh">
+  <body
+    class="flex flex-col bg-background font-body text-surface-ink"
+    style="height: 100dvh"
+  >
     <slot name="before-header" />
     <Header connectButton={connectButton} pageTitle={pageTitle} />
 
