@@ -16,7 +16,9 @@ import asset01 from '@assets/feed/asset01.png'
               alt="avatar"
             />
             <div class="flex flex-col flex-grow gap-0">
-              <div class="text-xs font-bold">long-name long-name long-name long-name long-name long-name</div>
+              <div class="text-xs font-bold">
+                long-name long-name long-name long-name long-name long-name
+              </div>
               <div
                 class="flex items-center gap-2 p-1 rounded-sm bg-white"
                 style="width: fit-content"
