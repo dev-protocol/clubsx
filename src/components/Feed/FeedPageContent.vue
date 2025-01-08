@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import iconHome from '@assets/footer/icon-home.png'
-import iconClubs from '@assets/footer/icon-clubs.png'
-import iconMe from '@assets/footer/icon-me.png'
+import avatar01 from '@assets/feed/avatar01.png'
+import image01 from '@assets/feed/image01.png'
+import asset01 from '@assets/feed/asset01.png'
 </script>
 <template>
   <div class="flex flex-col px-2 h-full">
@@ -12,11 +12,11 @@ import iconMe from '@assets/footer/icon-me.png'
           <div class="flex items-center gap-3">
             <img
               class="rounded-full w-14 h-14"
-              src="https://mdbootstrap.com/img/Photos/Avatars/img%20(10).jpg"
+              :src="avatar01.src"
               alt="avatar"
             />
             <div class="flex flex-col flex-grow gap-0">
-              <div class="text-xs font-bold">name</div>
+              <div class="text-xs font-bold">long-name long-name long-name long-name long-name long-name</div>
               <div
                 class="flex items-center gap-2 p-1 rounded-sm bg-white"
                 style="width: fit-content"
@@ -24,8 +24,8 @@ import iconMe from '@assets/footer/icon-me.png'
                 <img
                   class="w-7 rounded-sm"
                   style="aspect-ratio: 16 / 9"
-                  src="https://mdbootstrap.com/img/Photos/Avatars/img%20(10).jpg"
-                  alt="avatar"
+                  :src="image01.src"
+                  alt="image"
                 />
                 <p class="text-xs font-bold">Animal</p>
               </div>
@@ -33,11 +33,12 @@ import iconMe from '@assets/footer/icon-me.png'
           </div>
           <div class="w-full text-2xl font-bold">description</div>
         </div>
-        <div class="flex items-end">
+        <div class="flex items-end max-w-16">
           <img
-            class="w-16 h-16 rounded"
-            src="https://mdbootstrap.com/img/Photos/Avatars/img%20(10).jpg"
-            alt="avatar"
+            class="w-full rounded"
+            style="aspect-ratio: 1 / 1"
+            :src="asset01.src"
+            alt="asset"
           />
         </div>
       </div>
