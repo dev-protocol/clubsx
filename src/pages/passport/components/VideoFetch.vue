@@ -1,24 +1,30 @@
 <script setup>
-import { onMounted, ref } from 'vue'
 import MP4Box from 'mp4box'
+import { onMounted, ref, useTemplateRef } from 'vue'
 
 const props = defineProps({
+  isControlled: {
+    type: Boolean,
+    default: false,
+    required: true,
+  },
   url: {
     type: String,
     required: true,
   },
   posterUrl: {
-    type: String,
     default: '',
+    type: String,
   },
   videoClass: {
-    type: String,
     default: '',
+    type: String,
   },
 })
 
 // Refs and variables
-const videoElement = ref(null)
+let isPaused = ref(true)
+const videoElement = useTemplateRef(`videoElement`)
 let mediaSource = null
 let sourceBuffers = {}
 let mp4boxfile = null
@@ -33,6 +39,7 @@ let isDownloading = false
 onMounted(() => {
   if (!props.url) return
 
+  isPaused.value = true
   mediaSource = new MediaSource()
   videoElement.value.src = URL.createObjectURL(mediaSource)
   mediaSource.addEventListener('sourceopen', onSourceOpen)
@@ -87,7 +94,11 @@ function setupMp4Box() {
 
     // Start MP4Box file processing
     mp4boxfile.start()
-    videoElement.value?.play().catch((e) => console.error('Play error:', e))
+
+    if (!props.isControlled) {
+      // If controlled, then it will play when clicked.
+      togglePlay()
+    }
   }
 
   // Fired when a media segment is ready
@@ -211,18 +222,87 @@ function maybeEndOfStream() {
     }
   }
 }
+
+function togglePlay() {
+  if (videoElement.value?.paused) {
+    videoElement.value
+      ?.play()
+      .then(() => {
+        isPaused.value = false
+      })
+      .catch((e) => console.error('Play error:', e))
+  } else {
+    videoElement.value?.pause()
+    isPaused.value = true
+  }
+}
 </script>
 
 <template>
-  <video
-    ref="videoElement"
-    controlsList="nodownload"
-    loop
-    autoplay
-    muted
-    :poster="posterUrl"
-    :class="videoClass"
-  >
-    <track kind="captions" />
-  </video>
+  <div class="relative m-0 h-full w-full cursor-pointer p-0">
+    <video
+      ref="videoElement"
+      controlsList="nodownload"
+      :autoplay="!isControlled"
+      muted
+      loop
+      :poster="posterUrl"
+      :class="videoClass"
+    >
+      <track kind="captions" />
+    </video>
+    <div
+      v-if="isControlled"
+      class="absolute inset-0 m-auto flex size-1/2 items-center justify-center text-white opacity-60"
+      @click.stop.prevent="togglePlay"
+    >
+      <svg
+        v-if="isPaused"
+        className="w-full h-full"
+        viewBox="0 0 49 56"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M44.5 27.134C45.1667 27.5189 45.1667 28.4811 44.5 28.866L5.5 51.3827C4.83333 51.7676 4 51.2865 4 50.5167L4 5.48334C4 4.71354 4.83333 4.23241 5.5 4.61731L44.5 27.134Z"
+          fill="white"
+        />
+        <path
+          d="M6.5 53.1147L45.5 30.5981C47.5 29.4434 47.5 26.5566 45.5 25.4019L6.5 2.88526C4.5 1.73056 2 3.17393 2 5.48334L2 50.5167C2 52.8261 4.49999 54.2694 6.5 53.1147Z"
+          stroke="black"
+          stroke-opacity="0.1"
+          stroke-width="4"
+        />
+      </svg>
+      <svg
+        v-else
+        viewBox="0 0 56 56"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <rect x="17" y="15" width="6" height="25" rx="1" fill="white" />
+        <rect
+          x="15"
+          y="13"
+          width="10"
+          height="29"
+          rx="3"
+          stroke="black"
+          stroke-opacity="0.1"
+          stroke-width="4"
+        />
+        <rect x="33" y="15" width="6" height="25" rx="1" fill="white" />
+        <rect
+          x="31"
+          y="13"
+          width="10"
+          height="29"
+          rx="3"
+          stroke="black"
+          stroke-opacity="0.1"
+          stroke-width="4"
+        />
+      </svg>
+    </div>
+  </div>
 </template>

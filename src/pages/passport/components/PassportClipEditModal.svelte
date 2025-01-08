@@ -74,7 +74,7 @@
   <!-- on:introstart and on:outroend are required to transition 1 at a time between modals -->
   <div
     role="dialog"
-    class="fixed pointer-events-none fixed top-0 bottom-0 left-0 right-0 overflow-y-auto flex justify-center items-end lg:items-center lg:py-6 backdrop-blur-md bg-black/30 z-50"
+    class="fixed pointer-events-none top-0 bottom-0 left-0 right-0 overflow-y-auto flex justify-center items-end lg:items-center lg:py-6 backdrop-blur-md bg-black/30 z-50"
     transition:fly={{ y: 500 }}
     on:introstart
     on:outroend
@@ -122,6 +122,7 @@
             url={item.itemAssetValue}
             posterUrl={item.itemAssetValue}
             videoClass={`max-w-44 max-h-44 rounded-md w-full object-cover aspect-square`}
+            isControlled={item.itemAssetType.includes('short-video')}
           />
         {/if}
 

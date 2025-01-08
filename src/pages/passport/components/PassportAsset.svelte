@@ -170,6 +170,7 @@
           url={props?.item?.itemAssetValue}
           posterUrl={assetImage?.src}
           videoClass={`rounded-md w-full max-w-full pointer-events-none object-cover aspect-square`}
+          isControlled={props?.item.itemAssetType.includes('short-video')}
         />
       {:else}
         <Skeleton />
