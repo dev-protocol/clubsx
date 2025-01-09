@@ -9871,7 +9871,7 @@ __metadata:
     eslint-plugin-n: "npm:17.15.1"
     eslint-plugin-prettier: "npm:5.2.1"
     eslint-plugin-promise: "npm:7.2.1"
-    ethers: "npm:6.13.4"
+    ethers: "npm:6.13.5"
     fast-average-color: "npm:^9.4.0"
     firebase: "npm:^11.0.0"
     firebase-admin: "npm:^13.0.0"
@@ -12515,9 +12515,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@npm:6.13.4":
-  version: 6.13.4
-  resolution: "ethers@npm:6.13.4"
+"ethers@npm:6.13.5":
+  version: 6.13.5
+  resolution: "ethers@npm:6.13.5"
   dependencies:
     "@adraffy/ens-normalize": "npm:1.10.1"
     "@noble/curves": "npm:1.2.0"
@@ -12526,7 +12526,7 @@ __metadata:
     aes-js: "npm:4.0.0-beta.5"
     tslib: "npm:2.7.0"
     ws: "npm:8.17.1"
-  checksum: 10c0/efcf9f39f841e38af68ec23cdbd745432c239c256aac4929842d1af04e55d7be0ff65e462f1cf3e93586f43f7bdcc0098fd56f2f7234f36d73e466521a5766ce
+  checksum: 10c0/64bc7b8907de199392b8a88c15c9a085892919cff7efa2e5326abc7fe5c426001726c51d91e10c74e5fc5e2547188297ce4127f6e52ea42a97ade0b2ae474677
   languageName: node
   linkType: hard
 
