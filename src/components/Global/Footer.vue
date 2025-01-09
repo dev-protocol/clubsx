@@ -11,11 +11,11 @@ import iconMe from '@assets/footer/icon-me.png'
       <img class="w-6" :src="iconHome.src" alt="HOME" />
       <p class="text-xs">Home</p>
     </a>
-    <a href="/" class="flex flex-col items-center gap-0">
+    <a href="/clubs" class="flex flex-col items-center gap-0">
       <img class="w-6" :src="iconClubs.src" alt="Clubs" />
       <p class="text-xs">Clubs</p>
     </a>
-    <a href="/" class="flex flex-col items-center gap-0">
+    <a href="/passport" class="flex flex-col items-center gap-0">
       <img class="w-6" :src="iconMe.src" alt="Me" />
       <p class="text-xs">Me</p>
     </a>
