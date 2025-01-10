@@ -9897,7 +9897,7 @@ __metadata:
     react-dom: "npm:18.3.1"
     redis: "npm:4.7.0"
     rxjs: "npm:7.8.1"
-    sass: "npm:1.82.0"
+    sass: "npm:1.83.1"
     svelte: "npm:4.2.19"
     svelte-awesome-color-picker: "npm:^3.1.4"
     svelte-check: "npm:^4.0.0"
