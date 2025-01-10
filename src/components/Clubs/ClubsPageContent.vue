@@ -22,8 +22,8 @@ import movie from '@assets/clubs/box.mp4'
       </a>
     </div>
     <div
-      class="flex flex-col justify-center items-center gap-1 w-full border-dotted border-dp-white-400 border-4 rounded-xl"
-      style="aspect-ratio: 1/1"
+      class="flex flex-col justify-center items-center gap-1 mx-auto border-dotted border-dp-white-400 border-4 rounded-xl"
+      style="aspect-ratio: 1/1; width: 80vw"
     >
       <p class="text-xs font-bold">More Upcoming Clubs Await.</p>
       <video
@@ -32,6 +32,8 @@ import movie from '@assets/clubs/box.mp4'
         src="/assets/box.mp4"
         autoplay
         loop
+        muted
+        playsinline
       ></video>
     </div>
   </div>
