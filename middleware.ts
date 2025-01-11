@@ -14,9 +14,8 @@ const redirects = [
   ...hosts.map((host) => ({
     host,
     matchers: [
-      '/',
       new RegExp(
-        '^/(starter|ticketing|plugins|dev-tokens|blog|post|pricing|clubs)(|/.*)$',
+        '^/(starter|ticketing|plugins|dev-tokens|blog|post|pricing)(|/.*)$',
       ),
     ],
     destination: 'https://www.clubs.place',

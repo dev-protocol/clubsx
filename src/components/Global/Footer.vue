@@ -5,7 +5,7 @@ import iconMe from '@assets/footer/icon-me.png'
 </script>
 <template>
   <div
-    class="flex justify-between px-16 py-2 text-dp-blue-grey-200 border-t border-black border-opacity-10"
+    class="flex justify-between px-16 py-2 text-dp-blue-grey-200 border-t border-black border-opacity-10 bg-white"
   >
     <a href="/" class="flex flex-col items-center gap-0">
       <img class="w-6" :src="iconHome.src" alt="HOME" />
@@ -15,7 +15,7 @@ import iconMe from '@assets/footer/icon-me.png'
       <img class="w-6" :src="iconClubs.src" alt="Clubs" />
       <p class="text-xs">Clubs</p>
     </a>
-    <a href="/passport" class="flex flex-col items-center gap-0">
+    <a href="/signin" class="flex flex-col items-center gap-0">
       <img class="w-6" :src="iconMe.src" alt="Me" />
       <p class="text-xs">Me</p>
     </a>
