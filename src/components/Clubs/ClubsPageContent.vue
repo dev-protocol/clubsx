@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import preview01 from '@assets/clubs/preview01.png'
 import arrowRight from '@assets/clubs/arrow-right.svg'
-import movie from '@assets/clubs/box.mp4'
 </script>
 
 <template>
