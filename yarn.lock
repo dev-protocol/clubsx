@@ -9895,7 +9895,7 @@ __metadata:
     svelte-awesome-color-picker: "npm:^3.1.4"
     svelte-check: "npm:^4.0.0"
     svelte-modals: "npm:^1.3.0"
-    swiper: "npm:11.2.0"
+    swiper: "npm:11.2.1"
     swr: "npm:^2.2.5"
     tailwindcss: "npm:^3.3.3"
     textfit: "npm:^2.4.0"
@@ -22556,10 +22556,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swiper@npm:11.2.0":
-  version: 11.2.0
-  resolution: "swiper@npm:11.2.0"
-  checksum: 10c0/88092316a95026875d84f85be76d9fb3634015186401e9099995bf673cf9d10d35e227b073ed15de898eac391f12b98c22092f6c755f33b4f129e824a80a11ff
+"swiper@npm:11.2.1":
+  version: 11.2.1
+  resolution: "swiper@npm:11.2.1"
+  checksum: 10c0/7260ad4f145d10535dc11aa634ecc736cad42280ee8b12423dfe3568efd9d3c0c5e5dc3d82dde5ebfd98b42a53b7ea6e760ebd22c1bcbb96d43ad8e1520fb7d7
   languageName: node
   linkType: hard
 
