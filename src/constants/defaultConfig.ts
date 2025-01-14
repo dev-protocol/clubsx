@@ -1,4 +1,4 @@
-import type { ClubsConfiguration } from '@devprotocol/clubs-core'
+import { encode, type ClubsConfiguration } from '@devprotocol/clubs-core'
 import { rawContent as Body } from '@assets/homeConfig.body.md'
 
 export const defaultConfig: ClubsConfiguration = {
@@ -99,3 +99,5 @@ export const defaultConfig: ClubsConfiguration = {
     },
   ],
 }
+
+export const encodedDefaultConfig = encode(defaultConfig)

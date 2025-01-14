@@ -6,6 +6,7 @@ import {
 import { always } from 'ramda'
 import { createClient } from 'redis'
 import {
+  getPassportItemFromPayload,
   Index,
   sTokenPayload as sTokenPayloadSchema,
   type PassportItemDocument,
@@ -27,7 +28,9 @@ import { type as assetTypeSchema } from '../assets/schema'
 import { getProfile } from '../profile'
 import type { Profile } from '@pages/api/profile'
 import { getClubByProperty } from '../club/redis'
-import { decode } from '@devprotocol/clubs-core'
+import { bytes32Hex, decode } from '@devprotocol/clubs-core'
+import { defaultConfig, encodedDefaultConfig } from '@constants/defaultConfig'
+import { getBoringAvatar } from '../profile/utils'
 
 const { REDIS_URL, REDIS_USERNAME, REDIS_PASSWORD } = import.meta.env
 
@@ -70,34 +73,60 @@ export const getFeed = async () => {
     ([assets, client]) =>
       Promise.all(
         assets.map(async (asset) => {
-          const [user, club] = await Promise.all([
-            getProfile({ id: asset.owner }),
-            getClubByProperty(
-              asset.propertyAddress ||
-                '0xF5fb43b4674Cc8D07FB45e53Dc77B651e17dC407', // Use developers clubs default property address if absent in AssetDocument.
-              client,
-            ),
-          ])
+          const [userDocument, clubDocument, passportItemDocument] =
+            await Promise.all([
+              getProfile({ id: asset.owner })
+                .then((profile) => profile)
+                .catch(() => undefined),
+              getClubByProperty(
+                asset.propertyAddress ||
+                  '0xF5fb43b4674Cc8D07FB45e53Dc77B651e17dC407', // Use developers clubs default property address if absent in AssetDocument.
+                client,
+              )
+                .then((clubDocument) => clubDocument)
+                .catch(() => undefined),
+              getPassportItemFromPayload({ sTokenPayload: asset.payload || '' })
+                .then((passportItemDocument) => passportItemDocument)
+                .catch(() => undefined),
+            ])
 
-          const clubKey =
-            new URL(club?.clubsUrl || '').hostname.split('.').at(0) ||
-            'developers' // Use developers clubs default subdomain if absent in AssetDocument.
-          const clubDetails = decode((await client.get(clubKey)) || '')
+          const clubConfiguration = decode(
+            await client
+              .get(
+                // Get clubs key.
+                new URL(clubDocument?.clubsUrl || '').hostname
+                  .split('.')
+                  .at(0) || 'developers',
+              )
+              .then((club) => club || encodedDefaultConfig) // Use default config if absent.
+              .catch(() => encodedDefaultConfig), // Use default config if absent.
+          )
 
           return {
             ...asset,
             clubDetails: {
-              url: clubDetails?.url || 'https://developers.clubs.place',
-              name: clubDetails?.name || 'Developers',
+              url: clubConfiguration?.url || 'https://developers.clubs.place', // Use developers club if absent.
+              name: clubConfiguration?.name || 'Developers', // Use developers club if absent.
               avatar:
-                clubDetails?.options?.find(
+                clubConfiguration?.options?.find(
                   (option) => option.key === 'avatarImgSrc',
                 )?.value || 'https://i.imgur.com/lSpDjrr.jpg', // Use clubs default avatar if absent in AssetDocument.
             },
             ownerDetails: {
-              avatar: user.avatar,
               address: asset.owner,
-              username: user.username,
+              avatar:
+                userDocument?.avatar ||
+                (await getBoringAvatar('0x...')
+                  .then((res) => res)
+                  .catch(() => 'https://i.imgur.com/lSpDjrr.jpg')), // Use boring or clubs default avatar if absent.
+              username: userDocument?.username || '0x...',
+            },
+            passportDetails: {
+              ...passportItemDocument,
+              itemPreviewImgSrc:
+                clubConfiguration?.offerings?.find(
+                  (offering) => bytes32Hex(offering.payload) === asset.payload,
+                )?.imageSrc || 'https://i.imgur.com/lSpDjrr.jpg', // Use clubs default avatar if absent.
             },
           } as Pick<Profile, 'avatar' | 'username' | 'sns'> & AssetDocument
         }),
