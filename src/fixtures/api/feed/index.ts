@@ -162,7 +162,7 @@ export const getFeed = async () => {
                 asset.payload || passportItemDocument?.sTokenPayload,
               itemAssetType: passportItemDocument?.itemAssetType,
               itemAssetValue: passportItemDocument?.itemAssetValue,
-              itemLink: `/passport/${asset.owner}/${skinFoundFirst?.id || ''}/${itemToHash(skinSection || 'clips', clipFoundFirst?.sTokenId || '')}`,
+              itemLink: `/passport/${asset.owner}/${skinFoundFirst?.id || ''}/${itemToHash(skinSection || 'clips', clipFoundFirst?.sTokenId || '') || ''}`,
               itemDescription: clipFoundFirst?.description || '',
               itemFrameColorHex: clipFoundFirst?.frameColorHex || '',
               itemPreviewImgSrc:
