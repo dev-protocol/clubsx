@@ -8,6 +8,7 @@ import { createClient } from 'redis'
 import {
   getPassportItemFromPayload,
   Index,
+  sTokenPayload,
   sTokenPayload as sTokenPayloadSchema,
   type PassportItemDocument,
 } from '@devprotocol/clubs-plugin-passports'
@@ -138,7 +139,6 @@ export const getFeed = async () => {
           }
 
           return {
-            ...asset,
             clubDetails: {
               url: clubConfiguration?.url || 'https://developers.clubs.place', // Use developers club if absent.
               name: clubConfiguration?.name || 'Developers', // Use developers club if absent.
@@ -157,6 +157,9 @@ export const getFeed = async () => {
               username: userProfile?.username || '0x...',
             },
             passportDetails: {
+              id: asset.id || asset.nId?.toString(),
+              sTokenPayload:
+                asset.payload || passportItemDocument?.sTokenPayload,
               itemAssetType: passportItemDocument?.itemAssetType,
               itemAssetValue: passportItemDocument?.itemAssetValue,
               itemLink: `/passport/${asset.owner}/${skinFoundFirst?.id || ''}/${itemToHash(skinSection || 'clips', clipFoundFirst?.sTokenId || '')}`,
