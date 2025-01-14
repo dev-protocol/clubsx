@@ -5,7 +5,20 @@ import iconMe from '@assets/footer/icon-me.png'
 </script>
 <template>
   <div
-    class="flex justify-between px-16 py-2 text-dp-blue-grey-200 border-t border-black border-opacity-10 bg-white"
+    class="
+    md:absolute
+    md:bottom-8
+    md:drop-shadow
+    md:left-2/4
+    md:-translate-x-1/2
+    md:w-[75%]
+    md:border
+    md:rounded-3xl
+    flex
+    justify-between
+    px-16
+    py-2
+    text-dp-blue-grey-200 border-t  border-black border-opacity-10  bg-white"
   >
     <a href="/" class="flex flex-col items-center gap-0">
       <img class="w-6" :src="iconHome.src" alt="HOME" />

@@ -21,8 +21,16 @@ import arrowRight from '@assets/clubs/arrow-right.svg'
       </a>
     </div>
     <div
-      class="flex flex-col justify-center items-center gap-1 mx-auto border-dotted border-dp-white-400 border-4 rounded-xl"
-      style="aspect-ratio: 1/1; width: 80vw"
+      class="
+      flex
+      flex-col
+      justify-center
+      items-center
+      gap-1
+      mx-auto
+      w-[80%]
+      border-dotted border-dp-white-400 border-4 rounded-xl"
+      style="aspect-ratio: 1/1"
     >
       <p class="text-xs font-bold">More Upcoming Clubs Await.</p>
       <video
