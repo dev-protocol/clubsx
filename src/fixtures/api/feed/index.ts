@@ -70,32 +70,29 @@ export const getFeed = async () => {
     ([assets, client]) =>
       Promise.all(
         assets.map(async (asset) => {
-          // Use developers clubs default property address if absent in AssetDocument.
           const [user, club] = await Promise.all([
             getProfile({ id: asset.owner }),
             getClubByProperty(
               asset.propertyAddress ||
-                '0xF5fb43b4674Cc8D07FB45e53Dc77B651e17dC407',
+                '0xF5fb43b4674Cc8D07FB45e53Dc77B651e17dC407', // Use developers clubs default property address if absent in AssetDocument.
               client,
             ),
           ])
 
           const clubKey =
-            new URL(club?.clubsUrl || '').hostname
-              .replace('wwww.', '')
-              .split('.')
-              .at(0) || 'developers'
+            new URL(club?.clubsUrl || '').hostname.split('.').at(0) ||
+            'developers' // Use developers clubs default subdomain if absent in AssetDocument.
           const clubDetails = decode((await client.get(clubKey)) || '')
 
           return {
             ...asset,
             clubDetails: {
-              url: clubDetails?.url,
-              name: clubDetails?.name,
+              url: clubDetails?.url || 'https://developers.clubs.place',
+              name: clubDetails?.name || 'Developers',
               avatar:
                 clubDetails?.options?.find(
                   (option) => option.key === 'avatarImgSrc',
-                )?.value || 'https://i.imgur.com/lSpDjrr.jpg',
+                )?.value || 'https://i.imgur.com/lSpDjrr.jpg', // Use clubs default avatar if absent in AssetDocument.
             },
             ownerDetails: {
               avatar: user.avatar,
