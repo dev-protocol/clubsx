@@ -24,13 +24,14 @@ import {
 } from '@plugins/achievements/utils'
 import { Index as AssetIndex } from '@fixtures/api/assets/redis'
 import type { AssetDocument } from '../assets/schema'
-import { type as assetTypeSchema } from '../assets/schema'
+import { type as assetTypeSchema, owner } from '../assets/schema'
 import { getProfile } from '../profile'
-import type { Clip, Profile } from '@pages/api/profile'
+import type { Clip, Profile, Skin } from '@pages/api/profile'
 import { getClubByProperty } from '../club/redis'
 import { bytes32Hex, decode } from '@devprotocol/clubs-core'
 import { defaultConfig, encodedDefaultConfig } from '@constants/defaultConfig'
 import { getBoringAvatar } from '../profile/utils'
+import { itemToHash, type ClipTypes } from '@fixtures/router/passportItem'
 
 const { REDIS_URL, REDIS_USERNAME, REDIS_PASSWORD } = import.meta.env
 
@@ -86,7 +87,11 @@ export const getFeed = async () => {
                 .then((clubDocument) => clubDocument)
                 .catch(() => undefined),
               getPassportItemFromPayload({ sTokenPayload: asset.payload || '' })
-                .then((passportItemDocument) => passportItemDocument)
+                .then((passportItemDocument) =>
+                  passportItemDocument instanceof Error
+                    ? undefined
+                    : passportItemDocument,
+                )
                 .catch(() => undefined),
             ])
 
@@ -102,20 +107,31 @@ export const getFeed = async () => {
               .catch(() => encodedDefaultConfig), // Use default config if absent.
           )
 
+          let skinSection: ClipTypes | undefined
+          let skinFoundFirst: Skin | undefined
           let clipFoundFirst: Clip | undefined
           for (const skin of userProfile?.skins || []) {
-            const spotlightItem =
-              skin.spotlight?.find(
-                (clip) =>
-                  (clip.sTokenId === asset.id || asset.nId?.toString()) &&
-                  clip.payload === asset.payload,
-              ) ||
-              skin.clips?.find(
-                (clip) =>
-                  (clip.sTokenId === asset.id || asset.nId?.toString()) &&
-                  clip.payload === asset.payload,
-              )
+            const spotlightItem = skin.spotlight?.find(
+              (clip) =>
+                (clip.sTokenId === asset.id || asset.nId?.toString()) &&
+                clip.payload === asset.payload,
+            )
             if (spotlightItem) {
+              skinFoundFirst = skin
+              skinSection = 'spotlight'
+              clipFoundFirst = spotlightItem
+              break
+            }
+
+            const showcaseItme = skin.clips?.find(
+              (clip) =>
+                (clip.sTokenId === asset.id || asset.nId?.toString()) &&
+                clip.payload === asset.payload,
+            )
+
+            if (showcaseItme) {
+              skinFoundFirst = skin
+              skinSection = 'clips'
               clipFoundFirst = spotlightItem
               break
             }
@@ -141,15 +157,17 @@ export const getFeed = async () => {
               username: userProfile?.username || '0x...',
             },
             passportDetails: {
+              itemAssetType: passportItemDocument?.itemAssetType,
+              itemAssetValue: passportItemDocument?.itemAssetValue,
+              itemLink: `/passport/${asset.owner}/${skinFoundFirst?.id || ''}/${itemToHash(skinSection || 'clips', clipFoundFirst?.sTokenId || '')}`,
               itemDescription: clipFoundFirst?.description || '',
               itemFrameColorHex: clipFoundFirst?.frameColorHex || '',
-              ...passportItemDocument,
               itemPreviewImgSrc:
                 clubConfiguration?.offerings?.find(
                   (offering) => bytes32Hex(offering.payload) === asset.payload,
                 )?.imageSrc || 'https://i.imgur.com/lSpDjrr.jpg', // Use clubs default avatar if absent.
             },
-          } as Pick<Profile, 'avatar' | 'username' | 'sns'> & AssetDocument
+          }
         }),
       ),
   )
