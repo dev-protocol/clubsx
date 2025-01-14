@@ -26,6 +26,8 @@ import type { AssetDocument } from '../assets/schema'
 import { type as assetTypeSchema } from '../assets/schema'
 import { getProfile } from '../profile'
 import type { Profile } from '@pages/api/profile'
+import { getClubByProperty } from '../club/redis'
+import { decode } from '@devprotocol/clubs-core'
 
 const { REDIS_URL, REDIS_USERNAME, REDIS_PASSWORD } = import.meta.env
 
@@ -49,10 +51,6 @@ export const getFeed = async () => {
         AssetIndex.Asset,
         `@${assetTypeSchema['$.type'].AS}:{passportItem}`,
         {
-          SORTBY: {
-            BY: 'nBlock',
-            DIRECTION: 'DESC',
-          },
           LIMIT: {
             from: 0,
             size: 10,
@@ -67,18 +65,42 @@ export const getFeed = async () => {
       .catch((err) => new Error(err)),
   )
 
-  const purchasedAssetsWithUser = await whenNotError(
-    purchasedAssets,
-    (assets) =>
+  const purchasedAssetsWithUser = await whenNotErrorAll(
+    [purchasedAssets, redis],
+    ([assets, client]) =>
       Promise.all(
         assets.map(async (asset) => {
-          const user = await getProfile({ id: asset.owner })
+          // Use developers clubs default property address if absent in AssetDocument.
+          const [user, club] = await Promise.all([
+            getProfile({ id: asset.owner }),
+            getClubByProperty(
+              asset.propertyAddress ||
+                '0xF5fb43b4674Cc8D07FB45e53Dc77B651e17dC407',
+              client,
+            ),
+          ])
+
+          const clubKey =
+            new URL(club?.clubsUrl || '').hostname
+              .replace('wwww.', '')
+              .split('.')
+              .at(0) || 'developers'
+          const clubDetails = decode((await client.get(clubKey)) || '')
+
           return {
             ...asset,
+            clubDetails: {
+              url: clubDetails?.url,
+              name: clubDetails?.name,
+              avatar:
+                clubDetails?.options?.find(
+                  (option) => option.key === 'avatarImgSrc',
+                )?.value || 'https://i.imgur.com/lSpDjrr.jpg',
+            },
             ownerDetails: {
               avatar: user.avatar,
+              address: asset.owner,
               username: user.username,
-              sns: user.sns,
             },
           } as Pick<Profile, 'avatar' | 'username' | 'sns'> & AssetDocument
         }),
