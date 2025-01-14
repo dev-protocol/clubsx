@@ -1,4 +1,8 @@
-import { whenNotError, whenNotErrorAll } from '@devprotocol/util-ts'
+import {
+  whenDefined,
+  whenNotError,
+  whenNotErrorAll,
+} from '@devprotocol/util-ts'
 import { always } from 'ramda'
 import { createClient } from 'redis'
 import {
@@ -20,6 +24,8 @@ import {
 import { Index as AssetIndex } from '@fixtures/api/assets/redis'
 import type { AssetDocument } from '../assets/schema'
 import { type as assetTypeSchema } from '../assets/schema'
+import { getProfile } from '../profile'
+import type { Profile } from '@pages/api/profile'
 
 const { REDIS_URL, REDIS_USERNAME, REDIS_PASSWORD } = import.meta.env
 
@@ -56,15 +62,33 @@ export const getFeed = async () => {
       .then((res) =>
         res.total && res.documents.length
           ? res.documents.map((doc) => doc.value as AssetDocument)
-          : undefined,
+          : new Error('No purchases found'),
       )
       .catch((err) => new Error(err)),
+  )
+
+  const purchasedAssetsWithUser = await whenNotError(
+    purchasedAssets,
+    (assets) =>
+      Promise.all(
+        assets.map(async (asset) => {
+          const user = await getProfile({ id: asset.owner })
+          return {
+            ...asset,
+            ownerDetails: {
+              avatar: user.avatar,
+              username: user.username,
+              sns: user.sns,
+            },
+          } as Pick<Profile, 'avatar' | 'username' | 'sns'> & AssetDocument
+        }),
+      ),
   )
 
   const result = await whenNotErrorAll([redis], ([client]) =>
     client
       .quit()
-      .then(always(purchasedAssets))
+      .then(always(purchasedAssetsWithUser))
       .catch((err) => new Error(err)),
   )
 
