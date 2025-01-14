@@ -26,7 +26,7 @@ import { Index as AssetIndex } from '@fixtures/api/assets/redis'
 import type { AssetDocument } from '../assets/schema'
 import { type as assetTypeSchema } from '../assets/schema'
 import { getProfile } from '../profile'
-import type { Profile } from '@pages/api/profile'
+import type { Clip, Profile } from '@pages/api/profile'
 import { getClubByProperty } from '../club/redis'
 import { bytes32Hex, decode } from '@devprotocol/clubs-core'
 import { defaultConfig, encodedDefaultConfig } from '@constants/defaultConfig'
@@ -73,10 +73,10 @@ export const getFeed = async () => {
     ([assets, client]) =>
       Promise.all(
         assets.map(async (asset) => {
-          const [userDocument, clubDocument, passportItemDocument] =
+          const [userProfile, clubDocument, passportItemDocument] =
             await Promise.all([
               getProfile({ id: asset.owner })
-                .then((profile) => profile)
+                .then((profile) => profile as Profile)
                 .catch(() => undefined),
               getClubByProperty(
                 asset.propertyAddress ||
@@ -102,6 +102,25 @@ export const getFeed = async () => {
               .catch(() => encodedDefaultConfig), // Use default config if absent.
           )
 
+          let clipFoundFirst: Clip | undefined
+          for (const skin of userProfile?.skins || []) {
+            const spotlightItem =
+              skin.spotlight?.find(
+                (clip) =>
+                  (clip.sTokenId === asset.id || asset.nId?.toString()) &&
+                  clip.payload === asset.payload,
+              ) ||
+              skin.clips?.find(
+                (clip) =>
+                  (clip.sTokenId === asset.id || asset.nId?.toString()) &&
+                  clip.payload === asset.payload,
+              )
+            if (spotlightItem) {
+              clipFoundFirst = spotlightItem
+              break
+            }
+          }
+
           return {
             ...asset,
             clubDetails: {
@@ -115,13 +134,15 @@ export const getFeed = async () => {
             ownerDetails: {
               address: asset.owner,
               avatar:
-                userDocument?.avatar ||
+                userProfile?.avatar ||
                 (await getBoringAvatar('0x...')
                   .then((res) => res)
                   .catch(() => 'https://i.imgur.com/lSpDjrr.jpg')), // Use boring or clubs default avatar if absent.
-              username: userDocument?.username || '0x...',
+              username: userProfile?.username || '0x...',
             },
             passportDetails: {
+              itemDescription: clipFoundFirst?.description || '',
+              itemFrameColorHex: clipFoundFirst?.frameColorHex || '',
               ...passportItemDocument,
               itemPreviewImgSrc:
                 clubConfiguration?.offerings?.find(
