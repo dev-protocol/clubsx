@@ -1,14 +1,12 @@
 ---
-import Layout from '@layouts/Landing.astro'
+import Layout from '@layouts/LandingWithFooter.astro'
 import { ConnectButton } from '@devprotocol/clubs-plugin-awesome-onboarding'
 import EmailConnectControl from '@components/EmailConnect/Control.svelte'
 import SignInRedirection from '@components/SignInForm/SignInRedirection.vue'
 ---
 
-<Layout>
-  <div
-    class="relative grid gap-16 content-between justify-center p-4 md:p-0 min-h-[calc(100svh-4rem)]"
-  >
+<Layout connectButton="hidden" theme="auto">
+  <div class="relative grid gap-16 content-between justify-center p-4 md:p-0">
     <span>
       <section class="my-16 grid gap-8 text-center md:my-32">
         <h1 class="text-2xl font-bold md:text-5xl">Sign in to Clubs</h1>

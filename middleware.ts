@@ -14,7 +14,6 @@ const redirects = [
   ...hosts.map((host) => ({
     host,
     matchers: [
-      '/',
       new RegExp(
         '^/(starter|ticketing|plugins|dev-tokens|blog|post|pricing)(|/.*)$',
       ),

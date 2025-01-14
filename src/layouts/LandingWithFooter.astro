@@ -48,13 +48,13 @@ const twitterHandle = 'poweredbyClubs'
   </head>
 
   <body
-    class="flex flex-col bg-background font-body text-surface-ink"
+    class="relative flex flex-col max-w-full md:max-w-screen-sm mx-auto bg-background font-body text-surface-ink"
     style="height: 100dvh"
   >
     <slot name="before-header" />
     <Header connectButton={connectButton} pageTitle={pageTitle} />
 
-    <main class="flex-grow overflow-y-scroll">
+    <main class="flex-grow overflow-y-auto">
       <slot />
     </main>
 
