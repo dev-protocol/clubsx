@@ -18,9 +18,6 @@ const imageRef = ref<HTMLImageElement | null>(null)
 
 onMounted(async () => {
   try {
-    const response = await fetch(props.src)
-    const blob = await response.blob()
-    const blobDataUrl = URL.createObjectURL(blob)
     if (
       (props.type === 'image' ||
         props.type === 'image-link' ||
@@ -28,6 +25,9 @@ onMounted(async () => {
         props.type === 'image-playable-link') &&
       imageRef.value
     ) {
+      const response = await fetch(props.src)
+      const blob = await response.blob()
+      const blobDataUrl = URL.createObjectURL(blob)
       imageRef.value.src = blobDataUrl ? blobDataUrl : (props.posterSrc ?? '')
     }
   } catch (error) {

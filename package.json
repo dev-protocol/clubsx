@@ -54,6 +54,7 @@
     "svelte-check": "^4.0.0",
     "type-fest": "4.32.0",
     "typescript": "5.5.4",
+    "video.js": "^8.21.0",
     "vitest": "^1.0.0",
     "vue-tsc": "^2.0.0"
   },
@@ -111,7 +112,6 @@
     "js-base64": "^3.7.7",
     "jsonwebtoken": "^9.0.2",
     "marked": "10.0.0",
-    "mp4box": "^0.5.3",
     "nanoid": "^5.0.5",
     "nanostores": "^0.11.0",
     "p-queue": "^8.0.0",
