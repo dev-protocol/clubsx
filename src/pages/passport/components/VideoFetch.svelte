@@ -1,17 +1,17 @@
 <script>
-  import { onMount } from 'svelte';
-  import videojs from 'video.js';
-  import 'video.js/dist/video-js.css';
+  import { onMount } from 'svelte'
+  import videojs from 'video.js'
+  import 'video.js/dist/video-js.css'
 
   // Props
-  export let url;
-  export let isControlled = false;
-  export let posterUrl = '';
-  export let videoClass = '';
-  export let controls = false;
+  export let url
+  export let isControlled = false
+  export let posterUrl = ''
+  export let videoClass = ''
+  export let controls = false
   // export let autoplay = true;
-  export let loop = true;
-  export let muted = true;
+  export let loop = true
+  export let muted = true
   export let options = {
     // width: 640,
     // height: 360,
@@ -23,35 +23,35 @@
     playsinline: true,
     spatialNavigation: {
       enabled: true,
-      horizontalSeek: true
+      horizontalSeek: true,
     },
     controlBar: {
       skipButtons: {
         backward: 10,
         forward: 5,
-        fullscreenToggle: false
-      }
+        fullscreenToggle: false,
+      },
     },
     html5: {
       hls: {
         enableLowInitialPlaylist: true,
         smoothQualityChange: true,
-        overrideNative: true
-      }
-    }
-  };
+        overrideNative: true,
+      },
+    },
+  }
 
   // State
-  let isPaused = true;
-  let videoEl; // This will reference <video> in the DOM
-  let player;  // video.js player instance
+  let isPaused = true
+  let videoEl // This will reference <video> in the DOM
+  let player // video.js player instance
 
   function togglePlay() {
-    if (!player) return;
+    if (!player) return
     if (player.paused()) {
-      player.play();
+      player.play()
     } else {
-      player.pause();
+      player.pause()
     }
   }
 
@@ -60,28 +60,28 @@
       ...options,
       sources: [{ src: url }],
       controls,
-      autoplay: !isControlled,  // If not controlled, autoplay
+      autoplay: !isControlled, // If not controlled, autoplay
       muted,
       poster: posterUrl,
-      loop
-    });
+      loop,
+    })
 
     // Update isPaused whenever the player fires 'play' or 'pause'
     player.on('play', () => {
-      isPaused = false;
-    });
+      isPaused = false
+    })
 
     player.on('pause', () => {
-      isPaused = true;
-    });
+      isPaused = true
+    })
 
     // Cleanup when component unmounts
     return () => {
       if (player) {
-        player.dispose();
+        player.dispose()
       }
-    };
-  });
+    }
+  })
 </script>
 
 <!-- TEMPLATE -->

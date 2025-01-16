@@ -23,7 +23,7 @@ const props = defineProps({
   },
   controls: {
     default: false,
-    type: Boolean
+    type: Boolean,
   },
   // autoplay: {
   //   default: true,
@@ -31,11 +31,11 @@ const props = defineProps({
   // },
   loop: {
     default: true,
-    type: Boolean
+    type: Boolean,
   },
   muted: {
     default: true,
-    type: Boolean
+    type: Boolean,
   },
   options: {
     type: Object,
@@ -49,16 +49,16 @@ const props = defineProps({
       playbackRates: [0.5, 1, 1.5, 2],
       playsinline: true,
       spatialNavigation: {
-      enabled: true,
-      horizontalSeek: true
+        enabled: true,
+        horizontalSeek: true,
       },
       controlBar: {
-            skipButtons: {
-            backward: 10,
-            forward: 5,
-            fullscreenToggle: false
-        }
-    },
+        skipButtons: {
+          backward: 10,
+          forward: 5,
+          fullscreenToggle: false,
+        },
+      },
       html5: {
         hls: {
           enableLowInitialPlaylist: true,
@@ -66,8 +66,8 @@ const props = defineProps({
           overrideNative: true,
         },
       },
-    })
-  }
+    }),
+  },
 })
 
 // State & Refs
@@ -114,9 +114,7 @@ onMounted(() => {
 <template>
   <div class="relative m-0 h-full w-full cursor-pointer p-0">
     <!-- Video.js player element -->
-    <video ref="videoEl" class="video-js"
-    :class=videoClass
-    ></video>
+    <video ref="videoEl" class="video-js" :class="videoClass"></video>
 
     <!-- Custom play/pause overlay (only if isControlled=true) -->
     <div
