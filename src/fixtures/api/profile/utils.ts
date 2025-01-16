@@ -11,7 +11,7 @@ const truncateEthAddress = (address: string) => {
 }
 
 const cachedSvgDataURL = new Map<string, string>()
-const getBoringAvatar = async (address: string) => {
+export const getBoringAvatar = async (address: string) => {
   const fromCache = cachedSvgDataURL.get(address)
   if (fromCache) {
     return fromCache
