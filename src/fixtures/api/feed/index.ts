@@ -55,12 +55,6 @@ export const getFeed = async () => {
       .search(
         AssetIndex.Asset,
         `@${assetTypeSchema['$.type'].AS}:{passportItem}`,
-        {
-          LIMIT: {
-            from: 0,
-            size: 10,
-          },
-        },
       )
       .then((res) =>
         res.total && res.documents.length

@@ -1,8 +1,8 @@
 import type { APIRoute } from 'astro'
 
 import { json } from '@fixtures/api/json'
-import { headers } from '@fixtures/api/headers'
 import { getFeed } from '@fixtures/api/feed'
+import { headers } from '@fixtures/api/headers'
 
 export const GET: APIRoute = async ({ params }) => {
   const result = await getFeed()
