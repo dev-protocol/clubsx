@@ -4,8 +4,9 @@ import FeedPageContent from '@components/Feed/FeedPageContent.vue'
 import { getFeed } from '../fixtures/api/feed'
 import type { FeedType } from '@components/Feed/FeedPageContent.vue'
 
-const feeds = Array.isArray(await getFeed()) ? (await getFeed()) as FeedType[] : []
-
+const feeds = Array.isArray(await getFeed())
+  ? ((await getFeed()) as FeedType[])
+  : []
 ---
 
 <Layout connectButton="hidden" theme="auto" pageTitle="Feed">

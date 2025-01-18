@@ -7,12 +7,12 @@ export type FeedType = {
     url: string
     name: string
     avatar: string
-  },
+  }
   ownerDetails: {
     address: string
     avatar: string
     username: string
-  },
+  }
   passportDetails: {
     id: string
     sTokenPayload: string
@@ -29,18 +29,17 @@ const props = defineProps<{
   feeds: FeedType[]
 }>()
 
-const mappedFeeds:
-  {
-    avatarSrc: string
-    badgeSrc: string
-    assetSrc: string
-    tag: PassportItemAssetType
-    name: string
-    address: string
-    badgeName: string
-    description?: string
-    assetLink: string
-  }[] = props.feeds.map((feed) => {
+const mappedFeeds: {
+  avatarSrc: string
+  badgeSrc: string
+  assetSrc: string
+  tag: PassportItemAssetType
+  name: string
+  address: string
+  badgeName: string
+  description?: string
+  assetLink: string
+}[] = props.feeds.map((feed) => {
   return {
     avatarSrc: feed.ownerDetails.avatar,
     badgeSrc: feed.clubDetails.avatar,
@@ -50,7 +49,7 @@ const mappedFeeds:
     address: feed.ownerDetails.address,
     badgeName: feed.clubDetails.name,
     assetLink: feed.passportDetails.itemLink,
-    description: feed.passportDetails.itemDescription
+    description: feed.passportDetails.itemDescription,
   }
 })
 </script>
