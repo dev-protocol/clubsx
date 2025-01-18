@@ -7,7 +7,9 @@ const props = defineProps<{
   assetSrc: string
   tag: PassportItemAssetType
   name: string
+  address: string
   badgeName: string
+  assetLink: string
   description?: string
 }>()
 
@@ -39,7 +41,9 @@ const VIDEO: PassportItemAssetType[] = [
   >
     <div class="flex flex-col flex-grow">
       <div class="flex items-center gap-3">
-        <img class="rounded-full w-14 h-14" :src="avatarSrc" alt="avatar" />
+        <a :href="`/passport/${address}`">
+          <img class="rounded-full w-14 h-14" :src="avatarSrc" alt="avatar" />
+        </a>
         <div class="flex flex-col flex-grow gap-0">
           <div class="text-xs font-bold">
             {{ name }}
@@ -63,12 +67,14 @@ const VIDEO: PassportItemAssetType[] = [
       </div>
     </div>
     <div class="flex items-end max-w-16 min-w-16">
-      <img
-        class="w-full rounded"
-        style="aspect-ratio: 1 / 1"
-        :src="assetSrc"
-        alt="asset"
-      />
+      <a :href="assetLink">
+        <img
+          class="w-full rounded"
+          style="aspect-ratio: 1 / 1"
+          :src="assetSrc"
+          alt="asset"
+        />
+      </a>
     </div>
   </div>
 </template>
