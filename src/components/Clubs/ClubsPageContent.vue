@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import preview01 from '@assets/clubs/preview01.png'
 import arrowRight from '@assets/clubs/arrow-right.svg'
 </script>
 
@@ -7,17 +6,17 @@ import arrowRight from '@assets/clubs/arrow-right.svg'
   <div class="flex flex-col gap-1 px-2 h-full">
     <div class="flex flex-col gap-4">
       <a
-        href="/"
+        href="https://prerelease.clubs.place/giruguru"
         class="flex items-center gap-3 p-2 bg-right bg-no-repeat"
         :style="`background-image: url(${arrowRight.src});`"
       >
         <img
           class="w-44 rounded"
           style="aspect-ratio: 1/1"
-          :src="preview01.src"
+          src="https://storage.clubs.place/iwjlLc_RQxaNyA7YSC7FE"
           alt="Mystic Horizon"
         />
-        <p class="text-xs font-bold">Mystic Horizon</p>
+        <p class="text-xs font-bold">ぎるぐる</p>
       </a>
     </div>
     <div
