@@ -9,9 +9,17 @@ import Preview from '@assets/preview-overview-chart.png'
 import PublishConfirm from '@components/PublishConfirm/PublishConfirm.svelte'
 
 const { site } = Astro.params
+const siteconfig = await _config(site)
+
+if (!siteconfig) {
+  return new Response(null, {
+    status: 404,
+    statusText: 'Not found',
+  })
+}
 
 const { getStaticPaths, getCurrentConfig } = adminFactory({
-  config: async () => await _config(site),
+  config: async () => siteconfig,
   plugins: [admin],
 })
 

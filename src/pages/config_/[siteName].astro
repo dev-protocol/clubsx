@@ -8,6 +8,14 @@ import { whenNotError } from '@devprotocol/util-ts'
 const { siteName } = Astro.params
 
 const config = await _config(siteName).catch((err: Error) => err)
+
+if (!config) {
+  return new Response(null, {
+    status: 404,
+    statusText: 'Not found',
+  })
+}
+
 const clubsxConfig = whenNotError(config, (conf) =>
   replaceUrlConfigWithLocal(decode(conf), new URL(Astro.request.url), siteName),
 )

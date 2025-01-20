@@ -26,11 +26,19 @@ import Clarity from '@components/Clarity/Clarity.astro'
 import Resources from '@components/Admin/Resources.astro'
 
 const { site, page } = Astro.params
+const siteconfig = await _config(site)
+
+if (!siteconfig) {
+  return new Response(null, {
+    status: 404,
+    statusText: 'Not found',
+  })
+}
 
 const options = {
   config: async () =>
     replaceUrlConfigWithLocal(
-      decode(await _config(site)),
+      decode(siteconfig),
       new URL(Astro.request.url),
       site,
     ),
