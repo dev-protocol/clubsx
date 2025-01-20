@@ -85,6 +85,14 @@ const description =
       )
     }
 
+    {
+      (requestURL.host.includes('localhost') ||
+        requestURL.host.includes('prerelease')) &&
+        requestURL.searchParams.has('css') && (
+          <link rel="stylesheet" href={requestURL.searchParams.get('css')} />
+        )
+    }
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta property="og:image" content={`${image}`} />

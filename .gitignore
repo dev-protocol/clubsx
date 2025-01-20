@@ -36,3 +36,6 @@ package-lock.json
 
 # Astro
 .astro
+
+# Skin Debugging
+.skins
