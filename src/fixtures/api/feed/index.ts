@@ -74,6 +74,8 @@ export const getFeed = async () => {
       .catch((err) => new Error(err)),
   )
 
+  console.log('Assets', purchasedAssets)
+
   const purchasedAssetsWithUser = await whenNotErrorAll(
     [purchasedAssets, redis],
     ([assets, client]) =>
