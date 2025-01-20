@@ -1,0 +1,23 @@
+/* Red Theme */
+
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
+
+:root {
+  --bg-pattern: url('https://storage.clubs.place/KiMlevaCoke_UiyF2tGz8');
+}
+
+._p ._p-body {
+  background: #f95353 0 / 1000px var(--bg-pattern);
+}
+
+._p ._p-description-content {
+  background: white;
+}
+
+._p ._p-description-content p {
+  font-family: 'DotGothic16', serif;
+}
+
+._p ._p-main {
+  margin-top: 12rem;
+}
