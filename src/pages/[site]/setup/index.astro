@@ -9,9 +9,17 @@ import Layout from '@layouts/Landing.astro'
 import PublishForm from '@components/PublishForm/PublishForm.tsx'
 
 const { site } = Astro.params
+const siteconfig = await _config(site)
+
+if (!siteconfig) {
+  return new Response(null, {
+    status: 404,
+    statusText: 'Not found',
+  })
+}
 
 const { getStaticPaths, getCurrentConfig } = adminFactory({
-  config: async () => await _config(site),
+  config: async () => siteconfig,
   plugins: [admin],
 })
 

@@ -2,7 +2,7 @@ import { createClient } from 'redis'
 
 export const config = async (
   site: string | number | undefined,
-): Promise<string> => {
+): Promise<string | null> => {
   const client = createClient({
     url: process.env.REDIS_URL,
     username: process.env.REDIS_USERNAME ?? '',
@@ -19,12 +19,12 @@ export const config = async (
   })
 
   if (!site) {
-    throw new Error('No site passed')
+    console.error('WARN:', new Error('No site passed'))
   }
 
-  const res = (await client.get(`${site}`)) as string
+  const res = await client.get(`${site}`)
   if (!res) {
-    throw new Error(`No entry found ${site}`)
+    console.error('WARN:', new Error(`No entry found ${site}`))
   }
   await client.quit()
   return res
