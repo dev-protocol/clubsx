@@ -20,7 +20,7 @@ import Banner from '@components/Global/Banner.astro'
 import { plugins } from '@constants/plugins'
 import { ConnectButton } from '@devprotocol/clubs-plugin-awesome-onboarding'
 import PreviewBanner from '@components/PreviewBanner/PreviewBanner.astro'
-import { replaceWithFwdHost } from '@fixtures/url'
+import { replaceUrlConfigWithLocal, replaceWithFwdHost } from '@fixtures/url'
 import type { InferGetStaticPropsType } from 'astro'
 import Clarity from '@components/Clarity/Clarity.astro'
 import Resources from '@components/Admin/Resources.astro'
@@ -28,7 +28,12 @@ import Resources from '@components/Admin/Resources.astro'
 const { site, page } = Astro.params
 
 const options = {
-  config: async () => await _config(site),
+  config: async () =>
+    replaceUrlConfigWithLocal(
+      decode(await _config(site)),
+      new URL(Astro.request.url),
+      site,
+    ),
   plugins: [admin, marketplace, ...plugins],
 } satisfies ClubsFunctionFactoryOptions
 

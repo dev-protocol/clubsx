@@ -1,3 +1,4 @@
+import type { ClubsConfiguration } from '@devprotocol/clubs-core'
 import { whenDefined } from '@devprotocol/util-ts'
 
 export const replaceWithFwdHost = (base: Request) => {
@@ -19,4 +20,28 @@ export const replaceWithFwdHost = (base: Request) => {
       url.host === host ? (hostParam ?? url.host) : (host ?? url.host),
     )
     .replace(regParam, '/')
+}
+
+const hosts = [
+  ...(process.env.HOSTS ?? 'clubs.place').split(','),
+  'localhost',
+].map((x) => x.trim())
+
+export const replaceUrlConfigWithLocal = (
+  config: ClubsConfiguration,
+  url: URL,
+  site?: string,
+): ClubsConfiguration => {
+  console.log('url', url)
+  const configUrl = new URL(config.url)
+  const newUrl =
+    configUrl.origin === url.origin
+      ? config.url
+      : ((reqHost) =>
+          reqHost
+            ? config.url.replace(configUrl.host, `${site}.${reqHost}`)
+            : `${url.origin}/${site}`)(
+          hosts.find((h) => url.host.startsWith(`${site}.${h}`)),
+        )
+  return { ...config, url: newUrl }
 }

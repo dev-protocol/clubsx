@@ -1,10 +1,17 @@
 ---
 import Layout from '@layouts/Landing.astro'
 import { config as _config } from '@fixtures/config'
+import { replaceUrlConfigWithLocal } from '@fixtures/url'
+import { decode, encode } from '@devprotocol/clubs-core'
+import { whenNotError } from '@devprotocol/util-ts'
 
 const { siteName } = Astro.params
 
 const config = await _config(siteName).catch((err: Error) => err)
+const clubsxConfig = whenNotError(config, (conf) =>
+  replaceUrlConfigWithLocal(decode(conf), new URL(Astro.request.url), siteName),
+)
+const clubsxConfigEncoded = whenNotError(clubsxConfig, encode)
 
 if (config instanceof Error) {
   console.error({ config })
@@ -17,14 +24,26 @@ if (config instanceof Error) {
       <input type="hidden" id="encodedConfig" value={config} />
     )
   }
+  {
+    !(clubsxConfigEncoded instanceof Error) && (
+      <input
+        type="hidden"
+        id="encodedClubsxConfig"
+        value={clubsxConfigEncoded}
+      />
+    )
+  }
 </Layout>
 
 <script>
   import { decode } from '@devprotocol/clubs-core'
 
-  const config = (document.getElementById('encodedConfig') as HTMLInputElement)
-    .value
-  const decodedConfig = decode(config)
+  const config = decode(
+    (document.getElementById('encodedConfig') as HTMLInputElement).value,
+  )
+  const clubsxConfig = decode(
+    (document.getElementById('encodedClubsxConfig') as HTMLInputElement).value,
+  )
 
-  console.log({ decodedConfig })
+  console.log({ config, clubsxConfig })
 </script>
