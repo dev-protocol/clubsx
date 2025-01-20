@@ -68,7 +68,7 @@
     "@astrojs/vue": "4.5.3",
     "@crossmint/client-sdk-base": "^1.0.1-alpha.6",
     "@crossmint/client-sdk-react-ui": "^1.0.1-alpha.6",
-    "@devprotocol/clubs-core": "3.23.0",
+    "@devprotocol/clubs-core": "3.23.1",
     "@devprotocol/clubs-plugin-akiba": "0.1.8",
     "@devprotocol/clubs-plugin-awesome-onboarding": "0.5.1",
     "@devprotocol/clubs-plugin-passports": "0.1.0-beta.45",
