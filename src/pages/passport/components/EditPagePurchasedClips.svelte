@@ -64,12 +64,27 @@
     profile = {
       ...profile, // Retain other modified fields.
       skins: [
-        ...(profile?.skins?.map((skin, index) =>
-          index === skinIndex
-            ? {
-                ...skin,
+        ...(profile?.skins?.length
+          ? profile.skins.map((skin, index) =>
+              index === skinIndex
+                ? {
+                    ...skin,
+                    spotlight: [
+                      ...(skin.spotlight ?? []),
+                      {
+                        payload: item.payload!,
+                        description: '',
+                        frameColorHex: '',
+                        sTokenId: item.assetId,
+                      },
+                    ],
+                  }
+                : skin,
+            )
+          : [
+              {
+                ...({} as Skin),
                 spotlight: [
-                  ...(skin.spotlight ?? []),
                   {
                     payload: item.payload!,
                     description: '',
@@ -77,9 +92,8 @@
                     sTokenId: item.assetId,
                   },
                 ],
-              }
-            : skin,
-        ) ?? []), // keep all the other skins before skinIndex.
+              },
+            ]), // keep all the other skins before skinIndex.
       ],
     }
 
@@ -98,12 +112,27 @@
     profile = {
       ...profile, // Retain other modified fields.
       skins: [
-        ...(profile?.skins?.map((skin, index) =>
-          index === skinIndex
-            ? {
-                ...skin,
+        ...(profile?.skins?.length
+          ? profile?.skins?.map((skin, index) =>
+              index === skinIndex
+                ? {
+                    ...skin,
+                    clips: [
+                      ...(skin.clips ?? []),
+                      {
+                        payload: item.payload!,
+                        description: '',
+                        frameColorHex: '',
+                        sTokenId: item.assetId,
+                      },
+                    ],
+                  }
+                : skin,
+            )
+          : [
+              {
+                ...({} as Skin),
                 clips: [
-                  ...(skin.clips ?? []),
                   {
                     payload: item.payload!,
                     description: '',
@@ -111,9 +140,8 @@
                     sTokenId: item.assetId,
                   },
                 ],
-              }
-            : skin,
-        ) ?? []), // keep all the other skins before skinIndex.
+              },
+            ]), // keep all the other skins before skinIndex.
       ],
     }
 
