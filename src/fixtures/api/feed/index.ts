@@ -25,7 +25,11 @@ import {
 } from '@plugins/achievements/utils'
 import { Index as AssetIndex } from '@fixtures/api/assets/redis'
 import type { AssetDocument } from '../assets/schema'
-import { type as assetTypeSchema, owner } from '../assets/schema'
+import {
+  type as assetTypeSchema,
+  owner,
+  nBlock as assetNBlockSchema,
+} from '../assets/schema'
 import { getProfile } from '../profile'
 import type { Clip, Profile, Skin } from '@pages/api/profile'
 import { getClubByProperty } from '../club/redis'
@@ -55,6 +59,12 @@ export const getFeed = async () => {
       .search(
         AssetIndex.Asset,
         `@${assetTypeSchema['$.type'].AS}:{passportItem}`,
+        {
+          SORTBY: {
+            BY: assetNBlockSchema['$.n_block'].AS,
+            DIRECTION: 'DESC',
+          },
+        },
       )
       .then((res) =>
         res.total && res.documents.length
