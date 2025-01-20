@@ -25,6 +25,13 @@ import type { UndefinedOr } from '@devprotocol/util-ts'
 const { site, page } = Astro.params
 const config = await _config(site)
 
+if (!config) {
+  return new Response(null, {
+    status: 404,
+    statusText: 'Not found',
+  })
+}
+
 console.log('Astro.params', Astro.params)
 const options = {
   config: () =>
