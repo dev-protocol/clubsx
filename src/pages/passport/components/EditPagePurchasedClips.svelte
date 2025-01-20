@@ -13,6 +13,9 @@
   import IconShowcase from './IconShowcase.svelte'
   import IconSpotlight from './IconSpotlight.svelte'
   import { filter } from 'ramda'
+  import dayjs from 'dayjs'
+  import utc from 'dayjs/plugin/utc'
+  dayjs.extend(utc)
 
   const i18nBase = i18nFactory(Strings)
   let i18n = i18nBase(['en'])
@@ -76,6 +79,8 @@
                         description: '',
                         frameColorHex: '',
                         sTokenId: item.assetId,
+                        createdAt: dayjs().utc().toDate().getTime(),
+                        updatedAt: 0,
                       },
                     ],
                   }
@@ -90,6 +95,8 @@
                     description: '',
                     frameColorHex: '',
                     sTokenId: item.assetId,
+                    createdAt: dayjs().utc().toDate().getTime(),
+                    updatedAt: 0,
                   },
                 ],
               },
@@ -124,6 +131,8 @@
                         description: '',
                         frameColorHex: '',
                         sTokenId: item.assetId,
+                        createdAt: dayjs().utc().toDate().getTime(),
+                        updatedAt: 0,
                       },
                     ],
                   }
@@ -138,6 +147,8 @@
                     description: '',
                     frameColorHex: '',
                     sTokenId: item.assetId,
+                    createdAt: dayjs().utc().toDate().getTime(),
+                    updatedAt: 0,
                   },
                 ],
               },

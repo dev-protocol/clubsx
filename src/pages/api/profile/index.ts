@@ -9,6 +9,8 @@ export type Clip = {
   payload: Payload
   description: string
   frameColorHex: string
+  createdAt: number
+  updatedAt: number
 }
 
 export type Skin = {

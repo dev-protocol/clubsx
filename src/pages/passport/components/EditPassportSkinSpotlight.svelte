@@ -14,6 +14,9 @@
   import PassportClipEditModal from './PassportClipEditModal.svelte'
   import IconPlus from './IconPlus.svelte'
   import { passportSpotlightClass } from '@fixtures/ui/passport'
+  import dayjs from 'dayjs'
+  import utc from 'dayjs/plugin/utc'
+  dayjs.extend(utc)
 
   const i18nBase = i18nFactory(Strings)
   let i18n = i18nBase(['en'])
@@ -126,6 +129,13 @@
                                       sTokenId: item.assetId,
                                       description,
                                       frameColorHex,
+                                      createdAt: clip.createdAt
+                                        ? clip.createdAt
+                                        : dayjs().utc().toDate().getTime(),
+                                      updatedAt: dayjs()
+                                        .utc()
+                                        .toDate()
+                                        .getTime(),
                                     }
                                   : clip,
                               ) ?? ([] as Clip[])),

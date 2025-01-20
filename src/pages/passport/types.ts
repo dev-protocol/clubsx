@@ -40,4 +40,6 @@ export type PassportClip = AssetDocument &
   PassportItemIndexDoc & {
     description: string
     frameColorHex: string
+    createdAt?: number
+    updatedAt?: number
   }
