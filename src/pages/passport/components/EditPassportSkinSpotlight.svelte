@@ -81,19 +81,11 @@
       item: item,
       hex: profile?.skins
         ?.at(skinIndex)
-        ?.spotlight?.find(
-          (clip) =>
-            (clip.id && clip.id === item.id) ||
-            (clip.payload && clip.payload === item.payload),
-        )?.frameColorHex,
+        ?.spotlight?.find((clip) => clip.id === item.id)?.frameColorHex,
       description:
         profile?.skins
           ?.at(skinIndex)
-          ?.spotlight?.find(
-            (clip) =>
-              (clip.id && clip.id === item.id) ||
-              (clip.payload && clip.payload === item.payload),
-          )?.description ?? '',
+          ?.spotlight?.find((clip) => clip.id === item.id)?.description ?? '',
       onClose: async () => {
         document.body.classList.remove('overflow-hidden')
         closeAllModals()
@@ -109,11 +101,7 @@
         if (
           !profile?.skins
             ?.at(skinIndex)
-            ?.spotlight?.find(
-              (clip) =>
-                (clip.id && clip.id === item.id) ||
-                (clip.payload && clip.payload === item.payload),
-            )
+            ?.spotlight?.find((clip) => clip.id === item.id)
         ) {
           return false
         }
@@ -134,8 +122,7 @@
                         method === 'patch'
                           ? [
                               ...(skin.spotlight?.map((clip) =>
-                                (clip.id && clip.id === item.id) ||
-                                (clip.payload && clip.payload === item.payload)
+                                clip.id === item.id
                                   ? {
                                       ...clip,
                                       id: clip.id ?? nanoid(),

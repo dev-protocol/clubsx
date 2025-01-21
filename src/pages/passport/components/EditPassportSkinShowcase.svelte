@@ -84,19 +84,11 @@
       item,
       hex: profile?.skins
         ?.at(skinIndex)
-        ?.clips?.find(
-          (clip) =>
-            (clip.id && clip.id === item.id) ||
-            (clip.payload && clip.payload === item.payload),
-        )?.frameColorHex,
+        ?.clips?.find((clip) => clip.id === item.id)?.frameColorHex,
       description:
         profile?.skins
           ?.at(skinIndex)
-          ?.clips?.find(
-            (clip) =>
-              (clip.id && clip.id === item.id) ||
-              (clip.payload && clip.payload === item.payload),
-          )?.description ?? '',
+          ?.clips?.find((clip) => clip.id === item.id)?.description ?? '',
       onClose: async () => {
         document.body.classList.remove('overflow-hidden')
         closeAllModals()
@@ -112,11 +104,7 @@
         if (
           !profile?.skins
             ?.at(skinIndex)
-            ?.clips?.find(
-              (clip) =>
-                (clip.id && clip.id === item.id) ||
-                (clip.payload && clip.payload === item.payload),
-            )
+            ?.clips?.find((clip) => clip.id === item.id)
         ) {
           console.error(
             'Clip not found in profile showcase when trying to edit it.',
@@ -142,8 +130,7 @@
                         method === 'patch'
                           ? [
                               ...(skin.clips?.map((clip) =>
-                                (clip.id && clip.id === item.id) ||
-                                (clip.payload && clip.payload === item.payload)
+                                clip.id === item.id
                                   ? {
                                       ...clip,
                                       id: clip.id ?? nanoid(),
