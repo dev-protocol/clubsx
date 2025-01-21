@@ -54,7 +54,7 @@ const data = {
   item: isNotError(item) ? item : undefined,
   passportItem: isNotError(passportItemData) ? passportItemData : undefined,
   isFrameDark:
-    isNotError(item) && typeof item === 'object'
+    isNotError(item) && typeof item === 'object' && item.frameColorHex
       ? isDark(item.frameColorHex)
       : false,
 }
@@ -124,7 +124,7 @@ const tokenURI =
 
       <span class="grid grid-cols-1 grid-rows-[1fr_auto]">
         {
-          typeof data.item === 'object' ? (
+          typeof data.item === 'object' && data.item.description ? (
             <Description client:load text={data.item.description} />
           ) : (
             <span />
@@ -161,7 +161,7 @@ const tokenURI =
     />
   </div>
 </html>
-<!-- 
+<!--
 <script>
   document.getElementById('og-video-element')?.addEventListener(
     'loadedmetadata',

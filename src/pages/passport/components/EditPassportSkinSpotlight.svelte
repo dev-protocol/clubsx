@@ -81,13 +81,19 @@
       item: item,
       hex: profile?.skins
         ?.at(skinIndex)
-        ?.spotlight?.find((clip) => clip.payload === item.payload)
-        ?.frameColorHex,
+        ?.spotlight?.find(
+          (clip) =>
+            (clip.id && clip.id === item.id) ||
+            (clip.payload && clip.payload === item.payload),
+        )?.frameColorHex,
       description:
         profile?.skins
           ?.at(skinIndex)
-          ?.spotlight?.find((clip) => clip.payload === item.payload)
-          ?.description ?? '',
+          ?.spotlight?.find(
+            (clip) =>
+              (clip.id && clip.id === item.id) ||
+              (clip.payload && clip.payload === item.payload),
+          )?.description ?? '',
       onClose: async () => {
         document.body.classList.remove('overflow-hidden')
         closeAllModals()
@@ -96,7 +102,7 @@
       action: async (
         clip: PassportItem,
         description: string,
-        frameColorHex: string,
+        frameColorHex: string | undefined,
         method,
       ): Promise<boolean> => {
         console.log(clip, description, frameColorHex, method)

@@ -17,13 +17,13 @@
 
   export let isOpen: boolean
   export let item: PassportItem
-  export let hex: string
+  export let hex: UndefinedOr<string>
   export let description: string = ''
   export let action: UndefinedOr<
     (
       clip: PassportItem,
       description: string,
-      frameColorHex: string,
+      frameColorHex: string | undefined,
       method: 'patch' | 'del',
     ) => Promise<boolean>
   > = undefined

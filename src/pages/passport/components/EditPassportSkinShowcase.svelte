@@ -6,6 +6,7 @@
   import Skeleton from '@components/Global/Skeleton.svelte'
   import type { Clip, Profile } from '@pages/api/profile'
   import { closeAllModals, openModal } from 'svelte-modals'
+  import { nanoid } from 'nanoid'
 
   import { Strings } from '../i18n'
   import type { PassportItem } from '../types'
@@ -83,12 +84,19 @@
       item,
       hex: profile?.skins
         ?.at(skinIndex)
-        ?.clips?.find((clip) => clip.payload === item.payload)?.frameColorHex,
+        ?.clips?.find(
+          (clip) =>
+            (clip.id && clip.id === item.id) ||
+            (clip.payload && clip.payload === item.payload),
+        )?.frameColorHex,
       description:
         profile?.skins
           ?.at(skinIndex)
-          ?.clips?.find((clip) => clip.payload === item.payload)?.description ??
-        '',
+          ?.clips?.find(
+            (clip) =>
+              (clip.id && clip.id === item.id) ||
+              (clip.payload && clip.payload === item.payload),
+          )?.description ?? '',
       onClose: async () => {
         document.body.classList.remove('overflow-hidden')
         closeAllModals()
@@ -97,7 +105,7 @@
       action: async (
         clip: PassportItem,
         description: string,
-        frameColorHex: string,
+        frameColorHex: string | undefined,
         method,
       ): Promise<boolean> => {
         console.log(clip, description, frameColorHex, method)
