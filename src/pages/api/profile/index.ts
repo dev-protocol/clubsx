@@ -5,7 +5,7 @@ import { createClient } from 'redis'
 type Payload = string
 
 export type Clip = {
-  id?: string
+  id: string
   sTokenId?: string
   payload?: Payload
   description?: string
