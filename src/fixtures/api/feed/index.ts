@@ -1,5 +1,4 @@
 import {
-  whenDefined,
   whenNotError,
   whenNotErrorAll,
 } from '@devprotocol/util-ts'
@@ -7,10 +6,7 @@ import { always } from 'ramda'
 import { createClient } from 'redis'
 import {
   getPassportItemFromPayload,
-  Index,
-  sTokenPayload,
   sTokenPayload as sTokenPayloadSchema,
-  type PassportItemDocument,
 } from '@devprotocol/clubs-plugin-passports'
 import { getDefaultClient } from '@fixtures/api/assets/redis'
 import { ACHIEVEMENT_ITEM_SCHEMA } from '@plugins/achievements/db/schema'
@@ -142,6 +138,14 @@ export const getFeed = async () => {
             }
           }
 
+          let itemLink: string = `/passport/${asset.owner}`
+          if (skinFoundFirst && skinFoundFirst.id) {
+            itemLink += `/${skinFoundFirst.id}`
+          }
+          if (clipFoundFirst && clipFoundFirst.id) {
+            itemLink += `/${itemToHash(skinSection || 'clips', clipFoundFirst.id)}`
+          }
+
           return {
             clubDetails: {
               url: clubConfiguration?.url || 'https://developers.clubs.place', // Use developers club if absent.
@@ -162,10 +166,10 @@ export const getFeed = async () => {
             },
             passportDetails: {
               id: asset.id,
-              itemAssetType: passportItemDocument?.itemAssetType,
-              itemLink: `/passport/${asset.owner}/${skinFoundFirst?.id || ''}/${itemToHash(skinSection || 'clips', clipFoundFirst?.sTokenId || '') || ''}`,
+              itemLink: itemLink || '',
               itemDescription: clipFoundFirst?.description || '',
               itemFrameColorHex: clipFoundFirst?.frameColorHex || '',
+              itemAssetType: passportItemDocument?.itemAssetType || 'css',
               itemPreviewImgSrc:
                 passportItemDocument?.itemAssetType !== 'bgm' &&
                 passportItemDocument?.itemAssetType !== 'bgm-link' &&
