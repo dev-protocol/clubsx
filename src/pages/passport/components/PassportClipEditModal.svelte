@@ -120,7 +120,8 @@
 
         <button
           on:click|preventDefault={() => onClickAction('patch')}
-          class="hs-button is-filled is-large w-fit text-center">Done</button
+          class="hs-button is-filled is-large w-fit text-center"
+          >{i18n('Done')}</button
         >
       </div>
 
@@ -162,13 +163,13 @@
         {/if}
 
         <label class="hs-form-field is-filled">
-          <span class="hs-form-field__label"> {i18n('Description')} </span>
+          <span class="hs-form-field__label"> {i18n('EditItemComment')} </span>
           <textarea
             class="hs-form-field__input"
             bind:value={description}
             id="passport-item-description"
             name="passort-item-description"
-            placeholder={i18n('DescriptionPlaceholder')}
+            placeholder={i18n('InputYourCommentHere')}
           />
         </label>
 
@@ -191,7 +192,7 @@
         <button
           on:click|preventDefault={() => onClickAction('del')}
           class="hs-button is-filled is-error justify-self-end w-fit text-center"
-          >Unlist</button
+          >{i18n('Unlist')}</button
         >
       </div>
     </div>
