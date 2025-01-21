@@ -2,6 +2,7 @@
 import { ref, watch } from 'vue'
 import Bars3 from '@components/Icons/bars-3.vue'
 import XMark from '@components/Icons/x-mark.vue'
+import HomeLogo from '@components/Icons/home.vue'
 import { passportClass } from '@fixtures/ui/passport'
 
 const props = defineProps<{ pageTitle?: string; showConnectButton?: boolean }>()
@@ -24,12 +25,20 @@ watch(open, () => {
     class="relative flex items-center justify-between px-2 py-4 gap-2 lg:px-6"
   >
     <a href="/">
-      <h1 class="flex items-center gap-4" :class="passportClass('heading')">
+      <h1
+        class="hidden md:flex items-center gap-4"
+        :class="passportClass('heading')"
+      >
         <slot name="clubs-logo" />
         <span v-if="Boolean(props.pageTitle)" class="lg:text-xl font-bold">{{
           props.pageTitle
         }}</span>
       </h1>
+      <span
+        class="w-full flex items-center justify-end lg:hidden cursor-pointer"
+      >
+        <HomeLogo />
+      </span>
     </a>
 
     <span class="w-full flex items-center justify-end lg:hidden">
