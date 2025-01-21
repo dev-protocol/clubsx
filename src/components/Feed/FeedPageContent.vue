@@ -37,6 +37,7 @@ const mappedFeeds: {
   badgeName: string
   description?: string
   assetLink: string
+  frameHexColor?: string
 }[] = props.feeds.map((feed) => {
   return {
     avatarSrc: feed.ownerDetails.avatar,
@@ -48,10 +49,11 @@ const mappedFeeds: {
     badgeName: feed.clubDetails.name,
     assetLink: feed.passportDetails.itemLink,
     description: feed.passportDetails.itemDescription,
+    frameHexColor: feed.passportDetails.itemFrameColorHex,
   }
 })
 
-console.log('Feed', mappedFeeds.at(0), props.feeds.at(0))
+console.log('Feed', mappedFeeds.at(2), props.feeds.at(2))
 </script>
 <template>
   <div class="flex flex-col px-2 h-full">
