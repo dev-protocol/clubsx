@@ -1551,9 +1551,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@devprotocol/clubs-plugin-passports@npm:0.1.0-beta.45":
-  version: 0.1.0-beta.45
-  resolution: "@devprotocol/clubs-plugin-passports@npm:0.1.0-beta.45"
+"@devprotocol/clubs-plugin-passports@npm:0.1.0-beta.49":
+  version: 0.1.0-beta.49
+  resolution: "@devprotocol/clubs-plugin-passports@npm:0.1.0-beta.49"
   dependencies:
     "@devprotocol/dev-kit": "npm:8.7.0"
     "@devprotocol/util-ts": "npm:4.0.0"
@@ -1567,7 +1567,7 @@ __metadata:
     "@devprotocol/clubs-core": ^3.18.0
     "@devprotocol/clubs-plugin-payments": ^0.2.3 || ^0.3.0
     ethers: ^6.0.0
-  checksum: 10c0/812ac9d0088233b0fb75ce39ff612643d96218f37f526b2c5356f9b7c2be1157a3c7bca217a64af5a9f14f3f26dcafe8a096abfedf3514b83e1088dcc28368ad
+  checksum: 10c0/878bdd3675e5b7d714293ea2f73bba26044e86014cac42f62b8775a1ec55c498d5f9b0f79fb44e4dc91d392dffd1249536e3b30054c1cb37fe99349b329cff9b
   languageName: node
   linkType: hard
 
@@ -5584,6 +5584,13 @@ __metadata:
   dependencies:
     "@types/node": "npm:*"
   checksum: 10c0/ff8f54fc49621210291f815fe5b15d809fd7d032941b3180743440bd507ecdf08b9e844625fa346af568c84bf34114eb378dcdc3e921a08ba1e2a08d7e3c809c
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:^4.17.14":
+  version: 4.17.14
+  resolution: "@types/lodash@npm:4.17.14"
+  checksum: 10c0/343c6f722e0b39969036a885ad5aad6578479ead83987128c9b994e6b7f2fb9808244d802d4d332396bb09096f720a6c7060de16a492f5460e06a44560360322
   languageName: node
   linkType: hard
 
@@ -9811,7 +9818,7 @@ __metadata:
     "@devprotocol/clubs-core": "npm:3.23.2"
     "@devprotocol/clubs-plugin-akiba": "npm:0.1.8"
     "@devprotocol/clubs-plugin-awesome-onboarding": "npm:0.5.1"
-    "@devprotocol/clubs-plugin-passports": "npm:0.1.0-beta.45"
+    "@devprotocol/clubs-plugin-passports": "npm:0.1.0-beta.49"
     "@devprotocol/clubs-plugin-payments": "npm:0.4.0-alpha.0"
     "@devprotocol/clubs-plugin-posts": "npm:0.21.0-alpha.0"
     "@devprotocol/clubs-plugin-posts-voting": "npm:0.8.8"
@@ -9834,6 +9841,7 @@ __metadata:
     "@types/dompurify": "npm:^3.0.2"
     "@types/dotenv": "npm:8.2.3"
     "@types/human-number": "npm:^1.0.2"
+    "@types/lodash": "npm:^4.17.14"
     "@types/marked": "npm:^6.0.0"
     "@types/node": "npm:^22.0.0"
     "@types/ramda": "npm:0.30.2"
@@ -9875,6 +9883,7 @@ __metadata:
     husky: "npm:9.1.7"
     js-base64: "npm:^3.7.7"
     jsonwebtoken: "npm:^9.0.2"
+    lodash: "npm:^4.17.21"
     marked: "npm:10.0.0"
     mp4box: "npm:^0.5.3"
     nanoid: "npm:^5.0.5"

@@ -6,6 +6,7 @@
   import Skeleton from '@components/Global/Skeleton.svelte'
   import type { Clip, Profile } from '@pages/api/profile'
   import { closeAllModals, openModal } from 'svelte-modals'
+  import { nanoid } from 'nanoid'
 
   import { Strings } from '../i18n'
   import type { PassportItem } from '../types'
@@ -73,22 +74,29 @@
     ) {
       console.error(
         'Clip not found in profile showcase when trying to edit it.',
-        item?.id,
+        item,
       )
       return
     }
 
     document.body.classList.add('overflow-hidden')
     openModal(PassportClipEditModal, {
-      item: item,
+      item,
       hex: profile?.skins
         ?.at(skinIndex)
-        ?.clips?.find((clip) => clip.payload === item.payload)?.frameColorHex,
+        ?.clips?.find(
+          (clip) =>
+            (clip.id && clip.id === item.id) ||
+            (clip.payload && clip.payload === item.payload),
+        )?.frameColorHex,
       description:
         profile?.skins
           ?.at(skinIndex)
-          ?.clips?.find((clip) => clip.payload === item.payload)?.description ??
-        '',
+          ?.clips?.find(
+            (clip) =>
+              (clip.id && clip.id === item.id) ||
+              (clip.payload && clip.payload === item.payload),
+          )?.description ?? '',
       onClose: async () => {
         document.body.classList.remove('overflow-hidden')
         closeAllModals()
@@ -97,27 +105,28 @@
       action: async (
         clip: PassportItem,
         description: string,
-        frameColorHex: string,
+        frameColorHex: string | undefined,
         method,
       ): Promise<boolean> => {
+        console.log(clip, description, frameColorHex, method)
         if (
           !profile?.skins
             ?.at(skinIndex)
-            ?.clips?.find((clip) => clip.payload === item.payload)
+            ?.clips?.find(
+              (clip) =>
+                (clip.id && clip.id === item.id) ||
+                (clip.payload && clip.payload === item.payload),
+            )
         ) {
           console.error(
             'Clip not found in profile showcase when trying to edit it.',
-            item.id,
+            item,
           )
           return false
         }
 
-        if (clip.payload !== item.payload) {
-          console.error(
-            'Clip mismatch when trying to edit it.',
-            item.id,
-            clip.id,
-          )
+        if (clip.payload !== item.payload && clip.id !== item.id) {
+          console.error('Clip mismatch when trying to edit it.', item, clip.id)
           return false
         }
 
@@ -133,10 +142,11 @@
                         method === 'patch'
                           ? [
                               ...(skin.clips?.map((clip) =>
-                                clip.sTokenId === item.assetId
+                                (clip.id && clip.id === item.id) ||
+                                (clip.payload && clip.payload === item.payload)
                                   ? {
-                                      payload: item.payload!,
-                                      sTokenId: item.assetId,
+                                      ...clip,
+                                      id: clip.id ?? nanoid(),
                                       description,
                                       frameColorHex,
                                       createdAt: clip.createdAt
@@ -150,14 +160,17 @@
                                   : clip,
                               ) ?? ([] as Clip[])),
                             ]
-                          : skin.clips?.filter(
-                              (x) => x.sTokenId !== item.assetId,
+                          : skin.clips?.filter((x) =>
+                              'assetId' in item
+                                ? x.sTokenId !== item.assetId
+                                : x.id !== item.id,
                             ),
                     }
                   : skin,
               ) ?? []), // keep all the other skins before skinIndex.
             ],
           }
+          console.log('profile', profile)
           return true
         } catch (e) {
           return false
@@ -168,6 +181,7 @@
 
   const clips = (prof: Profile) => prof.skins?.at(skinIndex)?.clips
   const purchasedClipsBySkinClip = (clip: Clip, items: PassportItem[]) =>
+    (clip.link ? clip : undefined) ??
     items.find((x) => x.assetId === clip.sTokenId)
 </script>
 
@@ -224,7 +238,7 @@
         <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
           <PassportAsset
             props={((item) => ({
-              item: item,
+              item,
               provider: rpcProvider,
               local: isLocal,
               isEditable: true,

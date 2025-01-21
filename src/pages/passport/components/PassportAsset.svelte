@@ -8,12 +8,13 @@
   import { Contract, type ContractRunner } from 'ethers'
   import type { UndefinedOr } from '@devprotocol/util-ts'
   import Skeleton from '@components/Global/Skeleton.svelte'
-
+  import { MediaEmbed } from '@devprotocol/clubs-plugin-passports/svelte'
   import { loadImage, ABI_NFT } from '../utils'
   import type { PassportItem, ImageData } from '../types'
   import { isDark } from '@fixtures/color'
 
   import VideoFetch from './VideoFetch.svelte'
+  import { mediaSource } from '@devprotocol/clubs-plugin-passports/media'
   export let props: {
     local: boolean
     item?: PassportItem
@@ -35,6 +36,7 @@
   let imageElement: HTMLImageElement | null = null
 
   $: {
+    console.log('*****', props.item)
     htmlDescription = whenDefined(props.description, markdownToHtml)
     isFrameDark = whenDefined(
       props.frameColorHex?.startsWith('#') ? props.frameColorHex : undefined,
@@ -69,9 +71,9 @@
       'image-playable',
       'image-playable-link',
     ].includes(itemAssetType ?? '')
-    if (isImage) {
+    if (isImage && itemAssetValue) {
       try {
-        const response = await fetch(itemAssetValue ?? '')
+        const response = await fetch(itemAssetValue)
         const blob = await response.blob()
         const blobDataUrl = URL.createObjectURL(blob)
         if (isImage && imageElement) {
@@ -146,7 +148,7 @@
 </script>
 
 <div class="@container/passport-asset w-full h-full">
-  {#if !notFound && props.item}
+  {#if props.item}
     <div
       class={`w-full h-full shadow-md rounded-md p-2 grid gap-4 border border-black/20 @[16rem]/passport-asset:p-4 ${props.classNames ?? ''} ${props.frameColorHex ? 'bg-[var(--frameColor)]' : 'bg-surface-200'} ${isFrameDark ? 'text-white' : 'text-black'}`}
       style={props.frameColorHex
@@ -172,6 +174,8 @@
           videoClass={`rounded-md w-full max-w-full pointer-events-none object-cover aspect-square`}
           isControlled={props?.item.itemAssetType.includes('short-video')}
         />
+      {:else if props.item.link && mediaSource(props.item.link)}
+        <MediaEmbed src={props.item.link} />
       {:else}
         <Skeleton />
       {/if}

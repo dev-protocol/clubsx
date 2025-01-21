@@ -7,7 +7,7 @@
   import type { Clip, Profile } from '@pages/api/profile'
   import { closeAllModals, openModal } from 'svelte-modals'
   import IconSpotlight from './IconSpotlight.svelte'
-
+  import { nanoid } from 'nanoid'
   import { Strings } from '../i18n'
   import type { PassportItem } from '../types'
   import PassportAsset from './PassportAsset.svelte'
@@ -81,13 +81,19 @@
       item: item,
       hex: profile?.skins
         ?.at(skinIndex)
-        ?.spotlight?.find((clip) => clip.payload === item.payload)
-        ?.frameColorHex,
+        ?.spotlight?.find(
+          (clip) =>
+            (clip.id && clip.id === item.id) ||
+            (clip.payload && clip.payload === item.payload),
+        )?.frameColorHex,
       description:
         profile?.skins
           ?.at(skinIndex)
-          ?.spotlight?.find((clip) => clip.payload === item.payload)
-          ?.description ?? '',
+          ?.spotlight?.find(
+            (clip) =>
+              (clip.id && clip.id === item.id) ||
+              (clip.payload && clip.payload === item.payload),
+          )?.description ?? '',
       onClose: async () => {
         document.body.classList.remove('overflow-hidden')
         closeAllModals()
@@ -96,18 +102,23 @@
       action: async (
         clip: PassportItem,
         description: string,
-        frameColorHex: string,
+        frameColorHex: string | undefined,
         method,
       ): Promise<boolean> => {
+        console.log(clip, description, frameColorHex, method)
         if (
           !profile?.skins
             ?.at(skinIndex)
-            ?.spotlight?.find((clip) => clip.payload === item.payload)
+            ?.spotlight?.find(
+              (clip) =>
+                (clip.id && clip.id === item.id) ||
+                (clip.payload && clip.payload === item.payload),
+            )
         ) {
           return false
         }
 
-        if (clip.payload !== item.payload) {
+        if (clip.payload !== item.payload && clip.id !== item.id) {
           return false
         }
 
@@ -123,10 +134,11 @@
                         method === 'patch'
                           ? [
                               ...(skin.spotlight?.map((clip) =>
-                                clip.sTokenId === item.assetId
+                                (clip.id && clip.id === item.id) ||
+                                (clip.payload && clip.payload === item.payload)
                                   ? {
-                                      payload: item.payload!,
-                                      sTokenId: item.assetId,
+                                      ...clip,
+                                      id: clip.id ?? nanoid(),
                                       description,
                                       frameColorHex,
                                       createdAt: clip.createdAt
@@ -158,6 +170,7 @@
 
   const spotlight = (prof: Profile) => prof.skins?.at(skinIndex)?.spotlight
   const purchasedClipsBySkinClip = (clip: Clip, items: PassportItem[]) =>
+    (clip.link ? clip : undefined) ??
     items.find((x) => x.assetId === clip.sTokenId)
 
   $: {

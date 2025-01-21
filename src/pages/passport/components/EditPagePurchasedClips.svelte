@@ -6,6 +6,14 @@
   import type { Profile, Skin } from '@pages/api/profile'
   import Skeleton from '@components/Global/Skeleton.svelte'
   import IconXMark from './IconXMark.svelte'
+  import debounce from 'lodash/debounce'
+  import { mediaSource } from '@devprotocol/clubs-plugin-passports/media'
+  import { MediaEmbed } from '@devprotocol/clubs-plugin-passports/svelte'
+
+  import TikTok from '@assets/sns/TikTok.svg'
+  import Instagram from '@assets/sns/Instagram.svg'
+  import X from '@assets/sns/X.svg'
+  import YouTube from '@assets/sns/YouTube.svg'
 
   import { Strings } from '../i18n'
   import type { PassportItem } from '../types'
@@ -15,6 +23,7 @@
   import { filter } from 'ramda'
   import dayjs from 'dayjs'
   import utc from 'dayjs/plugin/utc'
+  import { nanoid } from 'nanoid'
   dayjs.extend(utc)
 
   const i18nBase = i18nFactory(Strings)
@@ -34,6 +43,10 @@
   export let target: UndefinedOr<'showcase' | 'spotlight'>
   export let hasSpotlightLimitReadched: boolean = false
   let selectedItem: UndefinedOr<PassportItem>
+  let linkingMode: UndefinedOr<boolean>
+  let link: UndefinedOr<string>
+  let description: UndefinedOr<string>
+  let linkError: UndefinedOr<string>
 
   $: {
     hasSpotlightLimitReadched =
@@ -44,14 +57,14 @@
     i18n = i18nBase(navigator.languages)
   })
 
-  const toggleClipInSpotlight = async (item: PassportItem) => {
-    if (!item.payload) {
+  const toggleClipInSpotlight = async (item?: PassportItem) => {
+    if (!item?.payload && !link) {
       return
     }
 
     const isClipInSpotlight = !!profile?.skins
       ?.at(skinIndex)
-      ?.spotlight?.find((clip) => clip.payload === item.payload)
+      ?.spotlight?.find((clip) => clip.payload === item?.payload)
 
     // If the clip is not already present in the spotlight, that means we are adding it, so we need
     // to check for spotlight?.length <= 3.
@@ -75,10 +88,17 @@
                     spotlight: [
                       ...(skin.spotlight ?? []),
                       {
-                        payload: item.payload!,
-                        description: '',
-                        frameColorHex: '',
-                        sTokenId: item.assetId,
+                        ...(item
+                          ? {
+                              payload: item.payload!,
+                              description: '',
+                              frameColorHex: '',
+                              sTokenId: item.assetId,
+                            }
+                          : {
+                              link: link,
+                            }),
+                        id: nanoid(),
                         createdAt: dayjs().utc().toDate().getTime(),
                         updatedAt: 0,
                       },
@@ -91,10 +111,15 @@
                 ...({} as Skin),
                 spotlight: [
                   {
-                    payload: item.payload!,
-                    description: '',
-                    frameColorHex: '',
-                    sTokenId: item.assetId,
+                    ...(item
+                      ? {
+                          payload: item.payload!,
+                          description: '',
+                          frameColorHex: '',
+                          sTokenId: item.assetId,
+                        }
+                      : { link }),
+                    id: nanoid(),
                     createdAt: dayjs().utc().toDate().getTime(),
                     updatedAt: 0,
                   },
@@ -107,11 +132,11 @@
     target = undefined
   }
 
-  const toggleClipsInShowcase = async (item: PassportItem) => {
-    if (!item.payload) {
+  const toggleClipsInShowcase = async (item?: PassportItem) => {
+    if (!item?.payload && !link) {
       console.log(
         `Passport non skin item not pinned as clips since item.paylaod missing`,
-        item.id,
+        item?.id,
       )
       return
     }
@@ -127,10 +152,15 @@
                     clips: [
                       ...(skin.clips ?? []),
                       {
-                        payload: item.payload!,
-                        description: '',
-                        frameColorHex: '',
-                        sTokenId: item.assetId,
+                        ...(item
+                          ? {
+                              payload: item.payload!,
+                              description: '',
+                              frameColorHex: '',
+                              sTokenId: item.assetId,
+                            }
+                          : { link }),
+                        id: nanoid(),
                         createdAt: dayjs().utc().toDate().getTime(),
                         updatedAt: 0,
                       },
@@ -143,10 +173,15 @@
                 ...({} as Skin),
                 clips: [
                   {
-                    payload: item.payload!,
-                    description: '',
-                    frameColorHex: '',
-                    sTokenId: item.assetId,
+                    ...(item
+                      ? {
+                          payload: item.payload!,
+                          description: '',
+                          frameColorHex: '',
+                          sTokenId: item.assetId,
+                        }
+                      : { link }),
+                    id: nanoid(),
                     createdAt: dayjs().utc().toDate().getTime(),
                     updatedAt: 0,
                   },
@@ -164,10 +199,22 @@
       profile,
     )
   }
+
+  const handleInput = () => {
+    const isLinkValid = typeof mediaSource(link) === 'string'
+    linkError = isLinkValid ? undefined : 'ERROR'
+    console.log({ linkError, link })
+  }
 </script>
 
 <div
-  class="fixed z-[999] inset-0 p-2 gap-2 grid grid-rows-[auto_1fr] items-stretch bg-surface-300 overflow-y-scroll opacity-0 animate-[fadeInShrinkToFit_.5s_ease-in-out_forwards]"
+  class={`fixed z-[999] inset-0 p-2 gap-2 grid grid-rows-[auto_1fr] items-stretch bg-surface-300 overflow-y-scroll opacity-0 ${
+    linkingMode === undefined
+      ? 'animate-[fadeInShrinkToFit_.5s_ease-in-out_forwards]'
+      : linkingMode === true
+        ? 'animate-[fadeOutFitToGrow_.5s_ease-in-out_forwards]'
+        : 'animate-[fadeInGrowToShrink_.5s_ease-in-out_forwards]'
+  }`}
 >
   <button
     on:click={() => (target = undefined)}
@@ -192,6 +239,23 @@
       </div>
     {:else if purchasedClips?.length}
       <ul class="grid gap-2 grid-cols-[repeat(auto-fill,minmax(160px,1fr))]">
+        <li id="assets-link" class="relative">
+          <button
+            on:click={() => (linkingMode = true)}
+            class="w-full h-full shadow-md rounded-md p-2 grid gap-4 border border-black/20 h-full bg-surface-200 text-black content-evenly"
+          >
+            <span class="font-bold">{i18n('AddFromExternal')}</span>
+            <div
+              class="grid gap-4 grid-cols-[repeat(2,minmax(0,45px))] justify-center justify-items-center items-center"
+            >
+              <img src={TikTok.src} alt="TikTok" />
+              <img src={YouTube.src} alt="YouTube" /><img
+                src={Instagram.src}
+                alt="Instagram"
+              /><img src={X.src} class="size-[80%]" alt="X" />
+            </div>
+          </button>
+        </li>
         {#each purchasedClips as item, i}
           <li id={`assets-${i.toString()}`} class="relative empty:hidden">
             <button
@@ -230,3 +294,74 @@
     </button>
   {/if}
 </div>
+
+{#if linkingMode}
+  <div
+    class="fixed z-[999] inset-0 p-2 flex justify-center items-center bg-surface-300 overflow-y-scroll opacity-0 animate-[fadeInShrinkToFit_.5s_ease-in-out_forwards]"
+  >
+    <div
+      class="flex m-auto flex-col w-full max-w-2xl items-center justify-center p-12 text-surface-ink subpixel-antialiased lg:pb-32 gap-6"
+    >
+      <div class="w-full flex items-center justify-between">
+        <button
+          on:click|preventDefault={() => (linkingMode = false)}
+          class="w-6 h-6"
+        >
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M6 18L18 6M6 6L18 18"
+              stroke="currentColor"
+              stroke-width="3.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+
+        <p class="font-DMSan font-bold text-base">{i18n('AddFromExternal')}</p>
+
+        <button
+          disabled={Boolean(link && linkError !== undefined)}
+          on:click={() =>
+            target === 'showcase'
+              ? toggleClipsInShowcase()
+              : toggleClipInSpotlight()}
+          class="hs-button is-filled is-large w-fit text-center">Done</button
+        >
+      </div>
+
+      <label class="hs-form-field is-filled">
+        <span class="hs-form-field__label"> {i18n('ContentLink')} </span>
+        <input
+          class="hs-form-field__input"
+          bind:value={link}
+          on:keyup={debounce(handleInput, 700)}
+          placeholder={i18n('ContentLinkPlaceholder')}
+        />
+      </label>
+
+      {#if link && linkError === undefined}
+        <div class="flex justify-center">
+          <div class="overflow-hidden rounded">
+            <MediaEmbed src={link} />
+          </div>
+        </div>
+      {/if}
+
+      <label class="hs-form-field is-filled">
+        <span class="hs-form-field__label"> {i18n('Description')} </span>
+        <textarea
+          class="hs-form-field__input"
+          bind:value={description}
+          placeholder={i18n('ContentLinkDescriptionPlaceholder')}
+        />
+      </label>
+    </div>
+  </div>
+{/if}

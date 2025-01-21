@@ -76,7 +76,7 @@ export const GET: APIRoute = async (req) => {
           JSON.stringify(res.documents.map(({ value }) => value)),
         )
       })
-    return search[0].clubsUrl
+    return whenDefined(search[0], (res) => res.clubsUrl as string)
   }
 
   const getAchievementName = async (achievement: AchievementDist) => {
@@ -111,8 +111,11 @@ export const GET: APIRoute = async (req) => {
       client,
     )
     const clubsUrl = await searchClubsURLFromHash(achievement.clubsUrl)
-    const clubsName = await getClubsNameByURL(clubsUrl)
-    const achievementUrl = `${clubsUrl}/achievement/${achievement.id}`
+    const clubsName = await whenDefined(clubsUrl, getClubsNameByURL)
+    const achievementUrl = whenDefined(
+      clubsUrl,
+      (u) => `${u}/achievement/${achievement.id}`,
+    )
     const achievementName = await getAchievementName(achievement)
     if (result && !claimed && distDocument?.id === achievement.id) {
       return {

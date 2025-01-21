@@ -193,4 +193,20 @@ export const Strings = {
     en: 'Create clubs now',
     ja: 'クラブを作成する',
   },
+  ContentLink: {
+    en: 'Content link',
+    ja: 'リンク',
+  },
+  ContentLinkPlaceholder: {
+    en: 'TikTok, YouTube, YouTube Shorts, Instagram, X are available.',
+    ja: 'TikTok, YouTube, YouTube Shorts, Instagram, X のリンクが使えます。',
+  },
+  ContentLinkDescriptionPlaceholder: {
+    en: 'Your comment...',
+    ja: 'コメント',
+  },
+  AddFromExternal: {
+    en: 'Add link from',
+    ja: 'リンクを追加',
+  },
 } satisfies ClubsI18nParts

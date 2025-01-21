@@ -20,6 +20,7 @@ import UserAssets from '../../components/UserAssets.vue'
 import PassportClips from '../../components/PassportClips.vue'
 import UserProfileEditButton from '../../components/UserProfileEditButton.svelte'
 import { clubsUrlToKeccak256Tag } from '@plugins/achievements/utils'
+import MediaSDKs from '@components/Passports/MediaSDKs.astro'
 
 const { eoa, ids } = Astro.params
 const isEOA = isAddress(eoa)
@@ -112,19 +113,21 @@ const passportSkinClips = await whenDefined(
 
     return Promise.all(
       clips.map((item) =>
-        getPassportItemForPayload({ sTokenPayload: item.payload ?? '' })
-          .then(
-            (clip) =>
-              (clip instanceof Error
-                ? undefined
-                : {
-                    ...item,
-                    ...clip,
-                    description: item.description,
-                    frameColorHex: item.frameColorHex,
-                  }) as PassportClip,
-          )
-          .catch(() => undefined),
+        item.link
+          ? item
+          : getPassportItemForPayload({ sTokenPayload: item.payload ?? '' })
+              .then(
+                (clip) =>
+                  (clip instanceof Error
+                    ? undefined
+                    : {
+                        ...item,
+                        ...clip,
+                        description: item.description,
+                        frameColorHex: item.frameColorHex,
+                      }) as PassportClip,
+              )
+              .catch(() => undefined),
       ) ?? [],
     )
       .then((items) => items.filter((items) => !!items))
@@ -142,19 +145,21 @@ const passportSpotlight = await whenDefined(
 
     return Promise.all(
       spotLights.map((item) =>
-        getPassportItemForPayload({ sTokenPayload: item.payload ?? '' })
-          .then(
-            (spotlight) =>
-              (spotlight instanceof Error
-                ? undefined
-                : {
-                    ...item,
-                    ...spotlight,
-                    description: item.description,
-                    frameColorHex: item.frameColorHex,
-                  }) as PassportClip,
-          )
-          .catch(() => undefined),
+        item.link
+          ? item
+          : getPassportItemForPayload({ sTokenPayload: item.payload ?? '' })
+              .then(
+                (spotlight) =>
+                  (spotlight instanceof Error
+                    ? undefined
+                    : {
+                        ...item,
+                        ...spotlight,
+                        description: item.description,
+                        frameColorHex: item.frameColorHex,
+                      }) as PassportClip,
+              )
+              .catch(() => undefined),
       ) ?? [],
     )
       .then((items) => items.filter((items) => !!items))
@@ -434,6 +439,8 @@ const passportSpotlight = await whenDefined(
     value={passportElementId}
     disabled
   />
+
+  <MediaSDKs />
 </Layout>
 
 <script>
