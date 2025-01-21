@@ -99,15 +99,20 @@
         frameColorHex: string,
         method,
       ): Promise<boolean> => {
+        console.log(clip, description, frameColorHex, method)
         if (
           !profile?.skins
             ?.at(skinIndex)
-            ?.spotlight?.find((clip) => clip.payload === item.payload)
+            ?.spotlight?.find(
+              (clip) =>
+                (clip.id && clip.id === item.id) ||
+                (clip.payload && clip.payload === item.payload),
+            )
         ) {
           return false
         }
 
-        if (clip.payload !== item.payload) {
+        if (clip.payload !== item.payload && clip.id !== item.id) {
           return false
         }
 
@@ -123,12 +128,11 @@
                         method === 'patch'
                           ? [
                               ...(skin.spotlight?.map((clip) =>
-                                clip.sTokenId === item.assetId ||
-                                clip.id === item.id
+                                (clip.id && clip.id === item.id) ||
+                                (clip.payload && clip.payload === item.payload)
                                   ? {
+                                      ...clip,
                                       id: clip.id ?? nanoid(),
-                                      payload: item.payload!,
-                                      sTokenId: item.assetId,
                                       description,
                                       frameColorHex,
                                       createdAt: clip.createdAt

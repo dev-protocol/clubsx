@@ -100,10 +100,15 @@
         frameColorHex: string,
         method,
       ): Promise<boolean> => {
+        console.log(clip, description, frameColorHex, method)
         if (
           !profile?.skins
             ?.at(skinIndex)
-            ?.clips?.find((clip) => clip.payload === item.payload)
+            ?.clips?.find(
+              (clip) =>
+                (clip.id && clip.id === item.id) ||
+                (clip.payload && clip.payload === item.payload),
+            )
         ) {
           console.error(
             'Clip not found in profile showcase when trying to edit it.',
@@ -112,7 +117,7 @@
           return false
         }
 
-        if (clip.payload !== item.payload) {
+        if (clip.payload !== item.payload && clip.id !== item.id) {
           console.error('Clip mismatch when trying to edit it.', item, clip.id)
           return false
         }
@@ -129,13 +134,11 @@
                         method === 'patch'
                           ? [
                               ...(skin.clips?.map((clip) =>
-                                clip.id === item.id
+                                (clip.id && clip.id === item.id) ||
+                                (clip.payload && clip.payload === item.payload)
                                   ? {
-                                      payload: item.payload!,
-                                      sTokenId:
-                                        'assetId' in item
-                                          ? item.assetId
-                                          : undefined,
+                                      ...clip,
+                                      id: clip.id ?? nanoid(),
                                       description,
                                       frameColorHex,
                                       createdAt: clip.createdAt
@@ -159,6 +162,7 @@
               ) ?? []), // keep all the other skins before skinIndex.
             ],
           }
+          console.log('profile', profile)
           return true
         } catch (e) {
           return false

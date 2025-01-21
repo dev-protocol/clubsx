@@ -160,6 +160,7 @@
                               sTokenId: item.assetId,
                             }
                           : { link }),
+                        id: nanoid(),
                         createdAt: dayjs().utc().toDate().getTime(),
                         updatedAt: 0,
                       },
@@ -180,6 +181,7 @@
                           sTokenId: item.assetId,
                         }
                       : { link }),
+                    id: nanoid(),
                     createdAt: dayjs().utc().toDate().getTime(),
                     updatedAt: 0,
                   },

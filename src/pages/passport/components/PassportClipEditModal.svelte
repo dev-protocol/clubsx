@@ -17,7 +17,7 @@
 
   export let isOpen: boolean
   export let item: PassportItem
-  export let hex: string = '#FFFF00'
+  export let hex: string
   export let description: string = ''
   export let action: UndefinedOr<
     (
