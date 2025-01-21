@@ -71,6 +71,7 @@ onMounted(async () => {
           :truncate="true"
           :skinSection="skinSection"
           :skinId="skinId"
+          media-embed-class="!aspect-[1/1.391]"
           class="cursor-pointer"
           @click="
             () => {

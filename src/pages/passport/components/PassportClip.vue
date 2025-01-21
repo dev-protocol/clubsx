@@ -19,6 +19,7 @@ const props = defineProps<{
   share?: boolean
   clubsLink?: boolean
   skinId: string
+  mediaEmbedClass?: string
 }>()
 
 const SITE_NAME = computed(
@@ -108,7 +109,11 @@ onMounted(async () => {
           :src="item.itemAssetValue"
           :type="item.itemAssetType"
         />
-        <MediaEmbed v-if="IS_LINK" :src="item.link" class="!aspect-[1/1]" />
+        <MediaEmbed
+          v-if="IS_LINK"
+          :src="item.link"
+          :class="props.mediaEmbedClass"
+        />
       </span>
 
       <span class="p-1 @[16rem]/passport-asset:p-4">
