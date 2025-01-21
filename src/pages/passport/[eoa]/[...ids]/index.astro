@@ -26,7 +26,7 @@ const { eoa, ids } = Astro.params
 const isEOA = isAddress(eoa)
 
 const id = ids?.split('/')?.at(0) ?? '' // Get the skin id from the URL.
-const passportElementId = ids?.split('/')?.at(1) ?? '' // Get the element id from the URL.
+const passportElementId = ids?.split('/')?.at(1) // Get the element id from the URL.
 
 const _profile: Profile = await getProfile({ id: eoa ?? '' })
 const profile = {
@@ -175,6 +175,7 @@ const passportSpotlight = await whenDefined(
   sTokenPayload={skin?.theme}
   skins={profile?.skins ?? []}
   selectedSkinId={skin?.id ?? ''}
+  itemHash={passportElementId}
   preload={[{ as: 'image', href: RedHeart.src }]}
 >
   <div class="grid gap-6 lg:gap-24">

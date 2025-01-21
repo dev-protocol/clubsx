@@ -33,7 +33,7 @@ const API_PATH = computed(() =>
 const IS_LINK = computed(() => typeof props.item.link === 'string')
 
 const elementId = computed<UndefinedOr<string>>(() => {
-  const id = whenDefined(props.item.sTokenId, (id) =>
+  const id = whenDefined(props.item.id, (id) =>
     itemToHash(props.skinSection ?? 'clips', id),
   )
   return isNotError(id) ? id : ''
@@ -69,8 +69,9 @@ const fetchClub = async (api: string) => {
 const shareClip = () => {
   const url = new URL(window.location.href)
   const eoa = url.pathname.split('/').at(2) || '' // The expected pathname is /passport/eoa/id/...
-  url.pathname = `/passport/${eoa}/${props.skinId || ''}/${itemToHash(props.skinSection || 'clips', props.item.sTokenId || '')}`
+  url.pathname = `/passport/${eoa}/${props.skinId || ''}/${itemToHash(props.skinSection || 'clips', props.item.id || '')}`
   // Please replace the title and text with the actual values.
+  console.log('share:', url.href)
   navigator.share({
     title: 'Check out this clip!',
     text: props.item.description,

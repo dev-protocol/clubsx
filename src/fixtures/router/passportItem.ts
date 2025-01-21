@@ -47,12 +47,12 @@ export const hashToItem = (value: string) => {
   const [typeStr, indexStr] = value.split('-')
   const type = itemKeyToType(typeStr)
   const id = tryCatch(
-    (num: string) => BigInt(num),
+    (v: string) => v,
     () => new Error('Unexpected index is passed'),
-  )(indexStr.replace(/^i([0-9]+).*/, '$1'))
+  )(indexStr.replace(/^i(.*)/, '$1'))
 
   return whenNotErrorAll([type, id], ([_type, _id]) => ({
     type: _type as ClipTypes,
-    id: _id.toString(),
+    id: _id,
   }))
 }

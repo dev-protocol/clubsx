@@ -15,6 +15,7 @@ type Props = {
   skins: Skin[]
   selectedSkinId: string
   sTokenPayload?: string
+  itemHash?: string
   theme?: 'light' | 'dark' | 'auto'
   preload?: { as: string; href: string }[]
 }
@@ -25,6 +26,7 @@ const {
   skins = [],
   eoa = '',
   selectedSkinId = '',
+  itemHash,
   preload = [],
 } = Astro.props as Props
 
@@ -42,8 +44,9 @@ const ogImageURLHost = requestURL.origin.includes('prerelease.clubs.place')
   : requestURL.origin.includes('clubs.place')
     ? 'clubs.place'
     : `${requestURL.hostname}:${requestURL.port}`
-const ogpImageURL = `${requestURL.protocol}//${ogImageURLHost}/og/image${requestURL.pathname}`
-const image = `https://capture.clubs.place/api/generate?src=${ogpImageURL}`
+const ogpImageURL = `${requestURL.protocol}//${ogImageURLHost}/og/image/passport/${eoa}/${selectedSkinId}${itemHash ? `/${itemHash}` : ''}`
+const image = `https://capture.clubs.place/api/generate?h=630&w=1200&src=${ogpImageURL}`
+const imageX = `https://capture.clubs.place/api/generate?h=675&w=1200&src=${ogpImageURL}`
 const name = 'Clubs'
 const url = 'https://www.clubs.place/'
 const twitterHandle = 'poweredbyClubs'
@@ -105,7 +108,7 @@ const description =
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={`${image}`} />
+    <meta name="twitter:image" content={`${imageX}`} />
   </head>
 
   <body

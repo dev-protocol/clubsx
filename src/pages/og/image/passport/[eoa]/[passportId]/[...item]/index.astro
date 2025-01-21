@@ -16,10 +16,11 @@ import { ClubsLogo } from '@devprotocol/clubs-core/layouts'
 import Description from './components/Description.vue'
 import VideoElement from './components/VideoElement.vue'
 import type { Clip } from '@pages/api/profile'
-import { clientsSTokens } from '@devprotocol/dev-kit'
-import { JsonRpcProvider } from 'ethers'
+import { markdownToHtml, ProseTextInherit } from '@devprotocol/clubs-core'
 
 import playIconInnerHTML from './assets/play-icon.svg?raw'
+import { MediaEmbed } from '@devprotocol/clubs-plugin-passports/vue'
+import MediaSDKs from '@components/Passports/MediaSDKs.astro'
 
 const { eoa, passportId, item: itemPath } = Astro.params
 
@@ -31,10 +32,11 @@ const itemFromPath = whenDefined(itemPath, hashToItem)
 const item = whenDefinedAll([skin, itemFromPath], ([_skin, _item]) =>
   whenNotError(_item, ({ type, id }) =>
     _skin[type] instanceof Array
-      ? (_skin[type].find((x: Clip) => x.sTokenId === id) as UndefinedOr<Clip>)
+      ? (_skin[type].find((x: Clip) => x.id === id) as UndefinedOr<Clip>)
       : _skin[type],
   ),
 )
+const mode: 'item' | 'skin' = itemPath ? 'item' : 'skin'
 const itemPayload = whenDefined(item, (_item) =>
   whenNotError(_item, (__item) =>
     typeof __item === 'string' ? __item : __item.payload,
@@ -48,27 +50,26 @@ const [passportItemData, userProfile] = await Promise.all([
   ),
   whenDefined(eoa, (id) => getProfile({ id })),
 ])
+const passportLinkItem = whenNotError(item, (item) =>
+  item?.link ? item : new Error(),
+)
 
 const data = {
   user: userProfile,
+  mode,
   item: isNotError(item) ? item : undefined,
   passportItem: isNotError(passportItemData) ? passportItemData : undefined,
+  passportLinkItem: isNotError(passportLinkItem) ? passportLinkItem : undefined,
+  profileDescription:
+    mode === 'skin' && profile
+      ? markdownToHtml(profile.description)
+      : undefined,
+  url: new URL(Astro.request.url),
   isFrameDark:
     isNotError(item) && typeof item === 'object' && item.frameColorHex
       ? isDark(item.frameColorHex)
       : false,
 }
-
-const provider = new JsonRpcProvider(
-  `https://polygon-mainnet.g.alchemy.com/v2/${import.meta.env.PUBLIC_ALCHEMY_KEY ?? ''}`,
-)
-// @ts-ignore
-const [l1, l2] = await clientsSTokens(provider)
-const contract = l1 ?? l2
-const tokenURI =
-  item && !(item instanceof Error)
-    ? await contract?.tokenURI(Number(item.sTokenId))
-    : undefined
 ---
 
 <html lang="en" hashi-theme="light">
@@ -85,78 +86,120 @@ const tokenURI =
       'text-white': data.isFrameDark,
       'text-black': !data.isFrameDark,
     }}
-  >
-    <main class="h-screen w-screen p-6 grid grid-cols-2 gap-6">
-      <span class="relative">
-        {
-          data?.passportItem?.itemAssetType === 'short-video' ||
-          data?.passportItem?.itemAssetType === 'short-video-link' ? (
-            <VideoElement
-              client:load
-              poster={tokenURI ? tokenURI.image : ''}
-              src={data.passportItem.itemAssetValue || ''}
-            />
-          ) : (
-            <img
-              id="og-image-element"
-              src={data.passportItem?.itemAssetValue}
-              class="w-full h-full object-cover rounded-xl"
-            />
-          )
-        }
-        {
-          data?.passportItem?.itemAssetType === 'short-video' ||
-          data?.passportItem?.itemAssetType === 'short-video-link' ||
-          data?.passportItem?.itemAssetType === 'image-playable' ||
-          data?.passportItem?.itemAssetType === 'image-playable-link' ? (
-            <div class="absolute inset-0 m-auto size-1/2 text-white flex items-center justify-center opacity-60">
-              <Fragment
-                set:html={playIconInnerHTML}
-                className="w-full h-full"
-                name="video-play"
+    >{
+      data.mode === 'item' && (
+        <main class="h-screen w-screen p-6 grid grid-cols-2 gap-6">
+          <span class="relative">
+            {data?.passportItem?.itemAssetType === 'short-video' ||
+            data?.passportItem?.itemAssetType === 'short-video-link' ? (
+              <VideoElement
+                client:load
+                poster={''}
+                src={data.passportItem.itemAssetValue || ''}
               />
+            ) : (
+              data.passportItem && (
+                <img
+                  id="og-image-element"
+                  src={data.passportItem?.itemAssetValue}
+                  class="w-full h-full object-cover rounded-xl"
+                />
+              )
+            )}
+            {data?.passportItem?.itemAssetType === 'short-video' ||
+            data?.passportItem?.itemAssetType === 'short-video-link' ||
+            data?.passportItem?.itemAssetType === 'image-playable' ||
+            data?.passportItem?.itemAssetType === 'image-playable-link' ? (
+              <div class="absolute inset-0 m-auto size-1/2 text-white flex items-center justify-center opacity-60">
+                <Fragment
+                  set:html={playIconInnerHTML}
+                  className="w-full h-full"
+                  name="video-play"
+                />
+              </div>
+            ) : (
+              data.passportItem && <span />
+            )}
+            {data?.passportLinkItem?.link && (
+              <MediaEmbed
+                src={data?.passportLinkItem?.link}
+                class="w-full h-full object-cover rounded-xl"
+              />
+            )}
+          </span>
+
+          <span class="grid grid-cols-1 grid-rows-[1fr_auto]">
+            {typeof data.item === 'object' && data.item.description ? (
+              <Description client:load text={data.item.description} />
+            ) : (
+              <span />
+            )}
+            <div>
+              <p>{data.passportLinkItem ? 'Clipped' : 'Owned'} by</p>
+              <p class="flex items-center gap-2">
+                <span class="font-bold text-2xl grow">
+                  {data.user?.username}
+                </span>
+                <img
+                  src={data.user?.avatar}
+                  class="rounded-full h-[43px] object-cover aspect-square"
+                />
+
+                <ClubsLogo />
+              </p>
             </div>
-          ) : (
-            <span />
-          )
-        }
-      </span>
-
-      <span class="grid grid-cols-1 grid-rows-[1fr_auto]">
-        {
-          typeof data.item === 'object' && data.item.description ? (
-            <Description client:load text={data.item.description} />
-          ) : (
-            <span />
-          )
-        }
-        <div>
-          <p>Owned by</p>
-          <p class="flex items-center gap-2">
-            <span class="font-bold text-2xl grow">{data.user?.username}</span>
-            <img
-              src={data.user?.avatar}
-              class="rounded-full h-[43px] aspect-square"
+          </span>
+        </main>
+      )
+    }
+    {
+      data.mode === 'skin' && (
+        <main class="h-screen w-screen p-6 grid grid-cols-2 gap-6">
+          <span class="grid grid-cols-1 grid-rows-[1fr_auto]">
+            <Description
+              client:load
+              text={data.profileDescription ?? ''}
+              html={true}
             />
+            <div>
+              <p class="flex items-center gap-2">
+                <span class="font-bold text-2xl grow">
+                  {data.user?.username}
+                </span>
+                <img
+                  src={data.user?.avatar}
+                  class="rounded-full object-cover h-[43px] aspect-square"
+                />
 
-            <ClubsLogo />
-          </p>
-        </div>
-      </span>
-    </main>
+                <ClubsLogo />
+              </p>
+            </div>
+          </span>
+
+          <span>
+            <iframe
+              title=""
+              class="rounded-xl border border-8 border-black/10 size-[200%] scale-[0.5] origin-[0_0]"
+              src={`/passport/${eoa}/${passportId}`}
+            />
+          </span>
+        </main>
+      )
+    }
+    <MediaSDKs />
   </body>
 
   <div class="mt-24">
     <Debug
       data={{
         'Astro.params': Astro.params,
+        data,
         profile,
         skin,
         itemFromPath,
         item,
         itemPayload,
         passportItemData,
-        tokenURI,
       }}
     />
   </div>
