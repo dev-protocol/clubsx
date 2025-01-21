@@ -1,13 +1,21 @@
 import ReactDOM from 'react-dom/server'
 import { createElement } from 'react'
 import Avatar from './avatar'
+import {
+  uniqueNamesGenerator,
+  starWars,
+  colors,
+  names,
+  animals,
+} from 'unique-names-generator'
+import type { Config } from 'unique-names-generator'
 
-const truncateEthAddress = (address: string) => {
-  const match = address.match(
-    /^(0x[a-zA-Z0-9]{4})[a-zA-Z0-9]+([a-zA-Z0-9]{4})$/,
-  )
-  if (!match) return address
-  return `${match[1]}\u2026${match[2]}`
+const config: Config = {
+  dictionaries: [colors, animals, starWars, names],
+  separator: ' ',
+  length: 2,
+  style: 'capital',
+  seed: '',
 }
 
 const cachedSvgDataURL = new Map<string, string>()
@@ -26,7 +34,7 @@ export const getBoringAvatar = async (address: string) => {
 
 export const getDefaultProfile = async ({ id }: { id: string }) => {
   return {
-    username: truncateEthAddress(id),
+    username: uniqueNamesGenerator({ ...config, seed: id }),
     avatar: await getBoringAvatar(id),
   }
 }
