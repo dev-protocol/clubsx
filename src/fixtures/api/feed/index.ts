@@ -74,8 +74,6 @@ export const getFeed = async () => {
       .catch((err) => new Error(err)),
   )
 
-  console.log('Assets', purchasedAssets)
-
   const purchasedAssetsWithUser = await whenNotErrorAll(
     [purchasedAssets, redis],
     ([assets, client]) =>
@@ -163,18 +161,21 @@ export const getFeed = async () => {
               username: userProfile?.username || '0x...',
             },
             passportDetails: {
-              id: asset.id || asset.nId?.toString(),
-              sTokenPayload:
-                asset.payload || passportItemDocument?.sTokenPayload,
+              id: asset.id,
               itemAssetType: passportItemDocument?.itemAssetType,
-              itemAssetValue: passportItemDocument?.itemAssetValue,
               itemLink: `/passport/${asset.owner}/${skinFoundFirst?.id || ''}/${itemToHash(skinSection || 'clips', clipFoundFirst?.sTokenId || '') || ''}`,
               itemDescription: clipFoundFirst?.description || '',
               itemFrameColorHex: clipFoundFirst?.frameColorHex || '',
               itemPreviewImgSrc:
-                clubConfiguration?.offerings?.find(
-                  (offering) => bytes32Hex(offering.payload) === asset.payload,
-                )?.imageSrc || 'https://i.imgur.com/lSpDjrr.jpg', // Use clubs default avatar if absent.
+                passportItemDocument?.itemAssetType !== 'bgm' &&
+                passportItemDocument?.itemAssetType !== 'bgm-link' &&
+                passportItemDocument?.itemAssetType !== 'css' &&
+                passportItemDocument?.itemAssetType !== 'stylesheet-link'
+                  ? passportItemDocument?.itemAssetValue
+                  : clubConfiguration?.offerings?.find(
+                      (offering) =>
+                        bytes32Hex(offering.payload) === asset.payload,
+                    )?.imageSrc || 'https://i.imgur.com/lSpDjrr.jpg', // Use clubs default avatar if absent.
             },
           }
         }),

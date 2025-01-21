@@ -15,9 +15,7 @@ export type FeedType = {
   }
   passportDetails: {
     id: string
-    sTokenPayload: string
     itemAssetType: string
-    itemAssetValue: string
     itemLink: string
     itemDescription: string
     itemFrameColorHex: string
@@ -52,6 +50,8 @@ const mappedFeeds: {
     description: feed.passportDetails.itemDescription,
   }
 })
+
+console.log('Feed', mappedFeeds.at(0), props.feeds.at(0))
 </script>
 <template>
   <div class="flex flex-col px-2 h-full">
