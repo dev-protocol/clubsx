@@ -175,7 +175,7 @@
           isControlled={props?.item.itemAssetType.includes('short-video')}
         />
       {:else if props.item.link && mediaSource(props.item.link)}
-        <MediaEmbed src={props.item.link} />
+        <!-- <MediaEmbed src={props.item.link} /> -->
       {:else}
         <Skeleton />
       {/if}

@@ -107,7 +107,7 @@ onMounted(async () => {
           :src="item.itemAssetValue"
           :type="item.itemAssetType"
         />
-        <MediaEmbed v-if="IS_LINK" :src="item.link" />
+        <!-- <MediaEmbed v-if="IS_LINK" :src="item.link" /> -->
       </span>
 
       <span class="p-1 @[16rem]/passport-asset:p-4">

@@ -349,7 +349,7 @@
       {#if link && linkError === undefined}
         <div class="flex justify-center">
           <div class="overflow-hidden rounded">
-            <MediaEmbed src={link} />
+            <!-- <MediaEmbed src={link} /> -->
           </div>
         </div>
       {/if}
