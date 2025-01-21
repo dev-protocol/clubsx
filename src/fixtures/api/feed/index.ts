@@ -105,33 +105,36 @@ export const getFeed = async () => {
               .catch(() => encodedDefaultConfig), // Use default config if absent.
           )
 
-          let skinSection: ClipTypes | undefined
           let skinFoundFirst: Skin | undefined
           let clipFoundFirst: Clip | undefined
+          let skinSection: ClipTypes | undefined
           for (const skin of userProfile?.skins || []) {
             const spotlightItem = skin.spotlight?.find(
               (clip) =>
                 (clip.sTokenId === asset.id || asset.nId?.toString()) &&
                 clip.payload === asset.payload,
             )
-            if (spotlightItem) {
-              skinFoundFirst = skin
-              skinSection = 'spotlight'
-              clipFoundFirst = spotlightItem
-              break
-            }
 
-            const showcaseItme = skin.clips?.find(
+            const showcaseItem = skin.clips?.find(
               (clip) =>
                 (clip.sTokenId === asset.id || asset.nId?.toString()) &&
                 clip.payload === asset.payload,
             )
 
-            if (showcaseItme) {
+            if (spotlightItem || showcaseItem) {
               skinFoundFirst = skin
-              skinSection = 'clips'
-              clipFoundFirst = spotlightItem
-              break
+              skinSection =
+                (showcaseItem?.updatedAt || 0) > (spotlightItem?.updatedAt || 0)
+                  ? 'clips'
+                  : !!spotlightItem
+                    ? 'spotlight'
+                    : undefined
+              clipFoundFirst =
+                (showcaseItem?.updatedAt || 0) > (spotlightItem?.updatedAt || 0)
+                  ? showcaseItem
+                  : !!spotlightItem
+                    ? spotlightItem
+                    : undefined
             }
           }
 
