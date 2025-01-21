@@ -30,16 +30,26 @@ export type PassportItemIndexDoc = {
   itemAssetValue: string
 }
 
-export type PassportItem = AssetDocument &
+export type PurchasedPassportItem = AssetDocument &
   PassportItemIndexDoc & {
     assetId: string
     passportDocId: string
   }
 
-export type PassportClip = AssetDocument &
+export type PurchasedPassportClip = AssetDocument &
   PassportItemIndexDoc & {
     description: string
     frameColorHex: string
     createdAt?: number
     updatedAt?: number
   }
+
+export type PassportItem = Partial<PurchasedPassportItem> & {
+  id?: string
+  link?: string
+}
+
+export type PassportClip = Partial<PurchasedPassportClip> & {
+  id?: string
+  link?: string
+}

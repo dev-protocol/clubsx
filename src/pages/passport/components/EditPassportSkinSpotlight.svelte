@@ -7,7 +7,7 @@
   import type { Clip, Profile } from '@pages/api/profile'
   import { closeAllModals, openModal } from 'svelte-modals'
   import IconSpotlight from './IconSpotlight.svelte'
-
+  import { nanoid } from 'nanoid'
   import { Strings } from '../i18n'
   import type { PassportItem } from '../types'
   import PassportAsset from './PassportAsset.svelte'
@@ -123,8 +123,10 @@
                         method === 'patch'
                           ? [
                               ...(skin.spotlight?.map((clip) =>
-                                clip.sTokenId === item.assetId
+                                clip.sTokenId === item.assetId ||
+                                clip.id === item.id
                                   ? {
+                                      id: clip.id ?? nanoid(),
                                       payload: item.payload!,
                                       sTokenId: item.assetId,
                                       description,
@@ -158,6 +160,7 @@
 
   const spotlight = (prof: Profile) => prof.skins?.at(skinIndex)?.spotlight
   const purchasedClipsBySkinClip = (clip: Clip, items: PassportItem[]) =>
+    (clip.link ? clip : undefined) ??
     items.find((x) => x.assetId === clip.sTokenId)
 
   $: {

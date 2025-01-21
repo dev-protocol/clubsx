@@ -1,4 +1,5 @@
-import type { ImageData } from './types'
+import type { Clip } from '@pages/api/profile'
+import type { ImageData, PassportItem } from './types'
 
 export const loadImage = async (src: string): Promise<ImageData> => {
   const img = await new Promise<ImageData>((res) => {
@@ -15,3 +16,7 @@ export const ABI_NFT = [
   'event Transfer(address indexed from, address indexed to, uint256 indexed tokenId)',
   'function tokenURI(uint256) view returns(string)',
 ]
+
+export const isItemPurchased = (
+  item: PassportItem | Clip,
+): item is PassportItem => 'assetId' in item

@@ -342,14 +342,16 @@ const classNames = computed(() => props.class ?? 'size-6')
   <svg
     v-if="props.icon === 'share'"
     xmlns="http://www.w3.org/2000/svg"
+    fill="none"
     viewBox="0 0 24 24"
-    fill="currentColor"
+    stroke-width="1.5"
+    stroke="currentColor"
     :class="classNames"
   >
     <path
-      fill-rule="evenodd"
-      d="M15.75 4.5a3 3 0 1 1 .825 2.066l-8.421 4.679a3.002 3.002 0 0 1 0 1.51l8.421 4.679a3 3 0 1 1-.729 1.31l-8.421-4.678a3 3 0 1 1 0-4.132l8.421-4.679a3 3 0 0 1-.096-.755Z"
-      clip-rule="evenodd"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"
     />
   </svg>
 </template>

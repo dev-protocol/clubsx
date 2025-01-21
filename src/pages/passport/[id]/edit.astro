@@ -1,6 +1,7 @@
 ---
 import { isAddress } from 'ethers'
 import Layout from '@layouts/Landing.astro'
+import MediaSDKs from '@components/Passports/MediaSDKs.astro'
 
 import UserProfileEdit from '../components/UserProfileEdit.svelte'
 
@@ -46,4 +47,6 @@ const isLocal =
       )
     }
   </div>
+
+  <MediaSDKs />
 </Layout>

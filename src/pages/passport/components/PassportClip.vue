@@ -9,6 +9,7 @@ import MediaCard from './MediaCard.vue'
 import type { PassportClip } from '../types'
 import Skeleton from '@components/Global/Skeleton.vue'
 import Icons from './Icons.vue'
+import { MediaEmbed } from '@devprotocol/clubs-plugin-passports/vue'
 
 const props = defineProps<{
   index: number
@@ -20,9 +21,16 @@ const props = defineProps<{
   skinId: string
 }>()
 
-const SITE_NAME =
-  new URL(props.item.clubsUrl)?.hostname?.split('.')?.at(0) ?? 'developers'
-const API_PATH = `/api/clubs/?id=${SITE_NAME}`
+const SITE_NAME = computed(
+  () =>
+    whenDefined(props.item?.clubsUrl, (url) =>
+      new URL(url).hostname?.split('.')?.at(0),
+    ) ?? 'developers',
+)
+const API_PATH = computed(() =>
+  whenDefined(SITE_NAME.value, (name) => `/api/clubs/?id=${name}`),
+)
+const IS_LINK = computed(() => typeof props.item.link === 'string')
 
 const elementId = computed<UndefinedOr<string>>(() => {
   const id = whenDefined(props.item.sTokenId, (id) =>
@@ -71,9 +79,11 @@ const shareClip = () => {
 }
 
 onMounted(async () => {
-  const clubApiPri = await fetchClub(`/${API_PATH}`)
-  const clubApi = clubApiPri ? clubApiPri : await fetchClub(API_PATH)
-  clubConfig.value = clubApi?.[0].config.source ?? undefined
+  if (API_PATH.value) {
+    const clubApiPri = await fetchClub(`/${API_PATH.value}`)
+    const clubApi = clubApiPri ? clubApiPri : await fetchClub(API_PATH.value)
+    clubConfig.value = clubApi?.[0]?.config.source ?? undefined
+  }
 })
 </script>
 
@@ -92,10 +102,12 @@ onMounted(async () => {
     >
       <span class="p-0.5 @[16rem]/passport-asset:p-4">
         <MediaCard
+          v-if="item.itemAssetType && item.itemAssetValue"
           :found="!!item"
           :src="item.itemAssetValue"
           :type="item.itemAssetType"
         />
+        <MediaEmbed v-if="IS_LINK" :src="item.link" />
       </span>
 
       <span class="p-1 @[16rem]/passport-asset:p-4">
@@ -107,28 +119,30 @@ onMounted(async () => {
         ></article>
 
         <div class="flex w-full max-w-full items-center justify-between">
+          <i v-if="IS_LINK"></i>
           <span
             v-if="clubName && !props.clubsLink"
             class="line-clamp-1 opacity-50 text-sm @[16rem]/passport-asset:text-base"
             >{{ clubName }}</span
           >
           <a
-            v-if="clubName && props.clubsLink"
+            v-if="!IS_LINK && clubName && props.clubsLink"
             :href="props.item.clubsUrl"
             target="_blank"
             class="line-clamp-1 opacity-50 text-sm @[16rem]/passport-asset:text-base"
             >{{ clubName }}</a
           >
 
-          <div v-if="!clubName" class="h-4 w-1/2">
+          <div v-if="!IS_LINK && !clubName" class="h-4 w-1/2">
             <Skeleton />
           </div>
           <button
             v-if="props.share"
             @click.stop.prevent="shareClip"
-            class="size-6 rounded-full"
+            class="grid justify-items-center gap-1"
           >
-            <Icons icon="share" />
+            <Icons icon="share" class="size-6" />
+            <span class="opacity-70 text-sm">Share</span>
           </button>
         </div>
       </span>

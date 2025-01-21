@@ -10,6 +10,10 @@
   import type { PassportItem } from '../types'
 
   import VideoFetch from './VideoFetch.svelte'
+  import { isItemPurchased } from '../utils'
+  import debounce from 'lodash/debounce'
+  import { mediaSource } from '@devprotocol/clubs-plugin-passports/media'
+  import { MediaEmbed } from '@devprotocol/clubs-plugin-passports/svelte'
 
   export let isOpen: boolean
   export let item: PassportItem
@@ -26,20 +30,24 @@
   export let closeAllOnFinished: boolean = false
   export let onClose: UndefinedOr<() => Promise<void>> = undefined
   let imageElement: HTMLImageElement | null = null
+  let linkError: UndefinedOr<string>
 
   const i18nBase = i18nFactory(Strings)
   let loading = false
   let i18n = i18nBase(['en'])
 
   onMount(async () => {
+    if (!isItemPurchased(item)) {
+      return
+    }
     const { itemAssetType, itemAssetValue } = item || {}
     const isImage = [
       'image',
       'image-link',
       'image-playable',
       'image-playable-link',
-    ].includes(itemAssetType)
-    if (isImage) {
+    ].includes(itemAssetType ?? '')
+    if (isImage && item.itemAssetValue) {
       const response = await fetch(item.itemAssetValue)
       const blob = await response.blob()
       const blobDataUrl = URL.createObjectURL(blob)
@@ -67,6 +75,12 @@
   const onClickClose = async () => {
     onClose && (await onClose())
     closeModal()
+  }
+
+  const handleInput = () => {
+    const isLinkValid = typeof mediaSource(item.link) === 'string'
+    linkError = isLinkValid ? undefined : 'ERROR'
+    console.log({ linkError, item })
   }
 </script>
 
@@ -111,19 +125,40 @@
       </div>
 
       <div class="grid gap-8 w-full max-w-screen-sm overflow-y-scroll">
-        {#if item.itemAssetType !== 'short-video' && item.itemAssetType !== 'short-video-link'}
+        {#if isItemPurchased(item) && item.itemAssetType !== 'short-video' && item.itemAssetType !== 'short-video-link'}
           <img
             bind:this={imageElement}
             class="max-w-44 max-h-44 rounded-md w-full max-w-full object-cover aspect-square"
             alt="Asset"
           />
-        {:else if item.itemAssetType === 'short-video' || item.itemAssetType === 'short-video-link'}
+        {:else if isItemPurchased(item) && (item.itemAssetType === 'short-video' || item.itemAssetType === 'short-video-link')}
           <VideoFetch
             url={item.itemAssetValue}
             posterUrl={item.itemAssetValue}
             videoClass={`max-w-44 max-h-44 rounded-md w-full object-cover aspect-square`}
             isControlled={item.itemAssetType.includes('short-video')}
           />
+        {/if}
+
+        {#if typeof item.link === 'string'}
+          <!-- IF IT's A LINK ITEM -->
+          <label class="hs-form-field is-filled">
+            <span class="hs-form-field__label"> {i18n('ContentLink')} </span>
+            <input
+              class="hs-form-field__input"
+              bind:value={item.link}
+              on:keyup={debounce(handleInput, 700)}
+              placeholder={i18n('ContentLinkPlaceholder')}
+            />
+          </label>
+
+          {#if item.link && linkError === undefined}
+            <div class="flex justify-center">
+              <div class="overflow-hidden rounded">
+                <MediaEmbed src={item.link} />
+              </div>
+            </div>
+          {/if}
         {/if}
 
         <label class="hs-form-field is-filled">
@@ -137,18 +172,21 @@
           />
         </label>
 
-        <span class="hs-form-field is-filled">
-          <span class="hs-form-field__label"> {i18n('FrameColor')} </span>
-          <ColorPicker
-            bind:hex
-            position="responsive"
-            sliderDirection="vertical"
-            isTextInput={true}
-            isAlpha={false}
-            label="Click here to choose a color"
-            --cp-text-color="#000"
-          />
-        </span>
+        {#if typeof item.link !== 'string'}
+          <!-- IF IT's NOT A LINK ITEM -->
+          <span class="hs-form-field is-filled">
+            <span class="hs-form-field__label"> {i18n('FrameColor')} </span>
+            <ColorPicker
+              bind:hex
+              position="responsive"
+              sliderDirection="vertical"
+              isTextInput={true}
+              isAlpha={false}
+              label="Click here to choose a color"
+              --cp-text-color="#000"
+            />
+          </span>
+        {/if}
 
         <button
           on:click|preventDefault={() => onClickAction('del')}
