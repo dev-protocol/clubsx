@@ -1,6 +1,22 @@
 import type { ClubsI18nParts } from '@devprotocol/clubs-core'
 
 export const Strings = {
+  Done: {
+    en: `Done`,
+    ja: `完了`,
+  },
+  Unlist: {
+    en: `Unlist`,
+    ja: `非表示`,
+  },
+  EditItemComment: {
+    en: `Comment`,
+    ja: `コメント`,
+  },
+  InputYourCommentHere: {
+    en: `Input your comment here`,
+    ja: `コメントを入力してください`,
+  },
   HideProfile: {
     en: `Hide this profile`,
     ja: `このプロフィールを非表示にする`,
