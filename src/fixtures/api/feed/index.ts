@@ -1,7 +1,4 @@
-import {
-  whenNotError,
-  whenNotErrorAll,
-} from '@devprotocol/util-ts'
+import { whenNotError, whenNotErrorAll } from '@devprotocol/util-ts'
 import { always } from 'ramda'
 import { createClient } from 'redis'
 import {
