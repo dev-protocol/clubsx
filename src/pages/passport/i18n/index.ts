@@ -7,7 +7,7 @@ export const Strings = {
   },
   ShowProfile: {
     en: `Unhide this profile`,
-    ja: `このプロフィールを再表示する`,
+    ja: `このプロフィールを表示する`,
   },
   MakeDefaultProfile: {
     en: `Make this profile default`,
@@ -39,7 +39,7 @@ export const Strings = {
   },
   PassportSkinNamePlaceholder: {
     en: `Enter a name that you would like to give to this passport`,
-    ja: `パスポートにつける名前を入力してください`,
+    ja: `パスポートの名称を入力してください`,
   },
   UsernamePlaceholder: {
     en: `Enter your username.`,
@@ -53,19 +53,19 @@ export const Strings = {
     en: () =>
       `You have not purchased <b>Passport Skins</b>.<br /><i>To configure</i> your creative and unique passport page <b>purchase Passport Skins now</b>.`,
     ja: () =>
-      `<b>パスポートスキン</b>を購入していません。<br />クリエイティブでユニークなパスポートページを<i>設定</i>するには、<b>今すぐパスポートスキンを購入</b>してください。`,
+      `<b>パスポートスキン</b>を購入していません。<br />パスポートスキンを<i>購入</i>すると、<b>パスポートページで着せ替え</b>をすることができます。`,
   },
   PinClipsToShowcase: {
     en: () =>
       `You have not pinned your <b>Passport Clips</b>.<br /><i>To configure</i> your creative and unique passport page <b>pin Passport Clips now</b>.`,
     ja: () =>
-      `<b>パスポートクリップ</b> をピン留めしていません。<br /><i>クリエイティブでユニークなパスポートページを設定</i>するには、<b>今すぐパスポートクリップをピン留め</b>してください。`,
+      `<b>パスポートクリップ</b> をピン留めしていません。<br /><i>パスポートページを設定</i>するには、<b>今すぐパスポートクリップをピン留め</b>してください。`,
   },
   PinClipsToSpotlight: {
     en: () =>
       `You have not pinned your <b>Passport Clips</b> to spotlight.<br /><i>To configure</i> your creative and unique passport page <b>pin Passport Clips to Spotlight now</b>.`,
     ja: () =>
-      `<b>パスポートクリップ</b> をスポットライトにピン留めしていません。<br /><i>クリエイティブでユニークなパスポートページを設定</i>するには、<b>今すぐパスポートクリップをスポットライトにピン留め</b>してください。`,
+      `<b>パスポートクリップ</b> をスポットライトにピン留めしていません。<br /><i>パスポートページを設定</i>するには、<b>今すぐパスポートクリップをスポットライトにピン留め</b>してください。`,
   },
   PinClipsToSpotlightHelper: {
     en: () => `You can pin 3 clips to your spotlight.`,
@@ -79,7 +79,7 @@ export const Strings = {
     en: () =>
       `You have not purchased <b>Passport Assets</b>.<br /><i>To configure</i> your creative and unique passport page <b>purchase Passport Assets now</b>.`,
     ja: () =>
-      `<b>パスポートアセット</b>を購入していません。<br />クリエイティブでユニークなパスポートページを<i>設定</i>するには、<b>今すぐパスポートアセットを購入</b>してください。`,
+      `<b>パスポートアセット</b>を購入していません。<br />パスポートページを<i>設定</i>するには、<b>今すぐパスポートアセットを購入</b>してください。`,
   },
   PassportClips: {
     en: () => `Purchased Passport Clips`,
@@ -111,7 +111,7 @@ export const Strings = {
   },
   Description: {
     en: 'Description',
-    ja: '説明',
+    ja: '自己紹介',
   },
   PassportNameHelper: {
     en: 'Give a name to your passport to make it easy to distinguish them',
@@ -199,7 +199,7 @@ export const Strings = {
   },
   ContentLinkPlaceholder: {
     en: 'TikTok, YouTube, YouTube Shorts, Instagram, X are available.',
-    ja: 'TikTok, YouTube, YouTube Shorts, Instagram, X のリンクが使えます。',
+    ja: 'TikTok, YouTube, YouTube Shorts, Instagram, X のリンクが利用可能です。',
   },
   ContentLinkDescriptionPlaceholder: {
     en: 'Your comment...',
