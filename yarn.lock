@@ -225,17 +225,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/tailwind@npm:5.1.4":
-  version: 5.1.4
-  resolution: "@astrojs/tailwind@npm:5.1.4"
+"@astrojs/tailwind@npm:5.1.5":
+  version: 5.1.5
+  resolution: "@astrojs/tailwind@npm:5.1.5"
   dependencies:
     autoprefixer: "npm:^10.4.20"
-    postcss: "npm:^8.4.49"
+    postcss: "npm:^8.5.1"
     postcss-load-config: "npm:^4.0.2"
   peerDependencies:
     astro: ^3.0.0 || ^4.0.0 || ^5.0.0
     tailwindcss: ^3.0.24
-  checksum: 10c0/ff9ff12c5c465371787c0f4e348ccbdefb2914e69134e28d156f0a42406da5c963b2a2427a30cb453f4437baa071cfc7bc44a7e215167e2c9564a5a3d1061e99
+  checksum: 10c0/90c1b19c268d08b82a22b94c7c874d025632453c2a22afe42e9d03c4372fdf565322e2c57b42135e152ed52dde733803cd4ed88c8a204862799708c43fca8db2
   languageName: node
   linkType: hard
 
@@ -9817,7 +9817,7 @@ __metadata:
     "@astrojs/prefetch": "npm:0.4.1"
     "@astrojs/react": "npm:3.6.3"
     "@astrojs/svelte": "npm:5.7.3"
-    "@astrojs/tailwind": "npm:5.1.4"
+    "@astrojs/tailwind": "npm:5.1.5"
     "@astrojs/vercel": "npm:7.8.2"
     "@astrojs/vue": "npm:4.5.3"
     "@crossmint/client-sdk-base": "npm:^1.0.1-alpha.6"
@@ -18064,7 +18064,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nanoid@npm:^3.3.7":
+"nanoid@npm:^3.3.7, nanoid@npm:^3.3.8":
   version: 3.3.8
   resolution: "nanoid@npm:3.3.8"
   bin:
@@ -19384,7 +19384,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:8.4.49, postcss@npm:^8.4.48, postcss@npm:^8.4.49":
+"postcss@npm:8.4.49, postcss@npm:^8.4.48":
   version: 8.4.49
   resolution: "postcss@npm:8.4.49"
   dependencies:
@@ -19414,6 +19414,17 @@ __metadata:
     picocolors: "npm:^1.1.0"
     source-map-js: "npm:^1.2.1"
   checksum: 10c0/929f68b5081b7202709456532cee2a145c1843d391508c5a09de2517e8c4791638f71dd63b1898dba6712f8839d7a6da046c72a5e44c162e908f5911f57b5f44
+  languageName: node
+  linkType: hard
+
+"postcss@npm:^8.5.1":
+  version: 8.5.1
+  resolution: "postcss@npm:8.5.1"
+  dependencies:
+    nanoid: "npm:^3.3.8"
+    picocolors: "npm:^1.1.1"
+    source-map-js: "npm:^1.2.1"
+  checksum: 10c0/c4d90c59c98e8a0c102b77d3f4cac190f883b42d63dc60e2f3ed840f16197c0c8e25a4327d2e9a847b45a985612317dc0534178feeebd0a1cf3eb0eecf75cae4
   languageName: node
   linkType: hard
 
