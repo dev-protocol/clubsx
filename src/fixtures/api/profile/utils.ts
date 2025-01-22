@@ -10,7 +10,7 @@ import {
 } from 'unique-names-generator'
 import type { Config } from 'unique-names-generator'
 
-const config: Config = {
+export const config: Config = {
   dictionaries: [colors, animals, starWars, names],
   separator: ' ',
   length: 2,
