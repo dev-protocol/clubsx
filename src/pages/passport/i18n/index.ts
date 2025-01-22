@@ -18,20 +18,20 @@ export const Strings = {
     ja: `コメントを入力してください`,
   },
   HideProfile: {
-    en: `Hide this profile`,
-    ja: `このプロフィールを非表示にする`,
+    en: `Hide this Passport`,
+    ja: `このパスポートを非表示にする`,
   },
   ShowProfile: {
-    en: `Unhide this profile`,
-    ja: `このプロフィールを表示する`,
+    en: `Unhide this Passport`,
+    ja: `このパスポートを表示する`,
   },
   MakeDefaultProfile: {
-    en: `Make this profile default`,
-    ja: `このプロフィールをデフォルトにする`,
+    en: `Make this Passport default`,
+    ja: `このパスポートをデフォルトにする`,
   },
   AddNewProfile: {
-    en: `Add new profile`,
-    ja: `新しいプロフィールを追加`,
+    en: `Add new Passport`,
+    ja: `新しいパスポートを追加`,
   },
   PassportName: {
     en: 'Passport name',
