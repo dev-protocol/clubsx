@@ -80,7 +80,11 @@ const VIDEO: PassportItemAssetType[] = [
     </div>
     <div class="flex items-end max-w-16 min-w-16">
       <a :href="assetLink">
+        <video v-if="VIDEO.includes(tag)">
+          <source :src="assetSrc" type="video/mp4" />
+        </video>
         <img
+          v-else
           class="w-full rounded"
           style="aspect-ratio: 1 / 1"
           :src="assetSrc"
