@@ -245,4 +245,16 @@ export const Strings = {
     en: 'Preview my Passport',
     ja: 'パスポートを見る',
   },
+  Skin: {
+    en: 'Skin',
+    ja: 'スキン',
+  },
+  CustomSkinSet: {
+    en: 'Custom Skin is set.',
+    ja: 'カスタムスキンあり',
+  },
+  NoCustomSkinSet: {
+    en: 'Custom Skin is not set.',
+    ja: 'カスタムスキンなし',
+  },
 } satisfies ClubsI18nParts

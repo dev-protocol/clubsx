@@ -75,7 +75,7 @@
 
 <!-- Passport skin theme -->
 <div class="w-full">
-  <label class="hs-form-field is-filled mt-[76px]">
+  <label class="hs-form-field is-filled mt-16">
     <div class="hs-form-field__label flex items-center justify-between mb-1">
       <span class="hs-form-field__label">
         {i18n('PassportSkin')} ({purchasedSkinThemes?.length ?? 0})

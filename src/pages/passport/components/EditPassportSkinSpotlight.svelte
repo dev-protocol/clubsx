@@ -167,7 +167,7 @@
 
 <!-- Edit passport skin spotlight clips -->
 <div class="w-full">
-  <span class="hs-form-field is-filled mt-[76px]">
+  <span class="hs-form-field is-filled mt-16">
     <div class="hs-form-field__label flex items-center justify-between mb-1">
       <span class="hs-form-field__label flex items-center gap-2">
         {i18n('PassportSpotlightClips')}

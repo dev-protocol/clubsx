@@ -36,5 +36,6 @@ export const getDefaultProfile = async ({ id }: { id: string }) => {
   return {
     username: uniqueNamesGenerator({ ...config, seed: id }),
     avatar: await getBoringAvatar(id),
+    skins: [],
   }
 }
