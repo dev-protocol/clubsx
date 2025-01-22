@@ -52,7 +52,11 @@ const VIDEO: PassportItemAssetType[] = [
     <div class="flex flex-col flex-grow">
       <div class="flex items-center gap-3">
         <a :href="`/passport/${address}`">
-          <img class="rounded-full w-14 h-14" :src="avatarSrc" alt="avatar" />
+          <img
+            class="w-14 h-14 rounded-full object-cover aspect-square bg-lightgray bg-cover bg-center bg-no-repeat _p-avatar"
+            :src="avatarSrc"
+            alt="avatar"
+          />
         </a>
         <div class="flex flex-col flex-grow gap-0">
           <div class="text-xs font-bold">
@@ -85,18 +89,24 @@ const VIDEO: PassportItemAssetType[] = [
     </div>
     <div class="flex items-end max-w-16 min-w-16">
       <a :href="assetLink" target="_blank">
+        <video v-if="VIDEO.includes(tag)">
+          <source :src="assetSrc" type="video/mp4" />
+        </video>
+        <img v-else-if="CLIP.includes(tag)" :src="assetSrc" alt="clip" />
         <MediaCard
+          v-else-if="SKIN.includes(tag)"
           class="w-full rounded"
           style="aspect-ratio: 1 / 1"
-          v-if="tag !== 'ugc'"
-          :found="!!assetSrc"
           :src="assetSrc"
           :type="tag"
         />
         <MediaEmbed
           v-else
+          class="w-full rounded"
+          style="aspect-ratio: 1 / 1"
+          :found="!!assetSrc"
           :src="assetSrc"
-          class="w-full h-full object-cover rounded-xl"
+          :type="tag"
         />
       </a>
     </div>

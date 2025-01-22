@@ -25,6 +25,7 @@ export type Skin = {
   likes?: number
   spotlight?: Clip[]
   isHidden?: boolean
+  description?: string
 }
 
 export type Profile = {

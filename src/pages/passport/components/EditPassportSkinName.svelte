@@ -47,7 +47,7 @@
 
 <!-- Passport skin name -->
 <div class="w-full">
-  <label class="hs-form-field is-filled mt-[76px]">
+  <label class="hs-form-field is-filled mt-16">
     <span class="hs-form-field__label"> {i18n('PassportName')} </span>
     <input
       class="hs-form-field__input"

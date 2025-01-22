@@ -38,10 +38,9 @@ const isLocal =
   Astro.url.hostname.includes('localhost') ||
   /^[\d\.]+$/.test(Astro.url.hostname)
 
-const htmlDescription = markdownToHtml(profile.description)
-
 const skin =
   profile?.skins?.find((skin) => skin.id === id) ?? profile?.skins?.at(0)
+const htmlDescription = markdownToHtml(skin?.description)
 const _passportSkinBGMs = skin?.bgm
 const _passportSkinClips = skin?.clips
 const _passportSkinVideos = skin?.videos

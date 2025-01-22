@@ -173,7 +173,7 @@
 </script>
 
 <!-- Edit passport skin showcase clips -->
-<span class="hs-form-field is-filled mt-[76px]">
+<span class="hs-form-field is-filled mt-16">
   <div class="hs-form-field__label flex items-center justify-between mb-1">
     <span class="hs-form-field__label flex gap-2 items-center">
       {i18n('PassportShowcaseClips')}
