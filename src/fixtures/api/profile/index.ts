@@ -26,7 +26,7 @@ export const getProfile = async ({ id }: { id: string }) => {
   const userAvatar = fromDb.avatar
   const userName = fromDb.username
   const defaultProfile: Profile =
-    !userAvatar || !userName ? await getDefaultProfile({ id }) : {}
+    !userAvatar || !userName ? await getDefaultProfile({ id }) : { skins: [] }
 
   const profile = mergeDeepRight(defaultProfile, fromDb)
 

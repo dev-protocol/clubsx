@@ -19,6 +19,7 @@
   import EditPassportSkinShowcase from './EditPassportSkinShowcase.svelte'
   import EditPassportSkinSpotlight from './EditPassportSkinSpotlight.svelte'
   import PassportAfterSavedModal from './PassportAfterSavedModal.svelte'
+  import SkinSummary from './SkinSummary.svelte'
 
   const i18nBase = i18nFactory(Strings)
   let i18n = i18nBase(['en'])
@@ -49,6 +50,7 @@
   let clicked = false
   let self: HTMLElement
   let transformYOrigin: UndefinedOr<number> = undefined
+  let skinEditorOpen = false
 
   onMount(async () => {
     i18n = i18nBase(navigator.languages)
@@ -416,7 +418,7 @@
   style={`transform-origin: center ${transformYOrigin}px`}
 >
   {#if eoa === id}
-    <div class="p-2 w-full max-w-screen-lg mx-auto">
+    <div class="p-2 w-full max-w-screen-lg mx-auto grid">
       <div
         class="w-fit max-w-full flex gap-[15px] py-[8px] px-[16px] items-center justify-start"
       >
@@ -450,30 +452,49 @@
       </div>
 
       <!-- Profile info edit -->
-      <EditUserProfileInfo {eoa} bind:profile {profileUpdating} />
+      <span class="hs-form-field mt-16">
+        <span class="hs-form-field__label"> {i18n('Profile')} </span></span
+      >
+      <EditUserProfileInfo {eoa} bind:profile {profileUpdating} {skinId} />
 
-      <!-- Passport skin name -->
-      <EditPassportSkinName
-        {eoa}
-        bind:profile
-        bind:skinIndex
-        {profileFromAPI}
-        {profileFetching}
-        {profileUpdating}
-      />
+      <span class="hs-form-field mt-16">
+        <span class="hs-form-field__label"> {i18n('Skin')} </span></span
+      >
+      <button
+        on:click={() => (skinEditorOpen = !skinEditorOpen)}
+        class="grid grid-cols-[1fr_auto] w-full items-stretch rounded-xl border border-surface-400 mb-4"
+      >
+        <SkinSummary {profile} {skinId} className="p-2" />
+        <span class="border-l border-surface-400 flex items-center px-8"
+          >{i18n('Edit')}</span
+        >
+      </button>
+      {#if skinEditorOpen}
+        <div class="rounded-xl border border-surface-400 p-2">
+          <!-- Passport skin name -->
+          <EditPassportSkinName
+            {eoa}
+            bind:profile
+            bind:skinIndex
+            {profileFromAPI}
+            {profileFetching}
+            {profileUpdating}
+          />
 
-      <!-- Passport skin theme -->
-      <EditPassportSkinTheme
-        {eoa}
-        {isLocal}
-        bind:profile
-        bind:skinIndex
-        {profileFromAPI}
-        {profileFetching}
-        {profileUpdating}
-        {purchasedSkinThemes}
-        purchasedSkinThemesFetching={purchasedPassportIAssetsFetching}
-      />
+          <!-- Passport skin theme -->
+          <EditPassportSkinTheme
+            {eoa}
+            {isLocal}
+            bind:profile
+            bind:skinIndex
+            {profileFromAPI}
+            {profileFetching}
+            {profileUpdating}
+            {purchasedSkinThemes}
+            purchasedSkinThemesFetching={purchasedPassportIAssetsFetching}
+          />
+        </div>
+      {/if}
 
       <!-- Passport skin spotlight -->
       <EditPassportSkinSpotlight
