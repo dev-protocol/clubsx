@@ -2,29 +2,19 @@
 import MediaCard from '@pages/passport/components/MediaCard.vue'
 import { MediaEmbed } from '@devprotocol/clubs-plugin-passports/vue'
 import type { PassportItemAssetType } from '@devprotocol/clubs-plugin-passports/types'
+import type { FeedType } from '@fixtures/api/feed';
 
-const props = defineProps<{
-  avatarSrc: string
-  badgeSrc: string
-  assetSrc: string
-  tag: PassportItemAssetType
-  name: string
-  address: string
-  badgeName: string
-  assetLink: string
-  description?: string
-  frameHexColor?: string
-}>()
+const props = defineProps<FeedType>()
 
-const SKIN: PassportItemAssetType[] = ['css', 'stylesheet-link']
-const CLIP: PassportItemAssetType[] = [
+const SKIN: FeedType['tag'][] = ['css', 'stylesheet-link']
+const CLIP: FeedType['tag'][] = [
   'image',
   'image-link',
   'image-playable',
   'image-playable-link',
 ]
-const BGM: PassportItemAssetType[] = ['bgm', 'bgm-link']
-const VIDEO: PassportItemAssetType[] = [
+const BGM: FeedType['tag'][] = ['bgm', 'bgm-link']
+const VIDEO: FeedType['tag'][] = [
   'video',
   'video-link',
   'short-video',
@@ -94,11 +84,12 @@ const VIDEO: PassportItemAssetType[] = [
         </video>
         <img v-else-if="CLIP.includes(tag)" :src="assetSrc" alt="clip" />
         <MediaCard
-          v-else-if="SKIN.includes(tag)"
+          v-else-if="SKIN.includes(tag as PassportItemAssetType)"
           class="w-full rounded"
           style="aspect-ratio: 1 / 1"
           :src="assetSrc"
-          :type="tag"
+          :type="tag as PassportItemAssetType"
+          :found="!!assetSrc"
         />
         <MediaEmbed
           v-else
