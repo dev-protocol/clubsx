@@ -2,7 +2,7 @@
 import MediaCard from '@pages/passport/components/MediaCard.vue'
 import { MediaEmbed } from '@devprotocol/clubs-plugin-passports/vue'
 import type { PassportItemAssetType } from '@devprotocol/clubs-plugin-passports/types'
-import type { FeedType } from '@fixtures/api/feed';
+import type { FeedType } from '@fixtures/api/feed'
 
 const props = defineProps<FeedType>()
 
