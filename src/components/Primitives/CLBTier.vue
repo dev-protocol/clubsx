@@ -46,36 +46,36 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@devprotocol/hashi' with (
-  $modular-mode: true
-);
+// @use '@devprotocol/hashi' with (
+//   $modular-mode: true
+// );
 
-.clb-tier {
-  display: grid;
-  justify-items: start;
-  gap: hashi.token-get('padding-sm');
+// .clb-tier {
+//   display: grid;
+//   justify-items: start;
+//   gap: hashi.token-get('padding-sm');
 
-  .clb-tier__media {
-    width: 100%;
-    height: auto;
-    border-radius: hashi.token-get('radius-medium');
-  }
+//   .clb-tier__media {
+//     width: 100%;
+//     height: auto;
+//     border-radius: hashi.token-get('radius-medium');
+//   }
 
-  .clb-tier__title {
-    font-size: hashi.token-get('size-subtitle');
-    font-weight: hashi.token-get('weight-bold');
-    line-height: hashi.token-get('line-height-condensed');
-  }
+//   .clb-tier__title {
+//     font-size: hashi.token-get('size-subtitle');
+//     font-weight: hashi.token-get('weight-bold');
+//     line-height: hashi.token-get('line-height-condensed');
+//   }
 
-  .clb-tier__subtitle {
-    font-size: hashi.token-get('size-body');
-    font-weight: hashi.token-get('weight-normal');
-    line-height: hashi.token-get('line-height-condensed');
-    text-transform: uppercase;
-  }
+//   .clb-tier__subtitle {
+//     font-size: hashi.token-get('size-body');
+//     font-weight: hashi.token-get('weight-normal');
+//     line-height: hashi.token-get('line-height-condensed');
+//     text-transform: uppercase;
+//   }
 
-  .clb-tier__actions {
-    //
-  }
-}
+//   .clb-tier__actions {
+//     //
+//   }
+// }
 </style>
