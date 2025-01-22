@@ -13,7 +13,7 @@
   import type { PassportItem, ImageData } from '../types'
   import { isDark } from '@fixtures/color'
 
- import { VideoFetch } from '@devprotocol/clubs-core/ui/svelte'
+  import { VideoFetch } from '@devprotocol/clubs-core/ui/svelte'
   export let props: {
     local: boolean
     item?: PassportItem
