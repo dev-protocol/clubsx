@@ -233,4 +233,16 @@ export const Strings = {
     en: 'Sign In',
     ja: 'サインイン',
   },
+  Close: {
+    en: 'Close',
+    ja: '閉じる',
+  },
+  PassportUpdated: {
+    en: 'Your Passport has been updated!',
+    ja: 'パスポートを更新しました!',
+  },
+  PreviewMyPassport: {
+    en: 'Preview my Passport',
+    ja: 'パスポートを見る',
+  },
 } satisfies ClubsI18nParts

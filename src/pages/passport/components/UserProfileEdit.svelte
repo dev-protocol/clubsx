@@ -6,7 +6,7 @@
   import type { Profile, Skin } from '@pages/api/profile'
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
   import { fade } from 'svelte/transition'
-  import { Modals, closeAllModals } from 'svelte-modals'
+  import { Modals, closeAllModals, openModal } from 'svelte-modals'
   import LockClosed from '@components/Icons/lock-closed.svelte'
 
   import { Strings } from '../i18n'
@@ -18,6 +18,7 @@
   import EditPagePurchasedClips from './EditPagePurchasedClips.svelte'
   import EditPassportSkinShowcase from './EditPassportSkinShowcase.svelte'
   import EditPassportSkinSpotlight from './EditPassportSkinSpotlight.svelte'
+  import PassportAfterSavedModal from './PassportAfterSavedModal.svelte'
 
   const i18nBase = i18nFactory(Strings)
   let i18n = i18nBase(['en'])
@@ -232,6 +233,14 @@
     profileUpdating = true
     updatingStatus = await submit()
     profileUpdating = false
+
+    openModal(PassportAfterSavedModal, {
+      onClose: async () => {
+        document.body.classList.remove('overflow-hidden')
+        closeAllModals()
+      },
+      href: `/passport/${eoa}/${skinIndex === 0 ? '' : skinId}`,
+    })
 
     setTimeout(() => {
       const isReqSuccessful = updatingStatus === 'success'
