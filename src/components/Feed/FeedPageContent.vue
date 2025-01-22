@@ -13,7 +13,7 @@ console.log('Feed', props.feeds.at(-1))
   <div class="flex flex-col px-2 h-full">
     <p class="text-base font-bold">Latest updates</p>
     <div class="flex flex-col gap-2 flex-grow pb-24 h-full">
-      <Feed v-for="feed in feeds" :key="feed.name" v-bind="feed" />
+      <Feed v-for="feed in feeds" :key="feed.id" v-bind="feed" />
     </div>
   </div>
 </template>
