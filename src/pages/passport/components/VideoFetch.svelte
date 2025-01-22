@@ -13,8 +13,6 @@
   export let loop = true
   export let muted = true
   export let options = {
-    // width: 640,
-    // height: 360,
     fill: false,
     fluid: false,
     preload: 'meta',
@@ -58,7 +56,10 @@
   onMount(() => {
     player = videojs(videoEl, {
       ...options,
-      sources: [{ src: url }],
+      sources: [
+        { src: url, type: 'video/mp4' },
+        { src: url, type: 'application/x-mpegURL' },
+      ],
       controls,
       autoplay: !isControlled, // If not controlled, autoplay
       muted,
@@ -152,3 +153,12 @@
     </div>
   {/if}
 </div>
+
+<style>
+  .video-js {
+    width: 100% !important;
+    height: 100% !important;
+    /* Add object-fit if you want it to behave like background cover */
+    object-fit: cover;
+  }
+  </style>

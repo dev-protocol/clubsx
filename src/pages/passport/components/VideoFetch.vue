@@ -40,8 +40,6 @@ const props = defineProps({
   options: {
     type: Object,
     default: () => ({
-      width: null,
-      height: null,
       fill: false,
       fluid: false,
       preload: 'meta',
