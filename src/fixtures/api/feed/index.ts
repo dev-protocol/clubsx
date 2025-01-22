@@ -1,16 +1,9 @@
-import {
-  whenDefined,
-  whenNotError,
-  whenNotErrorAll,
-} from '@devprotocol/util-ts'
+import { whenNotError, whenNotErrorAll } from '@devprotocol/util-ts'
 import { always } from 'ramda'
 import { createClient } from 'redis'
 import {
   getPassportItemFromPayload,
-  Index,
-  sTokenPayload,
   sTokenPayload as sTokenPayloadSchema,
-  type PassportItemDocument,
 } from '@devprotocol/clubs-plugin-passports'
 import { getDefaultClient } from '@fixtures/api/assets/redis'
 import { ACHIEVEMENT_ITEM_SCHEMA } from '@plugins/achievements/db/schema'
@@ -74,8 +67,6 @@ export const getFeed = async () => {
       .catch((err) => new Error(err)),
   )
 
-  console.log('Assets', purchasedAssets)
-
   const purchasedAssetsWithUser = await whenNotErrorAll(
     [purchasedAssets, redis],
     ([assets, client]) =>
@@ -114,34 +105,45 @@ export const getFeed = async () => {
               .catch(() => encodedDefaultConfig), // Use default config if absent.
           )
 
-          let skinSection: ClipTypes | undefined
           let skinFoundFirst: Skin | undefined
           let clipFoundFirst: Clip | undefined
+          let skinSection: ClipTypes | undefined
           for (const skin of userProfile?.skins || []) {
             const spotlightItem = skin.spotlight?.find(
               (clip) =>
                 (clip.sTokenId === asset.id || asset.nId?.toString()) &&
                 clip.payload === asset.payload,
             )
-            if (spotlightItem) {
-              skinFoundFirst = skin
-              skinSection = 'spotlight'
-              clipFoundFirst = spotlightItem
-              break
-            }
 
-            const showcaseItme = skin.clips?.find(
+            const showcaseItem = skin.clips?.find(
               (clip) =>
                 (clip.sTokenId === asset.id || asset.nId?.toString()) &&
                 clip.payload === asset.payload,
             )
 
-            if (showcaseItme) {
+            if (spotlightItem || showcaseItem) {
               skinFoundFirst = skin
-              skinSection = 'clips'
-              clipFoundFirst = spotlightItem
-              break
+              skinSection =
+                (showcaseItem?.updatedAt || 0) > (spotlightItem?.updatedAt || 0)
+                  ? 'clips'
+                  : !!spotlightItem
+                    ? 'spotlight'
+                    : undefined
+              clipFoundFirst =
+                (showcaseItem?.updatedAt || 0) > (spotlightItem?.updatedAt || 0)
+                  ? showcaseItem
+                  : !!spotlightItem
+                    ? spotlightItem
+                    : undefined
             }
+          }
+
+          let itemLink: string = `/passport/${asset.owner}`
+          if (skinFoundFirst && skinFoundFirst.id) {
+            itemLink += `/${skinFoundFirst.id}`
+          }
+          if (clipFoundFirst && clipFoundFirst.id) {
+            itemLink += `/${itemToHash(skinSection || 'clips', clipFoundFirst.id)}`
           }
 
           return {
@@ -163,18 +165,21 @@ export const getFeed = async () => {
               username: userProfile?.username || '0x...',
             },
             passportDetails: {
-              id: asset.id || asset.nId?.toString(),
-              sTokenPayload:
-                asset.payload || passportItemDocument?.sTokenPayload,
-              itemAssetType: passportItemDocument?.itemAssetType,
-              itemAssetValue: passportItemDocument?.itemAssetValue,
-              itemLink: `/passport/${asset.owner}/${skinFoundFirst?.id || ''}/${itemToHash(skinSection || 'clips', clipFoundFirst?.sTokenId || '') || ''}`,
+              id: asset.id,
+              itemLink: itemLink || '',
               itemDescription: clipFoundFirst?.description || '',
               itemFrameColorHex: clipFoundFirst?.frameColorHex || '',
+              itemAssetType: passportItemDocument?.itemAssetType || 'css',
               itemPreviewImgSrc:
-                clubConfiguration?.offerings?.find(
-                  (offering) => bytes32Hex(offering.payload) === asset.payload,
-                )?.imageSrc || 'https://i.imgur.com/lSpDjrr.jpg', // Use clubs default avatar if absent.
+                passportItemDocument?.itemAssetType !== 'bgm' &&
+                passportItemDocument?.itemAssetType !== 'bgm-link' &&
+                passportItemDocument?.itemAssetType !== 'css' &&
+                passportItemDocument?.itemAssetType !== 'stylesheet-link'
+                  ? passportItemDocument?.itemAssetValue
+                  : clubConfiguration?.offerings?.find(
+                      (offering) =>
+                        bytes32Hex(offering.payload) === asset.payload,
+                    )?.imageSrc || 'https://i.imgur.com/lSpDjrr.jpg', // Use clubs default avatar if absent.
             },
           }
         }),

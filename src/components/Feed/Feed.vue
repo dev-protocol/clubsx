@@ -11,6 +11,7 @@ const props = defineProps<{
   badgeName: string
   assetLink: string
   description?: string
+  frameHexColor?: string
 }>()
 
 const SKIN: PassportItemAssetType[] = ['css', 'stylesheet-link']
@@ -33,10 +34,17 @@ const VIDEO: PassportItemAssetType[] = [
   <div
     class="flex gap-3 p-2 rounded-xl"
     :class="{
-      'bg-indigo-600': CLIP.includes(tag),
-      'bg-fuchsia-500': SKIN.includes(tag),
-      'bg-orange-500': BGM.includes(tag),
-      'bg-yellow-500': VIDEO.includes(tag),
+      'bg-indigo-600':
+        !frameHexColor || frameHexColor === '' ? CLIP.includes(tag) : false,
+      'bg-fuchsia-500':
+        !frameHexColor || frameHexColor === '' ? SKIN.includes(tag) : false,
+      'bg-orange-500':
+        !frameHexColor || frameHexColor === '' ? BGM.includes(tag) : false,
+      'bg-yellow-500':
+        !frameHexColor || frameHexColor === '' ? VIDEO.includes(tag) : false,
+    }"
+    :style="{
+      backgroundColor: frameHexColor,
     }"
   >
     <div class="flex flex-col flex-grow">
