@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import MediaCard from '@pages/passport/components/MediaCard.vue'
+import { MediaEmbed } from '@devprotocol/clubs-plugin-passports/vue'
 import type { PassportItemAssetType } from '@devprotocol/clubs-plugin-passports/types'
 
 const props = defineProps<{
@@ -68,21 +70,33 @@ const VIDEO: PassportItemAssetType[] = [
               :src="badgeSrc"
               alt="image"
             />
-            <p v-if="!!badgeName && badgeName !== ''" class="text-xs font-bold">{{ badgeName }}</p>
+            <p v-if="!!badgeName && badgeName !== ''" class="text-xs font-bold">
+              {{ badgeName }}
+            </p>
           </div>
         </div>
       </div>
-      <div v-if="description" class="w-full text-2xl font-bold">
+      <div
+        v-if="description"
+        class="h-16 w-full text-2xl font-bold text-ellipsis overflow-hidden line-clamp-2"
+      >
         {{ description }}
       </div>
     </div>
     <div class="flex items-end max-w-16 min-w-16">
-      <a :href="assetLink">
-        <img
+      <a :href="assetLink" target="_blank">
+        <MediaCard
           class="w-full rounded"
           style="aspect-ratio: 1 / 1"
+          v-if="tag !== 'ugc'"
+          :found="!!assetSrc"
           :src="assetSrc"
-          alt="asset"
+          :type="tag"
+        />
+        <MediaEmbed
+          v-else
+          :src="assetSrc"
+          class="w-full h-full object-cover rounded-xl"
         />
       </a>
     </div>
