@@ -34,7 +34,7 @@
 
   const i18nBase = i18nFactory(Strings)
   let loading = false
-  let i18n = i18nBase(['en'])
+  let i18n = i18nBase(['en', 'ja'])
 
   onMount(async () => {
     if (!isItemPurchased(item)) {
