@@ -54,7 +54,7 @@ const twitterHandle = 'poweredbyClubs'
     <slot name="before-header" />
     <Header connectButton={connectButton} pageTitle={pageTitle} />
 
-    <main class="flex-grow">
+    <main class="flex-grow overflow-y-auto md:overflow-y-visible">
       <slot />
     </main>
 
