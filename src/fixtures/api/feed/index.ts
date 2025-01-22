@@ -43,6 +43,7 @@ import { itemToHash, type ClipTypes } from '@fixtures/router/passportItem'
 import { generateProfileId } from '../keys'
 import type { AsyncReturnType } from 'type-fest'
 import { uniqueNamesGenerator } from 'unique-names-generator'
+import { uniqueId } from 'lodash'
 
 const { REDIS_URL, REDIS_USERNAME, REDIS_PASSWORD } = import.meta.env
 
@@ -54,6 +55,7 @@ export type FeedUserData = {
 }
 
 export type FeedType = {
+  id: string
   avatarSrc: string
   badgeSrc: string
   assetSrc: string
@@ -207,6 +209,7 @@ export const getFeedAssetFromClip = async (
   }
 
   return {
+    id: clip.id || uniqueId(),
     avatarSrc: ownerDetails.avatarSrc,
     badgeSrc: clubAvatar,
     assetSrc: itemAssetValue,
