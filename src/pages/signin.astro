@@ -1,7 +1,6 @@
 ---
 import Layout from '@layouts/LandingWithFooter.astro'
 import { ConnectButton } from '@devprotocol/clubs-plugin-awesome-onboarding'
-import EmailConnectControl from '@components/EmailConnect/Control.svelte'
 import SignInRedirection from '@components/SignInForm/SignInRedirection.vue'
 ---
 
@@ -18,9 +17,6 @@ import SignInRedirection from '@components/SignInForm/SignInRedirection.vue'
           <SignInRedirection client:only="vue" />
         </div>
       </section>
-    </span>
-    <span>
-      <EmailConnectControl client:load />
     </span>
   </div>
 </Layout>
