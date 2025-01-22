@@ -7,7 +7,7 @@ const props = defineProps<{
   feeds: FeedType[]
 }>()
 
-console.log('Feed', props.feeds.at(2))
+console.log('Feed', props.feeds.at(-1))
 </script>
 <template>
   <div class="flex flex-col px-2 h-full">
