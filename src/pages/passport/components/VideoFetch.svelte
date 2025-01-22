@@ -161,4 +161,4 @@
     /* Add object-fit if you want it to behave like background cover */
     object-fit: cover;
   }
-  </style>
+</style>
