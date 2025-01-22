@@ -50,7 +50,7 @@ const VIDEO: PassportItemAssetType[] = [
     <div class="flex flex-col flex-grow">
       <div class="flex items-center gap-3">
         <a :href="`/passport/${address}`">
-          <img class="rounded-full w-14 h-14" :src="avatarSrc" alt="avatar" />
+          <img class="w-14 h-14 rounded-full object-cover aspect-square bg-lightgray bg-cover bg-center bg-no-repeat _p-avatar" :src="avatarSrc" alt="avatar" />
         </a>
         <div class="flex flex-col flex-grow gap-0">
           <div class="text-xs font-bold">
