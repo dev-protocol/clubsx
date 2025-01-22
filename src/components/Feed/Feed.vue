@@ -57,16 +57,18 @@ const VIDEO: PassportItemAssetType[] = [
             {{ name }}
           </div>
           <div
+            v-if="tag !== 'ugc'"
             class="flex items-center gap-2 p-1 rounded-sm bg-white"
             style="width: fit-content"
           >
             <img
+              v-if="!!badgeSrc && badgeSrc !== ''"
               class="w-7 rounded-sm"
               style="aspect-ratio: 16 / 9"
               :src="badgeSrc"
               alt="image"
             />
-            <p class="text-xs font-bold">{{ badgeName }}</p>
+            <p v-if="!!badgeName && badgeName !== ''" class="text-xs font-bold">{{ badgeName }}</p>
           </div>
         </div>
       </div>
