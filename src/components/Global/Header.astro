@@ -7,7 +7,7 @@ import { passportClass } from '@fixtures/ui/passport'
 import NavbarResponsive from './NavbarResponsive.vue'
 
 type Props = {
-  connectButton?: 'show' | 'hidden'
+  connectButton?: 'show' | 'hidden' | 'show-when-signedin'
   pageTitle?: string
 }
 
@@ -22,6 +22,7 @@ const { connectButton = 'hidden', pageTitle } = Astro.props
         client:load
         {pageTitle}
         showConnectButton={connectButton === 'show'}
+        showConnectButtonOnlySignedIn={connectButton === 'show-when-signedin'}
       >
         <Clubs slot="clubs-logo" class="h-5 lg:h-6 w-auto" />
 

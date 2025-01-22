@@ -7,6 +7,7 @@
   import type { connection as Connection } from '@devprotocol/clubs-core/connection'
   import { fade } from 'svelte/transition'
   import { Modals, closeAllModals } from 'svelte-modals'
+  import LockClosed from '@components/Icons/lock-closed.svelte'
 
   import { Strings } from '../i18n'
   import SkinSwitch from './SkinSwitch.svelte'
@@ -363,6 +364,10 @@
     closeAllModals()
   }
 
+  const signIn = () => {
+    connection?.().signal.next('sign-in-request')
+  }
+
   $: {
     if (
       typeof document !== 'undefined' &&
@@ -401,96 +406,96 @@
   }`}
   style={`transform-origin: center ${transformYOrigin}px`}
 >
-  <div class="p-2 w-full max-w-screen-lg mx-auto">
-    <div
-      class="w-fit max-w-full flex gap-[15px] py-[8px] px-[16px] items-center justify-start"
-    >
-      <SkinSwitch
+  {#if eoa === id}
+    <div class="p-2 w-full max-w-screen-lg mx-auto">
+      <div
+        class="w-fit max-w-full flex gap-[15px] py-[8px] px-[16px] items-center justify-start"
+      >
+        <SkinSwitch
+          {eoa}
+          isEditing={true}
+          skins={profile?.skins ?? []}
+          selectedSkinId={skinId ?? profile?.skins?.at(0)?.id ?? ''}
+        />
+
+        <!-- Add new profile -->
+        <button
+          on:click|preventDefault={createNewSkin}
+          disabled={profileFetching || profileUpdating || isCreatingNewSkin}
+          class={`hs-button is-filled w-fit text-center ${isCreatingNewSkin ? 'animate-pulse' : ''} ${
+            createNewSkinStatus === 'success'
+              ? 'is-success'
+              : createNewSkinStatus === 'error'
+                ? 'is-error'
+                : ''
+          }`}
+        >
+          {isCreatingNewSkin
+            ? i18n('Saving')
+            : createNewSkinStatus === 'success'
+              ? i18n('Saved')
+              : createNewSkinStatus === 'error'
+                ? i18n('Error')
+                : i18n('AddNewProfile')}
+        </button>
+      </div>
+
+      <!-- Profile info edit -->
+      <EditUserProfileInfo {eoa} bind:profile {profileUpdating} />
+
+      <!-- Passport skin name -->
+      <EditPassportSkinName
         {eoa}
-        isEditing={true}
-        skins={profile?.skins ?? []}
-        selectedSkinId={skinId ?? profile?.skins?.at(0)?.id ?? ''}
+        bind:profile
+        bind:skinIndex
+        {profileFromAPI}
+        {profileFetching}
+        {profileUpdating}
       />
 
-      <!-- Add new profile -->
-      <button
-        on:click|preventDefault={createNewSkin}
-        disabled={profileFetching || profileUpdating || isCreatingNewSkin}
-        class={`hs-button is-filled w-fit text-center ${isCreatingNewSkin ? 'animate-pulse' : ''} ${
-          createNewSkinStatus === 'success'
-            ? 'is-success'
-            : createNewSkinStatus === 'error'
-              ? 'is-error'
-              : ''
-        }`}
-      >
-        {isCreatingNewSkin
-          ? i18n('Saving')
-          : createNewSkinStatus === 'success'
-            ? i18n('Saved')
-            : createNewSkinStatus === 'error'
-              ? i18n('Error')
-              : i18n('AddNewProfile')}
-      </button>
+      <!-- Passport skin theme -->
+      <EditPassportSkinTheme
+        {eoa}
+        {isLocal}
+        bind:profile
+        bind:skinIndex
+        {profileFromAPI}
+        {profileFetching}
+        {profileUpdating}
+        {purchasedSkinThemes}
+        purchasedSkinThemesFetching={purchasedPassportIAssetsFetching}
+      />
+
+      <!-- Passport skin spotlight -->
+      <EditPassportSkinSpotlight
+        {eoa}
+        {isLocal}
+        bind:profile
+        bind:skinIndex
+        {profileFromAPI}
+        {profileFetching}
+        {profileUpdating}
+        {hasSpotlightLimitReadched}
+        purchasedClips={purchasedSkinClips}
+        isFetchingPurchasedClips={purchasedPassportIAssetsFetching}
+        onClickCreateButton={clickAddSpotlight}
+      />
+
+      <!-- Passport skin showcase -->
+      <EditPassportSkinShowcase
+        {eoa}
+        {isLocal}
+        bind:profile
+        bind:skinIndex
+        {profileFromAPI}
+        {profileFetching}
+        {profileUpdating}
+        purchasedClips={purchasedSkinClips}
+        isFetchingPurchasedClips={purchasedPassportIAssetsFetching}
+        onClickCreateButton={clickAddShowcase}
+      />
     </div>
 
-    <!-- Profile info edit -->
-    <EditUserProfileInfo {eoa} bind:profile {profileUpdating} />
-
-    <!-- Passport skin name -->
-    <EditPassportSkinName
-      {eoa}
-      bind:profile
-      bind:skinIndex
-      {profileFromAPI}
-      {profileFetching}
-      {profileUpdating}
-    />
-
-    <!-- Passport skin theme -->
-    <EditPassportSkinTheme
-      {eoa}
-      {isLocal}
-      bind:profile
-      bind:skinIndex
-      {profileFromAPI}
-      {profileFetching}
-      {profileUpdating}
-      {purchasedSkinThemes}
-      purchasedSkinThemesFetching={purchasedPassportIAssetsFetching}
-    />
-
-    <!-- Passport skin spotlight -->
-    <EditPassportSkinSpotlight
-      {eoa}
-      {isLocal}
-      bind:profile
-      bind:skinIndex
-      {profileFromAPI}
-      {profileFetching}
-      {profileUpdating}
-      {hasSpotlightLimitReadched}
-      purchasedClips={purchasedSkinClips}
-      isFetchingPurchasedClips={purchasedPassportIAssetsFetching}
-      onClickCreateButton={clickAddSpotlight}
-    />
-
-    <!-- Passport skin showcase -->
-    <EditPassportSkinShowcase
-      {eoa}
-      {isLocal}
-      bind:profile
-      bind:skinIndex
-      {profileFromAPI}
-      {profileFetching}
-      {profileUpdating}
-      purchasedClips={purchasedSkinClips}
-      isFetchingPurchasedClips={purchasedPassportIAssetsFetching}
-      onClickCreateButton={clickAddShowcase}
-    />
-  </div>
-
-  {#if eoa === id}
     <div
       class="my-[76px] flex w-full p-2 max-w-screen-lg mx-auto items-center justify-start gap-2"
     >
@@ -560,6 +565,24 @@
                 ? i18n('ShowProfile')
                 : i18n('HideProfile')}
       </button>
+    </div>
+  {:else if eoa === undefined}
+    <div
+      class="w-full mx-auto max-w-xl flex flex-col gap-8 py-8 px-4 min-h-[calc(100vh-7.5rem)] items-center justify-center"
+    >
+      <LockClosed className="size-32 text-black/10" />
+      <button
+        on:click={signIn}
+        class="hs-button is-filled is-large is-fullwidth"
+        >{i18n('SignIn')}</button
+      >
+    </div>
+  {:else}
+    <div
+      class="w-full mx-auto max-w-xl flex flex-col gap-8 py-8 px-4 min-h-[calc(100vh-7.5rem)] items-center justify-center"
+    >
+      <LockClosed className="size-32 text-black/10" />
+      <p class="font-bold text-black/50">{i18n('HasNoAccess')}</p>
     </div>
   {/if}
 </div>

@@ -225,4 +225,12 @@ export const Strings = {
     en: 'Add link from',
     ja: 'リンクを追加',
   },
+  HasNoAccess: {
+    en: `You can't access here.`,
+    ja: 'ここにはアクセスできません。',
+  },
+  SignIn: {
+    en: 'Sign In',
+    ja: 'サインイン',
+  },
 } satisfies ClubsI18nParts
