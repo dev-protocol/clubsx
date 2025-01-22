@@ -40,8 +40,8 @@ const props = defineProps({
   options: {
     type: Object,
     default: () => ({
-      // width: 640,
-      // height: 360,
+      width: null,
+      height: null,
       fill: false,
       fluid: false,
       preload: 'meta',
@@ -91,7 +91,10 @@ onMounted(() => {
   player = videojs(videoEl.value, {
     ...props.options,
     // Provide an HLS URL (m3u8) or fallback
-    sources: [{ src: props.url }],
+    sources: [
+      { src: props.url, type: 'video/mp4'},
+      { src: props.url, type: 'application/x-mpegURL'},
+    ],
     controls: props.controls, // for using videojs controls
     autoplay: !props.isControlled, // If not controlled, autoplay
     muted: props.muted,
@@ -175,3 +178,12 @@ onMounted(() => {
     </div>
   </div>
 </template>
+
+<style>
+.video-js {
+  width: 100% !important;
+  height: 100% !important;
+  /* Add object-fit if you want it to behave like background cover */
+  object-fit: cover;
+}
+</style>
