@@ -9,7 +9,7 @@
   import { Strings } from '../i18n'
   import type { PassportItem } from '../types'
 
-  import VideoFetch from './VideoFetch.svelte'
+ import { VideoFetch } from '@devprotocol/clubs-core/ui/svelte'
 
   export let isOpen: boolean
   export let item: PassportItem
