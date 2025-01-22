@@ -18,12 +18,12 @@ export const Strings = {
     ja: `コメントを入力してください`,
   },
   HideProfile: {
-    en: `Hide this Passport`,
-    ja: `このパスポートを非表示にする`,
+    en: `Archive`,
+    ja: `アーカイブする`,
   },
   ShowProfile: {
-    en: `Unhide this Passport`,
-    ja: `このパスポートを表示する`,
+    en: `Unarchive`,
+    ja: `アーカイブから戻す`,
   },
   MakeDefaultProfile: {
     en: `Make this Passport default`,

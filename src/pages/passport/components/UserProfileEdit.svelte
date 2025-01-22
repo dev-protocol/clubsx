@@ -506,74 +506,77 @@
     </div>
 
     <div
-      class="my-[76px] flex w-full p-2 max-w-screen-lg mx-auto items-center justify-start gap-2"
+      class="my-[76px] flex flex-col lg:flex-row w-full p-2 max-w-screen-lg mx-auto items-center justify-start gap-12 lg:gap-2"
     >
-      <button
-        on:click={saveProfile}
-        disabled={profileUpdating || !eoa || profileFetching}
-        class={`hs-button is-filled is-large w-fit ${profileUpdating ? 'animate-pulse' : ''} ${
-          updatingStatus === 'success'
-            ? 'is-success'
-            : updatingStatus === 'error'
-              ? 'is-error'
-              : ''
-        }`}
-        >{profileUpdating
-          ? i18n('Saving')
-          : updatingStatus === 'success'
-            ? i18n('Saved')
-            : updatingStatus === 'error'
-              ? i18n('Error')
-              : i18n('Save')}</button
-      >
-
       <!-- Make this profile default -->
-      <button
-        on:click|preventDefault={selectAsDefaultSkin}
-        disabled={profileFetching ||
-          profileUpdating ||
-          isSelectingAsDefaultSkin}
-        class={`hs-button is-filled is-large w-fit text-center ${isSelectingAsDefaultSkin ? 'animate-pulse' : ''} ${
-          selectAsDefaultSkinStatus === 'success'
-            ? 'is-success'
-            : selectAsDefaultSkinStatus === 'error'
-              ? 'is-error'
-              : ''
-        }`}
-        >{isSelectingAsDefaultSkin
-          ? i18n('Saving')
-          : selectAsDefaultSkinStatus === 'success'
-            ? i18n('Saved')
-            : selectAsDefaultSkinStatus === 'error'
-              ? i18n('Error')
-              : i18n('MakeDefaultProfile')}</button
-      >
+      <div class="w-full lg:w-fit order-last lg:order-none">
+        <button
+          on:click|preventDefault={selectAsDefaultSkin}
+          disabled={profileFetching ||
+            profileUpdating ||
+            isSelectingAsDefaultSkin}
+          class={`hs-button is-filled is-small w-fit text-center ${isSelectingAsDefaultSkin ? 'animate-pulse' : ''} ${
+            selectAsDefaultSkinStatus === 'success'
+              ? 'is-success'
+              : selectAsDefaultSkinStatus === 'error'
+                ? 'is-error'
+                : ''
+          }`}
+          >{isSelectingAsDefaultSkin
+            ? i18n('Saving')
+            : selectAsDefaultSkinStatus === 'success'
+              ? i18n('Saved')
+              : selectAsDefaultSkinStatus === 'error'
+                ? i18n('Error')
+                : i18n('MakeDefaultProfile')}</button
+        >
 
-      <!-- Toggle profile visibility -->
-      <button
-        on:click|preventDefault={toggleSkinVisibility}
-        disabled={profileFetching ||
-          profileUpdating ||
-          isTogglingSkinVisibility ||
-          skinIndex === 0}
-        class={`hs-button is-filled is-large w-fit text-center ${isTogglingSkinVisibility ? 'animate-pulse' : ''} ${
-          toggleSkinVisibilityStatus === 'success'
-            ? 'is-success'
-            : toggleSkinVisibilityStatus === 'error'
-              ? 'is-error'
-              : ''
-        }`}
+        <!-- Toggle profile visibility -->
+        <button
+          on:click|preventDefault={toggleSkinVisibility}
+          disabled={profileFetching ||
+            profileUpdating ||
+            isTogglingSkinVisibility ||
+            skinIndex === 0}
+          class={`hs-button is-filled is-small w-fit text-center ${isTogglingSkinVisibility ? 'animate-pulse' : ''} ${
+            toggleSkinVisibilityStatus === 'success'
+              ? 'is-success'
+              : toggleSkinVisibilityStatus === 'error'
+                ? 'is-error'
+                : ''
+          }`}
+        >
+          {isTogglingSkinVisibility
+            ? i18n('Saving')
+            : toggleSkinVisibilityStatus === 'success'
+              ? i18n('Saved')
+              : toggleSkinVisibilityStatus === 'error'
+                ? i18n('Error')
+                : profile?.skins?.at(skinIndex)?.isHidden
+                  ? i18n('ShowProfile')
+                  : i18n('HideProfile')}
+        </button>
+      </div>
+      <span class="w-full lg:w-fit lg:grow flex justify-end">
+        <button
+          on:click={saveProfile}
+          disabled={profileUpdating || !eoa || profileFetching}
+          class={`hs-button is-filled is-large w-full lg:w-fit lg:px-32 text-2xl lg:text-3xl ${profileUpdating ? 'animate-pulse' : ''} ${
+            updatingStatus === 'success'
+              ? 'is-success'
+              : updatingStatus === 'error'
+                ? 'is-error'
+                : ''
+          }`}
+          >{profileUpdating
+            ? i18n('Saving')
+            : updatingStatus === 'success'
+              ? i18n('Saved')
+              : updatingStatus === 'error'
+                ? i18n('Error')
+                : i18n('Save')}</button
+        ></span
       >
-        {isTogglingSkinVisibility
-          ? i18n('Saving')
-          : toggleSkinVisibilityStatus === 'success'
-            ? i18n('Saved')
-            : toggleSkinVisibilityStatus === 'error'
-              ? i18n('Error')
-              : profile?.skins?.at(skinIndex)?.isHidden
-                ? i18n('ShowProfile')
-                : i18n('HideProfile')}
-      </button>
     </div>
   {:else if eoa === undefined}
     <div
