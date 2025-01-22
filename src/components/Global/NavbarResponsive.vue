@@ -1,13 +1,26 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import Bars3 from '@components/Icons/bars-3.vue'
 import XMark from '@components/Icons/x-mark.vue'
+import HomeLogo from '@components/Icons/home.vue'
 import { passportClass } from '@fixtures/ui/passport'
 
-const props = defineProps<{ pageTitle?: string; showConnectButton?: boolean }>()
+const props = defineProps<{
+  pageTitle?: string
+  showConnectButton?: boolean
+  showConnectButtonOnlySignedIn?: boolean
+}>()
 
 const open = ref<boolean>()
 const animate = ref<boolean>()
+const connected = ref<boolean>(false)
+
+onMounted(async () => {
+  const { connection } = await import('@devprotocol/clubs-core/connection')
+  connection().account.subscribe((acc) => {
+    connected.value = typeof acc === 'string'
+  })
+})
 
 watch(open, () => {
   setTimeout(
@@ -24,12 +37,20 @@ watch(open, () => {
     class="relative flex items-center justify-between px-2 py-4 gap-2 lg:px-6"
   >
     <a href="/">
-      <h1 class="flex items-center gap-4" :class="passportClass('heading')">
+      <h1
+        class="hidden md:flex items-center gap-4"
+        :class="passportClass('heading')"
+      >
         <slot name="clubs-logo" />
         <span v-if="Boolean(props.pageTitle)" class="lg:text-xl font-bold">{{
           props.pageTitle
         }}</span>
       </h1>
+      <span
+        class="w-full flex items-center justify-end lg:hidden cursor-pointer"
+      >
+        <HomeLogo />
+      </span>
     </a>
 
     <span class="w-full flex items-center justify-end lg:hidden">
@@ -69,8 +90,16 @@ watch(open, () => {
 
       <slot name="before:connect-button" />
 
-      <template v-if="props.showConnectButton">
-        <slot name="connect-button" />
+      <template
+        v-if="props.showConnectButton || props.showConnectButtonOnlySignedIn"
+      >
+        <span
+          :class="{
+            invisible: props.showConnectButtonOnlySignedIn && !connected,
+          }"
+        >
+          <slot name="connect-button" />
+        </span>
       </template>
 
       <slot name="after:connect-button" />

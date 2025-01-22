@@ -192,7 +192,7 @@
             <p>{assetName ?? ''}</p>
           {/if}
           {#if !clubUrl || !clubName}
-            <span class="w-full h-3"><Skeleton /></span>
+            <span class="inline-block w-full h-3"><Skeleton /></span>
           {:else if props.linkToClub === true || props.linkToClub === undefined}
             <a href="clubUrl"
               ><span
