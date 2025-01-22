@@ -92,8 +92,8 @@ onMounted(() => {
     ...props.options,
     // Provide an HLS URL (m3u8) or fallback
     sources: [
-      { src: props.url, type: 'video/mp4'},
-      { src: props.url, type: 'application/x-mpegURL'},
+      { src: props.url, type: 'video/mp4' },
+      { src: props.url, type: 'application/x-mpegURL' },
     ],
     controls: props.controls, // for using videojs controls
     autoplay: !props.isControlled, // If not controlled, autoplay
