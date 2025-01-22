@@ -316,7 +316,8 @@ export const getFeed = async () => {
     )
   }
 
-  return feed?.filter((feed) => feed && feed.assetSrc)
+  const filteredFeed = feed?.filter((feed) => !!feed) ?? []
+  return filteredFeed
 }
 
 export const getSBTsForEOAFromClubsUrlHash = async (

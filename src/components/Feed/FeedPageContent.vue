@@ -1,27 +1,7 @@
 <script setup lang="ts">
 import Feed from '@components/Feed/Feed.vue'
 import type { PassportItemAssetType } from '@devprotocol/clubs-plugin-passports/types'
-
-export type FeedType = {
-  clubDetails: {
-    url: string
-    name: string
-    avatar: string
-  }
-  ownerDetails: {
-    address: string
-    avatar: string
-    username: string
-  }
-  passportDetails: {
-    id: string
-    itemAssetType: string
-    itemLink: string
-    itemDescription: string
-    itemFrameColorHex: string
-    itemPreviewImgSrc: string
-  }
-}
+import type { FeedType } from '../../fixtures/api/feed'
 
 const props = defineProps<{
   feeds: FeedType[]
