@@ -1387,16 +1387,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@devprotocol/clubs-plugin-akiba@npm:0.1.9":
-  version: 0.1.9
-  resolution: "@devprotocol/clubs-plugin-akiba@npm:0.1.9"
+"@devprotocol/clubs-plugin-akiba@npm:0.1.9-beta.1":
+  version: 0.1.9-beta.1
+  resolution: "@devprotocol/clubs-plugin-akiba@npm:0.1.9-beta.1"
   dependencies:
     "@devprotocol/dev-kit": "npm:8.7.0"
     "@devprotocol/util-ts": "npm:4.0.0"
     "@types/swiper": "npm:^6.0.0"
     bignumber.js: "npm:9.1.2"
     fast-average-color: "npm:^9.4.0"
-    mp4box: "npm:^0.5.3"
     ramda: "npm:0.30.1"
     sass: "npm:1.83.4"
     swiper: "npm:^11.1.15"
@@ -1405,7 +1404,7 @@ __metadata:
     "@devprotocol/clubs-plugin-passports": ^0.1.0-beta.43
     "@devprotocol/clubs-plugin-payments": ^0.3.0
     ethers: ^6.0.0
-  checksum: 10c0/84bae8f2866bab58182e450609be39333514cacf9ead9655710cf193779b3588b32c1181ca36d334147fcd9ac5ec7b5a5c3700af256a70914187d11fc6ce7926
+  checksum: 10c0/f8af0bf943385fa4d633ffc14c7ecdf3abe340a70b475ecce4969884b9b5a2a2ab19297a5a17d580364573b4bb482bd040f79f9abbabbc0f313527f0f64f2c0e
   languageName: node
   linkType: hard
 
@@ -9929,7 +9928,7 @@ __metadata:
     "@crossmint/client-sdk-base": "npm:^1.0.1-alpha.6"
     "@crossmint/client-sdk-react-ui": "npm:^1.0.1-alpha.6"
     "@devprotocol/clubs-core": "npm:3.24.2-beta.1"
-    "@devprotocol/clubs-plugin-akiba": "npm:0.1.9"
+    "@devprotocol/clubs-plugin-akiba": "npm:0.1.9-beta.1"
     "@devprotocol/clubs-plugin-awesome-onboarding": "npm:0.5.1"
     "@devprotocol/clubs-plugin-passports": "npm:0.1.0-beta.53"
     "@devprotocol/clubs-plugin-payments": "npm:0.4.0-alpha.0"
