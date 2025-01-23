@@ -88,7 +88,8 @@
   </div>
 {/if}
 
-<style lang="scss">
+<style>
+  /*
   @use '@devprotocol/hashi/hs-button';
 
   @include hs-button.extend('filled.native-blue') {
@@ -121,4 +122,5 @@
       );
     }
   }
+  */
 </style>

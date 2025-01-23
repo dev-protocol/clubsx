@@ -45,7 +45,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
+/*
 @use '@devprotocol/hashi' with (
   $modular-mode: true
 );
@@ -78,4 +79,5 @@ export default {
     //
   }
 }
+*/
 </style>

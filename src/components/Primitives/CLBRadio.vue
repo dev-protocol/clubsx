@@ -32,7 +32,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
+/*
 @use '@devprotocol/hashi' with (
   $modular-mode: true
 );
@@ -84,4 +85,5 @@ export default {
     height: clamp(42px, 5vw, 50px);
   }
 }
+*/
 </style>
