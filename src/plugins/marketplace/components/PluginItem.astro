@@ -29,64 +29,66 @@ const {
 const pluginUrl = plugin.planned ? undefined : `/admin/marketplace/${plugin.id}`
 ---
 
-<style lang="scss">
-  // @use 'node_modules/@devprotocol/hashi';
+<style>
+  /*
+  @use 'node_modules/@devprotocol/hashi';
 
-  // .clb-plugin__tag {
-  //   @include hashi.color-apply(
-  //     'plugin-tag',
-  //     (
-  //       fill: 'dp-surface-200',
-  //       ink: 'dp-surface-ink',
-  //       border: 'dp-surface-200',
-  //     )
-  //   );
+  .clb-plugin__tag {
+    @include hashi.color-apply(
+      'plugin-tag',
+      (
+        fill: 'dp-surface-200',
+        ink: 'dp-surface-ink',
+        border: 'dp-surface-200',
+      )
+    );
 
-  //   &.is-upcoming {
-  //     @include hashi.color-apply(
-  //       'plugin-tag',
-  //       (
-  //         fill: 'dp-yellow.400',
-  //         ink: 'dp-yellow.ink',
-  //         border: 'dp-yellow.400',
-  //       )
-  //     );
-  //   }
+    &.is-upcoming {
+      @include hashi.color-apply(
+        'plugin-tag',
+        (
+          fill: 'dp-yellow.400',
+          ink: 'dp-yellow.ink',
+          border: 'dp-yellow.400',
+        )
+      );
+    }
 
-  //   &.is-preview {
-  //     @include hashi.color-apply(
-  //       'plugin-tag',
-  //       (
-  //         fill: 'plox.400',
-  //         ink: 'plox.ink',
-  //         border: 'plox.400',
-  //       )
-  //     );
-  //   }
+    &.is-preview {
+      @include hashi.color-apply(
+        'plugin-tag',
+        (
+          fill: 'plox.400',
+          ink: 'plox.ink',
+          border: 'plox.400',
+        )
+      );
+    }
 
-  //   &.is-free,
-  //   &.is-added {
-  //     @include hashi.color-apply(
-  //       'plugin-tag',
-  //       (
-  //         fill: 'dp-green.400',
-  //         ink: 'dp-green.ink',
-  //         border: 'dp-green.400',
-  //       )
-  //     );
-  //   }
+    &.is-free,
+    &.is-added {
+      @include hashi.color-apply(
+        'plugin-tag',
+        (
+          fill: 'dp-green.400',
+          ink: 'dp-green.ink',
+          border: 'dp-green.400',
+        )
+      );
+    }
 
-  //   &.is-pro {
-  //     @include hashi.color-apply(
-  //       'plugin-tag',
-  //       (
-  //         fill: 'dp-blue-grey.400',
-  //         ink: 'dp-blue-grey.ink',
-  //         border: 'dp-blue-grey.400',
-  //       )
-  //     );
-  //   }
-  // }
+    &.is-pro {
+      @include hashi.color-apply(
+        'plugin-tag',
+        (
+          fill: 'dp-blue-grey.400',
+          ink: 'dp-blue-grey.ink',
+          border: 'dp-blue-grey.400',
+        )
+      );
+    }
+  }
+  */
 </style>
 
 <Wrapper href={pluginUrl}>

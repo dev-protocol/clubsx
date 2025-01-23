@@ -88,37 +88,39 @@
   </div>
 {/if}
 
-<style lang="scss">
-  // @use '@devprotocol/hashi/hs-button';
+<style>
+  /*
+  @use '@devprotocol/hashi/hs-button';
 
-  // @include hs-button.extend('filled.native-blue') {
-  //   @include hs-button.color(
-  //     (
-  //       fill: 'native-blue.400',
-  //       ink: 'native-blue.ink',
-  //       border: 'native-blue.400',
-  //     )
-  //   );
+  @include hs-button.extend('filled.native-blue') {
+    @include hs-button.color(
+      (
+        fill: 'native-blue.400',
+        ink: 'native-blue.ink',
+        border: 'native-blue.400',
+      )
+    );
 
-  //   &:hover,
-  //   &:focus {
-  //     @include hs-button.color(
-  //       (
-  //         fill: 'native-blue.300',
-  //         ink: 'native-blue.ink',
-  //         border: 'native-blue.300',
-  //       )
-  //     );
-  //   }
+    &:hover,
+    &:focus {
+      @include hs-button.color(
+        (
+          fill: 'native-blue.300',
+          ink: 'native-blue.ink',
+          border: 'native-blue.300',
+        )
+      );
+    }
 
-  //   &:active {
-  //     @include hs-button.color(
-  //       (
-  //         fill: 'native-blue.200',
-  //         ink: 'native-blue.ink',
-  //         border: 'native-blue.200',
-  //       )
-  //     );
-  //   }
-  // }
+    &:active {
+      @include hs-button.color(
+        (
+          fill: 'native-blue.200',
+          ink: 'native-blue.ink',
+          border: 'native-blue.200',
+        )
+      );
+    }
+  }
+  */
 </style>
