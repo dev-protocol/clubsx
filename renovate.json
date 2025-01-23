@@ -8,10 +8,6 @@
     {
       "packageNames": ["viem"],
       "allowedVersions": "< 2.0.0"
-    },
-    {
-      "packageNames": ["@astrojs/vercel"],
-      "allowedVersions": "< 8.0.0"
     }
   ]
 }
