@@ -246,8 +246,10 @@ onMounted(() => {
       </div>
 
       <div
-        v-if="step === 5"
-        class="max-w-xl rounded-2xl flex flex-col border border-black/10 outline outline-4 outline-transparent transition-all hover:outline-black/5 w-full justify-center p-8 gap-4"
+        :class="{
+          'max-w-xl rounded-2xl flex flex-col border border-black/10 outline outline-4 outline-transparent transition-all hover:outline-black/5 w-full justify-center p-8 gap-4': true,
+          hidden: step !== 5,
+        }"
       >
         <span
           class="transition-all duration-500 font-bold text-center text-2xl"
