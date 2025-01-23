@@ -1333,9 +1333,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@devprotocol/clubs-core@npm:3.23.4":
-  version: 3.23.4
-  resolution: "@devprotocol/clubs-core@npm:3.23.4"
+"@devprotocol/clubs-core@npm:3.23.6":
+  version: 3.23.6
+  resolution: "@devprotocol/clubs-core@npm:3.23.6"
   dependencies:
     "@devprotocol/dev-kit": "npm:8.7.0"
     "@devprotocol/elements": "npm:1.5.3"
@@ -1383,7 +1383,7 @@ __metadata:
       optional: true
     vue:
       optional: true
-  checksum: 10c0/b1fb1305e153991014a3c7d7dab902b0b4b3005540ffb477d50e5cae772bcab465a5f6abbfa51a32790547f7763ad97f3b3301cb1552ec8e53346561e1338466
+  checksum: 10c0/b346c71c0c1c7f29ad57fd13a1af5c71e8705e0ff2c74a6537f3cb1afed7434045d1d65bb842fdd69b07269fb1cc588e3aa0b24cea5a7548ac51bc8a7ed002bb
   languageName: node
   linkType: hard
 
@@ -1421,9 +1421,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@devprotocol/clubs-plugin-passports@npm:0.1.0-beta.51":
-  version: 0.1.0-beta.51
-  resolution: "@devprotocol/clubs-plugin-passports@npm:0.1.0-beta.51"
+"@devprotocol/clubs-plugin-passports@npm:0.1.0-beta.52":
+  version: 0.1.0-beta.52
+  resolution: "@devprotocol/clubs-plugin-passports@npm:0.1.0-beta.52"
   dependencies:
     "@devprotocol/dev-kit": "npm:8.7.0"
     "@devprotocol/util-ts": "npm:4.0.0"
@@ -1437,7 +1437,7 @@ __metadata:
     "@devprotocol/clubs-core": ^3.18.0
     "@devprotocol/clubs-plugin-payments": ^0.2.3 || ^0.3.0
     ethers: ^6.0.0
-  checksum: 10c0/92eb2af4b078e35da6b487fe9d7b4bb727fcab1a62da74bbda47bfa1c12bcd866b96ec6ffbad2e5d1844b9290473f9d95b2cb55890fc0d1944edaaa4393afc5a
+  checksum: 10c0/49a16b2b196d287f21db2cf13a81f35f7eeb9b52adc5271dbeb9ce189d9f315634a8e626dcbcac8b9b861b0c38012aa7df188fd8da7316bb4a66c7bcce80222b
   languageName: node
   linkType: hard
 
@@ -9928,10 +9928,10 @@ __metadata:
     "@astrojs/vue": "npm:5.0.6"
     "@crossmint/client-sdk-base": "npm:^1.0.1-alpha.6"
     "@crossmint/client-sdk-react-ui": "npm:^1.0.1-alpha.6"
-    "@devprotocol/clubs-core": "npm:3.23.4"
+    "@devprotocol/clubs-core": "npm:3.23.6"
     "@devprotocol/clubs-plugin-akiba": "npm:0.1.8"
     "@devprotocol/clubs-plugin-awesome-onboarding": "npm:0.5.1"
-    "@devprotocol/clubs-plugin-passports": "npm:0.1.0-beta.51"
+    "@devprotocol/clubs-plugin-passports": "npm:0.1.0-beta.52"
     "@devprotocol/clubs-plugin-payments": "npm:0.4.0-alpha.0"
     "@devprotocol/clubs-plugin-posts": "npm:0.21.0-alpha.0"
     "@devprotocol/clubs-plugin-posts-voting": "npm:0.8.8"
