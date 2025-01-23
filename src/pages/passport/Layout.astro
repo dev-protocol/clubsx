@@ -6,6 +6,7 @@ import { ClubsPictogramAdaptable as Favicon } from '@devprotocol/clubs-core/imag
 import '@devprotocol/clubs-core/styles'
 import type { Skin } from '@pages/api/profile'
 import Header from '@components/Global/Header.astro'
+import Footer from '@components/Global/Footer.vue'
 import { getPassportItemForPayload } from '@fixtures/api/passportItem'
 import SkinSwitch from 'src/pages/passport/components/SkinSwitch.svelte'
 import AchivementNotification from '../../pages/passport/components/AchivementNotification.svelte'
@@ -112,15 +113,16 @@ const description =
   </head>
 
   <body
-    class="min-h-screen bg-background font-body text-surface-ink"
+    class="bg-background font-body text-surface-ink"
     class:list={passportClass('body')}
   >
     <div class:list={passportClass('hero-container')}>
       <div class:list={passportClass('hero')}></div>
     </div>
     <div
-      class="relative z-10 overflow-x-clip"
+      class="relative flex flex-col max-w-full mx-auto"
       class:list={passportClass('main-container')}
+      style="height: 100dvh"
     >
       <slot name="before-header" />
 
@@ -139,11 +141,13 @@ const description =
         />
       </Header>
 
-      <div class:list={passportClass('main-content')}>
+      <div class:list={passportClass('main-content')} class="flex-grow overflow-y-auto md:overflow-y-visible">
         <main class:list={passportClass('main')}>
           <slot />
         </main>
       </div>
+
+      <Footer />
     </div>
   </body>
 </html>
