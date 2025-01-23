@@ -1,12 +1,9 @@
 ---
 import Layout from '@layouts/LandingWithFooter.astro'
 import FeedPageContent from '@components/Feed/FeedPageContent.vue'
-import { getFeed } from '../fixtures/api/feed'
-import type { FeedType } from '@components/Feed/FeedPageContent.vue'
+import { getFeed, type FeedType } from '../fixtures/api/feed'
 
-const feeds = Array.isArray(await getFeed())
-  ? ((await getFeed()) as FeedType[])
-  : []
+const feeds = await getFeed().catch(() => [] as FeedType[])
 ---
 
 <Layout connectButton="hidden" theme="auto" pageTitle="Feed">
