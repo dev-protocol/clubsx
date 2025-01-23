@@ -18,20 +18,20 @@ const imageRef = ref<HTMLImageElement | null>(null)
 
 onMounted(async () => {
   try {
-    const response = await fetch(props.src)
-    const blob = await response.blob()
-    const blobDataUrl = URL.createObjectURL(blob)
     if (
       (props.type === 'image' ||
         props.type === 'image-link' ||
         props.type === 'image-playable' ||
         props.type === 'image-playable-link') &&
-      imageRef.value
+      imageRef.value && props.src
     ) {
+      const response = await fetch(props.src)
+      const blob = await response.blob()
+      const blobDataUrl = URL.createObjectURL(blob)
       imageRef.value.src = blobDataUrl ? blobDataUrl : (props.posterSrc ?? '')
     }
   } catch (error) {
-    console.error('Error loading video:', error)
+    console.error('Error loading image:', error)
   }
 })
 </script>
