@@ -176,6 +176,7 @@ const passportSpotlight = await whenDefined(
   selectedSkinId={skin?.id ?? ''}
   itemHash={passportElementId}
   preload={[{ as: 'image', href: RedHeart.src }]}
+  connectButton="show"
 >
   <div class="grid gap-6 lg:gap-24">
     <section class:list={passportClass('account-container')}>
