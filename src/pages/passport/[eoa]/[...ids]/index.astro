@@ -16,11 +16,11 @@ import dummyData from '../../dummyData.json'
 import Icon from '../../components/Icons.vue'
 import type { PassportClip } from '../../types'
 import Like from '../../components/Like.svelte'
-import UserAssets from '../../components/UserAssets.vue'
 import PassportClips from '../../components/PassportClips.vue'
 import UserProfileEditButton from '../../components/UserProfileEditButton.svelte'
 import { clubsUrlToKeccak256Tag } from '@plugins/achievements/utils'
 import MediaSDKs from '@components/Passports/MediaSDKs.astro'
+import Onboarding from '../../components/Onboarding.vue'
 
 const { eoa, ids } = Astro.params
 const isEOA = isAddress(eoa)
@@ -33,10 +33,6 @@ const profile = {
   ..._profile,
   skins: _profile?.skins?.filter((skin) => !skin.isHidden) ?? [], // Filter out hidden skins.
 }
-
-const isLocal =
-  Astro.url.hostname.includes('localhost') ||
-  /^[\d\.]+$/.test(Astro.url.hostname)
 
 const skin =
   profile?.skins?.find((skin) => skin.id === id) ?? profile?.skins?.at(0)
@@ -336,7 +332,10 @@ const passportSpotlight = await whenDefined(
         >
           <span
             class="flex w-full justify-center items-center gap-2.5 p-4 self-stretch block rounded-xl"
-            class:list={[passportClass('description-content')]}
+            class:list={[
+              passportClass('description-content'),
+              { hidden: !htmlDescription },
+            ]}
           >
             <div
               class:list={[ProseTextInherit, passportClass('description')]}
@@ -400,15 +399,10 @@ const passportSpotlight = await whenDefined(
       }
 
       {
-        isEOA && (
-          <div class:list={passportClass('all-assets-container')}>
-            <details class:list={passportClass('all-assets-content')}>
-              <summary class="hs-button is-filled is-small mb-8">
-                All assets
-              </summary>
-              <UserAssets client:load account={eoa ?? ''} local={isLocal} />
-            </details>
-          </div>
+        skin === undefined && (
+          <span class="mb-32">
+            <Onboarding client:only="vue" eoa={eoa} />
+          </span>
         )
       }
 
