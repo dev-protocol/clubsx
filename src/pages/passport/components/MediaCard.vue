@@ -23,7 +23,8 @@ onMounted(async () => {
         props.type === 'image-link' ||
         props.type === 'image-playable' ||
         props.type === 'image-playable-link') &&
-      imageRef.value && props.src
+      imageRef.value &&
+      props.src
     ) {
       const response = await fetch(props.src)
       const blob = await response.blob()
