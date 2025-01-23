@@ -1,9 +1,15 @@
-import { whenNotError, whenNotErrorAll } from '@devprotocol/util-ts'
+import {
+  whenNotError,
+  whenNotErrorAll,
+  type ErrorOr,
+  type UndefinedOr,
+} from '@devprotocol/util-ts'
 import { always } from 'ramda'
-import { createClient } from 'redis'
+import { createClient, type RedisClientType } from 'redis'
 import {
   getPassportItemFromPayload,
   sTokenPayload as sTokenPayloadSchema,
+  type PassportItemAssetType,
 } from '@devprotocol/clubs-plugin-passports'
 import { getDefaultClient } from '@fixtures/api/assets/redis'
 import { ACHIEVEMENT_ITEM_SCHEMA } from '@plugins/achievements/db/schema'
@@ -22,16 +28,236 @@ import {
   type as assetTypeSchema,
   owner,
   nBlock as assetNBlockSchema,
+  payload as assetPayloadSchema,
 } from '../assets/schema'
 import { getProfile } from '../profile'
 import type { Clip, Profile, Skin } from '@pages/api/profile'
 import { getClubByProperty } from '../club/redis'
 import { bytes32Hex, decode } from '@devprotocol/clubs-core'
 import { defaultConfig, encodedDefaultConfig } from '@constants/defaultConfig'
-import { getBoringAvatar } from '../profile/utils'
+import {
+  config as uniqueNameGeneratorConfig,
+  getBoringAvatar,
+} from '../profile/utils'
 import { itemToHash, type ClipTypes } from '@fixtures/router/passportItem'
+import { generateProfileId } from '../keys'
+import type { AsyncReturnType } from 'type-fest'
+import { uniqueNamesGenerator } from 'unique-names-generator'
+import { nanoid } from 'nanoid'
 
 const { REDIS_URL, REDIS_USERNAME, REDIS_PASSWORD } = import.meta.env
+
+export type ProfileWithId = Profile & { id: string }
+export type FeedUserData = {
+  name: string
+  address: string
+  avatarSrc: string
+}
+
+export type FeedType = {
+  id: string
+  avatarSrc: string
+  badgeSrc: string
+  assetSrc: string
+  name: string
+  address: string
+  badgeName: string
+  description?: string
+  assetLink: string
+  frameHexColor?: string
+  tag: PassportItemAssetType | 'ugc'
+}
+
+export const getAllProfiles = async (
+  redis: ReturnType<typeof createClient>,
+): Promise<ErrorOr<Array<UndefinedOr<ProfileWithId>>>> => {
+  const keys = await whenNotError(redis, (client) => {
+    try {
+      return client.keys(generateProfileId('*'))
+    } catch {
+      return [] as string[]
+    }
+  })
+
+  return await whenNotErrorAll([redis, keys], ([client, _keys]) => {
+    if (!_keys.length) {
+      return [] as undefined[]
+    }
+
+    return Promise.all(
+      _keys.map(async (key) => {
+        const profile = await client.get(key).catch(() => undefined)
+        if (!profile) {
+          return undefined
+        }
+
+        try {
+          return {
+            ...JSON.parse(profile),
+            id: key.replaceAll('profile::', ''),
+          } as ProfileWithId
+        } catch (err) {
+          return undefined
+        }
+      }),
+    )
+  })
+}
+
+export const getClubFromAssetPayload = async (
+  payload: string,
+  redis: ReturnType<typeof createClient>,
+) => {
+  if (!payload || !redis || redis instanceof Error) {
+    return undefined
+  }
+
+  const assetDocument = await redis.ft
+    .search(
+      AssetIndex.Asset,
+      `@${assetPayloadSchema['$.payload'].AS}:{${payload}}`,
+      {
+        LIMIT: { from: 0, size: 1 },
+      },
+    )
+    .then((res) => {
+      return res.total && res.documents.length
+        ? (res.documents.at(0)?.value as AssetDocument) || undefined
+        : undefined
+    })
+    .catch(() => undefined)
+  if (!assetDocument || !assetDocument?.propertyAddress) {
+    return undefined
+  }
+
+  const clubDocument = await getClubByProperty(
+    assetDocument.propertyAddress,
+    redis,
+  )
+    .then((clubDocument) => clubDocument)
+    .catch(() => undefined)
+  if (!clubDocument || !clubDocument?.clubsUrl) {
+    return undefined
+  }
+
+  const clubsSubDomain = new URL(clubDocument.clubsUrl).hostname
+    .split('.')
+    .at(0)
+  if (!clubsSubDomain) {
+    return undefined
+  }
+
+  return await redis
+    .get(clubsSubDomain)
+    .then((res: string | null) => (res ? decode(res) : undefined))
+    .catch(() => undefined)
+}
+
+export const getFeedAssetFromClip = async (
+  clip: Clip,
+  ownerDetails: FeedUserData,
+  redis: ReturnType<typeof createClient>,
+): Promise<FeedType | undefined> => {
+  if (
+    !clip ||
+    clip instanceof Error ||
+    !ownerDetails ||
+    ownerDetails instanceof Error ||
+    !redis ||
+    redis instanceof Error
+  ) {
+    return undefined
+  }
+  if (!clip.link && !clip.payload) {
+    return undefined
+  }
+
+  let clubName: string = ''
+  let clubAvatar: string = ''
+  let itemAssetValue: string = ''
+  let itemAssetType: PassportItemAssetType | 'ugc'
+
+  if (clip.link && !clip.payload) {
+    clubName = ''
+    clubAvatar = ''
+    itemAssetType = 'ugc'
+    itemAssetValue = clip.link
+  } else {
+    const passportItem = await getPassportItemFromPayload({
+      sTokenPayload: clip.payload || '',
+    })
+      .then((passportItemDocument) =>
+        passportItemDocument instanceof Error
+          ? undefined
+          : passportItemDocument,
+      )
+      .catch(() => undefined)
+    if (!passportItem || !passportItem?.sTokenPayload) {
+      return undefined
+    }
+    itemAssetType = passportItem.itemAssetType
+    itemAssetValue = passportItem.itemAssetValue
+
+    const clubConfig = await getClubFromAssetPayload(
+      passportItem.sTokenPayload,
+      redis,
+    )
+    clubName = clubConfig?.name || ''
+    clubAvatar = (clubConfig?.options?.find(
+      (option) => option.key === 'avatarImgSrc',
+    )?.value || 'https://i.imgur.com/lSpDjrr.jpg') as string
+  }
+
+  return {
+    id: clip.id || nanoid(),
+    avatarSrc: ownerDetails.avatarSrc,
+    badgeSrc: clubAvatar,
+    assetSrc: itemAssetValue,
+    tag: itemAssetType,
+    name: ownerDetails.name,
+    address: ownerDetails.address,
+    badgeName: clubName,
+    description: clip.description || '',
+    assetLink: '', // TODO: replace this
+    frameHexColor: clip.frameColorHex || '',
+  }
+}
+
+export const getClipFromSkin = async (
+  skin: Skin,
+  ownerDetails: FeedUserData,
+  redis: ReturnType<typeof createClient>,
+) => {
+  if (
+    !skin ||
+    skin instanceof Error ||
+    !ownerDetails ||
+    ownerDetails instanceof Error ||
+    !redis ||
+    redis instanceof Error
+  ) {
+    return []
+  }
+
+  const clips = skin.clips || []
+  const spotlight = skin.spotlight || []
+  const clipsFeedDataPromises = Promise.all(
+    clips.map(async (clip) => {
+      return getFeedAssetFromClip(clip, ownerDetails, redis)
+    }),
+  )
+  const spotlightsFeedDataPromises = Promise.all(
+    spotlight.map(async (clip) => {
+      return getFeedAssetFromClip(clip, ownerDetails, redis)
+    }),
+  )
+
+  const [clipsFeedData, spotlightFeedData] = await Promise.all([
+    clipsFeedDataPromises,
+    spotlightsFeedDataPromises,
+  ])
+  return [...clipsFeedData, ...spotlightFeedData]
+}
 
 export const getFeed = async () => {
   const redis = await whenNotError(
@@ -47,153 +273,54 @@ export const getFeed = async () => {
         .catch((err) => new Error(err)),
   )
 
-  const purchasedAssets = await whenNotErrorAll([redis], ([client]) =>
-    client.ft
-      .search(
-        AssetIndex.Asset,
-        `@${assetTypeSchema['$.type'].AS}:{passportItem}`,
-        {
-          SORTBY: {
-            BY: assetNBlockSchema['$.n_block'].AS,
-            DIRECTION: 'DESC',
-          },
-        },
-      )
-      .then((res) =>
-        res.total && res.documents.length
-          ? res.documents.map((doc) => doc.value as AssetDocument)
-          : new Error('No purchases found'),
-      )
-      .catch((err) => new Error(err)),
-  )
+  const profiles = await whenNotError(redis, (client) => getAllProfiles(client))
 
-  const purchasedAssetsWithUser = await whenNotErrorAll(
-    [purchasedAssets, redis],
-    ([assets, client]) =>
-      Promise.all(
-        assets.map(async (asset) => {
-          const [userProfile, clubDocument, passportItemDocument] =
-            await Promise.all([
-              getProfile({ id: asset.owner })
-                .then((profile) => profile as Profile)
-                .catch(() => undefined),
-              getClubByProperty(
-                asset.propertyAddress ||
-                  '0xF5fb43b4674Cc8D07FB45e53Dc77B651e17dC407', // Use developers clubs default property address if absent in AssetDocument.
-                client,
-              )
-                .then((clubDocument) => clubDocument)
-                .catch(() => undefined),
-              getPassportItemFromPayload({ sTokenPayload: asset.payload || '' })
-                .then((passportItemDocument) =>
-                  passportItemDocument instanceof Error
-                    ? undefined
-                    : passportItemDocument,
-                )
-                .catch(() => undefined),
-            ])
+  const feed: Array<FeedType | undefined> = []
+  try {
+    await whenNotErrorAll([redis, profiles], ([client, _profiles]) => {
+      return Promise.all(
+        _profiles?.map(async (profile) => {
+          if (!profile) {
+            return []
+          }
 
-          const clubConfiguration = decode(
-            await client
-              .get(
-                // Get clubs key.
-                new URL(clubDocument?.clubsUrl || '').hostname
-                  .split('.')
-                  .at(0) || 'developers',
-              )
-              .then((club) => club || encodedDefaultConfig) // Use default config if absent.
-              .catch(() => encodedDefaultConfig), // Use default config if absent.
+          const ownerDetails: FeedUserData = {
+            avatarSrc:
+              profile?.avatar ||
+              (await getBoringAvatar('0x...')
+                .then((res) => res)
+                .catch(() => 'https://i.imgur.com/lSpDjrr.jpg')),
+            name:
+              profile?.username ||
+              uniqueNamesGenerator({
+                ...uniqueNameGeneratorConfig,
+                seed: profile?.id || '0x..',
+              }) ||
+              '0x..',
+            address: profile?.id || '0x...',
+          }
+
+          await Promise.all(
+            profile?.skins?.map(async (skin) => {
+              feed.push(...(await getClipFromSkin(skin, ownerDetails, client)))
+            }) ?? [],
           )
+        }) ?? [],
+      )
+    })
+  } catch (err) {
+    console.log('Err', err)
+  } finally {
+    await whenNotErrorAll([redis], ([client]) =>
+      client
+        .quit()
+        .then(always(feed))
+        .catch((err) => new Error(err)),
+    )
+  }
 
-          let skinFoundFirst: Skin | undefined
-          let clipFoundFirst: Clip | undefined
-          let skinSection: ClipTypes | undefined
-          for (const skin of userProfile?.skins || []) {
-            const spotlightItem = skin.spotlight?.find(
-              (clip) =>
-                (clip.sTokenId === asset.id || asset.nId?.toString()) &&
-                clip.payload === asset.payload,
-            )
-
-            const showcaseItem = skin.clips?.find(
-              (clip) =>
-                (clip.sTokenId === asset.id || asset.nId?.toString()) &&
-                clip.payload === asset.payload,
-            )
-
-            if (spotlightItem || showcaseItem) {
-              skinFoundFirst = skin
-              skinSection =
-                (showcaseItem?.updatedAt || 0) > (spotlightItem?.updatedAt || 0)
-                  ? 'clips'
-                  : !!spotlightItem
-                    ? 'spotlight'
-                    : undefined
-              clipFoundFirst =
-                (showcaseItem?.updatedAt || 0) > (spotlightItem?.updatedAt || 0)
-                  ? showcaseItem
-                  : !!spotlightItem
-                    ? spotlightItem
-                    : undefined
-            }
-          }
-
-          let itemLink: string = `/passport/${asset.owner}`
-          if (skinFoundFirst && skinFoundFirst.id) {
-            itemLink += `/${skinFoundFirst.id}`
-          }
-          if (clipFoundFirst && clipFoundFirst.id) {
-            itemLink += `/${itemToHash(skinSection || 'clips', clipFoundFirst.id)}`
-          }
-
-          return {
-            clubDetails: {
-              url: clubConfiguration?.url || 'https://developers.clubs.place', // Use developers club if absent.
-              name: clubConfiguration?.name || 'Developers', // Use developers club if absent.
-              avatar:
-                clubConfiguration?.options?.find(
-                  (option) => option.key === 'avatarImgSrc',
-                )?.value || 'https://i.imgur.com/lSpDjrr.jpg', // Use clubs default avatar if absent in AssetDocument.
-            },
-            ownerDetails: {
-              address: asset.owner,
-              avatar:
-                userProfile?.avatar ||
-                (await getBoringAvatar('0x...')
-                  .then((res) => res)
-                  .catch(() => 'https://i.imgur.com/lSpDjrr.jpg')), // Use boring or clubs default avatar if absent.
-              username: userProfile?.username || '0x...',
-            },
-            passportDetails: {
-              id: asset.id,
-              itemLink: itemLink || '',
-              itemDescription: clipFoundFirst?.description || '',
-              itemFrameColorHex: clipFoundFirst?.frameColorHex || '',
-              itemAssetType: passportItemDocument?.itemAssetType || 'css',
-              itemPreviewImgSrc:
-                passportItemDocument?.itemAssetType !== 'bgm' &&
-                passportItemDocument?.itemAssetType !== 'bgm-link' &&
-                passportItemDocument?.itemAssetType !== 'css' &&
-                passportItemDocument?.itemAssetType !== 'stylesheet-link'
-                  ? passportItemDocument?.itemAssetValue
-                  : clubConfiguration?.offerings?.find(
-                      (offering) =>
-                        bytes32Hex(offering.payload) === asset.payload,
-                    )?.imageSrc || 'https://i.imgur.com/lSpDjrr.jpg', // Use clubs default avatar if absent.
-            },
-          }
-        }),
-      ),
-  )
-
-  const result = await whenNotErrorAll([redis], ([client]) =>
-    client
-      .quit()
-      .then(always(purchasedAssetsWithUser))
-      .catch((err) => new Error(err)),
-  )
-
-  return result
+  const filteredFeed = feed?.filter((feed) => !!feed) ?? []
+  return filteredFeed
 }
 
 export const getSBTsForEOAFromClubsUrlHash = async (

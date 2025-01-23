@@ -12,13 +12,14 @@ import SkinSwitch from 'src/pages/passport/components/SkinSwitch.svelte'
 import AchivementNotification from '../../pages/passport/components/AchivementNotification.svelte'
 
 type Props = {
-  eoa: string
-  skins: Skin[]
-  selectedSkinId: string
+  eoa?: string
+  skins?: Skin[]
+  selectedSkinId?: string
   sTokenPayload?: string
   itemHash?: string
   theme?: 'light' | 'dark' | 'auto'
   preload?: { as: string; href: string }[]
+  connectButton?: 'show' | 'hidden' | 'show-when-signedin'
 }
 
 const {
@@ -29,6 +30,7 @@ const {
   selectedSkinId = '',
   itemHash,
   preload = [],
+  connectButton,
 } = Astro.props as Props
 
 const passportSkinTheme = await whenDefined(sTokenPayload, (payload: string) =>
@@ -126,7 +128,7 @@ const description =
     >
       <slot name="before-header" />
 
-      <Header connectButton="show" pageTitle="Passport">
+      <Header connectButton={connectButton} pageTitle="Passport">
         <AchivementNotification
           address={eoa}
           client:only="svelte"

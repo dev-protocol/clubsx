@@ -1,28 +1,20 @@
 <script setup lang="ts">
+import MediaCard from '@pages/passport/components/MediaCard.vue'
+import { MediaEmbed } from '@devprotocol/clubs-plugin-passports/vue'
 import type { PassportItemAssetType } from '@devprotocol/clubs-plugin-passports/types'
+import type { FeedType } from '@fixtures/api/feed'
 
-const props = defineProps<{
-  avatarSrc: string
-  badgeSrc: string
-  assetSrc: string
-  tag: PassportItemAssetType
-  name: string
-  address: string
-  badgeName: string
-  assetLink: string
-  description?: string
-  frameHexColor?: string
-}>()
+const props = defineProps<FeedType>()
 
-const SKIN: PassportItemAssetType[] = ['css', 'stylesheet-link']
-const CLIP: PassportItemAssetType[] = [
+const SKIN: FeedType['tag'][] = ['css', 'stylesheet-link']
+const CLIP: FeedType['tag'][] = [
   'image',
   'image-link',
   'image-playable',
   'image-playable-link',
 ]
-const BGM: PassportItemAssetType[] = ['bgm', 'bgm-link']
-const VIDEO: PassportItemAssetType[] = [
+const BGM: FeedType['tag'][] = ['bgm', 'bgm-link']
+const VIDEO: FeedType['tag'][] = [
   'video',
   'video-link',
   'short-video',
@@ -61,34 +53,51 @@ const VIDEO: PassportItemAssetType[] = [
             {{ name }}
           </div>
           <div
+            v-if="tag !== 'ugc'"
             class="flex items-center gap-2 p-1 rounded-sm bg-white"
             style="width: fit-content"
           >
             <img
+              v-if="!!badgeSrc && badgeSrc !== ''"
               class="w-7 rounded-sm"
               style="aspect-ratio: 16 / 9"
               :src="badgeSrc"
               alt="image"
             />
-            <p class="text-xs font-bold">{{ badgeName }}</p>
+            <p v-if="!!badgeName && badgeName !== ''" class="text-xs font-bold">
+              {{ badgeName }}
+            </p>
           </div>
         </div>
       </div>
-      <div v-if="description" class="w-full text-2xl font-bold">
+      <div
+        v-if="description"
+        class="h-16 w-full text-2xl font-bold text-ellipsis overflow-hidden line-clamp-2"
+      >
         {{ description }}
       </div>
     </div>
     <div class="flex items-end max-w-16 min-w-16">
-      <a :href="assetLink">
+      <a :href="assetLink" target="_blank">
         <video v-if="VIDEO.includes(tag)">
           <source :src="assetSrc" type="video/mp4" />
         </video>
-        <img
-          v-else
+        <img v-else-if="CLIP.includes(tag)" :src="assetSrc" alt="clip" />
+        <MediaCard
+          v-else-if="SKIN.includes(tag as PassportItemAssetType)"
           class="w-full rounded"
           style="aspect-ratio: 1 / 1"
           :src="assetSrc"
-          alt="asset"
+          :type="tag as PassportItemAssetType"
+          :found="!!assetSrc"
+        />
+        <MediaEmbed
+          v-else
+          class="w-full rounded"
+          style="aspect-ratio: 1 / 1"
+          :found="!!assetSrc"
+          :src="assetSrc"
+          :type="tag"
         />
       </a>
     </div>
