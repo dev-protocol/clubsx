@@ -257,4 +257,40 @@ export const Strings = {
     en: 'Custom Skin is not set.',
     ja: 'カスタムスキンなし',
   },
+  StartCustomization: {
+    en: `Welcome! Let's create your passport now!`,
+    ja: `ようこそ！いまからあなたのパスポートを作成しましょう！`,
+  },
+  Start: {
+    en: `Start`,
+    ja: `はじめる`,
+  },
+  YourName: {
+    en: `What's your name?`,
+    ja: `お名前は?`,
+  },
+  FaveCharacterss: {
+    en: `Who are your fave characters?`,
+    ja: `推しの名前は?`,
+  },
+  Next: {
+    en: `Next`,
+    ja: `進む`,
+  },
+  Finish: {
+    en: `Finish`,
+    ja: `完了`,
+  },
+  CreatePassport: {
+    en: `Create the first Passport`,
+    ja: `最初のパスポートをつくる`,
+  },
+  PassportCreated: {
+    en: `Created!`,
+    ja: `完成しました!`,
+  },
+  AfterPassportCreated: {
+    en: `Enhance your Passport by showcasing videos, photos, and writing a self-introduction. You can display content from TikTok, YouTube, Instagram, and X, or arrange clips you've purchased.`,
+    ja: `動画や写真を飾ったり、自己紹介を書いてパスポートを充実させてみましょう。TikTok, YouTube, Instagram や X のコンテンツを飾ったり、購入したクリップを並べることができます。`,
+  },
 } satisfies ClubsI18nParts
