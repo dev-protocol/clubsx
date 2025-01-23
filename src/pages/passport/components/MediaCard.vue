@@ -48,7 +48,7 @@ onMounted(async () => {
         type === 'image-playable' ||
         type === 'image-playable-link')
     "
-    class="rounded-md w-full max-w-full object-cover aspect-square"
+    class="rounded-md w-full max-w-full"
     :class="props.class"
   />
 
