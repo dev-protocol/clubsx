@@ -80,8 +80,7 @@ export default {
 }
 </script>
 
-<style scoped>
-/*
+<style lang="scss" scoped>
 @use '@devprotocol/hashi/hs-button';
 
 @include hs-button.extend('filled.native-blue') {
@@ -114,7 +113,6 @@ export default {
     );
   }
 }
-*/
 
 .hs-button {
   --hs-button-width: auto;

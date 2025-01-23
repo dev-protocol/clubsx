@@ -52,7 +52,7 @@ export default defineConfig({
     lit(),
     vue(),
     react(),
-    tailwind(),
+    tailwind({ applyBaseStyles: false }),
     svelte(),
   ],
   vite: {
