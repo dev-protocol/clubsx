@@ -2,7 +2,7 @@
 import { defineProps, onMounted, ref } from 'vue'
 import Skeleton from '@components/Global/Skeleton.vue'
 
-import VideoFetch from './VideoFetch.vue'
+import { VideoFetch } from '@devprotocol/clubs-core/ui/vue'
 
 import type { PassportItemIndexDoc } from '../types'
 
