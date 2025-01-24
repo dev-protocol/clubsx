@@ -147,11 +147,7 @@
                                   : clip,
                               ) ?? ([] as Clip[])),
                             ]
-                          : skin.clips?.filter((x) =>
-                              'assetId' in item
-                                ? x.sTokenId !== item.assetId
-                                : x.id !== item.id,
-                            ),
+                          : skin.clips?.filter((x) => x.id !== item.id),
                     }
                   : skin,
               ) ?? []), // keep all the other skins before skinIndex.
