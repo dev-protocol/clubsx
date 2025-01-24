@@ -187,6 +187,14 @@ onMounted(() => {
           }"
           >{{ i18n('FaveCharacterss') }}</span
         >
+        <span
+          :class="{
+            'transition-all duration-500 text-black/50 text-center': true,
+            'text-base': step === 3,
+            'text-xs': step > 3,
+          }"
+          >{{ i18n('FaveCharactersExample') }}</span
+        >
         <textarea
           type="text"
           v-model="fave"

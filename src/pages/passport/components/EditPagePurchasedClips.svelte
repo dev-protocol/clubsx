@@ -233,11 +233,7 @@
       >
         <Skeleton />
       </div>
-    {:else if !isFetchingPurchasedClips && !profileFetching && !purchasedClips?.length}
-      <div class="rounded-md border border-surface-400 p-8 text-accent-200">
-        {i18n('Empty')} :) <br />{@html i18n('PurchasePassportClips')}
-      </div>
-    {:else if purchasedClips?.length}
+    {:else if !isFetchingPurchasedClips && !profileFetching}
       <ul class="grid gap-2 grid-cols-[repeat(auto-fill,minmax(160px,1fr))]">
         <li id="assets-link" class="relative">
           <button
@@ -256,6 +252,15 @@
             </div>
           </button>
         </li>
+        {#if !purchasedClips?.length}
+          <li>
+            <span
+              class="w-full h-full rounded-md p-2 grid gap-4 border border-black/5 h-full text-black/50 items-center"
+            >
+              <span class="font-bold">{i18n('NoPurchasedItem')}</span>
+            </span>
+          </li>
+        {/if}
         {#each purchasedClips as item, i}
           <li id={`assets-${i.toString()}`} class="relative empty:hidden">
             <button

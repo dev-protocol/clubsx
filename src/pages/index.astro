@@ -6,7 +6,7 @@ import { getFeed, type FeedType } from '../fixtures/api/feed'
 const feeds = await getFeed().catch(() => [] as FeedType[])
 ---
 
-<Layout connectButton="hidden" theme="auto" pageTitle="Feed">
+<Layout connectButton="hidden" theme="light" pageTitle="Feed">
   <div class="@container/main h-full">
     <FeedPageContent feeds={feeds} />
   </div>
