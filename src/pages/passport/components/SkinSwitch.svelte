@@ -50,7 +50,7 @@
             ? `/passport/${eoa}/edit?skinId=${skin?.id}`
             : `/passport/${eoa}/${skin?.id}`}
           class="hs-button is-filled w-full text-center leading-normal line-clamp-1 z-50"
-          >{skin?.name ?? `Profile ${i}`}</a
+          >{skin?.name ?? `Passport ${i}`}</a
         >
       {/each}
     </div>
