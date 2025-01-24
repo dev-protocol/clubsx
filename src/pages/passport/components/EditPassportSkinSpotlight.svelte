@@ -122,7 +122,7 @@
                         method === 'patch'
                           ? [
                               ...(skin.spotlight?.map((clip) =>
-                                clip.sTokenId === item.assetId
+                                clip.id === item.id
                                   ? {
                                       ...clip,
                                       id: clip.id ?? nanoid(),
