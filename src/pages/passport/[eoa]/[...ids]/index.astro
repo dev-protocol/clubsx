@@ -57,29 +57,32 @@ const passportTheme = await whenDefined(_currentTheme, () =>
 
 const clubsUrl = passportTheme?.clubsUrl
 const clubsUrlHash = clubsUrlToKeccak256Tag(clubsUrl ?? '')
-const _clubsSBTs = await whenDefined(clubsUrlHash, () =>
-  getSBTsForEOAFromClubsUrlHash(
-    clubsUrlHash,
-    clubsUrl ? clubsUrl : '',
-    isEOA ? eoa : '',
-  )
-    .then((sbt) => (sbt instanceof Error ? undefined : sbt))
-    .catch(() => undefined),
-)
-
-const passportSkinBGMs = await whenDefined(_passportSkinBGMs, () =>
-  getPassportItemForPayload({
-    sTokenPayload: _passportSkinBGMs?.payload ?? '',
-  })
-    .then((item) =>
-      item instanceof Error ? undefined : { ..._passportSkinBGMs, ...item },
+const [
+  _clubsSBTs,
+  passportSkinBGMs,
+  passportSkinVideos,
+  passportSkinClips,
+  passportSpotlight,
+] = await Promise.all([
+  whenDefined(clubsUrlHash, () =>
+    getSBTsForEOAFromClubsUrlHash(
+      clubsUrlHash,
+      clubsUrl ? clubsUrl : '',
+      isEOA ? eoa : '',
     )
-    .catch(() => undefined),
-)
-
-const passportSkinVideos = await whenDefined(
-  _passportSkinVideos,
-  async (videos) => {
+      .then((sbt) => (sbt instanceof Error ? undefined : sbt))
+      .catch(() => undefined),
+  ),
+  whenDefined(_passportSkinBGMs, () =>
+    getPassportItemForPayload({
+      sTokenPayload: _passportSkinBGMs?.payload ?? '',
+    })
+      .then((item) =>
+        item instanceof Error ? undefined : { ..._passportSkinBGMs, ...item },
+      )
+      .catch(() => undefined),
+  ),
+  whenDefined(_passportSkinVideos, async (videos) => {
     if (!videos.length) {
       return undefined
     }
@@ -96,12 +99,8 @@ const passportSkinVideos = await whenDefined(
       .then((items) => items.filter((items) => !!items))
       .then((items) => (items.length ? items : undefined))
       .catch(() => undefined)
-  },
-)
-
-const passportSkinClips = await whenDefined(
-  _passportSkinClips,
-  async (clips) => {
+  }),
+  whenDefined(_passportSkinClips, async (clips) => {
     if (!clips.length) {
       return undefined
     }
@@ -128,12 +127,8 @@ const passportSkinClips = await whenDefined(
       .then((items) => items.filter((items) => !!items))
       .then((items) => (items.length ? items : undefined))
       .catch(() => undefined)
-  },
-)
-
-const passportSpotlight = await whenDefined(
-  _passportSpotlight,
-  async (spotLights) => {
+  }),
+  whenDefined(_passportSpotlight, async (spotLights) => {
     if (!spotLights.length) {
       return undefined
     }
@@ -160,8 +155,8 @@ const passportSpotlight = await whenDefined(
       .then((items) => items.filter((items) => !!items))
       .then((items) => (items.length ? items.slice(0, 3) : undefined))
       .catch(() => undefined)
-  },
-)
+  }),
+])
 ---
 
 <Layout
