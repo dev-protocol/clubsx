@@ -249,9 +249,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/vercel@npm:8.0.3":
-  version: 8.0.3
-  resolution: "@astrojs/vercel@npm:8.0.3"
+"@astrojs/vercel@npm:8.0.4":
+  version: 8.0.4
+  resolution: "@astrojs/vercel@npm:8.0.4"
   dependencies:
     "@astrojs/internal-helpers": "npm:^0.4.2"
     "@vercel/analytics": "npm:^1.4.1"
@@ -261,7 +261,7 @@ __metadata:
     fast-glob: "npm:^3.3.3"
   peerDependencies:
     astro: ^5.0.0
-  checksum: 10c0/0a7bcd634023ea1c3f676a12528577d4a32c369fcb7d92f4c714d69181190160a53556c234033adfdaa3aa3036c597ce76a81c990e2d6eae6dd1856999932156
+  checksum: 10c0/00a603c84f0f15fdbafede3436cb79134808aa3b6e257e33b3a10b61048942d65817b65b98ece085052e8aebb9a568f73df38a7e1c072b0cf80453d12e93c258
   languageName: node
   linkType: hard
 
@@ -9923,7 +9923,7 @@ __metadata:
     "@astrojs/react": "npm:4.1.6"
     "@astrojs/svelte": "npm:7.0.4"
     "@astrojs/tailwind": "npm:5.1.5"
-    "@astrojs/vercel": "npm:8.0.3"
+    "@astrojs/vercel": "npm:8.0.4"
     "@astrojs/vue": "npm:5.0.6"
     "@crossmint/client-sdk-base": "npm:^1.0.1-alpha.6"
     "@crossmint/client-sdk-react-ui": "npm:^1.0.1-alpha.6"
