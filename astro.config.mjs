@@ -24,6 +24,9 @@ export default defineConfig({
     port: 3000,
   },
   output: 'server',
+  security: {
+    checkOrigin: false,
+  },
   adapter: vercel(),
   integrations: [
     clubs(),
