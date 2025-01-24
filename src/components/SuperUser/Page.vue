@@ -1,6 +1,11 @@
 <script lang="ts" setup>
 import { randomBytes } from 'ethers'
-import { bytes32Hex, decode, encode } from '@devprotocol/clubs-core'
+import {
+  bytes32Hex,
+  decode,
+  encode,
+  type ClubsConfiguration,
+} from '@devprotocol/clubs-core'
 import {
   whenDefined,
   whenDefinedAll,
@@ -45,6 +50,7 @@ import {
   changePassportDiscountStart,
 } from './utils/passportDiscount'
 import type { Override } from '@devprotocol/clubs-plugin-payments'
+import { nanoid } from 'nanoid'
 
 dayjs.extend(utc)
 
@@ -74,7 +80,9 @@ const plugins = ref(
   })),
 )
 const passportPayload = ref<Uint8Array>()
-const passportOffering = ref<Partial<PassportOffering>>({})
+const passportOffering = ref<
+  Partial<PassportOffering> & { i18n: PassportOffering['i18n'] }
+>({ i18n: { name: { en: '', ja: '' }, description: { en: '', ja: '' } } })
 const achievement = ref<Partial<ReqBodyAchievement['achievement']>>({})
 const passportItem = ref<Partial<CreatePassportItemReq['passportItem']>>({})
 const passportDiscount = ref<Partial<PassportOptionsDiscount>>({})
@@ -233,16 +241,20 @@ const addPassportdOfferingInConfig = async () => {
     (await whenDefined(club.value, fetchClubs))?.content,
     decode,
   )
-  const nextConfig = whenDefined(currentConfig, (base) => ({
-    ...base,
-    offerings: [
-      ...(base?.offerings ?? []),
-      {
-        ...passportOffering.value,
-        managedBy: PASSPORT_PLUGIN_ID,
-      },
-    ],
-  }))
+  const nextConfig = whenDefined(
+    currentConfig,
+    (base) =>
+      ({
+        ...base,
+        offerings: [
+          ...(base?.offerings ?? []),
+          {
+            ...passportOffering.value,
+            managedBy: PASSPORT_PLUGIN_ID,
+          } as PassportOffering,
+        ],
+      }) satisfies ClubsConfiguration,
+  )
 
   const api = await whenDefined(nextConfig, (conf) =>
     fetch('/api/superuser/config', {
@@ -642,6 +654,24 @@ const updatePassportOfferingOnChain = async () => {
         </label>
 
         <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">Name (en)</span>
+          <input
+            type="text"
+            class="w-full hs-form-field__input"
+            v-model="passportOffering.i18n.name.en"
+          />
+        </label>
+
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">Name (ja)</span>
+          <input
+            type="text"
+            class="w-full hs-form-field__input"
+            v-model="passportOffering.i18n.name.ja"
+          />
+        </label>
+
+        <label class="w-full hs-form-field">
           <span class="w-full hs-form-field__label">Image URL</span>
           <input
             type="text"
@@ -706,6 +736,24 @@ const updatePassportOfferingOnChain = async () => {
             type="text"
             class="w-full hs-form-field__input"
             v-model="passportOffering.description"
+          />
+        </label>
+
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">Description(en)</span>
+          <input
+            type="text"
+            class="w-full hs-form-field__input"
+            v-model="passportOffering.i18n.description.en"
+          />
+        </label>
+
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">Description(ja)</span>
+          <input
+            type="text"
+            class="w-full hs-form-field__input"
+            v-model="passportOffering.i18n.description.ja"
           />
         </label>
 
