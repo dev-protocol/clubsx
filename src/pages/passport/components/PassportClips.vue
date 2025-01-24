@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { i18nFactory } from '@devprotocol/clubs-core'
 import Modal from '@pages/passport/components/Modal.vue'
 
@@ -8,7 +8,6 @@ import type { PassportClip } from '../types'
 import PassportClipCard from './PassportClip.vue'
 import { passportSpotlightClass } from '@fixtures/ui/passport'
 import PassportClipModal from './PassportClipModal.vue'
-import { mediaSource } from '@devprotocol/clubs-plugin-passports/media'
 
 const props = defineProps<{
   id: string
@@ -23,24 +22,6 @@ const i18n = ref<ReturnType<typeof i18nBase>>(i18nBase(['en']))
 const modalVisible = ref(false)
 const modalItemIndex = ref<number>()
 const modalItem = ref<PassportClip>()
-const colItems = computed(() => {
-  return props.skinSection === 'clips'
-    ? [
-        props.clips.filter((_, index) => {
-          const i = index + 1
-          return i === 1 || (i !== 3 && (i - 1) % 3 === 0)
-        }),
-        props.clips.filter((_, index) => {
-          const i = index + 1
-          return i === 2 || (i - 2) % 3 === 0
-        }),
-        props.clips.filter((_, index) => {
-          const i = index + 1
-          return i % 3 === 0
-        }),
-      ]
-    : undefined
-})
 const handleOnClick = (item: PassportClip, index: number) => {
   modalItem.value = item
   modalVisible.value = true
@@ -67,13 +48,13 @@ onMounted(async () => {
             skinSection === 'spotlight',
         },
         {
-          ['grid gap-1 lg:gap-4 grid-cols-3 content-stretch']:
+          ['grid gap-1 lg:gap-4 grid-cols-3 content-stretch items-center gap-y-2 lg:gap-y-8']:
             skinSection === 'clips',
         },
       ]"
     >
       <li
-        v-if="skinSection === 'spotlight' && clips?.length"
+        v-if="clips?.length"
         v-for="(clip, index) in clips"
         :key="index"
         :class="[
@@ -89,34 +70,10 @@ onMounted(async () => {
           :truncate="true"
           :skinSection="skinSection"
           :skinId="skinId"
-          media-embed-class="!aspect-[1/1.391]"
           class="cursor-pointer"
           @click="
             () => {
               handleOnClick(clip, index)
-            }
-          "
-        />
-      </li>
-      <li
-        v-if="skinSection === 'clips' && colItems"
-        v-for="items in colItems"
-        class="flex flex-col gap-4"
-      >
-        <PassportClipCard
-          v-for="(clip, cindex) in items"
-          :item="clip"
-          :index="cindex"
-          :truncate="true"
-          :skinSection="skinSection"
-          :skinId="skinId"
-          :media-embed-class="
-            mediaSource(clip.link) !== 'youtube' ? '!aspect-[1/1.391]' : ''
-          "
-          class="cursor-pointer"
-          @click="
-            () => {
-              handleOnClick(clip, cindex)
             }
           "
         />

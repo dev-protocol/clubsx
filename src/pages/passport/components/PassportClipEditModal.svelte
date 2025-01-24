@@ -156,7 +156,7 @@
           {#if item.link && linkError === undefined}
             <div class="flex justify-center">
               <div class="overflow-hidden rounded">
-                <MediaEmbed src={item.link} className="!aspect-[1/1.391]" />
+                <MediaEmbed src={item.link} />
               </div>
             </div>
           {/if}
