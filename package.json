@@ -65,7 +65,7 @@
     "@astrojs/react": "4.1.6",
     "@astrojs/svelte": "7.0.4",
     "@astrojs/tailwind": "5.1.5",
-    "@astrojs/vercel": "8.0.3",
+    "@astrojs/vercel": "8.0.4",
     "@astrojs/vue": "5.0.6",
     "@crossmint/client-sdk-base": "^1.0.1-alpha.6",
     "@crossmint/client-sdk-react-ui": "^1.0.1-alpha.6",
