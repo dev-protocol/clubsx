@@ -154,9 +154,15 @@
   }
 
   const spotlight = (prof: Profile) => prof.skins?.at(skinIndex)?.spotlight
-  const purchasedClipsBySkinClip = (clip: Clip, items: PassportItem[]) =>
-    (clip.link ? clip : undefined) ??
-    items.find((x) => x.assetId === clip.sTokenId)
+  const purchasedClipsBySkinClip = (clip: Clip, items: PassportItem[]) => {
+    const data =
+      (clip.link ? clip : undefined) ??
+      items.find((x) => x.assetId === clip.sTokenId)
+    return {
+      ...data,
+      id: clip?.id, // the id should always point to clip id and not assetDocId or passportDocId or anyother id.
+    }
+  }
 
   $: {
     spotlightLength = spotlight(profile)?.length ?? 0
