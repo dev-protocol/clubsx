@@ -7,7 +7,11 @@ import iconMe from '@assets/footer/icon-me.png'
   <div
     class="md:fixed md:bottom-8 md:drop-shadow md:left-2/4 md:-translate-x-1/2 md:w-[calc(640px_*_0.7)] md:border md:rounded-3xl flex justify-between px-16 py-2 text-dp-blue-grey-200 border-t border-black border-opacity-10 bg-white z-[1]"
   >
-    <a href="/" class="flex flex-col items-center gap-0">
+    <!-- <a href="/" class="flex flex-col items-center gap-0">
+      <img class="w-6" :src="iconHome.src" alt="HOME" />
+      <p class="text-xs">Home</p>
+    </a> -->
+    <a href="/app" class="flex flex-col items-center gap-0">
       <img class="w-6" :src="iconHome.src" alt="HOME" />
       <p class="text-xs">Home</p>
     </a>

@@ -6,6 +6,7 @@ import arrowRight from '@assets/clubs/arrow-right.svg'
   <div class="flex flex-col gap-1 px-2 h-full">
     <div class="flex flex-col gap-4">
       <a
+        v-if="false"
         href="/giruguru"
         class="flex items-center gap-3 p-2 bg-right bg-no-repeat"
         :style="`background-image: url(${arrowRight.src});`"
