@@ -35,6 +35,30 @@
   let isFrameDark: UndefinedOr<boolean>
   let imageElement: HTMLImageElement | null = null
 
+  const loadBloblImg = async () => {
+    const { itemAssetType, itemAssetValue } = props.item || {}
+    const isImage = [
+      'image',
+      'image-link',
+      'image-playable',
+      'image-playable-link',
+    ].includes(itemAssetType ?? '')
+    if (isImage && itemAssetValue) {
+      try {
+        const response = await fetch(itemAssetValue)
+        const blob = await response.blob()
+        const blobDataUrl = URL.createObjectURL(blob)
+        if (isImage && imageElement) {
+          imageElement.src = blobDataUrl
+        }
+      } catch (error) {
+        console.error('Error loading video or image:', error)
+      }
+      const img = await loadImage(itemAssetValue)
+      assetImage = img
+    }
+  }
+
   $: {
     console.log('*****', props.item)
     htmlDescription = whenDefined(props.description, markdownToHtml)
@@ -42,6 +66,9 @@
       props.frameColorHex?.startsWith('#') ? props.frameColorHex : undefined,
       isDark,
     )
+    whenDefined(props.item?.itemAssetValue, async (src) => {
+      await loadBloblImg()
+    })
   }
 
   let clubUrl = whenDefined(
@@ -64,25 +91,7 @@
     : `https://clubs.place/api/clubs?p=${props.item?.propertyAddress}`
 
   onMount(async () => {
-    const { itemAssetType, itemAssetValue } = props.item || {}
-    const isImage = [
-      'image',
-      'image-link',
-      'image-playable',
-      'image-playable-link',
-    ].includes(itemAssetType ?? '')
-    if (isImage && itemAssetValue) {
-      try {
-        const response = await fetch(itemAssetValue)
-        const blob = await response.blob()
-        const blobDataUrl = URL.createObjectURL(blob)
-        if (isImage && imageElement) {
-          imageElement.src = blobDataUrl
-        }
-      } catch (error) {
-        console.error('Error loading video or image:', error)
-      }
-    }
+    await loadBloblImg()
 
     const [clubApiPri, uri] = await Promise.all([
       fetch(`/api/clubs?p=${props.item?.propertyAddress}`)
@@ -155,7 +164,7 @@
         ? `--frameColor: ${props.frameColorHex}`
         : undefined}
     >
-      {#if assetImage && props.item.itemAssetType !== 'short-video' && props.item.itemAssetType !== 'short-video-link'}
+      {#if assetImage && props.item.itemAssetType !== 'short-video-controlled' && props.item.itemAssetType !== 'short-video-controlled-link' && props.item.itemAssetType !== 'short-video' && props.item.itemAssetType !== 'short-video-link' && props.item?.itemAssetType !== 'image' && props.item?.itemAssetType !== 'image-link' && props.item?.itemAssetType !== 'image-playable' && props.item?.itemAssetType !== 'image-playable-link'}
         <img
           src={assetImage.src}
           class="rounded-md w-full object-cover aspect-square"
@@ -167,7 +176,7 @@
           class="rounded-md w-full object-cover aspect-square"
           alt="Asset"
         />
-      {:else if props.item.itemAssetType === 'short-video' || props.item.itemAssetType === 'short-video-link'}
+      {:else if props.item.itemAssetType === 'short-video' || props.item.itemAssetType === 'short-video-link' || props.item.itemAssetType === 'short-video-controlled' || props.item.itemAssetType === 'short-video-controlled-link'}
         <VideoFetch
           url={props?.item?.itemAssetValue}
           posterUrl={assetImage?.src}
