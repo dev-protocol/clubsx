@@ -12,8 +12,7 @@
   import { loadImage, ABI_NFT } from '../utils'
   import type { PassportItem, ImageData } from '../types'
   import { isDark } from '@fixtures/color'
-
-  import VideoFetch from './VideoFetch.svelte'
+  import { VideoFetch } from '@devprotocol/clubs-core/ui/svelte'
   import { mediaSource } from '@devprotocol/clubs-plugin-passports/media'
   export let props: {
     local: boolean

@@ -90,7 +90,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="@container/passport-asset">
+  <div class="@container/passport-asset w-full h-full">
     <div
       v-if="!!item"
       :id="elementId"
