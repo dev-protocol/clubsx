@@ -20,31 +20,36 @@ import Footer from '@components/Footer/Footer.astro'
 import { replaceWithFwdHost, replaceUrlConfigWithLocal } from '@fixtures/url'
 import type { InferGetStaticPropsType } from 'astro'
 import Clarity from '@components/Clarity/Clarity.astro'
-import type { UndefinedOr } from '@devprotocol/util-ts'
+import { whenDefined, type UndefinedOr } from '@devprotocol/util-ts'
 
 const { site, page } = Astro.params
 const config = await _config(site)
 
-if (!config) {
-  return new Response(null, {
-    status: 404,
-    statusText: 'Not found',
-  })
-}
+const options = whenDefined(
+  config,
+  (conf) =>
+    ({
+      config: () =>
+        replaceUrlConfigWithLocal(
+          decode(conf),
+          new URL(Astro.request.url),
+          site,
+        ),
+      plugins,
+    }) satisfies ClubsFunctionFactoryOptions,
+)
 
-console.log('Astro.params', Astro.params)
-const options = {
-  config: () =>
-    replaceUrlConfigWithLocal(decode(config), new URL(Astro.request.url), site),
-  plugins,
-} satisfies ClubsFunctionFactoryOptions
-
-const { getStaticPaths } = pageFactory(
+const getPage = whenDefined(
   options,
-) as ClubsFunctionPageFactoryResult<typeof options>
-const router = routerFactory(await getStaticPaths(), (p) => p.params.page)
-const path = router(page) as UndefinedOr<
-  ClubsGetStaticPathsItem<InferGetStaticPropsType<typeof getStaticPaths>>
+  (opts) => pageFactory(opts) as ClubsFunctionPageFactoryResult<typeof opts>,
+)
+const router = await whenDefined(getPage, async (page) =>
+  routerFactory(await page.getStaticPaths(), (p) => p.params.page),
+)
+const path = whenDefined(router, (r) => r(page)) as UndefinedOr<
+  ClubsGetStaticPathsItem<
+    InferGetStaticPropsType<NonNullable<typeof getPage>['getStaticPaths']>
+  >
 >
 
 const Layout = path?.props.layout
@@ -52,7 +57,7 @@ const Content = path?.props.component
 
 const siteBaseUrl = new URL(replaceWithFwdHost(Astro.request)).origin
 
-const decodedConfig = decode<ClubsConfiguration>(config)
+const decodedConfig = whenDefined(config, decode)
 const draftOptions = decodedConfig?.options?.find(
   (option) => option.key === '__draft',
 )?.value as DraftOptions['value']
@@ -67,7 +72,7 @@ const SlotsConnectButton = path?.props.clubs.slots.filter(
 ---
 
 {
-  path && Layout && Content ? (
+  path && Layout && Content && config && decodedConfig ? (
     <>
       <Layout {...path.props}>
         {SlotsConnectButton?.length ? (
