@@ -6,7 +6,7 @@ import { i18nFactory } from '@devprotocol/clubs-core'
 import type { Profile } from '@pages/api/profile'
 import { nanoid } from 'nanoid'
 
-const props = defineProps<{ eoa?: string }>()
+const props = defineProps<{ eoa?: string; profile: Profile }>()
 const i18n = i18nFactory(Strings)(navigator.languages)
 
 const isSelf = ref<boolean>()
@@ -15,7 +15,7 @@ const step = ref<1 | 2 | 3 | 4 | 5>(1)
 const profile = computed(
   () =>
     ({
-      username: name.value,
+      username: name.value ?? props.profile.username,
       skins: [{ id: nanoid(), description: fave.value }],
     }) satisfies Profile,
 )
@@ -186,6 +186,14 @@ onMounted(() => {
             '': step > 3,
           }"
           >{{ i18n('FaveCharacterss') }}</span
+        >
+        <span
+          :class="{
+            'transition-all duration-500 text-black/50 text-center': true,
+            'text-base': step === 3,
+            'text-xs': step > 3,
+          }"
+          >{{ i18n('FaveCharactersExample') }}</span
         >
         <textarea
           type="text"

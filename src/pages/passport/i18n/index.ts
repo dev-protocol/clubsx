@@ -270,8 +270,12 @@ export const Strings = {
     ja: `お名前は?`,
   },
   FaveCharacterss: {
-    en: `Who are your fave characters?`,
-    ja: `推しの名前は?`,
+    en: `What's your fave?`,
+    ja: `あなたの推しは?`,
+  },
+  FaveCharactersExample: {
+    en: `Please write the name(s) of your fave anime, game, manga, character, etc.`,
+    ja: `推しのアニメやゲーム、マンガ、キャラクターなどの名前を教えてください。`,
   },
   Next: {
     en: `Next`,
@@ -292,5 +296,9 @@ export const Strings = {
   AfterPassportCreated: {
     en: `Enhance your Passport by showcasing videos, photos, and writing a self-introduction. You can display content from TikTok, YouTube, Instagram, and X, or arrange clips you've purchased.`,
     ja: `動画や写真を飾ったり、自己紹介を書いてパスポートを充実させてみましょう。TikTok, YouTube, Instagram や X のコンテンツを飾ったり、購入したクリップを並べることができます。`,
+  },
+  NoPurchasedItem: {
+    en: `Purchased items will be added here`,
+    ja: `購入アイテムはここに追加されます`,
   },
 } satisfies ClubsI18nParts
