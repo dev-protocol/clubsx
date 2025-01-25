@@ -20,6 +20,7 @@
 
   const i18nBase = i18nFactory(Strings)
   let i18n = i18nBase(['en'])
+  let thisEl: HTMLSpanElement
 
   export let skinIndex = 0
   export let isLocal: boolean
@@ -31,6 +32,7 @@
   export let purchasedClips: PassportItem[] = []
   export let eoa: UndefinedOr<string> = undefined
   export let onClickCreateButton: () => void
+  export const getElement = () => thisEl
 
   const rpcProvider = new JsonRpcProvider(
     `https://polygon-mainnet.g.alchemy.com/v2/${import.meta.env.PUBLIC_ALCHEMY_KEY ?? ''}`,
@@ -175,7 +177,7 @@
 </script>
 
 <!-- Edit passport skin showcase clips -->
-<span class="hs-form-field is-filled mt-16">
+<span class="hs-form-field is-filled mt-16" bind:this={thisEl}>
   <div class="hs-form-field__label flex items-center justify-between mb-1">
     <span class="hs-form-field__label flex gap-2 items-center">
       {i18n('PassportShowcaseClips')}

@@ -51,6 +51,7 @@
   let self: HTMLElement
   let transformYOrigin: UndefinedOr<number> = undefined
   let skinEditorOpen = false
+  let showcaseEl: () => HTMLElement
 
   onMount(async () => {
     i18n = i18nBase(navigator.languages)
@@ -58,7 +59,14 @@
     _fetchProfile()
     document.addEventListener(
       'triggered:open-showcase-edit-modal:from-header',
-      clickAddShowcase,
+      () => {
+        clickAddShowcase()
+        setTimeout(() => {
+          /* The Showcase section is most likely not in the viewport, so it will scroll after few second. */
+          const el = showcaseEl()
+          el?.scrollIntoView()
+        }, 1000)
+      },
     )
   })
 
@@ -527,6 +535,7 @@
         purchasedClips={purchasedSkinClips}
         isFetchingPurchasedClips={purchasedPassportIAssetsFetching}
         onClickCreateButton={clickAddShowcase}
+        bind:getElement={showcaseEl}
       />
     </div>
 
