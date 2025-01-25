@@ -97,6 +97,7 @@
                             }
                           : {
                               link: link,
+                              description,
                             }),
                         id: nanoid(),
                         createdAt: dayjs().utc().toDate().getTime(),
@@ -118,7 +119,7 @@
                           frameColorHex: '',
                           sTokenId: item.assetId,
                         }
-                      : { link }),
+                      : { link, description }),
                     id: nanoid(),
                     createdAt: dayjs().utc().toDate().getTime(),
                     updatedAt: 0,
@@ -159,7 +160,7 @@
                               frameColorHex: '',
                               sTokenId: item.assetId,
                             }
-                          : { link }),
+                          : { link, description }),
                         id: nanoid(),
                         createdAt: dayjs().utc().toDate().getTime(),
                         updatedAt: 0,
@@ -180,7 +181,7 @@
                           frameColorHex: '',
                           sTokenId: item.assetId,
                         }
-                      : { link }),
+                      : { link, description }),
                     id: nanoid(),
                     createdAt: dayjs().utc().toDate().getTime(),
                     updatedAt: 0,

@@ -217,7 +217,7 @@
           class={`h-full rounded bg-surface-400 opacity-50 ${passportSpotlightClass(0).child[2]}`}
         ></li>
       </ul>
-    {:else if !isFetchingPurchasedClips && !profileFetching && spotlightLength && purchasedClips?.length}
+    {:else if !isFetchingPurchasedClips && !profileFetching && spotlightLength}
       {#await Promise.resolve(spotlightLength < 3 && spotlightLength > 0 ? spotlightLength + 1 : spotlightLength) then dummyLength}
         <ul class={passportSpotlightClass(dummyLength).container}>
           {#if spotlightLength < 3}

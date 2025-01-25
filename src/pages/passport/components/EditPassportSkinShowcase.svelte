@@ -221,7 +221,7 @@
       <li class="rounded bg-surface-400 aspect-square opacity-50"></li>
       <li class="rounded bg-surface-400 aspect-square opacity-50"></li>
     </ul>
-  {:else if !isFetchingPurchasedClips && !profileFetching && profile.skins?.at(skinIndex)?.clips?.length && purchasedClips?.length}
+  {:else if !isFetchingPurchasedClips && !profileFetching && profile.skins?.at(skinIndex)?.clips?.length}
     <ul class="grid gap-2 lg:gap-4 grid-cols-3">
       {#each clips(profile) ?? [] as clip, i}
         <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
