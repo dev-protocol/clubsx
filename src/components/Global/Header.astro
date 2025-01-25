@@ -26,14 +26,26 @@ const { connectButton = 'hidden', pageTitle } = Astro.props
       >
         <Clubs slot="clubs-logo" class="h-5 lg:h-6 w-auto" />
 
-        <span slot="before:connect-button" class="w-full lg:w-fit">
-          <p class="text-xs font-bold lg:hidden">Switch Passports</p>
+        <span
+          slot="before:connect-button"
+          class="w-full lg:w-fit flex justify-center lg:justify-start"
+        >
           <slot name="passport:profile:switcher" />
         </span>
 
+        <slot
+          name="header:before:mobile-open-bar"
+          slot="before:mobile-open-bar"
+        />
+
         <nav slot="connect-button" class="w-full lg:w-fit">
-          <p class="text-xs font-bold lg:hidden">Sign In</p>
-          <ConnectButton />
+          <span class="flex justify-end gap-4 items-center">
+            <slot
+              name="header:before:sibling:connect-button"
+              slot="before:sibling:connect-button"
+            />
+            <ConnectButton />
+          </span>
         </nav>
 
         <slot name="right" slot="after:connect-button" />

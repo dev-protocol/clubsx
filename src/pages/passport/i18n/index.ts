@@ -73,23 +73,23 @@ export const Strings = {
   },
   PinClipsToShowcase: {
     en: () =>
-      `You have not pinned your <b>Passport Clips</b>.<br /><i>To configure</i> your creative and unique passport page <b>pin Passport Clips now</b>.`,
+      `You have not posted your <b>Passport Clips</b>.<br /><i>To configure</i> your creative and unique passport page <b>post Passport Clips now</b>.`,
     ja: () =>
-      `<b>パスポートクリップ</b> をピン留めしていません。<br /><i>パスポートページを設定</i>するには、<b>今すぐパスポートクリップをピン留め</b>してください。`,
+      `<b>パスポートクリップ</b> を投稿していません。<br /><i>パスポートページを設定</i>するには、<b>今すぐパスポートクリップを投稿</b>してください。`,
   },
   PinClipsToSpotlight: {
     en: () =>
-      `You have not pinned your <b>Passport Clips</b> to spotlight.<br /><i>To configure</i> your creative and unique passport page <b>pin Passport Clips to Spotlight now</b>.`,
+      `You have not posted your <b>Passport Clips</b> to spotlight.<br /><i>To configure</i> your creative and unique passport page <b>post Passport Clips to Spotlight now</b>.`,
     ja: () =>
-      `<b>パスポートクリップ</b> をスポットライトにピン留めしていません。<br /><i>パスポートページを設定</i>するには、<b>今すぐパスポートクリップをスポットライトにピン留め</b>してください。`,
+      `<b>パスポートクリップ</b> をスポットライトに投稿していません。<br /><i>パスポートページを設定</i>するには、<b>今すぐパスポートクリップをスポットライトに投稿</b>してください。`,
   },
   PinClipsToSpotlightHelper: {
-    en: () => `You can pin 3 clips to your spotlight.`,
-    ja: () => `スポットライトには3つのクリップをピン留めできます。`,
+    en: () => `You can post 3 clips to your spotlight.`,
+    ja: () => `スポットライトには3つのクリップを投稿できます。`,
   },
   PinClipsToShowcaseHelper: {
-    en: () => `You can pin as many clips as you like to your showcase.`,
-    ja: () => `ショーケースには好きな数のクリップをピン留めできます。`,
+    en: () => `You can post as many clips as you like to your showcase.`,
+    ja: () => `ショーケースには好きな数のクリップを投稿できます。`,
   },
   PurchasePassportClips: {
     en: () =>
@@ -300,5 +300,9 @@ export const Strings = {
   NoPurchasedItem: {
     en: `Purchased items will be added here`,
     ja: `購入アイテムはここに追加されます`,
+  },
+  Post: {
+    en: `Post`,
+    ja: `投稿`,
   },
 } satisfies ClubsI18nParts

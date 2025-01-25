@@ -53,7 +53,9 @@ watch(open, () => {
       </span>
     </a>
 
-    <span class="w-full flex items-center justify-end lg:hidden">
+    <span class="w-full flex items-center justify-end lg:hidden gap-4">
+      <slot name="before:mobile-open-bar" />
+
       <button type="button" @click="() => (open = true)" class="">
         <Bars3 />
       </button>
@@ -62,7 +64,7 @@ watch(open, () => {
     <span
       class="w-full absolute top-0 left-0 gap-4 px-2 py-4 bg-white text-black rounded-b-lg shadow content-start justify-stretch justify-items-center transition-[height] duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] overflow-x-hidden overflow-y-scroll"
       :class="[
-        { grid: open },
+        { 'grid z-[1]': open },
         { hidden: !open },
         { 'h-[50vh]': animate },
         { 'h-0': !animate },
