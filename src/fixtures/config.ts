@@ -1,8 +1,13 @@
 import { createClient } from 'redis'
+import { validate } from './site'
 
 export const config = async (
   site: string | number | undefined,
 ): Promise<string | null> => {
+  if ((site ? validate(site.toString()) : false) === false) {
+    return null
+  }
+
   const client = createClient({
     url: process.env.REDIS_URL,
     username: process.env.REDIS_USERNAME ?? '',

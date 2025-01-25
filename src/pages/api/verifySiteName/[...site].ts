@@ -1,14 +1,7 @@
 import reservedNamespacies from '@constants/reserved-namespacies'
 import { createClient } from 'redis'
 import BadWords from 'bad-words'
-
-/**
- * This accepts only 3-42 strings includes a-z, 0-9 or -, and returns boolean
- * @param site the string of site name
- * @returns boolean
- */
-const validate = (site?: string): site is string =>
-  site ? /^[a-z|0-9|-]{3,42}$/.test(site) : false
+import { validate } from '@fixtures/site'
 
 export const GET = async ({
   params: { site },
