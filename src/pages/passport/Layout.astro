@@ -10,6 +10,8 @@ import Footer from '@components/Global/Footer.vue'
 import { getPassportItemForPayload } from '@fixtures/api/passportItem'
 import SkinSwitch from 'src/pages/passport/components/SkinSwitch.svelte'
 import AchivementNotification from '../../pages/passport/components/AchivementNotification.svelte'
+import PostButton from './components/PostButton.vue'
+import { parseAcceptLanguage } from 'intl-parse-accept-language'
 
 type Props = {
   eoa?: string
@@ -20,6 +22,7 @@ type Props = {
   theme?: 'light' | 'dark' | 'auto'
   preload?: { as: string; href: string }[]
   connectButton?: 'show' | 'hidden' | 'show-when-signedin'
+  showSkinSwitcher?: boolean
 }
 
 const {
@@ -31,6 +34,7 @@ const {
   itemHash,
   preload = [],
   connectButton,
+  showSkinSwitcher = true,
 } = Astro.props as Props
 
 const passportSkinTheme = await whenDefined(sTokenPayload, (payload: string) =>
@@ -56,6 +60,7 @@ const twitterHandle = 'poweredbyClubs'
 const title = 'Clubs | All-in-One Space for Creators'
 const description =
   'Clubs is an all-in-one space for creators to manage their NFTs, DAOs, and more.'
+const langs = parseAcceptLanguage(Astro.request.headers.get('Accept-Language'))
 ---
 
 <html
@@ -134,13 +139,23 @@ const description =
           client:only="svelte"
           slot="before:heading"
         />
-        <SkinSwitch
+        {
+          showSkinSwitcher && (
+            <SkinSwitch
+              client:load
+              slot="passport:profile:switcher"
+              skins={skins ?? []}
+              eoa={eoa ?? ''}
+              selectedSkinId={selectedSkinId ?? skins?.at(0)?.id ?? ''}
+            />
+          )
+        }
+        <PostButton
           client:load
-          slot="passport:profile:switcher"
-          skins={skins ?? []}
-          eoa={eoa ?? ''}
-          selectedSkinId={selectedSkinId ?? skins?.at(0)?.id ?? ''}
+          slot="header:before:sibling:connect-button"
+          {langs}
         />
+        <PostButton client:load slot="header:before:mobile-open-bar" {langs} />
       </Header>
 
       <div

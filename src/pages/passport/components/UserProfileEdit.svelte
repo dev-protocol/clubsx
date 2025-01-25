@@ -56,6 +56,10 @@
     i18n = i18nBase(navigator.languages)
     _connectOnMount()
     _fetchProfile()
+    document.addEventListener(
+      'triggered:open-showcase-edit-modal:from-header',
+      clickAddShowcase,
+    )
   })
 
   const _connectOnMount = async () => {
