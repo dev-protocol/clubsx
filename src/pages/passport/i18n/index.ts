@@ -233,6 +233,10 @@ export const Strings = {
     en: 'Sign In',
     ja: 'サインイン',
   },
+  SignInOrSignUp: {
+    en: 'Sign In/Register',
+    ja: 'ログイン/会員登録',
+  },
   Close: {
     en: 'Close',
     ja: '閉じる',
@@ -304,5 +308,14 @@ export const Strings = {
   Post: {
     en: `Post`,
     ja: `投稿`,
+  },
+  Collect: { en: `Collect`, ja: `集めて` },
+  Showcase: { en: `Showcase`, ja: `飾って` },
+  Connect: { en: `Connect`, ja: `飾ろう` },
+  ',': { en: `,`, ja: `、` },
+  '.': { en: `.`, ja: `。` },
+  CopyLine: {
+    en: `Connect with fellow fans and elevate your <ruby>Oshi<rp>(</rp><rt>fave</rt><rp>)</rp></ruby> experience. Start for free today.`,
+    ja: `他のファンと"推し"を共有し、あなたの"推し活"をもっと深く掘り下げる。今すぐ無料で始めましょう。`,
   },
 } satisfies ClubsI18nParts
