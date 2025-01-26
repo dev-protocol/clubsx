@@ -1,6 +1,5 @@
 /// <reference path="../.astro/types.d.ts" />
 /// <reference types="astro/client" />
-import { SvelteComponentTyped } from 'svelte'
 
 interface ImportMetaEnv {
   readonly PUBLIC_YOUTUBE_CLIENT_ID: string
