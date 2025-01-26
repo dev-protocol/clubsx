@@ -7,17 +7,31 @@ import Footer from '@components/Global/Footer.vue'
 
 type Props = {
   connectButton?: 'show' | 'hidden'
+  header?: 'show' | 'hidden'
+  footer?: 'show' | 'hidden'
+  fullwidth?: boolean
   theme?: 'light' | 'dark' | 'auto'
   pageTitle?: string
+  og?: {
+    image?: string
+  }
 }
 
-const { connectButton = 'hidden', theme = 'dark', pageTitle } = Astro.props
+const {
+  connectButton = 'hidden',
+  header = 'show',
+  footer = 'show',
+  theme = 'dark',
+  fullwidth = false,
+  pageTitle,
+  og,
+} = Astro.props
 
-const title = 'Clubs'
-const name = 'Clubs' // not sure the difference here compared to title
-const description = ''
+const title = 'CLUBS'
+const name = 'CLUBS' // not sure the difference here compared to title
+const description = 'Collection-based Social Platform'
 const url = ''
-const ogURL = ''
+const ogURL = og?.image ?? ''
 const twitterHandle = 'poweredbyClubs'
 ---
 
@@ -48,17 +62,26 @@ const twitterHandle = 'poweredbyClubs'
   </head>
 
   <body
-    class="relative flex flex-col max-w-full md:max-w-screen-sm mx-auto bg-background font-body text-surface-ink"
+    class:list={[
+      'relative flex flex-col max-w-full mx-auto bg-background font-body text-surface-ink',
+      {
+        'md:max-w-screen-sm': fullwidth === false,
+      },
+    ]}
     style="height: 100dvh"
   >
     <slot name="before-header" />
-    <Header connectButton={connectButton} pageTitle={pageTitle} />
+    {
+      header === 'show' && (
+        <Header connectButton={connectButton} pageTitle={pageTitle} />
+      )
+    }
 
     <main class="flex-grow overflow-y-auto md:overflow-y-visible">
       <slot />
     </main>
 
-    <Footer />
+    {footer === 'show' && <Footer />}
   </body>
 </html>
 

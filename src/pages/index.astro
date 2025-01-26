@@ -1,13 +1,46 @@
 ---
 import Layout from '@layouts/LandingWithFooter.astro'
-import FeedPageContent from '@components/Feed/FeedPageContent.vue'
 import { getFeed, type FeedType } from '../fixtures/api/feed'
+import { CookieKey } from '@constants/cookie'
+import Frontpage from '@components/Home/Frontpage.vue'
+import { ConnectButton } from '@devprotocol/clubs-plugin-awesome-onboarding'
+import { parseAcceptLanguage } from 'intl-parse-accept-language'
+import Footer_ from '@components/Footer/Footer.astro'
+import OG from '@assets/clubs/og.png'
 
-const feeds = await getFeed().catch(() => [] as FeedType[])
+const guestAccess =
+  new URL(Astro.request.url).searchParams.get('as') === 'guest'
+
+const userFromCookie = Astro.cookies.get(CookieKey.User)
+const user = userFromCookie?.value
+  ? userFromCookie?.value
+  : guestAccess
+    ? 'guest'
+    : undefined
+
+const feeds = user ? await getFeed().catch(() => [] as FeedType[]) : []
+const langs = parseAcceptLanguage(Astro.request.headers.get('Accept-Language'))
 ---
 
-<Layout connectButton="hidden" theme="light" pageTitle="Feed">
+<Layout
+  connectButton="hidden"
+  theme={user ? 'light' : 'dark'}
+  pageTitle="Feed"
+  header={user ? 'show' : 'hidden'}
+  footer={user ? 'show' : 'hidden'}
+  fullwidth={user ? false : true}
+  og={{ image: OG.src }}
+>
   <div class="@container/main h-full">
-    <FeedPageContent feeds={feeds} />
+    <Frontpage client:load feeds={feeds} session={{ user }} {langs}
+      ><ConnectButton slot="connect-button" />
+      <Footer_ slot="footer" clubs={{ slots: [] }}
+        ><li slot="nav-item">
+          <a href="https://www.clubs.place" target="_blank" class="text-sm"
+            >For Creators</a
+          >
+        </li></Footer_
+      ></Frontpage
+    >
   </div>
 </Layout>

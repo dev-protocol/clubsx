@@ -11587,6 +11587,7 @@ __metadata:
     dayjs: "npm:^1.11.9"
     dompurify: "npm:^3.0.5"
     dotenv: "npm:16.4.7"
+    es-cookie: "npm:^1.5.0"
     eslint: "npm:8.57.1"
     eslint-config-prettier: "npm:10.0.1"
     eslint-config-standard: "npm:17.1.0"
@@ -13176,6 +13177,13 @@ __metadata:
   version: 1.0.0
   resolution: "es-array-method-boxes-properly@npm:1.0.0"
   checksum: 10c0/4b7617d3fbd460d6f051f684ceca6cf7e88e6724671d9480388d3ecdd72119ddaa46ca31f2c69c5426a82e4b3091c1e81867c71dcdc453565cd90005ff2c382d
+  languageName: node
+  linkType: hard
+
+"es-cookie@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "es-cookie@npm:1.5.0"
+  checksum: 10c0/1de9d37b2c6cc331138ff759b81d0be83334c2593ac3e4eb5eea0201d385c5cbfcb3e8bd4694a8741af4b5937c5ccd81990cd762a8b07ae75bcf602e88db9c50
   languageName: node
   linkType: hard
 
