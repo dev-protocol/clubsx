@@ -17,7 +17,6 @@ import Icon from '../../components/Icons.vue'
 import type { PassportClip } from '../../types'
 import Like from '../../components/Like.svelte'
 import PassportClips from '../../components/PassportClips.vue'
-import UserProfileEditButton from '../../components/UserProfileEditButton.svelte'
 import { clubsUrlToKeccak256Tag } from '@plugins/achievements/utils'
 import MediaSDKs from '@components/Passports/MediaSDKs.astro'
 import Onboarding from '../../components/Onboarding.vue'
@@ -168,6 +167,7 @@ const [
   itemHash={passportElementId}
   preload={[{ as: 'image', href: RedHeart.src }]}
   connectButton="show"
+  showPostButton="edit"
 >
   <div class="grid gap-6 lg:gap-24 mb-32">
     <section class:list={passportClass('account-container')}>
@@ -235,15 +235,6 @@ const [
                 </div>
               )
             }
-
-            <span class="empty:hidden">
-              <UserProfileEditButton
-                client:only="svelte"
-                address={eoa}
-                skinId={skin?.id ?? ''}
-                additionalClasses={passportClass('edit-button')}
-              />
-            </span>
           </span>
         </span>
 
