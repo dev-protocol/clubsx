@@ -79,6 +79,9 @@
     document.body.classList.add('overflow-hidden')
     openModal(PassportClipEditModal, {
       item: item,
+      tags: profile?.skins
+        ?.at(skinIndex)
+        ?.spotlight?.find((clip) => clip.id === item.id)?.tags,
       hex: profile?.skins
         ?.at(skinIndex)
         ?.spotlight?.find((clip) => clip.id === item.id)?.frameColorHex,
@@ -94,6 +97,7 @@
       action: async (
         clip: PassportItem,
         description: string,
+        tags: string[],
         frameColorHex: string | undefined,
         method,
       ): Promise<boolean> => {
@@ -127,6 +131,7 @@
                                       ...clip,
                                       id: clip.id ?? nanoid(),
                                       description,
+                                      tags,
                                       frameColorHex,
                                       createdAt: clip.createdAt
                                         ? clip.createdAt
@@ -161,6 +166,7 @@
     return {
       ...data,
       id: clip?.id, // the id should always point to clip id and not assetDocId or passportDocId or anyother id.
+      tags: clip?.tags,
     }
   }
 

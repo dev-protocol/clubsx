@@ -9,6 +9,7 @@
   import debounce from 'lodash/debounce'
   import { mediaSource } from '@devprotocol/clubs-plugin-passports/media'
   import { MediaEmbed } from '@devprotocol/clubs-plugin-passports/svelte'
+  import Tags from './Tags.svelte'
 
   import TikTok from '@assets/sns/TikTok.svg'
   import Instagram from '@assets/sns/Instagram.svg'
@@ -18,9 +19,6 @@
   import { Strings } from '../i18n'
   import type { PassportItem } from '../types'
   import PassportAsset from './PassportAsset.svelte'
-  import IconShowcase from './IconShowcase.svelte'
-  import IconSpotlight from './IconSpotlight.svelte'
-  import { filter } from 'ramda'
   import dayjs from 'dayjs'
   import utc from 'dayjs/plugin/utc'
   import { nanoid } from 'nanoid'
@@ -47,6 +45,7 @@
   let link: UndefinedOr<string>
   let description: UndefinedOr<string>
   let linkError: UndefinedOr<string>
+  let tags: string[] = []
 
   $: {
     hasSpotlightLimitReadched =
@@ -99,6 +98,7 @@
                               link: link,
                               description,
                             }),
+                        tags,
                         id: nanoid(),
                         createdAt: dayjs().utc().toDate().getTime(),
                         updatedAt: 0,
@@ -120,6 +120,7 @@
                           sTokenId: item.assetId,
                         }
                       : { link, description }),
+                    tags,
                     id: nanoid(),
                     createdAt: dayjs().utc().toDate().getTime(),
                     updatedAt: 0,
@@ -161,6 +162,7 @@
                               sTokenId: item.assetId,
                             }
                           : { link, description }),
+                        tags,
                         id: nanoid(),
                         createdAt: dayjs().utc().toDate().getTime(),
                         updatedAt: 0,
@@ -182,6 +184,7 @@
                           sTokenId: item.assetId,
                         }
                       : { link, description }),
+                    tags,
                     id: nanoid(),
                     createdAt: dayjs().utc().toDate().getTime(),
                     updatedAt: 0,
@@ -367,6 +370,11 @@
           bind:value={description}
           placeholder={i18n('ContentLinkDescriptionPlaceholder')}
         />
+      </label>
+
+      <label class="hs-form-field">
+        <span class="hs-form-field__label"> {i18n('Tags')} </span>
+        <Tags bind:tags />
       </label>
     </div>
   </div>

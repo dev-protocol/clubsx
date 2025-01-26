@@ -47,9 +47,11 @@ export type PurchasedPassportClip = AssetDocument &
 export type PassportItem = Partial<PurchasedPassportItem> & {
   id?: string
   link?: string
+  tags?: string[]
 }
 
 export type PassportClip = Partial<PurchasedPassportClip> & {
   id?: string
   link?: string
+  tags?: string[]
 }

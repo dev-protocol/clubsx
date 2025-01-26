@@ -11,6 +11,7 @@ export type Clip = {
   description?: string
   frameColorHex?: string
   link?: string
+  tags?: string[]
   createdAt: number
   updatedAt: number
 }

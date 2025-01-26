@@ -309,6 +309,10 @@ export const Strings = {
     en: `Post`,
     ja: `投稿`,
   },
+  Tags: {
+    en: `Tags`,
+    ja: `タグ`,
+  },
   Collect: { en: `Collect`, ja: `集めて` },
   Showcase: { en: `Showcase`, ja: `飾って` },
   Connect: { en: `Connect`, ja: `飾ろう` },

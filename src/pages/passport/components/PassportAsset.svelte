@@ -17,7 +17,7 @@
   import { mediaSource } from '@devprotocol/clubs-plugin-passports/media'
   export let props: {
     local: boolean
-    item?: PassportItem
+    item?: PassportItem & { tags?: string[] }
     classNames?: string
     isEditable?: boolean
     provider: ContractRunner
@@ -199,6 +199,13 @@
             {@html htmlDescription}
           {:else}
             <p>{assetName ?? ''}</p>
+          {/if}
+          {#if props.item.tags}
+            <ul class="flex flex-wrap gap-2 empty:hidden">
+              {#each props.item.tags as tag}
+                <li class="text-blue-500 text-sm">#{tag}</li>
+              {/each}
+            </ul>
           {/if}
           {#if !clubUrl || !clubName}
             <span class="inline-block w-full h-3"><Skeleton /></span>
