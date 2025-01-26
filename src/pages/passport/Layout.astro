@@ -23,6 +23,7 @@ type Props = {
   preload?: { as: string; href: string }[]
   connectButton?: 'show' | 'hidden' | 'show-when-signedin'
   showSkinSwitcher?: boolean
+  showPostButton?: 'hidden' | 'post' | 'edit'
 }
 
 const {
@@ -35,6 +36,7 @@ const {
   preload = [],
   connectButton,
   showSkinSwitcher = true,
+  showPostButton = 'hidden',
 } = Astro.props as Props
 
 const passportSkinTheme = await whenDefined(sTokenPayload, (payload: string) =>
@@ -150,12 +152,28 @@ const langs = parseAcceptLanguage(Astro.request.headers.get('Accept-Language'))
             />
           )
         }
-        <PostButton
-          client:load
-          slot="header:before:sibling:connect-button"
-          {langs}
-        />
-        <PostButton client:load slot="header:before:mobile-open-bar" {langs} />
+        {
+          showPostButton !== 'hidden' && (
+            <PostButton
+              client:only="vue"
+              slot="header:before:sibling:connect-button"
+              skinId={selectedSkinId}
+              mode={showPostButton}
+              {eoa}
+            />
+          )
+        }
+        {
+          showPostButton !== 'hidden' && (
+            <PostButton
+              client:only="vue"
+              slot="header:before:mobile-open-bar"
+              skinId={selectedSkinId}
+              mode={showPostButton}
+              {eoa}
+            />
+          )
+        }
       </Header>
 
       <div
