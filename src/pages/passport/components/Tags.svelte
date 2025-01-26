@@ -8,12 +8,12 @@
   export let addKeys: number[] = [13, 32]
 </script>
 
-<span>
+<span class="tags-input">
   <Tags bind:tags {allowPaste} {allowDrop} {splitWith} {addKeys} />
 </span>
 
 <style scoped lang="scss">
-  .hs-form-field {
+  .tags-input {
     & :global(.svelte-tags-input-tag),
     & :global(.svelte-tags-input) {
       @apply text-xl;

@@ -123,7 +123,11 @@ onMounted(async () => {
           class="description text-sm @[16rem]/passport-asset:text-base"
           :class="{ 'line-clamp-1': props.truncate ?? true }"
         ></article>
-
+        <ul class="flex flex-wrap gap-2 empty:hidden">
+          <li v-for="tag in props.item.tags" class="text-blue-500 text-sm">
+            #{{ tag }}
+          </li>
+        </ul>
         <div class="flex w-full max-w-full items-center justify-between">
           <i v-if="IS_LINK"></i>
           <span

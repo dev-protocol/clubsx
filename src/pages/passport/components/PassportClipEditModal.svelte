@@ -5,6 +5,7 @@
   import { i18nFactory } from '@devprotocol/clubs-core'
   import type { UndefinedOr } from '@devprotocol/util-ts'
   import { closeModal, closeAllModals } from 'svelte-modals'
+  import Tags from './Tags.svelte'
 
   import { Strings } from '../i18n'
   import type { PassportItem } from '../types'
@@ -23,6 +24,7 @@
     (
       clip: PassportItem,
       description: string,
+      tags: string[],
       frameColorHex: string | undefined,
       method: 'patch' | 'del',
     ) => Promise<boolean>
@@ -31,6 +33,7 @@
   export let onClose: UndefinedOr<() => Promise<void>> = undefined
   let imageElement: HTMLImageElement | null = null
   let linkError: UndefinedOr<string>
+  export let tags: string[] = []
 
   const i18nBase = i18nFactory(Strings)
   let loading = false
@@ -64,7 +67,8 @@
 
   const onClickAction = async (method: 'patch' | 'del') => {
     loading = true
-    const isSuccess = action && (await action(item, description, hex, method))
+    const isSuccess =
+      action && (await action(item, description, tags, hex, method))
     loading = false
 
     if (isSuccess) {
@@ -171,6 +175,11 @@
             name="passort-item-description"
             placeholder={i18n('InputYourCommentHere')}
           />
+        </label>
+
+        <label class="hs-form-field is-filled">
+          <span class="hs-form-field__label"> {i18n('Tags')} </span>
+          <Tags bind:tags />
         </label>
 
         {#if typeof item.link !== 'string'}

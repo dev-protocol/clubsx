@@ -7,6 +7,7 @@
   import type { Clip, Profile } from '@pages/api/profile'
   import { closeAllModals, openModal } from 'svelte-modals'
   import { nanoid } from 'nanoid'
+  import Tags from './Tags.svelte'
 
   import { Strings } from '../i18n'
   import type { PassportItem } from '../types'
@@ -21,6 +22,7 @@
   const i18nBase = i18nFactory(Strings)
   let i18n = i18nBase(['en'])
   let thisEl: HTMLSpanElement
+  let tags: string[] = []
 
   export let skinIndex = 0
   export let isLocal: boolean
@@ -84,6 +86,9 @@
     document.body.classList.add('overflow-hidden')
     openModal(PassportClipEditModal, {
       item,
+      tags: profile?.skins
+        ?.at(skinIndex)
+        ?.clips?.find((clip) => clip.id === item.id)?.tags,
       hex: profile?.skins
         ?.at(skinIndex)
         ?.clips?.find((clip) => clip.id === item.id)?.frameColorHex,
@@ -99,6 +104,7 @@
       action: async (
         clip: PassportItem,
         description: string,
+        tags: string[],
         frameColorHex: string | undefined,
         method,
       ): Promise<boolean> => {
@@ -137,6 +143,7 @@
                                       ...clip,
                                       id: clip.id ?? nanoid(),
                                       description,
+                                      tags,
                                       frameColorHex,
                                       createdAt: clip.createdAt
                                         ? clip.createdAt
@@ -172,6 +179,7 @@
     return {
       ...data,
       id: clip?.id, // the id should always point to clip id and not assetDocId or passportDocId or anyother id.
+      tags: clip?.tags,
     }
   }
 </script>
