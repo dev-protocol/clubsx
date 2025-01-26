@@ -305,4 +305,8 @@ export const Strings = {
     en: `Post`,
     ja: `投稿`,
   },
+  Tags: {
+    en: `Tags`,
+    ja: `タグ`,
+  },
 } satisfies ClubsI18nParts

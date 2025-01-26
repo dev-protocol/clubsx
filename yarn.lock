@@ -11626,6 +11626,7 @@ __metadata:
     svelte-awesome-color-picker: "npm:^3.1.4"
     svelte-check: "npm:^4.0.0"
     svelte-modals: "npm:^1.3.0"
+    svelte-tags-input: "npm:^6.0.2"
     swiper: "npm:11.2.1"
     swr: "npm:^2.2.5"
     tailwindcss: "npm:^3.3.3"
@@ -24874,6 +24875,13 @@ __metadata:
   peerDependencies:
     svelte: ^3.0.0 || ^4.0.0
   checksum: 10c0/765a7c5d0b8f0cc3488eca19012cd0b3e4a428fb5fc1955b1c7f09c5a53c674cf1914ed0bf5e24a303cf79e46aed20d60b959c833cad5e82437c5280472ea44c
+  languageName: node
+  linkType: hard
+
+"svelte-tags-input@npm:^6.0.2":
+  version: 6.0.2
+  resolution: "svelte-tags-input@npm:6.0.2"
+  checksum: 10c0/539550dff2d37cd7c8dfc4e1b8b48c5f64173eb7770dda89af5ae4c7644205f98ff4c0d4308fd7036ec14af9a8c914541395e1b1cfa36c69a32afa2b51c816a8
   languageName: node
   linkType: hard
 

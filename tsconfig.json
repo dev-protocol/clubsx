@@ -6,6 +6,7 @@
     "strict": true,
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
+    "typeRoots": ["src/@types"],
     "paths": {
       "@components/*": ["src/components/*"],
       "@constants/*": ["src/constants/*"],
