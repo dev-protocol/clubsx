@@ -4,6 +4,9 @@ import FeedPageContent from '@components/Feed/FeedPageContent.vue'
 import { getFeed, type FeedType } from '../fixtures/api/feed'
 
 const feeds = await getFeed().catch(() => [] as FeedType[])
+
+const guestAccess =
+  new URL(Astro.request.url).searchParams.get('as') === 'guest'
 ---
 
 <Layout connectButton="hidden" theme="light" pageTitle="Feed">
