@@ -68,6 +68,7 @@ export type FeedType = {
   item: Clip
   clipType: ClipTypes
   parentPassport: Skin
+  parentPassportIndex: number
 }
 
 export const getAllProfiles = async (
@@ -158,6 +159,7 @@ export const getClubFromAssetPayload = async (
 export const getFeedAssetFromClip = async (
   clip: Clip,
   skin: Skin,
+  skinIndex: number,
   type: ClipTypes,
   ownerDetails: FeedUserData,
   redis: ReturnType<typeof createClient>,
@@ -226,11 +228,13 @@ export const getFeedAssetFromClip = async (
     item: clip,
     clipType: type,
     parentPassport: skin,
+    parentPassportIndex: skinIndex,
   }
 }
 
 export const getClipFromSkin = async (
   skin: Skin,
+  skinIndex: number,
   ownerDetails: FeedUserData,
   redis: ReturnType<typeof createClient>,
 ) => {
@@ -249,12 +253,26 @@ export const getClipFromSkin = async (
   const spotlight = skin.spotlight || []
   const clipsFeedDataPromises = Promise.all(
     clips.map(async (clip) => {
-      return getFeedAssetFromClip(clip, skin, 'clips', ownerDetails, redis)
+      return getFeedAssetFromClip(
+        clip,
+        skin,
+        skinIndex,
+        'clips',
+        ownerDetails,
+        redis,
+      )
     }),
   )
   const spotlightsFeedDataPromises = Promise.all(
     spotlight.map(async (clip) => {
-      return getFeedAssetFromClip(clip, skin, 'spotlight', ownerDetails, redis)
+      return getFeedAssetFromClip(
+        clip,
+        skin,
+        skinIndex,
+        'spotlight',
+        ownerDetails,
+        redis,
+      )
     }),
   )
 
@@ -307,8 +325,10 @@ export const getFeed = async () => {
           }
 
           await Promise.all(
-            profile?.skins?.map(async (skin) => {
-              feed.push(...(await getClipFromSkin(skin, ownerDetails, client)))
+            profile?.skins?.map(async (skin, i) => {
+              feed.push(
+                ...(await getClipFromSkin(skin, i, ownerDetails, client)),
+              )
             }) ?? [],
           )
         }) ?? [],

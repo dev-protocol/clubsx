@@ -25,7 +25,7 @@ const { eoa, ids } = Astro.params
 const isEOA = isAddress(eoa)
 
 const id = ids?.split('/')?.at(0) ?? '' // Get the skin id from the URL.
-const passportElementId = ids?.split('/')?.at(1) // Get the element id from the URL.
+const passportElementId = new URL(Astro.request.url).hash.split('#').at(1) // Get the element id from the URL.
 
 const _profile: Profile = await getProfile({ id: eoa ?? '' })
 const profile = {

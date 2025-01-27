@@ -10,7 +10,7 @@ const props = defineProps<FeedType>()
 
 const assetLink = computed(
   () =>
-    `/passport/${props.address}/${props.parentPassport.id}/${itemToHash(props.clipType, props.item.id)}`,
+    `/passport/${props.address}/${props.parentPassportIndex === 0 ? '' : props.parentPassport.id}#${itemToHash(props.clipType, props.item.id)}`,
 )
 </script>
 
