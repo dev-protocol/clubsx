@@ -171,9 +171,7 @@ export const setImage = async (
               {
                 ...passportOffering.value,
                 currency: 'USDC',
-                price:
-                  passportDiscount?.value?.price?.usdc ||
-                  passportOffering.value.price, // if discount is available use it, else use the price.
+                price: passportOffering.value.price, // if discount is available use it, else use the price.
               } as Membership,
               chainId as number,
             ),

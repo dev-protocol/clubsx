@@ -32,7 +32,6 @@ export const changePassportDiscount =
     discountRef.value = {
       ...discountRef.value,
       price: {
-        usdc: offeringRef.value.price - offeringRef.value.price * value,
         yen: yenPrice - yenPrice * value,
       },
     }
