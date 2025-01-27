@@ -203,7 +203,7 @@
           {#if props.item.tags}
             <ul class="flex flex-wrap gap-2 empty:hidden">
               {#each props.item.tags as tag}
-                <li class="text-blue-500 text-sm">#{tag}</li>
+                <li class="text-violet-500 text-sm">#{tag}</li>
               {/each}
             </ul>
           {/if}

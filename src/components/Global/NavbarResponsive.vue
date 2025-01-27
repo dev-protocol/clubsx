@@ -47,7 +47,7 @@ watch(open, () => {
         }}</span>
       </h1>
       <span
-        class="w-full flex items-center justify-end lg:hidden cursor-pointer"
+        class="w-full flex items-center justify-end md:hidden cursor-pointer"
       >
         <HomeLogo />
       </span>

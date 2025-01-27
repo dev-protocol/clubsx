@@ -3,44 +3,21 @@ import MediaCard from '@pages/passport/components/MediaCard.vue'
 import { MediaEmbed } from '@devprotocol/clubs-plugin-passports/vue'
 import type { PassportItemAssetType } from '@devprotocol/clubs-plugin-passports/types'
 import type { FeedType } from '@fixtures/api/feed'
+import { computed } from 'vue'
+import { itemToHash } from '@fixtures/router/passportItem'
 
 const props = defineProps<FeedType>()
 
-const SKIN: FeedType['tag'][] = ['css', 'stylesheet-link']
-const CLIP: FeedType['tag'][] = [
-  'image',
-  'image-link',
-  'image-playable',
-  'image-playable-link',
-]
-const BGM: FeedType['tag'][] = ['bgm', 'bgm-link']
-const VIDEO: FeedType['tag'][] = [
-  'video',
-  'video-link',
-  'short-video',
-  'short-video-link',
-]
+const assetLink = computed(
+  () =>
+    `/passport/${props.address}/${props.parentPassport.id}/${itemToHash(props.clipType, props.item.id)}`,
+)
 </script>
 
 <template>
-  <div
-    class="flex gap-3 p-2 rounded-xl"
-    :class="{
-      'bg-indigo-600':
-        !frameHexColor || frameHexColor === '' ? CLIP.includes(tag) : false,
-      'bg-fuchsia-500':
-        !frameHexColor || frameHexColor === '' ? SKIN.includes(tag) : false,
-      'bg-orange-500':
-        !frameHexColor || frameHexColor === '' ? BGM.includes(tag) : false,
-      'bg-yellow-500':
-        !frameHexColor || frameHexColor === '' ? VIDEO.includes(tag) : false,
-    }"
-    :style="{
-      backgroundColor: frameHexColor,
-    }"
-  >
-    <div class="flex flex-col flex-grow">
-      <div class="flex items-center gap-3">
+  <div class="grid gap-2 p-2 border-b boder-black/20">
+    <div class="flex flex-col gap-2">
+      <div class="grid grid-cols-[auto_1fr] items-center gap-3">
         <a :href="`/passport/${address}`">
           <img
             class="w-14 h-14 rounded-full object-cover aspect-square bg-lightgray bg-cover bg-center bg-no-repeat _p-avatar"
@@ -48,10 +25,23 @@ const VIDEO: FeedType['tag'][] = [
             alt="avatar"
           />
         </a>
-        <div class="flex flex-col flex-grow gap-0">
-          <div class="text-xs font-bold">
-            {{ name }}
-          </div>
+        <div
+          :class="{
+            'grid grid-flow-col items-center justify-start gap-1': true,
+            'grid-rows-2': tag !== 'ugc',
+          }"
+        >
+          <span class="grid grid-flow-col items-center justify-start gap-2">
+            <span class="text-xs font-bold truncate">
+              {{ name }}
+            </span>
+            <span class="text-xs" v-if="props.parentPassport.description"
+              >·</span
+            >
+            <span class="text-xs truncate">
+              {{ props.parentPassport.description?.replace(/\\n/g, ' ') }}
+            </span>
+          </span>
           <div
             v-if="tag !== 'ugc'"
             class="flex items-center gap-2 p-1 rounded-sm bg-white"
@@ -70,37 +60,45 @@ const VIDEO: FeedType['tag'][] = [
           </div>
         </div>
       </div>
+
       <div
         v-if="description"
-        class="h-16 w-full text-2xl font-bold text-ellipsis overflow-hidden line-clamp-2"
+        class="text-xl font-bold text-ellipsis overflow-hidden line-clamp-2"
       >
         {{ description }}
       </div>
+      <ul v-if="props.item.tags" class="flex flex-wrap gap-2">
+        <li v-for="tag in props.item.tags" class="text-violet-500 text-sm">
+          #{{ tag }}
+        </li>
+      </ul>
     </div>
-    <div class="flex items-end max-w-16 min-w-16">
-      <a :href="assetLink" target="_blank">
-        <video v-if="VIDEO.includes(tag)">
-          <source :src="assetSrc" type="video/mp4" />
-        </video>
-        <img v-else-if="CLIP.includes(tag)" :src="assetSrc" alt="clip" />
+
+    <a :href="assetLink" target="_blank">
+      <div
+        v-if="tag !== 'ugc'"
+        class="p-3"
+        :style="{
+          backgroundColor: frameHexColor,
+        }"
+      >
         <MediaCard
-          v-else-if="SKIN.includes(tag as PassportItemAssetType)"
-          class="w-full rounded"
-          style="aspect-ratio: 1 / 1"
+          class="w-full rounded aspect-square overflow-hidden"
           :src="assetSrc"
           :type="tag as PassportItemAssetType"
           :found="!!assetSrc"
         />
+      </div>
+      <div v-if="tag === 'ugc'" class="rounded-xl bg-violet-50 p-2">
         <MediaEmbed
-          v-else
-          class="w-full rounded"
-          style="aspect-ratio: 1 / 1"
+          class="w-full rounded-xl aspect-[3/2] mx-auto max-w-xs pointer-events-none"
           :found="!!assetSrc"
           :src="assetSrc"
           :type="tag"
+          :autoplay="false"
         />
-      </a>
-    </div>
+      </div>
+    </a>
   </div>
 </template>
 
