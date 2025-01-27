@@ -105,6 +105,10 @@ const shareClip = () => {
 }
 
 onMounted(async () => {
+  preloadOgImages.value.map((img) => {
+    const el = document.createElement('img')
+    el.src = img
+  })
   if (API_PATH.value) {
     const clubApiPri = await fetchClub(`/${API_PATH.value}`)
     const clubApi = clubApiPri ? clubApiPri : await fetchClub(API_PATH.value)
@@ -182,12 +186,6 @@ onMounted(async () => {
         </div>
       </span>
     </div>
-    <img
-      v-for="img in preloadOgImages"
-      :src="img"
-      class="size-0 invisible"
-      role="presentation"
-    />
   </div>
 </template>
 
