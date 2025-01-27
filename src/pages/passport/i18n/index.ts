@@ -315,12 +315,13 @@ export const Strings = {
   },
   Collect: { en: `Collect`, ja: `集めて` },
   Showcase: { en: `Showcase`, ja: `飾って` },
-  Connect: { en: `Connect`, ja: `飾ろう` },
+  Connect: { en: `Connect`, ja: `つながろう` },
   ',': { en: `,`, ja: `、` },
   '.': { en: `.`, ja: `。` },
+  And: { en: `and `, ja: `` },
   CopyLine: {
-    en: `Connect with fellow fans and elevate your <ruby>Oshi<rp>(</rp><rt>fave</rt><rp>)</rp></ruby> experience. Start for free today.`,
-    ja: `他のファンと"推し"を共有し、あなたの"推し活"をもっと深く掘り下げる。今すぐ無料で始めましょう。`,
+    en: `CLUBS lets you collect and showcase your favorite game and anime items—fandom, right in your pocket.`,
+    ja: `CLUBS（クラブス）は、好きなゲームやアニメのアイテムを集めて飾れる、新しいコレクション型SNSです。ポケットに入るデジタル推し活を楽しもう！`,
   },
   UseAsAGuest: {
     en: 'Use as a guest',

@@ -64,7 +64,7 @@ const openSignInModal = () => {
           <span class="font-bold text-4xl italic"
             >{{ i18n('Showcase') }}{{ i18n(',') }}</span
           ><span class="font-bold text-4xl italic"
-            >{{ i18n('Connect') }}{{ i18n('.') }}</span
+            >{{ i18n('And') }}{{ i18n('Connect') }}{{ i18n('.') }}</span
           >
         </h1>
       </div>
