@@ -81,7 +81,9 @@ const plugins = ref(
 )
 const passportPayload = ref<Uint8Array>()
 const passportOffering = ref<
-  Partial<PassportOffering> & { i18n: PassportOffering['i18n'] }
+  Partial<PassportOffering> & {
+    i18n: { name: { en: ''; ja: '' }; description: { en: ''; ja: '' } }
+  }
 >({ i18n: { name: { en: '', ja: '' }, description: { en: '', ja: '' } } })
 const achievement = ref<Partial<ReqBodyAchievement['achievement']>>({})
 const passportItem = ref<Partial<CreatePassportItemReq['passportItem']>>({})
@@ -732,8 +734,7 @@ const updatePassportOfferingOnChain = async () => {
 
         <label class="w-full hs-form-field">
           <span class="w-full hs-form-field__label">Description</span>
-          <input
-            type="text"
+          <textarea
             class="w-full hs-form-field__input"
             v-model="passportOffering.description"
           />
@@ -741,8 +742,7 @@ const updatePassportOfferingOnChain = async () => {
 
         <label class="w-full hs-form-field">
           <span class="w-full hs-form-field__label">Description(en)</span>
-          <input
-            type="text"
+          <textarea
             class="w-full hs-form-field__input"
             v-model="passportOffering.i18n.description.en"
           />
@@ -750,8 +750,7 @@ const updatePassportOfferingOnChain = async () => {
 
         <label class="w-full hs-form-field">
           <span class="w-full hs-form-field__label">Description(ja)</span>
-          <input
-            type="text"
+          <textarea
             class="w-full hs-form-field__input"
             v-model="passportOffering.i18n.description.ja"
           />
