@@ -133,7 +133,7 @@
         {#if isItemPurchased(item) && item.itemAssetType !== 'short-video' && item.itemAssetType !== 'short-video-link'}
           <img
             bind:this={imageElement}
-            class="max-w-44 max-h-44 rounded-md w-full max-w-full object-cover aspect-square"
+            class="max-w-44 max-h-44 rounded-md w-full object-cover aspect-square"
             alt="Asset"
           />
         {:else if isItemPurchased(item) && (item.itemAssetType === 'short-video' || item.itemAssetType === 'short-video-link')}
