@@ -1,7 +1,12 @@
 <script lang="ts" setup>
 import { always } from 'ramda'
 import { computed, onMounted, ref } from 'vue'
-import { isNotError, whenDefined, type UndefinedOr } from '@devprotocol/util-ts'
+import {
+  isNotError,
+  whenDefined,
+  whenNotError,
+  type UndefinedOr,
+} from '@devprotocol/util-ts'
 import { itemToHash } from '@fixtures/router/passportItem'
 import { decode, markdownToHtml } from '@devprotocol/clubs-core'
 
@@ -70,7 +75,13 @@ const fetchClub = async (api: string) => {
 const shareClip = () => {
   const url = new URL(window.location.href)
   const eoa = url.pathname.split('/').at(2) || '' // The expected pathname is /passport/eoa/id/...
-  url.pathname = `/passport/${eoa}/${props.skinId || ''}#${itemToHash(props.skinSection || 'clips', props.item.id || '')}`
+  url.pathname = `/passport/${eoa}/${props.skinId || ''}`
+  whenNotError(
+    itemToHash(props.skinSection || 'clips', props.item.id || ''),
+    (hash) => {
+      url.searchParams.set('i', hash)
+    },
+  )
   // Please replace the title and text with the actual values.
   console.log('share:', url.href)
   navigator.share({
