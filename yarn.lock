@@ -189,9 +189,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/react@npm:4.1.6":
-  version: 4.1.6
-  resolution: "@astrojs/react@npm:4.1.6"
+"@astrojs/react@npm:4.2.0":
+  version: 4.2.0
+  resolution: "@astrojs/react@npm:4.2.0"
   dependencies:
     "@vitejs/plugin-react": "npm:^4.3.4"
     ultrahtml: "npm:^1.5.3"
@@ -201,7 +201,7 @@ __metadata:
     "@types/react-dom": ^17.0.17 || ^18.0.6 || ^19.0.0
     react: ^17.0.2 || ^18.0.0 || ^19.0.0
     react-dom: ^17.0.2 || ^18.0.0 || ^19.0.0
-  checksum: 10c0/6d093eb8e626dec198b07cb836d90c70d1c42b1963c6429d03ee8ec64ed732daa7389e7c071279e10583fb961b02b07e171a3d470d69c7aafa7edd674c9f6b5f
+  checksum: 10c0/9b095e39e25c63b7f7e9aa9e3cb5d3eb997f64e224fa9e80ed1aaf957efbd65a00a929fb0887ca3005a2ae287ec5678eae3a2054935325a0818d8a3427973b15
   languageName: node
   linkType: hard
 
@@ -9537,9 +9537,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro@npm:5.1.8":
-  version: 5.1.8
-  resolution: "astro@npm:5.1.8"
+"astro@npm:5.1.10":
+  version: 5.1.10
+  resolution: "astro@npm:5.1.10"
   dependencies:
     "@astrojs/compiler": "npm:^2.10.3"
     "@astrojs/internal-helpers": "npm:0.4.2"
@@ -9606,7 +9606,7 @@ __metadata:
       optional: true
   bin:
     astro: astro.js
-  checksum: 10c0/cadf9993c6d912b666527e722593ecea01d0d027dc799ea6f3e956ebb66a355152cf94dd19c94b8f6076abdcfd97fb748f343975916c05e8167705f82e4a511a
+  checksum: 10c0/c1bcdeea0a69c760d1c4f9b39baab82f6324f03d9b3d346172727cd2ee7533a073df4b0c651bfab25bf6c675481b24139b26e28b7d008158aac11f5e09200357
   languageName: node
   linkType: hard
 
@@ -11530,7 +11530,7 @@ __metadata:
     "@astrojs/check": "npm:0.9.4"
     "@astrojs/lit": "npm:4.3.0"
     "@astrojs/prefetch": "npm:0.4.1"
-    "@astrojs/react": "npm:4.1.6"
+    "@astrojs/react": "npm:4.2.0"
     "@astrojs/svelte": "npm:7.0.4"
     "@astrojs/tailwind": "npm:5.1.5"
     "@astrojs/vercel": "npm:8.0.4"
@@ -11577,7 +11577,7 @@ __metadata:
     "@wagmi/core": "npm:^1.4.1"
     "@web3modal/wagmi": "npm:3.5.7"
     "@webcomponents/template-shadowroot": "npm:^0.2.1"
-    astro: "npm:5.1.8"
+    astro: "npm:5.1.10"
     autoprefixer: "npm:10.4.20"
     bad-words: "npm:^3.0.4"
     bignumber.js: "npm:9.1.2"
