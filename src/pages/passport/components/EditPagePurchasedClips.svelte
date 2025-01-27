@@ -15,6 +15,7 @@
   import Instagram from '@assets/sns/Instagram.svg'
   import X from '@assets/sns/X.svg'
   import YouTube from '@assets/sns/YouTube.svg'
+  import Pinterst from '@assets/sns/Pinterest.svg'
 
   import { Strings } from '../i18n'
   import type { PassportItem } from '../types'
@@ -246,13 +247,17 @@
           >
             <span class="font-bold">{i18n('AddFromExternal')}</span>
             <div
-              class="grid gap-4 grid-cols-[repeat(2,minmax(0,45px))] justify-center justify-items-center items-center"
+              class="grid gap-4 grid-cols-[repeat(2,minmax(0,30px))] justify-center justify-items-center items-center"
             >
               <img src={TikTok.src} alt="TikTok" />
               <img src={YouTube.src} alt="YouTube" /><img
-                src={Instagram.src}
-                alt="Instagram"
-              /><img src={X.src} class="size-[80%]" alt="X" />
+                src={Pinterst.src}
+                alt="Pinterest"
+              /><img src={Instagram.src} alt="Instagram" /><img
+                src={X.src}
+                class="size-[80%]"
+                alt="X"
+              />
             </div>
           </button>
         </li>

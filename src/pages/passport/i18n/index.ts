@@ -214,8 +214,8 @@ export const Strings = {
     ja: 'リンク',
   },
   ContentLinkPlaceholder: {
-    en: 'TikTok, YouTube, YouTube Shorts, Instagram, X are available.',
-    ja: 'TikTok, YouTube, YouTube Shorts, Instagram, X のリンクが利用可能です。',
+    en: 'TikTok, YouTube, YouTube Shorts, Pinterest, Instagram, X are available.',
+    ja: 'TikTok, YouTube, YouTube Shorts, Pinterest, Instagram, X のリンクが利用可能です。',
   },
   ContentLinkDescriptionPlaceholder: {
     en: 'Your comment...',
