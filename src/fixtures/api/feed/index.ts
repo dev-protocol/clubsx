@@ -63,9 +63,11 @@ export type FeedType = {
   address: string
   badgeName: string
   description?: string
-  assetLink: string
   frameHexColor?: string
   tag: PassportItemAssetType | 'ugc'
+  item: Clip
+  clipType: ClipTypes
+  parentPassport: Skin
 }
 
 export const getAllProfiles = async (
@@ -155,6 +157,8 @@ export const getClubFromAssetPayload = async (
 
 export const getFeedAssetFromClip = async (
   clip: Clip,
+  skin: Skin,
+  type: ClipTypes,
   ownerDetails: FeedUserData,
   redis: ReturnType<typeof createClient>,
 ): Promise<FeedType | undefined> => {
@@ -218,8 +222,10 @@ export const getFeedAssetFromClip = async (
     address: ownerDetails.address,
     badgeName: clubName,
     description: clip.description || '',
-    assetLink: '', // TODO: replace this
     frameHexColor: clip.frameColorHex || '',
+    item: clip,
+    clipType: type,
+    parentPassport: skin,
   }
 }
 
@@ -243,12 +249,12 @@ export const getClipFromSkin = async (
   const spotlight = skin.spotlight || []
   const clipsFeedDataPromises = Promise.all(
     clips.map(async (clip) => {
-      return getFeedAssetFromClip(clip, ownerDetails, redis)
+      return getFeedAssetFromClip(clip, skin, 'clips', ownerDetails, redis)
     }),
   )
   const spotlightsFeedDataPromises = Promise.all(
     spotlight.map(async (clip) => {
-      return getFeedAssetFromClip(clip, ownerDetails, redis)
+      return getFeedAssetFromClip(clip, skin, 'spotlight', ownerDetails, redis)
     }),
   )
 
