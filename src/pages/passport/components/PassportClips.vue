@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { i18nFactory } from '@devprotocol/clubs-core'
 import Modal from '@pages/passport/components/Modal.vue'
 
@@ -11,6 +11,8 @@ import PassportClipModal from './PassportClipModal.vue'
 
 const props = defineProps<{
   id: string
+  eoa: string
+  url: string
   clips: PassportClip[]
   skinSection: 'spotlight' | 'clips'
   skinId: string
@@ -18,6 +20,7 @@ const props = defineProps<{
 
 const i18nBase = i18nFactory(Strings)
 const i18n = ref<ReturnType<typeof i18nBase>>(i18nBase(['en']))
+const url = computed(() => new URL(props.url))
 
 const modalVisible = ref(false)
 const modalItemIndex = ref<number>()
@@ -70,6 +73,8 @@ onMounted(async () => {
           :truncate="true"
           :skinSection="skinSection"
           :skinId="skinId"
+          :eoa="props.eoa"
+          :url="url"
           class="cursor-pointer"
           @click="
             () => {
@@ -96,6 +101,8 @@ onMounted(async () => {
       share: true,
       clubsLink: true,
       autoplay: true,
+      eoa: props.eoa,
+      url,
     }"
   />
 </template>

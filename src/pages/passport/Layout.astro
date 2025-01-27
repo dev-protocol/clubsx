@@ -1,10 +1,10 @@
 ---
-import { isNotError, whenDefined, whenNotError } from '@devprotocol/util-ts'
+import { whenDefined } from '@devprotocol/util-ts'
 import { passportClass } from '@fixtures/ui/passport'
 import { ClubsPictogramAdaptable as Favicon } from '@devprotocol/clubs-core/images'
 
 import '@devprotocol/clubs-core/styles'
-import type { Clip, Skin } from '@pages/api/profile'
+import type { Skin } from '@pages/api/profile'
 import Header from '@components/Global/Header.astro'
 import Footer from '@components/Global/Footer.vue'
 import { getPassportItemForPayload } from '@fixtures/api/passportItem'
@@ -12,9 +12,7 @@ import SkinSwitch from 'src/pages/passport/components/SkinSwitch.svelte'
 import AchivementNotification from '../../pages/passport/components/AchivementNotification.svelte'
 import PostButton from './components/PostButton.vue'
 import { parseAcceptLanguage } from 'intl-parse-accept-language'
-import { bytes32Hex } from '@devprotocol/clubs-core'
-import { toUtf8Bytes } from 'ethers'
-import { hashToItem } from '@fixtures/router/passportItem'
+import { getPassportOgImages } from '@fixtures/url/passports'
 
 type Props = {
   eoa?: string
@@ -51,26 +49,13 @@ const passportSkinTheme = await whenDefined(sTokenPayload, (payload: string) =>
 )
 
 const requestURL = new URL(Astro.url)
-const ogImageURLHost = requestURL.origin.includes('prerelease.clubs.place')
-  ? 'prerelease.clubs.place'
-  : requestURL.origin.includes('clubs.place')
-    ? 'clubs.place'
-    : `${requestURL.hostname}:${requestURL.port}`
-const skin = skins.find((x) => (selectedSkinId ? x.id === selectedSkinId : x))
-const clip =
-  whenDefined(itemHash, (item_) =>
-    whenNotError(hashToItem(item_), (res) =>
-      ((skin && res.type in skin ? skin[res.type] : []) as Clip[])!.find(
-        (y) => y.id === res.id,
-      ),
-    ),
-  ) ?? new Error()
-const cacheKey = toUtf8Bytes(
-  isNotError(clip) ? JSON.stringify(clip) : JSON.stringify(skin),
-)
-const ogpImageURL = `${requestURL.protocol}//${ogImageURLHost}/og/image/passport/${eoa}/${selectedSkinId}${itemHash ? `/${itemHash}` : ''}?cache=${bytes32Hex(cacheKey)}`
-const image = `https://capture.clubs.place/api/generate?h=630&w=1200&src=${ogpImageURL}`
-const imageX = `https://capture.clubs.place/api/generate?h=675&w=1200&src=${ogpImageURL}`
+const { default: image, x: imageX } = getPassportOgImages({
+  url: Astro.url,
+  user: eoa,
+  skins,
+  skinId: selectedSkinId,
+  itemHash,
+})
 const name = 'Clubs'
 const url = 'https://www.clubs.place/'
 const twitterHandle = 'poweredbyClubs'

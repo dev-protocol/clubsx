@@ -15,9 +15,12 @@ import type { PassportClip } from '../types'
 import Skeleton from '@components/Global/Skeleton.vue'
 import Icons from './Icons.vue'
 import { MediaEmbed } from '@devprotocol/clubs-plugin-passports/vue'
+import { getPassportOgImages } from '@fixtures/url/passports'
 
 const props = defineProps<{
   index: number
+  eoa: string
+  url: URL
   item: PassportClip
   truncate?: boolean
   skinSection: 'spotlight' | 'clips'
@@ -45,6 +48,16 @@ const elementId = computed<UndefinedOr<string>>(() => {
   return isNotError(id) ? id : ''
 })
 const clubConfig = ref<string>()
+const preloadOgImages = ref<string[]>(
+  ((og) => [og.default, og.x])(
+    getPassportOgImages({
+      url: props.url,
+      clip: props.item,
+      user: props.eoa,
+      skinId: props.skinId,
+    }),
+  ),
+)
 
 const clubName = computed(() => {
   return whenDefined(clubConfig.value, (config) => decode(config).name)
@@ -169,6 +182,12 @@ onMounted(async () => {
         </div>
       </span>
     </div>
+    <img
+      v-for="img in preloadOgImages"
+      :src="img"
+      class="size-0 invisible"
+      role="presentation"
+    />
   </div>
 </template>
 

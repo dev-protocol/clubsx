@@ -359,6 +359,8 @@ const [
             <div class:list={passportClass('spotlight-content')}>
               <PassportClips
                 id={id}
+                eoa={eoa!}
+                url={Astro.request.url}
                 client:load
                 skinSection="spotlight"
                 clips={passportSpotlight}
@@ -375,6 +377,8 @@ const [
             <div class:list={passportClass('clips-content')}>
               <PassportClips
                 id={id}
+                eoa={eoa!}
+                url={Astro.request.url}
                 client:load
                 skinSection="clips"
                 clips={passportSkinClips}
