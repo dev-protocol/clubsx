@@ -50,7 +50,7 @@ const openSignInModal = () => {
   <FeedPageContent v-if="props.session?.user" :feeds="props.feeds" />
   <template v-if="props.session?.user === undefined">
     <section
-      class="grid gap-8 p-4 h-full bg-cover bg-center justify-center content-center items-center shadow-[inset_0_0_240px_120px_rgb(0_0_0_/_0.5)]"
+      class="grid gap-8 p-4 h-full bg-cover bg-center justify-center content-center items-center shadow-[inset_0_0_240px_120px_rgb(0_0_0_/_0.5)] min-h-dvh"
       :style="`background-image: url(${FrontpageBg.src})`"
     >
       <div class="mx-auto max-w-xl">
