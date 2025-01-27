@@ -1,10 +1,10 @@
 ---
-import { whenDefined } from '@devprotocol/util-ts'
+import { isNotError, whenDefined, whenNotError } from '@devprotocol/util-ts'
 import { passportClass } from '@fixtures/ui/passport'
 import { ClubsPictogramAdaptable as Favicon } from '@devprotocol/clubs-core/images'
 
 import '@devprotocol/clubs-core/styles'
-import type { Skin } from '@pages/api/profile'
+import type { Clip, Skin } from '@pages/api/profile'
 import Header from '@components/Global/Header.astro'
 import Footer from '@components/Global/Footer.vue'
 import { getPassportItemForPayload } from '@fixtures/api/passportItem'
@@ -12,6 +12,9 @@ import SkinSwitch from 'src/pages/passport/components/SkinSwitch.svelte'
 import AchivementNotification from '../../pages/passport/components/AchivementNotification.svelte'
 import PostButton from './components/PostButton.vue'
 import { parseAcceptLanguage } from 'intl-parse-accept-language'
+import { bytes32Hex } from '@devprotocol/clubs-core'
+import { toUtf8Bytes } from 'ethers'
+import { hashToItem } from '@fixtures/router/passportItem'
 
 type Props = {
   eoa?: string
@@ -53,7 +56,19 @@ const ogImageURLHost = requestURL.origin.includes('prerelease.clubs.place')
   : requestURL.origin.includes('clubs.place')
     ? 'clubs.place'
     : `${requestURL.hostname}:${requestURL.port}`
-const ogpImageURL = `${requestURL.protocol}//${ogImageURLHost}/og/image/passport/${eoa}/${selectedSkinId}${itemHash ? `/${itemHash}` : ''}`
+const skin = skins.find((x) => (selectedSkinId ? x.id === selectedSkinId : x))
+const clip =
+  whenDefined(itemHash, (item_) =>
+    whenNotError(hashToItem(item_), (res) =>
+      ((skin && res.type in skin ? skin[res.type] : []) as Clip[])!.find(
+        (y) => y.id === res.id,
+      ),
+    ),
+  ) ?? new Error()
+const cacheKey = toUtf8Bytes(
+  isNotError(clip) ? JSON.stringify(clip) : JSON.stringify(skin),
+)
+const ogpImageURL = `${requestURL.protocol}//${ogImageURLHost}/og/image/passport/${eoa}/${selectedSkinId}${itemHash ? `/${itemHash}` : ''}?cache=${bytes32Hex(cacheKey)}`
 const image = `https://capture.clubs.place/api/generate?h=630&w=1200&src=${ogpImageURL}`
 const imageX = `https://capture.clubs.place/api/generate?h=675&w=1200&src=${ogpImageURL}`
 const name = 'Clubs'
@@ -63,6 +78,11 @@ const title = 'Clubs | All-in-One Space for Creators'
 const description =
   'Clubs is an all-in-one space for creators to manage their NFTs, DAOs, and more.'
 const langs = parseAcceptLanguage(Astro.request.headers.get('Accept-Language'))
+const preloads = [
+  ...preload,
+  { as: 'image', href: image },
+  { as: 'image', href: imageX },
+]
 ---
 
 <html
@@ -81,7 +101,7 @@ const langs = parseAcceptLanguage(Astro.request.headers.get('Accept-Language'))
     />
 
     {
-      preload.map((item) => (
+      preloads.map((item) => (
         <link rel="preload" as={item.as} href={item.href} />
       ))
     }
