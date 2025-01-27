@@ -124,6 +124,7 @@ onMounted(async () => {
           v-if="IS_LINK"
           :src="item.link"
           :class="props.mediaEmbedClass"
+          :autoplay="true"
         />
       </span>
 
@@ -135,7 +136,7 @@ onMounted(async () => {
           :class="{ 'line-clamp-1': props.truncate ?? true }"
         ></article>
         <ul class="flex flex-wrap gap-2 empty:hidden">
-          <li v-for="tag in props.item.tags" class="text-blue-500 text-sm">
+          <li v-for="tag in props.item.tags" class="text-violet-500 text-sm">
             #{{ tag }}
           </li>
         </ul>

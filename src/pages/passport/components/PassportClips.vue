@@ -95,6 +95,7 @@ onMounted(async () => {
       classes: 'max-w-screen-md',
       share: true,
       clubsLink: true,
+      autoplay: true,
     }"
   />
 </template>
