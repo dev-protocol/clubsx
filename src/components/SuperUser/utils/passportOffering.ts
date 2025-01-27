@@ -58,15 +58,19 @@ export const changePassportItemAssetType =
       return
     }
 
+    const isOfferingUsingCryptoPay = offeringRef.value.price !== undefined
+
     itemRef.value = {
       ...itemRef.value,
       itemAssetType: value as PassportItemAssetType,
     }
 
-    offeringRef.value = {
-      ...offeringRef.value,
-      price: Prices[value as PassportItemAssetType].usdc,
-      currency: 'USDC',
+    if (isOfferingUsingCryptoPay) {
+      offeringRef.value = {
+        ...offeringRef.value,
+        price: Prices[value as PassportItemAssetType].usdc,
+        currency: 'USDC',
+      }
     }
 
     const usdcPrice = Prices[value as PassportItemAssetType].usdc
@@ -74,7 +78,6 @@ export const changePassportItemAssetType =
     discountRef.value = {
       ...discountRef.value,
       price: {
-        usdc: usdcPrice - usdcPrice * discountRateRef.value,
         yen: yenPrice - yenPrice * discountRateRef.value,
       },
     }

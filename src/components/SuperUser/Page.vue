@@ -84,12 +84,29 @@ const passportOffering = ref<
   Partial<PassportOffering> & {
     i18n: { name: { en: ''; ja: '' }; description: { en: ''; ja: '' } }
   }
->({ i18n: { name: { en: '', ja: '' }, description: { en: '', ja: '' } } })
+>({
+  imageSrc: 'https://storage.clubs.place/tsVMjjwSZyCCaB5e-ToAZ',
+  payload: randomBytes(32),
+  price: undefined,
+  i18n: { name: { en: '', ja: '' }, description: { en: '', ja: '' } },
+})
 const achievement = ref<Partial<ReqBodyAchievement['achievement']>>({})
-const passportItem = ref<Partial<CreatePassportItemReq['passportItem']>>({})
+const passportItem = ref<Partial<CreatePassportItemReq['passportItem']>>({
+  sTokenPayload: bytes32Hex(passportOffering.value.payload!),
+})
 const passportDiscount = ref<Partial<PassportOptionsDiscount>>({})
 const passportDiscountRate = ref<number>(0)
 const passportOverride = ref<Partial<Override>>({})
+const onTogglePayments = () => {
+  const turnOn = passportOffering.value.price !== undefined
+  passportOffering.value = {
+    ...passportOffering.value,
+    price: turnOn
+      ? props.Prices[passportItem.value.itemAssetType ?? 'image'].usdc
+      : undefined,
+    currency: turnOn ? 'USDC' : undefined,
+  }
+}
 
 const sign = async () => {
   const msg = message()
@@ -318,7 +335,6 @@ const addPassportdDiscountInConfig = async () => {
                   end_utc: passportDiscount.value.end_utc || 8640000000000000,
                   price: {
                     yen: passportDiscount.value?.price?.yen || 0,
-                    usdc: passportDiscount.value?.price?.usdc || 0,
                   },
                 },
                 ...((_passportPlugin?.options?.find(
@@ -584,22 +600,24 @@ const updatePassportOfferingOnChain = async () => {
         </label>
       </div>
 
-      <h2 class="font-mono text-xl mt-8">Add Passport Item</h2>
+      <h2 class="font-mono text-xl mt-8">Add Passport Offering</h2>
+      <h3 class="font-mono">Info Passport Item</h3>
       <div class="w-full grid gap-2">
-        <label class="w-full hs-form-field">
+        <!-- <label class="w-full hs-form-field">
           <span class="w-full hs-form-field__label">sToken Id</span>
           <input
             type="text"
             class="w-full hs-form-field__input"
             v-model="passportItem.sTokenId"
           />
-        </label>
+        </label> -->
 
         <label class="w-full hs-form-field">
           <span class="w-full hs-form-field__label">Payload</span>
           <input
             type="text"
             class="w-full hs-form-field__input"
+            disabled
             v-model="passportItem.sTokenPayload"
           />
         </label>
@@ -644,7 +662,7 @@ const updatePassportOfferingOnChain = async () => {
         </label>
       </div>
 
-      <h2 class="font-mono text-xl mt-8">Add Passport Offering</h2>
+      <h3 class="font-mono">Info Passport Offering</h3>
       <div class="w-full grid gap-2">
         <label class="w-full hs-form-field">
           <span class="w-full hs-form-field__label">Name</span>
@@ -679,6 +697,7 @@ const updatePassportOfferingOnChain = async () => {
             type="text"
             class="w-full hs-form-field__input"
             v-model="passportOffering.imageSrc"
+            disabled
           />
         </label>
 
@@ -691,6 +710,16 @@ const updatePassportOfferingOnChain = async () => {
             type="text"
             class="w-full hs-form-field__input"
             v-model="passportOffering.previewImageSrc"
+          />
+        </label>
+
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">Using Crypto pay?</span>
+          <input
+            type="checkbox"
+            class="w-full hs-form-field__checkbox"
+            :checked="passportOffering.price !== undefined"
+            @change="onTogglePayments"
           />
         </label>
 
@@ -808,10 +837,6 @@ const updatePassportOfferingOnChain = async () => {
             @change="onChangePassportDiscountRate"
           />
           <p class="hs-form-field__helper mt-2">
-            * New price on smart-contract is:
-            <b>{{ passportDiscount.price?.usdc || 0 }} USDC</b>
-          </p>
-          <p class="hs-form-field__helper mt-2">
             * New fiat price is:
             <b>{{ passportDiscount.price?.yen || 0 }} YEN</b>
           </p>
@@ -864,7 +889,15 @@ const updatePassportOfferingOnChain = async () => {
                 class="hs-button is-small is-filled"
                 @click="addPassportdOfferingInConfig"
               >
-                Add in config
+                1) Add in config
+              </button>
+            </p>
+            <p>
+              <button
+                class="hs-button is-small is-filled mt-2"
+                @click="addPassportItem"
+              >
+                2) Add in Redis
               </button>
             </p>
             <p>
@@ -872,24 +905,16 @@ const updatePassportOfferingOnChain = async () => {
                 class="hs-button is-small is-filled mt-2"
                 @click="updatePassportOfferingOnChain"
               >
-                Add onchain (might be msg.sender restricted)
+                3) Add onchain (might be msg.sender restricted)
               </button>
             </p>
           </dd>
 
-          <dt class="font-bold">Add Passport Item</dt>
+          <dt class="font-bold">Passport Item</dt>
           <dd>
             <pre class="text-sm">{{
               passportItem ? JSON.stringify(passportItem, null, 2) : ''
             }}</pre>
-            <p>
-              <button
-                class="hs-button is-small is-filled"
-                @click="addPassportItem"
-              >
-                Add
-              </button>
-            </p>
           </dd>
 
           <dt class="font-bold">Add Passport Discount</dt>
