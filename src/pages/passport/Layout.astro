@@ -104,11 +104,9 @@ const preloads = [
     }
 
     {
-      (requestURL.host.includes('localhost') ||
-        requestURL.host.includes('prerelease')) &&
-        requestURL.searchParams.has('css') && (
-          <link rel="stylesheet" href={requestURL.searchParams.get('css')} />
-        )
+      requestURL.searchParams.has('css') && (
+        <link rel="stylesheet" href={requestURL.searchParams.get('css')} />
+      )
     }
 
     <meta charset="UTF-8" />
