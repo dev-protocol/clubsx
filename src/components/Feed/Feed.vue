@@ -5,16 +5,12 @@ import type { PassportItemAssetType } from '@devprotocol/clubs-plugin-passports/
 import type { FeedType } from '@fixtures/api/feed'
 import { computed } from 'vue'
 import { itemToHash } from '@fixtures/router/passportItem'
-import { isDark } from '@fixtures/color'
 
 const props = defineProps<FeedType>()
 
 const assetLink = computed(
   () =>
     `/passport/${props.address}/${props.parentPassportIndex === 0 ? '' : props.parentPassport.id}?i=${itemToHash(props.clipType, props.item.id)}`,
-)
-const dark = computed(() =>
-  props.frameHexColor ? isDark(props.frameHexColor) : undefined,
 )
 </script>
 
@@ -49,33 +45,17 @@ const dark = computed(() =>
         </div>
       </div>
 
-      <div
-        class="grid gap-2 grid-cols-2 rounded"
-        :class="{ 'p-3': frameHexColor }"
-        :style="
-          frameHexColor
-            ? {
-                backgroundColor: frameHexColor,
-              }
-            : undefined
-        "
-      >
+      <div class="grid gap-2 grid-cols-2 rounded">
         <div class="flex flex-col gap-1">
           <div
             v-if="description"
-            class="lg:text-xl font-bold text-ellipsis overflow-hidden line-clamp-2"
-            :class="{ 'text-white': dark }"
+            class="text-2xl font-bold text-ellipsis overflow-hidden line-clamp-2"
           >
             {{ description }}
           </div>
           <p
             v-if="props.item.tags"
-            class="text-sm line-clamp-3 lg:line-clamp-6"
-            :class="{
-              'text-white/70': dark,
-              'text-black/70': dark === false,
-              'text-violet-500': dark === undefined,
-            }"
+            class="text-sm text-violet-500 line-clamp-3 lg:line-clamp-6"
           >
             <span
               v-for="tag in props.item.tags"
@@ -100,7 +80,18 @@ const dark = computed(() =>
             </p>
           </div>
         </div>
-        <a :href="assetLink" target="_blank">
+        <a
+          :href="assetLink"
+          target="_blank"
+          :class="{ 'p-3 rounded': frameHexColor }"
+          :style="
+            frameHexColor
+              ? {
+                  backgroundColor: frameHexColor,
+                }
+              : undefined
+          "
+        >
           <div v-if="tag !== 'ugc'">
             <MediaCard
               class="w-full rounded overflow-hidden"
