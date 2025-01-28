@@ -69,6 +69,7 @@ export type FeedType = {
   clipType: ClipTypes
   parentPassport: Skin
   parentPassportIndex: number
+  score: number
 }
 
 export const getAllProfiles = async (
@@ -163,6 +164,7 @@ export const getFeedAssetFromClip = async (
   type: ClipTypes,
   ownerDetails: FeedUserData,
   redis: ReturnType<typeof createClient>,
+  currentTime: number,
 ): Promise<FeedType | undefined> => {
   if (
     !clip ||
@@ -214,6 +216,14 @@ export const getFeedAssetFromClip = async (
     )?.value || 'https://i.imgur.com/lSpDjrr.jpg') as string
   }
 
+  const contentTimestamp =
+    clip.updatedAt > clip.createdAt
+      ? clip.updatedAt
+      : clip.createdAt || Date.now()
+  const recencyScore = Math.exp(-(currentTime - contentTimestamp) / 86400)
+  const engagementScore = skin.likes || 0
+  const finalScore = 0.6 * recencyScore + 0.4 * engagementScore // 60% importance to recency, 40% to engagement.
+
   return {
     id: clip.id || nanoid(),
     avatarSrc: ownerDetails.avatarSrc,
@@ -229,6 +239,7 @@ export const getFeedAssetFromClip = async (
     clipType: type,
     parentPassport: skin,
     parentPassportIndex: skinIndex,
+    score: finalScore,
   }
 }
 
@@ -237,6 +248,7 @@ export const getClipFromSkin = async (
   skinIndex: number,
   ownerDetails: FeedUserData,
   redis: ReturnType<typeof createClient>,
+  currentTime: number,
 ) => {
   if (
     !skin ||
@@ -260,6 +272,7 @@ export const getClipFromSkin = async (
         'clips',
         ownerDetails,
         redis,
+        currentTime,
       )
     }),
   )
@@ -272,6 +285,7 @@ export const getClipFromSkin = async (
         'spotlight',
         ownerDetails,
         redis,
+        currentTime,
       )
     }),
   )
@@ -298,7 +312,7 @@ export const getFeed = async () => {
   )
 
   const profiles = await whenNotError(redis, (client) => getAllProfiles(client))
-
+  const currentTime = Date.now()
   const feed: Array<FeedType | undefined> = []
   try {
     await whenNotErrorAll([redis, profiles], ([client, _profiles]) => {
@@ -327,7 +341,13 @@ export const getFeed = async () => {
           await Promise.all(
             profile?.skins?.map(async (skin, i) => {
               feed.push(
-                ...(await getClipFromSkin(skin, i, ownerDetails, client)),
+                ...(await getClipFromSkin(
+                  skin,
+                  i,
+                  ownerDetails,
+                  client,
+                  currentTime,
+                )),
               )
             }) ?? [],
           )
@@ -345,7 +365,8 @@ export const getFeed = async () => {
     )
   }
 
-  const filteredFeed = feed?.filter((feed) => !!feed) ?? []
+  const filteredFeed =
+    feed?.filter((feed) => !!feed)?.sort((a, b) => b.score - a.score) ?? []
   return filteredFeed
 }
 
