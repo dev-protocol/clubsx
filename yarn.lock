@@ -1221,7 +1221,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@crossmint/client-sdk-base@npm:1.4.4, @crossmint/client-sdk-base@npm:^1.0.1-alpha.6":
+"@crossmint/client-sdk-base@npm:1.4.4":
   version: 1.4.4
   resolution: "@crossmint/client-sdk-base@npm:1.4.4"
   dependencies:
@@ -1232,6 +1232,20 @@ __metadata:
     uuid: "npm:9.0.1"
     zod: "npm:3.22.4"
   checksum: 10c0/c7c5a446a3510be30b6fa455e75def61c6b9b62c62a0f9a991f470c218b48473220a1b9364621123273b4b78dab7b2ade53b10ea774433a2e22077bc5caad080
+  languageName: node
+  linkType: hard
+
+"@crossmint/client-sdk-base@npm:^1.0.1-alpha.6":
+  version: 1.4.5
+  resolution: "@crossmint/client-sdk-base@npm:1.4.5"
+  dependencies:
+    "@crossmint/client-sdk-window": "npm:0.2.2"
+    "@crossmint/common-sdk-base": "npm:0.3.1"
+    "@datadog/browser-logs": "npm:4.42.2"
+    exponential-backoff: "npm:3.1.1"
+    uuid: "npm:9.0.1"
+    zod: "npm:3.22.4"
+  checksum: 10c0/cb96ca4cb164d5dff6fba0efe53dbff508e20a6a4f02ece67fdbe97b35c3e81b34edc39770fae439af069ccf98ec72d37938abb90eec4e804b25a847d3f6f0ad
   languageName: node
   linkType: hard
 
