@@ -32,11 +32,11 @@ export const passportSpotlightClass = (i: 0 | 1 | 2 | 3 | number) => {
       : // when # of items == 3 or 0
         {
           container:
-            'grid gap-1 lg:gap-4 items-center grid-cols-[2fr_3fr_2fr] grid-rows-[repeat(5,minmax(20px,1fr))] lg:grid-rows-[repeat(5,minmax(100px,1fr))]',
+            'grid gap-1 lg:gap-4 items-center grid-cols-[2fr_3fr_2fr] grid-rows-[auto_1fr_auto]',
           child: [
-            'col-start-1 col-span-1 row-start-2 row-span-3',
-            'col-start-2 col-span-1 row-start-1 row-span-5',
-            'col-start-3 col-span-1 row-start-2 row-span-3',
+            'col-start-1 col-span-1 row-start-2 row-span-1',
+            'col-start-2 col-span-1 row-start-1 row-span-3',
+            'col-start-3 col-span-1 row-start-2 row-span-1',
           ],
         }
 }
