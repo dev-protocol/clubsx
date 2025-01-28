@@ -103,7 +103,7 @@ const dark = computed(() =>
         <a :href="assetLink" target="_blank">
           <div v-if="tag !== 'ugc'">
             <MediaCard
-              class="w-full rounded aspect-square overflow-hidden"
+              class="w-full rounded overflow-hidden"
               :src="assetSrc"
               :type="tag as PassportItemAssetType"
               :found="!!assetSrc"
