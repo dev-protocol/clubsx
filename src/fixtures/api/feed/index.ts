@@ -365,7 +365,8 @@ export const getFeed = async () => {
     )
   }
 
-  const filteredFeed = feed?.filter((feed) => !!feed) ?? []
+  const filteredFeed =
+    feed?.filter((feed) => !!feed)?.sort((a, b) => b.score - a.score) ?? []
   return filteredFeed
 }
 
