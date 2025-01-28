@@ -36,7 +36,9 @@ export const getPassportOgImages = ({
         ),
       ) ?? new Error())
   const cacheKey = toUtf8Bytes(
-    isNotError(clip) ? JSON.stringify(clip) : JSON.stringify(skin),
+    isNotError(clip)
+      ? JSON.stringify({ id: clip.id, updatedAd: clip.updatedAt })
+      : JSON.stringify(skin ?? {}),
   )
   const ogpImageURL = `${requestURL.protocol}//${ogImageURLHost}/og/image/passport/${user}/${skinId ? skinId : ''}${itemHash ? `/${itemHash}` : ''}?cache=${bytes32Hex(cacheKey)}`
   const image = `https://capture.clubs.place/api/generate?h=630&w=1200&src=${ogpImageURL}`

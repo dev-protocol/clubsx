@@ -157,6 +157,8 @@ const [
       .catch(() => undefined)
   }),
 ])
+const isSnsEmpty =
+  profile?.sns && Object.keys(profile.sns).every((k) => !profile.sns?.[k])
 ---
 
 <Layout
@@ -170,21 +172,21 @@ const [
   connectButton="show"
   showPostButton="edit"
 >
-  <div class="grid gap-6 lg:gap-24 mb-32">
+  <div class="grid gap-6 lg:gap-12 mb-32">
     <section class:list={passportClass('account-container')}>
       <span
-        class="grid grid-cols-[3rem_1fr] lg:grid-cols-[10rem_1fr_auto] justify-items-start max-w-screen-lg mx-auto px-2 gap-6 lg:gap-y-8"
+        class="grid grid-cols-[3rem_1fr] lg:grid-cols-[8rem_1fr_auto] justify-items-start max-w-screen-lg mx-auto px-2 gap-6 lg:gap-y-8"
         class:list={[
           passportClass('account-content'),
           {
-            'grid-rows-[auto_auto_auto_auto] lg:grid-rows-[auto_auto_auto]':
+            'grid-rows-[auto_auto_auto_auto_auto] lg:grid-rows-[auto_auto_auto_auto]':
               passportSkinBGMs,
           },
           { 'grid-rows-[auto_auto_auto]': !passportSkinBGMs },
         ]}
       >
         <span
-          class="col-start-1 col-span-1"
+          class="col-start-1 col-span-1 row-start-1 row-span-2"
           class:list={passportClass('avatar-container')}
         >
           <span
@@ -201,7 +203,10 @@ const [
         </span>
         <span
           class="col-start-2 col-span-1 content-center"
-          class:list={passportClass('username-container')}
+          class:list={(passportClass('username-container'),
+          {
+            'row-span-2': isSnsEmpty,
+          })}
         >
           <span
             class="grid grid-flow-col justify-center items-center gap-6 px-3 py-1.5 lg:px-6 lg:py-3 rounded-xl bg-surface-200"
@@ -264,50 +269,52 @@ const [
         }
 
         {
-          profile?.sns && (
+          profile?.sns && !isSnsEmpty && (
             <span
-              class="col-start-1 col-span-2 lg:col-span-3 lg:row-start-2"
+              class="col-start-1 col-span-2 row-start-2 lg:col-start-2 lg:col-span-1 lg:-mt-8"
               class:list={passportClass('links-container')}
             >
               <span
                 class="grid grid-cols-5 items-start gap-6 p-3 rounded-lg bg-white"
                 class:list={passportClass('links-content')}
               >
-                <a
-                  href={`https://x.com/${profile?.sns?.x}`}
-                  target="_blank"
-                  class={`${profile?.sns?.x ? 'cursor-pointer' : 'cursor-not-allowed'}`}
-                >
-                  <Icon icon="x" />
-                </a>
-                <a
-                  href={`https://twitch.tv/${profile?.sns?.twitch}`}
-                  target="_blank"
-                  class={`${profile?.sns?.twitch ? 'cursor-pointer' : 'cursor-not-allowed'}`}
-                >
-                  <Icon icon="twitch" />
-                </a>
-                <a
-                  href={`https://instagram.com/${profile?.sns?.instagram}`}
-                  target="_blank"
-                  class={`${profile?.sns?.instagram ? 'cursor-pointer' : 'cursor-not-allowed'}`}
-                >
-                  <Icon icon="instagram" />
-                </a>
-                <a
-                  href={`https://tiktok.com/${profile?.sns?.tiktok}`}
-                  target="_blank"
-                  class={`${profile?.sns?.tiktok ? 'cursor-pointer' : 'cursor-not-allowed'}`}
-                >
-                  <Icon icon="tiktok" />
-                </a>
-                <a
-                  href={`https://youtube.com/${profile?.sns?.youtube}`}
-                  target="_blank"
-                  class={`${profile?.sns?.youtube ? 'cursor-pointer' : 'cursor-not-allowed'}`}
-                >
-                  <Icon icon="youtube" />
-                </a>
+                {profile?.sns?.x && (
+                  <a href={`https://x.com/${profile?.sns?.x}`} target="_blank">
+                    <Icon icon="x" />
+                  </a>
+                )}
+                {profile?.sns?.twitch && (
+                  <a
+                    href={`https://twitch.tv/${profile?.sns?.twitch}`}
+                    target="_blank"
+                  >
+                    <Icon icon="twitch" />
+                  </a>
+                )}
+                {profile?.sns?.instagram && (
+                  <a
+                    href={`https://instagram.com/${profile?.sns?.instagram}`}
+                    target="_blank"
+                  >
+                    <Icon icon="instagram" />
+                  </a>
+                )}
+                {profile?.sns?.tiktok && (
+                  <a
+                    href={`https://tiktok.com/${profile?.sns?.tiktok}`}
+                    target="_blank"
+                  >
+                    <Icon icon="tiktok" />
+                  </a>
+                )}
+                {profile?.sns?.youtube && (
+                  <a
+                    href={`https://youtube.com/${profile?.sns?.youtube}`}
+                    target="_blank"
+                  >
+                    <Icon icon="youtube" />
+                  </a>
+                )}
               </span>
             </span>
           )
@@ -318,7 +325,7 @@ const [
           class:list={[passportClass('description-container')]}
         >
           <span
-            class="flex w-full justify-center items-center gap-2.5 p-4 self-stretch block rounded-xl"
+            class="flex w-full justify-center items-center gap-2.5 p-4 self-stretch block rounded-xl border border-black/10"
             class:list={[
               passportClass('description-content'),
               { hidden: !htmlDescription },
@@ -408,7 +415,7 @@ const [
     </section>
   </div>
 
-  <div class="fixed bottom-0 right-0 p-2 lg:p-6">
+  <div class="fixed bottom-16 right-0 p-2 lg:p-6">
     <Like
       client:load
       props={{
