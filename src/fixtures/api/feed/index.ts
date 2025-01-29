@@ -301,7 +301,7 @@ export const getClipFromSkin = async (
   return [...clipsFeedData, ...spotlightFeedData]
 }
 
-export const getFeed = async (tag?: string = 'recent') => {
+export const getFeed = async (tag?: string) => {
   const redis = await whenNotError(
     createClient({
       url: REDIS_URL,
