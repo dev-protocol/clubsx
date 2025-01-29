@@ -374,7 +374,7 @@ export const getFeed = async (tag?: string) => {
       ? feed?.filter((feed) => !!feed)?.sort((a, b) => b.score - a.score)
       : tag.toLowerCase() === 'random3'
         ? getRandomElements(feed?.filter((feed) => !!feed) || [], 3)
-        : tag.toLowerCase() === 'random3'
+        : tag.toLowerCase() === 'random6'
           ? getRandomElements(feed?.filter((feed) => !!feed) || [], 6)
           : feed
               ?.filter((feed) => !!feed)
