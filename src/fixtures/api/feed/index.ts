@@ -372,11 +372,13 @@ export const getFeed = async (tag?: string = 'recent') => {
   const filteredFeed =
     (tag.toLowerCase() === 'score'
       ? feed?.filter((feed) => !!feed)?.sort((a, b) => b.score - a.score)
-      : tag.toLowerCase() === 'random'
+      : tag.toLowerCase() === 'random3'
         ? getRandomElements(feed?.filter((feed) => !!feed) || [], 3)
-        : feed
-            ?.filter((feed) => !!feed)
-            ?.sort((a, b) => b.updateTime - a.updateTime)) || []
+        : tag.toLowerCase() === 'random3'
+          ? getRandomElements(feed?.filter((feed) => !!feed) || [], 6)
+          : feed
+              ?.filter((feed) => !!feed)
+              ?.sort((a, b) => b.updateTime - a.updateTime)) || []
 
   return filteredFeed
 }
