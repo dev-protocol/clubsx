@@ -70,6 +70,8 @@ export type FeedType = {
   parentPassport: Skin
   parentPassportIndex: number
   score: number
+  updateTime: number
+  engagementScore: number
 }
 
 export const getAllProfiles = async (
@@ -240,6 +242,8 @@ export const getFeedAssetFromClip = async (
     parentPassport: skin,
     parentPassportIndex: skinIndex,
     score: finalScore,
+    updateTime: contentTimestamp,
+    engagementScore: engagementScore, // only based on likes for now.
   }
 }
 
@@ -297,7 +301,7 @@ export const getClipFromSkin = async (
   return [...clipsFeedData, ...spotlightFeedData]
 }
 
-export const getFeed = async () => {
+export const getFeed = async (tag?: string = 'recent') => {
   const redis = await whenNotError(
     createClient({
       url: REDIS_URL,
@@ -366,8 +370,30 @@ export const getFeed = async () => {
   }
 
   const filteredFeed =
-    feed?.filter((feed) => !!feed)?.sort((a, b) => b.score - a.score) ?? []
+    (tag.toLowerCase() === 'score'
+      ? feed?.filter((feed) => !!feed)?.sort((a, b) => b.score - a.score)
+      : tag.toLowerCase() === 'random'
+        ? getRandomElements(feed?.filter((feed) => !!feed) || [], 3)
+        : feed
+            ?.filter((feed) => !!feed)
+            ?.sort((a, b) => b.updateTime - a.updateTime)) || []
+
   return filteredFeed
+}
+
+function getRandomElements(feed: Array<FeedType>, noOfItems: number) {
+  const result = []
+  const seen = new Set()
+
+  while (result.length < noOfItems) {
+    const randomIndex = Math.floor(Math.random() * feed.length)
+    if (!seen.has(randomIndex)) {
+      result.push(feed[randomIndex])
+      seen.add(randomIndex)
+    }
+  }
+
+  return result
 }
 
 export const getSBTsForEOAFromClubsUrlHash = async (
