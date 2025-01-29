@@ -2,6 +2,9 @@
 import Layout from '@layouts/LandingWithFooter.astro'
 import { ConnectButton } from '@devprotocol/clubs-plugin-awesome-onboarding'
 import SignInRedirection from '@components/SignInForm/SignInRedirection.vue'
+import { CookieKey } from '@constants/cookie'
+
+const userFromCookie = Astro.cookies.get(CookieKey.User)
 ---
 
 <Layout connectButton="hidden" theme="light">

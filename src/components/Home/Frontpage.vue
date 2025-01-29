@@ -33,9 +33,6 @@ onMounted(async () => {
     .subscribe((acc) => {
       account.value = acc
       if (acc) {
-        set(CookieKey.User, acc, {
-          expires: dayjs().add(dayjs.duration(10, 'years')).toDate(),
-        })
         location.reload()
       }
     })

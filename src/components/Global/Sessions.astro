@@ -1,0 +1,22 @@
+<script>
+  import { CookieKey } from '@constants/cookie'
+  import { connection } from '@devprotocol/clubs-core/connection'
+  import { set, remove } from 'es-cookie'
+  import { distinctUntilChanged } from 'rxjs'
+  import dayjs from 'dayjs'
+  import duration from 'dayjs/plugin/duration'
+  dayjs.extend(duration)
+
+  connection()
+    .account.pipe(distinctUntilChanged())
+    .subscribe((acc) => {
+      console.log({ acc })
+      if (acc) {
+        set(CookieKey.User, acc, {
+          expires: dayjs().add(dayjs.duration(10, 'years')).toDate(),
+        })
+      } else {
+        remove(CookieKey.User)
+      }
+    })
+</script>
