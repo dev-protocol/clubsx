@@ -2,6 +2,12 @@
 import Layout from '@layouts/LandingWithFooter.astro'
 import { ConnectButton } from '@devprotocol/clubs-plugin-awesome-onboarding'
 import SignInRedirection from '@components/SignInForm/SignInRedirection.vue'
+import { CookieKey } from '@constants/cookie'
+
+const userFromCookie = Astro.cookies.get(CookieKey.User)
+if (userFromCookie?.value) {
+  return Astro.redirect(`/passport/${userFromCookie.value}`)
+}
 ---
 
 <Layout connectButton="hidden" theme="light">

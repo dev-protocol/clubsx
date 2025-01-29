@@ -4,6 +4,7 @@ import { ClubsPictogramAdaptable as Favicon } from '@devprotocol/clubs-core/imag
 import '@devprotocol/clubs-core/styles'
 import Header from '@components/Global/Header.astro'
 import Footer from '@components/Global/Footer.vue'
+import Sessions from '@components/Global/Sessions.astro'
 
 type Props = {
   connectButton?: 'show' | 'hidden'
@@ -82,6 +83,8 @@ const twitterHandle = 'poweredbyClubs'
 
     {footer === 'show' && <Footer />}
   </body>
+
+  <Sessions />
 </html>
 
 <script>

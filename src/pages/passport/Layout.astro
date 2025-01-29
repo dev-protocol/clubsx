@@ -13,6 +13,7 @@ import AchivementNotification from '../../pages/passport/components/AchivementNo
 import PostButton from './components/PostButton.vue'
 import { parseAcceptLanguage } from 'intl-parse-accept-language'
 import { getPassportOgImages } from '@fixtures/url/passports'
+import Sessions from '@components/Global/Sessions.astro'
 
 type Props = {
   eoa?: string
@@ -56,12 +57,11 @@ const { default: image, x: imageX } = getPassportOgImages({
   skinId: selectedSkinId,
   itemHash,
 })
-const name = 'Clubs'
+const name = 'CLUBS'
 const url = 'https://www.clubs.place/'
 const twitterHandle = 'poweredbyClubs'
-const title = 'Clubs | All-in-One Space for Creators'
-const description =
-  'Clubs is an all-in-one space for creators to manage their NFTs, DAOs, and more.'
+const title = 'CLUBS | Collection-based Social Platform'
+const description = 'Collect, Showcase, and Connect.'
 const langs = parseAcceptLanguage(Astro.request.headers.get('Accept-Language'))
 const preloads = [
   ...preload,
@@ -191,4 +191,5 @@ const preloads = [
       <Footer />
     </div>
   </body>
+  <Sessions />
 </html>
