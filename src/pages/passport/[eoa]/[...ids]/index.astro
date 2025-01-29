@@ -20,6 +20,8 @@ import PassportClips from '../../components/PassportClips.vue'
 import { clubsUrlToKeccak256Tag } from '@plugins/achievements/utils'
 import MediaSDKs from '@components/Passports/MediaSDKs.astro'
 import Onboarding from '../../components/Onboarding.vue'
+import Banner from '@pages/passport/components/Banner.astro'
+import { CookieKey } from '@constants/cookie'
 
 const { eoa, ids } = Astro.params
 const isEOA = isAddress(eoa)
@@ -159,6 +161,7 @@ const [
 ])
 const isSnsEmpty =
   profile?.sns && Object.keys(profile.sns).every((k) => !profile.sns?.[k])
+const userFromCookie = Astro.cookies.get(CookieKey.User)
 ---
 
 <Layout
@@ -415,7 +418,15 @@ const isSnsEmpty =
     </section>
   </div>
 
-  <div class="fixed bottom-16 right-0 p-2 lg:p-6">
+  <div
+    class="fixed right-0 p-2 lg:p-6"
+    class:list={[
+      {
+        'bottom-36 ': !Boolean(userFromCookie?.value),
+        'bottom-16 ': Boolean(userFromCookie?.value),
+      },
+    ]}
+  >
     <Like
       client:load
       props={{
@@ -425,6 +436,8 @@ const isSnsEmpty =
       }}
     />
   </div>
+
+  <Banner />
 
   <input
     id="passportElementIdValue"

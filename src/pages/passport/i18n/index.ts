@@ -327,4 +327,8 @@ export const Strings = {
     en: 'Use as a guest',
     ja: 'ゲストとして使う',
   },
+  CopyLineForBanner: {
+    en: `CLUBS lets you collect and showcase your favorite game and anime items—fandom, right in your pocket.`,
+    ja: `CLUBS（クラブス）は、好きなゲームやアニメのアイテムを集めて飾れる、新しいコレクション型SNSです。ポケットに入るデジタル推し活を楽しもう！`,
+  },
 } satisfies ClubsI18nParts

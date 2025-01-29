@@ -1,0 +1,51 @@
+---
+import { CookieKey } from '@constants/cookie'
+import { i18nFactory } from '@devprotocol/clubs-core'
+import { parseAcceptLanguage } from 'intl-parse-accept-language'
+import { Strings } from '../i18n'
+
+const userFromCookie = Astro.cookies.get(CookieKey.User)
+const ID = '_clubs-signin-button-on-the-banner_'
+
+const langs = parseAcceptLanguage(Astro.request.headers.get('Accept-Language'))
+const i18n = i18nFactory(Strings)(langs)
+---
+
+{
+  userFromCookie?.value ? (
+    ''
+  ) : (
+    <div class="fixed bottom-0 w-full min-h-12 bg-violet-500 p-4 z-10">
+      <div class="mx-auto container text-white z-10 grid gap-2 items-center grid-rows-[1fr_auto] lg:grid-rows-1 lg:grid-cols-[1fr_auto]">
+        <p class="font-bold lg:text-xl">{i18n('CopyLineForBanner')}</p>
+        <button
+          id={ID}
+          class="rounded-full text-xl p-2 font-bold bg-white text-black transition-all duration-300 outline outline-4 outline-transparent outline-offset-2 hover:outline-white"
+        >
+          {i18n('SignInOrSignUp')}
+        </button>
+      </div>
+    </div>
+  )
+}
+
+<script>
+  import { ClubsConnectionSignal } from '@devprotocol/clubs-core'
+  import { connection } from '@devprotocol/clubs-core/connection'
+  import { distinctUntilChanged, skip } from 'rxjs'
+
+  const signup = () => {
+    connection().signal.next(ClubsConnectionSignal.SignInRequest)
+    connection()
+      .account.pipe(skip(1), distinctUntilChanged())
+      .subscribe((acc) => {
+        if (acc) {
+          window.location.href = `/passport/${acc}`
+        }
+      })
+  }
+
+  document
+    .getElementById('_clubs-signin-button-on-the-banner_')
+    ?.addEventListener('click', signup)
+</script>
