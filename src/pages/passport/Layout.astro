@@ -15,6 +15,7 @@ import { parseAcceptLanguage } from 'intl-parse-accept-language'
 import { getPassportOgImages } from '@fixtures/url/passports'
 import Sessions from '@components/Global/Sessions.astro'
 import Analytics from '@components/Analytics/Analytics.astro'
+import type { PassportItem } from './types'
 
 type Props = {
   eoa?: string
@@ -42,13 +43,18 @@ const {
   showPostButton = 'hidden',
 } = Astro.props as Props
 
-const passportSkinTheme = await whenDefined(sTokenPayload, (payload: string) =>
-  getPassportItemForPayload({
-    sTokenPayload: payload ?? '',
-  })
-    .then((item) => (item instanceof Error ? undefined : item))
-    .catch(() => undefined),
-)
+const defaultSkin: PassportItem = {
+  itemAssetType: 'stylesheet-link',
+  itemAssetValue: 'https://dev-protocol.github.io/styles/skins/default.css',
+}
+const passportSkinTheme =
+  (await whenDefined(sTokenPayload, (payload: string) =>
+    getPassportItemForPayload({
+      sTokenPayload: payload ?? '',
+    })
+      .then((item) => (item instanceof Error ? defaultSkin : item))
+      .catch(() => defaultSkin),
+  )) ?? defaultSkin
 
 const requestURL = new URL(Astro.url)
 const { default: image, x: imageX } = getPassportOgImages({
