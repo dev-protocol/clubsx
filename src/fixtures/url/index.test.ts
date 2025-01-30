@@ -11,7 +11,7 @@ const run = (configUrl: string) => {
       {
         url: configUrl,
       } as ClubsConfiguration,
-      new URL('https://xxx.clubs.place/sites_/xxx'), // the middleware generates this url
+      new URL('https://clubs.place/sites_/xxx'), // the middleware generates this url
       'xxx',
     )
     expect(res.url).toBe('https://xxx.clubs.place')
