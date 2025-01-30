@@ -7289,6 +7289,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@upstash/redis@npm:^1.34.3":
+  version: 1.34.3
+  resolution: "@upstash/redis@npm:1.34.3"
+  dependencies:
+    crypto-js: "npm:^4.2.0"
+  checksum: 10c0/c192651740663a8c5db466eec00a6f8c97bc8c3c5f1cf0a48925c1f79097b9a63a32cd12ed99878c668e09123064e206f7591bc9bd19dffb8f809acc1d15cc5e
+  languageName: node
+  linkType: hard
+
 "@vanilla-extract/css@npm:^1.14.0":
   version: 1.17.0
   resolution: "@vanilla-extract/css@npm:1.17.0"
@@ -7357,27 +7366,6 @@ __metadata:
     throttleit: "npm:^2.1.0"
     undici: "npm:^5.28.4"
   checksum: 10c0/14cf72801548169f58b23e1abda6849b6f5e98b588f64b8863b06b4b44f8515aaa6727cbe1cf97d7fb5a8ba434fad23f2698dddb39e3ebfc78d6f044283a1a50
-  languageName: node
-  linkType: hard
-
-"@vercel/edge-config-fs@npm:0.1.0":
-  version: 0.1.0
-  resolution: "@vercel/edge-config-fs@npm:0.1.0"
-  checksum: 10c0/a3bd58d216832eac6280615b7ae6999a13b63d9f4bc2f9b4d7ffd0263903505862937591026b5e4e1abedecaf07a597595f0b7abe6718176be93585ad393ed3f
-  languageName: node
-  linkType: hard
-
-"@vercel/edge-config@npm:^1.4.0":
-  version: 1.4.0
-  resolution: "@vercel/edge-config@npm:1.4.0"
-  dependencies:
-    "@vercel/edge-config-fs": "npm:0.1.0"
-  peerDependencies:
-    "@opentelemetry/api": ^1.7.0
-  peerDependenciesMeta:
-    "@opentelemetry/api":
-      optional: true
-  checksum: 10c0/e37c635654a74ab5924ba44fa69725978379d4ca53a297767f0276214be5de9ed41ea51b4496e6293c1f321b94666e321c9e28c83075d0b95145aaf7c6047110
   languageName: node
   linkType: hard
 
@@ -11593,8 +11581,8 @@ __metadata:
     "@types/textfit": "npm:^2.4.5"
     "@types/three": "npm:0.161.2"
     "@types/uuid": "npm:^10.0.0"
+    "@upstash/redis": "npm:^1.34.3"
     "@vercel/edge": "npm:^1.1.1"
-    "@vercel/edge-config": "npm:^1.4.0"
     "@vue/composition-api": "npm:1.7.2"
     "@wagmi/core": "npm:^1.4.1"
     "@web3modal/wagmi": "npm:3.5.7"
@@ -12159,6 +12147,13 @@ __metadata:
   version: 3.1.0
   resolution: "crypto-hash@npm:3.1.0"
   checksum: 10c0/6b914e880eaf1d35643d832bd8557b12712c541f818f17d208d8c8fcb13b0f905ebe0cdd9b133ee77d793cb8269433be0f35ea3da2be190158b59a7805d94ea4
+  languageName: node
+  linkType: hard
+
+"crypto-js@npm:^4.2.0":
+  version: 4.2.0
+  resolution: "crypto-js@npm:4.2.0"
+  checksum: 10c0/8fbdf9d56f47aea0794ab87b0eb9833baf80b01a7c5c1b0edc7faf25f662fb69ab18dc2199e2afcac54670ff0cd9607a9045a3f7a80336cccd18d77a55b9fdf0
   languageName: node
   linkType: hard
 
