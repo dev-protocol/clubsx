@@ -42,10 +42,13 @@ export const replaceUrlConfigWithLocal = (
   url: URL,
   site?: string,
 ): ClubsConfiguration => {
-  console.log('$url$', url)
   const configUrl = new URL(config.url)
   const isConfigSubdomainType = hosts.every((h) => h !== configUrl.host) // If it's true, host name includes tenant name
   const isRequestSubdomainType = url.pathname.startsWith('/sites_/')
+  console.log('$url$', url)
+  console.log('$configUrl$', configUrl)
+  console.log('$isConfigSubdomainType$', isConfigSubdomainType)
+  console.log('$isRequestSubdomainType$', isRequestSubdomainType)
   const newUrl =
     isConfigSubdomainType === true
       ? isRequestSubdomainType === true
