@@ -19,6 +19,8 @@ const app = async () => {
     })
     await client.connect()
 
+    let updates = 0
+
     for await (const key of scanOnlyClubs(client)) {
       if (key.includes(':')) {
         // This is not a ClubsConfiguration
@@ -32,10 +34,12 @@ const app = async () => {
       }
 
       console.log('Detect:', key)
+      updates = updates + 1
       await upstash.set(key, 1)
     }
 
     await client.quit()
+    console.log('Updates:', updates)
     console.log('Closed the DB connection')
   } catch (error) {
     console.error('error upgrading db: ', error)
