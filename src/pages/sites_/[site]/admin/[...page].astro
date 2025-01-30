@@ -22,7 +22,7 @@ import { ConnectButton } from '@devprotocol/clubs-plugin-awesome-onboarding'
 import PreviewBanner from '@components/PreviewBanner/PreviewBanner.astro'
 import { replaceUrlConfigWithLocal, replaceWithFwdHost } from '@fixtures/url'
 import type { InferGetStaticPropsType } from 'astro'
-import Clarity from '@components/Clarity/Clarity.astro'
+import Analytics from '@components/Analytics/Analytics.astro'
 import Resources from '@components/Admin/Resources.astro'
 
 const { site, page } = Astro.params
@@ -172,7 +172,7 @@ const siteBaseUrl = new URL(replaceWithFwdHost(Astro.request)).origin
           config={config as ClubsConfiguration}
           slot={ClubsSlotName.AdminBodyAfterContents}
         />
-        <Clarity />
+        <Analytics />
         <Resources slot="admin:sidebar:before-footer" />
       </Admin>
     </>

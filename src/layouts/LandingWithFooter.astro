@@ -5,6 +5,7 @@ import '@devprotocol/clubs-core/styles'
 import Header from '@components/Global/Header.astro'
 import Footer from '@components/Global/Footer.vue'
 import Sessions from '@components/Global/Sessions.astro'
+import Analytics from '@components/Analytics/Analytics.astro'
 
 type Props = {
   connectButton?: 'show' | 'hidden'
@@ -85,6 +86,7 @@ const twitterHandle = 'poweredbyClubs'
   </body>
 
   <Sessions />
+  <Analytics />
 </html>
 
 <script>

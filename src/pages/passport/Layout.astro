@@ -14,6 +14,7 @@ import PostButton from './components/PostButton.vue'
 import { parseAcceptLanguage } from 'intl-parse-accept-language'
 import { getPassportOgImages } from '@fixtures/url/passports'
 import Sessions from '@components/Global/Sessions.astro'
+import Analytics from '@components/Analytics/Analytics.astro'
 
 type Props = {
   eoa?: string
@@ -190,6 +191,7 @@ const preloads = [
 
       <Footer />
     </div>
+    <Analytics />
   </body>
   <Sessions />
 </html>
