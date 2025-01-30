@@ -167,6 +167,7 @@ const userFromCookie = Astro.cookies.get(CookieKey.User)
 <Layout
   theme="light"
   eoa={eoa ?? ''}
+  applySkin={true}
   sTokenPayload={skin?.theme}
   skins={profile?.skins ?? []}
   selectedSkinId={skin?.id ?? ''}

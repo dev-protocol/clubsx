@@ -28,6 +28,7 @@ type Props = {
   connectButton?: 'show' | 'hidden' | 'show-when-signedin'
   showSkinSwitcher?: boolean
   showPostButton?: 'hidden' | 'post' | 'edit'
+  applySkin?: boolean
 }
 
 const {
@@ -41,6 +42,7 @@ const {
   connectButton,
   showSkinSwitcher = true,
   showPostButton = 'hidden',
+  applySkin = false,
 } = Astro.props as Props
 
 const defaultSkin: PassportItem = {
@@ -99,19 +101,19 @@ const preloads = [
     }
 
     {
-      passportSkinTheme?.itemAssetType === 'stylesheet-link' && (
+      applySkin && passportSkinTheme?.itemAssetType === 'stylesheet-link' && (
         <link rel="stylesheet" href={`${passportSkinTheme.itemAssetValue}`} />
       )
     }
 
     {
-      passportSkinTheme?.itemAssetType === 'css' && (
+      applySkin && passportSkinTheme?.itemAssetType === 'css' && (
         <style set:html={passportSkinTheme?.itemAssetValue ?? ''} />
       )
     }
 
     {
-      requestURL.searchParams.has('css') && (
+      applySkin && requestURL.searchParams.has('css') && (
         <link rel="stylesheet" href={requestURL.searchParams.get('css')} />
       )
     }

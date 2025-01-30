@@ -22,7 +22,8 @@ const profile = computed(
 const name = ref<string>()
 const fave = ref<string>()
 const status = ref<string>()
-const animations = ref({ x: 0, y: 0 })
+const animations = ref({ x: 0, y: 0, w: 0 })
+const initialw = ref(0)
 
 const submit = async (): Promise<void> => {
   const signer = connection ? connection().signer.getValue() : undefined
@@ -70,11 +71,14 @@ const submit = async (): Promise<void> => {
 const start = () => {
   if (step.value === 1) {
     const rect = el.value?.getBoundingClientRect()
-    const x = window.innerWidth - (rect?.width ?? 0) / 2
+    const w = window.innerWidth
+    const x = (w - (rect?.width ?? 0)) / 2
     const y = (rect?.top ?? 0) + window.scrollY
-    animations.value = { x, y }
+    el.value?.showModal()
+    animations.value = { x, y, w }
     step.value = 2
   } else {
+    el.value?.close()
     step.value = 1
   }
 }
@@ -82,33 +86,36 @@ const start = () => {
 onMounted(() => {
   connection().account.subscribe((acc) => {
     isSelf.value = acc === props.eoa
+    const rect = el.value?.getBoundingClientRect()
+    const w = rect?.width ?? 0
+    initialw.value = w
   })
 })
 </script>
 <template>
-  <div
+  <dialog
     v-if="isSelf"
     ref="container"
     :class="{
-      'relative transition-all duration-1000': true,
+      'relative transition-all duration-1000 p-2': true,
       'outline-transparent h-fit': step === 1,
       'outline-black/5 rounded-xl min-h-screen bg-white z-[99]': step > 1,
     }"
     :style="
       step !== 1
-        ? `margin-top: -${animations.y}px; margin-left: -${animations.x}px; margin-right: -${animations.x}px;`
-        : 'margin-top: 0px; margin-left: 0px; margin-right: 0px;'
+        ? `margin-top: -${animations.y}px; margin-left: -${animations.x}px; margin-right: -${animations.x}px; width: ${animations.w}px;`
+        : `margin-top: 0px; margin-left: 0px; margin-right: 0px; width: ${initialw}px;`
     "
   >
     <div
-      class="mx-auto container grid justify-center justify-items-center content-start items-start gap-4 transition-all duration-1000"
+      class="mx-auto container grid justify-center justify-items-stretch content-start items-start gap-4 transition-all duration-1000"
     >
       <h2 class="font-bold text-2xl transition-all duration-500 mt-12">
         {{ i18n('StartCustomization') }}
       </h2>
       <button
         :class="{
-          'rounded-2xl flex flex-col border border-black/10 outline outline-4 outline-transparent transition-all hover:outline-black/5 w-full justify-center': true,
+          'rounded-2xl bg-white flex flex-col border border-black/10 outline outline-4 outline-transparent transition-all hover:outline-black/5 justify-center': true,
           'p-8 gap-4 opacity-100': step === 1,
           'p-1 gap-2 opacity-30': step !== 1,
         }"
@@ -138,7 +145,7 @@ onMounted(() => {
 
       <label
         :class="{
-          'hs-form-field rounded-2xl flex !flex-col border border-black/10 outline outline-4 outline-transparent transition-all hover:outline-black/5 w-full !justify-stretch': true,
+          'hs-form-field bg-white rounded-2xl flex !flex-col border border-black/10 outline outline-4 outline-transparent transition-all hover:outline-black/5 w-full !justify-stretch': true,
           '!p-8 gap-4 opacity-100': step === 2,
           '!p-1 gap-2 opacity-30': step !== 2,
         }"
@@ -173,7 +180,7 @@ onMounted(() => {
 
       <label
         :class="{
-          'hs-form-field rounded-2xl flex !flex-col border border-black/10 outline outline-4 outline-transparent transition-all hover:outline-black/5 w-full !justify-stretch': true,
+          'hs-form-field bg-white rounded-2xl flex !flex-col border border-black/10 outline outline-4 outline-transparent transition-all hover:outline-black/5 w-full !justify-stretch': true,
           '!p-8 gap-4 opacity-100': step === 3,
           '!p-1 gap-2 opacity-30': step !== 3,
         }"
@@ -216,7 +223,7 @@ onMounted(() => {
 
       <div
         :class="{
-          'rounded-2xl flex flex-col border border-black/10 outline outline-4 outline-transparent transition-all hover:outline-black/5 w-full justify-center': true,
+          'rounded-2xl bg-white flex flex-col border border-black/10 outline outline-4 outline-transparent transition-all hover:outline-black/5 w-full justify-center': true,
           'p-8 gap-4 opacity-100': step === 4,
           'p-1 gap-2 opacity-30': step !== 4,
         }"
@@ -255,7 +262,7 @@ onMounted(() => {
 
       <div
         :class="{
-          'max-w-xl rounded-2xl flex flex-col border border-black/10 outline outline-4 outline-transparent transition-all hover:outline-black/5 w-full justify-center p-8 gap-4': true,
+          'max-w-xl bg-white rounded-2xl flex flex-col border border-black/10 outline outline-4 outline-transparent transition-all hover:outline-black/5 w-full justify-center p-8 gap-4': true,
           hidden: step !== 5,
         }"
       >
@@ -282,5 +289,5 @@ onMounted(() => {
         </a>
       </div>
     </div>
-  </div>
+  </dialog>
 </template>

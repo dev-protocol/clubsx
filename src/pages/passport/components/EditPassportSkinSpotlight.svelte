@@ -212,15 +212,15 @@
       </p>
       <ul class={passportSpotlightClass(0).container}>
         <li
-          class={`h-full rounded bg-surface-400 opacity-50 ${passportSpotlightClass(0).child[0]}`}
+          class={`h-full rounded bg-surface-400 opacity-50 h-[80%] ${passportSpotlightClass(0).child[0]}`}
         ></li>
         <button
-          class={`h-full rounded bg-surface-400 flex items-center justify-center ${passportSpotlightClass(0).child[1]}`}
+          class={`h-full rounded bg-surface-400 flex items-center justify-center min-h-64 aspect-square ${passportSpotlightClass(0).child[1]}`}
           on:click={onClickCreateButton}
           ><IconPlus classNames="size-12" />
         </button>
         <li
-          class={`h-full rounded bg-surface-400 opacity-50 ${passportSpotlightClass(0).child[2]}`}
+          class={`h-full rounded bg-surface-400 opacity-50 h-[80%] ${passportSpotlightClass(0).child[2]}`}
         ></li>
       </ul>
     {:else if !isFetchingPurchasedClips && !profileFetching && spotlightLength}
