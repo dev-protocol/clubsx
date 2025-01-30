@@ -7,18 +7,24 @@ import { ConnectButton } from '@devprotocol/clubs-plugin-awesome-onboarding'
 import { parseAcceptLanguage } from 'intl-parse-accept-language'
 import Footer_ from '@components/Footer/Footer.astro'
 import OG from '@assets/clubs/og.png'
+import { Mode, modes } from '@constants/feeds'
 
 const guestAccess =
   new URL(Astro.request.url).searchParams.get('as') === 'guest'
 
 const userFromCookie = Astro.cookies.get(CookieKey.User)
+const modeFromCookie = Astro.cookies.get(CookieKey.DefaultFeed)
 const user = userFromCookie?.value
   ? userFromCookie?.value
   : guestAccess
     ? 'guest'
     : undefined
+const mode =
+  modeFromCookie && modes.includes(modeFromCookie.value as Mode)
+    ? (modeFromCookie.value as Mode)
+    : Mode.Latest
 
-const feeds = user ? await getFeed().catch(() => [] as FeedType[]) : []
+const feeds = user ? await getFeed(mode).catch(() => [] as FeedType[]) : []
 const langs = parseAcceptLanguage(Astro.request.headers.get('Accept-Language'))
 ---
 
@@ -32,7 +38,7 @@ const langs = parseAcceptLanguage(Astro.request.headers.get('Accept-Language'))
   og={{ image: OG.src }}
 >
   <div class="@container/main h-full">
-    <Frontpage client:load feeds={feeds} session={{ user }} {langs}
+    <Frontpage client:load feeds={feeds} session={{ user }} {langs} {mode}
       ><ConnectButton slot="connect-button" />
       <Footer_ slot="footer" clubs={{ slots: [] }}
         ><li slot="nav-item">
