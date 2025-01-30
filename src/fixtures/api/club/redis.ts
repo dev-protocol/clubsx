@@ -140,6 +140,44 @@ export const getClubById = async (
   return search.documents[0]?.value as UndefinedOr<ClubDocument>
 }
 
+const callEdgeConfigToWrite = async ({
+  item,
+  edgeConfigId,
+  vercelApiToken,
+}: {
+  item: { key: string; value: number | string }
+  edgeConfigId: string
+  vercelApiToken: string
+}) =>
+  tryCatch(
+    () =>
+      fetch(
+        `https://api.vercel.com/v1/edge-config/${edgeConfigId}/items?teamId=devprtcl`,
+        {
+          method: 'PATCH',
+          headers: {
+            Authorization: `Bearer ${vercelApiToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            items: [
+              {
+                ...item,
+                operation: 'create',
+              },
+            ],
+          }),
+        },
+      ).then(async (r: Response) => {
+        console.log('$edgeconfigsetres$', await r.json(), { item })
+        return r.ok
+      }),
+    (err: Error) => {
+      console.log('$edgeconfigset$', err)
+      return Promise.resolve(false)
+    },
+  )()
+
 export const updateClubId = async (
   doc: ClubDocument,
   client: AsyncReturnType<typeof getDefaultClient>,

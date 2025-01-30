@@ -42,22 +42,34 @@ export const replaceUrlConfigWithLocal = (
   url: URL,
   site?: string,
 ): ClubsConfiguration => {
-  console.log('$url$', url)
   const configUrl = new URL(config.url)
   const isConfigSubdomainType = hosts.every((h) => h !== configUrl.host) // If it's true, host name includes tenant name
   const isRequestSubdomainType = url.pathname.startsWith('/sites_/')
+  const frontendUrl = isRequestSubdomainType
+    ? new URL(
+        url.pathname.replace('/sites_/', '/'),
+        site && url.host.includes(site)
+          ? url.origin
+          : url.origin.replace(url.host, `${site}.${url.host}`),
+      )
+    : url
+  console.log('$url$', url)
+  console.log('$configUrl$', configUrl)
+  console.log('$frontendUrl$', frontendUrl)
+  console.log('$isConfigSubdomainType$', isConfigSubdomainType)
+  console.log('$isRequestSubdomainType$', isRequestSubdomainType)
   const newUrl =
     isConfigSubdomainType === true
       ? isRequestSubdomainType === true
         ? configUrl.host === url.host
           ? config.url
-          : config.url.replace(configUrl.host, url.host)
+          : config.url.replace(configUrl.host, frontendUrl.host)
         : isRequestSubdomainType === false
           ? `${config.url.replace(configUrl.host, url.host)}${site ? `/${site}` : ''}`
           : (0 as never)
       : isConfigSubdomainType === false
         ? isRequestSubdomainType === true
-          ? url.origin
+          ? frontendUrl.origin
           : isRequestSubdomainType === false
             ? configUrl.host === url.host
               ? config.url
