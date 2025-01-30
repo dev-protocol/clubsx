@@ -12,12 +12,14 @@ import CLUBS from '@assets/clubs/Clubs-Decorative.svg'
 import { Strings } from '@pages/passport/i18n'
 import { distinctUntilChanged } from 'rxjs/operators'
 import FrontpageBg from '@assets/clubs/Images.png'
+import type { Mode } from '@constants/feeds'
 dayjs.extend(duration)
 
 const props = defineProps<{
   feeds: FeedType[]
   session?: { user?: string }
   langs: string[]
+  mode?: Mode
 }>()
 const account = ref<string>()
 const connection = ref<typeof Connection>()
@@ -44,7 +46,11 @@ const openSignInModal = () => {
 </script>
 
 <template>
-  <FeedPageContent v-if="props.session?.user" :feeds="props.feeds" />
+  <FeedPageContent
+    v-if="props.session?.user"
+    :feeds="props.feeds"
+    :initial-mode="mode"
+  />
   <template v-if="props.session?.user === undefined">
     <section
       class="grid gap-8 p-4 h-full bg-cover bg-center justify-center content-center items-center shadow-[inset_0_0_240px_120px_rgb(0_0_0_/_0.5)] min-h-dvh"
