@@ -29,8 +29,7 @@ const options = whenDefined(
   config,
   (conf) =>
     ({
-      config: () =>
-        replaceUrlConfigWithLocal(decode(conf), Astro.request, Astro.url, site),
+      config: () => replaceUrlConfigWithLocal(decode(conf), Astro.url, site),
       plugins,
     }) satisfies ClubsFunctionFactoryOptions,
 )

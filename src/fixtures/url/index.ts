@@ -39,21 +39,30 @@ const hosts = [
 
 export const replaceUrlConfigWithLocal = (
   config: ClubsConfiguration,
-  req: Request,
   url: URL,
   site?: string,
 ): ClubsConfiguration => {
-  const forwarded = req.headers.get('forwarded')
-  console.log('$forwarded$', forwarded)
   console.log('$url$', url)
-  const reqHost = whenDefined(forwarded, getHost)
   const configUrl = new URL(config.url)
-  const hasReqHostTenant = hosts.every((h) => h !== reqHost) // If it's true, host name includes tenant name
+  const isConfigSubdomainType = hosts.every((h) => h !== configUrl.host) // If it's true, host name includes tenant name
+  const isRequestSubdomainType = url.pathname.startsWith('/sites_/')
   const newUrl =
-    configUrl.host === reqHost
-      ? config.url
-      : reqHost && hasReqHostTenant
-        ? config.url.replace(configUrl.host, reqHost)
-        : `${url.origin}/${site}`
+    isConfigSubdomainType === true
+      ? isRequestSubdomainType === true
+        ? configUrl.host === url.host
+          ? config.url
+          : config.url.replace(configUrl.host, url.host)
+        : isRequestSubdomainType === false
+          ? `${config.url.replace(configUrl.host, url.host)}${site ? `/${site}` : ''}`
+          : (0 as never)
+      : isConfigSubdomainType === false
+        ? isRequestSubdomainType === true
+          ? url.origin
+          : isRequestSubdomainType === false
+            ? configUrl.host === url.host
+              ? config.url
+              : config.url.replace(configUrl.host, url.host)
+            : (0 as never)
+        : (0 as never)
   return { ...config, url: newUrl }
 }

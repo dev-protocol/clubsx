@@ -37,12 +37,7 @@ if (!siteconfig) {
 
 const options = {
   config: async () =>
-    replaceUrlConfigWithLocal(
-      decode(siteconfig),
-      Astro.request,
-      Astro.url,
-      site,
-    ),
+    replaceUrlConfigWithLocal(decode(siteconfig), Astro.url, site),
   plugins: [admin, marketplace, ...plugins],
 } satisfies ClubsFunctionFactoryOptions
 
