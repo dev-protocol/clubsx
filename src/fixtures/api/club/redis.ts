@@ -1,8 +1,9 @@
 import { createClient } from 'redis'
 import type { AsyncReturnType } from 'type-fest'
 import { CLUB_SCHEMA, CLUB_SCHEMA_ID, type ClubDocument } from './schema'
-import type { UndefinedOr } from '@devprotocol/util-ts'
-import { mergeDeepRight } from 'ramda'
+import { whenDefined, type UndefinedOr } from '@devprotocol/util-ts'
+import { mergeDeepRight, tryCatch } from 'ramda'
+import { has as edgeHas } from '@vercel/edge-config'
 
 export enum Index {
   Club = 'idx::clubs:club',
@@ -134,14 +135,75 @@ export const getClubById = async (
   return search.documents[0]?.value as UndefinedOr<ClubDocument>
 }
 
+const callEdgeConfigToWrite = async ({
+  item,
+  edgeConfigId,
+  vercelApiToken,
+}: {
+  item: { key: string; value: number | string }
+  edgeConfigId: string
+  vercelApiToken: string
+}) =>
+  tryCatch(
+    () =>
+      fetch(
+        `https://api.vercel.com/v1/edge-config/${edgeConfigId}/items?teamId=devprtcl`,
+        {
+          method: 'PATCH',
+          headers: {
+            Authorization: `Bearer ${vercelApiToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            items: [
+              {
+                ...item,
+                operation: 'create',
+              },
+            ],
+          }),
+        },
+      ).then(async (r: Response) => {
+        console.log('$edgeconfigsetres$', await r.json(), { item })
+        return r.ok
+      }),
+    (err: Error) => {
+      console.log('$edgeconfigset$', err)
+      return Promise.resolve(false)
+    },
+  )()
+
 export const updateClubId = async (
   doc: ClubDocument,
   client: AsyncReturnType<typeof getDefaultClient>,
 ): Promise<true | Error> => {
   const key = `${Prefix.Club}${doc.id}`
-  const old = await getClubById(doc.id, client)
+  const [old, edgeConfigHas] = await Promise.all([
+    getClubById(doc.id, client),
+    edgeHas(doc.id),
+  ])
   const next = mergeDeepRight(old ?? {}, doc)
-  const set = await client.json.set(key, '$', next)
+  const edgeConfig = tryCatch(
+    (str: string) =>
+      ((url) => ({
+        configId: url.pathname.slice(1, Infinity),
+        token: import.meta.env.VERCEL_API_TOKEN,
+      }))(new URL(str)),
+    () => undefined,
+  )(import.meta.env.EDGE_CONFIG)
+  const [set, createedgeconfig] = await Promise.all([
+    client.json.set(key, '$', next),
+    whenDefined(edgeConfigHas ? undefined : edgeConfig, (conf) =>
+      callEdgeConfigToWrite({
+        item: {
+          key: doc.id,
+          value: 1,
+        },
+        edgeConfigId: conf.configId,
+        vercelApiToken: conf.token,
+      }),
+    ) ?? Promise.resolve(undefined),
+  ])
 
-  return set === 'OK' ? true : new Error('Error')
+  return set === 'OK' && createedgeconfig !== false ? true : new Error('Error')
 }
