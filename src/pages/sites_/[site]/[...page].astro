@@ -19,7 +19,7 @@ import PreviewBanner from '@components/PreviewBanner/PreviewBanner.astro'
 import Footer from '@components/Footer/Footer.astro'
 import { replaceWithFwdHost, replaceUrlConfigWithLocal } from '@fixtures/url'
 import type { InferGetStaticPropsType } from 'astro'
-import Clarity from '@components/Clarity/Clarity.astro'
+import Analytics from '@components/Analytics/Analytics.astro'
 import { whenDefined, type UndefinedOr } from '@devprotocol/util-ts'
 
 const { site, page } = Astro.params
@@ -91,7 +91,7 @@ const SlotsConnectButton = path?.props.clubs.slots.filter(
 
         <PreviewBanner config={decode<ClubsConfiguration>(config)} />
 
-        <Clarity />
+        <Analytics />
       </Layout>
 
       <Footer {...(path.props as unknown as ClubsPropsPages)} {fullPage}>
