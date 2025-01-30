@@ -4,8 +4,10 @@ import { json } from '@fixtures/api/json'
 import { getFeed } from '@fixtures/api/feed'
 import { headers } from '@fixtures/api/headers'
 
-export const GET: APIRoute = async ({ params }) => {
-  const result = await getFeed()
+export const GET: APIRoute = async ({ url }) => {
+  const tag = url.searchParams.get('tag')
+
+  const result = await getFeed(tag || 'recent')
     .then((feed) => feed)
     .catch((err) => new Error(err))
 
