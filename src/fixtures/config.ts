@@ -1,6 +1,11 @@
 import { createClient } from 'redis'
 import { validate } from './site'
-import { has } from '@vercel/edge-config'
+import { Redis } from '@upstash/redis'
+
+const upstash = new Redis({
+  url: process.env.KV_REST_API_URL,
+  token: process.env.KV_REST_API_READ_ONLY_TOKEN,
+})
 
 export const config = async (
   site: string | number | undefined,
@@ -8,7 +13,7 @@ export const config = async (
   if ((site ? validate(site.toString()) : false) === false) {
     return null
   }
-  if ((await has(site?.toString() ?? '')) === false) {
+  if ((await upstash.exists(site?.toString() ?? '')) === 0) {
     // TODO: This process should be moved to the middleware with the appropriate URL percing.
     return null
   }

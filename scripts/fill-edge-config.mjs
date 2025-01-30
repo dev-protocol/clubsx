@@ -1,46 +1,14 @@
 import { createClient } from 'redis'
 import dotenv from 'dotenv'
 import { scanOnlyClubs } from './lib.scanOnlyClubs.mjs'
-import fetch from 'cross-fetch'
-import { has } from '@vercel/edge-config'
-import { tryCatch } from 'ramda'
+import { Redis } from '@upstash/redis'
 
 dotenv.config()
 
-const { VERCEL_API_TOKEN, EDGE_CONFIG } = process.env
-const edgeConfigId = ((url) => url.pathname.slice(1, Infinity))(
-  new URL(EDGE_CONFIG),
-)
-
-const callEdgeConfigToWrite = async (key) =>
-  tryCatch(
-    () =>
-      fetch(
-        `https://api.vercel.com/v1/edge-config/${edgeConfigId}/items?teamId=devprtcl`,
-        {
-          method: 'PATCH',
-          headers: {
-            Authorization: `Bearer ${VERCEL_API_TOKEN}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            items: [
-              {
-                operation: 'create',
-                key,
-                value: 1,
-              },
-            ],
-          }),
-        },
-      ).then(async (r) => {
-        return r.ok
-      }),
-    (err) => {
-      console.log('$edgeconfigset$', err)
-      return Promise.resolve(false)
-    },
-  )()
+const upstash = new Redis({
+  url: process.env.KV_REST_API_URL,
+  token: process.env.KV_REST_API_TOKEN,
+})
 
 const app = async () => {
   try {
@@ -58,13 +26,13 @@ const app = async () => {
         continue
       }
 
-      if (await has(key)) {
+      if (await upstash.exists(key)) {
         console.log('Already added', key)
         continue
       }
 
       console.log('Detect:', key)
-      await callEdgeConfigToWrite(key)
+      await upstash.set(key, 1)
     }
 
     await client.quit()

@@ -1,9 +1,14 @@
 import { createClient } from 'redis'
 import type { AsyncReturnType } from 'type-fest'
 import { CLUB_SCHEMA, CLUB_SCHEMA_ID, type ClubDocument } from './schema'
-import { whenDefined, type UndefinedOr } from '@devprotocol/util-ts'
+import { type UndefinedOr } from '@devprotocol/util-ts'
 import { mergeDeepRight, tryCatch } from 'ramda'
-import { has as edgeHas } from '@vercel/edge-config'
+import { Redis } from '@upstash/redis'
+
+const upstash = new Redis({
+  url: process.env.KV_REST_API_URL,
+  token: process.env.KV_REST_API_TOKEN,
+})
 
 export enum Index {
   Club = 'idx::clubs:club',
@@ -180,30 +185,15 @@ export const updateClubId = async (
   const key = `${Prefix.Club}${doc.id}`
   const [old, edgeConfigHas] = await Promise.all([
     getClubById(doc.id, client),
-    edgeHas(doc.id),
+    upstash.exists(doc.id).then((r) => r > 0),
   ])
   const next = mergeDeepRight(old ?? {}, doc)
-  const edgeConfig = tryCatch(
-    (str: string) =>
-      ((url) => ({
-        configId: url.pathname.slice(1, Infinity),
-        token: import.meta.env.VERCEL_API_TOKEN,
-      }))(new URL(str)),
-    () => undefined,
-  )(import.meta.env.EDGE_CONFIG)
-  const [set, createedgeconfig] = await Promise.all([
+  const [set, tenantnames] = await Promise.all([
     client.json.set(key, '$', next),
-    whenDefined(edgeConfigHas ? undefined : edgeConfig, (conf) =>
-      callEdgeConfigToWrite({
-        item: {
-          key: doc.id,
-          value: 1,
-        },
-        edgeConfigId: conf.configId,
-        vercelApiToken: conf.token,
-      }),
-    ) ?? Promise.resolve(undefined),
+    edgeConfigHas ? Promise.resolve(undefined) : upstash.set(doc.id, 1),
   ])
 
-  return set === 'OK' && createedgeconfig !== false ? true : new Error('Error')
+  return set === 'OK' && (tenantnames === undefined || tenantnames === 'OK')
+    ? true
+    : new Error('Error')
 }
