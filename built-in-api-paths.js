@@ -6,9 +6,12 @@ export default [
   '/api/stats',
   '/api/profile',
   '/api/plugins',
+  '/api/passportItem',
+  '/api/notification',
   '/api/mock',
   '/api/hasCreationLimitReached',
   '/api/fetchClubs',
+  '/api/feed',
   '/api/encrypt',
   '/api/decrypt',
   '/api/cron',
@@ -17,5 +20,4 @@ export default [
   '/api/authenticate',
   '/api/assets',
   '/api/addDaoToDraft',
-  '/api/notification',
 ]
