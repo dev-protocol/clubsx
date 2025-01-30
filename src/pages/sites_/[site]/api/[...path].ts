@@ -16,12 +16,7 @@ export const ALL: APIRoute = async (event) => {
   }
 
   const config = async () =>
-    replaceUrlConfigWithLocal(
-      decode(siteconfig),
-      event.request,
-      event.url,
-      params.site,
-    )
+    replaceUrlConfigWithLocal(decode(siteconfig), event.url, params.site)
 
   const { ALL } = apiFactory({
     config,
