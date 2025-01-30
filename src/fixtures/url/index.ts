@@ -44,6 +44,8 @@ export const replaceUrlConfigWithLocal = (
   site?: string,
 ): ClubsConfiguration => {
   const forwarded = req.headers.get('forwarded')
+  console.log('$forwarded$', forwarded)
+  console.log('$url$', url)
   const reqHost = whenDefined(forwarded, getHost)
   const configUrl = new URL(config.url)
   const hasReqHostTenant = hosts.every((h) => h !== reqHost) // If it's true, host name includes tenant name
