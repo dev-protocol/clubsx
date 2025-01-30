@@ -17,7 +17,7 @@ if (!config) {
 }
 
 const clubsxConfig = whenNotError(config, (conf) =>
-  replaceUrlConfigWithLocal(decode(conf), new URL(Astro.request.url), siteName),
+  replaceUrlConfigWithLocal(decode(conf), Astro.request, Astro.url, siteName),
 )
 const clubsxConfigEncoded = whenNotError(clubsxConfig, encode)
 

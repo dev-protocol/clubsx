@@ -39,7 +39,8 @@ const options = {
   config: async () =>
     replaceUrlConfigWithLocal(
       decode(siteconfig),
-      new URL(Astro.request.url),
+      Astro.request,
+      Astro.url,
       site,
     ),
   plugins: [admin, marketplace, ...plugins],

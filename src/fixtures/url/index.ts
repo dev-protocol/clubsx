@@ -29,10 +29,13 @@ const hosts = [
 
 export const replaceUrlConfigWithLocal = (
   config: ClubsConfiguration,
+  req: Request,
   url: URL,
   site?: string,
 ): ClubsConfiguration => {
-  console.log('url', url)
+  console.log('$url$', req)
+  const forwarded = req.headers.get('forwarded') // i.g., for=12.345.67.890;host=xxx.clubs.place;proto=https;sig=0QmV…iOTE=;exp=1696430045
+  console.log('$forwarded$', forwarded)
   const configUrl = new URL(config.url)
   const newUrl =
     configUrl.origin === url.origin
