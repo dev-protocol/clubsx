@@ -1,10 +1,15 @@
 import { createClient } from 'redis'
 import { validate } from './site'
+import { has } from '@vercel/edge-config'
 
 export const config = async (
   site: string | number | undefined,
 ): Promise<string | null> => {
   if ((site ? validate(site.toString()) : false) === false) {
+    return null
+  }
+  if ((await has(site?.toString() ?? '')) === false) {
+    // TODO: This process should be moved to the middleware with the appropriate URL percing.
     return null
   }
 

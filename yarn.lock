@@ -7360,6 +7360,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vercel/edge-config-fs@npm:0.1.0":
+  version: 0.1.0
+  resolution: "@vercel/edge-config-fs@npm:0.1.0"
+  checksum: 10c0/a3bd58d216832eac6280615b7ae6999a13b63d9f4bc2f9b4d7ffd0263903505862937591026b5e4e1abedecaf07a597595f0b7abe6718176be93585ad393ed3f
+  languageName: node
+  linkType: hard
+
+"@vercel/edge-config@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "@vercel/edge-config@npm:1.4.0"
+  dependencies:
+    "@vercel/edge-config-fs": "npm:0.1.0"
+  peerDependencies:
+    "@opentelemetry/api": ^1.7.0
+  peerDependenciesMeta:
+    "@opentelemetry/api":
+      optional: true
+  checksum: 10c0/e37c635654a74ab5924ba44fa69725978379d4ca53a297767f0276214be5de9ed41ea51b4496e6293c1f321b94666e321c9e28c83075d0b95145aaf7c6047110
+  languageName: node
+  linkType: hard
+
 "@vercel/edge@npm:^1.1.1, @vercel/edge@npm:^1.2.1":
   version: 1.2.1
   resolution: "@vercel/edge@npm:1.2.1"
@@ -11573,6 +11594,7 @@ __metadata:
     "@types/three": "npm:0.161.2"
     "@types/uuid": "npm:^10.0.0"
     "@vercel/edge": "npm:^1.1.1"
+    "@vercel/edge-config": "npm:^1.4.0"
     "@vue/composition-api": "npm:1.7.2"
     "@wagmi/core": "npm:^1.4.1"
     "@web3modal/wagmi": "npm:3.5.7"
