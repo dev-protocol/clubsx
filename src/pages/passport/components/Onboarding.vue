@@ -22,8 +22,7 @@ const profile = computed(
 const name = ref<string>()
 const fave = ref<string>()
 const status = ref<string>()
-const animations = ref({ x: 0, y: 0, w: 0 })
-const initialw = ref(0)
+const animations = ref({ x: 0, y: 0 })
 
 const submit = async (): Promise<void> => {
   const signer = connection ? connection().signer.getValue() : undefined
@@ -71,14 +70,11 @@ const submit = async (): Promise<void> => {
 const start = () => {
   if (step.value === 1) {
     const rect = el.value?.getBoundingClientRect()
-    const w = window.innerWidth
-    const x = (w - (rect?.width ?? 0)) / 2
+    const x = (window.innerWidth - (rect?.width ?? 0)) / 2
     const y = (rect?.top ?? 0) + window.scrollY
-    el.value?.showModal()
-    animations.value = { x, y, w }
+    animations.value = { x, y }
     step.value = 2
   } else {
-    el.value?.close()
     step.value = 1
   }
 }
@@ -86,25 +82,23 @@ const start = () => {
 onMounted(() => {
   connection().account.subscribe((acc) => {
     isSelf.value = acc === props.eoa
-    const rect = el.value?.getBoundingClientRect()
-    const w = rect?.width ?? 0
-    initialw.value = w
   })
 })
 </script>
 <template>
-  <dialog
+  <div
     v-if="isSelf"
     ref="container"
     :class="{
-      'relative transition-all duration-1000 p-2': true,
+      'relative transition-all duration-1000 p-2 backdrop-blur-none': true,
       'outline-transparent h-fit': step === 1,
-      'outline-black/5 rounded-xl min-h-screen bg-white z-[99]': step > 1,
+      'outline-black/5 rounded-xl min-h-screen bg-white z-[99] backdrop-blur-md':
+        step > 1,
     }"
     :style="
       step !== 1
-        ? `margin-top: -${animations.y}px; margin-left: -${animations.x}px; margin-right: -${animations.x}px; width: ${animations.w}px;`
-        : `margin-top: 0px; margin-left: 0px; margin-right: 0px; width: ${initialw}px;`
+        ? `margin-top: -${animations.y}px; margin-left: -${animations.x}px; margin-right: -${animations.x}px;`
+        : `margin-top: 0px; margin-left: 0px; margin-right: 0px;`
     "
   >
     <div
@@ -123,7 +117,7 @@ onMounted(() => {
       >
         <span
           :class="{
-            'transition-all duration-500 font-bold': true,
+            'transition-all duration-500 font-bold text-center w-full': true,
             'text-2xl': step === 1,
             '': step > 1,
           }"
@@ -289,5 +283,5 @@ onMounted(() => {
         </a>
       </div>
     </div>
-  </dialog>
+  </div>
 </template>
