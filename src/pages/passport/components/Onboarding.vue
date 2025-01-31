@@ -143,7 +143,7 @@ onMounted(() => {
           '!p-8 gap-4 opacity-100': step === 2,
           '!p-1 gap-2 opacity-30': step !== 2,
         }"
-        @click="step = 2"
+        @click="()=>{if (step < 2) step = 2}"
       >
         <span
           :class="{
@@ -156,6 +156,7 @@ onMounted(() => {
         <input
           type="text"
           v-model="name"
+          :disabled="step !== 2"
           :class="{
             'hs-form-field__input transition-all duration-500 is-fullwidth is-outlined': true,
             'h-auto': step === 2,
@@ -164,7 +165,7 @@ onMounted(() => {
         />
 
         <button
-          @click.stop="step = step === 2 ? 3 : 2"
+          @click.stop="step = 3"
           v-if="step === 2"
           class="hs-button is-fullwidth is-filled"
         >
@@ -178,7 +179,7 @@ onMounted(() => {
           '!p-8 gap-4 opacity-100': step === 3,
           '!p-1 gap-2 opacity-30': step !== 3,
         }"
-        @click="step = 3"
+        @click="()=> {if (step < 3) step = 3}"
       >
         <span
           :class="{
@@ -199,6 +200,7 @@ onMounted(() => {
         <textarea
           type="text"
           v-model="fave"
+          :disabled="step !== 3"
           :class="{
             'hs-form-field__input transition-all duration-500 is-fullwidth is-outlined': true,
             'max-h-52': step === 3,
@@ -207,7 +209,7 @@ onMounted(() => {
         />
 
         <button
-          @click.stop="step = step === 3 ? 4 : 3"
+          @click.stop="step = 4"
           v-if="step === 3"
           class="hs-button is-fullwidth is-filled"
         >
