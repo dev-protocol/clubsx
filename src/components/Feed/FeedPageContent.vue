@@ -5,6 +5,7 @@ import { computed, ref, watch } from 'vue'
 import { set } from 'es-cookie'
 import { CookieKey } from '@constants/cookie'
 import { Mode } from '@constants/feeds'
+import VirtualScroll from './VirtualScroll.vue'
 
 const props = defineProps<{
   feeds: FeedType[]
@@ -19,8 +20,6 @@ const feedsByMode = ref<Record<Mode, FeedType[]>>({
 })
 const switchingTo = ref<Mode>()
 const items = computed(() => feedsByMode.value[mode.value])
-
-console.log('Feed', props.feeds.at(-1))
 
 const changeMode = async (newmode: Mode) => {
   switchingTo.value = newmode
@@ -93,7 +92,10 @@ watch(mode, (mode_) => {
       class="flex flex-col gap-2 flex-grow pb-24 h-full transition"
       :class="{ 'opacity-70': switchingTo && switchingTo !== mode }"
     >
+      <VirtualScroll :items="items" :itemHeight="278" :buffer="10" />
+      <!--
       <Feed v-for="feed in items" :key="feed.id" v-bind="feed" />
+      -->
     </div>
   </div>
 </template>
