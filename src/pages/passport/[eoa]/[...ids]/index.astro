@@ -59,7 +59,7 @@ const redis = await whenNotError(
     db
       .connect()
       .then(always(db))
-      .catch((err) => new Error(err))
+      .catch((err) => new Error(err)),
 )
 
 const getPassportItemWrapper = (payload: string) =>
@@ -70,7 +70,7 @@ const getPassportItemWrapper = (payload: string) =>
 const passportTheme = await whenDefined(_currentTheme, () =>
   getPassportItemWrapper(_currentTheme || '')
     .then((item) => (item instanceof Error ? undefined : item))
-    .catch(() => undefined)
+    .catch(() => undefined),
 )
 
 const clubsUrl = passportTheme?.clubsUrl
@@ -86,17 +86,17 @@ const [
     getSBTsForEOAFromClubsUrlHash(
       clubsUrlHash,
       clubsUrl ? clubsUrl : '',
-      isEOA ? eoa : ''
+      isEOA ? eoa : '',
     )
       .then((sbt) => (sbt instanceof Error ? undefined : sbt))
-      .catch(() => undefined)
+      .catch(() => undefined),
   ),
   whenDefined(_passportSkinBGMs, () =>
     getPassportItemWrapper(_passportSkinBGMs?.payload ?? '')
       .then((item) =>
-        item instanceof Error ? undefined : { ..._passportSkinBGMs, ...item }
+        item instanceof Error ? undefined : { ..._passportSkinBGMs, ...item },
       )
-      .catch(() => undefined)
+      .catch(() => undefined),
   ),
   whenDefined(_passportSkinVideos, async (videos) => {
     if (!videos.length) {
@@ -107,10 +107,10 @@ const [
       videos.map((item) =>
         getPassportItemWrapper(item?.payload ?? '')
           .then((clip) =>
-            clip instanceof Error ? undefined : { ...item, ...clip }
+            clip instanceof Error ? undefined : { ...item, ...clip },
           )
-          .catch(() => undefined)
-      ) ?? []
+          .catch(() => undefined),
+      ) ?? [],
     )
       .then((items) => items.filter((items) => !!items))
       .then((items) => (items.length ? items : undefined))
@@ -135,10 +135,10 @@ const [
                         ...clip,
                         description: item.description,
                         frameColorHex: item.frameColorHex,
-                      }) as PassportClip
+                      }) as PassportClip,
               )
-              .catch(() => undefined)
-      ) ?? []
+              .catch(() => undefined),
+      ) ?? [],
     )
       .then((items) => items.filter((items) => !!items))
       .then((items) => (items.length ? items : undefined))
@@ -163,10 +163,10 @@ const [
                         ...spotlight,
                         description: item.description,
                         frameColorHex: item.frameColorHex,
-                      }) as PassportClip
+                      }) as PassportClip,
               )
-              .catch(() => undefined)
-      ) ?? []
+              .catch(() => undefined),
+      ) ?? [],
     )
       .then((items) => items.filter((items) => !!items))
       .then((items) => (items.length ? items.slice(0, 3) : undefined))
@@ -176,6 +176,10 @@ const [
 const isSnsEmpty =
   profile?.sns && Object.keys(profile.sns).every((k) => !profile.sns?.[k])
 const userFromCookie = Astro.cookies.get(CookieKey.User)
+
+await whenNotError(redis, (client) =>
+  client.quit().catch((err) => new Error(err)),
+)
 ---
 
 <Layout
