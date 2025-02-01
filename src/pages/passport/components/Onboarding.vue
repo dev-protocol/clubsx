@@ -143,7 +143,11 @@ onMounted(() => {
           '!p-8 gap-4 opacity-100': step === 2,
           '!p-1 gap-2 opacity-30': step !== 2,
         }"
-        @click="()=>{if (step < 2) step = 2}"
+        @click="
+          () => {
+            if (step < 2) step = 2
+          }
+        "
       >
         <span
           :class="{
@@ -179,7 +183,11 @@ onMounted(() => {
           '!p-8 gap-4 opacity-100': step === 3,
           '!p-1 gap-2 opacity-30': step !== 3,
         }"
-        @click="()=> {if (step < 3) step = 3}"
+        @click="
+          () => {
+            if (step < 3) step = 3
+          }
+        "
       >
         <span
           :class="{
