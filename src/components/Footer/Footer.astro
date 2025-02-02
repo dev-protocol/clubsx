@@ -27,7 +27,7 @@ const payments = [Visa, Master, Jcb, Amex]
 ---
 
 <footer>
-  <div class="container mx-auto py-12 px-4">
+  <div class="container mx-auto py-12 px-4 grid gap-6">
     <nav>
       <ul class="flex flex-wrap gap-6 lg:gap-12 items-center">
         <li>
@@ -56,21 +56,24 @@ const payments = [Visa, Master, Jcb, Amex]
           >
         </li>
         <slot name="nav-item" />
-        <li class="flex grow justify-end w-full lg:w-fit">
-          <ul class="flex flex-wrap gap-1 items-center">
-            {
-              payments.map((pay) => (
-                <li>
-                  <img
-                    src={pay.src}
-                    class="w-12 h-8 rounded bg-black/5 object-fit"
-                  />
-                </li>
-              ))
-            }
-          </ul>
-        </li>
       </ul>
     </nav>
+    <span class="flex flex-wrap gap-6 lg:gap-12 items-center">
+      <p class="text-sm">Copyright © FRAME00, Inc. All Rights Reserved.</p>
+      <li class="flex grow justify-end w-full lg:w-fit">
+        <ul class="flex flex-wrap gap-1 items-center">
+          {
+            payments.map((pay) => (
+              <li>
+                <img
+                  src={pay.src}
+                  class="w-12 h-8 rounded bg-black/5 object-fit"
+                />
+              </li>
+            ))
+          }
+        </ul>
+      </li>
+    </span>
   </div>
 </footer>
