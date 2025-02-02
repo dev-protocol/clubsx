@@ -3,6 +3,7 @@ import type { PassportItem } from '@pages/passport/types'
 import VideoElement from './VideoElement.vue'
 import playIconInnerHTML from '../assets/play-icon.svg?raw'
 import { MediaEmbed } from '@devprotocol/clubs-plugin-passports/vue'
+import type { Clip } from '@pages/api/profile'
 
 type Props = {
   item?: PassportItem
@@ -12,7 +13,15 @@ const { item } = Astro.props
 ---
 
 {
-  item ? (
+  item?.link && (
+    <MediaEmbed
+      src={item.link}
+      class="w-full h-full !aspect-auto object-cover rounded-xl"
+    />
+  )
+}
+{
+  item && item.link === undefined && item.itemAssetType && (
     <span class="relative">
       {item.itemAssetType === 'short-video' ||
       item.itemAssetType === 'short-video-link' ? (
@@ -38,14 +47,6 @@ const { item } = Astro.props
       ) : (
         <span />
       )}
-      {item.link && (
-        <MediaEmbed
-          src={item.link}
-          class="w-full h-full !aspect-auto object-cover rounded-xl"
-        />
-      )}
     </span>
-  ) : (
-    ''
   )
 }

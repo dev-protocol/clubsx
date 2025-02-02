@@ -24,6 +24,7 @@ import MediaSDKs from '@components/Passports/MediaSDKs.astro'
 import { DefaultSkin } from '@constants/passports'
 import { passportClass } from '@fixtures/ui/passport'
 import ItemView from './components/ItemView.astro'
+import { number } from 'astro:schema'
 
 const { eoa, passportId, item: itemPath } = Astro.params
 
@@ -67,7 +68,7 @@ const firstItem = whenDefined(
   (_skin) => _skin.spotlight?.at(0) ?? _skin.clips?.at(0),
 )
 const passportLinkItem = whenNotError(givenItem, (item) =>
-  item?.link ? item : new Error(),
+  item?.link ? (item as Clip) : new Error(),
 )
 
 const data = {
@@ -79,6 +80,7 @@ const data = {
   profileDescription:
     mode === 'skin' && skin ? markdownToHtml(skin.description) : undefined,
   passportSkinTheme,
+  numberItems: (skin?.clips?.length ?? 0) + (skin?.spotlight?.length ?? 0),
   firstItem,
   url: new URL(Astro.request.url),
   isFrameDark:
@@ -153,16 +155,25 @@ const data = {
     }
     {
       data.mode === 'skin' && (
-        <main class="h-screen w-screen p-28 grid grid-cols-[10rem_1fr] grid-rows-2 items-center gap-6 relative">
-          {false && data.firstItem && (
-            <span class="aspect-[1/1.391] absolute">
-              <ItemView item={data.firstItem} />
-            </span>
+        <main class="h-screen w-screen p-28 grid grid-cols-[10rem_5fr_4fr] grid-rows-2 items-center gap-6 relative">
+          {data.firstItem && (
+            <div class="relative aspect-[1/1.391] col-start-3 row-start-1 row-span-2">
+              <div class="w-full h-full border-x border-t border-surface-200 p-2 rounded-xl bg-white rotate-[2deg] shadow-xl">
+                <ItemView item={data.firstItem} />
+              </div>
+              <span class="absolute font-bold text-6xl -right-5 bottom-0">
+                + {data.numberItems}
+              </span>
+            </div>
           )}
           <span
-            class="relative col-start-1 col-span-2"
+            class="relative col-start-1 col-span-2 flex flex-col gap-2"
             class:list={passportClass('username-container')}
           >
+            <span class="flex items-center gap-2 font-bold italic text-xl">
+              <ClubsLogo class="h-4" />
+              Passport
+            </span>
             <span
               class="inline-block px-6 py-3 rounded-xl bg-surface-200"
               class:list={passportClass('username-content')}
@@ -194,9 +205,6 @@ const data = {
                 html={true}
               />
             </div>
-          </span>
-          <span class="absolute bottom-0 left-0">
-            <ClubsLogo />
           </span>
         </main>
       )
