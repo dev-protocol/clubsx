@@ -21,6 +21,11 @@ const feedsByMode = ref<Record<Mode, FeedType[]>>({
 const switchingTo = ref<Mode>()
 const items = computed(() => feedsByMode.value[mode.value])
 
+// itemsのtagsがugc以外をfilterして返す
+const ugcItems = computed(() =>
+  feedsByMode.value[mode.value].filter((item) => item.tag === 'ugc')
+)
+
 const changeMode = async (newmode: Mode) => {
   switchingTo.value = newmode
   if (feedsByMode.value[newmode].length > 0) {
@@ -89,13 +94,10 @@ watch(mode, (mode_) => {
   </nav>
   <div class="flex flex-col p-2 h-full rounded-xl md:border boder-black/20">
     <div
-      class="flex flex-col gap-2 flex-grow pb-24 h-full transition"
+      class="flex flex-col gap-2 flex-grow h-full transition"
       :class="{ 'opacity-70': switchingTo && switchingTo !== mode }"
     >
-      <VirtualScroll :items="items" :itemHeight="278" :buffer="10" />
-      <!--
-      <Feed v-for="feed in items" :key="feed.id" v-bind="feed" />
-      -->
+      <VirtualScroll :items="ugcItems" :itemHeight="195" :buffer="1" />
     </div>
   </div>
 </template>

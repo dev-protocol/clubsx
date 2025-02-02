@@ -6,8 +6,8 @@ import Feed from '@components/Feed/Feed.vue'
 // プロパティの型定義
 interface Props<T extends FeedType> {
   items: T[]
-  itemHeight: number
-  buffer: number
+  itemHeight: number // アイテムの高さ
+  buffer: number // 表示範囲外のアイテム数
 }
 
 // プロパティの宣言
@@ -107,8 +107,9 @@ watch([scrollTop, () => props.items], () => {
 <style scoped>
 .virtual-scroll-container {
   overflow-y: auto;
-  height: 600px;
+  height: calc(100vh - 56px - 40px);
   position: relative;
+  scrollbar-width: none;
 }
 .spacer {
   width: 100%;
