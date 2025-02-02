@@ -23,7 +23,7 @@ const items = computed(() => feedsByMode.value[mode.value])
 
 // itemsのtagsがugc以外をfilterして返す
 const ugcItems = computed(() =>
-  feedsByMode.value[mode.value].filter((item) => item.tag === 'ugc')
+  feedsByMode.value[mode.value].filter((item) => item.tag === 'ugc'),
 )
 
 const changeMode = async (newmode: Mode) => {
