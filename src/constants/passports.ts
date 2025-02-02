@@ -1,4 +1,4 @@
-import type { PassportItem } from './types'
+import type { PassportItem } from '@pages/passport/types'
 
 export const DefaultSkin: PassportItem = {
   itemAssetType: 'stylesheet-link',
