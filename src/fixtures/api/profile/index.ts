@@ -3,8 +3,13 @@ import { createClient } from 'redis'
 import type { Profile } from '@pages/api/profile'
 import { getDefaultProfile } from './utils'
 import { mergeDeepRight } from 'ramda'
+import { ZeroAddress } from 'ethers'
+import { forSkinPreview } from '@constants/profiles'
 
 export const getProfile = async ({ id }: { id: string }) => {
+  if (id === ZeroAddress) {
+    return mergeDeepRight(await getDefaultProfile({ id }), forSkinPreview)
+  }
   const client = createClient({
     url: process.env.REDIS_URL,
     username: process.env.REDIS_USERNAME ?? '',

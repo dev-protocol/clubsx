@@ -194,12 +194,12 @@ const userFromCookie = Astro.cookies.get(CookieKey.User)
           class:list={passportClass('avatar-container')}
         >
           <span
-            class="flex flex-col items-center p-1.5 lg:p-2 rounded-full bg-surface-300"
+            class="flex flex-col items-center p-1.5 lg:p-2 rounded-full h-full bg-surface-300"
             class:list={passportClass('avatar-content')}
           >
             <img
               src={profile.avatar}
-              class="rounded-full object-cover w-full aspect-square bg-lightgray bg-cover bg-center bg-no-repeat"
+              class="rounded-full object-cover h-full aspect-square bg-lightgray bg-cover bg-center bg-no-repeat"
               class:list={passportClass('avatar')}
               alt="Profile"
             />
