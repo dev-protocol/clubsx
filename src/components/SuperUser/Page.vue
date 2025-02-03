@@ -291,6 +291,71 @@ const addPassportdOfferingInConfig = async () => {
   apiCalling.value = { progress: false, result: res.result, error: res.error }
 }
 
+const syncPassportdOfferingOnChain = async () => {
+  if (!providerObj || !signerObj) {
+    return
+  }
+  apiCalling.value = { progress: true }
+
+  const currentConfig = whenDefined(
+    (await whenDefined(club.value, fetchClubs))?.content,
+    decode,
+  )
+
+  const offerings: PassportOffering[] =
+    (currentConfig?.offerings?.filter(
+      (i) => i.managedBy === 'devprotocol:clubs:plugin:passports',
+    ) as UndefinedOr<PassportOffering[]>) ?? []
+
+  const isDescriptorSet = await setTokenURIDescriptor(
+    signerObj,
+    chainId,
+    offerings,
+    providerObj,
+    currentConfig,
+  )
+  if (!isDescriptorSet || isDescriptorSet instanceof Error) {
+    apiCalling.value = {
+      progress: false,
+      result: isDescriptorSet,
+      error: 'Failed in setting setTokenURIDescriptor for item',
+    }
+
+    return
+  }
+
+  apiCalling.value = {
+    progress: true,
+  }
+
+  const isImageSet = await setImage(
+    signerObj,
+    chainId,
+    passportDiscount,
+    offerings,
+    providerObj,
+    currentConfig,
+  )
+  if (!isImageSet || isImageSet instanceof Error) {
+    apiCalling.value = {
+      progress: false,
+      result: isImageSet,
+      error: 'Failed in setting setImage for item',
+    }
+
+    return
+  }
+
+  apiCalling.value = {
+    result: {
+      isImageSet,
+      isDescriptorSet,
+    },
+    progress: false,
+    error: '',
+  }
+}
+
 const addPassportdDiscountInConfig = async () => {
   const { signature: sig, message: msg } = await sign()
   apiCalling.value = { progress: true }
@@ -928,6 +993,18 @@ const updatePassportOfferingOnChain = async () => {
                 @click="addPassportdDiscountInConfig"
               >
                 Add in passport plugin options
+              </button>
+            </p>
+          </dd>
+
+          <dt class="font-bold">Re-sync Passport Offering on-chain</dt>
+          <dd>
+            <p>
+              <button
+                class="hs-button is-small is-filled"
+                @click="syncPassportdOfferingOnChain"
+              >
+                Sync
               </button>
             </p>
           </dd>

@@ -105,7 +105,7 @@ export const changePassportOfferingBeneficiary =
 export const setTokenURIDescriptor = async (
   signer: UndefinedOr<Signer>,
   chainId: UndefinedOr<number>,
-  passportItem: RefPassportOffering,
+  passportItem: RefPassportOffering | PassportOffering[],
   provider: UndefinedOr<ContractRunner>,
   currentConfig: UndefinedOr<ClubsConfiguration>,
 ) => {
@@ -125,13 +125,19 @@ export const setTokenURIDescriptor = async (
         sTokensManager,
         currentConfig,
         customDescriptorAddress,
-        passportItem.value.payload,
+        Array.isArray(passportItem)
+          ? passportItem.map((x) => x.payload)
+          : passportItem.value.payload,
       ],
-      ([cont, conf, descriptorAddress, payload]) =>
+      ([cont, conf, descriptorAddress, payloads]) =>
         cont
-          .setTokenURIDescriptor(conf.propertyAddress, descriptorAddress, [
-            bytes32Hex(payload),
-          ])
+          .setTokenURIDescriptor(
+            conf.propertyAddress,
+            descriptorAddress,
+            Array.isArray(payloads)
+              ? payloads.map(bytes32Hex)
+              : [bytes32Hex(payloads)],
+          )
           .then((res) => res.wait())
           .then((res) => res?.status)
           .then((res) => (res ? true : false))
@@ -147,7 +153,7 @@ export const setImage = async (
   signer: UndefinedOr<Signer>,
   chainId: UndefinedOr<number>,
   passportDiscount: RefPassportDiscount,
-  passportOffering: RefPassportOffering,
+  passportOffering: RefPassportOffering | PassportOffering[],
   provider: UndefinedOr<ContractRunner>,
   currentConfig: UndefinedOr<ClubsConfiguration>,
 ) => {
@@ -160,23 +166,25 @@ export const setImage = async (
       [
         callSimpleCollections,
         currentConfig,
-        passportOffering.value.payload,
+        Array.isArray(passportOffering)
+          ? passportOffering
+          : [passportOffering.value],
         signer,
       ],
-      ([func, conf, payload, _signer]) =>
+      ([func, conf, offerings, _signer]) =>
         func(_signer, 'setImages', [
           conf.propertyAddress,
-          [
+          offerings.map((off) =>
             membershipToStruct(
               {
-                ...passportOffering.value,
-                currency: 'USDC',
-                price: passportOffering.value.price, // if discount is available use it, else use the price.
+                ...off,
+                currency: off.price ? 'USDC' : undefined,
+                price: off.price, // if discount is available use it, else use the price.
               } as Membership,
               chainId as number,
             ),
-          ],
-          [bytes32Hex(payload)],
+          ),
+          offerings.map((x) => bytes32Hex(x.payload!)),
         ])
           .then((res) => res.wait())
           .then((res) => res?.status)
