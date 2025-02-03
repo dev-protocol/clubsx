@@ -16,7 +16,7 @@ import { ClubsLogo } from '@devprotocol/clubs-core/layouts'
 import Description from './components/Description.vue'
 import VideoElement from './components/VideoElement.vue'
 import type { Clip } from '@pages/api/profile'
-import { markdownToHtml, ProseTextInherit } from '@devprotocol/clubs-core'
+import removeMd from 'remove-markdown'
 
 import playIconInnerHTML from './assets/play-icon.svg?raw'
 import { MediaEmbed } from '@devprotocol/clubs-plugin-passports/vue'
@@ -78,7 +78,7 @@ const data = {
   passportItem: isNotError(passportItemData) ? passportItemData : undefined,
   passportLinkItem: isNotError(passportLinkItem) ? passportLinkItem : undefined,
   profileDescription:
-    mode === 'skin' && skin ? markdownToHtml(skin.description) : undefined,
+    mode === 'skin' && skin ? removeMd(skin.description ?? '') : undefined,
   passportSkinTheme,
   numberItems: (skin?.clips?.length ?? 0) + (skin?.spotlight?.length ?? 0),
   firstItem,
@@ -155,29 +155,46 @@ const data = {
     }
     {
       data.mode === 'skin' && (
-        <main class="h-screen w-screen p-28 grid grid-cols-[10rem_5fr_4fr] grid-rows-2 items-center gap-6 relative">
+        <main class="h-screen w-screen p-14 grid grid-cols-[10rem_7fr_4fr] grid-rows-2 items-center gap-6 relative">
           {data.firstItem && (
             <div class="relative aspect-[1/1.391] col-start-3 row-start-1 row-span-2">
               <div class="w-full h-full border-x border-t border-surface-200 p-2 rounded-xl bg-white rotate-[2deg] shadow-xl">
                 <ItemView item={data.firstItem} />
               </div>
-              <span class="absolute font-bold text-6xl -right-5 bottom-0">
-                + {data.numberItems}
+              <span class="absolute -right-5 -bottom-5 px-3 py-1.5 rounded-full bg-surface-200 flex items-center gap-2 border border-black/10">
+<svg class="size-6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="512" height="512">
+<g>
+	<g>
+		<g>
+			<g>
+				<path style="fill:none;stroke:#000000;stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" d="&#10;&#9;&#9;&#9;&#9;&#9;M302.991,492h-180.14c-33.137,0-60-26.863-60-60V161.203c0-33.137,26.863-60,60-60h180.14c33.137,0,60,26.863,60,60V432&#10;&#9;&#9;&#9;&#9;&#9;C362.991,465.137,336.128,492,302.991,492z"/>
+			</g>
+			<path style="fill:none;stroke:#000000;stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" d="&#10;&#9;&#9;&#9;&#9;M364.234,410.797h24.915c33.137,0,60-26.863,60-60v-0.053"/>
+			<path style="fill:none;stroke:#000000;stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" d="&#10;&#9;&#9;&#9;&#9;M449.149,250.745V80c0-33.137-26.863-60-60-60h-180.14c-33.137,0-60,26.863-60,60v19.511"/>
+		</g>
+	</g>
+	<path style="fill:none;stroke:#000000;stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" d="&#10;&#9;&#9;M288.483,295.489l2.035,1.113l-2.035,1.113c-31.425,17.187-57.262,43.024-74.449,74.449l-1.113,2.035l-1.113-2.035&#10;&#9;&#9;c-17.187-31.425-43.024-57.262-74.449-74.449l-2.035-1.113l2.035-1.113c31.425-17.187,57.262-43.024,74.449-74.449l1.113-2.035&#10;&#9;&#9;l1.113,2.035C231.221,252.464,257.058,278.302,288.483,295.489z"/>
+</g>
+</svg>
+<span class="font-bold text-4xl ">{data.numberItems} items</span>
               </span>
             </div>
           )}
           <span
-            class="relative col-start-1 col-span-2 flex flex-col gap-2"
+            class="relative col-start-1 col-span-2 flex flex-col items-start gap-2"
             class:list={passportClass('username-container')}
           >
-            <span class="flex items-center gap-2 font-bold italic text-xl">
+            <span class="flex items-center gap-2 font-bold italic text-xl px-3 py-1.5 rounded-xl bg-surface-200">
+              Check my
               <ClubsLogo class="h-4" />
               Passport
             </span>
+
             <span
-              class="inline-block px-6 py-3 rounded-xl bg-surface-200"
+              class="flex items-center gap-4 px-6 py-3 rounded-xl bg-surface-200"
               class:list={passportClass('username-content')}
             >
+              <span class="font-bold text-2xl text-violet-400">Name</span>
               <span
                 class="text-4xl font-bold text-ellipsis overflow-hidden line-clamp-1"
                 class:list={passportClass('username')}
@@ -195,14 +212,17 @@ const data = {
             class:list={[passportClass('description-container')]}
           >
             <div
-              class="p-4"
+              class="p-4 rounded-xl"
               class:list={[passportClass('description-content')]}
             >
+              <span class="inline-block font-bold text-2xl text-violet-400 mb-4">
+                Profile
+              </span>
               <Description
                 client:load
-                text={data.profileDescription ?? ''}
-                class="text-2xl"
-                html={true}
+                text={data.profileDescription??''}
+                class="!text-2xl !font-bold !items-start h-[8lh] line-clamp-[8]"
+                autofit={false}
               />
             </div>
           </span>
