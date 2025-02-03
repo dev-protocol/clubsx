@@ -2,12 +2,9 @@
 import { isAddress } from 'ethers'
 import type { Profile } from '@pages/api/profile'
 import { getProfile } from '@fixtures/api/profile'
-import { whenDefined } from '@devprotocol/util-ts'
+import { whenDefined, whenNotError } from '@devprotocol/util-ts'
 import { passportClass } from '@fixtures/ui/passport'
-import {
-  getPassportItemForPayload,
-  getSBTsForEOAFromClubsUrlHash,
-} from '@fixtures/api/passportItem'
+import { getSBTsForEOAFromClubsUrlHash } from '@fixtures/api/passportItem'
 import { markdownToHtml, ProseTextInherit } from '@devprotocol/clubs-core'
 import RedHeart from '@assets/emoji-red-heart.png'
 
@@ -22,6 +19,9 @@ import MediaSDKs from '@components/Passports/MediaSDKs.astro'
 import Onboarding from '../../components/Onboarding.vue'
 import Banner from '@pages/passport/components/Banner.astro'
 import { CookieKey } from '@constants/cookie'
+import { createClient } from 'redis'
+import { always } from 'ramda'
+import { getPassportItemFromPayload } from '@devprotocol/clubs-plugin-passports'
 
 const { eoa, ids } = Astro.params
 const isEOA = isAddress(eoa)
@@ -49,10 +49,26 @@ const _currentLikes = id
 
 const _currentTheme = skin?.theme
 
+const redis = await whenNotError(
+  createClient({
+    url: import.meta.env.REDIS_URL,
+    username: import.meta.env.REDIS_USERNAME ?? '',
+    password: import.meta.env.REDIS_PASSWORD ?? '',
+  }),
+  (db) =>
+    db
+      .connect()
+      .then(always(db))
+      .catch((err) => new Error(err)),
+)
+
+const getPassportItemWrapper = (payload: string) =>
+  redis instanceof Error
+    ? getPassportItemFromPayload({ sTokenPayload: payload })
+    : getPassportItemFromPayload({ sTokenPayload: payload, client: redis })
+
 const passportTheme = await whenDefined(_currentTheme, () =>
-  getPassportItemForPayload({
-    sTokenPayload: _currentTheme ?? '',
-  })
+  getPassportItemWrapper(_currentTheme || '')
     .then((item) => (item instanceof Error ? undefined : item))
     .catch(() => undefined),
 )
@@ -76,9 +92,7 @@ const [
       .catch(() => undefined),
   ),
   whenDefined(_passportSkinBGMs, () =>
-    getPassportItemForPayload({
-      sTokenPayload: _passportSkinBGMs?.payload ?? '',
-    })
+    getPassportItemWrapper(_passportSkinBGMs?.payload ?? '')
       .then((item) =>
         item instanceof Error ? undefined : { ..._passportSkinBGMs, ...item },
       )
@@ -91,7 +105,7 @@ const [
 
     return Promise.all(
       videos.map((item) =>
-        getPassportItemForPayload({ sTokenPayload: item?.payload ?? '' })
+        getPassportItemWrapper(item?.payload ?? '')
           .then((clip) =>
             clip instanceof Error ? undefined : { ...item, ...clip },
           )
@@ -111,7 +125,7 @@ const [
       clips.map((item) =>
         item.link
           ? item
-          : getPassportItemForPayload({ sTokenPayload: item.payload ?? '' })
+          : getPassportItemWrapper(item.payload ?? '')
               .then(
                 (clip) =>
                   (clip instanceof Error
@@ -139,7 +153,7 @@ const [
       spotLights.map((item) =>
         item.link
           ? item
-          : getPassportItemForPayload({ sTokenPayload: item.payload ?? '' })
+          : getPassportItemWrapper(item.payload ?? '')
               .then(
                 (spotlight) =>
                   (spotlight instanceof Error
@@ -162,6 +176,10 @@ const [
 const isSnsEmpty =
   profile?.sns && Object.keys(profile.sns).every((k) => !profile.sns?.[k])
 const userFromCookie = Astro.cookies.get(CookieKey.User)
+
+await whenNotError(redis, (client) =>
+  client.quit().catch((err) => new Error(err)),
+)
 ---
 
 <Layout
