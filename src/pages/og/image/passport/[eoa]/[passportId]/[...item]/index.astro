@@ -14,13 +14,13 @@ import '@devprotocol/clubs-core/styles'
 import { isDark } from '@fixtures/color'
 import { ClubsLogo } from '@devprotocol/clubs-core/layouts'
 import Description from './components/Description.vue'
-import VideoElement from './components/VideoElement.vue'
 import type { Clip } from '@pages/api/profile'
-import { markdownToHtml, ProseTextInherit } from '@devprotocol/clubs-core'
-
-import playIconInnerHTML from './assets/play-icon.svg?raw'
-import { MediaEmbed } from '@devprotocol/clubs-plugin-passports/vue'
+import removeMd from 'remove-markdown'
 import MediaSDKs from '@components/Passports/MediaSDKs.astro'
+import { DefaultSkin } from '@constants/passports'
+import { passportClass } from '@fixtures/ui/passport'
+import ItemView from './components/ItemView.astro'
+import Cards from '@assets/clubs/cards.svg'
 
 const { eoa, passportId, item: itemPath } = Astro.params
 
@@ -29,7 +29,7 @@ const skin = whenDefinedAll([passportId, profile], ([id, prof]) =>
   prof.skins?.find((skin) => (skin as any).id === id),
 )
 const itemFromPath = whenDefined(itemPath, hashToItem)
-const item = whenDefinedAll([skin, itemFromPath], ([_skin, _item]) =>
+const givenItem = whenDefinedAll([skin, itemFromPath], ([_skin, _item]) =>
   whenNotError(_item, ({ type, id }) =>
     _skin[type] instanceof Array
       ? (_skin[type].find((x: Clip) => x.id === id) as UndefinedOr<Clip>)
@@ -37,96 +37,93 @@ const item = whenDefinedAll([skin, itemFromPath], ([_skin, _item]) =>
   ),
 )
 const mode: 'item' | 'skin' = itemPath ? 'item' : 'skin'
-const itemPayload = whenDefined(item, (_item) =>
+const givenItemPayload = whenDefined(givenItem, (_item) =>
   whenNotError(_item, (__item) =>
     typeof __item === 'string' ? __item : __item.payload,
   ),
 )
-const [passportItemData, userProfile] = await Promise.all([
-  whenDefined(itemPayload, (_payload) =>
+const [passportItemData, userProfile, passportSkinTheme] = await Promise.all([
+  whenDefined(givenItemPayload, (_payload) =>
     whenNotError(_payload, (__payload) =>
       getPassportItemForPayload({ sTokenPayload: __payload }),
     ),
   ),
   whenDefined(eoa, (id) => getProfile({ id })),
+  mode === 'skin'
+    ? (whenDefinedAll([skin?.theme], ([payload]) =>
+        getPassportItemForPayload({
+          sTokenPayload: payload ?? '',
+        })
+          .then((item) => (item instanceof Error ? DefaultSkin : item))
+          .catch(() => DefaultSkin),
+      ) ?? DefaultSkin)
+    : undefined,
 ])
-const passportLinkItem = whenNotError(item, (item) =>
-  item?.link ? item : new Error(),
+const firstItem = whenDefined(
+  skin,
+  (_skin) => _skin.spotlight?.at(0) ?? _skin.clips?.at(0),
+)
+const passportLinkItem = whenNotError(givenItem, (item) =>
+  item?.link ? (item as Clip) : new Error(),
 )
 
 const data = {
   user: userProfile,
   mode,
-  item: isNotError(item) ? item : undefined,
+  item: isNotError(givenItem) ? givenItem : undefined,
   passportItem: isNotError(passportItemData) ? passportItemData : undefined,
   passportLinkItem: isNotError(passportLinkItem) ? passportLinkItem : undefined,
   profileDescription:
-    mode === 'skin' && profile
-      ? markdownToHtml(profile.description)
-      : undefined,
+    mode === 'skin' && skin ? removeMd(skin.description ?? '') : undefined,
+  passportSkinTheme,
+  numberItems: (skin?.clips?.length ?? 0) + (skin?.spotlight?.length ?? 0),
+  firstItem,
   url: new URL(Astro.request.url),
   isFrameDark:
-    isNotError(item) && typeof item === 'object' && item.frameColorHex
-      ? isDark(item.frameColorHex)
+    isNotError(givenItem) &&
+    typeof givenItem === 'object' &&
+    givenItem.frameColorHex
+      ? isDark(givenItem.frameColorHex)
       : false,
 }
 ---
 
-<html lang="en" hashi-theme="light">
+<html lang="en" hashi-theme="light" class:list={[passportClass()]}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
+    {
+      mode === 'skin' &&
+        data.passportSkinTheme?.itemAssetType === 'stylesheet-link' && (
+          <link
+            rel="stylesheet"
+            href={`${data.passportSkinTheme.itemAssetValue}`}
+          />
+        )
+    }
+
+    {
+      mode === 'skin' && data.passportSkinTheme?.itemAssetType === 'css' && (
+        <style set:html={data.passportSkinTheme?.itemAssetValue ?? ''} />
+      )
+    }
   </head>
 
   <body
     style={typeof data.item === 'object' && data.item.frameColorHex
       ? `background-color: ${data.item.frameColorHex}`
       : undefined}
-    class:list={{
-      'text-white': data.isFrameDark,
-      'text-black': !data.isFrameDark,
-    }}
+    class:list={[
+      {
+        'text-white': data.isFrameDark,
+        'text-black': !data.isFrameDark,
+      },
+      passportClass('body'),
+    ]}
     >{
       data.mode === 'item' && (
         <main class="h-screen w-screen p-6 grid grid-cols-2 gap-6">
-          <span class="relative">
-            {data?.passportItem?.itemAssetType === 'short-video' ||
-            data?.passportItem?.itemAssetType === 'short-video-link' ? (
-              <VideoElement
-                client:load
-                poster={''}
-                src={data.passportItem.itemAssetValue || ''}
-              />
-            ) : (
-              data.passportItem && (
-                <img
-                  id="og-image-element"
-                  src={data.passportItem?.itemAssetValue}
-                  class="w-full h-full object-cover rounded-xl"
-                />
-              )
-            )}
-            {data?.passportItem?.itemAssetType === 'short-video' ||
-            data?.passportItem?.itemAssetType === 'short-video-link' ||
-            data?.passportItem?.itemAssetType === 'image-playable' ||
-            data?.passportItem?.itemAssetType === 'image-playable-link' ? (
-              <div class="absolute inset-0 m-auto size-1/2 text-white flex items-center justify-center opacity-60">
-                <Fragment
-                  set:html={playIconInnerHTML}
-                  className="w-full h-full"
-                  name="video-play"
-                />
-              </div>
-            ) : (
-              data.passportItem && <span />
-            )}
-            {data?.passportLinkItem?.link && (
-              <MediaEmbed
-                src={data?.passportLinkItem?.link}
-                class="w-full h-full !aspect-auto object-cover rounded-xl"
-              />
-            )}
-          </span>
+          <ItemView item={data.passportItem ?? data.passportLinkItem} />
 
           <span class="grid grid-cols-1 grid-rows-[1fr_auto]">
             {typeof data.item === 'object' && data.item.description ? (
@@ -154,34 +151,65 @@ const data = {
     }
     {
       data.mode === 'skin' && (
-        <main class="h-screen w-screen p-6 grid grid-cols-2 gap-6">
-          <span class="grid grid-cols-1 grid-rows-[1fr_auto]">
-            <Description
-              client:load
-              text={data.profileDescription ?? ''}
-              html={true}
-            />
-            <div>
-              <p class="flex items-center gap-2">
-                <span class="font-bold text-2xl grow">
-                  {data.user?.username}
+        <main class="h-screen w-screen p-14 grid grid-cols-[10rem_7fr_4fr] grid-rows-[2fr_3fr] items-center gap-6 relative">
+          {data.firstItem && (
+            <div class="relative aspect-[1/1.391] col-start-3 row-start-1 row-span-2">
+              <div class="w-full h-full border-x border-t border-surface-200 p-2 rounded-xl bg-white rotate-[2deg] shadow-xl">
+                <ItemView item={data.firstItem} />
+              </div>
+              <span class="absolute -right-5 -bottom-5 px-3 py-1.5 rounded-full bg-surface-200 flex items-center gap-2 border border-black/10">
+                <img src={Cards.src} class="size-6" />
+                <span class="font-bold text-4xl ">
+                  {data.numberItems} items
                 </span>
-                <img
-                  src={data.user?.avatar}
-                  class="rounded-full object-cover h-[43px] aspect-square"
-                />
-
-                <ClubsLogo />
-              </p>
+              </span>
             </div>
-          </span>
+          )}
+          <span
+            class="relative col-start-1 col-span-2 flex flex-col items-start gap-2"
+            class:list={passportClass('username-container')}
+          >
+            <span class="flex items-center gap-2 font-bold italic text-xl px-3 py-1.5 rounded-xl bg-surface-200">
+              Check my
+              <ClubsLogo class="h-4" />
+              Passport
+            </span>
 
-          <span>
-            <iframe
-              title=""
-              class="rounded-xl border border-8 border-black/10 size-[200%] scale-[0.5] origin-[0_0]"
-              src={`/passport/${eoa}/${passportId}`}
-            />
+            <span
+              class="flex items-center gap-4 px-6 py-3 rounded-xl bg-surface-200"
+              class:list={passportClass('username-content')}
+            >
+              <span class="font-bold text-2xl text-violet-400">Name</span>
+              <span
+                class="text-4xl font-bold text-ellipsis overflow-hidden line-clamp-1"
+                class:list={passportClass('username')}
+              >
+                {data.user?.username}
+              </span>
+            </span>
+          </span>
+          <img
+            src={data.user?.avatar}
+            class="rounded-full object-cover col-start-1 row-start-2 aspect-square"
+          />
+          <span
+            class="col-start-2 row-start-2"
+            class:list={[passportClass('description-container')]}
+          >
+            <div
+              class="p-4 rounded-xl"
+              class:list={[passportClass('description-content')]}
+            >
+              <span class="inline-block font-bold text-2xl text-violet-400 mb-4">
+                Profile
+              </span>
+              <Description
+                client:load
+                text={data.profileDescription ?? ''}
+                class="!text-2xl !font-bold !items-start h-[8lh] line-clamp-[8]"
+                autofit={false}
+              />
+            </div>
           </span>
         </main>
       )
@@ -197,8 +225,6 @@ const data = {
         profile,
         skin,
         itemFromPath,
-        item,
-        itemPayload,
         passportItemData,
       }}
     />

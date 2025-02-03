@@ -16,6 +16,7 @@ import { getPassportOgImages } from '@fixtures/url/passports'
 import Sessions from '@components/Global/Sessions.astro'
 import Analytics from '@components/Analytics/Analytics.astro'
 import type { PassportItem } from './types'
+import { DefaultSkin } from '@constants/passports'
 
 type Props = {
   eoa?: string
@@ -45,18 +46,14 @@ const {
   applySkin = false,
 } = Astro.props as Props
 
-const defaultSkin: PassportItem = {
-  itemAssetType: 'stylesheet-link',
-  itemAssetValue: 'https://dev-protocol.github.io/styles/skins/default.css',
-}
 const passportSkinTheme =
   (await whenDefined(sTokenPayload, (payload: string) =>
     getPassportItemForPayload({
       sTokenPayload: payload ?? '',
     })
-      .then((item) => (item instanceof Error ? defaultSkin : item))
-      .catch(() => defaultSkin),
-  )) ?? defaultSkin
+      .then((item) => (item instanceof Error ? DefaultSkin : item))
+      .catch(() => DefaultSkin),
+  )) ?? DefaultSkin
 
 const requestURL = new URL(Astro.url)
 const { default: image, x: imageX } = getPassportOgImages({
