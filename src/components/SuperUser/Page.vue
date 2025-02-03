@@ -105,6 +105,7 @@ const onTogglePayments = () => {
       ? props.Prices[passportItem.value.itemAssetType ?? 'image'].usdc
       : undefined,
     currency: turnOn ? 'USDC' : undefined,
+    fee: undefined,
   }
 }
 
