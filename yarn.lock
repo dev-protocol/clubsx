@@ -1473,9 +1473,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@devprotocol/clubs-plugin-passports@npm:0.2.2":
-  version: 0.2.2
-  resolution: "@devprotocol/clubs-plugin-passports@npm:0.2.2"
+"@devprotocol/clubs-plugin-passports@npm:0.2.3":
+  version: 0.2.3
+  resolution: "@devprotocol/clubs-plugin-passports@npm:0.2.3"
   dependencies:
     "@devprotocol/dev-kit": "npm:8.7.0"
     "@devprotocol/util-ts": "npm:4.0.0"
@@ -1489,7 +1489,7 @@ __metadata:
     "@devprotocol/clubs-core": ^3.18.0
     "@devprotocol/clubs-plugin-payments": ^0.2.3 || ^0.3.0
     ethers: ^6.0.0
-  checksum: 10c0/cedc77cdc33c0dbd4f4392c87324e3805f4aca069178cda5cb930d5bf309459490615f0f346c22e67ce349256cf13c881729449f7c61fc64bc68c60d0c95d917
+  checksum: 10c0/042f844781fad736ff782e5942f1b961efebce9faa28cc31f907b5727c199391ce60aaa4272a521717035dfb03aee6aa97e6a8395d52ca055f873345f058c3b1
   languageName: node
   linkType: hard
 
@@ -11549,7 +11549,7 @@ __metadata:
     "@devprotocol/clubs-core": "npm:3.24.2-beta.1"
     "@devprotocol/clubs-plugin-akiba": "npm:0.3.0"
     "@devprotocol/clubs-plugin-awesome-onboarding": "npm:0.5.1"
-    "@devprotocol/clubs-plugin-passports": "npm:0.2.2"
+    "@devprotocol/clubs-plugin-passports": "npm:0.2.3"
     "@devprotocol/clubs-plugin-payments": "npm:0.4.0"
     "@devprotocol/clubs-plugin-posts": "npm:0.21.0-alpha.0"
     "@devprotocol/clubs-plugin-posts-voting": "npm:0.8.8"
