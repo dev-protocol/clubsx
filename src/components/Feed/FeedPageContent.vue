@@ -20,7 +20,7 @@ const feedsByMode = ref<Record<Mode, FeedType[]>>({
 const switchingTo = ref<Mode>()
 const items = computed(() => feedsByMode.value[mode.value])
 
-console.log('Feed', props.feeds.at(-1))
+// console.log('Feed', props.feeds.at(-1))
 
 const changeMode = async (newmode: Mode) => {
   switchingTo.value = newmode
