@@ -249,19 +249,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/vercel@npm:8.0.4":
-  version: 8.0.4
-  resolution: "@astrojs/vercel@npm:8.0.4"
+"@astrojs/vercel@npm:8.0.5":
+  version: 8.0.5
+  resolution: "@astrojs/vercel@npm:8.0.5"
   dependencies:
     "@astrojs/internal-helpers": "npm:^0.4.2"
     "@vercel/analytics": "npm:^1.4.1"
     "@vercel/edge": "npm:^1.2.1"
     "@vercel/nft": "npm:^0.29.0"
+    "@vercel/routing-utils": "npm:^5.0.0"
     esbuild: "npm:^0.24.0"
     fast-glob: "npm:^3.3.3"
   peerDependencies:
     astro: ^5.0.0
-  checksum: 10c0/00a603c84f0f15fdbafede3436cb79134808aa3b6e257e33b3a10b61048942d65817b65b98ece085052e8aebb9a568f73df38a7e1c072b0cf80453d12e93c258
+  checksum: 10c0/7796b93903ed711daab56fe4effc07dcd833c26de60479f55d9354c947a407d6b216f3e40efeac73a7db5b859cc116f467222d5a1c3a4f47c7a3f10acda72d2d
   languageName: node
   linkType: hard
 
@@ -7398,6 +7399,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vercel/routing-utils@npm:^5.0.0":
+  version: 5.0.2
+  resolution: "@vercel/routing-utils@npm:5.0.2"
+  dependencies:
+    ajv: "npm:^6.12.3"
+    path-to-regexp: "npm:6.1.0"
+    path-to-regexp-updated: "npm:path-to-regexp@6.3.0"
+  dependenciesMeta:
+    ajv:
+      optional: true
+  checksum: 10c0/76492175204a9966ee0c7f87a1ca917065b10752ce9b5a74533332acc143451ce546da585671907a3c3ed31756b42aecf2f7245f38ccc3fc7a20ddfe9da9b119
+  languageName: node
+  linkType: hard
+
 "@videojs/http-streaming@npm:^3.16.2":
   version: 3.16.2
   resolution: "@videojs/http-streaming@npm:3.16.2"
@@ -11542,7 +11557,7 @@ __metadata:
     "@astrojs/react": "npm:4.2.0"
     "@astrojs/svelte": "npm:7.0.4"
     "@astrojs/tailwind": "npm:5.1.5"
-    "@astrojs/vercel": "npm:8.0.4"
+    "@astrojs/vercel": "npm:8.0.5"
     "@astrojs/vue": "npm:5.0.6"
     "@crossmint/client-sdk-base": "npm:^1.0.1-alpha.6"
     "@crossmint/client-sdk-react-ui": "npm:^1.0.1-alpha.6"
@@ -21195,10 +21210,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"path-to-regexp-updated@npm:path-to-regexp@6.3.0":
+  version: 6.3.0
+  resolution: "path-to-regexp@npm:6.3.0"
+  checksum: 10c0/73b67f4638b41cde56254e6354e46ae3a2ebc08279583f6af3d96fe4664fc75788f74ed0d18ca44fa4a98491b69434f9eee73b97bb5314bd1b5adb700f5c18d6
+  languageName: node
+  linkType: hard
+
 "path-to-regexp@npm:0.1.7":
   version: 0.1.7
   resolution: "path-to-regexp@npm:0.1.7"
   checksum: 10c0/50a1ddb1af41a9e68bd67ca8e331a705899d16fb720a1ea3a41e310480948387daf603abb14d7b0826c58f10146d49050a1291ba6a82b78a382d1c02c0b8f905
+  languageName: node
+  linkType: hard
+
+"path-to-regexp@npm:6.1.0":
+  version: 6.1.0
+  resolution: "path-to-regexp@npm:6.1.0"
+  checksum: 10c0/0c22bce52528452ee5717d71c2dc2b273d065a633de25c959d684980d1ff0891225a3dc94095421fe508aaa76f8b26a173954a3aef3c841a2a824bd6bf849963
   languageName: node
   linkType: hard
 
