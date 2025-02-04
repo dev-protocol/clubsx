@@ -1473,9 +1473,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@devprotocol/clubs-plugin-passports@npm:0.2.2":
-  version: 0.2.2
-  resolution: "@devprotocol/clubs-plugin-passports@npm:0.2.2"
+"@devprotocol/clubs-plugin-passports@npm:0.2.3":
+  version: 0.2.3
+  resolution: "@devprotocol/clubs-plugin-passports@npm:0.2.3"
   dependencies:
     "@devprotocol/dev-kit": "npm:8.7.0"
     "@devprotocol/util-ts": "npm:4.0.0"
@@ -1489,13 +1489,13 @@ __metadata:
     "@devprotocol/clubs-core": ^3.18.0
     "@devprotocol/clubs-plugin-payments": ^0.2.3 || ^0.3.0
     ethers: ^6.0.0
-  checksum: 10c0/cedc77cdc33c0dbd4f4392c87324e3805f4aca069178cda5cb930d5bf309459490615f0f346c22e67ce349256cf13c881729449f7c61fc64bc68c60d0c95d917
+  checksum: 10c0/042f844781fad736ff782e5942f1b961efebce9faa28cc31f907b5727c199391ce60aaa4272a521717035dfb03aee6aa97e6a8395d52ca055f873345f058c3b1
   languageName: node
   linkType: hard
 
-"@devprotocol/clubs-plugin-payments@npm:0.4.0-alpha.0":
-  version: 0.4.0-alpha.0
-  resolution: "@devprotocol/clubs-plugin-payments@npm:0.4.0-alpha.0"
+"@devprotocol/clubs-plugin-payments@npm:0.4.0":
+  version: 0.4.0
+  resolution: "@devprotocol/clubs-plugin-payments@npm:0.4.0"
   dependencies:
     "@devprotocol/dev-kit": "npm:8.7.0"
     "@devprotocol/util-ts": "npm:4.0.0"
@@ -1510,9 +1510,9 @@ __metadata:
     rimraf: "npm:^6.0.1"
   peerDependencies:
     "@devprotocol/clubs-core": ^3.22.1
-    "@devprotocol/clubs-plugin-passports": ^0.1.0-beta.36
+    "@devprotocol/clubs-plugin-passports": ^0.1.0-beta.36 || ^0.2.0
     ethers: ^6.0.0
-  checksum: 10c0/2a25234286ae55f4cf4b7990c1dd08e55eea7f66f3772a9acedf1d79399c5e7e066956d8c496ba2a49c4c9462d6dd94e9401363d131139504671bc9044ccee57
+  checksum: 10c0/65497d61719a944eea12b10bd9dc97ce228aa2dfb6f94b8a03c7138a13d0a69301e86130f580e8683c206492aed63830068defce259f672d759c41761117b4cd
   languageName: node
   linkType: hard
 
@@ -11549,8 +11549,8 @@ __metadata:
     "@devprotocol/clubs-core": "npm:3.24.2-beta.1"
     "@devprotocol/clubs-plugin-akiba": "npm:0.3.0"
     "@devprotocol/clubs-plugin-awesome-onboarding": "npm:0.5.1"
-    "@devprotocol/clubs-plugin-passports": "npm:0.2.2"
-    "@devprotocol/clubs-plugin-payments": "npm:0.4.0-alpha.0"
+    "@devprotocol/clubs-plugin-passports": "npm:0.2.3"
+    "@devprotocol/clubs-plugin-payments": "npm:0.4.0"
     "@devprotocol/clubs-plugin-posts": "npm:0.21.0-alpha.0"
     "@devprotocol/clubs-plugin-posts-voting": "npm:0.8.8"
     "@devprotocol/dev-kit": "npm:8.7.0"
@@ -11631,6 +11631,7 @@ __metadata:
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
     redis: "npm:4.7.0"
+    remove-markdown: "npm:^0.6.0"
     rxjs: "npm:7.8.1"
     sass: "npm:1.83.4"
     svelte: "npm:5.19.4"
@@ -22859,6 +22860,13 @@ __metadata:
     remark-stringify: "npm:^11.0.0"
     unified: "npm:^11.0.0"
   checksum: 10c0/ba675e4a5b114355991d2c6f5b09a632121fc8825257b0d148b3938420713f9e9b6f012120604435d5c217d42742f60195ac6f898dc1339d313a6608a84dbc49
+  languageName: node
+  linkType: hard
+
+"remove-markdown@npm:^0.6.0":
+  version: 0.6.0
+  resolution: "remove-markdown@npm:0.6.0"
+  checksum: 10c0/9a0cdae00577c236df278c1b6b9e5f35f7c712c8356fd47908859525652c20cc10e2fa2d01a535b5d5bdb9a796312b31ce06652b080216d49ba0ce001e190601
   languageName: node
   linkType: hard
 

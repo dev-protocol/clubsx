@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="512" height="512">
+<g>
+	<g>
+		<g>
+			<g>
+				<path style="fill:none;stroke:#000000;stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" d="&#10;&#9;&#9;&#9;&#9;&#9;M302.991,492h-180.14c-33.137,0-60-26.863-60-60V161.203c0-33.137,26.863-60,60-60h180.14c33.137,0,60,26.863,60,60V432&#10;&#9;&#9;&#9;&#9;&#9;C362.991,465.137,336.128,492,302.991,492z"/>
+			</g>
+			<path style="fill:none;stroke:#000000;stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" d="&#10;&#9;&#9;&#9;&#9;M364.234,410.797h24.915c33.137,0,60-26.863,60-60v-0.053"/>
+			<path style="fill:none;stroke:#000000;stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" d="&#10;&#9;&#9;&#9;&#9;M449.149,250.745V80c0-33.137-26.863-60-60-60h-180.14c-33.137,0-60,26.863-60,60v19.511"/>
+		</g>
+	</g>
+	<path style="fill:none;stroke:#000000;stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" d="&#10;&#9;&#9;M288.483,295.489l2.035,1.113l-2.035,1.113c-31.425,17.187-57.262,43.024-74.449,74.449l-1.113,2.035l-1.113-2.035&#10;&#9;&#9;c-17.187-31.425-43.024-57.262-74.449-74.449l-2.035-1.113l2.035-1.113c31.425-17.187,57.262-43.024,74.449-74.449l1.113-2.035&#10;&#9;&#9;l1.113,2.035C231.221,252.464,257.058,278.302,288.483,295.489z"/>
+</g>
+</svg>

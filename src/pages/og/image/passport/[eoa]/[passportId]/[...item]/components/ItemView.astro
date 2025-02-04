@@ -1,0 +1,53 @@
+---
+import type { PassportItem } from '@pages/passport/types'
+import VideoElement from './VideoElement.vue'
+import playIconInnerHTML from '../assets/play-icon.svg?raw'
+import { MediaEmbed } from '@devprotocol/clubs-plugin-passports/vue'
+import type { Clip } from '@pages/api/profile'
+
+type Props = {
+  item?: PassportItem
+}
+
+const { item } = Astro.props
+console.log('item', item)
+---
+
+{
+  item?.link && (
+    <MediaEmbed
+      src={item.link}
+      class="w-full h-full !aspect-auto object-cover rounded-xl"
+    />
+  )
+}
+{
+  item && item.link === undefined && item.itemAssetType && (
+    <span class="relative">
+      {item.itemAssetType === 'short-video' ||
+      item.itemAssetType === 'short-video-link' ? (
+        <VideoElement client:load poster={''} src={item.itemAssetValue || ''} />
+      ) : (
+        <img
+          id="og-image-element"
+          src={item.itemAssetValue}
+          class="w-full h-full object-cover rounded-xl"
+        />
+      )}
+      {item.itemAssetType === 'short-video' ||
+      item.itemAssetType === 'short-video-link' ||
+      item.itemAssetType === 'image-playable' ||
+      item.itemAssetType === 'image-playable-link' ? (
+        <div class="absolute inset-0 m-auto size-1/2 text-white flex items-center justify-center opacity-60">
+          <Fragment
+            set:html={playIconInnerHTML}
+            className="w-full h-full"
+            name="video-play"
+          />
+        </div>
+      ) : (
+        <span />
+      )}
+    </span>
+  )
+}

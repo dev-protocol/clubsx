@@ -44,7 +44,9 @@ export const itemToHash = (
 }
 
 export const hashToItem = (value: string) => {
-  const [typeStr, indexStr] = value.split('-')
+  const [typeStr, indexStr] = value
+    .replace(/(t[0-9]+)-(.*)/, '$1^^^$2')
+    .split('^^^')
   const type = itemKeyToType(typeStr)
   const id = tryCatch(
     (v: string) => v,
