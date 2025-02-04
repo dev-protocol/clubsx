@@ -215,7 +215,7 @@
       {i18n('PinClipsToShowcaseHelper')}
     </p>
     <ul
-      class="grid gap-2 lg:gap-4 justify-between items-center grid-cols-3 grid-rows-3"
+      class="grid gap-2 lg:gap-4 justify-between items-center grid-cols-2 lg:grid-cols-3 grid-rows-3"
     >
       <button
         class="rounded bg-surface-400 aspect-square flex items-center justify-center"
@@ -232,7 +232,7 @@
       <li class="rounded bg-surface-400 aspect-square opacity-50"></li>
     </ul>
   {:else if !isFetchingPurchasedClips && !profileFetching && profile.skins?.at(skinIndex)?.clips?.length}
-    <ul class="grid gap-2 lg:gap-4 grid-cols-3">
+    <ul class="grid gap-2 lg:gap-4 grid-cols-2 lg:grid-cols-3">
       {#each clips(profile) ?? [] as clip, i}
         <li id={`assetsPassportItems-${i.toString()}`} class="empty:hidden">
           <PassportAsset
