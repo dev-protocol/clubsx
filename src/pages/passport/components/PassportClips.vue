@@ -51,7 +51,7 @@ onMounted(async () => {
             skinSection === 'spotlight',
         },
         {
-          ['grid gap-1 lg:gap-4 grid-cols-3 content-stretch items-center gap-y-2 lg:gap-y-8']:
+          ['grid gap-1 lg:gap-4 grid-cols-2 lg:grid-cols-3 content-stretch items-center gap-y-2 lg:gap-y-8']:
             skinSection === 'clips',
         },
       ]"
