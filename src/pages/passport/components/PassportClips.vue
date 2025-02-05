@@ -75,6 +75,9 @@ onMounted(async () => {
           :skinId="skinId"
           :eoa="props.eoa"
           :url="url"
+          :lock="true"
+          :autoplay="true"
+          media-embed-class="rounded overflow-hidden"
           class="cursor-pointer"
           @click="
             () => {
@@ -102,6 +105,8 @@ onMounted(async () => {
       clubsLink: true,
       autoplay: true,
       eoa: props.eoa,
+      lock: false,
+      mediaEmbedClass: 'rounded overflow-hidden',
       url,
     }"
   />
