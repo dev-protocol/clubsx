@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import Feed from '@components/Feed/Feed.vue'
 import type { FeedType } from '../../fixtures/api/feed'
-import { computed, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { set } from 'es-cookie'
 import { CookieKey } from '@constants/cookie'
 import { Mode } from '@constants/feeds'
@@ -20,11 +19,6 @@ const feedsByMode = ref<Record<Mode, FeedType[]>>({
 })
 const switchingTo = ref<Mode>()
 const items = computed(() => feedsByMode.value[mode.value])
-
-// itemsのtagsがugc以外をfilterして返す
-const ugcItems = computed(() =>
-  feedsByMode.value[mode.value].filter((item) => item.tag === 'ugc'),
-)
 
 const changeMode = async (newmode: Mode) => {
   switchingTo.value = newmode
@@ -47,6 +41,12 @@ const changeMode = async (newmode: Mode) => {
 watch(mode, (mode_) => {
   set(CookieKey.DefaultFeed, mode_)
 })
+
+const itemHeight = ref(278)
+onMounted(() => {
+  itemHeight.value = window.innerWidth > 768 ? 278 : 180
+})
+
 </script>
 <template>
   <nav>
@@ -97,7 +97,7 @@ watch(mode, (mode_) => {
       class="flex flex-col gap-2 flex-grow h-full transition"
       :class="{ 'opacity-70': switchingTo && switchingTo !== mode }"
     >
-      <VirtualScroll :items="ugcItems" :itemHeight="195" :buffer="1" />
+      <VirtualScroll :items="items" :itemHeight="itemHeight" :buffer="1" />
     </div>
   </div>
 </template>

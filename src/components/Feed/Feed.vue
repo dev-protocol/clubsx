@@ -3,7 +3,7 @@ import MediaCard from '@pages/passport/components/MediaCard.vue'
 import { MediaEmbed } from '@devprotocol/clubs-plugin-passports/vue'
 import type { PassportItemAssetType } from '@devprotocol/clubs-plugin-passports/types'
 import type { FeedType } from '@fixtures/api/feed'
-import { computed } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { itemToHash } from '@fixtures/router/passportItem'
 
 const props = defineProps<FeedType>()
@@ -12,10 +12,17 @@ const assetLink = computed(
   () =>
     `/passport/${props.address}/${props.parentPassportIndex === 0 ? '' : props.parentPassport.id}?i=${itemToHash(props.clipType, props.item.id)}`,
 )
+
+const mediaHeight = ref(0)
+// PCの場合200px、スマホの場合110px
+onMounted(() => {
+  mediaHeight.value = window.innerWidth > 768 ? 200 : 110
+})
+
 </script>
 
 <template>
-  <div class="grid gap-2 p-2 border-b boder-black/20">
+  <div class="grid gap-2 p-2 h-full border-b boder-black/20">
     <div class="flex flex-col gap-2">
       <div class="grid grid-cols-[auto_1fr] items-center gap-3">
         <a :href="`/passport/${address}`">
@@ -45,7 +52,7 @@ const assetLink = computed(
         </div>
       </div>
 
-      <div class="grid gap-2 grid-cols-2 rounded">
+      <div class="flex-grow grid gap-2 grid-cols-2 rounded">
         <div class="flex flex-col gap-1">
           <div
             v-if="description"
@@ -83,6 +90,7 @@ const assetLink = computed(
         <a
           :href="assetLink"
           target="_blank"
+          class="flex items-end"
           :class="{ 'p-3 rounded': frameHexColor }"
           :style="
             frameHexColor
@@ -100,7 +108,7 @@ const assetLink = computed(
               :found="!!assetSrc"
             />
           </div>
-          <div v-if="tag === 'ugc'" class="rounded-xl bg-violet-50 p-2">
+          <div v-if="tag === 'ugc'" class="media-wrapper p-2 rounded-xl bg-violet-50" :style="{ height: `${mediaHeight}px` }">
             <MediaEmbed
               class="w-full rounded-xl aspect-[3/2] mx-auto max-w-40 lg:max-w-xs pointer-events-none overflow-hidden"
               :found="!!assetSrc"
@@ -115,4 +123,24 @@ const assetLink = computed(
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style lang="scss">
+.instagram-media {
+  min-width: auto !important;
+}
+
+.twitter-tweet {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+#twitter-widget-0 {
+  width: 100% !important;
+}
+</style>
+
+<style scoped lang="scss">
+.media-wrapper {
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+</style>
