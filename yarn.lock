@@ -1237,8 +1237,8 @@ __metadata:
   linkType: hard
 
 "@crossmint/client-sdk-react-ui@npm:^1.0.1-alpha.6":
-  version: 1.13.5
-  resolution: "@crossmint/client-sdk-react-ui@npm:1.13.5"
+  version: 1.13.7
+  resolution: "@crossmint/client-sdk-react-ui@npm:1.13.7"
   dependencies:
     "@crossmint/client-sdk-auth": "npm:1.1.13"
     "@crossmint/client-sdk-base": "npm:1.4.5"
@@ -1270,7 +1270,7 @@ __metadata:
   peerDependencies:
     react: ">=17.0.2"
     react-dom: ">=17.0.2"
-  checksum: 10c0/2c468e175b61405794bc95be930dd23bc5031fa09c6dcf41c3d9a2a14859cc6e02cdd7505b59bcf09d8a9adc72985beade1beef043e46ba487adf040a0c1b5fe
+  checksum: 10c0/356da5a01547b2d7e8aa59d53fc19806df96c7e7924d5278a874e4b819874735e77e36776d608684fa356c796fbf4250963a0c78267c78e26ff896c5b0106c31
   languageName: node
   linkType: hard
 
