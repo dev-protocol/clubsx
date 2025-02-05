@@ -23,11 +23,11 @@ export const Strings = {
   },
   LinkPrivacy: {
     en: 'https://www.clubs.place/privacy-policy',
-    ja: 'https://www.clubs.place/privacy-policy',
+    ja: 'https://corp.frame00.com/privacy',
   },
   LinkTerms: {
-    en: 'https://www.clubs.place/terms-conditions',
-    ja: 'https://www.clubs.place/terms-conditions',
+    en: 'https://clubs-help.notion.site/Clubs-Terms-and-Conditions-804ecd1a5eed4b18a63e67e1a262889c',
+    ja: 'https://clubs-help.notion.site/Clubs-13ec8dc2c2e1803597b5eae0c48318ca',
   },
   LinkFAQ: {
     en: 'https://app.charmverse.io/clubs-help-center/clubs-help-center-22949386729043408',
@@ -35,7 +35,7 @@ export const Strings = {
   },
   LinkCommercial: {
     en: 'https://github.com/dev-protocol/legal/blob/main/ACT-ON-SPECIFIED-COMMERCIAL-TRANSACTIONS_JA.md',
-    ja: 'https://github.com/dev-protocol/legal/blob/main/ACT-ON-SPECIFIED-COMMERCIAL-TRANSACTIONS_JA.md',
+    ja: 'https://clubs-help.notion.site/728afd0407054667ae9c1acec46cca8d?pvs=4',
   },
   LinkGuide: {
     en: 'https://app.charmverse.io/clubs-help-center/clubs-help-center-22949386729043408',
