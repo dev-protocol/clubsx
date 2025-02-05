@@ -12,12 +12,6 @@ const assetLink = computed(
   () =>
     `/passport/${props.address}/${props.parentPassportIndex === 0 ? '' : props.parentPassport.id}?i=${itemToHash(props.clipType, props.item.id)}`,
 )
-
-const mediaHeight = ref(0)
-// PCの場合200px、スマホの場合110px
-onMounted(() => {
-  mediaHeight.value = window.innerWidth > 768 ? 200 : 110
-})
 </script>
 
 <template>
@@ -53,19 +47,15 @@ onMounted(() => {
 
       <div class="flex-grow grid gap-2 grid-cols-2 rounded">
         <div class="flex flex-col gap-1">
-          <div
+          <p
             v-if="description"
-            class="text-2xl font-bold text-ellipsis overflow-hidden line-clamp-2"
+            class="text-2xl font-bold text-ellipsis overflow-hidden line-clamp-5 lg:line-clamp-8"
           >
             {{ description }}
-          </div>
-          <p
-            v-if="props.item.tags"
-            class="text-sm text-violet-500 line-clamp-3 lg:line-clamp-6"
-          >
             <span
+              v-if="props.item.tags"
               v-for="tag in props.item.tags"
-              class="text-inherit mr-1 last:mr-0"
+              class="text-sm text-violet-500 mr-1 last:mr-0"
               >#{{ tag }}</span
             >
           </p>
@@ -89,7 +79,7 @@ onMounted(() => {
         <a
           :href="assetLink"
           target="_blank"
-          class="flex items-end"
+          class="flex items-end block"
           :class="{ 'p-3 rounded': frameHexColor }"
           :style="
             frameHexColor
@@ -109,8 +99,7 @@ onMounted(() => {
           </div>
           <div
             v-if="tag === 'ugc'"
-            class="media-wrapper p-2 rounded-xl bg-violet-50"
-            :style="{ height: `${mediaHeight}px` }"
+            class="media-wrapper p-2 rounded-xl bg-violet-50 h-full w-full flex items-center"
           >
             <MediaEmbed
               class="w-full rounded-xl aspect-[3/2] mx-auto max-w-40 lg:max-w-xs pointer-events-none overflow-hidden"

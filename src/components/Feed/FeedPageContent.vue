@@ -43,8 +43,16 @@ watch(mode, (mode_) => {
 })
 
 const itemHeight = ref(278)
+
+const calcW = (w: number) => {
+  return w > 768 ? 278 : 240
+}
+
 onMounted(() => {
-  itemHeight.value = window.innerWidth > 768 ? 278 : 180
+  itemHeight.value = calcW(window.innerWidth)
+  window.addEventListener('resize', () => {
+    itemHeight.value = calcW(window.innerWidth)
+  })
 })
 </script>
 <template>
