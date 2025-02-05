@@ -76,6 +76,8 @@ onMounted(async () => {
           :eoa="props.eoa"
           :url="url"
           :lock="true"
+          :autoplay="true"
+          media-embed-class="rounded overflow-hidden"
           class="cursor-pointer"
           @click="
             () => {
@@ -104,6 +106,7 @@ onMounted(async () => {
       autoplay: true,
       eoa: props.eoa,
       lock: false,
+      mediaEmbedClass: 'rounded overflow-hidden',
       url,
     }"
   />

@@ -29,6 +29,7 @@ const props = defineProps<{
   skinId: string
   mediaEmbedClass?: string
   lock?: boolean
+  autoplay?: boolean
 }>()
 
 const SITE_NAME = computed(
@@ -142,7 +143,7 @@ onMounted(async () => {
           v-if="IS_LINK"
           :src="item.link"
           :class="props.mediaEmbedClass"
-          :autoplay="true"
+          :autoplay="props.autoplay"
           :lock="props.lock"
         />
       </span>
