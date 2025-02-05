@@ -1,6 +1,6 @@
 {
   "name": "clubs",
-  "version": "2.0.35",
+  "version": "2.0.36",
   "private": true,
   "type": "module",
   "scripts": {
@@ -19,7 +19,8 @@
     "upgradeDb": "node ./scripts/upgrade.mjs",
     "genApiPaths": "node ./scripts/generate-built-in-api-paths.mjs",
     "copy": "node ./scripts/copy.mjs",
-    "migratePosts": "node ./scripts/upgrade-posts-v2.mjs"
+    "migratePosts": "node ./scripts/upgrade-posts-v2.mjs",
+    "vpatch": "git checkout main && git pull && npm version patch && git push && git push --tags"
   },
   "devDependencies": {
     "@repeaterjs/repeater": "^3.0.5",
@@ -65,11 +66,11 @@
     "@astrojs/react": "4.2.0",
     "@astrojs/svelte": "7.0.4",
     "@astrojs/tailwind": "5.1.5",
-    "@astrojs/vercel": "8.0.4",
+    "@astrojs/vercel": "8.0.5",
     "@astrojs/vue": "5.0.6",
     "@crossmint/client-sdk-base": "^1.0.1-alpha.6",
     "@crossmint/client-sdk-react-ui": "^1.0.1-alpha.6",
-    "@devprotocol/clubs-core": "3.24.2-beta.1",
+    "@devprotocol/clubs-core": "3.24.2",
     "@devprotocol/clubs-plugin-akiba": "0.3.0",
     "@devprotocol/clubs-plugin-awesome-onboarding": "0.5.1",
     "@devprotocol/clubs-plugin-passports": "0.2.3",

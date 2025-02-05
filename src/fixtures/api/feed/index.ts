@@ -317,47 +317,55 @@ export const getFeed = async (tag: string = 'recent') => {
 
   const profiles = await whenNotError(redis, (client) => getAllProfiles(client))
   const currentTime = Date.now()
-  const feed: Array<FeedType | undefined> = []
+  let feed: Array<FeedType | undefined> = []
   try {
-    await whenNotErrorAll([redis, profiles], ([client, _profiles]) => {
-      return Promise.all(
-        _profiles?.map(async (profile) => {
-          if (!profile) {
-            return []
-          }
+    const nestedFeed = await whenNotErrorAll(
+      [redis, profiles],
+      ([client, _profiles]) => {
+        return Promise.all(
+          _profiles?.map(async (profile) => {
+            if (!profile) {
+              return []
+            }
 
-          const ownerDetails: FeedUserData = {
-            avatarSrc:
-              profile?.avatar ||
-              (await getBoringAvatar('0x...')
-                .then((res) => res)
-                .catch(() => 'https://i.imgur.com/lSpDjrr.jpg')),
-            name:
-              profile?.username ||
-              uniqueNamesGenerator({
-                ...uniqueNameGeneratorConfig,
-                seed: profile?.id || '0x..',
-              }) ||
-              '0x..',
-            address: profile?.id || '0x...',
-          }
+            const ownerDetails: FeedUserData = {
+              avatarSrc:
+                profile?.avatar ||
+                (await getBoringAvatar('0x...')
+                  .then((res) => res)
+                  .catch(() => 'https://i.imgur.com/lSpDjrr.jpg')),
+              name:
+                profile?.username ||
+                uniqueNamesGenerator({
+                  ...uniqueNameGeneratorConfig,
+                  seed: profile?.id || '0x..',
+                }) ||
+                '0x..',
+              address: profile?.id || '0x...',
+            }
 
-          await Promise.all(
-            profile?.skins?.map(async (skin, i) => {
-              feed.push(
-                ...(await getClipFromSkin(
+            return await Promise.all(
+              profile?.skins?.map(async (skin, i) => {
+                const clip = await getClipFromSkin(
                   skin,
                   i,
                   ownerDetails,
                   client,
                   currentTime,
-                )),
-              )
-            }) ?? [],
-          )
-        }) ?? [],
-      )
-    })
+                )
+                // feed.push(
+                //   ...clip,
+                // )
+                return clip
+              }) ?? [],
+            )
+          }) ?? [],
+        )
+      },
+    )
+    feed = (
+      nestedFeed instanceof Error ? [] : nestedFeed.flat(Infinity)
+    ) as Array<FeedType | undefined>
   } catch (err) {
     console.log('Err', err)
   } finally {

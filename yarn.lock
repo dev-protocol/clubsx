@@ -249,19 +249,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/vercel@npm:8.0.4":
-  version: 8.0.4
-  resolution: "@astrojs/vercel@npm:8.0.4"
+"@astrojs/vercel@npm:8.0.5":
+  version: 8.0.5
+  resolution: "@astrojs/vercel@npm:8.0.5"
   dependencies:
     "@astrojs/internal-helpers": "npm:^0.4.2"
     "@vercel/analytics": "npm:^1.4.1"
     "@vercel/edge": "npm:^1.2.1"
     "@vercel/nft": "npm:^0.29.0"
+    "@vercel/routing-utils": "npm:^5.0.0"
     esbuild: "npm:^0.24.0"
     fast-glob: "npm:^3.3.3"
   peerDependencies:
     astro: ^5.0.0
-  checksum: 10c0/00a603c84f0f15fdbafede3436cb79134808aa3b6e257e33b3a10b61048942d65817b65b98ece085052e8aebb9a568f73df38a7e1c072b0cf80453d12e93c258
+  checksum: 10c0/7796b93903ed711daab56fe4effc07dcd833c26de60479f55d9354c947a407d6b216f3e40efeac73a7db5b859cc116f467222d5a1c3a4f47c7a3f10acda72d2d
   languageName: node
   linkType: hard
 
@@ -1208,16 +1209,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@crossmint/client-sdk-auth@npm:1.1.12":
-  version: 1.1.12
-  resolution: "@crossmint/client-sdk-auth@npm:1.1.12"
+"@crossmint/client-sdk-auth@npm:1.1.13":
+  version: 1.1.13
+  resolution: "@crossmint/client-sdk-auth@npm:1.1.13"
   dependencies:
     "@crossmint/client-sdk-base": "npm:1.4.5"
-    "@crossmint/common-sdk-auth": "npm:1.0.10"
+    "@crossmint/common-sdk-auth": "npm:1.0.11"
     "@crossmint/common-sdk-base": "npm:0.3.1"
     "@farcaster/auth-kit": "npm:0.6.0"
     jwt-decode: "npm:4.0.0"
-  checksum: 10c0/5176d0172130c51b7c85402f27fc7b39621680bee6d823e2573acefaad3294081c6ec27c9ad2167d064aa6e8eb3bf8ac2c754b772d5abf78fd9a41876f5f8b0c
+  checksum: 10c0/50a6296fbe915ddc5fc21b5dcb11dff9a06297b63baeb8fc5c65703a7c8830bfe87c444c4be5d759cefe57ad4ddd25cf6962cebd209478f74bd75e27650533a8
   languageName: node
   linkType: hard
 
@@ -1236,14 +1237,14 @@ __metadata:
   linkType: hard
 
 "@crossmint/client-sdk-react-ui@npm:^1.0.1-alpha.6":
-  version: 1.13.4
-  resolution: "@crossmint/client-sdk-react-ui@npm:1.13.4"
+  version: 1.13.5
+  resolution: "@crossmint/client-sdk-react-ui@npm:1.13.5"
   dependencies:
-    "@crossmint/client-sdk-auth": "npm:1.1.12"
+    "@crossmint/client-sdk-auth": "npm:1.1.13"
     "@crossmint/client-sdk-base": "npm:1.4.5"
     "@crossmint/client-sdk-smart-wallet": "npm:0.1.30"
     "@crossmint/client-sdk-window": "npm:0.2.2"
-    "@crossmint/common-sdk-auth": "npm:1.0.10"
+    "@crossmint/common-sdk-auth": "npm:1.0.11"
     "@crossmint/common-sdk-base": "npm:0.3.1"
     "@dynamic-labs/ethereum": "npm:2.6.3"
     "@dynamic-labs/sdk-react-core": "npm:2.6.3"
@@ -1269,7 +1270,7 @@ __metadata:
   peerDependencies:
     react: ">=17.0.2"
     react-dom: ">=17.0.2"
-  checksum: 10c0/5d7677959f489e6435c7553ffe9b3fa7a7b3c588caa6c199a74e4dd9f8806c5009ffc904c1a4365d2eba2d9c4c81cabd322f59746216291251aac72d88dbffa9
+  checksum: 10c0/2c468e175b61405794bc95be930dd23bc5031fa09c6dcf41c3d9a2a14859cc6e02cdd7505b59bcf09d8a9adc72985beade1beef043e46ba487adf040a0c1b5fe
   languageName: node
   linkType: hard
 
@@ -1300,13 +1301,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@crossmint/common-sdk-auth@npm:1.0.10":
-  version: 1.0.10
-  resolution: "@crossmint/common-sdk-auth@npm:1.0.10"
+"@crossmint/common-sdk-auth@npm:1.0.11":
+  version: 1.0.11
+  resolution: "@crossmint/common-sdk-auth@npm:1.0.11"
   dependencies:
     "@crossmint/client-sdk-base": "npm:1.4.5"
     "@crossmint/common-sdk-base": "npm:0.3.1"
-  checksum: 10c0/56e3e7a4c2ff211b9bf2a1c2ec32574a1aa8c51784374c6a85dfb8be60117a01a3260a6ba869d81958461fed2594f5d0085fdf05ecab22dabec33271067953c0
+  checksum: 10c0/44dd08fc6a0c38d6eb56b3eb3d5d3eabb724e5f024be3e702530305f688b5c37577d38ee7b7ed4503562d19c12158b224688d1e96bdeaecbcbce2729c583d307
   languageName: node
   linkType: hard
 
@@ -1386,9 +1387,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@devprotocol/clubs-core@npm:3.24.2-beta.1":
-  version: 3.24.2-beta.1
-  resolution: "@devprotocol/clubs-core@npm:3.24.2-beta.1"
+"@devprotocol/clubs-core@npm:3.24.2":
+  version: 3.24.2
+  resolution: "@devprotocol/clubs-core@npm:3.24.2"
   dependencies:
     "@devprotocol/dev-kit": "npm:8.7.0"
     "@devprotocol/elements": "npm:1.5.3"
@@ -1436,7 +1437,7 @@ __metadata:
       optional: true
     vue:
       optional: true
-  checksum: 10c0/a9163de46280fb2ed83ad1d669e0d99ead8c65acc6e30c31cee2d54d2b75a0947b41668d8c74c154401590cb76ae268d3f772f5682bfe025d00b6ff47ea60273
+  checksum: 10c0/477ed4b1abd0fdb71cc7e975ea6364b1b96c4c11be8c2db9d430b5b0713d21271bf215de780e564e5390a84b2a02a30e67198397a173da3ea66a5f05c49102ed
   languageName: node
   linkType: hard
 
@@ -7398,6 +7399,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vercel/routing-utils@npm:^5.0.0":
+  version: 5.0.2
+  resolution: "@vercel/routing-utils@npm:5.0.2"
+  dependencies:
+    ajv: "npm:^6.12.3"
+    path-to-regexp: "npm:6.1.0"
+    path-to-regexp-updated: "npm:path-to-regexp@6.3.0"
+  dependenciesMeta:
+    ajv:
+      optional: true
+  checksum: 10c0/76492175204a9966ee0c7f87a1ca917065b10752ce9b5a74533332acc143451ce546da585671907a3c3ed31756b42aecf2f7245f38ccc3fc7a20ddfe9da9b119
+  languageName: node
+  linkType: hard
+
 "@videojs/http-streaming@npm:^3.16.2":
   version: 3.16.2
   resolution: "@videojs/http-streaming@npm:3.16.2"
@@ -7476,57 +7491,57 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitest/expect@npm:1.6.0":
-  version: 1.6.0
-  resolution: "@vitest/expect@npm:1.6.0"
+"@vitest/expect@npm:1.6.1":
+  version: 1.6.1
+  resolution: "@vitest/expect@npm:1.6.1"
   dependencies:
-    "@vitest/spy": "npm:1.6.0"
-    "@vitest/utils": "npm:1.6.0"
+    "@vitest/spy": "npm:1.6.1"
+    "@vitest/utils": "npm:1.6.1"
     chai: "npm:^4.3.10"
-  checksum: 10c0/a4351f912a70543e04960f5694f1f1ac95f71a856a46e87bba27d3eb72a08c5d11d35021cbdc6077452a152e7d93723fc804bba76c2cc53c8896b7789caadae3
+  checksum: 10c0/278164b2a32a7019b443444f21111c5e32e4cadee026cae047ae2a3b347d99dca1d1fb7b79509c88b67dc3db19fa9a16265b7d7a8377485f7e37f7851e44495a
   languageName: node
   linkType: hard
 
-"@vitest/runner@npm:1.6.0":
-  version: 1.6.0
-  resolution: "@vitest/runner@npm:1.6.0"
+"@vitest/runner@npm:1.6.1":
+  version: 1.6.1
+  resolution: "@vitest/runner@npm:1.6.1"
   dependencies:
-    "@vitest/utils": "npm:1.6.0"
+    "@vitest/utils": "npm:1.6.1"
     p-limit: "npm:^5.0.0"
     pathe: "npm:^1.1.1"
-  checksum: 10c0/27d67fa51f40effe0e41ee5f26563c12c0ef9a96161f806036f02ea5eb9980c5cdf305a70673942e7a1e3d472d4d7feb40093ae93024ef1ccc40637fc65b1d2f
+  checksum: 10c0/36333f1a596c4ad85d42c6126cc32959c984d584ef28d366d366fa3672678c1a0f5e5c2e8717a36675b6620b57e8830f765d6712d1687f163ed0a8ebf23c87db
   languageName: node
   linkType: hard
 
-"@vitest/snapshot@npm:1.6.0":
-  version: 1.6.0
-  resolution: "@vitest/snapshot@npm:1.6.0"
+"@vitest/snapshot@npm:1.6.1":
+  version: 1.6.1
+  resolution: "@vitest/snapshot@npm:1.6.1"
   dependencies:
     magic-string: "npm:^0.30.5"
     pathe: "npm:^1.1.1"
     pretty-format: "npm:^29.7.0"
-  checksum: 10c0/be027fd268d524589ff50c5fad7b4faa1ac5742b59ac6c1dc6f5a3930aad553560e6d8775e90ac4dfae4be746fc732a6f134ba95606a1519707ce70db3a772a5
+  checksum: 10c0/68bbc3132c195ec37376469e4b183fc408e0aeedd827dffcc899aac378e9ea324825f0873062786e18f00e3da9dd8a93c9bb871c07471ee483e8df963cb272eb
   languageName: node
   linkType: hard
 
-"@vitest/spy@npm:1.6.0":
-  version: 1.6.0
-  resolution: "@vitest/spy@npm:1.6.0"
+"@vitest/spy@npm:1.6.1":
+  version: 1.6.1
+  resolution: "@vitest/spy@npm:1.6.1"
   dependencies:
     tinyspy: "npm:^2.2.0"
-  checksum: 10c0/df66ea6632b44fb76ef6a65c1abbace13d883703aff37cd6d062add6dcd1b883f19ce733af8e0f7feb185b61600c6eb4042a518e4fb66323d0690ec357f9401c
+  checksum: 10c0/5207ec0e7882819f0e0811293ae6d14163e26927e781bb4de7d40b3bd99c1fae656934c437bb7a30443a3e7e736c5bccb037bbf4436dbbc83d29e65247888885
   languageName: node
   linkType: hard
 
-"@vitest/utils@npm:1.6.0":
-  version: 1.6.0
-  resolution: "@vitest/utils@npm:1.6.0"
+"@vitest/utils@npm:1.6.1":
+  version: 1.6.1
+  resolution: "@vitest/utils@npm:1.6.1"
   dependencies:
     diff-sequences: "npm:^29.6.3"
     estree-walker: "npm:^3.0.3"
     loupe: "npm:^2.3.7"
     pretty-format: "npm:^29.7.0"
-  checksum: 10c0/8b0d19835866455eb0b02b31c5ca3d8ad45f41a24e4c7e1f064b480f6b2804dc895a70af332f14c11ed89581011b92b179718523f55f5b14787285a0321b1301
+  checksum: 10c0/0d4c619e5688cbc22a60c412719c6baa40376b7671bdbdc3072552f5c5a5ee5d24a96ea328b054018debd49e0626a5e3db672921b2c6b5b17b9a52edd296806a
   languageName: node
   linkType: hard
 
@@ -11542,11 +11557,11 @@ __metadata:
     "@astrojs/react": "npm:4.2.0"
     "@astrojs/svelte": "npm:7.0.4"
     "@astrojs/tailwind": "npm:5.1.5"
-    "@astrojs/vercel": "npm:8.0.4"
+    "@astrojs/vercel": "npm:8.0.5"
     "@astrojs/vue": "npm:5.0.6"
     "@crossmint/client-sdk-base": "npm:^1.0.1-alpha.6"
     "@crossmint/client-sdk-react-ui": "npm:^1.0.1-alpha.6"
-    "@devprotocol/clubs-core": "npm:3.24.2-beta.1"
+    "@devprotocol/clubs-core": "npm:3.24.2"
     "@devprotocol/clubs-plugin-akiba": "npm:0.3.0"
     "@devprotocol/clubs-plugin-awesome-onboarding": "npm:0.5.1"
     "@devprotocol/clubs-plugin-passports": "npm:0.2.3"
@@ -21195,10 +21210,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"path-to-regexp-updated@npm:path-to-regexp@6.3.0":
+  version: 6.3.0
+  resolution: "path-to-regexp@npm:6.3.0"
+  checksum: 10c0/73b67f4638b41cde56254e6354e46ae3a2ebc08279583f6af3d96fe4664fc75788f74ed0d18ca44fa4a98491b69434f9eee73b97bb5314bd1b5adb700f5c18d6
+  languageName: node
+  linkType: hard
+
 "path-to-regexp@npm:0.1.7":
   version: 0.1.7
   resolution: "path-to-regexp@npm:0.1.7"
   checksum: 10c0/50a1ddb1af41a9e68bd67ca8e331a705899d16fb720a1ea3a41e310480948387daf603abb14d7b0826c58f10146d49050a1291ba6a82b78a382d1c02c0b8f905
+  languageName: node
+  linkType: hard
+
+"path-to-regexp@npm:6.1.0":
+  version: 6.1.0
+  resolution: "path-to-regexp@npm:6.1.0"
+  checksum: 10c0/0c22bce52528452ee5717d71c2dc2b273d065a633de25c959d684980d1ff0891225a3dc94095421fe508aaa76f8b26a173954a3aef3c841a2a824bd6bf849963
   languageName: node
   linkType: hard
 
@@ -26955,9 +26984,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-node@npm:1.6.0":
-  version: 1.6.0
-  resolution: "vite-node@npm:1.6.0"
+"vite-node@npm:1.6.1":
+  version: 1.6.1
+  resolution: "vite-node@npm:1.6.1"
   dependencies:
     cac: "npm:^6.7.14"
     debug: "npm:^4.3.4"
@@ -26966,7 +26995,7 @@ __metadata:
     vite: "npm:^5.0.0"
   bin:
     vite-node: vite-node.mjs
-  checksum: 10c0/0807e6501ac7763e0efa2b4bd484ce99fb207e92c98624c9f8999d1f6727ac026e457994260fa7fdb7060d87546d197081e46a705d05b0136a38b6f03715cbc2
+  checksum: 10c0/4d96da9f11bd0df8b60c46e65a740edaad7dd2d1aff3cdb3da5714ea8c10b5f2683111b60bfe45545c7e8c1f33e7e8a5095573d5e9ba55f50a845233292c2e02
   languageName: node
   linkType: hard
 
@@ -27145,14 +27174,14 @@ __metadata:
   linkType: hard
 
 "vitest@npm:^1.0.0":
-  version: 1.6.0
-  resolution: "vitest@npm:1.6.0"
+  version: 1.6.1
+  resolution: "vitest@npm:1.6.1"
   dependencies:
-    "@vitest/expect": "npm:1.6.0"
-    "@vitest/runner": "npm:1.6.0"
-    "@vitest/snapshot": "npm:1.6.0"
-    "@vitest/spy": "npm:1.6.0"
-    "@vitest/utils": "npm:1.6.0"
+    "@vitest/expect": "npm:1.6.1"
+    "@vitest/runner": "npm:1.6.1"
+    "@vitest/snapshot": "npm:1.6.1"
+    "@vitest/spy": "npm:1.6.1"
+    "@vitest/utils": "npm:1.6.1"
     acorn-walk: "npm:^8.3.2"
     chai: "npm:^4.3.10"
     debug: "npm:^4.3.4"
@@ -27166,13 +27195,13 @@ __metadata:
     tinybench: "npm:^2.5.1"
     tinypool: "npm:^0.8.3"
     vite: "npm:^5.0.0"
-    vite-node: "npm:1.6.0"
+    vite-node: "npm:1.6.1"
     why-is-node-running: "npm:^2.2.2"
   peerDependencies:
     "@edge-runtime/vm": "*"
     "@types/node": ^18.0.0 || >=20.0.0
-    "@vitest/browser": 1.6.0
-    "@vitest/ui": 1.6.0
+    "@vitest/browser": 1.6.1
+    "@vitest/ui": 1.6.1
     happy-dom: "*"
     jsdom: "*"
   peerDependenciesMeta:
@@ -27190,7 +27219,7 @@ __metadata:
       optional: true
   bin:
     vitest: vitest.mjs
-  checksum: 10c0/065da5b8ead51eb174d93dac0cd50042ca9539856dc25e340ea905d668c41961f7e00df3e388e6c76125b2c22091db2e8465f993d0f6944daf9598d549e562e7
+  checksum: 10c0/511d27d7f697683964826db2fad7ac303f9bc7eeb59d9422111dc488371ccf1f9eed47ac3a80eb47ca86b7242228ba5ca9cc3613290830d0e916973768cac215
   languageName: node
   linkType: hard
 
