@@ -122,11 +122,8 @@
 
         <p class="font-DMSan font-bold text-base">{i18n('EditItem')}</p>
 
-        <button
-          on:click|preventDefault={() => onClickAction('patch')}
-          class="hs-button is-filled is-large w-fit text-center"
-          >{i18n('Done')}</button
-        >
+        <!-- Just for spacer -->
+        <div class="w-6 h-6"></div>
       </div>
 
       <div class="grid gap-8 w-full max-w-screen-sm overflow-y-scroll">
@@ -197,12 +194,19 @@
             />
           </span>
         {/if}
-
+      </div>
+      <div class="flex gap-8 w-full items-center justify-between">
         <button
           on:click|preventDefault={() => onClickAction('del')}
-          class="hs-button is-filled is-error justify-self-end w-fit text-center"
+          class="hs-button is-filled is-error w-fit text-center"
           >{i18n('Unlist')}</button
         >
+        <button
+          on:click|preventDefault={() => onClickAction('patch')}
+          class="hs-button is-filled w-fit text-center"
+        >
+          {i18n('Done')}
+        </button>
       </div>
     </div>
   </div>
