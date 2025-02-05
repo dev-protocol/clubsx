@@ -120,14 +120,14 @@ const assetLink = computed(
   min-width: auto !important;
 }
 
-.twitter-tweet {
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-}
+// .twitter-tweet {
+//   margin-top: 0 !important;
+//   margin-bottom: 0 !important;
+// }
 
-#twitter-widget-0 {
-  width: 100% !important;
-}
+// #twitter-widget-0 {
+//   width: 100% !important;
+// }
 </style>
 
 <style scoped lang="scss">
