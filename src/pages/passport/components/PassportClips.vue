@@ -75,6 +75,7 @@ onMounted(async () => {
           :skinId="skinId"
           :eoa="props.eoa"
           :url="url"
+          :lock="true"
           class="cursor-pointer"
           @click="
             () => {
@@ -102,6 +103,7 @@ onMounted(async () => {
       clubsLink: true,
       autoplay: true,
       eoa: props.eoa,
+      lock: false,
       url,
     }"
   />

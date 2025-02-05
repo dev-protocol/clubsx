@@ -28,6 +28,7 @@ const props = defineProps<{
   clubsLink?: boolean
   skinId: string
   mediaEmbedClass?: string
+  lock?: boolean
 }>()
 
 const SITE_NAME = computed(
@@ -142,6 +143,7 @@ onMounted(async () => {
           :src="item.link"
           :class="props.mediaEmbedClass"
           :autoplay="true"
+          :lock="props.lock"
         />
       </span>
 
