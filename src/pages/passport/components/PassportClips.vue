@@ -8,6 +8,7 @@ import type { PassportClip } from '../types'
 import PassportClipCard from './PassportClip.vue'
 import { passportSpotlightClass } from '@fixtures/ui/passport'
 import PassportClipModal from './PassportClipModal.vue'
+import { mediaSource } from '@devprotocol/clubs-plugin-passports/media'
 
 const props = defineProps<{
   id: string
@@ -64,6 +65,12 @@ onMounted(async () => {
           {
             [passportSpotlightClass(clips.length).child[index]]:
               skinSection === 'spotlight',
+          },
+          {
+            ['col-span-2 lg:col-span-1']:
+              clip.link &&
+              mediaSource(clip.link) === 'x' &&
+              skinSection === 'clips',
           },
         ]"
       >
