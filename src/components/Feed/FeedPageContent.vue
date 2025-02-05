@@ -46,7 +46,6 @@ const itemHeight = ref(278)
 onMounted(() => {
   itemHeight.value = window.innerWidth > 768 ? 278 : 180
 })
-
 </script>
 <template>
   <nav>

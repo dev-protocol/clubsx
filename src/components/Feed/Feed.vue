@@ -18,7 +18,6 @@ const mediaHeight = ref(0)
 onMounted(() => {
   mediaHeight.value = window.innerWidth > 768 ? 200 : 110
 })
-
 </script>
 
 <template>
@@ -108,7 +107,11 @@ onMounted(() => {
               :found="!!assetSrc"
             />
           </div>
-          <div v-if="tag === 'ugc'" class="media-wrapper p-2 rounded-xl bg-violet-50" :style="{ height: `${mediaHeight}px` }">
+          <div
+            v-if="tag === 'ugc'"
+            class="media-wrapper p-2 rounded-xl bg-violet-50"
+            :style="{ height: `${mediaHeight}px` }"
+          >
             <MediaEmbed
               class="w-full rounded-xl aspect-[3/2] mx-auto max-w-40 lg:max-w-xs pointer-events-none overflow-hidden"
               :found="!!assetSrc"
