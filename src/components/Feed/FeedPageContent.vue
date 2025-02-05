@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import Feed from '@components/Feed/Feed.vue'
 import type { FeedType } from '../../fixtures/api/feed'
-import { computed, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { set } from 'es-cookie'
 import { CookieKey } from '@constants/cookie'
 import { Mode } from '@constants/feeds'
+import VirtualScroll from './VirtualScroll.vue'
 
 const props = defineProps<{
   feeds: FeedType[]
@@ -19,8 +19,6 @@ const feedsByMode = ref<Record<Mode, FeedType[]>>({
 })
 const switchingTo = ref<Mode>()
 const items = computed(() => feedsByMode.value[mode.value])
-
-// console.log('Feed', props.feeds.at(-1))
 
 const changeMode = async (newmode: Mode) => {
   switchingTo.value = newmode
@@ -42,6 +40,19 @@ const changeMode = async (newmode: Mode) => {
 
 watch(mode, (mode_) => {
   set(CookieKey.DefaultFeed, mode_)
+})
+
+const itemHeight = ref(278)
+
+const calcW = (w: number) => {
+  return w > 768 ? 278 : 240
+}
+
+onMounted(() => {
+  itemHeight.value = calcW(window.innerWidth)
+  window.addEventListener('resize', () => {
+    itemHeight.value = calcW(window.innerWidth)
+  })
 })
 </script>
 <template>
@@ -90,10 +101,10 @@ watch(mode, (mode_) => {
   </nav>
   <div class="flex flex-col p-2 h-full rounded-xl md:border boder-black/20">
     <div
-      class="flex flex-col gap-2 flex-grow pb-24 h-full transition"
+      class="flex flex-col gap-2 flex-grow h-full transition"
       :class="{ 'opacity-70': switchingTo && switchingTo !== mode }"
     >
-      <Feed v-for="feed in items" :key="feed.id" v-bind="feed" />
+      <VirtualScroll :items="items" :itemHeight="itemHeight" :buffer="1" />
     </div>
   </div>
 </template>
