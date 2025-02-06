@@ -46,6 +46,8 @@ watch(open, () => {
           props.pageTitle
         }}</span>
       </h1>
+    </a>
+    <a href="/signin">
       <span
         class="w-full flex items-center justify-end md:hidden cursor-pointer"
       >
