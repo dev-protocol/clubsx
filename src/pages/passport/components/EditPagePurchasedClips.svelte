@@ -339,15 +339,8 @@
         </button>
 
         <p class="font-DMSan font-bold text-base">{i18n('AddFromExternal')}</p>
-
-        <button
-          disabled={Boolean(link && linkError !== undefined)}
-          on:click={() =>
-            target === 'showcase'
-              ? toggleClipsInShowcase()
-              : toggleClipInSpotlight()}
-          class="hs-button is-filled is-large w-fit text-center">Done</button
-        >
+        <!-- For Spacing only  -->
+        <div class="w-6 h-6"></div>
       </div>
 
       <label class="hs-form-field is-filled">
@@ -381,6 +374,16 @@
         <span class="hs-form-field__label"> {i18n('Tags')} </span>
         <Tags bind:tags />
       </label>
+      <div class="w-full flex items-center justify-end">
+        <button
+          disabled={Boolean(link && linkError !== undefined)}
+          on:click={() =>
+            target === 'showcase'
+              ? toggleClipsInShowcase()
+              : toggleClipInSpotlight()}
+          class="hs-button is-filled is-large w-fit text-center">Done</button
+        >
+      </div>
     </div>
   </div>
 {/if}
