@@ -205,10 +205,17 @@
     )
   }
 
-  const handleInput = () => {
-    const isLinkValid = typeof mediaSource(link) === 'string'
+  const handleInput = async () => {
+    const _link = await fetch(`/api/ugc?link=${link}`)
+      .then((res) => res.json())
+      .then((res) => {
+        return res?.url || link || ''
+      })
+      .catch((err) => link)
+
+    const isLinkValid = typeof mediaSource(_link) === 'string'
     linkError = isLinkValid ? undefined : 'ERROR'
-    console.log({ linkError, link })
+    console.log({ linkError, _link })
   }
 </script>
 
