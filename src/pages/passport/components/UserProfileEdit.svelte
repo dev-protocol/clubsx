@@ -27,6 +27,7 @@
   export let id: string
   export let skinId: string
   export let isLocal: boolean
+  export let userFromCookie: string
 
   let skinIndex = 0
   let profileFetching = true
@@ -429,7 +430,7 @@
   }`}
   style={`transform-origin: center ${transformYOrigin}px`}
 >
-  {#if eoa === id}
+  {#if eoa === id || userFromCookie === id}
     <div class="p-2 w-full max-w-screen-lg mx-auto grid">
       <div
         class="w-fit max-w-full flex gap-[15px] py-[8px] px-[16px] items-center justify-start"
