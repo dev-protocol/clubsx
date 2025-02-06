@@ -43,6 +43,7 @@
   export let hasSpotlightLimitReadched: boolean = false
   let selectedItem: UndefinedOr<PassportItem>
   let linkingMode: UndefinedOr<boolean>
+  let inputLink: UndefinedOr<string> = ''
   let link: UndefinedOr<string>
   let description: UndefinedOr<string>
   let linkError: UndefinedOr<string>
@@ -205,7 +206,14 @@
     )
   }
 
-  const handleInput = () => {
+  const handleInput = async () => {
+    const _link = await fetch(`/api/ugc?link=${inputLink}`)
+      .then((res) => res.json())
+      .then((res) => {
+        return res?.url || inputLink || ''
+      })
+      .catch((err) => inputLink)
+    link = _link
     const isLinkValid = typeof mediaSource(link) === 'string'
     linkError = isLinkValid ? undefined : 'ERROR'
     console.log({ linkError, link })
@@ -346,8 +354,8 @@
       <label class="hs-form-field is-filled">
         <span class="hs-form-field__label"> {i18n('ContentLink')} </span>
         <input
+          bind:value={inputLink}
           class="hs-form-field__input"
-          bind:value={link}
           on:keyup={debounce(handleInput, 700)}
           placeholder={i18n('ContentLinkPlaceholder')}
         />
