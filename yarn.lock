@@ -11649,7 +11649,7 @@ __metadata:
     remove-markdown: "npm:^0.6.0"
     rxjs: "npm:7.8.1"
     sass: "npm:1.83.4"
-    svelte: "npm:5.19.7"
+    svelte: "npm:5.19.8"
     svelte-awesome-color-picker: "npm:^3.1.4"
     svelte-check: "npm:^4.0.0"
     svelte-modals: "npm:^1.3.0"
@@ -24960,9 +24960,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"svelte@npm:5.19.7":
-  version: 5.19.7
-  resolution: "svelte@npm:5.19.7"
+"svelte@npm:5.19.8":
+  version: 5.19.8
+  resolution: "svelte@npm:5.19.8"
   dependencies:
     "@ampproject/remapping": "npm:^2.3.0"
     "@jridgewell/sourcemap-codec": "npm:^1.5.0"
@@ -24978,7 +24978,7 @@ __metadata:
     locate-character: "npm:^3.0.0"
     magic-string: "npm:^0.30.11"
     zimmerframe: "npm:^1.1.2"
-  checksum: 10c0/786896a4348538fb59c2dc2e071b6b5bb9fbf6bbf40bf0ce186f80fe99baab0c2d7885b858fb567ec62a84c6211a084bc4cf28a39c008515cf51a0f476f41f8a
+  checksum: 10c0/4292a80a4138e8640c9f69de36b64b428333950dde051a2ad83186f4f58230ee435f0a3c82165868984aca5f8db8304c600ac944fe0dde1f97e37b51f2130892
   languageName: node
   linkType: hard
 
