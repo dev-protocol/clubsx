@@ -72,7 +72,7 @@
     "@crossmint/client-sdk-react-ui": "^1.0.1-alpha.6",
     "@devprotocol/clubs-core": "3.24.3",
     "@devprotocol/clubs-plugin-akiba": "0.3.0",
-    "@devprotocol/clubs-plugin-awesome-onboarding": "0.5.1",
+    "@devprotocol/clubs-plugin-awesome-onboarding": "0.6.0",
     "@devprotocol/clubs-plugin-passports": "0.3.3",
     "@devprotocol/clubs-plugin-payments": "0.4.0",
     "@devprotocol/clubs-plugin-posts": "0.21.0-alpha.0",
