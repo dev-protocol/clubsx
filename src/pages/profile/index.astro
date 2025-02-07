@@ -3,9 +3,9 @@ import Layout from '@layouts/LandingWithFooter.astro'
 import { CookieKey } from '@constants/cookie'
 import { parseAcceptLanguage } from 'intl-parse-accept-language'
 import Profile from '@components/Profile/Profile.vue'
-import { ConnectButton } from '@devprotocol/clubs-plugin-awesome-onboarding'
 import { getProfile } from '@fixtures/api/profile'
 import { whenDefined } from '@devprotocol/util-ts'
+import SignIn from '@components/SignIn/SignIn.astro'
 
 const user = Astro.cookies.get(CookieKey.User)
 const langs = parseAcceptLanguage(Astro.request.headers.get('Accept-Language'))
@@ -14,7 +14,7 @@ const profile = await whenDefined(user?.value, (id) => getProfile({ id }))
 
 <Layout connectButton="hidden" theme="light" pageTitle="Feed"
   ><Profile client:load user={user?.value} langs={langs} profile={profile}>
-    <ConnectButton slot="connect" />
+    <SignIn slot="not-logged-in" />
   </Profile>
   <hr role="presentation" class="mb-32 invisible" />
 </Layout>

@@ -17,4 +17,8 @@ export const Strings = {
     en: 'Logout',
     ja: 'ログアウト',
   },
+  CreatePassport: {
+    en: 'Create your first Passport',
+    ja: '最初のパスポートをつくる',
+  },
 } satisfies ClubsI18nParts

@@ -1470,15 +1470,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@devprotocol/clubs-plugin-awesome-onboarding@npm:0.5.1":
-  version: 0.5.1
-  resolution: "@devprotocol/clubs-plugin-awesome-onboarding@npm:0.5.1"
+"@devprotocol/clubs-plugin-awesome-onboarding@npm:0.6.0":
+  version: 0.6.0
+  resolution: "@devprotocol/clubs-plugin-awesome-onboarding@npm:0.6.0"
   peerDependencies:
     "@devprotocol/clubs-core": ^2.1.1 || ^3.0.0
     ethers: ^6.0.0
     react: ^18.0.0
     react-dom: ^18.0.0
-  checksum: 10c0/3ed2376d5006cc1325dcfed20c7c63e02e19634c4b8b765467d3e2932a475883db9f694c1c120c5184b8413bd689b38e1788a886e8f0a2ed81aa171e00020e34
+  checksum: 10c0/6c0323cf2e2f08b5b7fc2b98f9530878e6051a21681bbf9259b76e75d1232ed8d8afbb0360f07126de981ccab402eabf192969bcdc51d432948430c8e9ea1c79
   languageName: node
   linkType: hard
 
@@ -11767,7 +11767,7 @@ __metadata:
     "@crossmint/client-sdk-react-ui": "npm:^1.0.1-alpha.6"
     "@devprotocol/clubs-core": "npm:3.24.3"
     "@devprotocol/clubs-plugin-akiba": "npm:0.3.0"
-    "@devprotocol/clubs-plugin-awesome-onboarding": "npm:0.5.1"
+    "@devprotocol/clubs-plugin-awesome-onboarding": "npm:0.6.0"
     "@devprotocol/clubs-plugin-passports": "npm:0.3.3"
     "@devprotocol/clubs-plugin-payments": "npm:0.4.0"
     "@devprotocol/clubs-plugin-posts": "npm:0.21.0-alpha.0"
