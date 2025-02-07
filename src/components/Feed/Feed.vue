@@ -102,7 +102,7 @@ const assetLink = computed(
             class="media-wrapper p-2 rounded-xl bg-violet-50 h-full w-full flex items-center"
           >
             <MediaEmbed
-              class="w-full rounded-xl aspect-[3/2] mx-auto max-w-40 lg:max-w-xs pointer-events-none overflow-hidden"
+              class="w-full rounded-xl mx-auto max-h-40 lg:max-h-48 lg:max-w-xs pointer-events-none overflow-hidden"
               :found="!!assetSrc"
               :src="assetSrc"
               :type="tag"
