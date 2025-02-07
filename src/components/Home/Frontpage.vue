@@ -10,9 +10,10 @@ import type { connection as Connection } from '@devprotocol/clubs-core/connectio
 import { ClubsConnectionSignal, i18nFactory } from '@devprotocol/clubs-core'
 import CLUBS from '@assets/clubs/Clubs-Decorative.svg'
 import { Strings } from '@pages/passport/i18n'
-import { distinctUntilChanged } from 'rxjs/operators'
+import { distinctUntilChanged, filter } from 'rxjs/operators'
 import FrontpageBg from '@assets/clubs/Images.png'
 import type { Mode } from '@constants/feeds'
+import type { UndefinedOr } from '@devprotocol/util-ts'
 dayjs.extend(duration)
 
 const props = defineProps<{
@@ -21,7 +22,7 @@ const props = defineProps<{
   langs: string[]
   mode?: Mode
 }>()
-const account = ref<string>()
+const account = ref<UndefinedOr<string>>(props.session?.user)
 const connection = ref<typeof Connection>()
 const i18nBase = i18nFactory(Strings)
 const i18n = ref(i18nBase(props.langs))
@@ -31,12 +32,17 @@ onMounted(async () => {
   connection.value = C.connection
   connection
     .value()
-    .account.pipe(distinctUntilChanged())
+    .account.pipe(
+      distinctUntilChanged(),
+      filter((_, i) => {
+        return i === 0 && Boolean(props.session?.user) ? false : true
+      }),
+    )
     .subscribe((acc) => {
-      account.value = acc
-      if (acc) {
+      if (account.value === undefined && acc) {
         location.reload()
       }
+      account.value = acc
     })
 })
 
@@ -91,7 +97,6 @@ const openSignInModal = () => {
           </p>
         </div>
       </div>
-      <span class="hidden"><slot name="connect-button" /></span>
     </section>
     <footer>
       <slot name="footer" />
