@@ -32,9 +32,16 @@ const redirects = [
     destination: 'https://kougenji.clubs.place',
   },
 ]
+const ban = [/\.php$/, /^\/wp-/]
 
 export default function middleware(req: Request) {
   const url = new URL(req.url)
+
+  const matchToBan = ban.find((rule) => rule.test(url.pathname))
+
+  if (matchToBan) {
+    return new Response('Not Found', { status: 404 })
+  }
 
   const matchToRedirects = redirects.find(
     ({ host, matchers }) =>
