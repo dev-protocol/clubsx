@@ -158,7 +158,7 @@ onMounted(async () => {
   </div>
 
   <template v-if="!user">
-      <slot name="not-logged-in" />
+    <slot name="not-logged-in" />
   </template>
 
   <Modal
