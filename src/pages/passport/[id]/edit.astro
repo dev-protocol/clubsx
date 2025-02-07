@@ -1,6 +1,7 @@
 ---
 import { isAddress } from 'ethers'
 import Layout from '../Layout.astro'
+import { CookieKey } from '@constants/cookie'
 import MediaSDKs from '@components/Passports/MediaSDKs.astro'
 
 import UserProfileEdit from '../components/UserProfileEdit.svelte'
@@ -9,6 +10,8 @@ const { id } = Astro.params
 const skinId = Astro.url.searchParams.get('skinId') || ''
 
 const isEOA = isAddress(id)
+const userFromCookie = Astro.cookies.get(CookieKey.User)
+const user = userFromCookie?.value
 
 const isLocal =
   Astro.url.hostname.includes('localhost') ||
@@ -49,6 +52,7 @@ const isLocal =
           id={id ?? ''}
           skinId={skinId ?? ''}
           isLocal={isLocal}
+          userFromCookie={user}
         />
       )
     }
