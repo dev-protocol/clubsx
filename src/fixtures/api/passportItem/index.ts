@@ -1,12 +1,9 @@
-import { whenNotError, whenNotErrorAll } from '@devprotocol/util-ts'
-import { always } from 'ramda'
-import { createClient } from 'redis'
+import { whenNotErrorAll } from '@devprotocol/util-ts'
 import {
   Index,
   sTokenPayload as sTokenPayloadSchema,
   type PassportItemDocument,
 } from '@devprotocol/clubs-plugin-passports'
-import { getDefaultClient } from '@fixtures/api/assets/redis'
 import { ACHIEVEMENT_ITEM_SCHEMA } from '@plugins/achievements/db/schema'
 import {
   type AchievementItem,
@@ -17,24 +14,12 @@ import {
   AchievementPrefix,
   AchievementIndex,
 } from '@plugins/achievements/utils'
-
-const { REDIS_URL, REDIS_USERNAME, REDIS_PASSWORD } = import.meta.env
+import { Redis } from '@devprotocol/clubs-core/redis'
 
 export const getPassportItemForPayload = async (props: {
   sTokenPayload: string
 }) => {
-  const redis = await whenNotError(
-    createClient({
-      url: REDIS_URL,
-      username: REDIS_USERNAME ?? '',
-      password: REDIS_PASSWORD ?? '',
-    }),
-    (db) =>
-      db
-        .connect()
-        .then(always(db))
-        .catch((err) => new Error(err)),
-  )
+  const redis = await Redis.client().catch((err) => new Error(err))
 
   const passportItem = await whenNotErrorAll(
     [props, redis],
@@ -58,12 +43,7 @@ export const getPassportItemForPayload = async (props: {
         .catch((err) => new Error(err)),
   )
 
-  const result = await whenNotErrorAll([passportItem, redis], ([res, client]) =>
-    client
-      .quit()
-      .then(always(res))
-      .catch((err) => new Error(err)),
-  )
+  const result = passportItem
 
   return result
 }
@@ -73,7 +53,7 @@ export const getSBTsForEOAFromClubsUrlHash = async (
   clubsUrl: string,
   eoa: string,
 ) => {
-  const client = await getDefaultClient()
+  const client = await Redis.client()
   const getMetaData = async (
     achievementInfoId: string,
   ): Promise<AchievementInfo> => {
@@ -121,6 +101,5 @@ export const getSBTsForEOAFromClubsUrlHash = async (
       return await arrangeData(item)
     }),
   )
-  await client.quit()
   return finalData
 }
