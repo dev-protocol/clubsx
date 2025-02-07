@@ -1,0 +1,55 @@
+---
+import { i18nFactory } from '@devprotocol/clubs-core'
+import { ConnectButton } from '@devprotocol/clubs-plugin-awesome-onboarding'
+
+type Props = {
+  useDefaultHeight?: boolean
+  langs?: string[]
+  class?: string
+}
+
+const { langs, class: className, useDefaultHeight = true } = Astro.props
+
+const i18nBase = i18nFactory({
+  SignInToClubs: {
+    en: 'Sign in to CLUBS',
+    ja: 'CLUBS にサインイン',
+  },
+})
+const i18n = i18nBase(langs ?? ['en'])
+---
+
+<div
+  class="grid p-2 gap-4 items-center content-center justify-center justify-items-center"
+  class:list={{
+    'min-h-[calc(100vh_-_12rem)]': useDefaultHeight,
+    [className ?? '']: Boolean(className),
+  }}
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    stroke-width="1.5"
+    width="24"
+    height="24"
+    class="size-32 text-surface-400"
+  >
+    <defs>
+      <style>
+        .cls-6374f8d9b67f094e4896c670-1 {
+          fill: none;
+          stroke: currentColor;
+          stroke-miterlimit: 10;
+        }
+      </style>
+    </defs>
+    <circle class="cls-6374f8d9b67f094e4896c670-1" cx="12" cy="7.25" r="5.73"
+    ></circle>
+    <path
+      class="cls-6374f8d9b67f094e4896c670-1"
+      d="M1.5,23.48l.37-2.05A10.3,10.3,0,0,1,12,13h0a10.3,10.3,0,0,1,10.13,8.45l.37,2.05"
+    ></path>
+  </svg>
+  <p class="">{i18n('SignInToClubs')}</p>
+  <ConnectButton slot="connect" />
+</div>

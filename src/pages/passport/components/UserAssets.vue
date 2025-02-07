@@ -64,7 +64,7 @@ onMounted(async () => {
       </div>
 
       <li v-if="!assetsSbt" v-for="item in new Array(6)">
-        <span class="block h-96"><Skeleton /></span>
+        <span class="block h-48"><Skeleton /></span>
       </li>
     </ul>
   </section>
@@ -92,7 +92,7 @@ onMounted(async () => {
         {{ i18n('Empty') }} :)
       </div>
       <li v-if="!assetsNft" v-for="item in new Array(6)">
-        <span class="block h-96"><Skeleton /></span>
+        <span class="block h-48"><Skeleton /></span>
       </li>
     </ul>
   </section>
