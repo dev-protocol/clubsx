@@ -2,7 +2,6 @@ import { headers } from '@fixtures/api/headers'
 import type { APIRoute } from 'astro'
 import { isNotError, whenDefined, whenNotError } from '@devprotocol/util-ts'
 import { Contract, decodeBase64, JsonRpcProvider, toUtf8String } from 'ethers'
-import { getDefaultClient } from '@fixtures/api/assets/redis'
 import { addresses, arrayify } from '@devprotocol/dev-kit'
 import { json } from '@fixtures/api/json'
 import { ABI_NFT, fetchAssets } from '@fixtures/api/assets/utils'
@@ -18,6 +17,7 @@ import {
   Index,
   sTokenPayload as sTokenPayloadSchema,
 } from '@devprotocol/clubs-plugin-passports'
+import { Redis } from '@devprotocol/clubs-core/redis'
 
 const { PUBLIC_ALCHEMY_KEY } = import.meta.env
 
@@ -124,7 +124,7 @@ export const GET: APIRoute = async () => {
         new JsonRpcProvider(`https://polygon-mainnet.g.alchemy.com/v2/${key}`),
     ) ?? new Error('Alchemy key not found')
 
-  const redis = await getDefaultClient()
+  const redis = await Redis.client()
 
   const sTokensAbi = [
     ...ABI_NFT,
@@ -166,8 +166,6 @@ export const GET: APIRoute = async () => {
     ),
   )
   console.log({ sbtAssets })
-
-  await redis.quit()
 
   const res = [
     ...(isNotError(sTokensAssets) ? sTokensAssets : []),

@@ -1,7 +1,6 @@
 import { headers } from '@fixtures/api/headers'
 import { json, type JSON } from '@fixtures/api/json'
 import type { APIRoute } from 'astro'
-import { getDefaultClient, Index } from '@fixtures/api/assets/redis'
 import { CLUB_SCHEMA } from '@fixtures/api/club/schema'
 import { Index as ClubIndex } from '@fixtures/api/club/redis'
 import {
@@ -24,12 +23,13 @@ import {
   type AchievementInfo,
 } from '@plugins/achievements/types'
 import { decode } from '@devprotocol/clubs-core'
+import { Redis } from '@devprotocol/clubs-core/redis'
 
 export const GET: APIRoute = async (req) => {
   const eoa =
     whenDefined(req.params.eoa, (addr) => addr) ?? new Error('No EOA passed')
 
-  const client = await getDefaultClient()
+  const client = await Redis.client()
 
   const getClubsNameByURL = async (url: string) => {
     const key = url.replace(/^https?:\/\//, '').split('.')[0]
@@ -135,8 +135,6 @@ export const GET: APIRoute = async (req) => {
       }),
     )
   ).filter((achievement) => achievement !== undefined)
-
-  await client.quit()
 
   const res = whenNotError(claimableAchievements, (claimableAchievements) => ({
     achievements: claimableAchievements.slice(0, 5),

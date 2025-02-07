@@ -1,9 +1,9 @@
-import { getDefaultClient } from '@fixtures/api/club/redis'
 import { authenticate, decode } from '@devprotocol/clubs-core'
 import { isNotError, whenDefined, whenNotError } from '@devprotocol/util-ts'
 import { json } from '@fixtures/api/json'
 import { headers } from '@fixtures/api/headers'
 import { getDefaultProvider } from 'ethers'
+import { Redis } from '@devprotocol/clubs-core/redis'
 
 export const POST = async ({ request }: { request: Request }) => {
   const { message, signature, site } = (await request.json()) as {
@@ -12,7 +12,7 @@ export const POST = async ({ request }: { request: Request }) => {
     signature: string
   }
 
-  const client = await getDefaultClient()
+  const client = await Redis.client()
 
   const config = await client.get(site)
   const authenticated =
@@ -28,7 +28,6 @@ export const POST = async ({ request }: { request: Request }) => {
   const res = whenNotError(authenticated, (_auth) =>
     _auth ? _auth : new Error('Unauthorized'),
   )
-  await client.quit()
   return isNotError(res)
     ? new Response(
         json({

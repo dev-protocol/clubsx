@@ -5,10 +5,10 @@ import { whenDefined, type UndefinedOr } from '@devprotocol/util-ts'
 import { generateStatsId } from '@fixtures/api/keys'
 import { JsonRpcProvider, ZeroAddress } from 'ethers'
 import { always } from 'ramda'
-import { createClient } from 'redis'
 import type { Club, ClubWithStats, Stats } from '../stats/types'
+import { Redis } from '@devprotocol/clubs-core/redis'
 
-type Redis = ReturnType<typeof createClient>
+type Redis = Awaited<ReturnType<(typeof Redis)['client']>>
 
 const prov = new JsonRpcProvider('https://polygon.drpc.org')
 const U = always(undefined)
@@ -79,18 +79,7 @@ const factory = async (client: Redis) => {
 }
 
 export const GET = async () => {
-  const client = createClient({
-    url: process.env.REDIS_URL,
-    username: process.env.REDIS_USERNAME ?? '',
-    password: process.env.REDIS_PASSWORD ?? '',
-    socket: {
-      keepAlive: 1,
-      reconnectStrategy: () => {
-        return 1000
-      },
-    },
-  })
-  await client.connect()
+  const client = await Redis.client()
 
   const clubs = new Set<ClubWithStats>()
   const getClub = await factory(client)
@@ -155,7 +144,6 @@ export const GET = async () => {
   }
 
   await client.set(generateStatsId(), JSON.stringify(data))
-  await client.quit()
 
   return new Response(null)
 }

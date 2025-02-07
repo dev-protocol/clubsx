@@ -9,7 +9,6 @@ import {
   sTokenPayload as sTokenPayloadSchema,
   type PassportItemAssetType,
 } from '@devprotocol/clubs-plugin-passports'
-import { getDefaultClient } from '@fixtures/api/assets/redis'
 import { ACHIEVEMENT_ITEM_SCHEMA } from '@plugins/achievements/db/schema'
 import {
   type AchievementItem,
@@ -390,7 +389,7 @@ export const getSBTsForEOAFromClubsUrlHash = async (
   clubsUrl: string,
   eoa: string,
 ) => {
-  const client = await getDefaultClient()
+  const client = await Redis.client()
   const getMetaData = async (
     achievementInfoId: string,
   ): Promise<AchievementInfo> => {
@@ -438,6 +437,5 @@ export const getSBTsForEOAFromClubsUrlHash = async (
       return await arrangeData(item)
     }),
   )
-  await client.quit()
   return finalData
 }
