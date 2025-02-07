@@ -4,8 +4,6 @@ import {
   type ErrorOr,
   type UndefinedOr,
 } from '@devprotocol/util-ts'
-import { always } from 'ramda'
-import { createClient, type RedisClientType } from 'redis'
 import {
   getPassportItemFromPayload,
   sTokenPayload as sTokenPayloadSchema,
@@ -44,8 +42,7 @@ import { generateProfileId } from '../keys'
 import type { AsyncReturnType } from 'type-fest'
 import { uniqueNamesGenerator } from 'unique-names-generator'
 import { nanoid } from 'nanoid'
-
-const { REDIS_URL, REDIS_USERNAME, REDIS_PASSWORD } = import.meta.env
+import { Redis } from '@devprotocol/clubs-core/redis'
 
 export type ProfileWithId = Profile & { id: string }
 export type FeedUserData = {
@@ -75,7 +72,7 @@ export type FeedType = {
 }
 
 export const getAllProfiles = async (
-  redis: ReturnType<typeof createClient>,
+  redis: Awaited<ReturnType<(typeof Redis)['client']>>,
 ): Promise<ErrorOr<Array<UndefinedOr<ProfileWithId>>>> => {
   const keys = await whenNotError(redis, (client) => {
     try {
@@ -112,7 +109,7 @@ export const getAllProfiles = async (
 
 export const getClubFromAssetPayload = async (
   payload: string,
-  redis: ReturnType<typeof createClient>,
+  redis: Awaited<ReturnType<(typeof Redis)['client']>>,
 ) => {
   if (!payload || !redis || redis instanceof Error) {
     return undefined
@@ -165,7 +162,7 @@ export const getFeedAssetFromClip = async (
   skinIndex: number,
   type: ClipTypes,
   ownerDetails: FeedUserData,
-  redis: ReturnType<typeof createClient>,
+  redis: Awaited<ReturnType<(typeof Redis)['client']>>,
   currentTime: number,
 ): Promise<FeedType | undefined> => {
   if (
@@ -251,7 +248,7 @@ export const getClipFromSkin = async (
   skin: Skin,
   skinIndex: number,
   ownerDetails: FeedUserData,
-  redis: ReturnType<typeof createClient>,
+  redis: Awaited<ReturnType<(typeof Redis)['client']>>,
   currentTime: number,
 ) => {
   if (
@@ -302,18 +299,7 @@ export const getClipFromSkin = async (
 }
 
 export const getFeed = async (tag: string = 'recent') => {
-  const redis = await whenNotError(
-    createClient({
-      url: REDIS_URL,
-      username: REDIS_USERNAME ?? '',
-      password: REDIS_PASSWORD ?? '',
-    }),
-    (db) =>
-      db
-        .connect()
-        .then(always(db))
-        .catch((err) => new Error(err)),
-  )
+  const redis = await Redis.client().catch((err) => new Error(err))
 
   const profiles = await whenNotError(redis, (client) => getAllProfiles(client))
   const currentTime = Date.now()
@@ -368,13 +354,6 @@ export const getFeed = async (tag: string = 'recent') => {
     ) as Array<FeedType | undefined>
   } catch (err) {
     console.log('Err', err)
-  } finally {
-    await whenNotErrorAll([redis], ([client]) =>
-      client
-        .quit()
-        .then(always(feed))
-        .catch((err) => new Error(err)),
-    )
   }
 
   const filteredFeed =

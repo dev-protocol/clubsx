@@ -6,8 +6,9 @@ import {
   assetDocumentTypes,
   type AssetDocument,
 } from '@fixtures/api/assets/schema'
-import { getDefaultClient, Index } from '@fixtures/api/assets/redis'
+import { Index } from '@fixtures/api/assets/redis'
 import { isNotError, whenDefined, whenNotError } from '@devprotocol/util-ts'
+import { Redis } from '@devprotocol/clubs-core/redis'
 
 export const GET: APIRoute = async (req) => {
   const propertyAddress =
@@ -28,7 +29,7 @@ export const GET: APIRoute = async (req) => {
       : undefined,
   )
 
-  const client = await getDefaultClient()
+  const client = await Redis.client()
 
   const data = await whenNotError(propertyAddress, (property) =>
     client.ft
@@ -45,8 +46,6 @@ export const GET: APIRoute = async (req) => {
       )
       .catch((err: Error) => err),
   )
-
-  await client.quit()
 
   const res = whenNotError(data, (_data) => ({
     data: [..._data.documents.map(({ value }) => value)],

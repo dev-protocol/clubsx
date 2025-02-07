@@ -17,6 +17,7 @@ import {
   Index as AssetIndex,
 } from '@fixtures/api/assets/redis'
 import { ASSET_SCHEMA, type AssetDocument } from '@fixtures/api/assets/schema'
+import { Redis } from '@devprotocol/clubs-core/redis'
 
 export const GET: APIRoute = async (req) => {
   const accountAddress =
@@ -29,7 +30,7 @@ export const GET: APIRoute = async (req) => {
     type: 'passportItem',
   }
 
-  const client = await getDefaultClient().catch((err: Error) => err)
+  const client = await Redis.client().catch((err: Error) => err)
 
   const passportItemAssets = await whenNotErrorAll(
     [accountAddress, client],
@@ -73,8 +74,6 @@ export const GET: APIRoute = async (req) => {
         ),
       ),
   )
-
-  await whenNotError(client, (redis) => redis.quit())
 
   const res = whenNotError(passportItems, (items) => {
     const validItems = items.filter((item) => !!item)
