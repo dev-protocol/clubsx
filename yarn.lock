@@ -228,9 +228,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/tailwind@npm:5.1.5":
-  version: 5.1.5
-  resolution: "@astrojs/tailwind@npm:5.1.5"
+"@astrojs/tailwind@npm:6.0.0":
+  version: 6.0.0
+  resolution: "@astrojs/tailwind@npm:6.0.0"
   dependencies:
     autoprefixer: "npm:^10.4.20"
     postcss: "npm:^8.5.1"
@@ -238,7 +238,7 @@ __metadata:
   peerDependencies:
     astro: ^3.0.0 || ^4.0.0 || ^5.0.0
     tailwindcss: ^3.0.24
-  checksum: 10c0/90c1b19c268d08b82a22b94c7c874d025632453c2a22afe42e9d03c4372fdf565322e2c57b42135e152ed52dde733803cd4ed88c8a204862799708c43fca8db2
+  checksum: 10c0/b3b5f2647082dbd43efa58ecead9396c5a5187d425a616f31f247c4b1d0a1c0e041af6f1c2fcca10810d40c4c4d6b161828dd8866941a7e4b0e80b0222c0498a
   languageName: node
   linkType: hard
 
@@ -11762,7 +11762,7 @@ __metadata:
     "@astrojs/prefetch": "npm:0.4.1"
     "@astrojs/react": "npm:4.2.0"
     "@astrojs/svelte": "npm:7.0.4"
-    "@astrojs/tailwind": "npm:5.1.5"
+    "@astrojs/tailwind": "npm:6.0.0"
     "@astrojs/vercel": "npm:8.0.6"
     "@astrojs/vue": "npm:5.0.6"
     "@crossmint/client-sdk-base": "npm:^1.0.1-alpha.6"
