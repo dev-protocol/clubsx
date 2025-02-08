@@ -1217,34 +1217,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@crossmint/client-sdk-auth@npm:1.1.13":
-  version: 1.1.13
-  resolution: "@crossmint/client-sdk-auth@npm:1.1.13"
+"@crossmint/client-sdk-auth@npm:1.1.16":
+  version: 1.1.16
+  resolution: "@crossmint/client-sdk-auth@npm:1.1.16"
   dependencies:
-    "@crossmint/client-sdk-base": "npm:1.4.5"
-    "@crossmint/common-sdk-auth": "npm:1.0.11"
-    "@crossmint/common-sdk-base": "npm:0.3.1"
+    "@crossmint/client-sdk-base": "npm:1.4.8"
+    "@crossmint/common-sdk-auth": "npm:1.0.14"
+    "@crossmint/common-sdk-base": "npm:0.3.2"
     "@farcaster/auth-kit": "npm:0.6.0"
     jwt-decode: "npm:4.0.0"
-  checksum: 10c0/50a6296fbe915ddc5fc21b5dcb11dff9a06297b63baeb8fc5c65703a7c8830bfe87c444c4be5d759cefe57ad4ddd25cf6962cebd209478f74bd75e27650533a8
+  checksum: 10c0/80925dd31a4bf17f515d89db798c3b2fb367b3947e3a49a95ac3b80103c314ea93a016356e3ba84aa5dac910561f18593df23dbaa49375b28ca3504a9a50c20f
   languageName: node
   linkType: hard
 
-"@crossmint/client-sdk-base@npm:1.4.5":
-  version: 1.4.5
-  resolution: "@crossmint/client-sdk-base@npm:1.4.5"
-  dependencies:
-    "@crossmint/client-sdk-window": "npm:0.2.2"
-    "@crossmint/common-sdk-base": "npm:0.3.1"
-    "@datadog/browser-logs": "npm:4.42.2"
-    exponential-backoff: "npm:3.1.1"
-    uuid: "npm:9.0.1"
-    zod: "npm:3.22.4"
-  checksum: 10c0/cb96ca4cb164d5dff6fba0efe53dbff508e20a6a4f02ece67fdbe97b35c3e81b34edc39770fae439af069ccf98ec72d37938abb90eec4e804b25a847d3f6f0ad
-  languageName: node
-  linkType: hard
-
-"@crossmint/client-sdk-base@npm:^1.0.1-alpha.6":
+"@crossmint/client-sdk-base@npm:1.4.8, @crossmint/client-sdk-base@npm:^1.0.1-alpha.6":
   version: 1.4.8
   resolution: "@crossmint/client-sdk-base@npm:1.4.8"
   dependencies:
@@ -1259,15 +1245,15 @@ __metadata:
   linkType: hard
 
 "@crossmint/client-sdk-react-ui@npm:^1.0.1-alpha.6":
-  version: 1.13.7
-  resolution: "@crossmint/client-sdk-react-ui@npm:1.13.7"
+  version: 1.13.10
+  resolution: "@crossmint/client-sdk-react-ui@npm:1.13.10"
   dependencies:
-    "@crossmint/client-sdk-auth": "npm:1.1.13"
-    "@crossmint/client-sdk-base": "npm:1.4.5"
-    "@crossmint/client-sdk-smart-wallet": "npm:0.1.30"
+    "@crossmint/client-sdk-auth": "npm:1.1.16"
+    "@crossmint/client-sdk-base": "npm:1.4.8"
+    "@crossmint/client-sdk-smart-wallet": "npm:0.1.33"
     "@crossmint/client-sdk-window": "npm:0.2.2"
-    "@crossmint/common-sdk-auth": "npm:1.0.11"
-    "@crossmint/common-sdk-base": "npm:0.3.1"
+    "@crossmint/common-sdk-auth": "npm:1.0.14"
+    "@crossmint/common-sdk-base": "npm:0.3.2"
     "@dynamic-labs/ethereum": "npm:2.6.3"
     "@dynamic-labs/sdk-react-core": "npm:2.6.3"
     "@dynamic-labs/solana": "npm:2.6.3"
@@ -1292,16 +1278,16 @@ __metadata:
   peerDependencies:
     react: ">=17.0.2"
     react-dom: ">=17.0.2"
-  checksum: 10c0/356da5a01547b2d7e8aa59d53fc19806df96c7e7924d5278a874e4b819874735e77e36776d608684fa356c796fbf4250963a0c78267c78e26ff896c5b0106c31
+  checksum: 10c0/c2f9027dbd6687431a6586e0ef3d7c0eca2507d7ce9b66a4a52875f73e102ac69cf1ef0190e0b0e94823b6ee28d1c57c20914e32cf664b33b1d277bda42a139b
   languageName: node
   linkType: hard
 
-"@crossmint/client-sdk-smart-wallet@npm:0.1.30":
-  version: 0.1.30
-  resolution: "@crossmint/client-sdk-smart-wallet@npm:0.1.30"
+"@crossmint/client-sdk-smart-wallet@npm:0.1.33":
+  version: 0.1.33
+  resolution: "@crossmint/client-sdk-smart-wallet@npm:0.1.33"
   dependencies:
-    "@crossmint/client-sdk-base": "npm:1.4.5"
-    "@crossmint/common-sdk-base": "npm:0.3.1"
+    "@crossmint/client-sdk-base": "npm:1.4.8"
+    "@crossmint/common-sdk-base": "npm:0.3.2"
     "@zerodev/ecdsa-validator": "npm:5.3.1"
     "@zerodev/passkey-validator": "npm:5.4.0"
     "@zerodev/sdk": "npm:5.3.3"
@@ -1309,7 +1295,7 @@ __metadata:
     permissionless: "npm:0.1.36"
     viem: "npm:2.17.5"
     zod: "npm:3.22.4"
-  checksum: 10c0/83ba8f03c0fdad3e6e2b003a634d0a03490b335a79d8cc0c8e02571465378bd5dbaca8412a0ffd6150bd30f9c6167cf8bbcac37a296d0377863307a13a9c75a4
+  checksum: 10c0/5f6feab37b62bb4a06adcc03d88532ddd1e334910e9ea688a4686d3b3b7004a34dc349e0a7cb33d18315827455203f626a39fb0657a8cc14ab335e74c295fe99
   languageName: node
   linkType: hard
 
@@ -1323,23 +1309,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@crossmint/common-sdk-auth@npm:1.0.11":
-  version: 1.0.11
-  resolution: "@crossmint/common-sdk-auth@npm:1.0.11"
+"@crossmint/common-sdk-auth@npm:1.0.14":
+  version: 1.0.14
+  resolution: "@crossmint/common-sdk-auth@npm:1.0.14"
   dependencies:
-    "@crossmint/client-sdk-base": "npm:1.4.5"
-    "@crossmint/common-sdk-base": "npm:0.3.1"
-  checksum: 10c0/44dd08fc6a0c38d6eb56b3eb3d5d3eabb724e5f024be3e702530305f688b5c37577d38ee7b7ed4503562d19c12158b224688d1e96bdeaecbcbce2729c583d307
-  languageName: node
-  linkType: hard
-
-"@crossmint/common-sdk-base@npm:0.3.1":
-  version: 0.3.1
-  resolution: "@crossmint/common-sdk-base@npm:0.3.1"
-  dependencies:
-    bs58: "npm:5.0.0"
-    tweetnacl: "npm:1.0.3"
-  checksum: 10c0/0ccc3e1304a6590eda2df5095f24d6c4ff9b8ff0d0056baa0133df9cbf3df1ca7132656abfda3a8d75fd39130e32952ba4bb31d2df48567604311284ce60294f
+    "@crossmint/client-sdk-base": "npm:1.4.8"
+    "@crossmint/common-sdk-base": "npm:0.3.2"
+  checksum: 10c0/1aa3fd344d8bc6d6d1edca9044810b38c420d6944643055280c378f52677042900af9e77dc12395b735e6ae6cbd7f43074611f2c1c10f8c060c4621aee9d787f
   languageName: node
   linkType: hard
 
