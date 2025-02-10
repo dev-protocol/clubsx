@@ -1,10 +1,25 @@
 <script setup lang="ts">
-defineProps<{
+import { onMounted, useTemplateRef, watch } from 'vue'
+
+const props = defineProps<{
   modalContent: any
   isVisible: boolean
   handleModalClose: () => void
   attrs: { [key: string]: any }
 }>()
+const dialog = useTemplateRef('dialog')
+
+const toggleDialog = () => {
+  if (dialog.value && props.isVisible) {
+    dialog.value.showModal()
+  }
+  if (dialog.value && !props.isVisible) {
+    dialog.value.close()
+  }
+}
+
+watch(props, toggleDialog)
+onMounted(toggleDialog)
 </script>
 
 <style>
@@ -55,29 +70,28 @@ html:has(#modal-container[data-active='true']) {
 </style>
 
 <template>
-  <Teleport to="body">
+  <dialog
+    v-show="isVisible"
+    id="modal-container"
+    :data-active="isVisible"
+    class="modal-container z-30"
+    ref="dialog"
+  >
     <div
-      v-show="isVisible"
-      id="modal-container"
-      :data-active="isVisible"
-      class="modal-container z-30"
+      @click="
+        () => {
+          handleModalClose()
+        }
+      "
+      class="fixed top-0 bottom-0 left-0 right-0 overflow-y-auto py-6 flex justify-center items-center backdrop-blur-md bg-black/30 z-50"
     >
-      <div
-        @click="
-          () => {
-            handleModalClose()
-          }
-        "
-        class="fixed top-0 bottom-0 left-0 right-0 overflow-y-auto py-6 flex justify-center items-center backdrop-blur-md bg-black/30 z-50"
-      >
-        <Transition>
-          <component v-show="isVisible" :is="modalContent" v-bind="attrs">
-            <template #after:description>
-              <slot name="after:description" />
-            </template>
-          </component>
-        </Transition>
-      </div>
+      <Transition>
+        <component v-show="isVisible" :is="modalContent" v-bind="attrs">
+          <template #after:description>
+            <slot name="after:description" />
+          </template>
+        </component>
+      </Transition>
     </div>
-  </Teleport>
+  </dialog>
 </template>
