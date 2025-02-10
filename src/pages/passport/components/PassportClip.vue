@@ -189,6 +189,79 @@ onMounted(async () => {
         </div>
       </span>
     </div>
+    <div
+      v-if="props.share"
+      class="sticky bottom-0 mt-4 grid gap-4 rounded-xl bg-[rgba(23_0_60/.8)] p-4 backdrop-blur-sm"
+    >
+      <span class="grid justify-center justify-items-center">
+        <button
+          @click.stop.prevent="shareClip"
+          class="grid justify-center text-white"
+        >
+          <div
+            class="rounded-full bg-[url('https://images.unsplash.com/photo-1694698955114-82c37b89f961?w=320')] bg-cover p-2 shadow-[0_1px_0_0_#fff_inset,0_4px_4px_0_rgba(0_0_0/0.25)]"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="size-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"
+              />
+            </svg>
+          </div>
+          <span>Share</span>
+        </button></span
+      >
+      <span class="flex justify-between rounded-full bg-white/10 px-8 py-4">
+        <a href="#" class="flex items-center gap-2 text-white">
+          <svg
+            width="7"
+            height="23"
+            viewBox="0 0 7 23"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              id="Vector 1"
+              d="M5 2L2.30714 8.39555C1.47125 10.3808 1.47125 12.6192 2.30714 14.6045L5 21"
+              stroke="white"
+              stroke-width="3"
+              stroke-linecap="round"
+            />
+          </svg>
+          Prev</a
+        ><a href="#" class="flex items-center gap-2 text-white"
+          ><span class="size-3 rounded bg-white"></span> Passport</a
+        >
+        <button 
+          @click=""
+          class="flex items-center gap-2 text-white"
+          >Next<svg
+            class="rotate-180"
+            width="7"
+            height="23"
+            viewBox="0 0 7 23"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              id="Vector 1"
+              d="M5 2L2.30714 8.39555C1.47125 10.3808 1.47125 12.6192 2.30714 14.6045L5 21"
+              stroke="white"
+              stroke-width="3"
+              stroke-linecap="round"
+            />
+          </svg>
+        </button>
+      </span>
+    </div>
   </div>
 </template>
 
