@@ -51,7 +51,7 @@ const elementId = computed<UndefinedOr<string>>(() => {
 })
 const clubConfig = ref<string>()
 const preloadOgImages = ref<string[]>(
-  ((og) => [og.default, og.x])(
+  ((og) => [og.default])(
     getPassportOgImages({
       url: props.url,
       clip: props.item,

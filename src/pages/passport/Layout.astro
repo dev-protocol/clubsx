@@ -56,7 +56,7 @@ const passportSkinTheme =
   )) ?? DefaultSkin
 
 const requestURL = new URL(Astro.url)
-const { default: image, x: imageX } = getPassportOgImages({
+const { default: image } = getPassportOgImages({
   url: Astro.url,
   user: eoa,
   skins,
@@ -69,11 +69,7 @@ const twitterHandle = 'poweredbyClubs'
 const title = 'CLUBS | Collection-based Social Platform'
 const description = 'Collect, Showcase, and Connect.'
 const langs = parseAcceptLanguage(Astro.request.headers.get('Accept-Language'))
-const preloads = [
-  ...preload,
-  { as: 'image', href: image },
-  { as: 'image', href: imageX },
-]
+const preloads = [...preload, { as: 'image', href: image }]
 ---
 
 <html
@@ -127,7 +123,6 @@ const preloads = [
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={`${imageX}`} />
   </head>
 
   <body

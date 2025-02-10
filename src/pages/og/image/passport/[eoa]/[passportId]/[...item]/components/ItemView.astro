@@ -3,7 +3,11 @@ import type { PassportItem } from '@pages/passport/types'
 import VideoElement from './VideoElement.vue'
 import playIconInnerHTML from '../assets/play-icon.svg?raw'
 import { MediaEmbed } from '@devprotocol/clubs-plugin-passports/vue'
-import type { Clip } from '@pages/api/profile'
+import {
+  getMediaId,
+  mediaSource,
+} from '@devprotocol/clubs-plugin-passports/media'
+import YouTube from '@assets/sns/YouTube.svg'
 
 type Props = {
   item?: PassportItem
@@ -14,11 +18,23 @@ console.log('item', item)
 ---
 
 {
-  item?.link && (
-    <MediaEmbed
-      src={item.link}
-      class="w-full h-full !aspect-auto object-cover rounded-xl"
-    />
+  item?.link &&
+    mediaSource(item.link).toString().includes('youtube') === false && (
+      <MediaEmbed
+        src={item.link}
+        class="w-full h-full !aspect-auto object-cover rounded-xl"
+      />
+    )
+}
+{
+  item?.link && mediaSource(item.link).toString().includes('youtube') && (
+    <div class="w-full h-full relative flex justify-center items-center">
+      <img
+        src={`https://img.youtube.com/vi/${getMediaId(item.link)}/maxresdefault.jpg`}
+        class="w-full h-full aspect-auto object-cover rounded-xl"
+      />
+      <img src={YouTube.src} class="h-auto w-[28%] max-w-24 absolute" />
+    </div>
   )
 }
 {

@@ -19,7 +19,7 @@ export const getPassportOgImages = ({
   skinId: string
   clip?: Clip | PassportClip
   itemHash?: string
-}): { x: string; default: string } => {
+}): { default: string } => {
   const ogImageURLHost = requestURL.origin.includes('prerelease.clubs.place')
     ? 'prerelease.clubs.place'
     : requestURL.origin.includes('clubs.place')
@@ -42,6 +42,5 @@ export const getPassportOgImages = ({
   )
   const ogpImageURL = `${requestURL.protocol}//${ogImageURLHost}/og/image/passport/${user}/${skinId ? skinId : ''}${itemHash ? `/${itemHash}` : ''}?cache=${bytes32Hex(cacheKey)}`
   const image = `https://capture.clubs.place/api/generate?h=630&w=1200&src=${ogpImageURL}`
-  const imageX = `https://capture.clubs.place/api/generate?h=675&w=1200&src=${ogpImageURL}`
-  return { default: image, x: imageX }
+  return { default: image }
 }
