@@ -9,6 +9,8 @@ import PassportClipCard from './PassportClip.vue'
 import { passportSpotlightClass } from '@fixtures/ui/passport'
 import PassportClipModal from './PassportClipModal.vue'
 import { mediaSource } from '@devprotocol/clubs-plugin-passports/media'
+import type { ClipTypes } from '@fixtures/router/passportItem'
+import { whenDefined, type UndefinedOr } from '@devprotocol/util-ts'
 
 const props = defineProps<{
   id: string
@@ -17,15 +19,27 @@ const props = defineProps<{
   clips: PassportClip[]
   skinSection: 'spotlight' | 'clips'
   skinId: string
+  initialSelectedItem?: { type: ClipTypes; id: string }
 }>()
+
+const U = undefined
+const INIT = whenDefined(props.initialSelectedItem, (it) => {
+  const foundIndex =
+    it.type === props.skinSection
+      ? props.clips.findIndex((clip) => clip.id === it.id)
+      : U
+  return typeof foundIndex === 'number' && foundIndex > -1 ? foundIndex : U
+})
 
 const i18nBase = i18nFactory(Strings)
 const i18n = ref<ReturnType<typeof i18nBase>>(i18nBase(['en']))
 const url = computed(() => new URL(props.url))
 
-const modalVisible = ref(false)
-const modalItemIndex = ref<number>()
-const modalItem = ref<PassportClip>()
+const modalVisible = ref<boolean>(typeof INIT === 'number')
+const modalItemIndex = ref<UndefinedOr<number>>(INIT)
+const modalItem = ref<UndefinedOr<PassportClip>>(
+  typeof INIT === 'number' ? props.clips.at(INIT) : U,
+)
 const handleOnClick = (item: PassportClip, index: number) => {
   modalItem.value = item
   modalVisible.value = true
