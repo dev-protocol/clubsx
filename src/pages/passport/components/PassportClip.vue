@@ -163,7 +163,7 @@ onMounted(async () => {
         <div class="flex w-full max-w-full items-center justify-between">
           <i v-if="IS_LINK"></i>
           <span
-            v-if="clubName && !props.clubsLink"
+            v-if="!IS_LINK && clubName && !props.clubsLink"
             class="line-clamp-1 opacity-50 text-sm @[16rem]/passport-asset:text-base"
             >{{ clubName }}</span
           >
