@@ -57,6 +57,7 @@ const preloadOgImages = ref<string[]>(
       clip: props.item,
       user: props.eoa,
       skinId: props.skinId,
+      itemHash: elementId.value,
     }),
   ),
 )
