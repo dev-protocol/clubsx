@@ -56,20 +56,34 @@ const passportSkinTheme =
   )) ?? DefaultSkin
 
 const requestURL = new URL(Astro.url)
-const { default: image } = getPassportOgImages({
-  url: Astro.url,
-  user: eoa,
-  skins,
-  skinId: selectedSkinId,
-  itemHash,
-})
+const [{ default: image }, passportOgImage] = [
+  getPassportOgImages({
+    url: Astro.url,
+    user: eoa,
+    skins,
+    skinId: selectedSkinId,
+    itemHash,
+  }),
+  itemHash
+    ? getPassportOgImages({
+        url: Astro.url,
+        user: eoa,
+        skins,
+        skinId: selectedSkinId,
+      })
+    : undefined,
+]
 const name = 'CLUBS'
 const url = 'https://www.clubs.place/'
 const twitterHandle = 'poweredbyClubs'
 const title = 'CLUBS | Collection-based Social Platform'
 const description = 'Collect, Showcase, and Connect.'
 const langs = parseAcceptLanguage(Astro.request.headers.get('Accept-Language'))
-const preloads = [...preload, { as: 'image', href: image }]
+const preloads = [
+  ...preload,
+  { as: 'image', href: image },
+  ...(passportOgImage ? [{ as: 'image', href: passportOgImage.default }] : []),
+]
 ---
 
 <html
