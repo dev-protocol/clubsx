@@ -18,9 +18,7 @@ const totalHeight = computed(() => props.items.length * props.itemHeight)
 
 const visibleCount = computed(() => {
   if (!container.value) return 0
-  return (
-    Math.ceil(container.value.clientHeight / props.itemHeight) + props.buffer
-  )
+  return Math.ceil(window.innerHeight / props.itemHeight) + props.buffer
 })
 
 const startIndex = computed(() => {
@@ -45,7 +43,7 @@ const visibleItems = computed(() => {
 
 const onScroll = () => {
   if (container.value) {
-    scrollTop.value = container.value.scrollTop
+    scrollTop.value = Math.abs(container.value.getBoundingClientRect().top)
   }
 }
 
@@ -59,9 +57,11 @@ const throttledOnScroll = () => {
 }
 
 onMounted(() => {
+  container.value = window.document.body
   if (container.value) {
     scrollTop.value = container.value.scrollTop
   }
+  window.document.addEventListener('scroll', throttledOnScroll)
 })
 
 watch([scrollTop, () => props.items], () => {
@@ -72,11 +72,7 @@ watch([scrollTop, () => props.items], () => {
 </script>
 
 <template>
-  <div
-    class="virtual-scroll-container"
-    ref="container"
-    @scroll="throttledOnScroll"
-  >
+  <div class="relative" ref="container">
     <div class="spacer" :style="{ height: totalHeight + 'px' }"></div>
 
     <div
@@ -91,12 +87,6 @@ watch([scrollTop, () => props.items], () => {
 </template>
 
 <style scoped>
-.virtual-scroll-container {
-  overflow-y: auto;
-  height: calc(100vh - 56px - 40px);
-  position: relative;
-  scrollbar-width: none;
-}
 .spacer {
   width: 100%;
 }
