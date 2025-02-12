@@ -68,6 +68,7 @@ export type FeedType = {
   score: number
   updateTime: number
   engagementScore: number
+  clubLink?: string
 }
 
 export const getAllProfiles = async (
@@ -182,6 +183,7 @@ export const getFeedAssetFromClip = async (
   let clubAvatar: string = ''
   let itemAssetValue: string = ''
   let itemAssetType: PassportItemAssetType | 'ugc'
+  let clubLink: UndefinedOr<string> = undefined
 
   if (clip.link && !clip.payload) {
     clubName = ''
@@ -212,6 +214,7 @@ export const getFeedAssetFromClip = async (
     clubAvatar = (clubConfig?.options?.find(
       (option) => option.key === 'avatarImgSrc',
     )?.value || 'https://i.imgur.com/lSpDjrr.jpg') as string
+    clubLink = clubConfig?.url
   }
 
   const contentTimestamp =
@@ -240,6 +243,7 @@ export const getFeedAssetFromClip = async (
     score: finalScore,
     updateTime: contentTimestamp,
     engagementScore: engagementScore, // only based on likes for now.
+    clubLink,
   }
 }
 
