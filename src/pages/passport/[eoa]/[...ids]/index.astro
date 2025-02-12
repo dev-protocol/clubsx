@@ -86,7 +86,13 @@ const [
   whenDefined(_passportSkinBGMs, () =>
     getPassportItemWrapper(_passportSkinBGMs?.payload ?? '')
       .then((item) =>
-        item instanceof Error ? undefined : { ..._passportSkinBGMs, ...item },
+        item instanceof Error
+          ? undefined
+          : {
+              ..._passportSkinBGMs,
+              ...item,
+              id: _passportSkinBGMs?.id || item?.id,
+            },
       )
       .catch(() => undefined),
   ),
@@ -99,7 +105,9 @@ const [
       videos.map((item) =>
         getPassportItemWrapper(item?.payload ?? '')
           .then((clip) =>
-            clip instanceof Error ? undefined : { ...item, ...clip },
+            clip instanceof Error
+              ? undefined
+              : { ...item, ...clip, id: item?.id || clip?.id },
           )
           .catch(() => undefined),
       ) ?? [],
@@ -125,6 +133,7 @@ const [
                     : {
                         ...item,
                         ...clip,
+                        id: item?.id || clip?.id,
                         description: item.description,
                         frameColorHex: item.frameColorHex,
                       }) as PassportClip,
@@ -153,6 +162,7 @@ const [
                     : {
                         ...item,
                         ...spotlight,
+                        id: item?.id || clip?.id,
                         description: item.description,
                         frameColorHex: item.frameColorHex,
                       }) as PassportClip,
