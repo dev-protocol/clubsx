@@ -61,7 +61,8 @@ const onNext = () => {
 }
 const onPrev = () => {
   if (modalItemIndex.value !== undefined && modalVisible.value) {
-    const newIndex = (modalItemIndex.value - 1 + props.clips.length) % props.clips.length
+    const newIndex =
+      (modalItemIndex.value - 1 + props.clips.length) % props.clips.length
     modalItemIndex.value = newIndex
     modalItem.value = props.clips[newIndex]
   }
@@ -144,7 +145,7 @@ onMounted(async () => {
       mediaEmbedClass: 'rounded overflow-hidden',
       url,
       onNext: onNext,
-      onPrev: onPrev
+      onPrev: onPrev,
     }"
   />
 </template>

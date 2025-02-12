@@ -29,7 +29,7 @@ const props = defineProps<{
   mediaEmbedClass?: string
   lock?: boolean
   autoplay?: boolean
-  onPrev?:() => void
+  onPrev?: () => void
   onNext?: () => void
 }>()
 
@@ -213,7 +213,10 @@ onMounted(async () => {
           </button></span
         >
         <span class="flex justify-between rounded-full bg-white/10 px-8 py-4">
-          <button @click.stop.prevent="props.onPrev" class="flex items-center gap-2 text-white">
+          <button
+            @click.stop.prevent="props.onPrev"
+            class="flex items-center gap-2 text-white"
+          >
             <svg
               width="7"
               height="23"
@@ -233,7 +236,10 @@ onMounted(async () => {
           ><a href="#" class="flex items-center gap-2 text-white"
             ><span class="size-3 rounded bg-white"></span> Passport</a
           >
-          <button @click.stop.prevent="props.onNext" class="flex items-center gap-2 text-white">
+          <button
+            @click.stop.prevent="props.onNext"
+            class="flex items-center gap-2 text-white"
+          >
             Next<svg
               class="rotate-180"
               width="7"
