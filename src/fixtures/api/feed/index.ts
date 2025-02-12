@@ -42,6 +42,7 @@ import type { AsyncReturnType } from 'type-fest'
 import { uniqueNamesGenerator } from 'unique-names-generator'
 import { nanoid } from 'nanoid'
 import { Redis } from '@devprotocol/clubs-core/redis'
+import { orderBy } from 'lodash-es'
 
 export type ProfileWithId = Profile & { id: string }
 export type FeedUserData = {
@@ -215,11 +216,11 @@ export const getFeedAssetFromClip = async (
   }
 
   const contentTimestamp =
-    clip.updatedAt > clip.createdAt
+    (clip.updatedAt > clip.createdAt
       ? clip.updatedAt
-      : clip.createdAt || Date.now()
-  const recencyScore = Math.exp(-(currentTime - contentTimestamp) / 86400)
+      : clip.createdAt) || 0
   const engagementScore = skin.likes || 0
+  const recencyScore = Math.exp(-(currentTime - contentTimestamp) / 86400)
   const finalScore = 0.6 * recencyScore + 0.4 * engagementScore // 60% importance to recency, 40% to engagement.
 
   return {
@@ -237,9 +238,9 @@ export const getFeedAssetFromClip = async (
     clipType: type,
     parentPassport: skin,
     parentPassportIndex: skinIndex,
-    score: finalScore,
-    updateTime: contentTimestamp,
-    engagementScore: engagementScore, // only based on likes for now.
+    score: finalScore || 0,
+    updateTime: contentTimestamp || 0,
+    engagementScore: engagementScore || 0, // only based on likes for now.
   }
 }
 
@@ -302,7 +303,7 @@ export const getFeed = async (tag: string = 'recent') => {
 
   const profiles = await whenNotError(redis, (client) => getAllProfiles(client))
   const currentTime = Date.now()
-  let feed: Array<FeedType | undefined> = []
+  let feed: Array<FeedType> = []
   try {
     const nestedFeed = await whenNotErrorAll(
       [redis, profiles],
@@ -338,9 +339,6 @@ export const getFeed = async (tag: string = 'recent') => {
                   client,
                   currentTime,
                 )
-                // feed.push(
-                //   ...clip,
-                // )
                 return clip
               }) ?? [],
             )
@@ -349,22 +347,20 @@ export const getFeed = async (tag: string = 'recent') => {
       },
     )
     feed = (
-      nestedFeed instanceof Error ? [] : nestedFeed.flat(Infinity)
-    ) as Array<FeedType | undefined>
+      nestedFeed instanceof Error ? [] : nestedFeed.flat(Infinity).filter(feed => !!feed)
+    ) as Array<FeedType>
   } catch (err) {
     console.log('Err', err)
   }
 
   const filteredFeed =
     (tag.toLowerCase() === 'score'
-      ? feed?.filter((feed) => !!feed)?.sort((a, b) => b.score - a.score)
+      ? orderBy(feed, ['score'], ['desc'])
       : tag.toLowerCase() === 'random3'
-        ? getRandomElements(feed?.filter((feed) => !!feed) || [], 3)
+        ? getRandomElements(feed || [], 3)
         : tag.toLowerCase() === 'random6'
-          ? getRandomElements(feed?.filter((feed) => !!feed) || [], 6)
-          : feed
-              ?.filter((feed) => !!feed)
-              ?.sort((a, b) => b.updateTime - a.updateTime)) || []
+          ? getRandomElements(feed || [], 6)
+          : orderBy(feed, ['updateTime'], ['desc'])) || []
 
   return filteredFeed
 }
