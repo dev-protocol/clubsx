@@ -40,7 +40,6 @@ const modalItemIndex = ref<UndefinedOr<number>>(INIT)
 const modalItem = ref<UndefinedOr<PassportClip>>(
   typeof INIT === 'number' ? props.clips.at(INIT) : U,
 )
-console.log({ modalItem: modalItem.value, modalVisible: modalVisible.value})
 const handleOnClick = (item: PassportClip, index: number) => {
   modalItem.value = item
   modalVisible.value = true
@@ -56,7 +55,6 @@ const modalClose = () => {
 const onNext = () => {
   if (modalItemIndex.value !== undefined && modalVisible.value) {
     const newIndex = (modalItemIndex.value + 1) % props.clips.length
-    console.log({newIndex})
     modalItemIndex.value = newIndex
     modalItem.value = props.clips[newIndex]
   }
@@ -64,7 +62,6 @@ const onNext = () => {
 const onPrev = () => {
   if (modalItemIndex.value !== undefined && modalVisible.value) {
     const newIndex = (modalItemIndex.value - 1 + props.clips.length) % props.clips.length
-    console.log({newIndex})
     modalItemIndex.value = newIndex
     modalItem.value = props.clips[newIndex]
   }
