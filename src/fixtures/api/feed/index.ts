@@ -216,9 +216,7 @@ export const getFeedAssetFromClip = async (
   }
 
   const contentTimestamp =
-    (clip.updatedAt > clip.createdAt
-      ? clip.updatedAt
-      : clip.createdAt) || 0
+    (clip.updatedAt > clip.createdAt ? clip.updatedAt : clip.createdAt) || 0
   const engagementScore = skin.likes || 0
   const recencyScore = Math.exp(-(currentTime - contentTimestamp) / 86400)
   const finalScore = 0.6 * recencyScore + 0.4 * engagementScore // 60% importance to recency, 40% to engagement.
@@ -347,7 +345,9 @@ export const getFeed = async (tag: string = 'recent') => {
       },
     )
     feed = (
-      nestedFeed instanceof Error ? [] : nestedFeed.flat(Infinity).filter(feed => !!feed)
+      nestedFeed instanceof Error
+        ? []
+        : nestedFeed.flat(Infinity).filter((feed) => !!feed)
     ) as Array<FeedType>
   } catch (err) {
     console.log('Err', err)
