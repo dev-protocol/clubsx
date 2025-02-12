@@ -30,7 +30,7 @@ const id = ids?.split('/')?.at(0) ?? '' // Get the skin id from the URL.
 const passportElementId =
   new URL(Astro.request.url).searchParams.get('i') ?? undefined // Get the element id from the URL.
 const initialItem = ((item) => (isNotError(item) ? item : undefined))(
-  whenDefined(passportElementId, hashToItem),
+  whenDefined(passportElementId, hashToItem)
 )
 
 const _profile: Profile = await getProfile({ id: eoa ?? '' })
@@ -62,7 +62,7 @@ const getPassportItemWrapper = (payload: string) =>
 const passportTheme = await whenDefined(_currentTheme, () =>
   getPassportItemWrapper(_currentTheme || '')
     .then((item) => (item instanceof Error ? undefined : item))
-    .catch(() => undefined),
+    .catch(() => undefined)
 )
 
 const clubsUrl = passportTheme?.clubsUrl
@@ -78,10 +78,10 @@ const [
     getSBTsForEOAFromClubsUrlHash(
       clubsUrlHash,
       clubsUrl ? clubsUrl : '',
-      isEOA ? eoa : '',
+      isEOA ? eoa : ''
     )
       .then((sbt) => (sbt instanceof Error ? undefined : sbt))
-      .catch(() => undefined),
+      .catch(() => undefined)
   ),
   whenDefined(_passportSkinBGMs, () =>
     getPassportItemWrapper(_passportSkinBGMs?.payload ?? '')
@@ -92,9 +92,9 @@ const [
               ..._passportSkinBGMs,
               ...item,
               id: _passportSkinBGMs?.id || item?.id,
-            },
+            }
       )
-      .catch(() => undefined),
+      .catch(() => undefined)
   ),
   whenDefined(_passportSkinVideos, async (videos) => {
     if (!videos.length) {
@@ -107,10 +107,10 @@ const [
           .then((clip) =>
             clip instanceof Error
               ? undefined
-              : { ...item, ...clip, id: item?.id || clip?.id },
+              : { ...item, ...clip, id: item?.id || clip?.id }
           )
-          .catch(() => undefined),
-      ) ?? [],
+          .catch(() => undefined)
+      ) ?? []
     )
       .then((items) => items.filter((items) => !!items))
       .then((items) => (items.length ? items : undefined))
@@ -136,10 +136,10 @@ const [
                         id: item?.id || clip?.id,
                         description: item.description,
                         frameColorHex: item.frameColorHex,
-                      }) as PassportClip,
+                      }) as PassportClip
               )
-              .catch(() => undefined),
-      ) ?? [],
+              .catch(() => undefined)
+      ) ?? []
     )
       .then((items) => items.filter((items) => !!items))
       .then((items) => (items.length ? items : undefined))
@@ -165,10 +165,10 @@ const [
                         id: item?.id || spotlight?.id,
                         description: item.description,
                         frameColorHex: item.frameColorHex,
-                      }) as PassportClip,
+                      }) as PassportClip
               )
-              .catch(() => undefined),
-      ) ?? [],
+              .catch(() => undefined)
+      ) ?? []
     )
       .then((items) => items.filter((items) => !!items))
       .then((items) => (items.length ? items.slice(0, 3) : undefined))
