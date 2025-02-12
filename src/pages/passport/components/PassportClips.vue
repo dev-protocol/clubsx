@@ -40,6 +40,7 @@ const modalItemIndex = ref<UndefinedOr<number>>(INIT)
 const modalItem = ref<UndefinedOr<PassportClip>>(
   typeof INIT === 'number' ? props.clips.at(INIT) : U,
 )
+console.log({ modalItem: modalItem.value, modalVisible: modalVisible.value})
 const handleOnClick = (item: PassportClip, index: number) => {
   modalItem.value = item
   modalVisible.value = true
@@ -52,6 +53,22 @@ const modalClose = () => {
   modalItem.value = {} as PassportClip
 }
 
+const onNext = () => {
+  if (modalItemIndex.value !== undefined && modalVisible.value) {
+    const newIndex = (modalItemIndex.value + 1) % props.clips.length
+    console.log({newIndex})
+    modalItemIndex.value = newIndex
+    modalItem.value = props.clips[newIndex]
+  }
+}
+const onPrev = () => {
+  if (modalItemIndex.value !== undefined && modalVisible.value) {
+    const newIndex = (modalItemIndex.value - 1 + props.clips.length) % props.clips.length
+    console.log({newIndex})
+    modalItemIndex.value = newIndex
+    modalItem.value = props.clips[newIndex]
+  }
+}
 onMounted(async () => {
   i18n.value = i18nBase(navigator.languages)
 })
@@ -129,6 +146,8 @@ onMounted(async () => {
       lock: false,
       mediaEmbedClass: 'rounded overflow-hidden',
       url,
+      onNext: onNext,
+      onPrev: onPrev
     }"
   />
 </template>
