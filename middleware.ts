@@ -32,7 +32,7 @@ const redirects = [
     destination: 'https://kougenji.clubs.place',
   },
 ]
-const ban = [/\.php$/, /^\/wp-/]
+const ban = [/\.php$/, /^\/wp-/, /\.log$/]
 
 export default function middleware(req: Request) {
   const url = new URL(req.url)
