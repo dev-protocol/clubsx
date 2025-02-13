@@ -245,11 +245,7 @@ const addPassportdOfferingInConfig = async () => {
   const { signature: sig, message: msg } = await sign()
   apiCalling.value = { progress: true }
 
-  if (
-    !passportItem.value.itemAssetType ||
-    !passportItem.value.itemAssetValue ||
-    !passportOffering.value.price
-  ) {
+  if (!passportItem.value.itemAssetType || !passportItem.value.itemAssetValue) {
     apiCalling.value = {
       progress: false,
       result: null,
@@ -361,15 +357,11 @@ const addPassportdDiscountInConfig = async () => {
   const { signature: sig, message: msg } = await sign()
   apiCalling.value = { progress: true }
 
-  if (
-    !passportItem.value.itemAssetType ||
-    !passportItem.value.itemAssetValue ||
-    !passportOffering.value.price
-  ) {
+  if (!passportItem.value.itemAssetType || !passportItem.value.itemAssetValue) {
     apiCalling.value = {
       progress: false,
       result: null,
-      error: 'missing itemAssetType or itemAssetValue or price',
+      error: 'missing itemAssetType or itemAssetValue',
     }
   }
 
@@ -434,15 +426,11 @@ const addPassportdOverrideInConfig = async () => {
   const { signature: sig, message: msg } = await sign()
   apiCalling.value = { progress: true }
 
-  if (
-    !passportItem.value.itemAssetType ||
-    !passportItem.value.itemAssetValue ||
-    !passportOffering.value.price
-  ) {
+  if (!passportItem.value.itemAssetType || !passportItem.value.itemAssetValue) {
     apiCalling.value = {
       progress: false,
       result: null,
-      error: 'missing itemAssetType or itemAssetValue or price',
+      error: 'missing itemAssetType or itemAssetValue',
     }
   }
 
@@ -504,15 +492,11 @@ const updatePassportOfferingOnChain = async () => {
   }
 
   apiCalling.value = { progress: true }
-  if (
-    !passportItem.value.itemAssetType ||
-    !passportItem.value.itemAssetValue ||
-    !passportOffering.value.price
-  ) {
+  if (!passportItem.value.itemAssetType || !passportItem.value.itemAssetValue) {
     apiCalling.value = {
       progress: false,
       result: null,
-      error: 'missing itemAssetType or itemAssetValue or price',
+      error: 'missing itemAssetType or itemAssetValue',
     }
   }
 
@@ -572,7 +556,7 @@ const updatePassportOfferingOnChain = async () => {
 </script>
 
 <template>
-  <div class="grid gap-8 grid-cols-2">
+  <div class="grid gap-8 items-start grid-cols-2">
     <div class="grid gap-8 justify-start justify-items-start">
       <label class="hs-form-field is-filled">
         <span class="hs-form-field__label">Target Club</span>
