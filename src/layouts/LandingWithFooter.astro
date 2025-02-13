@@ -8,7 +8,6 @@ import Sessions from '@components/Global/Sessions.astro'
 import Analytics from '@components/Analytics/Analytics.astro'
 import { CookieKey } from '@constants/cookie'
 
-
 type Props = {
   connectButton?: 'show' | 'hidden'
   header?: 'show' | 'hidden'
@@ -85,7 +84,7 @@ const twitterHandle = 'poweredbyClubs'
       <slot />
     </main>
 
-    {footer === 'show' && <Footer user={userCookie}/>}
+    {footer === 'show' && <Footer user={userCookie} />}
   </body>
 
   <Sessions />
