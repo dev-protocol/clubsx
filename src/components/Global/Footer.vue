@@ -16,7 +16,7 @@ const props = defineProps<{
       <img :src="iconHome.src" alt="HOME" />
       <p class="text-xs">Home</p>
     </a>
-    <a href="/app" class="flex flex-col items-center gap-0">
+    <a href="/app?mode=random" class="flex flex-col items-center gap-0">
       <img :src="iconRandom.src" alt="RANDOM" />
       <p class="text-xs">Random</p>
     </a>
