@@ -15,7 +15,7 @@ const i18n = i18nFactory(Strings)(langs)
   userFromCookie?.value ? (
     ''
   ) : (
-    <div class="fixed bottom-0 w-full min-h-12 bg-violet-500 p-4 z-10">
+    <div class="sticky bottom-0 pb-[4.5rem] lg:pb-4 w-full min-h-12 bg-violet-500 p-4 z-10">
       <div class="mx-auto container text-white z-10 grid gap-2 items-center grid-rows-[1fr_auto] lg:grid-rows-1 lg:grid-cols-[1fr_auto]">
         <p class="font-bold lg:text-xl">{i18n('CopyLineForBanner')}</p>
         <button

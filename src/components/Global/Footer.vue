@@ -3,28 +3,60 @@ import iconStore from '@assets/footer/icon-store.svg'
 import iconRandom from '@assets/footer/icon-random.svg'
 import iconHome from '@assets/footer/home-icon.svg'
 import iconProfile from '@assets/footer/icon-profile.svg'
+import { computed, onMounted, ref, watch } from 'vue'
+import type { UndefinedOr } from '@devprotocol/util-ts'
+import type { Profile } from '@pages/api/profile'
 
 const props = defineProps<{
-  user: string
+  user?: string
 }>()
+
+const user = ref<UndefinedOr<string>>(props.user)
+const profile = ref<UndefinedOr<Profile>>()
+const avatar = computed(() => profile.value?.avatar)
+
+watch(user, async (_user) => {
+  if (_user) {
+    const api = await fetch(`/api/profile/${_user}`)
+    profile.value = await api.json()
+  } else {
+    profile.value = undefined
+  }
+})
+
+onMounted(async () => {
+  const { connection } = await import('@devprotocol/clubs-core/connection')
+  connection()
+    .account.asObservable()
+    .subscribe((acc) => {
+      user.value = acc
+    })
+})
 </script>
 <template>
   <div
-    class="text-dp-blue-grey-200 fixed bottom-0 z-[999] grid w-full grid-cols-5 justify-between border-t border-black border-opacity-10 bg-white px-5 py-2 md:bottom-8 md:left-2/4 md:w-[calc(640px_*_0.7)] md:-translate-x-1/2 md:rounded-3xl md:border md:drop-shadow"
+    class="text-dp-blue-grey-200 fixed bottom-0 z-[999] grid w-full grid-cols-5 justify-between border-t border-black border-opacity-10 bg-white px-5 py-2 lg:sticky lg:content-start lg:top-0 lg:bottom-auto lg:grid-cols-1 lg:z-auto lg:gap-8 lg:pt-8"
   >
     <a href="/app" class="flex flex-col items-center gap-0">
-      <img :src="iconHome.src" alt="HOME" />
+      <img :src="iconHome.src" alt="HOME" class="size-6 lg:size-8" />
       <p class="text-xs">Home</p>
     </a>
-    <a href="/app?mode=random" class="flex flex-col items-center gap-0">
-      <img :src="iconRandom.src" alt="RANDOM" />
+    <a
+      :href="profile ? '/app?mode=random6' : '/app?mode=random6&as=guest'"
+      class="flex flex-col items-center gap-0"
+    >
+      <img :src="iconRandom.src" alt="RANDOM" class="size-6 lg:size-8" />
       <p class="text-xs">Random</p>
     </a>
     <a
-      :href="`/passport/${props.user}`"
+      :href="
+        user ? `/passport/${user}` : '/profile?redirect-to=/passport/{account}'
+      "
       class="block rounded-xl bg-gradient-to-r from-[#B200FF] via-[#FF0048] to-[#5500FF] p-0.5"
     >
-      <div class="flex h-full w-full items-center rounded-[.65rem] bg-black">
+      <div
+        class="flex h-full w-full items-center rounded-[.65rem] bg-black lg:py-2"
+      >
         <svg
           class="m-auto"
           width="24"
@@ -44,11 +76,15 @@ const props = defineProps<{
       </div>
     </a>
     <a href="/clubs" class="flex flex-col items-center gap-0">
-      <img :src="iconStore.src" alt="STORE" />
+      <img :src="iconStore.src" alt="STORE" class="size-6 lg:size-8" />
       <p class="text-xs">Store</p>
     </a>
     <a href="/profile" class="flex flex-col items-center gap-0">
-      <img :src="iconProfile.src" alt="PROFILE" />
+      <img
+        :src="avatar ?? iconProfile.src"
+        alt="PROFILE"
+        class="size-6 lg:size-8 rounded-full object-cover"
+      />
       <p class="text-xs">Profile</p>
     </a>
   </div>

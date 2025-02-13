@@ -10,9 +10,10 @@ import SignIn from '@components/SignIn/SignIn.astro'
 const user = Astro.cookies.get(CookieKey.User)
 const langs = parseAcceptLanguage(Astro.request.headers.get('Accept-Language'))
 const profile = await whenDefined(user?.value, (id) => getProfile({ id }))
+const redirectTo = Astro.url.searchParams.get('redirect-to')
 ---
 
-<Layout connectButton="hidden" theme="light" pageTitle="Feed"
+<Layout connectButton="hidden" theme="light" pageTitle="Profile"
   ><Profile client:load user={user?.value} langs={langs} profile={profile}>
     <SignIn slot="not-logged-in" />
   </Profile>

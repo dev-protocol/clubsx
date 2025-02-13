@@ -151,69 +151,78 @@ const preloads = [
     class="bg-background font-body text-surface-ink"
     class:list={passportClass('body')}
   >
-    <div class:list={passportClass('hero-container')}>
-      <div class:list={passportClass('hero')}></div>
-    </div>
     <div
-      class="relative flex flex-col max-w-full mx-auto"
-      class:list={passportClass('main-container')}
-      style="min-height: 100dvh"
+      class="lg:relative lg:grid lg:grid-cols-[auto_1fr] lg:grid-rows-1 justify-stretch"
     >
-      <slot name="before-header" />
+      <div class:list={passportClass('container')}>
+        <div class:list={passportClass('hero-container')}>
+          <div class:list={passportClass('hero')}></div>
+        </div>
+        <div
+          class="relative flex flex-col max-w-full mx-auto"
+          class:list={passportClass('main-container')}
+          style="min-height: 100dvh"
+        >
+          <slot name="before-header" />
 
-      <Header connectButton={connectButton} pageTitle="Passport">
-        <AchivementNotification
-          address={eoa}
-          client:only="svelte"
-          slot="before:heading"
-        />
-        {
-          showSkinSwitcher && (
-            <SkinSwitch
-              client:load
-              slot="passport:profile:switcher"
-              skins={skins ?? []}
-              eoa={eoa ?? ''}
-              selectedSkinId={selectedSkinId ?? skins?.at(0)?.id ?? ''}
+          <Header connectButton={connectButton} pageTitle="Passport">
+            <AchivementNotification
+              address={eoa}
+              client:only="svelte"
+              slot="before:heading"
             />
-          )
-        }
-        {
-          showPostButton !== 'hidden' && (
-            <PostButton
-              client:only="vue"
-              slot="header:before:sibling:connect-button"
-              skinId={selectedSkinId}
-              mode={showPostButton}
-              {eoa}
-            />
-          )
-        }
-        {
-          showPostButton !== 'hidden' && (
-            <PostButton
-              client:only="vue"
-              slot="header:before:mobile-open-bar"
-              skinId={selectedSkinId}
-              mode={showPostButton}
-              {eoa}
-            />
-          )
-        }
-      </Header>
+            {
+              showSkinSwitcher && (
+                <SkinSwitch
+                  client:load
+                  slot="passport:profile:switcher"
+                  skins={skins ?? []}
+                  eoa={eoa ?? ''}
+                  selectedSkinId={selectedSkinId ?? skins?.at(0)?.id ?? ''}
+                />
+              )
+            }
+            {
+              showPostButton !== 'hidden' && (
+                <PostButton
+                  client:only="vue"
+                  slot="header:before:sibling:connect-button"
+                  skinId={selectedSkinId}
+                  mode={showPostButton}
+                  {eoa}
+                />
+              )
+            }
+            {
+              showPostButton !== 'hidden' && (
+                <PostButton
+                  client:only="vue"
+                  slot="header:before:aside-panel"
+                  skinId={selectedSkinId}
+                  mode={showPostButton}
+                  {eoa}
+                />
+              )
+            }
+          </Header>
 
-      <div
-        class:list={passportClass('main-content')}
-        class="flex-grow overflow-y-visible"
-      >
-        <main class:list={passportClass('main')}>
-          <slot />
-        </main>
+          <div
+            class:list={passportClass('main-content')}
+            class="flex-grow overflow-y-visible"
+          >
+            <main class:list={passportClass('main')}>
+              <slot />
+            </main>
+          </div>
+        </div>
       </div>
-
-      <Footer user={userCookie ?? '/'} />
+      <div
+        class="lg:col-start-1 lg:row-start-1 lg:min-h-screen lg:border-r lg:border-black/10 lg:bg-white"
+      >
+        <Footer client:load user={userCookie ?? '/'} />
+      </div>
     </div>
-    <Analytics />
   </body>
-  <Sessions />
+  <Analytics />
 </html>
+<Sessions />

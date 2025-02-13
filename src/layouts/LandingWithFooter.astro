@@ -37,6 +37,7 @@ const description = 'Collection-based Social Platform'
 const url = ''
 const ogURL = og?.image ?? ''
 const twitterHandle = 'poweredbyClubs'
+const redirectTo = Astro.url.searchParams.get('redirect-to')
 ---
 
 <html lang="en" hashi-theme={theme === 'auto' ? undefined : theme}>
@@ -65,29 +66,48 @@ const twitterHandle = 'poweredbyClubs'
     <meta name="twitter:image" content={`${ogURL}`} />
   </head>
 
-  <body
-    class:list={[
-      'relative flex flex-col max-w-full mx-auto bg-background font-body text-surface-ink',
+  <body>
+    <div
+      class:list={[
+        {
+          'lg:relative lg:grid lg:grid-cols-[auto_1fr] lg:grid-rows-1 justify-stretch':
+            footer === 'show',
+        },
+      ]}
+    >
+      <div
+        class:list={[
+          'relative flex flex-col w-full max-w-full mx-auto bg-background font-body text-surface-ink',
+          {
+            'md:max-w-screen-sm': fullwidth === false,
+          },
+          {
+            'lg:col-start-2': footer === 'show',
+          },
+        ]}
+      >
+        <slot name="before-header" />
+        {
+          header === 'show' && (
+            <Header connectButton={connectButton} pageTitle={pageTitle} />
+          )
+        }
+
+        <main class="relative flex-grow overflow-y-auto md:overflow-y-visible">
+          <slot />
+        </main>
+      </div>
       {
-        'md:max-w-screen-sm': fullwidth === false,
-      },
-    ]}
-  >
-    <slot name="before-header" />
-    {
-      header === 'show' && (
-        <Header connectButton={connectButton} pageTitle={pageTitle} />
-      )
-    }
-
-    <main class="flex-grow overflow-y-auto md:overflow-y-visible">
-      <slot />
-    </main>
-
-    {footer === 'show' && <Footer user={userCookie ?? '/'} />}
+        footer === 'show' && (
+          <div class="lg:col-start-1 lg:row-start-1 lg:min-h-screen lg:border-r lg:border-black/10">
+            <Footer client:load user={userCookie} />
+          </div>
+        )
+      }
+    </div>
   </body>
 
-  <Sessions />
+  <Sessions redirectTo={redirectTo} />
   <Analytics />
 </html>
 
