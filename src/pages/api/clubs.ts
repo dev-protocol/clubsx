@@ -1,10 +1,11 @@
-import { whenDefined } from '@devprotocol/util-ts'
+import { decode } from '@devprotocol/clubs-core'
+import { Redis } from '@devprotocol/clubs-core/redis'
+import { whenDefined, type UndefinedOr } from '@devprotocol/util-ts'
 import {
   getAllClubByOwnerAddress,
   getAllClubByOwnerFirebaseUid,
   getClubById,
   getClubByProperty,
-  getDefaultClient,
   withCheckingIndex,
 } from '@fixtures/api/club/redis'
 import { cache, headers } from '@fixtures/api/headers'
@@ -14,6 +15,9 @@ import { isAddress } from 'ethers'
 export type ClubsData = {
   id: string
   propertyAddress: string
+  url?: string
+  avatar?: string
+  name?: string
   config: {
     source: string
   }
@@ -40,7 +44,7 @@ export const GET: APIRoute = async ({ url }): Promise<Response> => {
   const owner = url.searchParams.get('owner')
   const id = url.searchParams.get('id')
 
-  const client = await withCheckingIndex(getDefaultClient)
+  const client = await withCheckingIndex(Redis.client)
   const fromDB = await Promise.all([
     ...propertyAddresses.map((p) => getClubByProperty(p, client)),
     owner
@@ -60,10 +64,17 @@ export const GET: APIRoute = async ({ url }): Promise<Response> => {
             club,
             async ({ id, propertyAddress }): Promise<ClubsData> => {
               const encoded = await client.get(id)
+              const decoded = whenDefined(encoded, decode)
               const source = whenDefined(encoded, (src) => src) ?? ''
+              const avatar = decoded?.options?.find(
+                (option) => option.key === 'avatarImgSrc',
+              )?.value as UndefinedOr<string>
               return {
                 id,
                 propertyAddress,
+                url: decoded?.url,
+                name: decoded?.name,
+                avatar,
                 config: { source },
               }
             },
@@ -71,7 +82,6 @@ export const GET: APIRoute = async ({ url }): Promise<Response> => {
         ),
       ),
     )) ?? []
-  await client.quit()
   return new Response(JSON.stringify(res), {
     status: 200,
     headers: { ...headers, ...cache({ maxAge: 604800 }) },

@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { always } from 'ramda'
 import { computed, onMounted, ref } from 'vue'
 import {
   isNotError,
@@ -8,14 +7,14 @@ import {
   type UndefinedOr,
 } from '@devprotocol/util-ts'
 import { itemToHash } from '@fixtures/router/passportItem'
-import { decode, markdownToHtml } from '@devprotocol/clubs-core'
+import { markdownToHtml } from '@devprotocol/clubs-core'
 
 import MediaCard from './MediaCard.vue'
 import type { PassportClip } from '../types'
-import Skeleton from '@components/Global/Skeleton.vue'
 import { MediaEmbed } from '@devprotocol/clubs-plugin-passports/vue'
 import { getPassportOgImages } from '@fixtures/url/passports'
 import type { Profile } from '@pages/api/profile'
+import PassportClubName from '@components/Badges/PassportClubName.vue'
 
 const props = defineProps<{
   index: number
@@ -41,9 +40,6 @@ const SITE_NAME = computed(
       new URL(url).hostname?.split('.')?.at(0),
     ) ?? 'developers',
 )
-const API_PATH = computed(() =>
-  whenDefined(SITE_NAME.value, (name) => `/api/clubs/?id=${name}`),
-)
 const IS_LINK = computed(() => typeof props.item.link === 'string')
 
 const elementId = computed<UndefinedOr<string>>(() => {
@@ -52,7 +48,6 @@ const elementId = computed<UndefinedOr<string>>(() => {
   )
   return isNotError(id) ? id : ''
 })
-const clubConfig = ref<string>()
 const preloadOgImages = ref<string[]>(
   ((og) => [og.default])(
     getPassportOgImages({
@@ -66,31 +61,9 @@ const preloadOgImages = ref<string[]>(
   ),
 )
 
-const clubName = computed(() => {
-  return whenDefined(clubConfig.value, (config) => decode(config).name)
-})
-
 const description = computed(() => {
   return markdownToHtml(props.item.description ?? '')
 })
-
-const fetchClub = async (api: string) => {
-  return await fetch(api)
-    .then((res) => res.json())
-    .then(
-      (res) =>
-        res as
-          | null
-          | [
-              {
-                id: string
-                propertyAddress: string
-                config: { source: string }
-              },
-            ],
-    )
-    .catch(always(null))
-}
 
 const shareClip = () => {
   const url = new URL(window.location.href)
@@ -116,11 +89,6 @@ onMounted(async () => {
     const el = document.createElement('img')
     el.src = img
   })
-  if (API_PATH.value) {
-    const clubApiPri = await fetchClub(`/${API_PATH.value}`)
-    const clubApi = clubApiPri ? clubApiPri : await fetchClub(API_PATH.value)
-    clubConfig.value = clubApi?.[0]?.config.source ?? undefined
-  }
 })
 </script>
 
@@ -164,24 +132,11 @@ onMounted(async () => {
               #{{ tag }}
             </li>
           </ul>
-          <div class="flex w-full max-w-full items-center justify-between">
-            <i v-if="IS_LINK"></i>
-            <span
-              v-if="!IS_LINK && clubName && !props.clubsLink"
-              class="line-clamp-1 opacity-50 text-sm @[16rem]/passport-asset:text-base"
-              >{{ clubName }}</span
-            >
-            <a
-              v-if="!IS_LINK && clubName && props.clubsLink"
-              :href="props.item.clubsUrl"
-              target="_blank"
-              class="line-clamp-1 opacity-50 text-sm @[16rem]/passport-asset:text-base"
-              >{{ clubName }}</a
-            >
-
-            <div v-if="!IS_LINK && !clubName" class="h-4 w-1/2">
-              <Skeleton />
-            </div>
+          <div v-if="!IS_LINK && SITE_NAME" class="mt-2">
+            <PassportClubName
+              :fetch-by="SITE_NAME"
+              :color="item.frameColorHex ? 'white' : undefined"
+            />
           </div>
         </span>
       </div>

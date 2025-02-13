@@ -5,6 +5,7 @@ import type { PassportItemAssetType } from '@devprotocol/clubs-plugin-passports/
 import type { FeedType } from '@fixtures/api/feed'
 import { computed, onMounted, ref } from 'vue'
 import { itemToHash } from '@fixtures/router/passportItem'
+import PassportClubName from '@components/Badges/PassportClubName.vue'
 
 const props = defineProps<FeedType>()
 
@@ -51,22 +52,12 @@ const assetLink = computed(
             >#{{ tag }}</span
           >
         </p>
-        <a
-          v-if="tag !== 'ugc'"
-          :href="clubLink"
-          class="flex items-center gap-2 p-1 rounded-sm bg-white w-fit"
-        >
-          <img
-            v-if="!!badgeSrc && badgeSrc !== ''"
-            class="w-7 rounded-sm"
-            style="aspect-ratio: 16 / 9"
-            :src="badgeSrc"
-            alt="image"
-          />
-          <p v-if="!!badgeName && badgeName !== ''" class="text-xs font-bold">
-            {{ badgeName }}
-          </p>
-        </a>
+        <PassportClubName
+          v-if="tag !== 'ugc' && clubLink && badgeSrc && badgeName"
+          :link="clubLink"
+          :src="badgeSrc"
+          :label="badgeName"
+        />
       </div>
       <a
         :href="assetLink"
