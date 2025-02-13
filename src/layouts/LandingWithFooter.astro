@@ -84,7 +84,7 @@ const twitterHandle = 'poweredbyClubs'
       <slot />
     </main>
 
-    {footer === 'show' && <Footer user={userCookie} />}
+    {footer === 'show' && <Footer user={userCookie ?? '/'} />}
   </body>
 
   <Sessions />
