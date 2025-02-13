@@ -1,10 +1,22 @@
 ---
 import { ConnectButton } from '@devprotocol/clubs-plugin-awesome-onboarding'
+
+type Props = {
+  redirectTo?: null | string
+}
+
+const { redirectTo } = Astro.props
 ---
 
 <span class="hidden">
   <ConnectButton />
 </span>
+
+{
+  redirectTo && (
+    <span class="hidden" id="_REDIRECT_TO_" data-redirect-to={redirectTo} />
+  )
+}
 
 <script>
   import { CookieKey } from '@constants/cookie'
@@ -13,7 +25,13 @@ import { ConnectButton } from '@devprotocol/clubs-plugin-awesome-onboarding'
   import { distinctUntilChanged, skip } from 'rxjs'
   import dayjs from 'dayjs'
   import duration from 'dayjs/plugin/duration'
+  import { whenDefined } from '@devprotocol/util-ts'
   dayjs.extend(duration)
+
+  const redirectTo = whenDefined(
+    document.getElementById('_REDIRECT_TO_')?.dataset,
+    (data) => data['redirectTo'],
+  )
 
   connection()
     .account.pipe(skip(1), distinctUntilChanged())
@@ -24,6 +42,9 @@ import { ConnectButton } from '@devprotocol/clubs-plugin-awesome-onboarding'
           expires: dayjs().add(dayjs.duration(10, 'years')).toDate(),
           path: '/',
         })
+        if (redirectTo) {
+          window.location.href = redirectTo.replace('{account}', acc)
+        }
       } else {
         remove(CookieKey.User)
       }

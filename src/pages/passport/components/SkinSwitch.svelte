@@ -15,7 +15,7 @@
 
 <div class="relative">
   <button
-    class="flex items-center justify-center gap-2 hs-button is-filled w-fit"
+    class="flex items-center justify-center gap-2 hs-button is-outlined !border border! w-fit"
     disabled={!skins?.length}
     on:click={() => toggleDropdownVisibility()}
   >
@@ -43,13 +43,15 @@
   </button>
 
   {#if isDropdownVisible}
-    <div class="left-0 mt-2 grid gap-[1px] w-full lg:absolute lg:w-96">
+    <div
+      class="z-10 right-0 mt-2 grid gap-2 w-full min-w-80 absolute lg:w-96 animate-[fadein_0.2s_ease-out] p-8 rounded-xl bg-white/30 border border-white/70 backdrop-blur-md"
+    >
       {#each skins as skin, i}
         <a
           href={isEditing
             ? `/passport/${eoa}/edit?skinId=${skin?.id}`
             : `/passport/${eoa}/${skin?.id}`}
-          class="hs-button is-filled w-full text-center leading-normal line-clamp-1 z-50"
+          class="hs-button is-filled !rounded-full rounded-full! w-full text-center leading-normal line-clamp-1 z-50"
           >{skin?.name ?? `Passport ${i}`}</a
         >
       {/each}
@@ -58,17 +60,14 @@
 </div>
 
 <style>
-  @keyframes -global-up {
+  @keyframes -global-fadein {
     0% {
-      transform: translateY(0);
-      opacity: 100%;
-    }
-    80% {
-      transform: translateY(-50%);
+      transform: scale(0.9);
+      opacity: 0%;
     }
     100% {
-      transform: translateY(-52%);
-      opacity: 0%;
+      transform: scale(1);
+      opacity: 100%;
     }
   }
 </style>

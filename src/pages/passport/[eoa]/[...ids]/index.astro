@@ -444,7 +444,7 @@ const userFromCookie = Astro.cookies.get(CookieKey.User)
     class="fixed right-0 p-2 lg:p-6"
     class:list={[
       {
-        'bottom-36 ': !Boolean(userFromCookie?.value),
+        'bottom-44': !Boolean(userFromCookie?.value),
         'bottom-16 ': Boolean(userFromCookie?.value),
       },
     ]}

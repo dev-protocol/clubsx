@@ -32,7 +32,7 @@ const click = () => {
     <button
       v-if="props.mode === 'post'"
       @click="click"
-      class="hs-button is-filled is-large !rounded-full"
+      class="hs-button is-filled !rounded-full"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -55,7 +55,7 @@ const click = () => {
     <a
       v-if="props.mode === 'edit'"
       :href="`/passport/${eoa}/edit${props.skinId ? `?skinId=${props.skinId}` : ''}`"
-      class="hs-button is-filled is-large !rounded-full"
+      class="hs-button is-filled !rounded-full"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
