@@ -17,6 +17,7 @@ import Sessions from '@components/Global/Sessions.astro'
 import Analytics from '@components/Analytics/Analytics.astro'
 import type { PassportItem } from './types'
 import { DefaultSkin } from '@constants/passports'
+import { CookieKey } from '@constants/cookie'
 
 type Props = {
   eoa?: string
@@ -47,6 +48,9 @@ const {
   applySkin = false,
   profile,
 } = Astro.props as Props
+
+const userFromCookie = Astro.cookies.get(CookieKey.User)
+const userCookie = userFromCookie?.value
 
 const passportSkinTheme =
   (await whenDefined(sTokenPayload, (payload: string) =>
@@ -207,7 +211,7 @@ const preloads = [
         </main>
       </div>
 
-      <Footer />
+      <Footer user={userCookie}/>
     </div>
     <Analytics />
   </body>
