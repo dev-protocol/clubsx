@@ -1,6 +1,5 @@
 ---
 import type { PassportItem } from '@pages/passport/types'
-import VideoElement from './VideoElement.vue'
 import playIconInnerHTML from '../assets/play-icon.svg?raw'
 import { MediaEmbed } from '@devprotocol/clubs-plugin-passports/vue'
 import {
@@ -8,6 +7,7 @@ import {
   mediaSource,
 } from '@devprotocol/clubs-plugin-passports/media'
 import YouTube from '@assets/sns/YouTube.svg'
+import { VideoFetch } from '@devprotocol/clubs-core/ui/vue'
 
 type Props = {
   item?: PassportItem
@@ -43,7 +43,12 @@ console.log('item', item)
     <span class="relative">
       {item.itemAssetType === 'short-video' ||
       item.itemAssetType === 'short-video-link' ? (
-        <VideoElement client:load poster={''} src={item.itemAssetValue || ''} />
+        <VideoFetch
+          client:only="vue"
+          poster={''}
+          url={item.itemAssetValue || ''}
+          videoClass="[&>video]:object-cover"
+        />
       ) : (
         <img
           id="og-image-element"

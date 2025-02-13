@@ -1,7 +1,7 @@
 import { bytes32Hex } from '@devprotocol/clubs-core'
 import { isNotError, whenDefined, whenNotError } from '@devprotocol/util-ts'
 import { hashToItem } from '@fixtures/router/passportItem'
-import type { Clip, Skin } from '@pages/api/profile'
+import type { Clip, Skin, Profile } from '@pages/api/profile'
 import type { PassportClip } from '@pages/passport/types'
 import { toUtf8Bytes } from 'ethers'
 
@@ -11,6 +11,7 @@ export const getPassportOgImages = ({
   skins,
   skinId,
   clip: givenClip,
+  profile,
   itemHash,
 }: {
   url: URL
@@ -18,6 +19,7 @@ export const getPassportOgImages = ({
   skins?: Skin[]
   skinId: string
   clip?: Clip | PassportClip
+  profile?: Profile
   itemHash?: string
 }): { default: string } => {
   const ogImageURLHost = requestURL.origin.includes('prerelease.clubs.place')
@@ -37,8 +39,8 @@ export const getPassportOgImages = ({
       ) ?? new Error())
   const cacheKey = toUtf8Bytes(
     isNotError(clip)
-      ? JSON.stringify({ id: clip.id, updatedAd: clip.updatedAt })
-      : JSON.stringify(skin ?? {}),
+      ? JSON.stringify({ id: clip.id, updatedAd: clip.updatedAt, profile })
+      : JSON.stringify({ ...(skin ?? {}), ...(profile ?? {}) }),
   )
   const ogpImageURL = `${requestURL.protocol}//${ogImageURLHost}/og/image/passport/${user}/${skinId ? skinId : ''}${itemHash ? `/${itemHash}` : ''}?cache=${bytes32Hex(cacheKey)}`
   const image = `https://capture.clubs.place/api/generate?h=630&w=1200&src=${ogpImageURL}`

@@ -11,6 +11,7 @@ import PassportClipModal from './PassportClipModal.vue'
 import { mediaSource } from '@devprotocol/clubs-plugin-passports/media'
 import type { ClipTypes } from '@fixtures/router/passportItem'
 import { whenDefined, type UndefinedOr } from '@devprotocol/util-ts'
+import type { Profile } from '@pages/api/profile'
 
 const props = defineProps<{
   id: string
@@ -20,6 +21,7 @@ const props = defineProps<{
   skinSection: 'spotlight' | 'clips'
   skinId: string
   initialSelectedItem?: { type: ClipTypes; id: string }
+  profile: Profile
 }>()
 
 const U = undefined

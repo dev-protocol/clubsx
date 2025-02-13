@@ -42,27 +42,35 @@ const givenItemPayload = whenDefined(givenItem, (_item) =>
     typeof __item === 'string' ? __item : __item.payload,
   ),
 )
-const [passportItemData, userProfile, passportSkinTheme] = await Promise.all([
-  whenDefined(givenItemPayload, (_payload) =>
-    whenNotError(_payload, (__payload) =>
-      getPassportItemForPayload({ sTokenPayload: __payload }),
-    ),
-  ),
-  whenDefined(eoa, (id) => getProfile({ id })),
-  mode === 'skin'
-    ? (whenDefinedAll([skin?.theme], ([payload]) =>
-        getPassportItemForPayload({
-          sTokenPayload: payload ?? '',
-        })
-          .then((item) => (item instanceof Error ? DefaultSkin : item))
-          .catch(() => DefaultSkin),
-      ) ?? DefaultSkin)
-    : undefined,
-])
-const firstItem = whenDefined(
+const firstItemClip = whenDefined(
   skin,
   (_skin) => _skin.spotlight?.at(0) ?? _skin.clips?.at(0),
 )
+const [passportItemData, userProfile, passportSkinTheme, firstItem] =
+  await Promise.all([
+    whenDefined(givenItemPayload, (_payload) =>
+      whenNotError(_payload, (__payload) =>
+        getPassportItemForPayload({ sTokenPayload: __payload }),
+      ),
+    ),
+    whenDefined(eoa, (id) => getProfile({ id })),
+    mode === 'skin'
+      ? (whenDefinedAll([skin?.theme], ([payload]) =>
+          getPassportItemForPayload({
+            sTokenPayload: payload ?? '',
+          })
+            .then((item) => (item instanceof Error ? DefaultSkin : item))
+            .catch(() => DefaultSkin),
+        ) ?? DefaultSkin)
+      : undefined,
+    mode === 'skin'
+      ? (whenDefined(firstItemClip?.payload, (payload) =>
+          getPassportItemForPayload({ sTokenPayload: payload }).then(
+            (data) => ({ ...data, ...firstItemClip }),
+          ),
+        ) ?? firstItemClip)
+      : undefined,
+  ])
 const passportLinkItem = whenNotError(givenItem, (item) =>
   item?.link ? (item as Clip) : new Error(),
 )
