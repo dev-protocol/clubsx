@@ -4,7 +4,7 @@ import { passportClass } from '@fixtures/ui/passport'
 import { ClubsPictogramAdaptable as Favicon } from '@devprotocol/clubs-core/images'
 
 import '@devprotocol/clubs-core/styles'
-import type { Skin } from '@pages/api/profile'
+import type { Profile, Skin } from '@pages/api/profile'
 import Header from '@components/Global/Header.astro'
 import Footer from '@components/Global/Footer.vue'
 import { getPassportItemForPayload } from '@fixtures/api/passportItem'
@@ -30,6 +30,7 @@ type Props = {
   showSkinSwitcher?: boolean
   showPostButton?: 'hidden' | 'post' | 'edit'
   applySkin?: boolean
+  profile?: Profile
 }
 
 const {
@@ -44,6 +45,7 @@ const {
   showSkinSwitcher = true,
   showPostButton = 'hidden',
   applySkin = false,
+  profile,
 } = Astro.props as Props
 
 const passportSkinTheme =
@@ -63,6 +65,7 @@ const [{ default: image }, passportOgImage] = [
     skins,
     skinId: selectedSkinId,
     itemHash,
+    profile,
   }),
   itemHash
     ? getPassportOgImages({
@@ -70,6 +73,7 @@ const [{ default: image }, passportOgImage] = [
         user: eoa,
         skins,
         skinId: selectedSkinId,
+        profile,
       })
     : undefined,
 ]

@@ -191,6 +191,7 @@ const userFromCookie = Astro.cookies.get(CookieKey.User)
   preload={[{ as: 'image', href: RedHeart.src }]}
   connectButton="show"
   showPostButton="edit"
+  profile={profile}
 >
   <div class="grid gap-6 lg:gap-12 mb-32">
     <section class:list={passportClass('account-container')}>
@@ -393,6 +394,7 @@ const userFromCookie = Astro.cookies.get(CookieKey.User)
                 clips={passportSpotlight}
                 skinId={skin?.id ?? ''}
                 initialSelectedItem={initialItem}
+                profile={profile}
               />
             </div>
           </div>
@@ -412,6 +414,7 @@ const userFromCookie = Astro.cookies.get(CookieKey.User)
                 clips={passportSkinClips}
                 skinId={skin?.id ?? ''}
                 initialSelectedItem={initialItem}
+                profile={profile}
               />
             </div>
           </div>

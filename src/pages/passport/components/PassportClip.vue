@@ -15,6 +15,7 @@ import type { PassportClip } from '../types'
 import Skeleton from '@components/Global/Skeleton.vue'
 import { MediaEmbed } from '@devprotocol/clubs-plugin-passports/vue'
 import { getPassportOgImages } from '@fixtures/url/passports'
+import type { Profile } from '@pages/api/profile'
 
 const props = defineProps<{
   index: number
@@ -31,6 +32,7 @@ const props = defineProps<{
   autoplay?: boolean
   onPrev?: () => void
   onNext?: () => void
+  profile?: Profile
 }>()
 
 const SITE_NAME = computed(
@@ -59,6 +61,7 @@ const preloadOgImages = ref<string[]>(
       user: props.eoa,
       skinId: props.skinId,
       itemHash: elementId.value,
+      profile: props.profile,
     }),
   ),
 )

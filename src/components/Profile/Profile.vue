@@ -39,7 +39,12 @@ const refetchProfile = async () =>
   )
 const getPassportOgImage = (id: string) =>
   whenDefinedAll([url.value, user.value], ([_url, _user]) =>
-    getPassportOgImages({ url: _url, user: _user, skinId: id }).default.replace(
+    getPassportOgImages({
+      url: _url,
+      user: _user,
+      skinId: id,
+      profile: profile.value,
+    }).default.replace(
       'http://localhost:3000',
       'https://prerelease.clubs.place',
     ),
