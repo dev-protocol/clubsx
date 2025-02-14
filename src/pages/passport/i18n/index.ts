@@ -327,6 +327,10 @@ export const Strings = {
     en: 'Use as a guest',
     ja: 'ゲストとして使う',
   },
+  TermsAndConditions: {
+    en: `By continuing, you agree to our <a href="https://clubs-help.notion.site/Clubs-Terms-and-Conditions-804ecd1a5eed4b18a63e67e1a262889c" target="_blank"><u>Terms of Service</u></a> and acknowledge that you have read our <a href="https://www.clubs.place/privacy-policy" target="_blank"><u>Privacy Policy</u></a>.`,
+    ja: `続行すると、<a href="https://clubs-help.notion.site/Clubs-Terms-and-Conditions-804ecd1a5eed4b18a63e67e1a262889c" target="_blank"><u>利用規約</u></a>に同意し、<a href="https://www.clubs.place/privacy-policy" を読んだことを認めたことになります。 target="_blank"><u>プライバシー ポリシー</u></a>。`,
+  },
   CopyLineForBanner: {
     en: `CLUBS lets you collect and showcase your favorite game and anime items—fandom, right in your pocket.`,
     ja: `CLUBS（クラブス）は、好きなゲームやアニメのアイテムを集めて飾れる、新しいコレクション型SNSです。ポケットに入るデジタル推し活を楽しもう！`,

@@ -2,7 +2,7 @@
   import { always } from 'ramda'
   import { onMount } from 'svelte'
   import { decodeTokenURI } from '@fixtures/nft'
-  import { decode, markdownToHtml } from '@devprotocol/clubs-core'
+  import { bytes32Hex, decode, markdownToHtml } from '@devprotocol/clubs-core'
   import type { ClubsData } from '@pages/api/clubs'
   import { whenDefined } from '@devprotocol/util-ts'
   import { Contract, type ContractRunner } from 'ethers'
@@ -12,9 +12,10 @@
   import { loadImage, ABI_NFT } from '../utils'
   import type { PassportItem, ImageData } from '../types'
   import { isDark } from '@fixtures/color'
-
   import VideoFetch from './VideoFetch.svelte'
   import { mediaSource } from '@devprotocol/clubs-plugin-passports/media'
+  import type { PassportOffering } from '@devprotocol/clubs-plugin-passports/src/types'
+
   export let props: {
     local: boolean
     item?: PassportItem & { tags?: string[] }
@@ -30,13 +31,15 @@
   let assetName: string
   let notFound: boolean = false
   let club: ClubsData | undefined
+  let isFrameDark: UndefinedOr<boolean>
   let assetImage: ImageData | undefined
   let htmlDescription: UndefinedOr<string>
-  let isFrameDark: UndefinedOr<boolean>
   let imageElement: HTMLImageElement | null = null
 
-  const loadBloblImg = async () => {
-    const { itemAssetType, itemAssetValue } = props.item || {}
+  const loadBlobImg = async (
+    itemAssetType: PassportItem['itemAssetType'] | undefined,
+    itemAssetValue: string | undefined,
+  ) => {
     const isImage = [
       'image',
       'image-link',
@@ -54,20 +57,21 @@
       } catch (error) {
         console.error('Error loading video or image:', error)
       }
+
       const img = await loadImage(itemAssetValue)
       assetImage = img
     }
   }
 
   $: {
-    console.log('*****', props.item)
     htmlDescription = whenDefined(props.description, markdownToHtml)
     isFrameDark = whenDefined(
       props.frameColorHex?.startsWith('#') ? props.frameColorHex : undefined,
       isDark,
     )
+
     whenDefined(props.item?.itemAssetValue, async (src) => {
-      await loadBloblImg()
+      await loadBlobImg(props.item?.itemAssetType, props.item?.itemAssetValue)
     })
   }
 
@@ -91,7 +95,7 @@
     : `https://clubs.place/api/clubs?p=${props.item?.propertyAddress}`
 
   onMount(async () => {
-    await loadBloblImg()
+    await loadBlobImg(props.item?.itemAssetType, props.item?.itemAssetValue)
 
     const [clubApiPri, uri] = await Promise.all([
       fetch(`/api/clubs?p=${props.item?.propertyAddress}`)
@@ -132,7 +136,6 @@
           .catch(always(null))
 
     club = clubApi ? clubApi : undefined
-
     clubUrl = whenDefined(
       club,
       ({ config }: { config: ClubsData['config'] }) =>
@@ -144,11 +147,25 @@
         decode(config.source).name,
     )
 
+    const clubOffering = whenDefined(club, (c) => {
+      if (!c || !c?.config?.source) {
+        return undefined
+      }
+      const decodedC = decode(c.config.source)
+      return decodedC.offerings?.find(
+        (off) => bytes32Hex(off.payload) === props.item?.sTokenPayload,
+      )
+    })
+
     notFound = !clubApi
-    assetName = uri?.name ?? ''
+    assetName = clubOffering?.name || uri?.name || ''
     assetImage = notFound
       ? undefined
-      : await whenDefined(uri?.htmlImageSrc, loadImage)
+      : await whenDefined(
+          (clubOffering as PassportOffering)?.previewImageSrc ||
+            uri?.htmlImageSrc,
+          loadImage,
+        )
   })
 
   const onEditClip = (item?: PassportItem) => {
@@ -178,8 +195,8 @@
         />
       {:else if props.item.itemAssetType === 'short-video' || props.item.itemAssetType === 'short-video-link' || props.item.itemAssetType === 'short-video-controlled' || props.item.itemAssetType === 'short-video-controlled-link'}
         <VideoFetch
-          url={props?.item?.itemAssetValue}
           posterUrl={assetImage?.src}
+          url={props?.item?.itemAssetValue}
           videoClass={`rounded-md w-full max-w-full pointer-events-none object-cover aspect-square`}
           isControlled={props?.item.itemAssetType.includes('short-video')}
         />
