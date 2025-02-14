@@ -98,14 +98,16 @@ const passportDiscount = ref<Partial<PassportOptionsDiscount>>({})
 const passportDiscountRate = ref<number>(0)
 const passportOverride = ref<Partial<Override>>({})
 const onTogglePayments = () => {
-  const turnOn = passportOffering.value.price !== undefined
+  const turnOn = passportOffering.value.price === undefined
   passportOffering.value = {
     ...passportOffering.value,
     price: turnOn
       ? props.Prices[passportItem.value.itemAssetType ?? 'image'].usdc
       : undefined,
     currency: turnOn ? 'USDC' : undefined,
-    fee: undefined,
+    fee: turnOn
+      ? { percentage: 1, beneficiary: account.value ?? '' }
+      : undefined,
   }
 }
 
@@ -204,6 +206,12 @@ const onChangePassportDiscountRate = changePassportDiscount(
   passportDiscountRate,
   passportOverride,
 )
+const setConnetedWalletOfferingBeneficiary = () => {
+  passportOffering.value = {
+    ...passportOffering.value,
+    fee: { ...passportOffering.value.fee!, beneficiary: account.value! },
+  }
+}
 
 onMounted(async () => {
   passportPayload.value = randomBytes(8)
@@ -759,6 +767,10 @@ const updatePassportOfferingOnChain = async () => {
           <input
             type="text"
             class="w-full hs-form-field__input"
+            :disabled="
+              passportItem.itemAssetType !== 'css' &&
+              passportItem.itemAssetType !== 'stylesheet-link'
+            "
             v-model="passportOffering.previewImageSrc"
           />
         </label>
@@ -794,6 +806,7 @@ const updatePassportOfferingOnChain = async () => {
             max="1"
             :value="passportOffering.fee?.percentage"
             class="w-full hs-form-field__input"
+            :disabled="!passportOffering.price"
             @change="onChangePassportOfferingFee"
           />
           <p class="hs-form-field__helper mt-2">
@@ -807,8 +820,16 @@ const updatePassportOfferingOnChain = async () => {
             type="text"
             class="w-full hs-form-field__input"
             :value="passportOffering.fee?.beneficiary"
+            :disabled="!passportOffering.fee"
             @change="onChangePassportOfferingBeneficiary"
           />
+          <button
+            class="hs-button is-small is-filled"
+            :disabled="!passportOffering.fee"
+            @click="setConnetedWalletOfferingBeneficiary"
+          >
+            Use the connected wallet
+          </button>
         </label>
 
         <label class="w-full hs-form-field">
