@@ -15,6 +15,7 @@ import { MediaEmbed } from '@devprotocol/clubs-plugin-passports/vue'
 import { getPassportOgImages } from '@fixtures/url/passports'
 import type { Profile } from '@pages/api/profile'
 import PassportClubName from '@components/Badges/PassportClubName.vue'
+import { passportClass } from '@fixtures/ui/passport'
 
 const props = defineProps<{
   index: number
@@ -93,12 +94,18 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="@container/passport-asset">
-    <div v-if="!!item" :id="elementId">
+  <div
+    class="@container/passport-asset"
+    :class="passportClass('item-container')"
+  >
+    <div v-if="!!item" :id="elementId" :class="passportClass('item-content')">
       <div
-        :class="{
-          'bg-surface-200': !item.frameColorHex,
-        }"
+        :class="[
+          passportClass('item-main'),
+          {
+            'bg-surface-200': !item.frameColorHex,
+          },
+        ]"
         :style="{
           backgroundColor: item.frameColorHex,
         }"

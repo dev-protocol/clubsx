@@ -92,6 +92,7 @@ const preloads = [
   { as: 'image', href: image },
   ...(passportOgImage ? [{ as: 'image', href: passportOgImage.default }] : []),
 ]
+const forceCss = requestURL.searchParams.get('css')
 ---
 
 <html
@@ -116,22 +117,20 @@ const preloads = [
     }
 
     {
-      applySkin && passportSkinTheme?.itemAssetType === 'stylesheet-link' && (
-        <link rel="stylesheet" href={`${passportSkinTheme.itemAssetValue}`} />
-      )
+      applySkin &&
+        !forceCss &&
+        passportSkinTheme?.itemAssetType === 'stylesheet-link' && (
+          <link rel="stylesheet" href={`${passportSkinTheme.itemAssetValue}`} />
+        )
     }
 
     {
-      applySkin && passportSkinTheme?.itemAssetType === 'css' && (
+      applySkin && !forceCss && passportSkinTheme?.itemAssetType === 'css' && (
         <style set:html={passportSkinTheme?.itemAssetValue ?? ''} />
       )
     }
 
-    {
-      applySkin && requestURL.searchParams.has('css') && (
-        <link rel="stylesheet" href={requestURL.searchParams.get('css')} />
-      )
-    }
+    {applySkin && forceCss && <link rel="stylesheet" href={forceCss} />}
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
