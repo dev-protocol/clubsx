@@ -159,7 +159,10 @@ const data = {
     }
     {
       data.mode === 'skin' && (
-        <main class="h-screen w-screen p-14 grid grid-cols-[10rem_7fr_4fr] grid-rows-[2fr_3fr] items-center gap-6 relative">
+        <main
+          class="h-screen w-screen p-14 grid grid-cols-[10rem_7fr_4fr] grid-rows-[2fr_3fr] items-center gap-6 relative"
+          class:list={[passportClass('container')]}
+        >
           {data.firstItem && (
             <div class="relative aspect-[1/1.391] col-start-3 row-start-1 row-span-2">
               <div class="w-full h-full border-x border-t border-surface-200 p-2 rounded-xl bg-white rotate-[2deg] shadow-xl">
