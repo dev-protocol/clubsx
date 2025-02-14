@@ -11842,7 +11842,7 @@ __metadata:
     jsonwebtoken: "npm:^9.0.2"
     lodash: "npm:^4.17.21"
     lodash-es: "npm:^4.17.21"
-    marked: "npm:10.0.0"
+    marked: "npm:15.0.7"
     nanoid: "npm:^5.0.5"
     nanostores: "npm:^0.11.0"
     p-queue: "npm:^8.0.0"
@@ -19233,21 +19233,30 @@ __metadata:
   languageName: node
   linkType: hard
 
-"marked@npm:10.0.0, marked@npm:^10.0.0":
-  version: 10.0.0
-  resolution: "marked@npm:10.0.0"
-  bin:
-    marked: bin/marked.js
-  checksum: 10c0/5882b04a5f0d619757b281f09a67eb8f9e966299083748b51b144b482c56527161cc4dee3ef8e334926c84b7c6ad2bb5c48af5855a52c6ae460131175e3fb93f
-  languageName: node
-  linkType: hard
-
 "marked@npm:15.0.6":
   version: 15.0.6
   resolution: "marked@npm:15.0.6"
   bin:
     marked: bin/marked.js
   checksum: 10c0/8f30972ac5fdf879353484bdd7717409c241d15031a58bbc483070dedb58e4b314c41c0b59b78e536658907c02ee149eaf4b9be221f198df97beae703f529d40
+  languageName: node
+  linkType: hard
+
+"marked@npm:15.0.7":
+  version: 15.0.7
+  resolution: "marked@npm:15.0.7"
+  bin:
+    marked: bin/marked.js
+  checksum: 10c0/0b9d07bace37bbf0548bae356c4184765afa4d2296ed0be4418aa4bb0ce703f323dc1a475125d536581f9fe264797e6265dd0b57499d97c0fe0f29bc6d016343
+  languageName: node
+  linkType: hard
+
+"marked@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "marked@npm:10.0.0"
+  bin:
+    marked: bin/marked.js
+  checksum: 10c0/5882b04a5f0d619757b281f09a67eb8f9e966299083748b51b144b482c56527161cc4dee3ef8e334926c84b7c6ad2bb5c48af5855a52c6ae460131175e3fb93f
   languageName: node
   linkType: hard
 
