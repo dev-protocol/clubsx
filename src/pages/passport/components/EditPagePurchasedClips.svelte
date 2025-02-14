@@ -222,180 +222,181 @@
 </script>
 
 {#if isOpen}
-<div
-  class="fixed z-[999] inset-0 p-2 gap-2 grid grid-rows-[auto_1fr] items-stretch bg-surface-300 overflow-y-auto"
->
-  <button
-    on:click={() => {
-      target = undefined
-      closeModal()
-    }}
-    class="size-12 bg-accent-200 flex justify-center items-center rounded-full text-surface-600 sticky top-0 justify-self-end z-20"
-    ><IconXMark classNames="size-6" />
-  </button>
-  <!-- Passport items other than type: css | stylesheet-link -->
-  <span class="mx-auto container">
-    {#if !eoa}
-      <div class="rounded-md border border-surface-400 p-8 text-accent-200">
-        {i18n('ConnectWalletTryAgain')} :)
-      </div>
-    {:else if isFetchingPurchasedClips || profileFetching}
-      <div
-        class="rounded-md border border-surface-400 p-8 text-accent-200 h-48"
-      >
-        <Skeleton />
-      </div>
-    {:else if !isFetchingPurchasedClips && !profileFetching}
-      <ul class="grid gap-2 grid-cols-[repeat(auto-fill,minmax(160px,1fr))]">
-        <li id="assets-link" class="relative">
-          <button
-            on:click={() => (linkingMode = true)}
-            class="w-full h-full shadow-md rounded-md p-2 grid gap-4 border border-black/20 h-full bg-surface-200 text-black content-evenly"
-          >
-            <span class="font-bold">{i18n('AddFromExternal')}</span>
-            <div
-              class="grid gap-4 grid-cols-[repeat(2,minmax(0,30px))] justify-center justify-items-center items-center"
-            >
-              <img src={TikTok.src} alt="TikTok" />
-              <img src={YouTube.src} alt="YouTube" /><img
-                src={Pinterst.src}
-                alt="Pinterest"
-              /><img src={Instagram.src} alt="Instagram" /><img
-                src={X.src}
-                class="size-[80%]"
-                alt="X"
-              />
-            </div>
-          </button>
-        </li>
-        {#if !purchasedClips?.length}
-          <li>
-            <span
-              class="w-full h-full rounded-md p-2 grid gap-4 border border-black/5 h-full text-black/50 items-center"
-            >
-              <span class="font-bold">{i18n('NoPurchasedItem')}</span>
-            </span>
-          </li>
-        {/if}
-        {#each purchasedClips as item, i}
-          <li id={`assets-${i.toString()}`} class="relative empty:hidden">
+  <div
+    class="fixed z-[999] inset-0 p-2 gap-2 grid grid-rows-[auto_1fr] items-stretch bg-surface-300 overflow-y-auto"
+  >
+    <button
+      on:click={() => {
+        target = undefined
+        closeModal()
+      }}
+      class="size-12 bg-accent-200 flex justify-center items-center rounded-full text-surface-600 sticky top-0 justify-self-end z-20"
+      ><IconXMark classNames="size-6" />
+    </button>
+    <!-- Passport items other than type: css | stylesheet-link -->
+    <span class="mx-auto container">
+      {#if !eoa}
+        <div class="rounded-md border border-surface-400 p-8 text-accent-200">
+          {i18n('ConnectWalletTryAgain')} :)
+        </div>
+      {:else if isFetchingPurchasedClips || profileFetching}
+        <div
+          class="rounded-md border border-surface-400 p-8 text-accent-200 h-48"
+        >
+          <Skeleton />
+        </div>
+      {:else if !isFetchingPurchasedClips && !profileFetching}
+        <ul class="grid gap-2 grid-cols-[repeat(auto-fill,minmax(160px,1fr))]">
+          <li id="assets-link" class="relative">
             <button
-              on:click={() => (selectedItem = item)}
-              class="w-full h-full disabled:opacity-30"
-              disabled={profile?.skins?.[skinIndex]?.[
-                target === 'showcase' ? 'clips' : 'spotlight'
-              ]?.some((x) => x.sTokenId === item.assetId)}
+              on:click={() => (linkingMode = true)}
+              class="w-full h-full shadow-md rounded-md p-2 grid gap-4 border border-black/20 h-full bg-surface-200 text-black content-evenly"
             >
-              <PassportAsset
-                props={{
-                  item,
-                  provider: rpcProvider,
-                  local: isLocal,
-                  linkToClub: false,
-                  classNames:
-                    selectedItem?.assetId === item.assetId
-                      ? 'h-full outline outline-2 outline-accent-200 !border-transparent'
-                      : 'h-full',
-                }}
-              />
+              <span class="font-bold">{i18n('AddFromExternal')}</span>
+              <div
+                class="grid gap-4 grid-cols-[repeat(2,minmax(0,30px))] justify-center justify-items-center items-center"
+              >
+                <img src={TikTok.src} alt="TikTok" />
+                <img src={YouTube.src} alt="YouTube" /><img
+                  src={Pinterst.src}
+                  alt="Pinterest"
+                /><img src={Instagram.src} alt="Instagram" /><img
+                  src={X.src}
+                  class="size-[80%]"
+                  alt="X"
+                />
+              </div>
             </button>
           </li>
-        {/each}
-      </ul>
-    {/if}
-  </span>
-  {#if selectedItem !== undefined}
-    <button
-      on:click={() =>
-        target === 'showcase'
-          ? selectedItem && toggleClipsInShowcase(selectedItem)
-          : selectedItem && toggleClipInSpotlight(selectedItem)}
-      class="bg-primary-ink px-8 py-6 text-2xl font-bold flex justify-center items-center rounded-full text-accent-ink sticky bottom-6 shadow justify-self-center"
-      >Done
-    </button>
-  {/if}
-</div>
-
-{#if linkingMode}
-  <div
-    class="fixed z-[999] inset-0 p-2 flex justify-center items-center bg-surface-300 overflow-y-auto"
-  >
-    <div
-      class="flex m-auto flex-col w-full max-w-2xl items-center justify-center p-12 text-surface-ink subpixel-antialiased lg:pb-32 gap-6"
-    >
-      <div class="w-full flex items-center justify-between">
-        <button
-          on:click|preventDefault={() => (linkingMode = false)}
-          class="w-6 h-6"
-        >
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M6 18L18 6M6 6L18 18"
-              stroke="currentColor"
-              stroke-width="3.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </button>
-
-        <p class="font-DMSan font-bold text-base">{i18n('AddFromExternal')}</p>
-        <!-- For Spacing only  -->
-        <div class="w-6 h-6"></div>
-      </div>
-
-      <label class="hs-form-field is-filled">
-        <span class="hs-form-field__label"> {i18n('ContentLink')} </span>
-        <input
-          bind:value={inputLink}
-          class="hs-form-field__input"
-          on:keyup={debounce(handleInput, 700)}
-          placeholder={i18n('ContentLinkPlaceholder')}
-        />
-      </label>
-
-      {#if link && linkError === undefined}
-        <div class="flex justify-center">
-          <div class="overflow-hidden rounded">
-            <MediaEmbed src={link} />
-          </div>
-        </div>
+          {#if !purchasedClips?.length}
+            <li>
+              <span
+                class="w-full h-full rounded-md p-2 grid gap-4 border border-black/5 h-full text-black/50 items-center"
+              >
+                <span class="font-bold">{i18n('NoPurchasedItem')}</span>
+              </span>
+            </li>
+          {/if}
+          {#each purchasedClips as item, i}
+            <li id={`assets-${i.toString()}`} class="relative empty:hidden">
+              <button
+                on:click={() => (selectedItem = item)}
+                class="w-full h-full disabled:opacity-30"
+                disabled={profile?.skins?.[skinIndex]?.[
+                  target === 'showcase' ? 'clips' : 'spotlight'
+                ]?.some((x) => x.sTokenId === item.assetId)}
+              >
+                <PassportAsset
+                  props={{
+                    item,
+                    provider: rpcProvider,
+                    local: isLocal,
+                    linkToClub: false,
+                    classNames:
+                      selectedItem?.assetId === item.assetId
+                        ? 'h-full outline outline-2 outline-accent-200 !border-transparent'
+                        : 'h-full',
+                  }}
+                />
+              </button>
+            </li>
+          {/each}
+        </ul>
       {/if}
+    </span>
+    {#if selectedItem !== undefined}
+      <button
+        on:click={() =>
+          target === 'showcase'
+            ? selectedItem && toggleClipsInShowcase(selectedItem)
+            : selectedItem && toggleClipInSpotlight(selectedItem)}
+        class="bg-primary-ink px-8 py-6 text-2xl font-bold flex justify-center items-center rounded-full text-accent-ink sticky bottom-6 shadow justify-self-center"
+        >Done
+      </button>
+    {/if}
+  </div>
 
-      <label class="hs-form-field is-filled">
-        <span class="hs-form-field__label"> {i18n('Description')} </span>
-        <textarea
-          class="hs-form-field__input"
-          bind:value={description}
-          placeholder={i18n('ContentLinkDescriptionPlaceholder')}
-        />
-      </label>
+  {#if linkingMode}
+    <div
+      class="fixed z-[999] inset-0 p-2 flex justify-center items-center bg-surface-300 overflow-y-auto"
+    >
+      <div
+        class="flex m-auto flex-col w-full max-w-2xl items-center justify-center p-12 text-surface-ink subpixel-antialiased lg:pb-32 gap-6"
+      >
+        <div class="w-full flex items-center justify-between">
+          <button
+            on:click|preventDefault={() => (linkingMode = false)}
+            class="w-6 h-6"
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6 18L18 6M6 6L18 18"
+                stroke="currentColor"
+                stroke-width="3.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
 
-      <label class="hs-form-field">
-        <span class="hs-form-field__label"> {i18n('Tags')} </span>
-        <Tags bind:tags />
-      </label>
-      <div class="w-full flex items-center justify-end">
-        <button
-          disabled={Boolean(link && linkError !== undefined)}
-          on:click={() => {
-            target === 'showcase'
-              ? toggleClipsInShowcase()
-              : toggleClipInSpotlight()
+          <p class="font-DMSan font-bold text-base">
+            {i18n('AddFromExternal')}
+          </p>
+          <!-- For Spacing only  -->
+          <div class="w-6 h-6"></div>
+        </div>
 
-            closeModal()
-          }}
-          class="hs-button is-filled is-large w-fit text-center">Done</button
-        >
+        <label class="hs-form-field is-filled">
+          <span class="hs-form-field__label"> {i18n('ContentLink')} </span>
+          <input
+            bind:value={inputLink}
+            class="hs-form-field__input"
+            on:keyup={debounce(handleInput, 700)}
+            placeholder={i18n('ContentLinkPlaceholder')}
+          />
+        </label>
+
+        {#if link && linkError === undefined}
+          <div class="flex justify-center">
+            <div class="overflow-hidden rounded">
+              <MediaEmbed src={link} />
+            </div>
+          </div>
+        {/if}
+
+        <label class="hs-form-field is-filled">
+          <span class="hs-form-field__label"> {i18n('Description')} </span>
+          <textarea
+            class="hs-form-field__input"
+            bind:value={description}
+            placeholder={i18n('ContentLinkDescriptionPlaceholder')}
+          />
+        </label>
+
+        <label class="hs-form-field">
+          <span class="hs-form-field__label"> {i18n('Tags')} </span>
+          <Tags bind:tags />
+        </label>
+        <div class="w-full flex items-center justify-end">
+          <button
+            disabled={Boolean(link && linkError !== undefined)}
+            on:click={() => {
+              target === 'showcase'
+                ? toggleClipsInShowcase()
+                : toggleClipInSpotlight()
+
+              closeModal()
+            }}
+            class="hs-button is-filled is-large w-fit text-center">Done</button
+          >
+        </div>
       </div>
     </div>
-  </div>
-{/if}
-
+  {/if}
 {/if}
