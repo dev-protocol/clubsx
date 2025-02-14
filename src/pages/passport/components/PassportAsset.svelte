@@ -36,7 +36,10 @@
   let htmlDescription: UndefinedOr<string>
   let imageElement: HTMLImageElement | null = null
 
-  const loadBlobImg = async (itemAssetType: PassportItem['itemAssetType'] | undefined, itemAssetValue: string | undefined) => {
+  const loadBlobImg = async (
+    itemAssetType: PassportItem['itemAssetType'] | undefined,
+    itemAssetValue: string | undefined,
+  ) => {
     const isImage = [
       'image',
       'image-link',
@@ -149,14 +152,20 @@
         return undefined
       }
       const decodedC = decode(c.config.source)
-      return decodedC.offerings?.find(off => bytes32Hex(off.payload) === props.item?.sTokenPayload)
+      return decodedC.offerings?.find(
+        (off) => bytes32Hex(off.payload) === props.item?.sTokenPayload,
+      )
     })
 
     notFound = !clubApi
-    assetName =  clubOffering?.name || uri?.name || ''
+    assetName = clubOffering?.name || uri?.name || ''
     assetImage = notFound
       ? undefined
-      : await whenDefined((clubOffering as PassportOffering)?.previewImageSrc || uri?.htmlImageSrc, loadImage)
+      : await whenDefined(
+          (clubOffering as PassportOffering)?.previewImageSrc ||
+            uri?.htmlImageSrc,
+          loadImage,
+        )
   })
 
   const onEditClip = (item?: PassportItem) => {
