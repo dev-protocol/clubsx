@@ -1,6 +1,7 @@
 ---
 import Page from '@components/SuperUser/Page.vue'
 import Layout from '@layouts/Landing.astro'
+import { ConnectButton } from '@devprotocol/clubs-plugin-awesome-onboarding'
 
 import payments from '@devprotocol/clubs-plugin-payments'
 import tickets from '@plugins/tickets'
@@ -21,8 +22,11 @@ const plugins = [
 ]
 ---
 
-<Layout theme="light" connectButton="show" pageTitle="Superuser">
+<Layout theme="light" pageTitle="Superuser">
   <section class="container mx-auto max-w-screen-lg">
+    <span>
+      <ConnectButton />
+    </span>
     <Page client:load plugins={plugins} Prices={Prices} />
   </section>
 </Layout>
