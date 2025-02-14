@@ -57,7 +57,7 @@
     "svelte-check": "^4.0.0",
     "type-fest": "4.33.0",
     "typescript": "5.5.4",
-    "vitest": "^1.0.0",
+    "vitest": "^3.0.0",
     "vue-tsc": "^2.0.0"
   },
   "dependencies": {
