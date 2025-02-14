@@ -48,9 +48,7 @@
   let selectAsDefaultSkinStatus: UndefinedOr<string> = undefined
   let toggleSkinVisibilityStatus: UndefinedOr<string> = undefined
   let isInAddMode: UndefinedOr<'showcase' | 'spotlight'> = undefined
-  let clicked = false
   let self: HTMLElement
-  let transformYOrigin: UndefinedOr<number> = undefined
   let skinEditorOpen = false
   let showcaseEl: () => HTMLElement
 
@@ -365,22 +363,40 @@
     }, 3000)
   }
 
-  const toggleBodyClassList = () => {
-    clicked = true
-    document.body.classList.toggle('overflow-hidden')
-    const rect = self.getBoundingClientRect()
-    transformYOrigin =
-      typeof isInAddMode === 'string'
-        ? rect.height - rect.bottom + window.innerHeight * 0.5
-        : transformYOrigin
-  }
   const clickAddSpotlight = () => {
     isInAddMode = 'spotlight'
-    toggleBodyClassList()
+    openModal(EditPagePurchasedClips, {
+      eoa,
+      isLocal,
+      profile,
+      setProfile: (newProfile: Profile) => {
+        profile = newProfile
+      },
+      skinIndex,
+      profileFetching,
+      hasSpotlightLimitReadched,
+      purchasedClips: purchasedSkinClips,
+      isFetchingPurchasedClips: purchasedPassportIAssetsFetching,
+      target: isInAddMode,
+    })
   }
+
   const clickAddShowcase = () => {
     isInAddMode = 'showcase'
-    toggleBodyClassList()
+    openModal(EditPagePurchasedClips, {
+      eoa,
+      isLocal,
+      profile,
+      setProfile: (newProfile: Profile) => {
+        profile = newProfile
+      },
+      skinIndex,
+      profileFetching,
+      hasSpotlightLimitReadched,
+      purchasedClips: purchasedSkinClips,
+      isFetchingPurchasedClips: purchasedPassportIAssetsFetching,
+      target: isInAddMode,
+    })
   }
 
   const closeModals = () => {
@@ -393,13 +409,6 @@
   }
 
   $: {
-    if (
-      typeof document !== 'undefined' &&
-      document.body.classList.contains('overflow-hidden') &&
-      isInAddMode === undefined
-    ) {
-      toggleBodyClassList()
-    }
     // Generate an id for skins.at(0) only if it is present but without an id.
     if (profile?.skins?.length && !profile.skins.at(0)?.id) {
       profile = {
@@ -419,17 +428,7 @@
   }
 </script>
 
-<div
-  bind:this={self}
-  class={`${
-    typeof isInAddMode === 'string'
-      ? 'animate-[fadeOutFitToGrow_.5s_ease-in-out_forwards]'
-      : clicked
-        ? 'animate-[fadeInGrowToShrink_.5s_ease-in-out_forwards]'
-        : ''
-  }`}
-  style={`transform-origin: center ${transformYOrigin}px`}
->
+<div>
   {#if eoa === id || userFromCookie === id}
     <div class="p-2 w-full max-w-screen-lg mx-auto grid">
       <div
@@ -468,11 +467,13 @@
       <span class="hs-form-field mt-16">
         <span class="hs-form-field__label"> {i18n('Profile')} </span></span
       >
+
       <EditUserProfileInfo {eoa} bind:profile {profileUpdating} {skinId} />
 
       <span class="hs-form-field mt-16">
         <span class="hs-form-field__label"> {i18n('Skin')} </span></span
       >
+
       <button
         on:click={() => (skinEditorOpen = !skinEditorOpen)}
         class="grid grid-cols-[1fr_auto] w-full items-stretch rounded-xl border border-surface-400 mb-4"
@@ -482,6 +483,7 @@
           >{i18n('Edit')}</span
         >
       </button>
+
       {#if skinEditorOpen}
         <div class="rounded-xl border border-surface-400 p-2">
           <!-- Passport skin name -->
@@ -633,21 +635,6 @@
     </div>
   {/if}
 </div>
-
-<!-- Edit page purchased clips -->
-{#if isInAddMode}
-  <EditPagePurchasedClips
-    {eoa}
-    {isLocal}
-    bind:profile
-    bind:skinIndex
-    {profileFetching}
-    {hasSpotlightLimitReadched}
-    purchasedClips={purchasedSkinClips}
-    isFetchingPurchasedClips={purchasedPassportIAssetsFetching}
-    bind:target={isInAddMode}
-  />
-{/if}
 
 <Modals>
   <div

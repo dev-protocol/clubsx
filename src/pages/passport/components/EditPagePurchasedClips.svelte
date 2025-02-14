@@ -10,6 +10,7 @@
   import { mediaSource } from '@devprotocol/clubs-plugin-passports/media'
   import { MediaEmbed } from '@devprotocol/clubs-plugin-passports/svelte'
   import Tags from './Tags.svelte'
+  import { closeModal } from 'svelte-modals'
 
   import TikTok from '@assets/sns/TikTok.svg'
   import Instagram from '@assets/sns/Instagram.svg'
@@ -32,11 +33,13 @@
     `https://polygon-mainnet.g.alchemy.com/v2/${import.meta.env.PUBLIC_ALCHEMY_KEY ?? ''}`,
   )
 
+  export let isOpen: boolean
   export let skinIndex = 0
   export let isLocal: boolean
   export let profileFetching = true
   export let isFetchingPurchasedClips = true
   export let profile: Profile = {} as Profile
+  export let setProfile: (profile: Profile) => void
   export let purchasedClips: PassportItem[] = []
   export let eoa: UndefinedOr<string> = undefined
   export let target: UndefinedOr<'showcase' | 'spotlight'>
@@ -133,6 +136,8 @@
       ],
     }
 
+    setProfile(profile)
+
     target = undefined
   }
 
@@ -197,13 +202,9 @@
       ],
     }
 
-    target = undefined
+    setProfile(profile)
 
-    console.log(
-      'Passort item and profile at pinning passport non skin item',
-      item,
-      profile,
-    )
+    target = undefined
   }
 
   const handleInput = async () => {
@@ -220,17 +221,15 @@
   }
 </script>
 
+{#if isOpen}
 <div
-  class={`fixed z-[999] inset-0 p-2 gap-2 grid grid-rows-[auto_1fr] items-stretch bg-surface-300 overflow-y-scroll opacity-0 ${
-    linkingMode === undefined
-      ? 'animate-[fadeInShrinkToFit_.5s_ease-in-out_forwards]'
-      : linkingMode === true
-        ? 'animate-[fadeOutFitToGrow_.5s_ease-in-out_forwards]'
-        : 'animate-[fadeInGrowToShrink_.5s_ease-in-out_forwards]'
-  }`}
+  class="fixed z-[999] inset-0 p-2 gap-2 grid grid-rows-[auto_1fr] items-stretch bg-surface-300 overflow-y-auto"
 >
   <button
-    on:click={() => (target = undefined)}
+    on:click={() => {
+      target = undefined
+      closeModal()
+    }}
     class="size-12 bg-accent-200 flex justify-center items-center rounded-full text-surface-600 sticky top-0 justify-self-end z-20"
     ><IconXMark classNames="size-6" />
   </button>
@@ -319,7 +318,7 @@
 
 {#if linkingMode}
   <div
-    class="fixed z-[999] inset-0 p-2 flex justify-center items-center bg-surface-300 overflow-y-scroll opacity-0 animate-[fadeInShrinkToFit_.5s_ease-in-out_forwards]"
+    class="fixed z-[999] inset-0 p-2 flex justify-center items-center bg-surface-300 overflow-y-auto"
   >
     <div
       class="flex m-auto flex-col w-full max-w-2xl items-center justify-center p-12 text-surface-ink subpixel-antialiased lg:pb-32 gap-6"
@@ -385,13 +384,18 @@
       <div class="w-full flex items-center justify-end">
         <button
           disabled={Boolean(link && linkError !== undefined)}
-          on:click={() =>
+          on:click={() => {
             target === 'showcase'
               ? toggleClipsInShowcase()
-              : toggleClipInSpotlight()}
+              : toggleClipInSpotlight()
+
+            closeModal()
+          }}
           class="hs-button is-filled is-large w-fit text-center">Done</button
         >
       </div>
     </div>
   </div>
+{/if}
+
 {/if}
