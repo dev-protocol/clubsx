@@ -84,17 +84,21 @@ const openSignInModal = () => {
           <p class="font-bold mb-8" v-html="i18n('CopyLine')"></p>
           <button
             @click="openSignInModal"
-            class="rounded-full text-2xl w-full p-4 lg:p-8 font-bold bg-white text-black transition-all duration-300 outline outline-4 outline-transparent outline-offset-2 hover:outline-white mb-8"
+            class="rounded-full text-2xl w-full p-4 lg:p-8 font-bold bg-white text-black transition-all duration-300 outline outline-4 outline-transparent outline-offset-2 hover:outline-white mb-4"
           >
             {{ i18n('SignInOrSignUp') }}
           </button>
-          <p class="text-center -mb-7">
+          <p class="text-center mb-8">
             <a
               href="/app?as=guest"
               class="text-sm transition opacity-30 hover:opacity-100"
               >{{ i18n('UseAsAGuest') }}</a
             >
           </p>
+          <p
+            class="text-center -mb-7 text-sm transition opacity-30 italic"
+            v-html="i18n('TermsAndConditions')"
+          />
         </div>
       </div>
     </section>
