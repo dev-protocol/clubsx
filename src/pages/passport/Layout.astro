@@ -93,6 +93,7 @@ const preloads = [
   ...(passportOgImage ? [{ as: 'image', href: passportOgImage.default }] : []),
 ]
 const forceCss = requestURL.searchParams.get('css')
+const hideNave = requestURL.searchParams.get('nav') === '0'
 ---
 
 <html
@@ -206,6 +207,7 @@ const forceCss = requestURL.searchParams.get('css')
       </div>
       <div
         class="lg:col-start-1 lg:row-start-1 lg:min-h-screen lg:border-r lg:border-black/10 lg:bg-white"
+        class:list={{ 'invisible w-0': hideNave }}
       >
         <Footer client:load user={userCookie ?? '/'} />
       </div>
