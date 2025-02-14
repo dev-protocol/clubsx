@@ -85,6 +85,7 @@ const passportOffering = ref<
     i18n: { name: { en: ''; ja: '' }; description: { en: ''; ja: '' } }
   }
 >({
+  description: '',
   imageSrc: 'https://storage.clubs.place/tsVMjjwSZyCCaB5e-ToAZ',
   payload: randomBytes(32),
   price: undefined,

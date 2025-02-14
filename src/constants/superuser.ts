@@ -6,4 +6,4 @@ export const superusers = [
   '0xf98d0aA92EeC453F612A63D6866cbB96d255cF1b',
 ]
 
-export const signatureExpiration = 10000
+export const signatureExpiration = 30000
