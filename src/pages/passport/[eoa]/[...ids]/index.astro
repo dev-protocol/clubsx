@@ -189,7 +189,6 @@ const userFromCookie = Astro.cookies.get(CookieKey.User)
   selectedSkinId={skin?.id ?? ''}
   itemHash={passportElementId}
   preload={[{ as: 'image', href: RedHeart.src }]}
-  connectButton="show"
   showPostButton="edit"
   profile={profile}
 >

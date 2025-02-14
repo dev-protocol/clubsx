@@ -42,6 +42,12 @@ const { connectButton = 'hidden', pageTitle } = Astro.props
           name="header:before:mobile-open-bar"
           slot="before:mobile-open-bar"
         />
+
+        <nav slot="connect-button" class="w-full lg:w-fit">
+          <span class="flex justify-end gap-4 items-center">
+            <ConnectButton />
+          </span>
+        </nav>
       </NavbarResponsive>
     </div>
   </span>

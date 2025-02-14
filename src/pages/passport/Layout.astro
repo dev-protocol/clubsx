@@ -186,17 +186,6 @@ const preloads = [
               showPostButton !== 'hidden' && (
                 <PostButton
                   client:only="vue"
-                  slot="header:before:sibling:connect-button"
-                  skinId={selectedSkinId}
-                  mode={showPostButton}
-                  {eoa}
-                />
-              )
-            }
-            {
-              showPostButton !== 'hidden' && (
-                <PostButton
-                  client:only="vue"
                   slot="header:before:aside-panel"
                   skinId={selectedSkinId}
                   mode={showPostButton}

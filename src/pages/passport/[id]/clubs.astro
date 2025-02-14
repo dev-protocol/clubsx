@@ -6,7 +6,7 @@ import UserClubs from '../components/UserClubs.svelte'
 const { id } = Astro.params
 ---
 
-<Layout connectButton="show" theme="auto" pageTitle="Passport">
+<Layout theme="auto" pageTitle="Passport">
   <div class="max-w-screen-lg mx-auto px-4 grid gap-24">
     <UserClubs client:load id={id ?? ''} />
   </div>
