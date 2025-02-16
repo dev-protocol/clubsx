@@ -128,9 +128,17 @@ onMounted(async () => {
             :autoplay="props.autoplay"
             :lock="props.lock"
           />
+          <PassportClubName
+            v-if="!IS_LINK && SITE_NAME"
+            :fetch-by="SITE_NAME"
+            :color="item.frameColorHex ? 'white' : undefined"
+            :container-class="'mt-1'"
+          />
         </span>
 
-        <span class="p-1 @[16rem]/passport-asset:p-4">
+        <span
+          class="p-1 @[16rem]/passport-asset:p-4 pt-0 @[16rem]/passport-asset:pt-0"
+        >
           <article
             v-if="description"
             v-html="description"
@@ -146,12 +154,6 @@ onMounted(async () => {
               #{{ tag }}
             </li>
           </ul>
-          <div v-if="!IS_LINK && SITE_NAME" class="mt-2">
-            <PassportClubName
-              :fetch-by="SITE_NAME"
-              :color="item.frameColorHex ? 'white' : undefined"
-            />
-          </div>
         </span>
       </div>
       <div

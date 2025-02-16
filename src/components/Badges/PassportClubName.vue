@@ -10,6 +10,7 @@ const props = defineProps<{
   label?: string
   fetchBy?: string
   color?: 'white'
+  containerClass?: string
 }>()
 
 const link = ref(props.link)
@@ -31,22 +32,31 @@ onMounted(async () => {
 </script>
 
 <template>
-  <a
-    v-if="link && src && label"
-    :href="link"
-    class="flex items-center gap-1 p-0.5 w-fit rounded-full border px-2"
-    :class="{
-      'border-violet-300 bg-violet-100': !props.color,
-      'border-white/30 bg-white text-black': props.color === 'white',
-    }"
-  >
-    <p class="text-xs">Licensed by</p>
-    <img class="w-10 aspect-[16/9] object-contain" :src="src" alt="image" />
-    <p class="text-xs font-bold">
-      {{ label }}
-    </p>
-  </a>
-  <div v-if="fetchBy && !link" class="h-4 w-1/2">
-    <Skeleton />
+  <div class="@container/club-name">
+    <a
+      v-if="link && src && label"
+      :href="link"
+      class="flex items-center flex-wrap gap-0.5 p-0.5 w-fit rounded-md border @[14rem]/club-name:px-2"
+      :class="{
+        'border-violet-300 bg-violet-100': !props.color,
+        'border-white/30 bg-white text-black': props.color === 'white',
+        [props.containerClass ?? '']: Boolean(props.containerClass),
+      }"
+    >
+      <p class="text-[0.65rem]">Licensed by</p>
+      <span class="flex items-center gap-0.5">
+        <img
+          class="w-6 @[14rem]/club-name:w-10 aspect-[16/9] object-contain"
+          :src="src"
+          alt="image"
+        />
+        <p class="text-[0.65rem] font-bold">
+          {{ label }}
+        </p>
+      </span>
+    </a>
+    <div v-if="fetchBy && !link" class="h-4 w-1/2">
+      <Skeleton />
+    </div>
   </div>
 </template>
