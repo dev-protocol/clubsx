@@ -136,7 +136,7 @@
     "svelte-tags-input": "^6.0.2",
     "swiper": "11.2.2",
     "swr": "^2.2.5",
-    "tailwindcss": "^3.3.3",
+    "tailwindcss": "^4.0.0",
     "textfit": "^2.4.0",
     "three": "0.161.0",
     "truncate-eth-address": "1.0.2",
