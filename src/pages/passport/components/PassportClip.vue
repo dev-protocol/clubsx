@@ -7,7 +7,7 @@ import {
   type UndefinedOr,
 } from '@devprotocol/util-ts'
 import { itemToHash } from '@fixtures/router/passportItem'
-import { markdownToHtml } from '@devprotocol/clubs-core'
+import { markdownToHtml, ProseTextInherit } from '@devprotocol/clubs-core'
 
 import MediaCard from './MediaCard.vue'
 import type { PassportClip } from '../types'
@@ -16,6 +16,7 @@ import { getPassportOgImages } from '@fixtures/url/passports'
 import type { Profile } from '@pages/api/profile'
 import PassportClubName from '@components/Badges/PassportClubName.vue'
 import { passportClass } from '@fixtures/ui/passport'
+import { isDark } from '@fixtures/color'
 
 const props = defineProps<{
   index: number
@@ -65,6 +66,8 @@ const preloadOgImages = ref<string[]>(
 const description = computed(() => {
   return markdownToHtml(props.item.description ?? '')
 })
+
+const dark = computed(() => whenDefined(props.item.frameColorHex, isDark))
 
 const shareClip = () => {
   const url = new URL(window.location.href)
@@ -132,7 +135,11 @@ onMounted(async () => {
             v-if="description"
             v-html="description"
             class="description text-sm @[16rem]/passport-asset:text-base"
-            :class="{ 'line-clamp-1': props.truncate ?? true }"
+            :class="[
+              { 'line-clamp-1': props.truncate ?? true },
+              ProseTextInherit,
+              { 'text-white': dark },
+            ]"
           ></article>
           <ul class="flex flex-wrap gap-2 empty:hidden">
             <li v-for="tag in props.item.tags" class="text-violet-500 text-sm">

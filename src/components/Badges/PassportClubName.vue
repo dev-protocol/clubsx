@@ -34,12 +34,13 @@ onMounted(async () => {
   <a
     v-if="link && src && label"
     :href="link"
-    class="flex items-center gap-2 p-1 w-fit rounded-full border px-2"
+    class="flex items-center gap-1 p-0.5 w-fit rounded-full border px-2"
     :class="{
       'border-violet-300 bg-violet-100': !props.color,
       'border-white/30 bg-white text-black': props.color === 'white',
     }"
   >
+    <p class="text-xs">Licensed by</p>
     <img class="w-10 aspect-[16/9] object-contain" :src="src" alt="image" />
     <p class="text-xs font-bold">
       {{ label }}
