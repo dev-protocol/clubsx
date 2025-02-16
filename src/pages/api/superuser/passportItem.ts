@@ -3,7 +3,11 @@ import { headers } from '@fixtures/api/headers'
 import { verifiedAccount } from '@fixtures/api/superuser'
 import {
   addPassportItemSetter,
+  getPassportItemFromPayload,
+  sTokenPayload,
   type CreatePassportItemReq,
+  patchPassportItemValue,
+  type PatchPassportItemValueReq,
 } from '@devprotocol/clubs-plugin-passports'
 import {
   isNotError,
@@ -48,6 +52,58 @@ export const POST = async ({ request }: { request: Request }) => {
     [props, client, decodedConf, authrized],
     ([data, redis, { url }]) =>
       addPassportItemSetter({ client: redis, data, url }),
+  )
+
+  await whenNotError(client, (redis) => redis.quit())
+
+  return new Response(
+    isNotError(res)
+      ? JSON.stringify({ res })
+      : JSON.stringify({ error: res.message }),
+    {
+      status: isNotError(res) ? 200 : 400,
+      headers,
+    },
+  )
+}
+
+export const PATCH = async ({ request }: { request: Request }) => {
+  const reqBody = (await request
+    .json()
+    .catch((err: Error) => err)) as PatchPassportItemValueReq & {
+    site: string
+  }
+  const props =
+    whenDefinedAll(
+      [
+        reqBody.site,
+        reqBody.message,
+        reqBody.signature,
+        reqBody.sTokenPayload,
+        reqBody.passportItemValue,
+      ],
+      ([site, message, signature, sTokenPayload, passportItemValue]) => ({
+        site,
+        message,
+        signature,
+        sTokenPayload,
+        passportItemValue,
+      }),
+    ) ?? new Error('#PROPS')
+
+  const authrized = whenNotError(props, ({ message, signature }) =>
+    verifiedAccount({ message, signature }),
+  )
+
+  const client = await getDefaultClient().catch((err: Error) => err)
+
+  const res = await whenNotErrorAll(
+    [props, client, authrized],
+    ([data, redis]) =>
+      patchPassportItemValue({
+        client: redis,
+        data,
+      }),
   )
 
   await whenNotError(client, (redis) => redis.quit())

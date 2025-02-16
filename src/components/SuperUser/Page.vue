@@ -29,7 +29,10 @@ import {
   resetRecipients,
 } from './utils/achievements'
 import type { RefApiCalling } from './utils'
-import { callAddPassportItem } from './utils/passportItem'
+import {
+  callAddPassportItem,
+  callPatchPassportItem,
+} from './utils/passportItem'
 import {
   setTokenURIDescriptor,
   setImage,
@@ -51,6 +54,7 @@ import {
 } from './utils/passportDiscount'
 import type { Override } from '@devprotocol/clubs-plugin-payments'
 import { nanoid } from 'nanoid'
+import type { PatchPassportItemValueReq } from '@devprotocol/clubs-plugin-passports'
 
 dayjs.extend(utc)
 
@@ -97,7 +101,6 @@ const passportItem = ref<Partial<CreatePassportItemReq['passportItem']>>({
 })
 const passportDiscount = ref<Partial<PassportOptionsDiscount>>({})
 const passportDiscountRate = ref<number>(0)
-const passportOverride = ref<Partial<Override>>({})
 const onTogglePayments = () => {
   const turnOn = passportOffering.value.price === undefined
   passportOffering.value = {
@@ -111,6 +114,9 @@ const onTogglePayments = () => {
       : undefined,
   }
 }
+const updatePassportItem = ref<
+  Omit<PatchPassportItemValueReq, 'site' | 'message' | 'signature'>
+>({ sTokenPayload: '', passportItemValue: '' })
 
 const sign = async () => {
   const msg = message()
@@ -186,6 +192,14 @@ const addPassportItem = async () => {
     message: msg,
   })
 }
+const patchPassportItem = async () => {
+  const { signature: sig, message: msg } = await sign()
+  callPatchPassportItem(updatePassportItem, apiCalling, {
+    site: club.value ?? '',
+    signature: sig ?? '',
+    message: msg,
+  })
+}
 
 const onChangePassportOfferingFee = changePassportOfferingFee(passportOffering)
 const onChangePassportOfferingBeneficiary =
@@ -195,7 +209,6 @@ const onChangePassportItemAssetType = changePassportItemAssetType(
   passportOffering,
   passportDiscount,
   passportDiscountRate,
-  passportOverride,
 )
 const onChangePassportDiscountEnd = changePassportDiscountEnd(passportDiscount)
 const onChangePassportDiscountStart =
@@ -205,7 +218,6 @@ const onChangePassportDiscountRate = changePassportDiscount(
   passportOffering,
   passportItem,
   passportDiscountRate,
-  passportOverride,
 )
 const setConnetedWalletOfferingBeneficiary = () => {
   passportOffering.value = {
@@ -229,10 +241,6 @@ onMounted(async () => {
   }
   passportDiscount.value = {
     ...passportDiscount.value,
-    payload: bytes32Hex(passportPayload.value),
-  }
-  passportOverride.value = {
-    ...passportOverride.value,
     payload: bytes32Hex(passportPayload.value),
   }
 
@@ -407,70 +415,6 @@ const addPassportdDiscountInConfig = async () => {
                 ...((_passportPlugin?.options?.find(
                   (option) => option.key === 'discounts',
                 )?.value || []) as PassportOptionsDiscount[]),
-              ],
-            },
-          ],
-        },
-      ],
-    }),
-  )
-
-  const api = await whenDefined(nextConfig, (conf) =>
-    fetch('/api/superuser/config', {
-      method: 'POST',
-      body: JSON.stringify({
-        site: club.value,
-        message: msg,
-        signature: sig,
-        config: encode(conf),
-      }),
-    }),
-  )
-
-  const res = (await api?.json()) as { result: string; error?: string }
-  apiCalling.value = { progress: false, result: res.result, error: res.error }
-}
-
-const addPassportdOverrideInConfig = async () => {
-  const { signature: sig, message: msg } = await sign()
-  apiCalling.value = { progress: true }
-
-  if (!passportItem.value.itemAssetType || !passportItem.value.itemAssetValue) {
-    apiCalling.value = {
-      progress: false,
-      result: null,
-      error: 'missing itemAssetType or itemAssetValue',
-    }
-  }
-
-  const currentConfig = whenDefined(
-    (await whenDefined(club.value, fetchClubs))?.content,
-    decode,
-  )
-  const passportPlugin = currentConfig?.plugins?.find(
-    (plgn) => plgn.id === PASSPORT_PLUGIN_ID,
-  )
-  const nextConfig = whenDefinedAll(
-    [currentConfig, passportPlugin],
-    ([base, _passportPlugin]) => ({
-      ...base,
-      plugins: [
-        ...base.plugins.filter((plgn) => plgn.id !== PASSPORT_PLUGIN_ID),
-        {
-          ..._passportPlugin,
-          options: [
-            ...(_passportPlugin?.options?.filter(
-              (option) => option.key !== 'override',
-            ) || []),
-            {
-              key: 'override',
-              value: [
-                {
-                  ...passportOverride.value,
-                },
-                ...((_passportPlugin?.options?.find(
-                  (option) => option.key === 'override',
-                )?.value || []) as Override[]),
               ],
             },
           ],
@@ -917,6 +861,27 @@ const updatePassportOfferingOnChain = async () => {
           </p>
         </label>
       </div>
+
+      <h2 class="font-mono text-xl mt-8">Update Passport Item value</h2>
+      <div class="w-full grid gap-2">
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">Item's sToken Payload</span>
+          <input
+            type="text"
+            class="w-full hs-form-field__input"
+            v-model="updatePassportItem.sTokenPayload"
+          />
+        </label>
+
+        <label class="w-full hs-form-field">
+          <span class="w-full hs-form-field__label">Value</span>
+          <input
+            type="text"
+            class="w-full hs-form-field__input"
+            v-model="updatePassportItem.passportItemValue"
+          />
+        </label>
+      </div>
     </div>
 
     <aside class="grid gap-2">
@@ -1016,17 +981,14 @@ const updatePassportOfferingOnChain = async () => {
             </p>
           </dd>
 
-          <dt class="font-bold">Add Passport Override</dt>
+          <dt class="font-bold">Update Passport Item Value</dt>
           <dd>
-            <pre class="text-sm">{{
-              passportOverride ? JSON.stringify(passportOverride, null, 2) : ''
-            }}</pre>
             <p>
               <button
                 class="hs-button is-small is-filled"
-                @click="addPassportdOverrideInConfig"
+                @click="patchPassportItem"
               >
-                Add in override
+                Update in Redis
               </button>
             </p>
           </dd>

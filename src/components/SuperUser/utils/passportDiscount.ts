@@ -18,7 +18,6 @@ export const changePassportDiscount =
     offeringRef: RefPassportOffering,
     itemRef: RefPassportItem,
     discountRateRef: RefPassportDiscountRate,
-    overrideRef: RefPassportOverride,
   ) =>
   (ev: Event) => {
     const value = Number((ev.target as HTMLInputElement).value)
@@ -31,13 +30,6 @@ export const changePassportDiscount =
     const yenPrice = Prices[itemRef.value.itemAssetType].yen
     discountRef.value = {
       ...discountRef.value,
-      price: {
-        yen: yenPrice - yenPrice * value,
-      },
-    }
-
-    overrideRef.value = {
-      ...overrideRef.value,
       price: {
         yen: yenPrice - yenPrice * value,
       },
