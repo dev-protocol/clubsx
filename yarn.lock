@@ -6859,6 +6859,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tweenjs/tween.js@npm:~23.1.3":
+  version: 23.1.3
+  resolution: "@tweenjs/tween.js@npm:23.1.3"
+  checksum: 10c0/811b30f5f0e7409fb41833401c501c2d6f600eb5f43039dd9067a7f70aff6dad5f5ce1233848e13f0b33a269a160d9c133f344d986cbff4f1f6b72ddecd06c89
+  languageName: node
+  linkType: hard
+
 "@twind/core@npm:1.1.3":
   version: 1.1.3
   resolution: "@twind/core@npm:1.1.3"
@@ -7418,15 +7425,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/three@npm:0.161.2":
-  version: 0.161.2
-  resolution: "@types/three@npm:0.161.2"
+"@types/three@npm:0.173.0":
+  version: 0.173.0
+  resolution: "@types/three@npm:0.173.0"
   dependencies:
+    "@tweenjs/tween.js": "npm:~23.1.3"
     "@types/stats.js": "npm:*"
     "@types/webxr": "npm:*"
-    fflate: "npm:~0.6.10"
+    "@webgpu/types": "npm:*"
+    fflate: "npm:~0.8.2"
     meshoptimizer: "npm:~0.18.1"
-  checksum: 10c0/b8f49ee5eff1ec137444753e8f65a0d51fe493f6efeb157c2a7a0049300482d1fafef63f1c5bcfabab7568be65b569a3676d6bc9d718bc69143ab93e9638d7cd
+  checksum: 10c0/6fede57591b364fc430c233d054d1892c017c2879e0ddb979e1cc14f6ebe59c560f7dbacc4c34e7cf17969d50c5f519d69a89f643a6839d16ed14ebbdd9ca43f
   languageName: node
   linkType: hard
 
@@ -9081,6 +9090,13 @@ __metadata:
   version: 0.2.1
   resolution: "@webcomponents/template-shadowroot@npm:0.2.1"
   checksum: 10c0/6a68f88cf06c4eed586db567e2c2493871a76d0e6eb1e181ccfb247ace557800a9c0a451546e3f2a412c4b70b66269016f4cd36c390049bd8478efdbf35046fb
+  languageName: node
+  linkType: hard
+
+"@webgpu/types@npm:*":
+  version: 0.1.54
+  resolution: "@webgpu/types@npm:0.1.54"
+  checksum: 10c0/79060d567e6b0030b036515f1db04d36dffb5329bdeb2b6e232d3a5bef82157f07fd1df1ec7ee7a760e891cea8da1fc3a4f99f302af66f661db2b3eb94a60a64
   languageName: node
   linkType: hard
 
@@ -11802,7 +11818,7 @@ __metadata:
     "@types/react": "npm:19.0.8"
     "@types/react-dom": "npm:19.0.3"
     "@types/textfit": "npm:^2.4.5"
-    "@types/three": "npm:0.161.2"
+    "@types/three": "npm:0.173.0"
     "@types/uuid": "npm:^10.0.0"
     "@upstash/redis": "npm:^1.34.3"
     "@vercel/edge": "npm:^1.1.1"
@@ -11867,7 +11883,7 @@ __metadata:
     swr: "npm:^2.2.5"
     tailwindcss: "npm:^3.3.3"
     textfit: "npm:^2.4.0"
-    three: "npm:0.161.0"
+    three: "npm:0.173.0"
     truncate-eth-address: "npm:1.0.2"
     type-fest: "npm:4.33.0"
     typescript: "npm:5.5.4"
@@ -15090,10 +15106,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fflate@npm:~0.6.10":
-  version: 0.6.10
-  resolution: "fflate@npm:0.6.10"
-  checksum: 10c0/c452f720e4cb404b300fceb8ef0bdf345f18fbfd3f57f7d0974dce5f5e2ac0e8dd4b6ff4bb7061ae74fd919b9c707172f9dbd44d91149b1137199b8c705768f1
+"fflate@npm:~0.8.2":
+  version: 0.8.2
+  resolution: "fflate@npm:0.8.2"
+  checksum: 10c0/03448d630c0a583abea594835a9fdb2aaf7d67787055a761515bf4ed862913cfd693b4c4ffd5c3f3b355a70cf1e19033e9ae5aedcca103188aaff91b8bd6e293
   languageName: node
   linkType: hard
 
@@ -25713,10 +25729,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"three@npm:0.161.0":
-  version: 0.161.0
-  resolution: "three@npm:0.161.0"
-  checksum: 10c0/0314e0b11c717042cc6cec983d6e2832ed416e4ab996b1340ff25335bbf71c529415856ae2de42952faeae284202368e7f1c6e3fd5a7c73d2b68108e5fb3c057
+"three@npm:0.173.0":
+  version: 0.173.0
+  resolution: "three@npm:0.173.0"
+  checksum: 10c0/6c8ad9b7ab6baaa0dc033c550e76cd3afe462ecfa99ba1b445714f36eeb4994e7dfcb1b72d3c32f6b53ac38df457aa3341ae4f948cb6cfd1d3acc9ee7bba4e58
   languageName: node
   linkType: hard
 
